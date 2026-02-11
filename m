@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-215848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0N8PNrCQjGlQrAAAu9opvQ
-	(envelope-from <stable+bounces-215848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 15:22:40 +0100
+	id UJeOL76QjGlQrAAAu9opvQ
+	(envelope-from <stable+bounces-215849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 15:22:54 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2831252C1
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 15:22:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8441252C8
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 15:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E6316301C930
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 14:21:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B478307092E
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 14:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B461C2BDC3E;
-	Wed, 11 Feb 2026 14:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A2029E115;
+	Wed, 11 Feb 2026 14:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0DttvDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FebrTJpJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BF7260565;
-	Wed, 11 Feb 2026 14:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21931258EE1;
+	Wed, 11 Feb 2026 14:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770819691; cv=none; b=BgmMJRiz9mjLYNllXmqi/SFit4jDHGJiM//QESGg+VjjS6X54UQ1gNyAy4jEEXpLHwUPbUnBVGJqdEA+eRhGU37gDmyy/psCGExeO+KO9eI+zX0qsdpP6stkLYzIAU3aQMqGe3LjOwrYwaDfKbf0Wz2kos32EBuOltwy0GbNkxU=
+	t=1770819694; cv=none; b=Fo988bgCFsVjBMYsv+FO1J0m7KLCNMS6TpOP5zZaNoK048UQ4aNEl+mQvVFEOtEtb/BiSgfaT8vPCkGS5Ln8q6LKTk4xjHPH6744nqUWDPa0yVVrop+gFQXkRRjVIJMY4zFP/lrTDV9OCqxLEzZ8jN+MhKobnQUL1IWB9xdJMtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770819691; c=relaxed/simple;
-	bh=0w5wLmCfp4pbcAPzxN9eOC+vSRqBjNFxHvJBiF/MAi8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zeifwp++9o8moGUSz/fLTwLtRfhP6t8IuYMpAwx5BTjgX23P+v3y26S48pbsNImLyjGU7c008U+vAhsv9XFLLx0We8twtCRQy+hVyxS8jq/wKxUKA2oldh+ERtI0a78IqaiXP/PajZO1kbCVzid0mEP+EwlG7hAWNFfYFFDsm4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0DttvDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484CBC19425;
-	Wed, 11 Feb 2026 14:21:30 +0000 (UTC)
+	s=arc-20240116; t=1770819694; c=relaxed/simple;
+	bh=ebde3JAd2yYEl8qMClv78Z90jLjGcS6ah7ibXY25hCg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=F78meGKRrShNVxl9AsHe/sYKH/fmG+zhGVbJH5rWg943r0dBemZNgFKff/0YZMzCcU7Em2kYUKUEIIgUjm2jIozcQ5mor22j1CPSPUueLJim3CCXJQ+Bl9uZQzGqBlfsY23sIpCEalGWkMAyWP2r5o0iIM5YWFQKHW6QAnLJli8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FebrTJpJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A42C4CEF7;
+	Wed, 11 Feb 2026 14:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770819691;
-	bh=0w5wLmCfp4pbcAPzxN9eOC+vSRqBjNFxHvJBiF/MAi8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q0DttvDDjjoW6xFNyU0qzoCAhUMwdwRw5TUA78jhpX0Wt/ESzaCDokD7QCdZPjkMR
-	 JXuQNdU8T31pjePtAIpwFwYBNjN1oGSwGfFsVBzUD0RbPxbxcIsQ/SURpnVQj+uTs2
-	 xYbtDWACktcw6lLUB8aigbe9SaKwCDRX5p+5Khzk=
+	s=korg; t=1770819693;
+	bh=ebde3JAd2yYEl8qMClv78Z90jLjGcS6ah7ibXY25hCg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FebrTJpJVS1fPOUgvn1JVP23hZIDmLepZcQaPgvwSFbdNuNcqQC62Gbi1NyuT3ZoQ
+	 EANXGE3grQReFCaOytio18UANB8F9bTcQMEfptvJQ7CFjSVVdMLWMWv9fcq0vsETBt
+	 xwp6kCrIDXQxolweJDFFNbH9qBdWbEWiBKlH3oGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -49,12 +48,10 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 5.15.200
-Date: Wed, 11 Feb 2026 15:21:19 +0100
-Message-ID: <2026021119-manmade-yonder-5400@gregkh>
+Subject: Linux 6.1.163
+Date: Wed, 11 Feb 2026 15:21:26 +0100
+Message-ID: <2026021126-squeezing-primate-f2f0@gregkh>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026021119-approval-situated-ff5e@gregkh>
-References: <2026021119-approval-situated-ff5e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,14 +67,14 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215848-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215849-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
@@ -90,2719 +87,278 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3B2831252C1
+X-Rspamd-Queue-Id: 4B8441252C8
 X-Rspamd-Action: no action
 
-diff --git a/Documentation/RCU/Design/Requirements/Requirements.rst b/Documentation/RCU/Design/Requirements/Requirements.rst
-index 45278e2974c0..ef5f65f21083 100644
---- a/Documentation/RCU/Design/Requirements/Requirements.rst
-+++ b/Documentation/RCU/Design/Requirements/Requirements.rst
-@@ -1858,7 +1858,7 @@ unloaded. After a given module has been unloaded, any attempt to call
- one of its functions results in a segmentation fault. The module-unload
- functions must therefore cancel any delayed calls to loadable-module
- functions, for example, any outstanding mod_timer() must be dealt
--with via del_timer_sync() or similar.
-+with via timer_shutdown_sync() or similar.
- 
- Unfortunately, there is no way to cancel an RCU callback; once you
- invoke call_rcu(), the callback function is eventually going to be
-diff --git a/Documentation/core-api/local_ops.rst b/Documentation/core-api/local_ops.rst
-index 2ac3f9f29845..0b42ceaaf3c4 100644
---- a/Documentation/core-api/local_ops.rst
-+++ b/Documentation/core-api/local_ops.rst
-@@ -191,7 +191,7 @@ Here is a sample module which implements a basic per cpu counter using
- 
-     static void __exit test_exit(void)
-     {
--            del_timer_sync(&test_timer);
-+            timer_shutdown_sync(&test_timer);
-     }
- 
-     module_init(test_init);
-diff --git a/Documentation/kernel-hacking/locking.rst b/Documentation/kernel-hacking/locking.rst
-index d431718921b7..a62c80f0f051 100644
---- a/Documentation/kernel-hacking/locking.rst
-+++ b/Documentation/kernel-hacking/locking.rst
-@@ -970,7 +970,7 @@ you might do the following::
- 
-             while (list) {
-                     struct foo *next = list->next;
--                    del_timer(&list->timer);
-+                    timer_delete(&list->timer);
-                     kfree(list);
-                     list = next;
-             }
-@@ -984,7 +984,7 @@ the lock after we spin_unlock_bh(), and then try to free
- the element (which has already been freed!).
- 
- This can be avoided by checking the result of
--del_timer(): if it returns 1, the timer has been deleted.
-+timer_delete(): if it returns 1, the timer has been deleted.
- If 0, it means (in this case) that it is currently running, so we can
- do::
- 
-@@ -993,7 +993,7 @@ do::
- 
-                     while (list) {
-                             struct foo *next = list->next;
--                            if (!del_timer(&list->timer)) {
-+                            if (!timer_delete(&list->timer)) {
-                                     /* Give timer a chance to delete this */
-                                     spin_unlock_bh(&list_lock);
-                                     goto retry;
-@@ -1008,9 +1008,12 @@ do::
- Another common problem is deleting timers which restart themselves (by
- calling add_timer() at the end of their timer function).
- Because this is a fairly common case which is prone to races, you should
--use del_timer_sync() (``include/linux/timer.h``) to
--handle this case. It returns the number of times the timer had to be
--deleted before we finally stopped it from adding itself back in.
-+use timer_delete_sync() (``include/linux/timer.h``) to
-+
-+Before freeing a timer, timer_shutdown() or timer_shutdown_sync() should be
-+called which will keep it from being rearmed. Any subsequent attempt to
-+rearm the timer will be silently ignored by the core code.
-+
- 
- Locking Speed
- =============
-@@ -1338,7 +1341,7 @@ lock.
- 
- -  kfree()
- 
---  add_timer() and del_timer()
-+-  add_timer() and timer_delete()
- 
- Mutex API reference
- ===================
-diff --git a/Documentation/timers/hrtimers.rst b/Documentation/timers/hrtimers.rst
-index c1c20a693e8f..7ac448908d1f 100644
---- a/Documentation/timers/hrtimers.rst
-+++ b/Documentation/timers/hrtimers.rst
-@@ -118,7 +118,7 @@ existing timer wheel code, as it is mature and well suited. Sharing code
- was not really a win, due to the different data structures. Also, the
- hrtimer functions now have clearer behavior and clearer names - such as
- hrtimer_try_to_cancel() and hrtimer_cancel() [which are roughly
--equivalent to del_timer() and del_timer_sync()] - so there's no direct
-+equivalent to timer_delete() and timer_delete_sync()] - so there's no direct
- 1:1 mapping between them on the algorithmic level, and thus no real
- potential for code sharing either.
- 
-diff --git a/Documentation/translations/it_IT/kernel-hacking/locking.rst b/Documentation/translations/it_IT/kernel-hacking/locking.rst
-index 9d6387e7b083..b5055b251ad3 100644
---- a/Documentation/translations/it_IT/kernel-hacking/locking.rst
-+++ b/Documentation/translations/it_IT/kernel-hacking/locking.rst
-@@ -998,7 +998,7 @@ potreste fare come segue::
- 
-             while (list) {
-                     struct foo *next = list->next;
--                    del_timer(&list->timer);
-+                    timer_delete(&list->timer);
-                     kfree(list);
-                     list = next;
-             }
-@@ -1011,7 +1011,7 @@ e prenderà il *lock* solo dopo spin_unlock_bh(), e cercherà
- di eliminare il suo oggetto (che però è già stato eliminato).
- 
- Questo può essere evitato controllando il valore di ritorno di
--del_timer(): se ritorna 1, il temporizzatore è stato già
-+timer_delete(): se ritorna 1, il temporizzatore è stato già
- rimosso. Se 0, significa (in questo caso) che il temporizzatore è in
- esecuzione, quindi possiamo fare come segue::
- 
-@@ -1020,7 +1020,7 @@ esecuzione, quindi possiamo fare come segue::
- 
-                     while (list) {
-                             struct foo *next = list->next;
--                            if (!del_timer(&list->timer)) {
-+                            if (!timer_delete(&list->timer)) {
-                                     /* Give timer a chance to delete this */
-                                     spin_unlock_bh(&list_lock);
-                                     goto retry;
-@@ -1034,10 +1034,8 @@ esecuzione, quindi possiamo fare come segue::
- Un altro problema è l'eliminazione dei temporizzatori che si riavviano
- da soli (chiamando add_timer() alla fine della loro esecuzione).
- Dato che questo è un problema abbastanza comune con una propensione
--alle corse critiche, dovreste usare del_timer_sync()
--(``include/linux/timer.h``) per gestire questo caso. Questa ritorna il
--numero di volte che il temporizzatore è stato interrotto prima che
--fosse in grado di fermarlo senza che si riavviasse.
-+alle corse critiche, dovreste usare timer_delete_sync()
-+(``include/linux/timer.h``) per gestire questo caso.
- 
- Velocità della sincronizzazione
- ===============================
-@@ -1382,7 +1380,7 @@ contesto, o trattenendo un qualsiasi *lock*.
- 
- -  kfree()
- 
---  add_timer() e del_timer()
-+-  add_timer() e timer_delete()
- 
- Riferimento per l'API dei Mutex
- ===============================
-diff --git a/Documentation/translations/zh_CN/core-api/local_ops.rst b/Documentation/translations/zh_CN/core-api/local_ops.rst
-index 41e4525038e8..eb5423f60f17 100644
---- a/Documentation/translations/zh_CN/core-api/local_ops.rst
-+++ b/Documentation/translations/zh_CN/core-api/local_ops.rst
-@@ -185,7 +185,7 @@ UP之间没有不同的行为，在你的架构的 ``local.h`` 中包括 ``asm-g
- 
-     static void __exit test_exit(void)
-     {
--            del_timer_sync(&test_timer);
-+            timer_shutdown_sync(&test_timer);
-     }
- 
-     module_init(test_init);
-diff --git a/Makefile b/Makefile
-index 69d7ba5a1ded..1af1fb3f1263 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 5
- PATCHLEVEL = 15
--SUBLEVEL = 199
-+SUBLEVEL = 200
- EXTRAVERSION =
- NAME = Trick or Treat
- 
-diff --git a/arch/arm/include/asm/string.h b/arch/arm/include/asm/string.h
-index 6c607c68f3ad..c35250c4991b 100644
---- a/arch/arm/include/asm/string.h
-+++ b/arch/arm/include/asm/string.h
-@@ -42,7 +42,10 @@ static inline void *memset32(uint32_t *p, uint32_t v, __kernel_size_t n)
- extern void *__memset64(uint64_t *, uint32_t low, __kernel_size_t, uint32_t hi);
- static inline void *memset64(uint64_t *p, uint64_t v, __kernel_size_t n)
- {
--	return __memset64(p, v, n * 8, v >> 32);
-+	if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN))
-+		return __memset64(p, v, n * 8, v >> 32);
-+	else
-+		return __memset64(p, v >> 32, n * 8, v);
- }
- 
- /*
-diff --git a/arch/arm/mach-spear/time.c b/arch/arm/mach-spear/time.c
-index 6baf952fa902..8b572c93e14c 100644
---- a/arch/arm/mach-spear/time.c
-+++ b/arch/arm/mach-spear/time.c
-@@ -90,7 +90,7 @@ static void __init spear_clocksource_init(void)
- 		200, 16, clocksource_mmio_readw_up);
- }
- 
--static inline void timer_shutdown(struct clock_event_device *evt)
-+static inline void spear_timer_shutdown(struct clock_event_device *evt)
- {
- 	u16 val = readw(gpt_base + CR(CLKEVT));
- 
-@@ -101,7 +101,7 @@ static inline void timer_shutdown(struct clock_event_device *evt)
- 
- static int spear_shutdown(struct clock_event_device *evt)
- {
--	timer_shutdown(evt);
-+	spear_timer_shutdown(evt);
- 
- 	return 0;
- }
-@@ -111,7 +111,7 @@ static int spear_set_oneshot(struct clock_event_device *evt)
- 	u16 val;
- 
- 	/* stop the timer */
--	timer_shutdown(evt);
-+	spear_timer_shutdown(evt);
- 
- 	val = readw(gpt_base + CR(CLKEVT));
- 	val |= CTRL_ONE_SHOT;
-@@ -126,7 +126,7 @@ static int spear_set_periodic(struct clock_event_device *evt)
- 	u16 val;
- 
- 	/* stop the timer */
--	timer_shutdown(evt);
-+	spear_timer_shutdown(evt);
- 
- 	period = clk_get_rate(gpt_clk) / HZ;
- 	period >>= CTRL_PRESCALER16;
-diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
-index 23ff70350992..f42d73573f3c 100644
---- a/arch/riscv/include/asm/cacheflush.h
-+++ b/arch/riscv/include/asm/cacheflush.h
-@@ -22,11 +22,6 @@ static inline void flush_dcache_page(struct page *page)
- }
- #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
- 
--/*
-- * RISC-V doesn't have an instruction to flush parts of the instruction cache,
-- * so instead we just flush the whole thing.
-- */
--#define flush_icache_range(start, end) flush_icache_all()
- #define flush_icache_user_page(vma, pg, addr, len) \
- 	flush_icache_mm(vma->vm_mm, 0)
- 
-@@ -42,6 +37,16 @@ void flush_icache_mm(struct mm_struct *mm, bool local);
- 
- #endif /* CONFIG_SMP */
- 
-+/*
-+ * RISC-V doesn't have an instruction to flush parts of the instruction cache,
-+ * so instead we just flush the whole thing.
-+ */
-+#define flush_icache_range flush_icache_range
-+static inline void flush_icache_range(unsigned long start, unsigned long end)
-+{
-+	flush_icache_all();
-+}
-+
- /*
-  * Bits in sys_riscv_flush_icache()'s flags argument.
-  */
-diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
-index 194f166b2cc4..0d18ee53fd64 100644
---- a/arch/riscv/kernel/probes/uprobes.c
-+++ b/arch/riscv/kernel/probes/uprobes.c
-@@ -161,6 +161,7 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
- 	/* Initialize the slot */
- 	void *kaddr = kmap_atomic(page);
- 	void *dst = kaddr + (vaddr & ~PAGE_MASK);
-+	unsigned long start = (unsigned long)dst;
- 
- 	memcpy(dst, src, len);
- 
-@@ -170,13 +171,6 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
- 		*(uprobe_opcode_t *)dst = __BUG_INSN_32;
- 	}
- 
-+	flush_icache_range(start, start + len);
- 	kunmap_atomic(kaddr);
--
--	/*
--	 * We probably need flush_icache_user_page() but it needs vma.
--	 * This should work on most of architectures by default. If
--	 * architecture needs to do something different it can define
--	 * its own version of the function.
--	 */
--	flush_dcache_page(page);
- }
-diff --git a/arch/x86/include/asm/kfence.h b/arch/x86/include/asm/kfence.h
-index acf9ffa1a171..dfd5c74ba41a 100644
---- a/arch/x86/include/asm/kfence.h
-+++ b/arch/x86/include/asm/kfence.h
-@@ -42,7 +42,7 @@ static inline bool kfence_protect_page(unsigned long addr, bool protect)
- {
- 	unsigned int level;
- 	pte_t *pte = lookup_address(addr, &level);
--	pteval_t val;
-+	pteval_t val, new;
- 
- 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
- 		return false;
-@@ -57,11 +57,12 @@ static inline bool kfence_protect_page(unsigned long addr, bool protect)
- 		return true;
- 
- 	/*
--	 * Otherwise, invert the entire PTE.  This avoids writing out an
-+	 * Otherwise, flip the Present bit, taking care to avoid writing an
- 	 * L1TF-vulnerable PTE (not present, without the high address bits
- 	 * set).
- 	 */
--	set_pte(pte, __pte(~val));
-+	new = val ^ _PAGE_PRESENT;
-+	set_pte(pte, __pte(flip_protnone_guard(val, new, PTE_PFN_MASK)));
- 
- 	/*
- 	 * If the page was protected (non-present) and we're making it
-diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c
-index 53e275e377a7..2d804ab595dc 100644
---- a/block/bfq-cgroup.c
-+++ b/block/bfq-cgroup.c
-@@ -387,7 +387,7 @@ static void bfqg_stats_add_aux(struct bfqg_stats *to, struct bfqg_stats *from)
- 	blkg_rwstat_add_aux(&to->merged, &from->merged);
- 	blkg_rwstat_add_aux(&to->service_time, &from->service_time);
- 	blkg_rwstat_add_aux(&to->wait_time, &from->wait_time);
--	bfq_stat_add_aux(&from->time, &from->time);
-+	bfq_stat_add_aux(&to->time, &from->time);
- 	bfq_stat_add_aux(&to->avg_queue_size_sum, &from->avg_queue_size_sum);
- 	bfq_stat_add_aux(&to->avg_queue_size_samples,
- 			  &from->avg_queue_size_samples);
-diff --git a/drivers/android/binderfs.c b/drivers/android/binderfs.c
-index 6d717ed76766..671adaba60be 100644
---- a/drivers/android/binderfs.c
-+++ b/drivers/android/binderfs.c
-@@ -130,8 +130,8 @@ static int binderfs_binder_device_create(struct inode *ref_inode,
- 	mutex_lock(&binderfs_minors_mutex);
- 	if (++info->device_count <= info->mount_opts.max)
- 		minor = ida_alloc_max(&binderfs_minors,
--				      use_reserve ? BINDERFS_MAX_MINOR :
--						    BINDERFS_MAX_MINOR_CAPPED,
-+				      use_reserve ? BINDERFS_MAX_MINOR - 1 :
-+						    BINDERFS_MAX_MINOR_CAPPED - 1,
- 				      GFP_KERNEL);
- 	else
- 		minor = -ENOSPC;
-@@ -433,8 +433,8 @@ static int binderfs_binder_ctl_create(struct super_block *sb)
- 	/* Reserve a new minor number for the new device. */
- 	mutex_lock(&binderfs_minors_mutex);
- 	minor = ida_alloc_max(&binderfs_minors,
--			      use_reserve ? BINDERFS_MAX_MINOR :
--					    BINDERFS_MAX_MINOR_CAPPED,
-+			      use_reserve ? BINDERFS_MAX_MINOR - 1 :
-+					    BINDERFS_MAX_MINOR_CAPPED - 1,
- 			      GFP_KERNEL);
- 	mutex_unlock(&binderfs_minors_mutex);
- 	if (minor < 0) {
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index f617fc3a1102..8c906643b4ed 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -3497,11 +3497,29 @@ static void rbd_img_object_requests(struct rbd_img_request *img_req)
- 	rbd_assert(!need_exclusive_lock(img_req) ||
- 		   __rbd_is_lock_owner(rbd_dev));
- 
--	if (rbd_img_is_write(img_req)) {
--		rbd_assert(!img_req->snapc);
-+	if (test_bit(IMG_REQ_CHILD, &img_req->flags)) {
-+		rbd_assert(!rbd_img_is_write(img_req));
-+	} else {
-+		struct request *rq = blk_mq_rq_from_pdu(img_req);
-+		u64 off = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
-+		u64 len = blk_rq_bytes(rq);
-+		u64 mapping_size;
-+
- 		down_read(&rbd_dev->header_rwsem);
--		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
-+		mapping_size = rbd_dev->mapping.size;
-+		if (rbd_img_is_write(img_req)) {
-+			rbd_assert(!img_req->snapc);
-+			img_req->snapc =
-+			    ceph_get_snap_context(rbd_dev->header.snapc);
-+		}
- 		up_read(&rbd_dev->header_rwsem);
-+
-+		if (unlikely(off + len > mapping_size)) {
-+			rbd_warn(rbd_dev, "beyond EOD (%llu~%llu > %llu)",
-+				 off, len, mapping_size);
-+			img_req->pending.result = -EIO;
-+			return;
-+		}
- 	}
- 
- 	for_each_obj_request(img_req, obj_req) {
-@@ -4727,7 +4745,6 @@ static void rbd_queue_workfn(struct work_struct *work)
- 	struct request *rq = blk_mq_rq_from_pdu(img_request);
- 	u64 offset = (u64)blk_rq_pos(rq) << SECTOR_SHIFT;
- 	u64 length = blk_rq_bytes(rq);
--	u64 mapping_size;
- 	int result;
- 
- 	/* Ignore/skip any zero-length requests */
-@@ -4740,17 +4757,9 @@ static void rbd_queue_workfn(struct work_struct *work)
- 	blk_mq_start_request(rq);
- 
- 	down_read(&rbd_dev->header_rwsem);
--	mapping_size = rbd_dev->mapping.size;
- 	rbd_img_capture_header(img_request);
- 	up_read(&rbd_dev->header_rwsem);
- 
--	if (offset + length > mapping_size) {
--		rbd_warn(rbd_dev, "beyond EOD (%llu~%llu > %llu)", offset,
--			 length, mapping_size);
--		result = -EIO;
--		goto err_img_request;
--	}
--
- 	dout("%s rbd_dev %p img_req %p %s %llu~%llu\n", __func__, rbd_dev,
- 	     img_request, obj_op_name(op_type), offset, length);
- 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 4f87d4365dab..26b581127266 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -709,9 +709,15 @@ static int qca_close(struct hci_uart *hu)
- 	skb_queue_purge(&qca->tx_wait_q);
- 	skb_queue_purge(&qca->txq);
- 	skb_queue_purge(&qca->rx_memdump_q);
-+	/*
-+	 * Shut the timers down so they can't be rearmed when
-+	 * destroy_workqueue() drains pending work which in turn might try
-+	 * to arm a timer.  After shutdown rearm attempts are silently
-+	 * ignored by the timer core code.
-+	 */
-+	timer_shutdown_sync(&qca->tx_idle_timer);
-+	timer_shutdown_sync(&qca->wake_retrans_timer);
- 	destroy_workqueue(qca->workqueue);
--	del_timer_sync(&qca->tx_idle_timer);
--	del_timer_sync(&qca->wake_retrans_timer);
- 	qca->hu = NULL;
- 
- 	kfree_skb(qca->rx_skb);
-diff --git a/drivers/char/tpm/tpm-dev-common.c b/drivers/char/tpm/tpm-dev-common.c
-index 56e56a09cc90..c3fbbf4d3db7 100644
---- a/drivers/char/tpm/tpm-dev-common.c
-+++ b/drivers/char/tpm/tpm-dev-common.c
-@@ -157,7 +157,7 @@ ssize_t tpm_common_read(struct file *file, char __user *buf,
- out:
- 	if (!priv->response_length) {
- 		*off = 0;
--		del_singleshot_timer_sync(&priv->user_read_timer);
-+		del_timer_sync(&priv->user_read_timer);
- 		flush_work(&priv->timeout_work);
- 	}
- 	mutex_unlock(&priv->buffer_mutex);
-@@ -264,7 +264,7 @@ __poll_t tpm_common_poll(struct file *file, poll_table *wait)
- void tpm_common_release(struct file *file, struct file_priv *priv)
- {
- 	flush_work(&priv->async_work);
--	del_singleshot_timer_sync(&priv->user_read_timer);
-+	del_timer_sync(&priv->user_read_timer);
- 	flush_work(&priv->timeout_work);
- 	file->private_data = NULL;
- 	priv->response_length = 0;
-diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
-index be6d741d404c..2255c6f726b7 100644
---- a/drivers/clocksource/arm_arch_timer.c
-+++ b/drivers/clocksource/arm_arch_timer.c
-@@ -691,8 +691,8 @@ static irqreturn_t arch_timer_handler_virt_mem(int irq, void *dev_id)
- 	return timer_handler(ARCH_TIMER_MEM_VIRT_ACCESS, evt);
- }
- 
--static __always_inline int timer_shutdown(const int access,
--					  struct clock_event_device *clk)
-+static __always_inline int arch_timer_shutdown(const int access,
-+					       struct clock_event_device *clk)
- {
- 	unsigned long ctrl;
- 
-@@ -705,22 +705,22 @@ static __always_inline int timer_shutdown(const int access,
- 
- static int arch_timer_shutdown_virt(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
- }
- 
- static int arch_timer_shutdown_phys(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
- }
- 
- static int arch_timer_shutdown_virt_mem(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
- }
- 
- static int arch_timer_shutdown_phys_mem(struct clock_event_device *clk)
- {
--	return timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
-+	return arch_timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
- }
- 
- static __always_inline void set_next_event(const int access, unsigned long evt,
-diff --git a/drivers/clocksource/timer-sp804.c b/drivers/clocksource/timer-sp804.c
-index e6a87f4af2b5..cd1916c05325 100644
---- a/drivers/clocksource/timer-sp804.c
-+++ b/drivers/clocksource/timer-sp804.c
-@@ -155,14 +155,14 @@ static irqreturn_t sp804_timer_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--static inline void timer_shutdown(struct clock_event_device *evt)
-+static inline void evt_timer_shutdown(struct clock_event_device *evt)
- {
- 	writel(0, common_clkevt->ctrl);
- }
- 
- static int sp804_shutdown(struct clock_event_device *evt)
- {
--	timer_shutdown(evt);
-+	evt_timer_shutdown(evt);
- 	return 0;
- }
- 
-@@ -171,7 +171,7 @@ static int sp804_set_periodic(struct clock_event_device *evt)
- 	unsigned long ctrl = TIMER_CTRL_32BIT | TIMER_CTRL_IE |
- 			     TIMER_CTRL_PERIODIC | TIMER_CTRL_ENABLE;
- 
--	timer_shutdown(evt);
-+	evt_timer_shutdown(evt);
- 	writel(common_clkevt->reload, common_clkevt->load);
- 	writel(ctrl, common_clkevt->ctrl);
- 	return 0;
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index b68293a50551..1dc28cabd71d 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -285,6 +285,7 @@
- #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
- #define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
- #define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3	0xb882
- 
- #define USB_VENDOR_ID_CHUNGHWAT		0x2247
- #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
-@@ -400,6 +401,9 @@
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001	0xa001
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002	0xc002
- 
-+#define USB_VENDOR_ID_EDIFIER		0x2d99
-+#define USB_DEVICE_ID_EDIFIER_QR30	0xa101	/* EDIFIER Hal0 2.0 SE */
-+
- #define USB_VENDOR_ID_ELAN		0x04f3
- #define USB_DEVICE_ID_TOSHIBA_CLICK_L9W	0x0401
- #define USB_DEVICE_ID_HP_X2		0x074d
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 5dec035c5c1d..5c40790b977e 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -379,6 +379,7 @@ static const struct mt_class mt_classes[] = {
- 	{ .name = MT_CLS_VTL,
- 		.quirks = MT_QUIRK_ALWAYS_VALID |
- 			MT_QUIRK_CONTACT_CNT_ACCURATE |
-+			MT_QUIRK_STICKY_FINGERS |
- 			MT_QUIRK_FORCE_GET_FEATURE,
- 	},
- 	{ .name = MT_CLS_GOOGLE,
-diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
-index 944e5e5ff134..69c16c9b8c5c 100644
---- a/drivers/hid/hid-playstation.c
-+++ b/drivers/hid/hid-playstation.c
-@@ -463,11 +463,16 @@ static struct input_dev *ps_gamepad_create(struct hid_device *hdev,
- 	if (IS_ERR(gamepad))
- 		return ERR_CAST(gamepad);
- 
-+	/* Set initial resting state for joysticks to 128 (center) */
- 	input_set_abs_params(gamepad, ABS_X, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_X].value = 128;
- 	input_set_abs_params(gamepad, ABS_Y, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_Y].value = 128;
- 	input_set_abs_params(gamepad, ABS_Z, 0, 255, 0, 0);
- 	input_set_abs_params(gamepad, ABS_RX, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_RX].value = 128;
- 	input_set_abs_params(gamepad, ABS_RY, 0, 255, 0, 0);
-+	gamepad->absinfo[ABS_RY].value = 128;
- 	input_set_abs_params(gamepad, ABS_RZ, 0, 255, 0, 0);
- 
- 	input_set_abs_params(gamepad, ABS_HAT0X, -1, 1, 0, 0);
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index cc2f462fced2..b4f4f6823c5f 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -81,6 +81,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_PS3), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_WIIU), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DWAV, USB_DEVICE_ID_EGALAX_TOUCHCONTROLLER), HID_QUIRK_MULTI_INPUT | HID_QUIRK_NOGET },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_EDIFIER, USB_DEVICE_ID_EDIFIER_QR30), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELO, USB_DEVICE_ID_ELO_TS2700), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_EMS, USB_DEVICE_ID_EMS_TRIO_LINKER_PLUS_II), HID_QUIRK_MULTI_INPUT },
-@@ -740,6 +741,7 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
-diff --git a/drivers/hid/intel-ish-hid/ishtp-hid-client.c b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-index 91bf4d01e91a..34d243450457 100644
---- a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-+++ b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-@@ -493,6 +493,7 @@ static int ishtp_enum_enum_devices(struct ishtp_cl *hid_ishtp_cl)
- 	int rv;
- 
- 	/* Send HOSTIF_DM_ENUM_DEVICES */
-+	client_data->enum_devices_done = false;
- 	memset(&msg, 0, sizeof(struct hostif_msg));
- 	msg.hdr.command = HOSTIF_DM_ENUM_DEVICES;
- 	rv = ishtp_cl_send(hid_ishtp_cl, (unsigned char *)&msg,
-diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
-index 8b8f50ef36af..44007858c23f 100644
---- a/drivers/hwmon/occ/common.c
-+++ b/drivers/hwmon/occ/common.c
-@@ -752,6 +752,7 @@ static ssize_t occ_show_extended(struct device *dev,
-  * are dynamically allocated, we cannot use the existing kernel macros which
-  * stringify the name argument.
-  */
-+__printf(7, 8)
- static void occ_init_attribute(struct occ_attribute *attr, int mode,
- 	ssize_t (*show)(struct device *dev, struct device_attribute *attr, char *buf),
- 	ssize_t (*store)(struct device *dev, struct device_attribute *attr,
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 01e01ca760cf..964170f90597 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -3068,6 +3068,9 @@ iommu_sva_bind_device(struct device *dev, struct mm_struct *mm, void *drvdata)
- 	if (!group)
- 		return ERR_PTR(-ENODEV);
- 
-+	if (IS_ENABLED(CONFIG_X86))
-+		return ERR_PTR(-EOPNOTSUPP);
-+
- 	/* Ensure device count and domain don't change while we're binding */
- 	mutex_lock(&group->mutex);
- 
-diff --git a/drivers/net/ethernet/cavium/liquidio/lio_main.c b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-index 443755729d79..08326eca68bc 100644
---- a/drivers/net/ethernet/cavium/liquidio/lio_main.c
-+++ b/drivers/net/ethernet/cavium/liquidio/lio_main.c
-@@ -3529,6 +3529,23 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 		 */
- 		netdev->netdev_ops = &lionetdevops;
- 
-+		lio = GET_LIO(netdev);
-+
-+		memset(lio, 0, sizeof(struct lio));
-+
-+		lio->ifidx = ifidx_or_pfnum;
-+
-+		props = &octeon_dev->props[i];
-+		props->gmxport = resp->cfg_info.linfo.gmxport;
-+		props->netdev = netdev;
-+
-+		/* Point to the  properties for octeon device to which this
-+		 * interface belongs.
-+		 */
-+		lio->oct_dev = octeon_dev;
-+		lio->octprops = props;
-+		lio->netdev = netdev;
-+
- 		retval = netif_set_real_num_rx_queues(netdev, num_oqueues);
- 		if (retval) {
- 			dev_err(&octeon_dev->pci_dev->dev,
-@@ -3545,16 +3562,6 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 			goto setup_nic_dev_free;
- 		}
- 
--		lio = GET_LIO(netdev);
--
--		memset(lio, 0, sizeof(struct lio));
--
--		lio->ifidx = ifidx_or_pfnum;
--
--		props = &octeon_dev->props[i];
--		props->gmxport = resp->cfg_info.linfo.gmxport;
--		props->netdev = netdev;
--
- 		lio->linfo.num_rxpciq = num_oqueues;
- 		lio->linfo.num_txpciq = num_iqueues;
- 		for (j = 0; j < num_oqueues; j++) {
-@@ -3620,13 +3627,6 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 		netdev->min_mtu = LIO_MIN_MTU_SIZE;
- 		netdev->max_mtu = LIO_MAX_MTU_SIZE;
- 
--		/* Point to the  properties for octeon device to which this
--		 * interface belongs.
--		 */
--		lio->oct_dev = octeon_dev;
--		lio->octprops = props;
--		lio->netdev = netdev;
--
- 		dev_dbg(&octeon_dev->pci_dev->dev,
- 			"if%d gmx: %d hw_addr: 0x%llx\n", i,
- 			lio->linfo.gmxport, CVM_CAST64(lio->linfo.hw_addr));
-@@ -3772,6 +3772,7 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 				&octeon_dev->pci_dev->dev);
- 	if (!devlink) {
- 		dev_err(&octeon_dev->pci_dev->dev, "devlink alloc failed\n");
-+		i--;
- 		goto setup_nic_dev_free;
- 	}
- 
-@@ -3792,11 +3793,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 
- setup_nic_dev_free:
- 
--	while (i--) {
-+	do {
- 		dev_err(&octeon_dev->pci_dev->dev,
- 			"NIC ifidx:%d Setup failed\n", i);
- 		liquidio_destroy_nic_device(octeon_dev, i);
--	}
-+	} while (i--);
- 
- setup_nic_dev_done:
- 
-diff --git a/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c b/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c
-index 8a969a9d4b63..650845b671c6 100644
---- a/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c
-+++ b/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c
-@@ -2230,11 +2230,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
- 
- setup_nic_dev_free:
- 
--	while (i--) {
-+	do {
- 		dev_err(&octeon_dev->pci_dev->dev,
- 			"NIC ifidx:%d Setup failed\n", i);
- 		liquidio_destroy_nic_device(octeon_dev, i);
--	}
-+	} while (i--);
- 
- setup_nic_dev_done:
- 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index 1e6b29c04771..5c7055a4acc6 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -1509,6 +1509,10 @@ static irqreturn_t dpaa2_switch_irq0_handler_thread(int irq_num, void *arg)
- 	}
- 
- 	if_id = (status & 0xFFFF0000) >> 16;
-+	if (if_id >= ethsw->sw_attr.num_ifs) {
-+		dev_err(dev, "Invalid if_id %d in IRQ status\n", if_id);
-+		goto out;
-+	}
- 	port_priv = ethsw->ports[if_id];
- 
- 	if (status & DPSW_IRQ_EVENT_LINK_CHANGED) {
-@@ -2972,6 +2976,12 @@ static int dpaa2_switch_init(struct fsl_mc_device *sw_dev)
- 		goto err_close;
- 	}
- 
-+	if (!ethsw->sw_attr.num_ifs) {
-+		dev_err(dev, "DPSW device has no interfaces\n");
-+		err = -ENODEV;
-+		goto err_close;
-+	}
-+
- 	err = dpsw_get_api_version(ethsw->mc_io, 0,
- 				   &ethsw->major,
- 				   &ethsw->minor);
-diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
-index 1f8cc722aae3..807ba8133469 100644
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -142,7 +142,8 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 		tmp_rx_desc_err_dropped_pkt, tmp_tx_pkts, tmp_tx_bytes;
- 	u64 rx_buf_alloc_fail, rx_desc_err_dropped_pkt, rx_pkts,
- 		rx_skb_alloc_fail, rx_bytes, tx_pkts, tx_bytes;
--	int stats_idx, base_stats_idx, max_stats_idx;
-+	int rx_base_stats_idx, max_rx_stats_idx, max_tx_stats_idx;
-+	int stats_idx, stats_region_len, nic_stats_len;
- 	struct stats *report_stats;
- 	int *rx_qid_to_stats_idx;
- 	int *tx_qid_to_stats_idx;
-@@ -211,8 +212,7 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 	data[i++] = rx_bytes;
- 	data[i++] = tx_bytes;
- 	/* total rx dropped packets */
--	data[i++] = rx_skb_alloc_fail + rx_buf_alloc_fail +
--		    rx_desc_err_dropped_pkt;
-+	data[i++] = rx_skb_alloc_fail + rx_desc_err_dropped_pkt;
- 	/* Skip tx_dropped */
- 	i++;
- 
-@@ -228,14 +228,33 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 	data[i++] = priv->stats_report_trigger_cnt;
- 	i = GVE_MAIN_STATS_LEN;
- 
--	/* For rx cross-reporting stats, start from nic rx stats in report */
--	base_stats_idx = GVE_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues +
--		GVE_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues;
--	max_stats_idx = NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
--		base_stats_idx;
-+	rx_base_stats_idx = 0;
-+	max_rx_stats_idx = 0;
-+	max_tx_stats_idx = 0;
-+	stats_region_len = priv->stats_report_len -
-+				sizeof(struct gve_stats_report);
-+	nic_stats_len = (NIC_RX_STATS_REPORT_NUM * priv->rx_cfg.num_queues +
-+		NIC_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues) *
-+		sizeof(struct stats);
-+	if (unlikely((stats_region_len -
-+				nic_stats_len) % sizeof(struct stats))) {
-+		net_err_ratelimited("Starting index of NIC stats should be multiple of stats size");
-+	} else {
-+		/* For rx cross-reporting stats,
-+		 * start from nic rx stats in report
-+		 */
-+		rx_base_stats_idx = (stats_region_len - nic_stats_len) /
-+							sizeof(struct stats);
-+		max_rx_stats_idx = NIC_RX_STATS_REPORT_NUM *
-+			priv->rx_cfg.num_queues +
-+			rx_base_stats_idx;
-+		max_tx_stats_idx = NIC_TX_STATS_REPORT_NUM *
-+			priv->tx_cfg.num_queues +
-+			max_rx_stats_idx;
-+	}
- 	/* Preprocess the stats report for rx, map queue id to start index */
- 	skip_nic_stats = false;
--	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
-+	for (stats_idx = rx_base_stats_idx; stats_idx < max_rx_stats_idx;
- 		stats_idx += NIC_RX_STATS_REPORT_NUM) {
- 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
- 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
-@@ -267,7 +286,6 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 			data[i++] = tmp_rx_bytes;
- 			/* rx dropped packets */
- 			data[i++] = tmp_rx_skb_alloc_fail +
--				tmp_rx_buf_alloc_fail +
- 				tmp_rx_desc_err_dropped_pkt;
- 			data[i++] = rx->rx_copybreak_pkt;
- 			data[i++] = rx->rx_copied_pkt;
-@@ -288,13 +306,9 @@ gve_get_ethtool_stats(struct net_device *netdev,
- 		i += priv->rx_cfg.num_queues * NUM_GVE_RX_CNTS;
- 	}
- 
--	/* For tx cross-reporting stats, start from nic tx stats in report */
--	base_stats_idx = max_stats_idx;
--	max_stats_idx = NIC_TX_STATS_REPORT_NUM * priv->tx_cfg.num_queues +
--		max_stats_idx;
--	/* Preprocess the stats report for tx, map queue id to start index */
- 	skip_nic_stats = false;
--	for (stats_idx = base_stats_idx; stats_idx < max_stats_idx;
-+	/* NIC TX stats start right after NIC RX stats */
-+	for (stats_idx = max_rx_stats_idx; stats_idx < max_tx_stats_idx;
- 		stats_idx += NIC_TX_STATS_REPORT_NUM) {
- 		u32 stat_name = be32_to_cpu(report_stats[stats_idx].stat_name);
- 		u32 queue_id = be32_to_cpu(report_stats[stats_idx].queue_id);
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 9e1080689057..a8fb51e77fea 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -135,9 +135,9 @@ static int gve_alloc_stats_report(struct gve_priv *priv)
- 	int tx_stats_num, rx_stats_num;
- 
- 	tx_stats_num = (GVE_TX_STATS_REPORT_NUM + NIC_TX_STATS_REPORT_NUM) *
--		       priv->tx_cfg.num_queues;
-+				priv->tx_cfg.max_queues;
- 	rx_stats_num = (GVE_RX_STATS_REPORT_NUM + NIC_RX_STATS_REPORT_NUM) *
--		       priv->rx_cfg.num_queues;
-+				priv->rx_cfg.max_queues;
- 	priv->stats_report_len = struct_size(priv->stats_report, stats,
- 					     size_add(tx_stats_num, rx_stats_num));
- 	priv->stats_report =
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 0f863e72714c..e92d7f2f28c1 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1527,9 +1527,10 @@ int macvlan_common_newlink(struct net *src_net, struct net_device *dev,
- 	/* the macvlan port may be freed by macvlan_uninit when fail to register.
- 	 * so we destroy the macvlan port only when it's valid.
- 	 */
--	if (create && macvlan_port_get_rtnl(lowerdev)) {
-+	if (macvlan_port_get_rtnl(lowerdev)) {
- 		macvlan_flush_sources(port, vlan);
--		macvlan_port_destroy(port->dev);
-+		if (create)
-+			macvlan_port_destroy(port->dev);
- 	}
- 	return err;
- }
-diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
-index 90aed52ce937..86d14fad318c 100644
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -539,6 +539,11 @@ static const struct usb_device_id products[] = {
- 		USB_DEVICE(0x0fe6, 0x9700),	/* SR9700 device */
- 		.driver_info = (unsigned long)&sr9700_driver_info,
- 	},
-+	{
-+		/* SR9700 with virtual driver CD-ROM - interface 0 is the CD-ROM device */
-+		USB_DEVICE_INTERFACE_NUMBER(0x0fe6, 0x9702, 1),
-+		.driver_info = (unsigned long)&sr9700_driver_info,
-+	},
- 	{},			/* END */
- };
- 
-diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
-index e20e18cd04ae..e86cc3425e99 100644
---- a/drivers/net/wireless/ti/wlcore/tx.c
-+++ b/drivers/net/wireless/ti/wlcore/tx.c
-@@ -210,6 +210,11 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
- 	total_blocks = wlcore_hw_calc_tx_blocks(wl, total_len, spare_blocks);
- 
- 	if (total_blocks <= wl->tx_blocks_available) {
-+		if (skb_headroom(skb) < (total_len - skb->len) &&
-+		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
-+			wl1271_free_tx_id(wl, id);
-+			return -EAGAIN;
-+		}
- 		desc = skb_push(skb, total_len - skb->len);
- 
- 		wlcore_hw_set_tx_desc_blocks(wl, desc, total_blocks,
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 051798ef7431..8f7984c53f3f 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -78,9 +78,8 @@ struct nvmet_tcp_cmd {
- 	u32				pdu_len;
- 	u32				pdu_recv;
- 	int				sg_idx;
--	int				nr_mapped;
- 	struct msghdr			recv_msg;
--	struct kvec			*iov;
-+	struct bio_vec			*iov;
- 	u32				flags;
- 
- 	struct list_head		entry;
-@@ -167,6 +166,7 @@ static struct workqueue_struct *nvmet_tcp_wq;
- static const struct nvmet_fabrics_ops nvmet_tcp_ops;
- static void nvmet_tcp_free_cmd(struct nvmet_tcp_cmd *c);
- static void nvmet_tcp_finish_cmd(struct nvmet_tcp_cmd *cmd);
-+static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd);
- 
- static inline u16 nvmet_tcp_cmd_tag(struct nvmet_tcp_queue *queue,
- 		struct nvmet_tcp_cmd *cmd)
-@@ -298,44 +298,61 @@ static int nvmet_tcp_check_ddgst(struct nvmet_tcp_queue *queue, void *pdu)
- 	return 0;
- }
- 
--static void nvmet_tcp_unmap_pdu_iovec(struct nvmet_tcp_cmd *cmd)
-+static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd)
- {
--	struct scatterlist *sg;
--	int i;
--
--	sg = &cmd->req.sg[cmd->sg_idx];
--
--	for (i = 0; i < cmd->nr_mapped; i++)
--		kunmap(sg_page(&sg[i]));
-+	kfree(cmd->iov);
-+	sgl_free(cmd->req.sg);
-+	cmd->iov = NULL;
-+	cmd->req.sg = NULL;
- }
- 
--static void nvmet_tcp_map_pdu_iovec(struct nvmet_tcp_cmd *cmd)
-+static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue);
-+
-+static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- {
--	struct kvec *iov = cmd->iov;
-+	struct bio_vec *iov = cmd->iov;
- 	struct scatterlist *sg;
- 	u32 length, offset, sg_offset;
-+	unsigned int sg_remaining;
-+	int nr_pages;
- 
- 	length = cmd->pdu_len;
--	cmd->nr_mapped = DIV_ROUND_UP(length, PAGE_SIZE);
-+	nr_pages = DIV_ROUND_UP(length, PAGE_SIZE);
- 	offset = cmd->rbytes_done;
- 	cmd->sg_idx = offset / PAGE_SIZE;
- 	sg_offset = offset % PAGE_SIZE;
-+	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt) {
-+		nvmet_tcp_fatal_error(cmd->queue);
-+		return;
-+	}
- 	sg = &cmd->req.sg[cmd->sg_idx];
-+	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
- 
- 	while (length) {
- 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
- 
--		iov->iov_base = kmap(sg_page(sg)) + sg->offset + sg_offset;
--		iov->iov_len = iov_len;
-+		if (!sg_remaining) {
-+			nvmet_tcp_fatal_error(cmd->queue);
-+			return;
-+		}
-+		if (!sg->length || sg->length <= sg_offset) {
-+			nvmet_tcp_fatal_error(cmd->queue);
-+			return;
-+		}
-+
-+		iov->bv_page = sg_page(sg);
-+		iov->bv_len = iov_len;
-+		iov->bv_offset = sg->offset + sg_offset;
- 
- 		length -= iov_len;
- 		sg = sg_next(sg);
-+		sg_remaining--;
- 		iov++;
- 		sg_offset = 0;
- 	}
- 
--	iov_iter_kvec(&cmd->recv_msg.msg_iter, READ, cmd->iov,
--		cmd->nr_mapped, cmd->pdu_len);
-+	iov_iter_bvec(&cmd->recv_msg.msg_iter, READ, cmd->iov,
-+		      nr_pages, cmd->pdu_len);
- }
- 
- static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
-@@ -389,11 +406,11 @@ static int nvmet_tcp_map_data(struct nvmet_tcp_cmd *cmd)
- 
- 	return 0;
- err:
--	sgl_free(cmd->req.sg);
-+	nvmet_tcp_free_cmd_buffers(cmd);
- 	return NVME_SC_INTERNAL;
- }
- 
--static void nvmet_tcp_send_ddgst(struct ahash_request *hash,
-+static void nvmet_tcp_calc_ddgst(struct ahash_request *hash,
- 		struct nvmet_tcp_cmd *cmd)
- {
- 	ahash_request_set_crypt(hash, cmd->req.sg,
-@@ -401,23 +418,6 @@ static void nvmet_tcp_send_ddgst(struct ahash_request *hash,
- 	crypto_ahash_digest(hash);
- }
- 
--static void nvmet_tcp_recv_ddgst(struct ahash_request *hash,
--		struct nvmet_tcp_cmd *cmd)
--{
--	struct scatterlist sg;
--	struct kvec *iov;
--	int i;
--
--	crypto_ahash_init(hash);
--	for (i = 0, iov = cmd->iov; i < cmd->nr_mapped; i++, iov++) {
--		sg_init_one(&sg, iov->iov_base, iov->iov_len);
--		ahash_request_set_crypt(hash, &sg, NULL, iov->iov_len);
--		crypto_ahash_update(hash);
--	}
--	ahash_request_set_crypt(hash, NULL, (void *)&cmd->exp_ddgst, 0);
--	crypto_ahash_final(hash);
--}
--
- static void nvmet_setup_c2h_data_pdu(struct nvmet_tcp_cmd *cmd)
- {
- 	struct nvme_tcp_data_pdu *pdu = cmd->data_pdu;
-@@ -442,7 +442,7 @@ static void nvmet_setup_c2h_data_pdu(struct nvmet_tcp_cmd *cmd)
- 
- 	if (queue->data_digest) {
- 		pdu->hdr.flags |= NVME_TCP_F_DDGST;
--		nvmet_tcp_send_ddgst(queue->snd_hash, cmd);
-+		nvmet_tcp_calc_ddgst(queue->snd_hash, cmd);
- 	}
- 
- 	if (cmd->queue->hdr_digest) {
-@@ -640,10 +640,8 @@ static int nvmet_try_send_data(struct nvmet_tcp_cmd *cmd, bool last_in_batch)
- 		}
- 	}
- 
--	if (queue->nvme_sq.sqhd_disabled) {
--		kfree(cmd->iov);
--		sgl_free(cmd->req.sg);
--	}
-+	if (queue->nvme_sq.sqhd_disabled)
-+		nvmet_tcp_free_cmd_buffers(cmd);
- 
- 	return 1;
- 
-@@ -672,8 +670,7 @@ static int nvmet_try_send_response(struct nvmet_tcp_cmd *cmd,
- 	if (left)
- 		return -EAGAIN;
- 
--	kfree(cmd->iov);
--	sgl_free(cmd->req.sg);
-+	nvmet_tcp_free_cmd_buffers(cmd);
- 	cmd->queue->snd_cmd = NULL;
- 	nvmet_tcp_put_cmd(cmd);
- 	return 1;
-@@ -931,7 +928,7 @@ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
- 	}
- 
- 	queue->rcv_state = NVMET_TCP_RECV_DATA;
--	nvmet_tcp_map_pdu_iovec(cmd);
-+	nvmet_tcp_build_pdu_iovec(cmd);
- 	cmd->flags |= NVMET_TCP_F_INIT_FAILED;
- }
- 
-@@ -984,7 +981,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		goto err_proto;
- 	}
- 	cmd->pdu_recv = 0;
--	nvmet_tcp_map_pdu_iovec(cmd);
-+	nvmet_tcp_build_pdu_iovec(cmd);
- 	queue->cmd = cmd;
- 	queue->rcv_state = NVMET_TCP_RECV_DATA;
- 
-@@ -1058,7 +1055,7 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
- 	if (nvmet_tcp_need_data_in(queue->cmd)) {
- 		if (nvmet_tcp_has_inline_data(queue->cmd)) {
- 			queue->rcv_state = NVMET_TCP_RECV_DATA;
--			nvmet_tcp_map_pdu_iovec(queue->cmd);
-+			nvmet_tcp_build_pdu_iovec(queue->cmd);
- 			return 0;
- 		}
- 		/* send back R2T */
-@@ -1157,7 +1154,7 @@ static void nvmet_tcp_prep_recv_ddgst(struct nvmet_tcp_cmd *cmd)
- {
- 	struct nvmet_tcp_queue *queue = cmd->queue;
- 
--	nvmet_tcp_recv_ddgst(queue->rcv_hash, cmd);
-+	nvmet_tcp_calc_ddgst(queue->rcv_hash, cmd);
- 	queue->offset = 0;
- 	queue->left = NVME_TCP_DIGEST_LENGTH;
- 	queue->rcv_state = NVMET_TCP_RECV_DDGST;
-@@ -1178,7 +1175,6 @@ static int nvmet_tcp_try_recv_data(struct nvmet_tcp_queue *queue)
- 		cmd->rbytes_done += ret;
- 	}
- 
--	nvmet_tcp_unmap_pdu_iovec(cmd);
- 	if (queue->data_digest) {
- 		nvmet_tcp_prep_recv_ddgst(cmd);
- 		return 0;
-@@ -1451,9 +1447,7 @@ static void nvmet_tcp_restore_socket_callbacks(struct nvmet_tcp_queue *queue)
- static void nvmet_tcp_finish_cmd(struct nvmet_tcp_cmd *cmd)
- {
- 	nvmet_req_uninit(&cmd->req);
--	nvmet_tcp_unmap_pdu_iovec(cmd);
--	kfree(cmd->iov);
--	sgl_free(cmd->req.sg);
-+	nvmet_tcp_free_cmd_buffers(cmd);
- }
- 
- static void nvmet_tcp_uninit_data_in_cmds(struct nvmet_tcp_queue *queue)
-@@ -1463,7 +1457,9 @@ static void nvmet_tcp_uninit_data_in_cmds(struct nvmet_tcp_queue *queue)
- 
- 	for (i = 0; i < queue->nr_cmds; i++, cmd++) {
- 		if (nvmet_tcp_need_data_in(cmd))
--			nvmet_tcp_finish_cmd(cmd);
-+			nvmet_req_uninit(&cmd->req);
-+
-+		nvmet_tcp_free_cmd_buffers(cmd);
- 	}
- 
- 	if (!queue->nr_cmds && nvmet_tcp_need_data_in(&queue->connect)) {
-diff --git a/drivers/platform/x86/intel/telemetry/debugfs.c b/drivers/platform/x86/intel/telemetry/debugfs.c
-index 1d4d0fbfd63c..e533de621ac4 100644
---- a/drivers/platform/x86/intel/telemetry/debugfs.c
-+++ b/drivers/platform/x86/intel/telemetry/debugfs.c
-@@ -449,7 +449,7 @@ static int telem_pss_states_show(struct seq_file *s, void *unused)
- 	for (index = 0; index < debugfs_conf->pss_ltr_evts; index++) {
- 		seq_printf(s, "%-32s\t%u\n",
- 			   debugfs_conf->pss_ltr_data[index].name,
--			   pss_s0ix_wakeup[index]);
-+			   pss_ltr_blkd[index]);
- 	}
- 
- 	seq_puts(s, "\n--------------------------------------\n");
-@@ -459,7 +459,7 @@ static int telem_pss_states_show(struct seq_file *s, void *unused)
- 	for (index = 0; index < debugfs_conf->pss_wakeup_evts; index++) {
- 		seq_printf(s, "%-32s\t%u\n",
- 			   debugfs_conf->pss_wakeup[index].name,
--			   pss_ltr_blkd[index]);
-+			   pss_s0ix_wakeup[index]);
- 	}
- 
- 	return 0;
-diff --git a/drivers/platform/x86/intel/telemetry/pltdrv.c b/drivers/platform/x86/intel/telemetry/pltdrv.c
-index 405dea87de6b..dd1ee2730b6a 100644
---- a/drivers/platform/x86/intel/telemetry/pltdrv.c
-+++ b/drivers/platform/x86/intel/telemetry/pltdrv.c
-@@ -610,7 +610,7 @@ static int telemetry_setup(struct platform_device *pdev)
- 	/* Get telemetry Info */
- 	events = (read_buf & TELEM_INFO_SRAMEVTS_MASK) >>
- 		  TELEM_INFO_SRAMEVTS_SHIFT;
--	event_regs = read_buf & TELEM_INFO_SRAMEVTS_MASK;
-+	event_regs = read_buf & TELEM_INFO_NENABLES_MASK;
- 	if ((events < TELEM_MAX_EVENTS_SRAM) ||
- 	    (event_regs < TELEM_MAX_EVENTS_SRAM)) {
- 		dev_err(&pdev->dev, "PSS:Insufficient Space for SRAM Trace\n");
-diff --git a/drivers/platform/x86/toshiba_haps.c b/drivers/platform/x86/toshiba_haps.c
-index 49e84095bb01..8a53f6119fed 100644
---- a/drivers/platform/x86/toshiba_haps.c
-+++ b/drivers/platform/x86/toshiba_haps.c
-@@ -185,7 +185,7 @@ static int toshiba_haps_add(struct acpi_device *acpi_dev)
- 
- 	pr_info("Toshiba HDD Active Protection Sensor device\n");
- 
--	haps = kzalloc(sizeof(struct toshiba_haps_dev), GFP_KERNEL);
-+	haps = devm_kzalloc(&acpi_dev->dev, sizeof(*haps), GFP_KERNEL);
- 	if (!haps)
- 		return -ENOMEM;
- 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index c611fedda7de..a51310aa2556 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1087,8 +1087,10 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	reset_control_deassert(tspi->rst);
- 
- 	spi_irq = platform_get_irq(pdev, 0);
--	if (spi_irq < 0)
--		return spi_irq;
-+	if (spi_irq < 0) {
-+		ret = spi_irq;
-+		goto exit_pm_put;
-+	}
- 	tspi->irq = spi_irq;
- 	ret = request_threaded_irq(tspi->irq, tegra_slink_isr,
- 				   tegra_slink_isr_thread, IRQF_ONESHOT,
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 7306ad89bc71..cb9679905682 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -794,6 +794,7 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
- 	u32 command1, command2, speed = t->speed_hz;
- 	u8 bits_per_word = t->bits_per_word;
- 	u32 tx_tap = 0, rx_tap = 0;
-+	unsigned long flags;
- 	int req_mode;
- 
- 	if (speed != tqspi->cur_speed) {
-@@ -801,10 +802,12 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
- 		tqspi->cur_speed = speed;
- 	}
- 
-+	spin_lock_irqsave(&tqspi->lock, flags);
- 	tqspi->cur_pos = 0;
- 	tqspi->cur_rx_pos = 0;
- 	tqspi->cur_tx_pos = 0;
- 	tqspi->curr_xfer = t;
-+	spin_unlock_irqrestore(&tqspi->lock, flags);
- 
- 	if (is_first_of_msg) {
- 		tegra_qspi_mask_clear_irq(tqspi);
-@@ -1046,6 +1049,7 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 	u32 address_value = 0;
- 	u32 cmd_config = 0, addr_config = 0;
- 	u8 cmd_value = 0, val = 0;
-+	unsigned long flags;
- 
- 	/* Enable Combined sequence mode */
- 	val = tegra_qspi_readl(tqspi, QSPI_GLOBAL_CONFIG);
-@@ -1152,12 +1156,16 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 			tegra_qspi_transfer_end(spi);
- 			spi_transfer_delay_exec(xfer);
- 		}
-+		spin_lock_irqsave(&tqspi->lock, flags);
- 		tqspi->curr_xfer = NULL;
-+		spin_unlock_irqrestore(&tqspi->lock, flags);
- 		transfer_phase++;
- 	}
- 
- exit:
-+	spin_lock_irqsave(&tqspi->lock, flags);
- 	tqspi->curr_xfer = NULL;
-+	spin_unlock_irqrestore(&tqspi->lock, flags);
- 	msg->status = ret;
- 
- 	return ret;
-@@ -1170,6 +1178,7 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
- 	struct spi_transfer *transfer;
- 	bool is_first_msg = true;
- 	int ret = 0, val = 0;
-+	unsigned long flags;
- 
- 	msg->status = 0;
- 	msg->actual_length = 0;
-@@ -1239,7 +1248,9 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
- 		msg->actual_length += xfer->len + dummy_bytes;
- 
- complete_xfer:
-+		spin_lock_irqsave(&tqspi->lock, flags);
- 		tqspi->curr_xfer = NULL;
-+		spin_unlock_irqrestore(&tqspi->lock, flags);
- 
- 		if (ret < 0) {
- 			tegra_qspi_transfer_end(spi);
-@@ -1310,10 +1321,11 @@ static int tegra_qspi_transfer_one_message(struct spi_master *master,
- 
- static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
- {
--	struct spi_transfer *t = tqspi->curr_xfer;
-+	struct spi_transfer *t;
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&tqspi->lock, flags);
-+	t = tqspi->curr_xfer;
- 
- 	if (tqspi->tx_status ||  tqspi->rx_status) {
- 		tegra_qspi_handle_error(tqspi);
-@@ -1344,7 +1356,7 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
- 
- static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
- {
--	struct spi_transfer *t = tqspi->curr_xfer;
-+	struct spi_transfer *t;
- 	unsigned int total_fifo_words;
- 	unsigned long flags;
- 	long wait_status;
-@@ -1381,6 +1393,7 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
- 	}
- 
- 	spin_lock_irqsave(&tqspi->lock, flags);
-+	t = tqspi->curr_xfer;
- 
- 	if (err) {
- 		tegra_qspi_dma_unmap_xfer(tqspi, t);
-@@ -1420,15 +1433,30 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
- static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
- {
- 	struct tegra_qspi *tqspi = context_data;
-+	u32 status;
-+
-+	/*
-+	 * Read transfer status to check if interrupt was triggered by transfer
-+	 * completion
-+	 */
-+	status = tegra_qspi_readl(tqspi, QSPI_TRANS_STATUS);
- 
- 	/*
- 	 * Occasionally the IRQ thread takes a long time to wake up (usually
- 	 * when the CPU that it's running on is excessively busy) and we have
- 	 * already reached the timeout before and cleaned up the timed out
- 	 * transfer. Avoid any processing in that case and bail out early.
-+	 *
-+	 * If no transfer is in progress, check if this was a real interrupt
-+	 * that the timeout handler already processed, or a spurious one.
- 	 */
--	if (!tqspi->curr_xfer)
--		return IRQ_NONE;
-+	if (!tqspi->curr_xfer) {
-+		/* Spurious interrupt - transfer not ready */
-+		if (!(status & QSPI_RDY))
-+			return IRQ_NONE;
-+		/* Real interrupt, already handled by timeout path */
-+		return IRQ_HANDLED;
-+	}
- 
- 	tqspi->status_reg = tegra_qspi_readl(tqspi, QSPI_FIFO_STATUS);
- 
-diff --git a/drivers/staging/wlan-ng/hfa384x_usb.c b/drivers/staging/wlan-ng/hfa384x_usb.c
-index 0d869b5e309c..8687e0bf3315 100644
---- a/drivers/staging/wlan-ng/hfa384x_usb.c
-+++ b/drivers/staging/wlan-ng/hfa384x_usb.c
-@@ -1116,8 +1116,8 @@ static int hfa384x_usbctlx_complete_sync(struct hfa384x *hw,
- 		if (ctlx == get_active_ctlx(hw)) {
- 			spin_unlock_irqrestore(&hw->ctlxq.lock, flags);
- 
--			del_singleshot_timer_sync(&hw->reqtimer);
--			del_singleshot_timer_sync(&hw->resptimer);
-+			del_timer_sync(&hw->reqtimer);
-+			del_timer_sync(&hw->resptimer);
- 			hw->req_timer_done = 1;
- 			hw->resp_timer_done = 1;
- 			usb_kill_urb(&hw->ctlx_urb);
-diff --git a/drivers/staging/wlan-ng/prism2usb.c b/drivers/staging/wlan-ng/prism2usb.c
-index 4b08dc1da4f9..83fcb937a58e 100644
---- a/drivers/staging/wlan-ng/prism2usb.c
-+++ b/drivers/staging/wlan-ng/prism2usb.c
-@@ -171,9 +171,9 @@ static void prism2sta_disconnect_usb(struct usb_interface *interface)
- 		 */
- 		prism2sta_ifstate(wlandev, P80211ENUM_ifstate_disable);
- 
--		del_singleshot_timer_sync(&hw->throttle);
--		del_singleshot_timer_sync(&hw->reqtimer);
--		del_singleshot_timer_sync(&hw->resptimer);
-+		del_timer_sync(&hw->throttle);
-+		del_timer_sync(&hw->reqtimer);
-+		del_timer_sync(&hw->resptimer);
- 
- 		/* Unlink all the URBs. This "removes the wheels"
- 		 * from the entire CTLX handling mechanism.
-diff --git a/drivers/target/iscsi/iscsi_target_util.c b/drivers/target/iscsi/iscsi_target_util.c
-index 6dd5810e2af1..6998c0eec3d4 100644
---- a/drivers/target/iscsi/iscsi_target_util.c
-+++ b/drivers/target/iscsi/iscsi_target_util.c
-@@ -785,8 +785,11 @@ void iscsit_dec_session_usage_count(struct iscsi_session *sess)
- 	spin_lock_bh(&sess->session_usage_lock);
- 	sess->session_usage_count--;
- 
--	if (!sess->session_usage_count && sess->session_waiting_on_uc)
-+	if (!sess->session_usage_count && sess->session_waiting_on_uc) {
-+		spin_unlock_bh(&sess->session_usage_lock);
- 		complete(&sess->session_waiting_on_uc_comp);
-+		return;
-+	}
- 
- 	spin_unlock_bh(&sess->session_usage_lock);
- }
-@@ -854,8 +857,11 @@ void iscsit_dec_conn_usage_count(struct iscsi_conn *conn)
- 	spin_lock_bh(&conn->conn_usage_lock);
- 	conn->conn_usage_count--;
- 
--	if (!conn->conn_usage_count && conn->conn_waiting_on_uc)
-+	if (!conn->conn_usage_count && conn->conn_waiting_on_uc) {
-+		spin_unlock_bh(&conn->conn_usage_lock);
- 		complete(&conn->conn_waiting_on_uc_comp);
-+		return;
-+	}
- 
- 	spin_unlock_bh(&conn->conn_usage_lock);
- }
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 9a96842aeab3..e7867b0f6c62 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -1094,7 +1094,8 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	lops_before_commit(sdp, tr);
- 	if (gfs2_withdrawn(sdp))
- 		goto out_withdraw;
--	gfs2_log_submit_bio(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
-+	if (sdp->sd_jdesc)
-+		gfs2_log_submit_bio(&sdp->sd_jdesc->jd_log_bio, REQ_OP_WRITE);
- 	if (gfs2_withdrawn(sdp))
- 		goto out_withdraw;
- 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 268651ac9fc8..3345bc071e44 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -67,9 +67,13 @@ void gfs2_jindex_free(struct gfs2_sbd *sdp)
- 	sdp->sd_journals = 0;
- 	spin_unlock(&sdp->sd_jindex_spin);
- 
-+	down_write(&sdp->sd_log_flush_lock);
- 	sdp->sd_jdesc = NULL;
-+	up_write(&sdp->sd_log_flush_lock);
-+
- 	while (!list_empty(&list)) {
- 		jd = list_first_entry(&list, struct gfs2_jdesc, jd_list);
-+		BUG_ON(jd->jd_log_bio);
- 		gfs2_free_journal_extents(jd);
- 		list_del(&jd->jd_list);
- 		iput(jd->jd_inode);
-diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
-index 98a30ca6354c..17e651bd04ad 100644
---- a/fs/hfsplus/dir.c
-+++ b/fs/hfsplus/dir.c
-@@ -204,7 +204,7 @@ static int hfsplus_readdir(struct file *file, struct dir_context *ctx)
- 			fd.entrylength);
- 		type = be16_to_cpu(entry.type);
- 		len = NLS_MAX_CHARSET_SIZE * HFSPLUS_MAX_STRLEN;
--		err = hfsplus_uni2asc(sb, &fd.key->cat.name, strbuf, &len);
-+		err = hfsplus_uni2asc_str(sb, &fd.key->cat.name, strbuf, &len);
- 		if (err)
- 			goto out;
- 		if (type == HFSPLUS_FOLDER) {
-diff --git a/fs/hfsplus/hfsplus_fs.h b/fs/hfsplus/hfsplus_fs.h
-index 8396964b056f..610ba01f19c3 100644
---- a/fs/hfsplus/hfsplus_fs.h
-+++ b/fs/hfsplus/hfsplus_fs.h
-@@ -516,8 +516,12 @@ int hfsplus_strcasecmp(const struct hfsplus_unistr *s1,
- 		       const struct hfsplus_unistr *s2);
- int hfsplus_strcmp(const struct hfsplus_unistr *s1,
- 		   const struct hfsplus_unistr *s2);
--int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
--		    char *astr, int *len_p);
-+int hfsplus_uni2asc_str(struct super_block *sb,
-+			const struct hfsplus_unistr *ustr, char *astr,
-+			int *len_p);
-+int hfsplus_uni2asc_xattr_str(struct super_block *sb,
-+			      const struct hfsplus_attr_unistr *ustr,
-+			      char *astr, int *len_p);
- int hfsplus_asc2uni(struct super_block *sb, struct hfsplus_unistr *ustr,
- 		    int max_unistr_len, const char *astr, int len);
- int hfsplus_hash_dentry(const struct dentry *dentry, struct qstr *str);
-diff --git a/fs/hfsplus/unicode.c b/fs/hfsplus/unicode.c
-index ebd326799f35..11e08a4a18b2 100644
---- a/fs/hfsplus/unicode.c
-+++ b/fs/hfsplus/unicode.c
-@@ -143,9 +143,8 @@ static u16 *hfsplus_compose_lookup(u16 *p, u16 cc)
- 	return NULL;
- }
- 
--int hfsplus_uni2asc(struct super_block *sb,
--		const struct hfsplus_unistr *ustr,
--		char *astr, int *len_p)
-+static int hfsplus_uni2asc(struct super_block *sb, const struct hfsplus_unistr *ustr,
-+		    int max_len, char *astr, int *len_p)
- {
- 	const hfsplus_unichr *ip;
- 	struct nls_table *nls = HFSPLUS_SB(sb)->nls;
-@@ -158,8 +157,8 @@ int hfsplus_uni2asc(struct super_block *sb,
- 	ip = ustr->unicode;
- 
- 	ustrlen = be16_to_cpu(ustr->length);
--	if (ustrlen > HFSPLUS_MAX_STRLEN) {
--		ustrlen = HFSPLUS_MAX_STRLEN;
-+	if (ustrlen > max_len) {
-+		ustrlen = max_len;
- 		pr_err("invalid length %u has been corrected to %d\n",
- 			be16_to_cpu(ustr->length), ustrlen);
- 	}
-@@ -280,6 +279,21 @@ int hfsplus_uni2asc(struct super_block *sb,
- 	return res;
- }
- 
-+inline int hfsplus_uni2asc_str(struct super_block *sb,
-+			       const struct hfsplus_unistr *ustr, char *astr,
-+			       int *len_p)
-+{
-+	return hfsplus_uni2asc(sb, ustr, HFSPLUS_MAX_STRLEN, astr, len_p);
-+}
-+
-+inline int hfsplus_uni2asc_xattr_str(struct super_block *sb,
-+				     const struct hfsplus_attr_unistr *ustr,
-+				     char *astr, int *len_p)
-+{
-+	return hfsplus_uni2asc(sb, (const struct hfsplus_unistr *)ustr,
-+			       HFSPLUS_ATTR_MAX_STRLEN, astr, len_p);
-+}
-+
- /*
-  * Convert one or more ASCII characters into a single unicode character.
-  * Returns the number of ASCII characters corresponding to the unicode char.
-diff --git a/fs/hfsplus/xattr.c b/fs/hfsplus/xattr.c
-index 7ad3071debd6..53c8e3c0b8c1 100644
---- a/fs/hfsplus/xattr.c
-+++ b/fs/hfsplus/xattr.c
-@@ -737,9 +737,9 @@ ssize_t hfsplus_listxattr(struct dentry *dentry, char *buffer, size_t size)
- 			goto end_listxattr;
- 
- 		xattr_name_len = NLS_MAX_CHARSET_SIZE * HFSPLUS_ATTR_MAX_STRLEN;
--		if (hfsplus_uni2asc(inode->i_sb,
--			(const struct hfsplus_unistr *)&fd.key->attr.key_name,
--					strbuf, &xattr_name_len)) {
-+		if (hfsplus_uni2asc_xattr_str(inode->i_sb,
-+					      &fd.key->attr.key_name, strbuf,
-+					      &xattr_name_len)) {
- 			pr_err("unicode conversion failed\n");
- 			res = -EIO;
- 			goto end_listxattr;
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index b4a1aa1bc960..b5ff4c855f9c 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -2263,7 +2263,7 @@ static noinline int create_smb2_pipe(struct ksmbd_work *work)
- {
- 	struct smb2_create_rsp *rsp;
- 	struct smb2_create_req *req;
--	int id;
-+	int id = -1;
- 	int err;
- 	char *name;
- 
-@@ -2320,6 +2320,9 @@ static noinline int create_smb2_pipe(struct ksmbd_work *work)
- 		break;
- 	}
- 
-+	if (id >= 0)
-+		ksmbd_session_rpc_close(work->sess, id);
-+
- 	if (!IS_ERR(name))
- 		kfree(name);
- 
-diff --git a/include/linux/timer.h b/include/linux/timer.h
-index e78521bce565..00ee960be028 100644
---- a/include/linux/timer.h
-+++ b/include/linux/timer.h
-@@ -169,7 +169,6 @@ static inline int timer_pending(const struct timer_list * timer)
- }
- 
- extern void add_timer_on(struct timer_list *timer, int cpu);
--extern int del_timer(struct timer_list * timer);
- extern int mod_timer(struct timer_list *timer, unsigned long expires);
- extern int mod_timer_pending(struct timer_list *timer, unsigned long expires);
- extern int timer_reduce(struct timer_list *timer, unsigned long expires);
-@@ -184,6 +183,9 @@ extern void add_timer(struct timer_list *timer);
- 
- extern int try_to_del_timer_sync(struct timer_list *timer);
- extern int timer_delete_sync(struct timer_list *timer);
-+extern int timer_delete(struct timer_list *timer);
-+extern int timer_shutdown_sync(struct timer_list *timer);
-+extern int timer_shutdown(struct timer_list *timer);
- 
- /**
-  * del_timer_sync - Delete a pending timer and wait for a running callback
-@@ -198,7 +200,18 @@ static inline int del_timer_sync(struct timer_list *timer)
- 	return timer_delete_sync(timer);
- }
- 
--#define del_singleshot_timer_sync(t) del_timer_sync(t)
-+/**
-+ * del_timer - Delete a pending timer
-+ * @timer:	The timer to be deleted
-+ *
-+ * See timer_delete() for detailed explanation.
-+ *
-+ * Do not use in new code. Use timer_delete() instead.
-+ */
-+static inline int del_timer(struct timer_list *timer)
-+{
-+	return timer_delete(timer);
-+}
- 
- extern void init_timers(void);
- struct hrtimer;
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index d4ce3ebe2c8c..ab4709be7a59 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -964,7 +964,7 @@ __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int option
- 	unsigned int idx = UINT_MAX;
- 	int ret = 0;
- 
--	BUG_ON(!timer->function);
-+	debug_assert_init(timer);
- 
- 	/*
- 	 * This is a common optimization triggered by the networking code - if
-@@ -991,6 +991,14 @@ __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int option
- 		 * dequeue/enqueue dance.
- 		 */
- 		base = lock_timer_base(timer, &flags);
-+		/*
-+		 * Has @timer been shutdown? This needs to be evaluated
-+		 * while holding base lock to prevent a race against the
-+		 * shutdown code.
-+		 */
-+		if (!timer->function)
-+			goto out_unlock;
-+
- 		forward_timer_base(base);
- 
- 		if (timer_pending(timer) && (options & MOD_TIMER_REDUCE) &&
-@@ -1017,6 +1025,14 @@ __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int option
- 		}
- 	} else {
- 		base = lock_timer_base(timer, &flags);
-+		/*
-+		 * Has @timer been shutdown? This needs to be evaluated
-+		 * while holding base lock to prevent a race against the
-+		 * shutdown code.
-+		 */
-+		if (!timer->function)
-+			goto out_unlock;
-+
- 		forward_timer_base(base);
- 	}
- 
-@@ -1075,8 +1091,12 @@ __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int option
-  * mod_timer_pending() is the same for pending timers as mod_timer(), but
-  * will not activate inactive timers.
-  *
-+ * If @timer->function == NULL then the start operation is silently
-+ * discarded.
-+ *
-  * Return:
-- * * %0 - The timer was inactive and not modified
-+ * * %0 - The timer was inactive and not modified or was in
-+ *	  shutdown state and the operation was discarded
-  * * %1 - The timer was active and requeued to expire at @expires
-  */
- int mod_timer_pending(struct timer_list *timer, unsigned long expires)
-@@ -1102,8 +1122,12 @@ EXPORT_SYMBOL(mod_timer_pending);
-  * same timer, then mod_timer() is the only safe way to modify the timeout,
-  * since add_timer() cannot modify an already running timer.
-  *
-+ * If @timer->function == NULL then the start operation is silently
-+ * discarded. In this case the return value is 0 and meaningless.
-+ *
-  * Return:
-- * * %0 - The timer was inactive and started
-+ * * %0 - The timer was inactive and started or was in shutdown
-+ *	  state and the operation was discarded
-  * * %1 - The timer was active and requeued to expire at @expires or
-  *	  the timer was active and not modified because @expires did
-  *	  not change the effective expiry time
-@@ -1123,8 +1147,12 @@ EXPORT_SYMBOL(mod_timer);
-  * modify an enqueued timer if that would reduce the expiration time. If
-  * @timer is not enqueued it starts the timer.
-  *
-+ * If @timer->function == NULL then the start operation is silently
-+ * discarded.
-+ *
-  * Return:
-- * * %0 - The timer was inactive and started
-+ * * %0 - The timer was inactive and started or was in shutdown
-+ *	  state and the operation was discarded
-  * * %1 - The timer was active and requeued to expire at @expires or
-  *	  the timer was active and not modified because @expires
-  *	  did not change the effective expiry time such that the
-@@ -1147,6 +1175,9 @@ EXPORT_SYMBOL(timer_reduce);
-  * The @timer->expires and @timer->function fields must be set prior
-  * to calling this function.
-  *
-+ * If @timer->function == NULL then the start operation is silently
-+ * discarded.
-+ *
-  * If @timer->expires is already in the past @timer will be queued to
-  * expire at the next timer tick.
-  *
-@@ -1155,7 +1186,8 @@ EXPORT_SYMBOL(timer_reduce);
-  */
- void add_timer(struct timer_list *timer)
- {
--	BUG_ON(timer_pending(timer));
-+	if (WARN_ON_ONCE(timer_pending(timer)))
-+		return;
- 	__mod_timer(timer, timer->expires, MOD_TIMER_NOTPENDING);
- }
- EXPORT_SYMBOL(add_timer);
-@@ -1174,7 +1206,10 @@ void add_timer_on(struct timer_list *timer, int cpu)
- 	struct timer_base *new_base, *base;
- 	unsigned long flags;
- 
--	BUG_ON(timer_pending(timer) || !timer->function);
-+	debug_assert_init(timer);
-+
-+	if (WARN_ON_ONCE(timer_pending(timer)))
-+		return;
- 
- 	new_base = get_timer_cpu_base(timer->flags, cpu);
- 
-@@ -1184,6 +1219,13 @@ void add_timer_on(struct timer_list *timer, int cpu)
- 	 * wrong base locked.  See lock_timer_base().
- 	 */
- 	base = lock_timer_base(timer, &flags);
-+	/*
-+	 * Has @timer been shutdown? This needs to be evaluated while
-+	 * holding base lock to prevent a race against the shutdown code.
-+	 */
-+	if (!timer->function)
-+		goto out_unlock;
-+
- 	if (base != new_base) {
- 		timer->flags |= TIMER_MIGRATING;
- 
-@@ -1197,25 +1239,27 @@ void add_timer_on(struct timer_list *timer, int cpu)
- 
- 	debug_timer_activate(timer);
- 	internal_add_timer(base, timer);
-+out_unlock:
- 	raw_spin_unlock_irqrestore(&base->lock, flags);
- }
- EXPORT_SYMBOL_GPL(add_timer_on);
- 
- /**
-- * del_timer - Deactivate a timer.
-+ * __timer_delete - Internal function: Deactivate a timer
-  * @timer:	The timer to be deactivated
-+ * @shutdown:	If true, this indicates that the timer is about to be
-+ *		shutdown permanently.
-  *
-- * The function only deactivates a pending timer, but contrary to
-- * timer_delete_sync() it does not take into account whether the timer's
-- * callback function is concurrently executed on a different CPU or not.
-- * It neither prevents rearming of the timer. If @timer can be rearmed
-- * concurrently then the return value of this function is meaningless.
-+ * If @shutdown is true then @timer->function is set to NULL under the
-+ * timer base lock which prevents further rearming of the time. In that
-+ * case any attempt to rearm @timer after this function returns will be
-+ * silently ignored.
-  *
-  * Return:
-  * * %0 - The timer was not pending
-  * * %1 - The timer was pending and deactivated
-  */
--int del_timer(struct timer_list *timer)
-+static int __timer_delete(struct timer_list *timer, bool shutdown)
- {
- 	struct timer_base *base;
- 	unsigned long flags;
-@@ -1223,33 +1267,90 @@ int del_timer(struct timer_list *timer)
- 
- 	debug_assert_init(timer);
- 
--	if (timer_pending(timer)) {
-+	/*
-+	 * If @shutdown is set then the lock has to be taken whether the
-+	 * timer is pending or not to protect against a concurrent rearm
-+	 * which might hit between the lockless pending check and the lock
-+	 * aquisition. By taking the lock it is ensured that such a newly
-+	 * enqueued timer is dequeued and cannot end up with
-+	 * timer->function == NULL in the expiry code.
-+	 *
-+	 * If timer->function is currently executed, then this makes sure
-+	 * that the callback cannot requeue the timer.
-+	 */
-+	if (timer_pending(timer) || shutdown) {
- 		base = lock_timer_base(timer, &flags);
- 		ret = detach_if_pending(timer, base, true);
-+		if (shutdown)
-+			timer->function = NULL;
- 		raw_spin_unlock_irqrestore(&base->lock, flags);
- 	}
- 
- 	return ret;
- }
--EXPORT_SYMBOL(del_timer);
- 
- /**
-- * try_to_del_timer_sync - Try to deactivate a timer
-+ * timer_delete - Deactivate a timer
-+ * @timer:	The timer to be deactivated
-+ *
-+ * The function only deactivates a pending timer, but contrary to
-+ * timer_delete_sync() it does not take into account whether the timer's
-+ * callback function is concurrently executed on a different CPU or not.
-+ * It neither prevents rearming of the timer.  If @timer can be rearmed
-+ * concurrently then the return value of this function is meaningless.
-+ *
-+ * Return:
-+ * * %0 - The timer was not pending
-+ * * %1 - The timer was pending and deactivated
-+ */
-+int timer_delete(struct timer_list *timer)
-+{
-+	return __timer_delete(timer, false);
-+}
-+EXPORT_SYMBOL(timer_delete);
-+
-+/**
-+ * timer_shutdown - Deactivate a timer and prevent rearming
-+ * @timer:	The timer to be deactivated
-+ *
-+ * The function does not wait for an eventually running timer callback on a
-+ * different CPU but it prevents rearming of the timer. Any attempt to arm
-+ * @timer after this function returns will be silently ignored.
-+ *
-+ * This function is useful for teardown code and should only be used when
-+ * timer_shutdown_sync() cannot be invoked due to locking or context constraints.
-+ *
-+ * Return:
-+ * * %0 - The timer was not pending
-+ * * %1 - The timer was pending
-+ */
-+int timer_shutdown(struct timer_list *timer)
-+{
-+	return __timer_delete(timer, true);
-+}
-+EXPORT_SYMBOL_GPL(timer_shutdown);
-+
-+/**
-+ * __try_to_del_timer_sync - Internal function: Try to deactivate a timer
-  * @timer:	Timer to deactivate
-+ * @shutdown:	If true, this indicates that the timer is about to be
-+ *		shutdown permanently.
-  *
-- * This function tries to deactivate a timer. On success the timer is not
-- * queued and the timer callback function is not running on any CPU.
-+ * If @shutdown is true then @timer->function is set to NULL under the
-+ * timer base lock which prevents further rearming of the timer. Any
-+ * attempt to rearm @timer after this function returns will be silently
-+ * ignored.
-  *
-- * This function does not guarantee that the timer cannot be rearmed right
-- * after dropping the base lock. That needs to be prevented by the calling
-- * code if necessary.
-+ * This function cannot guarantee that the timer cannot be rearmed
-+ * right after dropping the base lock if @shutdown is false. That
-+ * needs to be prevented by the calling code if necessary.
-  *
-  * Return:
-  * * %0  - The timer was not pending
-  * * %1  - The timer was pending and deactivated
-  * * %-1 - The timer callback function is running on a different CPU
-  */
--int try_to_del_timer_sync(struct timer_list *timer)
-+static int __try_to_del_timer_sync(struct timer_list *timer, bool shutdown)
- {
- 	struct timer_base *base;
- 	unsigned long flags;
-@@ -1259,13 +1360,37 @@ int try_to_del_timer_sync(struct timer_list *timer)
- 
- 	base = lock_timer_base(timer, &flags);
- 
--	if (base->running_timer != timer)
-+	if (base->running_timer != timer) {
- 		ret = detach_if_pending(timer, base, true);
-+		if (shutdown)
-+			timer->function = NULL;
-+	}
- 
- 	raw_spin_unlock_irqrestore(&base->lock, flags);
- 
- 	return ret;
- }
-+
-+/**
-+ * try_to_del_timer_sync - Try to deactivate a timer
-+ * @timer:	Timer to deactivate
-+ *
-+ * This function tries to deactivate a timer. On success the timer is not
-+ * queued and the timer callback function is not running on any CPU.
-+ *
-+ * This function does not guarantee that the timer cannot be rearmed right
-+ * after dropping the base lock. That needs to be prevented by the calling
-+ * code if necessary.
-+ *
-+ * Return:
-+ * * %0  - The timer was not pending
-+ * * %1  - The timer was pending and deactivated
-+ * * %-1 - The timer callback function is running on a different CPU
-+ */
-+int try_to_del_timer_sync(struct timer_list *timer)
-+{
-+	return __try_to_del_timer_sync(timer, false);
-+}
- EXPORT_SYMBOL(try_to_del_timer_sync);
- 
- #ifdef CONFIG_PREEMPT_RT
-@@ -1342,45 +1467,28 @@ static inline void del_timer_wait_running(struct timer_list *timer) { }
- #endif
- 
- /**
-- * timer_delete_sync - Deactivate a timer and wait for the handler to finish.
-+ * __timer_delete_sync - Internal function: Deactivate a timer and wait
-+ *			 for the handler to finish.
-  * @timer:	The timer to be deactivated
-+ * @shutdown:	If true, @timer->function will be set to NULL under the
-+ *		timer base lock which prevents rearming of @timer
-  *
-- * Synchronization rules: Callers must prevent restarting of the timer,
-- * otherwise this function is meaningless. It must not be called from
-- * interrupt contexts unless the timer is an irqsafe one. The caller must
-- * not hold locks which would prevent completion of the timer's callback
-- * function. The timer's handler must not call add_timer_on(). Upon exit
-- * the timer is not queued and the handler is not running on any CPU.
-- *
-- * For !irqsafe timers, the caller must not hold locks that are held in
-- * interrupt context. Even if the lock has nothing to do with the timer in
-- * question.  Here's why::
-- *
-- *    CPU0                             CPU1
-- *    ----                             ----
-- *                                     <SOFTIRQ>
-- *                                       call_timer_fn();
-- *                                       base->running_timer = mytimer;
-- *    spin_lock_irq(somelock);
-- *                                     <IRQ>
-- *                                        spin_lock(somelock);
-- *    timer_delete_sync(mytimer);
-- *    while (base->running_timer == mytimer);
-+ * If @shutdown is not set the timer can be rearmed later. If the timer can
-+ * be rearmed concurrently, i.e. after dropping the base lock then the
-+ * return value is meaningless.
-  *
-- * Now timer_delete_sync() will never return and never release somelock.
-- * The interrupt on the other CPU is waiting to grab somelock but it has
-- * interrupted the softirq that CPU0 is waiting to finish.
-+ * If @shutdown is set then @timer->function is set to NULL under timer
-+ * base lock which prevents rearming of the timer. Any attempt to rearm
-+ * a shutdown timer is silently ignored.
-  *
-- * This function cannot guarantee that the timer is not rearmed again by
-- * some concurrent or preempting code, right after it dropped the base
-- * lock. If there is the possibility of a concurrent rearm then the return
-- * value of the function is meaningless.
-+ * If the timer should be reused after shutdown it has to be initialized
-+ * again.
-  *
-  * Return:
-  * * %0	- The timer was not pending
-  * * %1	- The timer was pending and deactivated
-  */
--int timer_delete_sync(struct timer_list *timer)
-+static int __timer_delete_sync(struct timer_list *timer, bool shutdown)
- {
- 	int ret;
- 
-@@ -1410,7 +1518,7 @@ int timer_delete_sync(struct timer_list *timer)
- 		lockdep_assert_preemption_enabled();
- 
- 	do {
--		ret = try_to_del_timer_sync(timer);
-+		ret = __try_to_del_timer_sync(timer, shutdown);
- 
- 		if (unlikely(ret < 0)) {
- 			del_timer_wait_running(timer);
-@@ -1420,8 +1528,97 @@ int timer_delete_sync(struct timer_list *timer)
- 
- 	return ret;
- }
-+
-+/**
-+ * timer_delete_sync - Deactivate a timer and wait for the handler to finish.
-+ * @timer:	The timer to be deactivated
-+ *
-+ * Synchronization rules: Callers must prevent restarting of the timer,
-+ * otherwise this function is meaningless. It must not be called from
-+ * interrupt contexts unless the timer is an irqsafe one. The caller must
-+ * not hold locks which would prevent completion of the timer's callback
-+ * function. The timer's handler must not call add_timer_on(). Upon exit
-+ * the timer is not queued and the handler is not running on any CPU.
-+ *
-+ * For !irqsafe timers, the caller must not hold locks that are held in
-+ * interrupt context. Even if the lock has nothing to do with the timer in
-+ * question.  Here's why::
-+ *
-+ *    CPU0                             CPU1
-+ *    ----                             ----
-+ *                                     <SOFTIRQ>
-+ *                                       call_timer_fn();
-+ *                                       base->running_timer = mytimer;
-+ *    spin_lock_irq(somelock);
-+ *                                     <IRQ>
-+ *                                        spin_lock(somelock);
-+ *    timer_delete_sync(mytimer);
-+ *    while (base->running_timer == mytimer);
-+ *
-+ * Now timer_delete_sync() will never return and never release somelock.
-+ * The interrupt on the other CPU is waiting to grab somelock but it has
-+ * interrupted the softirq that CPU0 is waiting to finish.
-+ *
-+ * This function cannot guarantee that the timer is not rearmed again by
-+ * some concurrent or preempting code, right after it dropped the base
-+ * lock. If there is the possibility of a concurrent rearm then the return
-+ * value of the function is meaningless.
-+ *
-+ * If such a guarantee is needed, e.g. for teardown situations then use
-+ * timer_shutdown_sync() instead.
-+ *
-+ * Return:
-+ * * %0	- The timer was not pending
-+ * * %1	- The timer was pending and deactivated
-+ */
-+int timer_delete_sync(struct timer_list *timer)
-+{
-+	return __timer_delete_sync(timer, false);
-+}
- EXPORT_SYMBOL(timer_delete_sync);
- 
-+/**
-+ * timer_shutdown_sync - Shutdown a timer and prevent rearming
-+ * @timer: The timer to be shutdown
-+ *
-+ * When the function returns it is guaranteed that:
-+ *   - @timer is not queued
-+ *   - The callback function of @timer is not running
-+ *   - @timer cannot be enqueued again. Any attempt to rearm
-+ *     @timer is silently ignored.
-+ *
-+ * See timer_delete_sync() for synchronization rules.
-+ *
-+ * This function is useful for final teardown of an infrastructure where
-+ * the timer is subject to a circular dependency problem.
-+ *
-+ * A common pattern for this is a timer and a workqueue where the timer can
-+ * schedule work and work can arm the timer. On shutdown the workqueue must
-+ * be destroyed and the timer must be prevented from rearming. Unless the
-+ * code has conditionals like 'if (mything->in_shutdown)' to prevent that
-+ * there is no way to get this correct with timer_delete_sync().
-+ *
-+ * timer_shutdown_sync() is solving the problem. The correct ordering of
-+ * calls in this case is:
-+ *
-+ *	timer_shutdown_sync(&mything->timer);
-+ *	workqueue_destroy(&mything->workqueue);
-+ *
-+ * After this 'mything' can be safely freed.
-+ *
-+ * This obviously implies that the timer is not required to be functional
-+ * for the rest of the shutdown operation.
-+ *
-+ * Return:
-+ * * %0 - The timer was not pending
-+ * * %1 - The timer was pending
-+ */
-+int timer_shutdown_sync(struct timer_list *timer)
-+{
-+	return __timer_delete_sync(timer, true);
-+}
-+EXPORT_SYMBOL_GPL(timer_shutdown_sync);
-+
- static void call_timer_fn(struct timer_list *timer,
- 			  void (*fn)(struct timer_list *),
- 			  unsigned long baseclk)
-@@ -1486,6 +1683,12 @@ static void expire_timers(struct timer_base *base, struct hlist_head *head)
- 
- 		fn = timer->function;
- 
-+		if (WARN_ON_ONCE(!fn)) {
-+			/* Should never happen. Emphasis on should! */
-+			base->running_timer = NULL;
-+			continue;
-+		}
-+
- 		if (timer->flags & TIMER_IRQSAFE) {
- 			raw_spin_unlock(&base->lock);
- 			call_timer_fn(timer, fn, baseclk);
-@@ -1912,7 +2115,7 @@ signed long __sched schedule_timeout(signed long timeout)
- 	timer_setup_on_stack(&timer.timer, process_timeout, 0);
- 	__mod_timer(&timer.timer, expire, MOD_TIMER_NOTPENDING);
- 	schedule();
--	del_singleshot_timer_sync(&timer.timer);
-+	del_timer_sync(&timer.timer);
- 
- 	/* Remove the timer from the object tracker */
- 	destroy_timer_on_stack(&timer.timer);
-@@ -1995,8 +2198,6 @@ int timers_dead_cpu(unsigned int cpu)
- 	struct timer_base *new_base;
- 	int b, i;
- 
--	BUG_ON(cpu_online(cpu));
--
- 	for (b = 0; b < NR_BASES; b++) {
- 		old_base = per_cpu_ptr(&timer_bases[b], cpu);
- 		new_base = get_cpu_ptr(&timer_bases[b]);
-@@ -2013,7 +2214,8 @@ int timers_dead_cpu(unsigned int cpu)
- 		 */
- 		forward_timer_base(new_base);
- 
--		BUG_ON(old_base->running_timer);
-+		WARN_ON_ONCE(old_base->running_timer);
-+		old_base->running_timer = NULL;
- 
- 		for (i = 0; i < WHEEL_SIZE; i++)
- 			migrate_timer_list(new_base, old_base->vectors + i);
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 90a8dd91e2eb..d17ebe6a4ebf 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2322,6 +2322,8 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 					list) {
- 			list_del_init(&bpage->list);
- 			free_buffer_page(bpage);
-+
-+			cond_resched();
- 		}
- 	}
-  out_err_unlock:
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 7464e0c9c4b1..ee32f56debd3 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -65,14 +65,17 @@ enum trace_type {
- #undef __field_fn
- #define __field_fn(type, item)		type	item;
- 
-+#undef __field_packed
-+#define __field_packed(type, item)	type	item;
-+
- #undef __field_struct
- #define __field_struct(type, item)	__field(type, item)
- 
- #undef __field_desc
- #define __field_desc(type, container, item)
- 
--#undef __field_packed
--#define __field_packed(type, container, item)
-+#undef __field_desc_packed
-+#define __field_desc_packed(type, container, item)
- 
- #undef __array
- #define __array(type, item, size)	type	item[size];
-diff --git a/kernel/trace/trace_entries.h b/kernel/trace/trace_entries.h
-index cd41e863b51c..f7ea8b4afd47 100644
---- a/kernel/trace/trace_entries.h
-+++ b/kernel/trace/trace_entries.h
-@@ -78,8 +78,8 @@ FTRACE_ENTRY_PACKED(funcgraph_entry, ftrace_graph_ent_entry,
- 
- 	F_STRUCT(
- 		__field_struct(	struct ftrace_graph_ent,	graph_ent	)
--		__field_packed(	unsigned long,	graph_ent,	func		)
--		__field_packed(	int,		graph_ent,	depth		)
-+		__field_desc_packed(	unsigned long,	graph_ent,	func	)
-+		__field_desc_packed(	int,		graph_ent,	depth	)
- 	),
- 
- 	F_printk("--> %ps (%d)", (void *)__entry->func, __entry->depth)
-@@ -92,11 +92,11 @@ FTRACE_ENTRY_PACKED(funcgraph_exit, ftrace_graph_ret_entry,
- 
- 	F_STRUCT(
- 		__field_struct(	struct ftrace_graph_ret,	ret	)
--		__field_packed(	unsigned long,	ret,		func	)
--		__field_packed(	int,		ret,		depth	)
--		__field_packed(	unsigned int,	ret,		overrun	)
--		__field_packed(	unsigned long long, ret,	calltime)
--		__field_packed(	unsigned long long, ret,	rettime	)
-+		__field_desc_packed(	unsigned long,	ret,	func	)
-+		__field_desc_packed(	int,		ret,	depth	)
-+		__field_desc_packed(	unsigned int,	ret,	overrun	)
-+		__field_desc_packed(	unsigned long long, ret,	calltime)
-+		__field_desc_packed(	unsigned long long, ret,	rettime	)
- 	),
- 
- 	F_printk("<-- %ps (%d) (start: %llx  end: %llx) over: %d",
-diff --git a/kernel/trace/trace_export.c b/kernel/trace/trace_export.c
-index d960f6b11b5e..35c5d1b0fe5f 100644
---- a/kernel/trace/trace_export.c
-+++ b/kernel/trace/trace_export.c
-@@ -42,11 +42,14 @@ static int ftrace_event_register(struct trace_event_call *call,
- #undef __field_fn
- #define __field_fn(type, item)				type item;
- 
-+#undef __field_packed
-+#define __field_packed(type, item)			type item;
-+
- #undef __field_desc
- #define __field_desc(type, container, item)		type item;
- 
--#undef __field_packed
--#define __field_packed(type, container, item)		type item;
-+#undef __field_desc_packed
-+#define __field_desc_packed(type, container, item)	type item;
- 
- #undef __array
- #define __array(type, item, size)			type item[size];
-@@ -101,11 +104,14 @@ static void __always_unused ____ftrace_check_##name(void)		\
- #undef __field_fn
- #define __field_fn(_type, _item) __field_ext(_type, _item, FILTER_TRACE_FN)
- 
-+#undef __field_packed
-+#define __field_packed(_type, _item) __field_ext_packed(_type, _item, FILTER_OTHER)
-+
- #undef __field_desc
- #define __field_desc(_type, _container, _item) __field_ext(_type, _item, FILTER_OTHER)
- 
--#undef __field_packed
--#define __field_packed(_type, _container, _item) __field_ext_packed(_type, _item, FILTER_OTHER)
-+#undef __field_desc_packed
-+#define __field_desc_packed(_type, _container, _item) __field_ext_packed(_type, _item, FILTER_OTHER)
- 
- #undef __array
- #define __array(_type, _item, _len) {					\
-@@ -139,11 +145,14 @@ static struct trace_event_fields ftrace_event_fields_##name[] = {	\
- #undef __field_fn
- #define __field_fn(type, item)
- 
-+#undef __field_packed
-+#define __field_packed(type, item)
-+
- #undef __field_desc
- #define __field_desc(type, container, item)
- 
--#undef __field_packed
--#define __field_packed(type, container, item)
-+#undef __field_desc_packed
-+#define __field_desc_packed(type, container, item)
- 
- #undef __array
- #define __array(type, item, len)
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index c49bc76b3a38..e1a555eeec45 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -520,7 +520,7 @@ static bool __init kfence_init_pool(void)
- {
- 	unsigned long addr = (unsigned long)__kfence_pool;
- 	struct page *pages;
--	int i;
-+	int i, rand;
- 	char *p;
- 
- 	if (!__kfence_pool)
-@@ -576,13 +576,30 @@ static bool __init kfence_init_pool(void)
- 		INIT_LIST_HEAD(&meta->list);
- 		raw_spin_lock_init(&meta->lock);
- 		meta->state = KFENCE_OBJECT_UNUSED;
--		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
--		list_add_tail(&meta->list, &kfence_freelist);
-+		/* Use addr to randomize the freelist. */
-+		meta->addr = i;
- 
- 		/* Protect the right redzone. */
--		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
-+		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE))) {
-+			addr += 2 * i * PAGE_SIZE;
- 			goto err;
-+		}
-+	}
-+
-+	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
-+		rand = get_random_u32() % i;
-+		swap(kfence_metadata[i - 1].addr, kfence_metadata[rand].addr);
-+	}
- 
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		struct kfence_metadata *meta_1 = &kfence_metadata[i];
-+		struct kfence_metadata *meta_2 = &kfence_metadata[meta_1->addr];
-+
-+		list_add_tail(&meta_2->list, &kfence_freelist);
-+	}
-+
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		kfence_metadata[i].addr = addr;
- 		addr += 2 * PAGE_SIZE;
- 	}
- 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index f07512bcaf12..8d6fc3a0c9a7 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2373,6 +2373,9 @@ static void hci_cs_disconnect(struct hci_dev *hdev, u8 status)
- 			hci_req_reenable_advertising(hdev);
- 		}
- 
-+		/* Inform sockets conn is gone before we delete it */
-+		hci_disconn_cfm(conn, HCI_ERROR_UNSPECIFIED);
-+
- 		/* If the disconnection failed for any reason, the upper layer
- 		 * does not retry to disconnect in current implementation.
- 		 * Hence, we need to do some basic cleanup here and re-enable
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index 2f3ea11785ad..c74efcc2b499 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -1299,7 +1299,7 @@ int ebt_register_template(const struct ebt_table *t, int (*table_init)(struct ne
- 	list_for_each_entry(tmpl, &template_tables, list) {
- 		if (WARN_ON_ONCE(strcmp(t->name, tmpl->name) == 0)) {
- 			mutex_unlock(&ebt_mutex);
--			return -EEXIST;
-+			return -EBUSY;
- 		}
- 	}
- 
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index c755e3b332de..88cf9e63dffe 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -910,7 +910,8 @@ void ieee80211_reenable_keys(struct ieee80211_sub_if_data *sdata)
- 
- 	if (ieee80211_sdata_running(sdata)) {
- 		list_for_each_entry(key, &sdata->key_list, list) {
--			increment_tailroom_need_count(sdata);
-+			if (!(key->flags & KEY_FLAG_TAINTED))
-+				increment_tailroom_need_count(sdata);
- 			ieee80211_key_enable_hw_accel(key);
- 		}
- 	}
-diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
-index 9713e53f11b1..6688b1dd8aaa 100644
---- a/net/mac80211/ocb.c
-+++ b/net/mac80211/ocb.c
-@@ -47,6 +47,9 @@ void ieee80211_ocb_rx_no_sta(struct ieee80211_sub_if_data *sdata,
- 	struct sta_info *sta;
- 	int band;
- 
-+	if (!ifocb->joined)
-+		return;
-+
- 	/* XXX: Consider removing the least recently used entry and
- 	 *      allow new one to be added.
- 	 */
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index d1460b870ed5..f9a5bda1f925 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1101,6 +1101,10 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
- 		}
- 	}
- 
-+	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
-+	if (sinfo)
-+		sta_set_sinfo(sta, sinfo, true);
-+
- 	if (sta->uploaded) {
- 		ret = drv_sta_state(local, sdata, sta, IEEE80211_STA_NONE,
- 				    IEEE80211_STA_NOTEXIST);
-@@ -1109,9 +1113,6 @@ static void __sta_info_destroy_part2(struct sta_info *sta)
- 
- 	sta_dbg(sdata, "Removed STA %pM\n", sta->sta.addr);
- 
--	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
--	if (sinfo)
--		sta_set_sinfo(sta, sinfo, true);
- 	cfg80211_del_sta_sinfo(sdata->dev, sta->sta.addr, sinfo, GFP_KERNEL);
- 	kfree(sinfo);
- 
-diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
-index 8f5362a19b15..d15d2911a67e 100644
---- a/net/netfilter/nf_log.c
-+++ b/net/netfilter/nf_log.c
-@@ -89,7 +89,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
- 	if (pf == NFPROTO_UNSPEC) {
- 		for (i = NFPROTO_UNSPEC; i < NFPROTO_NUMPROTO; i++) {
- 			if (rcu_access_pointer(loggers[i][logger->type])) {
--				ret = -EEXIST;
-+				ret = -EBUSY;
- 				goto unlock;
- 			}
- 		}
-@@ -97,7 +97,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
- 			rcu_assign_pointer(loggers[i][logger->type], logger);
- 	} else {
- 		if (rcu_access_pointer(loggers[pf][logger->type])) {
--			ret = -EEXIST;
-+			ret = -EBUSY;
- 			goto unlock;
- 		}
- 		rcu_assign_pointer(loggers[pf][logger->type], logger);
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index e37d2ef9538e..cbec5fc23719 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5141,7 +5141,7 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
- 
- 	list_for_each_entry(catchall, &set->catchall_list, list) {
- 		ext = nft_set_elem_ext(set, catchall->elem);
--		if (!nft_set_elem_active(ext, genmask))
-+		if (nft_set_elem_active(ext, genmask))
- 			continue;
- 
- 		elem.priv = catchall->elem;
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 8336f2052f22..863162c82330 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -667,6 +667,11 @@ static int pipapo_resize(struct nft_pipapo_field *f, int old_rules, int rules)
- 	}
- 
- mt:
-+	if (rules > (INT_MAX / sizeof(*new_mt))) {
-+		kvfree(new_lt);
-+		return -ENOMEM;
-+	}
-+
- 	new_mt = kvmalloc(rules * sizeof(*new_mt), GFP_KERNEL);
- 	if (!new_mt) {
- 		kvfree(new_lt);
-@@ -1360,6 +1365,9 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 		       src->bsize * sizeof(*dst->lt) *
- 		       src->groups * NFT_PIPAPO_BUCKETS(src->bb));
- 
-+		if (src->rules > (INT_MAX / sizeof(*src->mt)))
-+			goto out_mt;
-+
- 		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL);
- 		if (!dst->mt)
- 			goto out_mt;
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index 9a579217763d..6303ba7a62a2 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -1761,7 +1761,7 @@ EXPORT_SYMBOL_GPL(xt_hook_ops_alloc);
- int xt_register_template(const struct xt_table *table,
- 			 int (*table_init)(struct net *net))
- {
--	int ret = -EEXIST, af = table->af;
-+	int ret = -EBUSY, af = table->af;
- 	struct xt_template *t;
- 
- 	mutex_lock(&xt[af].mutex);
-diff --git a/net/sunrpc/xprt.c b/net/sunrpc/xprt.c
-index 2db834318d14..2bccb5a90934 100644
---- a/net/sunrpc/xprt.c
-+++ b/net/sunrpc/xprt.c
-@@ -1160,7 +1160,7 @@ xprt_request_enqueue_receive(struct rpc_task *task)
- 	spin_unlock(&xprt->queue_lock);
- 
- 	/* Turn off autodisconnect */
--	del_singleshot_timer_sync(&xprt->timer);
-+	del_timer_sync(&xprt->timer);
- }
- 
- /**
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index b525e6483881..22c07a270ed4 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -1230,7 +1230,7 @@ void tipc_crypto_key_flush(struct tipc_crypto *c)
- 		rx = c;
- 		tx = tipc_net(rx->net)->crypto_tx;
- 		if (cancel_delayed_work(&rx->work)) {
--			kfree(rx->skey);
-+			kfree_sensitive(rx->skey);
- 			rx->skey = NULL;
- 			atomic_xchg(&rx->key_distr, 0);
- 			tipc_node_put(rx->node);
-@@ -2405,7 +2405,7 @@ static void tipc_crypto_work_rx(struct work_struct *work)
- 			break;
- 		default:
- 			synchronize_rcu();
--			kfree(rx->skey);
-+			kfree_sensitive(rx->skey);
- 			rx->skey = NULL;
- 			break;
- 		}
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 6ebc6567b287..40548fe7e263 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1418,12 +1418,14 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 	tmp = result;
- 	tmp *= SCALE;
- 	do_div(tmp, mcs_divisors[rate->mcs]);
--	result = tmp;
- 
- 	/* and take NSS, DCM into account */
--	result = (result * rate->nss) / 8;
-+	tmp *= rate->nss;
-+	do_div(tmp, 8);
- 	if (rate->he_dcm)
--		result /= 2;
-+		do_div(tmp, 2);
-+
-+	result = tmp;
- 
- 	return result / 10000;
- }
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 10f7f807e706..839a7e957d42 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9333,6 +9333,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
- 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8706, "HP Laptop 15s-eq1xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x8720, "HP EliteBook x360 1040 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x8724, "HP EliteBook 850 G7", ALC285_FIXUP_HP_GPIO_LED),
-diff --git a/sound/soc/amd/renoir/acp3x-pdm-dma.c b/sound/soc/amd/renoir/acp3x-pdm-dma.c
-index 9dd22a2fa2e5..6b0f90e88a92 100644
---- a/sound/soc/amd/renoir/acp3x-pdm-dma.c
-+++ b/sound/soc/amd/renoir/acp3x-pdm-dma.c
-@@ -295,9 +295,11 @@ static int acp_pdm_dma_close(struct snd_soc_component *component,
- 			     struct snd_pcm_substream *substream)
- {
- 	struct pdm_dev_data *adata = dev_get_drvdata(component->dev);
-+	struct pdm_stream_instance *rtd = substream->runtime->private_data;
- 
- 	disable_pdm_interrupts(adata->acp_base);
- 	adata->capture_stream = NULL;
-+	kfree(rtd);
- 	return 0;
- }
- 
-diff --git a/sound/soc/codecs/tlv320adcx140.c b/sound/soc/codecs/tlv320adcx140.c
-index f7fbe3795f98..46560d5eb4b1 100644
---- a/sound/soc/codecs/tlv320adcx140.c
-+++ b/sound/soc/codecs/tlv320adcx140.c
-@@ -1098,6 +1098,9 @@ static int adcx140_i2c_probe(struct i2c_client *i2c,
- 	adcx140->gpio_reset = devm_gpiod_get_optional(adcx140->dev,
- 						      "reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(adcx140->gpio_reset))
-+		return dev_err_probe(&i2c->dev, PTR_ERR(adcx140->gpio_reset),
-+				     "Failed to get Reset GPIO\n");
-+	if (!adcx140->gpio_reset)
- 		dev_info(&i2c->dev, "Reset GPIO not defined\n");
- 
- 	adcx140->supply_areg = devm_regulator_get_optional(adcx140->dev,
-diff --git a/sound/soc/ti/davinci-evm.c b/sound/soc/ti/davinci-evm.c
-index b043a0070d20..b554e86280ce 100644
---- a/sound/soc/ti/davinci-evm.c
-+++ b/sound/soc/ti/davinci-evm.c
-@@ -404,27 +404,32 @@ static int davinci_evm_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 
- 	dai->cpus->of_node = of_parse_phandle(np, "ti,mcasp-controller", 0);
--	if (!dai->cpus->of_node)
--		return -EINVAL;
-+	if (!dai->cpus->of_node) {
-+		ret = -EINVAL;
-+		goto err_put;
-+	}
- 
- 	dai->platforms->of_node = dai->cpus->of_node;
- 
- 	evm_soc_card.dev = &pdev->dev;
- 	ret = snd_soc_of_parse_card_name(&evm_soc_card, "ti,model");
- 	if (ret)
--		return ret;
-+		goto err_put;
- 
- 	mclk = devm_clk_get(&pdev->dev, "mclk");
- 	if (PTR_ERR(mclk) == -EPROBE_DEFER) {
--		return -EPROBE_DEFER;
-+		ret = -EPROBE_DEFER;
-+		goto err_put;
- 	} else if (IS_ERR(mclk)) {
- 		dev_dbg(&pdev->dev, "mclk not found.\n");
- 		mclk = NULL;
- 	}
- 
- 	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
--	if (!drvdata)
--		return -ENOMEM;
-+	if (!drvdata) {
-+		ret = -ENOMEM;
-+		goto err_put;
-+	}
- 
- 	drvdata->mclk = mclk;
- 
-@@ -434,7 +439,8 @@ static int davinci_evm_probe(struct platform_device *pdev)
- 		if (!drvdata->mclk) {
- 			dev_err(&pdev->dev,
- 				"No clock or clock rate defined.\n");
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto err_put;
- 		}
- 		drvdata->sysclk = clk_get_rate(drvdata->mclk);
- 	} else if (drvdata->mclk) {
-@@ -450,8 +456,25 @@ static int davinci_evm_probe(struct platform_device *pdev)
- 	snd_soc_card_set_drvdata(&evm_soc_card, drvdata);
- 	ret = devm_snd_soc_register_card(&pdev->dev, &evm_soc_card);
- 
--	if (ret)
-+	if (ret) {
- 		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
-+		goto err_put;
-+	}
-+
-+	return ret;
-+
-+err_put:
-+	dai->platforms->of_node = NULL;
-+
-+	if (dai->cpus->of_node) {
-+		of_node_put(dai->cpus->of_node);
-+		dai->cpus->of_node = NULL;
-+	}
-+
-+	if (dai->codecs->of_node) {
-+		of_node_put(dai->codecs->of_node);
-+		dai->codecs->of_node = NULL;
-+	}
- 
- 	return ret;
- }
-diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
-index 5b874e7ba36f..c841f8bc8228 100644
---- a/virt/kvm/eventfd.c
-+++ b/virt/kvm/eventfd.c
-@@ -147,21 +147,28 @@ irqfd_shutdown(struct work_struct *work)
- }
- 
- 
--/* assumes kvm->irqfds.lock is held */
--static bool
--irqfd_is_active(struct kvm_kernel_irqfd *irqfd)
-+static bool irqfd_is_active(struct kvm_kernel_irqfd *irqfd)
- {
-+	/*
-+	 * Assert that either irqfds.lock or SRCU is held, as irqfds.lock must
-+	 * be held to prevent false positives (on the irqfd being active), and
-+	 * while false negatives are impossible as irqfds are never added back
-+	 * to the list once they're deactivated, the caller must at least hold
-+	 * SRCU to guard against routing changes if the irqfd is deactivated.
-+	 */
-+	lockdep_assert_once(lockdep_is_held(&irqfd->kvm->irqfds.lock) ||
-+			    srcu_read_lock_held(&irqfd->kvm->irq_srcu));
-+
- 	return list_empty(&irqfd->list) ? false : true;
- }
- 
- /*
-  * Mark the irqfd as inactive and schedule it for removal
-- *
-- * assumes kvm->irqfds.lock is held
-  */
--static void
--irqfd_deactivate(struct kvm_kernel_irqfd *irqfd)
-+static void irqfd_deactivate(struct kvm_kernel_irqfd *irqfd)
- {
-+	lockdep_assert_held(&irqfd->kvm->irqfds.lock);
-+
- 	BUG_ON(!irqfd_is_active(irqfd));
- 
- 	list_del_init(&irqfd->list);
-@@ -202,8 +209,15 @@ irqfd_wakeup(wait_queue_entry_t *wait, unsigned mode, int sync, void *key)
- 			seq = read_seqcount_begin(&irqfd->irq_entry_sc);
- 			irq = irqfd->irq_entry;
- 		} while (read_seqcount_retry(&irqfd->irq_entry_sc, seq));
--		/* An event has been signaled, inject an interrupt */
--		if (kvm_arch_set_irq_inatomic(&irq, kvm,
-+
-+		/*
-+		 * An event has been signaled, inject an interrupt unless the
-+		 * irqfd is being deassigned (isn't active), in which case the
-+		 * routing information may be stale (once the irqfd is removed
-+		 * from the list, it will stop receiving routing updates).
-+		 */
-+		if (unlikely(!irqfd_is_active(irqfd)) ||
-+		    kvm_arch_set_irq_inatomic(&irq, kvm,
- 					      KVM_USERSPACE_IRQ_SOURCE_ID, 1,
- 					      false) == -EWOULDBLOCK)
- 			schedule_work(&irqfd->inject);
-@@ -541,18 +555,8 @@ kvm_irqfd_deassign(struct kvm *kvm, struct kvm_irqfd *args)
- 	spin_lock_irq(&kvm->irqfds.lock);
- 
- 	list_for_each_entry_safe(irqfd, tmp, &kvm->irqfds.items, list) {
--		if (irqfd->eventfd == eventfd && irqfd->gsi == args->gsi) {
--			/*
--			 * This clearing of irq_entry.type is needed for when
--			 * another thread calls kvm_irq_routing_update before
--			 * we flush workqueue below (we synchronize with
--			 * kvm_irq_routing_update using irqfds.lock).
--			 */
--			write_seqcount_begin(&irqfd->irq_entry_sc);
--			irqfd->irq_entry.type = 0;
--			write_seqcount_end(&irqfd->irq_entry_sc);
-+		if (irqfd->eventfd == eventfd && irqfd->gsi == args->gsi)
- 			irqfd_deactivate(irqfd);
--		}
- 	}
- 
- 	spin_unlock_irq(&kvm->irqfds.lock);
+I'm announcing the release of the 6.1.163 kernel.
+
+All users of the 6.1 kernel series must upgrade.
+
+The updated 6.1.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.1.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile                                            |    2 
+ arch/arm/include/asm/string.h                       |    5 +-
+ arch/loongarch/kernel/traps.c                       |    5 ++
+ arch/loongarch/mm/cache.c                           |    8 +--
+ arch/riscv/include/asm/cacheflush.h                 |   15 ++++--
+ arch/riscv/kernel/probes/uprobes.c                  |   10 ----
+ arch/x86/include/asm/kfence.h                       |    7 +--
+ block/bfq-cgroup.c                                  |    2 
+ drivers/android/binder.c                            |    5 +-
+ drivers/android/binderfs.c                          |    8 +--
+ drivers/block/rbd.c                                 |   33 +++++++++-----
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c             |    3 -
+ drivers/gpu/drm/mgag200/mgag200_bmc.c               |   31 +++++--------
+ drivers/gpu/drm/mgag200/mgag200_drv.h               |    6 ++
+ drivers/hid/hid-ids.h                               |    4 +
+ drivers/hid/hid-multitouch.c                        |    1 
+ drivers/hid/hid-playstation.c                       |    5 ++
+ drivers/hid/hid-quirks.c                            |    2 
+ drivers/hid/i2c-hid/i2c-hid-core.c                  |    1 
+ drivers/hid/intel-ish-hid/ishtp-hid-client.c        |    1 
+ drivers/hid/intel-ish-hid/ishtp/bus.c               |   12 ++++-
+ drivers/hwmon/occ/common.c                          |    1 
+ drivers/iommu/iommu.c                               |    3 +
+ drivers/net/ethernet/cavium/liquidio/lio_main.c     |   39 ++++++++--------
+ drivers/net/ethernet/cavium/liquidio/lio_vf_main.c  |    4 -
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c |   10 ++++
+ drivers/net/ethernet/google/gve/gve_ethtool.c       |   46 +++++++++++++-------
+ drivers/net/ethernet/google/gve/gve_main.c          |    4 -
+ drivers/net/macvlan.c                               |    5 +-
+ drivers/net/usb/sr9700.c                            |    5 ++
+ drivers/net/wireless/ti/wlcore/tx.c                 |    5 ++
+ drivers/nvme/host/fc.c                              |    2 
+ drivers/nvme/target/tcp.c                           |   17 +++++++
+ drivers/platform/x86/intel/telemetry/debugfs.c      |    4 -
+ drivers/platform/x86/intel/telemetry/pltdrv.c       |    2 
+ drivers/platform/x86/toshiba_haps.c                 |    2 
+ drivers/soc/imx/imx8m-blk-ctrl.c                    |    2 
+ drivers/soc/imx/imx8mp-blk-ctrl.c                   |   30 +++++++++++++
+ drivers/spi/spi-tegra20-slink.c                     |    6 +-
+ drivers/spi/spi-tegra210-quad.c                     |   36 +++++++++++++--
+ drivers/target/iscsi/iscsi_target_util.c            |   10 +++-
+ fs/btrfs/inode.c                                    |   16 ++++--
+ fs/hfsplus/dir.c                                    |    2 
+ fs/hfsplus/hfsplus_fs.h                             |    8 ++-
+ fs/hfsplus/unicode.c                                |   24 ++++++++--
+ fs/hfsplus/xattr.c                                  |    6 +-
+ fs/smb/client/smb2file.c                            |    1 
+ fs/smb/server/smb2pdu.c                             |    5 +-
+ kernel/trace/ring_buffer.c                          |    2 
+ kernel/trace/trace.h                                |    7 ++-
+ kernel/trace/trace_entries.h                        |   14 +++---
+ kernel/trace/trace_export.c                         |   21 ++++++---
+ net/bridge/netfilter/ebtables.c                     |    2 
+ net/core/filter.c                                   |    8 +--
+ net/mac80211/key.c                                  |    3 -
+ net/mac80211/ocb.c                                  |    3 +
+ net/mac80211/sta_info.c                             |    7 +--
+ net/netfilter/nf_log.c                              |    4 -
+ net/netfilter/nf_tables_api.c                       |    2 
+ net/netfilter/nft_set_pipapo.c                      |    8 +++
+ net/netfilter/x_tables.c                            |    2 
+ net/tipc/crypto.c                                   |    4 -
+ net/wireless/util.c                                 |    8 ++-
+ sound/pci/hda/patch_realtek.c                       |    2 
+ sound/soc/amd/renoir/acp3x-pdm-dma.c                |    2 
+ sound/soc/codecs/tlv320adcx140.c                    |    3 +
+ sound/soc/ti/davinci-evm.c                          |   39 +++++++++++++---
+ tools/testing/selftests/kvm/Makefile                |    1 
+ virt/kvm/eventfd.c                                  |   44 ++++++++++---------
+ 69 files changed, 449 insertions(+), 198 deletions(-)
+
+Andrew Cooper (1):
+      x86/kfence: fix booting on 32bit non-PAE systems
+
+Andrew Fasano (1):
+      netfilter: nf_tables: fix inverted genmask check in nft_map_catchall_activate()
+
+Arnd Bergmann (1):
+      hwmon: (occ) Mark occ_init_attribute() as __printf
+
+Baochen Qiang (1):
+      wifi: mac80211: collect station statistics earlier when disconnect
+
+Bert Karwatzki (1):
+      Revert "drm/amd: Check if ASPM is enabled from PCIe subsystem"
+
+Björn Töpel (2):
+      riscv: uprobes: Add missing fence.i after building the XOL buffer
+      riscv: Replace function-like macro by static inline function
+
+Breno Leitao (5):
+      spi: tegra210-quad: Return IRQ_HANDLED when timeout already processed transfer
+      spi: tegra210-quad: Move curr_xfer read inside spinlock
+      spi: tegra210-quad: Protect curr_xfer assignment in tegra_qspi_setup_transfer_one
+      spi: tegra210-quad: Protect curr_xfer in tegra_qspi_combined_seq_xfer
+      spi: tegra210-quad: Protect curr_xfer clearing in tegra_qspi_non_combined_seq_xfer
+
+Carlos Llamas (2):
+      binder: fix BR_FROZEN_REPLY error log
+      binderfs: fix ida_alloc_max() upper bound
+
+Chaitanya Kulkarni (1):
+      nvme-fc: release admin tagset if init fails
+
+ChenXiaoSong (1):
+      smb/client: fix memory leak in smb2_open_file()
+
+Chenghao Duan (1):
+      LoongArch: Enable exception fixup for specific ADE subcode
+
+Chris Bainbridge (1):
+      ASoC: amd: fix memory leak in acp3x pdm dma ops
+
+Chris Chiu (1):
+      HID: quirks: Add another Chicony HP 5MP Cameras to hid_ignore_list
+
+Daniel Gomez (1):
+      netfilter: replace -EEXIST with -EBUSY
+
+Daniel Hodges (1):
+      tipc: use kfree_sensitive() for session key material
+
+DaytonCL (1):
+      HID: multitouch: add MT_QUIRK_STICKY_FINGERS to MT_CLS_VTL
+
+Debarghya Kundu (1):
+      gve: Fix stats report corruption on queue count change
+
+Dimitrios Katsaros (1):
+      ASoC: tlv320adcx140: Propagate error codes during probe
+
+Eric Dumazet (1):
+      macvlan: fix error recovery in macvlan_common_newlink()
+
+Ethan Nelson-Moore (1):
+      net: usb: sr9700: support devices with virtual driver CD
+
+Felix Gu (1):
+      spi: tegra: Fix a memory leak in tegra_slink_probe()
+
+Filipe Manana (1):
+      btrfs: fix reservation leak in some error paths when inserting inline extent
+
+Greg Kroah-Hartman (1):
+      Linux 6.1.163
+
+Huacai Chen (1):
+      LoongArch: Set correct protection_map[] for VM_NONE/VM_SHARED
+
+Ilya Dryomov (1):
+      rbd: check for EOD after exclusive lock is ensured to be held
+
+Jacob Keller (1):
+      drm/mgag200: fix mgag200_bmc_stop_scanout()
+
+Jakub Kicinski (1):
+      net: don't touch dev->stats in BPF redirect paths
+
+Junrui Luo (2):
+      dpaa2-switch: prevent ZERO_SIZE_PTR dereference when num_ifs is zero
+      dpaa2-switch: add bounds check for if_id in IRQ handler
+
+Kang Chen (1):
+      hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()
+
+Kaushlendra Kumar (2):
+      platform/x86: intel_telemetry: Fix swapped arrays in PSS output
+      platform/x86: intel_telemetry: Fix PSS event register mask
+
+Kery Qi (1):
+      ASoC: davinci-evm: Fix reference leak in davinci_evm_probe
+
+Kwok Kin Ming (1):
+      HID: i2c-hid: fix potential buffer overflow in i2c_hid_get_report()
+
+Lu Baolu (1):
+      iommu: disable SVA when CONFIG_X86 is set
+
+Maurizio Lombardi (2):
+      scsi: target: iscsi: Fix use-after-free in iscsit_dec_session_usage_count()
+      scsi: target: iscsi: Fix use-after-free in iscsit_dec_conn_usage_count()
+
+Max Yuan (1):
+      gve: Correct ethtool rx_dropped calculation
+
+Miri Korenblit (1):
+      wifi: mac80211: don't increment crypto_tx_tailroom_needed_cnt twice
+
+Moon Hee Lee (1):
+      wifi: mac80211: ocb: skip rx_no_sta when interface is not joined
+
+Pablo Neira Ayuso (1):
+      netfilter: nft_set_pipapo: clamp maximum map bucket size to INT_MAX
+
+Peter Åstrand (1):
+      wifi: wlcore: ensure skb headroom before skb_push
+
+Rafael J. Wysocki (1):
+      platform/x86: toshiba_haps: Fix memory leaks in add/remove routines
+
+Rodrigo Lugathe da Conceição Alves (1):
+      HID: Apply quirk HID_QUIRK_ALWAYS_POLL to Edifier QR30 (2d99:a101)
+
+Ruslan Krupitsa (1):
+      ALSA: hda/realtek: add HP Laptop 15s-eq1xxx mute LED quirk
+
+Sean Christopherson (1):
+      KVM: Don't clobber irqfd routing type when deassigning irqfd
+
+Siarhei Vishniakou (1):
+      HID: playstation: Center initial joystick axes to prevent spurious events
+
+Steven Rostedt (1):
+      tracing: Fix ftrace event field alignments
+
+Thomas Weissschuh (1):
+      ARM: 9468/1: fix memset64() on big-endian
+
+Tim Guttzeit (1):
+      ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU
+
+Veerendranath Jakkam (1):
+      wifi: cfg80211: Fix bitrate calculation overflow for HE rates
+
+Werner Sembach (1):
+      ALSA: hda/realtek: Really fix headset mic for TongFang X6AR55xU.
+
+Wupeng Ma (1):
+      ring-buffer: Avoid softlockup in ring_buffer_resize() during memory free
+
+Xu Yang (3):
+      pmdomain: imx8mp-blk-ctrl: Keep gpc power domain on for system wakeup
+      pmdomain: imx8mp-blk-ctrl: Keep usb phy power domain on for system wakeup
+      pmdomain: imx8m-blk-ctrl: fix out-of-range access of bc->domains
+
+YunJe Shin (1):
+      nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec
+
+Zhang Lixu (2):
+      HID: intel-ish-hid: Update ishtp bus match to support device ID table
+      HID: intel-ish-hid: Reset enum_devices_done before enumeration
+
+ZhangGuoDong (1):
+      smb/server: call ksmbd_session_rpc_close() on error path in create_smb2_pipe()
+
+Zhiquan Li (1):
+      KVM: selftests: Add -U_FORTIFY_SOURCE to avoid some unpredictable test failures
+
+Zilin Guan (3):
+      net: liquidio: Initialize netdev pointer before queue setup
+      net: liquidio: Fix off-by-one error in PF setup_nic_devices() cleanup
+      net: liquidio: Fix off-by-one error in VF setup_nic_devices() cleanup
+
+shechenglong (1):
+      block,bfq: fix aux stat accumulation destination
+
 
