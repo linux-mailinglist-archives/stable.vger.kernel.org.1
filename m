@@ -1,166 +1,144 @@
-Return-Path: <stable+bounces-215761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2L6iOS07jGlZjgAAu9opvQ
-	(envelope-from <stable+bounces-215761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 09:17:49 +0100
+	id 8IlzHJw/jGlyjwAAu9opvQ
+	(envelope-from <stable+bounces-215765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 09:36:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51137122287
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 09:17:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF391224F6
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 09:36:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A4AB3037E7A
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 08:15:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3B4F302BA68
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 08:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5024C3502AD;
-	Wed, 11 Feb 2026 08:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8693A350A00;
+	Wed, 11 Feb 2026 08:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oDtCCMH0"
+	dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b="w7P8aM9+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B5A34FF58;
-	Wed, 11 Feb 2026 08:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7635327BF3;
+	Wed, 11 Feb 2026 08:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770797705; cv=none; b=HCFA/cvkZTFr/4lrAybTybsVw1r9iLe03MmVve3VJFfhc5yHAkg+XFvG/gULglyF91lk9aopPTF26VaCL0T3XgjwHRpj2dovtJh0M9VHucOfj1Y7+QW0tVvIk/4gQZ+yHS7QToAdp9+Vl+98hpyBOAs8Z8IjdmcSYBvytCkv3Gg=
+	t=1770798984; cv=none; b=VgsEEr11JqcF0bNAsg3S5bGxBSrmxBWDg+jJuI94EDVK5W2TFeMkrQRg1H/x+Fm/SBpTL1hlkW4XlmVFc1pjG6/e5paN5Aq6jp24bVFgwuKa9XwiJR974Fqp1XezVE4qTz89oipSeU46/UWGDrsk8PDIIdhrPaHIkiCWdMqdjik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770797705; c=relaxed/simple;
-	bh=lcm3o7wL5kBg7ZYVDqCsaOcln/wpMYWwqixrap+exkM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tvIxFi7RgoKK92NJOy8FvlvWHikyLHsFWV0hPmS4bXLZ7bo9NzymW2HgrL0tKyBhdxdsx8w73C9B5nfxPbKoNS7bUDTsWXc8wtd+SMVl18YNblHOeefb31bpOQHYfZNoCE7JvbRWohKA53QsfSKeQbt5Pg+b7Rd7Psd4ra0TVwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oDtCCMH0; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770797705; x=1802333705;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lcm3o7wL5kBg7ZYVDqCsaOcln/wpMYWwqixrap+exkM=;
-  b=oDtCCMH0wDoOBrawYKhVDfPBxfUxwTTfFwRe8e2mTaDJAMb0NWHXN5H/
-   CP2ACwPjr36qS5nfgWEn5xPTMC7+tjFnq45Y69kcXQFu63k4sC8HBLNsb
-   QmvNZ55PUlhSR0/aFpJTs4RoHDERPW6fMGe7dExVqHrDi4SiaKtH41cWz
-   Azo5dqwYr9Z1OXK+G2oLqmqKyt2ohAbZr35tS52qDA+hSTjoxsGkEr2QV
-   Agt5l9QbTR11JcGHaxxxXPkZ/4YJqVtYc+lEYaSjqvIrRxf3mim2nxHeO
-   mfsJjbi8lb8bvm2CmKLqf6CFFHctxItuS7IiPxloM1dHSk1EwYJuKHRci
-   g==;
-X-CSE-ConnectionGUID: afE77VtOTMqSqUiDG3OYug==
-X-CSE-MsgGUID: H4Dh/0SiSu2pJJq4WKimjw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="83380869"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="83380869"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 00:15:04 -0800
-X-CSE-ConnectionGUID: 8UiJQ0k6Q7em/8Llw6CfGw==
-X-CSE-MsgGUID: mhA5W8wZShqRq0+mZKkrcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="211137503"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.220])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 00:15:01 -0800
-Date: Wed, 11 Feb 2026 10:14:59 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] device property: Allow secondary lookup in
- fwnode_get_next_child_node()
-Message-ID: <aYw6g-R5hXd2jnwQ@smile.fi.intel.com>
-References: <20260210135822.47335-1-andriy.shevchenko@linux.intel.com>
- <aYurEV6kKQfI3cs8@kekkonen.localdomain>
+	s=arc-20240116; t=1770798984; c=relaxed/simple;
+	bh=BVz1bM74OvQl89TLWkaJ4OQ0Wr8i89XZCPW6Ug3O/nE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XPx1iJa+3ELwAUVftUvC4bY3porn/+1rKmWf6Pw3TVQOtlkJ4Xn9gieEbwdT/81XXuwEM+DDkJJHXYRHOOWymVPz+NiIH2+p1pLpAGjoFRBG9rS1vz9apVRfpJGo3cTGyTa0Klr4AfJp36UXpGB4P6CJ8tftf47H1wLsj4k3gCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; dkim=pass (2048-bit key) header.d=aladdin.ru header.i=@aladdin.ru header.b=w7P8aM9+; arc=none smtp.client-ip=91.199.251.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
+DKIM-Signature: v=1; a=rsa-sha256; d=aladdin.ru; s=mail; c=simple/simple;
+	t=1770798043; h=from:subject:to:date:message-id;
+	bh=BVz1bM74OvQl89TLWkaJ4OQ0Wr8i89XZCPW6Ug3O/nE=;
+	b=w7P8aM9+0IiwZZzVZ6jYrzR3vLpRtjxbizRF/7L2rUfq7+mZ4/uc7PWLzWxIACEUjDBTJ/MUIFR
+	+6n4lM97qbvTsrssbCTcEZvu/zQ1t235XBtsc9QGVcAFe3qtVaQuPd9z0wi/XvK+otxo24quqbqY5
+	2Rkc9IkzRAy/UKyfiwvOnvRE2hDZvIvtJgjViBdo1JanYMBYzjMdBnTkDd7L5MIdCK+tjSlvPgsjE
+	ZJ03iFLazlwoz5J5vyV795+Vj1md1xLeSQG5Wnm+QEyl5tHDH4Qzj0pbl/GXR6pOs/qiaSpvfEgh7
+	5JYNTGpKxXs7Qp9fwa/FjZKH1jDtJmAtKiYA==
+From: Daniil Dulov <d.dulov@aladdin.ru>
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: Daniil Dulov <d.dulov@aladdin.ru>, <linux-wireless@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v2] wifi: cfg80211: cancel rfkill_block work in wiphy_unregister()
+Date: Wed, 11 Feb 2026 11:20:24 +0300
+Message-ID: <20260211082024.1967588-1-d.dulov@aladdin.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYurEV6kKQfI3cs8@kekkonen.localdomain>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EXCH-2016-04.aladdin.ru (192.168.1.104) To
+ EXCH-2016-01.aladdin.ru (192.168.1.101)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[aladdin.ru,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[aladdin.ru:s=mail];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,linux.intel.com,linuxfoundation.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-215761-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215765-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim]
-X-Rspamd-Queue-Id: 51137122287
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[d.dulov@aladdin.ru,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[aladdin.ru:+];
+	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sipsolutions.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,aladdin.ru:mid,aladdin.ru:dkim,aladdin.ru:email]
+X-Rspamd-Queue-Id: CDF391224F6
 X-Rspamd-Action: no action
 
-On Wed, Feb 11, 2026 at 12:02:57AM +0200, Sakari Ailus wrote:
-> On Tue, Feb 10, 2026 at 02:58:22PM +0100, Andy Shevchenko wrote:
-> > When device_get_child_node_count() got split to the fwnode and device
-> > respective APIs, the fwnode didn't inherit the ability to traverse over
-> > the secondary fwnode. Hence any user, that switches from device to fwnode
-> > API misses this feature. In particular, this was revealed by the commit
-> > 1490cbb9dbfd ("device property: Split fwnode_get_child_node_count()")
-> > that effectively broke the GPIO enumeration on Intel Galileo boards.
-> > Fix this by moving the secondary lookup from device to fwnode API.
-> > 
-> > Note, in general no device_*() API should go into the depth of the fwnode
-> > implementation.
+There is a use-after-free error in cfg80211_shutdown_all_interfaces found
+by syzkaller:
 
-Thanks for the review, my answers below.
+BUG: KASAN: use-after-free in cfg80211_shutdown_all_interfaces+0x213/0x220
+Read of size 8 at addr ffff888112a78d98 by task kworker/0:5/5326
+CPU: 0 UID: 0 PID: 5326 Comm: kworker/0:5 Not tainted 6.19.0-rc2 #2 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: events cfg80211_rfkill_block_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x116/0x1f0
+ print_report+0xcd/0x630
+ kasan_report+0xe0/0x110
+ cfg80211_shutdown_all_interfaces+0x213/0x220
+ cfg80211_rfkill_block_work+0x1e/0x30
+ process_one_work+0x9cf/0x1b70
+ worker_thread+0x6c8/0xf10
+ kthread+0x3c5/0x780
+ ret_from_fork+0x56d/0x700
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-...
+The problem arises due to the rfkill_block work is not cancelled when wiphy
+is being unregistered. In order to fix the issue cancel the corresponding
+work in wiphy_unregister().
 
-> > +	if (IS_ERR_OR_NULL(fwnode))
-> > +		return NULL;
-> 
-> This test is already being done by fwnode_call_ptr_op() (via
-> fwnode_has_op()) so I'd omit it here. That would probably be best put in
-> another patch though. Up to you.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-I would like to keep this as is for the matter of backporting.
-With that done, I can clean up further.
+Fixes: 1f87f7d3a3b4 ("cfg80211: add rfkill support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+---
+v2: move cancel_work_sync() from cfg80211_dev_free() to wiphy_unregister()
+as suggested by Johannes Berg <johannes@sipsolutions.net>
+ net/wireless/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-...
-
-> As the function becomes trivial, I'd move it to property.h.
-
-Yes, but the same applies to many functions in the property.c. I don't want to
-treat this specially:
-- exceptionally for this function (what about the rest?)
-- for the matters of backporting
-
-...
-
-TL;DR: I would like to move this patch forward as is. After that I will
-consider cleaning up as suggested taking into account other places.
-
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 9a420d627d3c..8628e0eefadc 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1214,6 +1214,7 @@ void wiphy_unregister(struct wiphy *wiphy)
+ 	/* this has nothing to do now but make sure it's gone */
+ 	cancel_work_sync(&rdev->wiphy_work);
+ 
++	cancel_work_sync(&rdev->rfkill_block);
+ 	cancel_work_sync(&rdev->conn_work);
+ 	flush_work(&rdev->event_work);
+ 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 
