@@ -1,155 +1,282 @@
-Return-Path: <stable+bounces-215777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4K+OBMlYjGm9lQAAu9opvQ
-	(envelope-from <stable+bounces-215777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:24:09 +0100
+	id oI3eFkZZjGm9lQAAu9opvQ
+	(envelope-from <stable+bounces-215778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:26:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6539812349B
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:24:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C911D1234D5
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 171CD301E6E8
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 10:23:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA8813024A66
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 10:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B616367F3D;
-	Wed, 11 Feb 2026 10:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BD8367F4E;
+	Wed, 11 Feb 2026 10:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="OXnuHrRu"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="0fSY4IpP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D4735B625
-	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 10:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770805437; cv=pass; b=OTDEStDOFi815km/gdm445oZ26EbExPArJDDX7T/Fctdzfq5t4AHRE5jdH8tXYX+mOCI7c89uD118Y93phJ7MB1CtjY8fAaS4VGEqfW2qRbU5cpQrAKvUEwlv5xky8i2G/qsmFi4qId5AutpC1J3Puw3dCUULCaSjlFBLCqx1Fo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770805437; c=relaxed/simple;
-	bh=GJN3JThm9HVHgiMb8j+F3eZ0lgRN+wnA0Q7Lj0Wkr5o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DVWHB9ziBkPtmcsWgc6Of0W+CcsZF0Q3zEYdUC34UWY9c8lX0DgJ063ZB3y2oVaZUr8uiNIoY/qRGpdTjubkWQLDPuJeKwJRM/z8Ti5w1018Yf6IHBACzgUuGfUUD+IXy/7KxuckWs4dT0nyPN+ezO6EUqJDB0msxUx67AmR0aY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=OXnuHrRu; arc=pass smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b885e8c679bso698095966b.1
-        for <stable@vger.kernel.org>; Wed, 11 Feb 2026 02:23:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770805434; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VdXVSidFJF0jg7f/HtEPzRP0pDaBEVgNzI5wrBy9uwmCkCr/jEVP/++0yINS+7RbHH
-         vqWga4rlUvESLVWQXG33LwrQyAib1+NAacXikxSemneSUWrT0wEqekZYPU0IQEyJhlaL
-         2WnxxBuwPe31yOOTUKg8dJqT6WJhISJkn7grRcfAUBrjFm3dtTeQRVYzUw2OersJwI2D
-         vXX1D+zOadrGipDtiJtw8GXLzXPpc+aVqhC+9vHhiqlto6OAXk9rXeivhZKMOKSNhWiZ
-         UAmMhKJak4Of74FuAnRNWFA50EyrHlfX4bvhmI+S+HqO268E3WNgJZmPMcPNfZ80RD/p
-         3a+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=v4tmqZhYNY4ez4j9clJooVuPTcvKuhrRqyO3PCivUnY=;
-        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
-        b=Y6P8YNYh0/wtzogcj970HKfVgp4YYhmardFXwT65oBrtOoSW1poQUXjpomJMhF5FZe
-         YkuG660jb48WBZDpcBDJdNFvrev7WeDcSmDT8OiGdxGyCUxPPvHAG63l/YJm5O4FEvqL
-         eosre6td73MGP8olFoZyJMONCdcbmGCd6Q+Um5oGlCkcRSgRFBb5cgvPw7JOP7qAm22U
-         KjXLTTH8gsqDtahDFJKsAr+Osh0VPmP8eog/Fv4VuvUrfyfDYW8DgLEFixm4b5RkFh2c
-         ELYc7mW4IDfozJ8RcH5wrmJPR0X2MVWlr1xDw4pZt68hCKhlq1Hjj4UQmK7kL2RL1kF9
-         TiWQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F3D126BF1
+	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 10:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770805564; cv=none; b=mrAM+OuVVNO7fuMpAu8OxapPxJCnzMuZTmJdQsftijN5Rgk3ZfukV8VLwmmBp9PZnTsa+wpjWNL20Y+ONXE5PFKOuuU6yYHUxIdW3rZ21c9ASvGYPSR4EmBPHB12SGSndpxvfdGzXsUF2shr4CJmTQxptGlRlMicmLREt261aLg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770805564; c=relaxed/simple;
+	bh=zRNJdLbq1/8txYkSzXuGG+2aZAzv/ahmwd+TGLim1yk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ip1r6on59ZUHF7jDJv9QJ03GsYgc6kVzaqqVsOH1muRDqbjiLYUK5LutZJnMY/wRO+Gg3QtjVHovJiaPOJBqeGFn9JB+xGulE4jqxb3fVOA5iBhm9lv12JVAwNl+Gm3Uanv+1G/7G+D969zQe9EZYnSiPuK0jrXLpduYfTtaGic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=0fSY4IpP; arc=none smtp.client-ip=120.232.169.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1770805434; x=1771410234; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=v4tmqZhYNY4ez4j9clJooVuPTcvKuhrRqyO3PCivUnY=;
-        b=OXnuHrRuoDGjdb21HTMJ0W6pCCjS0fkchfEX2FO6PZGitdYvDWrr6HFocioXqQ/xBP
-         qc50y3diH6vYdqDFfa9sCitpECWri1o5Ovfi31ApfdY0BGHBqIgSnoqnNG6go3gns0lu
-         Er0J2tLXKhSGYY27lnnoGD6Cahwyvf0R7NFZxkqEsSGTX4p8nNH1IqPLZlo8++3IZ4G6
-         u80jPEnwM4rC1S856KkLlVJYfujDDy3VFm5zIbM7QgA1c4PcPxNjEzdfCnfzY0JcBC2o
-         zwQQ2VkAlQgfNe3MZPoyygChgKXyCrBFjNm/0NMBvk2SUVVoKlKUYyAh0SlnJ3CM4n+l
-         gDsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770805434; x=1771410234;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v4tmqZhYNY4ez4j9clJooVuPTcvKuhrRqyO3PCivUnY=;
-        b=nhRlXq+JV1XBSgDPT4AQ5LiId+YCZIkXHARr7wGeJkByEMXZzeHzIQyxVAWAbkV0zN
-         UkIaL1W0kHuZYAx44O2uBmH1uOfUsn5Y5vJCSwL6KL4Ocz+H20Id2DB3vOba0Axvr38C
-         MzmV5wxTvzw348oF9GtXXS5TR68KyXYFtilfONHr/y9NNw1gPTY9PMZG1OBclC1xWj7u
-         4qs+4+6dBPNxLddq6Pja0++XccyYaHkph5/I9TQ9lVZHKM4Vno3oBH006sUZxaTvmxeR
-         Wp1KPTP7TRITuQIKJKd+ULOKc3C/yeQqHqXS4eoxYRko+HTc0aN2qIbK2u4l+OLQFt0z
-         LLsQ==
-X-Gm-Message-State: AOJu0Yz7uXVV6AmLRfiZD0I9cKjwYcc6M71am+SN3hMJA8Ya4JAp49mc
-	0VmGImC+Vyt/qX08BFBHvyrM5aiGtwRF2f2hRFQo06nHxE4j2JeOu9E8rjemqAEkbYaG2vm7NI9
-	jmchb/yw9a6scSmY8TbsLnkCDay34+fTeRkrMmDdfLg==
-X-Gm-Gg: AZuq6aL9DX3mIBLhskb3SSL2lVv1/mNjWEz+X9JUkhLlJBNtpR1kyCetnLC79IxrSQU
-	sxw1oWOjytKmOGZ+aDGZZJ5eaJFfb0RP4yVwMNusEnF6Zi7c37thKOaNLRbCNKWC2RfaeDU/GTs
-	Np4cC2Uz1fxy66VP9IepXLHxd8NadiJrO86JC1M8pvKvbP9ge+IiVMfUA5pIxRN9bDJbUJ++6p0
-	OP+b7G6H21TPuWa9iZetJVslTZUbAx3N2Q8Xqo4RhRPChJZJmzZeXj4nkaMkkaFgBHoOtdsVUMe
-	XH+Ex3at0odvsEpa97pVEaAKxwx5Pi747/7BL+6s1Q25cjEpTWSUYXvSO51bT0MPtEd5xw==
-X-Received: by 2002:a17:907:da17:b0:b8e:7d43:edda with SMTP id
- a640c23a62f3a-b8f6aa110b2mr114508166b.29.1770805434267; Wed, 11 Feb 2026
- 02:23:54 -0800 (PST)
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=0fSY4IpPFfQHbtnqZHvbYzQ/m2//NJPmskVurAN/KAPPYiw0G868UXWLg5MJDhBmY4beBfC2NDTfy
+	 Zz43Oos7e2w4bLsnoR42/6NN0+9ApP7vxOKr21robC/O/QvHWUWpktYq4O8i5FASJEcQXuE4VcNBgc
+	 pWbvwPJTKbqdAr8c=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from ubuntu24.corp.ad.wrs.com (unknown[120.244.194.126])
+	by rmsmtp-lg-appmail-40-12054 (RichMail) with SMTP id 2f16698c5927cc3-7d278;
+	Wed, 11 Feb 2026 18:25:47 +0800 (CST)
+X-RM-TRANSID:2f16698c5927cc3-7d278
+From: Bin Lan <lanbincn@139.com>
+To: stable@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Bin Lan <lanbincn@139.com>
+Subject: [PATCH 6.6.y 1/2] netfilter: nf_tables: missing objects with no memcg accounting
+Date: Wed, 11 Feb 2026 10:25:35 +0000
+Message-ID: <20260211102536.4364-1-lanbincn@139.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260209142304.770150175@linuxfoundation.org>
-In-Reply-To: <20260209142304.770150175@linuxfoundation.org>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Wed, 11 Feb 2026 15:53:16 +0530
-X-Gm-Features: AZwV_Qi8WkFzLyUcNMT6WAEOAamSKCAjyY14DahhzqQC69_qgGWcKCTYt5W4tP8
-Message-ID: <CAG=yYwnOCr-zTW4ND39LG-_G37iJC-CEoNR7PLYksu1hm2L6tg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 00/86] 6.6.124-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[rajagiritech.edu.in];
-	TAGGED_FROM(0.00)[bounces-215777-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[139.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215778-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[139.com:-];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[netfilter.org,139.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rajagiritech.edu.in:email]
-X-Rspamd-Queue-Id: 6539812349B
+	RCPT_COUNT_THREE(0.00)[3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,139.com:mid,139.com:email]
+X-Rspamd-Queue-Id: C911D1234D5
 X-Rspamd-Action: no action
 
- hello,
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-No typical  dmesg regressions
+[ Upstream commit 69e687cea79fc99a17dfb0116c8644b9391b915e ]
 
-Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+Several ruleset objects are still not using GFP_KERNEL_ACCOUNT for
+memory accounting, update them. This includes:
 
---
-software engineer
-rajagiri school of engineering and technology
+- catchall elements
+- compat match large info area
+- log prefix
+- meta secctx
+- numgen counters
+- pipapo set backend datastructure
+- tunnel private objects
+
+Fixes: 33758c891479 ("memcg: enable accounting for nft objects")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[ Adjust context ]
+Signed-off-by: Bin Lan <lanbincn@139.com>
+---
+ net/netfilter/nf_tables_api.c  |  2 +-
+ net/netfilter/nft_compat.c     |  6 +++---
+ net/netfilter/nft_log.c        |  2 +-
+ net/netfilter/nft_meta.c       |  2 +-
+ net/netfilter/nft_numgen.c     |  2 +-
+ net/netfilter/nft_set_pipapo.c | 10 +++++-----
+ net/netfilter/nft_tunnel.c     |  5 +++--
+ 7 files changed, 15 insertions(+), 14 deletions(-)
+
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index c00dd7dae5cb..7e2650a9eb1d 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6615,7 +6615,7 @@ static int nft_setelem_catchall_insert(const struct net *net,
+ 		}
+ 	}
+ 
+-	catchall = kmalloc(sizeof(*catchall), GFP_KERNEL);
++	catchall = kmalloc(sizeof(*catchall), GFP_KERNEL_ACCOUNT);
+ 	if (!catchall)
+ 		return -ENOMEM;
+ 
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 52cdfee17f73..7ca4f0d21fe2 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -535,7 +535,7 @@ nft_match_large_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
+ 	struct xt_match *m = expr->ops->data;
+ 	int ret;
+ 
+-	priv->info = kmalloc(XT_ALIGN(m->matchsize), GFP_KERNEL);
++	priv->info = kmalloc(XT_ALIGN(m->matchsize), GFP_KERNEL_ACCOUNT);
+ 	if (!priv->info)
+ 		return -ENOMEM;
+ 
+@@ -808,7 +808,7 @@ nft_match_select_ops(const struct nft_ctx *ctx,
+ 		goto err;
+ 	}
+ 
+-	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL);
++	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL_ACCOUNT);
+ 	if (!ops) {
+ 		err = -ENOMEM;
+ 		goto err;
+@@ -898,7 +898,7 @@ nft_target_select_ops(const struct nft_ctx *ctx,
+ 		goto err;
+ 	}
+ 
+-	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL);
++	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL_ACCOUNT);
+ 	if (!ops) {
+ 		err = -ENOMEM;
+ 		goto err;
+diff --git a/net/netfilter/nft_log.c b/net/netfilter/nft_log.c
+index 5defe6e4fd98..e35588137995 100644
+--- a/net/netfilter/nft_log.c
++++ b/net/netfilter/nft_log.c
+@@ -163,7 +163,7 @@ static int nft_log_init(const struct nft_ctx *ctx,
+ 
+ 	nla = tb[NFTA_LOG_PREFIX];
+ 	if (nla != NULL) {
+-		priv->prefix = kmalloc(nla_len(nla) + 1, GFP_KERNEL);
++		priv->prefix = kmalloc(nla_len(nla) + 1, GFP_KERNEL_ACCOUNT);
+ 		if (priv->prefix == NULL)
+ 			return -ENOMEM;
+ 		nla_strscpy(priv->prefix, nla, nla_len(nla) + 1);
+diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
+index 8c8eb14d647b..05cd1e6e6a2f 100644
+--- a/net/netfilter/nft_meta.c
++++ b/net/netfilter/nft_meta.c
+@@ -952,7 +952,7 @@ static int nft_secmark_obj_init(const struct nft_ctx *ctx,
+ 	if (tb[NFTA_SECMARK_CTX] == NULL)
+ 		return -EINVAL;
+ 
+-	priv->ctx = nla_strdup(tb[NFTA_SECMARK_CTX], GFP_KERNEL);
++	priv->ctx = nla_strdup(tb[NFTA_SECMARK_CTX], GFP_KERNEL_ACCOUNT);
+ 	if (!priv->ctx)
+ 		return -ENOMEM;
+ 
+diff --git a/net/netfilter/nft_numgen.c b/net/netfilter/nft_numgen.c
+index 7d29db7c2ac0..bd058babfc82 100644
+--- a/net/netfilter/nft_numgen.c
++++ b/net/netfilter/nft_numgen.c
+@@ -66,7 +66,7 @@ static int nft_ng_inc_init(const struct nft_ctx *ctx,
+ 	if (priv->offset + priv->modulus - 1 < priv->offset)
+ 		return -EOVERFLOW;
+ 
+-	priv->counter = kmalloc(sizeof(*priv->counter), GFP_KERNEL);
++	priv->counter = kmalloc(sizeof(*priv->counter), GFP_KERNEL_ACCOUNT);
+ 	if (!priv->counter)
+ 		return -ENOMEM;
+ 
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 4274831b6e67..dcb75f428152 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -869,7 +869,7 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
+ 		return;
+ 	}
+ 
+-	new_lt = kvzalloc(lt_size + NFT_PIPAPO_ALIGN_HEADROOM, GFP_KERNEL);
++	new_lt = kvzalloc(lt_size + NFT_PIPAPO_ALIGN_HEADROOM, GFP_KERNEL_ACCOUNT);
+ 	if (!new_lt)
+ 		return;
+ 
+@@ -1145,7 +1145,7 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
+ 		scratch = kzalloc_node(struct_size(scratch, map,
+ 						   bsize_max * 2) +
+ 				       NFT_PIPAPO_ALIGN_HEADROOM,
+-				       GFP_KERNEL, cpu_to_node(i));
++				       GFP_KERNEL_ACCOUNT, cpu_to_node(i));
+ 		if (!scratch) {
+ 			/* On failure, there's no need to undo previous
+ 			 * allocations: this means that some scratch maps have
+@@ -1318,7 +1318,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 	struct nft_pipapo_match *new;
+ 	int i;
+ 
+-	new = kmalloc(struct_size(new, f, old->field_count), GFP_KERNEL);
++	new = kmalloc(struct_size(new, f, old->field_count), GFP_KERNEL_ACCOUNT);
+ 	if (!new)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -1348,7 +1348,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 		new_lt = kvzalloc(src->groups * NFT_PIPAPO_BUCKETS(src->bb) *
+ 				  src->bsize * sizeof(*dst->lt) +
+ 				  NFT_PIPAPO_ALIGN_HEADROOM,
+-				  GFP_KERNEL);
++				  GFP_KERNEL_ACCOUNT);
+ 		if (!new_lt)
+ 			goto out_lt;
+ 
+@@ -1359,7 +1359,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 		       src->bsize * sizeof(*dst->lt) *
+ 		       src->groups * NFT_PIPAPO_BUCKETS(src->bb));
+ 
+-		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL);
++		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL_ACCOUNT);
+ 		if (!dst->mt)
+ 			goto out_mt;
+ 
+diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
+index 3e3ae29dde33..f77a5bf69911 100644
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -503,13 +503,14 @@ static int nft_tunnel_obj_init(const struct nft_ctx *ctx,
+ 			return err;
+ 	}
+ 
+-	md = metadata_dst_alloc(priv->opts.len, METADATA_IP_TUNNEL, GFP_KERNEL);
++	md = metadata_dst_alloc(priv->opts.len, METADATA_IP_TUNNEL,
++				GFP_KERNEL_ACCOUNT);
+ 	if (!md)
+ 		return -ENOMEM;
+ 
+ 	memcpy(&md->u.tun_info, &info, sizeof(info));
+ #ifdef CONFIG_DST_CACHE
+-	err = dst_cache_init(&md->u.tun_info.dst_cache, GFP_KERNEL);
++	err = dst_cache_init(&md->u.tun_info.dst_cache, GFP_KERNEL_ACCOUNT);
+ 	if (err < 0) {
+ 		metadata_dst_free(md);
+ 		return err;
+-- 
+2.43.0
+
+
 
