@@ -1,53 +1,101 @@
-Return-Path: <stable+bounces-215875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKk2GlXbjGm3uAAAu9opvQ
-	(envelope-from <stable+bounces-215875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:41:09 +0100
+	id WJSUH+fbjGm3uAAAu9opvQ
+	(envelope-from <stable+bounces-215876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:43:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4A9127387
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:41:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4541273C6
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:43:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5B63303C4F3
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 19:40:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8152A3007CA0
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 19:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152413542F5;
-	Wed, 11 Feb 2026 19:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A982C352F9C;
+	Wed, 11 Feb 2026 19:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQyk5deY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iZV3+YpQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61253542E7;
-	Wed, 11 Feb 2026 19:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5806126B2CE
+	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 19:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770838813; cv=none; b=U8rCfFsSP3OoLobsJASkvm/jX1c/w4twPBLFCK9t2IAUTyU1CwntVuI4Y1EgSG3TbQGmEiswenmjCJGXXGvjGQWuF6z+80DSt7jZW7W3G2szcW8PlH53bc0QJvjtMXsKJS4hty6zpgj6GuLMIdNtyASmxq1KI+skPmMM6Xq055I=
+	t=1770839012; cv=none; b=X0j4Jx6nLpx/uZtaBN0jwb4xSPMgpHx9z1fXGayv6ju5Cyd9tU/CBGpI52mZr9ohspPsh7aV1kxknNEgaJo1tQmFDGcud1r/A53LRsHnhR32Xn41dl7RtDW6wP7tonaYHt/SPkP26XsNzqvShaBWqMDSaES0Jx2NuSD/7eD89NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770838813; c=relaxed/simple;
-	bh=HvQ4cnixqUKyg+SllepuEvhBcD2/ieez5yuQtifif60=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=H/RfG/CKKNh0Hg//icO/v2ZBR9HCtzFjlPH18pQy6QouKbhz5FtHNX1SjkzfodP2UiMcJzUqzbFU8nXqs+nTY+GImSzg/h8uctsW+24UI2IHW/QY4+brkpNgqP+ln9fyx/2i+iIdwemd1Gp+hx7nkWVU0rdu+qvbQQt7xp3uyRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQyk5deY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED80C4CEF7;
-	Wed, 11 Feb 2026 19:40:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770838813;
-	bh=HvQ4cnixqUKyg+SllepuEvhBcD2/ieez5yuQtifif60=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=tQyk5deYFw6bFD/1N5vIBOtHcCldMaHOkaF+CxtZMEfaGgKmutSNz1ql6tRroZ8bs
-	 Hp7vXKI4pyk3q35mr3OANxMIjdTyGobpiZ1k+avYVUUlYVyRLcnVai4OHGkLjrX+Bb
-	 EhMmoM4QzB5YOCrMODWI1YWdhkhOnUGFPaV2W8w++jLZFTXR7gWYG+g4Hbvv2fgwZa
-	 z6/pkBbA/c+FwjNJdFOd7pOHZ49Gj5dkPFxjylOwZefsR0/yZ8dylAAc5Hjz+VmLvh
-	 l/U4WET0/eGzTKGTbn2QC9qAamhg82/AArdSDzkxmXIblapKcVjM4ww8EskanP2NF+
-	 IccRpZSEMEkIA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 851CD39EF964;
-	Wed, 11 Feb 2026 19:40:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1770839012; c=relaxed/simple;
+	bh=ZWbPqJQii6H8WyeXZM+tCMZQu3W2Yff2gbsayOOGiPY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=kkrwVZFrUmhuu2TGel1GF1QmBcdUoyKoa+qCy1claheFO370Rmi9rycI+BQbv/OXBxpDu515yLsT0ag5A4KqPmxd+1kUMfsV9a08dtS61rNi+caoPX5qxJRv5WX/PrKqfHbRWNwzsmN9F7driB2ScF+7tXCs2kP7YA9yjiXVmUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iZV3+YpQ; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-4042cd2a336so1572937fac.0
+        for <stable@vger.kernel.org>; Wed, 11 Feb 2026 11:43:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770839010; x=1771443810; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0a9gQYVVISPj2gmgBnG3tylapu0SzuOdddpgIvGc12s=;
+        b=iZV3+YpQp/V6DKuuOwLiVZJRJlURIwsjjAKm3aid2r3/5/qDfyFdrn8wP+ekZ76kYO
+         cJBiVlS6Xe6qPXedhx+PSYC7FiVNwFDTGIXdrGxtDYM8ou0BNoVm3mIrPhDHpyl+VZuZ
+         k0hIMmdlACa9IznX3a/CRmjM6YxKMdYiQgX46/2vYMa9Ot5ge9IM+2sUwh1mQGz+PbCT
+         PzcIAA5hxlthhqKUCZQuxHrjvnz29lIGwNCcN4oiVl9t/NNyQ+ogMv1p3BHonA/b2dTD
+         x/3/k60wKt/SotaXjw88XRmVcZIulqfSZyk3UyL5DjxoKKSj7ij5m+iwAJdZFHvl3xHI
+         pdCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770839010; x=1771443810;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0a9gQYVVISPj2gmgBnG3tylapu0SzuOdddpgIvGc12s=;
+        b=ttua22PBLod4RLEZ0ZATSQs/aNoDiihwFXYbsG+qYDPfEubEEP6Zve3DN8ncsHkOPG
+         ABlEhFbL/Z9tY+aNcLLd3x9dMJL/yjqzfEU5kS70r5tk2gr2idrfdHVpAUTKwXDGrPZn
+         VmBLPk6dcfdpGxAkho5kQQQeEl51dp7iZekRLQeC4pA1sCA3qIMbTi8ZG91Wg3sYU1W5
+         XG9NKWk+SmY2W5SqumuIw2nH/HpreFWIONuNG3kJmH517Rt49iA5zwKIzFqaq0eAJUq/
+         yXO2CVQEuyJM7cGQqR11G0T7gxOPdC6YLpD15MqndrwPntFaUoR0kbJ62wZSUljgkc8t
+         jwpw==
+X-Forwarded-Encrypted: i=1; AJvYcCXxyl9JT81JNzWM/UENpXSvG15ar83/ZPD2fEticHaQe4FqOX01YOP81ItqV37ADa3nbXFDp/c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSTLgWrI7HCtKftdbLcdQH0/mHYNDN9gZiFqwthlw4RBpeFGeT
+	hnKM70Ft9fzoL2iLp78RMHt9u3liH2IMDPVD/K3FyYVv+FkEOhf1KpT8
+X-Gm-Gg: AZuq6aKFtYw0q2o7/AG2Ugue0cQwXEC5WWauXfj8Jtz9SgTaIdTysFVb9VdX1V6j2Tb
+	GIJwQBlzciiSgC2irskhY0VmjhT5oc+hCY/Z2+wKUVVxs2kUSCyqTssD5c+JNaXloyJRtRTitT4
+	PjLxj98KZsZx9LHee2bu5dfbFwlKqWqHLX+Ntn7+aXleRONQ9CB7PDVVKioLBDnwl+E0d24y4KE
+	5Ohev7b0la3Z0jlHwxaf6WOx8bAmDtm06Uxttb7lFq1/Fd5Ooa22NZtIZx/fxZkP6aH3Fid5YSe
+	4hsNeFgxZa+b1WyYdSEioYUMs4vSbkhvMSKkeGuOpki+TKObN8TVbIrhWIHQuKf/HCSfFpnlLKo
+	GbfuDS3he+dKD2YfZZBDxgN/pP0iZFh9qS+ldBkVS52xu8lGqtSrhPU12LfAhPdzo2jbuQJu8el
+	aprQpAMe5ATbv+tCcK9iwAl3qlj1MFtZKQx2RYRixXWkxzw7kqgefwxb9PdlJaZL/XZxA1l0Pu
+X-Received: by 2002:a05:6870:3342:b0:409:794e:fe9 with SMTP id 586e51a60fabf-40ec74775e9mr153681fac.54.1770839010010;
+        Wed, 11 Feb 2026 11:43:30 -0800 (PST)
+Received: from ubuntu-BQM5.tailafa00.ts.net (cs244-84-dhcp.cs.colorado.edu. [128.138.244.84])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40eaf1e858bsm1989412fac.19.2026.02.11.11.43.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Feb 2026 11:43:28 -0800 (PST)
+From: Ruitong Liu <cnitlrt@gmail.com>
+To: netdev@vger.kernel.org
+Cc: jhs@mojatatu.com,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ruitong Liu <cnitlrt@gmail.com>,
+	stable@vger.kernel.org,
+	Shuyuan Liu <L0x1c3r@gmail.com>
+Subject: [PATCH v2] net/sched: act_skbedit: fix divide-by-zero in tcf_skbedit_hash()
+Date: Thu, 12 Feb 2026 03:43:25 +0800
+Message-Id: <20260211194325.797963-1-cnitlrt@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260211184848.731894-1-cnitlrt@gmail.com>
+References: <20260211184848.731894-1-cnitlrt@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,74 +103,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] Bluetooth: purge error queues in socket destructors
-From: patchwork-bot+bluetooth@kernel.org
-Message-Id: 
- <177083880807.688115.2802433045954977794.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Feb 2026 19:40:08 +0000
-References: <20260211-bt-purge-error-queue-v1-1-42159dd7bb28@igalia.com>
-In-Reply-To: <20260211-bt-purge-error-queue-v1-1-42159dd7bb28@igalia.com>
-To: Heitor Alves de Siqueira <halves@igalia.com>
-Cc: marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
- willemb@google.com, pav@iki.fi, luiz.von.dentz@intel.com,
- linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-dev@igalia.com, syzbot+7ff4013eabad1407b70a@syzkaller.appspotmail.com,
- stable@vger.kernel.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[holtmann.org,gmail.com,google.com,iki.fi,intel.com,vger.kernel.org,igalia.com,syzkaller.appspotmail.com];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215875-lists,stable=lfdr.de,bluetooth];
+	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-215876-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7ff4013eabad1407b70a];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cnitlrt@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: BF4A9127387
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CD4541273C6
 X-Rspamd-Action: no action
 
-Hello:
+Commit 38a6f0865796 ("net: sched: support hash selecting tx queue")
+added SKBEDIT_F_TXQ_SKBHASH support. mapping_mod is computed as:
 
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+  mapping_mod = queue_mapping_max - queue_mapping + 1;
 
-On Wed, 11 Feb 2026 15:03:35 -0300 you wrote:
-> When TX timestamping is enabled via SO_TIMESTAMPING, SKBs may be queued
-> into sk_error_queue and will stay there until consumed. If userspace never
-> gets to read the timestamps, or if the controller is removed unexpectedly,
-> these SKBs will leak.
-> 
-> Fix by adding skb_queue_purge() calls for sk_error_queue in affected
-> bluetooth destructors. RFCOMM does not currently use sk_error_queue.
-> 
-> [...]
+mapping_mod is stored as u16, so the calculation can overflow when the
+requested range covers 65536 queues (e.g. queue_mapping=0 and
+queue_mapping_max=0xffff). In that case mapping_mod wraps to 0 and
+tcf_skbedit_hash() triggers a divide-by-zero:
 
-Here is the summary with links:
-  - Bluetooth: purge error queues in socket destructors
-    https://git.kernel.org/bluetooth/bluetooth-next/c/d5e3243e55d7
+  queue_mapping += skb_get_hash(skb) % params->mapping_mod;
 
-You are awesome, thank you!
+Reject such invalid configuration to prevent mapping_mod from becoming
+0 and avoid the crash.
+
+Fixes: 38a6f0865796 ("net: sched: support hash selecting tx queue")
+Cc: stable@vger.kernel.org # 6.12+
+Reported-by: Ruitong Liu <cnitlrt@gmail.com>
+Reported-by: Shuyuan Liu <L0x1c3r@gmail.com>
+Signed-off-by: Ruitong Liu <cnitlrt@gmail.com>
+---
+ net/sched/act_skbedit.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/sched/act_skbedit.c b/net/sched/act_skbedit.c
+index 8c1d1554f657..b6f5c21651fc 100644
+--- a/net/sched/act_skbedit.c
++++ b/net/sched/act_skbedit.c
+@@ -194,6 +194,10 @@ static int tcf_skbedit_init(struct net *net, struct nlattr *nla,
+ 			}
+ 
+ 			mapping_mod = *queue_mapping_max - *queue_mapping + 1;
++			if (!mapping_mod) {
++				NL_SET_ERR_MSG_MOD(extack, "Invalid queue_mapping range: range too large");
++				return -EINVAL;
++			}
+ 			flags |= SKBEDIT_F_TXQ_SKBHASH;
+ 		}
+ 		if (*pure_flags & SKBEDIT_F_INHERITDSFIELD)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
 
