@@ -1,180 +1,208 @@
-Return-Path: <stable+bounces-215789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEFiMvZpjGkMnQAAu9opvQ
-	(envelope-from <stable+bounces-215789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:37:26 +0100
+	id w0RmCgVsjGlmngAAu9opvQ
+	(envelope-from <stable+bounces-215790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:46:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CEE123EA1
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:37:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BCF1123F15
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 12:46:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5EE6630177B3
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:37:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C09653010BB0
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0DB7314D0D;
-	Wed, 11 Feb 2026 11:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB88281525;
+	Wed, 11 Feb 2026 11:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="id+sTax7"
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="D6P9gLkf";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="u1YJ5Wap"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D8630FC1C;
-	Wed, 11 Feb 2026 11:37:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974E28460;
+	Wed, 11 Feb 2026 11:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770809843; cv=none; b=q6Sz7CR9xRpJjTEBMZ0dLdEQOsy/BC8PnX3NM/QYemwBhnOA65ufaDJLeTLHJBC/cdSwJmRRIOteJqFuEi/v+UZoGALueTxKVrLDg9PNYWUFFO6l1fcWtYnkic41fM/CzIgkUcbNbeW2DT9RoDIU71AnwQ7ixauME8fmspWhCYE=
+	t=1770810367; cv=none; b=XBBcCHIM3cTo8f4BvA6TlRQaXG2aOhZpb95ylqkc3A1VA40zNtkQWgfB6b1dyeRdfdsxf3G9mIa3zrGAsufUdhqdFIptPIyl3ijkNw7KMDcEucUuPVbKf/sPn//s1zc4PXfPJU3Ic2SQAoKjuvOVWhxEs3ILI2sHbzoViLkBa/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770809843; c=relaxed/simple;
-	bh=B8qCfDH8IucAVQlQxF0PqgeDGjyVUTzYQUcKocAx/aY=;
+	s=arc-20240116; t=1770810367; c=relaxed/simple;
+	bh=UMyxJV4svHC9C+Q/U8kxDvWW1hGYe8YJ+LZPzQW1Dn8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gn7PXhziH+hQR4t6TtBVM+K94nCnJLzY+xljGjVFRYHKfRsg+5Wqlh0z1BYzkAu8BI5/nNeLiR5BR7cLoka5qiNEZRyvvmKZwQQ4fmO+x5kkFnvYUaH3f2zmqUWFeaT/f4TLSYrsRDIfs+K9h/LPVTxVJ0yADix2FkWn9Shp0X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=id+sTax7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34CBC4CEF7;
-	Wed, 11 Feb 2026 11:37:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770809843;
-	bh=B8qCfDH8IucAVQlQxF0PqgeDGjyVUTzYQUcKocAx/aY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=id+sTax7e3H74WDbUVECGY71eYZspzt5wSg9mVe91rf8JIWEiuZmtb8Y2+q/2N7Pv
-	 F8qwogKUJiruAz8+SNBlspfd61Bg5EwUfvg2g0LWVB+SpLnQENyr0I+C1o9pJE+aO/
-	 4EJpaqZKNioqwBk/NPBDwJ5yoxgl75brdfzMSf6I=
-Date: Wed, 11 Feb 2026 12:37:20 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Johan Korsnes <johan.korsnes@remarkable.no>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, stable@vger.kernel.org,
-	patches@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 094/169] vsock/test: fix seqpacket message bounds
- test
-Message-ID: <2026021103-gusto-karaoke-6c60@gregkh>
-References: <20260128145334.006287341@linuxfoundation.org>
- <20260128145337.388867288@linuxfoundation.org>
- <61627e8a-6998-4138-a174-d7fd257db93e@remarkable.no>
- <aYw9N_Ido_FZzblw@sgarzare-redhat>
- <cc9bcfe1-4667-4a33-b370-1f3912f0adca@remarkable.no>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ijxlS/dCoCtDCcGa2l0kED1nIVtitW/RnbWuNJmCgjv+GVdC0sJKBJ3wCr/xn7f2/FMOHKpaVBAwP2TzY99vFUUZaloaxLBqy4iinSW5DCCIswZIBTuiuob4MDmcMG4ntfCZd/xXE1ddGY7npixKjAkhYJHXis6smpU5Q8N48VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=D6P9gLkf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=u1YJ5Wap; arc=none smtp.client-ip=202.12.124.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfout.stl.internal (Postfix) with ESMTP id 21BD41D00183;
+	Wed, 11 Feb 2026 06:46:04 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Wed, 11 Feb 2026 06:46:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1770810363; x=1770896763; bh=ukbEN640sL
+	CWjepQ3oOy/19KEzPFUeSNtmy3J6LTRuw=; b=D6P9gLkfxYzKfsUf0CAG8VmOmc
+	eJbuwBPDfvJYEDMb2oulNIqbvtpsrgFFuHJ4tOfjjecFZGZ5mLbn6TBLYgV/6Sjv
+	skPR67hPYHcWxpgA7VD+1o1GkWLv9GFPl2wdK24aQM6iT/87Wo7X9Xj///a6ilMH
+	/6vbIRJlMOwyD8R5YRWVl8UrEp6gZMBYAYv5SHpBLm3ES210Hhv7kurNtwbW6SVW
+	wmX+5N39X+0Yr4VgIUd93pZpfvCwqHNG3jsk+jviHLzlf/9Dv3mtulWr2Qd6c+V6
+	wv8PgDJLaxgJKxcpWnWlrk7oWdamcch8NTV/oO/l0TAKCkXLOv+v6GbJAqtQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1770810363; x=1770896763; bh=ukbEN640sLCWjepQ3oOy/19KEzPFUeSNtmy
+	3J6LTRuw=; b=u1YJ5WapTnOO51LbuXW87gB9hcscNuECThY7V6wxz90dm115w7c
+	K7cYdhXPPy9vJGVPvZRt84jkpeR8kfnyjERL7YQxRyk8veqImnEVJ0MFkzrms8e4
+	Kr4/bzXZIzG5CHId/McTed7M8gyjqid5M6L/4adY9F/m+O7gba2CLnB/L+etMiL/
+	96d02g4THzrHOl/mSRH2mRvbgvOMCaFje/0t4KmE9MBcvDNK5o19TcoQJszcDmW9
+	oS+/qZEbDg9DRQirz+CPrQZfWCkJjXtr1kX8tAr5Ti3c4Oz695oLjwMkHKZkIdMN
+	SGMAItjkFgMhmC7n6JE3QWjG0kMUJWn9Xcw==
+X-ME-Sender: <xms:-2uMaVBCbfr859cGEbq5QpG7w_o81C00UlHrFHns-aDa7_Y4aeU-CQ>
+    <xme:-2uMaSkXQtqXsj36Y7Kk5Dr_7dWnVUlIF13FaOWYChiX4W9WU990fZni76g6o5ep-
+    89sUhxhJDv656qa1o6RU3zUlSefJWQQoLdAHWH03KCSxoUMLiQuHWc>
+X-ME-Received: <xmr:-2uMaWxwS8pLkK2QTg-yaSmu99IAdBF6VRf2r5Xj3rlnmYSVMVZ34YF8bIxnlvHpF98GHcaVFdI-sU2p3N-y7z6b7ijKT5A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtddvgeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujggfsehttdortddtreejnecuhfhrohhmpeflrghnucfr
+    rghluhhsuceojhhprghluhhssehfrghsthhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhepvefgtdejgfeugefgffethedvueeigfegteduffeftdeihfduuefgieelteekheeg
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehjphgrlhhushesfhgrshhtmhgrihhlrdgtohhm
+    pdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehhvg
+    hikhhosehsnhhtvggthhdruggvpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhn
+    vghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugi
+    dqrhhotghktghhihhpsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthht
+    oheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepphgsrhhosghinhhsohhnsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhgvghhr
+    vghsshhiohhnsheslhgvvghmhhhuihhsrdhinhhfohdprhgtphhtthhopehsthgrsghlvg
+    esvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:-2uMacQDmam6Ndluo90DoSSA864FB_o7xtOYntFtqf0478uILqnJ7A>
+    <xmx:-2uMae9Ad0hpCRjGR50u68RSJo8aR50evKXYSrIMLK6rbTHJXIcwJw>
+    <xmx:-2uMaatdKf6p6Cy-_xx49pF4AkcKypYFnHsTXozPWg7lht9t7SvK1Q>
+    <xmx:-2uMaWPUK4iBXdUci29oRFj4fciIDYs-kLRBr_JDKASAnGUmAAdZDQ>
+    <xmx:-2uMaUsoCZr9j0XuJpu1tJMAcY6fId3JDlqUQWUbeVEP8CzFyi-Z0N7R>
+Feedback-ID: i01894241:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 11 Feb 2026 06:46:02 -0500 (EST)
+Date: Wed, 11 Feb 2026 12:46:01 +0100
+From: Jan Palus <jpalus@fastmail.com>
+To: Heiko Stuebner <heiko@sntech.de>
+Cc: linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Peter Robinson <pbrobinson@gmail.com>, Thorsten Leemhuis <regressions@leemhuis.info>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "arm64: dts: rockchip: Further describe the WiFi
+ for the Pinebook Pro"
+Message-ID: <aYxrhXSLHcAHavAd@rock.grzadka>
+References: <20260210120142.698512-1-heiko@sntech.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cc9bcfe1-4667-4a33-b370-1f3912f0adca@remarkable.no>
+In-Reply-To: <20260210120142.698512-1-heiko@sntech.de>
+User-Agent: NeoMutt/20251211
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[fastmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[fastmail.com:s=fm3,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215789-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,gmail.com,leemhuis.info];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215790-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[fastmail.com:+,messagingengine.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[fastmail.com];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jpalus@fastmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_PROHIBIT(0.00)[0.0.0.1:email];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 25CEE123EA1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sntech.de:email,messagingengine.com:dkim,leemhuis.info:email,rock.grzadka:mid]
+X-Rspamd-Queue-Id: 5BCF1123F15
 X-Rspamd-Action: no action
 
-On Wed, Feb 11, 2026 at 09:58:08AM +0100, Johan Korsnes wrote:
-> On 11/02/2026 09:30, Stefano Garzarella wrote:
-> > On Wed, Feb 11, 2026 at 08:50:11AM +0100, Johan Korsnes wrote:
-> >> On 28/01/2026 16:22, Greg Kroah-Hartman wrote:
-> >>> 6.12-stable review patch.  If anyone has any objections, please let me know.
-> >>>
-> >>> ------------------
-> >>>
-> >>> From: Stefano Garzarella <sgarzare@redhat.com>
-> >>>
-> >>> [ Upstream commit 0a98de80136968bab7db37b16282b37f044694d3 ]
-> >>>
-> >>> The test requires the sender (client) to send all messages before waking
-> >>> up the receiver (server).
-> >>> Since virtio-vsock had a bug and did not respect the size of the TX
-> >>> buffer, this test worked, but now that we are going to fix the bug, the
-> >>> test hangs because the sender would fill the TX buffer before waking up
-> >>> the receiver.
-> >>>
-> >>> Set the buffer size in the sender (client) as well, as we already do for
-> >>> the receiver (server).
-> >>>
-> >>> Fixes: 5c338112e48a ("test/vsock: rework message bounds test")
-> >>> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> >>> Link: https://patch.msgid.link/20260121093628.9941-3-sgarzare@redhat.com
-> >>> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> >>> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> >>> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> >>> ---
-> >>>  tools/testing/vsock/vsock_test.c | 11 +++++++++++
-> >>>  1 file changed, 11 insertions(+)
-> >>>
-> >>> diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-> >>> index 0c22ff7a8de2a..79ef11c0ab14f 100644
-> >>> --- a/tools/testing/vsock/vsock_test.c
-> >>> +++ b/tools/testing/vsock/vsock_test.c
-> >>> @@ -359,6 +359,7 @@ static void test_stream_msg_peek_server(const struct test_opts *opts)
-> >>>
-> >>>  static void test_seqpacket_msg_bounds_client(const struct test_opts *opts)
-> >>>  {
-> >>> +	unsigned long long sock_buf_size;
-> >>>  	unsigned long curr_hash;
-> >>>  	size_t max_msg_size;
-> >>>  	int page_size;
-> >>> @@ -371,6 +372,16 @@ static void test_seqpacket_msg_bounds_client(const struct test_opts *opts)
-> >>>  		exit(EXIT_FAILURE);
-> >>>  	}
-> >>>
-> >>> +	sock_buf_size = SOCK_BUF_SIZE;
-> >>> +
-> >>> +	setsockopt_ull_check(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE,
-> >>> +			     sock_buf_size,
-> >>> +			     "setsockopt(SO_VM_SOCKETS_BUFFER_MAX_SIZE)");
-> >>
-> >> Hi Greg,
-> >>
-> >> This patch causes build failure as the setsockopt_ull_check() function
-> >> does not seem to be defined in the 6.12 tree.
-> > 
-> > I guess just when you build vsock_test, right?
-> >
+On 10.02.2026 13:01, Heiko Stuebner wrote:
+> This reverts commit 6d54d935062e2d4a7d3f779ceb9eeff108d0535d.
 > 
-> Correct. I should have specified that.
+> It seems there are different variants of the Wifi chipset in use on the
+> Pinebook Pro. And according to the reported regression - see Closes
+> below, the reverted change causes issues with one Wifi chipset.
 > 
-> > BTW to fix that we should backport commit 86814d8ffd55 ("vsock/test: 
-> > verify socket options after setting them").
-> > 
-> > I tried to cherry-pick it on current linux-6.12.y and apply clean.
-> > 
+> The original commit message indicates a "further description" only and
+> does not indicate this would fix an actual problem, so a revert should
+> not cause further problems.
 > 
-> I can confirm it builds fine after cherry-picking that commit.
+> Fixes: 6d54d935062e ("arm64: dts: rockchip: Further describe the WiFi for the Pinebook Pro")
+> Cc: Jan Palus <jpalus@fastmail.com>
+> Cc: Peter Robinson <pbrobinson@gmail.com>
+> Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+> Cc: stable@vger.kernel.org
+> Closes: https://lore.kernel.org/r/aUKOlj-RvTYlrpiS@rock.grzadka/
+> Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+> ---
+>  .../boot/dts/rockchip/rk3399-pinebook-pro.dts  | 18 ------------------
+>  1 file changed, 18 deletions(-)
 > 
-> Kind regards,
-> Johan
-> 
-> > Greg, let me know if I should send a proper patch for 6.12.
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+> index 810ab6ff4e67..7c23971920f0 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+> @@ -883,12 +883,6 @@ vcc5v0_host_en_pin: vcc5v0-host-en-pin {
+>  		};
+>  	};
+>  
+> -	wifi {
+> -		wifi_host_wake_l: wifi-host-wake-l {
+> -			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
+> -		};
+> -	};
+> -
+>  	wireless-bluetooth {
+>  		bt_wake_pin: bt-wake-pin {
+>  			rockchip,pins = <2 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
+> @@ -946,19 +940,7 @@ &sdio0 {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&sdio0_bus4 &sdio0_cmd &sdio0_clk>;
+>  	sd-uhs-sdr104;
+> -	#address-cells = <1>;
+> -	#size-cells = <0>;
+>  	status = "okay";
+> -
+> -	brcmf: wifi@1 {
+> -		compatible = "brcm,bcm4329-fmac";
+> -		reg = <1>;
+> -		interrupt-parent = <&gpio0>;
+> -		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_HIGH>;
+> -		interrupt-names = "host-wake";
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&wifi_host_wake_l>;
+> -	};
+>  };
+>  
+>  &sdhci {
 
-Great!  Can you send a proper patch for 6.12.y for this?
+Although it's pretty much obvious feel free to include:
 
-thanks,
-
-greg k-h
+Tested-by: Jan Palus <jpalus@fastmail.com>
 
