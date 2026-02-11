@@ -1,155 +1,135 @@
-Return-Path: <stable+bounces-215770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JC+Ks9EjGl+kQAAu9opvQ
-	(envelope-from <stable+bounces-215770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 09:58:55 +0100
+	id OINjIuVEjGl+kQAAu9opvQ
+	(envelope-from <stable+bounces-215771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 09:59:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E7B122792
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 09:58:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF4F12279A
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 09:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1702B300861A
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 08:58:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 994BD300D9E6
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 08:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B366353EC6;
-	Wed, 11 Feb 2026 08:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="PbWQ2ciE";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wtI6Z6GR";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="PbWQ2ciE";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wtI6Z6GR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2F9350D78;
+	Wed, 11 Feb 2026 08:59:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27501BBBE5
-	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 08:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6325534F46F
+	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 08:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770800329; cv=none; b=hFzDu6g45NfEtob7i5t+wk9RkDzMJMwwdRWH2yNnhrZkWoGeimIi6unPaNUna/kcZqFlRqWVUCUufRGCSas8KcGpvKGFdxzhzIelJsez5Sle7MoWMOTHcI/1UwKLTl3XbKXD5jmYTJd5vuo9kPwMHDUO6reoYrowApm5eBUTUrc=
+	t=1770800354; cv=none; b=VtnSI14Mv59j9JhIOFwLQ+brFZye4frQcPWbtHpmkDJSQ/l+5Hg+bkqhRti+l5zVEfcqvjPPi8Qm6BVeQld7wfy5yF1aDuHYOjVKbGtWqvG1qLU0FJBwz53XA1D3OpwHO9GQ2AlHafQI8+oPd5qskFARCH4P8tLCe1jBzkC3VqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770800329; c=relaxed/simple;
-	bh=VOCTj8CIBobsYBDIb6CWbtQhQ4UI1viaPB+/cJpEJj8=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D5f9vvnyVOxaR8A9WhnV1ELA00T8S0QwSEFPQxQeoSyc9lsd4rfCTr09GJ41sG1c1qwwFC8bBep51kWIj+0gQEoubR77LmQPbmxogbhtRcs/p0X6frxgVhcvbpsQ7AMwZOV0EJjnbfpc6BA+xkzdn726oLpRYvxqHkzc6Kfz9BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=PbWQ2ciE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wtI6Z6GR; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=PbWQ2ciE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wtI6Z6GR; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3284A3E6F2;
-	Wed, 11 Feb 2026 08:58:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770800326; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IV71KXvd8W+k5ABKoyXEOmi0wOn0ULwGJ/gDb7KfQmo=;
-	b=PbWQ2ciETHYxNOa7JLTBJM6QT3WEdlT5RSRLJd2N/plf7QUsqHC2hUz4IZcpDVKQWz/A0r
-	143/XtweN421ETCSif5XXCBmqhGpe6/StZDcE5liCA6OratmBDLOxzpRsNVrTZLoUhYnLd
-	mRwnRgyZtHRTgp8hidNZt4xYZG+U63w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770800326;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IV71KXvd8W+k5ABKoyXEOmi0wOn0ULwGJ/gDb7KfQmo=;
-	b=wtI6Z6GR05GsAGxwnQyDY75taRZWPenTIzgV8ooMvHeECAi+i1htirLkmIVpxhltkDbvgI
-	CTSMcTsPcsdBnVDQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770800326; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IV71KXvd8W+k5ABKoyXEOmi0wOn0ULwGJ/gDb7KfQmo=;
-	b=PbWQ2ciETHYxNOa7JLTBJM6QT3WEdlT5RSRLJd2N/plf7QUsqHC2hUz4IZcpDVKQWz/A0r
-	143/XtweN421ETCSif5XXCBmqhGpe6/StZDcE5liCA6OratmBDLOxzpRsNVrTZLoUhYnLd
-	mRwnRgyZtHRTgp8hidNZt4xYZG+U63w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770800326;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IV71KXvd8W+k5ABKoyXEOmi0wOn0ULwGJ/gDb7KfQmo=;
-	b=wtI6Z6GR05GsAGxwnQyDY75taRZWPenTIzgV8ooMvHeECAi+i1htirLkmIVpxhltkDbvgI
-	CTSMcTsPcsdBnVDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D96013EA62;
-	Wed, 11 Feb 2026 08:58:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9EyIMMVEjGlyWgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Wed, 11 Feb 2026 08:58:45 +0000
-Date: Wed, 11 Feb 2026 09:58:45 +0100
-Message-ID: <87pl6bu056.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Eric Naim <dnaim@cachyos.org>
-Cc: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	stable@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda/realtek: Add quirk for Gigabyte G5 KF5 (2023)
-In-Reply-To: <20260210093403.21514-1-dnaim@cachyos.org>
-References: <20260210093403.21514-1-dnaim@cachyos.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1770800354; c=relaxed/simple;
+	bh=untbHeSgClt1NbxyXv+2H3wxS2fkUX4eMkF88xDOoIU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RDBixnr0Dy1T9GxHTRH/GC5iBI5ujaw/yE2s1PtE/53pMO9HXXK22iq70d6us9RHtHVXh8+FYBxChegbKp3sg5jX4Z6SsSF9uHNFwFmqKv0AwQ1pAb/lvd26Oei/spYP59IHZQWZfG7OW2h7LArJtv/FfjoB1TUTNOsNSRXNo3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2a95de4b5cbso43911445ad.1
+        for <stable@vger.kernel.org>; Wed, 11 Feb 2026 00:59:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770800352; x=1771405152;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yK55GKsRQUKRb2pbzYX2sV3DuP8HMn2n/G9bxyEv3MY=;
+        b=sonJqcbYHZsAstQGyPuWMzU1dJKlxSieI1KGWo8WVzE8L7tBwfJUj3fvOUsSjN2qD/
+         09yOA2xxE+BRnU3KpiPYG9wLqzUaIC8VlXU+Dz2EyXdyFr5JWxiMgAtrFiLYeCJaV8Ow
+         UKkgsYcIIf2A651kw2H0PmLoPQ91D8SerZ5+9jjfymDxKU12PGApHiMNF6XLduwfMPQ4
+         jCXHzOMdpyhimWMzjKesI7YMnDEttn0c07Z8P3S1Jqz6KF6YUOI/iW9aWTEjpzVmADik
+         G/jR0sFOoDUGGU/0v1djUIW+Dtv23Qem5kcJ34+4y8xePj/XK+t6VHE62EgnNowWOMjB
+         BMsw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+ScfgJZwd2o68CoTdFxqq6am3L5CpWuoicgfE58tg+cm6fbLljwY9YMSbMHCV5fOcbXSQqyk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8VpVSCbSchDG+/XqwT/cazSS01Hqni3AvVmvhFAvMhzqYpQMU
+	rQpKyWE5mOfNxmylSpS7vaCHu9f6FrnwRpmtj5lmOVQ12BxRvGIz5TQq
+X-Gm-Gg: AZuq6aKacsbQmf/BTLAtIXP1IGxToDmA+RrmSqmjqcvukM5OKx8MFdCJc1qpuzkshSg
+	OmocbjwFecOY2JGlxwBU/OGc6ABhUEcVzJz5Dl0vdl+2zFL1ebfM4lNnsvsyXl/NjFarkDLxACO
+	SuodBMwckIV/PR8q1cwrK9UPff3PiiyQOAKx7+1PWE6XPWmP5y3fGYsqXtbrwUjz1ucKva8AEof
+	3KP++jftVBCcgqtv9NuYvdwHDx9w3eRc3Xx7ZVGcPPtyuYRsdIMja85h4o9GVezL2Kji0SKNFiL
+	kzWiAQLfmHzXiZ3gtFRyQt37erEZuFztrvhDxaSXnrhL/XNXNLk1aM7/3HSxVqKHOrsiuv1iT4d
+	VGq83IRXJno/rg9NY2TrXP/+8yL+6FwDhsePuV6YBncjKHZlHZ3jzx4yNkuEp8mA1SSeAWrfR0d
+	lZ+NAXpT4F1i/G2LNkUZ+6SwVhtUsSmDmD1KRSYbn8jHd6LQ==
+X-Received: by 2002:a17:902:ce82:b0:2a7:95d1:3c0 with SMTP id d9443c01a7336-2ab2ac070e5mr13475785ad.23.1770800351677;
+        Wed, 11 Feb 2026 00:59:11 -0800 (PST)
+Received: from power-ThinkBook-15-G2-ITL.. ([116.128.244.171])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ab2c522a60sm10860205ad.63.2026.02.11.00.59.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Feb 2026 00:59:11 -0800 (PST)
+From: Xueqin Luo <luoxueqin@kylinos.cn>
+To: rafael@kernel.org
+Cc: christian.loehle@arm.com,
+	daniel.lezcano@linaro.org,
+	dsmythies@telus.net,
+	gregkh@linuxfoundation.org,
+	harshvardhan.j.jha@oracle.com,
+	linux-pm@vger.kernel.org,
+	luoxueqin@kylinos.cn,
+	sashal@kernel.org,
+	senozhatsky@chromium.org,
+	stable@vger.kernel.org
+Subject: Performance regressions introduced via Revert "cpuidle: menu: Avoid discarding useful information" on 5.15 LTS
+Date: Wed, 11 Feb 2026 16:58:55 +0800
+Message-ID: <20260211085855.96448-1-luoxueqin@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAJZ5v0gxNdQG8O32PrBcSa3GGvQCYObrquuiUXyJ8kgPV=91Sg@mail.gmail.com>
+References: <CAJZ5v0gxNdQG8O32PrBcSa3GGvQCYObrquuiUXyJ8kgPV=91Sg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Score: -3.30
-X-Spam-Level: 
-X-Spam-Flag: NO
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215770-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-215771-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DMARC_NA(0.00)[kylinos.cn];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:mid,suse.de:dkim,cachyos.org:email]
-X-Rspamd-Queue-Id: B1E7B122792
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[luoxueqin@kylinos.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AFF4F12279A
 X-Rspamd-Action: no action
 
-On Tue, 10 Feb 2026 10:34:02 +0100,
-Eric Naim wrote:
-> 
-> Fixes microphone detection when a headset is connected to the audio jack
-> using the ALC256.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Naim <dnaim@cachyos.org>
+On this platform (ZHAOXIN KaiXian KX-7000), we evaluated the impact
+of commit 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
+under a screen-on idle scenario. During testing, the cpufreq driver
+was acpi-cpufreq and the scaling governor was set to ondemand.
 
-Applied now.  Thanks.
+With this commit applied, measured system idle power increases by
+approximately 2W compared to the revert case. In addition, battery life
+testing on the same system shows a reduction of roughly 80 minutes when
+this commit is present.
 
+These results were consistently reproduced across multiple test runs
+under identical conditions.
 
-Takashi
+-- 
+2.43.0
+
 
