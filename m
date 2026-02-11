@@ -1,177 +1,388 @@
-Return-Path: <stable+bounces-215726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QG0EEnzFi2k7awAAu9opvQ
-	(envelope-from <stable+bounces-215726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:55:40 +0100
+	id KEgaDLDIi2kwbAAAu9opvQ
+	(envelope-from <stable+bounces-215727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 01:09:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B759912030E
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:55:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B34651203A2
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 01:09:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC4E73047069
-	for <lists+stable@lfdr.de>; Tue, 10 Feb 2026 23:55:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF4673044815
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 00:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B5033ADAC;
-	Tue, 10 Feb 2026 23:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568993FC9;
+	Wed, 11 Feb 2026 00:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R+rIjo+y"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VXLdUAYV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1A0322C73
-	for <stable@vger.kernel.org>; Tue, 10 Feb 2026 23:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770767734; cv=pass; b=avzGscKU3FQLva5JG9pyiOila8sKjkCUXcIsY4ZHeoFxLZPor9Uy5Q4V+4x1X1lfdbEf4MO+GY5cacCaYwrCMEEVIVzX5/Jxaeysm3APPsFly4xf6Y9O66JxaIH9+PqXErGyg+0OcTZgwxAMonaqeZhw2ZlzMd6lgOLUPHGpejY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770767734; c=relaxed/simple;
-	bh=4uWbQ7qEGVK7s6dzdSol4VsuFBEkwTb07g2z1PgY5kw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jy4JleYT9ipcTn72Ad/jCsRLKJjIktZIL+NkerPGZP1QtQa7DVWJ7Dw4nlXJT5t0cRwVrpROXsC9gLMo0sNji8JXlAPG8/f98VEIbciafGSwzZQU9E5MO0X7pbMLNnk3HE3UaYmDVskZcFGyaJFF/hbK99fMMGwxDqMIBPWt+EQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R+rIjo+y; arc=pass smtp.client-ip=74.125.82.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2b867142b07so239172eec.0
-        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 15:55:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770767732; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dKNW2vHs3FOnAEFkTba+HdykTzFb3laYZpFTdd9rkt6q67X1rQcYT4K30C1uq4shLU
-         na14+517OcUBiquwke2bfDcA0nLi4fjIcrArKdaU56zvJNz8MknBe3MAoakSgh6Wc0uN
-         eqmiGXgiAkk6vxW3qm9UEjVzqSTL3j+oL1MekdhP0aOaV/lTZOnjTbv8aarTaRyeidYL
-         8+1BbZ5SoKfVoPUYcZwvEQxb40aA0xqyddKc0UFdfS4IINjmYD0kJyGweiX1Arf70Qpy
-         kCb3WE2UuJsXnqE1PoMC6LV77y5kM5nfRdI91DPChMBKyv52wLWiJ6F6ibmEWUDFxxMZ
-         2idg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4uWbQ7qEGVK7s6dzdSol4VsuFBEkwTb07g2z1PgY5kw=;
-        fh=qYYZ6PAKUMZBPL+7wIUl0lMjgIc9ho/ByA2721shivw=;
-        b=eo/ovul8ZsBibSYKg0ORzwSD3lB80awugiecEMXQZ2WfndYfTZwpHgz1kj3RCRLA9r
-         SJ80E1l3bMEyUwoOGWGvA4m8VW/znuB6ftc0+Ag3k5BGZzzJ8BjPOuHRgjrgEVxGXGgQ
-         g5NPY0cBa6OKXBpSpHk1CDzchgznpk1ojGDoxN1OqB2jVMYtwv1gN/wc5tJzSmAAjFzS
-         fXEjNAmw4DICVGkUSjIhoWp+RxIMblKEPCvkw2bJ26WMzqqTsvwQADybEr2Uo/xWBYQp
-         Qe6h6RUEXTAh53X9Fc2BHWJZAVckY3sxfCM43ot8+IltZVOQI3z9wZl6/QafYfL6IOgm
-         BFUA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8ADEBA34
+	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 00:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770768555; cv=none; b=LxCPzijgH4W6wCWJX/FLvdugeZ1V14flhRKZ8cyn7i13OmgbsN807OJZwrTfeoJPtioqHrbQDZjmdLlJmVjr1YQ0yv78DBH2uTySYmAIIh6oDshQyuRcyvBzLH8FUYqQmtfzFeKKnthuf81SQjX7kCKUVzypij0K2jPNY6p34Sc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770768555; c=relaxed/simple;
+	bh=VMRGazPTLTcwKF21VG5B6p+oJVF9pwEE/p215VYQItk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fS/pSWxqxTq0Rcql10JHyCWsoVjFA5HZvUGXLemZWGUYZQ7TgE9TAFJMkWRzx3ky4CXWT2vu59P1PkxNpGPTJpS7Zicxb6tuaP02ThVh1D0fD7Jx49w3Kwl+/WNqBagdWultyta3SPQp2AfcFUGFQTDIX2KfvGOL9j2eSf4GY3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VXLdUAYV; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8249e91bcfbso26898b3a.3
+        for <stable@vger.kernel.org>; Tue, 10 Feb 2026 16:09:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770767732; x=1771372532; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4uWbQ7qEGVK7s6dzdSol4VsuFBEkwTb07g2z1PgY5kw=;
-        b=R+rIjo+yeTl32D2LKK/1hPvSm0rb94oMG5avlKUGPXvh/lsjOp8hCDyvgiG9KHB+xy
-         AVPE6L0A0pSlpR6hq+oG4YBbx3veMZ+XFGUh+FDVZwc2JOPSGewp/WzLOR4RwfhC/HdY
-         UeAEz2R5vrB+cbYnXZvKuIUiLYKjZbFkvf6K12PA2kyu0eh7JFrgXQ7DZJrNYN9SRsT2
-         0YUgbk/b741JbwYLdChRyAkfYKjiudF7yemagDr29oi9RA7qrF2GOxKTHosRp42vz+p3
-         STn0WsxMupLfdp+jYEz6CDqhxiaJFaQYs7Qy2/7oZQ9Cq2usVhNYYUa5mmTKDV+bpHHx
-         4P6Q==
+        d=google.com; s=20230601; t=1770768553; x=1771373353; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=w2fRs8crS9fOJGsOa5fG7r9GR4L1iAYavcsR08Hvs4w=;
+        b=VXLdUAYVU8goA2oW5Ame2za12nMJxhZarkHu+H6xRuPlixGr2YuNJgPrVMogJePNUA
+         lerQ8cD7RAq/8MafCrdf9p5cuNdnXXaa1jQaPxnlGVt09RB+nMODo7ya6CTbhdAmk+W9
+         5ViDMbvb7xazEjB+li45RmQIm8N5trqY3P/ytnTV+vBsLhxZCvSFqov0m/xsog0/uhPS
+         5m9NFHSPVX5hLjhvZh5WHF2PDcJJCE0P7Qm5a2v6JPaQK/pY7ftZN9xc9fTMlLIH0Akq
+         LRWLUIdjeJm1pwxHo6Scn8HVdWSeM+Dp1h84iu81LZHuIieFHg7T9cYPqdMatahVvpT1
+         aOUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770767732; x=1771372532;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4uWbQ7qEGVK7s6dzdSol4VsuFBEkwTb07g2z1PgY5kw=;
-        b=XizOYJkq8xR6gbirswHqXeBLvrFNw4IAwJvoqCjVC7inb4yChpm8ptT5cOmFmAw2EM
-         EL841kO7maESCZ1DrosJI+gGdsCmd9IasETUHivN6maCN4TPYHBXAHNr1m+JweykDzSn
-         eBPh9d8t8FsIjOarjfcP81cQ9ycyjvEdy9tMgUnOBuEBpDvRfbDYdHAlo7GKaTREO8iF
-         k+GCntNx+Hvsjkg/ZyDRS/sTRFC5927jLh90qEsxPHIbg0WCEb0HH71CkxiWjFoWkhei
-         /19url8pCEGA7rNadzTU8KWXdw6rP8bhZYiaKlem54GpTJjlmuAFCSE+0I2W+XpoJgWh
-         lJIA==
-X-Forwarded-Encrypted: i=1; AJvYcCVPIY1elXRaIhW8Y0UY7h6+pUkkTV5eUTCZWiq5RY2X1lsDc9w3RXyF8T4qLshTiOpx+/S1fg0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoiHRrWBg9j32P9LW3ej9AYDhWsuCZD3suTRk4OzUMLrUrK9zl
-	L+xTMWwzM3z/RVeph64rFUJVbarG2MA5juDg4HnUmOSw+zngQ4Fd9tlX6LWvrIBNSbZX/nuY0c1
-	HcnvFOEqzG+T7FRMXs961bBQetF3aKwI=
-X-Gm-Gg: AZuq6aKU/m4BIIPwM1f6/yaLE24pyRtFXtJvrEGlrCvzFT42O/CR7K7KB9QzAk1/cGL
-	4+kjzMj6kqseKIrml9Lvy3McbjNdKtCwaXDDO1ErLsfPOw7RT4pRUWef5SLdLDJ1B49QJcUT+bO
-	ga87box6TrJJiBx8BiLQ/6ha2q0cD04o10pdUN7T1rtZ3MsrJ60IdiAcHVYa/yutEJXawRYqcKl
-	CaQa4qgNkFSy9jpgvo2PQaPMD3Z/hhIOOq+plOHjYiL2C5ddtk2RSExO35bMRnqx4eVucC3deFM
-	At3n/6Hfo+WjYDOnRzHi55c8Slp/Bjv4Y+x/ZY4sMQy90Ia9NRbSUDpk+BheeqrbzjE2HGwWlXB
-	1Cc+FmxiyOG0wa6Aht/Q1um+r
-X-Received: by 2002:a05:693c:3b03:b0:2b0:4f9a:724b with SMTP id
- 5a478bee46e88-2ba8cdb3d32mr825524eec.6.1770767732055; Tue, 10 Feb 2026
- 15:55:32 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770768553; x=1771373353;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=w2fRs8crS9fOJGsOa5fG7r9GR4L1iAYavcsR08Hvs4w=;
+        b=PdO0PTcWlB1rxYzmNHaYWO0kgZNkQ7p5kMFzLOZ9E8OMSJ/uKKO8XDvWTomJXsdjYa
+         tvPm8YlDeuva9DqSQZUjUQRAkOWN2joL1sS5g7DFxhVGZ8uWiK3nDt0vsSPfR5hX1+cq
+         qS0nKbD9PP8tMsfNtN/g9Zk7kcrErX5F82OR3+9ZZf5ZkeBsQLfEY8XZ2r7/Gx+hGyGo
+         znsgTmc855HawJzjFabGft025HifjOU8EOIB1hYCKHvUv75QwCS+RdeN3CemoaeLaj0X
+         bBETjqlKwjjLu/9+dvZIfa33C194x1rs2WiETDCGr8d5xKLLepAsobOjLo+KeoDgvCmz
+         QP1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUfAKKVepcmTDPnoxJAwGFt27Ho403h0kyEDD5s68mvV/A10+BfX9fFjljyVM4WNtwrklmYGlw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAOf/pTcAZgPULbz+2dTqnKttpmCP5hSELwFfE82KdlHY5LbTt
+	Oh2xiyfjjoEQU2939G/Jxl9zLPkCjr03PzaxiJqJfBaEXXgkPYRaQqAmiaXE0LeJdsrXQNVoPHo
+	fZhJJAQ==
+X-Received: from pfn9.prod.google.com ([2002:a05:6a00:a209:b0:821:8690:e783])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:10c3:b0:81f:9a5b:e8fc
+ with SMTP id d2e1a72fcca58-8249fdce3a7mr39456b3a.54.1770768552951; Tue, 10
+ Feb 2026 16:09:12 -0800 (PST)
+Date: Tue, 10 Feb 2026 16:09:11 -0800
+In-Reply-To: <ck57mmdt5phh64cadoqxylw5q2b72ffmabmlzmpphaf27lbtxw@4kscovf6ahve>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260210232949.3770644-1-cmllamas@google.com>
-In-Reply-To: <20260210232949.3770644-1-cmllamas@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 11 Feb 2026 00:55:19 +0100
-X-Gm-Features: AZwV_QhspIVFMH3tEzHxhp3tdie1pO5H-yKNMpIPHp3A2MnDfnLnbLxBqljb69E
-Message-ID: <CANiq72nU1rUrxfAZUMeOF70gwvTPqo6Wcv6VUqYZ6mCPpyY=JQ@mail.gmail.com>
-Subject: Re: [PATCH] rust_binder: fix oneway spam detection
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Matt Gilbride <mattgilbride@google.com>, Paul Moore <paul@paul-moore.com>, 
-	Vitaly Wool <vitaly.wool@konsulko.se>, Miguel Ojeda <ojeda@kernel.org>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, Tiffany Yang <ynaffit@google.com>, stable@vger.kernel.org, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260210005449.3125133-1-yosry.ahmed@linux.dev>
+ <20260210005449.3125133-2-yosry.ahmed@linux.dev> <aYqOkvHs3L-AX-CG@google.com>
+ <4g25s35ty23lx2je4aknn6dg4ohviqhkbvvel4wkc4chhgp6af@kbqz3lnezo3j>
+ <aYuE8xQdE5pQrmUs@google.com> <ck57mmdt5phh64cadoqxylw5q2b72ffmabmlzmpphaf27lbtxw@4kscovf6ahve>
+Message-ID: <aYvIpwjsJ50Ns4ho@google.com>
+Subject: Re: [PATCH 1/4] KVM: nSVM: Sync next_rip to cached vmcb12 after VMRUN
+ of L2
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215726-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,android.com,kernel.org,google.com,gmail.com,paul-moore.com,konsulko.se,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215727-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: B759912030E
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B34651203A2
 X-Rspamd-Action: no action
 
-On Wed, Feb 11, 2026 at 12:30=E2=80=AFAM Carlos Llamas <cmllamas@google.com=
-> wrote:
->
-> The spam detection logic in TreeRange was executed before the current
-> request was inserted into the tree. So the new request was not being
-> factored in the spam calculation. Fix this by moving the logic after
-> the new range has been inserted.
->
-> Also, the detection logic for ArrayRange was missing altogether which
-> meant large spamming transactions could get away without being detected.
-> Fix this by implementing an equivalent low_oneway_space() in ArrayRange.
->
-> Note that I looked into centralizing this logic in RangeAllocator but
-> iterating through 'state' and 'size' got a bit too complicated (for me)
-> and I abandoned this effort.
->
-> Cc: stable@vger.kernel.org
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+On Tue, Feb 10, 2026, Yosry Ahmed wrote:
+> On Tue, Feb 10, 2026 at 11:20:19AM -0800, Sean Christopherson wrote:
+> > > > Actually, I take that back, I have no idea how this code works.  How does e.g.
+> > > > exit_info_1 not get clobbered on save/restore?
+> > > 
+> > > I *think* KVM always sets the error_code and exit_info_* fields before
+> > > synthesizing a #VMEXIT to L1, usually right before calling
+> > > nested_svm_vmeit(), so no chance for save/restore in between.
+> > 
+> > Ugh, right, KVM generally doesn't recognize signals until after invoking the exit
+> > handler.  Actually, even that isn't the key, it's that this flaw only affects
+> > "in/out" fields, as you note above.  Heh, and even that probably isn't entirely
+> > precise, as it's really "in/out fields that KVM consumes while running L2 are
+> > buggy".  E.g. in this case, nested_vmcb02_prepare_control() pulls next_rip for
+> > vmcb02 from the cache.
+> > 
+> > 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+> > 		vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
+> > 	else if (boot_cpu_has(X86_FEATURE_NRIPS))
+> > 		vmcb02->control.next_rip    = vmcb12_rip;
+> 
+> Hmm I thin a pure "out" field would be affected if it's consumed by KVM
+> later on, after save+restore is possible, right?
 
-Cc'ing rust-for-linux (we still do our best to send all Rust-related
-patches there too, to have an index).
+True.
 
-Cheers,
-Miguel
+> Do you mean that it just happens that the currently affected fields are
+> "in/out" fields? Or is there a reason why pure "out" fields cannot be
+> affected? AFAICT, these fields are lost after save+restore.
+
+I was essentially assuming KVM wouldn't ever consume pure out fields from the
+cache.
+
+
+> > > > In other words, AFAICT, nested.ctl.int_ctl is special in that KVM needs it to be
+> > > > up-to-date at all times, *and* it needs to copied back to vmcb12 (or userspace).
+> > > 
+> > > Hmm actually looking at nested.ctl.int_ctl, I don't think it's that special.
+> > > Most KVM usages are checking "in" bits, i.e. whether some features (e.g.
+> > > vGIF) are enabled or not.
+> > >
+> > > The "out" bits seem to only be consumed by svm_clear_vintr(), and I
+> > > think this can be worked around.
+> > 
+> > OMG that code makes my head hurt.  Isn't that code just this?
+> > 
+> > 	/*
+> > 	 * Drop int_ctl fields related to VINTR injection.  If L2 is active,
+> > 	 * restore the virtual IRQ flag and its vector from vmcb12 now that KVM
+> > 	 * is done usurping virtual IRQs for its own purposes.
+> > 	 */
+> > 	svm->vmcb01.ptr->control.int_ctl &= ~V_IRQ_INJECTION_BITS_MASK;
+> > 
+> > 	if (is_guest_mode(&svm->vcpu)) {
+> > 		svm->vmcb->control.int_ctl = (svm->vmcb->control.int_ctl & ~V_IRQ_MASK) |
+> > 					     (svm->nested.ctl.int_ctl & V_IRQ_MASK);
+> 
+> Also V_INTR_PRIO_MASK, I think?
+
+Ugh, yes.  And I think V_IGN_TPR as well?  I can't tell if that's a bug or not.
+It looks like a bug.  AFAICT, svm_set_vintr() uses whatever V_IGN_TPR_MASK value
+happens to be in vmcb02.  I don't see how that can be desirable.
+
+> But otherwise yeah I think that's what the function is doing
+> more-or-less.
+> 
+> > 		svm->vmcb->control.int_vector = svm->nested.ctl.int_vector;
+> > 	} else {
+> > 		WARN_ON_ONCE(svm->vmcb != svm->vmcb01.ptr);
+> > 	}
+> > 
+> > 	svm_clr_intercept(svm, INTERCEPT_VINTR);
+> > 	vmcb_mark_dirty(svm->vmcb, VMCB_INTR);
+> > 
+> > > So maybe we don't really need to keep it up-to-date in the cache at all
+> > > times.
+> > 
+> > Yeah, IMO that approach is unnecessarily convoluted.  The actual logic isn't all
+> > that complex, all of the complexity comes from juggling state between the cache
+> > and vmcb02 just so that the cache can be authoritative.  Given that we failed
+> > miserably in actually making the cache authoritative, e.g. see the nested #VMEXIT
+> > flow, I think we should kill the entire concept and instead maintain an *exact*
+> 
+> When you say *exact* snapshot, do you mean move all the sanitizing logic
+> recently introduced in __nested_copy_vmcb_control_to_cache() (by Kevin
+> and myself) to sanitize vmcb02 instead?
+
+Oh, no, not _that_ exact.  More "unchanged after emulated VMRUN"
+
+> That would be annoying. For example, for the intercepts, sanitizing
+> vmcb02 (but not vmcb12) means that we need to also add checks in the
+> exit path (i.e. in nested_svm_intercept() or even
+> vmcb12_is_intercept()), as vmcb12 could have illegal intercepts.
+> 
+> > snapshot of vmcb12's controls, and then make vmcb02 authoritative.  We'll still
+> > need the logic in nested_sync_control_from_vmcb02() to updated int_ctl on save
+> > or #VMEXIT if KVM is still intercepting VINTR for its own purposes, but at least
+> > the code will be contained.
+> 
+> Yeah. We should leave it out of the vmcb12 cache though.
+
++1
+
+> > Then to make it all but impossible to re-introduce this mess, do something like
+> > this so that someone would have to go way out of their way to try and modify the
+> > cache.
+> > 
+> > diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> > index ebd7b36b1ceb..2de6305be9ce 100644
+> > --- a/arch/x86/kvm/svm/svm.h
+> > +++ b/arch/x86/kvm/svm/svm.h
+> > @@ -199,14 +199,13 @@ struct svm_nested_state {
+> >          * we cannot inject a nested vmexit yet.  */
+> >         bool nested_run_pending;
+> >  
+> > -       /* cache for control fields of the guest */
+> > -       struct vmcb_ctrl_area_cached ctl;
+> > -
+> >         /*
+> > -        * Note: this struct is not kept up-to-date while L2 runs; it is only
+> > -        * valid within nested_svm_vmrun.
+> > +        * An opaque, read-only cache of vmcb12 controls, used to query L1's
+> > +        * controls while running L2, e.g. to route intercepts appropriately.
+> > +        * All reads are routed through accessors to make it all but impossible
+> > +        * for KVM to clobber its snapshot of vmcb12.
+> >          */
+> > -       struct vmcb_save_area_cached save;
+> 
+> Is dropping the cached save area intentional?
+
+Yes, I think we should try to drop it.  Assuming the comment is correct and it
+really only 
+
+> We can drop it and make it a local vaiable in nested_svm_vmrun(), and
+> plumb it all the way down. But it could be too big for the stack.
+
+It's 48 bytes, there's no way that's too big.
+
+> Allocating it every time isn't nice either.
+
+> Do you mean to also make it opaque?
+
+I'd prefer to drop it.
+
+> > +       u8 __vmcb12_ctrl[sizeof(struct vmcb_ctrl_area_cached)];
+> 
+> We have a lot of accesses to svm->nested.ctl, so we'll need a lot of
+> clutter to cast the field in all of these places.
+> 
+> Maybe we add a read-only accessor that returns a pointer to a constant
+> struct?
+
+That's what I said :-D
+
+	* All reads are routed through accessors to make it all but impossible
+	* for KVM to clobber its snapshot of vmcb12.
+
+There might be a lot of helpers, but I bet it's less than nVMX has for vmcs12.
+
+> >         bool initialized;
+> > 
+> > > > Part of me wants to remove these two fields entirely:
+> > > > 
+> > > > 	/* cache for control fields of the guest */
+> > > > 	struct vmcb_ctrl_area_cached ctl;
+> > > > 
+> > > > 	/*
+> > > > 	 * Note: this struct is not kept up-to-date while L2 runs; it is only
+> > > > 	 * valid within nested_svm_vmrun.
+> > > > 	 */
+> > > > 	struct vmcb_save_area_cached save;
+> > > > 
+> > > > and instead use "full" caches only for the duration of nested_svm_vmrun().  Or
+> > > > hell, just copy the entire vmcb12 and throw the cached structures in the garbage.
+> > > > But that'll probably end in a game of whack-a-mole as things get moved back in.
+> > > 
+> > > Yeah, KVM needs to keep some of the fields around :/
+> > 
+> > For me, that's totally fine.  As above, the problem I see is that there is no
+> > single source of truth, i.e. that the authoritative state is spread across vmcb02
+> > and the cache.
+> > 
+> > > > So rather than do something totally drastic, I think we should kill
+> > > > nested_copy_vmcb_cache_to_control() and replace it with a "save control" flow.
+> > > > And then have it share code as much code as possible with nested_svm_vmexit(),
+> > > > and fixup nested_svm_vmexit() to not pull from svm->nested.ctl unnecessarily.
+> > > > Which, again AFICT, is pretty much limited to int_ctl: either vmcb02 is
+> > > > authoritative, or KVM shouldn't be updating vmcb12, and so only the "save control"
+> > > > for KVM_GET_NESTED_STATE needs to copy from the cache to the migrated vmcb12.
+> > > 
+> > > I think this works if we draw a clear extinction between "in","out", and
+> > > "in/out" fields, which is not great because some fields (like int_ctl)
+> > > have different directions for different bits :/
+> > > 
+> > > But if we do draw that distinction, and have helpers that copy fields
+> > > based on direction, things become more intuitive:
+> > > 
+> > > During nested VMRUN, we use the "in" and "in/out" fields from cached
+> > > vmcb12 to construct vmcb02 through nested_vmcb02_prepare_control().
+> > > 
+> > > During save, we save "in" fields from the cached vmcb12, "out" and
+> > > "in/out" fields from vmcb02.
+> > > 
+> > > During restore, we use the "in" and "in/out" fields from the restored
+> > > payload to construct vmcb02 through nested_vmcb02_prepare_control(), AND
+> > > update the "out" fields as well from the payload.
+> > 
+> > Why the last part?  If L2 is active, then the pure "out" fields are guaranteed
+> > to be written on nested #VMEXIT.  Anything else simply can't work.
+> 
+> I think it just so happens that all pure "out" fields are consumed by
+> KVM before save+restore is possible, but it is possible for an "out"
+> field to be used by KVM at a later point, or copied from vmcb02 to
+> vmcb12 during nested #VMEXIT (e.g. if KVM exits to L1 directly after
+> save+restore, before running L2).
+
+Ya.
+
+> next_rip and int_state fall in this bucket, it just happens to also be
+> an "in" field.
+> 
+> For example, if support for decode assists is added, there will be cases
+> where KVM just copies insn_bytes from vmcb02 to vmcb12 on nested
+> #VMEXIT. If insn_bytes is lost on save+restore, and KVM immediately
+> exits to L1 after restore, insn_bytes is lost.
+> 
+> So we need to also save+restore pure "out" fields, which we do not do
+> today.
+
+Hmm, strictly speaking, no.  We'd be fixing a bug that doesn't exist, yet.  But
+the word yet...
+
+> > > During synthesized #VMEXIT, we save the "out" and "in/out" fields from
+> > > vmcb02 (shared part with save/restore).
+> > 
+> > Yeah, that all works.  We could also treat save() as an extension of #VMEXIT, but
+> > that could make KVM_GET_NESTED_STATE non-idempotent (which might already be the
+> > case for VMX?).  I.e. we could sync vmcb02 to vmcb12 (cache), and then copy that
+> > to userspace.
+> 
+> I think this will require adding more fields to the cache, but wait, we
+> already have a lot of "out" fields there but I don't think they are
+> being used at all..
+> 
+> Anyway, this may make things simpler. Instead of pulling different
+> fields from either cached vmcb12 and vmcb02, we always combine them
+> first. I will keep that in mind.
+> 
+> > 
+> > > The save/restore changes would need a flag to avoid restoring garbage
+> > > from an older KVM.
+> > 
+> > I don't follow.  I was thinking we'd only change how KVM maintains authoritative
+> > state while runnign L2, i.e. not make any changes (other than fixes) to the
+> > serialized state for save/restore.
+> 
+> I thought we're not currently saving "out" fields at all, but
+> apparently we are, we just do not use them in svm_set_nested_state(). So
+> we probably do not need a flag. Even if some fields are not currently
+> copied, I assume KVM restoring garbage from an older KVM is no worse
+> than having uninitialized garbage :)
+
+Heh, yep.
+
+> I think this will be annoying when new fields are added, like
+> insn_bytes. Perhaps at some point we move to just serializing the entire
+> combined vmcb02/vmcb12 control area and add a flag for that.
+
+If we do it now, can we avoid the flag?
 
