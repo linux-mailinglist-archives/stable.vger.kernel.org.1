@@ -1,161 +1,189 @@
-Return-Path: <stable+bounces-215775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAwvDLVVjGnblAAAu9opvQ
-	(envelope-from <stable+bounces-215775-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:11:01 +0100
+	id 6PGEFLhVjGnblAAAu9opvQ
+	(envelope-from <stable+bounces-215776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:11:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8539D123337
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:11:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA6E12333F
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 11:11:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C9DE3089AE2
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 10:09:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 362703005596
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 10:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4234366DC4;
-	Wed, 11 Feb 2026 10:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082B8367F40;
+	Wed, 11 Feb 2026 10:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="ajjjAYYz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ITnaDjM/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E75366DBB
-	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 10:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770804549; cv=pass; b=Zi97kw4DGj2NoYzKSnmRV5ZoQcxyJhTKZRG63eanbUuRqJsrrAdkr/ME+gf3UwXUAwIqb36SS4/wgxLH10Ycq6S+rc0SpT7C6VRXfQpXzmUZ98KkSCdmOglph/L72qFNZYtITxU7AVxfQLNAACAiorIMAnORkp1+g4PKArOrYc0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770804549; c=relaxed/simple;
-	bh=l1D8gw5i2W0/j8zDgRzT9uZ621ZVhzaysNHDR6kRh44=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DNesMlchzDnGZQ1UAchRFNcy7wNsmb8rTQrSh+Z7PSSYJkkaDID/U2Zu8bMJXAZPHoLK2kcJ0Ks6XjgWXFR5Ez9Q4D449VYRrkXBlFk3lUYNKWT58qOfMoRSBeZhKQ3rF5/BPsf/s9R6voGyGoApEzIzBlYw1WimQRhrlmsWwsw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=ajjjAYYz; arc=pass smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b8850aa5b56so1122302266b.2
-        for <stable@vger.kernel.org>; Wed, 11 Feb 2026 02:09:08 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770804547; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PsuLi2U/4p29fSAMIilVMZYxSZdeHTNzNfujO8W06opcORBPCGpFXZ2OPmBty92lLV
-         1zOXdNdpTLB5LOqUkU8EkcFzIO4R+4PIozXYJXKTV1saLF3ZCcgmuOFhfg1h5E/YH/wV
-         56H/iu19QTjqkOmdmhqTkah3kW1PXgrqDHt6/0IDMCrA3TiJPnwGTUG2MoFC0ksiI4q9
-         fuB9dxXarFP7pSVcw5iEMnVIj+5MEuR8HzNCEM2njJKwrDo9cF4cBRo6Vzhilc3YNIrM
-         N82K4SDA85SjXpqZdtAUNvPB1rq4VSlZPyTUc4xWd/BDYJSOS8GH4FtWKxdrQdRKsiZi
-         qaAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=pru2SUTXC3VPuTIPcsJbrEeU7VXtLClZTOl0vZZxfiY=;
-        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
-        b=JQu+hzZ+/LaYn/Nx3Dkj8BRd/XPGmJRYASpeZITNB4xWLz4Y/x+9MaBhOL/Ej7BC11
-         6PK7aEmRpZ96ohCCyDer/Om3Sb+yJn0zaeCu7QPFq+Q7zInlIKKcBsSkhQSEHST7n/KB
-         gJbJIOm8T596snWPPNWFaiDjdBxDrdHn5Rk5P3lgeZY+c+hvWM4UWT5MUP7ZbcDDicYq
-         kzN0z20I2fyKeDrFCYB6gv1WqNuLUBR0V5YW7aeDWjqR0ALf1pCnfr3kSlkChmSK1eEg
-         WOxqZp7DP038Vunyh2szGsmARR2ILY+O8FXy5NADPr8Q4g0pkboGVuunsyvQEpwef+Nw
-         Ppvw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1770804547; x=1771409347; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pru2SUTXC3VPuTIPcsJbrEeU7VXtLClZTOl0vZZxfiY=;
-        b=ajjjAYYz/UobB+Kh03DulCy4FcLy/pZyUIwtTC3tjYNdI8bKs1Xew/6q6kBCmRTbZm
-         VxzZ7jZOSVeZp9Oh2GgLxwfOYjMXsprUeKThvATYdVNHI2E+9u/aXXjwwnMmWxEbUyH0
-         AnU7O68Va3KwxBCfiZAcTLxY2/2lOtqHqox7igigMpDUqXyHRimm5RjbbfY1NuBQIptL
-         K6GK746pfaQqIRF1jmBS+Cop7V8EtALxt0ekqQ8ZZXiNi8In7fKqht18mvUW4J7dYM/h
-         bx7gpDDBkYbT/7v5YBOeiJCo4hdJCfS2X7h83DQtcccwJbz9G4PHeLHPnJ+9rVoFe3Rk
-         wfPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770804547; x=1771409347;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pru2SUTXC3VPuTIPcsJbrEeU7VXtLClZTOl0vZZxfiY=;
-        b=FdhNXZ8b8SMdGMvEhgdED1WxgP+E0R3FNYmRLmTE5J9RvP86gRtzNxMAwjQZFf5xL7
-         rdxfKCQ34A/h2GvnV96CU8np8lQ6ch5SJxOb/RH9ROgotr3IAR25Mszn2SGY3W3z9Mla
-         5TL+xfZ5A3eO5igcmrNGvCP4E5SMr1ot0H3JUjjXtmipgYq+aQJcKK9xpnL1Xm/fF75A
-         m30RY30gR6TUxMU9JBa3WYR9sFotMtJL0cx7ttqCp4N/Alj+ImIBg8RpGJCKRRxn95pS
-         eotmB9F+tvMAuylDt8z35eUVpmjikHHoogTdAUZ7OfDv3kYqqEgU/cWWyxflv1GfVB+Q
-         4mFA==
-X-Gm-Message-State: AOJu0YyueG6svLby/ST/Kicxg5HJJEF9I1K51TJFDQd9e4cqYfatS9BP
-	XPaV5rMfzY3B9PoA154hzZNaDBs7CMj04aZgQ2a0qBqQr/HG1dM/tc5NMb3gMMfdFZR3w4ThDnl
-	8WoeWCcXDHZsvKLp09qWVR8nfRQtpQjJRreeFh+ee7g==
-X-Gm-Gg: AZuq6aL3mAxIYHFeN5JwU9ygtw9qw+kWGuy9Jkiz3jzBQiip4/DoCeRjP4DrYqPU54l
-	AkOmzLwQ5WBIv0nNMJo80QqauVYsDOXfYj8UdVrPtlAF9lVZB9wKPpH5X5QKMooHFF79FP0AnS5
-	0zzUMVWeerJF5KwNKfU1HtZN7T8a0IXd7wBhHiKs3S7iBMhfr3aZtp1Q+2++ct5U796bCKib2QL
-	2LBrRGzrMecZRv9JrLpXEcnTjDEKTbGVjd7O8GGBA4U7QrNVC6FmaFSFx5ifQCABhng7oE/dYPz
-	ngHu8uhv40AqsqEe8vpYchjHtifpbWuADiKnGFsGT4kiv3lWDrVrvMQRB7gTUVE9vGKJ9A==
-X-Received: by 2002:a17:907:1c83:b0:b8d:bf4d:7458 with SMTP id
- a640c23a62f3a-b8f715a7af8mr82185366b.24.1770804546772; Wed, 11 Feb 2026
- 02:09:06 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FAF367F3B
+	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 10:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770804659; cv=none; b=sTR6gcgjyEgTA1t4q1d2R599wCZih//g1m2U35PBu4Blu9JJjkq1J1tV23RId8z2E3Y3au6SP7rOUf6dUVq1Ux5FwTuKIOPluoODdvY+6ujm4Grm1u9UWUGYSr9i3CmGZn2i86Nl/G0cykSbRK5G5xyW9Lz82ARFlqkQwBRgbcY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770804659; c=relaxed/simple;
+	bh=mraV4moKsRijhvCoXXFT99yH6FOF+9kEJfwjekzxJuE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=lo8wlFfp3LpBrO5nSAKneFX8sCp2rv/Lx5+jQV3BF79jb5UTKNUcHBoGtm06eHXtnJ4g1QQnjEkRO0vXVVwDBrrjAIHh8bF7XSBptrPyb/iVSqAj1zudQ1PQ1IR5PXo3Yfl9+YXjgPG9E7SH80pMZwuNCmaDNV8T/5ZPnOfx+50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ITnaDjM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215AEC19424;
+	Wed, 11 Feb 2026 10:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770804658;
+	bh=mraV4moKsRijhvCoXXFT99yH6FOF+9kEJfwjekzxJuE=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=ITnaDjM/Pv9sagE6K/D8ypKf7+XGepJksgKvU4LQLYPPa6qp5JN2EQrMejmE5VK8+
+	 TFMj+DIjC9AzhJiyDlkNiN1j9shHaUbhd/bnXlOQ7TeOELzOYVkDO8ZuubWWyX+ywt
+	 5CdxG4NqBd4CZhovzbl0xyomqSHW0yQ9rfyoxymwBmxCubaQGhiQrWwrveUG/a0QL4
+	 d574lc2ByzRUVn22VWIxhXYfNoUx9Assjv1zgJ5puepGIbLoagaxOv5JunkC8xpJMs
+	 VdpVpphrX9s/FZIq5p9QmFff6ojl3NBMIOYTnHoIZwpTRt1wRGArbVgtvCKp9qeRF5
+	 H89inw3wSqEfQ==
+Message-ID: <c9ca13cc-a7ce-48ac-a7b2-a8bdc823aed3@kernel.org>
+Date: Wed, 11 Feb 2026 11:10:55 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260209142301.913348974@linuxfoundation.org>
-In-Reply-To: <20260209142301.913348974@linuxfoundation.org>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Wed, 11 Feb 2026 15:38:29 +0530
-X-Gm-Features: AZwV_QiSl-YLGb3rIqTrwEAhC38cFxhqIeltHg-6NkIYrjTXQLV8imvIeyEw0RU
-Message-ID: <CAG=yYwnY5cnTVpwNn3ECWSZdmSyayepkhSCZU8osg2kna1ihpA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/69] 6.1.163-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: stable: queue/* branches no longer updated
+Content-Language: en-GB, fr-BE
+From: Matthieu Baerts <matttbe@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+References: <e6ea1805-3e82-476c-86a8-096b80bde74a@kernel.org>
+ <aImjNPvGPMqFu3RD@lappy> <9989cd82-d126-4dd3-96e5-37dad7f733fb@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <9989cd82-d126-4dd3-96e5-37dad7f733fb@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[rajagiritech.edu.in];
-	TAGGED_FROM(0.00)[bounces-215775-lists,stable=lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-215776-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rajagiritech.edu.in:email]
-X-Rspamd-Queue-Id: 8539D123337
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: EBA6E12333F
 X-Rspamd-Action: no action
 
- hello ,
+Hi Sasha,
 
-dmesg stuff...
+On 19/09/2025 23:30, Matthieu Baerts wrote:
+> Hi Sasha,
+> 
+> On 30/07/2025 06:44, Sasha Levin wrote:
+>> On Mon, Jul 28, 2025 at 11:06:17AM +0200, Matthieu Baerts wrote:
+>>> Hi Sasha,
+>>>
+>>> Thank you for maintaining the stable versions with Greg!
+>>>
+>>> If I remember well, you run some scripts on your side to maintain the
+>>> queue/* branches in the linux-stable-rc Git tree [1], is that correct?
+>>>
+>>> These branches have not been updated for a bit more than 3 weeks. Is it
+>>> normal?
+>>>
+>>> Personally, I find them useful. But if it is just me, I can work without
+>>> them.
+>>
+>> Nope, it's a bug!
+>>
+>> Looks like git was throwing:
+>>
+>> fatal: Unable to create '/home/sasha/data/stable-queue-builder/linux-
+>> stable/.git/index.lock': File exists.
+>>
+>> Another git process seems to be running in this repository, e.g.
+>> an editor opened by 'git commit'. Please make sure all processes
+>> are terminated then try again. If it still fails, a git process
+>> may have crashed in this repository earlier:
+>> remove the file manually to continue.
+>>
+>>
+>> Which my script was promptly ignoring...
+>>
+>> Fixed now, thanks for the heads up!
+> 
+> It looks like these branches are no longer updated. Do you mind checking
+> on your side please? :)
 
--------------------------------error---------------------------------
-$sudo dmesg -l err
-[   11.536507] kfd kfd: amdgpu: GC IP 090100  not supported in kfd
-$
--------------------------------error---------------------------------
+These stable queue/* branches have not been updated for more than two
+weeks. Do you mind checking if there is something stuck on your side,
+please? :)
 
-Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
---
-software engineer
-rajagiri school of engineering and technology
 
