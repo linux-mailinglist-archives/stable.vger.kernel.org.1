@@ -1,104 +1,120 @@
-Return-Path: <stable+bounces-215748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cI/aAgkQjGkwfwAAu9opvQ
-	(envelope-from <stable+bounces-215748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 06:13:45 +0100
+	id wI/kJdoTjGl1gAAAu9opvQ
+	(envelope-from <stable+bounces-215749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 06:30:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F6E1214D9
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 06:13:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E78C8121599
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 06:30:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CA33301DBA6
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 05:13:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A62BA303C297
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 05:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D424D2F6586;
-	Wed, 11 Feb 2026 05:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3657D3446AF;
+	Wed, 11 Feb 2026 05:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bcHT3loQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Myxfk5HE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-106121.protonmail.ch (mail-106121.protonmail.ch [79.135.106.121])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEE326290
-	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 05:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E401A3157
+	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 05:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770786817; cv=none; b=fqzDW5qrdQAm21Qf0xJv2vzWh6HJKNQVrIWV87wz8/o+296t8qS8zgO+Buxxa+s8HwOEIJ1OyMTBi+9kosoSwNE0BkMWVlp4wYi3aoJMm2bt4YK6YN5F+4Yk6LjD12pk1PssTcVo8bWejqlPl7QtqhSYPv1KcjJZc71XHdVhku8=
+	t=1770787800; cv=none; b=aDnajnthhzMBrgDUtwWnsp1gQMCQx7CM4+FZ4ly5TGqcKXeh8bDFXyrXGeidN99RmrUDFBd+ryTsdp/SL74Vq9vmLqcDyqfUMxfL/aiaQzyQtf05IDxnbHJlGfVuTYeB66IP+0FwjvNqIAknrQBWNg/4iiqHinonoQa2GUrnwb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770786817; c=relaxed/simple;
-	bh=mpwt0ndPqahhQ+biKm2WQQtfkBxEVnR1vz7RDE5Yo5I=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iOMvM0cyAHHo+86T99qbNUD4FRDfPQk1LV9lA+JghlQakokaps5DBy6xHAQ68KZkT1ycjz0iqDJLLaBNnteo22TLP7F03ERAb7CcpXRE2XYLrCm6L9DO0LRv/AUxGSXklSH9L2KSgPOwkwMrJIa90ddvrcflIzH21rY4DQ6Qadk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bcHT3loQ; arc=none smtp.client-ip=79.135.106.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1770786806; x=1771046006;
-	bh=mpwt0ndPqahhQ+biKm2WQQtfkBxEVnR1vz7RDE5Yo5I=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=bcHT3loQUDOvH15cxpL25OTe6ftVf15kI+qd0A4xbwreoVpCUCLydOq+A0f38j4E9
-	 U5qkYmZg0VmpITI42OGQAjHVoTUqVnkiH5au2daME7NwHF/+G/XCYhVXS047N3U49y
-	 0gdtbG5YsjPa2v0ZaW+rX4ODa5vd6VmxIhAkXOivoulJ6lzekLeQ2yTFFrY800rvdf
-	 vtvWmFLPlgkK7SXF4A6/xukbjBDfPrMOhuHPQeoiK5BOCEGcijNyg8BZhgSSebgBSW
-	 04MFUMP7iD7owWfdi3WdeOs5XfWBN/jwVXd79l64rNP6Jf6XG/CqJ4+96D6tR373GS
-	 lNyd/3jq9rgUg==
-Date: Wed, 11 Feb 2026 05:13:20 +0000
-To: Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org
-From: Tj <tj.iam.tj@proton.me>
+	s=arc-20240116; t=1770787800; c=relaxed/simple;
+	bh=Uz+x9y99muTa8NCgYEpHnw/WPnftl6PnQ+zs1LSTcXE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DzaTTJTqoLFQyES4aV2z4NUJTSAocoRy+jVMp6BbLxXtm6B0x4ZEc8fPQkCcnK4OTiQWcXiCn069LjymFiQ3i4Y8F0fQ70HNnWxvCwYNMto6kAsQjcc9TiuwIUzxzm12XwVW7XcC9R9FH7KZG6jRde0J7AhRT0LPn+4/qy6tu5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Myxfk5HE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1793C4CEF7;
+	Wed, 11 Feb 2026 05:29:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770787799;
+	bh=Uz+x9y99muTa8NCgYEpHnw/WPnftl6PnQ+zs1LSTcXE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Myxfk5HEkvebWZ+SL2FyaSK72iDneav+ebjjmH6s5aQJ+9yERQShgwBbAjG/nNKUB
+	 ujHlDIZWRujTcEP0angQL1QjDx1aUw6sYGncX2a8CoBN8zL9tWu0ZqQ+9Q7J1zyHgn
+	 rPaX8MDCLu8XgOiAVnRGZjRPgQGWTeCpIT/uBN/k=
+Date: Wed, 11 Feb 2026 06:29:56 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Tj <tj.iam.tj@proton.me>
+Cc: 1127597@bugs.debian.org, Eric Dumazet <edumazet@google.com>,
+	stable@vger.kernel.org, Bastien Durel <bastien@durel.org>
 Subject: Re: Regression: v6.12.67 ip6_tunnel: ip6gre decapsulation fails
-Message-ID: <5e2ddfcf-a853-435b-ae73-a607973d324f@proton.me>
-In-Reply-To: <handler.1127597.B1127597.1770760247113066.ackinfo@bugs.debian.org>
-References: <177076023892.578113.8206759777477389796.reportbug@sunny> <handler.1127597.B1127597.1770760247113066.ackinfo@bugs.debian.org>
-Feedback-ID: 113488376:user:proton
-X-Pm-Message-ID: d5e5b5c0a198dbce7000196a144a6c065a1cf2fa
+Message-ID: <2026021138-gleaming-overarch-7e6f@gregkh>
+References: <177076023892.578113.8206759777477389796.reportbug@sunny>
+ <handler.1127597.B1127597.1770760247113066.ackinfo@bugs.debian.org>
+ <4157ffbe-3974-46f8-a39f-01671d86e224@proton.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4157ffbe-3974-46f8-a39f-01671d86e224@proton.me>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
-	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	TAGGED_FROM(0.00)[bounces-215748-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215749-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tj.iam.tj@proton.me,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[proton.me:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,proton.me:mid,proton.me:dkim]
-X-Rspamd-Queue-Id: 86F6E1214D9
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E78C8121599
 X-Rspamd-Action: no action
 
-Apologies for not including more information for upstream in my original=20
-report.
+On Wed, Feb 11, 2026 at 05:04:04AM +0000, Tj wrote:
+> ip6gre tunnels fail to be decapsulated in v6.12.67 so never appears on 
+> the GRE interface.
+> 
+> Reverting the following commit fixes it:
+> 
+> commit df5ffde9669314500809bc498ae73d6d3d9519ac
+> Author: Eric Dumazet <edumazet@google.com>
+> Date:   Wed Jan 7 16:31:09 2026 +0000
+> 
+>      ip6_tunnel: use skb_vlan_inet_prepare() in __ip6_tnl_rcv()
+> 
+>      [ Upstream commit 81c734dae203757fb3c9eee6f9896386940776bd ]
+> 
+> v6.19 works but I've not been able to identify a subsequent commit that 
+> should also be backported to the stable tree.
 
-I replied to the Debian bug that has all the information and logs and=20
-forgot there was no link included:
+Please see this thread:
+	https://lore.kernel.org/r/CANn89iL5ksZZCJr7SK9=4Sw6EejdOzr5_m6pBMM8RVtbLy_ACA@mail.gmail.com
 
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1127597
+I think that should fix this, right?
 
+thanks,
 
+greg k-h
 
