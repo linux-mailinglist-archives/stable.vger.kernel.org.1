@@ -1,162 +1,204 @@
-Return-Path: <stable+bounces-215873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEB3H13TjGm+tgAAu9opvQ
-	(envelope-from <stable+bounces-215873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:07:09 +0100
+	id UIJsFmjUjGm+tgAAu9opvQ
+	(envelope-from <stable+bounces-215874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:11:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED54412707D
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:07:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4996127136
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 20:11:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 68081300D90F
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 19:07:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A22F53024151
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 19:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CAE346E56;
-	Wed, 11 Feb 2026 19:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A506534FF47;
+	Wed, 11 Feb 2026 19:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="srcnZadh"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cZRuWlQ1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4F427707;
-	Wed, 11 Feb 2026 19:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770836826; cv=none; b=udgRDL9xWS6ZQ2dOc3Q0ZJAo0Q8PUU22dxLXQLue8Cx5r3p88BrOD06aJz9t0EVJXWiPikmqD6L6d/rc9xyi8aZ5FbbvD6jN9sO7j88Yme5WYaSnnO8QiBwWODcIlabjf9HmnRHurTzR0VI33iKnFz30NlDtCJ8S4c4V/rstXJw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770836826; c=relaxed/simple;
-	bh=4ilfBfueSL/qCRRY/D5V1mAmH6Qzgsf5jWHBTlRngKo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=efHqvUiKuVYQ0SNzDDEnbdXccNr7o8G/belNS247z6IlwOINMXSQTXXnSoEXev79DD3+bxpjUp1nZsjtaD2K4jxiGKBlpSU+4ua74EcPZMii16Xrr2FMADajlvPk/AKZe0odgQ70mGCtjUsQM/lwwWk2pqdH6Y6rw8ljTf8/srQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=srcnZadh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5498BC19424;
-	Wed, 11 Feb 2026 19:07:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770836826;
-	bh=4ilfBfueSL/qCRRY/D5V1mAmH6Qzgsf5jWHBTlRngKo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srcnZadhU6ao5uJGSJSNkIzFXciqlGREg0vzSD4r3u/NyQs2oBjpuYqQNlYWnetBu
-	 WXtizJ8xqncXtCUUrNQ4EGK53JfR35SbYRtGBP3QjNAdxzeYm0OyLi+ZOliIdnWWYb
-	 DstLF8Hwgiaq7nV1Gsfoj2DG8YQtD0u7xsWAANgjdn/0oJnMiXyMBiOrW8Ct6MyBpH
-	 Dqtnc+tDvXtMkOQt/tUO3CHPBJ0Vwmi8Esr7r3wXEJle2T5oWuibzkvSW0VTlwmgb0
-	 rz0hdeUbRPe0nmSKcYA7a+d8yR738shBMlD1ykw8wXPiPyxQjeo4WuDO6w3P+65zbv
-	 0csdoZRp/iXbg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: mptcp@lists.linux.dev,
-	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	sashal@kernel.org,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1.y 6/6] selftests: mptcp: join: fix local endp not being tracked
-Date: Wed, 11 Feb 2026 20:06:24 +0100
-Message-ID: <20260211190617.77192-14-matttbe@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260211190617.77192-8-matttbe@kernel.org>
-References: <20260211190617.77192-8-matttbe@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B45303A35
+	for <stable@vger.kernel.org>; Wed, 11 Feb 2026 19:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770836846; cv=pass; b=eEVC1M3lQ5fTeKaJSF0GlU+GCRNblFejljAGXQcFP6wVnLAIiAEyJ1M73GYFY2FFfKdC5SvDY/xUxVDjSppLNmHTQBAbDD8YSUQBc4WXiOCFXoyHWS318dgj2qZw7WC0hOsm47YwyHIlWPiL47buYUZ+SgudwZGgIbyu7+6bCRc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770836846; c=relaxed/simple;
+	bh=p9HwxvmB/RtNijuLWoEzhbkHs3QEd/JA8FvZu8Cd1SA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d/2x8dAWV4H5FnUD7rLUiSOa22Ia0xVRRWZgc7d+k3qCrtQG89dZvWKiXoDOhcJu9NsQwranTq37eLLUGIg1GC/xX+3o5k2mSD5L+yvakS8wLDc5y5E0hNVF2v/UmDKq05TLNvGsNExUhs6ckAjoGImYiWyOD3yFSySTdbSs4bw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cZRuWlQ1; arc=pass smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5033387c80aso16217221cf.0
+        for <stable@vger.kernel.org>; Wed, 11 Feb 2026 11:07:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770836844; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BDrk0kvcM8cTPy1aNVA6a/HR7bEPZb5eHTtSwqa3uomWQrmWSDFWfeNrg53qkrMZsu
+         vmUKeNTNPhYdAaovGdYKJijSiFS/7Accl3jdMJnpEHwXiEQP9X3sUlDPZC0XpPxJpG/p
+         kGMuDL0e0Vi9ekyaNra1plXIVWKrD//3W1+LES5djJpD7ckDTzdw7CCqDz+CCfioQDMq
+         Is8Te7JlVm/hnCT+LZ9VmGJ7A1JjHbauQ65YhPDwakQxdZIZmlhJWRO+00HViDpuzs2M
+         lXSqAtbTdKnfOXS+6wXCECb9rFVfaXucgyAdPzVrUOfSU2OKUPdTvlGty37lPRtqNw69
+         zmkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DnLuFbeq8pqLAUutep5qhmfm1lskl8h2Igp5g6q46Pg=;
+        fh=xYJeyd1Ht3LtA2+tXNW/5wfq3kgBeALewI1sJL8r010=;
+        b=HL5I7MVp7E3WsoUj11fPzH/lSSIqJuNyw1H1WcdGACP+Zj1YnwwHJW26MwRgqfNLK4
+         Ipo63kgICKXQ+xveHNCac24g4FYTUOxUEaT42Toq4zENHq8w6//bt0DHacPF8hFgRiQz
+         DJw3/dBCOSE1wbEQnlEcNU05VJhumpXZH77ajRwDdGJ0AXgFcIGN79ARByNjyWD7v1Am
+         WGtv3jouE5G/OTWE/Bomi7vJ/Wk30bfhxzYA96vAb7s2M0O5qBHXjIaUnpOY4OET4r0d
+         ZybH/GN9raHiVmZ4PRqMkHQMSHmcB3Mt5Vfn8sbHjyFmivA7vzhkD/z0aKNvlX7DBUNH
+         myyg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770836844; x=1771441644; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DnLuFbeq8pqLAUutep5qhmfm1lskl8h2Igp5g6q46Pg=;
+        b=cZRuWlQ1GM3iTErfUUy0pI1A0i/LeYC9ZB4ZAoXJSoNATFFNBG1QFE927M+UAUPzuP
+         Hx9bMxPlq6F2kiHOJovp/YjeK8isxrr49kWur1tX8TnZoNv4dJ/RsIjNELZ7Lv5SFGiU
+         D1XOZ6qbam4NCEHlccpsnUmbw565uV8IjyDrtn1OikQDJGwSArzDm0dN30YkXM8qEJ+C
+         j2Y6mRT382luG8CVwzppll6GiHflVcsmgtFfDFzgzCgCFH5bHA0eHBOFlbX14WhHTMnm
+         0zWYHgk99TpEPYv+vK5qUrNC28OjpbzE4/y+EiPjwGBDWUlQw3JSJs9/+NXh4vhgu0aE
+         1O7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770836844; x=1771441644;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DnLuFbeq8pqLAUutep5qhmfm1lskl8h2Igp5g6q46Pg=;
+        b=WMnzxGvRYduckChEP8GVp/btQkan8olGoi6HZgQqRy/csYQ3jCP1SpDd2uqvZucK01
+         QMd0PaEBJ0VMZ41j7XzHxktLn8j+P36/VtwvomZCUMQpkt6LfAKtHYOYEYRxzX9RHABU
+         /5T5aiZwY508/ZTiXs0aX38f76DtZz/5zZ0AFBv73El7bDIi3A3SwqheBIRmCtihs7Hm
+         0TPXNXtMtHsxv6bp+yFj+UKWUUas/zJwfRDlcwxhVFlb6LClIrCVLcTGDm2/3Rt7hbEU
+         RClp70cgHwKNNF2hmmmu+3bD716V8njklJkReFLTtYKYAPjgaEgzQbs+ZvQAc9+uaVJh
+         1x7A==
+X-Forwarded-Encrypted: i=1; AJvYcCX16Oyg+qbvoMUWA7o3fStr4TFEE0LB58UsjolMtUuKDrBx2eMiOIVpHLy5vqZJJlYjP7VGIiQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtpeEc+7h68Y5108RY8ayAyDFrMELQFftbO8aFA+xtre9qc14q
+	/DYAvdnnnxJ2F8JETvt+GZ4KXk0gW65FT+vGPphwG5KGquOdo95LyG8kCgc4Bm808J4GgiKqcqS
+	4a7VcStt1uHeKi2ojswdX8dBxFHq8JJOfX2TvUqHb
+X-Gm-Gg: AZuq6aJxHFGE8LI8Uzyyc4uhA+S1coSEXU2A1RWocsSRSaOJ4O8p0eQbD/LPeJraOri
+	ELrwcr9a4rIKbb1hdxmmkZEJMbqUZ7y5ppEL+tt7dp0SYg3/jNPi1xY6q3o8rfUBrs5PXhOExnQ
+	H8aS3e0qaxL00ZXroHDYfncf8Bzhzx97DvzRYziB/6ZHKrxeTbhJZgNnWxYU25MDIm1CP7mqpbG
+	diP8rMR009/WtxaHn8rLLgOkb3qoJ/aUpQeJP8BEWRuRgxQko/otOYa4XIiXWn8w88UjT0m9U51
+	x8VXV+ew
+X-Received: by 2002:a05:622a:1648:b0:4b3:8ee:520c with SMTP id
+ d75a77b69052e-50691b7c850mr6329641cf.19.1770836843536; Wed, 11 Feb 2026
+ 11:07:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2716; i=matttbe@kernel.org; h=from:subject; bh=4ilfBfueSL/qCRRY/D5V1mAmH6Qzgsf5jWHBTlRngKo=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJ7LhtM6PFeGNi90sd4+lnJbZkLdk6YYlK3f/fdPs6MC f/nHK1Q7ChlYRDjYpAVU2SRbovMn/m8irfEy88CZg4rE8gQBi5OAZjImSpGhssRP37Mb1l/Krel eq/8zHWr1yl8mzf/BePWju4H5hPML6xkZFhQ8bNYVfLo1gK9OYe1Zs225tN3qd4g3eZX+c92ucO NFl4A
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+References: <20260211184848.731894-1-cnitlrt@gmail.com>
+In-Reply-To: <20260211184848.731894-1-cnitlrt@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 11 Feb 2026 20:07:12 +0100
+X-Gm-Features: AZwV_Qju27ZDej9fUpmFOnWmvu4Tc2zoX29NHZ-GbfVzP3U_PrWeGiJeb6Ch2nA
+Message-ID: <CANn89iL5F=zN2t-LfBPtR6xzCQjVr8XB+bHu=LLYCvaao3Fx0Q@mail.gmail.com>
+Subject: Re: [PATCH] net/sched: act_skbedit: fix divide-by-zero in tcf_skbedit_hash()
+To: Ruitong Liu <cnitlrt@gmail.com>
+Cc: netdev@vger.kernel.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com, 
+	jiri@resnulli.us, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Shuyuan Liu <L0x1c3r@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-215873-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-215874-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,mojatatu.com,gmail.com,resnulli.us,davemloft.net,kernel.org,redhat.com];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,mptcp_join.sh:url]
-X-Rspamd-Queue-Id: ED54412707D
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: B4996127136
 X-Rspamd-Action: no action
 
-commit c5d5ecf21fdd9ce91e6116feb3aa83cee73352cc upstream.
+On Wed, Feb 11, 2026 at 7:48=E2=80=AFPM Ruitong Liu <cnitlrt@gmail.com> wro=
+te:
+>
+> mapping_mod is computed as:
+>
+>   mapping_mod =3D queue_mapping_max - queue_mapping + 1;
+>
+> mapping_mod is stored as u16, so the calculation can overflow when
+> queue_mapping=3D0 and queue_mapping_max=3D0xffff. In this case the value
+> wraps to 0, leading to a divide-by-zero in tcf_skbedit_hash():
+>
+>   queue_mapping +=3D skb_get_hash(skb) % params->mapping_mod;
+>
+> Fix it by using a wider type for mapping_mod and performing the
+> calculation in u32, preventing overflow to zero.
+>
+> Fixes: 38a6f0865796 ("net: sched: support hash selecting tx queue")
+> Cc: stable@vger.kernel.org # 6.12+
+> Reported-by: Ruitong Liu <cnitlrt@gmail.com>
+> Reported-by: Shuyuan Liu <L0x1c3r@gmail.com>
+> Signed-off-by: Ruitong Liu <cnitlrt@gmail.com>
+> ---
 
-When running this mptcp_join.sh selftest on older kernel versions not
-supporting local endpoints tracking, this test fails because 3 MP_JOIN
-ACKs have been received, while only 2 were expected.
+I do not think we want to support very large mapping_mod values, this
+makes no sense.
 
-It is not clear why only 2 MP_JOIN ACKs were expected on old kernel
-versions, while 3 MP_JOIN SYN and SYN+ACK were expected. When testing on
-the v5.15.197 kernel, 3 MP_JOIN ACKs are seen, which is also what is
-expected in the selftests included in this kernel version, see commit
-f4480eaad489 ("selftests: mptcp: add missing join check").
+Please reject wrong configuration instead.
 
-Switch the expected MP_JOIN ACKs to 3. While at it, move this
-chk_join_nr helper out of the special condition for older kernel
-versions as it is now the same as with more recent ones. Also, invert
-the condition to be more logical: what's expected on newer kernel
-versions having such helper first.
+diff --git a/net/sched/act_skbedit.c b/net/sched/act_skbedit.c
+index 8c1d1554f657..0ab83dc776d1 100644
+--- a/net/sched/act_skbedit.c
++++ b/net/sched/act_skbedit.c
+@@ -126,7 +126,7 @@ static int tcf_skbedit_init(struct net *net,
+struct nlattr *nla,
+        struct tcf_skbedit *d;
+        u32 flags =3D 0, *priority =3D NULL, *mark =3D NULL, *mask =3D NULL=
+;
+        u16 *queue_mapping =3D NULL, *ptype =3D NULL;
+-       u16 mapping_mod =3D 1;
++       u32 mapping_mod =3D 1;
+        bool exists =3D false;
+        int ret =3D 0, err;
+        u32 index;
+@@ -194,6 +194,10 @@ static int tcf_skbedit_init(struct net *net,
+struct nlattr *nla,
+                        }
 
-Fixes: d4c81bbb8600 ("selftests: mptcp: join: support local endpoint being tracked or not")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-5-7f71e1bc4feb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in mptcp_join.sh, because commit e571fb09c893 ("selftests:
-  mptcp: add speed env var") is not in this version, and caused
-  conflicts in the context. The same modification can still be applied
-  at the same place. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 7d4df90d6281..5a40e09e8374 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2181,17 +2181,16 @@ signal_address_tests()
- 		# the peer could possibly miss some addr notification, allow retransmission
- 		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=1
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow
-+		chk_join_nr 3 3 3
- 
- 		# It is not directly linked to the commit introducing this
- 		# symbol but for the parent one which is linked anyway.
--		if ! mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
--			chk_join_nr 3 3 2
--			chk_add_nr 4 4
--		else
--			chk_join_nr 3 3 3
-+		if mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
- 			# the server will not signal the address terminating
- 			# the MPC subflow
- 			chk_add_nr 3 3
-+		else
-+			chk_add_nr 4 4
- 		fi
- 	fi
- }
--- 
-2.51.0
-
+                        mapping_mod =3D *queue_mapping_max - *queue_mapping=
+ + 1;
++                       if (mapping_mod > 0xFFFF) {
++                               NL_SET_ERR_MSG_MOD(extack, "The range
+of queue_mapping is invalid.");
++                               return -EINVAL;
++                       }
+                        flags |=3D SKBEDIT_F_TXQ_SKBHASH;
+                }
+                if (*pure_flags & SKBEDIT_F_INHERITDSFIELD)
 
