@@ -1,66 +1,75 @@
-Return-Path: <stable+bounces-215734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNmeMWTai2lIcAAAu9opvQ
-	(envelope-from <stable+bounces-215734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 02:24:52 +0100
+	id iK5kLUvai2lIcAAAu9opvQ
+	(envelope-from <stable+bounces-215733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 02:24:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33AA120746
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 02:24:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F247120738
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 02:24:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 261DD3013953
-	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 01:24:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5116C3055805
+	for <lists+stable@lfdr.de>; Wed, 11 Feb 2026 01:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB47286415;
-	Wed, 11 Feb 2026 01:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5068E286881;
+	Wed, 11 Feb 2026 01:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="b86/g32+"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="k4rY8dyG"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84666285061;
-	Wed, 11 Feb 2026 01:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524F528504F;
+	Wed, 11 Feb 2026 01:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770773087; cv=none; b=XfhVtwaLaJwhjyBr0W86IroKTUahLdy1G5niX/hjed7WmJspL3x5FqrcTGrLLY4x5WygIgu1A9Jgoi0qbZ/vWr9d9dyW/JkS52gSl4jQdZetlH9bp1ADfcUCYKtucyYs9inRipIgZVK8rONLB7i5TAkUGZ+RgY2v9yVN7OZUkds=
+	t=1770773047; cv=none; b=rkzRG9xnaTdvsZkWnN4QWC3Dq2ujOpFRgYnSz12q/LXAMDjgYYZcP0aUTWJ+QQjvl0x7F640QZqP8aED5gDYa3r/GV7yedSGP6sTdOKr9NFN49CNFK2egIZJ1KXH6ENHFYPedTS8QZASgoKUrnvLt7KDwKwaoUecLQbRxDrO4Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770773087; c=relaxed/simple;
-	bh=VZw11mAnIHFM71gWThJobMmVmweJG9NUQgyzLaGGqec=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6tHYOiPUdnPzUPiUEOhnv7goO6Dw26oCklfnmf77AikSyjZVzLImGRlJ3oyIl81Pvh++KeVJR4STEixteePPBcn7Yn3+SOQJz0RnYVn1uh7VlX0Ce8Ek4Jji856ck5pIAcz5X+MURQPsi+QqhjVF1qMCkb0AG9M8cGTYUoC2po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=b86/g32+; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=+M
-	nDmV5IQu/jnXX+pmPU4nJ4kwJNeE3fTXXAd2vIReY=; b=b86/g32+FT4tra5Zfh
-	v4CunaMUZab3+RGQnBJb3CR5/vASUYw3wrGhdN0qoK7D2vF5R0A6MDTVxNYlug05
-	XlObd8HIgY2u6o7KCIHbYwyeKPD0g5rFunf+hPlIDKU74f9KVBfFWmerb2yLH8gy
-	cdIO0xn1JnPe0WP7LoitnFpMw=
-Received: from ubuntu24-z.. (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wBHL1Yj2otp2VksLA--.37135S2;
-	Wed, 11 Feb 2026 09:23:47 +0800 (CST)
-From: ranxiaokai627@163.com
-To: pratyush@kernel.org
-Cc: akpm@linux-foundation.org,
-	graf@amazon.com,
-	kexec@lists.infradead.org,
+	s=arc-20240116; t=1770773047; c=relaxed/simple;
+	bh=HY4GxaF0TfbN5KzTEIMgAVRQnTDYujQobru3c6s0dTg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DbOScVBVuayZFeD8IX7qDcpvd6MbxmRTuq0uxoXucyxJUKbzVYRpGjefEao1MyfqzO+c88IHVAplygJUYPJ+vbIkOgtPJp8kjWJgkvVLPUGIfbdZTZaKfNQjFx41bMq4bqHkbiaoHQkgD1UWYnwlRERhuAtqf1kzSiFm1cx9i2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=k4rY8dyG; arc=none smtp.client-ip=120.232.169.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=k4rY8dyGr+ZMmzENq7OohDKkBqouz9FEPkuvpZpoPy2YaK+fGQxhYpcBPyeZ+Q+QDqaRoIenyGLWP
+	 SR5+0/xsXrRQzCd7gXlTkv4tYv5GSmppWI8powPt/dLQursmCCRm9N+Ujc5LLHySiwEJwG4NK9lJxg
+	 oXFIH7Jrn3vN73gI=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-18-12021 (RichMail) with SMTP id 2ef5698bda265d5-02609;
+	Wed, 11 Feb 2026 09:23:52 +0800 (CST)
+X-RM-TRANSID:2ef5698bda265d5-02609
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	u201911157@hust.edu.cn
+Cc: patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	pasha.tatashin@soleen.com,
-	ran.xiaokai@zte.com.cn,
-	ranxiaokai627@163.com,
-	rppt@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH -next 1/2] kho: fix missing early_memunmap() call in kho_populate()
-Date: Wed, 11 Feb 2026 01:23:46 +0000
-Message-ID: <20260211012346.208225-1-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2vxzv7g4sof5.fsf@kernel.org>
-References: <2vxzv7g4sof5.fsf@kernel.org>
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	miles.chen@mediatek.com,
+	wenst@chromium.org,
+	chun-jie.chen@mediatek.com,
+	ikjn@chromium.org,
+	weiyi.lu@mediatek.com,
+	linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	dzm91@hust.edu.cn
+Subject: [PATCH 6.1.y] clk: mediatek: fix of_iomap memory leak
+Date: Wed, 11 Feb 2026 09:23:51 +0800
+Message-Id: <20260211012351.2076922-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,113 +77,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHL1Yj2otp2VksLA--.37135S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7try3tr18Gw45uFy5GF15urg_yoW8tr4kpF
-	WrGa1jkw48tayjqa12gF12934Fgw4ktw1fta4UAa4fJF1DZrnaq3yxGa40vFnrXr1S93WS
-	yF4vqayfW3WkCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUpVbDUUUUU=
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7gP7SGmL2iPjdwAA3R
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linux-foundation.org,amazon.com,lists.infradead.org,vger.kernel.org,kvack.org,soleen.com,zte.com.cn,163.com,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-215733-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215734-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NO_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,baylibre.com,kernel.org,gmail.com,collabora.com,mediatek.com,chromium.org,lists.infradead.org,hust.edu.cn];
+	DMARC_NA(0.00)[139.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[139.com:-];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ranxiaokai627@163.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[163.com:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[163.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zte.com.cn:email]
-X-Rspamd-Queue-Id: D33AA120746
+	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[hust.edu.cn:email]
+X-Rspamd-Queue-Id: 1F247120738
 X-Rspamd-Action: no action
 
->Hi Ran,
->
->Thanks for the fix.
->
->On Fri, Feb 06 2026, ranxiaokai627@163.com wrote:
->
->> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->>
->> kho_populate() returns without calling early_memunmap() on success
->> path, this will cause early ioremap virtual address space leak.
->>
->> Fixes: b50634c5e84a ("kho: cleanup error handling in kho_populate()")
->> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->> ---
->>
->> b50634c5e84a ("kho: cleanup error handling in kho_populate()")
->> has not landed in upstream, so
->> Cc: <stable@vger.kernel.org> is unnecessary?
->>
->>  kernel/liveupdate/kexec_handover.c | 8 +++++---
->>  1 file changed, 5 insertions(+), 3 deletions(-)
->>
->> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
->> index fb3a7b67676e..76b714db175d 100644
->> --- a/kernel/liveupdate/kexec_handover.c
->> +++ b/kernel/liveupdate/kexec_handover.c
->> @@ -1463,6 +1463,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->>  	struct kho_scratch *scratch = NULL;
->>  	phys_addr_t mem_map_phys;
->>  	void *fdt = NULL;
->> +	int populated = 0;
->
->Nit: Please use a bool and true/false. I think it reads much nicer.
+From: Bosi Zhang <u201911157@hust.edu.cn>
 
-yes.
+[ Upstream commit 3db7285e044144fd88a356f5b641b9cd4b231a77 ]
 
->>  	int err;
->>  
->>  	/* Validate the input FDT */
->> @@ -1529,16 +1530,17 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->>  	kho_in.scratch_phys = scratch_phys;
->>  	kho_in.mem_map_phys = mem_map_phys;
->>  	kho_scratch_cnt = scratch_cnt;
->> -	pr_info("found kexec handover data.\n");
->>  
->> -	return;
->> +	populated = 1;
->> +	pr_info("found kexec handover data.\n");
->>  
->>  err_unmap_scratch:
->>  	early_memunmap(scratch, scratch_len);
->>  err_unmap_fdt:
->>  	early_memunmap(fdt, fdt_len);
->>  err_report:
->
->Nit: now that this code can be reached by non-error paths, we should
->re-name the labels. I think dropping the "err_" prefix should be enough.
+Smatch reports:
+drivers/clk/mediatek/clk-mtk.c:583 mtk_clk_simple_probe() warn:
+    'base' from of_iomap() not released on lines: 496.
 
-Thanks for your review.
-Very helpful suggestion. I will send a v2.
+This problem was also found in linux-next. In mtk_clk_simple_probe(),
+base is not released when handling errors
+if clk_data is not existed, which may cause a leak.
+So free_base should be added here to release base.
 
->With these fixed,
->
->Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
->
->> -	pr_warn("disabling KHO revival\n");
->> +	if (!populated)
->> +		pr_warn("disabling KHO revival\n");
->>  }
->>  
->>  /* Helper functions for kexec_file_load */
+Fixes: c58cd0e40ffa ("clk: mediatek: Add mtk_clk_simple_probe() to simplify clock providers")
+Signed-off-by: Bosi Zhang <u201911157@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230422084331.47198-1-u201911157@hust.edu.cn
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Li hongliang <1468888505@139.com>
+---
+ drivers/clk/mediatek/clk-mtk.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
+index 7b1ad73309b1..c2ca3d7576c2 100644
+--- a/drivers/clk/mediatek/clk-mtk.c
++++ b/drivers/clk/mediatek/clk-mtk.c
+@@ -505,8 +505,10 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
+ 	num_clks += mcd->num_mux_clks;
+ 
+ 	clk_data = mtk_alloc_clk_data(num_clks);
+-	if (!clk_data)
+-		return -ENOMEM;
++	if (!clk_data) {
++		r = -ENOMEM;
++		goto free_base;
++	}
+ 
+ 	if (mcd->fixed_clks) {
+ 		r = mtk_clk_register_fixed_clks(mcd->fixed_clks,
+@@ -594,6 +596,7 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
+ 					      mcd->num_fixed_clks, clk_data);
+ free_data:
+ 	mtk_free_clk_data(clk_data);
++free_base:
+ 	if (mcd->shared_io && base)
+ 		iounmap(base);
+ 
+-- 
+2.34.1
+
 
 
