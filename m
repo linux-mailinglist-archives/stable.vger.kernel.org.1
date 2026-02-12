@@ -1,285 +1,149 @@
-Return-Path: <stable+bounces-215950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MG+yIfvFjWnT6gAAu9opvQ
-	(envelope-from <stable+bounces-215950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:22:19 +0100
+	id gKgvEZPFjWnT6gAAu9opvQ
+	(envelope-from <stable+bounces-215951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:20:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6C212D67C
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:22:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C5112D60C
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2AE9E30C930F
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 12:18:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DFF15300B46B
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 12:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68123344D97;
-	Thu, 12 Feb 2026 12:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B050835770A;
+	Thu, 12 Feb 2026 12:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="hKAu2ljP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBcg4lQ9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4397.protonmail.ch (mail-4397.protonmail.ch [185.70.43.97])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C933570B6;
-	Thu, 12 Feb 2026 12:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F601346779;
+	Thu, 12 Feb 2026 12:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770898696; cv=none; b=obm2aYD6oxVc6KbRe5qZNtT4WKxLlByAKhPAUysa4ZV/3zN6zawX/Swzavs+JJ+3C7P5tP5GRf1tP6jr3mLG53uiNZtanKWfKQIpOP+qFD5aBQo6+ayEWXAnNyENUy77odryDuHAk25JNMh55EpMF4zMN9i9f0LvkoPGa/HZFyc=
+	t=1770898827; cv=none; b=sMkPRyuoKYRvq6dOXyjysrwSFEhhSjbwE19/+WLk+P4dgffkvTNwkAxJBDW0KXNMD5WeGmE2tly4cik1bBAlYR1X3AXvpygc5bVAG5Hze3YiteYkIdbSFWaHhazUTbWxHmIzcgZYKN1/HiHLbqGCVT0zK9GHUEoGY1MdeAVjWGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770898696; c=relaxed/simple;
-	bh=Fgp+NowPbYwgCMhWMOsiWJrrq1R0CaAAYKvFqsMquo0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UvZFlScysJXAsSssZkyhY2KCufNAvqP6p4isi5dnb4JbRtoYCnViKMMzM3lGuTQPbh7LBZsjN3TQyaKwklQ9W7Ioml2yDEghg0mTZyd2X4VyXfMKB8OBhxG0FbAcLtg/LJonvZJyOxip4pzRblGcXWSBYkZWESeLVu7Osnyr1OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=hKAu2ljP; arc=none smtp.client-ip=185.70.43.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1770898683; x=1771157883;
-	bh=fZ8VB4W/hZRiQ0wYvpHYEcLhoXj9fzTdCw14ccJdOcA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=hKAu2ljPi03hV5sbJzr6xjS5CwhmKp2p8yeI5rCCL7p5jHKDbqni84uFyKrIvlmcL
-	 ga/sJKMMhCsfkNqUh465UfImD3sqF7M9hfXi0UlBPTlbI8qI4GxQPVyKqLmIBXTSG7
-	 dIFpBX5G89LBKVjoXc1B9uXO8/x3u/dfZWQExT5zcxo0ZFxocdlNcr5ibwINwPkMPs
-	 8IGAQoAAceOJ0otb3paKQKsHHfZN86waoV0dV6oZENbNlgdSiMwUewEsoNLGYElxGO
-	 Ff0jxrWS1b6INXSjl27aosdLJl6n2oz9OFjcAcKYc8A5M7BphrCVqam4e1/CJxLiTA
-	 v6R3jTX09RANw==
-Date: Thu, 12 Feb 2026 12:17:59 +0000
-To: Victor Nogueira <victor@mojatatu.com>
-From: Paul Moses <p@1g4.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v5 1/1] net/sched: act_gate: snapshot parameters with RCU on replace
-Message-ID: <nmLWEyw7BWgMgTdbfbxbYI1QqIF-IPdNFFsdf_T8qY8IBncn1bNnTPDe9Bz1AWfsGVt4pgj8wLzhB1DxZ1-RzuZiW2VZLamsaBS4WpjC8lw=@1g4.org>
-In-Reply-To: <CA+NMeC_v8bQo2tFUYiD1faMJ0Gd9FFbqmPHCvBUD7HW_yoCx0A@mail.gmail.com>
-References: <20260205150958.412278-1-p@1g4.org> <20260205150958.412278-2-p@1g4.org> <CA+NMeC_v8bQo2tFUYiD1faMJ0Gd9FFbqmPHCvBUD7HW_yoCx0A@mail.gmail.com>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 641b4b95da5523bcf2bb07a85c371348fcbfce84
+	s=arc-20240116; t=1770898827; c=relaxed/simple;
+	bh=yIbWErC8RoWVsumaMazbVPE1/7hFZ//8a27+WNh2ZJ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CJAIzGkopFYmPjx/RFxxCV5kLpRu5zJF6sFiticpVawWdQUzFkxhsc9rRXvVO05YSlIdsBRM62oqUOil1sJjifmc5ucoY7PxyQGoKbM6u8Ky63F75fevAuinA9aoktHGIN5EE7IHaZ6sox03PQN1no0Ihd7n98Nk/LZQhwJZYWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBcg4lQ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E74C4CEF7;
+	Thu, 12 Feb 2026 12:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770898827;
+	bh=yIbWErC8RoWVsumaMazbVPE1/7hFZ//8a27+WNh2ZJ4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JBcg4lQ9GBoQaNq/TDFVUofSs0znEjq9PUwj/bwijzcNnoTtA8xCZNY3BgczOnMJT
+	 cRkgFKae2iL57FpxXHKBVjK/5qoKFYD9gfKRWM9g7UhBq2BY+TytcFhGVNRK0wQKRj
+	 fGaQT7ZixF3H1EcAPIRXQC40Gwz8e9GAmlQqcuZS2c7TbL8MrYuGxXxpRghoyRe7QF
+	 QXCg9c8agzlInhrUZLWlWG+SQh5gGTNjFUdmpZywDp+CUvNwPhArwLTQkcKdzB/V++
+	 BXq5/6gv/PXOwQgMMlGeVB1qxrCEP3ibazV97DdMEZS3FUzfmWFzYj7yIlqozPLx9K
+	 SyKhFsFV9oBGQ==
+Date: Thu, 12 Feb 2026 13:20:21 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Aksh Garg <a-garg7@ti.com>
+Cc: Manikanta Maddireddy <mmaddireddy@nvidia.com>, kishon@kernel.org,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	stable@vger.kernel.org, Thierry Reding <treding@nvidia.com>,
+	linux-pci@vger.kernel.org, linux-tegra@vger.kernel.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: Re: [PATCH v2 2/3] PCI: tegra194: Reset BARs when running in PCIe
+ endpoint mode
+Message-ID: <aY3FhZUhb7RL80Fp@ryzen>
+References: <20250922140822.519796-5-cassel@kernel.org>
+ <20250922140822.519796-7-cassel@kernel.org>
+ <2fedf28e-83ea-4e51-b1a1-e45f0e928509@nvidia.com>
+ <aYonDJyd_dbV0GBK@ryzen>
+ <94458c39-587b-4bb4-a410-e921e5d99f10@nvidia.com>
+ <aYsDDOZA18BBeOsd@ryzen>
+ <aYsKzBjmGEi1z0am@ryzen>
+ <8d85409e-2f07-4e4b-831b-68c17a341a60@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8d85409e-2f07-4e4b-831b-68c17a341a60@ti.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215950-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215951-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[1g4.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[nvidia.com,kernel.org,wdc.com,vger.kernel.org,google.com,gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1g4.org:mid,1g4.org:dkim]
-X-Rspamd-Queue-Id: DF6C212D67C
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 55C5112D60C
 X-Rspamd-Action: no action
 
-Proposed changes from v5...v6:
-1. Agreed
-   -Fixed in (net/sched: act_gate: keep gate_setup_timer helper name)
-
-2. Agreed
-   -Fixed in (net/sched: act_gate: drop redundant clockid pre-validation)
-
-3. I was not able to reproduce it. I tended to keep it since NULL became
-   representable in the conversion and it was not an expensive branch.
-   -Fixed in (net/sched: act_gate: assume params exist on replace path)
-
-4. use_old_entries is true only when REPLACE does not provide a usable new =
-entry
-   list (missing or empty) and we copy the previous entries into p to prese=
-rve
-   effective behavior. This block is skipped when new entries are provided,=
- so
-   old cycletime is not reused in that case. It could be clearer but I didn=
-'t
-   think it was worth the diff increase.
-
-5. Yes
-   -Fixed in (net/sched: act_gate: deduplicate init error cleanup labels)
-
-6. Agreed
-   -Fixed in (net/sched: act_gate: align cleanup dereference with act_vlan)
-
-7. Agreed
-   -Fixed in (net/sched: act_gate: dump params under rcu read-side lock)
-
-Thanks,
-Paul
-
-
-On Friday, February 6th, 2026 at 4:36 AM, Victor Nogueira <victor@mojatatu.=
-com> wrote:
-
-> > The gate action can be replaced while the hrtimer callback or dump path=
- is
-> > walking the schedule list.
-> >
-> > Convert the parameters to an RCU-protected snapshot and swap updates un=
-der
-> > tcf_lock, freeing the previous snapshot via call_rcu(). When REPLACE om=
-its
-> > the entry list, preserve the existing schedule so the effective state i=
-s
-> > unchanged.
-> > [...]
-> > diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
-> > index c1f75f2727576..4a1a10bfe3e62 100644
-> > [...]
-> > -static void gate_setup_timer(struct tcf_gate *gact, u64 basetime,
-> > -                            enum tk_offsets tko, s32 clockid,
-> > -                            bool do_init)
-> > [...]
-> > +static void gate_timer_setup(struct tcf_gate *gact, s32 clockid,
-> > +                            enum tk_offsets tko)
-> > [...]
->=20
-> I don't believe you need to change the function name here.
->=20
-> > [...]
-> > @@ -323,20 +370,11 @@ static int tcf_gate_init(struct net *net, struct =
-nlattr *nla,
-> >
-> >         if (tb[TCA_GATE_CLOCKID]) {
-> >                 clockid =3D nla_get_s32(tb[TCA_GATE_CLOCKID]);
-> > -               switch (clockid) {
-> > -               case CLOCK_REALTIME:
-> > -                       tk_offset =3D TK_OFFS_REAL;
-> > -                       break;
-> > -               case CLOCK_MONOTONIC:
-> > -                       tk_offset =3D TK_OFFS_MAX;
-> > -                       break;
-> > -               case CLOCK_BOOTTIME:
-> > -                       tk_offset =3D TK_OFFS_BOOT;
-> > -                       break;
-> > -               case CLOCK_TAI:
-> > -                       tk_offset =3D TK_OFFS_TAI;
-> > -                       break;
-> > -               default:
-> > +               clockid_provided =3D true;
-> > +               if (clockid !=3D CLOCK_REALTIME &&
-> > +                   clockid !=3D CLOCK_MONOTONIC &&
-> > +                   clockid !=3D CLOCK_BOOTTIME &&
-> > +                   clockid !=3D CLOCK_TAI) {
-> >                         NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
-> >                         return -EINVAL;
-> >                 }
->=20
-> This is better than what you had before, however it still
-> is redundant given that you do the switch statement later
-> and perform the same validation again. If there's no reason to
-> keep this code, you probably can also get rid of "clockid_provided".
->=20
-> > @@ -366,6 +404,37 @@ static int tcf_gate_init(struct net *net, struct n=
-lattr *nla,
-> > [...]
-> > +
-> > +       if (ret !=3D ACT_P_CREATED) {
-> > +               rcu_read_lock();
-> > +               old_p =3D rcu_dereference(gact->param);
-> > +               if (old_p) {
->=20
-> When do you believe old_p might be NULL here?
-> From what I understand, you can't arrive here while
-> a delete for the same action instance is happening in parallel.
-> Were you able to create such scenario when testing gate?
->=20
-> > [...]
-> > +       if (use_old_entries) {
-> > +               err =3D tcf_gate_copy_entries(p, old_p, extack);
-> > +               if (err)
-> > +                       goto unlock;
-> > +
-> > +               if (!tb[TCA_GATE_CYCLE_TIME])
-> > +                       cycletime =3D old_p->tcfg_cycletime;
->=20
-> Why did you keep this one as in v4?
-> You don't want to reuse the old "cycletime" if the user
-> specified new entries?
-> Not saying you are necessarily wrong.
-> Just trying to understand your logic.
->=20
-> > [...]
-> > -chain_put:
-> > +unlock:
-> >         spin_unlock_bh(&gact->tcf_lock);
-> >
-> >         if (goto_ch)
-> >                 tcf_chain_put_by_act(goto_ch);
-> > +       release_entry_list(&p->entries);
-> > +       kfree(p);
->=20
-> The 4 lines above look exactly like what you
-> do in err_free. Can't you label them as err_free
-> and remove the lines below?
->=20
-> > [...]
-> > +err_free:
-> > +       if (goto_ch)
-> > +               tcf_chain_put_by_act(goto_ch);
-> > +       release_entry_list(&p->entries);
-> > +       kfree(p);
-> > +       goto release_idr;
-> > +}
-> > [...]
-> >  static void tcf_gate_cleanup(struct tc_action *a)
-> > @@ -458,9 +594,10 @@ static void tcf_gate_cleanup(struct tc_action *a)
-> >         struct tcf_gate *gact =3D to_gate(a);
-> >         struct tcf_gate_params *p;
-> >
-> > -       p =3D &gact->param;
-> >         hrtimer_cancel(&gact->hitimer);
-> > -       release_entry_list(&p->entries);
-> > +       p =3D rcu_replace_pointer(gact->param, NULL, 1);
-> > +       if (p)
-> > +               call_rcu(&p->rcu, tcf_gate_params_free_rcu);
-> >  }
->=20
-> Sorry, I think I lacked precision in my last comment.
-> I meant that you should've removed the rtnl requirement
-> (which you did), but also use rcu_dereference_protected as
-> act_vlan does. This relates to my previous comment on "old_p"
-> being NULL. I don't believe you need to set this to NULL
-> unless you were able to reproduce the scenario I described
-> earlier.
->=20
-> >  static int dumping_entry(struct sk_buff *skb,
-> > @@ -512,7 +649,8 @@ static int tcf_gate_dump(struct sk_buff *skb, struc=
-t tc_action *a,
-> >         spin_lock_bh(&gact->tcf_lock);
-> >         opt.action =3D gact->tcf_action;
-> >
-> > -       p =3D &gact->param;
-> > +       p =3D rcu_dereference_protected(gact->param,
-> > +                                     lockdep_is_held(&gact->tcf_lock))=
-;
->=20
-> You could've kept the rcu_read_lock approach here.
-> One of the main advantages of making the params rcu
-> is being able to dump without the tcf_lock.
->=20
-> cheers,
-> Victor
+On Thu, Feb 12, 2026 at 05:40:59PM +0530, Aksh Garg wrote:
+> > since you have a @ti.com email, perhaps you can explain how pci-keystone.c
+> > can pass all the pci-epf-test test cases, considering that this is the only
+> > driver that has BARs (BAR0 and BAR1) marked as BAR_RESERVED but do not also
+> > disable the BARs (using dw_pcie_ep_reset_bar()) in the init() callback.
+> > 
+> > Or, perhaps the simple answer is that pci-keystone.c does not pass all
+> > pci-epf-test test cases?
 > 
+> Hi Niklas,
+> 
+> I just joined the organization and have no context on why the
+> pci-keystone.c have BAR0 and BAR1 as reserved, without disabling the
+> bars using dw_pcie_ep_reset_bar() in the .init() callback. Because the
+> AM65 do not use any BARs for any purpose like Tegra194 does (ATU
+> registers or eDMA registers exposed in BAR4 for example), there would
+> be no issue if the BAR0 and BAR1 are overwritten.
+> 
+> This was introduced in the driver the time the EP support was added to
+> the driver by Kishon in commit 23284ad677a9 ("PCI: keystone: Add support
+> for PCIe EP in AM654x Platforms"), where no context is provided in the
+> comments or commit message why the BAR0/1 are marked as reserved in the
+> features. Perhaps Kishon can provide a better insight over this.
+
+It is extra confusing, since the older driver from TI:
+pci-dra7xx.c does have the dw_pcie_ep_reset_bar() calls in init()
+(git blame shows added by Kishon), so it is a bit surprising that
+the newer driver (pci-keystone.c) does not.
+
+(And like I explained, currently all DWC drivers except keystone and
+pcie-keembay.c do have the dw_pcie_ep_reset_bar() calls in init().)
+
+
+Kind regards,
+Niklas
 
