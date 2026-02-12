@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-215943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215944-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id PcxDJ6mzjWl96AAAu9opvQ
-	(envelope-from <stable+bounces-215943-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 12:04:09 +0100
+	id eBLnELG+jWkZ6gAAu9opvQ
+	(envelope-from <stable+bounces-215944-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 12:51:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09BF12CD25
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 12:04:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E6E612D2E3
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 12:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 51ADF300B9FB
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:04:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C39E3008C91
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E3E344D81;
-	Thu, 12 Feb 2026 11:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3457A34DB72;
+	Thu, 12 Feb 2026 11:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oi0PRiJV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u57jX9Km"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9CD1D5CD9;
-	Thu, 12 Feb 2026 11:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2482FE579;
+	Thu, 12 Feb 2026 11:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770894243; cv=none; b=C7i64zfSwcA9rly+rg9GToK9V0bdwvXkmvyfIkbV6Vzgk/8+c90AXFzFamqMZDioWtHs5VtPWzGv7zqQ8eHggp669hADDn+eCCfi3QbYihvWEhFR4vkf8+ArLPEaiQxqXd6zKAbX6n2+GDIXGSPL43X7VJo1VzR0HQtS63998n4=
+	t=1770897066; cv=none; b=tnM7znYteFrXyaQ4S4nJy/2RMEB10xjg3OjkKktvmpAbKuBYzKy++seN698Rumn8OpoEwCrdDNVfIBzgrWaRDwvMaAXMSOllhonSn1xdBgee224kbeJyOzHvNVZjticw2ho7CoJsmM5NCkQkrl4GfpYcYBNiGHJ4TXlm241fMNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770894243; c=relaxed/simple;
-	bh=5vSbprRosksE04vwNa8oFaR5lXnaQ5PV1yZExADSpyI=;
+	s=arc-20240116; t=1770897066; c=relaxed/simple;
+	bh=WmbzLKDB0Uaqeg3tAn1+tey25NxlODgd+5JE8M2pG88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5IG9jdYOc1pPd4qtjqN7vmqxNIHostmpVMX6ytXboAiyTAeqB8nhr6Pa7GD+YF3xc+z4/1AO83ukXQFjzbFfb0TYYdoZR4djItW0E/CU/GBQKgnOFu1Ltovq8Ku+v9Y4Vu2E2SjQYifEZ+oMeMAqajUKTOPDDosLAHyORU5D6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oi0PRiJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B93C19422;
-	Thu, 12 Feb 2026 11:04:02 +0000 (UTC)
+	 MIME-Version; b=LbFMEIEaHUc1f+G+6DbdLh67Uc5DDigpdyD/a4xtffEHhtmDwitlb9uTRDdGHQ0kcKFf1E4bHsei3g0iOFre9RBWkeo9gC3RUTO5NbOVfPYr9UFROxqzMBWa07KcSMepoVzanvmrg+B3ekTnVYZtAWVGprvw/4JpiLoAIqy7u7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u57jX9Km; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A76C4CEF7;
+	Thu, 12 Feb 2026 11:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770894243;
-	bh=5vSbprRosksE04vwNa8oFaR5lXnaQ5PV1yZExADSpyI=;
+	s=k20201202; t=1770897065;
+	bh=WmbzLKDB0Uaqeg3tAn1+tey25NxlODgd+5JE8M2pG88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oi0PRiJVSkn8ncOEdV4em5QI9hBsxAAytVUMx3YSv5JtHfih12nlBjIEKVP8whuO2
-	 L7P8S74lMGl6SmM5B79M/ELgVSNB7yHUMm2Uwa8HYgmPZb+99ygDqGMZ9roPo7B4dh
-	 eGzRkkzwZT4iY4N1M3f5uHcDnswb0QrBkQpcGnfjJw/I3VpKEq2U1JeTp0843KOO+5
-	 +IOL58eHTlvQr7b+K3xLuvmJWHPYqTPNbw7U340QwESrwUh8wBdK3+Yvni2soxd6sl
-	 jNcN83U3MKgvZglqHFHrPthTL/Bsug71JAhwuTFTJwCR3hgP2X4lTyCTzZjdBrppkv
-	 6zQ8zVUkPSAaQ==
+	b=u57jX9Km3ju/LH5+ytVyhvQI7LBpNCKNjSu0bNZicWxQGrCsqvWMJgTtNG8qHZQc8
+	 F4gyV6SkzMrxOrwOaVq+MdXupEwq7hBD7RAdYBCvgMogXywJELcqDrMPXzcZNJCF3A
+	 LSxd/ZXa0aW0W+acrNEvleYAHC8Aqv0jzFy3bFJvetotbMpHa5zZpGeCaI5gStW3Sv
+	 /a/KD/9pC/mjS0YemjqzLlCmd+WzDaxVZ2CT6ZmULkqb92yrMIsS68mY8L/x+RhY/b
+	 9qsb2n+PWf18h11G6CbU3xTQfajQ2v+wtDcur05YHqUhcJZRIovfN6vE7TxiQZNfD1
+	 ob/6/tDBmAgdg==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -51,19 +51,19 @@ Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Mat Martineau <martineau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15.y] selftests: mptcp: pm: ensure unknown flags are ignored
-Date: Thu, 12 Feb 2026 12:03:45 +0100
-Message-ID: <20260212110344.781836-2-matttbe@kernel.org>
+Subject: [PATCH 5.10.y] selftests: mptcp: pm: ensure unknown flags are ignored
+Date: Thu, 12 Feb 2026 12:50:57 +0100
+Message-ID: <20260212115056.898313-2-matttbe@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122947-enforced-elective-e753@gregkh>
-References: <2025122947-enforced-elective-e753@gregkh>
+In-Reply-To: <2025122947-clapping-zookeeper-5d32@gregkh>
+References: <2025122947-clapping-zookeeper-5d32@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3827; i=matttbe@kernel.org; h=from:subject; bh=5vSbprRosksE04vwNa8oFaR5lXnaQ5PV1yZExADSpyI=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJ7N090WWr9oKTn2UGz2pmi+eYXW8X6byUckdttZfl2q uuPO1ZGHaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABOpCGdkaPK9UrNToibkyISU GJFb/lPVZ1lYH0+SE41afynjaNLnLkaGs7J2Bp2FcpxHC2ZxXj90LEH4n2nZbo4jJ/1m7HkfXra TCwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3927; i=matttbe@kernel.org; h=from:subject; bh=WmbzLKDB0Uaqeg3tAn1+tey25NxlODgd+5JE8M2pG88=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJ79y18opx92rg+kGnPjfLyFRdsnnU5/fF+cWlXRu/6o DOnv++a31HKwiDGxSArpsgi3RaZP/N5FW+Jl58FzBxWJpAhDFycAjCRcyGMDDceskVdfbDNO/zy aV/L21PtpxuezHkt/dJlo+RrllPRUy0YGX6ZeJ4NPaUR1VrKrq2wQb334qNg/6Tt59V/m2QuKdM 1ZQEA
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215943-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215944-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -93,7 +93,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: C09BF12CD25
+X-Rspamd-Queue-Id: 5E6E612D2E3
 X-Rspamd-Action: no action
 
 commit 29f4801e9c8dfd12bdcb33b61a6ac479c7162bd7 upstream.
@@ -122,33 +122,34 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
   Also, commit 1dc88d241f92 ("selftests: mptcp: pm_nl_ctl: always look
   for errors") is not in this version, and create a conflict in the
   context which is not related to the modification here.
+  In v5.10, endpoints couldn't be re-used directly, so the flag is
+  tested before.
   Conflicts in pm_nl_ctl.c, because commit 69c6ce7b6eca ("selftests:
-  mptcp: add implicit endpoint test case") is not in this version, and
-  caused a conflict in the context which is not related to the
-  modification here. ]
+  mptcp: add implicit endpoint test case") and commit 371b90377e60
+  ("selftests: mptcp: set and print the fullmesh flag") are not in this
+  version, and caused a conflict in the context which is not related to
+  the modification here. ]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/pm_netlink.sh |  4 ++++
+ tools/testing/selftests/net/mptcp/pm_netlink.sh |  2 +-
  tools/testing/selftests/net/mptcp/pm_nl_ctl.c   | 11 +++++++++++
- 2 files changed, 15 insertions(+)
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/net/mptcp/pm_netlink.sh b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-index 68e05bd3526e..e3ab2f5ef304 100755
+index 7d194f5c2939..9d95d7e5b70a 100755
 --- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
 +++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -124,6 +124,10 @@ id 8 flags signal 10.0.1.8" "id limit"
- ip netns exec $ns1 ./pm_nl_ctl flush
- check "ip netns exec $ns1 ./pm_nl_ctl dump" "" "flush addrs"
+@@ -80,7 +80,7 @@ if mptcp_lib_expect_all_features; then
+ subflows 0" "defaults limits"
+ fi
  
+-ip netns exec $ns1 ./pm_nl_ctl add 10.0.1.1
 +ip netns exec $ns1 ./pm_nl_ctl add 10.0.1.1 flags unknown
-+check "ip netns exec $ns1 ./pm_nl_ctl dump" "id 1 flags  10.0.1.1" "ignore unknown flags"
-+ip netns exec $ns1 ./pm_nl_ctl flush
-+
- ip netns exec $ns1 ./pm_nl_ctl limits 9 1
- check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "rcv addrs above hard limit"
- 
+ ip netns exec $ns1 ./pm_nl_ctl add 10.0.1.2 flags subflow dev lo
+ ip netns exec $ns1 ./pm_nl_ctl add 10.0.1.3 flags signal,backup
+ check "ip netns exec $ns1 ./pm_nl_ctl get 1" "id 1 flags  10.0.1.1" "simple add/get addr"
 diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-index 354784512748..e50075be0e4d 100644
+index b24a2f17d415..c6d7e0f2a8b8 100644
 --- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
 +++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
 @@ -22,6 +22,8 @@
@@ -159,17 +160,17 @@ index 354784512748..e50075be0e4d 100644
 +
  static void syntax(char *argv[])
  {
- 	fprintf(stderr, "%s add|get|set|del|flush|dump|accept [<args>]\n", argv[0]);
-@@ -238,6 +240,8 @@ int add_addr(int fd, int pm_family, int argc, char *argv[])
+ 	fprintf(stderr, "%s add|get|del|flush|dump|accept [<args>]\n", argv[0]);
+@@ -236,6 +238,8 @@ int add_addr(int fd, int pm_family, int argc, char *argv[])
+ 					flags |= MPTCP_PM_ADDR_FLAG_SIGNAL;
+ 				else if (!strcmp(tok, "backup"))
  					flags |= MPTCP_PM_ADDR_FLAG_BACKUP;
- 				else if (!strcmp(tok, "fullmesh"))
- 					flags |= MPTCP_PM_ADDR_FLAG_FULLMESH;
 +				else if (!strcmp(tok, "unknown"))
 +					flags |= MPTCP_PM_ADDR_FLAG_UNKNOWN;
  				else
  					error(1, errno,
  					      "unknown flag %s", argv[arg]);
-@@ -436,6 +440,13 @@ static void print_addr(struct rtattr *attrs, int len)
+@@ -373,6 +377,13 @@ static void print_addr(struct rtattr *attrs, int len)
  					printf(",");
  			}
  
