@@ -1,150 +1,215 @@
-Return-Path: <stable+bounces-215921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OK28EneMjWnq3wAAu9opvQ
-	(envelope-from <stable+bounces-215921-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 09:16:55 +0100
+	id qKceAPaMjWnq3wAAu9opvQ
+	(envelope-from <stable+bounces-215922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 09:19:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FBC412B2AF
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 09:16:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D1812B321
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 09:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6916F300691D
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 08:16:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A26E30E9116
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 08:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C042D028A;
-	Thu, 12 Feb 2026 08:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856872D0C68;
+	Thu, 12 Feb 2026 08:18:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jBt3QSzu"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4266F2C236B;
-	Thu, 12 Feb 2026 08:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B30F145355;
+	Thu, 12 Feb 2026 08:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770884209; cv=none; b=AvGv7ZmUWAnyID/+ss/Tmxud8hEMzCbKh9+HN/Tdx4VzuJAoRizvhAcRdZs27hf5pHM68xAW+eCse/zLqu8lLbeYmtE1/ZMv2nexy1XQ2HyR8WronEXEurmgQeAiXcn7ykicyW5Ivdrs6QyHmSCGCbUqhTlFtkVvmyEuWSqwLpQ=
+	t=1770884299; cv=none; b=cEOKNw9rvgc3FcvmPzX2zp7NOMiDVGmQZSEmmvNVq3swjLHGFaQ89nMYvtRM0tuT9KoIo4izLuhmzYfj4FltwJOkcOoN6Qc68YicmFvVFJqvX+I3Z3BhzKxBsqOK8w5ZTcHkWbPGTVdi6pTorChq1N2x7b+D5xo3/rA9Duq70HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770884209; c=relaxed/simple;
-	bh=d/VoO/HeDmjeOI8y90MSAVJLI9O7yUzvouiqcwFR6hY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GMMyWmUUphLmzugMKrvjNhO1fNZL77LnBexOuyecQ4cu7Ky3i9lXhV8dgeNXsOiiadUdsX0ZXoX3KwhNWn3P+htYoT0SR84sgeO3wUQjDLeVh/8YWnjtZfX76etBKG/YZ/Huw+HbkwItYk/39KaBeMEm9sKmMz0XxkeYbYlNG/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.192] (ip5f5af117.dynamic.kabel-deutschland.de [95.90.241.23])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id B4E674C1A25A2E;
-	Thu, 12 Feb 2026 09:16:36 +0100 (CET)
-Message-ID: <18fca2c1-c35f-4624-9520-7425f99e7781@molgen.mpg.de>
-Date: Thu, 12 Feb 2026 09:16:35 +0100
+	s=arc-20240116; t=1770884299; c=relaxed/simple;
+	bh=gb7oE0tg3OUkogbWMEHphSa0+94S+0FjanBb9PzUyAA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rgaBACObvD6BkcSWG5bXtlSemtFqIR4QLBig4LzYPlR21REpg2D86gVeE5sY1/7QgrM700ua5nmbnN1oA/UxPqpyZeTstfl41lZAADoTl+sxLa0czzp1rsu7No2xoKfsuY6s58LAhrW4Fbsnx1KDrhAUWH7fykJN21ztUq1YLFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jBt3QSzu; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=oB
+	0XDhqS4bBwAuzTTWE/s1rt96As4j4hqN4FxPFSt20=; b=jBt3QSzunSQtrgD+U4
+	0431SFKHf2I5IpyC7EJgZPUgN7m/9pVybOCZNxZ1Uzv65bO8v40Txzdn41mG+jCm
+	0xZgxJuPljD9fk5kw+AK4jp72kpz+Y55nUNqgziF2v7kPBQDF6kiPGdh0xkZfyMS
+	Q294rmHjx7+UL1OwQ+IWCMC7o=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wAXSLWnjI1pzQIXLQ--.8152S2;
+	Thu, 12 Feb 2026 16:17:43 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	Niravkumar L Rabara <nirav.rabara@altera.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	alex Walker <18501357977@189.cn>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.6.y] spi: cadence-quadspi: Implement refcount to handle unbind during busy
+Date: Thu, 12 Feb 2026 16:17:43 +0800
+Message-Id: <20260212081743.4137376-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Bluetooth: Fix CIS host feature condition
-To: Mariusz Skamra <mariusz.skamra@codecoup.pl>,
- linux-bluetooth@vger.kernel.org
-Cc: stable@vger.kernel.org, Naga Bhavani Akella <naga.akella@oss.qualcomm.com>
-References: <20260212074111.316980-1-mariusz.skamra@codecoup.pl>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260212074111.316980-1-mariusz.skamra@codecoup.pl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAXSLWnjI1pzQIXLQ--.8152S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZFWrXFykur4rAw1fWrWkCrg_yoWrXrWkpF
+	4UGw45tF4xKF4IqFnrJa4DZF13KrWxJ34fW39rA34avry3Jwn8Za4FkF1Utr43AF97AF1U
+	WF409FWIkFsxZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UpUDJUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5gkLdmmNjKnNAQAA3f
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mpg.de:email,codecoup.pl:email];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	R_DKIM_NA(0.00)[];
-	DMARC_NA(0.00)[mpg.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,altera.com,163.com,189.cn,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-215922-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215921-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4]
-X-Rspamd-Queue-Id: 5FBC412B2AF
+	FREEMAIL_FROM(0.00)[163.com];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,altera.com:email]
+X-Rspamd-Queue-Id: 93D1812B321
 X-Rspamd-Action: no action
 
-[Cc: +Naga]
+From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
 
-Dear Mariusz,
+[ Upstream commit 7446284023e8ef694fb392348185349c773eefb3 ]
 
+driver support indirect read and indirect write operation with
+assumption no force device removal(unbind) operation. However
+force device removal(removal) is still available to root superuser.
 
-Thank you for your patch.
+Unbinding driver during operation causes kernel crash. This changes
+ensure driver able to handle such operation for indirect read and
+indirect write by implementing refcount to track attached devices
+to the controller and gracefully wait and until attached devices
+remove operation completed before proceed with removal operation.
 
-Am 12.02.26 um 08:41 schrieb Mariusz Skamra:
-> This fixes the condition for sending the LE Set Host Feature command.
-> The command is sent to indicate host support for Connected Isochronous
-> Streams in this case. It has been observed that the system could not
-> initialize BIS-only capable controllers because the controllers do not
-> support the command.
-> 
-> As per Core v6.2 | Vol 4, Part E, Table 3.1 the command shall be
-> supported if CIS Central or CIS Peripheral is supported; otherwise,
-> the command is optional.
+Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Reviewed-by: Niravkumar L Rabara <nirav.rabara@altera.com>
+Link: https://patch.msgid.link/8704fd6bd2ff4d37bba4a0eacf5eba3ba001079e.1756168074.git.khairul.anuar.romli@altera.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[Add cqspi defination in cqspi_exec_mem_op and minor context change fixed.]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 
-It’d be great if you documented the BIS-only controller you tested with.
+ drivers/spi/spi-cadence-quadspi.c | 34 +++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-Also to easier find your patch in the history, I’d find it useful to add 
-the log messages of the failure.
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index eed88aba2cfe..3e7bf76be22b 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -100,6 +100,8 @@ struct cqspi_st {
+ 	bool			apb_ahb_hazard;
+ 
+ 	bool			is_jh7110; /* Flag for StarFive JH7110 SoC */
++	refcount_t		refcount;
++	refcount_t		inflight_ops;
+ };
+ 
+ struct cqspi_driver_platdata {
+@@ -705,6 +707,9 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 	u8 *rxbuf_end = rxbuf + n_rx;
+ 	int ret = 0;
+ 
++	if (!refcount_read(&cqspi->refcount))
++		return -ENODEV;
++
+ 	writel(from_addr, reg_base + CQSPI_REG_INDIRECTRDSTARTADDR);
+ 	writel(remaining, reg_base + CQSPI_REG_INDIRECTRDBYTES);
+ 
+@@ -1021,6 +1026,9 @@ static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
+ 	unsigned int write_bytes;
+ 	int ret;
+ 
++	if (!refcount_read(&cqspi->refcount))
++		return -ENODEV;
++
+ 	writel(to_addr, reg_base + CQSPI_REG_INDIRECTWRSTARTADDR);
+ 	writel(remaining, reg_base + CQSPI_REG_INDIRECTWRBYTES);
+ 
+@@ -1412,11 +1420,29 @@ static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
+ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+ 	int ret;
++	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
++
++	if (refcount_read(&cqspi->inflight_ops) == 0)
++		return -ENODEV;
++
++	if (!refcount_read(&cqspi->refcount))
++		return -EBUSY;
++
++	refcount_inc(&cqspi->inflight_ops);
++
++	if (!refcount_read(&cqspi->refcount)) {
++		if (refcount_read(&cqspi->inflight_ops))
++			refcount_dec(&cqspi->inflight_ops);
++		return -EBUSY;
++	}
+ 
+ 	ret = cqspi_mem_process(mem, op);
+ 	if (ret)
+ 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
+ 
++	if (refcount_read(&cqspi->inflight_ops) > 1)
++		refcount_dec(&cqspi->inflight_ops);
++
+ 	return ret;
+ }
+ 
+@@ -1847,6 +1873,9 @@ static int cqspi_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	refcount_set(&cqspi->refcount, 1);
++	refcount_set(&cqspi->inflight_ops, 1);
++
+ 	ret = devm_request_irq(dev, irq, cqspi_irq_handler, 0,
+ 			       pdev->name, cqspi);
+ 	if (ret) {
+@@ -1899,6 +1928,11 @@ static void cqspi_remove(struct platform_device *pdev)
+ {
+ 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
+ 
++	refcount_set(&cqspi->refcount, 0);
++
++	if (!refcount_dec_and_test(&cqspi->inflight_ops))
++		cqspi_wait_idle(cqspi);
++
+ 	spi_unregister_controller(cqspi->host);
+ 	cqspi_controller_enable(cqspi, 0);
+ 
+-- 
+2.34.1
 
-I think you are missing the Fixes: tag.
-
-Fixes: fe05e3c0593f ("Bluetooth: hci_sync: Add LE Channel Sounding HCI 
-Command/event structures")
-
-Though this was just merged in this 7.0 merge window.
-
-(This seems to be a common mistake, and was fixed at another place in 
-commit 5af69ab9bc62 (Bluetooth: ISO: Set CIS bit only for devices with 
-CIS support).
-
-> Signed-off-by: Mariusz Skamra <mariusz.skamra@codecoup.pl>
-> ---
->   net/bluetooth/hci_sync.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-> index f04a90bce4a9..0b0dc0965f5a 100644
-> --- a/net/bluetooth/hci_sync.c
-> +++ b/net/bluetooth/hci_sync.c
-> @@ -4592,7 +4592,7 @@ static int hci_le_set_host_features_sync(struct hci_dev *hdev)
->   {
->   	int err;
->   
-> -	if (iso_capable(hdev)) {
-> +	if (cis_capable(hdev)) {
->   		/* Connected Isochronous Channels (Host Support) */
->   		err = hci_le_set_host_feature_sync(hdev, 32,
->   						   (iso_enabled(hdev) ? 0x01 :
-
-Feel free to add
-
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-
-
-Kind regards,
-
-Paul
 
