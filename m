@@ -1,280 +1,289 @@
-Return-Path: <stable+bounces-215976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WP3eL/DzjWlw8wAAu9opvQ
-	(envelope-from <stable+bounces-215976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:38:24 +0100
+	id cHpjDHr1jWlw8wAAu9opvQ
+	(envelope-from <stable+bounces-215977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:44:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B6A12F0B1
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:38:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C7612F145
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 388FE30A2C8C
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:35:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C73A4301075A
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03169337111;
-	Thu, 12 Feb 2026 15:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687212BD001;
+	Thu, 12 Feb 2026 15:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aWegDsBC"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="aG/iFurh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9420318BA2;
-	Thu, 12 Feb 2026 15:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1AB7082F;
+	Thu, 12 Feb 2026 15:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770910547; cv=none; b=coH2RFAY+4OaYC+K/636ZsDj4sJG+/f3qPzP8uCqbUh9LgkTpoja7AmHprrhwkaEy4OdWlS3klVPUGAMUosJkz8JFLf7evOOtH9vZHJWG23filXxMvDN6GytsO2mwnFRy0bbc3HEpoQV+n5mbEZ4JgdiumwRqY6zXMnDzM7PZOs=
+	t=1770911089; cv=none; b=L/u4lSkDBWzE2Gp3+p7QPMtA6Mb7sPtOdwHhsrjr0a2C3oqkrhPgeUGKg9s2ZpOp16KF3aHHgelNpm9l1ETKLx96UIi5bT4R7FQUgtz2oIc99pzv747DfyAf/7u2j+CX0DKB9Bk3sUvBY44EC7BEUZUeG5YGGK4Jey5WaoZvAhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770910547; c=relaxed/simple;
-	bh=TO37eo+Xgib1YZz+3/bN23epC9tyuhnej0GE/4f9cu0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AjWwt2N/VHszRELSojuLu3kliH0CKM231qtFU0ztZ3L5cKUAyHexyHJLlmngakn+5IgukBi65ZhkdFAFLzE0jIB5ZfzZ9nF6n5x/xI0ta7l8Wn8jsCqSjn+ntm3AXDiL+9RbL253V0RyQSCOiHT3pryJIAFDmdeCVtxtkFKIWvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aWegDsBC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431CCC4CEF7;
-	Thu, 12 Feb 2026 15:35:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770910546;
-	bh=TO37eo+Xgib1YZz+3/bN23epC9tyuhnej0GE/4f9cu0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aWegDsBCbtfgIg9OB2Xop0lxMZQZwqnfB0XxDQ1ueSB7JcgdPabiA42A0ID30+YaT
-	 P/XSETTC7Yp7LAHJn1mdglYBFHY8apMm7aJjIdTv62SFR8OMUfOdbzlnUy2wCzeZ9P
-	 qeitAMtlBa4Dpu0Pld90mQkZsNlQEPhZhE3NsjwBsGOYAXM1Z0jy/tUfs3Uiy7Yzmq
-	 jqUs5QcXBDMLhWVRmFhrg4r6U4qsQmae3wNfbwYcj9s5SjXNuawXvxLGiKOZVh9R7+
-	 QNiq30C+UJ87E8cP7FBFGdAK0wCpMBxagWggHp00At/4AMI4cabCeJx5GC2bp1sUNM
-	 KIvbaqBP5G1gQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vqYjH-0000000AeWS-3lg7;
-	Thu, 12 Feb 2026 15:35:43 +0000
-Date: Thu, 12 Feb 2026 15:35:43 +0000
-Message-ID: <86ikc2asa8.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <tabba@google.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	oliver.upton@linux.dev,
-	joey.gouly@arm.com,
-	suzuki.poulose@arm.com,
-	yuzenghui@huawei.com,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] KVM: arm64: Hide S1POE from guests when not supported by the host
-In-Reply-To: <CA+EHjTz-JU2gDfziCY2SguK9=6gGSCL5TN_U_C7FiZ5i0JTZqQ@mail.gmail.com>
-References: <20260212090252.158689-1-tabba@google.com>
-	<20260212090252.158689-2-tabba@google.com>
-	<86jywib98e.wl-maz@kernel.org>
-	<CA+EHjTz-JU2gDfziCY2SguK9=6gGSCL5TN_U_C7FiZ5i0JTZqQ@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1770911089; c=relaxed/simple;
+	bh=3PzrZU2BEdK2n3XcSigmtSJUjiL09RYksQYRAsOC3KU=;
+	h=Date:To:From:Subject:Message-Id; b=P+8cuzSmCZImP+9boMkTv9Ni3vozbP8X2GzFpTMTc+w0MXR8sTDcdCl7SIDu5Q7PSDH0G35S8VODcfHmY00s2P1kKJpNvblB3/qkex0boZfwOn5HMOamGtIBLTwc7onppbawyZki4xWbLlSI41Hw/uxAvOybxZshV2NwV0nrmgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=aG/iFurh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66BCC4CEF7;
+	Thu, 12 Feb 2026 15:44:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770911087;
+	bh=3PzrZU2BEdK2n3XcSigmtSJUjiL09RYksQYRAsOC3KU=;
+	h=Date:To:From:Subject:From;
+	b=aG/iFurhB5j8/L78UWqVHS5d4Gpcz8MbIOerHBbiwWS4/9tD5+orV8O1G2EKezDV/
+	 z6pQe4UiAO6puOujn3UFgGeKmYkutlPFycXGuPuJTe8kxPBhqwOajMSJM3inua75L9
+	 AhUcVOq19jskDPG8PSVGtTrMobRoUiWbV/uPB848=
+Date: Thu, 12 Feb 2026 07:44:47 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rcampbell@nvidia.com,matthew.brost@intel.com,leon@kernel.org,jhubbard@nvidia.com,jgg@ziepe.ca,jgg@mellanox.com,hch@lst.de,apopple@nvidia.com,thomas.hellstrom@linux.intel.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged] mm-fix-a-hmm_range_fault-livelock-starvation-problem.patch removed from -mm tree
+Message-Id: <20260212154447.B66BCC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: tabba@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	R_BAD_CTE_7BIT(3.50)[unknown];
+	BROKEN_CONTENT_TYPE(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[172.234.253.10:from];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215976-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-215977-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 23B6A12F0B1
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 20C7612F145
 X-Rspamd-Action: no action
 
-On Thu, 12 Feb 2026 09:41:22 +0000,
-Fuad Tabba <tabba@google.com> wrote:
-> 
-> Hi Marc,
-> 
-> On Thu, 12 Feb 2026 at 09:29, Marc Zyngier <maz@kernel.org> wrote:
-> >
-> > Hi Fuad,
-> >
-> > On Thu, 12 Feb 2026 09:02:50 +0000,
-> > Fuad Tabba <tabba@google.com> wrote:
-> > >
-> > > When CONFIG_ARM64_POE is disabled, KVM does not save/restore POR_EL1.
-> > > However, ID_AA64MMFR3_EL1 sanitisation currently exposes the feature to
-> > > guests whenever the hardware supports it, ignoring the host kernel
-> > > configuration.
-> >
-> > This is the umpteenth time we get caught by this. PAN was the latest
-> > instance until this one. Maybe an approach would be to have a default
-> > override when a config option is not enabled, so that KVM is
-> > consistent with the rest of the kernel?
-> 
-> I spoke to Will about this, and one thing he'll look into is whether
-> this value in `struct arm64_ftr_reg` can be made consistent with the
-> cpu configuration itself (in cpufeature.c itself) . This would avoid
-> the problem altogether if possible. The question is whether the kernel
-> needs to somehow know that a certain feature exists even if it's
-> disabled in the config...
-> 
-> If he thinks it's not doable at that level, I'll look into
-> alternatives to make it correct by construction.
 
-What I currently have for that is rather ugly:
+The quilt patch titled
+     Subject: mm: fix a hmm_range_fault() livelock / starvation problem
+has been removed from the -mm tree.  Its filename was
+     mm-fix-a-hmm_range_fault-livelock-starvation-problem.patch
 
-diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-index 72f39cecce93a..3bde0ad5ea972 100644
---- a/arch/arm64/include/asm/cpufeature.h
-+++ b/arch/arm64/include/asm/cpufeature.h
-@@ -971,6 +971,7 @@ struct arm64_ftr_reg *get_arm64_ftr_reg(u32 sys_id);
- extern struct arm64_ftr_override id_aa64mmfr0_override;
- extern struct arm64_ftr_override id_aa64mmfr1_override;
- extern struct arm64_ftr_override id_aa64mmfr2_override;
-+extern struct arm64_ftr_override id_aa64mmfr3_override;
- extern struct arm64_ftr_override id_aa64pfr0_override;
- extern struct arm64_ftr_override id_aa64pfr1_override;
- extern struct arm64_ftr_override id_aa64zfr0_override;
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 1a7eec542675b..32069da9651bf 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -778,6 +778,7 @@ static const struct arm64_ftr_bits ftr_raz[] = {
- struct arm64_ftr_override __read_mostly id_aa64mmfr0_override;
- struct arm64_ftr_override __read_mostly id_aa64mmfr1_override;
- struct arm64_ftr_override __read_mostly id_aa64mmfr2_override;
-+struct arm64_ftr_override __read_mostly id_aa64mmfr3_override;
- struct arm64_ftr_override __read_mostly id_aa64pfr0_override;
- struct arm64_ftr_override __read_mostly id_aa64pfr1_override;
- struct arm64_ftr_override __read_mostly id_aa64zfr0_override;
-@@ -850,7 +851,8 @@ static const struct __ftr_reg_entry {
- 			       &id_aa64mmfr1_override),
- 	ARM64_FTR_REG_OVERRIDE(SYS_ID_AA64MMFR2_EL1, ftr_id_aa64mmfr2,
- 			       &id_aa64mmfr2_override),
--	ARM64_FTR_REG(SYS_ID_AA64MMFR3_EL1, ftr_id_aa64mmfr3),
-+	ARM64_FTR_REG_OVERRIDE(SYS_ID_AA64MMFR3_EL1, ftr_id_aa64mmfr3,
-+			       &id_aa64mmfr3_override),
- 	ARM64_FTR_REG(SYS_ID_AA64MMFR4_EL1, ftr_id_aa64mmfr4),
+This patch was dropped because it was merged into mainline or a subsystem tree
+
+------------------------------------------------------
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Subject: mm: fix a hmm_range_fault() livelock / starvation problem
+Date: Tue, 10 Feb 2026 12:56:53 +0100
+
+If hmm_range_fault() fails a folio_trylock() in do_swap_page, trying to
+acquire the lock of a device-private folio for migration, to ram, the
+function will spin until it succeeds grabbing the lock.
+
+However, if the process holding the lock is depending on a work item to be
+completed, which is scheduled on the same CPU as the spinning
+hmm_range_fault(), that work item might be starved and we end up in a
+livelock / starvation situation which is never resolved.
+
+This can happen, for example if the process holding the
+device-private folio lock is stuck in
+   migrate_device_unmap()->lru_add_drain_all()
+sinc lru_add_drain_all() requires a short work-item
+to be run on all online cpus to complete.
+
+A prerequisite for this to happen is:
+a) Both zone device and system memory folios are considered in
+   migrate_device_unmap(), so that there is a reason to call
+   lru_add_drain_all() for a system memory folio while a
+   folio lock is held on a zone device folio.
+b) The zone device folio has an initial mapcount > 1 which causes
+   at least one migration PTE entry insertion to be deferred to
+   try_to_migrate(), which can happen after the call to
+   lru_add_drain_all().
+c) No or voluntary only preemption.
+
+This all seems pretty unlikely to happen, but indeed is hit by the
+"xe_exec_system_allocator" igt test.
+
+Resolve this by waiting for the folio to be unlocked if the
+folio_trylock() fails in do_swap_page().
+
+Rename migration_entry_wait_on_locked() to softleaf_entry_wait_unlock()
+and update its documentation to indicate the new use-case.
+
+Future code improvements might consider moving the lru_add_drain_all()
+call in migrate_device_unmap() to be called *after* all pages have
+migration entries inserted.  That would eliminate also b) above.
+
+Link: https://lkml.kernel.org/r/20260210115653.92413-1-thomas.hellstrom@linux.intel.com
+Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>		[v3]
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: <stable@vger.kernel.org>	[6.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/migrate.h |   10 +++++++++-
+ mm/filemap.c            |   15 ++++++++++-----
+ mm/memory.c             |    3 ++-
+ mm/migrate.c            |    8 ++++----
+ mm/migrate_device.c     |    2 +-
+ 5 files changed, 26 insertions(+), 12 deletions(-)
+
+--- a/include/linux/migrate.h~mm-fix-a-hmm_range_fault-livelock-starvation-problem
++++ a/include/linux/migrate.h
+@@ -65,7 +65,7 @@ bool isolate_folio_to_list(struct folio
  
- 	/* Op1 = 0, CRn = 10, CRm = 4 */
-diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
-index 85bc629270bd9..202e165a4680c 100644
---- a/arch/arm64/kernel/image-vars.h
-+++ b/arch/arm64/kernel/image-vars.h
-@@ -51,6 +51,7 @@ PI_EXPORT_SYM(id_aa64isar2_override);
- PI_EXPORT_SYM(id_aa64mmfr0_override);
- PI_EXPORT_SYM(id_aa64mmfr1_override);
- PI_EXPORT_SYM(id_aa64mmfr2_override);
-+PI_EXPORT_SYM(id_aa64mmfr3_override);
- PI_EXPORT_SYM(id_aa64pfr0_override);
- PI_EXPORT_SYM(id_aa64pfr1_override);
- PI_EXPORT_SYM(id_aa64smfr0_override);
-diff --git a/arch/arm64/kernel/pi/idreg-override.c b/arch/arm64/kernel/pi/idreg-override.c
-index e5ea280452c3b..b8dbe02e53171 100644
---- a/arch/arm64/kernel/pi/idreg-override.c
-+++ b/arch/arm64/kernel/pi/idreg-override.c
-@@ -24,10 +24,12 @@
- static u64 __boot_status __initdata;
+ int migrate_huge_page_move_mapping(struct address_space *mapping,
+ 		struct folio *dst, struct folio *src);
+-void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 		__releases(ptl);
+ void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
+ int folio_migrate_mapping(struct address_space *mapping,
+@@ -97,6 +97,14 @@ static inline int set_movable_ops(const
+ 	return -ENOSYS;
+ }
  
- typedef bool filter_t(u64 val);
-+typedef void cfg_override_t(struct arm64_ftr_override *);
- 
- struct ftr_set_desc {
- 	char 				name[FTR_DESC_NAME_LEN];
- 	PREL64(struct arm64_ftr_override, override);
-+	PREL64(cfg_override_t,		cfg_override);
- 	struct {
- 		char			name[FTR_DESC_FIELD_LEN];
- 		u8			shift;
-@@ -106,6 +108,22 @@ static const struct ftr_set_desc mmfr2 __prel64_initconst = {
- 	},
- };
- 
-+static void __init cfg_mmfr3_override(struct arm64_ftr_override *override)
++static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++	__releases(ptl)
 +{
-+#ifndef CONFIG_ARM64_POE
-+	override->mask |= ID_AA64MMFR3_EL1_S1POE_MASK;
-+#endif
++	WARN_ON_ONCE(1);
++
++	spin_unlock(ptl);
 +}
 +
-+static const struct ftr_set_desc mmfr3 __prel64_initconst = {
-+	.name		= "id_aa64mmfr3",
-+	.override	= &id_aa64mmfr3_override,
-+	.cfg_override	= cfg_mmfr3_override,
-+	.fields		= {
-+		{}
-+	},
-+};
-+
- static bool __init pfr0_sve_filter(u64 val)
- {
- 	/*
-@@ -221,6 +239,7 @@ PREL64(const struct ftr_set_desc, reg) regs[] __prel64_initconst = {
- 	{ &mmfr0	},
- 	{ &mmfr1	},
- 	{ &mmfr2	},
-+	{ &mmfr3	},
- 	{ &pfr0 	},
- 	{ &pfr1 	},
- 	{ &isar1	},
-@@ -398,14 +417,19 @@ void __init init_feature_override(u64 boot_status, const void *fdt,
- {
- 	struct arm64_ftr_override *override;
- 	const struct ftr_set_desc *reg;
-+	cfg_override_t *cfg_override;
- 	int i;
+ #endif /* CONFIG_MIGRATION */
  
- 	for (i = 0; i < ARRAY_SIZE(regs); i++) {
- 		reg = prel64_pointer(regs[i].reg);
- 		override = prel64_pointer(reg->override);
-+		cfg_override = prel64_pointer(reg->cfg_override);
+ #ifdef CONFIG_NUMA_BALANCING
+--- a/mm/filemap.c~mm-fix-a-hmm_range_fault-livelock-starvation-problem
++++ a/mm/filemap.c
+@@ -1379,14 +1379,16 @@ repeat:
  
- 		override->val  = 0;
- 		override->mask = 0;
-+
-+		if (cfg_override)
-+			cfg_override(override);
+ #ifdef CONFIG_MIGRATION
+ /**
+- * migration_entry_wait_on_locked - Wait for a migration entry to be removed
+- * @entry: migration swap entry.
++ * softleaf_entry_wait_on_locked - Wait for a migration entry or
++ * device_private entry to be removed.
++ * @entry: migration or device_private swap entry.
+  * @ptl: already locked ptl. This function will drop the lock.
+  *
+- * Wait for a migration entry referencing the given page to be removed. This is
++ * Wait for a migration entry referencing the given page, or device_private
++ * entry referencing a dvice_private page to be unlocked. This is
+  * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
+  * this can be called without taking a reference on the page. Instead this
+- * should be called while holding the ptl for the migration entry referencing
++ * should be called while holding the ptl for @entry referencing
+  * the page.
+  *
+  * Returns after unlocking the ptl.
+@@ -1394,7 +1396,7 @@ repeat:
+  * This follows the same logic as folio_wait_bit_common() so see the comments
+  * there.
+  */
+-void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 	__releases(ptl)
+ {
+ 	struct wait_page_queue wait_page;
+@@ -1428,6 +1430,9 @@ void migration_entry_wait_on_locked(soft
+ 	 * If a migration entry exists for the page the migration path must hold
+ 	 * a valid reference to the page, and it must take the ptl to remove the
+ 	 * migration entry. So the page is valid until the ptl is dropped.
++	 * Similarly any path attempting to drop the last reference to a
++	 * device-private page needs to grab the ptl to remove the device-private
++	 * entry.
+ 	 */
+ 	spin_unlock(ptl);
+ 
+--- a/mm/memory.c~mm-fix-a-hmm_range_fault-livelock-starvation-problem
++++ a/mm/memory.c
+@@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault
+ 				unlock_page(vmf->page);
+ 				put_page(vmf->page);
+ 			} else {
+-				pte_unmap_unlock(vmf->pte, vmf->ptl);
++				pte_unmap(vmf->pte);
++				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+ 			}
+ 		} else if (softleaf_is_hwpoison(entry)) {
+ 			ret = VM_FAULT_HWPOISON;
+--- a/mm/migrate.c~mm-fix-a-hmm_range_fault-livelock-starvation-problem
++++ a/mm/migrate.c
+@@ -499,7 +499,7 @@ void migration_entry_wait(struct mm_stru
+ 	if (!softleaf_is_migration(entry))
+ 		goto out;
+ 
+-	migration_entry_wait_on_locked(entry, ptl);
++	softleaf_entry_wait_on_locked(entry, ptl);
+ 	return;
+ out:
+ 	spin_unlock(ptl);
+@@ -531,10 +531,10 @@ void migration_entry_wait_huge(struct vm
+ 		 * If migration entry existed, safe to release vma lock
+ 		 * here because the pgtable page won't be freed without the
+ 		 * pgtable lock released.  See comment right above pgtable
+-		 * lock release in migration_entry_wait_on_locked().
++		 * lock release in softleaf_entry_wait_on_locked().
+ 		 */
+ 		hugetlb_vma_unlock_read(vma);
+-		migration_entry_wait_on_locked(entry, ptl);
++		softleaf_entry_wait_on_locked(entry, ptl);
+ 		return;
  	}
  
- 	__boot_status = boot_status;
+@@ -552,7 +552,7 @@ void pmd_migration_entry_wait(struct mm_
+ 	ptl = pmd_lock(mm, pmd);
+ 	if (!pmd_is_migration_entry(*pmd))
+ 		goto unlock;
+-	migration_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
++	softleaf_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
+ 	return;
+ unlock:
+ 	spin_unlock(ptl);
+--- a/mm/migrate_device.c~mm-fix-a-hmm_range_fault-livelock-starvation-problem
++++ a/mm/migrate_device.c
+@@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(
+ 		}
+ 
+ 		if (softleaf_is_migration(entry)) {
+-			migration_entry_wait_on_locked(entry, ptl);
++			softleaf_entry_wait_on_locked(entry, ptl);
+ 			spin_unlock(ptl);
+ 			return -EAGAIN;
+ 		}
+_
+
+Patches currently in -mm which might be from thomas.hellstrom@linux.intel.com are
 
 
-which works, but is not super friendly.
-
-Looking at the arm64_ftr_reg structure, this could work if
-FTR_VISIBLE_IF_IS_ENABLED() didn't simply put "HIDDEN" when the
-feature is not present, but forced things to be disabled
-altogether. The problem is that "HIDDEN" means not shown to userspace,
-and that we have plenty of HIDDEN features that must make it into KVM.
-
-I'll have a think.
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
 
