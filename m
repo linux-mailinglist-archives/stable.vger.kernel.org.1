@@ -1,149 +1,157 @@
-Return-Path: <stable+bounces-215914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qN2FFwlzjWn42gAAu9opvQ
-	(envelope-from <stable+bounces-215914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 07:28:25 +0100
+	id sNjjKaF1jWnN2wAAu9opvQ
+	(envelope-from <stable+bounces-215915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 07:39:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB2112AA71
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 07:28:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D7112ACAD
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 07:39:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3100030C04CA
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 06:28:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 360E83067764
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 06:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41355299927;
-	Thu, 12 Feb 2026 06:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762F2296BD2;
+	Thu, 12 Feb 2026 06:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SMbF4axD"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="CPrBsPfL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE9928BAB9
-	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 06:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D46319CC14
+	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 06:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770877685; cv=none; b=m9u1FQ9bKv+wzn5/9DQyBThqt/MMxj6b0mTGZpcWKECrcuwZyEPO/kMXuIicuDzhalGshlOgoHU9AsKjwhbESF9DM3BQ8ubbY7oiwYWnxuPVZsrh1xvRlnsYhQ5kAVxsAGwP9xAY4/vL+6DfCSlMlgll3L3VpjDkp8z1VoJOYa8=
+	t=1770878364; cv=none; b=ruEsh7RGHrG1LNVKxPiyyFz+TjT1kTuSDAJAzP+9kE4FH21EbtW57RBUpuCYhPqucvxgq0w7IdkbHnNTvBCPNROzfNd6riiNTAi/T+tjTGPktaNwERrS+4wg1k0vvfjGPTPcDSp6vrPVzDR8Sjk0Hl3Vc8ar1o6NffPC3rdzUBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770877685; c=relaxed/simple;
-	bh=OE1TfbR90USCxaTmJDqR+C3D5xTkUhHvQxZlHBze7i4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=useBrOK4WovvkFKocQWHUdvACW4hvPDttGEyVeqRipYf3Y843fT7zLn9XxGzmYCLWSORgAfT6wZLF8dx5+vAJvKjsYXmZvFIpEEMJm87ZJCR7S2+iVpaa93U2e+QmiX5PwqmRZoXj3oQhUDx977Zuu403Io4nYz9UtNGteuwq5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SMbF4axD; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770877684; x=1802413684;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=OE1TfbR90USCxaTmJDqR+C3D5xTkUhHvQxZlHBze7i4=;
-  b=SMbF4axDxCSaBf3o2387xAmiyA/wHJiYTmdf7ZFvuWXqnfdncq6YDPmC
-   JsESXpSHKWIH3pqEUPWr9bAJOaEhTiXhqloH8uUZ7A0lVNTGt6sAh32Ej
-   +Hytl3CK6KwvJuT7GN5kLH8mdzCAQNErP+gIog4+N77AIIIfTOQ7Kaw+b
-   hv85IuPPa3vjVDoNkkXrh8E7QHBxaUONjdkE3prhreEocmcxhN+X2vEqh
-   qiDYoHLtDx1+oKoPePhlM3jhEyH3pEPSY/LpBdbTy0br6Ox13gvjkSnOd
-   Fl4cME43rPvoD94EgcxRw7+vHnUJ5n2dKVZ8lLQ8U/2igaPZNbPwcO4ys
-   Q==;
-X-CSE-ConnectionGUID: EV4gh/lTTt+UzRI6xVNFDw==
-X-CSE-MsgGUID: 49Aezj9OQ8Gz2ESQOzNHEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="71938032"
-X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="71938032"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 22:28:03 -0800
-X-CSE-ConnectionGUID: g4tplW4cQFqQ2AC9MeSwNQ==
-X-CSE-MsgGUID: p5Oa3qxuQcSsTFhgWh+Miw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="250169188"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO jhogande-mobl3.intel.com) ([10.245.246.96])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 22:28:01 -0800
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Animesh Manna <animesh.manna@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
+	s=arc-20240116; t=1770878364; c=relaxed/simple;
+	bh=O34gZIYg49kZyNPTCzXcE+jPWhdJA8mJFoL0W1Dbogw=;
+	h=From:To:Subject:Date:Message-Id; b=Jug36oZwed+2UQUuosx08c2Z50/OKBWbxNDgh2w0e5Nz8gABSEubd824cF+OjjtnB5PFnGrD49N/n2QI/AYw6U9uRqjF/wmwN7d8JKi21MNdNkA0JdTv08rDDSMYi1+6/qHCulbcUC/KffClZu8xpQ1FKh+Oaz1K4pqjwxQQnA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=CPrBsPfL; arc=none smtp.client-ip=120.232.169.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=CPrBsPfLjaduzZXUZjp1eByIv6Rl7QKWRXtU15MNusDfg3Btn9J7fxfMI21ppJ3cJm3mLh/+JsVrn
+	 SC99vzeExEQDStWXEzHPduUVF54JvSOyaccRKH6/d1c+xwN0J2o+YFgo4P1qZFlZOa/whpw/ba9GNg
+	 D6hVk+sVOLaUP01s=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[117.129.7.232])
+	by rmsmtp-lg-appmail-09-12087 (RichMail) with SMTP id 2f37698d74d6bad-96254;
+	Thu, 12 Feb 2026 14:36:08 +0800 (CST)
+X-RM-TRANSID:2f37698d74d6bad-96254
+From: Rajani Kantha <681739313@139.com>
+To: xueshuai@linux.alibaba.com,
+	jarkko@kernel.org,
+	Jonathan.Cameron@huawei.com,
+	yazen.ghannam@amd.com,
+	jane.chu@oracle.com,
+	guohanjun@huawei.com,
 	stable@vger.kernel.org
-Subject: [PATCH] drm/i915/alpm: ALPM disable fixes
-Date: Thu, 12 Feb 2026 08:27:31 +0200
-Message-ID: <20260212062731.397801-1-jouni.hogander@intel.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH 6.1.y] ACPI: APEI: send SIGBUS to current task if synchronous memory error not recovered
+Date: Thu, 12 Feb 2026 14:36:05 +0800
+Message-Id: <20260212063605.2284-1-681739313@139.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [1.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215914-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215915-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[139.com];
+	DKIM_TRACE(0.00)[139.com:-];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jouni.hogander@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ABB2112AA71
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,oracle.com:email,139.com:mid,139.com:email]
+X-Rspamd-Queue-Id: 43D7112ACAD
 X-Rspamd-Action: no action
 
-PORT_ALPM_CTL is supposed to be written only before link training. Remove
-writing it from ALPM disable.
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-Also clearing ALPM_CTL_ALPM_AUX_LESS_ENABLE and is not about disabling ALPM
-but switching to AUX-Wake ALPM. Stop touching this bit on ALPM disable.
+[ Upstream commit 79a5ae3c4c5eb7e38e0ebe4d6bf602d296080060 ]
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7153
-Fixes: 1ccbf135862b ("drm/i915/psr: Enable ALPM on source side for eDP Panel replay")
-Cc: Animesh Manna <animesh.manna@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+If a synchronous error is detected as a result of user-space process
+triggering a 2-bit uncorrected error, the CPU will take a synchronous
+error exception such as Synchronous External Abort (SEA) on Arm64. The
+kernel will queue a memory_failure() work which poisons the related
+page, unmaps the page, and then sends a SIGBUS to the process, so that
+a system wide panic can be avoided.
+
+However, no memory_failure() work will be queued when abnormal
+synchronous errors occur. These errors can include situations like
+invalid PA, unexpected severity, no memory failure config support,
+invalid GUID section, etc. In such a case, the user-space process will
+trigger SEA again.  This loop can potentially exceed the platform
+firmware threshold or even trigger a kernel hard lockup, leading to a
+system reboot.
+
+Fix it by performing a force kill if no memory_failure() work is queued
+for synchronous errors.
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://patch.msgid.link/20250714114212.31660-2-xueshuai@linux.alibaba.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ Using pr_err instead of dev_err due to ghes doesn't have member "dev"]
+Signed-off-by: Rajani Kantha <681739313@139.com>
 ---
- drivers/gpu/drm/i915/display/intel_alpm.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/acpi/apei/ghes.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_alpm.c b/drivers/gpu/drm/i915/display/intel_alpm.c
-index e0a4a59dc025..b3334bc4d0f9 100644
---- a/drivers/gpu/drm/i915/display/intel_alpm.c
-+++ b/drivers/gpu/drm/i915/display/intel_alpm.c
-@@ -604,12 +604,7 @@ void intel_alpm_disable(struct intel_dp *intel_dp)
- 	mutex_lock(&intel_dp->alpm.lock);
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 03344c273222..9fb86d0c4ff0 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -684,6 +684,16 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 		}
+ 	}
  
- 	intel_de_rmw(display, ALPM_CTL(display, cpu_transcoder),
--		     ALPM_CTL_ALPM_ENABLE | ALPM_CTL_LOBF_ENABLE |
--		     ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
--
--	intel_de_rmw(display,
--		     PORT_ALPM_CTL(cpu_transcoder),
--		     PORT_ALPM_CTL_ALPM_AUX_LESS_ENABLE, 0);
-+		     ALPM_CTL_ALPM_ENABLE | ALPM_CTL_LOBF_ENABLE, 0);
++	/*
++	 * If no memory failure work is queued for abnormal synchronous
++	 * errors, do a force kill.
++	 */
++	if (sync && !queued) {
++		pr_err(GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
++			current->comm, task_pid_nr(current));
++		force_sig(SIGBUS);
++	}
++
+ 	return queued;
+ }
  
- 	drm_dbg_kms(display->drm, "Disabling ALPM\n");
- 	mutex_unlock(&intel_dp->alpm.lock);
 -- 
-2.43.0
+2.17.1
+
 
 
