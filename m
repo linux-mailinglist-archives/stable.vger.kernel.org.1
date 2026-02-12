@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-215905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDxiOPEojWl8zgAAu9opvQ
-	(envelope-from <stable+bounces-215905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:12:17 +0100
+	id cKLCAgIpjWl8zgAAu9opvQ
+	(envelope-from <stable+bounces-215907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:12:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9B8128D48
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:12:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78823128D6E
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6BECC307DFD5
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 01:10:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1466530832F8
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 01:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F631F151C;
-	Thu, 12 Feb 2026 01:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4811F1E834B;
+	Thu, 12 Feb 2026 01:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXwK2MFv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J5NvKxCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46BC6FC5;
-	Thu, 12 Feb 2026 01:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099266FC5;
+	Thu, 12 Feb 2026 01:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770858627; cv=none; b=hSIcZCAj/IRYeBgtehF5pSb42sJVxN6dMcpv0RtgnXPtcGAmHVzGSLYOBH5lttBBIW14qwjsVjVjh8oVC/p1G5/BElP+Ku53jdHegpMAFal0nI3KTr3/fafhtlzSMVg/HhNU/S1L8A7+sVfwEWBNiyPI2FrZ4KREukoWXJtY2p4=
+	t=1770858628; cv=none; b=FuC8L7y3Q9QINfnBhSYWbbqWOLQd3ShPMDMbEFhAsgHTd4WUSgOpmgb3/zK2dcVU20rhUImxA8Ann79msn2WbVNd5CGRdZU2dCRvcXf2JngT7/R6cPUQg3cJZO8q0QW0zutKMOiGL57YtWdq7J9V83qp/pTAkCWDcXItYi7BWdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770858627; c=relaxed/simple;
-	bh=GWfxoPjAlhmbYzmaHzlAUTsYdSb7eG4rjSIH+V6odZU=;
+	s=arc-20240116; t=1770858628; c=relaxed/simple;
+	bh=WNxUeTuNFXUVQA1DrmQq6BohaFxGzQljrENvmt4XfJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGDcexzTodVOJBtKylp3A1ovqISPJrQuZNFmu+e/29Gvw496dr9yGTYTv1NenRmXIk10muh63hdaxgGFbLyYdmsBx0qBhUdEz9SWz66YMhs0wL9QlLKLAicMuJcwNcKYvqubEFeWwFT/DnT8H/VNWzfn7spaZ3jTSJq68Bop6lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXwK2MFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F03C4CEF7;
-	Thu, 12 Feb 2026 01:10:25 +0000 (UTC)
+	 MIME-Version; b=IQbLfNGfRuBL+QGm5TMb2hDFEh6M5043pHNANKJWiB3HmmLvJjzRFXL2dLE5DKR/j5KTNgcGPltOkgAjNnPFfuFN+EKsk/D5lChuA2r6rlJAAVg52cdH0EnqxuL8th6hCnu0OR2XuyxRjy9UToIFg7AbpP6xFCyU+Cxhkq431bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J5NvKxCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE00C4CEF7;
+	Thu, 12 Feb 2026 01:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770858626;
-	bh=GWfxoPjAlhmbYzmaHzlAUTsYdSb7eG4rjSIH+V6odZU=;
+	s=k20201202; t=1770858627;
+	bh=WNxUeTuNFXUVQA1DrmQq6BohaFxGzQljrENvmt4XfJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXwK2MFvg8DB9sVzNGOuGUBlTdC+uEL/9w8GZB9DdFcPHhnaVcEP/fMHQbDnq07js
-	 kO0NCoyhzTOjK/2cvidRcn0Ku+f5FWJkyLYYfWpaqgfVeNJzSbTbavITjfo7lLSF1w
-	 jfyiQjRFOcFxXdspG+Fh035pccpluwhVhrVQKMLq+O3+rwUVJKO5xgpoANt9fNDUlt
-	 2HJNdfBJ41+XsPwmmzj8IQR60l5kzmIG3yf55V10MJ0qZMQoeYS+7We5xgjPlsz5uA
-	 +W24E2q/xi4w0kBmZV4Foxv89UTj5ll6Y76Cmf1HvL0Lj4iZmvy1HDQcuP0EJcW7KC
-	 SsDfAgIFJHj8g==
+	b=J5NvKxCczKA/fsG9BI1Rtfe0RoM/iA/kTSbPZx8BIK1WtD9w4teAQGe6hbaQ9JQnP
+	 u3tLEmrYrwhfcAW+VkY8Vxah8p6yOlX6rAE0rTK4uwN792S4Gw++BY7SbmSQtGMvUN
+	 phJ64tyytQh4Z97PgvZQnhIfor0tRh8E0BPdMCdQR7Y5WUyYafZetd24nDGSrxEwkm
+	 oyUGRUSzUG+xn8S+ou9P4I6VRKnQmY31ZVfa3XsLUU/BSt/gZMZ0UwqTtxKqGNJ6pa
+	 1yxsNPvGH2CtGaG3ohrn+jPhJPclZRc5tUe/PeKVOwC7JUbWKtId742gpi5nissD4L
+	 Y619EOlj7XrgA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Sami Tolvanen <samitolvanen@google.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Viktor Malik <vmalik@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	vadim.fedorenko@linux.dev,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.12] bpf: crypto: Use the correct destructor kfunc type
-Date: Wed, 11 Feb 2026 20:09:41 -0500
-Message-ID: <20260212010955.3480391-18-sashal@kernel.org>
+Cc: Ruipeng Qi <ruipengqi3@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-5.10] pstore: ram_core: fix incorrect success return when vmap() fails
+Date: Wed, 11 Feb 2026 20:09:42 -0500
+Message-ID: <20260212010955.3480391-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260212010955.3480391-1-sashal@kernel.org>
 References: <20260212010955.3480391-1-sashal@kernel.org>
@@ -74,222 +68,226 @@ X-stable-base: Linux 6.19
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-215905-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215907-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 5B9B8128D48
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 78823128D6E
 X-Rspamd-Action: no action
 
-From: Sami Tolvanen <samitolvanen@google.com>
+From: Ruipeng Qi <ruipengqi3@gmail.com>
 
-[ Upstream commit b40a5d724f29fc2eed23ff353808a9aae616b48a ]
+[ Upstream commit 05363abc7625cf18c96e67f50673cd07f11da5e9 ]
 
-With CONFIG_CFI enabled, the kernel strictly enforces that indirect
-function calls use a function pointer type that matches the target
-function. I ran into the following type mismatch when running BPF
-self-tests:
+In persistent_ram_vmap(), vmap() may return NULL on failure.
 
-  CFI failure at bpf_obj_free_fields+0x190/0x238 (target:
-    bpf_crypto_ctx_release+0x0/0x94; expected type: 0xa488ebfc)
-  Internal error: Oops - CFI: 00000000f2008228 [#1]  SMP
-  ...
+If offset is non-zero, adding offset_in_page(start) causes the function
+to return a non-NULL pointer even though the mapping failed.
+persistent_ram_buffer_map() therefore incorrectly returns success.
 
-As bpf_crypto_ctx_release() is also used in BPF programs and using
-a void pointer as the argument would make the verifier unhappy, add
-a simple stub function with the correct type and register it as the
-destructor kfunc instead.
+Subsequent access to prz->buffer may dereference an invalid address
+and cause crashes.
 
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Tested-by: Viktor Malik <vmalik@redhat.com>
-Link: https://lore.kernel.org/r/20260110082548.113748-7-samitolvanen@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Add proper NULL checking for vmap() failures.
+
+Signed-off-by: Ruipeng Qi <ruipengqi3@gmail.com>
+Link: https://patch.msgid.link/20260203020358.3315299-1-ruipengqi3@gmail.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Here is my comprehensive analysis:
+Now I have all the information needed for a thorough analysis. Let me
+summarize my findings.
 
 ---
 
-## Commit Analysis: "bpf: crypto: Use the correct destructor kfunc type"
+## Detailed Analysis
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-The commit message is explicit and detailed about the crash:
-- **Trigger**: Running BPF self-tests with `CONFIG_CFI` enabled
-- **Symptom**: `CFI failure at bpf_obj_free_fields+0x190/0x238 (target:
-  bpf_crypto_ctx_release+0x0/0x94; expected type: 0xa488ebfc)` followed
-  by `Internal error: Oops - CFI: 00000000f2008228 [#1] SMP`
-- **Root cause**: Function type mismatch between what the destructor
-  function pointer expects (`void (*)(void *)`) and what
-  `bpf_crypto_ctx_release` actually is (`void (*)(struct bpf_crypto_ctx
-  *)`)
-- **Tags**: Acked-by Yonghong Song, Tested-by Viktor Malik
+The commit subject is explicit: "fix incorrect success return when
+vmap() fails". The message clearly explains the bug mechanism:
+- `vmap()` may return NULL on failure
+- When `offset_in_page(start)` is non-zero, adding it to NULL produces a
+  non-NULL pointer
+- The caller `persistent_ram_buffer_map()` checks `if (!prz->vaddr)`,
+  which passes because the returned pointer is non-NULL (e.g., `0x100`)
+- Subsequent access to `prz->buffer` dereferences an invalid address,
+  causing a **kernel crash**
+
+The commit is signed off by Kees Cook, the pstore subsystem maintainer,
+indicating proper review.
 
 ### 2. CODE CHANGE ANALYSIS
 
-The bug mechanism is clear:
+The fix is exactly **7 lines added** (4 lines of comment + 2 lines of
+code + 1 blank line) to a single file:
 
-**The destructor type** (from `include/linux/bpf.h:228`):
-```c
-typedef void (*btf_dtor_kfunc_t)(void *);
+```449:455:fs/pstore/ram_core.c
+        /*
+  - vmap() may fail and return NULL. Do not add the offset in this
+  - case, otherwise a NULL mapping would appear successful.
+         */
+        if (!vaddr)
+                return NULL;
 ```
 
-**The call site** (`kernel/bpf/syscall.c:855`):
-```c
-field->kptr.dtor(xchgd_field);
+**Bug mechanism in detail:**
+
+In `persistent_ram_vmap()` (line 403-455), the function maps physical
+pages via `vmap()`, then returns the virtual address with a sub-page
+offset added:
+
+```454:454:fs/pstore/ram_core.c
+        return vaddr + offset_in_page(start);
 ```
 
-This is an indirect call through a `btf_dtor_kfunc_t` function pointer,
-which has type `void (*)(void *)`. With CONFIG_CFI, the kernel enforces
-that the actual target function's type hash matches the function
-pointer's type hash. But `bpf_crypto_ctx_release` has signature `void
-(*)(struct bpf_crypto_ctx *)` - the types don't match, causing a CFI
-failure and kernel Oops.
+When `vmap()` returns NULL (memory pressure, vmalloc space exhaustion),
+and `offset_in_page(start)` is non-zero (the physical `start` address is
+not page-aligned), the return value becomes `NULL + offset` = a small
+non-zero invalid pointer.
 
-**The fix** adds a thin wrapper with the correct type signature:
-```c
-__bpf_kfunc void bpf_crypto_ctx_release_dtor(void *ctx)
-{
-    bpf_crypto_ctx_release(ctx);
-}
-CFI_NOSEAL(bpf_crypto_ctx_release_dtor);
-```
-And registers this wrapper as the destructor instead:
-```c
--BTF_ID(func, bpf_crypto_ctx_release)
-+BTF_ID(func, bpf_crypto_ctx_release_dtor)
+The caller `persistent_ram_buffer_map()` has a NULL check at line 494:
+
+```494:500:fs/pstore/ram_core.c
+        if (!prz->vaddr) {
+                pr_err("%s: Failed to map 0x%llx pages at 0x%llx\n",
+__func__,
+                        (unsigned long long)size, (unsigned long
+long)start);
+                return -ENOMEM;
+        }
+
+        prz->buffer = prz->vaddr;
 ```
 
-### 3. ESTABLISHED PATTERN
+This check passes (the pointer is non-NULL but invalid), so
+`prz->buffer` is set to the invalid address. Then
+`persistent_ram_post_init()` immediately dereferences it at line 520:
 
-This is NOT a novel fix. It follows an **exact established pattern**
-from commit `e4c00339891c` ("bpf: Fix dtor CFI", v6.7-rc3) by Peter
-Zijlstra, which applied the same fix to:
-- `kernel/bpf/cpumask.c` - `bpf_cpumask_release_dtor`
-- `kernel/bpf/helpers.c` - `bpf_task_release_dtor`,
-  `bpf_cgroup_release_dtor`
-- `net/bpf/test_run.c` - `bpf_kfunc_call_test_release_dtor`,
-  `bpf_kfunc_call_memb_release_dtor`
+```520:520:fs/pstore/ram_core.c
+        if (prz->buffer->sig == sig) {
+```
 
-The crypto code was introduced later (v6.10) and simply missed applying
-this pattern, leaving a latent CFI crash.
+This dereferences `prz->buffer->sig` at the invalid address, causing a
+**kernel crash/oops**.
 
-### 4. SCOPE AND RISK
+### 3. BUG ORIGIN
 
-- **Lines changed**: ~10 lines added, 1 line modified
-- **Files changed**: 1 (`kernel/bpf/crypto.c`)
-- **Risk**: Extremely low - trivial wrapper function that exactly
-  matches the pattern already in use by 5 other BPF destructors
-- **Self-contained**: Yes, no dependency on other patches in the series
+The bug was introduced by commit `831b624df1b420` ("pstore: Fix
+incorrect persistent ram buffer mapping") from September 2018. That
+commit moved the `offset_in_page(start)` addition from
+`persistent_ram_buffer_map()` into `persistent_ram_vmap()` to fix a
+different bug (double-offset), but neglected to add a NULL check before
+the offset addition. This means the bug has existed since **kernel
+v4.19** and affects ALL currently supported stable kernels (5.4.y,
+5.10.y, 5.15.y, 6.1.y, 6.6.y, 6.12.y).
 
-### 5. AFFECTED STABLE TREES
+### 4. CLASSIFICATION
 
-- **Bug present in**: v6.10 through v6.19 (all versions with
-  `kernel/bpf/crypto.c`)
-- **v6.12.y LTS**: Confirmed buggy (checked v6.12.69) - has the crypto
-  code with the mismatched dtor type
-- **v6.6.y and older**: Not affected (`kernel/bpf/crypto.c` doesn't
-  exist)
-- **CFI_NOSEAL availability**: Present since v6.7-rc3 - available in all
-  affected trees
-- **Patch applies cleanly**: Verified the surrounding code in v6.12 is
-  essentially identical to HEAD
+This is a clear **NULL pointer dereference / invalid pointer dereference
+bug fix**. The consequence is a kernel crash. It falls squarely into the
+category of "fixes crashes, panics, oopses."
+
+### 5. SCOPE AND RISK ASSESSMENT
+
+- **Lines changed:** 7 lines added, 0 lines modified, 0 lines removed
+- **Files changed:** 1 (`fs/pstore/ram_core.c`)
+- **Complexity:** Trivially simple - a NULL check before pointer
+  arithmetic
+- **Risk of regression:** Essentially zero. The fix adds an early return
+  on an error path that was previously incorrectly handled. It cannot
+  break any correct behavior.
+- **Subsystem:** pstore/ramoops - used for preserving kernel crash logs
+  across reboots, important for debugging and production systems
 
 ### 6. USER IMPACT
 
-- **Who is affected**: Any user with CONFIG_CFI enabled (Android
-  devices, security-hardened enterprise kernels, arm64 systems with
-  kCFI)
-- **What triggers it**: BPF programs using crypto kptr objects being
-  freed (map cleanup, program unload)
-- **Severity**: **Kernel Oops/crash** - the CFI check failure causes an
-  immediate Oops with `[#1] SMP`, which is a kernel crash
-- **Frequency**: Deterministic once the destructor path is hit with CFI
-  enabled
+- **Who is affected:** Any system using pstore/ramoops with a non-page-
+  aligned persistent RAM region where `vmap()` fails (memory pressure,
+  vmalloc space exhaustion)
+- **Severity:** Kernel crash/oops - HIGH. The system crashes instead of
+  gracefully handling the mapping failure
+- **Practical trigger:** When ramoops is configured (common on
+  embedded/Android/IoT), if the reserved memory region is not page-
+  aligned AND vmalloc space is low or fragmented, `vmap()` fails and the
+  kernel crashes
+- **pstore's importance:** pstore is widely used on Android devices,
+  embedded systems, and enterprise servers for crash diagnostics
 
-### 7. CLASSIFICATION
+### 7. STABILITY INDICATORS
 
-This is unambiguously a **bug fix**:
-- Fixes a kernel crash (Oops)
-- No new features, APIs, or behavioral changes
-- Small, surgical, well-tested fix
-- Follows an established, proven pattern
-- No risk of regression
+- Signed off by **Kees Cook**, the pstore maintainer - high trust
+- The fix is obviously correct by inspection
+- The pattern (NULL check before pointer arithmetic) is a well-
+  established defensive programming practice
 
 ### 8. DEPENDENCY CHECK
 
-- The only dependency is the `CFI_NOSEAL` macro from `e9d13b9d2f99c`
-  (v6.7-rc3) and the `__bpf_kfunc` annotation infrastructure - both
-  present in all affected stable trees
-- The fix is entirely self-contained within `kernel/bpf/crypto.c`
+- **No dependencies.** This is a completely self-contained fix
+- The affected code (`persistent_ram_vmap()` with `return vaddr +
+  offset_in_page(start)`) exists identically in all stable trees since
+  v4.19
+- The fix applies cleanly - no surrounding code context has changed
 
-### Summary
+### 9. MEETS STABLE CRITERIA
 
-This commit fixes a deterministic kernel crash (Oops) on CFI-enabled
-kernels when BPF crypto context destructors are invoked. The fix is a
-minimal ~10-line change adding a type-correct wrapper function,
-following an exact pattern already applied to 5 other BPF destructors
-since v6.7. The bug has been present since `kernel/bpf/crypto.c` was
-introduced in v6.10 and affects the v6.12.y LTS tree. The fix is
-obviously correct, small, self-contained, well-tested, and carries
-virtually zero regression risk.
+| Criterion | Met? |
+|-----------|------|
+| Obviously correct and tested | YES - trivial NULL check |
+| Fixes a real bug | YES - kernel crash |
+| Important issue (crash) | YES |
+| Small and contained | YES - 7 lines, 1 file |
+| No new features | YES |
+| No new APIs | YES |
 
 **YES**
 
- kernel/bpf/crypto.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/pstore/ram_core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/bpf/crypto.c b/kernel/bpf/crypto.c
-index 83c4d9943084b..1d024fe7248ac 100644
---- a/kernel/bpf/crypto.c
-+++ b/kernel/bpf/crypto.c
-@@ -261,6 +261,12 @@ __bpf_kfunc void bpf_crypto_ctx_release(struct bpf_crypto_ctx *ctx)
- 		call_rcu(&ctx->rcu, crypto_free_cb);
- }
+diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+index f1848cdd6d348..f8b9b47e8b244 100644
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -446,6 +446,13 @@ static void *persistent_ram_vmap(phys_addr_t start, size_t size,
+ 	vaddr = vmap(pages, page_count, VM_MAP | VM_IOREMAP, prot);
+ 	kfree(pages);
  
-+__bpf_kfunc void bpf_crypto_ctx_release_dtor(void *ctx)
-+{
-+	bpf_crypto_ctx_release(ctx);
-+}
-+CFI_NOSEAL(bpf_crypto_ctx_release_dtor);
++	/*
++	 * vmap() may fail and return NULL. Do not add the offset in this
++	 * case, otherwise a NULL mapping would appear successful.
++	 */
++	if (!vaddr)
++		return NULL;
 +
- static int bpf_crypto_crypt(const struct bpf_crypto_ctx *ctx,
- 			    const struct bpf_dynptr_kern *src,
- 			    const struct bpf_dynptr_kern *dst,
-@@ -368,7 +374,7 @@ static const struct btf_kfunc_id_set crypt_kfunc_set = {
- 
- BTF_ID_LIST(bpf_crypto_dtor_ids)
- BTF_ID(struct, bpf_crypto_ctx)
--BTF_ID(func, bpf_crypto_ctx_release)
-+BTF_ID(func, bpf_crypto_ctx_release_dtor)
- 
- static int __init crypto_kfunc_init(void)
- {
+ 	/*
+ 	 * Since vmap() uses page granularity, we must add the offset
+ 	 * into the page here, to get the byte granularity address
 -- 
 2.51.0
 
