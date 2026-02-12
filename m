@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-215941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMl8BYSxjWmz5wAAu9opvQ
-	(envelope-from <stable+bounces-215941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:55:00 +0100
+	id qBcdGYexjWmz5wAAu9opvQ
+	(envelope-from <stable+bounces-215942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:55:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5162512CBC9
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:54:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B8812CBD0
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 58C2E30EF2DF
+	by tor.lore.kernel.org (Postfix) with ESMTP id D84C030F13B9
 	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 10:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3BA2DEA7A;
-	Thu, 12 Feb 2026 10:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F05314D2B;
+	Thu, 12 Feb 2026 10:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="zei3L+23"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="HNl6P126"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C453731986C
-	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 10:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF99314D03
+	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 10:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770893575; cv=none; b=F7Z7+pKCXXgxTTy7rx2cDajnsMZg64V/GCt36iZ3NCEZWqCj3vBH0+7auDz1IqZvf2e2sbcdmeK8RAYO5P/lzutAMyWZCPDhlsYBlsWzNjmB+hMPb1uHgW7X/QBD2XGkKXV/5+qgjyHgh+qQka9b6ZKbRM9Q7Lg+hlUpywGnoUE=
+	t=1770893591; cv=none; b=RFDBox8sFVqlruWFonjVi4qnByMfq96KQbyUNTmcpn9TYDEdSMMQz1Yor0HZPbHcj+YXF8sApoN1Sxad4JIeO2kd0m+qm1jkbwNtXetZrGxVIjPlkqVU/sfR20rbrYFIOj+Yrji2+iuREsz6qVwGSspnm1jHxsyzNMMoh2wPzgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770893575; c=relaxed/simple;
-	bh=HR2ns6vv/H4ljkqrmZMnGqH+nGu2Wi5FG+PS29Zwgh8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HwYMzgyzfyTcMNVyI6A/eei2p4hH2TBOhuQmOchjcOtI06iUdmpK3yXj383fIXnTwCaBx5QWfRmunzQQ0HK4gqzczf9kE0HRwnrb0g7LXcGdpeNkIXQofxA4lAzL2ZGRn1GZJN2jLSPxqz6f4W7yzJUiawROCjig+n0ABPhVo/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=zei3L+23; arc=none smtp.client-ip=120.232.169.111
+	s=arc-20240116; t=1770893591; c=relaxed/simple;
+	bh=QODKW3Mcvd5psbAB98MHCK7+ZWVDYdyCLvhF40H+wI4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XE0AW/EXM4nY/rBm3rECLVW28XY8RCojNh9HEPnWIePJI+Rl5XRuaa/bOF3v06J10hl2ltohLUZBEcfZ6KDKmzue24lch2OPni5SA1wXQSGLjcCqof/EukjinQqhTVjHH9qdngOYfKU/g2ZCK6gdX1h65J1dYklSiyuz5peBU7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=HNl6P126; arc=none smtp.client-ip=120.232.169.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=zei3L+23LUH7Pp4SqjFGUtcf7kzKY3xy38jc+ExRujyypAjNv1ZCRS54hMd6E8CfK1p3/YuTKgt6O
-	 x2zg338QH7IrYlhZCPnZSosKNbzo+GVCBDKoWQgbQpF0MLdRxH0SzEbF8uzvup3tKYYYuZu4sxsngU
-	 qM/6YuoEaWIUhAJo=
+	b=HNl6P126EBTkodbXBvlQAX2+fGhMo2a46FkYJtf/2mvB60LsTX7YA2fU0TK3VOGX1wQHsAA2HcmuO
+	 0xwM82sd02sA3pxZwe7Id3SMMg1XBdbMknH3OZgRCjyUTtFBPtyqh1rWufWQ1XQvB5hmEMlRnfKyhM
+	 cdGZordgXCYQ/a5o=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from ubuntu24.corp.ad.wrs.com (unknown[120.244.194.126])
-	by rmsmtp-lg-appmail-18-12021 (RichMail) with SMTP id 2ef5698db0fa874-98fd4;
-	Thu, 12 Feb 2026 18:52:43 +0800 (CST)
-X-RM-TRANSID:2ef5698db0fa874-98fd4
+	by rmsmtp-lg-appmail-20-12023 (RichMail) with SMTP id 2ef7698db110fe2-976f4;
+	Thu, 12 Feb 2026 18:53:06 +0800 (CST)
+X-RM-TRANSID:2ef7698db110fe2-976f4
 From: Bin Lan <lanbincn@139.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
 Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 5.15.y] net: dsa: free routing table on probe failure
-Date: Thu, 12 Feb 2026 10:52:36 +0000
-Message-ID: <20260212105236.4180-1-lanbincn@139.com>
+Subject: [PATCH 6.1.y] net: dsa: free routing table on probe failure
+Date: Thu, 12 Feb 2026 10:53:04 +0000
+Message-ID: <20260212105304.4210-1-lanbincn@139.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [1.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -81,18 +81,18 @@ X-Spamd-Result: default: False [1.04 / 15.00];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_FROM(0.00)[139.com];
-	TAGGED_FROM(0.00)[bounces-215941-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215942-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[139.com:-];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_CC(0.00)[nxp.com,kernel.org,139.com];
 	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 5162512CBC9
+X-Rspamd-Queue-Id: D2B8812CBD0
 X-Rspamd-Action: no action
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
@@ -180,7 +180,7 @@ Fixes: c5f51765a1f6 ("net: dsa: list DSA links in the fabric")
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Link: https://patch.msgid.link/20250414213001.2957964-1-vladimir.oltean@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Backport the fix to net/dsa/dsa2.c in v5.15.y for dsa2.c was
+[ Backport the fix to net/dsa/dsa2.c in v6.1.y for dsa2.c was
 renamed back into dsa.c by commit
 47d2ce03dcfb ("net: dsa: rename dsa2.c back into dsa.c and create its header")
 since v6.2. ]
@@ -190,10 +190,10 @@ Signed-off-by: Bin Lan <lanbincn@139.com>
  1 file changed, 14 insertions(+), 7 deletions(-)
 
 diff --git a/net/dsa/dsa2.c b/net/dsa/dsa2.c
-index bf384b30ec0a..a6b6bcffc69c 100644
+index 98f864879175..668699d7b0b7 100644
 --- a/net/dsa/dsa2.c
 +++ b/net/dsa/dsa2.c
-@@ -1079,6 +1079,16 @@ static void dsa_tree_teardown_lags(struct dsa_switch_tree *dst)
+@@ -1148,6 +1148,16 @@ static void dsa_tree_teardown_lags(struct dsa_switch_tree *dst)
  	kfree(dst->lags);
  }
  
@@ -210,7 +210,7 @@ index bf384b30ec0a..a6b6bcffc69c 100644
  static int dsa_tree_setup(struct dsa_switch_tree *dst)
  {
  	bool complete;
-@@ -1096,7 +1106,7 @@ static int dsa_tree_setup(struct dsa_switch_tree *dst)
+@@ -1165,7 +1175,7 @@ static int dsa_tree_setup(struct dsa_switch_tree *dst)
  
  	err = dsa_tree_setup_cpu_ports(dst);
  	if (err)
@@ -219,7 +219,7 @@ index bf384b30ec0a..a6b6bcffc69c 100644
  
  	err = dsa_tree_setup_switches(dst);
  	if (err)
-@@ -1123,14 +1133,14 @@ static int dsa_tree_setup(struct dsa_switch_tree *dst)
+@@ -1197,14 +1207,14 @@ static int dsa_tree_setup(struct dsa_switch_tree *dst)
  	dsa_tree_teardown_switches(dst);
  teardown_cpu_ports:
  	dsa_tree_teardown_cpu_ports(dst);
@@ -236,7 +236,7 @@ index bf384b30ec0a..a6b6bcffc69c 100644
  	if (!dst->setup)
  		return;
  
-@@ -1144,10 +1154,7 @@ static void dsa_tree_teardown(struct dsa_switch_tree *dst)
+@@ -1218,10 +1228,7 @@ static void dsa_tree_teardown(struct dsa_switch_tree *dst)
  
  	dsa_tree_teardown_cpu_ports(dst);
  
