@@ -1,173 +1,168 @@
-Return-Path: <stable+bounces-215974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eF1rLW3sjWnG8gAAu9opvQ
-	(envelope-from <stable+bounces-215974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:06:21 +0100
+	id uPM8NSzzjWlw8wAAu9opvQ
+	(envelope-from <stable+bounces-215975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:35:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B648812EC30
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:06:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F63512F01A
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:35:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DB96E3008462
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:06:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66331302DF78
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3173446C7;
-	Thu, 12 Feb 2026 15:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100F92C2365;
+	Thu, 12 Feb 2026 15:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5BsC5DV"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="LkvNi11u"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-07.mail-europe.com (mail-0701.mail-europe.com [51.83.17.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB422E7635;
-	Thu, 12 Feb 2026 15:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABF51F3B87
+	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 15:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.17.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770908773; cv=none; b=EqXTIJEytzVxnUYJM2xj3SOdvPsKhTUEtngZ3NeGydbJUNOjFL7+MLdyZVD9/n90a7WahohCkIp72NmOs9AqdmaXpJrGzwS129+6PZ/SgW8w8O5TsXh7PqrSAsMZjrrUCbXUnqH8NOMVg2ia3LA0v3XMu/3gDCCJx8ZaZ94Z+10=
+	t=1770910502; cv=none; b=FIjIv+MdIt43Y/gZxaPiFtL0ShbWQpnpubGRQb7fRC6QqmitJhwAIP0IWcVHV3nayFfAn5oESYzRorjtENOZPLvLMjXzab1G64PMFgc18nFrEOTyqVH1Xb38siSvlcUdL+6J/84FcI1nkwhrK+e5LoCaAWHH9SAAOHwpQ2BwX50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770908773; c=relaxed/simple;
-	bh=K7i/IEqYAIP3hwqfxxBGOuWS4B0xoeIJM9ICOS9WQ54=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rUk6XyatihIsYWyodAFeRbvRh+DV40kTNy87Lqt2WXOSe4TL9lDbN7aWJS+7qMKvibwkHF03uQPYcrtLTBctPmf130M0DyngkCUgyOp4erTUU/urpRfodSvEXfLvFf0iUgYMYa7L34UQbKWOmdzHqXh35CVGZrLJL6Y6aLHWVd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5BsC5DV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4854CC4CEF7;
-	Thu, 12 Feb 2026 15:06:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770908772;
-	bh=K7i/IEqYAIP3hwqfxxBGOuWS4B0xoeIJM9ICOS9WQ54=;
-	h=From:To:Cc:Subject:Date:From;
-	b=d5BsC5DVxypDBstvfFN4IbNmsOPxByal+71ukjnEdrKxA13EyXORz0zZNzVJEgesP
-	 3rTyxcrQgIGmVmMPuzFy5A72NVWxw+mGh1gIcOkGpObNlkw5o1gd+f2K780q45bkuM
-	 ARtyTAyRJRsKFiCOKcY2c89clWtrnRqBhaNcGuau7CGtEePF2SCeJWGYGSYnKP7z0h
-	 7sqZ54qJH533xxRSDqYpGQLsTk7uKUcj9F6Kn6eCi9GNdhmDYWFWT+Uj7mNOQkZRe9
-	 /c/GqfSQpe6tWn/N+tUtbljGi683PEQlPvxiffHu1Ko3k44DMMUlts4xydGoaLIn+A
-	 pyVBCNw6k8gcA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot+5498a510ff9de39d37da@syzkaller.appspotmail.com,
-	Eulgyu Kim <eulgyukim@snu.ac.kr>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12.y] mptcp: fix race in mptcp_pm_nl_flush_addrs_doit()
-Date: Thu, 12 Feb 2026 16:05:48 +0100
-Message-ID: <20260212150547.1345709-2-matttbe@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1770910502; c=relaxed/simple;
+	bh=GKU97sFrDJU9ubg2pcOiS88y9fxPx469uJTR7aE6ieM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GsgTr4TZK3OZrCKG5n4Y9AWltqpJB6U0AqLR6KMYPb2VriwaSZ9w53yljXgk2e13jzZlM7XWkf0k7ifUDBhxxm6X1zhiLLVqOtklYK+TtEI7U7lgzj5Eyv6CbBVxIc1qbsSOSJk07lRWQBHs/6toa73dhrzwIBTf9ntJ+H50pqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=fail smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=LkvNi11u; arc=none smtp.client-ip=51.83.17.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1770910483; x=1771169683;
+	bh=4M+Owbd0HeHgku23Jntag7YvEbhLlJDH/9jpPFuXA6I=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=LkvNi11ucnkDX/2xnpTUxpj/bCdwE7jsGSoECQXV5bYHUB2FR14P/tWdKaT0/+meO
+	 lS5AQ1VDp2eUI7fH5wPoAcuBLQ1SErjdxA8Hy01o0Pp2PWovt1lEQHPKJE9YSn0pRO
+	 SdNKYKVcLZTFfTi1lSTFBdfWqUPxtc9nT9PP1m2lDjdmC93oX28oqI7uupScMmA04G
+	 tFut9ZKv7RCz3pygvKsgF++U8hUJLrmjzjjEWLJcP2TNgQMuph7PVUe8InR648u3Uc
+	 W63m/yOzKfq7cB59BVAzVtBKJol9RSHf+dkxQpiHDrTcngubAuEuCxjSYwGjZqUEI+
+	 EJSjcEOGM87eg==
+Date: Thu, 12 Feb 2026 15:34:38 +0000
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: m.wieczorretman@pm.me, pawel.chmielewski@linux.intel.com, Farrah Chen <farrah.chen@intel.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v5 1/3] x86/cpu: Clear feature bits disabled at compile-time
+Message-ID: <32fbbfc16974cfed11e7d2651bce836ba9ceaccc.1770908783.git.m.wieczorretman@pm.me>
+In-Reply-To: <cover.1770908783.git.m.wieczorretman@pm.me>
+References: <cover.1770908783.git.m.wieczorretman@pm.me>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 13dc42a1ba63ab0ef2e91884790de5ad50f75227
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2925; i=matttbe@kernel.org; h=from:subject; bh=YxruUXO+vGA4F+8DkfEKookwW/IrvLpnYlr9D467xAA=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJ73/gsF+K5VK6vvOOmudWqR9J22e1OZidWrLJbnLpcP /TY1dnTOkpZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACai8p2RYWXwlf8rvW7eiZ14 nKHtwqvqxy+ZWHNOZVzMZHyucOHF888M/6NnMheU9i9+Edy5MtvaIG/O92l9T2ZpR+uXsX5JNw4 MYQYA
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[pm.me,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[pm.me:s=protonmail3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MISSING_XM_UA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-215974-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[m.wieczorretman@pm.me,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,5498a510ff9de39d37da];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B648812EC30
+	TAGGED_FROM(0.00)[bounces-215975-lists,stable=lfdr.de];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[pm.me:+]
+X-Rspamd-Queue-Id: 3F63512F01A
 X-Rspamd-Action: no action
 
-From: Eric Dumazet <edumazet@google.com>
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-commit e2a9eeb69f7d4ca4cf4c70463af77664fdb6ab1d upstream.
+If some config options are disabled during compile time, they still are
+enumerated in macros that use the x86_capability bitmask - cpu_has() or
+this_cpu_has().
 
-syzbot and Eulgyu Kim reported crashes in mptcp_pm_nl_get_local_id()
-and/or mptcp_pm_nl_is_backup()
+The features are also visible in /proc/cpuinfo even though they are not
+enabled - which is contrary to what the documentation states about the
+file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
+split_lock_detect, user_shstk, avx_vnni and enqcmd.
 
-Root cause is list_splice_init() in mptcp_pm_nl_flush_addrs_doit()
-which is not RCU ready.
+Through the cpufeaturemasks.awk script add a DISABLED_MASK_INITIALIZER
+macro that creates an initializer list filled with DISABLED_MASKx
+bitmasks.
 
-list_splice_init_rcu() can not be called here while holding pernet->lock
-spinlock.
+At the same time add a REQUIRED_MASK_INITIALIZER that can be used for a
+sanity check of whether all the required feature bits are set at the end
+of cpu identification.
 
-Many thanks to Eulgyu Kim for providing a repro and testing our patches.
+Initialize the cpu_caps_cleared array with the autogenerated disabled
+bitmask. apply_forced_caps() will clear the corresponding bits in
+boot_cpu_data.x86_capability[] and other secondary cpus'
+cpu_data.x86_capability[]. Thus features disabled at compile time won't
+show up in /proc/cpuinfo.
 
-Fixes: 141694df6573 ("mptcp: remove address when netlink flushes addrs")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot+5498a510ff9de39d37da@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6970a46d.a00a0220.3ad28e.5cf0.GAE@google.com/T/
-Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/611
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260124-net-mptcp-race_nl_flush_addrs-v3-1-b2dc1b613e9d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts because the code has been moved from pm_netlink.c to
-  pm_kernel.c later on in commit 8617e85e04bd ("mptcp: pm: split
-  in-kernel PM specific code"). The same modifications can be applied
-  in pm_netlink.c with one exception, because 'pernet->local_addr_list'
-  has been renamed to 'pernet->endp_list' in commit 35e71e43a56d
-  ("mptcp: pm: in-kernel: rename 'local_addr_list' to 'endp_list'"). The
-  previous name is then still being used in this version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220348
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: <stable@vger.kernel.org> # 6.18.x
 ---
- net/mptcp/pm_netlink.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/common.c       | 3 ++-
+ arch/x86/tools/cpufeaturemasks.awk | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 0b4ab3c816da..864c26e22b24 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1811,16 +1811,26 @@ static void __reset_counters(struct pm_nl_pernet *pernet)
- int mptcp_pm_nl_flush_addrs_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct pm_nl_pernet *pernet = genl_info_pm_nl(info);
--	LIST_HEAD(free_list);
-+	struct list_head free_list;
- 
- 	spin_lock_bh(&pernet->lock);
--	list_splice_init(&pernet->local_addr_list, &free_list);
-+	free_list = pernet->local_addr_list;
-+	INIT_LIST_HEAD_RCU(&pernet->local_addr_list);
- 	__reset_counters(pernet);
- 	pernet->next_id = 1;
- 	bitmap_zero(pernet->id_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
- 	spin_unlock_bh(&pernet->lock);
--	mptcp_nl_flush_addrs_list(sock_net(skb->sk), &free_list);
-+
-+	if (free_list.next == &pernet->local_addr_list)
-+		return 0;
-+
- 	synchronize_rcu();
-+
-+	/* Adjust the pointers to free_list instead of pernet->local_addr_list */
-+	free_list.prev->next = &free_list;
-+	free_list.next->prev = &free_list;
-+
-+	mptcp_nl_flush_addrs_list(sock_net(skb->sk), &free_list);
- 	__flush_addrs(&free_list);
- 	return 0;
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index e7ab22fce3b5..8d12c5722245 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -732,7 +732,8 @@ static const char *table_lookup_model(struct cpuinfo_x8=
+6 *c)
  }
--- 
-2.51.0
+=20
+ /* Aligned to unsigned long to avoid split lock in atomic bitmap ops */
+-__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
+));
++__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
+)) =3D
++=09DISABLED_MASK_INITIALIZER;
+ __u32 cpu_caps_set[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long));
+=20
+ #ifdef CONFIG_X86_32
+diff --git a/arch/x86/tools/cpufeaturemasks.awk b/arch/x86/tools/cpufeature=
+masks.awk
+index 173d5bf2d999..b7f4e775a365 100755
+--- a/arch/x86/tools/cpufeaturemasks.awk
++++ b/arch/x86/tools/cpufeaturemasks.awk
+@@ -82,6 +82,12 @@ END {
+ =09=09}
+ =09=09printf " 0\t\\\n";
+ =09=09printf "\t) & (1U << ((x) & 31)))\n\n";
++
++=09=09printf "\n#define %s_MASK_INITIALIZER\t\t\t\\", s;
++=09=09printf "\n\t{\t\t\t\t\t\t\\";
++=09=09for (i =3D 0; i < ncapints; i++)
++=09=09=09printf "\n\t\t%s_MASK%d,\t\t\t\\", s, i;
++=09=09printf "\n\t}\n\n";
+ =09}
+=20
+ =09printf "#endif /* _ASM_X86_CPUFEATUREMASKS_H */\n";
+--=20
+2.53.0
+
 
 
