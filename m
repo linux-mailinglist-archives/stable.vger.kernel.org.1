@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-215901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215903-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yL2ENr4ojWl8zgAAu9opvQ
-	(envelope-from <stable+bounces-215901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:11:26 +0100
+	id 8GMzBXcpjWl8zgAAu9opvQ
+	(envelope-from <stable+bounces-215903-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:14:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574DA128D14
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:11:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5D0128DF5
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:14:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C427330603FA
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 01:10:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84A6D31597F1
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 01:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B161EB19B;
-	Thu, 12 Feb 2026 01:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058521FE46D;
+	Thu, 12 Feb 2026 01:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQihO52a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gXnwlXDy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01681F936;
-	Thu, 12 Feb 2026 01:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D911F3BAC;
+	Thu, 12 Feb 2026 01:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770858620; cv=none; b=A6ECbEud07wjJsH381f2zfsce7lMxkmQ1wnv6dxMTaAqm7qzIMc5zwvrVcRnKLagcIKtt/VdxjU98KHsdym3B0IkRjYygy2xTzng36lCaTz+MBmq58qVkkLwV0+AKpp0CrDddA5+qLqMpO6CAHJSQI4g51U98yKp8B4g0YaLD1o=
+	t=1770858621; cv=none; b=tcqUVc4TF+7u4VqATMBM2rey5GlcGmXHFqXBMp+AT/hrk/Y+PUVO8o4kAMIhnWKvf4jym8ZxUQKRkGZehbW7h2hj4xgRgUuXUcpZC0Ksh4Xcnp2yjjU22yHm4khLpCUzKksgv8GP1g27JmxTaL8zttRdlmESv0h/oFupKnXQXbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770858620; c=relaxed/simple;
-	bh=Xyjhxetf/JuBjLMUQzU/EP8+gsZ6mzTazLRP1oGO4R8=;
+	s=arc-20240116; t=1770858621; c=relaxed/simple;
+	bh=+lGniL+OxbcFxoAlMxETmX7mmGnwfdS+rLkMfIkKd28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmo9R/8r/Hz210HS6Pvqh+eC2NTmVFHd0iFWTfU+4jYAHWHkSInh45hGugw/BAwVBnSrrTaMnm/ZoSk5fGAdD/RcnxaSYV/HcJA2M4HDIuvZzrrqBXLbmF6XiAOrCBu8IYh5V5vYpsilpyDGbwX0bFQvfnU76oxv4DsM4wKaJvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQihO52a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEAFC19423;
-	Thu, 12 Feb 2026 01:10:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RiaUaTWQgOSQzINi4z7igFoL6q6rOuoaIoxIF9aG2YqhowjieD+J/oElYLEqwGayPDwRdWAxfgoWdtw9AIm2WdS1U+qGhvLVqQxb7o4SEPko0usfe8Gyxa7IifDeGEg4DXj+c7mrCYFDioxbfYz6aqM32H2xup0C7JgQUxbLPDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gXnwlXDy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC25CC19425;
+	Thu, 12 Feb 2026 01:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770858620;
-	bh=Xyjhxetf/JuBjLMUQzU/EP8+gsZ6mzTazLRP1oGO4R8=;
+	s=k20201202; t=1770858621;
+	bh=+lGniL+OxbcFxoAlMxETmX7mmGnwfdS+rLkMfIkKd28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQihO52aSVmxJWuTSkuXTjGFgZ8nUh+y/kouMrskVsFa/DUtkk1zzCGkP1Pcq+ME5
-	 JaGf5kjLacoI6RsJ8hz5bwbXawd4b0Cuk7Hlcdh/5MlsNtMwEzv6C6bHrQByfOoXMw
-	 eG6Afh9a/YUw8dZdtFY+SIid579cF8V4MLKTDLS9k9kxuZmGhoIoi5vCsjBQ/W2jo6
-	 CfiJf3yHKMRki9xUXvVcRkKBzUrW0m+8aoOCgdGgECM31Na2AT6zPHOioU+gmtskuE
-	 MHRLq7earyNOiPBS5ad8rgyx1L6qyFy/DfDY5gbAVS8LXeUePZAeYFttNgnHfOwQby
-	 wShYrcDQSgdeQ==
+	b=gXnwlXDyqO9OVFGgYsHen9VbpkzDcoywnj9St8ViuT8HZf+60qPGTBbLDiDFasI4l
+	 tOuWOP/hB4lwkuZyRCmgXhWDhIedAJ3yEIi9Q4wREuRE+VsAoNfX/L88coBT5Bn8XR
+	 yaMdUV/Qqc1kX2AJnlAHOzBpp4Zg+qQiVI8yWZfprJ+01gq+uVBgPTsNfndVP5+EEc
+	 Q8wzm4tHgXhMF8JlKuyOCfe5U/mn4MHnUesb2uTmzLsObh5C6yUoKjJLWhGVLqgEtW
+	 vdgmVMnpMxWc9P7ukKQvFzlYwo0C2jIJdn/5oWXjqR9OKnPwr5nZW0kj1Py+gpanlS
+	 wzarBnlWSLyVw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Martin Schiller <ms@dev.tdt.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	linux-perf-users@vger.kernel.org,
+	tglx@kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.12] perf/x86/cstate: Add Airmont NP
-Date: Wed, 11 Feb 2026 20:09:37 -0500
-Message-ID: <20260212010955.3480391-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-5.10] clocksource/drivers/timer-integrator-ap: Add missing Kconfig dependency on OF
+Date: Wed, 11 Feb 2026 20:09:38 -0500
+Message-ID: <20260212010955.3480391-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260212010955.3480391-1-sashal@kernel.org>
 References: <20260212010955.3480391-1-sashal@kernel.org>
@@ -71,189 +67,163 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-215901-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215903-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,infradead.org:email,intel.com:email,tdt.de:email]
-X-Rspamd-Queue-Id: 574DA128D14
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linaro.org:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: 6C5D0128DF5
 X-Rspamd-Action: no action
 
-From: Martin Schiller <ms@dev.tdt.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit 3006911f284d769b0f66c12b39da130325ef1440 ]
+[ Upstream commit 2246464821e2820572e6feefca2029f17629cc50 ]
 
-From the perspective of Intel cstate residency counters, the Airmont NP
-(aka Lightning Mountain) is identical to the Airmont.
+This driver accesses the of_aliases global variable declared in
+linux/of.h and defined in drivers/base/of.c. It requires OF support or
+will cause a link failure. Add the missing Kconfig dependency.
 
-Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Link: https://patch.msgid.link/20251124074846.9653-4-ms@dev.tdt.de
+Closes: https://lore.kernel.org/oe-kbuild-all/202601152233.og6LdeUo-lkp@intel.com/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20260116111723.10585-1-bartosz.golaszewski@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a complete picture. Here is my analysis:
+The key observation is that the `extern` declarations for `of_root`,
+`of_chosen`, `of_aliases`, `of_stdout` at lines 141-144 are **outside
+any `#ifdef CONFIG_OF`** guard. They are visible regardless of
+CONFIG_OF. But the actual definition of `of_aliases` only exists in
+`drivers/of/base.c` which is only compiled when `CONFIG_OF=y`.
 
----
+This means:
+1. When `CONFIG_OF=n` and `CONFIG_COMPILE_TEST=y`, the
+   `INTEGRATOR_AP_TIMER` config can be enabled
+2. The driver compiles fine (the extern declaration is visible)
+3. But at link time, there is no definition for `of_aliases` → **linker
+   error**
 
-## Detailed Analysis of "perf/x86/cstate: Add Airmont NP"
+## Summary of Analysis
 
-### 1. COMMIT MESSAGE ANALYSIS
+**Commit:** Adds `depends on OF` to `INTEGRATOR_AP_TIMER` Kconfig
+option.
 
-The commit adds a single CPU model ID entry for Intel Airmont NP (also
-known as Lightning Mountain, CPU model 0x75) to the perf cstate
-residency counter driver's match table. The author, Martin Schiller from
-TDT (a networking hardware company), states that from the perspective of
-cstate residency counters, Airmont NP is identical to regular Airmont.
-The patch was reviewed by Dapeng Mi (Intel) and signed off by Peter
-Zijlstra (Intel), the perf maintainer.
+### 1. What Problem Does It Fix?
 
-The message ID `20251124074846.9653-4-ms@dev.tdt.de` indicates this is
-patch 4 of a multi-patch series, which likely adds Airmont NP support to
-several Intel subsystems simultaneously.
+This is a **build fix** — it prevents a **link failure** when
+`CONFIG_INTEGRATOR_AP_TIMER=y` with `CONFIG_COMPILE_TEST=y` but
+`CONFIG_OF=n`. The driver `timer-integrator-ap.c` directly references
+the global variable `of_aliases` (at lines 181 and 201), which is
+defined in `drivers/of/base.c`. That file is only compiled when
+`CONFIG_OF=y` (per `drivers/Makefile`: `obj-$(CONFIG_OF) += of/`).
+Without `depends on OF`, the Kconfig allows enabling the driver in
+configurations where OF is disabled, causing an unresolved symbol at
+link time.
 
-### 2. CODE CHANGE ANALYSIS
+This was reported by Intel's kbuild test robot (automated build
+testing), confirming it's a real, reproducible build failure.
 
-The change is a single line addition:
+### 2. Stable Kernel Rules Assessment
 
-```c
-X86_MATCH_VFM(INTEL_ATOM_AIRMONT_NP,    &slm_cstates),
-```
+- **Obviously correct and tested**: Yes. It's a one-line Kconfig
+  dependency addition. The driver uses `of_aliases` and multiple OF APIs
+  (`of_io_request_and_map`, `of_clk_get`, `of_property_read_string`,
+  `of_find_node_by_path`, `of_node_put`, `irq_of_parse_and_map`,
+  `TIMER_OF_DECLARE`). It clearly requires `CONFIG_OF`.
+- **Fixes a real bug**: Yes — a link failure preventing kernel
+  compilation in certain configurations.
+- **Fixes an important issue**: Build fixes are explicitly listed as
+  backport-worthy in the stable rules. A link error prevents anyone from
+  building the kernel with that configuration.
+- **Small and contained**: Yes — single line addition to a Kconfig file.
+  Zero risk of runtime regression.
+- **No new features**: Correct — this only adds a constraint on when the
+  driver can be selected.
 
-This maps CPU model `INTEL_ATOM_AIRMONT_NP` (IFM(6, 0x75)) to the
-`slm_cstates` configuration, which provides:
-- **Core events**: C1 and C6 residency counters
-- **Package events**: C6 residency counter (using the C7 MSR quirk)
+### 3. Risk vs Benefit
 
-This is the exact same cstate model used by Silvermont
-(`INTEL_ATOM_SILVERMONT`), Silvermont-D (`INTEL_ATOM_SILVERMONT_D`), and
-regular Airmont (`INTEL_ATOM_AIRMONT`). The Airmont NP is
-architecturally an Airmont-based SoC, so sharing the same cstate
-configuration is technically correct and expected.
+- **Risk**: Essentially zero. Adding a Kconfig `depends on OF` only
+  narrows the set of configurations where this driver can be enabled.
+  Since the driver fundamentally requires OF to work (it uses OF APIs
+  throughout), this is purely corrective. No runtime behavior changes.
+- **Benefit**: Fixes a real build failure that prevents kernel
+  compilation.
 
-### 3. CLASSIFICATION: NEW DEVICE ID
+### 4. Scope
 
-This falls squarely into the **"New Device ID"** exception category for
-stable backports:
-- The driver (`arch/x86/events/intel/cstate.c`) already exists in all
-  stable trees back to v5.4
-- The `slm_cstates` model structure already exists unchanged in all
-  stable trees
-- The `INTEL_ATOM_AIRMONT_NP` (or `INTEL_FAM6_ATOM_AIRMONT_NP`) macro
-  has been defined since v5.4 (commit 855fa1f362ca from September 2019)
-- Only the ID-to-model mapping is new
+- **One line changed** in `drivers/clocksource/Kconfig`
+- **One file affected**
+- No code logic changes, no runtime impact
 
-### 4. SCOPE AND RISK ASSESSMENT
+### 5. Affected Versions
 
-- **Lines changed**: 1 addition
-- **Files touched**: 1 (`arch/x86/events/intel/cstate.c`)
-- **Complexity**: Trivial - a single entry in a match table
-- **Risk of regression**: Essentially zero. The new line only activates
-  when running on an Airmont NP CPU (model 0x75). It cannot affect any
-  other CPU or any other code path.
+The bug has existed since commit `568c0342e494` (June 2016, v4.8 cycle)
+when `COMPILE_TEST` was added to `INTEGRATOR_AP_TIMER`. All current
+stable trees (5.4.y through 6.12.y) are affected and the patch applies
+cleanly since the surrounding Kconfig hasn't changed.
 
-### 5. USER IMPACT
+### 6. Dependencies
 
-Without this patch, users running Linux on the Intel Lightning Mountain
-SoC (used in networking/embedded equipment like DSL/fiber routers from
-companies such as TDT) cannot access perf cstate residency counters.
-These counters are used by power management monitoring tools like `perf`
-and `turbostat` to measure CPU power states. While not a crash or data
-corruption bug, this is a hardware support gap for real users on real
-hardware.
+None. This is completely self-contained.
 
-The Lightning Mountain SoC vulnerability whitelist entry already exists
-in `arch/x86/kernel/cpu/common.c` (since earlier kernels), and
-`arch/x86/kernel/tsc_msr.c` already has Airmont NP support. The cstate
-driver was simply overlooked.
+### 7. Classification
 
-### 6. BACKPORTABILITY TO STABLE TREES
+This is a **build fix** — one of the explicitly listed categories for
+stable backporting. Build fixes are critical because they affect anyone
+who needs to compile the kernel with a particular configuration. Even
+though this specific configuration (COMPILE_TEST=y, OF=n) may not be
+common for production kernels (since the Integrator/AP platform always
+has OF), it matters for:
+- Automated build testing infrastructure (like Intel's kbuild)
+- Distributions running `make allmodconfig` / `make allyesconfig`
+  testing
+- Developers using COMPILE_TEST for coverage
 
-The change requires trivial adaptation for different stable trees due to
-macro naming:
-
-- **v6.12+**: Uses `X86_MATCH_VFM(INTEL_ATOM_AIRMONT_NP, &slm_cstates)`
-  - applies as-is
-- **v6.1, v6.6**: Uses `X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT_NP,
-  &slm_cstates)` - trivial macro name change
-- **v5.4, v5.10, v5.15**: Uses
-  `X86_CSTATES_MODEL(INTEL_FAM6_ATOM_AIRMONT_NP, slm_cstates)` (v5.4) or
-  `X86_MATCH_INTEL_FAM6_MODEL` variant - trivial adaptation
-
-All prerequisites (`slm_cstates` struct, the `AIRMONT_NP` macro) exist
-in every supported stable tree.
-
-### 7. DEPENDENCY CHECK
-
-This commit is self-contained. While it's part of a series (patch 4/N),
-each patch in such a series independently adds a CPU ID to a different
-driver's match table. No other commits are needed for this one to
-function correctly.
-
-### 8. STABILITY INDICATORS
-
-- **Reviewed-by**: Dapeng Mi (Intel) - domain expert
-- **Signed-off-by**: Peter Zijlstra (Intel) - perf subsystem maintainer
-- The pattern is well-established: every other Atom variant (Silvermont,
-  Silvermont-D, Airmont, Goldmont, Tremont, etc.) follows the exact same
-  pattern in this driver
-
----
-
-## Summary
-
-This is a textbook CPU ID addition to an existing driver - the exact
-type of change that stable kernel rules explicitly permit as an
-exception. It's a single-line, zero-risk change that enables hardware
-monitoring on real embedded/networking hardware (Intel Lightning
-Mountain SoC). The driver infrastructure, cstate model, and CPU ID
-definitions are all already present in every supported stable tree. The
-patch was reviewed by an Intel engineer and accepted by the perf
-maintainer.
+The fix is small, surgical, zero-risk, and meets all stable kernel
+criteria perfectly.
 
 **YES**
 
- arch/x86/events/intel/cstate.c | 1 +
+ drivers/clocksource/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
-index fa67fda6e45b4..c1e318bdaa397 100644
---- a/arch/x86/events/intel/cstate.c
-+++ b/arch/x86/events/intel/cstate.c
-@@ -599,6 +599,7 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
- 	X86_MATCH_VFM(INTEL_ATOM_SILVERMONT,	&slm_cstates),
- 	X86_MATCH_VFM(INTEL_ATOM_SILVERMONT_D,	&slm_cstates),
- 	X86_MATCH_VFM(INTEL_ATOM_AIRMONT,	&slm_cstates),
-+	X86_MATCH_VFM(INTEL_ATOM_AIRMONT_NP,	&slm_cstates),
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index aa59e5b133510..fd91127065454 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -254,6 +254,7 @@ config KEYSTONE_TIMER
  
- 	X86_MATCH_VFM(INTEL_BROADWELL,		&snb_cstates),
- 	X86_MATCH_VFM(INTEL_BROADWELL_D,	&snb_cstates),
+ config INTEGRATOR_AP_TIMER
+ 	bool "Integrator-AP timer driver" if COMPILE_TEST
++	depends on OF
+ 	select CLKSRC_MMIO
+ 	help
+ 	  Enables support for the Integrator-AP timer.
 -- 
 2.51.0
 
