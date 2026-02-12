@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-215915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNjjKaF1jWnN2wAAu9opvQ
-	(envelope-from <stable+bounces-215915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 07:39:29 +0100
+	id u+XTKXh4jWl63AAAu9opvQ
+	(envelope-from <stable+bounces-215916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 07:51:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D7112ACAD
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 07:39:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E9512ACED
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 07:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 360E83067764
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 06:39:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B27730530C5
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 06:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762F2296BD2;
-	Thu, 12 Feb 2026 06:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FA728D8DA;
+	Thu, 12 Feb 2026 06:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="CPrBsPfL"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="MaOYg3zN"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D46319CC14
-	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 06:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190BA2367A2
+	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 06:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770878364; cv=none; b=ruEsh7RGHrG1LNVKxPiyyFz+TjT1kTuSDAJAzP+9kE4FH21EbtW57RBUpuCYhPqucvxgq0w7IdkbHnNTvBCPNROzfNd6riiNTAi/T+tjTGPktaNwERrS+4wg1k0vvfjGPTPcDSp6vrPVzDR8Sjk0Hl3Vc8ar1o6NffPC3rdzUBE=
+	t=1770879089; cv=none; b=XPgaLh8+wLPF6RGXyQIZBNkfY9irFwonN+ivt4yIQBBsQsJHjfPk4W+2xGf7LG4sOpK7dFdgDpLUcrzyWHeEyXSfX8cUZW6oXVpZKQDZKq8TG+OQ9oQsRMnXpi9vFGm5xb3WBXlkreLihV4DEiq+hVTG7kc4/brR/c74t4j/vXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770878364; c=relaxed/simple;
-	bh=O34gZIYg49kZyNPTCzXcE+jPWhdJA8mJFoL0W1Dbogw=;
-	h=From:To:Subject:Date:Message-Id; b=Jug36oZwed+2UQUuosx08c2Z50/OKBWbxNDgh2w0e5Nz8gABSEubd824cF+OjjtnB5PFnGrD49N/n2QI/AYw6U9uRqjF/wmwN7d8JKi21MNdNkA0JdTv08rDDSMYi1+6/qHCulbcUC/KffClZu8xpQ1FKh+Oaz1K4pqjwxQQnA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=CPrBsPfL; arc=none smtp.client-ip=120.232.169.110
+	s=arc-20240116; t=1770879089; c=relaxed/simple;
+	bh=r6roCl9Od0O4qVuKsSvxupqIDr/uceaRYcAuDsTbst8=;
+	h=From:To:Subject:Date:Message-Id; b=AK2TLYYEdtBPGRAYWUCJ6FKFHZf6ws9ytr9WHDH6zNZ2VtD9UcsaS1vr+EZrcqZ0CdykBQQgvkciIB0jYU4ASwvA4OJUqEtjBrwd/ZUU0W5n5AmD3IvQHPWi1rSwbnFePncawe2iX0zNCkbXIiAuAAr8JjrQl0/VcVsrl6gAzXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=MaOYg3zN; arc=none smtp.client-ip=120.232.169.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=CPrBsPfLjaduzZXUZjp1eByIv6Rl7QKWRXtU15MNusDfg3Btn9J7fxfMI21ppJ3cJm3mLh/+JsVrn
-	 SC99vzeExEQDStWXEzHPduUVF54JvSOyaccRKH6/d1c+xwN0J2o+YFgo4P1qZFlZOa/whpw/ba9GNg
-	 D6hVk+sVOLaUP01s=
+	b=MaOYg3zNpkUyMGaUQ3K4HxJVYeEj6PUSrL4W5r700QNHs4O5mPd4p8tPz9pykRo6jDdG9XZ/eiuWV
+	 wO29n6aV1MafMAk5hWS8A+2nVSJZqLejZAyYJ81rouldO7p6kfGp9Dm4WqIyh/4Au4Ft3nU4krAObt
+	 vSnIuCAok1RHciko=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from NTT-kernel-dev (unknown[117.129.7.232])
-	by rmsmtp-lg-appmail-09-12087 (RichMail) with SMTP id 2f37698d74d6bad-96254;
-	Thu, 12 Feb 2026 14:36:08 +0800 (CST)
-X-RM-TRANSID:2f37698d74d6bad-96254
+	by rmsmtp-lg-appmail-27-12032 (RichMail) with SMTP id 2f00698d786114e-96863;
+	Thu, 12 Feb 2026 14:51:15 +0800 (CST)
+X-RM-TRANSID:2f00698d786114e-96863
 From: Rajani Kantha <681739313@139.com>
-To: xueshuai@linux.alibaba.com,
-	jarkko@kernel.org,
-	Jonathan.Cameron@huawei.com,
-	yazen.ghannam@amd.com,
-	jane.chu@oracle.com,
-	guohanjun@huawei.com,
+To: dqfext@gmail.com,
+	jacob.e.keller@intel.com,
+	kuba@kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 6.1.y] ACPI: APEI: send SIGBUS to current task if synchronous memory error not recovered
-Date: Thu, 12 Feb 2026 14:36:05 +0800
-Message-Id: <20260212063605.2284-1-681739313@139.com>
+Subject: [PATCH 6.1.y] net: stmmac: Fix accessing freed irq affinity_hint
+Date: Thu, 12 Feb 2026 14:51:14 +0800
+Message-Id: <20260212065114.2532-1-681739313@139.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,92 +63,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215915-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[139.com];
-	DKIM_TRACE(0.00)[139.com:-];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FREEMAIL_FROM(0.00)[139.com];
-	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215916-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[139.com];
+	FREEMAIL_TO(0.00)[gmail.com,intel.com,kernel.org,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[139.com];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_NONE(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,oracle.com:email,139.com:mid,139.com:email]
-X-Rspamd-Queue-Id: 43D7112ACAD
+	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,139.com:mid,139.com:email]
+X-Rspamd-Queue-Id: E5E9512ACED
 X-Rspamd-Action: no action
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit 79a5ae3c4c5eb7e38e0ebe4d6bf602d296080060 ]
+[ Upstream commit c60d101a226f18e9a8f01bb4c6ca2b47dfcb15ef ]
 
-If a synchronous error is detected as a result of user-space process
-triggering a 2-bit uncorrected error, the CPU will take a synchronous
-error exception such as Synchronous External Abort (SEA) on Arm64. The
-kernel will queue a memory_failure() work which poisons the related
-page, unmaps the page, and then sends a SIGBUS to the process, so that
-a system wide panic can be avoided.
+The cpumask should not be a local variable, since its pointer is saved
+to irq_desc and may be accessed from procfs.
+To fix it, use the persistent mask cpumask_of(cpu#).
 
-However, no memory_failure() work will be queued when abnormal
-synchronous errors occur. These errors can include situations like
-invalid PA, unexpected severity, no memory failure config support,
-invalid GUID section, etc. In such a case, the user-space process will
-trigger SEA again.  This loop can potentially exceed the platform
-firmware threshold or even trigger a kernel hard lockup, leading to a
-system reboot.
-
-Fix it by performing a force kill if no memory_failure() work is queued
-for synchronous errors.
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Reviewed-by: Jane Chu <jane.chu@oracle.com>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-Link: https://patch.msgid.link/20250714114212.31660-2-xueshuai@linux.alibaba.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[ Using pr_err instead of dev_err due to ghes doesn't have member "dev"]
+Cc: stable@vger.kernel.org
+Fixes: 8deec94c6040 ("net: stmmac: set IRQ affinity hint for multi MSI vectors")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250318032424.112067-1-dqfext@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Rajani Kantha <681739313@139.com>
 ---
- drivers/acpi/apei/ghes.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 03344c273222..9fb86d0c4ff0 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -684,6 +684,16 @@ static bool ghes_do_proc(struct ghes *ghes,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b8b3ef09ea99..b5de07b84f77 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3518,7 +3518,6 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	enum request_irq_err irq_err;
+-	cpumask_t cpu_mask;
+ 	int irq_idx = 0;
+ 	char *int_name;
+ 	int ret;
+@@ -3630,9 +3629,8 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 			irq_idx = i;
+ 			goto irq_error;
  		}
+-		cpumask_clear(&cpu_mask);
+-		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
+-		irq_set_affinity_hint(priv->rx_irq[i], &cpu_mask);
++		irq_set_affinity_hint(priv->rx_irq[i],
++				      cpumask_of(i % num_online_cpus()));
  	}
  
-+	/*
-+	 * If no memory failure work is queued for abnormal synchronous
-+	 * errors, do a force kill.
-+	 */
-+	if (sync && !queued) {
-+		pr_err(GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
-+			current->comm, task_pid_nr(current));
-+		force_sig(SIGBUS);
-+	}
-+
- 	return queued;
- }
+ 	/* Request Tx MSI irq */
+@@ -3655,9 +3653,8 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		cpumask_clear(&cpu_mask);
+-		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
+-		irq_set_affinity_hint(priv->tx_irq[i], &cpu_mask);
++		irq_set_affinity_hint(priv->tx_irq[i],
++				      cpumask_of(i % num_online_cpus()));
+ 	}
  
+ 	return 0;
 -- 
 2.17.1
 
