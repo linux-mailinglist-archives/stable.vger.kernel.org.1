@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-215902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215901-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IESWCr8ojWmEzgAAu9opvQ
-	(envelope-from <stable+bounces-215902-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:11:27 +0100
+	id yL2ENr4ojWl8zgAAu9opvQ
+	(envelope-from <stable+bounces-215901-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:11:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9943E128D15
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574DA128D14
 	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 02:11:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E54D23060D2C
+	by tor.lore.kernel.org (Postfix) with ESMTP id C427330603FA
 	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 01:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40D61EBA19;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B161EB19B;
 	Thu, 12 Feb 2026 01:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1/2P6Kf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQihO52a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01BF1B81CA;
-	Thu, 12 Feb 2026 01:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01681F936;
+	Thu, 12 Feb 2026 01:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770858620; cv=none; b=Y41lpMsGYBN+lM+U/l9rTKO1qVvqH2pn/QJ6IFNLt47kmwK/Q6eSnGjLuF97VfIqmdKF6oj/ltQLqz7Oc/G62i1v8GDVqlWuFJP58Mq0AReAE+8SH/tm1fy5Nj9KrjzrV2KOjzZTbPVQSezJ5bnCaVZhX1fX754Tcd2Em/s5xlQ=
+	t=1770858620; cv=none; b=A6ECbEud07wjJsH381f2zfsce7lMxkmQ1wnv6dxMTaAqm7qzIMc5zwvrVcRnKLagcIKtt/VdxjU98KHsdym3B0IkRjYygy2xTzng36lCaTz+MBmq58qVkkLwV0+AKpp0CrDddA5+qLqMpO6CAHJSQI4g51U98yKp8B4g0YaLD1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770858620; c=relaxed/simple;
-	bh=3EDqfbwCBf5FnZ/AoYq0Uf0EzSt1GquuJEJw+pJY3Ls=;
+	bh=Xyjhxetf/JuBjLMUQzU/EP8+gsZ6mzTazLRP1oGO4R8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJ96ljl/7Yy7rvZRvX4BhOuro3JbdQaoQsiHfkjBibuBJXMeq8hc1Zvlwgd1DsP4CpKisdB3OG8AwjHCtVteXFGUaJY9Si3eyowi7/4rZD3it5wmkjon0QsacCmIVfiOWxtRW86xQB1vzWsCtnYLSZ/wOHOKl6zHVaASBmnOfIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1/2P6Kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87739C4CEF7;
-	Thu, 12 Feb 2026 01:10:17 +0000 (UTC)
+	 MIME-Version; b=hmo9R/8r/Hz210HS6Pvqh+eC2NTmVFHd0iFWTfU+4jYAHWHkSInh45hGugw/BAwVBnSrrTaMnm/ZoSk5fGAdD/RcnxaSYV/HcJA2M4HDIuvZzrrqBXLbmF6XiAOrCBu8IYh5V5vYpsilpyDGbwX0bFQvfnU76oxv4DsM4wKaJvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQihO52a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEAFC19423;
+	Thu, 12 Feb 2026 01:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770858618;
-	bh=3EDqfbwCBf5FnZ/AoYq0Uf0EzSt1GquuJEJw+pJY3Ls=;
+	s=k20201202; t=1770858620;
+	bh=Xyjhxetf/JuBjLMUQzU/EP8+gsZ6mzTazLRP1oGO4R8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1/2P6KfJiq7HNX01r5yeHGoVTXA2k0kvFZIfVkgw82b97m9ldDRvKMSuf1EWxCbO
-	 WqBqv4CX0tVPivTz5u8xOaW6J5Jjj6inBLQSdpWIDh2UsEQjADznVFRX/n/BBgdKZZ
-	 rMI9U458UNV0ApXV3d4uR4IgcXhTeL9JLqk2H/H3/k9yCPJOqGqdTEMqpGR9D1N+CS
-	 o3QS4YwdfnhohNuw414zE2Zc71w/NsU6s998X9NmhRQSAKLoX8PBV/JQIqiTmsaYFb
-	 6nFDroVxSR/jp1yYzJedg0zgoynofdzrVZhouDdfFezPEPpuO88fjHtXNb0J+m8b3k
-	 zrZoPWRAu6kCQ==
+	b=PQihO52aSVmxJWuTSkuXTjGFgZ8nUh+y/kouMrskVsFa/DUtkk1zzCGkP1Pcq+ME5
+	 JaGf5kjLacoI6RsJ8hz5bwbXawd4b0Cuk7Hlcdh/5MlsNtMwEzv6C6bHrQByfOoXMw
+	 eG6Afh9a/YUw8dZdtFY+SIid579cF8V4MLKTDLS9k9kxuZmGhoIoi5vCsjBQ/W2jo6
+	 CfiJf3yHKMRki9xUXvVcRkKBzUrW0m+8aoOCgdGgECM31Na2AT6zPHOioU+gmtskuE
+	 MHRLq7earyNOiPBS5ad8rgyx1L6qyFy/DfDY5gbAVS8LXeUePZAeYFttNgnHfOwQby
+	 wShYrcDQSgdeQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Namhyung Kim <namhyung@kernel.org>,
-	Rosalie Fang <rosaliefang@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
+Cc: Martin Schiller <ms@dev.tdt.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	mingo@redhat.com,
 	acme@kernel.org,
+	namhyung@kernel.org,
 	linux-perf-users@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.18] perf/core: Fix slow perf_event_task_exit() with LBR callstacks
-Date: Wed, 11 Feb 2026 20:09:36 -0500
-Message-ID: <20260212010955.3480391-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-6.12] perf/x86/cstate: Add Airmont NP
+Date: Wed, 11 Feb 2026 20:09:37 -0500
+Message-ID: <20260212010955.3480391-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260212010955.3480391-1-sashal@kernel.org>
 References: <20260212010955.3480391-1-sashal@kernel.org>
@@ -77,317 +78,182 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-215902-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215901-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9943E128D15
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,infradead.org:email,intel.com:email,tdt.de:email]
+X-Rspamd-Queue-Id: 574DA128D14
 X-Rspamd-Action: no action
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Martin Schiller <ms@dev.tdt.de>
 
-[ Upstream commit 4960626f956d63dce57f099016c2ecbe637a8229 ]
+[ Upstream commit 3006911f284d769b0f66c12b39da130325ef1440 ]
 
-I got a report that a task is stuck in perf_event_exit_task() waiting
-for global_ctx_data_rwsem.  On large systems with lots threads, it'd
-have performance issues when it grabs the lock to iterate all threads
-in the system to allocate the context data.
+From the perspective of Intel cstate residency counters, the Airmont NP
+(aka Lightning Mountain) is identical to the Airmont.
 
-And it'd block task exit path which is problematic especially under
-memory pressure.
-
-  perf_event_open
-    perf_event_alloc
-      attach_perf_ctx_data
-        attach_global_ctx_data
-          percpu_down_write (global_ctx_data_rwsem)
-            for_each_process_thread
-              alloc_task_ctx_data
-                                               do_exit
-                                                 perf_event_exit_task
-                                                   percpu_down_read (global_ctx_data_rwsem)
-
-It should not hold the global_ctx_data_rwsem on the exit path.  Let's
-skip allocation for exiting tasks and free the data carefully.
-
-Reported-by: Rosalie Fang <rosaliefang@google.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Martin Schiller <ms@dev.tdt.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260112165157.1919624-1-namhyung@kernel.org
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://patch.msgid.link/20251124074846.9653-4-ms@dev.tdt.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
+Now I have a complete picture. Here is my analysis:
+
 ---
 
-## Comprehensive Analysis
+## Detailed Analysis of "perf/x86/cstate: Add Airmont NP"
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-**Subject**: "perf/core: Fix slow perf_event_task_exit() with LBR
-callstacks"
+The commit adds a single CPU model ID entry for Intel Airmont NP (also
+known as Lightning Mountain, CPU model 0x75) to the perf cstate
+residency counter driver's match table. The author, Martin Schiller from
+TDT (a networking hardware company), states that from the perspective of
+cstate residency counters, Airmont NP is identical to regular Airmont.
+The patch was reviewed by Dapeng Mi (Intel) and signed off by Peter
+Zijlstra (Intel), the perf maintainer.
 
-The commit message clearly describes a **performance regression / system
-hang** scenario. Key indicators:
-- **"I got a report that a task is stuck"** - real-world report from a
-  Google engineer (Rosalie Fang)
-- **"On large systems with lots threads, it'd have performance issues"**
-  - reproducible on production systems
-- **"it'd block task exit path which is problematic especially under
-  memory pressure"** - can escalate to system unresponsiveness
-- **Reported-by: Rosalie Fang <rosaliefang@google.com>** - actual user
-  report
-- **Suggested-by: Peter Zijlstra** and **Signed-off-by: Peter Zijlstra**
-  - the perf subsystem maintainer suggested and approved the fix
-
-The commit message illustrates the exact deadlock scenario:
-1. `perf_event_open` -> `attach_global_ctx_data` takes
-   `global_ctx_data_rwsem` as a **writer** and iterates all threads to
-   allocate context data
-2. Simultaneously, a task calling `do_exit` -> `perf_event_exit_task`
-   tries to take `global_ctx_data_rwsem` as a **reader**
-3. On large systems with many threads, the write lock is held for a long
-   time during the `for_each_process_thread` loop, blocking ALL task
-   exits
-
-This is effectively a **priority inversion / livelock** scenario where
-task exit (a critical path) is blocked by a potentially very long
-operation (iterating and allocating for all threads in the system).
+The message ID `20251124074846.9653-4-ms@dev.tdt.de` indicates this is
+patch 4 of a multi-patch series, which likely adds Airmont NP support to
+several Intel subsystems simultaneously.
 
 ### 2. CODE CHANGE ANALYSIS
 
-The patch makes three coordinated changes:
-
-#### Change 1: Skip exiting tasks in `attach_global_ctx_data()` (lines
-5483-5484 in the diff)
+The change is a single line addition:
 
 ```c
-for_each_process_thread(g, p) {
-    if (p->flags & PF_EXITING)
-        continue;
+X86_MATCH_VFM(INTEL_ATOM_AIRMONT_NP,    &slm_cstates),
 ```
 
-This adds a check to skip tasks that are already exiting during the
-global iteration. No point allocating context data for a task that's
-about to die.
+This maps CPU model `INTEL_ATOM_AIRMONT_NP` (IFM(6, 0x75)) to the
+`slm_cstates` configuration, which provides:
+- **Core events**: C1 and C6 residency counters
+- **Package events**: C6 residency counter (using the C7 MSR quirk)
 
-#### Change 2: Detect and undo allocation for exiting tasks in
-`attach_task_ctx_data()` (lines 5427-5434 in the diff)
+This is the exact same cstate model used by Silvermont
+(`INTEL_ATOM_SILVERMONT`), Silvermont-D (`INTEL_ATOM_SILVERMONT_D`), and
+regular Airmont (`INTEL_ATOM_AIRMONT`). The Airmont NP is
+architecturally an Airmont-based SoC, so sharing the same cstate
+configuration is technically correct and expected.
 
-After successfully attaching via `try_cmpxchg`, the code now checks:
-```c
-if (task->flags & PF_EXITING) {
-    /* detach_task_ctx_data() may free it already */
-    if (try_cmpxchg(&task->perf_ctx_data, &cd, NULL))
-        perf_free_ctx_data_rcu(cd);
-}
-```
+### 3. CLASSIFICATION: NEW DEVICE ID
 
-This handles the race where `attach_global_ctx_data()` allocates for a
-task that starts exiting between the `PF_EXITING` check and the
-`try_cmpxchg`. If we detect the task is exiting, we undo our allocation.
-
-The key insight: The `try_cmpxchg()` in `attach_task_ctx_data()` pairs
-with the `try_cmpxchg()` in `detach_task_ctx_data()` to provide total
-ordering. If `attach_task_ctx_data()` succeeds the cmpxchg first, it
-will see `PF_EXITING` and undo the allocation. If
-`detach_task_ctx_data()` (called from `perf_event_exit_task`) succeeds
-first, the undo cmpxchg will fail (because `cd` is no longer at
-`task->perf_ctx_data`), which is fine.
-
-#### Change 3: Remove lock from `perf_event_exit_task()` (lines
-14558-14603 in the diff)
-
-The critical change:
-```c
-// BEFORE:
-guard(percpu_read)(&global_ctx_data_rwsem);
-detach_task_ctx_data(task);
-
-// AFTER (no lock):
-detach_task_ctx_data(task);
-```
-
-The comment explains the correctness:
-> Done without holding global_ctx_data_rwsem; typically
-attach_global_ctx_data() will skip over this task, but otherwise
-attach_task_ctx_data() will observe PF_EXITING.
-
-**Correctness argument**:
-- `PF_EXITING` is set in `exit_signals()` (line 913 of exit.c)
-  **before** `perf_event_exit_task()` is called (line 951)
-- The `try_cmpxchg()` operations provide atomic visibility of
-  `task->perf_ctx_data` changes
-- If `attach_global_ctx_data()` races with exit: either it sees
-  `PF_EXITING` and skips, or if it allocates, `attach_task_ctx_data()`
-  sees `PF_EXITING` after the cmpxchg and undoes the allocation
-- `detach_task_ctx_data()` uses `try_cmpxchg` to atomically clear the
-  pointer, so concurrent operations are safe
-
-### 3. BUG CLASSIFICATION
-
-This is a **performance regression / system hang** fix. The
-`global_ctx_data_rwsem` write lock blocks ALL readers (task exits) while
-iterating ALL threads. On systems with thousands of threads:
-- Opening a perf event with LBR callstacks causes the write lock to be
-  held for a long time
-- Every task trying to exit during this period blocks on the read lock
-- Under memory pressure, blocked task exits compound the problem (tasks
-  holding memory can't release it)
-- This can effectively hang the system
+This falls squarely into the **"New Device ID"** exception category for
+stable backports:
+- The driver (`arch/x86/events/intel/cstate.c`) already exists in all
+  stable trees back to v5.4
+- The `slm_cstates` model structure already exists unchanged in all
+  stable trees
+- The `INTEL_ATOM_AIRMONT_NP` (or `INTEL_FAM6_ATOM_AIRMONT_NP`) macro
+  has been defined since v5.4 (commit 855fa1f362ca from September 2019)
+- Only the ID-to-model mapping is new
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-**Lines changed**: ~25 lines added/changed in a single file
-(`kernel/events/core.c`)
-**Files touched**: 1
-**Complexity**: Moderate - the synchronization relies on cmpxchg +
-PF_EXITING flag ordering
-**Risk**: LOW-MEDIUM
-  - The fix is self-contained within the perf subsystem
-  - The cmpxchg-based synchronization replaces a lock-based approach,
-    which is more lockless but well-reasoned
-  - Peter Zijlstra (the maintainer) both suggested and signed off on the
-    approach
-  - The worst case if the fix has a subtle race: a small memory leak of
-    one `perf_ctx_data` allocation (not a crash)
+- **Lines changed**: 1 addition
+- **Files touched**: 1 (`arch/x86/events/intel/cstate.c`)
+- **Complexity**: Trivial - a single entry in a match table
+- **Risk of regression**: Essentially zero. The new line only activates
+  when running on an Airmont NP CPU (model 0x75). It cannot affect any
+  other CPU or any other code path.
 
 ### 5. USER IMPACT
 
-**Who is affected**: Anyone using perf with LBR callstacks (Intel) in
-system-wide mode on systems with many threads. This is common on:
-- Large servers doing production profiling
-- CI/CD systems running perf monitoring
-- Google's production fleet (where the bug was reported)
+Without this patch, users running Linux on the Intel Lightning Mountain
+SoC (used in networking/embedded equipment like DSL/fiber routers from
+companies such as TDT) cannot access perf cstate residency counters.
+These counters are used by power management monitoring tools like `perf`
+and `turbostat` to measure CPU power states. While not a crash or data
+corruption bug, this is a hardware support gap for real users on real
+hardware.
 
-**Severity**: HIGH - can block the task exit path, which is critical.
-Under memory pressure this can effectively hang the system.
+The Lightning Mountain SoC vulnerability whitelist entry already exists
+in `arch/x86/kernel/cpu/common.c` (since earlier kernels), and
+`arch/x86/kernel/tsc_msr.c` already has Airmont NP support. The cstate
+driver was simply overlooked.
 
-### 6. STABILITY & TRUST INDICATORS
+### 6. BACKPORTABILITY TO STABLE TREES
 
-- **Reported-by**: Rosalie Fang from Google - real production issue
-- **Suggested-by**: Peter Zijlstra (perf maintainer) - expert-designed
-  solution
-- **Signed-off-by**: Both Namhyung Kim (author) and Peter Zijlstra
-  (maintainer)
-- **Link**: Has a patch.msgid.link reference showing proper mailing list
-  review
+The change requires trivial adaptation for different stable trees due to
+macro naming:
+
+- **v6.12+**: Uses `X86_MATCH_VFM(INTEL_ATOM_AIRMONT_NP, &slm_cstates)`
+  - applies as-is
+- **v6.1, v6.6**: Uses `X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT_NP,
+  &slm_cstates)` - trivial macro name change
+- **v5.4, v5.10, v5.15**: Uses
+  `X86_CSTATES_MODEL(INTEL_FAM6_ATOM_AIRMONT_NP, slm_cstates)` (v5.4) or
+  `X86_MATCH_INTEL_FAM6_MODEL` variant - trivial adaptation
+
+All prerequisites (`slm_cstates` struct, the `AIRMONT_NP` macro) exist
+in every supported stable tree.
 
 ### 7. DEPENDENCY CHECK
 
-The affected code was introduced in:
-- `cb43691293390` "perf: Save PMU specific data in task_struct"
-  (v6.15-rc1)
-- `506e64e710ff9` "perf: attach/detach PMU specific data" (v6.15-rc1)
+This commit is self-contained. While it's part of a series (patch 4/N),
+each patch in such a series independently adds a CPU ID to a different
+driver's match table. No other commits are needed for this one to
+function correctly.
 
-**Applicable stable trees**: 6.15.y, 6.16.y, 6.17.y, 6.18.y
-**NOT applicable**: 6.14.y and earlier (code doesn't exist)
+### 8. STABILITY INDICATORS
 
-The patch is self-contained - it doesn't depend on any other commits. It
-modifies only the code introduced by the above commits and the logic is
-self-sufficient.
+- **Reviewed-by**: Dapeng Mi (Intel) - domain expert
+- **Signed-off-by**: Peter Zijlstra (Intel) - perf subsystem maintainer
+- The pattern is well-established: every other Atom variant (Silvermont,
+  Silvermont-D, Airmont, Goldmont, Tremont, etc.) follows the exact same
+  pattern in this driver
 
-### 8. MINOR CLEANUP CONCERN
+---
 
-The patch also removes a `(struct perf_ctx_data **)` cast from one
-`try_cmpxchg` call in `attach_task_ctx_data()`. This is a minor
-whitespace/type-correctness issue and doesn't affect functionality -
-`try_cmpxchg` on an `__rcu` pointer works the same way.
+## Summary
 
-### CONCLUSION
-
-This commit fixes a real, reported, production-impacting performance bug
-that can cause task exit to hang on systems with many threads when LBR
-callstack profiling is active. The fix is:
-
-1. **Obviously correct**: The synchronization relies on the well-
-   established pattern of `PF_EXITING` flag + atomic cmpxchg operations,
-   with clear ordering guarantees
-2. **Fixes a real bug**: Reported by a Google engineer on production
-   systems
-3. **Important**: Can cause system hangs, especially under memory
-   pressure
-4. **Small and contained**: ~25 lines in a single file, touching only
-   the perf subsystem
-5. **No new features**: Just removes unnecessary lock contention
-6. **Expert-reviewed**: Suggested by Peter Zijlstra, the perf subsystem
-   maintainer
-
-The fix should be backported to all stable trees containing the affected
-code (6.15.y through 6.18.y).
+This is a textbook CPU ID addition to an existing driver - the exact
+type of change that stable kernel rules explicitly permit as an
+exception. It's a single-line, zero-risk change that enables hardware
+monitoring on real embedded/networking hardware (Intel Lightning
+Mountain SoC). The driver infrastructure, cstate model, and CPU ID
+definitions are all already present in every supported stable tree. The
+patch was reviewed by an Intel engineer and accepted by the perf
+maintainer.
 
 **YES**
 
- kernel/events/core.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ arch/x86/events/intel/cstate.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 8cca800946248..69c56cad88a89 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5280,9 +5280,20 @@ attach_task_ctx_data(struct task_struct *task, struct kmem_cache *ctx_cache,
- 		return -ENOMEM;
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index fa67fda6e45b4..c1e318bdaa397 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -599,6 +599,7 @@ static const struct x86_cpu_id intel_cstates_match[] __initconst = {
+ 	X86_MATCH_VFM(INTEL_ATOM_SILVERMONT,	&slm_cstates),
+ 	X86_MATCH_VFM(INTEL_ATOM_SILVERMONT_D,	&slm_cstates),
+ 	X86_MATCH_VFM(INTEL_ATOM_AIRMONT,	&slm_cstates),
++	X86_MATCH_VFM(INTEL_ATOM_AIRMONT_NP,	&slm_cstates),
  
- 	for (;;) {
--		if (try_cmpxchg((struct perf_ctx_data **)&task->perf_ctx_data, &old, cd)) {
-+		if (try_cmpxchg(&task->perf_ctx_data, &old, cd)) {
- 			if (old)
- 				perf_free_ctx_data_rcu(old);
-+			/*
-+			 * Above try_cmpxchg() pairs with try_cmpxchg() from
-+			 * detach_task_ctx_data() such that
-+			 * if we race with perf_event_exit_task(), we must
-+			 * observe PF_EXITING.
-+			 */
-+			if (task->flags & PF_EXITING) {
-+				/* detach_task_ctx_data() may free it already */
-+				if (try_cmpxchg(&task->perf_ctx_data, &cd, NULL))
-+					perf_free_ctx_data_rcu(cd);
-+			}
- 			return 0;
- 		}
- 
-@@ -5328,6 +5339,8 @@ attach_global_ctx_data(struct kmem_cache *ctx_cache)
- 	/* Allocate everything */
- 	scoped_guard (rcu) {
- 		for_each_process_thread(g, p) {
-+			if (p->flags & PF_EXITING)
-+				continue;
- 			cd = rcu_dereference(p->perf_ctx_data);
- 			if (cd && !cd->global) {
- 				cd->global = 1;
-@@ -14294,8 +14307,11 @@ void perf_event_exit_task(struct task_struct *task)
- 
- 	/*
- 	 * Detach the perf_ctx_data for the system-wide event.
-+	 *
-+	 * Done without holding global_ctx_data_rwsem; typically
-+	 * attach_global_ctx_data() will skip over this task, but otherwise
-+	 * attach_task_ctx_data() will observe PF_EXITING.
- 	 */
--	guard(percpu_read)(&global_ctx_data_rwsem);
- 	detach_task_ctx_data(task);
- }
- 
+ 	X86_MATCH_VFM(INTEL_BROADWELL,		&snb_cstates),
+ 	X86_MATCH_VFM(INTEL_BROADWELL_D,	&snb_cstates),
 -- 
 2.51.0
 
