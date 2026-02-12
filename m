@@ -1,124 +1,191 @@
-Return-Path: <stable+bounces-215997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHEZMZpgjmnLBwEAu9opvQ
-	(envelope-from <stable+bounces-215997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 00:22:02 +0100
+	id gEcdLwJljmkOCAEAu9opvQ
+	(envelope-from <stable+bounces-215998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 00:40:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C39131B4B
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 00:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 046DC131CC2
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 00:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B23D3031AF6
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 23:22:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C5D1F30193A0
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 23:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDE21DF248;
-	Thu, 12 Feb 2026 23:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005832DE6F3;
+	Thu, 12 Feb 2026 23:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tw/erl5i"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="a8/eVDgt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D7C17C220;
-	Thu, 12 Feb 2026 23:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FA13EBF1B;
+	Thu, 12 Feb 2026 23:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770938516; cv=none; b=pegEhrDl9mcZHr3wgN0a0yFumR/PQeL/x+SlYJOrBKfQuZbFlqTgWNXauvitiQxH+uPeydFkfXsUQvoprHg9SBmC16IqSQ1TBJR3QdxmxWUOH5g9YiCqE/DPHOCSn5mkrPfZzYT4n2bS4DljjLdU5I8+ILw7xdePOjig9BykNK4=
+	t=1770939647; cv=none; b=ozTdB4JH1OeyiUnfE1y1BREMRSpfa/WGIm0snav6+rdfalVu89xifnRc1CKnPkl0QZpNMweAdsVnSN0A6TAewrBnfObEwwOL2jHtpAfB7T3IvWnNsvAY4EFWc45aWGtqLZe95FM/DJo2h+S0cb7/xLdwvrVkIR6EPi+S2SRuc3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770938516; c=relaxed/simple;
-	bh=qp9sXiv6YCh7kOwFOz34uHvgOY/+lP6HG9yRJ7MwebU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DMv2uNde4jKPlamVXy+WNSkDeF86Ck9InPpr9xSrAk8awws7C9K1i8fP11kOyy1SLqoJBfC6aZ4IPpp4PyVPm8aU7jr0+1BtLuRZCdsLLkR8f+fzJ22HSPWakj2KmVLb7k6kFEe7AwNE0H/Nv+lN6VeUMu6aNcll1hft5wQtsYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tw/erl5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0237C4CEF7;
-	Thu, 12 Feb 2026 23:21:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770938516;
-	bh=qp9sXiv6YCh7kOwFOz34uHvgOY/+lP6HG9yRJ7MwebU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Tw/erl5i9fySER5rkZCKFWApobBaok/63eR0sHqXQmPaOPqXcyNDfzXq1ul9GmIqy
-	 xQE2uq5b5bATz4n8TvFr0gGUBNRk4HqQrlhN+lnD3+v6asmbQnJs7LchrLBHUpQl1I
-	 AHziSXdvKl/l9ph6nDlvAO2n3iEZ91xg1MircFRHXUvmTNs3GbrJZdyNKtj1iXXp9j
-	 Og6gpy2spreRZrbQ1J8Ql+tlHZ3bs1TD0ZCNGYMr6EfMJnrZ23NhoICIq6ZYWoBtDG
-	 mZBoEw8uE2ySvVxwolmrBVPPA6FNShcY9mxJQMmlbxZdukHVvHerFzZZK4e4QtCa8G
-	 KEv8YxSBJbqpA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, root
- <admin@windowsforum.com>
-Cc: peterz@infradead.org, mingo@redhat.com, linux-kernel@vger.kernel.org,
- mjfara@gmail.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [BUG] sched_mm_cid_exit+0xe2: page fault on CID bitmap write
- with nopti on 6.19.0
-In-Reply-To: <31feb490-c9dc-4cb0-80bc-951e9a6cdab6@efficios.com>
-References: <20260212211213.F1BE52A1C1D@windowsforum.com>
- <31feb490-c9dc-4cb0-80bc-951e9a6cdab6@efficios.com>
-Date: Fri, 13 Feb 2026 00:21:52 +0100
-Message-ID: <87seb58s4v.ffs@tglx>
+	s=arc-20240116; t=1770939647; c=relaxed/simple;
+	bh=x+KoL5lqHzBK80U+S3TuqtzQIa6x6bM94GUorfw/Ewo=;
+	h=Date:To:From:Subject:Message-Id; b=oe3vsJ2lZi8trO38To5lii2LH4lcmL8quwrFo+MT8hWLXzcYx5grL+6ApaKiBy2QVfms4eO4pDv0U++F2l1qSRT10cq7BaJkZ7sT589MP0dOtfMvng0y45eTCpcLth4hsWGgwRpa7S3KqX1F+4QJKGCBLwEKFXSW1h0nxrLr9cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=a8/eVDgt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AF4C4CEF7;
+	Thu, 12 Feb 2026 23:40:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770939646;
+	bh=x+KoL5lqHzBK80U+S3TuqtzQIa6x6bM94GUorfw/Ewo=;
+	h=Date:To:From:Subject:From;
+	b=a8/eVDgt6geeqFjvM0OPLySWYxbvF2ZTJqbQvAT4zun/xGZxJA91m6qrQA1ShyAU+
+	 6IZ9slMx3KCOr13hw4uJxqRzFT9UkktykmcVhFY7ZpUKId0vywhvRvyDmTTuqwLcKJ
+	 1CKG28xvitSFzELKgd72AJEh0uA25LpeHU8MxlzU=
+Date: Thu, 12 Feb 2026 15:40:44 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,usama.arif@linux.dev,surenb@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,rppt@kernel.org,osalvador@suse.de,muchun.song@linux.dev,mhocko@suse.com,mawupeng1@huawei.com,lorenzo.stoakes@oracle.com,longman@redhat.com,Liam.Howlett@oracle.com,david@kernel.org,joshua.hahnjy@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-hugetlb-restore-failed-global-reservations-to-subpool.patch removed from -mm tree
+Message-Id: <20260212234046.B9AF4C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215997-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[infradead.org,redhat.com,vger.kernel.org,gmail.com,linuxfoundation.org];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215998-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,suse.cz,linux.dev,google.com,kernel.org,suse.de,suse.com,huawei.com,oracle.com,redhat.com,gmail.com,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 44C39131B4B
+X-Rspamd-Queue-Id: 046DC131CC2
 X-Rspamd-Action: no action
 
-On Thu, Feb 12 2026 at 16:19, Mathieu Desnoyers wrote:
-> On 2026-02-12 16:12, root wrote:
->> I'm hitting a repeatable page fault in sched_mm_cid_exit() on 6.19.0
->> when booting with nopti. The crash occurs during process exit
->> (do_exit -> sched_mm_cid_exit) on an atomic bit-clear (lock btr) of
->> the CID bitmap. The faulting address is within a 2MB huge page that
->> returns a permissions violation on supervisor write access.
->> 
->> The bug triggered 8 times over ~20 hours on a single boot, hitting
->> multiple unrelated processes (git, gce_workload_ce). Eventually D-Bus
->> died and systemd became non-functional, requiring a hard power-off.
->
-> Can you confirm whether the following fix in Linus' tree fixes your issue ?
 
-It's exactly that problem:
+The quilt patch titled
+     Subject: mm/hugetlb: restore failed global reservations to subpool
+has been removed from the -mm tree.  Its filename was
+     mm-hugetlb-restore-failed-global-reservations-to-subpool.patch
 
-  2a:*	f0 48 0f b3 10       	lock btr %rdx,(%rax)		<-- trapping instruction
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-RDX: 0000000020000006
+------------------------------------------------------
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: mm/hugetlb: restore failed global reservations to subpool
+Date: Fri, 16 Jan 2026 15:40:36 -0500
 
-which has the TRANSIT bit set and that's what below fixes:
+Commit a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+fixed an underflow error for hstate->resv_huge_pages caused by incorrectly
+attributing globally requested pages to the subpool's reservation.
 
-> commit 1e83ccd5921a ("sched/mmcid: Don't assume CID is CPU owned on mode switch")
+Unfortunately, this fix also introduced the opposite problem, which would
+leave spool->used_hpages elevated if the globally requested pages could
+not be acquired.  This is because while a subpool's reserve pages only
+accounts for what is requested and allocated from the subpool, its "used"
+counter keeps track of what is consumed in total, both from the subpool
+and globally.  Thus, we need to adjust spool->used_hpages in the other
+direction, and make sure that globally requested pages are uncharged from
+the subpool's used counter.
+
+Each failed allocation attempt increments the used_hpages counter by how
+many pages were requested from the global pool.  Ultimately, this renders
+the subpool unusable, as used_hpages approaches the max limit.
+
+The issue can be reproduced as follows:
+1. Allocate 4 hugetlb pages
+2. Create a hugetlb mount with max=4, min=2
+3. Consume 2 pages globally
+4. Request 3 pages from the subpool (2 from subpool + 1 from global)
+	4.1 hugepage_subpool_get_pages(spool, 3) succeeds.
+		used_hpages += 3
+	4.2 hugetlb_acct_memory(h, 1) fails: no global pages left
+		used_hpages -= 2
+5. Subpool now has used_hpages = 1, despite not being able to
+   successfully allocate any hugepages. It believes it can now only
+   allocate 3 more hugepages, not 4.
+
+With each failed allocation attempt incrementing the used counter, the
+subpool eventually reaches a point where its used counter equals its
+max counter.  At that point, any future allocations that try to
+allocate hugeTLB pages from the subpool will fail, despite the subpool
+not having any of its hugeTLB pages consumed by any user.
+
+Once this happens, there is no way to make the subpool usable again,
+since there is no way to decrement the used counter as no process is
+really consuming the hugeTLB pages.
+
+The underflow issue that the original commit fixes still remains fixed
+as well.
+
+Without this fix, used_hpages would keep on leaking if
+hugetlb_acct_memory() fails.
+
+Link: https://lkml.kernel.org/r/20260116204037.2270096-1-joshua.hahnjy@gmail.com
+Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Acked-by: Usama Arif <usama.arif@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Ma Wupeng <mawupeng1@huawei.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Waiman Long <longman@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/hugetlb.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+--- a/mm/hugetlb.c~mm-hugetlb-restore-failed-global-reservations-to-subpool
++++ a/mm/hugetlb.c
+@@ -6717,6 +6717,15 @@ out_put_pages:
+ 		 */
+ 		hugetlb_acct_memory(h, -gbl_resv);
+ 	}
++	/* Restore used_hpages for pages that failed global reservation */
++	if (gbl_reserve && spool) {
++		unsigned long flags;
++
++		spin_lock_irqsave(&spool->lock, flags);
++		if (spool->max_hpages != -1)
++			spool->used_hpages -= gbl_reserve;
++		unlock_or_release_subpool(spool, flags);
++	}
+ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
+_
+
+Patches currently in -mm which might be from joshua.hahnjy@gmail.com are
+
+
 
