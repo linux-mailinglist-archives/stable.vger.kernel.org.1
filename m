@@ -1,319 +1,251 @@
-Return-Path: <stable+bounces-215986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aClUC8ghjmm+/wAAu9opvQ
-	(envelope-from <stable+bounces-215986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 19:54:00 +0100
+	id QEKcJ0w/jmk3BQEAu9opvQ
+	(envelope-from <stable+bounces-215987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 21:59:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86048130718
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 19:53:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB86131199
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 21:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A165D305595F
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 18:53:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 76721301326C
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 20:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B5D263C8C;
-	Thu, 12 Feb 2026 18:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586FD325706;
+	Thu, 12 Feb 2026 20:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3+zm171y"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Z6mm+czl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06BE1FCF41
-	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 18:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770922426; cv=pass; b=XjvUVOSxlxaIw8v+pach74HI4FPvps111IbNDsJm4yURjmiVaMCbE9NGzp4nCKwQvDCWkHX5tPoR3b7HRpdF9JS2B4apsfNI/eh6Hi6+0g+CR5G4dG7fXeCzdEKqfrzwRvOu/C8IGUQuN91UxbKZI7PAnAfBvrjtRD6oxtblO40=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770922426; c=relaxed/simple;
-	bh=XMDd4/Tmzy2G8avag+KjNC0MlH3sj+OcJMh3Za8Ln/k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ClIFbFVSkMuRtRkl5Bb8krycoStkUshEQaLpsgM8kEu3fn721sBF9j+sYmvzLPEsNKFy+fdCdrbZTflp4ZBUpAsYXwvm6QnOqilgvAmcKBxH5EDJSA7qMJMVbPyCmwE8EYcdA9uE50HXbOwaAK0cNWiAcPgC6vwhNF6o8JlT53U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3+zm171y; arc=pass smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-506a355aedfso46081cf.0
-        for <stable@vger.kernel.org>; Thu, 12 Feb 2026 10:53:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770922423; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Z/JkRbl84A42JVyE8zWUoP9P+K3EQoEMHjKO6D7VJZHmpJwj7Y9BpYdCeUqGU3IR9H
-         Qu5SUALYShr+x26SxgMMfOqFwyLJ1MknZmjyP/t4TNkNJm+ZPykJ1pyDffJ/Vh6brtXa
-         otRTupkpzkkn2NXZnCSuCspwLj9myxWKxYQQECuzMGn+WtwGJ+8NElOODwW9botIWYP8
-         LAxZZxJs40GmGZmksM4xeexm3FnFj4imzXg1mhrDsFo3FlFR13efqd2+8wz58tlGdxAd
-         OERVmH3ona+Ld3hzGMztxW5i2evyLJwM7Zw/7i+eVZ/nnrHf8FHDQ3gXBujol0S8hNjg
-         aXYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=KxJxh9FSjNvMYBpkVXl2+9DScVhBboCfxSSFZplOIEM=;
-        fh=utiHSKmqJR+RPE6gt6jYYQvGwBmKt6kdzGBge7QAoEw=;
-        b=Fnu4P9JBWwDdiTby26HHmLLJwEeKBw0GA5umbzw3xAfiCB6auFWnj8o3Lk/TTAwP05
-         r7EU4CUDDp621blRVDhMPtfNYPZ/epNw5I3B/hvyV4lTzQwHhWcZMtgHRm1D274x3nOU
-         DSMpYwyMR/O0r62E6tLUr7Mr0i+vv1Zm8Xfld6tb3I+Dbgdbwpz1CfVdjZ2xx/Bf+Z9E
-         m0AtcIsmFhOm0sS4/UX9evGB1AbV/ixQXt5UMGRFoPLmPNY6NLK6iBqrkFd3X1U0NYK4
-         N85zcLRCpuawWFV33ygUGWHdl1zofPPaZ0p3Xx6pTHBjFV+TMtVZMhoR8DbrcpGlFXbV
-         QCZA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770922423; x=1771527223; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KxJxh9FSjNvMYBpkVXl2+9DScVhBboCfxSSFZplOIEM=;
-        b=3+zm171yQW8K6tOAgJvkM+q310AaKYjo9yInlOeveJxmH8/O6XAfLvrqCxClXcy/LE
-         ZmOrj1u5t5dDZoGH56PBwbLD2dTUUKKZaNV++x1u8XyWwszJirh9oc1KsbvNe0HtO24K
-         Zden75YQEpas5CE6Az/96Su0ojm0oj7HOOPvYJ5w9y6InZE/mCBQWUiCgEVqYzlawHld
-         3YX8RmVcuEuaOkUnfex+ETKuBz39Nt3LjoODAO+OTo/jllGGSkDJCL5D51fM4WRqzSUR
-         yzNZnmhxESi/uIBPqFG2MckzLdxBakzon6ARVoYiRQuIn7ZiBPExyEMJBVk21oIpKYik
-         iDsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770922423; x=1771527223;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KxJxh9FSjNvMYBpkVXl2+9DScVhBboCfxSSFZplOIEM=;
-        b=LdbDEfYROxD6mjwTnurm+JlC6WMgIBDMVJfrlhwY7/cEoaqrJOhjJqbJ9pRwssnLuy
-         Avv7hZ/qorIpJefKFF1omiHl8sr/UNv4XGs9qaMn0VdFnKXUq6Zu7cPSBZwEdLBtb2bg
-         kvWgsNR7kfLerUqgJ/BKGgctcQPKmQ0/MtNs6OM3nA7Kl3Wu2U84TSAm3mBCUmc7Miu9
-         4rl9uPavHIR9FQN1nkm2eRNhi6YQGtSdaWJU8a9UlxAdFEPOjiAmfvpYi78FDnz1kYJr
-         QFwOfABq2Bns/w/2sox2c0zfObn3oUDVzCc5Vc2QGpPL4zFj3LtKN4WeOldvOXUSYscs
-         yiOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXONQfsZCMBZkq0rvLb9CORAFaowiT+UrsNItEvR3y2Mh+QJDXqp/Oi/bWPTxsJkEcsVNvfH40=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDS2OQQw8HOzKN320eBOaDM5UiX5r8zQx3dgoNieKCNIo3aULE
-	Dyf564NmgNhaA1UL14xi7m63+Dfx8t3pw9i59p5lWGOOmarMxwtLrKahDYRkQjjzWmsW9EHWKIr
-	Pa2uiwufRZgZJZC1EP0PhR4CUJLcLo7nRp+luKRpr
-X-Gm-Gg: AZuq6aJ1KCUjSd8XFkPF+fflEmiVseU6IPJqlpLh9MtPIa7bnXux3eB405cumRol6qU
-	cX0DSKQDE9dybtsSEs1sw09orpC8oG5Wn5RrRXlQaNCe9mRhExmyoT2LjBP+DpXpDAGcU+XFse6
-	9izAU1Wu5ppLOYmcm2S2Ncc7B7rKM4rqOsgBNhT1GTl4+V7plixlfLz86uWxYol/Q32bAPzRFml
-	WihwBntpHC0sTPFBMOhRenTt1S3GnpSsdb5cecHFkpJ+45wjSNXSrWxq70lO4rGstvW+x3CuVwN
-	q8z/562MW6+gkYhBgRQ=
-X-Received: by 2002:ac8:5ace:0:b0:503:2e98:7842 with SMTP id
- d75a77b69052e-506a5089fd7mr798601cf.4.1770922422056; Thu, 12 Feb 2026
- 10:53:42 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E1E25B2F4;
+	Thu, 12 Feb 2026 20:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770929994; cv=none; b=lUvqVDbLuWTxgrAHja99+bC/5SfdIjIgyUKvCfdhR8HANBqOym3Cd2zZdqF6svFXCo1vskmUHNwdfzAj3FeBdM1aFGVYLesCIadnvdyCKel68S87EfEQvJ6RzCmPJj69YEljutawkUlRhZGA/MzcPfmo8HLl/nuoIzdFnXFZx/w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770929994; c=relaxed/simple;
+	bh=wgJKQfmxOzsKstGBY6rLl+Aq49bQ/slkNHMgqOHPRxQ=;
+	h=Date:To:From:Subject:Message-Id; b=Hexa/sIMGDEH+Db0/NkXXgT4hnpD2cDeY4ptvkUVHm8t3MI2fxJDnp+97wA3W5Y7Up/yvgjlef9lJHsVp77L57I684nAArwAxtz0syNcipfgZ9E02Sq9j3tLl+nU1EryJ0PphGPaCBE2pfFul85x1+umRSPXQXREZPyH0hki7n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Z6mm+czl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A9AC4CEF7;
+	Thu, 12 Feb 2026 20:59:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770929993;
+	bh=wgJKQfmxOzsKstGBY6rLl+Aq49bQ/slkNHMgqOHPRxQ=;
+	h=Date:To:From:Subject:From;
+	b=Z6mm+czlaIiffWRu2xFuftV/5TC7BBkWNd8ty7wpJwYAJT1gfAVKWe3qgYvNylUBG
+	 yE7c0cG25/K/Xwy9ZhhZZFpIaWe1alrSk//PjNCRd5dDMdYVKhC9UObLIlF8daYXXE
+	 NXNrSe0t7EGQok7vqmpoO5nhKbGJ6R9ETdOxJG8Q=
+Date: Thu, 12 Feb 2026 12:59:52 -0800
+To: mm-commits@vger.kernel.org,wangyinfeng@phytium.com.cn,stable@vger.kernel.org,rppt@kernel.org,jonathan.cameron@huawei.com,gourry@gourry.net,david@kernel.org,dan.j.williams@intel.com,cuichao1753@phytium.com.cn,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-numa_memblks-identify-the-accurate-numa-id-of-cfmw.patch added to mm-new branch
+Message-Id: <20260212205953.87A9AC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260212090252.158689-1-tabba@google.com> <20260212090252.158689-2-tabba@google.com>
- <86jywib98e.wl-maz@kernel.org> <CA+EHjTz-JU2gDfziCY2SguK9=6gGSCL5TN_U_C7FiZ5i0JTZqQ@mail.gmail.com>
- <86ikc2asa8.wl-maz@kernel.org>
-In-Reply-To: <86ikc2asa8.wl-maz@kernel.org>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 12 Feb 2026 18:53:05 +0000
-X-Gm-Features: AZwV_QgjHAKlb2oJ6cTtVmiD8glUdVPUVPAc_uYr3UsDjUESaoBBPSZwwkWqYwc
-Message-ID: <CA+EHjTwLcxB1e_FZsw_Semoj8tjMBUKZFM8+Vbo+64+=T4GN-Q@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] KVM: arm64: Hide S1POE from guests when not
- supported by the host
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, 
-	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	catalin.marinas@arm.com, will@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215986-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TAGGED_FROM(0.00)[bounces-215987-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+]
-X-Rspamd-Queue-Id: 86048130718
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linux-foundation.org:email,linux-foundation.org:dkim,gourry.net:email]
+X-Rspamd-Queue-Id: 2DB86131199
 X-Rspamd-Action: no action
 
-/fuad
 
-On Thu, 12 Feb 2026 at 15:35, Marc Zyngier <maz@kernel.org> wrote:
->
-> On Thu, 12 Feb 2026 09:41:22 +0000,
-> Fuad Tabba <tabba@google.com> wrote:
-> >
-> > Hi Marc,
-> >
-> > On Thu, 12 Feb 2026 at 09:29, Marc Zyngier <maz@kernel.org> wrote:
-> > >
-> > > Hi Fuad,
-> > >
-> > > On Thu, 12 Feb 2026 09:02:50 +0000,
-> > > Fuad Tabba <tabba@google.com> wrote:
-> > > >
-> > > > When CONFIG_ARM64_POE is disabled, KVM does not save/restore POR_EL1.
-> > > > However, ID_AA64MMFR3_EL1 sanitisation currently exposes the feature to
-> > > > guests whenever the hardware supports it, ignoring the host kernel
-> > > > configuration.
-> > >
-> > > This is the umpteenth time we get caught by this. PAN was the latest
-> > > instance until this one. Maybe an approach would be to have a default
-> > > override when a config option is not enabled, so that KVM is
-> > > consistent with the rest of the kernel?
-> >
-> > I spoke to Will about this, and one thing he'll look into is whether
-> > this value in `struct arm64_ftr_reg` can be made consistent with the
-> > cpu configuration itself (in cpufeature.c itself) . This would avoid
-> > the problem altogether if possible. The question is whether the kernel
-> > needs to somehow know that a certain feature exists even if it's
-> > disabled in the config...
-> >
-> > If he thinks it's not doable at that level, I'll look into
-> > alternatives to make it correct by construction.
->
-> What I currently have for that is rather ugly:
->
-> diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-> index 72f39cecce93a..3bde0ad5ea972 100644
-> --- a/arch/arm64/include/asm/cpufeature.h
-> +++ b/arch/arm64/include/asm/cpufeature.h
-> @@ -971,6 +971,7 @@ struct arm64_ftr_reg *get_arm64_ftr_reg(u32 sys_id);
->  extern struct arm64_ftr_override id_aa64mmfr0_override;
->  extern struct arm64_ftr_override id_aa64mmfr1_override;
->  extern struct arm64_ftr_override id_aa64mmfr2_override;
-> +extern struct arm64_ftr_override id_aa64mmfr3_override;
->  extern struct arm64_ftr_override id_aa64pfr0_override;
->  extern struct arm64_ftr_override id_aa64pfr1_override;
->  extern struct arm64_ftr_override id_aa64zfr0_override;
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index 1a7eec542675b..32069da9651bf 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -778,6 +778,7 @@ static const struct arm64_ftr_bits ftr_raz[] = {
->  struct arm64_ftr_override __read_mostly id_aa64mmfr0_override;
->  struct arm64_ftr_override __read_mostly id_aa64mmfr1_override;
->  struct arm64_ftr_override __read_mostly id_aa64mmfr2_override;
-> +struct arm64_ftr_override __read_mostly id_aa64mmfr3_override;
->  struct arm64_ftr_override __read_mostly id_aa64pfr0_override;
->  struct arm64_ftr_override __read_mostly id_aa64pfr1_override;
->  struct arm64_ftr_override __read_mostly id_aa64zfr0_override;
-> @@ -850,7 +851,8 @@ static const struct __ftr_reg_entry {
->                                &id_aa64mmfr1_override),
->         ARM64_FTR_REG_OVERRIDE(SYS_ID_AA64MMFR2_EL1, ftr_id_aa64mmfr2,
->                                &id_aa64mmfr2_override),
-> -       ARM64_FTR_REG(SYS_ID_AA64MMFR3_EL1, ftr_id_aa64mmfr3),
-> +       ARM64_FTR_REG_OVERRIDE(SYS_ID_AA64MMFR3_EL1, ftr_id_aa64mmfr3,
-> +                              &id_aa64mmfr3_override),
->         ARM64_FTR_REG(SYS_ID_AA64MMFR4_EL1, ftr_id_aa64mmfr4),
->
->         /* Op1 = 0, CRn = 10, CRm = 4 */
-> diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
-> index 85bc629270bd9..202e165a4680c 100644
-> --- a/arch/arm64/kernel/image-vars.h
-> +++ b/arch/arm64/kernel/image-vars.h
-> @@ -51,6 +51,7 @@ PI_EXPORT_SYM(id_aa64isar2_override);
->  PI_EXPORT_SYM(id_aa64mmfr0_override);
->  PI_EXPORT_SYM(id_aa64mmfr1_override);
->  PI_EXPORT_SYM(id_aa64mmfr2_override);
-> +PI_EXPORT_SYM(id_aa64mmfr3_override);
->  PI_EXPORT_SYM(id_aa64pfr0_override);
->  PI_EXPORT_SYM(id_aa64pfr1_override);
->  PI_EXPORT_SYM(id_aa64smfr0_override);
-> diff --git a/arch/arm64/kernel/pi/idreg-override.c b/arch/arm64/kernel/pi/idreg-override.c
-> index e5ea280452c3b..b8dbe02e53171 100644
-> --- a/arch/arm64/kernel/pi/idreg-override.c
-> +++ b/arch/arm64/kernel/pi/idreg-override.c
-> @@ -24,10 +24,12 @@
->  static u64 __boot_status __initdata;
->
->  typedef bool filter_t(u64 val);
-> +typedef void cfg_override_t(struct arm64_ftr_override *);
->
->  struct ftr_set_desc {
->         char                            name[FTR_DESC_NAME_LEN];
->         PREL64(struct arm64_ftr_override, override);
-> +       PREL64(cfg_override_t,          cfg_override);
->         struct {
->                 char                    name[FTR_DESC_FIELD_LEN];
->                 u8                      shift;
-> @@ -106,6 +108,22 @@ static const struct ftr_set_desc mmfr2 __prel64_initconst = {
->         },
->  };
->
-> +static void __init cfg_mmfr3_override(struct arm64_ftr_override *override)
-> +{
-> +#ifndef CONFIG_ARM64_POE
-> +       override->mask |= ID_AA64MMFR3_EL1_S1POE_MASK;
-> +#endif
-> +}
-> +
-> +static const struct ftr_set_desc mmfr3 __prel64_initconst = {
-> +       .name           = "id_aa64mmfr3",
-> +       .override       = &id_aa64mmfr3_override,
-> +       .cfg_override   = cfg_mmfr3_override,
-> +       .fields         = {
-> +               {}
-> +       },
-> +};
-> +
->  static bool __init pfr0_sve_filter(u64 val)
->  {
->         /*
-> @@ -221,6 +239,7 @@ PREL64(const struct ftr_set_desc, reg) regs[] __prel64_initconst = {
->         { &mmfr0        },
->         { &mmfr1        },
->         { &mmfr2        },
-> +       { &mmfr3        },
->         { &pfr0         },
->         { &pfr1         },
->         { &isar1        },
-> @@ -398,14 +417,19 @@ void __init init_feature_override(u64 boot_status, const void *fdt,
->  {
->         struct arm64_ftr_override *override;
->         const struct ftr_set_desc *reg;
-> +       cfg_override_t *cfg_override;
->         int i;
->
->         for (i = 0; i < ARRAY_SIZE(regs); i++) {
->                 reg = prel64_pointer(regs[i].reg);
->                 override = prel64_pointer(reg->override);
-> +               cfg_override = prel64_pointer(reg->cfg_override);
->
->                 override->val  = 0;
->                 override->mask = 0;
-> +
-> +               if (cfg_override)
-> +                       cfg_override(override);
->         }
->
->         __boot_status = boot_status;
->
->
-> which works, but is not super friendly.
+The patch titled
+     Subject: mm: numa_memblks: identify the accurate NUMA ID of CFMW
+has been added to the -mm mm-new branch.  Its filename is
+     mm-numa_memblks-identify-the-accurate-numa-id-of-cfmw.patch
 
-Ouch! Yeah, no easy solutions here. For now, as a fix to be able to
-backport, would you like me to respin this without the change to
-kvm_has_s1poe(), or with that change as a separate patch?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-numa_memblks-identify-the-accurate-numa-id-of-cfmw.patch
 
-Cheers,
-/fuad
-> Looking at the arm64_ftr_reg structure, this could work if
-> FTR_VISIBLE_IF_IS_ENABLED() didn't simply put "HIDDEN" when the
-> feature is not present, but forced things to be disabled
-> altogether. The problem is that "HIDDEN" means not shown to userspace,
-> and that we have plenty of HIDDEN features that must make it into KVM.
->
-> I'll have a think.
->
->         M.
->
-> --
-> Without deviation from the norm, progress is not possible.
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+The mm-new branch of mm.git is not included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Cui Chao <cuichao1753@phytium.com.cn>
+Subject: mm: numa_memblks: identify the accurate NUMA ID of CFMW
+Date: Wed, 11 Feb 2026 18:33:20 +0800
+
+In some physical memory layout designs, the address space of CFMW (CXL
+Fixed Memory Window) resides between multiple segments of system memory
+belonging to the same NUMA node.  In numa_cleanup_meminfo, these multiple
+segments of system memory are merged into a larger numa_memblk.  When
+identifying which NUMA node the CFMW belongs to, it may be incorrectly
+assigned to the NUMA node of the merged system memory.
+
+When a CXL RAM region is created in userspace, the memory capacity of the
+newly created region is not added to the CFMW-dedicated NUMA node. 
+Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
+containing RAM).  This makes it impossible to clearly distinguish between
+the two types of memory, which may affect memory-tiering applications.
+
+Example memory layout:
+
+Physical address space:
+    0x00000000 - 0x1FFFFFFF  System RAM (node0)
+    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
+    0x40000000 - 0x5FFFFFFF  System RAM (node0)
+    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+
+After numa_cleanup_meminfo, the two node0 segments are merged into one:
+    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
+    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+
+So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
+
+To address this scenario, accurately identifying the correct NUMA node can
+be achieved by checking whether the region belongs to both numa_meminfo
+and numa_reserved_meminfo.
+
+While this issue is only observed in a QEMU configuration, and no known
+end users are impacted by this problem, it is likely that some firmware
+implementation is leaving memory map holes in a CXL Fixed Memory Window. 
+CXL hotplug depends on mapping free window capacity, and it seems to be
+only a coincidence to have not hit this problem yet.
+
+1. Issue Impact and Backport Recommendation:
+
+This patch fixes an issue observed in QEMU emulation where, during the
+dynamic creation of a CXL RAM region, the memory capacity is not assigned
+to the correct CFMW-dedicated NUMA node.  While hardware platforms could
+potentially have such memory configurations, we are not currently aware of
+any such hardware.  This issue leads to:
+
+    Failure of the memory tiering mechanism: The system is designed to
+    treat System RAM as fast memory and CXL memory as slow memory. For
+    performance optimization, hot pages may be migrated to fast memory
+    while cold pages are migrated to slow memory. The system uses NUMA
+    IDs as an index to identify different tiers of memory. If the NUMA
+    ID for CXL memory is calculated incorrectly and its capacity is
+    aggregated into the NUMA node containing System RAM (i.e., the node
+    for fast memory), the CXL memory cannot be correctly identified. It
+    may be misjudged as fast memory, thereby affecting performance
+    optimization strategies.
+
+    Inability to distinguish between System RAM and CXL memory even for
+    simple manual binding: Tools like |numactl|and other NUMA policy
+    utilities cannot differentiate between System RAM and CXL memory,
+    making it impossible to perform reasonable memory binding.
+
+    Inaccurate system reporting: Tools like |numactl -H|would display
+    memory capacities that do not match the actual physical hardware
+    layout, impacting operations and monitoring.
+
+This issue affects all users utilizing the CXL RAM functionality who rely
+on memory tiering or NUMA-aware scheduling.
+
+Therefore, I recommend backporting this patch to all stable kernel series
+that support dynamic CXL region creation.
+
+2. Why a Kernel Update is Recommended Over a Firmware Update:
+
+In the scenario of dynamic CXL region creation, the association between
+the memory's HPA range and its corresponding NUMA node is established when
+the kernel driver performs the commit operation.  This is a runtime,
+OS-managed operation where the platform firmware cannot intervene to
+provide a fix.
+
+Considering factors like hardware platform architecture, memory resources,
+and others, such a physical address layout can indeed occur.  This patch
+does not introduce risk; it simply correctly handles the NUMA node
+assignment for CXL RAM regions within such a physical address layout.
+
+Thus, I believe a kernel fix is necessary.
+
+Link: https://lkml.kernel.org/r/20260211103320.2064211-2-cuichao1753@phytium.com.cn
+Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
+Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Wang Yinfeng <wangyinfeng@phytium.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/numa_memblks.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+--- a/mm/numa_memblks.c~mm-numa_memblks-identify-the-accurate-numa-id-of-cfmw
++++ a/mm/numa_memblks.c
+@@ -570,15 +570,16 @@ static int meminfo_to_nid(struct numa_me
+ int phys_to_target_node(u64 start)
+ {
+ 	int nid = meminfo_to_nid(&numa_meminfo, start);
++	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
+ 
+ 	/*
+-	 * Prefer online nodes, but if reserved memory might be
+-	 * hot-added continue the search with reserved ranges.
++	 * Prefer online nodes unless the address is also described
++	 * by reserved ranges, in which case use the reserved nid.
+ 	 */
+-	if (nid != NUMA_NO_NODE)
++	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
+ 		return nid;
+ 
+-	return meminfo_to_nid(&numa_reserved_meminfo, start);
++	return reserved_nid;
+ }
+ EXPORT_SYMBOL_GPL(phys_to_target_node);
+ 
+_
+
+Patches currently in -mm which might be from cuichao1753@phytium.com.cn are
+
+mm-numa_memblks-identify-the-accurate-numa-id-of-cfmw.patch
+
 
