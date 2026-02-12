@@ -1,171 +1,139 @@
-Return-Path: <stable+bounces-215936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AN/uIpGpjWkK5wAAu9opvQ
-	(envelope-from <stable+bounces-215936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:21:05 +0100
+	id MFysJoiqjWkK5wAAu9opvQ
+	(envelope-from <stable+bounces-215937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:25:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADFE612C6D9
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:21:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F333012C756
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0D3B5300BC6E
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 10:16:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72333303EABC
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 10:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329E32EACEE;
-	Thu, 12 Feb 2026 10:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515CF2C0290;
+	Thu, 12 Feb 2026 10:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="f7tr/E4L"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TP3HfEze"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m1973194.qiye.163.com (mail-m1973194.qiye.163.com [220.197.31.94])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3C22EC569;
-	Thu, 12 Feb 2026 10:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.94
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95B01C4A24;
+	Thu, 12 Feb 2026 10:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770891397; cv=none; b=DAdkFJkA1UstPyNA7+4GOGuowDbetP0bqepnpW5R7XiKVpVAmmOOyDbUECj2bjf0awicmt4KoueZ2HFwtINvZ7BMbNUhzKM5bNzssSnD+HZaUUZimib4GXmw08nQB5sp3Xz3jPCVPRNBcdc03MPmoTzKh4oSPpkWoDMdPWjtVHc=
+	t=1770891897; cv=none; b=LclHtdnwd3/QR8+XVu2OcyM5mgv40hm+ry7721HbN5WpyKDSaag+qw85e77AjKjJYh4/4LcS1tISooA0rYxjjVW8yMqk43dkI5vTf1kn1d7m9MnLOhOGdlqGFPpAHflNlf8b6ijc4O59Q6V0Qji9WGf0+k9P+LnxhVoxDHna3o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770891397; c=relaxed/simple;
-	bh=S0aN7p4YQN4RmlyDDCPare7qU/HGNXtlRHX0+vqggF0=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=ImYNGbfnpQb3FZo99ukb/iUEB/hvBH68IG6cujHgxtuBDU90+UUXmdSqpHezWHM0U6cqDyju+3dDAuQKe9jcJyHJwErYrewMN964DyozTHh6fdG+cnOga2U7dZxduCcu29DD+7ok+rFnrwt9rMBd9nn3ST19aWWehAZ2CRbAsRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=f7tr/E4L; arc=none smtp.client-ip=220.197.31.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 33fa08078;
-	Thu, 12 Feb 2026 18:16:21 +0800 (GMT+08:00)
-From: Shawn Lin <shawn.lin@rock-chips.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Finley Xiao <finley.xiao@rock-chips.com>,
-	Frank Zhang <rmxpzlb@gmail.com>,
-	linux-pm@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	linux-rockchip@lists.infradead.org,
-	Shawn Lin <shawn.lin@rock-chips.com>,
+	s=arc-20240116; t=1770891897; c=relaxed/simple;
+	bh=Q1mgWVleEE0wyf7KXIaG1atYZg87rJLD9jD9rv73Zxc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oQ8zUZMTIKmWuLJ5+Dchm8Hovt0cLTbnmpkH5PPDkAU7Mm3A8hkRBOQ0JYPMlnhKn/YwFLlnFA6ABX1ZlvuUhuB+DBLhmR9UJ8E4+sIZuIOFeNCcbROoCL3dL9qsa0UY7DrVXQYuDplw6NS5SQ93sYWuY0Cc7fONT+gG8KHD3Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TP3HfEze; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770891895; x=1802427895;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Q1mgWVleEE0wyf7KXIaG1atYZg87rJLD9jD9rv73Zxc=;
+  b=TP3HfEzepY88WwL4j6dxlKJfs6JgebjmQDdrfR7K08BOQkUQr9x53P59
+   dxk0PZbKyk6iS6KkxJ90mJmoVXkVQWEqzAQuTRpY/AhN/hYeDE+wXSQiM
+   cfa/3TpHbxshA1mxfEAsaDYCebFqC89XKcUYXdpyEibxUdOV40gMmlDnv
+   EN5W05vVPEnz2a3qQlf4R2zfsgE1jW0LzRismPs/V9FQAhR0Y4NIvWW5u
+   qwqlS9YbIlNgmTLEiBMp2SUf2DS/5KTIGd20jJgALbjegufHUkd6TZgdK
+   2TNiyqVkzkyqpEli7eT386ficB+U3Bgv+YaJQOBiohwYIf1dWGP3VNC6D
+   A==;
+X-CSE-ConnectionGUID: bWryUqVuTAWcoXyHUxcrHg==
+X-CSE-MsgGUID: yDdx/szhQs+h32pDEtaXlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="75684952"
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
+   d="scan'208";a="75684952"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 02:24:54 -0800
+X-CSE-ConnectionGUID: w92L+W/iTzySPvh6OtFRUw==
+X-CSE-MsgGUID: f9HdQho0SvCpTUUQIBLK6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
+   d="scan'208";a="212664748"
+Received: from b580.bj.intel.com ([10.238.152.74])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 02:24:51 -0800
+From: Junjie Cao <junjie.cao@intel.com>
+To: miriam.rachel.korenblit@intel.com,
+	johannes.berg@intel.com,
+	linux-wireless@vger.kernel.org,
+	richardcochran@gmail.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	yedidya.ben.shimol@intel.com,
+	avraham.stern@intel.com,
+	daniel.gabay@intel.com,
+	krishnanand.prabhu@intel.com,
+	luciano.coelho@intel.com,
+	gregory.greenman@intel.com,
 	stable@vger.kernel.org
-Subject: [PATCH] pmdomain: rockchip: Fix rkvdec0/1 and venc0/1 for RK3588
-Date: Thu, 12 Feb 2026 18:16:04 +0800
-Message-Id: <1770891364-52147-1-git-send-email-shawn.lin@rock-chips.com>
-X-Mailer: git-send-email 2.7.4
-X-HM-Tid: 0a9c515a082f09cckunm305a02041ef9af
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGh9JSlYeTh1MSktPTE5PTRpWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=f7tr/E4LX48FgGZFCGkczgOcuFAT9VbPhusium2zsAa0QDxmpmNN4PypuvtTVlIxkv843sPIAXHGkBF6cjXvQIRWyWdChEU7u8MMHroicK43UuzL5bbmIXcXYhoo25lhqqii1mMBpJkNSrj+4iR8i3pfIcyGHv6JJdTJOPONs/E=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=GFR9wRVn0Qke2uoGUoqI/yXbVDXXXiIpaex2yOx3ucY=;
-	h=date:mime-version:subject:message-id:from;
+Subject: Re: [PATCH] wifi: iwlwifi: ptp: Fix potential race condition in PTP removal
+Date: Thu, 12 Feb 2026 18:24:02 +0800
+Message-ID: <20260212102402.1283533-1-junjie.cao@intel.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <DM3PPF63A6024A9E1EF4081E342AF4BED81A365A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+References: <DM3PPF63A6024A9E1EF4081E342AF4BED81A365A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[rock-chips.com,none];
-	R_DKIM_ALLOW(-0.20)[rock-chips.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[rock-chips.com,gmail.com,vger.kernel.org,collabora.com,sntech.de,lists.infradead.org];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215936-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shawn.lin@rock-chips.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215937-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[intel.com,vger.kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FROM_NEQ_ENVFROM(0.00)[junjie.cao@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[rock-chips.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ADFE612C6D9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F333012C756
 X-Rspamd-Action: no action
 
-From the RK3588 TRM Table 1-1 RK3588 Voltage Domain and Power Domain Summary,
-PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltages to
-be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support landed[1].
-The panic looks like below:
+Hi Miri,
 
-  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec0' on, val=0
-  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec1' on, val=0
-  ...
-  Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
-  Workqueue: pm genpd_power_off_work_fn
-  Call trace:
-  show_stack+0x18/0x24 (C)
-  dump_stack_lvl+0x40/0x84
-  dump_stack+0x18/0x24
-  vpanic+0x1ec/0x4fc
-  vpanic+0x0/0x4fc
-  check_panic_on_warn+0x0/0x94
-  arm64_serror_panic+0x6c/0x78
-  do_serror+0xc4/0xcc
-  el1h_64_error_handler+0x3c/0x5c
-  el1h_64_error+0x6c/0x70
-  regmap_mmio_read32le+0x18/0x24 (P)
-  _regmap_bus_reg_read+0xfc/0x130
-  _regmap_read+0x188/0x1ac
-  regmap_read+0x54/0x78
-  rockchip_pd_power+0xcc/0x5f0
-  rockchip_pd_power_off+0x1c/0x4c
-  _genpd_power_off+0x84/0x120
-  genpd_power_off+0x1b4/0x260
-  genpd_power_off_work_fn+0x38/0x58
-  process_scheduled_works+0x194/0x2c4
-  worker_thread+0x2ac/0x3d8
-  kthread+0x104/0x124
-  ret_from_fork+0x10/0x20
-  SMP: stopping secondary CPUs
-  Kernel Offset: disabled
-  CPU features: 0x3000000,000e0005,40230521,0400720b
-  Memory Limit: none
-  ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
+You're right -- cancel_delayed_work_sync() handles re-arming by design,
+and the work is scheduled with a 1-hour delay (IWL_PTP_WRAP_TIME =
+3600 * HZ), so it cannot realistically fire again during the
+microsecond-scale teardown window.
 
-[1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.casanova@collabora.com/
-Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+The real issue is simply that the delayed work can execute between
+ptp_clock_unregister() and cancel_delayed_work_sync(), observing
+partially cleared PTP state.
 
----
+I'll send a v2 with a corrected commit message, and also split the
+patch into two (one per sub-driver) as Simon suggested.
 
- drivers/pmdomain/rockchip/pm-domains.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Thanks for the review!
 
-diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
-index 997e93c..040aa5f 100644
---- a/drivers/pmdomain/rockchip/pm-domains.c
-+++ b/drivers/pmdomain/rockchip/pm-domains.c
-@@ -1315,10 +1315,10 @@ static const struct rockchip_domain_info rk3588_pm_domains[] = {
- 	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
- 	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
- 	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
--	[RK3588_PD_VENC0]	= DOMAIN_RK3588("venc0",   0x0, BIT(6),  0,       0x0, BIT(14), BIT(5),  0x0, BIT(4),  BIT(4),  false, false),
--	[RK3588_PD_VENC1]	= DOMAIN_RK3588("venc1",   0x0, BIT(7),  0,       0x0, BIT(15), BIT(6),  0x0, BIT(5),  BIT(5),  false, false),
--	[RK3588_PD_RKVDEC0]	= DOMAIN_RK3588("rkvdec0", 0x0, BIT(8),  0,       0x0, BIT(16), BIT(7),  0x0, BIT(6),  BIT(6),  false, false),
--	[RK3588_PD_RKVDEC1]	= DOMAIN_RK3588("rkvdec1", 0x0, BIT(9),  0,       0x0, BIT(17), BIT(8),  0x0, BIT(7),  BIT(7),  false, false),
-+	[RK3588_PD_VENC0]	= DOMAIN_RK3588("venc0",   0x0, BIT(6),  0,       0x0, BIT(14), BIT(5),  0x0, BIT(4),  BIT(4),  false, true),
-+	[RK3588_PD_VENC1]	= DOMAIN_RK3588("venc1",   0x0, BIT(7),  0,       0x0, BIT(15), BIT(6),  0x0, BIT(5),  BIT(5),  false, true),
-+	[RK3588_PD_RKVDEC0]	= DOMAIN_RK3588("rkvdec0", 0x0, BIT(8),  0,       0x0, BIT(16), BIT(7),  0x0, BIT(6),  BIT(6),  false, true),
-+	[RK3588_PD_RKVDEC1]	= DOMAIN_RK3588("rkvdec1", 0x0, BIT(9),  0,       0x0, BIT(17), BIT(8),  0x0, BIT(7),  BIT(7),  false, true),
- 	[RK3588_PD_VDPU]	= DOMAIN_RK3588("vdpu",    0x0, BIT(10), 0,       0x0, BIT(18), BIT(9),  0x0, BIT(8),  BIT(8),  false, false),
- 	[RK3588_PD_RGA30]	= DOMAIN_RK3588("rga30",   0x0, BIT(11), 0,       0x0, BIT(19), BIT(10), 0x0, 0,       0,       false, false),
- 	[RK3588_PD_AV1]		= DOMAIN_RK3588("av1",     0x0, BIT(12), 0,       0x0, BIT(20), BIT(11), 0x0, BIT(9),  BIT(9),  false, false),
--- 
-2.7.4
-
+Junjie
 
