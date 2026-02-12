@@ -1,289 +1,162 @@
-Return-Path: <stable+bounces-215977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHpjDHr1jWlw8wAAu9opvQ
-	(envelope-from <stable+bounces-215977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:44:58 +0100
+	id wEOrALP4jWnz9wAAu9opvQ
+	(envelope-from <stable+bounces-215978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:58:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C7612F145
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:44:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8AF12F26A
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:58:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C73A4301075A
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:44:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0CF523043D5D
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687212BD001;
-	Thu, 12 Feb 2026 15:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E151E3033C1;
+	Thu, 12 Feb 2026 15:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="aG/iFurh"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OZZsWmXg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1AB7082F;
-	Thu, 12 Feb 2026 15:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26C71D5147;
+	Thu, 12 Feb 2026 15:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770911089; cv=none; b=L/u4lSkDBWzE2Gp3+p7QPMtA6Mb7sPtOdwHhsrjr0a2C3oqkrhPgeUGKg9s2ZpOp16KF3aHHgelNpm9l1ETKLx96UIi5bT4R7FQUgtz2oIc99pzv747DfyAf/7u2j+CX0DKB9Bk3sUvBY44EC7BEUZUeG5YGGK4Jey5WaoZvAhI=
+	t=1770911918; cv=none; b=THGit/+T2Reg/9pR+B+B88L2wAnLwvUhW5AqZNHlm1RbWgb/OouiyzWSu9euMvIVevkErHAu2JJZ0XMcydK3kujzk9B5WC78ELEMNHGRwZdQhlJGXZpEvNLoiCiLNcfNfjBeOnz+l5C9lo5c91z/S4RRZ3aJxGDoCq0RlpR1Oh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770911089; c=relaxed/simple;
-	bh=3PzrZU2BEdK2n3XcSigmtSJUjiL09RYksQYRAsOC3KU=;
-	h=Date:To:From:Subject:Message-Id; b=P+8cuzSmCZImP+9boMkTv9Ni3vozbP8X2GzFpTMTc+w0MXR8sTDcdCl7SIDu5Q7PSDH0G35S8VODcfHmY00s2P1kKJpNvblB3/qkex0boZfwOn5HMOamGtIBLTwc7onppbawyZki4xWbLlSI41Hw/uxAvOybxZshV2NwV0nrmgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=aG/iFurh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66BCC4CEF7;
-	Thu, 12 Feb 2026 15:44:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1770911087;
-	bh=3PzrZU2BEdK2n3XcSigmtSJUjiL09RYksQYRAsOC3KU=;
-	h=Date:To:From:Subject:From;
-	b=aG/iFurhB5j8/L78UWqVHS5d4Gpcz8MbIOerHBbiwWS4/9tD5+orV8O1G2EKezDV/
-	 z6pQe4UiAO6puOujn3UFgGeKmYkutlPFycXGuPuJTe8kxPBhqwOajMSJM3inua75L9
-	 AhUcVOq19jskDPG8PSVGtTrMobRoUiWbV/uPB848=
-Date: Thu, 12 Feb 2026 07:44:47 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rcampbell@nvidia.com,matthew.brost@intel.com,leon@kernel.org,jhubbard@nvidia.com,jgg@ziepe.ca,jgg@mellanox.com,hch@lst.de,apopple@nvidia.com,thomas.hellstrom@linux.intel.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged] mm-fix-a-hmm_range_fault-livelock-starvation-problem.patch removed from -mm tree
-Message-Id: <20260212154447.B66BCC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1770911918; c=relaxed/simple;
+	bh=G0lzjGkLz7KOv67ffxg4ifcAGjXZMix2D+1CjjIoXUc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p/JMab5HIFeiw0nPbhCV6IzMZUelkpVtPlezQCu3vaWkXj56XBVOjaQP30xtZVALSp4xM1tMGiUXshsjoK9OKopZIpt43LBpbrOT26K4pOcXmjg73xDVDjTLOTf3n6kQwqv7nTNRHUmR2VDCTnrZoPvq3JJl5u/rCYBNvYb0Lqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OZZsWmXg; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7388540E036A;
+	Thu, 12 Feb 2026 15:58:30 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id VyusCkIHNxxu; Thu, 12 Feb 2026 15:58:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1770911905; bh=UCczMiNTbCNSmwaGGd2wqfRBgSMvWHnpvLD5Txq7LSQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OZZsWmXgvJMcWZ1Z81uPq0CZ1rOZbbSQPR4d766psC1qMBNpyPenHx93UlyPs22BV
+	 4DFtPum4khDz1HwNMdzugmI0dOzQ67uUtdcFRGtmZR15mrsE5YDykS8BoO6PcK3Zku
+	 9sft9HnZ8hWsrgCxSEc5t3L9xd+ULot8UzPJyC/TvD8yk0SsWwxErjb0U23MR0pJSU
+	 0DGtXZArEr+RlDJg8ed+6mJdEGt2ixB0Zt5IJ5XaSozdwZTtR7sGjHGagR6c/dl47S
+	 CLr3dTIwupqhad3Npzw3ZfLmgaUbL274zogR66eoZIBA401hxg4oh77jG3x4Pe97za
+	 m6Y8xlOEJKVa9nV6mrX/NzSyfJR528miVQoz18tufh58aB/khxzF8qU3kxymh1OBHK
+	 I1baWCSPirkkz9CZoADBGgvGY9kFe3qUYRS0kFQpsAp+mV49ONnTe8oS4ostD1Y73j
+	 TjIVicig1xXci2c1zPtz74X6ObrNkX9ne5Qyd1Q2PQXVa1XQu1NEJclqxEukh3rl1B
+	 LVkaINWrMmlRMGBsDQyU7OhlsZWzXDRqkJy9RPHZz+rsqgiVuX0SHyxye5k6UJpMuJ
+	 PT+nz1aSGjF4YFjCkBIYEUas+TTRmyAA7jxqfWczd65+NH8cuniBoGNGXuX8pnF9Vw
+	 GSCshJfLK6oMEdS0AQoqj0o0=
+Received: from zn.tnic (pd95306e3.dip0.t-ipconnect.de [217.83.6.227])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 0D5A140E0365;
+	Thu, 12 Feb 2026 15:58:14 +0000 (UTC)
+Date: Thu, 12 Feb 2026 16:58:08 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, pawel.chmielewski@linux.intel.com,
+	Farrah Chen <farrah.chen@intel.com>,
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/3] x86/cpu: Clear feature bits disabled at
+ compile-time
+Message-ID: <20260212155808.GDaY34kOTrEYHLdoyK@fat_crate.local>
+References: <cover.1770908783.git.m.wieczorretman@pm.me>
+ <32fbbfc16974cfed11e7d2651bce836ba9ceaccc.1770908783.git.m.wieczorretman@pm.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <32fbbfc16974cfed11e7d2651bce836ba9ceaccc.1770908783.git.m.wieczorretman@pm.me>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	R_BAD_CTE_7BIT(3.50)[unknown];
-	BROKEN_CONTENT_TYPE(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
+	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-215978-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-215977-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[alien8.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 20C7612F145
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,alien8.de:dkim]
+X-Rspamd-Queue-Id: 6B8AF12F26A
 X-Rspamd-Action: no action
 
+On Thu, Feb 12, 2026 at 03:34:38PM +0000, Maciej Wieczor-Retman wrote:
+> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+> 
+> If some config options are disabled during compile time, they still are
+> enumerated in macros that use the x86_capability bitmask - cpu_has() or
+> this_cpu_has().
+> 
+> The features are also visible in /proc/cpuinfo even though they are not
+> enabled - which is contrary to what the documentation states about the
+> file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
+> split_lock_detect, user_shstk, avx_vnni and enqcmd.
 
-The quilt patch titled
-     Subject: mm: fix a hmm_range_fault() livelock / starvation problem
-has been removed from the -mm tree.  Its filename was
-     mm-fix-a-hmm_range_fault-livelock-starvation-problem.patch
+I'm still unclear as to when did we break this? Did it ever work as
+documented?
 
-This patch was dropped because it was merged into mainline or a subsystem tree
+I wanna say yes, I've seen this turning off a feature removes it from
+/proc/cpuinfo but I don't remember any details...
 
-------------------------------------------------------
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Subject: mm: fix a hmm_range_fault() livelock / starvation problem
-Date: Tue, 10 Feb 2026 12:56:53 +0100
+> Through the cpufeaturemasks.awk script add a DISABLED_MASK_INITIALIZER
+> macro that creates an initializer list filled with DISABLED_MASKx
+> bitmasks.
+> 
+> At the same time add a REQUIRED_MASK_INITIALIZER that can be used for a
+> sanity check of whether all the required feature bits are set at the end
+> of cpu identification.
+> 
+> Initialize the cpu_caps_cleared array with the autogenerated disabled
+> bitmask. apply_forced_caps() will clear the corresponding bits in
+> boot_cpu_data.x86_capability[] and other secondary cpus'
+> cpu_data.x86_capability[]. Thus features disabled at compile time won't
+> show up in /proc/cpuinfo.
 
-If hmm_range_fault() fails a folio_trylock() in do_swap_page, trying to
-acquire the lock of a device-private folio for migration, to ram, the
-function will spin until it succeeds grabbing the lock.
+Can you please stop explaining the diff? I can read the diff. Put in the
+commit message non-obvious text which is important. Not what you're doing.
 
-However, if the process holding the lock is depending on a work item to be
-completed, which is scheduled on the same CPU as the spinning
-hmm_range_fault(), that work item might be starved and we end up in a
-livelock / starvation situation which is never resolved.
+Check all your commit messages pls.
 
-This can happen, for example if the process holding the
-device-private folio lock is stuck in
-   migrate_device_unmap()->lru_add_drain_all()
-sinc lru_add_drain_all() requires a short work-item
-to be run on all online cpus to complete.
+Thx.
 
-A prerequisite for this to happen is:
-a) Both zone device and system memory folios are considered in
-   migrate_device_unmap(), so that there is a reason to call
-   lru_add_drain_all() for a system memory folio while a
-   folio lock is held on a zone device folio.
-b) The zone device folio has an initial mapcount > 1 which causes
-   at least one migration PTE entry insertion to be deferred to
-   try_to_migrate(), which can happen after the call to
-   lru_add_drain_all().
-c) No or voluntary only preemption.
+-- 
+Regards/Gruss,
+    Boris.
 
-This all seems pretty unlikely to happen, but indeed is hit by the
-"xe_exec_system_allocator" igt test.
-
-Resolve this by waiting for the folio to be unlocked if the
-folio_trylock() fails in do_swap_page().
-
-Rename migration_entry_wait_on_locked() to softleaf_entry_wait_unlock()
-and update its documentation to indicate the new use-case.
-
-Future code improvements might consider moving the lru_add_drain_all()
-call in migrate_device_unmap() to be called *after* all pages have
-migration entries inserted.  That would eliminate also b) above.
-
-Link: https://lkml.kernel.org/r/20260210115653.92413-1-thomas.hellstrom@linux.intel.com
-Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Suggested-by: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>		[v3]
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Ralph Campbell <rcampbell@nvidia.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Jason Gunthorpe <jgg@mellanox.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: <stable@vger.kernel.org>	[6.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/migrate.h |   10 +++++++++-
- mm/filemap.c            |   15 ++++++++++-----
- mm/memory.c             |    3 ++-
- mm/migrate.c            |    8 ++++----
- mm/migrate_device.c     |    2 +-
- 5 files changed, 26 insertions(+), 12 deletions(-)
-
---- a/include/linux/migrate.h~mm-fix-a-hmm_range_fault-livelock-starvation-problem
-+++ a/include/linux/migrate.h
-@@ -65,7 +65,7 @@ bool isolate_folio_to_list(struct folio
- 
- int migrate_huge_page_move_mapping(struct address_space *mapping,
- 		struct folio *dst, struct folio *src);
--void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
-+void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
- 		__releases(ptl);
- void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
- int folio_migrate_mapping(struct address_space *mapping,
-@@ -97,6 +97,14 @@ static inline int set_movable_ops(const
- 	return -ENOSYS;
- }
- 
-+static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
-+	__releases(ptl)
-+{
-+	WARN_ON_ONCE(1);
-+
-+	spin_unlock(ptl);
-+}
-+
- #endif /* CONFIG_MIGRATION */
- 
- #ifdef CONFIG_NUMA_BALANCING
---- a/mm/filemap.c~mm-fix-a-hmm_range_fault-livelock-starvation-problem
-+++ a/mm/filemap.c
-@@ -1379,14 +1379,16 @@ repeat:
- 
- #ifdef CONFIG_MIGRATION
- /**
-- * migration_entry_wait_on_locked - Wait for a migration entry to be removed
-- * @entry: migration swap entry.
-+ * softleaf_entry_wait_on_locked - Wait for a migration entry or
-+ * device_private entry to be removed.
-+ * @entry: migration or device_private swap entry.
-  * @ptl: already locked ptl. This function will drop the lock.
-  *
-- * Wait for a migration entry referencing the given page to be removed. This is
-+ * Wait for a migration entry referencing the given page, or device_private
-+ * entry referencing a dvice_private page to be unlocked. This is
-  * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
-  * this can be called without taking a reference on the page. Instead this
-- * should be called while holding the ptl for the migration entry referencing
-+ * should be called while holding the ptl for @entry referencing
-  * the page.
-  *
-  * Returns after unlocking the ptl.
-@@ -1394,7 +1396,7 @@ repeat:
-  * This follows the same logic as folio_wait_bit_common() so see the comments
-  * there.
-  */
--void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
-+void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
- 	__releases(ptl)
- {
- 	struct wait_page_queue wait_page;
-@@ -1428,6 +1430,9 @@ void migration_entry_wait_on_locked(soft
- 	 * If a migration entry exists for the page the migration path must hold
- 	 * a valid reference to the page, and it must take the ptl to remove the
- 	 * migration entry. So the page is valid until the ptl is dropped.
-+	 * Similarly any path attempting to drop the last reference to a
-+	 * device-private page needs to grab the ptl to remove the device-private
-+	 * entry.
- 	 */
- 	spin_unlock(ptl);
- 
---- a/mm/memory.c~mm-fix-a-hmm_range_fault-livelock-starvation-problem
-+++ a/mm/memory.c
-@@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault
- 				unlock_page(vmf->page);
- 				put_page(vmf->page);
- 			} else {
--				pte_unmap_unlock(vmf->pte, vmf->ptl);
-+				pte_unmap(vmf->pte);
-+				softleaf_entry_wait_on_locked(entry, vmf->ptl);
- 			}
- 		} else if (softleaf_is_hwpoison(entry)) {
- 			ret = VM_FAULT_HWPOISON;
---- a/mm/migrate.c~mm-fix-a-hmm_range_fault-livelock-starvation-problem
-+++ a/mm/migrate.c
-@@ -499,7 +499,7 @@ void migration_entry_wait(struct mm_stru
- 	if (!softleaf_is_migration(entry))
- 		goto out;
- 
--	migration_entry_wait_on_locked(entry, ptl);
-+	softleaf_entry_wait_on_locked(entry, ptl);
- 	return;
- out:
- 	spin_unlock(ptl);
-@@ -531,10 +531,10 @@ void migration_entry_wait_huge(struct vm
- 		 * If migration entry existed, safe to release vma lock
- 		 * here because the pgtable page won't be freed without the
- 		 * pgtable lock released.  See comment right above pgtable
--		 * lock release in migration_entry_wait_on_locked().
-+		 * lock release in softleaf_entry_wait_on_locked().
- 		 */
- 		hugetlb_vma_unlock_read(vma);
--		migration_entry_wait_on_locked(entry, ptl);
-+		softleaf_entry_wait_on_locked(entry, ptl);
- 		return;
- 	}
- 
-@@ -552,7 +552,7 @@ void pmd_migration_entry_wait(struct mm_
- 	ptl = pmd_lock(mm, pmd);
- 	if (!pmd_is_migration_entry(*pmd))
- 		goto unlock;
--	migration_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
-+	softleaf_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
- 	return;
- unlock:
- 	spin_unlock(ptl);
---- a/mm/migrate_device.c~mm-fix-a-hmm_range_fault-livelock-starvation-problem
-+++ a/mm/migrate_device.c
-@@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(
- 		}
- 
- 		if (softleaf_is_migration(entry)) {
--			migration_entry_wait_on_locked(entry, ptl);
-+			softleaf_entry_wait_on_locked(entry, ptl);
- 			spin_unlock(ptl);
- 			return -EAGAIN;
- 		}
-_
-
-Patches currently in -mm which might be from thomas.hellstrom@linux.intel.com are
-
-
+https://people.kernel.org/tglx/notes-about-netiquette
 
