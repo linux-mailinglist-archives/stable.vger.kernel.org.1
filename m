@@ -1,165 +1,110 @@
-Return-Path: <stable+bounces-215955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNCDOrvNjWn87AAAu9opvQ
-	(envelope-from <stable+bounces-215955-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:55:23 +0100
+	id WCecOePNjWn87AAAu9opvQ
+	(envelope-from <stable+bounces-215956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:56:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B4212D9EB
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:55:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9966712DA19
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA92E30BDDFA
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 12:52:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 879BF3048889
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 12:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1029A35B13D;
-	Thu, 12 Feb 2026 12:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9026D356A0D;
+	Thu, 12 Feb 2026 12:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WRk/Lspw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKqoZNU+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F522F39DE;
-	Thu, 12 Feb 2026 12:51:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4768B296BD2
+	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 12:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770900718; cv=none; b=oMN4P2Ej0MDAJBmKfLBXgvM8a7DGY3TU3AITiPfVfI5ZQdZZt4WvJWnntm1R0kCnAGpsPEnAMzyuUPqmSzPgezpPgnzD4q2MI2X0rHKPnFwFQGcoEpbZZ7ln2/zQPkh4mtq0uZBokaKgDxmRHecbJwVRX8qwVL4k0mCh9ZfZW5g=
+	t=1770900751; cv=none; b=cf9eywZQaMhQ5asa4zhOWIBJwf64jnho42VB8lgQ0IX5xIedYm2JWs+oBi+wtcCOjo51HLj7x7T4n3nmNycuNvf8xyjWBhrOuYLgNvznrn6Q+8oq0uI/pIhtoKYVy0YcJMY1a55LgSjCfF+Zdk7Rj/DWSJS0hWgSH0sYJhB+5tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770900718; c=relaxed/simple;
-	bh=5PADlxX/i4hi1VtzVuL+/fMGXH/GtoU6RGW/xNTvkbA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3BcmMCpxB+0U87MEZCbefClSoQFgoF/mS1XjJJgE4XR/gRSsKI3sl0N/CFLc3Joll1LoHkQCKqAF8bbmwQEyp3x4bKslEfn2LuutNNg4vQDOazTXxJF7833Qe+BPTNK22JKnYlbJ0pDfYiGmtjAcku+XMu+HzBgayHzY9votSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WRk/Lspw; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770900717; x=1802436717;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5PADlxX/i4hi1VtzVuL+/fMGXH/GtoU6RGW/xNTvkbA=;
-  b=WRk/Lspw69jjWmZeFYk3mPiJQnxRNtvbkXRVsIHml0Spp6waSpdGO6RY
-   9818mhxeXGdUygfwUfAaLAF/0lQye0TxPZXRHzpizjl6RBXJAJx8X3Ro+
-   vveeHR3jWE2M9+n4sD7jXjzmaJqE/6JzWDtx+8tX8UJo7xNQfik2F55Sm
-   QxHgRsCrlhkWxhdMD37w0pvIbBKnNBSAaGypTj6pfGag+d8I0pDXl16lM
-   bXTY4Jo1NYvGdhV9XlFgx1KYJ8XlT4yHEo87rF1oVaDbEsH0pKl0Phiyi
-   IInDoVLYccZFu0oBCKXviLHEerFY/alCf8dvePZ9y/QF3vB/hVIdjDh4g
-   Q==;
-X-CSE-ConnectionGUID: jWV3RxjNSXq1wNGycJiFvQ==
-X-CSE-MsgGUID: 0Hks4yIwQ/CIfpU5vAif8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="72254028"
-X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="72254028"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 04:51:51 -0800
-X-CSE-ConnectionGUID: g7rFGx85TkSh4eFZ3STacg==
-X-CSE-MsgGUID: TdTu/8/vS1CpLsgXK5HHPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="217553359"
-Received: from b580.bj.intel.com ([10.238.152.74])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 04:51:48 -0800
-From: Junjie Cao <junjie.cao@intel.com>
-To: miriam.rachel.korenblit@intel.com,
-	johannes.berg@intel.com,
-	linux-wireless@vger.kernel.org,
-	richardcochran@gmail.com
-Cc: horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	yedidya.ben.shimol@intel.com,
-	avraham.stern@intel.com,
-	daniel.gabay@intel.com,
-	krishnanand.prabhu@intel.com,
-	luciano.coelho@intel.com,
-	gregory.greenman@intel.com,
-	stable@vger.kernel.org,
-	Junjie Cao <junjie.cao@intel.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH v2 2/2] wifi: iwlwifi: mld: fix race condition in PTP removal
-Date: Thu, 12 Feb 2026 20:50:35 +0800
-Message-ID: <20260212125035.1345718-2-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260212125035.1345718-1-junjie.cao@intel.com>
-References: <DM3PPF63A6024A9E1EF4081E342AF4BED81A365A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
- <20260212125035.1345718-1-junjie.cao@intel.com>
+	s=arc-20240116; t=1770900751; c=relaxed/simple;
+	bh=kAK5Pe1R55mQWBTm0vefHxh9FAlrEg6zu6pOoLeFq8s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bQZkwfMbrFRql3NIkzt68sdBzjyvtkK/pb53NxIntBbGoak9I6dnr94wzuz7OMX+WgrMvmgll9PPxqjoz2vfjKb0RFq5GedP/4YiLPyms5a+t1aq0dNadbvHysDpncChhah7iakzNDoOomEbeO1afmUmvMSNt32debfIWCaMtR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKqoZNU+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B878C4CEF7;
+	Thu, 12 Feb 2026 12:52:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770900750;
+	bh=kAK5Pe1R55mQWBTm0vefHxh9FAlrEg6zu6pOoLeFq8s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mKqoZNU+P9CS4cCFguoLrCM8CB5ZsHdU+1Ms8YCg6Rx1Z2MpboIBemHF1gNuy4NZU
+	 CP7pVKK01J2kAVYlksW+2fDKbnFsPiH0NN/W2+modqtUmzPlndigJ8alXDTnMSw0VG
+	 JcX9G6IfXbomMOeZBMbAaRdDGA+ufTtjHvmZhziM=
+Date: Thu, 12 Feb 2026 13:52:27 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: stable <stable@vger.kernel.org>
+Subject: Re: 6.18-stable inclusion request
+Message-ID: <2026021222-bunkhouse-surfacing-ae48@gregkh>
+References: <7923dc60-dbf5-44aa-9aab-1c474cea0039@kernel.dk>
+ <faa3e25a-ab8e-4589-aa4f-6f58bd93a636@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <faa3e25a-ab8e-4589-aa4f-6f58bd93a636@kernel.dk>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-215955-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TO_DN_ALL(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-215956-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[intel.com,vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[junjie.cao@intel.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 65B4212D9EB
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9966712DA19
 X-Rspamd-Action: no action
 
-iwl_mld_ptp_remove() calls cancel_delayed_work_sync() only after
-ptp_clock_unregister() and clearing ptp_data state (ptp_clock,
-last_gp2, wrap_counter).
+On Wed, Feb 11, 2026 at 05:21:35AM -0700, Jens Axboe wrote:
+> On 2/11/26 4:49 AM, Jens Axboe wrote:
+> > Hi Greg/stable,
+> > 
+> > Can you add these two patches to the 6.18-stable queue? You can also
+> > just cherry pick these in order:
+> > 
+> > 38aa434ab9335ce2d178b7538cdf01d60b2014c3
+> > 91214661489467f8452d34edbf257488d85176e4
+> > 
+> > It's in the nice-to-have category just to be consistent with the
+> > older/current stable release.
+> 
+> Oh and since 6.19 is out as well, 6.19-stable queue as well, please.
 
-This creates a race where the delayed work iwl_mld_ptp_work() can
-execute between ptp_clock_unregister() and cancel_delayed_work_sync(),
-observing partially cleared PTP state.
+Now done, thanks!
 
-Move cancel_delayed_work_sync() before ptp_clock_unregister() to
-ensure the delayed work is fully stopped before any PTP cleanup
-begins.
-
-Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mld/ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-index 231920425c06..b40182320801 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/ptp.c
-@@ -319,10 +319,10 @@ void iwl_mld_ptp_remove(struct iwl_mld *mld)
- 			       mld->ptp_data.ptp_clock_info.name,
- 			       ptp_clock_index(mld->ptp_data.ptp_clock));
- 
-+		cancel_delayed_work_sync(&mld->ptp_data.dwork);
- 		ptp_clock_unregister(mld->ptp_data.ptp_clock);
- 		mld->ptp_data.ptp_clock = NULL;
- 		mld->ptp_data.last_gp2 = 0;
- 		mld->ptp_data.wrap_counter = 0;
--		cancel_delayed_work_sync(&mld->ptp_data.dwork);
- 	}
- }
--- 
-2.48.1
-
+greg k-h
 
