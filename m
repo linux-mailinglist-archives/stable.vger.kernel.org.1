@@ -1,152 +1,139 @@
-Return-Path: <stable+bounces-215938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6L43A+2sjWmz5wAAu9opvQ
-	(envelope-from <stable+bounces-215938-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:35:25 +0100
+	id QIQVEiiwjWmz5wAAu9opvQ
+	(envelope-from <stable+bounces-215939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:49:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0975D12C8C3
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:35:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B893812CAF7
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 11:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4158830455D8
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 10:34:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 386753157610
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 10:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C8F2D7DDC;
-	Thu, 12 Feb 2026 10:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4502229D297;
+	Thu, 12 Feb 2026 10:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nsLKylHB";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ctraEmnn";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="d8llgl8Y";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="UKHSTwsz"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="g5BOpCOI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7242BE647
-	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 10:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E72C1DDA24;
+	Thu, 12 Feb 2026 10:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770892443; cv=none; b=srlhm8fTBcu0QYEzuScJ+bqC22dMCjpdRma5bFfBK7Yn/Xr/XXsAPy2FeMIJSKjO2S7HsQGC9te39WPX5A6uPy7d3sqmxBRp7qjE1+Z9BNguXf9Nl2+wrnwFEwHpHyPsDesGg5ux5ltgNzN2pJ1DhCuehwaQT7A3ylFrFJejQWM=
+	t=1770893160; cv=none; b=QgRfAOqT8l6h88VFt64uP2pDWW5EwBIDdgpyVGecDAZiQwC3WMx9IM+GE+YzuJN6+Mq+4ifNQ9jNbrDzHYTvVIMwgQ4c3r3rlJShr9k4qFQj53SrohJkj8dxyBUPeGKN0jV44YCO8006Aj65kIh6oGrvkHxX1CLKEnMW2FtB9WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770892443; c=relaxed/simple;
-	bh=kLZwO6LnZFSRcZNUwXxBDrrg2rSZk13WMmdXPZp5bHY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=b6o3UwinuYoTESab1LrHqtyYDThRKzVxjEzj9rO/ZgwmvZQuOhIG3nGpz/I7EBYcWEVGIuv+dv3V5sUjhdh+jdWIOfTwn3QerS3B6hgadbP8yvd9WW4guAXqqV9kApAL+WeAp6JD2so+Njj89waRgBIsUyGb8ieRs3hidU3hViI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nsLKylHB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ctraEmnn; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=d8llgl8Y; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UKHSTwsz; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from hawking.nue2.suse.org (unknown [IPv6:2a07:de40:a101:3:92b1:1cff:fe69:ddc])
-	by smtp-out2.suse.de (Postfix) with ESMTP id C33FC5BDAD;
-	Thu, 12 Feb 2026 10:34:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770892441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BeqIufAnYFkDobcmSJZWZ2CF3hg0EmflNlkkrGIm70U=;
-	b=nsLKylHB2RCOPy8131sxnnODIOADcYH6mFmK5mdtcESmMXnNjDYV9fJUN6QJ0+8dNVULwL
-	OeiKltQzlUQahubViNh8d4ygNwYOc4um3TApa4/R0ZRycLJdWM6Hx3iUZvCmRECW6xtIF4
-	PKFbO6etyfBYAw8rR7+S2mMhtY2rjqg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770892441;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BeqIufAnYFkDobcmSJZWZ2CF3hg0EmflNlkkrGIm70U=;
-	b=ctraEmnnzOPGB2pjH+6bObn5UnOpNRFk6wffYbCuXaSwDTXjXcrDSLpgAAUyDMX/a11Wjr
-	4spUj71SJeEfgqBA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=d8llgl8Y;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UKHSTwsz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770892440; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BeqIufAnYFkDobcmSJZWZ2CF3hg0EmflNlkkrGIm70U=;
-	b=d8llgl8YGpXU3bLR71G4BOLv8H8nzNx0xCNaqYEQBknIKOLnjDf4H5XulvGAl35mQYAyQU
-	ZyoB4rYuJ/JgMYuDvVxsafSNZEgwbCmJdaOupDN8LRrLSzgJfLNLTAUBMZ+Ba9hOJFx5+t
-	9LuoN6rmuJB16LahLniFFfNRmdCF19I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770892440;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BeqIufAnYFkDobcmSJZWZ2CF3hg0EmflNlkkrGIm70U=;
-	b=UKHSTwsz4ggPCOXEVZLqlnng5t29saErflvm5qpBVM1LvWZpGvIj4K8uAuyKCXJzH53e20
-	QzPVzB+HlRXI3DCQ==
-Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
-	id A8E114A0A2B; Thu, 12 Feb 2026 11:34:00 +0100 (CET)
-From: Andreas Schwab <schwab@suse.de>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org,  linux-kernel@vger.kernel.org,  Ard
- Biesheuvel <ardb@kernel.org>,  "Jason A . Donenfeld" <Jason@zx2c4.com>,
-  Herbert Xu <herbert@gondor.apana.org.au>,  Vivian Wang
- <wangruikang@iscas.ac.cn>,  Jerry Shih <jerry.shih@sifive.com>,  "David S
- . Miller" <davem@davemloft.net>,  Palmer Dabbelt <palmer@dabbelt.com>,
-  Paul Walmsley <pjw@kernel.org>,  Alexandre Ghiti <alex@ghiti.fr>,
-  "Martin K . Petersen" <martin.petersen@oracle.com>,  Han Gao
- <gaohan@iscas.ac.cn>,  linux-riscv@lists.infradead.org,
-  stable@vger.kernel.org
-Subject: Re: [PATCH] lib/crypto: riscv: Depend on
- RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
-In-Reply-To: <20251206213750.81474-1-ebiggers@kernel.org> (Eric Biggers's
-	message of "Sat, 6 Dec 2025 13:37:50 -0800")
-References: <20251206213750.81474-1-ebiggers@kernel.org>
-Date: Thu, 12 Feb 2026 11:34:00 +0100
-Message-ID: <mvm1piq9ron.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1770893160; c=relaxed/simple;
+	bh=Q9lBOtUg68sa9iMHgSNiQwBdqiC8tpa9sl++GN3qSZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lhSbglCUu2uOqfxYfxOsE7CY6bxHdC/xQxHB8RiwEi9HaJso2vesMRFRiSPH2wsXindN5vwi6+YVSWjRfKTjC8rzUqeId0ktFvipxjzQ302VKbOT22n1kbkn+XHgEX1h2i5d3qbx8fjlgPSfvVMbkhodY4M416QIMII0723Di4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=g5BOpCOI; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=qe
+	ccGjVLjUuQaSbBstJwiQOfIWq48EFo6VoO+Gt3HtY=; b=g5BOpCOIBd4ujm+v3L
+	bACpaRc4XLiIdpWizPIMP45pgaMItayZldkEpD6iG3XzjnJ04WTtuiRftr7BWZMK
+	yoRqefmKMad48OXCC6niAAiYBrr+24xej+NOxwcprMNKq34fl84Rkja9Jqx/JOrt
+	EzXktG0bNSJgKBomI1Nnux+dE=
+Received: from 163.com (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wA38f4Tr41pL2eqLA--.10527S6;
+	Thu, 12 Feb 2026 18:44:43 +0800 (CST)
+From: Zhiquan Li <zhiquan_li@163.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	shuah@kernel.org
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhiquan_li@163.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 4/4] KVM: selftests: Fix reserved value WRMSR testcase for multi-feature MSRs
+Date: Thu, 12 Feb 2026 18:38:41 +0800
+Message-ID: <20260212103841.171459-5-zhiquan_li@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260212103841.171459-1-zhiquan_li@163.com>
+References: <20260212103841.171459-1-zhiquan_li@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Flag: YES
-X-Spamd-Bar: +++++++++++++++
-X-Spam-Level: ***************
-X-Spam-Score: 15.29
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wA38f4Tr41pL2eqLA--.10527S6
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw1ktFW8WF48KrWfXryrZwb_yoW8Ar1kpa
+	n3Jr40kr93Ka4fAayxGF4xXF18ZFnrWr40gF1Fy3srZF15Ja4xZw1xKay5Aas3urWSq3y3
+	Zas2gw1j9a1DJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEqg4hUUUUU=
+X-CM-SenderInfo: 52kl13xdqbzxi6rwjhhfrp/xtbCwhuvmGmNrxvmkQAA3J
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.34 / 15.00];
-	SPAM_FLAG(5.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-215938-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,163.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[schwab@suse.de,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-215939-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[zhiquan_li@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0975D12C8C3
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_FROM(0.00)[163.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B893812CAF7
 X-Rspamd-Action: no action
 
-On Dez 06 2025, Eric Biggers wrote:
+From: Sean Christopherson <seanjc@google.com>
 
-> Replace the RISCV_ISA_V dependency of the RISC-V crypto code with
-> RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS, which implies RISCV_ISA_V as
-> well as vector unaligned accesses being efficient.
+When determining whether or not a WRMSR with reserved bits will #GP or
+succeed due to the WRMSR not existing per the guest virtual CPU model,
+expect failure if and only if _all_ features associated with the MSR are
+unsupported.  Checking only the primary feature results in false failures
+when running on AMD and Hygon CPUs with only one of RDPID or RDTSCP, as
+AMD/Hygon CPUs ignore MSR_TSC_AUX[63:32], i.e. don't treat the bits as
+reserved, and so #GP only if the MSR is unsupported.
 
-That should be a runtime dependency.
+Fixes: 9c38ddb3df94 ("KVM: selftests: Add an MSR test to exercise guest/host and read/write")
+Reported-by: Zhiquan Li <zhiquan_li@163.com>
+Closes: https://lore.kernel.org/all/20260209041305.64906-6-zhiquan_li@163.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ tools/testing/selftests/kvm/x86/msrs_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/tools/testing/selftests/kvm/x86/msrs_test.c b/tools/testing/selftests/kvm/x86/msrs_test.c
+index 4c97444fdefe..f7e39bf887ad 100644
+--- a/tools/testing/selftests/kvm/x86/msrs_test.c
++++ b/tools/testing/selftests/kvm/x86/msrs_test.c
+@@ -175,7 +175,7 @@ void guest_test_reserved_val(const struct kvm_msr *msr)
+ 	 * If the CPU will truncate the written value (e.g. SYSENTER on AMD),
+ 	 * expect success and a truncated value, not #GP.
+ 	 */
+-	if (!this_cpu_has(msr->feature) ||
++	if ((!this_cpu_has(msr->feature) && !this_cpu_has(msr->feature2)) ||
+ 	    msr->rsvd_val == fixup_rdmsr_val(msr->index, msr->rsvd_val)) {
+ 		u8 vec = wrmsr_safe(msr->index, msr->rsvd_val);
+ 
 -- 
-Andreas Schwab, SUSE Labs, schwab@suse.de
-GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
-"And now for something completely different."
+2.43.0
+
 
