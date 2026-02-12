@@ -1,168 +1,280 @@
-Return-Path: <stable+bounces-215975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPM8NSzzjWlw8wAAu9opvQ
-	(envelope-from <stable+bounces-215975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:35:08 +0100
+	id WP3eL/DzjWlw8wAAu9opvQ
+	(envelope-from <stable+bounces-215976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:38:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F63512F01A
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:35:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B6A12F0B1
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 16:38:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 66331302DF78
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:35:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 388FE30A2C8C
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100F92C2365;
-	Thu, 12 Feb 2026 15:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03169337111;
+	Thu, 12 Feb 2026 15:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="LkvNi11u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aWegDsBC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-07.mail-europe.com (mail-0701.mail-europe.com [51.83.17.38])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABF51F3B87
-	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 15:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.17.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9420318BA2;
+	Thu, 12 Feb 2026 15:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770910502; cv=none; b=FIjIv+MdIt43Y/gZxaPiFtL0ShbWQpnpubGRQb7fRC6QqmitJhwAIP0IWcVHV3nayFfAn5oESYzRorjtENOZPLvLMjXzab1G64PMFgc18nFrEOTyqVH1Xb38siSvlcUdL+6J/84FcI1nkwhrK+e5LoCaAWHH9SAAOHwpQ2BwX50=
+	t=1770910547; cv=none; b=coH2RFAY+4OaYC+K/636ZsDj4sJG+/f3qPzP8uCqbUh9LgkTpoja7AmHprrhwkaEy4OdWlS3klVPUGAMUosJkz8JFLf7evOOtH9vZHJWG23filXxMvDN6GytsO2mwnFRy0bbc3HEpoQV+n5mbEZ4JgdiumwRqY6zXMnDzM7PZOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770910502; c=relaxed/simple;
-	bh=GKU97sFrDJU9ubg2pcOiS88y9fxPx469uJTR7aE6ieM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GsgTr4TZK3OZrCKG5n4Y9AWltqpJB6U0AqLR6KMYPb2VriwaSZ9w53yljXgk2e13jzZlM7XWkf0k7ifUDBhxxm6X1zhiLLVqOtklYK+TtEI7U7lgzj5Eyv6CbBVxIc1qbsSOSJk07lRWQBHs/6toa73dhrzwIBTf9ntJ+H50pqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=fail smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=LkvNi11u; arc=none smtp.client-ip=51.83.17.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1770910483; x=1771169683;
-	bh=4M+Owbd0HeHgku23Jntag7YvEbhLlJDH/9jpPFuXA6I=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=LkvNi11ucnkDX/2xnpTUxpj/bCdwE7jsGSoECQXV5bYHUB2FR14P/tWdKaT0/+meO
-	 lS5AQ1VDp2eUI7fH5wPoAcuBLQ1SErjdxA8Hy01o0Pp2PWovt1lEQHPKJE9YSn0pRO
-	 SdNKYKVcLZTFfTi1lSTFBdfWqUPxtc9nT9PP1m2lDjdmC93oX28oqI7uupScMmA04G
-	 tFut9ZKv7RCz3pygvKsgF++U8hUJLrmjzjjEWLJcP2TNgQMuph7PVUe8InR648u3Uc
-	 W63m/yOzKfq7cB59BVAzVtBKJol9RSHf+dkxQpiHDrTcngubAuEuCxjSYwGjZqUEI+
-	 EJSjcEOGM87eg==
-Date: Thu, 12 Feb 2026 15:34:38 +0000
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: m.wieczorretman@pm.me, pawel.chmielewski@linux.intel.com, Farrah Chen <farrah.chen@intel.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v5 1/3] x86/cpu: Clear feature bits disabled at compile-time
-Message-ID: <32fbbfc16974cfed11e7d2651bce836ba9ceaccc.1770908783.git.m.wieczorretman@pm.me>
-In-Reply-To: <cover.1770908783.git.m.wieczorretman@pm.me>
-References: <cover.1770908783.git.m.wieczorretman@pm.me>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 13dc42a1ba63ab0ef2e91884790de5ad50f75227
+	s=arc-20240116; t=1770910547; c=relaxed/simple;
+	bh=TO37eo+Xgib1YZz+3/bN23epC9tyuhnej0GE/4f9cu0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AjWwt2N/VHszRELSojuLu3kliH0CKM231qtFU0ztZ3L5cKUAyHexyHJLlmngakn+5IgukBi65ZhkdFAFLzE0jIB5ZfzZ9nF6n5x/xI0ta7l8Wn8jsCqSjn+ntm3AXDiL+9RbL253V0RyQSCOiHT3pryJIAFDmdeCVtxtkFKIWvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aWegDsBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431CCC4CEF7;
+	Thu, 12 Feb 2026 15:35:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770910546;
+	bh=TO37eo+Xgib1YZz+3/bN23epC9tyuhnej0GE/4f9cu0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=aWegDsBCbtfgIg9OB2Xop0lxMZQZwqnfB0XxDQ1ueSB7JcgdPabiA42A0ID30+YaT
+	 P/XSETTC7Yp7LAHJn1mdglYBFHY8apMm7aJjIdTv62SFR8OMUfOdbzlnUy2wCzeZ9P
+	 qeitAMtlBa4Dpu0Pld90mQkZsNlQEPhZhE3NsjwBsGOYAXM1Z0jy/tUfs3Uiy7Yzmq
+	 jqUs5QcXBDMLhWVRmFhrg4r6U4qsQmae3wNfbwYcj9s5SjXNuawXvxLGiKOZVh9R7+
+	 QNiq30C+UJ87E8cP7FBFGdAK0wCpMBxagWggHp00At/4AMI4cabCeJx5GC2bp1sUNM
+	 KIvbaqBP5G1gQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vqYjH-0000000AeWS-3lg7;
+	Thu, 12 Feb 2026 15:35:43 +0000
+Date: Thu, 12 Feb 2026 15:35:43 +0000
+Message-ID: <86ikc2asa8.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	oliver.upton@linux.dev,
+	joey.gouly@arm.com,
+	suzuki.poulose@arm.com,
+	yuzenghui@huawei.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/3] KVM: arm64: Hide S1POE from guests when not supported by the host
+In-Reply-To: <CA+EHjTz-JU2gDfziCY2SguK9=6gGSCL5TN_U_C7FiZ5i0JTZqQ@mail.gmail.com>
+References: <20260212090252.158689-1-tabba@google.com>
+	<20260212090252.158689-2-tabba@google.com>
+	<86jywib98e.wl-maz@kernel.org>
+	<CA+EHjTz-JU2gDfziCY2SguK9=6gGSCL5TN_U_C7FiZ5i0JTZqQ@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tabba@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[pm.me,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[pm.me:s=protonmail3];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[172.234.253.10:from];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[m.wieczorretman@pm.me,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215975-lists,stable=lfdr.de];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-215976-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[pm.me:+]
-X-Rspamd-Queue-Id: 3F63512F01A
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 23B6A12F0B1
 X-Rspamd-Action: no action
 
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+On Thu, 12 Feb 2026 09:41:22 +0000,
+Fuad Tabba <tabba@google.com> wrote:
+> 
+> Hi Marc,
+> 
+> On Thu, 12 Feb 2026 at 09:29, Marc Zyngier <maz@kernel.org> wrote:
+> >
+> > Hi Fuad,
+> >
+> > On Thu, 12 Feb 2026 09:02:50 +0000,
+> > Fuad Tabba <tabba@google.com> wrote:
+> > >
+> > > When CONFIG_ARM64_POE is disabled, KVM does not save/restore POR_EL1.
+> > > However, ID_AA64MMFR3_EL1 sanitisation currently exposes the feature to
+> > > guests whenever the hardware supports it, ignoring the host kernel
+> > > configuration.
+> >
+> > This is the umpteenth time we get caught by this. PAN was the latest
+> > instance until this one. Maybe an approach would be to have a default
+> > override when a config option is not enabled, so that KVM is
+> > consistent with the rest of the kernel?
+> 
+> I spoke to Will about this, and one thing he'll look into is whether
+> this value in `struct arm64_ftr_reg` can be made consistent with the
+> cpu configuration itself (in cpufeature.c itself) . This would avoid
+> the problem altogether if possible. The question is whether the kernel
+> needs to somehow know that a certain feature exists even if it's
+> disabled in the config...
+> 
+> If he thinks it's not doable at that level, I'll look into
+> alternatives to make it correct by construction.
 
-If some config options are disabled during compile time, they still are
-enumerated in macros that use the x86_capability bitmask - cpu_has() or
-this_cpu_has().
+What I currently have for that is rather ugly:
 
-The features are also visible in /proc/cpuinfo even though they are not
-enabled - which is contrary to what the documentation states about the
-file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
-split_lock_detect, user_shstk, avx_vnni and enqcmd.
-
-Through the cpufeaturemasks.awk script add a DISABLED_MASK_INITIALIZER
-macro that creates an initializer list filled with DISABLED_MASKx
-bitmasks.
-
-At the same time add a REQUIRED_MASK_INITIALIZER that can be used for a
-sanity check of whether all the required feature bits are set at the end
-of cpu identification.
-
-Initialize the cpu_caps_cleared array with the autogenerated disabled
-bitmask. apply_forced_caps() will clear the corresponding bits in
-boot_cpu_data.x86_capability[] and other secondary cpus'
-cpu_data.x86_capability[]. Thus features disabled at compile time won't
-show up in /proc/cpuinfo.
-
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220348
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Cc: <stable@vger.kernel.org> # 6.18.x
----
- arch/x86/kernel/cpu/common.c       | 3 ++-
- arch/x86/tools/cpufeaturemasks.awk | 6 ++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index e7ab22fce3b5..8d12c5722245 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -732,7 +732,8 @@ static const char *table_lookup_model(struct cpuinfo_x8=
-6 *c)
- }
-=20
- /* Aligned to unsigned long to avoid split lock in atomic bitmap ops */
--__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
-));
-+__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
-)) =3D
-+=09DISABLED_MASK_INITIALIZER;
- __u32 cpu_caps_set[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long));
-=20
- #ifdef CONFIG_X86_32
-diff --git a/arch/x86/tools/cpufeaturemasks.awk b/arch/x86/tools/cpufeature=
-masks.awk
-index 173d5bf2d999..b7f4e775a365 100755
---- a/arch/x86/tools/cpufeaturemasks.awk
-+++ b/arch/x86/tools/cpufeaturemasks.awk
-@@ -82,6 +82,12 @@ END {
- =09=09}
- =09=09printf " 0\t\\\n";
- =09=09printf "\t) & (1U << ((x) & 31)))\n\n";
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index 72f39cecce93a..3bde0ad5ea972 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -971,6 +971,7 @@ struct arm64_ftr_reg *get_arm64_ftr_reg(u32 sys_id);
+ extern struct arm64_ftr_override id_aa64mmfr0_override;
+ extern struct arm64_ftr_override id_aa64mmfr1_override;
+ extern struct arm64_ftr_override id_aa64mmfr2_override;
++extern struct arm64_ftr_override id_aa64mmfr3_override;
+ extern struct arm64_ftr_override id_aa64pfr0_override;
+ extern struct arm64_ftr_override id_aa64pfr1_override;
+ extern struct arm64_ftr_override id_aa64zfr0_override;
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 1a7eec542675b..32069da9651bf 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -778,6 +778,7 @@ static const struct arm64_ftr_bits ftr_raz[] = {
+ struct arm64_ftr_override __read_mostly id_aa64mmfr0_override;
+ struct arm64_ftr_override __read_mostly id_aa64mmfr1_override;
+ struct arm64_ftr_override __read_mostly id_aa64mmfr2_override;
++struct arm64_ftr_override __read_mostly id_aa64mmfr3_override;
+ struct arm64_ftr_override __read_mostly id_aa64pfr0_override;
+ struct arm64_ftr_override __read_mostly id_aa64pfr1_override;
+ struct arm64_ftr_override __read_mostly id_aa64zfr0_override;
+@@ -850,7 +851,8 @@ static const struct __ftr_reg_entry {
+ 			       &id_aa64mmfr1_override),
+ 	ARM64_FTR_REG_OVERRIDE(SYS_ID_AA64MMFR2_EL1, ftr_id_aa64mmfr2,
+ 			       &id_aa64mmfr2_override),
+-	ARM64_FTR_REG(SYS_ID_AA64MMFR3_EL1, ftr_id_aa64mmfr3),
++	ARM64_FTR_REG_OVERRIDE(SYS_ID_AA64MMFR3_EL1, ftr_id_aa64mmfr3,
++			       &id_aa64mmfr3_override),
+ 	ARM64_FTR_REG(SYS_ID_AA64MMFR4_EL1, ftr_id_aa64mmfr4),
+ 
+ 	/* Op1 = 0, CRn = 10, CRm = 4 */
+diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
+index 85bc629270bd9..202e165a4680c 100644
+--- a/arch/arm64/kernel/image-vars.h
++++ b/arch/arm64/kernel/image-vars.h
+@@ -51,6 +51,7 @@ PI_EXPORT_SYM(id_aa64isar2_override);
+ PI_EXPORT_SYM(id_aa64mmfr0_override);
+ PI_EXPORT_SYM(id_aa64mmfr1_override);
+ PI_EXPORT_SYM(id_aa64mmfr2_override);
++PI_EXPORT_SYM(id_aa64mmfr3_override);
+ PI_EXPORT_SYM(id_aa64pfr0_override);
+ PI_EXPORT_SYM(id_aa64pfr1_override);
+ PI_EXPORT_SYM(id_aa64smfr0_override);
+diff --git a/arch/arm64/kernel/pi/idreg-override.c b/arch/arm64/kernel/pi/idreg-override.c
+index e5ea280452c3b..b8dbe02e53171 100644
+--- a/arch/arm64/kernel/pi/idreg-override.c
++++ b/arch/arm64/kernel/pi/idreg-override.c
+@@ -24,10 +24,12 @@
+ static u64 __boot_status __initdata;
+ 
+ typedef bool filter_t(u64 val);
++typedef void cfg_override_t(struct arm64_ftr_override *);
+ 
+ struct ftr_set_desc {
+ 	char 				name[FTR_DESC_NAME_LEN];
+ 	PREL64(struct arm64_ftr_override, override);
++	PREL64(cfg_override_t,		cfg_override);
+ 	struct {
+ 		char			name[FTR_DESC_FIELD_LEN];
+ 		u8			shift;
+@@ -106,6 +108,22 @@ static const struct ftr_set_desc mmfr2 __prel64_initconst = {
+ 	},
+ };
+ 
++static void __init cfg_mmfr3_override(struct arm64_ftr_override *override)
++{
++#ifndef CONFIG_ARM64_POE
++	override->mask |= ID_AA64MMFR3_EL1_S1POE_MASK;
++#endif
++}
 +
-+=09=09printf "\n#define %s_MASK_INITIALIZER\t\t\t\\", s;
-+=09=09printf "\n\t{\t\t\t\t\t\t\\";
-+=09=09for (i =3D 0; i < ncapints; i++)
-+=09=09=09printf "\n\t\t%s_MASK%d,\t\t\t\\", s, i;
-+=09=09printf "\n\t}\n\n";
- =09}
-=20
- =09printf "#endif /* _ASM_X86_CPUFEATUREMASKS_H */\n";
---=20
-2.53.0
++static const struct ftr_set_desc mmfr3 __prel64_initconst = {
++	.name		= "id_aa64mmfr3",
++	.override	= &id_aa64mmfr3_override,
++	.cfg_override	= cfg_mmfr3_override,
++	.fields		= {
++		{}
++	},
++};
++
+ static bool __init pfr0_sve_filter(u64 val)
+ {
+ 	/*
+@@ -221,6 +239,7 @@ PREL64(const struct ftr_set_desc, reg) regs[] __prel64_initconst = {
+ 	{ &mmfr0	},
+ 	{ &mmfr1	},
+ 	{ &mmfr2	},
++	{ &mmfr3	},
+ 	{ &pfr0 	},
+ 	{ &pfr1 	},
+ 	{ &isar1	},
+@@ -398,14 +417,19 @@ void __init init_feature_override(u64 boot_status, const void *fdt,
+ {
+ 	struct arm64_ftr_override *override;
+ 	const struct ftr_set_desc *reg;
++	cfg_override_t *cfg_override;
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(regs); i++) {
+ 		reg = prel64_pointer(regs[i].reg);
+ 		override = prel64_pointer(reg->override);
++		cfg_override = prel64_pointer(reg->cfg_override);
+ 
+ 		override->val  = 0;
+ 		override->mask = 0;
++
++		if (cfg_override)
++			cfg_override(override);
+ 	}
+ 
+ 	__boot_status = boot_status;
 
 
+which works, but is not super friendly.
+
+Looking at the arm64_ftr_reg structure, this could work if
+FTR_VISIBLE_IF_IS_ENABLED() didn't simply put "HIDDEN" when the
+feature is not present, but forced things to be disabled
+altogether. The problem is that "HIDDEN" means not shown to userspace,
+and that we have plenty of HIDDEN features that must make it into KVM.
+
+I'll have a think.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
