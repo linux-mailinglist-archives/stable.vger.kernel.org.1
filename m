@@ -1,74 +1,61 @@
-Return-Path: <stable+bounces-215969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNweAjrpjWkm8gAAu9opvQ
-	(envelope-from <stable+bounces-215969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:52:42 +0100
+	id UDo7NejojWkm8gAAu9opvQ
+	(envelope-from <stable+bounces-215970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:51:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB5F12E98A
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:52:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A3212E90A
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 15:51:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B4D5300B467
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 14:48:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 974B83012224
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 14:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC9C35CB7C;
-	Thu, 12 Feb 2026 14:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555E635CBB7;
+	Thu, 12 Feb 2026 14:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nu6uB5eE";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CZEeMQVK"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="VfpmNuzq"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp-8faa.mail.infomaniak.ch (smtp-8faa.mail.infomaniak.ch [83.166.143.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B131F35BDAA;
-	Thu, 12 Feb 2026 14:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4B135CB7E
+	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 14:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770907727; cv=none; b=vCx7CgUM2FBWn+qYKTmib6f9NyyVNegrg2acq/4DGDkkd+uveEBe5uycXtSrrGyh5GAZcHav+3kjKvS9PsGejqMPRA59Y/ytaCm94vRDFQ4P5FoRjNHSWL/WgXdbo84jY1r4TnEuRtFTZHfqIbQVVI3HU2SFbbi4eMeUVvcldLM=
+	t=1770907876; cv=none; b=X69/PL5cvZEgIapAsJwBRuzlnXWgM6SdD1hAmaIeC/7L/AUUj/a8eXpOteH8j3t+/3sCIZPYrkb4yn2YDbdg2vzx9sbtg1fk36K3FpCPqdqYbbLF4HtkSrjmOMF9l1zk1r6PhvhVfMw0QbkzkOrJRM+y2QGb0tPse8T3pw0EyOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770907727; c=relaxed/simple;
-	bh=dFavjR5pdXwlc9K6evsuvIUExi633TuD2Y58C+AQzB4=;
+	s=arc-20240116; t=1770907876; c=relaxed/simple;
+	bh=yV+qGryzCv5LdVIdZObnyl+TqBvoZRBq/s7BwmvEucY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m+CCfcUaH1cOBzE2tGYPEUr56JvbH6AG4D5i9x9rA3RLuSlzCt1S7qX69Nfp3ZiLkDUShpQoA+ryYLyRDaOaPBqoG6tUlm2f6s/5gxp3Z1gspUzrB3wGOz7nrnfb3I6PvqPGz+hDH6VSLXNLMWvXve+DQT5gPVOzpkwnp2VlXxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nu6uB5eE; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CZEeMQVK; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 12 Feb 2026 15:48:41 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1770907723;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iyKLveYLx2s5utbcVS0AmPY44PgTdWydUyC5yig1Ys8=;
-	b=nu6uB5eE+Ig0CPqWNXdLCsQ4n2Pr7jnNrODwcr/C3EfMXtifqh20fWjeNDYigRZ9LJfWI4
-	J9oNH6bKq+IrcFwMPRlwbojTOhyJdhhLBD9Kcwv4Jt4k5hzXTrfjprKANFmiqpcZTFHVmP
-	gF54kA51mbEQ7oYyq3eKSihBpi0j06cwRqVcbvGyWx525MS2jxffgPf9XHE+XSIKQaIbEn
-	D76MyToOQ5UXTXBXSln7simIfKp7kIzImdQew+KfC6sI7oTbCg0Q5lR1R392szl56PWjbL
-	hEYmMXCgnoMnKXrKPvkIHvxWxUSunDHJIG5l8Bvc81XhKKZBaGq3eI1u5NStEA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1770907723;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iyKLveYLx2s5utbcVS0AmPY44PgTdWydUyC5yig1Ys8=;
-	b=CZEeMQVKcntcOvBwuUCfscuZPYwPbNP3RVFpqIsyORAkGv5NVdGuxmRYHtb4ATm1ykgc7I
-	D5IzSCTjC0H/m3Aw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>
-Cc: axboe@kernel.dk, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rt-users@vger.kernel.org,
-	ming.lei@redhat.com, muchun.song@linux.dev,
-	mkhalfella@purestorage.com, chris.friesen@windriver.com,
-	stable@vger.kernel.org, sunlightlinux@gmail.com,
-	ionut_n2001@yahoo.com
-Subject: Re: [PATCH v3 1/1] block/blk-mq: use atomic_t for quiesce_depth to
- avoid lock contention on RT
-Message-ID: <20260212144841.95-yCgJm@linutronix.de>
-References: <20260211203928.324307-2-ionut.nechita@windriver.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=aC9TplW4pdyZI9HxgFHfTapBaXSFA5VC0jtznykjxIHw5v60dmIV6DeqX3nEF4iLYrM6QoAHYqasJujDW7Cwhem3/fUJghonwjUKwBDF57fpi/yToBHb0kfrj3p6c9DsHjbuEsFyzsSiz/PNju1tdlEzl22yGhFJ896xsLgzP/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=VfpmNuzq; arc=none smtp.client-ip=83.166.143.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-3-0001.mail.infomaniak.ch (smtp-3-0001.mail.infomaniak.ch [10.4.36.108])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fBdXR4dDGzgQh;
+	Thu, 12 Feb 2026 15:51:03 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1770907863;
+	bh=CO1ZykXZY4zJvGlWonzeMkNhR0m/da9fetsI6SBQSIo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VfpmNuzqAWs6ximhaxzWPLghgTTt/0jeQoJ5VFh4I6Wqum0fpHt7KXCz9agYPU1bP
+	 SKHhpuNDMKkzd36eJwjcudqnYF9xhOC+TviDKsq3NM+vHPLU8FE5TKnjNezHKtz4QS
+	 +fNkjznu5n3wuLwkBU9FjHnZwonM27gCyHvN3TKE=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fBdXR0RTCzy0n;
+	Thu, 12 Feb 2026 15:51:02 +0100 (CET)
+Date: Thu, 12 Feb 2026 15:50:58 +0100
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-team@cloudflare.com, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v1] kbuild: Fix CC_CAN_LINK detection
+Message-ID: <20260212.Eich4Liesaiv@digikod.net>
+References: <20260212133544.1331437-1-mic@digikod.net>
+ <20260212151347-6f19b408-f22b-4ecb-9ce5-bd4e01e06743@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,95 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260211203928.324307-2-ionut.nechita@windriver.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260212151347-6f19b408-f22b-4ecb-9ce5-bd4e01e06743@linutronix.de>
+X-Infomaniak-Routing: alpha
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	R_MIXED_CHARSET(1.00)[subject];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[digikod.net:s=20191114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-215969-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.dk,vger.kernel.org,redhat.com,linux.dev,purestorage.com,windriver.com,gmail.com,yahoo.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[digikod.net:+];
+	TAGGED_FROM(0.00)[bounces-215970-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[digikod.net];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[mic@digikod.net,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 0EB5F12E98A
+X-Rspamd-Queue-Id: 66A3212E90A
 X-Rspamd-Action: no action
 
-On 2026-02-11 22:39:29 [+0200], Ionut Nechita (Wind River) wrote:
-> From: Ionut Nechita <ionut.nechita@windriver.com>
->=20
-> In RT kernel (PREEMPT_RT), commit 679b1874eba7 ("block: fix ordering
-> between checking QUEUE_FLAG_QUIESCED request adding") causes severe
-=E2=80=A6
+On Thu, Feb 12, 2026 at 03:15:47PM +0100, Thomas Weißschuh wrote:
+> On Thu, Feb 12, 2026 at 02:35:43PM +0100, Mickaël Salaün wrote:
+> > Most samples cannot be build on some environments because they depend
+> > on CC_CAN_LINK, which is set according to the result of
+> > scripts/cc-can-link.sh called by cc_can_link_user.
+> > 
+> > Because cc-can-link.sh must now build without warning, it may fail
+> > because it is calling printf() with an empty string:
+> > 
+> >   + cat
+> >   + gcc -m32 -Werror -Wl,--fatal-warnings -x c - -o /dev/null
+> >   <stdin>: In function ‘main’:
+> >   <stdin>:4:9: error: zero-length gnu_printf format string [-Werror=format-zero-length]
+> >   cc1: all warnings being treated as errors
+> > 
+> > Fix this warning and the samples build by actually printing something.
+> > 
+> > Cc: Nathan Chancellor <nathan@kernel.org>
+> > Cc: Nicolas Schier <nsc@kernel.org>
+> > Cc: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> > Cc: stable@vger.kernel.org
+> > Fixes: d81d9d389b9b ("kbuild: don't enable CC_CAN_LINK if the dummy program generates warnings")
+> 
+> Thanks!
+> 
+> Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> 
+> In my GCC 15.2 this warning is not enabled by default.
 
-> Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Fixes: 679b1874eba7 ("block: fix ordering between checking QUEUE_FLAG_QUI=
-ESCED request adding")
-This is
-         6bda857bcbb86 ("block: fix ordering between checking QUEUE_FLAG_QU=
-IESCED request adding")
+Some for me, but it is the case with GCC 13.3.0 on Ubuntu 24 LTS.
 
-in my tree. I don't have your hash anywhere. The hash at the top in the
-email is also affected.
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ionut Nechita <ionut.nechita@windriver.com>
-
-Otherwise
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-
-> --- a/block/blk-mq.c
-> +++ b/block/blk-mq.c
-> @@ -314,21 +314,18 @@ EXPORT_SYMBOL_GPL(blk_mq_quiesce_queue);
->   */
->  void blk_mq_unquiesce_queue(struct request_queue *q)
->  {
-> -	unsigned long flags;
-> -	bool run_queue =3D false;
-> +	int depth;
-> =20
-> -	spin_lock_irqsave(&q->queue_lock, flags);
-> -	if (WARN_ON_ONCE(q->quiesce_depth <=3D 0)) {
-> -		;
-> -	} else if (!--q->quiesce_depth) {
-> -		blk_queue_flag_clear(QUEUE_FLAG_QUIESCED, q);
-> -		run_queue =3D true;
-> -	}
-> -	spin_unlock_irqrestore(&q->queue_lock, flags);
-> +	depth =3D atomic_dec_if_positive(&q->quiesce_depth);
-> +	if (WARN_ON_ONCE(depth < 0))
-> +		return;
-
-Ah. That is cute.
-
-> -	/* dispatch requests which are inserted during quiescing */
-> -	if (run_queue)
-> +	if (depth =3D=3D 0) {
-> +		/* Ensure the decrement is visible before running queues */
-> +		smp_mb__after_atomic();
-> +		/* dispatch requests which are inserted during quiescing */
->  		blk_mq_run_hw_queues(q, true);
-> +	}
->  }
->  EXPORT_SYMBOL_GPL(blk_mq_unquiesce_queue);
-> =20
-
-Sebastian
+> 
+> > Signed-off-by: Mickaël Salaün <mic@digikod.net>
+> > ---
+> >  scripts/cc-can-link.sh | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/scripts/cc-can-link.sh b/scripts/cc-can-link.sh
+> > index e67fd8d7b684..58dc7dd6d556 100755
+> > --- a/scripts/cc-can-link.sh
+> > +++ b/scripts/cc-can-link.sh
+> > @@ -5,7 +5,7 @@ cat << "END" | $@ -Werror -Wl,--fatal-warnings -x c - -o /dev/null >/dev/null 2>
+> >  #include <stdio.h>
+> >  int main(void)
+> >  {
+> > -	printf("");
+> > +	printf("\n");
+> >  	return 0;
+> >  }
+> >  END
+> > -- 
+> > 2.53.0
+> > 
 
