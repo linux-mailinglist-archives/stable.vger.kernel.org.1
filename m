@@ -1,146 +1,185 @@
-Return-Path: <stable+bounces-215929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BPoI6aXjWkt5AAAu9opvQ
-	(envelope-from <stable+bounces-215929-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 10:04:38 +0100
+	id 2G6mA4udjWmD5QAAu9opvQ
+	(envelope-from <stable+bounces-215930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 10:29:47 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63F612BB03
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 10:04:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A6112BE03
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 10:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51594314467D
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 09:03:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F186B305F7DF
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 09:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFDD2DC35A;
-	Thu, 12 Feb 2026 09:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7252DEA97;
+	Thu, 12 Feb 2026 09:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BV/JlQFG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMgzjksR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022BB2DE6F3
-	for <stable@vger.kernel.org>; Thu, 12 Feb 2026 09:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03F42D8DB9;
+	Thu, 12 Feb 2026 09:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770886979; cv=none; b=uzOW1lL9XqczKBqS8LiCwsnbZG2JTqZieIDsKpqY8gUbvOUM7AUQtaHwq4V9ORAW37S53Iw21ZxEjaBbE1J7VenqpGu8I2yA+thq/goypvoGZPEUmCppootuAk+De6BypzaYpM0HZT1YZon+1Ml8uhlKCTD/MxRLilTAgLUR/gk=
+	t=1770888580; cv=none; b=pGflq2p+JeNUnwO3PMHnJdbFChbgkqfLAvXxS0YhJTwCm9gB2AHBIlZtQXZoQAfAWLP8Dnn5hr9a85hVe3EM20KJ7TsSE8YF0iDMxr/EyGhS5m73VGHWgUEwfiJaUpqnrZaXtC17y0pVGb1S1XcE8mLrlcg9FlrLUGLmUfZsBBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770886979; c=relaxed/simple;
-	bh=i9Zhh3N6A4NdcyXc5VJPTx/rNWSpAt0ReEMQ1vjLMdw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=r16nS1sOyICocjMErM0RH9IHtHv2EkDSoKXySwKjmqeyukBj3J3LdxWyqJubDmcqx413ejAogA9eJZKUo//cW8P2xgOvXKQOnZ0UR7XUOk0KfFFFiep8bX6/QhP7uxKzU1MnIvsl8HKlDjfvkXDk7ljzhj+9eCrWPb59Cqb2yDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BV/JlQFG; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-482eec44485so22021895e9.3
-        for <stable@vger.kernel.org>; Thu, 12 Feb 2026 01:02:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770886976; x=1771491776; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cyyYRiwc6FqhQlyFBFLg66ihDNCGyZfWrA54Edi64Eg=;
-        b=BV/JlQFGLwbTV2Q64RgI4T6vvV0qUCUMRyWEhZ1kfpojlN8cPE9aWObjegk2083bKd
-         lKR5vG+vONLNxyU0D5PjZB50KXoVfc9yH734Jx6/Yk7Tc9qCZwXyThyzcNSUqw08GIFc
-         RGgiFPLHwKQXQvMv3DYo12JIZ3bSDv66bC6DzQsarzGtfL+W8o7oUzyyHStDoiGpFsss
-         S4bJV2uhK4rpXJhKSy6zedw2KT8QzuHBm7vtG0qCFWKTGxmSAPk8qNHXWy+8n6iZOAcr
-         Ao17GM0LmUkesPAESYyz5bQay6oY/UcZt5s5os/USP34JH5E7FYn+zMXiEfUhNTi3XR6
-         ZDXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770886976; x=1771491776;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cyyYRiwc6FqhQlyFBFLg66ihDNCGyZfWrA54Edi64Eg=;
-        b=qbWW8KpneCB2OSXxcZEP69Tj0wXqhsT1+IMU+EYEHkam7cW3L4zRjzI4ES9gttJNO2
-         wA4wfFM9xkAYT3B64yhPQxhKQAe0+CJrtXs7FE93dEALnlyUK2Y/wRJHsqukG6LXRK1N
-         8OEVETlF3xQphUuWWjDVh6mqKbRNUT2iTos1KwTgB1gSkDvUii46dDPszMTy31KFWOQ5
-         r6uxqEw4qQ3ZFVfFnKLhRGLrCj2fYKQTp7zlAya+GciiLCgEIwFnlxb1mADvW4x8N8A2
-         HNJIb9DDYG48L0s3NfNAEAGByr0afNsGCt4oNHZXFZCKYyVykQLlZogP7MTF1nbV2dDB
-         6rjg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWi9EJV2VkoWjvK784Mci35PC81FZ744I6hFokxJQyyGD8u/ppBJob3P97XAKfF83ufI4JXus=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzT5JmMMowVNdIXdvdU1CepBT31Y01UaWRlNoeBdCj84hAV84PR
-	WkT/09NeQFAIwFub+K129HUNyK/SfeLdqv1ky5K1dHd7jyUbyPYvWlfObi2WzMkX/YCqcFs9lvv
-	FLw==
-X-Received: from wmqu17.prod.google.com ([2002:a05:600c:19d1:b0:483:29f4:26b8])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:608b:b0:47d:8479:78d5
- with SMTP id 5b1f17b1804b1-4836710a0afmr20458865e9.7.1770886976534; Thu, 12
- Feb 2026 01:02:56 -0800 (PST)
-Date: Thu, 12 Feb 2026 09:02:52 +0000
-In-Reply-To: <20260212090252.158689-1-tabba@google.com>
+	s=arc-20240116; t=1770888580; c=relaxed/simple;
+	bh=iZyfNOwyD37sadNlp31+zwi7lJubFRN6RKclXfibhQU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qGdMtlca68fNqFeiqeZhldcW3mE+a83TCQqwTh1azZ1BS8S4CoInkrHraH97gwYfSvw23CSUvQTDfw4VDRhVy+nYVdENwq9MzLnG6udWPf7qcTtiuUFJZizktwtbSIba+dyPiEXhS8LR/b3XMYPx9A/y+MRzE2P8WFyOLVqLjhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMgzjksR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B38C4CEF7;
+	Thu, 12 Feb 2026 09:29:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770888580;
+	bh=iZyfNOwyD37sadNlp31+zwi7lJubFRN6RKclXfibhQU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WMgzjksRKXmhbGYgMOwxiC5W35cIH5gveVPwAbB0ugycGDjtRFyhYm+pVLcLCKNZH
+	 mgYBR18nhaEB09FQmWkgWqRb3Hy6itiCTaZi5xp1oBM/Rz2NUp+yjdNYyTdjpKjXOL
+	 p2KxjU6sUMhkkM+8Xpffp1+3QrDskT6ZTwfJaPDeaI7ylWms4Yn9SwWzds+6AXzAvs
+	 7eZg7YX8rneAfFHB9hNH7El+/LsAx7R+F9sKZMEygrkhH/cWD5ASfMziXEHSMkJUP9
+	 vcGtYql3keB9zjO7TmY1jmMXoiYL5TQuKPD7278uJdB1UgkH/6fXXtUCkotomFtHwn
+	 uxYF3nCaEhGlw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vqT0z-0000000AZEb-3wuv;
+	Thu, 12 Feb 2026 09:29:38 +0000
+Date: Thu, 12 Feb 2026 09:29:37 +0000
+Message-ID: <86jywib98e.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	oliver.upton@linux.dev,
+	joey.gouly@arm.com,
+	suzuki.poulose@arm.com,
+	yuzenghui@huawei.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/3] KVM: arm64: Hide S1POE from guests when not supported by the host
+In-Reply-To: <20260212090252.158689-2-tabba@google.com>
+References: <20260212090252.158689-1-tabba@google.com>
+	<20260212090252.158689-2-tabba@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260212090252.158689-1-tabba@google.com>
-X-Mailer: git-send-email 2.53.0.239.g8d8fc8a987-goog
-Message-ID: <20260212090252.158689-4-tabba@google.com>
-Subject: [PATCH v1 3/3] KVM: arm64: Remove redundant kern_hyp_va() in unpin_host_sve_state()
-From: Fuad Tabba <tabba@google.com>
-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, 
-	suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, 
-	will@kernel.org, tabba@google.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tabba@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-215929-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-215930-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E63F612BB03
+X-Rspamd-Queue-Id: 65A6112BE03
 X-Rspamd-Action: no action
 
-The `sve_state` pointer in `hyp_vcpu->vcpu.arch` is initialized as a
-hypervisor virtual address during vCPU initialization in
-`pkvm_vcpu_init_sve()`.
+Hi Fuad,
 
-`unpin_host_sve_state()` calls `kern_hyp_va()` on this address. Since
-`kern_hyp_va()` is idempotent, it's not a bug. However, it is
-unnecessary and potentially confusing. Remove the redundant conversion.
+On Thu, 12 Feb 2026 09:02:50 +0000,
+Fuad Tabba <tabba@google.com> wrote:
+> 
+> When CONFIG_ARM64_POE is disabled, KVM does not save/restore POR_EL1.
+> However, ID_AA64MMFR3_EL1 sanitisation currently exposes the feature to
+> guests whenever the hardware supports it, ignoring the host kernel
+> configuration.
 
-Signed-off-by: Fuad Tabba <tabba@google.com>
----
- arch/arm64/kvm/hyp/nvhe/pkvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is the umpteenth time we get caught by this. PAN was the latest
+instance until this one. Maybe an approach would be to have a default
+override when a config option is not enabled, so that KVM is
+consistent with the rest of the kernel?
 
-diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-index 267854ed29c8..8b9e027ec86a 100644
---- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
-+++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-@@ -393,7 +393,7 @@ static void unpin_host_sve_state(struct pkvm_hyp_vcpu *hyp_vcpu)
- 	if (!vcpu_has_feature(&hyp_vcpu->vcpu, KVM_ARM_VCPU_SVE))
- 		return;
- 
--	sve_state = kern_hyp_va(hyp_vcpu->vcpu.arch.sve_state);
-+	sve_state = hyp_vcpu->vcpu.arch.sve_state;
- 	hyp_unpin_shared_mem(sve_state,
- 			     sve_state + vcpu_sve_state_size(&hyp_vcpu->vcpu));
- }
+> 
+> If a guest detects this feature and attempts to use it, the host will
+> fail to context-switch POR_EL1, potentially leading to state corruption.
+> 
+> Fix this by masking ID_AA64MMFR3_EL1.S1POE and preventing KVM from
+> advertising the feature when the host does not support it, i.e.,
+> system_supports_poe() is false.
+> 
+> Fixes: 70ed7238297f ("KVM: arm64: Sanitise ID_AA64MMFR3_EL1")
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> ---
+>  arch/arm64/include/asm/kvm_host.h | 3 ++-
+>  arch/arm64/kvm/sys_regs.c         | 3 +++
+>  2 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index ac7f970c7883..7af72ca749a6 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -1592,7 +1592,8 @@ void kvm_set_vm_id_reg(struct kvm *kvm, u32 reg, u64 val);
+>  	(kvm_has_feat((k), ID_AA64MMFR3_EL1, S1PIE, IMP))
+>  
+>  #define kvm_has_s1poe(k)				\
+> -	(kvm_has_feat((k), ID_AA64MMFR3_EL1, S1POE, IMP))
+> +	(system_supports_poe() &&			\
+> +	 kvm_has_feat((k), ID_AA64MMFR3_EL1, S1POE, IMP))
+
+Why do we need to further key this on system_supports_poe()? I can see
+this is a potential optimisation, but I don't think this is part of
+the minimal fix.
+
+>  
+>  #define kvm_has_ras(k)					\
+>  	(kvm_has_feat((k), ID_AA64PFR0_EL1, RAS, IMP))
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index 88a57ca36d96..237e8bd1cf29 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -1816,6 +1816,9 @@ static u64 __kvm_read_sanitised_id_reg(const struct kvm_vcpu *vcpu,
+>  		       ID_AA64MMFR3_EL1_SCTLRX |
+>  		       ID_AA64MMFR3_EL1_S1POE |
+>  		       ID_AA64MMFR3_EL1_S1PIE;
+> +
+> +		if (!system_supports_poe())
+> +			val &= ~ID_AA64MMFR3_EL1_S1POE;
+
+How about S1PIE? It seems to have a similar problem, in the sense that
+it has extra state. But I guess because we don't put it behind a
+config option, we context-switch it anyway and all is good?
+
+Thanks,
+
+	M.
+
 -- 
-2.53.0.239.g8d8fc8a987-goog
-
+Without deviation from the norm, progress is not possible.
 
