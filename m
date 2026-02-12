@@ -1,149 +1,138 @@
-Return-Path: <stable+bounces-215951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215952-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKgvEZPFjWnT6gAAu9opvQ
-	(envelope-from <stable+bounces-215951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:20:35 +0100
+	id MC3sLpLFjWnT6gAAu9opvQ
+	(envelope-from <stable+bounces-215952-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:20:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55C5112D60C
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8466512D60D
 	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 13:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DFF15300B46B
-	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 12:20:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 19094300E585
+	for <lists+stable@lfdr.de>; Thu, 12 Feb 2026 12:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B050835770A;
-	Thu, 12 Feb 2026 12:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BEE357708;
+	Thu, 12 Feb 2026 12:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBcg4lQ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ait6T45Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F601346779;
-	Thu, 12 Feb 2026 12:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04752FF150;
+	Thu, 12 Feb 2026 12:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770898827; cv=none; b=sMkPRyuoKYRvq6dOXyjysrwSFEhhSjbwE19/+WLk+P4dgffkvTNwkAxJBDW0KXNMD5WeGmE2tly4cik1bBAlYR1X3AXvpygc5bVAG5Hze3YiteYkIdbSFWaHhazUTbWxHmIzcgZYKN1/HiHLbqGCVT0zK9GHUEoGY1MdeAVjWGg=
+	t=1770898829; cv=none; b=OHUTDCFA5XBiXzYj/er8LTcE7I7feopYcMbjC4wVrmCEBihhCcLaxCpNGnmgD4d8mOIkXtQjSjxu8IrTPucs4UNTYoMimzpf2BXYs/6I/3GKphIrjThhMihoTYc1k+3hDFbia5A4iGN13kgIflGvfL7Wf8cog4DNS9hjjaZVl4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770898827; c=relaxed/simple;
-	bh=yIbWErC8RoWVsumaMazbVPE1/7hFZ//8a27+WNh2ZJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CJAIzGkopFYmPjx/RFxxCV5kLpRu5zJF6sFiticpVawWdQUzFkxhsc9rRXvVO05YSlIdsBRM62oqUOil1sJjifmc5ucoY7PxyQGoKbM6u8Ky63F75fevAuinA9aoktHGIN5EE7IHaZ6sox03PQN1no0Ihd7n98Nk/LZQhwJZYWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBcg4lQ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E74C4CEF7;
-	Thu, 12 Feb 2026 12:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770898827;
-	bh=yIbWErC8RoWVsumaMazbVPE1/7hFZ//8a27+WNh2ZJ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JBcg4lQ9GBoQaNq/TDFVUofSs0znEjq9PUwj/bwijzcNnoTtA8xCZNY3BgczOnMJT
-	 cRkgFKae2iL57FpxXHKBVjK/5qoKFYD9gfKRWM9g7UhBq2BY+TytcFhGVNRK0wQKRj
-	 fGaQT7ZixF3H1EcAPIRXQC40Gwz8e9GAmlQqcuZS2c7TbL8MrYuGxXxpRghoyRe7QF
-	 QXCg9c8agzlInhrUZLWlWG+SQh5gGTNjFUdmpZywDp+CUvNwPhArwLTQkcKdzB/V++
-	 BXq5/6gv/PXOwQgMMlGeVB1qxrCEP3ibazV97DdMEZS3FUzfmWFzYj7yIlqozPLx9K
-	 SyKhFsFV9oBGQ==
-Date: Thu, 12 Feb 2026 13:20:21 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Aksh Garg <a-garg7@ti.com>
-Cc: Manikanta Maddireddy <mmaddireddy@nvidia.com>, kishon@kernel.org,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	stable@vger.kernel.org, Thierry Reding <treding@nvidia.com>,
-	linux-pci@vger.kernel.org, linux-tegra@vger.kernel.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: Re: [PATCH v2 2/3] PCI: tegra194: Reset BARs when running in PCIe
- endpoint mode
-Message-ID: <aY3FhZUhb7RL80Fp@ryzen>
-References: <20250922140822.519796-5-cassel@kernel.org>
- <20250922140822.519796-7-cassel@kernel.org>
- <2fedf28e-83ea-4e51-b1a1-e45f0e928509@nvidia.com>
- <aYonDJyd_dbV0GBK@ryzen>
- <94458c39-587b-4bb4-a410-e921e5d99f10@nvidia.com>
- <aYsDDOZA18BBeOsd@ryzen>
- <aYsKzBjmGEi1z0am@ryzen>
- <8d85409e-2f07-4e4b-831b-68c17a341a60@ti.com>
+	s=arc-20240116; t=1770898829; c=relaxed/simple;
+	bh=EsVPA6igSHogdWunbQbxpBLhZdkZH4NQp46IhTeVY5E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bLOceT49qlQQazcdYcdDHD/5kYGLcblAgk2AVfr5mgSyxK1LjdbBgiWcMKJdHRsFpRRJVK5/yi2AoYGYbVIUB+Oph0T6HvlNAHFJeBdB/2vgDgdTc1f9KUefGumNms1dvmobzLBsZPJpd3nAWc/pgZIPZ6kZ11X7UcYpOJsZJCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ait6T45Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1ABC4CEF7;
+	Thu, 12 Feb 2026 12:20:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770898829;
+	bh=EsVPA6igSHogdWunbQbxpBLhZdkZH4NQp46IhTeVY5E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ait6T45QErAa+WKgfUF0JqhbgWNV13Ex9aLKhucWdr1kx8CaO9CyM5dkV0BS3ghAc
+	 /wylcGZ7znSOW31adupJpeH21LrbETQ16oUlKM19VJVt0nBIDA4DBDCmHdCgDsjbvt
+	 1F+x228TTQChgI6tvFYjTRkxzDpPQFQSJO0iT0GE=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.12.71
+Date: Thu, 12 Feb 2026 13:20:24 +0100
+Message-ID: <2026021249-prepaid-scant-755b@gregkh>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d85409e-2f07-4e4b-831b-68c17a341a60@ti.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-215951-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-215952-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[nvidia.com,kernel.org,wdc.com,vger.kernel.org,google.com,gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 55C5112D60C
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8466512D60D
 X-Rspamd-Action: no action
 
-On Thu, Feb 12, 2026 at 05:40:59PM +0530, Aksh Garg wrote:
-> > since you have a @ti.com email, perhaps you can explain how pci-keystone.c
-> > can pass all the pci-epf-test test cases, considering that this is the only
-> > driver that has BARs (BAR0 and BAR1) marked as BAR_RESERVED but do not also
-> > disable the BARs (using dw_pcie_ep_reset_bar()) in the init() callback.
-> > 
-> > Or, perhaps the simple answer is that pci-keystone.c does not pass all
-> > pci-epf-test test cases?
-> 
-> Hi Niklas,
-> 
-> I just joined the organization and have no context on why the
-> pci-keystone.c have BAR0 and BAR1 as reserved, without disabling the
-> bars using dw_pcie_ep_reset_bar() in the .init() callback. Because the
-> AM65 do not use any BARs for any purpose like Tegra194 does (ATU
-> registers or eDMA registers exposed in BAR4 for example), there would
-> be no issue if the BAR0 and BAR1 are overwritten.
-> 
-> This was introduced in the driver the time the EP support was added to
-> the driver by Kishon in commit 23284ad677a9 ("PCI: keystone: Add support
-> for PCIe EP in AM654x Platforms"), where no context is provided in the
-> comments or commit message why the BAR0/1 are marked as reserved in the
-> features. Perhaps Kishon can provide a better insight over this.
+I'm announcing the release of the 6.12.71 kernel.
 
-It is extra confusing, since the older driver from TI:
-pci-dra7xx.c does have the dw_pcie_ep_reset_bar() calls in init()
-(git blame shows added by Kishon), so it is a bit surprising that
-the newer driver (pci-keystone.c) does not.
+All users of the 6.12 kernel series that had issues with 6.12.69 or
+6.12.70 should upgrade, as some regressions are fixed here.
 
-(And like I explained, currently all DWC drivers except keystone and
-pcie-keembay.c do have the dw_pcie_ep_reset_bar() calls in init().)
+The updated 6.12.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.12.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
+thanks,
 
-Kind regards,
-Niklas
+greg k-h
+
+------------
+
+ Makefile                                  |    2 
+ drivers/net/bareudp.c                     |    4 
+ drivers/net/geneve.c                      |    4 
+ drivers/net/vxlan/vxlan_core.c            |    2 
+ include/net/ip_tunnels.h                  |   13 +-
+ io_uring/rw.c                             |    2 
+ tools/testing/vsock/control.c             |    9 -
+ tools/testing/vsock/msg_zerocopy_common.c |   10 --
+ tools/testing/vsock/msg_zerocopy_common.h |    1 
+ tools/testing/vsock/util.c                |  142 ++++++++++++++++++++++++++++++
+ tools/testing/vsock/util.h                |    7 +
+ tools/testing/vsock/vsock_perf.c          |   10 ++
+ tools/testing/vsock/vsock_test.c          |   51 +++-------
+ tools/testing/vsock/vsock_test_zerocopy.c |    2 
+ tools/testing/vsock/vsock_uring_test.c    |    2 
+ 15 files changed, 197 insertions(+), 64 deletions(-)
+
+Greg Kroah-Hartman (1):
+      Linux 6.12.71
+
+Jens Axboe (1):
+      io_uring/rw: recycle buffers manually for non-mshot reads
+
+Konstantin Shkolnyy (1):
+      vsock/test: verify socket options after setting them
+
+Menglong Dong (1):
+      net: tunnel: make skb_vlan_inet_prepare() return drop reasons
+
 
