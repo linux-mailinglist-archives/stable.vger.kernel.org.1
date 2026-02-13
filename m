@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-216173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sM35NyQtj2kPKwEAu9opvQ
-	(envelope-from <stable+bounces-216173-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:44 +0100
+	id cKLxD+stj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:58:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685D1136B3D
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB234136CF2
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:58:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D32AD302FEB0
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:54:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACDD7309F213
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDE1241665;
-	Fri, 13 Feb 2026 13:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F6E35FF7D;
+	Fri, 13 Feb 2026 13:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+z9Lpgj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEb8nL5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4326054723;
-	Fri, 13 Feb 2026 13:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C931684BE;
+	Fri, 13 Feb 2026 13:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990877; cv=none; b=cL2Xbnts9HMlKkq4Ch9q6m+sderLIsCKuBuZ1hq2hnrgEzrz14nyxS3Z/NRV0WIfqCEFvO3JypiRC/rqeFNU3qOHMM+xNY8JLW/aOrRd2WignCvXcngKDzxA+dK5F16pRA1yr6AQS5CMibhpxUiJyztKo9xtVjNaFFJRr4FiY50=
+	t=1770990963; cv=none; b=jG+EKj7mTUW3RMQg0R1lmxVp20F12GVYe7qszuWJfo2Go8vJzjpVUQA3rdEd0gpBiaHwf+85WrlylbIJF8dMQhc+zuvQRKTtG4fogaHBeuwxBPGZO9ZnIs+ADy6EHToTOSoCwH5bQVdIu/MY/JXsnwD+enpaxdt2VK/SNlkxqNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990877; c=relaxed/simple;
-	bh=NfHkl2S+C6gQSCFxTeLggKHDTcA64wOYz3KDeTAu4x4=;
+	s=arc-20240116; t=1770990963; c=relaxed/simple;
+	bh=IyjQjLLAFvkIiFX40YYQPg87EzO9Yw8U4L9+hQOahOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O0G3lkt5v7gcjtFjwrlWaRXc6O0TvtNO0is2t6CZTXqCQjWYVWl7Aj2J3LuXK1YUNOk/fN8rt9T8cjbzOVB19eD4i0ZPOSaH3COKK1VszXVSju5U+NCtcg19oQYph2pBpUYIivKdjukUIlgvKPQ92EXlPlJE5nFTm0bcBW+qEEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+z9Lpgj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41B4C116C6;
-	Fri, 13 Feb 2026 13:54:36 +0000 (UTC)
+	 MIME-Version; b=uWwmwdBcB/InVMlGGk4Pyl5BDNfe895ebdOLLRokU3L7Rzlgek8FLDTcpxZqe9BJWXOOgtJ19KsCrEYdYL0GqtWfV5xbf3fN7XssbgAk0UHt75CEVOn7u2JpwJAgHExqhHSKU2AI5j1E67GURCLmyKiLppcP8n//CV/+xSbeQ/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEb8nL5z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97F3C116C6;
+	Fri, 13 Feb 2026 13:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990877;
-	bh=NfHkl2S+C6gQSCFxTeLggKHDTcA64wOYz3KDeTAu4x4=;
+	s=korg; t=1770990963;
+	bh=IyjQjLLAFvkIiFX40YYQPg87EzO9Yw8U4L9+hQOahOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+z9LpgjF9SsNrv1xcQeyVnNU5CjYGdBXwlw53yEP4ZJ457FADyAtGdltwUMWmIm6
-	 9aZc+I0j9dIMfN8pBVK1eMyr7EkwhOsFkfee/f5vtAeaUBmyvoLB/A9T4eyN02sT/6
-	 BO8ZLUnmNpnENtGryejRBhFrFwal8/Jm2egcXFk8=
+	b=rEb8nL5z+YpatIDFN385bzkRoH2KJP+rJEmm2COvwrTrKlGigN30wUlJNcE+ouuDM
+	 zeew1YtrQGCXzU/QkF6MzhJ1HTYDD/5750r7VFiCRoLGEn6s4IIdyTOtzdChCNOKJR
+	 5QrKO1Cdw22LWFiLq8VueiCtVjY6rUM8gJ7/Sisg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.18 38/49] scsi: qla2xxx: Validate sp before freeing associated memory
-Date: Fri, 13 Feb 2026 14:48:22 +0100
-Message-ID: <20260213134710.266478433@linuxfoundation.org>
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Subject: [PATCH 6.12 04/24] driver core: enforce device_lock for driver_match_device()
+Date: Fri, 13 Feb 2026 14:48:23 +0100
+Message-ID: <20260213134704.891254167@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
-References: <20260213134708.885500854@linuxfoundation.org>
+In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
+References: <20260213134704.728003077@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +64,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216173-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216198-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 685D1136B3D
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: BB234136CF2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-commit b6df15aec8c3441357d4da0eaf4339eb20f5999f upstream.
+commit dc23806a7c47ec5f1293aba407fb69519f976ee0 upstream.
 
-System crash with the following signature
-[154563.214890] nvme nvme2: NVME-FC{1}: controller connect complete
-[154564.169363] qla2xxx [0000:b0:00.1]-3002:2: nvme: Sched: Set ZIO exchange threshold to 3.
-[154564.169405] qla2xxx [0000:b0:00.1]-ffffff:2: SET ZIO Activity exchange threshold to 5.
-[154565.539974] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 0080 0000.
-[154565.545744] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 00a0 0000.
-[154565.545857] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
-[154565.552760] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
-[154565.553079] BUG: kernel NULL pointer dereference, address: 00000000000000f8
-[154565.553080] #PF: supervisor read access in kernel mode
-[154565.553082] #PF: error_code(0x0000) - not-present page
-[154565.553084] PGD 80000010488ab067 P4D 80000010488ab067 PUD 104978a067 PMD 0
-[154565.553089] Oops: 0000 1 PREEMPT SMP PTI
-[154565.553092] CPU: 10 PID: 858 Comm: qla2xxx_2_dpc Kdump: loaded Tainted: G           OE     -------  ---  5.14.0-503.11.1.el9_5.x86_64 #1
-[154565.553096] Hardware name: HPE Synergy 660 Gen10/Synergy 660 Gen10 Compute Module, BIOS I43 09/30/2024
-[154565.553097] RIP: 0010:qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
-[154565.553141] Code: 00 00 e8 58 a3 ec d4 49 89 e9 ba 12 20 00 00 4c 89 e6 49 c7 c0 00 ee a8 c0 48 c7 c1 66 c0 a9 c0 bf 00 80 00 10 e8 15 69 00 00 <4c> 8b 8d f8 00 00 00 4d 85 c9 74 35 49 8b 84 24 00 19 00 00 48 8b
-[154565.553143] RSP: 0018:ffffb4dbc8aebdd0 EFLAGS: 00010286
-[154565.553145] RAX: 0000000000000000 RBX: ffff8ec2cf0908d0 RCX: 0000000000000002
-[154565.553147] RDX: 0000000000000000 RSI: ffffffffc0a9c896 RDI: ffffb4dbc8aebd47
-[154565.553148] RBP: 0000000000000000 R08: ffffb4dbc8aebd45 R09: 0000000000ffff0a
-[154565.553150] R10: 0000000000000000 R11: 000000000000000f R12: ffff8ec2cf0908d0
-[154565.553151] R13: ffff8ec2cf090900 R14: 0000000000000102 R15: ffff8ec2cf084000
-[154565.553152] FS:  0000000000000000(0000) GS:ffff8ed27f800000(0000) knlGS:0000000000000000
-[154565.553154] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[154565.553155] CR2: 00000000000000f8 CR3: 000000113ae0a005 CR4: 00000000007706f0
-[154565.553157] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[154565.553158] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[154565.553159] PKRU: 55555554
-[154565.553160] Call Trace:
-[154565.553162]  <TASK>
-[154565.553165]  ? show_trace_log_lvl+0x1c4/0x2df
-[154565.553172]  ? show_trace_log_lvl+0x1c4/0x2df
-[154565.553177]  ? qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
-[154565.553215]  ? __die_body.cold+0x8/0xd
-[154565.553218]  ? page_fault_oops+0x134/0x170
-[154565.553223]  ? snprintf+0x49/0x70
-[154565.553229]  ? exc_page_fault+0x62/0x150
-[154565.553238]  ? asm_exc_page_fault+0x22/0x30
+Currently, driver_match_device() is called from three sites. One site
+(__device_attach_driver) holds device_lock(dev), but the other two
+(bind_store and __driver_attach) do not. This inconsistency means that
+bus match() callbacks are not guaranteed to be called with the lock
+held.
 
-Check for sp being non NULL before freeing any associated memory
+Fix this by introducing driver_match_device_locked(), which guarantees
+holding the device lock using a scoped guard. Replace the unlocked calls
+in bind_store() and __driver_attach() with this new helper. Also add a
+lock assertion to driver_match_device() to enforce this guarantee.
 
-Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
+This consistency also fixes a known race condition. The driver_override
+implementation relies on the device_lock, so the missing lock led to the
+use-after-free (UAF) reported in Bugzilla for buses using this field.
+
+Stress testing the two newly locked paths for 24 hours with
+CONFIG_PROVE_LOCKING and CONFIG_LOCKDEP enabled showed no UAF recurrence
+and no lockdep warnings.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-10-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+Suggested-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Fixes: 49b420a13ff9 ("driver core: check bus->match without holding device lock")
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Link: https://patch.msgid.link/20260113162843.12712-1-hanguidong02@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c |   34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ drivers/base/base.h |    9 +++++++++
+ drivers/base/bus.c  |    2 +-
+ drivers/base/dd.c   |    2 +-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3701,23 +3701,25 @@ int qla_fab_async_scan(scsi_qla_host_t *
- 	return rval;
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -165,9 +165,18 @@ void device_set_deferred_probe_reason(co
+ static inline int driver_match_device(const struct device_driver *drv,
+ 				      struct device *dev)
+ {
++	device_lock_assert(dev);
++
+ 	return drv->bus->match ? drv->bus->match(dev, drv) : 1;
+ }
  
- done_free_sp:
--	if (sp->u.iocb_cmd.u.ctarg.req) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.req,
--		    sp->u.iocb_cmd.u.ctarg.req_dma);
--		sp->u.iocb_cmd.u.ctarg.req = NULL;
--	}
--	if (sp->u.iocb_cmd.u.ctarg.rsp) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.rsp,
--		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
--		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
--	}
-+	if (sp) {
-+		if (sp->u.iocb_cmd.u.ctarg.req) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.req,
-+			    sp->u.iocb_cmd.u.ctarg.req_dma);
-+			sp->u.iocb_cmd.u.ctarg.req = NULL;
-+		}
-+		if (sp->u.iocb_cmd.u.ctarg.rsp) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.rsp,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
-+			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
-+		}
++static inline int driver_match_device_locked(const struct device_driver *drv,
++					     struct device *dev)
++{
++	guard(device)(dev);
++	return driver_match_device(drv, dev);
++}
++
+ static inline void dev_sync_state(struct device *dev)
+ {
+ 	if (dev->bus->sync_state)
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -263,7 +263,7 @@ static ssize_t bind_store(struct device_
+ 	int err = -ENODEV;
  
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+		/* ref: INIT */
-+		kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+	}
+ 	dev = bus_find_device_by_name(bus, NULL, buf);
+-	if (dev && driver_match_device(drv, dev)) {
++	if (dev && driver_match_device_locked(drv, dev)) {
+ 		err = device_driver_attach(drv, dev);
+ 		if (!err) {
+ 			/* success */
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -1168,7 +1168,7 @@ static int __driver_attach(struct device
+ 	 * is an error.
+ 	 */
  
- 	spin_lock_irqsave(&vha->work_lock, flags);
- 	vha->scan.scan_flags &= ~SF_SCANNING;
+-	ret = driver_match_device(drv, dev);
++	ret = driver_match_device_locked(drv, dev);
+ 	if (ret == 0) {
+ 		/* no match */
+ 		return 0;
 
 
 
