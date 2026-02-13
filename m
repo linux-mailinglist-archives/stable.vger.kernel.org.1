@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-216145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNbSEMQsj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:08 +0100
+	id QAaUKr8sj2kPKwEAu9opvQ
+	(envelope-from <stable+bounces-216121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9D3136A17
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F743136A01
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A6C3300D76D
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:53:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFFDC300EA91
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E77F35F8D4;
-	Fri, 13 Feb 2026 13:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C97754723;
+	Fri, 13 Feb 2026 13:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7Za8vma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gq17rJII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21204241665;
-	Fri, 13 Feb 2026 13:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DF7241665;
+	Fri, 13 Feb 2026 13:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990785; cv=none; b=GlXM/zNQshMBj47CSb7FKHpRDgc3JT49NSaFBG4Ovt527H6XGOfNdDj8avfLrh18jCWJNaPesMzf3rgv6u1K8zSyD+NJAzRjfWeyt1YN3MpAo65dXX9y41G5sc/iavfuJ+s/J0gU7NOR/OHllafByw+krJ8haVMwRk4X9vmhSy4=
+	t=1770990705; cv=none; b=hF2cG57HAlho5sKnxXKOZIxgRfMQvbo7/ClT8joNw1aZZ96MRMrY0zYSnfk4OOFaT1587Fq3WWtlwhlmERAZ9/xIfvilHfh61tFehfBEEfbEiSHV2DpE9CsvoTufrdGBHN7JoIgNdxlS5mOFNDpKqHj//dyceJtdDBSwimkcahI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990785; c=relaxed/simple;
-	bh=sBlJX5hvFTRY0zZyRB4mdWBs4jZm014t1pF+O7YcoyM=;
+	s=arc-20240116; t=1770990705; c=relaxed/simple;
+	bh=z4aIl31E2zpDC48OVEyKLQxCN86gcaFCCVMgBvNSTRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+2e0B19k9k0SaTIXsAKHAEsDZgIAGTe5OYOzSfVYGoQH1C+3eOgxKR7tPWhba428tJLz8WTcBeXBwT698oH1fT53mpCU7UndOLc/p20DLAFGGevnHlrp2oV8UCdyQq7rlvjq9e96q0XkKf5k7ikSvbs8ACBdaYMJlDkwM02RqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7Za8vma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1A9C116C6;
-	Fri, 13 Feb 2026 13:53:04 +0000 (UTC)
+	 MIME-Version; b=TPNEYZat9z/BYtjqhWglmkqvFKlouDkprDUMNiy6VDUWu00Y6fCgIIqIjgdl5NVXBIn7w5tWFYsDY33vqBQewUQevBMhdTXxrnHw94oS0OJHRUVSarppSff12xn3ul+cPCPZczqSQ0CMHKgHHlE3rZbQpppvyORXGLja+luKpms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gq17rJII; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B482AC116C6;
+	Fri, 13 Feb 2026 13:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990785;
-	bh=sBlJX5hvFTRY0zZyRB4mdWBs4jZm014t1pF+O7YcoyM=;
+	s=korg; t=1770990705;
+	bh=z4aIl31E2zpDC48OVEyKLQxCN86gcaFCCVMgBvNSTRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7Za8vmaH6cOw/a9tEQvtpa3lX3A56a13fBVzJcLeq1UK2MAprnfILkTfQfQHTKf9
-	 o/rZTFJ1lNDCs5P7c2go+PQl8dLMdc/SfvZLhIyrzdgVSlzqi5CYgPBMAD4rUHlovi
-	 fZ10m2UPaGTKsTXKYOlhZLm8o8IhzyUjDlndpA7E=
+	b=gq17rJIIEbkO8KQwLfhmxZhvcq9AxNkhBsQ4PdXwIX79fpe2qlXwS0hIPdnxfYPOd
+	 gfySWAgDm3fiNyg/h8KjvujzKa4FUDLnST+P0afAKfJofeXdi386xwnHU0vEtMmnxq
+	 CniJC1gSvkAH0pPainh1Y8UsWgV/0BYXPfbTExEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 23/49] smb: client: make use of smbdirect_socket.send_io.bcredits
-Date: Fri, 13 Feb 2026 14:48:07 +0100
-Message-ID: <20260213134709.736503470@linuxfoundation.org>
+	Ali Tariq <alitariq45892@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.19 49/49] wifi: rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
+Date: Fri, 13 Feb 2026 14:48:08 +0100
+Message-ID: <20260213134710.504909787@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
-References: <20260213134708.885500854@linuxfoundation.org>
+In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
+References: <20260213134708.713126210@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,187 +66,81 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216145-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216121-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samba.org:email,talpey.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: DE9D3136A17
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,realtek.com:email]
+X-Rspamd-Queue-Id: 0F743136A01
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Ali Tariq <alitariq45892@gmail.com>
 
-commit 21538121efe6c8c5b51c742fa02cbe820bc48714 upstream.
+commit 86c946bcc00f6390ef65e9614ae60a9377e454f8 upstream.
 
-It turns out that our code will corrupt the stream of
-reassabled data transfer messages when we trigger an
-immendiate (empty) send.
+The driver does not set hw->sta_data_size, which causes mac80211 to
+allocate insufficient space for driver private station data in
+__sta_info_alloc(). When rtl8xxxu_sta_add() accesses members of
+struct rtl8xxxu_sta_info through sta->drv_priv, this results in a
+slab-out-of-bounds write.
 
-In order to fix this we'll have a single 'batch' credit per
-connection. And code getting that credit is free to use
-as much messages until remaining_length reaches 0, then
-the batch credit it given back and the next logical send can
-happen.
+KASAN report on RISC-V (VisionFive 2) with RTL8192EU adapter:
 
-Cc: <stable@vger.kernel.org> # 6.18.x
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+  BUG: KASAN: slab-out-of-bounds in rtl8xxxu_sta_add+0x31c/0x346
+  Write of size 8 at addr ffffffd6d3e9ae88 by task kworker/u16:0/12
+
+Set hw->sta_data_size to sizeof(struct rtl8xxxu_sta_info) during
+probe, similar to how hw->vif_data_size is configured. This ensures
+mac80211 allocates sufficient space for the driver's per-station
+private data.
+
+Tested on StarFive VisionFive 2 v1.2A board.
+
+Fixes: eef55f1545c9 ("wifi: rtl8xxxu: support multiple interfaces in {add,remove}_interface()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251225115430.13011-1-alitariq45892@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c | 58 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 55 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index ef3b237bccc1..dbb2d939bc44 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -657,6 +657,7 @@ static bool process_negotiation_response(
- 			sp->max_frmr_depth * PAGE_SIZE);
- 	sp->max_frmr_depth = sp->max_read_write_size / PAGE_SIZE;
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -7826,6 +7826,7 @@ static int rtl8xxxu_probe(struct usb_int
+ 		goto err_set_intfdata;
  
-+	atomic_set(&sc->send_io.bcredits.count, 1);
- 	sc->recv_io.expected = SMBDIRECT_EXPECT_DATA_TRANSFER;
- 	return true;
- }
-@@ -1214,6 +1215,7 @@ static void smbd_send_batch_init(struct smbdirect_send_batch *batch,
- 	batch->wr_cnt = 0;
- 	batch->need_invalidate_rkey = need_invalidate_rkey;
- 	batch->remote_key = remote_key;
-+	batch->credit = 0;
- }
+ 	hw->vif_data_size = sizeof(struct rtl8xxxu_vif);
++	hw->sta_data_size = sizeof(struct rtl8xxxu_sta_info);
  
- static int smbd_send_batch_flush(struct smbdirect_socket *sc,
-@@ -1224,7 +1226,7 @@ static int smbd_send_batch_flush(struct smbdirect_socket *sc,
- 	int ret = 0;
- 
- 	if (list_empty(&batch->msg_list))
--		return 0;
-+		goto release_credit;
- 
- 	first = list_first_entry(&batch->msg_list,
- 				 struct smbdirect_send_io,
-@@ -1266,6 +1268,13 @@ static int smbd_send_batch_flush(struct smbdirect_socket *sc,
- 		smbd_free_send_io(last);
- 	}
- 
-+release_credit:
-+	if (is_last && !ret && batch->credit) {
-+		atomic_add(batch->credit, &sc->send_io.bcredits.count);
-+		batch->credit = 0;
-+		wake_up(&sc->send_io.bcredits.wait_queue);
-+	}
-+
- 	return ret;
- }
- 
-@@ -1291,6 +1300,25 @@ static int wait_for_credits(struct smbdirect_socket *sc,
- 	} while (true);
- }
- 
-+static int wait_for_send_bcredit(struct smbdirect_socket *sc,
-+				 struct smbdirect_send_batch *batch)
-+{
-+	int ret;
-+
-+	if (batch->credit)
-+		return 0;
-+
-+	ret = wait_for_credits(sc,
-+			       &sc->send_io.bcredits.wait_queue,
-+			       &sc->send_io.bcredits.count,
-+			       1);
-+	if (ret)
-+		return ret;
-+
-+	batch->credit = 1;
-+	return 0;
-+}
-+
- static int wait_for_send_lcredit(struct smbdirect_socket *sc,
- 				 struct smbdirect_send_batch *batch)
- {
-@@ -1338,6 +1366,19 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
- 	struct smbdirect_send_io *request;
- 	struct smbdirect_data_transfer *packet;
- 	int new_credits = 0;
-+	struct smbdirect_send_batch _batch;
-+
-+	if (!batch) {
-+		smbd_send_batch_init(&_batch, false, 0);
-+		batch = &_batch;
-+	}
-+
-+	rc = wait_for_send_bcredit(sc, batch);
-+	if (rc) {
-+		log_outgoing(ERR, "disconnected not sending on wait_bcredit\n");
-+		rc = -EAGAIN;
-+		goto err_wait_bcredit;
-+	}
- 
- 	rc = wait_for_send_lcredit(sc, batch);
- 	if (rc) {
-@@ -1432,8 +1473,14 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
- 		     le32_to_cpu(packet->remaining_data_length));
- 
- 	rc = smbd_post_send(sc, batch, request);
--	if (!rc)
--		return 0;
-+	if (!rc) {
-+		if (batch != &_batch)
-+			return 0;
-+
-+		rc = smbd_send_batch_flush(sc, batch, true);
-+		if (!rc)
-+			return 0;
-+	}
- 
- err_dma:
- 	smbd_free_send_io(request);
-@@ -1447,6 +1494,11 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
- 	wake_up(&sc->send_io.lcredits.wait_queue);
- 
- err_wait_lcredit:
-+	atomic_add(batch->credit, &sc->send_io.bcredits.count);
-+	batch->credit = 0;
-+	wake_up(&sc->send_io.bcredits.wait_queue);
-+
-+err_wait_bcredit:
- 	return rc;
- }
- 
--- 
-2.53.0
-
+ 	hw->wiphy->max_scan_ssids = 1;
+ 	hw->wiphy->max_scan_ie_len = IEEE80211_MAX_DATA_LEN;
 
 
 
