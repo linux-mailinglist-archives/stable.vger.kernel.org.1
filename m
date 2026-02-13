@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-216160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHmEAUUtj2kPKwEAu9opvQ
-	(envelope-from <stable+bounces-216160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:17 +0100
+	id iPb5J5Esj2kPKwEAu9opvQ
+	(envelope-from <stable+bounces-216126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:52:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC0A136B85
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD7F136981
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:52:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF957309244F
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:53:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 365BE300D0C5
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A9F3563C3;
-	Fri, 13 Feb 2026 13:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85674360731;
+	Fri, 13 Feb 2026 13:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eq6HbzDq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHgK2Juq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAE554723;
-	Fri, 13 Feb 2026 13:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48550241665;
+	Fri, 13 Feb 2026 13:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990835; cv=none; b=rbhZzPzqvKBPWtbkmVxgDW1CScLmZK/Z3PPJDMYn5Q0s2eNdKS/TUim/h1UgglZl8uMXA7ZASmCMjp8ZuL3vn8niGXkh8lkqrRrQtPbidn53s3++VEMBagxbdbfMyDu5YeYyVdV+6ruKEKwtWRO1+xn7YVJh+CHc3wS+UsYkUyM=
+	t=1770990721; cv=none; b=eKyrq4UPU5nWqdYPJ5LOXdk6A+2qG01Z9SdTralitZAoazPPWDW0FhTwS72j+mKPnbRi+8/JXTD12GvNgxiL3mIZ+pa/frEbwMYiaVV1Opf0TNoYUbX6KbZOomJChLBpmV+LO2QZpnDoBDK/Y+kihHno95vDLAl8myqpovqniVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990835; c=relaxed/simple;
-	bh=zq2DU7phj5dAJ5/brgIDEVBiXsTdoGJg32TBLgo2qOw=;
+	s=arc-20240116; t=1770990721; c=relaxed/simple;
+	bh=XIr6KXAiLrliFB7gabb9G56EpHXzuCiwD5ECMXtW2to=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vEPtH4MdWueF4nqSpJqQ76pptUXJg/3qTXQXrm5BHCDa+qZNtbqaDNhIn1aeNkIiJBzsBlSwmNatZpmv19E4IaK8ZeIg8o0vWjFfrehO4mADoyEcd5eeZln+8ubSm7Q83OX5wMyr+cNQ8HqEt1Cn8ltQoD+DjeVLGhSzRTRLJWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eq6HbzDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC872C116C6;
-	Fri, 13 Feb 2026 13:53:54 +0000 (UTC)
+	 MIME-Version; b=ayc+O2p8y4ymylfX90d8++DvGFOFkgtOOSUXLQRm/GI+efmXws5+VsMHLpd8freTHnOuVB/tE2KUfPCJW2GP1+5hIVug57beV9QQRuH/C+IkTYDf2qwiF/vumFIzZCbg//8dAWA/O/6lHc2480qzJ5Npv7GR159asweuyMCmjVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHgK2Juq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59F4C19423;
+	Fri, 13 Feb 2026 13:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990835;
-	bh=zq2DU7phj5dAJ5/brgIDEVBiXsTdoGJg32TBLgo2qOw=;
+	s=korg; t=1770990721;
+	bh=XIr6KXAiLrliFB7gabb9G56EpHXzuCiwD5ECMXtW2to=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eq6HbzDqEh/IB4HQaWvkK0sIfQlcjJlQPWQ5gp9MxKxfaRGzoHwXJrR/qNm9GENuH
-	 PYcy8wJ2u0fBf10kcbIkxKw6Ri32rt15FQsnrcWMoGHFOeFYXDQfvFRM9wboRbtDbf
-	 +4QLMu62u7VgwLZjG7vn/35h1nfbhFs1bjACSlvk=
+	b=HHgK2JuqHgD8nheYnbnBX2naDJujoplEeXyAxRLUR9A6TU/sRsecr1qlKYDn0fdvg
+	 py5hXjm/PGW+1WvCwi/d4OXOqF77Rd8zdsL0Jq4izxZxie4RzB2Ajrwik4LQD0H3a6
+	 hFg2DC+4PyVEryIqtmdwiRsMDBLca4zk62S7Rapc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 08/49] smb: smbdirect: introduce smbdirect_socket.send_io.bcredits.*
+	Bibo Mao <maobibo@loongson.cn>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.19 33/49] crypto: virtio - Add spinlock protection with virtqueue notification
 Date: Fri, 13 Feb 2026 14:47:52 +0100
-Message-ID: <20260213134709.191402372@linuxfoundation.org>
+Message-ID: <20260213134709.938872318@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
-References: <20260213134708.885500854@linuxfoundation.org>
+In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
+References: <20260213134708.713126210@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,104 +70,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216160-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216126-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talpey.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samba.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 4FC0A136B85
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,loongson.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CDD7F136981
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit 8e94268b21c8235d430ce1aa6dc0b15952744b9b upstream.
+commit b505047ffc8057555900d2d3a005d033e6967382 upstream.
 
-It turns out that our code will corrupt the stream of
-reassabled data transfer messages when we trigger an
-immendiate (empty) send.
+When VM boots with one virtio-crypto PCI device and builtin backend,
+run openssl benchmark command with multiple processes, such as
+  openssl speed -evp aes-128-cbc -engine afalg  -seconds 10 -multi 32
 
-In order to fix this we'll have a single 'batch' credit per
-connection. And code getting that credit is free to use
-as much messages until remaining_length reaches 0, then
-the batch credit it given back and the next logical send can
-happen.
+openssl processes will hangup and there is error reported like this:
+ virtio_crypto virtio0: dataq.0:id 3 is not a head!
 
-Cc: <stable@vger.kernel.org> # 6.18.x
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+It seems that the data virtqueue need protection when it is handled
+for virtio done notification. If the spinlock protection is added
+in virtcrypto_done_task(), openssl benchmark with multiple processes
+works well.
+
+Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/common/smbdirect/smbdirect_socket.h |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/crypto/virtio/virtio_crypto_core.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/smb/common/smbdirect/smbdirect_socket.h
-+++ b/fs/smb/common/smbdirect/smbdirect_socket.h
-@@ -155,6 +155,17 @@ struct smbdirect_socket {
- 		} mem;
+--- a/drivers/crypto/virtio/virtio_crypto_core.c
++++ b/drivers/crypto/virtio/virtio_crypto_core.c
+@@ -75,15 +75,20 @@ static void virtcrypto_done_task(unsigne
+ 	struct data_queue *data_vq = (struct data_queue *)data;
+ 	struct virtqueue *vq = data_vq->vq;
+ 	struct virtio_crypto_request *vc_req;
++	unsigned long flags;
+ 	unsigned int len;
  
- 		/*
-+		 * This is a coordination for smbdirect_send_batch.
-+		 *
-+		 * There's only one possible credit, which means
-+		 * only one instance is running at a time.
-+		 */
-+		struct {
-+			atomic_t count;
-+			wait_queue_head_t wait_queue;
-+		} bcredits;
-+
-+		/*
- 		 * The local credit state for ib_post_send()
- 		 */
- 		struct {
-@@ -359,6 +370,9 @@ static __always_inline void smbdirect_so
- 	INIT_DELAYED_WORK(&sc->idle.timer_work, __smbdirect_socket_disabled_work);
- 	disable_delayed_work_sync(&sc->idle.timer_work);
++	spin_lock_irqsave(&data_vq->lock, flags);
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
++			spin_unlock_irqrestore(&data_vq->lock, flags);
+ 			if (vc_req->alg_cb)
+ 				vc_req->alg_cb(vc_req, len);
++			spin_lock_irqsave(&data_vq->lock, flags);
+ 		}
+ 	} while (!virtqueue_enable_cb(vq));
++	spin_unlock_irqrestore(&data_vq->lock, flags);
+ }
  
-+	atomic_set(&sc->send_io.bcredits.count, 0);
-+	init_waitqueue_head(&sc->send_io.bcredits.wait_queue);
-+
- 	atomic_set(&sc->send_io.lcredits.count, 0);
- 	init_waitqueue_head(&sc->send_io.lcredits.wait_queue);
- 
-@@ -473,6 +487,8 @@ struct smbdirect_send_batch {
- 	 */
- 	bool need_invalidate_rkey;
- 	u32 remote_key;
-+
-+	int credit;
- };
- 
- struct smbdirect_recv_io {
+ static void virtcrypto_dataq_callback(struct virtqueue *vq)
 
 
 
