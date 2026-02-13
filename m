@@ -1,205 +1,204 @@
-Return-Path: <stable+bounces-216252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0C3UKM9Gj2kiPAEAu9opvQ
-	(envelope-from <stable+bounces-216252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 16:44:15 +0100
+	id cLlVF+VGj2kiPAEAu9opvQ
+	(envelope-from <stable+bounces-216253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 16:44:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08ABC137A76
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 16:44:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8618137A7D
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 16:44:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3643302E934
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:43:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C9C7A30364CA
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBFD35CB87;
-	Fri, 13 Feb 2026 15:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B693590C3;
+	Fri, 13 Feb 2026 15:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UkBXexLD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dpxO1S4N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B755B2F362B
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 15:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C01F1F91F6
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 15:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770997429; cv=none; b=bZNhsvapaYtOM//BGdxg3Rhp33hEmdmyCRlRX4AETPzFJYLXHR3E9YGDocXO9EeIarl4BWQwI+gnHNg0M5ULgd1+fy/J+fsbfGUIgbGPZCqc/sOpZG5U8y4hYXALMs4xLHd8Fqb7+IG+V3EiQ1IMrm+oFJ19TcyNSr0RXjOC8AI=
+	t=1770997473; cv=none; b=Zo5MrUlo0vlWX+HVJiR38KgtrccwTgyxVEE6pRn2z1B2MR+1iikNPLh2k/BK0KjqI2FigXYBdIlZjJIX9a8JpKuISL27cQVgE86kdDJvjQzSUOVRSrfiJmNsSG9HnHvaNnO3OJQTBPggBcGezPm6sZrM48OuLKwwpiVR2P+PEn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770997429; c=relaxed/simple;
-	bh=+dusP7b7Y+fR/eQZCzTfPMiG+QuUHfUOipSCPalrPDI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UhP2XPJT9gv+euIxlRJW1KZRB9nQCv4dxDqzJlpb4dFPDhQH0DVw1+Dau1TeTuVt7E+dt+HE2wZdUmwF8hk441QlQGONwOYRA1GbjVg9zVkx/n9khe5eFUBMaZpMkTpdvSGt1zxEm/gCvwLlCAaMs3JwsWKV7d5LKb9+YA1KVuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UkBXexLD; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-823075fed75so628927b3a.1
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 07:43:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770997427; x=1771602227; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QmLUL6Mdt8fjL0IuFsbCh5POYvLXg7Y0PhqJLQXRfPY=;
-        b=UkBXexLD9i26HNorv7qOX7wcwzoMbYvY2X8U/v5/iCflbTrAFNcf7Jcz+z6wRGfVWy
-         /b2uoWPUnobSfYY7iJ9ncpaINibIBzNaKrgJIGUTHIQ2VW3Y60hAnVjq2cxSLx5HoIT3
-         flx/y5Ypqe17rNqrgKqk+uMaPUz0+BEgsmZsc5y7P79/VY5oQdAb85cZW5Sr0J9zIpt7
-         vbz9qj+pj9eTBdLJzE6RlnYCfmkDV8y5PLFagcwlegPZraNc5j9aEA7kag4LwM1YNLsk
-         bKyOs+ya4Kwu+IwY7rT2B+y7Smb/uIHH7qvdNPEBq0Ja+iuTp5oFj6abLj6ysv5YSaLv
-         /kKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770997427; x=1771602227;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QmLUL6Mdt8fjL0IuFsbCh5POYvLXg7Y0PhqJLQXRfPY=;
-        b=f8+eT00yjOpsnTxThVINdAGXEROrxmgzlMTA7jgpxd5LbdJRyNxlU6woelNH+H8rDv
-         mgGK8g/jDz2NH2zXdjLJTcR60GNGBpOsg8v/46b2r6Fitb5abBdXPXu5NoTlGBrww7jR
-         sUv9RgnCZQGDpxYxQX2NS7P3spvAF28by6yvTHl2fGAgFUG2B8ZSDee1jmxhFG7F9DHc
-         1Ji0hwo1LEZ/KVdbxRS14MvHkJyBV13WO4IyKMKI7z6+TdvzcG0+zoAyDQ4qBuwrefeF
-         +GsDFW1j1zvu/vCfZy3ADE93taLAN5NJ4JnEwLxvwP+depSPpkidP1bL3qcQPgJgT1ue
-         GHIw==
-X-Forwarded-Encrypted: i=1; AJvYcCX1FFi73HdVysYlS82OcbTYbQMiT+MYp72Gm/+G9NjAImcChBbTvym/NolEsKAwea//vY57P1w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVAypCKZNKNCsLCX4X7XuDGJAsSuk8/6G8oGRVbODdOpYkT1zm
-	HgY/EcdUAg7hbQOYiWFj4nvBxh8YQS3CbBrJn6yPM7eCWtu79Mn5LAS9
-X-Gm-Gg: AZuq6aKw5GD1YJ/INCrLhmxbrbn3EPfOB0m4+khEhka24Hj3KCacfR0JJrDetyQNQ7K
-	xlFWnyb8UM7Ze1Nmn0J7zwNfrXfcTvRQht+ccTOcQvOMNtplXwctgqx+3jOdHo9i7nWvQVuL9qb
-	kICq7i4ZF8lhYlxN0t+kBEoZ7CFXBLdzNaqXteuJt69Bd3SHxQ791STrjk5a1aYiehz1EgrOGQT
-	KYDYo/FzIFQ0aPdsmz13gwQUwuKQaWfhb8z5qEKIjPcYayL7f2veLfAN5AtdrKu99681Uwr+dM/
-	wih6rr1VY8zRMaDrkzxfZTFzs3VimPkcu3ky93UpLIXILPcU6t89cu1Nah3vOrpQUFiuoRQq/vh
-	uNIRPIGEH6SlDNMT2PTDhdo52NM7l8ma/XmJ0xLdkxlE0+eZVj/4uIUqjtQDyw0fziSyw80yOpz
-	3RMFiclYhL8NGe8Tv7eUKmvpZwdmIJgs568bfQa/G1jAjGcgx8L/yW/c2mC/5IZPBx/cNhRReca
-	meNVRo=
-X-Received: by 2002:a05:6a00:4fc1:b0:81f:440b:4f61 with SMTP id d2e1a72fcca58-824d5ee63d3mr443651b3a.35.1770997426769;
-        Fri, 13 Feb 2026 07:43:46 -0800 (PST)
-Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:775e:88a1:54b0:dcdc])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-824c6b69f2asm2888129b3a.37.2026.02.13.07.43.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Feb 2026 07:43:46 -0800 (PST)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
-	stable@vger.kernel.org,
-	Deepanshu Kartikey <Kartikey406@gmail.com>
-Subject: [PATCH] mm: thp: deny THP for files on anonymous inodes
-Date: Fri, 13 Feb 2026 21:13:36 +0530
-Message-ID: <20260213154336.434008-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1770997473; c=relaxed/simple;
+	bh=N0mBbtOVd5HAHaI8gVQD3L30JkuSbdY/HsRemR8bDqk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=At8ru/CmrXHLXkMEpf5T+o5uwDU1DNp5eeUg0rYa7+ohn2TcHZ9NdWa4K3Oll6Omp2r8oA2Gvph4QJRfw4USTkWjwaUrIAOWqFZMoXi/YmP6x4hYHdOoJI0OHWVt59XRABsz4fIj2y7yESe4AIzEbfv7ee2T6ZxIpviNtLzwQEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dpxO1S4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0214FC116C6;
+	Fri, 13 Feb 2026 15:44:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770997472;
+	bh=N0mBbtOVd5HAHaI8gVQD3L30JkuSbdY/HsRemR8bDqk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dpxO1S4NJzJkGZQllMcuybGlchWHAjVrNVOIi1W6FPu9C9XcHyHfWZccFu2Wbs3wg
+	 ExUb4QX/ChF9hURbcW2NeDY4KTR2RhHd4cTCP2Lx0SPX9Ja5je1R1Z50MO6wr0Qbr/
+	 0ot48+yIiQS7q/CjJTUJXExl6OcCbtjflRyC5c3ERtqQjkmV08/ZZLRoHZF1BtXwqZ
+	 XuJrT/cwoYiHNJK5ZxgKYCV1BVs0RoZTcqQMtVabkr9vptyFtdRsH8us0AjBJLphIb
+	 cgYKxKISqsTlvSZ/XaawCJ+WJfnfyjqIpaF8XwHaFvta/xsELaCV6EHwon84F38FAT
+	 TLEDUhoQUY8dA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] scsi: qla2xxx: Validate sp before freeing associated memory
+Date: Fri, 13 Feb 2026 10:44:30 -0500
+Message-ID: <20260213154430.3545825-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026021351-wildfire-denim-13fd@gregkh>
+References: <2026021351-wildfire-denim-13fd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216252-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kartikey406@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-216253-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[marvell.com,gmail.com,oracle.com,kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,appspotmail.com:email]
-X-Rspamd-Queue-Id: 08ABC137A76
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,marvell.com:email,oracle.com:email]
+X-Rspamd-Queue-Id: D8618137A7D
 X-Rspamd-Action: no action
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-file_thp_enabled() incorrectly allows THP for files on anonymous inodes
-(e.g. guest_memfd and secretmem). These files are created via
-alloc_file_pseudo(), which does not call get_write_access() and leaves
-inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
-true, they appear as read-only regular files when
-CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
-collapse.
+[ Upstream commit b6df15aec8c3441357d4da0eaf4339eb20f5999f ]
 
-Anonymous inodes can never pass the inode_is_open_for_write() check
-since their i_writecount is never incremented through the normal VFS
-open path. The right thing to do is to exclude them from THP eligibility
-altogether, since CONFIG_READ_ONLY_THP_FOR_FS was designed for real
-filesystem files (e.g. shared libraries), not for pseudo-filesystem
-inodes.
+System crash with the following signature
+[154563.214890] nvme nvme2: NVME-FC{1}: controller connect complete
+[154564.169363] qla2xxx [0000:b0:00.1]-3002:2: nvme: Sched: Set ZIO exchange threshold to 3.
+[154564.169405] qla2xxx [0000:b0:00.1]-ffffff:2: SET ZIO Activity exchange threshold to 5.
+[154565.539974] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 0080 0000.
+[154565.545744] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 00a0 0000.
+[154565.545857] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
+[154565.552760] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
+[154565.553079] BUG: kernel NULL pointer dereference, address: 00000000000000f8
+[154565.553080] #PF: supervisor read access in kernel mode
+[154565.553082] #PF: error_code(0x0000) - not-present page
+[154565.553084] PGD 80000010488ab067 P4D 80000010488ab067 PUD 104978a067 PMD 0
+[154565.553089] Oops: 0000 1 PREEMPT SMP PTI
+[154565.553092] CPU: 10 PID: 858 Comm: qla2xxx_2_dpc Kdump: loaded Tainted: G           OE     -------  ---  5.14.0-503.11.1.el9_5.x86_64 #1
+[154565.553096] Hardware name: HPE Synergy 660 Gen10/Synergy 660 Gen10 Compute Module, BIOS I43 09/30/2024
+[154565.553097] RIP: 0010:qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
+[154565.553141] Code: 00 00 e8 58 a3 ec d4 49 89 e9 ba 12 20 00 00 4c 89 e6 49 c7 c0 00 ee a8 c0 48 c7 c1 66 c0 a9 c0 bf 00 80 00 10 e8 15 69 00 00 <4c> 8b 8d f8 00 00 00 4d 85 c9 74 35 49 8b 84 24 00 19 00 00 48 8b
+[154565.553143] RSP: 0018:ffffb4dbc8aebdd0 EFLAGS: 00010286
+[154565.553145] RAX: 0000000000000000 RBX: ffff8ec2cf0908d0 RCX: 0000000000000002
+[154565.553147] RDX: 0000000000000000 RSI: ffffffffc0a9c896 RDI: ffffb4dbc8aebd47
+[154565.553148] RBP: 0000000000000000 R08: ffffb4dbc8aebd45 R09: 0000000000ffff0a
+[154565.553150] R10: 0000000000000000 R11: 000000000000000f R12: ffff8ec2cf0908d0
+[154565.553151] R13: ffff8ec2cf090900 R14: 0000000000000102 R15: ffff8ec2cf084000
+[154565.553152] FS:  0000000000000000(0000) GS:ffff8ed27f800000(0000) knlGS:0000000000000000
+[154565.553154] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[154565.553155] CR2: 00000000000000f8 CR3: 000000113ae0a005 CR4: 00000000007706f0
+[154565.553157] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[154565.553158] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[154565.553159] PKRU: 55555554
+[154565.553160] Call Trace:
+[154565.553162]  <TASK>
+[154565.553165]  ? show_trace_log_lvl+0x1c4/0x2df
+[154565.553172]  ? show_trace_log_lvl+0x1c4/0x2df
+[154565.553177]  ? qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
+[154565.553215]  ? __die_body.cold+0x8/0xd
+[154565.553218]  ? page_fault_oops+0x134/0x170
+[154565.553223]  ? snprintf+0x49/0x70
+[154565.553229]  ? exc_page_fault+0x62/0x150
+[154565.553238]  ? asm_exc_page_fault+0x22/0x30
 
-For guest_memfd, this allows khugepaged and MADV_COLLAPSE to create
-large folios in the page cache via the collapse path, but the
-guest_memfd fault handler does not support large folios. This triggers
-WARN_ON_ONCE(folio_test_large(folio)) in kvm_gmem_fault_user_mapping().
+Check for sp being non NULL before freeing any associated memory
 
-For secretmem, collapse_file() tries to copy page contents through the
-direct map, but secretmem pages are removed from the direct map. This
-can result in a kernel crash:
-
-    BUG: unable to handle page fault for address: ffff88810284d000
-    RIP: 0010:memcpy_orig+0x16/0x130
-    Call Trace:
-     collapse_file
-     hpage_collapse_scan_file
-     madvise_collapse
-
-Secretmem is not affected by the crash on upstream as the memory failure
-recovery handles the failed copy gracefully, but it still triggers
-confusing false memory failure reports:
-
-    Memory failure: 0x106d96f: recovery action for clean unevictable
-    LRU page: Recovered
-
-Check IS_ANON_FILE(inode) in file_thp_enabled() to deny THP for all
-anonymous inode files.
-
-Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
-Link: https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=U6rs6S7iP0gkR9enr7HoGtA@mail.gmail.com
-Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
-Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
+Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
 Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-10-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ adapted kref_put() srb free mechanism to older sp->free(sp) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-v2:
-  - Use IS_ANON_FILE(inode) to deny THP for all anonymous inode files
-    instead of checking for specific subsystems (David Hildenbrand)
-  - Updated Fixes tag to 7fbb5e188248 which removed the VM_EXEC
-    requirement that accidentally protected secretmem
-  - Expanded commit message with implications for both guest_memfd
-    and secretmem
----
- mm/huge_memory.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/qla2xxx/qla_gs.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 40cf59301c21..d3beddd8cc30 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -94,6 +94,9 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
+diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
+index b08a92d346f5f..2b5a97af59585 100644
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -3901,22 +3901,24 @@ static int qla24xx_async_gnnft(scsi_qla_host_t *vha, struct srb *sp,
+ 	return rval;
  
- 	inode = file_inode(vma->vm_file);
+ done_free_sp:
+-	if (sp->u.iocb_cmd.u.ctarg.req) {
+-		dma_free_coherent(&vha->hw->pdev->dev,
+-		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
+-		    sp->u.iocb_cmd.u.ctarg.req,
+-		    sp->u.iocb_cmd.u.ctarg.req_dma);
+-		sp->u.iocb_cmd.u.ctarg.req = NULL;
+-	}
+-	if (sp->u.iocb_cmd.u.ctarg.rsp) {
+-		dma_free_coherent(&vha->hw->pdev->dev,
+-		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
+-		    sp->u.iocb_cmd.u.ctarg.rsp,
+-		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
+-		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
+-	}
++	if (sp) {
++		if (sp->u.iocb_cmd.u.ctarg.req) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.req,
++			    sp->u.iocb_cmd.u.ctarg.req_dma);
++			sp->u.iocb_cmd.u.ctarg.req = NULL;
++		}
++		if (sp->u.iocb_cmd.u.ctarg.rsp) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.rsp,
++			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
++			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
++		}
  
-+	if (IS_ANON_FILE(inode))
-+		return false;
-+
- 	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
- }
+-	sp->free(sp);
++		sp->free(sp);
++	}
  
+ 	spin_lock_irqsave(&vha->work_lock, flags);
+ 	vha->scan.scan_flags &= ~SF_SCANNING;
 -- 
-2.43.0
+2.51.0
 
 
