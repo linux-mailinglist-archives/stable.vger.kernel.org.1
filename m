@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-216114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MzXBmosj2kPKwEAu9opvQ
-	(envelope-from <stable+bounces-216114-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:38 +0100
+	id IM3+IrAsj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:52:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5CEE13690A
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F201369CD
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3244F304D929
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:51:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E27EC3019C90
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D47135FF62;
-	Fri, 13 Feb 2026 13:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9F4360722;
+	Fri, 13 Feb 2026 13:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVdFVw1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpG48FN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B0235FF6F;
-	Fri, 13 Feb 2026 13:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FE0241665;
+	Fri, 13 Feb 2026 13:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990681; cv=none; b=n4MKNCJqM7jQOOPXiAz34dxcz/fyODTMIYdGglgJOZTsVwFv4ZIIC9chcejKJRQo7qBVlDqbxAfKI9cFZh7shutpDX2aPftXbfA90TjFVmYhdr563/bCZwzM8mCgFTWBAPKZkFNeShRMnil7PRtzMnXuZRklc2AvoDSWH67Jv6M=
+	t=1770990764; cv=none; b=J+2wdNsN9+GsdE8gMHvXmXmPYuxdcJ9ej/GloqxCHV/QNpcH5NhY+anYo2Ht37NWBnoSTuHH4GI1w003auge1u0eHBVkpqba0M9JJ7O1jmc+C5yGWo6QSJqGnEHi5hA9PJzZcnuzDCMzREuB+lc8mU6oLOKCW7BF7jCDuk33OW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990681; c=relaxed/simple;
-	bh=4PqD2sbK7vf6qK7kG2u5bp1h8+ZID5y0UVFjAahYBoE=;
+	s=arc-20240116; t=1770990764; c=relaxed/simple;
+	bh=R1P1JBU1IE27gV8XQv4wDehyunYP+/IHzBuUDCTMsyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YDFBTY9QgA4BrvxJSQxJexwGN9WczgHVRZrGcdO8G7qadM5RzUnMRGDlX2rzBMGboYCnmdfHmYToG5oxXyVS5AYeum4vxpRDXNqmEsTY+ky/jGe8twKx0R+pa1xO7ZgEQrwc/F1qsZ50loPzAbN4G5/EbEbch3AMTrEsTQdW9tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVdFVw1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E52C116C6;
-	Fri, 13 Feb 2026 13:51:20 +0000 (UTC)
+	 MIME-Version; b=ZgNS5d1nJODKSwdEqcmpt2LwsD5WRDzDYOxZ3EEQ8I+NaUn6mPW3qSesKmX12REkCyMEk8uZ8nSOSUj0y9cMFVn3q3MNV8FvBGz3SW72DKVziCcBfoYm9fp1y+esgrYILtsM1lRW5ZX4C3SBNBVsj/xYVSNue1B6ybPm4lOqgxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpG48FN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4333DC116C6;
+	Fri, 13 Feb 2026 13:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990681;
-	bh=4PqD2sbK7vf6qK7kG2u5bp1h8+ZID5y0UVFjAahYBoE=;
+	s=korg; t=1770990764;
+	bh=R1P1JBU1IE27gV8XQv4wDehyunYP+/IHzBuUDCTMsyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kVdFVw1XOfEmNbHNs5yky02mcuABLf8ZMYs/Q38r6EAshs/8XePR0nXw2y4JEhSY1
-	 NqIIKZjPmyFo+4zBpK2gwyEeJxTZEMwcrqUsq06KuaSXnYaabUQhoXQLJKCyIC1NSO
-	 7a96EksEX/Br6S3x9Vp8k83NCyYDjor785mSrifE=
+	b=LpG48FN3lF8M/GEMyU0gzsa2gWBZguBLgl21MI1h+h0/Rm/87+sBwDoinDAmQXqIL
+	 z+xulHWG4vg0mrbtuX3pBXOeiuYMaSonSSLc3kjsmu0rT/FyodnRdcfB3B5+EhMhzb
+	 z9VS3hj1aHPR365qxA0SSiXZgelJI+mWLfAPZlOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.19 43/49] sched/mmcid: Dont assume CID is CPU owned on mode switch
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 18/49] smb: client: remove pointless sc->send_io.pending handling in smbd_post_send_iter()
 Date: Fri, 13 Feb 2026 14:48:02 +0100
-Message-ID: <20260213134710.292691810@linuxfoundation.org>
+Message-ID: <20260213134709.554956304@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
-References: <20260213134708.713126210@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+References: <20260213134708.885500854@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,111 +74,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216114-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216139-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,wdc.com:email]
-X-Rspamd-Queue-Id: A5CEE13690A
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,talpey.com:email,samba.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 76F201369CD
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@kernel.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 1e83ccd5921a610ef409a7d4e56db27822b4ea39 upstream.
+commit 8bfe3fd33f36b987c8200b112646732b5f5cd8b3 upstream.
 
-Shinichiro reported a KASAN UAF, which is actually an out of bounds access
-in the MMCID management code.
+If we reach this the connection is already broken as
+smbd_post_send() already called
+smbd_disconnect_rdma_connection().
 
-   CPU0						CPU1
-   						T1 runs in userspace
-   T0: fork(T4) -> Switch to per CPU CID mode
-         fixup() set MM_CID_TRANSIT on T1/CPU1
-   T4 exit()
-   T3 exit()
-   T2 exit()
-						T1 exit() switch to per task mode
-						 ---> Out of bounds access.
+This will also simplify further changes.
 
-As T1 has not scheduled after T0 set the TRANSIT bit, it exits with the
-TRANSIT bit set. sched_mm_cid_remove_user() clears the TRANSIT bit in
-the task and drops the CID, but it does not touch the per CPU storage.
-That's functionally correct because a CID is only owned by the CPU when
-the ONCPU bit is set, which is mutually exclusive with the TRANSIT flag.
-
-Now sched_mm_cid_exit() assumes that the CID is CPU owned because the
-prior mode was per CPU. It invokes mm_drop_cid_on_cpu() which clears the
-not set ONCPU bit and then invokes clear_bit() with an insanely large
-bit number because TRANSIT is set (bit 29).
-
-Prevent that by actually validating that the CID is CPU owned in
-mm_drop_cid_on_cpu().
-
-Fixes: 007d84287c74 ("sched/mmcid: Drop per CPU CID immediately when switching to per task mode")
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Tested-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/aYsZrixn9b6s_2zL@shinmob
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c  |    7 +++----
- kernel/sched/sched.h |    6 ++++--
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ fs/smb/client/smbdirect.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -10729,10 +10729,9 @@ void sched_mm_cid_exit(struct task_struc
- 					return;
- 				/*
- 				 * Mode change. The task has the CID unset
--				 * already. The CPU CID is still valid and
--				 * does not have MM_CID_TRANSIT set as the
--				 * mode change has just taken effect under
--				 * mm::mm_cid::lock. Drop it.
-+				 * already and dealt with an eventually set
-+				 * TRANSIT bit. If the CID is owned by the CPU
-+				 * then drop it.
- 				 */
- 				mm_drop_cid_on_cpu(mm, this_cpu_ptr(mm->mm_cid.pcpu));
- 			}
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -3758,8 +3758,10 @@ static __always_inline void mm_unset_cid
- static __always_inline void mm_drop_cid_on_cpu(struct mm_struct *mm, struct mm_cid_pcpu *pcp)
- {
- 	/* Clear the ONCPU bit, but do not set UNSET in the per CPU storage */
--	pcp->cid = cpu_cid_to_cid(pcp->cid);
--	mm_drop_cid(mm, pcp->cid);
-+	if (cid_on_cpu(pcp->cid)) {
-+		pcp->cid = cpu_cid_to_cid(pcp->cid);
-+		mm_drop_cid(mm, pcp->cid);
-+	}
- }
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index c9fcd35e0c77..cfbe8ce0db42 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1274,11 +1274,6 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
+ 	if (!rc)
+ 		return 0;
  
- static inline unsigned int __mm_get_cid(struct mm_struct *mm, unsigned int max_cids)
+-	if (atomic_dec_and_test(&sc->send_io.pending.count))
+-		wake_up(&sc->send_io.pending.zero_wait_queue);
+-
+-	wake_up(&sc->send_io.pending.dec_wait_queue);
+-
+ err_dma:
+ 	for (i = 0; i < request->num_sge; i++)
+ 		if (request->sge[i].addr)
+-- 
+2.53.0
+
 
 
 
