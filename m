@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-216118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216143-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHhfJnwsj2kPKwEAu9opvQ
-	(envelope-from <stable+bounces-216118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:56 +0100
+	id 6BTCNvUsj2kPKwEAu9opvQ
+	(envelope-from <stable+bounces-216143-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A200136947
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1DC136AC9
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 277FC3012944
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:51:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06745307BDA2
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:53:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F80835F8B7;
-	Fri, 13 Feb 2026 13:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75D023645D;
+	Fri, 13 Feb 2026 13:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSzxk6t8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X29TugA6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034CC54723;
-	Fri, 13 Feb 2026 13:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97E0241665;
+	Fri, 13 Feb 2026 13:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990695; cv=none; b=WKvh24gmB/DAjg0z1GHZBIEExMv+btZY09FJbZUO2s6l2ezzguwOv1vsL7wcAhYnZ+s2gPZgxSLJ1Pl5LzDIg+itrliPKIJf6AOIfk4x3hPN1JsQpAWDaWjJprLJWa1t6lMKxnRQH+4Cu+C4aLjokDSJT4TcSBRGwGbYkCq1w1U=
+	t=1770990778; cv=none; b=U6Ry1iNzRb5yVeV63d+VtJjPPOyUT5F7Mfl02KGhcgEjx+JwLCLQLqpWSs73wrhm1Ff1S4AaJYtKyAYFdLdvvEq/l7T3BKdeQ3JuAiIwF2Kd86hoWeXiqMnaLC9hrFoglQeVQlO4jStYeOjd3i7IQDQBv7M3IeKdv9aFF0EnkUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990695; c=relaxed/simple;
-	bh=Tb8Qvl//ImJDlu+7KVeHrBi2GWZFRv7QiSpH5X0TQqU=;
+	s=arc-20240116; t=1770990778; c=relaxed/simple;
+	bh=5C39CLrMMH78KhFZk6gPCEo7a4VdcFr2KbN/+q+dPI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNuihFtpi8NrvC6aJ7rDyHPQpt7jqu7xAjzyJoD/4HHlpWBB+hwFpou8qpt4Zw7cHJ9wcRQa2UQvP0H9AOaadDPwX5uSQ2kKMVrqiZsGsA2b9j1uPRKGIipjyJZxF97tHHF3p+YW61xUliFhPTsB4J6eKHv5KPyumbaNWmvjXOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSzxk6t8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F91C116C6;
-	Fri, 13 Feb 2026 13:51:34 +0000 (UTC)
+	 MIME-Version; b=N9OzCrn8FLqBBptcnU+MjfYTJrW4vm5LeXohGIyZk6r5iYawNH/To79LudbG59wr0capwtWa75OWFt0iftAa0XbbxWn8uetMUFeRH0xrpwt+HtRcoSnhd0qFhDFy2mTN+GvPTXUlG55/6QvzXl+UtoT7d/bu/oD7jhg237vT0LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X29TugA6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3091BC116C6;
+	Fri, 13 Feb 2026 13:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990694;
-	bh=Tb8Qvl//ImJDlu+7KVeHrBi2GWZFRv7QiSpH5X0TQqU=;
+	s=korg; t=1770990778;
+	bh=5C39CLrMMH78KhFZk6gPCEo7a4VdcFr2KbN/+q+dPI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSzxk6t8AijVDOhZNH4o0nzslKgSKw7QdlI31dfaRrHZMr5hTVwRagI6qzyLzB00/
-	 Qct718QG1BD0uocv7Y4gyV0RWaU1yn5kL1eBumfBvyQW89SLnvY9q+kHpqKfVSUd1g
-	 pypalke+5MZWp8EH4IYgbn1H15JXfz4kMsAJ0Gxo=
+	b=X29TugA65nPAfzeub7ePmoVfPS20wK5bTNeGhI53oc9TAJTxyvib3CHAH+5xpa/dF
+	 Fy6iQGvfcLKo4UR5uuYJOmOnjkxQ3b7Ln5Sae+q4LAB0o0NB8wbSULWkZgwQTVdQWz
+	 XBYqeL+D/s1vLPsr1WDznLLPnyNV2YC/nPNTlAZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	r772577952@gmail.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.19 46/49] xfs: fix UAF in xchk_btree_check_block_owner
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 21/49] smb: client: introduce and use smbd_{alloc, free}_send_io()
 Date: Fri, 13 Feb 2026 14:48:05 +0100
-Message-ID: <20260213134710.397968879@linuxfoundation.org>
+Message-ID: <20260213134709.663735241@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
-References: <20260213134708.713126210@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+References: <20260213134708.885500854@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +72,234 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216118-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,lst.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216143-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 9A200136947
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samba.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,talpey.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 5C1DC136AC9
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 1c253e11225bc5167217897885b85093e17c2217 upstream.
+commit dc77da0373529d43175984b390106be2d8f03609 upstream.
 
-We cannot dereference bs->cur when trying to determine if bs->cur
-aliases bs->sc->sa.{bno,rmap}_cur after the latter has been freed.
-Fix this by sampling before type before any freeing could happen.
-The correct temporal ordering was broken when we removed xfs_btnum_t.
+This is basically a copy of smb_direct_{alloc,free}_sendmsg()
+in the server, with just using ib_dma_unmap_page() in all
+cases, which is the same as ib_dma_unmap_single().
 
-Cc: r772577952@gmail.com
-Cc: <stable@vger.kernel.org> # v6.9
-Fixes: ec793e690f801d ("xfs: remove xfs_btnum_t")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Tested-by: Jiaming Zhang <r772577952@gmail.com>
+We'll use this logic in common code in future.
+(I basically backported it from my branch that
+as already has everything in common).
+
+Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/btree.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/smb/client/smbdirect.c | 87 ++++++++++++++++++++++++++-------------
+ 1 file changed, 58 insertions(+), 29 deletions(-)
 
---- a/fs/xfs/scrub/btree.c
-+++ b/fs/xfs/scrub/btree.c
-@@ -370,12 +370,15 @@ xchk_btree_check_block_owner(
- {
- 	xfs_agnumber_t		agno;
- 	xfs_agblock_t		agbno;
-+	bool			is_bnobt, is_rmapbt;
- 	bool			init_sa;
- 	int			error = 0;
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 75c0ac9cc65c..6cb40da7e589 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -493,10 +493,54 @@ static inline void *smbdirect_recv_io_payload(struct smbdirect_recv_io *response
+ 	return (void *)response->packet;
+ }
  
- 	if (!bs->cur)
++static struct smbdirect_send_io *smbd_alloc_send_io(struct smbdirect_socket *sc)
++{
++	struct smbdirect_send_io *msg;
++
++	msg = mempool_alloc(sc->send_io.mem.pool, GFP_KERNEL);
++	if (!msg)
++		return ERR_PTR(-ENOMEM);
++	msg->socket = sc;
++	INIT_LIST_HEAD(&msg->sibling_list);
++	msg->num_sge = 0;
++
++	return msg;
++}
++
++static void smbd_free_send_io(struct smbdirect_send_io *msg)
++{
++	struct smbdirect_socket *sc = msg->socket;
++	size_t i;
++
++	/*
++	 * The list needs to be empty!
++	 * The caller should take care of it.
++	 */
++	WARN_ON_ONCE(!list_empty(&msg->sibling_list));
++
++	/*
++	 * Note we call ib_dma_unmap_page(), even if some sges are mapped using
++	 * ib_dma_map_single().
++	 *
++	 * The difference between _single() and _page() only matters for the
++	 * ib_dma_map_*() case.
++	 *
++	 * For the ib_dma_unmap_*() case it does not matter as both take the
++	 * dma_addr_t and dma_unmap_single_attrs() is just an alias to
++	 * dma_unmap_page_attrs().
++	 */
++	for (i = 0; i < msg->num_sge; i++)
++		ib_dma_unmap_page(sc->ib.dev,
++				  msg->sge[i].addr,
++				  msg->sge[i].length,
++				  DMA_TO_DEVICE);
++
++	mempool_free(msg, sc->send_io.mem.pool);
++}
++
+ /* Called when a RDMA send is done */
+ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
+ {
+-	int i;
+ 	struct smbdirect_send_io *request =
+ 		container_of(wc->wr_cqe, struct smbdirect_send_io, cqe);
+ 	struct smbdirect_socket *sc = request->socket;
+@@ -505,12 +549,8 @@ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	log_rdma_send(INFO, "smbdirect_send_io 0x%p completed wc->status=%s\n",
+ 		request, ib_wc_status_msg(wc->status));
+ 
+-	for (i = 0; i < request->num_sge; i++)
+-		ib_dma_unmap_single(sc->ib.dev,
+-			request->sge[i].addr,
+-			request->sge[i].length,
+-			DMA_TO_DEVICE);
+-	mempool_free(request, sc->send_io.mem.pool);
++	/* Note this frees wc->wr_cqe, but not wc */
++	smbd_free_send_io(request);
+ 	lcredits += 1;
+ 
+ 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
+@@ -963,15 +1003,13 @@ static int smbd_post_send_negotiate_req(struct smbdirect_socket *sc)
+ {
+ 	struct smbdirect_socket_parameters *sp = &sc->parameters;
+ 	struct ib_send_wr send_wr;
+-	int rc = -ENOMEM;
++	int rc;
+ 	struct smbdirect_send_io *request;
+ 	struct smbdirect_negotiate_req *packet;
+ 
+-	request = mempool_alloc(sc->send_io.mem.pool, GFP_KERNEL);
+-	if (!request)
+-		return rc;
+-
+-	request->socket = sc;
++	request = smbd_alloc_send_io(sc);
++	if (IS_ERR(request))
++		return PTR_ERR(request);
+ 
+ 	packet = smbdirect_send_io_payload(request);
+ 	packet->min_version = cpu_to_le16(SMBDIRECT_V1);
+@@ -983,7 +1021,6 @@ static int smbd_post_send_negotiate_req(struct smbdirect_socket *sc)
+ 	packet->max_fragmented_size =
+ 		cpu_to_le32(sp->max_fragmented_recv_size);
+ 
+-	request->num_sge = 1;
+ 	request->sge[0].addr = ib_dma_map_single(
+ 				sc->ib.dev, (void *)packet,
+ 				sizeof(*packet), DMA_TO_DEVICE);
+@@ -991,6 +1028,7 @@ static int smbd_post_send_negotiate_req(struct smbdirect_socket *sc)
+ 		rc = -EIO;
+ 		goto dma_mapping_failed;
+ 	}
++	request->num_sge = 1;
+ 
+ 	request->sge[0].length = sizeof(*packet);
+ 	request->sge[0].lkey = sc->ib.pd->local_dma_lkey;
+@@ -1020,13 +1058,11 @@ static int smbd_post_send_negotiate_req(struct smbdirect_socket *sc)
+ 	/* if we reach here, post send failed */
+ 	log_rdma_send(ERR, "ib_post_send failed rc=%d\n", rc);
+ 	atomic_dec(&sc->send_io.pending.count);
+-	ib_dma_unmap_single(sc->ib.dev, request->sge[0].addr,
+-		request->sge[0].length, DMA_TO_DEVICE);
+ 
+ 	smbd_disconnect_rdma_connection(sc);
+ 
+ dma_mapping_failed:
+-	mempool_free(request, sc->send_io.mem.pool);
++	smbd_free_send_io(request);
+ 	return rc;
+ }
+ 
+@@ -1187,7 +1223,7 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
+ 			       int *_remaining_data_length)
+ {
+ 	struct smbdirect_socket_parameters *sp = &sc->parameters;
+-	int i, rc;
++	int rc;
+ 	int header_length;
+ 	int data_length;
+ 	struct smbdirect_send_io *request;
+@@ -1208,13 +1244,12 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
+ 		goto err_wait_credit;
+ 	}
+ 
+-	request = mempool_alloc(sc->send_io.mem.pool, GFP_KERNEL);
+-	if (!request) {
+-		rc = -ENOMEM;
++	request = smbd_alloc_send_io(sc);
++	if (IS_ERR(request)) {
++		rc = PTR_ERR(request);
+ 		goto err_alloc;
+ 	}
+ 
+-	request->socket = sc;
+ 	memset(request->sge, 0, sizeof(request->sge));
+ 
+ 	/* Map the packet to DMA */
+@@ -1292,13 +1327,7 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
  		return 0;
  
-+	is_bnobt = xfs_btree_is_bno(bs->cur->bc_ops);
-+	is_rmapbt = xfs_btree_is_rmap(bs->cur->bc_ops);
- 	agno = xfs_daddr_to_agno(bs->cur->bc_mp, daddr);
- 	agbno = xfs_daddr_to_agbno(bs->cur->bc_mp, daddr);
+ err_dma:
+-	for (i = 0; i < request->num_sge; i++)
+-		if (request->sge[i].addr)
+-			ib_dma_unmap_single(sc->ib.dev,
+-					    request->sge[i].addr,
+-					    request->sge[i].length,
+-					    DMA_TO_DEVICE);
+-	mempool_free(request, sc->send_io.mem.pool);
++	smbd_free_send_io(request);
  
-@@ -398,11 +401,11 @@ xchk_btree_check_block_owner(
- 	 * have to nullify it (to shut down further block owner checks) if
- 	 * self-xref encounters problems.
- 	 */
--	if (!bs->sc->sa.bno_cur && xfs_btree_is_bno(bs->cur->bc_ops))
-+	if (!bs->sc->sa.bno_cur && is_bnobt)
- 		bs->cur = NULL;
- 
- 	xchk_xref_is_only_owned_by(bs->sc, agbno, 1, bs->oinfo);
--	if (!bs->sc->sa.rmap_cur && xfs_btree_is_rmap(bs->cur->bc_ops))
-+	if (!bs->sc->sa.rmap_cur && is_rmapbt)
- 		bs->cur = NULL;
- 
- out_free:
+ err_alloc:
+ 	atomic_inc(&sc->send_io.credits.count);
+-- 
+2.53.0
+
 
 
 
