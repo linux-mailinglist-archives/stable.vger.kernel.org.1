@@ -1,161 +1,248 @@
-Return-Path: <stable+bounces-216299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNsKGQJ8j2m+RAEAu9opvQ
-	(envelope-from <stable+bounces-216299-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 20:31:14 +0100
+	id CMZLE3J+j2nZRAEAu9opvQ
+	(envelope-from <stable+bounces-216300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 20:41:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB33F1393A1
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 20:31:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEAE3139411
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 20:41:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF13C30304A1
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 19:30:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 49A203008326
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 19:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1532199FD3;
-	Fri, 13 Feb 2026 19:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189B027F01B;
+	Fri, 13 Feb 2026 19:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h53c0yUU"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NiPMwTWd";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fVPJafXq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340D91A3160
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 19:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756E425F994
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 19:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771011054; cv=none; b=X34qv7KdpmFTQkISQcRbjIAEUD9H1dzyIev0CjOv/wp3+hFUfARKci/UsAwpNF+8QcLSkXoU6qiTkBwXim0jpsEofK/KGcWC6moj/NxUmYIBdafqp0Ta6BTxULgBoVOkvwp+ONyNHPxeJQdroMGePZrJba48qxlmQoThEdduC6s=
+	t=1771011695; cv=none; b=Dg7dKlbTpuMpEIT8WX/aOFq1JtVIq2oSkd6U0prVqxozAgAAXQ06MB2htcdp603/KK9za//E93vlvdDHFUywXy6FtwnJWTyymZgLxH59OY0oKaStoVcwJGmmSVwADfA29+Y6XwJvXMGa2LgN/OO8xJs6WgBGJFSLt4FXvCTQ1pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771011054; c=relaxed/simple;
-	bh=dAO8lB0ND8WhwH2pV1nOyXFciMHsu+ivTvc7OEUo92E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gPCLJbFK9TizoOR8N2x4rZan9+2gmJv5XYlFdRtubh7h+T0kSA6f0MnWcY25M2iW6zn0lxEBAyoGZViHso+Y2q85/k73kVvZ6ALBQcfGtp4Har5CtnHaohTl91EdP/Pdum25dbC2JYb47lISt2Al9VgD3l7CYJNXaPDvDYAGZrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h53c0yUU; arc=none smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1270be4d125so2976011c88.1
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 11:30:48 -0800 (PST)
+	s=arc-20240116; t=1771011695; c=relaxed/simple;
+	bh=0vG8ZqU3sCAHwpU6tE5Q+ZCkwGtFet0/lGXw0pw2o9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kApev/kS2UrKQWmWG7ANdGcKaUNlYavbs5NfZVtOHqWKshb3tLVGdztI/iWgoXRPHZvYoSor2kXT/OnIj2bMMfWDorBrkyysb5SwhoTezb8J+bQXUKrHuVx5GDEp0TaMJWP3BjXZcYnvtD+2v8MpOgolOWqxG5o8CW+FEXbgLLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NiPMwTWd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fVPJafXq; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771011693;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sNPXiBDvtas/vaXtolVa7cVtITG/UHp7HfnL+g1+92o=;
+	b=NiPMwTWdYwZuqWwJk4WRGl2M/Fauj/5YR7dtCahTs9q2uJkA+NvPWueBjPuXYeD3+W58Ha
+	qYZ5J1AdWMj5pszNHPLf5DyZ8U1VVRba4qFJ7vmv1I6loyGVLTmQHr+aC8yeb5FjSfN7SE
+	vi7RfMDACETNm8TV0QleXUAWrFX27OU=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-621-OOrpZ95vPHW6VpHCyANg8g-1; Fri, 13 Feb 2026 14:41:32 -0500
+X-MC-Unique: OOrpZ95vPHW6VpHCyANg8g-1
+X-Mimecast-MFC-AGG-ID: OOrpZ95vPHW6VpHCyANg8g_1771011691
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4837107e0a9so10648795e9.0
+        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 11:41:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771011048; x=1771615848; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Q6XCBbxcLfgzoRVkZvaJQyYjeS/eWp9B2ykayYaVUGo=;
-        b=h53c0yUU/FK0q9n7Pz5tfEsOW++Cc8XAyMwStbP8XbxYbqPIyUMxVZXFf3z29SGJJO
-         ehTA7YhO8BYYr7r9Z2UfxQIT3I7S+QVxpK/FE/dcY49zgAn5+aTSbcyd4ZoBuTPTip+l
-         xHqXaDLItdJuUn+98iV+3KoeR+JgU/csIiKjtxrHl5ggOop7A+0KF/S7P0iFYbEtNqKU
-         8BB6OX2tl50aXmXRJjnL0F6cpk8O4CUtDKRD0kLYFXWI0YSHcYEDESQJqzwbqOPCZnMX
-         h1GnWMmfU0XQxbfJyzU4c1U2aAKhaIu1Qb6NKgiOyePpAa1KTmzFwdQsBnenHkg+XV34
-         thAA==
+        d=redhat.com; s=google; t=1771011691; x=1771616491; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=sNPXiBDvtas/vaXtolVa7cVtITG/UHp7HfnL+g1+92o=;
+        b=fVPJafXqSDm4Zmj9TUoUbpe9iVthcun8yUAivdFwf9+YoTwFjrucNgkRxulpI8VdQx
+         ZKNax3D8JMV4d3ucyaBt9aNph8JxwO97ENqSruXffuM91UyAzs5+y3AJiP8CWSEwkq//
+         g3smCLpkZU82l7tmYMAr3nIW+okQQa0F109EIRGBTL/Qg9a/7TcbUSkzgEyBcjUpYngL
+         beALH00EaM17d6T+kownHmgiBcQEZfVoK0lvLvr5gJmmRiOSlh4xXShT8LYEXOqNPMGI
+         sEvxuGbrVCrn30YtYL4P3iMSiSJoYjNAHwVaVRbTeV6jXS1sTIJmXzIEngC07Kvm5K5j
+         5PXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771011048; x=1771615848;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q6XCBbxcLfgzoRVkZvaJQyYjeS/eWp9B2ykayYaVUGo=;
-        b=lzd4IvoXSpDFci85MlqELpj7XGpAaTJTGp8C6JyVrkZ/gh0u1KhCQNVF2B1UxKRjTu
-         A0/bOGY2pmMVB6MZdi5KLASSKw4XVQzoc+RGysdgQ6p6wadRJvoLui0czxSnpuyANm2z
-         dBsEho5Lf4ExtJqss4SBWe7yC+0e7t7CmMcdZNI+Aa2UDOG+ZHQ1ypp2Or+0zff3mf9A
-         4o5rCe8vfaoo/3AWG9HkT09skvi35OYBmODItLbVLVqGUt+561Ql7YD/BTuGB/Hqlzun
-         wxxUvTCgb4mihlh0swSYkv2q2ygKM8spqccO8RDOB8nJEWc6vWAYXTpw6U+WZvHu0GIK
-         ABtA==
-X-Forwarded-Encrypted: i=1; AJvYcCVms014ULvjDGNI0ThaZguxoSZQ5k0r2lAWBszGywO2JyC37gY6YLas0F+3VayBUwgJsKtMAvE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqrPr7JozxliESl/xvprN2NKk6jw+ehMhRnQgInjhmFkxj1tjP
-	ZByVS0XPIF4NFeWqhY6R3ZtmnXHeLBIEa8AKMRFqZoclNv+pCJQY6XxrE22iBQTD
-X-Gm-Gg: AZuq6aKmoIROfKycPwu/PWcZBCBVyyXZNWNrqWwjeljd+9rN2nKCxKJpYY+t6p+Xvlu
-	Or5/QL0vFFv/bdChImqUXKyD9ffvJu8PM2/GD+PXt99U5C07tqlvtO1BFjNg6b77ookLk4/wBhC
-	T7ZaEHcQlxqYxUe9K/EGWmu5/dkOIe2tizAXajrLIYu9ai9pDVgakCTILQX0BVBjL4rXK3ioDG0
-	6aD7yQlfhEH0RCZlHDsbLZ7MymCOcqaL/lkw773nlrl0FxA1TCl+VGkChsJdT+0mMeoA6NE151U
-	K5h6FDK+Yj/xN7eU+z7o6Zhf2jOqQks2tQkoE1oTE0MMJUltMz/aQKniEDHXSN4MrM4YVEc2C9B
-	M+Ea5vSTkSXw9oOAMijYLuXlc7nPIEN7zq2qdp7n0yo9dJB7Q8K/1Q1+lw5NXkND1S3p+rbxbD0
-	2eue4c+azbD4CBXkaqFeGhH2K3tQ8FTigdeejvHwX77Ea0W7M9NpMgXZzfUiCA
-X-Received: by 2002:a05:7022:662c:b0:11b:c1fb:896 with SMTP id a92af1059eb24-12741b63659mr291180c88.4.1771011047993;
-        Fri, 13 Feb 2026 11:30:47 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1273eb11a30sm1350851c88.1.2026.02.13.11.30.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Feb 2026 11:30:47 -0800 (PST)
-Message-ID: <56cfb554-ec87-4058-8ce1-7629adccf73f@gmail.com>
-Date: Fri, 13 Feb 2026 11:30:45 -0800
+        d=1e100.net; s=20230601; t=1771011691; x=1771616491;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sNPXiBDvtas/vaXtolVa7cVtITG/UHp7HfnL+g1+92o=;
+        b=FiRK+yPlbVyM/9TTdHLZE3MuACp24ZmihIxOxynSzRRH3FR4E0Dayyc6R4/nPkXtrf
+         nfFDn9KWfJW7aLPVDlV5GHqcng4NzOH1X1Hm9qrSkMsIHe71lZYdULsipVsJdeC5rnQS
+         TY+Arwzg63Y2VJ96l2gr2B7d5hXhucnsgZWxnKBxhbV69TxHbByi0vuK6Ecvfols5dka
+         lhNQ7HXsXfeRrj648H0ttxrkd9FtRElTZYfQPjsxPtaMs/B5bIcAgJzziuC4dUyZjWce
+         KXwN6vxrNrE7lRmikckVf/nmUOx/Oe9pEgx+/E6YqHNDHUoYCrdi1+p+NxK99RZqK8qk
+         /8JA==
+X-Forwarded-Encrypted: i=1; AJvYcCVxCGvcaz6tkmpnl47OlmhpE7UjFKGjf4XNh9OnPTrvR8L4LCB6SkdsZb6thjKeuXUcrkZipbU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMdvH+rWcEwctizfpxYcIj39AQJB2b5x1e/N5EQIUjBjO/kl1R
+	koeyOpss5BFxZLX95gRkEFETa5TRemr5ismdyDwvtV5exLmiv4IJgQgC4r295yd85HjHWOzW9iQ
+	shajDFXhX/CBJg1JuhdIPpMOAPezTmYGogxNu1Xm6sbt4r+sBcYwH5iHJMQ==
+X-Gm-Gg: AZuq6aKMSL+pMJyyye1Z3VV6GKRT1LdVmJxkFvd44M5JDcr/9qSr/h8CkhurxwI5Pbq
+	TrxtEZUGvqwFqbY670cTdXLZPKWj05LiS0nUMe+eSN1pIdnO5Vy0WiuY2Ov3XNwOxYEvOdU2w1i
+	5cyGpvMBf7Nsah7TsNdCLqwzBHeRMHjJnZOLqiGRd5+ufve8aedRfvaojV3QotU9tKs/vceDRyC
+	WtC61u+CWRQmOc5hZAYf5NLYypk5RYkaxmqd7e3uYV/IjzHsHLqaozrRutIn1JwRmOjNHUJG0Ml
+	3A9llYGNyh5yW30JmEWgQQQNtjQ6WOjghRJOjQLOm/o+WlT3EHeOUffbMEvW91PWUcL8d3W5WcT
+	ghLrZijsK9AnJdH4jc0S8f+SWHxOwhGnf+X0LKTMwaSYrv0FB7+Sh35hrbKxNVlPiJfMBHos=
+X-Received: by 2002:a05:600c:1e1d:b0:477:9814:6882 with SMTP id 5b1f17b1804b1-48373a15f3cmr46613515e9.5.1771011690984;
+        Fri, 13 Feb 2026 11:41:30 -0800 (PST)
+X-Received: by 2002:a05:600c:1e1d:b0:477:9814:6882 with SMTP id 5b1f17b1804b1-48373a15f3cmr46613075e9.5.1771011690457;
+        Fri, 13 Feb 2026 11:41:30 -0800 (PST)
+Received: from sgarzare-redhat (host-82-53-134-58.retail.telecomitalia.it. [82.53.134.58])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d82a4c4sm476596725e9.10.2026.02.13.11.41.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Feb 2026 11:41:29 -0800 (PST)
+Date: Fri, 13 Feb 2026 20:41:24 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicolas Schier <nsc@kernel.org>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Steve French <smfrench@gmail.com>
+Subject: Re: [PATCH 0/2] kbuild: rpm-pkg: Address -debuginfo build regression
+ with RPM < 4.20.0
+Message-ID: <CAGxU2F7FFNgb781_A7a1oL63n9Oy8wsyWceKhUpeZ6mLk=focw@mail.gmail.com>
+References: <20260210-kbuild-fix-debuginfo-rpm-v1-0-0730b92b14bc@kernel.org>
+ <aY8wyR572eZYWVJY@sgarzare-redhat>
+ <20260213191138.GA2131983@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 00/49] 6.18.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260213134708.885500854@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260213191138.GA2131983@ax162>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216299-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-216300-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,broadcom.com:email]
-X-Rspamd-Queue-Id: DB33F1393A1
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
+X-Rspamd-Queue-Id: DEAE3139411
 X-Rspamd-Action: no action
 
-On 2/13/26 05:47, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.11 release.
-> There are 49 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 15 Feb 2026 13:46:52 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.11-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Fri, 13 Feb 2026 at 20:11, Nathan Chancellor <nathan@kernel.org> wrote:
+>
+> Hi Stefano,
+>
+> On Fri, Feb 13, 2026 at 03:11:38PM +0100, Stefano Garzarella wrote:
+> > On Tue, Feb 10, 2026 at 12:04:47AM -0700, Nathan Chancellor wrote:
+> > > Steve reported a build issue with commit 62089b804895 ("kbuild: rpm-pkg:
+> > > Generate debuginfo package manually") on RHEL9, which has an older
+> > > version of RPM than what I tested. Turns out that RPM 4.20.0 fixed an
+> > > issue with specifying %files for a -debuginfo subpackage.
+> > >
+> > > The first patch restricts the new -debuginfo package generation process
+> > > to CONFIG_MODULE_SIG=y and RPM >= 4.20.0 to ensure it is actually
+> > > necessary and working. The second patch restores the original -debuginfo
+> > > package generation process from commit a7c699d090a1 ("kbuild: rpm-pkg:
+> > > build a debuginfo RPM") when CONFIG_MODULE_SIG is disabled to keep the
+> > > -debuginfo package around for older versions of RPM.
+> >
+> > Yeah, I had similar issue on Fedora 42 (RPM version 4.20.1) and this series
+> > fixed my issue.
+>
+> Thanks for testing! I find that a little odd though since I tested
+> 62089b804895 in Fedora 42 during my investigation of the problem and it
+> worked fine without these changes. Nevertheless, I will add your tags to
+> this series when I apply it.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+mmm, that it's odd indeed.
+Without this series applied, I had issues on Fedora 42 (RPM version 
+4.20.1), but it worked on Fedora 43 (RPM version 6.0.1).
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+I just retried on Fedora 42 to build commit cee73b1e840c ("Merge tag 
+'riscv-for-linus-7.0-mw1' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux") and I have 
+the following errors:
+
+RPM build errors:
+    Dependency tokens must begin with alpha-numeric, '_' or '/': #�) = 0x0d000002
+    Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x47161b0700
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x339b1a000ac0
+    Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x36000000
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7508200000000000
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e76000000000400
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x803ab2b00000000
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1a00000000005e00
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x125590000000060
+    Dependency tokens must begin with alpha-numeric, '_' or '/': = 0x03080000
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x818000000003600
+    Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
+    Dependency tokens must begin with alpha-numeric, '_' or '/': $) = 0x1c01040000004d00
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x63c300000000000
+    Illegal char '?' (0xffffffd8) in: 3�
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1320f691700
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e17101500
+    Version required: ksym(g) =
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
+    Dependency tokens must begin with alpha-numeric, '_' or '/': p) = 0x3875480000005c
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ]) = 0xfc22000000003000
+    Dependency tokens must begin with alpha-numeric, '_' or '/': 2) = 0x5d0d03cc22
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ]) = 0x32042c1c
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1c11a3d1b00
+    Version required: ksym(�) =
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3220312e322e3400
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x322e353120295400
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x2029554e47282000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+    Illegal char ')' (0x29) in: (GNU)
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
+    Dependency tokens must begin with alpha-numeric, '_' or '/': #) = 0x031c0000
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x570d03ea11
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x4000000520d03c0
+    Dependency tokens must begin with alpha-numeric, '_' or '/': C) = 0x690d03cf33
+    Dependency tokens must begin with alpha-numeric, '_' or '/': �l) = 0x102000001471140
+    Dependency tokens must begin with alpha-numeric, '_' or '/': i) = 0x4a00000000011000
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e00000000240000
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x42111503a533
+    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0xea1303bb33000000
+    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+
+But if I apply this series on top, everything is fine.
+
+Thanks,
+Stefano
+
 
