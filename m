@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-216175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHjhDCYtj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:46 +0100
+	id 8EnRHH0tj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:56:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9260136B44
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C7E1136C06
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:56:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 712603016262
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:54:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 97A5030131D3
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC08360739;
-	Fri, 13 Feb 2026 13:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B4035FF61;
+	Fri, 13 Feb 2026 13:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvSzh+qI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oI45KSno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A5254723;
-	Fri, 13 Feb 2026 13:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE191684BE;
+	Fri, 13 Feb 2026 13:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990883; cv=none; b=Xj61hRUc2CIoyYZT4LeSWVPAKwmAA133XrF20GCPmOkhwUHtP8Si0JgcsVp7vTMiuNCVMiyWN8N7PRfAbeGoA634reXPGelXR729izJ8trkTKMFg9BbdkrXNl++gAJGy6fy/mfBkqjipOzM+2Tcxq83kmGy0mBdFzZPkwOLSCVY=
+	t=1770990966; cv=none; b=b5J8iI/sisGtYUnF+r3AYEco0kV7pT9su6kWIIs0aEM8uYTuWXRtMnZ+7sWMZHpLY/Pk95tNRgvbdBRU5APdj7rFrdBd+9gR+6nvNCu/c8ZZca/S215M/dczIsnKZ4JnC/nQyL5FkM0DPlCME0okTtssdvza2cxgn9L4sHcG5lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990883; c=relaxed/simple;
-	bh=dKCUEm0bqEyBY5uHJB9pOvTn5qaTW8rCxM5VQnOiMGk=;
+	s=arc-20240116; t=1770990966; c=relaxed/simple;
+	bh=iITgYstPR5UcWGk9Wy25YKvYXy+6LfcoVbtAiQ48ZCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KaV/OpcM20ZrjdzzdcazhOzkb++/BaQn+EoGEQSMfWJf1xpQH1r7xm1ezpq9lmpewKcKxrkBESCbQ9PeJ6o4JRWsv+FDfsjTvcjjg6Jgi7JmryokYcwQ5ecAflMyu0FHw6UN3Vt4N3Wr8HGR78GIvaDUUdVyGuU4y3kgbyDoXT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvSzh+qI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25407C116C6;
-	Fri, 13 Feb 2026 13:54:42 +0000 (UTC)
+	 MIME-Version; b=G0ceAyaD62U4R0WEc900chS34z/rUzRVqGQBrYFjQ7LmuXeEd7oFzQWNw0BCQwP9uEexnoPunR9lTAsBrCkdrcafxUGl8jKEVb/KAvVI2X4LlbOL44U4z0ZGU4IvDy7G7ytLXSuFqfAsBpdyFAVdU7mTF7Lxui5fIK9szaacoIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oI45KSno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0D9C116C6;
+	Fri, 13 Feb 2026 13:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990883;
-	bh=dKCUEm0bqEyBY5uHJB9pOvTn5qaTW8rCxM5VQnOiMGk=;
+	s=korg; t=1770990966;
+	bh=iITgYstPR5UcWGk9Wy25YKvYXy+6LfcoVbtAiQ48ZCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvSzh+qIhHIkYUSNRy5pxsZvhJK3jYGxGNIEwGdOvA7SzIdKanySn05Y434WZhBO6
-	 FYDNKODc6L935Yjbq4ZnzdiZplW/rXMH1CQSKc0UzMJZWC1+BC4Crxz48/fOJhCM+j
-	 wH+i3K0bJhzrJTJ8MnRuzch4KOrhnwYW8vU6lddo=
+	b=oI45KSnoVtarMi+p+uK2DpyluI1r8s96dJpDO3ZaJEqe+35IjyJklh/vGcX8yemSa
+	 FZFxBaLysupn74iCgjPaCD0nU+vDBFe5dpg/j7+DFP3bpi/5L2hXLDXG4/mdnQgDVf
+	 dyipiLF9r8ukBsL57my70xod7dH1oG6BkvRxqv9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.18 40/49] scsi: qla2xxx: Delay module unload while fabric scan in progress
+	Zenm Chen <zenmchen@gmail.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 05/24] Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
 Date: Fri, 13 Feb 2026 14:48:24 +0100
-Message-ID: <20260213134710.336573499@linuxfoundation.org>
+Message-ID: <20260213134704.926389981@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
-References: <20260213134708.885500854@linuxfoundation.org>
+In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
+References: <20260213134704.728003077@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,103 +67,111 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216175-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,linaro.org,marvell.com,gmail.com,oracle.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216199-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,molgen.mpg.de,intel.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,intel.com:email,oracle.com:email,msgid.link:url,marvell.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: C9260136B44
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,mpg.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 9C7E1136C06
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: Zenm Chen <zenmchen@gmail.com>
 
-commit 8890bf450e0b6b283f48ac619fca5ac2f14ddd62 upstream.
+commit 6c0568b7741a346088fd6dfced2d871f7d481d06 upstream.
 
-System crash seen during load/unload test in a loop.
+Add USB ID 7392:e611 for Edimax EW-7611UXB which is RTL8851BU-based
+Wi-Fi + Bluetooth adapter.
 
-[105954.384919] RBP: ffff914589838dc0 R08: 0000000000000000 R09: 0000000000000086
-[105954.384920] R10: 000000000000000f R11: ffffa31240904be5 R12: ffff914605f868e0
-[105954.384921] R13: ffff914605f86910 R14: 0000000000008010 R15: 00000000ddb7c000
-[105954.384923] FS:  0000000000000000(0000) GS:ffff9163fec40000(0000) knlGS:0000000000000000
-[105954.384925] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[105954.384926] CR2: 000055d31ce1d6a0 CR3: 0000000119f5e001 CR4: 0000000000770ee0
-[105954.384928] PKRU: 55555554
-[105954.384929] Call Trace:
-[105954.384931]  <IRQ>
-[105954.384934]  qla24xx_sp_unmap+0x1f3/0x2a0 [qla2xxx]
-[105954.384962]  ? qla_async_scan_sp_done+0x114/0x1f0 [qla2xxx]
-[105954.384980]  ? qla24xx_els_ct_entry+0x4de/0x760 [qla2xxx]
-[105954.384999]  ? __wake_up_common+0x80/0x190
-[105954.385004]  ? qla24xx_process_response_queue+0xc2/0xaa0 [qla2xxx]
-[105954.385023]  ? qla24xx_msix_rsp_q+0x44/0xb0 [qla2xxx]
-[105954.385040]  ? __handle_irq_event_percpu+0x3d/0x190
-[105954.385044]  ? handle_irq_event+0x58/0xb0
-[105954.385046]  ? handle_edge_irq+0x93/0x240
-[105954.385050]  ? __common_interrupt+0x41/0xa0
-[105954.385055]  ? common_interrupt+0x3e/0xa0
-[105954.385060]  ? asm_common_interrupt+0x22/0x40
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below:
 
-The root cause of this was that there was a free (dma_free_attrs) in the
-interrupt context.  There was a device discovery/fabric scan in
-progress.  A module unload was issued which set the UNLOADING flag.  As
-part of the discovery, after receiving an interrupt a work queue was
-scheduled (which involved a work to be queued).  Since the UNLOADING
-flag is set, the work item was not allocated and the mapped memory had
-to be freed.  The free occurred in interrupt context leading to system
-crash.  Delay the driver unload until the fabric scan is complete to
-avoid the crash.
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=7392 ProdID=e611 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=802.11ax WLAN Adapter
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtw89_8851bu_git
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/202512090414.07Waorz0-lkp@intel.com/
-Fixes: 783e0dc4f66a ("qla2xxx: Check for device state before unloading the driver.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-8-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: stable@vger.kernel.org # 6.6.x
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -1182,7 +1182,8 @@ qla2x00_wait_for_hba_ready(scsi_qla_host
- 	while ((qla2x00_reset_active(vha) || ha->dpc_active ||
- 		ha->flags.mbox_busy) ||
- 	       test_bit(FX00_RESET_RECOVERY, &vha->dpc_flags) ||
--	       test_bit(FX00_TARGET_SCAN, &vha->dpc_flags)) {
-+	       test_bit(FX00_TARGET_SCAN, &vha->dpc_flags) ||
-+	       (vha->scan.scan_flags & SF_SCANNING)) {
- 		if (test_bit(UNLOADING, &base_vha->dpc_flags))
- 			break;
- 		msleep(1000);
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -519,6 +519,8 @@ static const struct usb_device_id quirks
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x7392, 0xe611), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 
+ 	/* Realtek 8852AE Bluetooth devices */
+ 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
 
 
 
