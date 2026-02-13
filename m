@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-216053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMLxIY8Ij2ltHQEAu9opvQ
-	(envelope-from <stable+bounces-216053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:18:39 +0100
+	id eC05DagIj2ltHQEAu9opvQ
+	(envelope-from <stable+bounces-216054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:19:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD818135A7B
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:18:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C92135AA9
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:19:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70ED330E4004
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:14:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50C6930FD901
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9615435028D;
-	Fri, 13 Feb 2026 11:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA54E3559F8;
+	Fri, 13 Feb 2026 11:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+xJKwvi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uM5Ferke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5912E34D915
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 11:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3001F03EF
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 11:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770981290; cv=none; b=pGt0VG6i5B475NLDNp5sPk2aKKW8WX/EQaLxd3qsTiq03IOE07OyAZYgE+sZrsfc9cRTOD0cYOIaeE5ZiRGVOuArz56X30k7QWHkSY0w8QQ27WxxUkxxt26Zx0J1/qB8FAMmkf6xVzwvQ4s2z5fOqpxb9a5P2lFQPC7bg3n8Jl0=
+	t=1770981308; cv=none; b=cw/BE5BsTU+u2cGtanz9l10Ua8Mf0EjO6r1VrEa8StW+20p/U9i/nWtNvBLlsyxbw6lJICQbaxahaqn3GhV1xZxqby5Q76bu2x0z9GsjpHbgdcF2NMYQyxt50v8DIm4drSx3flHdxzTJFd7dwJmDUxLN4veSywytGw5Lq4JwtYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770981290; c=relaxed/simple;
-	bh=psddgzuJNKHibyxlV6+FzRL/bL8IzwisbirHW1iV4Dg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=G3LFqXGbm7O0faR4lcunytftX1fmBg4OKRbWUduCsDZYbuBkzvRc8RHBQjZ/fpNxByWd5h8N3vZshTfKTd4E3J8mAk5wHfU7Z28OIUtJx3dahetwWTOniD96JTG9y50U/sfs465MLK5oBxZhHaInLilHw7g6lCOOz2+i9wbDN9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+xJKwvi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A447CC116C6;
-	Fri, 13 Feb 2026 11:14:49 +0000 (UTC)
+	s=arc-20240116; t=1770981308; c=relaxed/simple;
+	bh=nQuP6Kayp7m/5y+41rwRps2BlayYy63IKl09Dcy7TFM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WUtQDEaq6p/nPd0ZyBStKh75zJwbGrqt3Gzixw1rggZJ6vvUWgA4N7QVkP1izzoPcVJO8MaCPdnC2WcGPDhXb8dg/13VhzrLPx1blvREP8IRi9fMINMcBv3DEpX8ovHhA+6x3/aB3qOvLwBI1vLoJN15Db1twGvcbLQ+BkZ38sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uM5Ferke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E2BC116C6;
+	Fri, 13 Feb 2026 11:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770981290;
-	bh=psddgzuJNKHibyxlV6+FzRL/bL8IzwisbirHW1iV4Dg=;
+	s=korg; t=1770981308;
+	bh=nQuP6Kayp7m/5y+41rwRps2BlayYy63IKl09Dcy7TFM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=y+xJKwviwQ+8vxGs3/3RA/p0cCDOgaE3hXaZB2NjCmaYLKk+NceMXOqr8+ER4S/vo
-	 j48DBMNxLCTS456t+OzZrG0mWFg/4RD6M/6ZDoi9L1IX4A8aWYsArjjiX3krofi21q
-	 Fyyai7L8TZgIR+NOHDAJAoYVCSMOQyKuFmNueJIw=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Allow recovery for tape devices" failed to apply to 5.10-stable tree
-To: sdeodhar@marvell.com,hmadhani2024@gmail.com,martin.petersen@oracle.com,njavali@marvell.com
+	b=uM5FerkeYadvtVSkwdL981mg9/379XiZOsZLhbAm2NS8bP+MSzF58v/2ZLCloLj4w
+	 TDpiGQxj7VeyKRAptQbYahsEbr3KUFgG24WgEiuNdiHj2iDjgk4iBnEV5ogIaxvghA
+	 6Gs5SLIVkOaYWEofC/EjhvPHe+rDFemqEcS1s6FY=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Free sp in error path to fix system crash" failed to apply to 6.1-stable tree
+To: agurumurthy@marvell.com,hmadhani2024@gmail.com,martin.petersen@oracle.com,njavali@marvell.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 13 Feb 2026 12:14:39 +0100
-Message-ID: <2026021339-auction-doing-24ff@gregkh>
+Date: Fri, 13 Feb 2026 12:15:04 +0100
+Message-ID: <2026021304-avid-upside-f50a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_TO(0.00)[marvell.com,gmail.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-216053-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216054-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -82,24 +82,24 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	FROM_NO_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,msgid.link:url,linuxfoundation.org:dkim,oracle.com:email,marvell.com:email]
-X-Rspamd-Queue-Id: DD818135A7B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,msgid.link:url,oracle.com:email,linuxfoundation.org:dkim,marvell.com:email]
+X-Rspamd-Queue-Id: 87C92135AA9
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x b0335ee4fb94832a4ef68774ca7e7b33b473c7a6
+git cherry-pick -x 7adbd2b7809066c75f0433e5e2a8e114b429f30f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026021339-auction-doing-24ff@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026021304-avid-upside-f50a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,55 +111,82 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b0335ee4fb94832a4ef68774ca7e7b33b473c7a6 Mon Sep 17 00:00:00 2001
-From: Shreyas Deodhar <sdeodhar@marvell.com>
-Date: Wed, 10 Dec 2025 15:45:58 +0530
-Subject: [PATCH] scsi: qla2xxx: Allow recovery for tape devices
+From 7adbd2b7809066c75f0433e5e2a8e114b429f30f Mon Sep 17 00:00:00 2001
+From: Anil Gurumurthy <agurumurthy@marvell.com>
+Date: Wed, 10 Dec 2025 15:46:00 +0530
+Subject: [PATCH] scsi: qla2xxx: Free sp in error path to fix system crash
 
-Tape device doesn't show up after RSCNs.  To fix this, remove tape
-device specific checks which allows recovery of tape devices.
+System crash seen during load/unload test in a loop,
 
-Fixes: 44c57f205876 ("scsi: qla2xxx: Changes to support FCP2 Target")
+[61110.449331] qla2xxx [0000:27:00.0]-0042:0: Disabled MSI-X.
+[61110.467494] =============================================================================
+[61110.467498] BUG qla2xxx_srbs (Tainted: G           OE    --------  --- ): Objects remaining in qla2xxx_srbs on __kmem_cache_shutdown()
+[61110.467501] -----------------------------------------------------------------------------
+
+[61110.467502] Slab 0x000000000ffc8162 objects=51 used=1 fp=0x00000000e25d3d85 flags=0x57ffffc0010200(slab|head|node=1|zone=2|lastcpupid=0x1fffff)
+[61110.467509] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G           OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
+[61110.467513] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
+[61110.467515] Call Trace:
+[61110.467516]  <TASK>
+[61110.467519]  dump_stack_lvl+0x34/0x48
+[61110.467526]  slab_err.cold+0x53/0x67
+[61110.467534]  __kmem_cache_shutdown+0x16e/0x320
+[61110.467540]  kmem_cache_destroy+0x51/0x160
+[61110.467544]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467607]  ? __do_sys_delete_module.constprop.0+0x178/0x280
+[61110.467613]  ? syscall_trace_enter.constprop.0+0x145/0x1d0
+[61110.467616]  ? do_syscall_64+0x5c/0x90
+[61110.467619]  ? exc_page_fault+0x62/0x150
+[61110.467622]  ? entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[61110.467626]  </TASK>
+[61110.467627] Disabling lock debugging due to kernel taint
+[61110.467635] Object 0x0000000026f7e6e6 @offset=16000
+[61110.467639] ------------[ cut here ]------------
+[61110.467639] kmem_cache_destroy qla2xxx_srbs: Slab cache still has objects when called from qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467659] WARNING: CPU: 53 PID: 455206 at mm/slab_common.c:520 kmem_cache_destroy+0x14d/0x160
+[61110.467718] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G    B      OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
+[61110.467720] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
+[61110.467721] RIP: 0010:kmem_cache_destroy+0x14d/0x160
+[61110.467724] Code: 99 7d 07 00 48 89 ef e8 e1 6a 07 00 eb b3 48 8b 55 60 48 8b 4c 24 20 48 c7 c6 70 fc 66 90 48 c7 c7 f8 ef a1 90 e8 e1 ed 7c 00 <0f> 0b eb 93 c3 cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 55 48 89
+[61110.467725] RSP: 0018:ffffa304e489fe80 EFLAGS: 00010282
+[61110.467727] RAX: 0000000000000000 RBX: ffffffffc0d9a860 RCX: 0000000000000027
+[61110.467729] RDX: ffff8fd5ff9598a8 RSI: 0000000000000001 RDI: ffff8fd5ff9598a0
+[61110.467730] RBP: ffff8fb6aaf78700 R08: 0000000000000000 R09: 0000000100d863b7
+[61110.467731] R10: ffffa304e489fd20 R11: ffffffff913bef48 R12: 0000000040002000
+[61110.467731] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[61110.467733] FS:  00007f64c89fb740(0000) GS:ffff8fd5ff940000(0000) knlGS:0000000000000000
+[61110.467734] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[61110.467735] CR2: 00007f0f02bfe000 CR3: 00000020ad6dc005 CR4: 0000000000770ee0
+[61110.467736] PKRU: 55555554
+[61110.467737] Call Trace:
+[61110.467738]  <TASK>
+[61110.467739]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467755]  ? __do_sys_delete_module.constprop.0+0x178/0x280
+
+Free sp in the error path to fix the crash.
+
+Fixes: f352eeb75419 ("scsi: qla2xxx: Add ability to use GPNFT/GNNFT for RSCN handling")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
 Signed-off-by: Nilesh Javali <njavali@marvell.com>
 Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-7-njavali@marvell.com
+Link: https://patch.msgid.link/20251210101604.431868-9-njavali@marvell.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
 diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
-index 51c7cea71f90..02a52c215797 100644
+index 02a52c215797..e5ebb9c5b650 100644
 --- a/drivers/scsi/qla2xxx/qla_gs.c
 +++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3266,9 +3266,6 @@ void qla_fab_scan_finish(scsi_qla_host_t *vha, srb_t *sp)
- 			    atomic_read(&fcport->state) == FCS_ONLINE) ||
- 				do_delete) {
- 				if (fcport->loop_id != FC_NO_LOOP_ID) {
--					if (fcport->flags & FCF_FCP2_DEVICE)
--						continue;
--
- 					ql_log(ql_log_warn, vha, 0x20f0,
- 					       "%s %d %8phC post del sess\n",
- 					       __func__, __LINE__,
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index 9729e32012aa..6ce3a492ad6f 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -1859,15 +1859,6 @@ void qla2x00_handle_rscn(scsi_qla_host_t *vha, struct event_arg *ea)
- 	case RSCN_PORT_ADDR:
- 		fcport = qla2x00_find_fcport_by_nportid(vha, &ea->id, 1);
- 		if (fcport) {
--			if (ql2xfc2target &&
--			    fcport->flags & FCF_FCP2_DEVICE &&
--			    atomic_read(&fcport->state) == FCS_ONLINE) {
--				ql_dbg(ql_dbg_disc, vha, 0x2115,
--				       "Delaying session delete for FCP2 portid=%06x %8phC ",
--					fcport->d_id.b24, fcport->port_name);
--				return;
--			}
--
- 			if (vha->hw->flags.edif_enabled && DBELL_ACTIVE(vha)) {
- 				/*
- 				 * On ipsec start by remote port, Target port
+@@ -3532,8 +3532,8 @@ int qla_fab_async_scan(scsi_qla_host_t *vha, srb_t *sp)
+ 	if (vha->scan.scan_flags & SF_SCANNING) {
+ 		spin_unlock_irqrestore(&vha->work_lock, flags);
+ 		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x2012,
+-		    "%s: scan active\n", __func__);
+-		return rval;
++		    "%s: scan active for sp:%p\n", __func__, sp);
++		goto done_free_sp;
+ 	}
+ 	vha->scan.scan_flags |= SF_SCANNING;
+ 	if (!sp)
 
 
