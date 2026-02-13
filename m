@@ -1,147 +1,163 @@
-Return-Path: <stable+bounces-216007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEMvIEd3jmlNCgEAu9opvQ
-	(envelope-from <stable+bounces-216007-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 01:58:47 +0100
+	id WIMeBkp4jmlbCgEAu9opvQ
+	(envelope-from <stable+bounces-216008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:03:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC06E1322D0
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 01:58:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2862132313
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:03:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3CDD4305DA77
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 00:58:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D28F3061750
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 01:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D4C214204;
-	Fri, 13 Feb 2026 00:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EAA19C542;
+	Fri, 13 Feb 2026 01:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PfrTWsNE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1r/4Yxz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C543BB48;
-	Fri, 13 Feb 2026 00:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531993EBF33;
+	Fri, 13 Feb 2026 01:02:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770944320; cv=none; b=fKzmAJrrYjcXS9ZvNBLpxLWAJnmDiF+Z+XdyP8Lq0j/B/Ygt3QMSALiJf8tlYD8kLOpyKW8Nz0+zk6Wp4Dl262RigCsLwIHwOfyG7LBtVtJJfsj2ZgGUFLyAe9Q4T/0M3rn4woraLlsSNPll0wdsW0TzD8oyEdgiV72rFw4o2PU=
+	t=1770944575; cv=none; b=FNNIsLfFyH3TaroHblwyF+TD2VWF2IU6RMKmhNXEc3OEURMBCNFBqiIkOQ2psHcqkqiirt3EY5F49ejnBBmM8XbTJYTqgLZhKXFVvaZI9YsW8zrMEKnOqw3hfzqgvm5A5I3SCgn4wlszvefJ/CmH2ofrlrcw2LwRDL0Ke69c2CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770944320; c=relaxed/simple;
-	bh=cHpcPyGAG03o+TR1ecG1uWELBgFcwDeP1nRIMffIaRo=;
+	s=arc-20240116; t=1770944575; c=relaxed/simple;
+	bh=KwbmCqQa/Q37dD8NJdF3IkFjL0StaTgXiGrl/kaJs5Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Do+fuekuN9eL8bCfI/7Hh4jo8Vk9JqBcuOSZLHt0SK79YWX3rfHkGoBK+7ppzOBHr5/X+StM9jcJRRydAh3/W+2USNwv23/DJvVYClTDGGUYi+rFiwf+IMlc9YTzmCm1+7536iNAOOgbkfa+Vbs+SHqE/XzNnaV5OfDeLwWL0cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PfrTWsNE; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D6D1F40E036C;
-	Fri, 13 Feb 2026 00:58:35 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 0cnwuM8wyb4g; Fri, 13 Feb 2026 00:58:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1770944312; bh=s15k0VtDmBXgT2loxwA/MKSEgz9TEur+XrbqGNej0pI=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=DPaNHGvHT7Ilopg77ovsCEDwvjKKEwWacfk1Bf8XLe8amtRJJk4GzhjxqahKnRKkbIWx4pX7YdtVABdjduzISUZUnMKz1Or5zNbGH2oQKrEJu9KSBO9uLib2n0Kd/Px/Y+nRoA1sjxffg1opo626tU9CVDLNIyAnJbltgx7Dfos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1r/4Yxz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F376C4CEF7;
+	Fri, 13 Feb 2026 01:02:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770944574;
+	bh=KwbmCqQa/Q37dD8NJdF3IkFjL0StaTgXiGrl/kaJs5Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PfrTWsNEyLo5ZMnQHJhxBDkjowYWwMulchUa5FMtBRdYT6ULAwxrOsOtb1K2nUo5+
-	 KxA2lzcEXzWg4OS40h+kLOb0zCUWYAlrFmF0c2DiV4WB4Z2dfiHXdBXNuJv+dUpXlR
-	 UE059gonvA2tdL3CyX0BnD+cCTdy9YR+zdy/EPG8/Q+Ri0pND3mBKDyOw6y8x92tF3
-	 9buCmRun+qXy3+qlcJS6BXLh6xjyHr+qaTnycPwaaYPxQeGv2Qack1YIasnmQzHdIf
-	 KJFVWvtF8TQ5GyFgbBNxjJgVeyL0wxcl4ulPZK6O72Ijjir5QmAq6814tFyfdeLuAT
-	 sn2umI18Hu/er6AaXkqwaNbMP5HBR22nThE8RIOkLZoBZgvFS6E7fSjvwj8SERJbtU
-	 rGQEqXlGqhQFQxV413f3TL8FCN0qUXGtcCogyIR6kXO4MWcQ8LSDNG+gw4weIJcGI9
-	 YfQf5sFdA7FZqVt/Vto0Vojq9xffT0FtvyqlvHUR7D4kLH0VemYMLW5wkVKJMS2UKX
-	 t6fZ5cDFCRYSRnJj/yM8O/0BWt5xRCi17HYuqP2l8ZP++PBeZmWu85uqqDZzXAoc1a
-	 nlOWmo+nPpuBVOs5iYebJT48/fKsY75W5J0rWQkw6lQWWRaJubqquuUzdGgypltpOo
-	 iCu4c0l82lqE2GaGDkSzoR6Q=
-Received: from zn.tnic (pd95306e3.dip0.t-ipconnect.de [217.83.6.227])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id DEECB40E036B;
-	Fri, 13 Feb 2026 00:58:19 +0000 (UTC)
-Date: Fri, 13 Feb 2026 01:58:13 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>,
-	Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	x86@kernel.org, pawel.chmielewski@linux.intel.com,
-	Farrah Chen <farrah.chen@intel.com>,
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] x86/cpu: Clear feature bits disabled at
- compile-time
-Message-ID: <20260213005813.GGaY53JfOLNoSJNgRe@fat_crate.local>
-References: <cover.1770908783.git.m.wieczorretman@pm.me>
- <32fbbfc16974cfed11e7d2651bce836ba9ceaccc.1770908783.git.m.wieczorretman@pm.me>
- <20260212155808.GDaY34kOTrEYHLdoyK@fat_crate.local>
- <aY35H-VXwoSLFXoj@wieczorr-mobl1.localdomain>
- <E9F385CE-83B8-4088-B6FC-AB113F8DF55C@zytor.com>
- <A9F52EC5-EC74-43BB-BB3F-351F684BF5CE@alien8.de>
- <19d3f1c8-01aa-4a50-81e0-6af3fb7fe9cd@intel.com>
- <20260212234722.GFaY5mimfap5YbOi30@fat_crate.local>
- <57039edb-419c-4e4a-96d0-3578e233b594@intel.com>
+	b=k1r/4Yxz7bCefYO+ld67cg3Bg1TPvFMtLZxiDotgFV/1EE86IolC4qpNqp2Mp/RCy
+	 0fy0cSCyNtjTmBWiQ77+78NduSt+GWYmjnFvDxs8CBtcLMGv7mb1DX6JgNxtFoY3L1
+	 DEjgpdi899HXRRQAn5rNrxP2U/PZooLV6dVFJCgMtBCMC4Kz9Tqd3HgGZWdLHffYVH
+	 hL0uj7J4B01tLYLd5n8E1DjU8C4IYDeYA9/VYamdSuBTAh9+JY81YNT9r4TzPP2hnm
+	 8yN78C7o4TLtT/LEfz5L+ccWzn7XHxIMqVipKdRAHCsKkCxESD1LO0x8/qd6IeXbkl
+	 fm6voAeBhpjIQ==
+Date: Thu, 12 Feb 2026 17:02:53 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: manivannan.sadhasivam@oss.qualcomm.com
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, stable@vger.kernel.org,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>
+Subject: Re: [PATCH v2 1/4] soc: qcom: ice: Remove platform_driver support
+ and expose as a pure library
+Message-ID: <20260213010253.GA6208@quark>
+References: <20260210-qcom-ice-fix-v2-0-9c1ab5d6502c@oss.qualcomm.com>
+ <20260210-qcom-ice-fix-v2-1-9c1ab5d6502c@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <57039edb-419c-4e4a-96d0-3578e233b594@intel.com>
+In-Reply-To: <20260210-qcom-ice-fix-v2-1-9c1ab5d6502c@oss.qualcomm.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
-	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216008-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216007-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[alien8.de:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fat_crate.local:mid]
-X-Rspamd-Queue-Id: CC06E1322D0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B2862132313
 X-Rspamd-Action: no action
 
-On Thu, Feb 12, 2026 at 04:14:07PM -0800, Sohil Mehta wrote:
-> So, as of today, if one of these features shows up, a user can't be sure
-> whether the kernel has enabled it or not. Right?
+On Tue, Feb 10, 2026 at 12:26:50PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+>  drivers/soc/qcom/ice.c | 118 ++++++++++++++++++-------------------------------
+>  1 file changed, 44 insertions(+), 74 deletions(-)
 
-This is not such a critical bug - judging by how no one noticed it until
-now...
+I don't yet know enough to be confident that this is the correct fix,
+but there are a few things I noticed that look like bugs:
 
-> My suggestion is that:
-> Instead of (or maybe along with) fixing this buggy interface, would it
-> be better to put this information in something like debugfs/sysfs? So,
-> at least new user software can start using that.
+> +static DEFINE_MUTEX(ice_mutex);
+> +struct qcom_ice *ice_handle;
 
-... to go and make big waves and "fix" everything. We'll address this
-inconsistency eventually and go on with our lives.
+ice_handle is used only in this file, so it should be static
 
--- 
-Regards/Gruss,
-    Boris.
+> @@ -643,41 +645,42 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
+[...]
+> +	ice = qcom_ice_create(&pdev->dev, base);
+> +	if (IS_ERR(ice)) {
+>  		platform_device_put(pdev);
+> -		ice = ERR_PTR(-EINVAL);
+> +		return ice_handle;
+>  	}
 
-https://people.kernel.org/tglx/notes-about-netiquette
+This error path returns NULL, where this patch seems to have been
+intended to remove NULL as a possible return value.
+
+> -static void qcom_ice_put(const struct qcom_ice *ice)
+> +static void qcom_ice_put(struct kref *kref)
+>  {
+> -	struct platform_device *pdev = to_platform_device(ice->dev);
+> -
+> -	if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
+> -		platform_device_put(pdev);
+> +	platform_device_put(to_platform_device(ice_handle->dev));
+> +	ice_handle = NULL;
+>  }
+
+Elsewhere ice_handle is protected by ice_mutex, but this seems to modify
+it without holding the mutex.
+
+I'm also wondering what happens if all consumer devices are removed.
+platform_device_put() gets executed on the ICE platform_device for each
+one, but does that actually drop the last reference and cause the
+resources allocated with devm_*() to be freed?  On do they stick around
+until/unless the ICE device is actually removed as well?
+
+>  static void devm_of_qcom_ice_put(struct device *dev, void *res)
+>  {
+> -	qcom_ice_put(*(struct qcom_ice **)res);
+> +	const struct qcom_ice *ice = *(struct qcom_ice **)res;
+> +	struct platform_device *pdev = to_platform_device(ice->dev);
+> +
+> +	if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
+> +		kref_put(&ice_handle->refcount, qcom_ice_put);
+>  }
+
+Above probably should use the ice local variable, not ice_handle.
+
+- Eric
 
