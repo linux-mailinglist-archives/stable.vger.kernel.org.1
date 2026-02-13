@@ -1,181 +1,196 @@
-Return-Path: <stable+bounces-216012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEqsG9OJjmmVCwEAu9opvQ
-	(envelope-from <stable+bounces-216012-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 03:17:55 +0100
+	id XY2JD86MjmntCwEAu9opvQ
+	(envelope-from <stable+bounces-216013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 03:30:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1B0132629
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 03:17:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7166A13265E
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 03:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 748A730879AB
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:17:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C80E306EE5B
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F2C70818;
-	Fri, 13 Feb 2026 02:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C4EEADC;
+	Fri, 13 Feb 2026 02:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONdoe+fa"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="aF3tXKaN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E24A17D2;
-	Fri, 13 Feb 2026 02:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80E23EBF1F
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 02:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770949067; cv=none; b=npzvhoKo8OaotNLMmnNDVtLTqRNRKAOjq2xljW6WfUCTNzXccZEjkwdnfzIqqO4/hqfJdEJw32wvsvYsYxZcDQnjVRCjsKW4SkvyXZQGRCOd8YLmzLFxukkzMpwKuYbTiQmvCtQh5R6tI1Hg8fpMdKzVAmO/lo/zv4vRPK0Quf8=
+	t=1770949834; cv=none; b=d2DS1uFvl0OnEpmKCzJ5t/62xoAy0DwgEX6cva9lSrVYHHMZAPS6RQe9dJTTuTLuxYHc3KEtL8WslEX8Oim+htXggxaZ3CiMYCkvU0XIhXMYjjx3coXcVBH0xZWrxDKrcfZ3vRU7SsD/rAezRY6VimvZ2SLtFutv5BIpGgQGxF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770949067; c=relaxed/simple;
-	bh=jcn/tgnFKkNrRO9Qp2BKNUBc3hhBvbOk0me8Jij/eW4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mF2bMDwy03HAW1pcS2WTBVOadt8t2ikmV/lahtPkQyMVmATmH6yDOaF3ulcXCKGcRc2RiDS78amDpp45rpHw/9t2dIPS7WVHfI7SfNECKZzj2GDqn1l7TEfvTJzX8LaXgHenOmHw1cgs85Qa5vpVpwwog+L4+WlQwBLgANPcxz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONdoe+fa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CAFC4CEF7;
-	Fri, 13 Feb 2026 02:17:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770949066;
-	bh=jcn/tgnFKkNrRO9Qp2BKNUBc3hhBvbOk0me8Jij/eW4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ONdoe+faYA8iPCOxVbp+REhPAA5BwqK6pOII8ZPfhf4OBkKsmqS1wUi1OEoxpvED9
-	 Ke81p4BTYJL9qG50tNSahM8SwWdsfPG9J6cEm2Fy3NDkwus979NlohLEA5SyK4SryA
-	 EN51/E+ZNCOd9dIbmfaRdvAm4eqvJpwvvsdsxgi3MPJhubo7Yb3XU6LZdUexUJ5xzt
-	 slzzwa8qfDGiwi1hhEbW4guaH9v20Nks0gGyy7r84aJBu5sx4vfKkdxnnT9Ve4kVba
-	 epIZB0YHrgVdUufiYJHyyKeb79zbzqBaucfFCADlo/jEraouW7RxOgPVEt6Wdipu9K
-	 DS///vG42hm/Q==
-Date: Fri, 13 Feb 2026 07:47:37 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Abel Vesa <abel.vesa@linaro.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, stable@vger.kernel.org, Abel Vesa <abel.vesa@oss.qualcomm.com>
-Subject: Re: [PATCH v2 1/4] soc: qcom: ice: Remove platform_driver support
- and expose as a pure library
-Message-ID: <gsm6l7b3sjrddyiaykhiai2pthvpuo4vilp6houmhgkgnfu4af@lodndyakg7bj>
-References: <20260210-qcom-ice-fix-v2-0-9c1ab5d6502c@oss.qualcomm.com>
- <20260210-qcom-ice-fix-v2-1-9c1ab5d6502c@oss.qualcomm.com>
- <20260213010253.GA6208@quark>
+	s=arc-20240116; t=1770949834; c=relaxed/simple;
+	bh=r4kuJIXNRe1KTzGlBB5Ndieq1xaJ0s0bp8Q6gqzjshg=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=DY3EqH1S2d/iRRl1DKHB7HgfR07VmZtPRoP6aR9niCGLS+CzJHjwamvEj+iXOAb/qIhnG3R1NRwLhUR3JFXL/vYbFqiTRO717TTcPZqSuh2nU1nwIZq9yzwAuSkIzViUYhouAzhjZfyKIlCFN0MQ5EzHrx644Wf3aiob9p+KQHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=aF3tXKaN; arc=none smtp.client-ip=74.125.82.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-124a95e592fso1556789c88.0
+        for <stable@vger.kernel.org>; Thu, 12 Feb 2026 18:30:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1770949832; x=1771554632; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PWqZ0gDegdl1pbZHMxaPttEWHIvGKZjRE0Uyxtykopw=;
+        b=aF3tXKaNXpbPK16Hff7ywffuYCT/ugzlLmGovvIBJaY8ej+STrljJNbITMkzr4uhfj
+         aEO/E2eyl93dZ3xeHspaSC7hYVqcXCH7IBw4Iewqavnk3SeitGGbbHHxl9WNXWJIGJaH
+         C2jZu18Lp3fmwuwsoqeYZpv+GRIm5cCqJ/Ne9UgEQnLlmuV21uxkovZLcGk3+vS8BSMh
+         OeSzw5KhcSFEpKW89PD6wvJWDu8tBpwrMmIoqE2C4wTJ0ynQ6Sepa8MvpV3DdnfcXcC0
+         lh5A2WYky7ie5Q4XP9hcf0sY5R1s4NkGsrQw3DFOsXQrMjgk2Pj9/MyABhZmzUShWM6F
+         SLNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770949832; x=1771554632;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PWqZ0gDegdl1pbZHMxaPttEWHIvGKZjRE0Uyxtykopw=;
+        b=Lsuyi++WWXTrrpiWi7amYq2lvf0psiQ7TOTOH2R2bNBPjQd+z66d4Ejkdc9EwtxtXk
+         EG0jGyGjSUPtcD9VcZS1onSefmvS6heUELtLumeYpLvLt/WJP2GbW7qWo99ZfPtB03pb
+         pRL/YA3gwfvwxm5fJqO9X7w3wKJjURFreJht/SzUjuQS65FE06Bibo/kL9mXtrnk5CZa
+         rBPyhHI2qdAaJqxCjV3KmsPavh3zVk+40mjX3x8U1+l1CtG7AL7sZx3GRqKF4xWQq2IE
+         pKMEsWQU+yejV4HAtD2lYQfaUi8Li4QcQ2XeNOV+Xt6fcSlUSsg1NeoYJOBlVzYXJQ3f
+         Xb4A==
+X-Gm-Message-State: AOJu0YztRtwgNm7sHt3n9a5SwEoG1mch/yIn0y9nU7YRX2epBfMTflOA
+	X1KDFU5AHiMBSTqwpnUnmpiGQK/eouCafez1GEmwZfyI8Mt45gmjiJUjRnLIot9TI7g=
+X-Gm-Gg: AZuq6aK1FPTME1Pmk0dN4Suq15BLGNVPqQzKzoY9ujmVWndCTTFfgd4uwKRJXu5qpRj
+	trVBJ0TeQU/VZ5ZAQvk8MX1E0NX6GKk3IXAyg+dO17z9i2lCDc096FuYbsYG7ajwXWvSiLRShBX
+	FZb4qEQ3rkcfcDyAV2D5dGaCMd6JLJn4FnjDba+WxxJXYZBnYZeocHC1eek1hcABzDSif8ceUoN
+	wdYw3yPOlThd+mjqTWftmDNV5dWu8xQ3TfAXzU9V6c2BT1kPbMrKGi7vBbhGQ2lSi7us84ixRMY
+	P2KsIpW4ab800btXjK5HRcUN8tAdNDd72ckzC1o7cS0LLaZ6VgrysH24HW/cpKk1gMZDxE8UP/6
+	u0/Y8+KzqK45P/N6AYVIUYXptukIJEjmKJH0UyqQyEkPSrwmEYYB4S1JjPmf9kyPzOgyyv49edX
+	vtITb44xGmY8WB0l4DzDLja0M1Q9A=
+X-Received: by 2002:a05:7022:2393:b0:119:e569:fbb3 with SMTP id a92af1059eb24-1273ae4735cmr98396c88.34.1770949831678;
+        Thu, 12 Feb 2026 18:30:31 -0800 (PST)
+Received: from f55b40a4666e ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1272a6e9966sm7530859c88.10.2026.02.12.18.30.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Feb 2026 18:30:31 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260213010253.GA6208@quark>
+Subject: [STATUS] stable/linux-6.12.y -
+ ae591174b1f2e6b81ffe182fb621bba910bfb44e
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Fri, 13 Feb 2026 02:30:31 -0000
+Message-ID: <177094983070.1089.17359132364552177115@f55b40a4666e>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216012-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216013-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kernelci.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DD1B0132629
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
+	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernelci.org:url,lists.linux.dev:replyto]
+X-Rspamd-Queue-Id: 7166A13265E
 X-Rspamd-Action: no action
 
-On Thu, Feb 12, 2026 at 05:02:53PM -0800, Eric Biggers wrote:
-> On Tue, Feb 10, 2026 at 12:26:50PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> >  drivers/soc/qcom/ice.c | 118 ++++++++++++++++++-------------------------------
-> >  1 file changed, 44 insertions(+), 74 deletions(-)
-> 
-> I don't yet know enough to be confident that this is the correct fix,
-> but there are a few things I noticed that look like bugs:
-> 
-> > +static DEFINE_MUTEX(ice_mutex);
-> > +struct qcom_ice *ice_handle;
-> 
-> ice_handle is used only in this file, so it should be static
-> 
-> > @@ -643,41 +645,42 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
-> [...]
-> > +	ice = qcom_ice_create(&pdev->dev, base);
-> > +	if (IS_ERR(ice)) {
-> >  		platform_device_put(pdev);
-> > -		ice = ERR_PTR(-EINVAL);
-> > +		return ice_handle;
-> >  	}
-> 
-> This error path returns NULL, where this patch seems to have been
-> intended to remove NULL as a possible return value.
-> 
 
-Oops... I should return 'ice' here, not 'ice_handle'.
 
-> > -static void qcom_ice_put(const struct qcom_ice *ice)
-> > +static void qcom_ice_put(struct kref *kref)
-> >  {
-> > -	struct platform_device *pdev = to_platform_device(ice->dev);
-> > -
-> > -	if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
-> > -		platform_device_put(pdev);
-> > +	platform_device_put(to_platform_device(ice_handle->dev));
-> > +	ice_handle = NULL;
-> >  }
-> 
-> Elsewhere ice_handle is protected by ice_mutex, but this seems to modify
-> it without holding the mutex.
-> 
 
-I'll add it.
 
-> I'm also wondering what happens if all consumer devices are removed.
-> platform_device_put() gets executed on the ICE platform_device for each
-> one, but does that actually drop the last reference and cause the
-> resources allocated with devm_*() to be freed?  On do they stick around
-> until/unless the ICE device is actually removed as well?
-> 
+Hello,
 
-No, they'll stick around because the platform device itself won't be removed.
-of_qcom_ice_get() increments the refcount due to of_find_device_by_node() and we
-keep the refcount as we expect the platform device to be available until all the
-consumers call devm_of_qcom_ice_put(). Then we'll finally drop our own refcount.
+Status summary for stable/linux-6.12.y
 
-But I get your concern that we are not freeing the ioremap.
+Dashboard:
+https://d.kernelci.org/c/stable/linux-6.12.y/ae591174b1f2e6b81ffe182fb621bba910bfb44e/
 
-> >  static void devm_of_qcom_ice_put(struct device *dev, void *res)
-> >  {
-> > -	qcom_ice_put(*(struct qcom_ice **)res);
-> > +	const struct qcom_ice *ice = *(struct qcom_ice **)res;
-> > +	struct platform_device *pdev = to_platform_device(ice->dev);
-> > +
-> > +	if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
-> > +		kref_put(&ice_handle->refcount, qcom_ice_put);
-> >  }
-> 
-> Above probably should use the ice local variable, not ice_handle.
-> 
+giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+branch: linux-6.12.y
+commit hash: ae591174b1f2e6b81ffe182fb621bba910bfb44e
+origin: maestro
+test start time: 2026-02-12 12:20:18.603000+00:00
 
-Ack.
+Builds:	   40 ✅    0 ❌    0 ⚠️
+Boots: 	   60 ✅    0 ❌    0 ⚠️
+Tests: 	 3849 ✅  443 ❌ 1281 ⚠️
 
-- Mani
+### POSSIBLE REGRESSIONS
+    
+Hardware: mt8183-kukui-jacuzzi-juniper-sku16
+  > Config: defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
+    - Architecture/compiler: arm64/gcc-14
+      - kernelci_wifi_basic
+      last run: https://d.kernelci.org/test/maestro:698dd189a1ae387ffbd0f516
+      history:  > ✅  > ❌  
+            
 
--- 
-மணிவண்ணன் சதாசிவம்
+
+### FIXED REGRESSIONS
+    
+Hardware: beaglebone-black
+  > Config: multi_v7_defconfig
+    - Architecture/compiler: arm/gcc-14
+      - ltp
+      last run: https://d.kernelci.org/test/maestro:698ddebea1ae387ffbd14982
+      history:  > ❌  > ❌  > ❌  > ✅  > ✅  
+            
+Hardware: mt8195-cherry-tomato-r2
+  > Config: defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
+    - Architecture/compiler: arm64/gcc-14
+      - kernelci_wifi_basic
+      last run: https://d.kernelci.org/test/maestro:698dd18da1ae387ffbd0f53b
+      history:  > ❌  > ✅  
+            
+Hardware: qcs6490-rb3gen2
+  > Config: defconfig+lab-setup+kselftest
+    - Architecture/compiler: arm64/gcc-14
+      - kselftest.proc.proc_read
+      last run: https://d.kernelci.org/test/maestro:698dd50aa1ae387ffbd10109
+      history:  > ❌  > ✅  
+            
+
+
+### UNSTABLE TESTS
+
+  No unstable tests observed.
+
+
+Sent every day if there were changes in the past 24 hours.
+Legend: ✅ PASS   ❌ FAIL  ⚠️ INCONCLUSIVE
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
