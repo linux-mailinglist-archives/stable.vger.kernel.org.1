@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-216055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKk+ELIIj2ltHQEAu9opvQ
-	(envelope-from <stable+bounces-216055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:19:14 +0100
+	id cIuTB70Ij2ltHQEAu9opvQ
+	(envelope-from <stable+bounces-216056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:19:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F08135AB9
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:19:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4031D135ACE
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:19:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 626083101723
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:15:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2FAB83043C2E
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6924357715;
-	Fri, 13 Feb 2026 11:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764F43EBF00;
+	Fri, 13 Feb 2026 11:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isdUWhDz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkhd7eeQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9E2225416
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 11:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A82D3570C1
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 11:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770981317; cv=none; b=Mqe77LPLv4GXpLkVAMdbtpxB4ZpkT6b5w2trw2ukkVhZ61RHAfZ8oxUTwx7ROh8KZhDO/GMV39r2C9JLXcxWKKoMMeQtd6b46qq61axEZn+N0ykKi96tOS3PLo7qrrOaG6HN4ZrPNnreEDFyjCUMbJuhNagOmNFUsH+bV3Hi2ic=
+	t=1770981321; cv=none; b=ODhBfiEMg2XhJ/ecnSXc/Rjs272+nUy6vWIr6x9IprK364VKuvJYY5+TbVXmwYgNj10XKPPH0ELPwZACuEz2L/4AfRq0A/Qrpdn6KJVgkjvZevV8Ie2SNFqxi+NMO0cvSsF9/+b8vhRkX8laODVAZjeUsU3TZG8UdTNSBAg0+38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770981317; c=relaxed/simple;
-	bh=oBJKh71fD0OmH0+b5bY+vxVlYL00xvefYdyWOoklWVU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q19ep+FWVMvTjGgaqOumiTwUw0h7084gBFchvXNhS507gRTb/3PZaAGjL2HAq8PtPsvsiVbgI/lZp8b4tadWA79th6QCR55RIe7p5cLN9WF2QsiqlMhaZ6MkpYi1P9KMkWLbZazMFlW8x+2YKigMoHUMkYpXS6g5Bfgy6cuASUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isdUWhDz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28E4C116C6;
-	Fri, 13 Feb 2026 11:15:16 +0000 (UTC)
+	s=arc-20240116; t=1770981321; c=relaxed/simple;
+	bh=k0C6f/FbMLPE8ML5lZFv6svUEhM+nQj1cxxXu1c40Ek=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XoJqUpeb2LtuLJyeXRyX0ggO1HFYYBjQhgkkw4ZoHObPUSonpB9hGV+yBVzj1SEL/Ur2aZmPYcRIUc9r5/TNt3ycBa+kkhQE4yRnwiMAAHamkFidmXluzq9kO6s/iz2zUjaIYiZbbM8HnhFa+WThfAeS5TX4SObEGMNfM+VxtfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkhd7eeQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61050C116C6;
+	Fri, 13 Feb 2026 11:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770981317;
-	bh=oBJKh71fD0OmH0+b5bY+vxVlYL00xvefYdyWOoklWVU=;
+	s=korg; t=1770981320;
+	bh=k0C6f/FbMLPE8ML5lZFv6svUEhM+nQj1cxxXu1c40Ek=;
 	h=Subject:To:Cc:From:Date:From;
-	b=isdUWhDzlsxtjTnoDUvDKZ5DWIR6CEwSZxIC1+fOLekYpiR90L9qxtw8Nk28b4X/k
-	 /8PQ07Q2Pp9BmPjxDzhfiNcykyplsljJhmqFGrC2tH6feJUDsNej2Lu/JWyfK3a4Na
-	 jL03wyK8/x6awYf4sjyAxCxoGehYLuuzU2AS3rxY=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Free sp in error path to fix system crash" failed to apply to 5.15-stable tree
+	b=xkhd7eeQ33XiJViVEckVZH10rO2T1dE2Oktr/c7qlbCupdcVnoTRK3r7BMXd+oYwi
+	 qcbSstmL5qSs6mwnT79+sBPakXCM8K6EJM5Xm0TZki/qSd4EDfDbH8fHIsZexqotbF
+	 eoPQRMynqVc1sxKRLonJx74nEBn/ybmlSazeTQD0=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Free sp in error path to fix system crash" failed to apply to 5.10-stable tree
 To: agurumurthy@marvell.com,hmadhani2024@gmail.com,martin.petersen@oracle.com,njavali@marvell.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 13 Feb 2026 12:15:06 +0100
-Message-ID: <2026021306-playful-overact-2bfb@gregkh>
+Date: Fri, 13 Feb 2026 12:15:07 +0100
+Message-ID: <2026021307-undivided-gazing-4aaa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,14 +60,14 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_TO(0.00)[marvell.com,gmail.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-216055-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216056-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -80,26 +80,26 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,msgid.link:url,gregkh:email,linuxfoundation.org:dkim,marvell.com:email]
-X-Rspamd-Queue-Id: A9F08135AB9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,gregkh:email,oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,marvell.com:email]
+X-Rspamd-Queue-Id: 4031D135ACE
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7adbd2b7809066c75f0433e5e2a8e114b429f30f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026021306-playful-overact-2bfb@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026021307-undivided-gazing-4aaa@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
