@@ -1,171 +1,270 @@
-Return-Path: <stable+bounces-216009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qB8uD5iEjmkyCwEAu9opvQ
-	(envelope-from <stable+bounces-216009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:55:36 +0100
+	id eHtPHIiGjmlfCwEAu9opvQ
+	(envelope-from <stable+bounces-216010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 03:03:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E462132556
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:55:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01AC0132586
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 03:03:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E994F3068169
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 01:55:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BB8193024903
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485222144D7;
-	Fri, 13 Feb 2026 01:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630241F4CA9;
+	Fri, 13 Feb 2026 02:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qtWDQ7DK"
 X-Original-To: stable@vger.kernel.org
-Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261281624C0
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 01:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.150.39.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770947733; cv=none; b=B50Hhv2YVnr3R4rqVJspaUDkATlNpxoSnzPglhNyh2jGL55wHFkiabN+nrL+ChvGwwn8tZ0QyFMceDhhduNBhOBz4K9AI/kCWzr+e85rpsk2VCU0jSIrmFLiFhs++9hJWFtlLSStM5kt7y+y4hQnknerCflOCp8nU8LS8awm2j0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770947733; c=relaxed/simple;
-	bh=jsdlg2Ynwh2r9K78xMh03EfD8NoasnFnvJCqCdLLk4A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V0WmYnmkqJtHRvpVLKOCdoICkiVM2U8O8UbLI5wzBnm/4FQK6xTxWrT7B9P+ftcyMtJKvoT+YvuV9J8L7jfH6YsI2V7ceKO/XvcceG7gYfTC9otgN/8ybBwN/Q6J+39YsHAIHt3UzZbUZ98gz6+gUJAT404Z4x4gQVvqtCcVt3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=129.150.39.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytium.com.cn
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwDHzZmGhI5pDBEYBw--.2511S2;
-	Fri, 13 Feb 2026 09:55:18 +0800 (CST)
-Received: from localhost.localdomain (unknown [218.76.62.144])
-	by mail (Coremail) with SMTP id AQAAfwC3Det8hI5p3QUbAA--.32458S3;
-	Fri, 13 Feb 2026 09:55:10 +0800 (CST)
-From: Cui Chao <cuichao1753@phytium.com.cn>
-To: cuichao1753@phytium.com.cn
-Cc: stable@vger.kernel.org,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Gregory Price <gourry@gourry.net>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH v4 1/1] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
-Date: Fri, 13 Feb 2026 09:55:06 +0800
-Message-Id: <20260213015506.2381118-2-cuichao1753@phytium.com.cn>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260213015506.2381118-1-cuichao1753@phytium.com.cn>
-References: <20260213015506.2381118-1-cuichao1753@phytium.com.cn>
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010005.outbound.protection.outlook.com [52.101.56.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE316EADC;
+	Fri, 13 Feb 2026 02:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770948227; cv=fail; b=ofPlu1hKwHrE+KNurhv6RerWvfUuOJwscP8HLZCgx0e3D7siiNpm9g6pUalOSwH4gR91a8NOICT8vNwJzXGhEiqBOvZVeY2LMlGr48SEZ30WKkxZd7MLIHMClD6iwEFWp/smE/0+zrFDhA0QncJV7Cc6KyPvQleVuxe68fxB6C0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770948227; c=relaxed/simple;
+	bh=xEmZ0jY5TReobdQN+zv7MU3QBhUrZCkp6977UAPFjuw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DH8a2Za6SVTPBYWfGi8qHxmvFfEII3Plw772b4h/oDr66lXNmXyllnFkD26N9OJ2cBCIXq98GJhGkxouNUJfsjBXMiWekw5o80tRs9jqpE4ex3PUkxFtnS1VCYV/i7ZTfzYJOHHTE+Eo6i4271Oj5y2SsIoj+A0GG5FZlqdkrgA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qtWDQ7DK; arc=fail smtp.client-ip=52.101.56.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EE65SVDjzIMV+j6wXVATk+2ITBOenVQliWj4jKn85MmXId7hyT4D3jX19q/IbdUV//01pCJzqleFiSz8x0RK0lkL2H8+YDTSqCCnOWn10mK3ID8D6PDl9zlU659ZeBV1dlxMlokvBQXQ2G5mluUqSM6/Ot6DyyUR97nZrBv6t6mGo+gBJyzXBjzZRLmNEQI76O6zPQK+Lj2wKQvOXuE220iRppPlm5h2KGq9Vz2TgkFK6+cI4Yi/wwPSZQzfep4Qiey3xIvp5+gKrN9CJsL5Rg9Rq82dqMesh0ftA+IDXNjFqaeDphO6AWsD2bSqGaAZJW5ribNqEAx1TURJY2I7tA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=diNM1hQe3YE+uNf38Hrmt5HY22mrL7spVK3/CCqW7K0=;
+ b=qoQBcPtQ+WHQyLtFpLIcEHKPSKJIGYoFsmRJ2nPfJdSpP7VDRIkVB6oboZMDwVu0b8NtrOmQhwD5/NtAL+R7Tva1i/OXcInoIC6oOInLTuhybgvVhb9OrKisQ81BP/2TJfTdBXUD6vmbqPt6UVV/c/Vgmpej7sPs1qBRJl6FuR6EEkow38SsrPRyZZ5mEUd0slX7W5fIKFWyeWvSrYjaXcDxWupxF46ivg+MeRwPJNI3zgI0tl5Rzs5s1SiYbL3M1RVmHPjCBd2pscAt4AZqJfhyNzuFsMXX1WjgckPev0w+Khros6lRC7kjMfEoVdjnsi2TV1NaB/BfxehoUMC+uQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=diNM1hQe3YE+uNf38Hrmt5HY22mrL7spVK3/CCqW7K0=;
+ b=qtWDQ7DKMWxLYR1mtsRpmay47/W+T+epYkZ5/1Yn8GMWJkqkMDYqFhMPg2PbngysmQ2X+3jlvLXJwb58g5WWeXGAySwWp+Dobe7acQ2ze4DFYZgMuX5r1q/H9qKuN87Az1ClhagEnat08+SfvysoFgxVE2sNJSvZlKo1+vy6UBsD/twLbuQf7rwXnV6CXh/XW6/w4ZaTBuuXMtPx6cdKSgGzxX628G+xYrFy1KohmsXA+036VEsqVgkfNvJSwLf5YEF6LufUtIQugmJBfRZEgnx/bKS916QR2tJwak4BLWfLpP/1vTgsvRrNTwf/vDCZoHJFkafsC/GpQ1vZonGKBw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SJ2PR12MB9161.namprd12.prod.outlook.com (2603:10b6:a03:566::20)
+ by CY5PR12MB6622.namprd12.prod.outlook.com (2603:10b6:930:42::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.13; Fri, 13 Feb
+ 2026 02:03:41 +0000
+Received: from SJ2PR12MB9161.namprd12.prod.outlook.com
+ ([fe80::d9d1:8c49:a703:b017]) by SJ2PR12MB9161.namprd12.prod.outlook.com
+ ([fe80::d9d1:8c49:a703:b017%4]) with mapi id 15.20.9611.008; Fri, 13 Feb 2026
+ 02:03:41 +0000
+From: Mikko Perttunen <mperttunen@nvidia.com>
+To: Thierry Reding <thierry.reding@gmail.com>,
+ Alper Ak <alperyasinak1@gmail.com>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Alper Ak <alperyasinak1@gmail.com>
+Subject:
+ Re: [PATCH] gpu: host1x: Fix passing zero to ERR_PTR in host1x_iommu_attach()
+Date: Fri, 13 Feb 2026 11:03:30 +0900
+Message-ID: <11263677.nUPlyArG6x@senjougahara>
+In-Reply-To: <20260209131426.37611-1-alperyasinak1@gmail.com>
+References: <20260209131426.37611-1-alperyasinak1@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-ClientProxiedBy: TY4P286CA0009.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:26d::17) To SJ2PR12MB9161.namprd12.prod.outlook.com
+ (2603:10b6:a03:566::20)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwC3Det8hI5p3QUbAA--.32458S3
-X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQAFAGmONAkAtAABsr
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=cuichao175
-	3@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxCr4rGryDtrWxuFyDAw43ZFb_yoW5CFW5pa
-	1agFZYgF4kJryxGFs7u3WUAw1IqFnYkF45GFZrCwnxZa1Ygw1Uuryavr1FvFn7tryfCF1r
-	XF4qy3WYvw1UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB9161:EE_|CY5PR12MB6622:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f121fb4-21af-4130-58bf-08de6aa41c3c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|10070799003|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YmVzNmtXcWpYa0JjL000UGd5b0Z1V1ZqV3E1MjEvSmJXWGEyUjVJa0RucGJa?=
+ =?utf-8?B?YjFzRHJRYU4rQ3VlaVNHVGM1ekJoRS9pOE1QWUtOdDlWR1diWEtUcXdXUjBU?=
+ =?utf-8?B?eWV4SHZkS09TZExnMVZCSWZ6NzhuN3IyWkNuallGUkUrZFpwVE5pd3lyQ0t2?=
+ =?utf-8?B?QS9CTUZMaU01VldwUCthVjE0TkRWT3pGc1NtODU1YS82V0l1MzEvcVFrZ2Yw?=
+ =?utf-8?B?UDFrMDZjdyt2c0FGOWxwVTVML3BxQ2w5Zmc5S0NJYzBsMEpJQTI2TzJtdy81?=
+ =?utf-8?B?ZjZBRkpBUXBWSERVbUZNZnBPUlBNc1VaWFFuRnpLZ2hUMjBVOE5yQVpYUk1o?=
+ =?utf-8?B?aHNHQmc0UlFwdkZZV0hRM0RtMmZzRmtHZjhWdG9kNkh6akVlejBPeExwbjlX?=
+ =?utf-8?B?Vi9PSUgwb0JzK3hhUm1EYzBtRE5sY2tIOEswaXhqVlc5TTdOOHF0Sk5Yd2xM?=
+ =?utf-8?B?WU9zVVlNY0N1Uko3dDNZOTBXcUdnOHNSbzlTeUNvbm9YM1JmUW9ON2hzYUJX?=
+ =?utf-8?B?VGM1S1djUTlIMFA1R3ROSkkrcjdROHNzMEJtZmdXM3NxUkFCRGloaW9mb2s2?=
+ =?utf-8?B?Q0dmQWdGM29kdktnaFJPdmVKRm1HR1IxZFRpdlZzV05LR3hYbHlRelhDSHRr?=
+ =?utf-8?B?TldkY1NuNEZ3dXA3QlgzUk1JQkJuK25LUlNVZjQyZEl0SGZsMWlMOC85RWJu?=
+ =?utf-8?B?emEvVTZzTTVha0RoV1pHaE5ka0MzM21aRzBYaXVSZ2o5MHpKT3VLVVFIRTZS?=
+ =?utf-8?B?UjNCbTQxRUNOVnRTdjdrSUdzYWtsdVk2VWRucUU2SGdXRFJuMVh3ZVVFN1J3?=
+ =?utf-8?B?aHhMNHdHUWxINHh5cDhuYkpocnhJZG5Jaktuckw4TjlKa1pLU1ZmY29reFJr?=
+ =?utf-8?B?b0JOOENORG1DdlRaRjhKMGRrNEtRL3htWURPVnptUGE3RnlkaW1NS0s0L2NU?=
+ =?utf-8?B?UzJVNTNsU1NRdGluQ2Y4WjZKUkM3Rkt5aE9KUFdvK3lYSTlQdXlkd1lkT3hy?=
+ =?utf-8?B?VW4wd0szNmRzOXMzVVVDNkw4NFFsSDRvUHJsN3l2RGo2MmVsbDJ0OVZhdmtj?=
+ =?utf-8?B?TzdvRU1WcFViTDRyWldUUlByNlVURFZKdVZMOFJIMFpLSm1ENXdRSERrRWh1?=
+ =?utf-8?B?UmFCNWtINCthRmNDVHFtNlNKQUhoZDZQSnJUMXFnTHhEdWV2TmZZUTMxZThp?=
+ =?utf-8?B?MGY3Ny9ERXJld1NZK292ZzJSSG44Ky90L0hpdW9xLy9BK0NCK0NrYjZudFUy?=
+ =?utf-8?B?a1NDalFReHg3UG83ZG1MZHpzSGc5YVRaK1pzNVpnMkxEck9CcGdVQmhyVlFJ?=
+ =?utf-8?B?dUlQbW5aVW51MlNnTUhyV3VucmhtQWxPTHEvb0M2ZXNSUkYzcEpBZ016ZjJE?=
+ =?utf-8?B?RlpZWlFvSUlUejdVaFprRSszWVd4U2xnRGxNVTFTdTBaZHJKdm1QYjFPSjVy?=
+ =?utf-8?B?cVNtNWV5b2NUK3l1QVdrN1NwaWhWMVlGS1FUVTlFOFFxV1hGWk1vQWtUSDlw?=
+ =?utf-8?B?MHFPT2NXcGxUbXY0cHFtUC90THpsMXo4a2gzT0NPcTlyWDFsOE45eEQ4Z09I?=
+ =?utf-8?B?Z2VKWGRlZ0YzZFBWWjNZTnRVdFZTanltdlEvZEt0YnYrR09nQ21ZSHNwYVd1?=
+ =?utf-8?B?YklIWVRmS1Mzd2dSWGVRYWlvb2d1R25VYzZzSkNYb3BNYXFza1QzblJGbG8v?=
+ =?utf-8?B?b1o4RlVGcTFpNXh0YUFhWXozbEZuZTBVRnpBMDlhWFYwY3YrbUtkN0t5U3Nt?=
+ =?utf-8?B?TkdzL1JZWU51Z0g1cTdhKzBFN0lmZEtBR2U2YlAvdzZEZURnSC9ZeXF3SzZY?=
+ =?utf-8?B?dERnV0V3VU5FUjJLQjQvQ1VOZlF3dFdXZlhFU0tpbmw1ZUxCQWUwWG9GZkt0?=
+ =?utf-8?B?RTJLSlNDellGaWpFeXBNeEd0VWtnUTJKNVZvTHFObEVOSWFDOGgxeVd3OGZO?=
+ =?utf-8?B?TFdMd2FpSXY0aWJIdWprb002aW5uQXNVdTNkSlJVeVBOQ1VVcmJLOXNWMGR0?=
+ =?utf-8?B?Tmdxeld0bk9xV3NQSUcxQjRDMWlkTndsMis4Y1ZpeGROcHB6NENYWmFZaW5L?=
+ =?utf-8?B?d09abzdCWVNzYW5WTm5MNEtiY2lIYktSSG9ibnQvSytCSXJSWnpCN2FTUzNw?=
+ =?utf-8?Q?sK6o=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB9161.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OVVORk9Ubzl6K2dOUGZrYndMWHErdFFXdUJoR3o0YUpQSWdpRDAyaDcvVXNl?=
+ =?utf-8?B?ODlRMlIxRFRzSHpYQVlrVTVsbGFOeGdoT2dncU1Da0x4WXd1ZFdHREJHVmNQ?=
+ =?utf-8?B?ZExNaHZrWDZBVDNEWkJtMm0rZnFpb2QySkMzUUJLUmlad2VSVlk4eVRTSnVO?=
+ =?utf-8?B?VFNxVStOQnNpRWc2TjRGSGxmMkp4UlRMeVdrZS9sYWVyaTFKVjJSWVFzRlNp?=
+ =?utf-8?B?SkxYMWFva1ZUYlVkSHEyakRkSHJKS3lvUURIS2Zaejg1VDVMZXJoeDJ0ZlJ2?=
+ =?utf-8?B?RTJCUVI1aFZTczN5Um9Ta2Z6RWE1a2ljMHlLeS9uOERIN2Z0SVV6Q1VhcVV5?=
+ =?utf-8?B?bFBsMllSdXFpU3M5R01oSUZYa0ZIOE5ZSjNuc0FhWllzbXFTd1pJSmhsdVpT?=
+ =?utf-8?B?MWVNY1BYclFQK3ExcDRsZnBiZlVOblhNQ3VhZm93TGRDVm43bTBIR0dPTTQx?=
+ =?utf-8?B?UkwxNnpYNmVqNXJERWh1NDUybTJBR2ttZGxIM3FmTVBqMUFvbUE2TzVyNnEy?=
+ =?utf-8?B?YUhPQXFzY1RYRTJwUjE2NEhnb3N3SlRuV0VGcEN4Ky9EQVAyOFVScDRITVRK?=
+ =?utf-8?B?NFg5UVVKZ0taeVhkSy9YMkN1cHVpWGxvLzc5QzVEcC9PZzFFUDZoSFRlSkN2?=
+ =?utf-8?B?c3dwWjFhOUZNcnVUWEp3Wlp3VW1lNWpqZmozdU02NzBTYTNCZmRIb2JRWkpB?=
+ =?utf-8?B?ZmpMc1U0MnZiNCtvZ0VER3UwNGtzMENTSjRVTlQ3aG1QTWVpRkQxSnRWYVBC?=
+ =?utf-8?B?YXpPdUFiZXZWT3VFbXU0bEpsM29WUnpJak9qYk1wR0VJbTJsM1M3VFZOdllx?=
+ =?utf-8?B?Yk41YXZGa21rWXJ2dHhOTW96bXJjTTBhcC8zRW9mNDErVFcweURWOFdOQS94?=
+ =?utf-8?B?MWxTM1NUWlFLL3NIMGtYZHliK2d3dllUNXR4dWdUV1AyYTlHcVViTG5BWTY4?=
+ =?utf-8?B?d1NsM3k5Ym5jQ1ViZFlxSXVlVnAxeUlJWG1KZ212VExXcVpyWjlIVzlrdmla?=
+ =?utf-8?B?ZjNYNlZKZnJsTzN1a3I4S3IrSkpaa0F2S090M3BwQUpTMnpsRVRJQ3QzVTNa?=
+ =?utf-8?B?Z2tteVVnQktwNnJXQkZkM05ydGczb2VrK3dXcjM5UjQvZUxXejdXOUlrRDhk?=
+ =?utf-8?B?bWl6d2FZVHVyTlBldTlGQjNMcUlPZjhOK3ZNdUEranlBK1FEZE9PWkdJbG5x?=
+ =?utf-8?B?Z1MvZldxdnkrOWZiSFQvVEl3cWY0UlhJeWw1YmM2UnNEWENhcmt0TVp0ZzBj?=
+ =?utf-8?B?ejljazZ6cEM0NEpQZzVMa21DT3Fic0tiZXRYbXZBSys4Ky9kemJaVklCcmpI?=
+ =?utf-8?B?VEl3Szh2azlsQzRyOGZTUlBRcnovY0dyWFBmYTBQck0xclJQMmtyWm53ZHZI?=
+ =?utf-8?B?VFVXek5FSVNGbjYzMUZoMEJ3RnVGMy9pWUJZOW44TlVxd3NIOWZBVGFQRVhF?=
+ =?utf-8?B?TFN5TzRzWXNTRXcwZ3BJZDdnU2RJMFZQbysrTDFQcGtPM3RQTDljZW5UTUc5?=
+ =?utf-8?B?S1Q0YlQxOFZEb0c0UEZmd0RNMmlkNEVpNGhuYVc3OHQ4VWY3ZHM2Q0Z0b3pL?=
+ =?utf-8?B?Q2lZUC9BOHI4K3NGSm5RNXd4U1preVdJckl3RDFCdVdpbDhwdzl4QWg4WG1U?=
+ =?utf-8?B?K2JpZXo3emtTbkRMRk1JRm9VL2RlWGg3ajJ6SEhRWWh4dDUzLzRYbVM2VlE5?=
+ =?utf-8?B?bGtJNG96YVBjZXRrWWhPVjZteTVpZmloaW9Sd2xjbmVlT0tBK0ZPY2grcDAr?=
+ =?utf-8?B?YXZ3bnlYdjJobitQMGRLVmswNEgrbk45RkRzcC84d3dobUZxcW8rZ0xTMDRC?=
+ =?utf-8?B?SmpFblNza2EwWFdFSlRMMkJiaDFyci9oWE1sSTcrK0thR2lLczVCeWQ2cGN1?=
+ =?utf-8?B?WDZFM3dOZjdSM2ZjZ0szK1Fld1Y0TUxjTk5JemhTby9GOG84UVgxSXlVTXRO?=
+ =?utf-8?B?bHdNYnBnMUhaYzFwRjBWbHV4ZENEMVU4OTBCc1l1S2lQamtiK0t4N21tWDQ3?=
+ =?utf-8?B?MG9MdThVY0cwcDhjNTU3VVBhUitxdHNYcVI2UFJ2eDFkMGpFaFBxc3VZTUZ4?=
+ =?utf-8?B?a2h5aUpFbWpFc0paQUVVcGJQekhkZW4yYVY0VDNIcW4xRmpqUXJ1THk0UlNZ?=
+ =?utf-8?B?ekNxeVJwbmNjRHYwNVk4WWJaRkozbnBBWTh0SXVJZWxaUXFiVE5oaDlCc1dV?=
+ =?utf-8?B?cDc4VmFmc01MRFQ5VE1YUy9jazdwWUVEaDVDZ2plckxrYkxoWFdJZ1RMaUxG?=
+ =?utf-8?B?ejE4UkJmWEFCZXc4VCtPbVVCWFVHMXdBWkViRThQbEtXWUZZckUwcGgrSWFr?=
+ =?utf-8?B?RWlFOVZMMCtncmNnMHpKa2txcEJjb3pBNGNLUy96ZHBzTUxjRURWbWExRTYy?=
+ =?utf-8?Q?GuMbdDyeQ6nCwuXTJDgQuHTaPtQ5sdPBUw5pkI6AUOUVN?=
+X-MS-Exchange-AntiSpam-MessageData-1: BVSzl7+93TPE/A==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f121fb4-21af-4130-58bf-08de6aa41c3c
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB9161.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2026 02:03:41.6122
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sVu5fhRow9m5L1rkGU5talGmmS/L9SiWHgRZWQxZdywOHIPT3m9v57qvYHLN/Vcja2Gr9887ek7XNy08+wwvjQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6622
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [1.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cuichao1753@phytium.com.cn,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	DMARC_NA(0.00)[phytium.com.cn];
-	TAGGED_FROM(0.00)[bounces-216009-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216010-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,phytium.com.cn:mid,phytium.com.cn:email,gourry.net:email,huawei.com:email]
-X-Rspamd-Queue-Id: 5E462132556
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mperttunen@nvidia.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim]
+X-Rspamd-Queue-Id: 01AC0132586
 X-Rspamd-Action: no action
 
-In some physical memory layout designs, the address space of CFMW (CXL
-Fixed Memory Window) resides between multiple segments of system memory
-belonging to the same NUMA node. In numa_cleanup_meminfo, these multiple
-segments of system memory are merged into a larger numa_memblk. When
-identifying which NUMA node the CFMW belongs to, it may be incorrectly
-assigned to the NUMA node of the merged system memory.
+On Monday, February 9, 2026 10:14=E2=80=AFPM Alper Ak wrote:
+> When iommu_attach_group() returns -ENODEV, the code sets err to 0 but
+> still falls through to the error path, returning ERR_PTR(0).
+>=20
+> Returning ERR_PTR(0) evaluates to NULL and breaks the ERR_PTR/IS_ERR
+> contract, causing the error to be silently ignored and potentially
+> leading to NULL pointer dereferences by callers.
+>=20
+> Fix this by returning NULL when err is zero, and ERR_PTR(err) only
+> for actual error codes.
 
-When a CXL RAM region is created in userspace, the memory capacity of
-the newly created region is not added to the CFMW-dedicated NUMA node.
-Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
-containing RAM). This makes it impossible to clearly distinguish
-between the two types of memory, which may affect memory-tiering
-applications.
+This commit message doesn't make sense. First you say that the function has=
+ a bug because ERR_PTR(0) evaluates to NULL and can cause problems when cal=
+lers don't handle NULL. Then you fix that by returning NULL explicitly.
 
-Example memory layout:
+While returning NULL through ERR_PTR(0) may not be very beautiful, this fun=
+ction is defined to return NULL in certain cases and so the behavior is cor=
+rect.
 
-Physical address space:
-    0x00000000 - 0x1FFFFFFF  System RAM (node0)
-    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
-    0x40000000 - 0x5FFFFFFF  System RAM (node0)
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+Mikko
 
-After numa_cleanup_meminfo, the two node0 segments are merged into one:
-    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+>=20
+> This issue was reported by the Smatch static analyzer.
+>=20
+> Fixes: 06867a362de0 ("gpu: host1x: Set DMA mask based on IOMMU setup")
+> Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+> ---
+>  drivers/gpu/host1x/dev.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/host1x/dev.c b/drivers/gpu/host1x/dev.c
+> index 3f475f0e6545..46a570b861ac 100644
+> --- a/drivers/gpu/host1x/dev.c
+> +++ b/drivers/gpu/host1x/dev.c
+> @@ -450,7 +450,7 @@ static struct iommu_domain *host1x_iommu_attach(struc=
+t host1x *host)
+>  	iommu_group_put(host->group);
+>  	host->group =3D NULL;
+> =20
+> -	return ERR_PTR(err);
+> +	return err ? ERR_PTR(err) : NULL;
+>  }
+> =20
+>  static int host1x_iommu_init(struct host1x *host)
+> --=20
+> 2.43.0
+>=20
+>=20
 
-So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
 
-To address this scenario, accurately identifying the correct NUMA node
-can be achieved by checking whether the region belongs to both
-numa_meminfo and numa_reserved_meminfo.
 
-While this issue is only observed in a QEMU configuration, and no known
-end users are impacted by this problem, it is likely that some firmware
-implementation is leaving memory map holes in a CXL Fixed Memory Window.
-CXL hotplug depends on mapping free window capacity, and it seems to be
-only a coincidence to have not hit this problem yet.
-
-Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
-Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
----
- mm/numa_memblks.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index 5b009a9cd8b4..0892d532908c 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -568,15 +568,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
- int phys_to_target_node(u64 start)
- {
- 	int nid = meminfo_to_nid(&numa_meminfo, start);
-+	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
- 
- 	/*
--	 * Prefer online nodes, but if reserved memory might be
--	 * hot-added continue the search with reserved ranges.
-+	 * Prefer online nodes unless the address is also described
-+	 * by reserved ranges, in which case use the reserved nid.
- 	 */
--	if (nid != NUMA_NO_NODE)
-+	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
- 		return nid;
- 
--	return meminfo_to_nid(&numa_reserved_meminfo, start);
-+	return reserved_nid;
- }
- EXPORT_SYMBOL_GPL(phys_to_target_node);
- 
--- 
-2.33.0
 
 
