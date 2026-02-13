@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-216134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHCuM7csj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:52:55 +0100
+	id YP0POE4sj2kPKwEAu9opvQ
+	(envelope-from <stable+bounces-216109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0B31369E3
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:52:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84CCD13689E
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D4753304274E
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:52:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99B013027D9C
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D7535F8A4;
-	Fri, 13 Feb 2026 13:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03E83563C3;
+	Fri, 13 Feb 2026 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdhpLiIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4jCA2jI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FD754723;
-	Fri, 13 Feb 2026 13:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B5B34CFC3;
+	Fri, 13 Feb 2026 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990747; cv=none; b=NAsDiMflSqbT3/mhxjodUAUGO0KLmnHkiXQPBTuKvftHIoUg/kyc78LcCwdmm4XCEogbDy+wq8oeFqsWvohxqxMjwKFnzvY/AMRTfmiPuo3Z1J70RRx3gCGvtGp8/cH0Hk0ZVyoDm3NTjahwmheNQjEOFxhsN0uqBkZVRgD/nHs=
+	t=1770990664; cv=none; b=gqJWkVNHrffVmLd8mVzb4QNe20oWigqwvzRAvIYiyO0IA2mH8JMzn2rQHLbuPbGmv4Ng+rYfiVcPH7B8CAF3eCqGC/qVgMp8yraRiL4z5j/TcvoBsCqZu2e3MspepQnqTpwSsKNZ7HXu+9ByKC60coppiRxRM/ptRatO84kE/LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990747; c=relaxed/simple;
-	bh=7H+GJ/DGbCEawWuqZpq1599EvkhT5PXK0P0SoSuNM5o=;
+	s=arc-20240116; t=1770990664; c=relaxed/simple;
+	bh=aSFzd1IxUxvLwxA9Peyw0zz/dDUIU4JtukrtYJLMZnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=szJia4JRjgk/6xdmQZlSWoDHOGuLaig06DJKhSIn4XrHtnWnSN6ioR5+hcV2bmhyg9kYQRtJVXE1wb0L3FYYNFB9nC0+kHPoAKYm1Af7qlu8sQH3y6h3KqaGIqIuWFLWamCOWWo9z6FuQBCmxIta9/ZuM6QyGOMD6V9QOIeEDnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdhpLiIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FA6C116C6;
-	Fri, 13 Feb 2026 13:52:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jo2qJOyW+iqw+4qsJvQ+bKsAJqagmeg/A74m4blOEDqnlfATIaRNOvVpRsiVKWb4fZgskGO5w2SuC6o/DBuh818iWmBIBNve+3Tum4QekRsANUbF4Rs9VIhduxSzUsozbuq3N1MSmxa8OOqVgKfBBW59KUXzOCxPSJiHdwS0r+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4jCA2jI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359F1C116C6;
+	Fri, 13 Feb 2026 13:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990747;
-	bh=7H+GJ/DGbCEawWuqZpq1599EvkhT5PXK0P0SoSuNM5o=;
+	s=korg; t=1770990664;
+	bh=aSFzd1IxUxvLwxA9Peyw0zz/dDUIU4JtukrtYJLMZnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cdhpLiIWHF2r7prif2LjFX3K0iR8BaQvmFylBczhJdR/rg0CsUiq3pkLE6d9jGcCm
-	 7wyGEt0U4uLBRFgqy6nsJrNoGnvl6ff1H8v0AE9mG22w6y9iQRqnzFyhTqkfDNe61A
-	 9r2+XX/puq7iQcTUFkKG1599ACDpLEY8xNHHxsKQ=
+	b=y4jCA2jIfvPcv3MoQd0SaIJ832cCVv6xxutwe7XYbDuZ7RHFcZb7O+J7OfFLd/cqx
+	 QRLOnjbDzzp+bN0yBfCYpgn/MDlktbHBT4YPr3XFdZxj+dTPSmod72cmypGaef48YI
+	 n3qib7QBocVhu/GDHq1AWoXxrEv4ZT1C+Iv0fQ5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 13/49] smb: server: let send_done handle a completion without IB_SEND_SIGNALED
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.19 38/49] scsi: qla2xxx: Validate sp before freeing associated memory
 Date: Fri, 13 Feb 2026 14:47:57 +0100
-Message-ID: <20260213134709.373513166@linuxfoundation.org>
+Message-ID: <20260213134710.116338961@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
-References: <20260213134708.885500854@linuxfoundation.org>
+In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
+References: <20260213134708.713126210@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +64,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216134-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,talpey.com,vger.kernel.org,lists.samba.org,samba.org,microsoft.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216109-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samba.org:email,talpey.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 6B0B31369E3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,oracle.com:email,marvell.com:email]
+X-Rspamd-Queue-Id: 84CCD13689E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-commit 9da82dc73cb03e85d716a2609364572367a5ff47 upstream.
+commit b6df15aec8c3441357d4da0eaf4339eb20f5999f upstream.
 
-With smbdirect_send_batch processing we likely have requests without
-IB_SEND_SIGNALED, which will be destroyed in the final request
-that has IB_SEND_SIGNALED set.
+System crash with the following signature
+[154563.214890] nvme nvme2: NVME-FC{1}: controller connect complete
+[154564.169363] qla2xxx [0000:b0:00.1]-3002:2: nvme: Sched: Set ZIO exchange threshold to 3.
+[154564.169405] qla2xxx [0000:b0:00.1]-ffffff:2: SET ZIO Activity exchange threshold to 5.
+[154565.539974] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 0080 0000.
+[154565.545744] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 00a0 0000.
+[154565.545857] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
+[154565.552760] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
+[154565.553079] BUG: kernel NULL pointer dereference, address: 00000000000000f8
+[154565.553080] #PF: supervisor read access in kernel mode
+[154565.553082] #PF: error_code(0x0000) - not-present page
+[154565.553084] PGD 80000010488ab067 P4D 80000010488ab067 PUD 104978a067 PMD 0
+[154565.553089] Oops: 0000 1 PREEMPT SMP PTI
+[154565.553092] CPU: 10 PID: 858 Comm: qla2xxx_2_dpc Kdump: loaded Tainted: G           OE     -------  ---  5.14.0-503.11.1.el9_5.x86_64 #1
+[154565.553096] Hardware name: HPE Synergy 660 Gen10/Synergy 660 Gen10 Compute Module, BIOS I43 09/30/2024
+[154565.553097] RIP: 0010:qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
+[154565.553141] Code: 00 00 e8 58 a3 ec d4 49 89 e9 ba 12 20 00 00 4c 89 e6 49 c7 c0 00 ee a8 c0 48 c7 c1 66 c0 a9 c0 bf 00 80 00 10 e8 15 69 00 00 <4c> 8b 8d f8 00 00 00 4d 85 c9 74 35 49 8b 84 24 00 19 00 00 48 8b
+[154565.553143] RSP: 0018:ffffb4dbc8aebdd0 EFLAGS: 00010286
+[154565.553145] RAX: 0000000000000000 RBX: ffff8ec2cf0908d0 RCX: 0000000000000002
+[154565.553147] RDX: 0000000000000000 RSI: ffffffffc0a9c896 RDI: ffffb4dbc8aebd47
+[154565.553148] RBP: 0000000000000000 R08: ffffb4dbc8aebd45 R09: 0000000000ffff0a
+[154565.553150] R10: 0000000000000000 R11: 000000000000000f R12: ffff8ec2cf0908d0
+[154565.553151] R13: ffff8ec2cf090900 R14: 0000000000000102 R15: ffff8ec2cf084000
+[154565.553152] FS:  0000000000000000(0000) GS:ffff8ed27f800000(0000) knlGS:0000000000000000
+[154565.553154] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[154565.553155] CR2: 00000000000000f8 CR3: 000000113ae0a005 CR4: 00000000007706f0
+[154565.553157] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[154565.553158] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[154565.553159] PKRU: 55555554
+[154565.553160] Call Trace:
+[154565.553162]  <TASK>
+[154565.553165]  ? show_trace_log_lvl+0x1c4/0x2df
+[154565.553172]  ? show_trace_log_lvl+0x1c4/0x2df
+[154565.553177]  ? qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
+[154565.553215]  ? __die_body.cold+0x8/0xd
+[154565.553218]  ? page_fault_oops+0x134/0x170
+[154565.553223]  ? snprintf+0x49/0x70
+[154565.553229]  ? exc_page_fault+0x62/0x150
+[154565.553238]  ? asm_exc_page_fault+0x22/0x30
 
-If the connection is broken all requests are signaled
-even without explicit IB_SEND_SIGNALED.
+Check for sp being non NULL before freeing any associated memory
 
-Cc: <stable@vger.kernel.org> # 6.18.x
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-10-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_rdma.c |   26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/scsi/qla2xxx/qla_gs.c |   34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -957,6 +957,31 @@ static void send_done(struct ib_cq *cq,
- 		    ib_wc_status_msg(wc->status), wc->status,
- 		    wc->opcode);
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -3701,23 +3701,25 @@ int qla_fab_async_scan(scsi_qla_host_t *
+ 	return rval;
  
-+	if (unlikely(!(sendmsg->wr.send_flags & IB_SEND_SIGNALED))) {
-+		/*
-+		 * This happens when smbdirect_send_io is a sibling
-+		 * before the final message, it is signaled on
-+		 * error anyway, so we need to skip
-+		 * smbdirect_connection_free_send_io here,
-+		 * otherwise is will destroy the memory
-+		 * of the siblings too, which will cause
-+		 * use after free problems for the others
-+		 * triggered from ib_drain_qp().
-+		 */
-+		if (wc->status != IB_WC_SUCCESS)
-+			goto skip_free;
-+
-+		/*
-+		 * This should not happen!
-+		 * But we better just close the
-+		 * connection...
-+		 */
-+		pr_err("unexpected send completion wc->status=%s (%d) wc->opcode=%d\n",
-+		       ib_wc_status_msg(wc->status), wc->status, wc->opcode);
-+		smb_direct_disconnect_rdma_connection(sc);
-+		return;
+ done_free_sp:
+-	if (sp->u.iocb_cmd.u.ctarg.req) {
+-		dma_free_coherent(&vha->hw->pdev->dev,
+-		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
+-		    sp->u.iocb_cmd.u.ctarg.req,
+-		    sp->u.iocb_cmd.u.ctarg.req_dma);
+-		sp->u.iocb_cmd.u.ctarg.req = NULL;
+-	}
+-	if (sp->u.iocb_cmd.u.ctarg.rsp) {
+-		dma_free_coherent(&vha->hw->pdev->dev,
+-		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
+-		    sp->u.iocb_cmd.u.ctarg.rsp,
+-		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
+-		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
+-	}
++	if (sp) {
++		if (sp->u.iocb_cmd.u.ctarg.req) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.req,
++			    sp->u.iocb_cmd.u.ctarg.req_dma);
++			sp->u.iocb_cmd.u.ctarg.req = NULL;
++		}
++		if (sp->u.iocb_cmd.u.ctarg.rsp) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.rsp,
++			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
++			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
++		}
+ 
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
++		/* ref: INIT */
++		kref_put(&sp->cmd_kref, qla2x00_sp_release);
 +	}
-+
- 	/*
- 	 * Free possible siblings and then the main send_io
- 	 */
-@@ -970,6 +995,7 @@ static void send_done(struct ib_cq *cq,
- 	lcredits += 1;
  
- 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
-+skip_free:
- 		pr_err("Send error. status='%s (%d)', opcode=%d\n",
- 		       ib_wc_status_msg(wc->status), wc->status,
- 		       wc->opcode);
+ 	spin_lock_irqsave(&vha->work_lock, flags);
+ 	vha->scan.scan_flags &= ~SF_SCANNING;
 
 
 
