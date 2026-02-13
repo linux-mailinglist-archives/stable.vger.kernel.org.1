@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-216206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CY0Cjkuj2nTLgEAu9opvQ
-	(envelope-from <stable+bounces-216206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:59:21 +0100
+	id sGDsFj8tj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8184136D26
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:59:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFB1136B7D
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2C3230D0E0E
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EA9293008D34
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F97135FF49;
-	Fri, 13 Feb 2026 13:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E27F35FF62;
+	Fri, 13 Feb 2026 13:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0BuDyR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN4M5Rxh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D768F1684BE;
-	Fri, 13 Feb 2026 13:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D567E23D2AB;
+	Fri, 13 Feb 2026 13:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990991; cv=none; b=tr6jXfAGlNwn3s1qcsakAuEnGLRsvD4M8TKnKMpPyCbGu/3oHsFQ8RaM77paheu3h9gvKkopwjgoIylZiYpzwbN+tmqpUshlF2L1j6RMvMwp2/THzmDUjfsUb9mqgAl03QRj5Mj5tEPqvZCUi5CfqKIAqDnUaa3ucKiwcdYjTag=
+	t=1770990905; cv=none; b=lNu43D8FSnwJQ+AP8sib3A+3FjT5Has3bqPdu1VS+ZsWotWraqZeBN99YXYb/UindD9Za4rfHphrwKEnW3IuegobELrP+Ee6MWjyRFmz0uT1jepB0oN9JXvR45g37GhBxkGe1bXygbMj6VVeaBipBrZWZYQC1z8Lq8GGsb9MvQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990991; c=relaxed/simple;
-	bh=eBkSII84j0IXvt+e1Ak5UMkdGLjj4aZFC5UMl0Ti/xA=;
+	s=arc-20240116; t=1770990905; c=relaxed/simple;
+	bh=2HJgN1zSHNzz1egj2iVZH0bXN3BhuaSwyzqj0Fuh13w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPYW4hRqG2UpXVMFxE9fJSGAZxGGvEw07DSvOVP7UP33/HfViacKShQWdFVEi6qoUd3IpUGL9Q8nyo25OsuVyF6vlXvIlV/ndPoBZ2UWmKZoaQUBDz+TLdmi69de2YSpQLJl1B+i27Fm18s+lLuG3FHEIRHnFCmorOoMz4TP01A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0BuDyR1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2DAC116C6;
-	Fri, 13 Feb 2026 13:56:31 +0000 (UTC)
+	 MIME-Version; b=aZbMuvxa9xe35rZmnkxtADsVP7ygnHOH34zzHJw5QlWHY778Tx0eCK1HiaKpMACw5Sq4bfTE9G0seggRZg5djNQtHScVCibD07G330Du3seByGdF0yCL9c7ApHqGJbppy7Ag6AGlaMrDndL1sdja5vwP+HPfpD9I70texOF+F24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN4M5Rxh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE44C116C6;
+	Fri, 13 Feb 2026 13:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990991;
-	bh=eBkSII84j0IXvt+e1Ak5UMkdGLjj4aZFC5UMl0Ti/xA=;
+	s=korg; t=1770990905;
+	bh=2HJgN1zSHNzz1egj2iVZH0bXN3BhuaSwyzqj0Fuh13w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0BuDyR1AygAi6BeVxiKM7rIw4ZwmxPKG8gaY1wCrqpgIJ3I/nIytF2kBMw/XTvnV
-	 1uFfQ775CuHk5Dkt7rM3VtZ2F/cTAyO/msglxwyzQ6Kagr13+Z9N92ltJ4spgFFQCw
-	 ziJT5UPp2agYxNHPzeZRgSCLB0BINlK3FfvzVaNY=
+	b=kN4M5RxhrJynFItHxQRK+CjPhrf8gAzoCnzWlDlObbQKpLoTln2TMKiNtV9OHTESt
+	 Hh0tNBhT+bbCufA+BDbJkLNyK/iUg12AQsPKmYbRYMPXPmr2Bz2VOThdWOvqiL31go
+	 xYJjfVUzfM2YMfunuYAGcfwOk7FXSl9c9XDzPtOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	tianshuo han <hantianshuo233@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 02/25] ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off reset in error paths
-Date: Fri, 13 Feb 2026 14:48:28 +0100
-Message-ID: <20260213134703.975062335@linuxfoundation.org>
+	Bibo Mao <maobibo@loongson.cn>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 10/24] crypto: virtio - Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req
+Date: Fri, 13 Feb 2026 14:48:29 +0100
+Message-ID: <20260213134705.106238319@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
-References: <20260213134703.882698935@linuxfoundation.org>
+In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
+References: <20260213134704.728003077@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +68,67 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216206-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216181-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C8184136D26
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 7DFB1136B7D
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit 010eb01ce23b34b50531448b0da391c7f05a72af upstream.
+commit 14f86a1155cca1176abf55987b2fce7f7fcb2455 upstream.
 
-The problem occurs when a signed request fails smb2 signature verification
-check. In __process_request(), if check_sign_req() returns an error,
-set_smb2_rsp_status(work, STATUS_ACCESS_DENIED) is called.
-set_smb2_rsp_status() set work->next_smb2_rcv_hdr_off as zero. By resetting
-next_smb2_rcv_hdr_off to zero, the pointer to the next command in the chain
-is lost. Consequently, is_chained_smb2_message() continues to point to
-the same request header instead of advancing. If the header's NextCommand
-field is non-zero, the function returns true, causing __handle_ksmbd_work()
-to repeatedly process the same failed request in an infinite loop.
-This results in the kernel log being flooded with "bad smb2 signature"
-messages and high CPU usage.
+With function virtio_crypto_skcipher_crypt_req(), there is already
+virtqueue_kick() call with spinlock held in function
+__virtio_crypto_skcipher_do_req(). Remove duplicated virtqueue_kick()
+function call here.
 
-This patch fixes the issue by changing the return value from
-SERVER_HANDLER_CONTINUE to SERVER_HANDLER_ABORT. This ensures that
-the processing loop terminates immediately rather than attempting to
-continue from an invalidated offset.
-
-Reported-by: tianshuo han <hantianshuo233@gmail.com>
+Fixes: d79b5d0bbf2e ("crypto: virtio - support crypto engine framework")
 Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/server.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/crypto/virtio/virtio_crypto_skcipher_algs.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -126,21 +126,21 @@ static int __process_request(struct ksmb
- andx_again:
- 	if (command >= conn->max_cmds) {
- 		conn->ops->set_rsp_status(work, STATUS_INVALID_PARAMETER);
--		return SERVER_HANDLER_CONTINUE;
-+		return SERVER_HANDLER_ABORT;
- 	}
+--- a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
++++ b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
+@@ -550,8 +550,6 @@ int virtio_crypto_skcipher_crypt_req(
+ 	if (ret < 0)
+ 		return ret;
  
- 	cmds = &conn->cmds[command];
- 	if (!cmds->proc) {
- 		ksmbd_debug(SMB, "*** not implemented yet cmd = %x\n", command);
- 		conn->ops->set_rsp_status(work, STATUS_NOT_IMPLEMENTED);
--		return SERVER_HANDLER_CONTINUE;
-+		return SERVER_HANDLER_ABORT;
- 	}
- 
- 	if (work->sess && conn->ops->is_sign_req(work, command)) {
- 		ret = conn->ops->check_sign_req(work);
- 		if (!ret) {
- 			conn->ops->set_rsp_status(work, STATUS_ACCESS_DENIED);
--			return SERVER_HANDLER_CONTINUE;
-+			return SERVER_HANDLER_ABORT;
- 		}
- 	}
+-	virtqueue_kick(data_vq->vq);
+-
+ 	return 0;
+ }
  
 
 
