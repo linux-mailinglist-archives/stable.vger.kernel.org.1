@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-216135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIg5Huosj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:46 +0100
+	id aNuQA1Asj2kPKwEAu9opvQ
+	(envelope-from <stable+bounces-216110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44FC136A9C
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A89C61368A6
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06181307242C
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:52:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 12420300833F
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABBD35FF6F;
-	Fri, 13 Feb 2026 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460D335FF62;
+	Fri, 13 Feb 2026 13:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0EoFCpw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wy4Ea8rD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4F954723;
-	Fri, 13 Feb 2026 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0891534F24E;
+	Fri, 13 Feb 2026 13:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990752; cv=none; b=X7CoR52ExtnmQY9WtK+7NdxDnb3zO0VeuiMJLhXB4tt7hHv0lIsPh2PRxJCxBNnvrVrA4xbEH+Z/6sTosWaAljN66ZpZA1yR595Dxc/58OMjanS8NiLDPDznRk97BGiQ9GY8ke3UrUH3qDxF3SZCxKosVnA72yZRzvP7iWhFXlc=
+	t=1770990668; cv=none; b=GRnq1t8TlWu2ogUC3oE1eBHepHLgUexYkptRusOWguTfRzrJW6KS5B18u9eAs3LTV6bxryDuQgIt41BdufQf/PwItSegErqOD5KeSLCRE029dyDUH7aXw6cLyMZbtGSkJ7UPDaL2R9z2oOgj+UDyLv4oioRaLl/6xvSI/M3nPw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990752; c=relaxed/simple;
-	bh=+iAArarCr0PM3ohnUBZLoSEORrTah6jKrA9zLdMtSuE=;
+	s=arc-20240116; t=1770990668; c=relaxed/simple;
+	bh=Wsvao3NGvNeZiMrg+FR+/mopr2seKTXgOpxkx0KMD0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DgtgYa0glHpAalWRbOl0gC8FSyvXwwPbjByj5ZuJMfyWqfmgXB22LvD0Pn+3G1mLROJYYF2nZrmUbpH1z1oAsvvJ9+7x255YTPY/8GZz7N8m8YviB1twS/0Yo8sZ0CZCFlHtopAzzdy1azYvqZF4EIycOPJQd1mr2Vzw2X8C3vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0EoFCpw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50943C116C6;
-	Fri, 13 Feb 2026 13:52:31 +0000 (UTC)
+	 MIME-Version; b=YhzU7EWuxxOVAJlSL0hFQQBi6PzGny0Ifw2zqX70K1M4JYSJw4gzxqqmNL0AU6PzffRyQwKFWRcif2IwwMOKYzcT6UplolEgvVBZmsaIffMP0IIEz0BJtEQVhqKhORZGjZLKcJ66biLgNfRxMPyDI1XM45zFL1d57e0VjmiWd/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wy4Ea8rD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D61C116C6;
+	Fri, 13 Feb 2026 13:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990751;
-	bh=+iAArarCr0PM3ohnUBZLoSEORrTah6jKrA9zLdMtSuE=;
+	s=korg; t=1770990667;
+	bh=Wsvao3NGvNeZiMrg+FR+/mopr2seKTXgOpxkx0KMD0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x0EoFCpwwO1eq5MZzw9BgMVSv9sROc+vfECS9D97uGBIyF1MAIz6XlfkhAtXQ8t5K
-	 4dKFQKwE0v7guf5+zt11jQx76fC5oCxgFj7ufJp1azqwndzqj8uEuEo4eu7NPCnc+T
-	 H6C1Jdq+bOUiKG5TKfrja2g/Az64r8PoRWGHjTqg=
+	b=wy4Ea8rDVMTAKFg7BuAotfcvD4M1f0O63YBCEjYp8mqGCm3TaUzgOmnsmiDD0kv1u
+	 AnFg81xIMp7rbBQosH9ft35NBjn2D7E5GArT3LSY9xK97CQQn7BP4x6e+ZF/9oX+tQ
+	 hLQvJRB5Tbx+c5ph8R+5ZnOoPcpEGZpxqTZpqpLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 14/49] smb: client: make use of smbdirect_socket.recv_io.credits.available
+	Shreyas Deodhar <sdeodhar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.19 39/49] scsi: qla2xxx: Allow recovery for tape devices
 Date: Fri, 13 Feb 2026 14:47:58 +0100
-Message-ID: <20260213134709.409827711@linuxfoundation.org>
+Message-ID: <20260213134710.151422093@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
-References: <20260213134708.885500854@linuxfoundation.org>
+In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
+References: <20260213134708.713126210@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,144 +70,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216135-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216110-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samba.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,talpey.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: D44FC136A9C
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email]
+X-Rspamd-Queue-Id: A89C61368A6
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-commit 9911b1ed187a770a43950bf51f340ad4b7beecba upstream.
+commit b0335ee4fb94832a4ef68774ca7e7b33b473c7a6 upstream.
 
-The logic off managing recv credits by counting posted recv_io and
-granted credits is racy.
+Tape device doesn't show up after RSCNs.  To fix this, remove tape
+device specific checks which allows recovery of tape devices.
 
-That's because the peer might already consumed a credit,
-but between receiving the incoming recv at the hardware
-and processing the completion in the 'recv_done' functions
-we likely have a window where we grant credits, which
-don't really exist.
-
-So we better have a decicated counter for the
-available credits, which will be incremented
-when we posted new recv buffers and drained when
-we grant the credits to the peer.
-
-Fixes: 5fb9b459b368 ("smb: client: count the number of posted recv_io messages in order to calculated credits")
-Cc: <stable@vger.kernel.org> # 6.18.x
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 44c57f205876 ("scsi: qla2xxx: Changes to support FCP2 Target")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-7-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c |   34 ++++++++++++++++++++++++++++------
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ drivers/scsi/qla2xxx/qla_gs.c   |    3 ---
+ drivers/scsi/qla2xxx/qla_init.c |    9 ---------
+ 2 files changed, 12 deletions(-)
 
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -618,6 +618,7 @@ static void smbd_post_send_credits(struc
- 	struct smbdirect_recv_io *response;
- 	struct smbdirect_socket *sc =
- 		container_of(work, struct smbdirect_socket, recv_io.posted.refill_work);
-+	int posted = 0;
- 
- 	if (sc->status != SMBDIRECT_SOCKET_CONNECTED) {
- 		return;
-@@ -640,9 +641,12 @@ static void smbd_post_send_credits(struc
- 			}
- 
- 			atomic_inc(&sc->recv_io.posted.count);
-+			posted += 1;
- 		}
- 	}
- 
-+	atomic_add(posted, &sc->recv_io.credits.available);
-+
- 	/* Promptly send an immediate packet as defined in [MS-SMBD] 3.1.1.1 */
- 	if (atomic_read(&sc->recv_io.credits.count) <
- 		sc->recv_io.credits.target - 1) {
-@@ -1033,19 +1037,38 @@ dma_mapping_failed:
-  */
- static int manage_credits_prior_sending(struct smbdirect_socket *sc)
- {
-+	int missing;
-+	int available;
- 	int new_credits;
- 
- 	if (atomic_read(&sc->recv_io.credits.count) >= sc->recv_io.credits.target)
- 		return 0;
- 
--	new_credits = atomic_read(&sc->recv_io.posted.count);
--	if (new_credits == 0)
-+	missing = (int)sc->recv_io.credits.target - atomic_read(&sc->recv_io.credits.count);
-+	available = atomic_xchg(&sc->recv_io.credits.available, 0);
-+	new_credits = (u16)min3(U16_MAX, missing, available);
-+	if (new_credits <= 0) {
-+		/*
-+		 * If credits are available, but not granted
-+		 * we need to re-add them again.
-+		 */
-+		if (available)
-+			atomic_add(available, &sc->recv_io.credits.available);
- 		return 0;
-+	}
- 
--	new_credits -= atomic_read(&sc->recv_io.credits.count);
--	if (new_credits <= 0)
--		return 0;
-+	if (new_credits < available) {
-+		/*
-+		 * Readd the remaining available again.
-+		 */
-+		available -= new_credits;
-+		atomic_add(available, &sc->recv_io.credits.available);
-+	}
- 
-+	/*
-+	 * Remember we granted the credits
-+	 */
-+	atomic_add(new_credits, &sc->recv_io.credits.count);
- 	return new_credits;
- }
- 
-@@ -1217,7 +1240,6 @@ wait_credit:
- 	packet->credits_requested = cpu_to_le16(sp->send_credit_target);
- 
- 	new_credits = manage_credits_prior_sending(sc);
--	atomic_add(new_credits, &sc->recv_io.credits.count);
- 	packet->credits_granted = cpu_to_le16(new_credits);
- 
- 	packet->flags = 0;
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -3266,9 +3266,6 @@ login_logout:
+ 			    atomic_read(&fcport->state) == FCS_ONLINE) ||
+ 				do_delete) {
+ 				if (fcport->loop_id != FC_NO_LOOP_ID) {
+-					if (fcport->flags & FCF_FCP2_DEVICE)
+-						continue;
+-
+ 					ql_log(ql_log_warn, vha, 0x20f0,
+ 					       "%s %d %8phC post del sess\n",
+ 					       __func__, __LINE__,
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -1859,15 +1859,6 @@ void qla2x00_handle_rscn(scsi_qla_host_t
+ 	case RSCN_PORT_ADDR:
+ 		fcport = qla2x00_find_fcport_by_nportid(vha, &ea->id, 1);
+ 		if (fcport) {
+-			if (ql2xfc2target &&
+-			    fcport->flags & FCF_FCP2_DEVICE &&
+-			    atomic_read(&fcport->state) == FCS_ONLINE) {
+-				ql_dbg(ql_dbg_disc, vha, 0x2115,
+-				       "Delaying session delete for FCP2 portid=%06x %8phC ",
+-					fcport->d_id.b24, fcport->port_name);
+-				return;
+-			}
+-
+ 			if (vha->hw->flags.edif_enabled && DBELL_ACTIVE(vha)) {
+ 				/*
+ 				 * On ipsec start by remote port, Target port
 
 
 
