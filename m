@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-216193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216227-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCKpOtstj2nTLgEAu9opvQ
-	(envelope-from <stable+bounces-216193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:47 +0100
+	id mKOcLN0tj2nTLgEAu9opvQ
+	(envelope-from <stable+bounces-216227-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49222136CB9
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED8D136CC7
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 536D43086049
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:55:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ACD62300BBA1
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5D335FF7D;
-	Fri, 13 Feb 2026 13:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3100352936;
+	Fri, 13 Feb 2026 13:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8UrLiY2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOEEKdRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C7F1684BE;
-	Fri, 13 Feb 2026 13:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865F01684BE;
+	Fri, 13 Feb 2026 13:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990947; cv=none; b=qRyqi9HVBxhDfegrplO4lDj4L5Ou5nvvxtXEPfeT1g4KDYb1i8qFcJQJX6sVNUwm/vq6xp/4cnbAfN9U1SnunE2pF8RJcSn9d0ya4XP6kxQNliawP0ldGGaX9vUklNZkkdD7OlZJXt6tyOSekQdSAWlsgmyGsFgvsQHiIZbzK5U=
+	t=1770991067; cv=none; b=sGwtt+bB5rnpnuk+3k/K1bqxzEViMRCfNTqUc/obJeKzMzfIcJTcLqR/Dqm2G+hfS77RZOB9NAkXj2ui6sMupZaX+tGlrVI9p0j4Z7+0X+BBKR+LIg3AYaYGOaWtp33Iu6ZYwrsOvwwfZwbttBnfAUwA27k8JZKLpaDoy1p1gMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990947; c=relaxed/simple;
-	bh=6m7nEScowCIO3tGmCXZz2AZuOJuPY2lGDT1bAgGi+uc=;
+	s=arc-20240116; t=1770991067; c=relaxed/simple;
+	bh=GJi6os/VII1PF3nutvbbuk3SfmULqLFikn+28Apbhl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPrZZKi7sW7yr5c7C6mlybFdlz6PZKyq1vFkpt+MYuhdYoAB8v8792zyvm6yk0SXFOB5m6p7/IbPmVvQYXwNKdQ6+dx9RHlZNMyN8AgrElP/zxU7Nlr+FQ34wG6p9HTh2DB07cJgXr5amBWv5d4zq5FztJnU833nax0u5Tzo0h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8UrLiY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE2EC116C6;
-	Fri, 13 Feb 2026 13:55:46 +0000 (UTC)
+	 MIME-Version; b=olrZimFN0NwXZxTjWCMSHcXskIX+7dlND5yR4KOIBjbR/LqsO+pDRy/utfrBc3lMUEQ9lrkPB1NNPHI/fN6IixZduLdBO2hL0rwoZqs14QCF5mw0eIW4T16parQXNj43JPQ6xpdYB1vI0GKE9Vqzplqv3TUnVzqm14yISqVhAkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOEEKdRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DEBC116C6;
+	Fri, 13 Feb 2026 13:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990946;
-	bh=6m7nEScowCIO3tGmCXZz2AZuOJuPY2lGDT1bAgGi+uc=;
+	s=korg; t=1770991067;
+	bh=GJi6os/VII1PF3nutvbbuk3SfmULqLFikn+28Apbhl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8UrLiY28pymurwayzbRwuT0JyOd4EnbPJd96fQHgtHKbJvQi2wl5JwPFHadubcUx
-	 z+OXAGqmg7Z5WSgHLqvZb+fz/vk44n/5wnzwVDd08juzkDE3MNxBIaZ0+R5FU7KV8U
-	 5g1C68JEU+7Z17lU6+Su2So+CgY9gfLC7dWH7j44=
+	b=nOEEKdRrlpFwGzIShvYtKKMnVwLEDj8gHsmGRc703zRiY2bQwNbM5DC/PYN0a32gC
+	 Fld4Qn8Hq5XjCZIqE4ZZHUW4048wKDSswXzLbE8UAXJzZNDqDm+JgJtTnIOKu1NL8h
+	 e3sq0tn15u8SgeIywTbZuJr/cjDfjhWyB7rPy23U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	r772577952@gmail.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.12 21/24] xfs: fix UAF in xchk_btree_check_block_owner
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 14/25] scsi: qla2xxx: Delay module unload while fabric scan in progress
 Date: Fri, 13 Feb 2026 14:48:40 +0100
-Message-ID: <20260213134705.497497548@linuxfoundation.org>
+Message-ID: <20260213134704.402620730@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
-References: <20260213134704.728003077@linuxfoundation.org>
+In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
+References: <20260213134703.882698935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +70,103 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216193-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,lst.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216227-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,linaro.org,marvell.com,gmail.com,oracle.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 49222136CB9
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,marvell.com:email,intel.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 4ED8D136CC7
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-commit 1c253e11225bc5167217897885b85093e17c2217 upstream.
+commit 8890bf450e0b6b283f48ac619fca5ac2f14ddd62 upstream.
 
-We cannot dereference bs->cur when trying to determine if bs->cur
-aliases bs->sc->sa.{bno,rmap}_cur after the latter has been freed.
-Fix this by sampling before type before any freeing could happen.
-The correct temporal ordering was broken when we removed xfs_btnum_t.
+System crash seen during load/unload test in a loop.
 
-Cc: r772577952@gmail.com
-Cc: <stable@vger.kernel.org> # v6.9
-Fixes: ec793e690f801d ("xfs: remove xfs_btnum_t")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Tested-by: Jiaming Zhang <r772577952@gmail.com>
+[105954.384919] RBP: ffff914589838dc0 R08: 0000000000000000 R09: 0000000000000086
+[105954.384920] R10: 000000000000000f R11: ffffa31240904be5 R12: ffff914605f868e0
+[105954.384921] R13: ffff914605f86910 R14: 0000000000008010 R15: 00000000ddb7c000
+[105954.384923] FS:  0000000000000000(0000) GS:ffff9163fec40000(0000) knlGS:0000000000000000
+[105954.384925] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[105954.384926] CR2: 000055d31ce1d6a0 CR3: 0000000119f5e001 CR4: 0000000000770ee0
+[105954.384928] PKRU: 55555554
+[105954.384929] Call Trace:
+[105954.384931]  <IRQ>
+[105954.384934]  qla24xx_sp_unmap+0x1f3/0x2a0 [qla2xxx]
+[105954.384962]  ? qla_async_scan_sp_done+0x114/0x1f0 [qla2xxx]
+[105954.384980]  ? qla24xx_els_ct_entry+0x4de/0x760 [qla2xxx]
+[105954.384999]  ? __wake_up_common+0x80/0x190
+[105954.385004]  ? qla24xx_process_response_queue+0xc2/0xaa0 [qla2xxx]
+[105954.385023]  ? qla24xx_msix_rsp_q+0x44/0xb0 [qla2xxx]
+[105954.385040]  ? __handle_irq_event_percpu+0x3d/0x190
+[105954.385044]  ? handle_irq_event+0x58/0xb0
+[105954.385046]  ? handle_edge_irq+0x93/0x240
+[105954.385050]  ? __common_interrupt+0x41/0xa0
+[105954.385055]  ? common_interrupt+0x3e/0xa0
+[105954.385060]  ? asm_common_interrupt+0x22/0x40
+
+The root cause of this was that there was a free (dma_free_attrs) in the
+interrupt context.  There was a device discovery/fabric scan in
+progress.  A module unload was issued which set the UNLOADING flag.  As
+part of the discovery, after receiving an interrupt a work queue was
+scheduled (which involved a work to be queued).  Since the UNLOADING
+flag is set, the work item was not allocated and the mapped memory had
+to be freed.  The free occurred in interrupt context leading to system
+crash.  Delay the driver unload until the fabric scan is complete to
+avoid the crash.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/202512090414.07Waorz0-lkp@intel.com/
+Fixes: 783e0dc4f66a ("qla2xxx: Check for device state before unloading the driver.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-8-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/btree.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_os.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/scrub/btree.c
-+++ b/fs/xfs/scrub/btree.c
-@@ -370,12 +370,15 @@ xchk_btree_check_block_owner(
- {
- 	xfs_agnumber_t		agno;
- 	xfs_agblock_t		agbno;
-+	bool			is_bnobt, is_rmapbt;
- 	bool			init_sa;
- 	int			error = 0;
- 
- 	if (!bs->cur)
- 		return 0;
- 
-+	is_bnobt = xfs_btree_is_bno(bs->cur->bc_ops);
-+	is_rmapbt = xfs_btree_is_rmap(bs->cur->bc_ops);
- 	agno = xfs_daddr_to_agno(bs->cur->bc_mp, daddr);
- 	agbno = xfs_daddr_to_agbno(bs->cur->bc_mp, daddr);
- 
-@@ -398,11 +401,11 @@ xchk_btree_check_block_owner(
- 	 * have to nullify it (to shut down further block owner checks) if
- 	 * self-xref encounters problems.
- 	 */
--	if (!bs->sc->sa.bno_cur && xfs_btree_is_bno(bs->cur->bc_ops))
-+	if (!bs->sc->sa.bno_cur && is_bnobt)
- 		bs->cur = NULL;
- 
- 	xchk_xref_is_only_owned_by(bs->sc, agbno, 1, bs->oinfo);
--	if (!bs->sc->sa.rmap_cur && xfs_btree_is_rmap(bs->cur->bc_ops))
-+	if (!bs->sc->sa.rmap_cur && is_rmapbt)
- 		bs->cur = NULL;
- 
- out_free:
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -1194,7 +1194,8 @@ qla2x00_wait_for_hba_ready(scsi_qla_host
+ 	while ((qla2x00_reset_active(vha) || ha->dpc_active ||
+ 		ha->flags.mbox_busy) ||
+ 	       test_bit(FX00_RESET_RECOVERY, &vha->dpc_flags) ||
+-	       test_bit(FX00_TARGET_SCAN, &vha->dpc_flags)) {
++	       test_bit(FX00_TARGET_SCAN, &vha->dpc_flags) ||
++	       (vha->scan.scan_flags & SF_SCANNING)) {
+ 		if (test_bit(UNLOADING, &base_vha->dpc_flags))
+ 			break;
+ 		msleep(1000);
 
 
 
