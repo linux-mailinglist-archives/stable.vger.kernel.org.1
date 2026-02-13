@@ -1,153 +1,153 @@
-Return-Path: <stable+bounces-216024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oA50Bf3EjmnCEgEAu9opvQ
-	(envelope-from <stable+bounces-216024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:30:21 +0100
+	id kBSGIIPIjmlPEwEAu9opvQ
+	(envelope-from <stable+bounces-216025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:45:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6BA133437
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:30:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2DD1334C5
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:45:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99926301F4B0
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 06:30:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CA5AE3033E7C
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 06:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0896726A1A7;
-	Fri, 13 Feb 2026 06:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A2726FA5A;
+	Fri, 13 Feb 2026 06:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="JuV+mcgb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ws2OhZZ9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.crpt.ru (mail.crpt.ru [91.236.205.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4830727BF7C;
-	Fri, 13 Feb 2026 06:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7552505B2;
+	Fri, 13 Feb 2026 06:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770964216; cv=none; b=sqxizZSIWio5l500/M+fETWl5a6cPfZfahLLhb7QKeImzOrDUvOYHDYWAHNwcfBwQfHDcROzI8iLWymx3Fer4lYvUKA+0ef8FRtZXVgk1DWGF6Db2p+kKvcVQj6uvkO46SCpfSsFPf1O/HsWHv2xsl7kz6svjypGY1rX4ClkSzE=
+	t=1770965120; cv=none; b=KBoWcDqY7n9U/dG7OvTJMRvLyaIUfu6WwGLsO/CCtZ2jPujesVshSIS9PcIh+qOwWZPTx4Vb3CRTrIG8dRIhH312smWxeUKovNpFqOjMmEf+kbc8PgHfxNNHTmTOsrAxraxf76lSDI13TuTAtO5HwKXLyoE1P41I+p1aekiWkWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770964216; c=relaxed/simple;
-	bh=wV7DAzzqNuCCfLN5M5sE1fU0bi1iDDxhi3lmyRlyVUA=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=K+2L66n1vbuD2Xvefa/VBDiJ0wTy1kI0CVUFhTn2ykvZHbiEKc9R1SlR2PKHLx5rc55sqRIfcmupAVXcFxJOdZ5zacnpgGFJbHui3YqNZngkbAOO6cODimr/RUQ1cJIpsMqDO0CP1M6XZ8SGkJAgt8AJuFmxQ55QfFd7DcEclG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=JuV+mcgb; arc=none smtp.client-ip=91.236.205.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
-Received: from mail.crpt.ru ([192.168.60.4])
-	by mail.crpt.ru  with ESMTPS id 61D6THmr005781-61D6THmt005781
-	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
-	Fri, 13 Feb 2026 09:29:17 +0300
-Received: from EX2.crpt.local (192.168.60.4) by ex2.crpt.local (192.168.60.4)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Fri, 13 Feb
- 2026 09:29:16 +0300
-Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
- ([192.168.60.4]) with mapi id 15.01.2507.044; Fri, 13 Feb 2026 09:29:16 +0300
-From: =?utf-8?B?0JLQsNGC0L7RgNC+0L/QuNC9INCQ0L3QtNGA0LXQuQ==?=
-	<a.vatoropin@crpt.ru>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: =?utf-8?B?0JLQsNGC0L7RgNC+0L/QuNC9INCQ0L3QtNGA0LXQuQ==?=
-	<a.vatoropin@crpt.ru>, Jacob Pan <jacob.jun.pan@linux.intel.com>, Ajay Thomas
-	<ajay.thomas.david.rajamanickam@intel.com>, "linux-pm@vger.kernel.org"
-	<linux-pm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: [PATCH] powercap: intel_rapl: use unsigned arithmetic in time window
- computation
-Thread-Topic: [PATCH] powercap: intel_rapl: use unsigned arithmetic in time
- window computation
-Thread-Index: AQHcnLITgGace02fqUu09hbfrEIEfA==
-Date: Fri, 13 Feb 2026 06:29:16 +0000
-Message-ID: <20260213062542.169365-1-a.vatoropin@crpt.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: EX2.crpt.local, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 2/12/2026 10:40:00 PM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E2E4A1E7A9BB804996CBB031253A8987@crpt.ru>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1770965120; c=relaxed/simple;
+	bh=6J35rRRigU8xE8JpO0UJ8nD7n7Rc/gRlu+sFTRGORyQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KhPpumwhbbvUuUYc73wSD4cTup2fFxBdnjqMlJxsW40lBwxtqg2wMvHF9vILinieys6/dXkxS3uXvea1KiTnFZUA0XEmM+HX+ERYs+/uDgv+JsySFQqewXeRy69cP0LLaq3fW+Rqw2eE5wL4z2QNMSdCWlNR5NhjxOs9Ae4wOIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ws2OhZZ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42212C116C6;
+	Fri, 13 Feb 2026 06:45:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770965120;
+	bh=6J35rRRigU8xE8JpO0UJ8nD7n7Rc/gRlu+sFTRGORyQ=;
+	h=From:Date:Subject:To:Cc:From;
+	b=Ws2OhZZ9DBc5gq+7vU8LG08UxFyPLnQdQXJiaxE18AR1nsgBL0mBCaIu3HLPE0cPq
+	 x3WJ67lmIxg0WZZejRRSbm5xQN1w3XNDpVMCySNmjJBb0D1VRtLN2zMxo3yCGIrBrG
+	 aOi4Tmm8kZh0z/5y4uRhTbOp5xfRk1c8ar/Jmwf9gCZ7v6R1edj/y4BAu0dD9mLFf/
+	 M8825xtzGyWvlZYQZSslWxvfOW59ap4D8sNKRF2WgmYt9Jcs//wxaTdizgLrKhIeXD
+	 4nsbXKlyK49ftBq/FA85pkWTB7GyY5lS2hBDAlKP7VwgUUmQB0QQQmn8jbdUXjt0pz
+	 52hs5OmEXCJ3Q==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Fri, 13 Feb 2026 01:45:13 -0500
+Subject: [PATCH] kbuild: rpm-pkg: Fix manual debuginfo generation when
+ using .src.rpm
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-FEAS-BEC-Info: WlpIGw0aAQkEARIJHAEHBlJSCRoLAAEeDUhZUEhYSFhIWUhZXkguLVxYWC48UVlRWFhYWVxaSFlRSAlGHgkcBxoHGAEGKAsaGBxGGh1IWUhZX0gaCQ4JDQQoAw0aBg0ERgcaD0hYSFpIWVpIWVFaRlleUEZeWEZcSFBIWEhYSF1IWEhYSFhIXFhICQIJEUYcAAcFCRtGDAkeAQxGGgkCCQUJBgELAwkFKAEGHA0ERgsHBUhYSFpRSAIJCwcKRgIdBkYYCQYoBAEGHRBGAQYcDQRGCwcFSFhIWlBIBAEGHRBFAw0aBg0EKB4PDRpGAw0aBg0ERgcaD0hYSFpQSAQeC0UYGgcCDQscKAQBBh0QHA0bHAEGD0YHGg9IWEhZX0gaCQ4JDQQoAw0aBg0ERgcaD0hY
-X-FEAS-Client-IP: 192.168.60.4
-X-FE-Policy-ID: 2:4:0:SYSTEM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
- h=from:to:cc:subject:date:message-id:content-type:mime-version;
- bh=wV7DAzzqNuCCfLN5M5sE1fU0bi1iDDxhi3lmyRlyVUA=;
- b=JuV+mcgbnaq2toX2ekMlgl00Ln+BIqOpMHmI34HGVvFixqeg5COrjPt/Pb3PCw9O1M9KFPVyABc5
-	d1anSOFCH3yZ4J6IygwWKWAUCfKx/uOFTvznFFJMNDpbVhwTHD//v94Dt0tz+VcUBeYER1Q2++iU
-	4XKtadULpTSZ6BQW42fWGroOii5KEHVviDAlYZnwmH4zCJLnMSi8eI6BuoswaQyeMyr4lguzJjZc
-	00IZTK40FpiJkLPNUo+BlLvd6YogWqAXbR+jEFXzvQDZRvkci5GCXnoXefktoA0lNC+3cPNWBpf3
-	dfO/W2Id5jvWnPws2tYPPd2Majy4R7YM1U1kLQ==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260213-fix-debuginfo-srcrpm-pkg-v1-1-45cd0c0501b9@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqEMAwAvyI5b6Ct2gW/InvQGGuQrSVFEcS/W
+ zwOzMwFmVU4Q1ddoHxIli0WsJ8KaBliYJSpMDjjvHG2xllOnHjcg8R5w6yk6Y9pDeja2hNZ8qb
+ 5QsmTcnHfdf+77wfSY2InagAAAA==
+X-Change-ID: 20260213-fix-debuginfo-srcrpm-pkg-2536cc1c6047
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Lukas Herbolt <lukas@herbolt.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2126; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=6J35rRRigU8xE8JpO0UJ8nD7n7Rc/gRlu+sFTRGORyQ=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJl9J+qaWFgUmuvWb+v/2Jcdw9LaX3E15/Nd81ueAhe/R
+ t37KSbWUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACaySZKR4cWto7+Kb03Re1K0
+ Zjnrzy0Xrk2ren62kiv03cNjhc8UFpcyMryJEZupVHZs3nkvvp1ftsyx65E3e6rz0SRvUYxdkrX
+ dHj4A
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.06 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[crpt.ru,quarantine];
-	R_DKIM_ALLOW(-0.20)[crpt.ru:s=crpt.ru];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216024-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216025-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[a.vatoropin@crpt.ru,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[crpt.ru:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxtesting.org:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BE6BA133437
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,p:email]
+X-Rspamd-Queue-Id: EA2DD1334C5
 X-Rspamd-Action: no action
 
-RnJvbTogQW5kcmV5IFZhdG9yb3BpbiA8YS52YXRvcm9waW5AY3JwdC5ydT4NCg0KSW4gcmFwbF9j
-b21wdXRlX3RpbWVfd2luZG93X2NvcmUoKSB0aGUgdGltZSB3aW5kb3cgaXMgY2FsY3VsYXRlZCB1
-c2luZyB0aGUNCnZhcmlhYmxlICJ5Ii4gVGhpcyB2YXJpYWJsZSBpcyBsaW1pdGVkIGJ5IHRoZSBt
-YXNrIDB4MUYsIGhvd2V2ZXLCoHRoZQ0KcmVzdWx0IG9mIHRoZSBjb3JuZXItY2FzZSBleHByZXNz
-aW9uICgxIDw8IDB4MUYpIGlzIDB4ODAwMDAwMDAgb2Ygc2lnbmVkDQppbnRlZ2VyIHR5cGUuIEFj
-dHVhbGx5IGl0J3MgdW5kZWZpbmVkIGluIHN0YW5kYXJkIEMgbGFuZ3VhZ2UgYnV0IHRoZQ0Ka2Vy
-bmVsIGlzIGNvbXBpbGVkIHdpdGggLWZuby1zdHJpY3Qtb3ZlcmZsb3cgKC1md3JhcHYpIGZsYWcg
-d2hpY2ggZG9lcyB0aGUNCnRyaWNrLg0KDQpFdmVudHVhbGx5IHRoZSB1bmV4cGVjdGVkIHNpZ24g
-ZXh0ZW5zaW9uIGlzIHBvc3NpYmxlIHdoZW4gdGhlIHJlc3VsdCBvZg0KdHlwZSBpbnQgaXMgZXhw
-YW5kZWQgdG8gdTY0LCBsaWtlIDB4ODAwMDAwMDAgLT4gMHhGRkZGRkZGRjgwMDAwMDAwIHdoaWNo
-DQpsZWFkcyB0byBpbmNvcnJlY3QgYXJpdGhtZXRpYy4NCg0KQXZvaWQgc2lnbiBleHRlbnNpb24g
-YnkgY2FzdGluZyB0aGUgbGVmdCBvcGVyYW5kIG9mIHRoZSBzaGlmdCB0byB0aGUNCnVuc2lnbmVk
-IHR5cGUgYmVmb3JlIHBlcmZvcm1pbmcgdGhlIHNoaWZ0Lg0KDQpGb3VuZCBieSBMaW51eCBWZXJp
-ZmljYXRpb24gQ2VudGVyIChsaW51eHRlc3Rpbmcub3JnKSB3aXRoIFNWQUNFLg0KDQpGaXhlczog
-M2MyYzA4NDU0Y2U5ICgicG93ZXJjYXAgLyBSQVBMOiBoYW5kbGUgYXRvbSBhbmQgY29yZSBkaWZm
-ZXJlbmNlcyIpDQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KU2lnbmVkLW9mZi1ieTogQW5k
-cmV5IFZhdG9yb3BpbiA8YS52YXRvcm9waW5AY3JwdC5ydT4NCi0tLQ0KIGRyaXZlcnMvcG93ZXJj
-YXAvaW50ZWxfcmFwbF9jb21tb24uYyB8IDIgKy0NCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRp
-b24oKyksIDEgZGVsZXRpb24oLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvcG93ZXJjYXAvaW50
-ZWxfcmFwbF9jb21tb24uYyBiL2RyaXZlcnMvcG93ZXJjYXAvaW50ZWxfcmFwbF9jb21tb24uYw0K
-aW5kZXggM2ZmNmRhM2JmNGU2Li4wZjJkM2QxYTAwYzUgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL3Bv
-d2VyY2FwL2ludGVsX3JhcGxfY29tbW9uLmMNCisrKyBiL2RyaXZlcnMvcG93ZXJjYXAvaW50ZWxf
-cmFwbF9jb21tb24uYw0KQEAgLTExMDcsNyArMTEwNyw3IEBAIHN0YXRpYyB1NjQgcmFwbF9jb21w
-dXRlX3RpbWVfd2luZG93X2NvcmUoc3RydWN0IHJhcGxfZG9tYWluICpyZCwgdTY0IHZhbHVlLA0K
-IAlpZiAoIXRvX3Jhdykgew0KIAkJZiA9ICh2YWx1ZSAmIDB4NjApID4+IDU7DQogCQl5ID0gdmFs
-dWUgJiAweDFmOw0KLQkJdmFsdWUgPSAoMSA8PCB5KSAqICg0ICsgZikgKiByZC0+dGltZV91bml0
-IC8gNDsNCisJCXZhbHVlID0gKDFVIDw8IHkpICogKDQgKyBmKSAqIHJkLT50aW1lX3VuaXQgLyA0
-Ow0KIAl9IGVsc2Ugew0KIAkJaWYgKHZhbHVlIDwgcmQtPnRpbWVfdW5pdCkNCiAJCQlyZXR1cm4g
-MDsNCi0tIA0KMi40My4wDQo=
+Commit 62089b804895 ("kbuild: rpm-pkg: Generate debuginfo package
+manually") added uses of OBJCOPY and READELF, variables from Kbuild.
+These variables are defined and work properly when using the binrpm-pkg
+target because rpmbuild is run within Kbuild. However, these variables
+are not defined when building from a source RPM package generated with
+the srcrpm-pkg target, breaking the build when generating the debug info
+subpackage.
+
+Define a default value for these variables so that these commands
+respect the value from Kbuild but continue to work when built from a
+source RPM package.
+
+Cc: stable@vger.kernel.org
+Fixes: 62089b804895 ("kbuild: rpm-pkg: Generate debuginfo package manually")
+Reported-by: Lukas Herbolt <lukas@herbolt.com>
+Closes: https://lore.kernel.org/20260212135855.147906-2-lukas@herbolt.com/
+Tested-by: Lukas Herbolt <lukas@herbolt.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ scripts/package/kernel.spec | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
+index af682a705477..bccf58bdd45f 100644
+--- a/scripts/package/kernel.spec
++++ b/scripts/package/kernel.spec
+@@ -148,11 +148,11 @@ echo /usr/lib/debug/lib/modules/%{KERNELRELEASE}/vmlinux > %{buildroot}/debuginf
+ while read -r mod; do
+ 	mod="${mod%.o}.ko"
+ 	dbg="%{buildroot}/usr/lib/debug/lib/modules/%{KERNELRELEASE}/kernel/${mod}"
+-	buildid=$("${READELF}" -n "${mod}" | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p')
++	buildid=$("${READELF:-readelf}" -n "${mod}" | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p')
+ 	link="%{buildroot}/usr/lib/debug/.build-id/${buildid}.debug"
+ 
+ 	mkdir -p "${dbg%/*}" "${link%/*}"
+-	"${OBJCOPY}" --only-keep-debug "${mod}" "${dbg}"
++	"${OBJCOPY:-objcopy}" --only-keep-debug "${mod}" "${dbg}"
+ 	ln -sf --relative "${dbg}" "${link}"
+ 
+ 	echo "${dbg#%{buildroot}}" >> %{buildroot}/debuginfo.list
+
+---
+base-commit: d59d7292d8b2f3123450e0ba573da6072fd869ef
+change-id: 20260213-fix-debuginfo-srcrpm-pkg-2536cc1c6047
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
+
 
