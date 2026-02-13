@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-216121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAaUKr8sj2kPKwEAu9opvQ
-	(envelope-from <stable+bounces-216121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:03 +0100
+	id qBnOM9ssj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F743136A01
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85AB2136A70
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFFDC300EA91
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:51:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CCD07304AD09
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C97754723;
-	Fri, 13 Feb 2026 13:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8726035F8D4;
+	Fri, 13 Feb 2026 13:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gq17rJII"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8jhMMqe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DF7241665;
-	Fri, 13 Feb 2026 13:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CBC54723;
+	Fri, 13 Feb 2026 13:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990705; cv=none; b=hF2cG57HAlho5sKnxXKOZIxgRfMQvbo7/ClT8joNw1aZZ96MRMrY0zYSnfk4OOFaT1587Fq3WWtlwhlmERAZ9/xIfvilHfh61tFehfBEEfbEiSHV2DpE9CsvoTufrdGBHN7JoIgNdxlS5mOFNDpKqHj//dyceJtdDBSwimkcahI=
+	t=1770990788; cv=none; b=ibA/sWgQEowH5NenAR2ehNEr52J5P2Mr6rfsSoL9iYJMHl+23Zcm9UcMyIG8ZJagwcK/E4b2nRlDTT45iHlKrLK3TuXnFjCCLbBrQJj0lOzIW91ZgJ7v1mi3zJ58xRN1h+bXW5OgaruYNnRTJ9eGHlytJirat98KQF1DbP6E4o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990705; c=relaxed/simple;
-	bh=z4aIl31E2zpDC48OVEyKLQxCN86gcaFCCVMgBvNSTRc=;
+	s=arc-20240116; t=1770990788; c=relaxed/simple;
+	bh=XZl/pNthdB2sSXqnYOc0aKyyMELDdZiVPoJh4o/vmmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPNEYZat9z/BYtjqhWglmkqvFKlouDkprDUMNiy6VDUWu00Y6fCgIIqIjgdl5NVXBIn7w5tWFYsDY33vqBQewUQevBMhdTXxrnHw94oS0OJHRUVSarppSff12xn3ul+cPCPZczqSQ0CMHKgHHlE3rZbQpppvyORXGLja+luKpms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gq17rJII; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B482AC116C6;
-	Fri, 13 Feb 2026 13:51:44 +0000 (UTC)
+	 MIME-Version; b=ak1Zl96Bz5b/6imT4HJrVtlAkhXBkysWRsz3uDhdnxa+JLCj4N09U3xQYLHLOJ8M/9UNGYhgI1kEnEG6WJSY/5U6izFP23+LA53Dao7syyhAelNBAwU93LnmNvZ//jOXSXmD0fui1XUsym7kXbKoT++Ls7vlCqy+zcvIQo5vx98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8jhMMqe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C8BC116C6;
+	Fri, 13 Feb 2026 13:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990705;
-	bh=z4aIl31E2zpDC48OVEyKLQxCN86gcaFCCVMgBvNSTRc=;
+	s=korg; t=1770990788;
+	bh=XZl/pNthdB2sSXqnYOc0aKyyMELDdZiVPoJh4o/vmmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gq17rJIIEbkO8KQwLfhmxZhvcq9AxNkhBsQ4PdXwIX79fpe2qlXwS0hIPdnxfYPOd
-	 gfySWAgDm3fiNyg/h8KjvujzKa4FUDLnST+P0afAKfJofeXdi386xwnHU0vEtMmnxq
-	 CniJC1gSvkAH0pPainh1Y8UsWgV/0BYXPfbTExEY=
+	b=l8jhMMqeP9eU5fX0YvD9xgSUPiv4e2wOirvsiUH6nPLYbz5i/gFL9rgOk10o/gg7b
+	 VwqdgbU3Mq/WyENvuq0WQ13mg447UA0zRS8V+knPMnEyS1nzn/BSDiAnDzf2kaRXNf
+	 tin9boR6EeQ6Mu6iu+vtn1T+vTU+LJjw24B29Mzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ali Tariq <alitariq45892@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.19 49/49] wifi: rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 24/49] smb: client: fix last send credit problem causing disconnects
 Date: Fri, 13 Feb 2026 14:48:08 +0100
-Message-ID: <20260213134710.504909787@linuxfoundation.org>
+Message-ID: <20260213134709.772534857@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
-References: <20260213134708.713126210@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+References: <20260213134708.885500854@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +72,141 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216121-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216146-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,realtek.com:email]
-X-Rspamd-Queue-Id: 0F743136A01
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samba.org:email,talpey.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 85AB2136A70
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ali Tariq <alitariq45892@gmail.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 86c946bcc00f6390ef65e9614ae60a9377e454f8 upstream.
+commit 93ac432274e1361b4f6cd69e7c5d9b3ac21e13f5 upstream.
 
-The driver does not set hw->sta_data_size, which causes mac80211 to
-allocate insufficient space for driver private station data in
-__sta_info_alloc(). When rtl8xxxu_sta_add() accesses members of
-struct rtl8xxxu_sta_info through sta->drv_priv, this results in a
-slab-out-of-bounds write.
+When we are about to use the last send credit that was
+granted to us by the peer, we need to wait until
+we are ourself able to grant at least one credit
+to the peer. Otherwise it might not be possible
+for the peer to grant more credits.
 
-KASAN report on RISC-V (VisionFive 2) with RTL8192EU adapter:
+The following sections in MS-SMBD are related to this:
 
-  BUG: KASAN: slab-out-of-bounds in rtl8xxxu_sta_add+0x31c/0x346
-  Write of size 8 at addr ffffffd6d3e9ae88 by task kworker/u16:0/12
+3.1.5.1 Sending Upper Layer Messages
+...
+If Connection.SendCredits is 1 and the CreditsGranted field of the
+message is 0, stop processing.
+...
 
-Set hw->sta_data_size to sizeof(struct rtl8xxxu_sta_info) during
-probe, similar to how hw->vif_data_size is configured. This ensures
-mac80211 allocates sufficient space for the driver's per-station
-private data.
+3.1.5.9 Managing Credits Prior to Sending
+...
+If Connection.ReceiveCredits is zero, or if Connection.SendCredits is
+one and the Connection.SendQueue is not empty, the sender MUST allocate
+and post at least one receive of size Connection.MaxReceiveSize and MUST
+increment Connection.ReceiveCredits by the number allocated and posted.
+If no receives are posted, the processing MUST return a value of zero to
+indicate to the caller that no Send message can be currently performed.
+...
 
-Tested on StarFive VisionFive 2 v1.2A board.
+This is a similar logic as we have in the server.
 
-Fixes: eef55f1545c9 ("wifi: rtl8xxxu: support multiple interfaces in {add,remove}_interface()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251225115430.13011-1-alitariq45892@gmail.com
+Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/smbdirect.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -7826,6 +7826,7 @@ static int rtl8xxxu_probe(struct usb_int
- 		goto err_set_intfdata;
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index dbb2d939bc44..20faa6d7f514 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -697,6 +697,15 @@ static void smbd_post_send_credits(struct work_struct *work)
  
- 	hw->vif_data_size = sizeof(struct rtl8xxxu_vif);
-+	hw->sta_data_size = sizeof(struct rtl8xxxu_sta_info);
+ 	atomic_add(posted, &sc->recv_io.credits.available);
  
- 	hw->wiphy->max_scan_ssids = 1;
- 	hw->wiphy->max_scan_ie_len = IEEE80211_MAX_DATA_LEN;
++	/*
++	 * If the last send credit is waiting for credits
++	 * it can grant we need to wake it up
++	 */
++	if (posted &&
++	    atomic_read(&sc->send_io.bcredits.count) == 0 &&
++	    atomic_read(&sc->send_io.credits.count) == 0)
++		wake_up(&sc->send_io.credits.wait_queue);
++
+ 	/* Promptly send an immediate packet as defined in [MS-SMBD] 3.1.1.1 */
+ 	if (atomic_read(&sc->recv_io.credits.count) <
+ 		sc->recv_io.credits.target - 1) {
+@@ -1394,6 +1403,26 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
+ 		goto err_wait_credit;
+ 	}
+ 
++	new_credits = manage_credits_prior_sending(sc);
++	if (new_credits == 0 &&
++	    atomic_read(&sc->send_io.credits.count) == 0 &&
++	    atomic_read(&sc->recv_io.credits.count) == 0) {
++		queue_work(sc->workqueue, &sc->recv_io.posted.refill_work);
++		rc = wait_event_interruptible(sc->send_io.credits.wait_queue,
++					      atomic_read(&sc->send_io.credits.count) >= 1 ||
++					      atomic_read(&sc->recv_io.credits.available) >= 1 ||
++					      sc->status != SMBDIRECT_SOCKET_CONNECTED);
++		if (sc->status != SMBDIRECT_SOCKET_CONNECTED)
++			rc = -ENOTCONN;
++		if (rc < 0) {
++			log_outgoing(ERR, "disconnected not sending on last credit\n");
++			rc = -EAGAIN;
++			goto err_wait_credit;
++		}
++
++		new_credits = manage_credits_prior_sending(sc);
++	}
++
+ 	request = smbd_alloc_send_io(sc);
+ 	if (IS_ERR(request)) {
+ 		rc = PTR_ERR(request);
+@@ -1448,8 +1477,6 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
+ 
+ 	/* Fill in the packet header */
+ 	packet->credits_requested = cpu_to_le16(sp->send_credit_target);
+-
+-	new_credits = manage_credits_prior_sending(sc);
+ 	packet->credits_granted = cpu_to_le16(new_credits);
+ 
+ 	packet->flags = 0;
+-- 
+2.53.0
+
 
 
 
