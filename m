@@ -1,62 +1,95 @@
-Return-Path: <stable+bounces-216022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGb+Gvu+jmmzEQEAu9opvQ
-	(envelope-from <stable+bounces-216022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:04:43 +0100
+	id YEEGHFG/jmmzEQEAu9opvQ
+	(envelope-from <stable+bounces-216023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:06:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB989133229
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:04:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8CFA1332A1
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:06:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B61F3088215
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 06:04:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A8B030E8E71
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 06:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF26285C91;
-	Fri, 13 Feb 2026 06:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01402264A8;
+	Fri, 13 Feb 2026 06:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N1KvAnRX"
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net (zg8tmja5ljk3lje4ms43mwaa.icoremail.net [209.97.181.73])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5542770A;
-	Fri, 13 Feb 2026 06:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.181.73
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9092673AA
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 06:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770962650; cv=none; b=sVzAJLS8tcBoOLgWev4x+bwuyV9TKsV0ITYGmG+K06W40JySaq2NQi4Co7V2PPtj8fLNWFw1jg1HJaxyHSBDvRX1WyZuN1ykDKSyvkswPeiAO4okqqPb0o1UjkQkGC+EtGTgqF3FXvbJpYCdlgBQrXpcQgEXslwvUyPynMcHdLE=
+	t=1770962680; cv=none; b=AI0YjDseJfeaBFDcyRGIxew6O6Bty087BEN+LLLS8+Ur0KmgnwAxo3kVAOKPku9dS4WEztsHhkQpHiri2KrIjlUgEl5NoJLIT0u1M4dcDa3sZYdG+NAR75yc2YZbb7E7lMISC8V+6w5lqyvDNQOFO1uChJ1GgWPO8cX/l4JCDJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770962650; c=relaxed/simple;
-	bh=jsdlg2Ynwh2r9K78xMh03EfD8NoasnFnvJCqCdLLk4A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CmKMi4uhTP3QW/tHe3qYAiUylMLxGzfS/B7MeY3ae/N3dIppae5MJoioOU458EVv8nDfQfSWP3zJ5UavlWpsxuLq75+76M4QBoabr+N7Ay/L8QiqLZBHdixqEDfjBucG1PJ9ndzaiHr0g9vVcWB45QBJaY73WaDj/YJ4SuWDBc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=209.97.181.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytium.com.cn
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwC3jUXOvo5pvFZNAA--.57062S2;
-	Fri, 13 Feb 2026 14:03:58 +0800 (CST)
-Received: from localhost.localdomain (unknown [218.76.62.144])
-	by mail (Coremail) with SMTP id AQAAfwAHXuvEvo5pWw0bAA--.32545S3;
-	Fri, 13 Feb 2026 14:03:49 +0800 (CST)
-From: Cui Chao <cuichao1753@phytium.com.cn>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Wang Yinfeng <wangyinfeng@phytium.com.cn>,
-	dan.j.williams@intel.com,
-	Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>,
-	Gregory Price <gourry@gourry.net>,
-	David Hildenbrand <david@kernel.org>,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	qemu-devel@nongnu.org,
-	stable@vger.kernel.org,
-	Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: [PATCH v4 1/1] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
-Date: Fri, 13 Feb 2026 14:03:47 +0800
-Message-Id: <20260213060347.2389818-2-cuichao1753@phytium.com.cn>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260213060347.2389818-1-cuichao1753@phytium.com.cn>
-References: <20260213060347.2389818-1-cuichao1753@phytium.com.cn>
+	s=arc-20240116; t=1770962680; c=relaxed/simple;
+	bh=vQxdkryUEJ+pArY5kJMAR+7YlXlMsv2XI7L1MiRhw0w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mYor1AQhE3O8n1GMFibcyorzCdFMd0x8KehA54LB9C7nbwslNC1Zc+mBQN+BA4pH0//ao+gEIDPF6Zs7LAg82vazvud7nDKvFGD9G5kmrkCpD9FtxRb+c8abGzljqp19K7OQ+Yoo0DaxWEN2G/3kkXrxi/+uOBxQxTJfG5JMOUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N1KvAnRX; arc=none smtp.client-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2ba94dbf739so681688eec.1
+        for <stable@vger.kernel.org>; Thu, 12 Feb 2026 22:04:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770962678; x=1771567478; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nbsk2agQ8f3m0QH5WZrAhx9x+dI3Pqe/kCYQZSQSePA=;
+        b=N1KvAnRXtNCeDd6avdmZNqC6fd5VXrKBg+Z1E/2UihIPKBPazS0hkNHC7jF1xFBl4z
+         3lyvVeIDulK7XGEI10QZmBdCcsPE6b2l/wxyzSEssl38izDnu58XX4TqqgHhetJlSo0v
+         HNhKwul3TitlpV8AVRBj1geaQPc5LWvMehRL/tEfGWr5zVfI3WDFGotfElX7yz1igp1+
+         VxNT5m17Q3GKXGJznU1M1cGA1wBFzVNYRSn5+AQKsluh0C866pzbPUzMsYlK8U5KAXW/
+         zYX50mAe/614YvUeKlpU0qRqAEQA7DBjfXwfO7NXu514HV2zKQEocdtYJPgsOgDYD6Ef
+         Rgyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770962679; x=1771567479;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=nbsk2agQ8f3m0QH5WZrAhx9x+dI3Pqe/kCYQZSQSePA=;
+        b=xRR4pWk9KSevPd/GAeg85fKe2jJn/EYIOFhOoWHPEK/xVFS5dlxBh+19oW7NSv/eP3
+         1pq2gz08fcVv0oStpB4a+bLKCHXJtj58XUKcp3JBOoJKlM30nr+sbny1p+LU4gTpVcfS
+         3crprmKh9y4aOe9WNr45cW+J4aKUzHrx3BvtES5dvNmIoLAxX1h2SYxOpwuByRfKBGit
+         yWe9i+o9Fxrgr2htLWpGu3KjnhKiRAo++MgNeZ0Ef4IHxGMwfKbxIjkeiUHI3NluSXEw
+         sIWSYCQ+RmEWSGTH9d0OCEJBFT1H2To3e99er+xB6APVabqsO3XTpnMHvLn+lKbYFvix
+         h3BQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULoRwCliSRHCUUBwvFB0lB2noOLo2WgZ8G3/xb4yy/ZmzvrZu0XIy4OUJaw6b4ZvgF0Yq718w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtzeTM9CANndcloRaLonQxqtwSOHapB2UdCJY1eN5rA+3+DZVZ
+	nuIUm39AoPbQoDb8Jq7NQhKW9bp7NrRdlP5B4DWKbVIKwGMrzy7Rfzmp
+X-Gm-Gg: AZuq6aLhSFWLBFd6qrCJ/zgIEcVIbKQKHED9bg08IrnXUmSsBSAlTTk+ZwaeR8MkcUt
+	ciqjUnaRvDhDtlfHf9N2YpKFO3FrAEprWN/dUdJthxJ84M/W16JMn7l/C+UiwdZKNRUeXWsZ2A4
+	z4GN7V6q7QWbQUM86H8tz6PVKYcVqeKpJ90qm1p2M6LZP1iH/ctza2MN31jbXOfttFgU2+WeSyt
+	GYLNzbWM1ZvVORvaF01yJNlr4E6VL3N+WNOH02aRYfzrP1Ko7+2iWpTrfSj/m+Z7GrYhdSwz9iI
+	89UKPKUCL0blvirqvxx51CPtpxi9Zxs0D6f8aczV0WKp1fnXDe8rNqz5Sh2IRr3xcsepxkznQCK
+	A0ch8n30PKfBh9KL/IrDsZuTOsZ/pKLeEQ/nAr7/zdvcDr0lfKdW0402GiSf92dM2ergSoitm12
+	uTDe3/CiQHQuDooYdb7NBCKv/ZH/6cHf3U6J8RJMssXoUHmPoHD1Rwuvdhmshb2/7OfZqsGVfQU
+	q/YVFtHHjPnwEg5bhzfn4tCzg==
+X-Received: by 2002:a05:7300:6ca1:b0:2b7:a27f:3a6a with SMTP id 5a478bee46e88-2babc3aa2f4mr230438eec.4.1770962678519;
+        Thu, 12 Feb 2026 22:04:38 -0800 (PST)
+Received: from kernel.. ([45.232.185.208])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dcead76sm4803025eec.27.2026.02.12.22.04.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Feb 2026 22:04:38 -0800 (PST)
+From: Maiquel Paiva <maiquelpaiva@gmail.com>
+To: linux-bluetooth@vger.kernel.org
+Cc: luiz.dentz@gmail.com,
+	gregkh@linuxfoundation.org,
+	marcel@holtmann.org,
+	Maiquel Paiva <maiquelpaiva@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH bluetooth v7 1/1] Bluetooth: mgmt: Fix heap overflow and race condition in mesh handling
+Date: Fri, 13 Feb 2026 06:04:01 +0000
+Message-ID: <20260213060401.14200-2-maiquelpaiva@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260213060401.14200-1-maiquelpaiva@gmail.com>
+References: <20260213060401.14200-1-maiquelpaiva@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,117 +97,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwAHXuvEvo5pWw0bAA--.32545S3
-X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQAFAGmONAkAtAAEsu
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=cuichao175
-	3@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxCr4rGryDtrWxuFyDAw43ZFb_yoW5CFW5pa
-	1agFZYgF4kJryxGFs7u3WUAw1IqFnYkF45GFZrCwnxZa1Ygw1Uuryavr1FvFn7tryfCF1r
-	XF4qy3WYvw1UZaDanT9S1TB71UUUUjJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linuxfoundation.org,holtmann.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cuichao1753@phytium.com.cn,stable@vger.kernel.org];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,phytium.com.cn:mid,phytium.com.cn:email,intel.com:email,gourry.net:email];
-	TAGGED_FROM(0.00)[bounces-216022-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216023-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[phytium.com.cn]
-X-Rspamd-Queue-Id: CB989133229
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maiquelpaiva@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C8CFA1332A1
 X-Rspamd-Action: no action
 
-In some physical memory layout designs, the address space of CFMW (CXL
-Fixed Memory Window) resides between multiple segments of system memory
-belonging to the same NUMA node. In numa_cleanup_meminfo, these multiple
-segments of system memory are merged into a larger numa_memblk. When
-identifying which NUMA node the CFMW belongs to, it may be incorrectly
-assigned to the NUMA node of the merged system memory.
+This patch addresses two issues in mesh handling:
 
-When a CXL RAM region is created in userspace, the memory capacity of
-the newly created region is not added to the CFMW-dedicated NUMA node.
-Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
-containing RAM). This makes it impossible to clearly distinguish
-between the two types of memory, which may affect memory-tiering
-applications.
+1. Heap buffer overflow in mgmt_mesh_add:
+   The 'len' parameter wasn't being validated against the 'param' size,
+   potentially leading to an overflow. Added a check to validate user
+   input.
 
-Example memory layout:
+2. Race conditions in mgmt_mesh_add and mgmt_mesh_find:
+   These functions modify or traverse the mesh_pending list without
+   locking. Used guard(mutex) with the existing mgmt_pending_lock to
+   protect the critical sections, as suggested by maintainers.
 
-Physical address space:
-    0x00000000 - 0x1FFFFFFF  System RAM (node0)
-    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
-    0x40000000 - 0x5FFFFFFF  System RAM (node0)
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
-
-After numa_cleanup_meminfo, the two node0 segments are merged into one:
-    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
-
-So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
-
-To address this scenario, accurately identifying the correct NUMA node
-can be achieved by checking whether the region belongs to both
-numa_meminfo and numa_reserved_meminfo.
-
-While this issue is only observed in a QEMU configuration, and no known
-end users are impacted by this problem, it is likely that some firmware
-implementation is leaving memory map holes in a CXL Fixed Memory Window.
-CXL hotplug depends on mapping free window capacity, and it seems to be
-only a coincidence to have not hit this problem yet.
-
-Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
-Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maiquel Paiva <maiquelpaiva@gmail.com>
 ---
- mm/numa_memblks.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/bluetooth/mgmt_util.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index 5b009a9cd8b4..0892d532908c 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -568,15 +568,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
- int phys_to_target_node(u64 start)
+diff --git a/net/bluetooth/mgmt_util.c b/net/bluetooth/mgmt_util.c
+index aa7b5585cb26..eee4bc05f6e5 100644
+--- a/net/bluetooth/mgmt_util.c
++++ b/net/bluetooth/mgmt_util.c
+@@ -397,8 +397,7 @@ struct mgmt_mesh_tx *mgmt_mesh_find(struct hci_dev *hdev, u8 handle)
  {
- 	int nid = meminfo_to_nid(&numa_meminfo, start);
-+	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
+ 	struct mgmt_mesh_tx *mesh_tx;
  
- 	/*
--	 * Prefer online nodes, but if reserved memory might be
--	 * hot-added continue the search with reserved ranges.
-+	 * Prefer online nodes unless the address is also described
-+	 * by reserved ranges, in which case use the reserved nid.
- 	 */
--	if (nid != NUMA_NO_NODE)
-+	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
- 		return nid;
+-	if (list_empty(&hdev->mesh_pending))
+-		return NULL;
++	guard(mutex)(&hdev->mgmt_pending_lock);
  
--	return meminfo_to_nid(&numa_reserved_meminfo, start);
-+	return reserved_nid;
- }
- EXPORT_SYMBOL_GPL(phys_to_target_node);
+ 	list_for_each_entry(mesh_tx, &hdev->mesh_pending, list) {
+ 		if (mesh_tx->handle == handle)
+@@ -413,10 +412,15 @@ struct mgmt_mesh_tx *mgmt_mesh_add(struct sock *sk, struct hci_dev *hdev,
+ {
+ 	struct mgmt_mesh_tx *mesh_tx;
  
++	if (len > sizeof(mesh_tx->param))
++		return NULL;
++
+ 	mesh_tx = kzalloc(sizeof(*mesh_tx), GFP_KERNEL);
+ 	if (!mesh_tx)
+ 		return NULL;
+ 
++	guard(mutex)(&hdev->mgmt_pending_lock);
++
+ 	hdev->mesh_send_ref++;
+ 	if (!hdev->mesh_send_ref)
+ 		hdev->mesh_send_ref++;
 -- 
-2.33.0
+2.43.0
 
 
