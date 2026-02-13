@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-216212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OQVCnAuj2nTLgEAu9opvQ
-	(envelope-from <stable+bounces-216212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:00:16 +0100
+	id UHzGHFUtj2kPKwEAu9opvQ
+	(envelope-from <stable+bounces-216187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D912136D5A
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:00:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFFA136BB1
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4427930FCB2E
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 475C93007B00
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7CE360739;
-	Fri, 13 Feb 2026 13:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B52D360723;
+	Fri, 13 Feb 2026 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sg4wCvR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJqVEIZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5477360723;
-	Fri, 13 Feb 2026 13:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF39352936;
+	Fri, 13 Feb 2026 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770991012; cv=none; b=BXN7+qx9qHH/yuM5Pi/rbWFQAiAj/B5vQJcUNtDAIqM4KxL9l4lmMiry8BwIT3DwNH6bhyt5XNOnGJAanfP/PXCriRagAh9IWaxjuouXGCc3H80OE/wgkd7oWnnVY7mA3fpNKlHDT/FfGkWDmV7A+iiw+2bDCUSO0Fkdn1nCznA=
+	t=1770990927; cv=none; b=Q3J/NDRLP6E3XuovPj1GbkQFG7OX95ctLyGj+84D3Y6YXw/1MhA6wnLEPY+IB5wyQUuOk70Sp51hXwET/FZDSlqkOIsfy5DhXDrh7clb+ClGoll8vvCnwfjg/rijxGevdGa+wHCrchEp78TZDOscdI8fRJvTBKKxKQbnaiUYlpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770991012; c=relaxed/simple;
-	bh=9QtzeyeUUjiQ1nZm7J40BSyPPZgHvhtnM/3wIg1q+vk=;
+	s=arc-20240116; t=1770990927; c=relaxed/simple;
+	bh=LcV3jRaLbPphHH3CiiQUgu65/jODOuwabe6EEjuZ8Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=moTJlUUA/ShfwfKwy7gfsTt4WGGp+DHab9xHaDqMQDVeC86sVzLUt11tn3X1NlSysdBzlFS7l0Ng+REjIshIFoQFutgmMuEb1f7uyl7lcgEW40EVK5HinhmeZDopiTrg3r/uo2PjZGI+lbUi3s+J5WaZkmh2nv+MLxbge6sH9OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sg4wCvR1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14577C116C6;
-	Fri, 13 Feb 2026 13:56:51 +0000 (UTC)
+	 MIME-Version; b=YkjVmYLgW54weMY6wMsb9uzHfuoQMxf/7JBYvUQ1LCKXkBhzFRuoGN03zoBrJEittqi/jtTES298juoY2Eou3d/aOuilhFCngl/hOdOF+OsivgHUX5TyfEvW7kqjeT/rgKLi84EHaVyEnuSR1eGi2/mZwg9b3GW3oeWmZaxAVzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJqVEIZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EB5C116C6;
+	Fri, 13 Feb 2026 13:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770991012;
-	bh=9QtzeyeUUjiQ1nZm7J40BSyPPZgHvhtnM/3wIg1q+vk=;
+	s=korg; t=1770990927;
+	bh=LcV3jRaLbPphHH3CiiQUgu65/jODOuwabe6EEjuZ8Z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sg4wCvR1FY2gpgpqi0rkVhhEdZ/cCShAQ3oeLkxillwsk9UnDGp8ePeiyUN0Nkmli
-	 +wbj18wsl841kmWF7YarV3cbkwDrdXvSl9CeYz6Ltuc16lbubcSQItn60sKHW4mtk7
-	 1HSMEYfzSQ0dj0XlZs8SshIBUfdBnYIqEOsJoZJc=
+	b=SJqVEIZTovVMhDBq57LmlSZg/6xFWSJJcHPGwlsLxvY4EL0MkcrtgcG8RtoE71qMk
+	 toXQw/osWuE6Goi9eUHlpw6a8B1pRQVx3VPOhzzDhzO62GuhKs+gUgRVaJGIAy3Keg
+	 jcJ/pbA0esxaqfDxnUO1Rp872RQJJUHoyKtDYSPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 08/25] crypto: virtio - Add spinlock protection with virtqueue notification
-Date: Fri, 13 Feb 2026 14:48:34 +0100
-Message-ID: <20260213134704.189843256@linuxfoundation.org>
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 16/24] scsi: qla2xxx: Free sp in error path to fix system crash
+Date: Fri, 13 Feb 2026 14:48:35 +0100
+Message-ID: <20260213134705.319246481@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
-References: <20260213134703.882698935@linuxfoundation.org>
+In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
+References: <20260213134704.728003077@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +70,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216212-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216187-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 6D912136D5A
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,marvell.com:email,oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AEFFA136BB1
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-commit b505047ffc8057555900d2d3a005d033e6967382 upstream.
+commit 7adbd2b7809066c75f0433e5e2a8e114b429f30f upstream.
 
-When VM boots with one virtio-crypto PCI device and builtin backend,
-run openssl benchmark command with multiple processes, such as
-  openssl speed -evp aes-128-cbc -engine afalg  -seconds 10 -multi 32
+System crash seen during load/unload test in a loop,
 
-openssl processes will hangup and there is error reported like this:
- virtio_crypto virtio0: dataq.0:id 3 is not a head!
+[61110.449331] qla2xxx [0000:27:00.0]-0042:0: Disabled MSI-X.
+[61110.467494] =============================================================================
+[61110.467498] BUG qla2xxx_srbs (Tainted: G           OE    --------  --- ): Objects remaining in qla2xxx_srbs on __kmem_cache_shutdown()
+[61110.467501] -----------------------------------------------------------------------------
 
-It seems that the data virtqueue need protection when it is handled
-for virtio done notification. If the spinlock protection is added
-in virtcrypto_done_task(), openssl benchmark with multiple processes
-works well.
+[61110.467502] Slab 0x000000000ffc8162 objects=51 used=1 fp=0x00000000e25d3d85 flags=0x57ffffc0010200(slab|head|node=1|zone=2|lastcpupid=0x1fffff)
+[61110.467509] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G           OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
+[61110.467513] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
+[61110.467515] Call Trace:
+[61110.467516]  <TASK>
+[61110.467519]  dump_stack_lvl+0x34/0x48
+[61110.467526]  slab_err.cold+0x53/0x67
+[61110.467534]  __kmem_cache_shutdown+0x16e/0x320
+[61110.467540]  kmem_cache_destroy+0x51/0x160
+[61110.467544]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467607]  ? __do_sys_delete_module.constprop.0+0x178/0x280
+[61110.467613]  ? syscall_trace_enter.constprop.0+0x145/0x1d0
+[61110.467616]  ? do_syscall_64+0x5c/0x90
+[61110.467619]  ? exc_page_fault+0x62/0x150
+[61110.467622]  ? entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[61110.467626]  </TASK>
+[61110.467627] Disabling lock debugging due to kernel taint
+[61110.467635] Object 0x0000000026f7e6e6 @offset=16000
+[61110.467639] ------------[ cut here ]------------
+[61110.467639] kmem_cache_destroy qla2xxx_srbs: Slab cache still has objects when called from qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467659] WARNING: CPU: 53 PID: 455206 at mm/slab_common.c:520 kmem_cache_destroy+0x14d/0x160
+[61110.467718] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G    B      OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
+[61110.467720] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
+[61110.467721] RIP: 0010:kmem_cache_destroy+0x14d/0x160
+[61110.467724] Code: 99 7d 07 00 48 89 ef e8 e1 6a 07 00 eb b3 48 8b 55 60 48 8b 4c 24 20 48 c7 c6 70 fc 66 90 48 c7 c7 f8 ef a1 90 e8 e1 ed 7c 00 <0f> 0b eb 93 c3 cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 55 48 89
+[61110.467725] RSP: 0018:ffffa304e489fe80 EFLAGS: 00010282
+[61110.467727] RAX: 0000000000000000 RBX: ffffffffc0d9a860 RCX: 0000000000000027
+[61110.467729] RDX: ffff8fd5ff9598a8 RSI: 0000000000000001 RDI: ffff8fd5ff9598a0
+[61110.467730] RBP: ffff8fb6aaf78700 R08: 0000000000000000 R09: 0000000100d863b7
+[61110.467731] R10: ffffa304e489fd20 R11: ffffffff913bef48 R12: 0000000040002000
+[61110.467731] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[61110.467733] FS:  00007f64c89fb740(0000) GS:ffff8fd5ff940000(0000) knlGS:0000000000000000
+[61110.467734] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[61110.467735] CR2: 00007f0f02bfe000 CR3: 00000020ad6dc005 CR4: 0000000000770ee0
+[61110.467736] PKRU: 55555554
+[61110.467737] Call Trace:
+[61110.467738]  <TASK>
+[61110.467739]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467755]  ? __do_sys_delete_module.constprop.0+0x178/0x280
 
-Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Free sp in the error path to fix the crash.
+
+Fixes: f352eeb75419 ("scsi: qla2xxx: Add ability to use GPNFT/GNNFT for RSCN handling")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-9-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/virtio/virtio_crypto_core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/qla2xxx/qla_gs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -77,15 +77,20 @@ static void virtcrypto_done_task(unsigne
- 	struct data_queue *data_vq = (struct data_queue *)data;
- 	struct virtqueue *vq = data_vq->vq;
- 	struct virtio_crypto_request *vc_req;
-+	unsigned long flags;
- 	unsigned int len;
- 
-+	spin_lock_irqsave(&data_vq->lock, flags);
- 	do {
- 		virtqueue_disable_cb(vq);
- 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
-+			spin_unlock_irqrestore(&data_vq->lock, flags);
- 			if (vc_req->alg_cb)
- 				vc_req->alg_cb(vc_req, len);
-+			spin_lock_irqsave(&data_vq->lock, flags);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
-+	spin_unlock_irqrestore(&data_vq->lock, flags);
- }
- 
- static void virtcrypto_dataq_callback(struct virtqueue *vq)
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -3622,8 +3622,8 @@ int qla_fab_async_scan(scsi_qla_host_t *
+ 	if (vha->scan.scan_flags & SF_SCANNING) {
+ 		spin_unlock_irqrestore(&vha->work_lock, flags);
+ 		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x2012,
+-		    "%s: scan active\n", __func__);
+-		return rval;
++		    "%s: scan active for sp:%p\n", __func__, sp);
++		goto done_free_sp;
+ 	}
+ 	vha->scan.scan_flags |= SF_SCANNING;
+ 	if (!sp)
 
 
 
