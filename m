@@ -1,248 +1,144 @@
-Return-Path: <stable+bounces-216300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMZLE3J+j2nZRAEAu9opvQ
-	(envelope-from <stable+bounces-216300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 20:41:38 +0100
+	id IPUzIOaFj2mRRQEAu9opvQ
+	(envelope-from <stable+bounces-216301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 21:13:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEAE3139411
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 20:41:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5D313958E
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 21:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49A203008326
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 19:41:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 031E13037E65
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 20:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189B027F01B;
-	Fri, 13 Feb 2026 19:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5292826FD93;
+	Fri, 13 Feb 2026 20:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NiPMwTWd";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fVPJafXq"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="UIenRa5+"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756E425F994
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 19:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D151B81D3;
+	Fri, 13 Feb 2026 20:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771011695; cv=none; b=Dg7dKlbTpuMpEIT8WX/aOFq1JtVIq2oSkd6U0prVqxozAgAAXQ06MB2htcdp603/KK9za//E93vlvdDHFUywXy6FtwnJWTyymZgLxH59OY0oKaStoVcwJGmmSVwADfA29+Y6XwJvXMGa2LgN/OO8xJs6WgBGJFSLt4FXvCTQ1pc=
+	t=1771013601; cv=none; b=td2ufr4sWhfpkdyRIQjkwLqsjWC/lhh72wuIGm8UbeZD8TiT0NzMDUVBsG1o8yyupezDB7T0IHjIlNIODgtrr4MI6ARLHoqCvepqJEi5JLOi0FSaZnWpz746Fus//1O1Eq1cxn4lF4Wci7Cm027B8bI0WtQpX+GoGm4yVEqy7V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771011695; c=relaxed/simple;
-	bh=0vG8ZqU3sCAHwpU6tE5Q+ZCkwGtFet0/lGXw0pw2o9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kApev/kS2UrKQWmWG7ANdGcKaUNlYavbs5NfZVtOHqWKshb3tLVGdztI/iWgoXRPHZvYoSor2kXT/OnIj2bMMfWDorBrkyysb5SwhoTezb8J+bQXUKrHuVx5GDEp0TaMJWP3BjXZcYnvtD+2v8MpOgolOWqxG5o8CW+FEXbgLLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NiPMwTWd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fVPJafXq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771011693;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sNPXiBDvtas/vaXtolVa7cVtITG/UHp7HfnL+g1+92o=;
-	b=NiPMwTWdYwZuqWwJk4WRGl2M/Fauj/5YR7dtCahTs9q2uJkA+NvPWueBjPuXYeD3+W58Ha
-	qYZ5J1AdWMj5pszNHPLf5DyZ8U1VVRba4qFJ7vmv1I6loyGVLTmQHr+aC8yeb5FjSfN7SE
-	vi7RfMDACETNm8TV0QleXUAWrFX27OU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-OOrpZ95vPHW6VpHCyANg8g-1; Fri, 13 Feb 2026 14:41:32 -0500
-X-MC-Unique: OOrpZ95vPHW6VpHCyANg8g-1
-X-Mimecast-MFC-AGG-ID: OOrpZ95vPHW6VpHCyANg8g_1771011691
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4837107e0a9so10648795e9.0
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 11:41:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1771011691; x=1771616491; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sNPXiBDvtas/vaXtolVa7cVtITG/UHp7HfnL+g1+92o=;
-        b=fVPJafXqSDm4Zmj9TUoUbpe9iVthcun8yUAivdFwf9+YoTwFjrucNgkRxulpI8VdQx
-         ZKNax3D8JMV4d3ucyaBt9aNph8JxwO97ENqSruXffuM91UyAzs5+y3AJiP8CWSEwkq//
-         g3smCLpkZU82l7tmYMAr3nIW+okQQa0F109EIRGBTL/Qg9a/7TcbUSkzgEyBcjUpYngL
-         beALH00EaM17d6T+kownHmgiBcQEZfVoK0lvLvr5gJmmRiOSlh4xXShT8LYEXOqNPMGI
-         sEvxuGbrVCrn30YtYL4P3iMSiSJoYjNAHwVaVRbTeV6jXS1sTIJmXzIEngC07Kvm5K5j
-         5PXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771011691; x=1771616491;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sNPXiBDvtas/vaXtolVa7cVtITG/UHp7HfnL+g1+92o=;
-        b=FiRK+yPlbVyM/9TTdHLZE3MuACp24ZmihIxOxynSzRRH3FR4E0Dayyc6R4/nPkXtrf
-         nfFDn9KWfJW7aLPVDlV5GHqcng4NzOH1X1Hm9qrSkMsIHe71lZYdULsipVsJdeC5rnQS
-         TY+Arwzg63Y2VJ96l2gr2B7d5hXhucnsgZWxnKBxhbV69TxHbByi0vuK6Ecvfols5dka
-         lhNQ7HXsXfeRrj648H0ttxrkd9FtRElTZYfQPjsxPtaMs/B5bIcAgJzziuC4dUyZjWce
-         KXwN6vxrNrE7lRmikckVf/nmUOx/Oe9pEgx+/E6YqHNDHUoYCrdi1+p+NxK99RZqK8qk
-         /8JA==
-X-Forwarded-Encrypted: i=1; AJvYcCVxCGvcaz6tkmpnl47OlmhpE7UjFKGjf4XNh9OnPTrvR8L4LCB6SkdsZb6thjKeuXUcrkZipbU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMdvH+rWcEwctizfpxYcIj39AQJB2b5x1e/N5EQIUjBjO/kl1R
-	koeyOpss5BFxZLX95gRkEFETa5TRemr5ismdyDwvtV5exLmiv4IJgQgC4r295yd85HjHWOzW9iQ
-	shajDFXhX/CBJg1JuhdIPpMOAPezTmYGogxNu1Xm6sbt4r+sBcYwH5iHJMQ==
-X-Gm-Gg: AZuq6aKMSL+pMJyyye1Z3VV6GKRT1LdVmJxkFvd44M5JDcr/9qSr/h8CkhurxwI5Pbq
-	TrxtEZUGvqwFqbY670cTdXLZPKWj05LiS0nUMe+eSN1pIdnO5Vy0WiuY2Ov3XNwOxYEvOdU2w1i
-	5cyGpvMBf7Nsah7TsNdCLqwzBHeRMHjJnZOLqiGRd5+ufve8aedRfvaojV3QotU9tKs/vceDRyC
-	WtC61u+CWRQmOc5hZAYf5NLYypk5RYkaxmqd7e3uYV/IjzHsHLqaozrRutIn1JwRmOjNHUJG0Ml
-	3A9llYGNyh5yW30JmEWgQQQNtjQ6WOjghRJOjQLOm/o+WlT3EHeOUffbMEvW91PWUcL8d3W5WcT
-	ghLrZijsK9AnJdH4jc0S8f+SWHxOwhGnf+X0LKTMwaSYrv0FB7+Sh35hrbKxNVlPiJfMBHos=
-X-Received: by 2002:a05:600c:1e1d:b0:477:9814:6882 with SMTP id 5b1f17b1804b1-48373a15f3cmr46613515e9.5.1771011690984;
-        Fri, 13 Feb 2026 11:41:30 -0800 (PST)
-X-Received: by 2002:a05:600c:1e1d:b0:477:9814:6882 with SMTP id 5b1f17b1804b1-48373a15f3cmr46613075e9.5.1771011690457;
-        Fri, 13 Feb 2026 11:41:30 -0800 (PST)
-Received: from sgarzare-redhat (host-82-53-134-58.retail.telecomitalia.it. [82.53.134.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d82a4c4sm476596725e9.10.2026.02.13.11.41.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Feb 2026 11:41:29 -0800 (PST)
-Date: Fri, 13 Feb 2026 20:41:24 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nsc@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Steve French <smfrench@gmail.com>
-Subject: Re: [PATCH 0/2] kbuild: rpm-pkg: Address -debuginfo build regression
- with RPM < 4.20.0
-Message-ID: <CAGxU2F7FFNgb781_A7a1oL63n9Oy8wsyWceKhUpeZ6mLk=focw@mail.gmail.com>
-References: <20260210-kbuild-fix-debuginfo-rpm-v1-0-0730b92b14bc@kernel.org>
- <aY8wyR572eZYWVJY@sgarzare-redhat>
- <20260213191138.GA2131983@ax162>
+	s=arc-20240116; t=1771013601; c=relaxed/simple;
+	bh=+gUk4hK7+k7pYFbyAM6dw8oTyzRmsqoUuCwB4AOQlOU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z/p8HlgFS1mkqzXvXro4zRCzxsJwUVVCOOyBE8PpxM9AQz4ldJWZwZD4F372N2cSya84a9lMEwtjmUftZ4i+0P6mb5iezDh4ZRlDRQmVQb+ceJFdppeaap/h/W2Zn0tgosnp9c4pKprqGa9hfGTnkjMyxH3gUEx1x2oyzOOi0Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=UIenRa5+; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [IPV6:2607:fb90:3709:ce04:bf4c:86df:148a:f3f5] ([IPv6:2607:fb90:3709:ce04:bf4c:86df:148a:f3f5])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 61DKBp7G948099
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Fri, 13 Feb 2026 12:11:59 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 61DKBp7G948099
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026012301; t=1771013560;
+	bh=qDr8hxaps84UY5Vhn7GxyKkxMFuR1fhYlnu0pWKAx/8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UIenRa5+SCODvF3HfzM/+/w1oYcPTJj0zmEZKetHm8AKDjAj766pfpV6b21fv9djc
+	 F4mDW1kCXZALUIDbDAkXCV0W9/cGsMTej9gJnhz2OiicACwASB0CzdWu5EzwADZRcg
+	 Pq/1U3gANHfOjYPR12LTBxw59FeajY2Hr6mkuHsDiH1fke97v44z6t3rDTGzyc4xkP
+	 LFViuiEFrNKpZXmqpAeRqNj7RTvZEl96/+oCvr3ox+KgHRvNTKDQ2l1m9NuEpsapra
+	 rTzvHo9F/VGTB6AZ2mOwuErHUyX4KmmUwQM9t6cAgyyjQFezebSfEz4L8fDz/cYHZB
+	 S6CYk7pnREspg==
+Message-ID: <5c155da1-35a7-4b36-8c21-e21f8743c3d4@zytor.com>
+Date: Fri, 13 Feb 2026 12:11:51 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260213191138.GA2131983@ax162>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/3] x86/cpu: Clear feature bits disabled at
+ compile-time
+To: Borislav Petkov <bp@alien8.de>, Sohil Mehta <sohil.mehta@intel.com>
+Cc: Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        x86@kernel.org, pawel.chmielewski@linux.intel.com,
+        Farrah Chen <farrah.chen@intel.com>,
+        Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1770908783.git.m.wieczorretman@pm.me>
+ <32fbbfc16974cfed11e7d2651bce836ba9ceaccc.1770908783.git.m.wieczorretman@pm.me>
+ <20260212155808.GDaY34kOTrEYHLdoyK@fat_crate.local>
+ <aY35H-VXwoSLFXoj@wieczorr-mobl1.localdomain>
+ <E9F385CE-83B8-4088-B6FC-AB113F8DF55C@zytor.com>
+ <A9F52EC5-EC74-43BB-BB3F-351F684BF5CE@alien8.de>
+ <19d3f1c8-01aa-4a50-81e0-6af3fb7fe9cd@intel.com>
+ <20260212234722.GFaY5mimfap5YbOi30@fat_crate.local>
+ <57039edb-419c-4e4a-96d0-3578e233b594@intel.com>
+ <20260213005813.GGaY53JfOLNoSJNgRe@fat_crate.local>
+Content-Language: en-US, sv-SE
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <20260213005813.GGaY53JfOLNoSJNgRe@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[zytor.com,none];
+	R_DKIM_ALLOW(-0.20)[zytor.com:s=2026012301];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-216300-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-216301-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hpa@zytor.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[zytor.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
-X-Rspamd-Queue-Id: DEAE3139411
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zytor.com:mid,zytor.com:dkim]
+X-Rspamd-Queue-Id: DC5D313958E
 X-Rspamd-Action: no action
 
-On Fri, 13 Feb 2026 at 20:11, Nathan Chancellor <nathan@kernel.org> wrote:
->
-> Hi Stefano,
->
-> On Fri, Feb 13, 2026 at 03:11:38PM +0100, Stefano Garzarella wrote:
-> > On Tue, Feb 10, 2026 at 12:04:47AM -0700, Nathan Chancellor wrote:
-> > > Steve reported a build issue with commit 62089b804895 ("kbuild: rpm-pkg:
-> > > Generate debuginfo package manually") on RHEL9, which has an older
-> > > version of RPM than what I tested. Turns out that RPM 4.20.0 fixed an
-> > > issue with specifying %files for a -debuginfo subpackage.
-> > >
-> > > The first patch restricts the new -debuginfo package generation process
-> > > to CONFIG_MODULE_SIG=y and RPM >= 4.20.0 to ensure it is actually
-> > > necessary and working. The second patch restores the original -debuginfo
-> > > package generation process from commit a7c699d090a1 ("kbuild: rpm-pkg:
-> > > build a debuginfo RPM") when CONFIG_MODULE_SIG is disabled to keep the
-> > > -debuginfo package around for older versions of RPM.
-> >
-> > Yeah, I had similar issue on Fedora 42 (RPM version 4.20.1) and this series
-> > fixed my issue.
->
-> Thanks for testing! I find that a little odd though since I tested
-> 62089b804895 in Fedora 42 during my investigation of the problem and it
-> worked fine without these changes. Nevertheless, I will add your tags to
-> this series when I apply it.
+On 2026-02-12 16:58, Borislav Petkov wrote:
+> On Thu, Feb 12, 2026 at 04:14:07PM -0800, Sohil Mehta wrote:
+>> So, as of today, if one of these features shows up, a user can't be sure
+>> whether the kernel has enabled it or not. Right?
+> 
+> This is not such a critical bug - judging by how no one noticed it until
+> now...
+> 
+>> My suggestion is that:
+>> Instead of (or maybe along with) fixing this buggy interface, would it
+>> be better to put this information in something like debugfs/sysfs? So,
+>> at least new user software can start using that.
+> 
+> ... to go and make big waves and "fix" everything. We'll address this
+> inconsistency eventually and go on with our lives.
+> 
 
-mmm, that it's odd indeed.
-Without this series applied, I had issues on Fedora 42 (RPM version 
-4.20.1), but it worked on Fedora 43 (RPM version 6.0.1).
+Agreed. And more importantly, like it or not, /proc/cpuinfo is what people are
+using, if they aren't going straight out and looking at CPUID and XCR0 in user
+space directly.
 
-I just retried on Fedora 42 to build commit cee73b1e840c ("Merge tag 
-'riscv-for-linus-7.0-mw1' of 
-git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux") and I have 
-the following errors:
+A new more structured interface might be nice -- for one thing, /proc/cpuinfo
+is huge on newer machines; it was originally designed for the UP world -- but
+we can't get rid of /proc/cpuinfo for many, many years so let's actually fix it.
 
-RPM build errors:
-    Dependency tokens must begin with alpha-numeric, '_' or '/': #�) = 0x0d000002
-    Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x47161b0700
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x339b1a000ac0
-    Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x36000000
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7508200000000000
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e76000000000400
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x803ab2b00000000
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1a00000000005e00
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x125590000000060
-    Dependency tokens must begin with alpha-numeric, '_' or '/': = 0x03080000
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x818000000003600
-    Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
-    Dependency tokens must begin with alpha-numeric, '_' or '/': $) = 0x1c01040000004d00
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x63c300000000000
-    Illegal char '?' (0xffffffd8) in: 3�
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1320f691700
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e17101500
-    Version required: ksym(g) =
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
-    Dependency tokens must begin with alpha-numeric, '_' or '/': p) = 0x3875480000005c
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ]) = 0xfc22000000003000
-    Dependency tokens must begin with alpha-numeric, '_' or '/': 2) = 0x5d0d03cc22
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ]) = 0x32042c1c
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1c11a3d1b00
-    Version required: ksym(�) =
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3220312e322e3400
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x322e353120295400
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x2029554e47282000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-    Illegal char ')' (0x29) in: (GNU)
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
-    Dependency tokens must begin with alpha-numeric, '_' or '/': #) = 0x031c0000
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x570d03ea11
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x4000000520d03c0
-    Dependency tokens must begin with alpha-numeric, '_' or '/': C) = 0x690d03cf33
-    Dependency tokens must begin with alpha-numeric, '_' or '/': �l) = 0x102000001471140
-    Dependency tokens must begin with alpha-numeric, '_' or '/': i) = 0x4a00000000011000
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e00000000240000
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x42111503a533
-    Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0xea1303bb33000000
-    Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-
-But if I apply this series on top, everything is fine.
-
-Thanks,
-Stefano
+	-hpa
 
 
