@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-216042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216043-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEo6BG34jmnbGAEAu9opvQ
-	(envelope-from <stable+bounces-216042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:09:49 +0100
+	id 0IIpFYT4jmnbGAEAu9opvQ
+	(envelope-from <stable+bounces-216043-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:10:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9ED134E26
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:09:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D081F134E4B
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:10:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EC1B3308B18C
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 10:09:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 825CB30B379C
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 10:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0545A3502B9;
-	Fri, 13 Feb 2026 10:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0AF350290;
+	Fri, 13 Feb 2026 10:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OXmez4S6"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qrRATXF/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2396350299
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 10:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BB4350A30
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 10:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770977363; cv=none; b=gjDRmBAMPVC9GRovkmME4D9pB676aPKZn3M74765AInVrYvIxeHpn947shHlrP7eejLKl+YKKVnBVWXNMBFC+Z169SPqPea3lYheiBtEjy1+Zwn12JsgjREv9VrOqFu+/qG/+CQL31vuciLtJiCakp3CvDYkrayOm1CIEoUMO84=
+	t=1770977367; cv=none; b=B6yo3rMMeMonyoWKTEYUgQDJdczkXQUTv5ZGhaI6l2W5W08v7tJcgQviH4zwrgv6FYVnhKA4x59/3UqG78M1Sb3+Bfwq4laPbHO2mtycJszul42eWPYRM3OSeMp/lUmAU2pi4QklFk3OpKt3K0xcffufCXa7K3sGdF2wZPEeAWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770977363; c=relaxed/simple;
-	bh=Gmr69WGMLjBvur+7uCQXLHA9odNRHmal7j3YUPNU3ZE=;
+	s=arc-20240116; t=1770977367; c=relaxed/simple;
+	bh=nEMCIOnsanEJMnLYmB5e41nP6UMT7vo619hj5X6ToIQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZGfjNzKJwbNkFuwyc4j/6Q1uM9+Dvjm6Nd+eMmWjDsfzgWgYCKH0MlSNbWiCan/14Y9QaFp+6XGO0KbZOUrLpSyPH2rYU3wG+0qx7pg/jIGgATkTIPawVQAD48zqbaMEVnbqK4OoBWQ3jU35zeg8rTsmvSX263B7nqbycBFFQUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--guanyulin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OXmez4S6; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=tqQvbFOSV9m9Zp9x9I+WieRq0XvvSuN0fgxh5QXtPgbcSlrqvEoNOR7XpgXgjsp6JxOSAcSmQ7HzDtKr6RYXibfkINSoYfwBkEgeUWLSeyRvmEJE/DQPjgPXv7PpM1kRvInVSAgUZCh7upn3mjMX8us2y1h83FuQx06YtlH/EQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--guanyulin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qrRATXF/; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--guanyulin.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ab4de9580dso23924605ad.3
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 02:09:22 -0800 (PST)
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35621cea097so553251a91.1
+        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 02:09:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770977362; x=1771582162; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1770977365; x=1771582165; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iwUi3JIHoNvBN2bDQam1XZ1HxEGtt5ZvqQPmazzonYA=;
-        b=OXmez4S6eASUJ5aMR3jT0QhjgMMB/j1r17AtoH7b7/k9LXKhtRkJps9DU/94QVMyKG
-         Yn/tpCvtYMK9mWddJ5XI82c5c8xX2u1X+akH0OG12Px0ZR2+2KKFzDytj5/lTI4OytEB
-         2mKy3VF7Djr51lxhjOQ2uQUMRMfLq3hsOU4iq9vCGg7giAIA7Ohi9FvJWOHulylz2cUX
-         +rcnBMVrKBABSBrn61szfXxDSvWm7ipYbA+Q238IPuCYt4xfd2datY+1idCyt9Mo02nW
-         uy0yhKWUQmWDe80aW7byXas9zHgbW1b9pBLHGwAjHz3adgu3ccpCqzv7XT0w7MKim9/k
-         nEPg==
+        bh=6H578zF40bIvw0kW2/BZM5eR8EPStj53jblRqAXiqY4=;
+        b=qrRATXF/DSXdU5UJqW3LPIGgJIjEkRjTN89lmtG8kzDeaVlcTM9S9JQfUKnaSqYbJ/
+         wBDPU7ZBCc365c0JAoPccaWcOJgCXDHTSnZebvwPuChdTSAAWxILFscDniFsqXPawIpn
+         ed46QkXBKjKjt/W51iU52UB1FevqK+yT5JflHmH3s+DfsXSHxy5+WKfaQ8aXA9K249pq
+         jw+Z5BFrU3IcHwG5EZMVPIexP4NS3xc3Y/l+qCt6KzPMTmi6RXQzqhWjPyIwPZCDB0UT
+         9LOSE5PKkOiw28RdCcMLYlRVIB8xZRdxODfseQnfGyzNnX3eNatbCkKgX8Dr7s5Mk3jB
+         l9sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770977362; x=1771582162;
+        d=1e100.net; s=20230601; t=1770977365; x=1771582165;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iwUi3JIHoNvBN2bDQam1XZ1HxEGtt5ZvqQPmazzonYA=;
-        b=YVP2f13KuFBXCqJOc8ZeonKNcpbpFtDdH2vm7Ybp0ESEH6fKlRP9tDbixByhBIssMJ
-         0boQd0SKokKSMAruO1Svn3AVDqyXjHT3+BLHo6tff/dAYVRVq5U8VUaNROEPUI3kJ1yt
-         26uKNlnPAZmgU74JUp3g3M3okSsrZke1LjL2DBRrsM1rjsBJCw21Xc7Ux9QW2DUjQG8d
-         JhVcDbmHhuBwnlEwUr+TvYWw9704oc3mKCi8LVEV/91CVTpgHmOWk8hq+9g+ct+NXKH0
-         yuI85Erb31CI/YDDIVndU6ezIQL9NzjIaV4G0dIJ+yr+aRsRYDKOrU8za9wcnvLVqhvH
-         yjXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUXEzRmT1+c1PG7LzDoWPzyAJUe2GOfoNayr1mmQkbhlBm2gTvCfQzZoPHp6naUvNUWKisw1vQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxLogpNTfreoqE14KD9IZ0mfDP0m2GrhOjyZ65pCqc7qe91Fdg
-	73dDZb8bUvnFLX6+gtWIDCTsiTZybYzjNp5E5zJ0Yp9dQUqknNSvLItukH7vYJ1QF2wnt6G/FfD
-	4EAeAI3RXEIHQv0ZOPw==
-X-Received: from plbje12.prod.google.com ([2002:a17:903:264c:b0:2a7:5a4a:5bc0])
+        bh=6H578zF40bIvw0kW2/BZM5eR8EPStj53jblRqAXiqY4=;
+        b=YuiH3rOhG6cc6Ar3dBpcqnetMvySRHDkxOaXZGn/DpYACoghOL3zIUJwTyaAk044Ox
+         HcmnE/Jz4gF7WXdiJFkckIRAya9b702pQMJmYOt8KeuW7+1kE1V8qig5+89ReRfYJTBh
+         SfSoOUmRvG4quc/0u1RHjFCG1xsPT1KnYRAQ5HQtxwBsVKS1ITSZfbrOfoySAUWjNri5
+         A4dETkOnnip5aHH8WNyEN5f9ieauJsEWf07ESNoREbGM/p1OPpNGdDdmST2bcWJXJJkV
+         EReHMtUkTVUKNlcBmX26cTmzAww+xXHtzsaY772N40NtVmWPV3Ak/7ypL8zZAbGc6MWt
+         NNkA==
+X-Forwarded-Encrypted: i=1; AJvYcCVi7HLor6/Gcf8WOd5auH/uHACPP+rt5A3j2EHtrU9PMbq3hbPDKI2JfNwSeWcVD3dMjmbuIfE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXz4BJaMFJwcAEDCo25K5II6yURg42YXxTvwyhwv5cW1bouD6U
+	twAKa94TWo8FRZvj7chBJmwNzx73/AeWizO8f1nC0O0mg9xyMIB2tuPFquX9FWHLXRxRxaeWvaO
+	VnVsWmKCCKpOGQAxSvw==
+X-Received: from pjbbx10.prod.google.com ([2002:a17:90a:f48a:b0:356:28cb:9650])
  (user=guanyulin job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:b4b:b0:298:5abe:4b1 with SMTP id d9443c01a7336-2ab5062cd61mr14490185ad.52.1770977361891;
- Fri, 13 Feb 2026 02:09:21 -0800 (PST)
-Date: Fri, 13 Feb 2026 10:07:35 +0000
+ 2002:a17:90b:5550:b0:354:a065:ec3e with SMTP id 98e67ed59e1d1-356aad900fbmr1526714a91.26.1770977364914;
+ Fri, 13 Feb 2026 02:09:24 -0800 (PST)
+Date: Fri, 13 Feb 2026 10:07:36 +0000
 In-Reply-To: <20260213100736.2914690-1-guanyulin@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,8 +76,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260213100736.2914690-1-guanyulin@google.com>
 X-Mailer: git-send-email 2.53.0.273.g2a3d683680-goog
-Message-ID: <20260213100736.2914690-2-guanyulin@google.com>
-Subject: [RFC PATCH v2 1/2] usb: offload: move device locking to callers in offload.c
+Message-ID: <20260213100736.2914690-3-guanyulin@google.com>
+Subject: [RFC PATCH v2 2/2] ALSA: usb: qcom: manage offload device usage
 From: Guan-Yu Lin <guanyulin@google.com>
 To: gregkh@linuxfoundation.org, mathias.nyman@intel.com, perex@perex.cz, 
 	tiwai@suse.com, quic_wcheng@quicinc.com, broonie@kernel.org, arnd@arndb.de, 
@@ -107,177 +107,120 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[guanyulin@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216042-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216043-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[google.com:+]
-X-Rspamd-Queue-Id: 7C9ED134E26
+X-Rspamd-Queue-Id: D081F134E4B
 X-Rspamd-Action: no action
 
-Update usb_offload_get() and usb_offload_put() to require that the
-caller holds the USB device lock. Remove the internal call to
-usb_lock_device() and add device_lock_assert() to ensure synchronization
-is handled by the caller. These functions continue to manage the
-device's power state via autoresume/autosuspend and update the
-offload_usage counter.
+The Qualcomm USB audio offload driver currently does not report its offload
+activity to the USB core. This prevents the USB core from properly tracking
+active offload sessions, which could allow the device to auto-suspend while
+audio offloading is in progress.
 
-Additionally, decouple the xHCI sideband interrupter lifecycle from the
-offload usage counter by removing the calls to usb_offload_get() and
-usb_offload_put() from the interrupter creation and removal paths. This
-allows interrupters to be managed independently of the device's offload
-activity status.
+Integrate usb_offload_get() and usb_offload_put() calls into the offload
+stream setup and teardown paths. Specifically, call usb_offload_get() when
+initializing the event ring and usb_offload_put() when freeing it.
+
+Since the updated usb_offload_get() and usb_offload_put() APIs require the
+caller to hold the USB device lock, add the necessary device locking in
+handle_uaudio_stream_req() and qmi_stop_session() to satisfy this
+requirement.
 
 Cc: stable@vger.kernel.org
 Fixes: ef82a4803aab ("xhci: sideband: add api to trace sideband usage")
 Signed-off-by: Guan-Yu Lin <guanyulin@google.com>
 ---
- drivers/usb/core/offload.c       | 34 +++++++++++---------------------
- drivers/usb/host/xhci-sideband.c | 14 +------------
- 2 files changed, 13 insertions(+), 35 deletions(-)
+ sound/usb/qcom/qc_audio_offload.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/core/offload.c b/drivers/usb/core/offload.c
-index 7c699f1b8d2b..e13a4c21d61b 100644
---- a/drivers/usb/core/offload.c
-+++ b/drivers/usb/core/offload.c
-@@ -20,6 +20,7 @@
-  * enabled on this usb_device; that is, another entity is actively handling USB
-  * transfers. This information allows the USB driver to adjust its power
-  * management policy based on offload activity.
-+ * The caller must hold @udev's device lock.
-  *
-  * Return: 0 on success. A negative error code otherwise.
-  */
-@@ -27,31 +28,25 @@ int usb_offload_get(struct usb_device *udev)
- {
- 	int ret;
+diff --git a/sound/usb/qcom/qc_audio_offload.c b/sound/usb/qcom/qc_audio_offload.c
+index cfb30a195364..6bcb6033e688 100644
+--- a/sound/usb/qcom/qc_audio_offload.c
++++ b/sound/usb/qcom/qc_audio_offload.c
+@@ -699,6 +699,7 @@ static void uaudio_event_ring_cleanup_free(struct uaudio_dev *dev)
+ 		uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE,
+ 				   PAGE_SIZE);
+ 		xhci_sideband_remove_interrupter(uadev[dev->chip->card->number].sb);
++		usb_offload_put(dev->udev);
+ 	}
+ }
  
--	usb_lock_device(udev);
--	if (udev->state == USB_STATE_NOTATTACHED) {
--		usb_unlock_device(udev);
-+	device_lock_assert(&udev->dev);
+@@ -750,6 +751,7 @@ static void qmi_stop_session(void)
+ 	struct snd_usb_substream *subs;
+ 	struct usb_host_endpoint *ep;
+ 	struct snd_usb_audio *chip;
++	struct usb_device *udev;
+ 	struct intf_info *info;
+ 	int pcm_card_num;
+ 	int if_idx;
+@@ -791,8 +793,13 @@ static void qmi_stop_session(void)
+ 			disable_audio_stream(subs);
+ 		}
+ 		atomic_set(&uadev[idx].in_use, 0);
+-		guard(mutex)(&chip->mutex);
+-		uaudio_dev_cleanup(&uadev[idx]);
 +
-+	if (udev->state == USB_STATE_NOTATTACHED)
- 		return -ENODEV;
--	}
++		udev = uadev[idx].udev;
++		if (udev) {
++			guard(device)(&udev->dev);
++			guard(mutex)(&chip->mutex);
++			uaudio_dev_cleanup(&uadev[idx]);
++		}
+ 	}
+ }
  
- 	if (udev->state == USB_STATE_SUSPENDED ||
--		   udev->offload_at_suspend) {
--		usb_unlock_device(udev);
-+	    udev->offload_at_suspend)
- 		return -EBUSY;
--	}
+@@ -1183,11 +1190,15 @@ static int uaudio_event_ring_setup(struct snd_usb_substream *subs,
+ 	er_pa = 0;
  
- 	/*
- 	 * offload_usage could only be modified when the device is active, since
- 	 * it will alter the suspend flow of the device.
- 	 */
- 	ret = usb_autoresume_device(udev);
--	if (ret < 0) {
--		usb_unlock_device(udev);
+ 	/* event ring */
++	ret = usb_offload_get(subs->dev);
 +	if (ret < 0)
- 		return ret;
--	}
++		goto exit;
++
+ 	ret = xhci_sideband_create_interrupter(uadev[card_num].sb, 1, false,
+ 					       0, uaudio_qdev->data->intr_num);
+ 	if (ret < 0) {
+ 		dev_err(&subs->dev->dev, "failed to fetch interrupter\n");
+-		goto exit;
++		goto put_offload;
+ 	}
  
- 	udev->offload_usage++;
- 	usb_autosuspend_device(udev);
--	usb_unlock_device(udev);
- 
+ 	sgt = xhci_sideband_get_event_buffer(uadev[card_num].sb);
+@@ -1219,6 +1230,8 @@ static int uaudio_event_ring_setup(struct snd_usb_substream *subs,
+ 	mem_info->dma = 0;
+ remove_interrupter:
+ 	xhci_sideband_remove_interrupter(uadev[card_num].sb);
++put_offload:
++	usb_offload_put(subs->dev);
+ exit:
  	return ret;
  }
-@@ -64,6 +59,7 @@ EXPORT_SYMBOL_GPL(usb_offload_get);
-  * The inverse operation of usb_offload_get, which drops the offload_usage of
-  * a USB device. This information allows the USB driver to adjust its power
-  * management policy based on offload activity.
-+ * The caller must hold @udev's device lock.
-  *
-  * Return: 0 on success. A negative error code otherwise.
-  */
-@@ -71,33 +67,27 @@ int usb_offload_put(struct usb_device *udev)
- {
- 	int ret;
+@@ -1483,6 +1496,7 @@ static int prepare_qmi_response(struct snd_usb_substream *subs,
+ 	uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE, PAGE_SIZE);
+ free_sec_ring:
+ 	xhci_sideband_remove_interrupter(uadev[card_num].sb);
++	usb_offload_put(subs->dev);
+ drop_sync_ep:
+ 	if (subs->sync_endpoint) {
+ 		uaudio_iommu_unmap(MEM_XFER_RING,
+@@ -1528,6 +1542,7 @@ static void handle_uaudio_stream_req(struct qmi_handle *handle,
+ 	u8 pcm_card_num;
+ 	u8 pcm_dev_num;
+ 	u8 direction;
++	struct usb_device *udev = NULL;
+ 	int ret = 0;
  
--	usb_lock_device(udev);
--	if (udev->state == USB_STATE_NOTATTACHED) {
--		usb_unlock_device(udev);
-+	device_lock_assert(&udev->dev);
-+
-+	if (udev->state == USB_STATE_NOTATTACHED)
- 		return -ENODEV;
--	}
+ 	if (!svc->client_connected) {
+@@ -1597,6 +1612,8 @@ static void handle_uaudio_stream_req(struct qmi_handle *handle,
  
- 	if (udev->state == USB_STATE_SUSPENDED ||
--		   udev->offload_at_suspend) {
--		usb_unlock_device(udev);
-+	    udev->offload_at_suspend)
- 		return -EBUSY;
--	}
+ 	uadev[pcm_card_num].ctrl_intf = chip->ctrl_intf;
  
- 	/*
- 	 * offload_usage could only be modified when the device is active, since
- 	 * it will alter the suspend flow of the device.
- 	 */
- 	ret = usb_autoresume_device(udev);
--	if (ret < 0) {
--		usb_unlock_device(udev);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	/* Drop the count when it wasn't 0, ignore the operation otherwise. */
- 	if (udev->offload_usage)
- 		udev->offload_usage--;
- 	usb_autosuspend_device(udev);
--	usb_unlock_device(udev);
- 
- 	return ret;
- }
-diff --git a/drivers/usb/host/xhci-sideband.c b/drivers/usb/host/xhci-sideband.c
-index 2bd77255032b..6fc0ad658d66 100644
---- a/drivers/usb/host/xhci-sideband.c
-+++ b/drivers/usb/host/xhci-sideband.c
-@@ -93,8 +93,6 @@ __xhci_sideband_remove_endpoint(struct xhci_sideband *sb, struct xhci_virt_ep *e
- static void
- __xhci_sideband_remove_interrupter(struct xhci_sideband *sb)
- {
--	struct usb_device *udev;
--
- 	lockdep_assert_held(&sb->mutex);
- 
- 	if (!sb->ir)
-@@ -102,10 +100,6 @@ __xhci_sideband_remove_interrupter(struct xhci_sideband *sb)
- 
- 	xhci_remove_secondary_interrupter(xhci_to_hcd(sb->xhci), sb->ir);
- 	sb->ir = NULL;
--	udev = sb->vdev->udev;
--
--	if (udev->state != USB_STATE_NOTATTACHED)
--		usb_offload_put(udev);
- }
- 
- /* sideband api functions */
-@@ -328,9 +322,6 @@ int
- xhci_sideband_create_interrupter(struct xhci_sideband *sb, int num_seg,
- 				 bool ip_autoclear, u32 imod_interval, int intr_num)
- {
--	int ret = 0;
--	struct usb_device *udev;
--
- 	if (!sb || !sb->xhci)
- 		return -ENODEV;
- 
-@@ -348,12 +339,9 @@ xhci_sideband_create_interrupter(struct xhci_sideband *sb, int num_seg,
- 	if (!sb->ir)
- 		return -ENOMEM;
- 
--	udev = sb->vdev->udev;
--	ret = usb_offload_get(udev);
--
- 	sb->ir->ip_autoclear = ip_autoclear;
- 
--	return ret;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(xhci_sideband_create_interrupter);
- 
++	udev = subs->dev;
++	guard(device)(&udev->dev);
+ 	if (req_msg->enable) {
+ 		ret = enable_audio_stream(subs,
+ 					  map_pcm_format(req_msg->audio_format),
 -- 
 2.53.0.273.g2a3d683680-goog
 
