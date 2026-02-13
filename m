@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-216200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOFrDvEtj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:58:09 +0100
+	id 2J7YIzAtj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EEA136CF9
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:58:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E72136B59
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F093530A6EB0
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6F606301297F
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C6435FF61;
-	Fri, 13 Feb 2026 13:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1113D360732;
+	Fri, 13 Feb 2026 13:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmuZ5T6F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mID7dafl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9A71684BE;
-	Fri, 13 Feb 2026 13:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87B2241665;
+	Fri, 13 Feb 2026 13:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990972; cv=none; b=hbYRH/OXW57DHB+K8hqAC4naNTCMeOi2V/jdvOLoynYyIQUKgQoLFgxdHQSkukdBdS9zTscWoTfVU1R60PdVzN9zhm7vA6PMS35Ve4ivXoNMbFKiQmAhxDfL0kSzG0+90vzy1aMXBCkoBGj2f3zg6uwENMMEU8Ixn0jCrcOnC1M=
+	t=1770990886; cv=none; b=Sb8GF0o6OMk//WHT6voLQLtBVckLdBgNeaX2twH26LTNPHjS6u/My8ag+EDo44zvmuTISLpBX0gDuoBtnRsBzPkU5BHL30miVD3xEED8BOv49NFDTUmqG17mMCKuY5j6JtXVOfvKBgWqZB8iPbJNOImvXQn2kWBMWny5AvPCFq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990972; c=relaxed/simple;
-	bh=vIzNQ9Ftr8D9x99QpWZ8n+Q+s7aI7tjJiEWuumV2bKc=;
+	s=arc-20240116; t=1770990886; c=relaxed/simple;
+	bh=OCoo9igwMhxjUdf+Ch+IhjqKrRutw3BPKB9wp8iZ4x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VDUeYMWwQl+FWDcbKWzRqyXpgHe9smjPwPQDEr5ec/WQKiVnlsESwtpjSqSwLHIyh3TlvkP+3WZiUU4KeZQu8nTSi/IgSxm7Z++c6KVJE7ImYlQe7LChrzImknPGRX3KVkfuITTq8jAwvtD8VVVgYI6e6Wx7V7qwFfc9jj9k3m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmuZ5T6F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A99C116C6;
-	Fri, 13 Feb 2026 13:56:11 +0000 (UTC)
+	 MIME-Version; b=HEzXKNYISTFDS+tE3f9CMr1YmJBWFwPwnzvTMReCoITREAVEpqZSHNauIbelwvPUbpkYX/NPs9Vo4sFBP6e4AYAtPb9qMPZcIfKSlND/xiXBc3gesa7/YrLaqlgK4eUPj7R07sMjKhKU/WlCv5WcsGCPUCyFtHp1rEq/sOVuDwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mID7dafl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56269C116C6;
+	Fri, 13 Feb 2026 13:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990972;
-	bh=vIzNQ9Ftr8D9x99QpWZ8n+Q+s7aI7tjJiEWuumV2bKc=;
+	s=korg; t=1770990886;
+	bh=OCoo9igwMhxjUdf+Ch+IhjqKrRutw3BPKB9wp8iZ4x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmuZ5T6FcMqJdSstlqEVZeO7CTuKb/0daGcckELCJMz+eSXbsWMq7XzwpGl3NHZHf
-	 W8eE3fvBkBFPSjFBskMUaJv5AW4c57dmTlHQSeE4p+JTghP+cg8S7DZOnkH/G1JxaW
-	 EjKS/5Z676IUjN135uvgEiGrxqWdyWos7pf0igQ0=
+	b=mID7daflhAcLWgY/KcjYFoxV96/m5Y8bJOGQ+D9MJ551iywAfaMmOpjTlU9AVEIpp
+	 eA9nygyaz20go9+UwZ20jXls4uDzvNNAvzOzpYAzjFm+hIQUVMi0IuirXpXN+1lA2I
+	 2mmE9ZLkvufGvdzMWcYTXHedJqNzX9d7DVJ/JI04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Kanchana P Sridhar <kanchana.p.sridhar@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 06/24] crypto: iaa - Fix out-of-bounds index in find_empty_iaa_compression_mode
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.18 41/49] scsi: qla2xxx: Free sp in error path to fix system crash
 Date: Fri, 13 Feb 2026 14:48:25 +0100
-Message-ID: <20260213134704.963899569@linuxfoundation.org>
+Message-ID: <20260213134710.371257334@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
-References: <20260213134704.728003077@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+References: <20260213134708.885500854@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +68,116 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216200-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216176-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linux.dev:email,intel.com:email,apana.org.au:email]
-X-Rspamd-Queue-Id: 96EEA136CF9
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,marvell.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: C9E72136B59
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-commit 48329301969f6d21b2ef35f678e40f72b59eac94 upstream.
+commit 7adbd2b7809066c75f0433e5e2a8e114b429f30f upstream.
 
-The local variable 'i' is initialized with -EINVAL, but the for loop
-immediately overwrites it and -EINVAL is never returned.
+System crash seen during load/unload test in a loop,
 
-If no empty compression mode can be found, the function would return the
-out-of-bounds index IAA_COMP_MODES_MAX, which would cause an invalid
-array access in add_iaa_compression_mode().
+[61110.449331] qla2xxx [0000:27:00.0]-0042:0: Disabled MSI-X.
+[61110.467494] =============================================================================
+[61110.467498] BUG qla2xxx_srbs (Tainted: G           OE    --------  --- ): Objects remaining in qla2xxx_srbs on __kmem_cache_shutdown()
+[61110.467501] -----------------------------------------------------------------------------
 
-Fix both issues by returning either a valid index or -EINVAL.
+[61110.467502] Slab 0x000000000ffc8162 objects=51 used=1 fp=0x00000000e25d3d85 flags=0x57ffffc0010200(slab|head|node=1|zone=2|lastcpupid=0x1fffff)
+[61110.467509] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G           OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
+[61110.467513] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
+[61110.467515] Call Trace:
+[61110.467516]  <TASK>
+[61110.467519]  dump_stack_lvl+0x34/0x48
+[61110.467526]  slab_err.cold+0x53/0x67
+[61110.467534]  __kmem_cache_shutdown+0x16e/0x320
+[61110.467540]  kmem_cache_destroy+0x51/0x160
+[61110.467544]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467607]  ? __do_sys_delete_module.constprop.0+0x178/0x280
+[61110.467613]  ? syscall_trace_enter.constprop.0+0x145/0x1d0
+[61110.467616]  ? do_syscall_64+0x5c/0x90
+[61110.467619]  ? exc_page_fault+0x62/0x150
+[61110.467622]  ? entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[61110.467626]  </TASK>
+[61110.467627] Disabling lock debugging due to kernel taint
+[61110.467635] Object 0x0000000026f7e6e6 @offset=16000
+[61110.467639] ------------[ cut here ]------------
+[61110.467639] kmem_cache_destroy qla2xxx_srbs: Slab cache still has objects when called from qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467659] WARNING: CPU: 53 PID: 455206 at mm/slab_common.c:520 kmem_cache_destroy+0x14d/0x160
+[61110.467718] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G    B      OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
+[61110.467720] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
+[61110.467721] RIP: 0010:kmem_cache_destroy+0x14d/0x160
+[61110.467724] Code: 99 7d 07 00 48 89 ef e8 e1 6a 07 00 eb b3 48 8b 55 60 48 8b 4c 24 20 48 c7 c6 70 fc 66 90 48 c7 c7 f8 ef a1 90 e8 e1 ed 7c 00 <0f> 0b eb 93 c3 cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 55 48 89
+[61110.467725] RSP: 0018:ffffa304e489fe80 EFLAGS: 00010282
+[61110.467727] RAX: 0000000000000000 RBX: ffffffffc0d9a860 RCX: 0000000000000027
+[61110.467729] RDX: ffff8fd5ff9598a8 RSI: 0000000000000001 RDI: ffff8fd5ff9598a0
+[61110.467730] RBP: ffff8fb6aaf78700 R08: 0000000000000000 R09: 0000000100d863b7
+[61110.467731] R10: ffffa304e489fd20 R11: ffffffff913bef48 R12: 0000000040002000
+[61110.467731] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[61110.467733] FS:  00007f64c89fb740(0000) GS:ffff8fd5ff940000(0000) knlGS:0000000000000000
+[61110.467734] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[61110.467735] CR2: 00007f0f02bfe000 CR3: 00000020ad6dc005 CR4: 0000000000770ee0
+[61110.467736] PKRU: 55555554
+[61110.467737] Call Trace:
+[61110.467738]  <TASK>
+[61110.467739]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467755]  ? __do_sys_delete_module.constprop.0+0x178/0x280
 
+Free sp in the error path to fix the crash.
+
+Fixes: f352eeb75419 ("scsi: qla2xxx: Add ability to use GPNFT/GNNFT for RSCN handling")
 Cc: stable@vger.kernel.org
-Fixes: b190447e0fa3 ("crypto: iaa - Add compression mode management along with fixed mode")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-9-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/intel/iaa/iaa_crypto_main.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/scsi/qla2xxx/qla_gs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
-+++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
-@@ -223,15 +223,13 @@ static struct iaa_compression_mode *iaa_
- 
- static int find_empty_iaa_compression_mode(void)
- {
--	int i = -EINVAL;
-+	int i;
- 
--	for (i = 0; i < IAA_COMP_MODES_MAX; i++) {
--		if (iaa_compression_modes[i])
--			continue;
--		break;
--	}
-+	for (i = 0; i < IAA_COMP_MODES_MAX; i++)
-+		if (!iaa_compression_modes[i])
-+			return i;
- 
--	return i;
-+	return -EINVAL;
- }
- 
- static struct iaa_compression_mode *find_iaa_compression_mode(const char *name, int *idx)
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -3532,8 +3532,8 @@ int qla_fab_async_scan(scsi_qla_host_t *
+ 	if (vha->scan.scan_flags & SF_SCANNING) {
+ 		spin_unlock_irqrestore(&vha->work_lock, flags);
+ 		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x2012,
+-		    "%s: scan active\n", __func__);
+-		return rval;
++		    "%s: scan active for sp:%p\n", __func__, sp);
++		goto done_free_sp;
+ 	}
+ 	vha->scan.scan_flags |= SF_SCANNING;
+ 	if (!sp)
 
 
 
