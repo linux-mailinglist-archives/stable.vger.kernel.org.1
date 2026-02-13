@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-216209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMU/LUUuj2nTLgEAu9opvQ
-	(envelope-from <stable+bounces-216209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:59:33 +0100
+	id IDFbA7ktj2nTLgEAu9opvQ
+	(envelope-from <stable+bounces-216183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE21136D34
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:59:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E59136C69
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CB4A30D7281
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48AF43090CEA
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D604435FF49;
-	Fri, 13 Feb 2026 13:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2B235FF7D;
+	Fri, 13 Feb 2026 13:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWjsWFBt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EQEIsfh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CE5352936;
-	Fri, 13 Feb 2026 13:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C7D1D432D;
+	Fri, 13 Feb 2026 13:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770991002; cv=none; b=LjZZ81fadGD+nr1t4p+Bs57OnnL7azgshc7o9WfEyicC7URvh+I5Z8YMbAVf1YlyvxOw7TR8mDUmRIJkbXrqYNwgGcy4gJ4LgtqkIXAiQ6oQezII7iJIlBLal+Sc7+iLx3Fii7F4wI0l4dYQJxzJVnzFl19XdzefuZS8J2mj1fw=
+	t=1770990913; cv=none; b=kN8X+/kUTKnE1Cxg+H5QSqqlriOTUo0ejkYh/FAE3KcCQ1h5hqU7Xlb62IlRprP7yES7nk63AnDxMmi+5YyDGL7MurFSXOU48TlCGGJ0BiknrQ1V9qqj6IcjMHWIRCgpVmiNcUNvNBX37EORHc15DU0SSj8nM4QWHSXoqjLNwUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770991002; c=relaxed/simple;
-	bh=+uDuG6dijkgL7TznhPCN+1kiLH0m5KPCuT5gUo0H0wc=;
+	s=arc-20240116; t=1770990913; c=relaxed/simple;
+	bh=vU+x3WRwUcWfecJzYHeoV9+SbgkfD99w4Asssa3L9HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBG+UKxqjMUoAWKdQFIXT1hD39W+0sRqrUqLUOx6ritO2P9/1Ya6D4FHt4o66ANCkSo5RgepzuuSezoMzFD6zU5npTCLYNQKJwCxuXEi4fWwqfgqR5FicEzrZhHT8/HbsapxtLj9/e5v3r5gAO22Fubw9t6MqN5EEnl1pIw7dgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWjsWFBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0556C116C6;
-	Fri, 13 Feb 2026 13:56:41 +0000 (UTC)
+	 MIME-Version; b=TimjvycpgaEsaHjDhaRkWup/9w9H6apXGzzLUZeeBl+MYRLc03fwOI8hpCAUOdPVR8xItaUO2Vevx2DnukZv5QgKVT9/Y2kxLPggQGZV5OVSwiFV9fcySO1BwT9wzmB/+6UxHcqUxwys+rC8dWxJsCzqdxkYkvlz3VvwN71uaO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EQEIsfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B813C116C6;
+	Fri, 13 Feb 2026 13:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770991002;
-	bh=+uDuG6dijkgL7TznhPCN+1kiLH0m5KPCuT5gUo0H0wc=;
+	s=korg; t=1770990913;
+	bh=vU+x3WRwUcWfecJzYHeoV9+SbgkfD99w4Asssa3L9HE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWjsWFBt77olrWXQLgYGhkbzW4o8BfR7la1htMXQIhD4rDZ5N3BFo/TBSmOkyEUJ3
-	 VT79M20/bLK/pvJvo2BeFUdI/V4i+3C2E2NPL9Lyf3JrPoJxFVRrCPWm/PCTgCs7GU
-	 EeE4xDTLGQ0iVp1Pbke/Mk1wju05woTiz+vBDZek=
+	b=2EQEIsfh8FatDdu7CJwzbpxTp2N0PBAdXZEYq8xwz9RwKJvti2nwJPtDSeN1YABAr
+	 fQPW+kGCfii2ifYjq/9AVk/hHnjVcmcTrUv/MDhabZazeYlrsuVx/zmDSlcK/SG/RP
+	 AhYeht8inTs+0mFyl36p/Z3Mbgn6YOw0Bz4WJ12E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenm Chen <zenmchen@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 05/25] Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.12 12/24] wifi: rtw88: Fix alignment fault in rtw_core_enable_beacon()
 Date: Fri, 13 Feb 2026 14:48:31 +0100
-Message-ID: <20260213134704.082657368@linuxfoundation.org>
+Message-ID: <20260213134705.176372595@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
-References: <20260213134703.882698935@linuxfoundation.org>
+In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
+References: <20260213134704.728003077@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,10 +74,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216209-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216183-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,molgen.mpg.de,intel.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
@@ -90,88 +89,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mpg.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 1CE21136D34
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 79E59136C69
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 6c0568b7741a346088fd6dfced2d871f7d481d06 upstream.
+commit 0177aa828d966117ea30a44f2e1890fdb356118e upstream.
 
-Add USB ID 7392:e611 for Edimax EW-7611UXB which is RTL8851BU-based
-Wi-Fi + Bluetooth adapter.
+rtw_core_enable_beacon() reads 4 bytes from an address that is not a
+multiple of 4. This results in a crash on some systems.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below:
+Do 1 byte reads/writes instead.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=7392 ProdID=e611 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=802.11ax WLAN Adapter
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtw89_8851bu_git
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Unable to handle kernel paging request at virtual address ffff8000827e0522
+Mem abort info:
+  ESR = 0x0000000096000021
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x21: alignment fault
+Data abort info:
+  ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
+  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000005492000
+[ffff8000827e0522] pgd=0000000000000000, p4d=10000001021d9403, pud=10000001021da403, pmd=100000011061c403, pte=00780000f3200f13
+Internal error: Oops: 0000000096000021 [#1]  SMP
+Modules linked in: [...] rtw88_8822ce rtw88_8822c rtw88_pci rtw88_core [...]
+CPU: 0 UID: 0 PID: 73 Comm: kworker/u32:2 Tainted: G        W           6.17.9 #1-NixOS VOLUNTARY
+Tainted: [W]=WARN
+Hardware name: FriendlyElec NanoPC-T6 LTS (DT)
+Workqueue: phy0 rtw_c2h_work [rtw88_core]
+pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : rtw_pci_read32+0x18/0x40 [rtw88_pci]
+lr : rtw_core_enable_beacon+0xe0/0x148 [rtw88_core]
+sp : ffff800080cc3ca0
+x29: ffff800080cc3ca0 x28: ffff0001031fc240 x27: ffff000102100828
+x26: ffffd2cb7c9b4088 x25: ffff0001031fc2c0 x24: ffff000112fdef00
+x23: ffff000112fdef18 x22: ffff000111c29970 x21: 0000000000000001
+x20: 0000000000000001 x19: ffff000111c22040 x18: 0000000000000000
+x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+x11: 0000000000000000 x10: 0000000000000000 x9 : ffffd2cb6507c090
+x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+x2 : 0000000000007f10 x1 : 0000000000000522 x0 : ffff8000827e0522
+Call trace:
+ rtw_pci_read32+0x18/0x40 [rtw88_pci] (P)
+ rtw_hw_scan_chan_switch+0x124/0x1a8 [rtw88_core]
+ rtw_fw_c2h_cmd_handle+0x254/0x290 [rtw88_core]
+ rtw_c2h_work+0x50/0x98 [rtw88_core]
+ process_one_work+0x178/0x3f8
+ worker_thread+0x208/0x418
+ kthread+0x120/0x220
+ ret_from_fork+0x10/0x20
+Code: d28fe202 8b020000 f9524400 8b214000 (b9400000)
+---[ end trace 0000000000000000 ]---
 
-Cc: stable@vger.kernel.org # 6.6.x
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: ad6741b1e044 ("wifi: rtw88: Stop high queue during scan")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/lwfinger/rtw88/issues/418
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/6345300d-8c93-464c-9b05-d0d9af3c97ad@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/realtek/rtw88/main.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -516,6 +516,8 @@ static const struct usb_device_id quirks
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x7392, 0xe611), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -2408,10 +2408,10 @@ void rtw_core_enable_beacon(struct rtw_d
  
- 	/* Realtek 8852AE Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
+ 	if (enable) {
+ 		rtw_write32_set(rtwdev, REG_BCN_CTRL, BIT_EN_BCN_FUNCTION);
+-		rtw_write32_clr(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
++		rtw_write8_clr(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
+ 	} else {
+ 		rtw_write32_clr(rtwdev, REG_BCN_CTRL, BIT_EN_BCN_FUNCTION);
+-		rtw_write32_set(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
++		rtw_write8_set(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
+ 	}
+ }
+ 
 
 
 
