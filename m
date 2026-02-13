@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-216190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216225-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CIiKWAtj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:44 +0100
+	id iPC/HNgtj2nTLgEAu9opvQ
+	(envelope-from <stable+bounces-216225-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34D7136BDB
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1553A136CB2
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5AAE03010210
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:55:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 30F6A303E756
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506A635FF7D;
-	Fri, 13 Feb 2026 13:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA65235FF49;
+	Fri, 13 Feb 2026 13:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAswNy7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5pcp6nb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143601D432D;
-	Fri, 13 Feb 2026 13:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0BC223323;
+	Fri, 13 Feb 2026 13:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990937; cv=none; b=E1pa+AMxrSmExfwn3D0HZ0O2WnMiNN7NDTxXpn8SFF4O/GEJiNB9KmLOg1Cyi6+B6BlPEU7IwcO2r6VuUyMygrs95WpZpr8VsEpI0HlDxIal2VRl8r+cn0qRtSQ9Xg/5PoQLUuhB/0Eac3G1xcOSD/DuY2knvGPLxfiJIlfTCew=
+	t=1770991060; cv=none; b=GKFmgrLiZ8JxTmZg2bFwH93bOOpddAe0TYoPiXxFhvzpNLrxMSSV5WZIHtPdopzH99m6oP2OvwGZyHfTYWzyGKiTrZUmRVaNAeLrYATU/J4nHGA7lu9qAjc6qcx+xsLee9fe3P1EjGMLJ2Jh8zPYYaXoKHIWY42O6X4XsJVrhAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990937; c=relaxed/simple;
-	bh=RmmbhFUbqbIeUhf89X8yyUAyIwsbBt1MEOHvwu14dFM=;
+	s=arc-20240116; t=1770991060; c=relaxed/simple;
+	bh=rxnjnakLSSAflBQCwy4ZhDsKVdRTb9f+B1uikQJjsLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IitH/Hi/rGoN3UcjHQsH0SGU9kZ4f7JJmNbEYTFxjhU9jgQaKM4N1LCxXthtnRqxHGkQ+No0LWj/r4zeVCnY/YmGHqpRK9CRIX2UMEePd1Z530fo/eIWibhvo5yBZiQwIfWoCfjX78dt7fhOqqk0AKKWk0r1j/Q5dgX66ukw5H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAswNy7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA3AC116C6;
-	Fri, 13 Feb 2026 13:55:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F0nXb4GhPZMThPa+1qZiIn2q7ufOBEDU5dRUEOHeolj+NT0da5tHTO+Rb/0q3tBpkeOzSmVss6Y+HzWTDPmgsxel8iZoF0gLJWoqjqiylWik2/JaDSUPo9ec8u7RcXnV+ZBi7Hb4NRdO2kkJxSe/FwP1Wy2E+vh4G9dYQqyCnbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5pcp6nb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CACC116C6;
+	Fri, 13 Feb 2026 13:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990937;
-	bh=RmmbhFUbqbIeUhf89X8yyUAyIwsbBt1MEOHvwu14dFM=;
+	s=korg; t=1770991060;
+	bh=rxnjnakLSSAflBQCwy4ZhDsKVdRTb9f+B1uikQJjsLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EAswNy7F4HoBdxt5durXWgNKhgDeYFM6WIofvvv+iGOhu0+GUwO5IwyhBSCUt/AE2
-	 3oMwTzppgDkYrVKBHwrlKnI9FTzEjeRsnadFDjVx6BiDfyhgHqIZkeP8R704LqB/7Q
-	 Av+KDF4XLgUjVcqSc2HJ1S3F4ywj8F/Oi2Q2xAD0=
+	b=a5pcp6nbPIEfzvweFXJP5rImuJFF16AZb48ImYTHo3waCZvxZM5p30QnGg59FlxzQ
+	 fMWO+Cqvz2xdzd+0JRuDSBmRCo+6oKpuvgC2EKlQowqtl9hs646SOrYhJDpEXF4dr9
+	 Lb8N9RG2OfKAoph+vXu/XDunkh/foYbcDTJaamrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot+5498a510ff9de39d37da@syzkaller.appspotmail.com,
-	Eulgyu Kim <eulgyukim@snu.ac.kr>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 19/24] mptcp: fix race in mptcp_pm_nl_flush_addrs_doit()
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 12/25] scsi: qla2xxx: Validate sp before freeing associated memory
 Date: Fri, 13 Feb 2026 14:48:38 +0100
-Message-ID: <20260213134705.425963571@linuxfoundation.org>
+Message-ID: <20260213134704.331039243@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
-References: <20260213134704.728003077@linuxfoundation.org>
+In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
+References: <20260213134703.882698935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +64,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216190-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216225-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,5498a510ff9de39d37da];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,appspotmail.com:email,snu.ac.kr:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: D34D7136BDB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,marvell.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,oracle.com:email]
+X-Rspamd-Queue-Id: 1553A136CB2
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-commit e2a9eeb69f7d4ca4cf4c70463af77664fdb6ab1d upstream.
+commit b6df15aec8c3441357d4da0eaf4339eb20f5999f upstream.
 
-syzbot and Eulgyu Kim reported crashes in mptcp_pm_nl_get_local_id()
-and/or mptcp_pm_nl_is_backup()
+System crash with the following signature
+[154563.214890] nvme nvme2: NVME-FC{1}: controller connect complete
+[154564.169363] qla2xxx [0000:b0:00.1]-3002:2: nvme: Sched: Set ZIO exchange threshold to 3.
+[154564.169405] qla2xxx [0000:b0:00.1]-ffffff:2: SET ZIO Activity exchange threshold to 5.
+[154565.539974] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 0080 0000.
+[154565.545744] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 00a0 0000.
+[154565.545857] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
+[154565.552760] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
+[154565.553079] BUG: kernel NULL pointer dereference, address: 00000000000000f8
+[154565.553080] #PF: supervisor read access in kernel mode
+[154565.553082] #PF: error_code(0x0000) - not-present page
+[154565.553084] PGD 80000010488ab067 P4D 80000010488ab067 PUD 104978a067 PMD 0
+[154565.553089] Oops: 0000 1 PREEMPT SMP PTI
+[154565.553092] CPU: 10 PID: 858 Comm: qla2xxx_2_dpc Kdump: loaded Tainted: G           OE     -------  ---  5.14.0-503.11.1.el9_5.x86_64 #1
+[154565.553096] Hardware name: HPE Synergy 660 Gen10/Synergy 660 Gen10 Compute Module, BIOS I43 09/30/2024
+[154565.553097] RIP: 0010:qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
+[154565.553141] Code: 00 00 e8 58 a3 ec d4 49 89 e9 ba 12 20 00 00 4c 89 e6 49 c7 c0 00 ee a8 c0 48 c7 c1 66 c0 a9 c0 bf 00 80 00 10 e8 15 69 00 00 <4c> 8b 8d f8 00 00 00 4d 85 c9 74 35 49 8b 84 24 00 19 00 00 48 8b
+[154565.553143] RSP: 0018:ffffb4dbc8aebdd0 EFLAGS: 00010286
+[154565.553145] RAX: 0000000000000000 RBX: ffff8ec2cf0908d0 RCX: 0000000000000002
+[154565.553147] RDX: 0000000000000000 RSI: ffffffffc0a9c896 RDI: ffffb4dbc8aebd47
+[154565.553148] RBP: 0000000000000000 R08: ffffb4dbc8aebd45 R09: 0000000000ffff0a
+[154565.553150] R10: 0000000000000000 R11: 000000000000000f R12: ffff8ec2cf0908d0
+[154565.553151] R13: ffff8ec2cf090900 R14: 0000000000000102 R15: ffff8ec2cf084000
+[154565.553152] FS:  0000000000000000(0000) GS:ffff8ed27f800000(0000) knlGS:0000000000000000
+[154565.553154] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[154565.553155] CR2: 00000000000000f8 CR3: 000000113ae0a005 CR4: 00000000007706f0
+[154565.553157] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[154565.553158] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[154565.553159] PKRU: 55555554
+[154565.553160] Call Trace:
+[154565.553162]  <TASK>
+[154565.553165]  ? show_trace_log_lvl+0x1c4/0x2df
+[154565.553172]  ? show_trace_log_lvl+0x1c4/0x2df
+[154565.553177]  ? qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
+[154565.553215]  ? __die_body.cold+0x8/0xd
+[154565.553218]  ? page_fault_oops+0x134/0x170
+[154565.553223]  ? snprintf+0x49/0x70
+[154565.553229]  ? exc_page_fault+0x62/0x150
+[154565.553238]  ? asm_exc_page_fault+0x22/0x30
 
-Root cause is list_splice_init() in mptcp_pm_nl_flush_addrs_doit()
-which is not RCU ready.
+Check for sp being non NULL before freeing any associated memory
 
-list_splice_init_rcu() can not be called here while holding pernet->lock
-spinlock.
-
-Many thanks to Eulgyu Kim for providing a repro and testing our patches.
-
-Fixes: 141694df6573 ("mptcp: remove address when netlink flushes addrs")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot+5498a510ff9de39d37da@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6970a46d.a00a0220.3ad28e.5cf0.GAE@google.com/T/
-Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/611
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260124-net-mptcp-race_nl_flush_addrs-v3-1-b2dc1b613e9d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts because the code has been moved from pm_netlink.c to
-  pm_kernel.c later on in commit 8617e85e04bd ("mptcp: pm: split
-  in-kernel PM specific code"). The same modifications can be applied
-  in pm_netlink.c with one exception, because 'pernet->local_addr_list'
-  has been renamed to 'pernet->endp_list' in commit 35e71e43a56d
-  ("mptcp: pm: in-kernel: rename 'local_addr_list' to 'endp_list'"). The
-  previous name is then still being used in this version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-10-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_gs.c |   34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1811,16 +1811,26 @@ static void __reset_counters(struct pm_n
- int mptcp_pm_nl_flush_addrs_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct pm_nl_pernet *pernet = genl_info_pm_nl(info);
--	LIST_HEAD(free_list);
-+	struct list_head free_list;
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -3791,23 +3791,25 @@ int qla_fab_async_scan(scsi_qla_host_t *
+ 	return rval;
  
- 	spin_lock_bh(&pernet->lock);
--	list_splice_init(&pernet->local_addr_list, &free_list);
-+	free_list = pernet->local_addr_list;
-+	INIT_LIST_HEAD_RCU(&pernet->local_addr_list);
- 	__reset_counters(pernet);
- 	pernet->next_id = 1;
- 	bitmap_zero(pernet->id_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
- 	spin_unlock_bh(&pernet->lock);
--	mptcp_nl_flush_addrs_list(sock_net(skb->sk), &free_list);
-+
-+	if (free_list.next == &pernet->local_addr_list)
-+		return 0;
-+
- 	synchronize_rcu();
-+
-+	/* Adjust the pointers to free_list instead of pernet->local_addr_list */
-+	free_list.prev->next = &free_list;
-+	free_list.next->prev = &free_list;
-+
-+	mptcp_nl_flush_addrs_list(sock_net(skb->sk), &free_list);
- 	__flush_addrs(&free_list);
- 	return 0;
- }
+ done_free_sp:
+-	if (sp->u.iocb_cmd.u.ctarg.req) {
+-		dma_free_coherent(&vha->hw->pdev->dev,
+-		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
+-		    sp->u.iocb_cmd.u.ctarg.req,
+-		    sp->u.iocb_cmd.u.ctarg.req_dma);
+-		sp->u.iocb_cmd.u.ctarg.req = NULL;
+-	}
+-	if (sp->u.iocb_cmd.u.ctarg.rsp) {
+-		dma_free_coherent(&vha->hw->pdev->dev,
+-		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
+-		    sp->u.iocb_cmd.u.ctarg.rsp,
+-		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
+-		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
+-	}
++	if (sp) {
++		if (sp->u.iocb_cmd.u.ctarg.req) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.req,
++			    sp->u.iocb_cmd.u.ctarg.req_dma);
++			sp->u.iocb_cmd.u.ctarg.req = NULL;
++		}
++		if (sp->u.iocb_cmd.u.ctarg.rsp) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.rsp,
++			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
++			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
++		}
+ 
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
++		/* ref: INIT */
++		kref_put(&sp->cmd_kref, qla2x00_sp_release);
++	}
+ 
+ 	spin_lock_irqsave(&vha->work_lock, flags);
+ 	vha->scan.scan_flags &= ~SF_SCANNING;
 
 
 
