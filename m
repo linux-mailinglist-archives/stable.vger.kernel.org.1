@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-216225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216192-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPC/HNgtj2nTLgEAu9opvQ
-	(envelope-from <stable+bounces-216225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:44 +0100
+	id aOWBIWEtj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216192-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1553A136CB2
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B06136BE2
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 30F6A303E756
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:57:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36CEE30120D2
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA65235FF49;
-	Fri, 13 Feb 2026 13:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A9A35FF62;
+	Fri, 13 Feb 2026 13:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5pcp6nb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/0J8/DR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0BC223323;
-	Fri, 13 Feb 2026 13:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C10C1D432D;
+	Fri, 13 Feb 2026 13:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770991060; cv=none; b=GKFmgrLiZ8JxTmZg2bFwH93bOOpddAe0TYoPiXxFhvzpNLrxMSSV5WZIHtPdopzH99m6oP2OvwGZyHfTYWzyGKiTrZUmRVaNAeLrYATU/J4nHGA7lu9qAjc6qcx+xsLee9fe3P1EjGMLJ2Jh8zPYYaXoKHIWY42O6X4XsJVrhAg=
+	t=1770990943; cv=none; b=Le4dKNrtYZGsrX7Vu9QArqAbjGIrfGzxL2np/eX/mu5/GS7cd3GUjW0urJ55SdvxHXdsWUzXhgb3OvpxjhgxDbglHuDxw8OmlDA9bd+wGcwdz+PftiahU/bKIAqMK6HKOnLPAPNRnkmUjoALQd2TBSEiSQ6FGXZIoMFhLn/CKvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770991060; c=relaxed/simple;
-	bh=rxnjnakLSSAflBQCwy4ZhDsKVdRTb9f+B1uikQJjsLo=;
+	s=arc-20240116; t=1770990943; c=relaxed/simple;
+	bh=JJ8Sx7um6WOhuMg6ni/xcqT7bL9M6raqtPkPZxEF4ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F0nXb4GhPZMThPa+1qZiIn2q7ufOBEDU5dRUEOHeolj+NT0da5tHTO+Rb/0q3tBpkeOzSmVss6Y+HzWTDPmgsxel8iZoF0gLJWoqjqiylWik2/JaDSUPo9ec8u7RcXnV+ZBi7Hb4NRdO2kkJxSe/FwP1Wy2E+vh4G9dYQqyCnbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5pcp6nb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CACC116C6;
-	Fri, 13 Feb 2026 13:57:39 +0000 (UTC)
+	 MIME-Version; b=EpSMvpmX9ylISPvB2ixKtAs0HtEXWVOh9wsj6+ZGcmKXF5F5JYvm1EFxoICpMrUOC7OGaM/nSV1L+2FC1JBk/7z7VQt24iX7D3J8+mWVsSQ4zKkbPVdeprhCWRw5LEG679zGlcl5q9OEm6q4R7QrhQ+OL9IMEoDvWW9TyAfsmrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/0J8/DR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE85C116C6;
+	Fri, 13 Feb 2026 13:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770991060;
-	bh=rxnjnakLSSAflBQCwy4ZhDsKVdRTb9f+B1uikQJjsLo=;
+	s=korg; t=1770990943;
+	bh=JJ8Sx7um6WOhuMg6ni/xcqT7bL9M6raqtPkPZxEF4ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5pcp6nbPIEfzvweFXJP5rImuJFF16AZb48ImYTHo3waCZvxZM5p30QnGg59FlxzQ
-	 fMWO+Cqvz2xdzd+0JRuDSBmRCo+6oKpuvgC2EKlQowqtl9hs646SOrYhJDpEXF4dr9
-	 Lb8N9RG2OfKAoph+vXu/XDunkh/foYbcDTJaamrQ=
+	b=f/0J8/DRHxBiTX1JHBulB/lcYgoJRmSkZdEb3rEOEalbxx8bxVugvjiYRtqZj4eGD
+	 IJyRYTq6XtDPMBIje/7hdSzJgF7O55ImaE91yC5IFZLMoOllZHLHcQImIpScxetpEq
+	 ZZbUDggniIw2oj50QJEZquqdjFRaRa4mUIBhSE5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 12/25] scsi: qla2xxx: Validate sp before freeing associated memory
-Date: Fri, 13 Feb 2026 14:48:38 +0100
-Message-ID: <20260213134704.331039243@linuxfoundation.org>
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.12 20/24] erofs: fix UAF issue for file-backed mounts w/ directio option
+Date: Fri, 13 Feb 2026 14:48:39 +0100
+Message-ID: <20260213134705.461290853@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
-References: <20260213134703.882698935@linuxfoundation.org>
+In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
+References: <20260213134704.728003077@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +63,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216225-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216192-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,marvell.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,oracle.com:email]
-X-Rspamd-Queue-Id: 1553A136CB2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 47B06136BE2
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: Chao Yu <chao@kernel.org>
 
-commit b6df15aec8c3441357d4da0eaf4339eb20f5999f upstream.
+commit 1caf50ce4af096d0280d59a31abdd85703cd995c upstream.
 
-System crash with the following signature
-[154563.214890] nvme nvme2: NVME-FC{1}: controller connect complete
-[154564.169363] qla2xxx [0000:b0:00.1]-3002:2: nvme: Sched: Set ZIO exchange threshold to 3.
-[154564.169405] qla2xxx [0000:b0:00.1]-ffffff:2: SET ZIO Activity exchange threshold to 5.
-[154565.539974] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 0080 0000.
-[154565.545744] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 00a0 0000.
-[154565.545857] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
-[154565.552760] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
-[154565.553079] BUG: kernel NULL pointer dereference, address: 00000000000000f8
-[154565.553080] #PF: supervisor read access in kernel mode
-[154565.553082] #PF: error_code(0x0000) - not-present page
-[154565.553084] PGD 80000010488ab067 P4D 80000010488ab067 PUD 104978a067 PMD 0
-[154565.553089] Oops: 0000 1 PREEMPT SMP PTI
-[154565.553092] CPU: 10 PID: 858 Comm: qla2xxx_2_dpc Kdump: loaded Tainted: G           OE     -------  ---  5.14.0-503.11.1.el9_5.x86_64 #1
-[154565.553096] Hardware name: HPE Synergy 660 Gen10/Synergy 660 Gen10 Compute Module, BIOS I43 09/30/2024
-[154565.553097] RIP: 0010:qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
-[154565.553141] Code: 00 00 e8 58 a3 ec d4 49 89 e9 ba 12 20 00 00 4c 89 e6 49 c7 c0 00 ee a8 c0 48 c7 c1 66 c0 a9 c0 bf 00 80 00 10 e8 15 69 00 00 <4c> 8b 8d f8 00 00 00 4d 85 c9 74 35 49 8b 84 24 00 19 00 00 48 8b
-[154565.553143] RSP: 0018:ffffb4dbc8aebdd0 EFLAGS: 00010286
-[154565.553145] RAX: 0000000000000000 RBX: ffff8ec2cf0908d0 RCX: 0000000000000002
-[154565.553147] RDX: 0000000000000000 RSI: ffffffffc0a9c896 RDI: ffffb4dbc8aebd47
-[154565.553148] RBP: 0000000000000000 R08: ffffb4dbc8aebd45 R09: 0000000000ffff0a
-[154565.553150] R10: 0000000000000000 R11: 000000000000000f R12: ffff8ec2cf0908d0
-[154565.553151] R13: ffff8ec2cf090900 R14: 0000000000000102 R15: ffff8ec2cf084000
-[154565.553152] FS:  0000000000000000(0000) GS:ffff8ed27f800000(0000) knlGS:0000000000000000
-[154565.553154] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[154565.553155] CR2: 00000000000000f8 CR3: 000000113ae0a005 CR4: 00000000007706f0
-[154565.553157] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[154565.553158] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[154565.553159] PKRU: 55555554
-[154565.553160] Call Trace:
-[154565.553162]  <TASK>
-[154565.553165]  ? show_trace_log_lvl+0x1c4/0x2df
-[154565.553172]  ? show_trace_log_lvl+0x1c4/0x2df
-[154565.553177]  ? qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
-[154565.553215]  ? __die_body.cold+0x8/0xd
-[154565.553218]  ? page_fault_oops+0x134/0x170
-[154565.553223]  ? snprintf+0x49/0x70
-[154565.553229]  ? exc_page_fault+0x62/0x150
-[154565.553238]  ? asm_exc_page_fault+0x22/0x30
+[    9.269940][ T3222] Call trace:
+[    9.269948][ T3222]  ext4_file_read_iter+0xac/0x108
+[    9.269979][ T3222]  vfs_iocb_iter_read+0xac/0x198
+[    9.269993][ T3222]  erofs_fileio_rq_submit+0x12c/0x180
+[    9.270008][ T3222]  erofs_fileio_submit_bio+0x14/0x24
+[    9.270030][ T3222]  z_erofs_runqueue+0x834/0x8ac
+[    9.270054][ T3222]  z_erofs_read_folio+0x120/0x220
+[    9.270083][ T3222]  filemap_read_folio+0x60/0x120
+[    9.270102][ T3222]  filemap_fault+0xcac/0x1060
+[    9.270119][ T3222]  do_pte_missing+0x2d8/0x1554
+[    9.270131][ T3222]  handle_mm_fault+0x5ec/0x70c
+[    9.270142][ T3222]  do_page_fault+0x178/0x88c
+[    9.270167][ T3222]  do_translation_fault+0x38/0x54
+[    9.270183][ T3222]  do_mem_abort+0x54/0xac
+[    9.270208][ T3222]  el0_da+0x44/0x7c
+[    9.270227][ T3222]  el0t_64_sync_handler+0x5c/0xf4
+[    9.270253][ T3222]  el0t_64_sync+0x1bc/0x1c0
 
-Check for sp being non NULL before freeing any associated memory
+EROFS may encounter above panic when enabling file-backed mount w/
+directio mount option, the root cause is it may suffer UAF in below
+race condition:
 
-Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-10-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+- z_erofs_read_folio                          wq s_dio_done_wq
+ - z_erofs_runqueue
+  - erofs_fileio_submit_bio
+   - erofs_fileio_rq_submit
+    - vfs_iocb_iter_read
+     - ext4_file_read_iter
+      - ext4_dio_read_iter
+       - iomap_dio_rw
+       : bio was submitted and return -EIOCBQUEUED
+                                              - dio_aio_complete_work
+                                               - dio_complete
+                                                - dio->iocb->ki_complete (erofs_fileio_ki_complete())
+                                                 - kfree(rq)
+                                                 : it frees iocb, iocb.ki_filp can be UAF in file_accessed().
+       - file_accessed
+       : access NULL file point
+
+Introduce a reference count in struct erofs_fileio_rq, and initialize it
+as two, both erofs_fileio_ki_complete() and erofs_fileio_rq_submit() will
+decrease reference count, the last one decreasing the reference count
+to zero will free rq.
+
+Cc: stable@kernel.org
+Fixes: fb176750266a ("erofs: add file-backed mount support")
+Fixes: 6422cde1b0d5 ("erofs: use buffered I/O for file-backed mounts by default")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c |   34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ fs/erofs/fileio.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3791,23 +3791,25 @@ int qla_fab_async_scan(scsi_qla_host_t *
- 	return rval;
+--- a/fs/erofs/fileio.c
++++ b/fs/erofs/fileio.c
+@@ -10,6 +10,7 @@ struct erofs_fileio_rq {
+ 	struct bio bio;
+ 	struct kiocb iocb;
+ 	struct super_block *sb;
++	refcount_t ref;
+ };
  
- done_free_sp:
--	if (sp->u.iocb_cmd.u.ctarg.req) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.req,
--		    sp->u.iocb_cmd.u.ctarg.req_dma);
--		sp->u.iocb_cmd.u.ctarg.req = NULL;
--	}
--	if (sp->u.iocb_cmd.u.ctarg.rsp) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.rsp,
--		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
--		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
--	}
-+	if (sp) {
-+		if (sp->u.iocb_cmd.u.ctarg.req) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.req,
-+			    sp->u.iocb_cmd.u.ctarg.req_dma);
-+			sp->u.iocb_cmd.u.ctarg.req = NULL;
-+		}
-+		if (sp->u.iocb_cmd.u.ctarg.rsp) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.rsp,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
-+			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
-+		}
+ struct erofs_fileio {
+@@ -42,7 +43,8 @@ static void erofs_fileio_ki_complete(str
+ 		}
+ 	}
+ 	bio_uninit(&rq->bio);
+-	kfree(rq);
++	if (refcount_dec_and_test(&rq->ref))
++		kfree(rq);
+ }
  
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+		/* ref: INIT */
-+		kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+	}
+ static void erofs_fileio_rq_submit(struct erofs_fileio_rq *rq)
+@@ -63,6 +65,8 @@ static void erofs_fileio_rq_submit(struc
+ 	ret = vfs_iocb_iter_read(rq->iocb.ki_filp, &rq->iocb, &iter);
+ 	if (ret != -EIOCBQUEUED)
+ 		erofs_fileio_ki_complete(&rq->iocb, ret);
++	if (refcount_dec_and_test(&rq->ref))
++		kfree(rq);
+ }
  
- 	spin_lock_irqsave(&vha->work_lock, flags);
- 	vha->scan.scan_flags &= ~SF_SCANNING;
+ static struct erofs_fileio_rq *erofs_fileio_rq_alloc(struct erofs_map_dev *mdev)
+@@ -73,6 +77,7 @@ static struct erofs_fileio_rq *erofs_fil
+ 	bio_init(&rq->bio, NULL, rq->bvecs, BIO_MAX_VECS, REQ_OP_READ);
+ 	rq->iocb.ki_filp = mdev->m_dif->file;
+ 	rq->sb = mdev->m_sb;
++	refcount_set(&rq->ref, 2);
+ 	return rq;
+ }
+ 
 
 
 
