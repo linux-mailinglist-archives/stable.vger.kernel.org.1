@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-216106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJexNZksj2kPKwEAu9opvQ
-	(envelope-from <stable+bounces-216106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:52:25 +0100
+	id IMquJe4sj2kPKwEAu9opvQ
+	(envelope-from <stable+bounces-216142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 322CF13698F
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:52:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18760136AB3
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0E0930C2E1D
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:50:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2535300A8D4
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7FF35F8B7;
-	Fri, 13 Feb 2026 13:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B75C35FF49;
+	Fri, 13 Feb 2026 13:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdr7n212"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7XCGAVq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC0B3563C3;
-	Fri, 13 Feb 2026 13:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DAB535CBD8;
+	Fri, 13 Feb 2026 13:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990654; cv=none; b=E4+dYCmw7EEE78urc5z/SriYnCvHA9pzPDPJYYDkNEeFZOAvvnUNre7HHrCVu+tVnNyVzD1uj2jROtBZMt9S3JjtnL3/Whd0XMsH+MQP/9A/5b6ZacSpOGr8c1lgBumgOhTybjAnbUZetNJsUg3foaaDydgcAn2MVLGb6VejNIU=
+	t=1770990775; cv=none; b=slSf4QNa2mo+n0y3BOTZyjVleOoDs3j+lbS56vigyxO3rzF/iDptu7ZrdQQUAUt9RIMWgUErIB9ZQ30Rcq+UW8IPpWrWXZ+udF9jDvY/q9GdDGo6UZyBCSqyoZB2tlegU/SsMt5q3Oa0Vqx++DUfCsS3wJvGAhcD3ci1ql9cTfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990654; c=relaxed/simple;
-	bh=g6TBDFgZjXq1hxhx4dfx2wGEqOiub8zZfrOfyB0vKpM=;
+	s=arc-20240116; t=1770990775; c=relaxed/simple;
+	bh=utRT/G/5ZTzr5btttaeUR5cTiNfERqb7TVa4677dXcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WjmPEmekHLh9fez3/G5/ZkaHrvhzjiZ8eezeZRRJtZ7UJC0RYnFNE8LDxuJ0zagtwWsvTaDNp1wQxK52ksf3Ger45RWDdhgsjRb6nfhV8VFUahegQrUheI5POzjV7bBgwngXsKNAHqi3LGaE3yPQbcNYvAtS2iRlNaJFkusGzyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdr7n212; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9538EC116C6;
-	Fri, 13 Feb 2026 13:50:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PPh0Rekq0OSvFLaSHCm+v+sWZctJTulmyqdfFC0IDFFrM56j7o7UcnId8p2zEM2mk9OUZKCjUJs4DqtzHP7635amXasFMrEhIfg5UI3A3Yi+wUjdtePdE2AHPELtTxYu2kVy8d2fNaMzFg8u+An9T9p+L/9byMF0YuVgDx6zeRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7XCGAVq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F16C116C6;
+	Fri, 13 Feb 2026 13:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990654;
-	bh=g6TBDFgZjXq1hxhx4dfx2wGEqOiub8zZfrOfyB0vKpM=;
+	s=korg; t=1770990774;
+	bh=utRT/G/5ZTzr5btttaeUR5cTiNfERqb7TVa4677dXcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bdr7n212jAgYhs8CQ/Zr13UsLbM4C59yXBg4aozBzQM6sRN0zACB8n79IDI7PdnXQ
-	 u/l/ADhK7OQBQwetrgIC/al06kMhPKb5zDIVqy7CIn3Nc+Nk7tFl0mzQczFvbSct3U
-	 rdYTME100RcV0OnIck7N5xCF2tYVB7/UrTr6a3ro=
+	b=E7XCGAVqR+Y/MXnjANqnnRr5wE7w7qGdobHZ8pUd/ciFw9Vb19Qmjeq/SBWM6aEMc
+	 YgDr5rGb2LcRcs+/jtnIAbXagABy+oDVYfcfju4ymD+pKgPWJb39sQGbkpBjJIcAlm
+	 iCHj+IsfgZM25MMedbWePdP9KLWL4g2GnCSgetYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Subject: [PATCH 6.19 27/49] driver core: enforce device_lock for driver_match_device()
-Date: Fri, 13 Feb 2026 14:47:46 +0100
-Message-ID: <20260213134709.727418807@linuxfoundation.org>
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 03/49] smb: client: split cached_fid bitfields to avoid shared-byte RMW races
+Date: Fri, 13 Feb 2026 14:47:47 +0100
+Message-ID: <20260213134709.012478039@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
-References: <20260213134708.713126210@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+References: <20260213134708.885500854@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +62,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216106-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-216142-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: 322CF13698F
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 18760136AB3
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit dc23806a7c47ec5f1293aba407fb69519f976ee0 upstream.
+commit ec306600d5ba7148c9dbf8f5a8f1f5c1a044a241 upstream.
 
-Currently, driver_match_device() is called from three sites. One site
-(__device_attach_driver) holds device_lock(dev), but the other two
-(bind_store and __driver_attach) do not. This inconsistency means that
-bus match() callbacks are not guaranteed to be called with the lock
-held.
+is_open, has_lease and on_list are stored in the same bitfield byte in
+struct cached_fid but are updated in different code paths that may run
+concurrently. Bitfield assignments generate byte read–modify–write
+operations (e.g. `orb $mask, addr` on x86_64), so updating one flag can
+restore stale values of the others.
 
-Fix this by introducing driver_match_device_locked(), which guarantees
-holding the device lock using a scoped guard. Replace the unlocked calls
-in bind_store() and __driver_attach() with this new helper. Also add a
-lock assertion to driver_match_device() to enforce this guarantee.
+A possible interleaving is:
+    CPU1: load old byte (has_lease=1, on_list=1)
+    CPU2: clear both flags (store 0)
+    CPU1: RMW store (old | IS_OPEN) -> reintroduces cleared bits
 
-This consistency also fixes a known race condition. The driver_override
-implementation relies on the device_lock, so the missing lock led to the
-use-after-free (UAF) reported in Bugzilla for buses using this field.
-
-Stress testing the two newly locked paths for 24 hours with
-CONFIG_PROVE_LOCKING and CONFIG_LOCKDEP enabled showed no UAF recurrence
-and no lockdep warnings.
+To avoid this class of races, convert these flags to separate bool
+fields.
 
 Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Suggested-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Fixes: 49b420a13ff9 ("driver core: check bus->match without holding device lock")
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Link: https://patch.msgid.link/20260113162843.12712-1-hanguidong02@gmail.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: ebe98f1447bbc ("cifs: enable caching of directories for which a lease is held")
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/base.h |    9 +++++++++
- drivers/base/bus.c  |    2 +-
- drivers/base/dd.c   |    2 +-
- 3 files changed, 11 insertions(+), 2 deletions(-)
+ fs/smb/client/cached_dir.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/base/base.h
-+++ b/drivers/base/base.h
-@@ -182,9 +182,18 @@ void device_set_deferred_probe_reason(co
- static inline int driver_match_device(const struct device_driver *drv,
- 				      struct device *dev)
- {
-+	device_lock_assert(dev);
-+
- 	return drv->bus->match ? drv->bus->match(dev, drv) : 1;
- }
- 
-+static inline int driver_match_device_locked(const struct device_driver *drv,
-+					     struct device *dev)
-+{
-+	guard(device)(dev);
-+	return driver_match_device(drv, dev);
-+}
-+
- static inline void dev_sync_state(struct device *dev)
- {
- 	if (dev->bus->sync_state)
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -263,7 +263,7 @@ static ssize_t bind_store(struct device_
- 	int err = -ENODEV;
- 
- 	dev = bus_find_device_by_name(bus, NULL, buf);
--	if (dev && driver_match_device(drv, dev)) {
-+	if (dev && driver_match_device_locked(drv, dev)) {
- 		err = device_driver_attach(drv, dev);
- 		if (!err) {
- 			/* success */
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -1180,7 +1180,7 @@ static int __driver_attach(struct device
- 	 * is an error.
- 	 */
- 
--	ret = driver_match_device(drv, dev);
-+	ret = driver_match_device_locked(drv, dev);
- 	if (ret == 0) {
- 		/* no match */
- 		return 0;
+--- a/fs/smb/client/cached_dir.h
++++ b/fs/smb/client/cached_dir.h
+@@ -36,10 +36,10 @@ struct cached_fid {
+ 	struct list_head entry;
+ 	struct cached_fids *cfids;
+ 	const char *path;
+-	bool has_lease:1;
+-	bool is_open:1;
+-	bool on_list:1;
+-	bool file_all_info_is_valid:1;
++	bool has_lease;
++	bool is_open;
++	bool on_list;
++	bool file_all_info_is_valid;
+ 	unsigned long time; /* jiffies of when lease was taken */
+ 	unsigned long last_access_time; /* jiffies of when last accessed */
+ 	struct kref refcount;
 
 
 
