@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-216112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIFAA1gsj2kPKwEAu9opvQ
-	(envelope-from <stable+bounces-216112-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:20 +0100
+	id sISTD8Isj2kPKwEAu9opvQ
+	(envelope-from <stable+bounces-216137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B181368C5
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D628E136A10
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6EF4D3010264
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:51:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 184F53055B53
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8D535F8B7;
-	Fri, 13 Feb 2026 13:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A48360732;
+	Fri, 13 Feb 2026 13:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qu/2yjEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEQjqZuH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125DF3563C3;
-	Fri, 13 Feb 2026 13:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62105241665;
+	Fri, 13 Feb 2026 13:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990675; cv=none; b=UpEiI31rL2u3qh2wS39wrKCB9K3OE5BvoGe3/ByqOm+jh6P43iFuQ/+5bpz34/jAmKNQBOMUPv+rGI17KQxQbvlCPmEANKLyJ08m/O6l/1NQKTnYjHcorb3rY/zyCkCejgZqlskXNdEYOtkBaxcfz7gMVaCt66Ajp/PcRLswvfM=
+	t=1770990758; cv=none; b=oTHeWq1BfDqSyu23oQ4YLL0NdbhZmS6CLc63i4skBpKl017HYo0LG4TOTcXq0pul+b8jBmFuUb0C4cHbLG+TvHXW4fvVC1RWyheaMvs+gUfoEnZadG2kk61vz8U+PR4ZtUTeoyKdN5NcZmMrtKWgVirXONohYr/Lb0juHEYmvSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990675; c=relaxed/simple;
-	bh=p9PUbcMDghVf3s3jByrnjP65EB+JNct/+5JsCrt8pqg=;
+	s=arc-20240116; t=1770990758; c=relaxed/simple;
+	bh=XhaFoSvA3y2i6FNlGFQkmkNEk/KM9xqmGj2FhXlvhts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r12mnaETANTRhmnLtQDnccPvaLPDRrR5Z3t/UMz+3gNn39BxppBFC20VrC7cbsxFzC2+GFrTQx7JQsDHi0lCGJwTcGpgIfOXmAHqpbjkxIiwQqBkl3pxC8u7DBZIZbRw1ZAAtF2WSkVgW/UC2YNm3i0mlA2fXH9Lc+ycEJvoT88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qu/2yjEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA58C116C6;
-	Fri, 13 Feb 2026 13:51:13 +0000 (UTC)
+	 MIME-Version; b=T9SrVztUSD5YT3//rM9aGu4UtvVbBcMsNhUUUuGxysK+cHFf6th8y91T6025OR1W+7VGWx7U5NG2qJDSVGGOow+hLjsI0DYqNeMC9MkhaqerisivsGDJcdiMdpcvd5nfRd/sdz12VLBGrQuijrl04itFRWxKBFeyFu/2bfS/YHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEQjqZuH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6742C116C6;
+	Fri, 13 Feb 2026 13:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990674;
-	bh=p9PUbcMDghVf3s3jByrnjP65EB+JNct/+5JsCrt8pqg=;
+	s=korg; t=1770990758;
+	bh=XhaFoSvA3y2i6FNlGFQkmkNEk/KM9xqmGj2FhXlvhts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qu/2yjEEAn4ZxjHD5r+3KiAdzSudTw/XNmz9JMwpti3p6hRkXPx4P+aza13IY9Q5K
-	 7D1nkuMgyzty1DpJWJSlKFSWEQiOs8nStOtOSUlAGlnAt4t6hZ2n1vyce4hhyIXwtJ
-	 8E/Lhv2wCruDRVO1lnEDDZSaR50t+U8ag5/YdRfA=
+	b=rEQjqZuHIVOZAOiO7CHIEfnMXcUklAri1jS41wVKWUKM31roZ+B/S/MPVs1CcDDuG
+	 3ULNbZsKtHP1XlWVDDnqO0pGzRkYzkM7po33ClV4xikKn5PxNezVPQLH17SzsWo9vQ
+	 bjWCdlIDCY/bIm82v3auo1+sZ0/Je/aYHn6AXIT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.19 41/49] scsi: qla2xxx: Free sp in error path to fix system crash
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 16/49] smb: client: let smbd_post_send() make use of request->wr
 Date: Fri, 13 Feb 2026 14:48:00 +0100
-Message-ID: <20260213134710.221885068@linuxfoundation.org>
+Message-ID: <20260213134709.482872050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
-References: <20260213134708.713126210@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+References: <20260213134708.885500854@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,108 +80,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216112-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216137-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email]
-X-Rspamd-Queue-Id: 78B181368C5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[send_wr.next:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samba.org:email,talpey.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: D628E136A10
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 7adbd2b7809066c75f0433e5e2a8e114b429f30f upstream.
+commit bf1656e12a9db2add716c7fb57b56967f69599fa upstream.
 
-System crash seen during load/unload test in a loop,
+We don't need a stack variable in addition.
 
-[61110.449331] qla2xxx [0000:27:00.0]-0042:0: Disabled MSI-X.
-[61110.467494] =============================================================================
-[61110.467498] BUG qla2xxx_srbs (Tainted: G           OE    --------  --- ): Objects remaining in qla2xxx_srbs on __kmem_cache_shutdown()
-[61110.467501] -----------------------------------------------------------------------------
-
-[61110.467502] Slab 0x000000000ffc8162 objects=51 used=1 fp=0x00000000e25d3d85 flags=0x57ffffc0010200(slab|head|node=1|zone=2|lastcpupid=0x1fffff)
-[61110.467509] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G           OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
-[61110.467513] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
-[61110.467515] Call Trace:
-[61110.467516]  <TASK>
-[61110.467519]  dump_stack_lvl+0x34/0x48
-[61110.467526]  slab_err.cold+0x53/0x67
-[61110.467534]  __kmem_cache_shutdown+0x16e/0x320
-[61110.467540]  kmem_cache_destroy+0x51/0x160
-[61110.467544]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
-[61110.467607]  ? __do_sys_delete_module.constprop.0+0x178/0x280
-[61110.467613]  ? syscall_trace_enter.constprop.0+0x145/0x1d0
-[61110.467616]  ? do_syscall_64+0x5c/0x90
-[61110.467619]  ? exc_page_fault+0x62/0x150
-[61110.467622]  ? entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[61110.467626]  </TASK>
-[61110.467627] Disabling lock debugging due to kernel taint
-[61110.467635] Object 0x0000000026f7e6e6 @offset=16000
-[61110.467639] ------------[ cut here ]------------
-[61110.467639] kmem_cache_destroy qla2xxx_srbs: Slab cache still has objects when called from qla2x00_module_exit+0x93/0x99 [qla2xxx]
-[61110.467659] WARNING: CPU: 53 PID: 455206 at mm/slab_common.c:520 kmem_cache_destroy+0x14d/0x160
-[61110.467718] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G    B      OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
-[61110.467720] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
-[61110.467721] RIP: 0010:kmem_cache_destroy+0x14d/0x160
-[61110.467724] Code: 99 7d 07 00 48 89 ef e8 e1 6a 07 00 eb b3 48 8b 55 60 48 8b 4c 24 20 48 c7 c6 70 fc 66 90 48 c7 c7 f8 ef a1 90 e8 e1 ed 7c 00 <0f> 0b eb 93 c3 cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 55 48 89
-[61110.467725] RSP: 0018:ffffa304e489fe80 EFLAGS: 00010282
-[61110.467727] RAX: 0000000000000000 RBX: ffffffffc0d9a860 RCX: 0000000000000027
-[61110.467729] RDX: ffff8fd5ff9598a8 RSI: 0000000000000001 RDI: ffff8fd5ff9598a0
-[61110.467730] RBP: ffff8fb6aaf78700 R08: 0000000000000000 R09: 0000000100d863b7
-[61110.467731] R10: ffffa304e489fd20 R11: ffffffff913bef48 R12: 0000000040002000
-[61110.467731] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-[61110.467733] FS:  00007f64c89fb740(0000) GS:ffff8fd5ff940000(0000) knlGS:0000000000000000
-[61110.467734] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[61110.467735] CR2: 00007f0f02bfe000 CR3: 00000020ad6dc005 CR4: 0000000000770ee0
-[61110.467736] PKRU: 55555554
-[61110.467737] Call Trace:
-[61110.467738]  <TASK>
-[61110.467739]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
-[61110.467755]  ? __do_sys_delete_module.constprop.0+0x178/0x280
-
-Free sp in the error path to fix the crash.
-
-Fixes: f352eeb75419 ("scsi: qla2xxx: Add ability to use GPNFT/GNNFT for RSCN handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-9-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/smbdirect.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3532,8 +3532,8 @@ int qla_fab_async_scan(scsi_qla_host_t *
- 	if (vha->scan.scan_flags & SF_SCANNING) {
- 		spin_unlock_irqrestore(&vha->work_lock, flags);
- 		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x2012,
--		    "%s: scan active\n", __func__);
--		return rval;
-+		    "%s: scan active for sp:%p\n", __func__, sp);
-+		goto done_free_sp;
- 	}
- 	vha->scan.scan_flags |= SF_SCANNING;
- 	if (!sp)
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 61693b4a83fc..f2ae35a9f047 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1105,7 +1105,6 @@ static int manage_keep_alive_before_sending(struct smbdirect_socket *sc)
+ static int smbd_post_send(struct smbdirect_socket *sc,
+ 		struct smbdirect_send_io *request)
+ {
+-	struct ib_send_wr send_wr;
+ 	int rc, i;
+ 
+ 	for (i = 0; i < request->num_sge; i++) {
+@@ -1121,14 +1120,14 @@ static int smbd_post_send(struct smbdirect_socket *sc,
+ 
+ 	request->cqe.done = send_done;
+ 
+-	send_wr.next = NULL;
+-	send_wr.wr_cqe = &request->cqe;
+-	send_wr.sg_list = request->sge;
+-	send_wr.num_sge = request->num_sge;
+-	send_wr.opcode = IB_WR_SEND;
+-	send_wr.send_flags = IB_SEND_SIGNALED;
++	request->wr.next = NULL;
++	request->wr.wr_cqe = &request->cqe;
++	request->wr.sg_list = request->sge;
++	request->wr.num_sge = request->num_sge;
++	request->wr.opcode = IB_WR_SEND;
++	request->wr.send_flags = IB_SEND_SIGNALED;
+ 
+-	rc = ib_post_send(sc->ib.qp, &send_wr, NULL);
++	rc = ib_post_send(sc->ib.qp, &request->wr, NULL);
+ 	if (rc) {
+ 		log_rdma_send(ERR, "ib_post_send failed rc=%d\n", rc);
+ 		smbd_disconnect_rdma_connection(sc);
+-- 
+2.53.0
+
 
 
 
