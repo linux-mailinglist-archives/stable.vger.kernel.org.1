@@ -1,153 +1,156 @@
-Return-Path: <stable+bounces-216025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBSGIIPIjmlPEwEAu9opvQ
-	(envelope-from <stable+bounces-216025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:45:23 +0100
+	id eCI8M3HRjmnJFAEAu9opvQ
+	(envelope-from <stable+bounces-216026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 08:23:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2DD1334C5
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:45:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9E91337D2
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 08:23:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CA5AE3033E7C
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 06:45:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD5B63032059
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 07:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A2726FA5A;
-	Fri, 13 Feb 2026 06:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B252D541B;
+	Fri, 13 Feb 2026 07:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ws2OhZZ9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DaoYk5xq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7552505B2;
-	Fri, 13 Feb 2026 06:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674812D0610
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 07:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770965120; cv=none; b=KBoWcDqY7n9U/dG7OvTJMRvLyaIUfu6WwGLsO/CCtZ2jPujesVshSIS9PcIh+qOwWZPTx4Vb3CRTrIG8dRIhH312smWxeUKovNpFqOjMmEf+kbc8PgHfxNNHTmTOsrAxraxf76lSDI13TuTAtO5HwKXLyoE1P41I+p1aekiWkWE=
+	t=1770967359; cv=none; b=NSe7lMQRNl5z8Irpwy8zGmVpTmXFoN6VBqlFdFCmDTIc/2LHPJ1qZNSgy9dr7W9X6t9BsCGTnpKihu+QksPgmoY2NdH/OlHJIF52wQXXqGXOS0lv0lbp4djvqYJaI3g2VUr30x7ntjhzu6oTd6qEwewsp3B3H4nt7/Jjli5AY3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770965120; c=relaxed/simple;
-	bh=6J35rRRigU8xE8JpO0UJ8nD7n7Rc/gRlu+sFTRGORyQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KhPpumwhbbvUuUYc73wSD4cTup2fFxBdnjqMlJxsW40lBwxtqg2wMvHF9vILinieys6/dXkxS3uXvea1KiTnFZUA0XEmM+HX+ERYs+/uDgv+JsySFQqewXeRy69cP0LLaq3fW+Rqw2eE5wL4z2QNMSdCWlNR5NhjxOs9Ae4wOIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ws2OhZZ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42212C116C6;
-	Fri, 13 Feb 2026 06:45:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770965120;
-	bh=6J35rRRigU8xE8JpO0UJ8nD7n7Rc/gRlu+sFTRGORyQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Ws2OhZZ9DBc5gq+7vU8LG08UxFyPLnQdQXJiaxE18AR1nsgBL0mBCaIu3HLPE0cPq
-	 x3WJ67lmIxg0WZZejRRSbm5xQN1w3XNDpVMCySNmjJBb0D1VRtLN2zMxo3yCGIrBrG
-	 aOi4Tmm8kZh0z/5y4uRhTbOp5xfRk1c8ar/Jmwf9gCZ7v6R1edj/y4BAu0dD9mLFf/
-	 M8825xtzGyWvlZYQZSslWxvfOW59ap4D8sNKRF2WgmYt9Jcs//wxaTdizgLrKhIeXD
-	 4nsbXKlyK49ftBq/FA85pkWTB7GyY5lS2hBDAlKP7VwgUUmQB0QQQmn8jbdUXjt0pz
-	 52hs5OmEXCJ3Q==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Fri, 13 Feb 2026 01:45:13 -0500
-Subject: [PATCH] kbuild: rpm-pkg: Fix manual debuginfo generation when
- using .src.rpm
+	s=arc-20240116; t=1770967359; c=relaxed/simple;
+	bh=LSYFkz0UrOYAmwgkQWvg5id8QdlFKf3BK68u5Xx8e2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VLdRMSXTssNgnomUtRNP3o+bP8Wwd0lbgYAm7ncvmdZa9AOvkAhCEVFlnKKFqgEIFvexlJGf7cILcj05iET3qEi57oTUoKQRYCzPa3xn72uRDqp68NfQU0wn972JFPVlD4eWvYv+C1bePULZWaWHFuHLrL00+c1KIfyzdANjcfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DaoYk5xq; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2ba94dbf739so740266eec.1
+        for <stable@vger.kernel.org>; Thu, 12 Feb 2026 23:22:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770967357; x=1771572157; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fiCbh2V+lOmkwVu8CiLzDS6uSCAV7WhBVlxztbyz1pI=;
+        b=DaoYk5xqkP7/w4vfPaR8ZCHq3058kThbaT0Y2Vto0NCLEXQzaNQo3cIX2NUKSTBs4L
+         GMU3f2nmLsahoY8PV/5ZLSE0wvDrIx4QSu8Wmt9FsmPQa0dufRfExfjVSRxuqg//ejjk
+         JDHZLo9FGo9MsSh0arO6ILS+NHgfMufWxQgRHKKL1gI++3BUiWv5osyE5jvMu8wTW5Oj
+         EJpJXEHtqCTRoeVZ9HZ2jTknzOXTP5o9crEQzAfeT/yynZt0eiOyJoZ4/GN18CQ9Jd60
+         an3Mhfe7M+Shvt6VMd4BIodD5pNZAzve6oszdOk9E+WGsOTySbJ1rESfXteyjF3HR3AN
+         3RNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770967357; x=1771572157;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fiCbh2V+lOmkwVu8CiLzDS6uSCAV7WhBVlxztbyz1pI=;
+        b=tTMfEoHj/TQDZRSUybLfdPZufi0jWFa4ApECYwhdcTRZjHSMW70olyZMs7PC4qvPDk
+         Dlcw/J+eyZVMkTZy/LjHmtQkDHTKdTelRTl8wSc0o3fBmZls5C54LUc5Nij9wXhH3JeU
+         3+pZ6lRt/dppYtGN6F7duRSuUbquBMvl544mFNTHTSK5Y0OFlsVa7+tRSD1B5nAi9XPd
+         1nHPocFdWBh2sOw+6ykiMZmXQqcABcSTOxAxXX6NmIQUk/VblTCElBL1S7hVERHGjTbn
+         ahTa2sk439wR9a/nxgSQlq8ejg8rUMbrPW/rkqM5elJTa6OQamOeMaKI6vkVYADve8GA
+         5yAw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvFza+SnnqsdpY2NH4pLMZ2aSlrV0Pg0mCkTzCpgX3BcsiWMehXms8k4au1DQPrYZNRkkrEQw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL2SIOR38JX+LiaGGGzJ2Eang9xQJcMpztNIPzulRN+caq2Xmp
+	C0tRimEMuTvy3D2Xj2fmFVkbZaSDRF9YIuvfDy/WdYxFde/ebTKw+/ncRRxaNg==
+X-Gm-Gg: AZuq6aIbI6guEe7ZfINM2MyREYwmOnb0mqRSYK4d0mCf2K91DG6JOzqr6lKSiKaYQCz
+	ylowoVVCIVWyOJKYhAqBd/luTQku2F9rdhC1knX3Zl3VYPV31NgP+1vCn0MvrDa6MinEBm4pB3J
+	d63lEHktAa4X2dASHNFEnpTBUZDndJSAvPg6k1WzARfbhgnoT+YZp+N/zoNALsOmTBhCu+vedeI
+	POQgTDVTJNILS4agUxHK6k/eiPvayPOefaQ2stAf0c6p7uPXnJLx1oWmZm+kvFy5agRGJOOmUfJ
+	UfNfI1eXbh2OPq7Z0a+pJzKeNoT526fFO97fW/WgvarV42DtP2+ky1XvQbSTs2s74/gJA7JL7vr
+	idZP/8uFs87t2BhJsjuwdYuzJ/oWDJBcUPHZgW0wL/6Gul5lBKrKUxbV5BYUyyWQUbB0cxBfm3o
+	QwPXj9NaCK/X8ahj5qConqQhiXxznhc0MBIGlyH5RSIClglagMH4gUAabLAOKvtdFEE5guSQJu8
+	ZLAsRL62sO2Q5dj5VAxdSb3h4OpCCpV/NPj
+X-Received: by 2002:a05:7301:5792:b0:2ba:858b:3751 with SMTP id 5a478bee46e88-2babc3a977amr344411eec.3.1770967357418;
+        Thu, 12 Feb 2026 23:22:37 -0800 (PST)
+Received: from kernel.. ([45.232.185.208])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dcfe6b7sm5898148eec.29.2026.02.12.23.22.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Feb 2026 23:22:36 -0800 (PST)
+From: Maiquel Paiva <maiquelpaiva@gmail.com>
+To: linux-bluetooth@vger.kernel.org
+Cc: luiz.dentz@gmail.com,
+	gregkh@linuxfoundation.org,
+	marcel@holtmann.org,
+	stable@vger.kernel.org,
+	Maiquel Paiva <maiquelpaiva@gmail.com>
+Subject: [PATCH v8 0/1] Bluetooth: mgmt: Fix heap overflow and race condition
+Date: Fri, 13 Feb 2026 07:22:04 +0000
+Message-ID: <20260213072205.18404-1-maiquelpaiva@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260213-fix-debuginfo-srcrpm-pkg-v1-1-45cd0c0501b9@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqEMAwAvyI5b6Ct2gW/InvQGGuQrSVFEcS/W
- zwOzMwFmVU4Q1ddoHxIli0WsJ8KaBliYJSpMDjjvHG2xllOnHjcg8R5w6yk6Y9pDeja2hNZ8qb
- 5QsmTcnHfdf+77wfSY2InagAAAA==
-X-Change-ID: 20260213-fix-debuginfo-srcrpm-pkg-2536cc1c6047
-To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Lukas Herbolt <lukas@herbolt.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2126; i=nathan@kernel.org;
- h=from:subject:message-id; bh=6J35rRRigU8xE8JpO0UJ8nD7n7Rc/gRlu+sFTRGORyQ=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDJl9J+qaWFgUmuvWb+v/2Jcdw9LaX3E15/Nd81ueAhe/R
- t37KSbWUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACaySZKR4cWto7+Kb03Re1K0
- Zjnrzy0Xrk2ren62kiv03cNjhc8UFpcyMryJEZupVHZs3nkvvp1ftsyx65E3e6rz0SRvUYxdkrX
- dHj4A
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216025-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,linuxfoundation.org,holtmann.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216026-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maiquelpaiva@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,p:email]
-X-Rspamd-Queue-Id: EA2DD1334C5
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,test.bot:url]
+X-Rspamd-Queue-Id: 3B9E91337D2
 X-Rspamd-Action: no action
 
-Commit 62089b804895 ("kbuild: rpm-pkg: Generate debuginfo package
-manually") added uses of OBJCOPY and READELF, variables from Kbuild.
-These variables are defined and work properly when using the binrpm-pkg
-target because rpmbuild is run within Kbuild. However, these variables
-are not defined when building from a source RPM package generated with
-the srcrpm-pkg target, breaking the build when generating the debug info
-subpackage.
+This patch addresses two vulnerabilities in mesh handling within mgmt_util.c:
+a heap buffer overflow and race conditions during list traversal.
 
-Define a default value for these variables so that these commands
-respect the value from Kbuild but continue to work when built from a
-source RPM package.
+The fixes have been consolidated into a single patch to ensure atomic
+application and to follow maintainer feedback regarding the use of 
+existing mutexes.
 
-Cc: stable@vger.kernel.org
-Fixes: 62089b804895 ("kbuild: rpm-pkg: Generate debuginfo package manually")
-Reported-by: Lukas Herbolt <lukas@herbolt.com>
-Closes: https://lore.kernel.org/20260212135855.147906-2-lukas@herbolt.com/
-Tested-by: Lukas Herbolt <lukas@herbolt.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- scripts/package/kernel.spec | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Changes in v8:
+- Rebased against the latest bluetooth-fixes/master to resolve the 
+  merge conflict at line 413 reported by bluez.test.bot.
+- No functional changes since v7.
 
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index af682a705477..bccf58bdd45f 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -148,11 +148,11 @@ echo /usr/lib/debug/lib/modules/%{KERNELRELEASE}/vmlinux > %{buildroot}/debuginf
- while read -r mod; do
- 	mod="${mod%.o}.ko"
- 	dbg="%{buildroot}/usr/lib/debug/lib/modules/%{KERNELRELEASE}/kernel/${mod}"
--	buildid=$("${READELF}" -n "${mod}" | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p')
-+	buildid=$("${READELF:-readelf}" -n "${mod}" | sed -n 's@^.*Build ID: \(..\)\(.*\)@\1/\2@p')
- 	link="%{buildroot}/usr/lib/debug/.build-id/${buildid}.debug"
- 
- 	mkdir -p "${dbg%/*}" "${link%/*}"
--	"${OBJCOPY}" --only-keep-debug "${mod}" "${dbg}"
-+	"${OBJCOPY:-objcopy}" --only-keep-debug "${mod}" "${dbg}"
- 	ln -sf --relative "${dbg}" "${link}"
- 
- 	echo "${dbg#%{buildroot}}" >> %{buildroot}/debuginfo.list
+Changes in v5-v7:
+- Combined heap overflow and race condition fixes into one patch.
+- Switched to guard(mutex) using 'mgmt_pending_lock' instead of a 
+  spinlock, as requested by maintainers.
+- Resolved minor style and alignment issues.
 
----
-base-commit: d59d7292d8b2f3123450e0ba573da6072fd869ef
-change-id: 20260213-fix-debuginfo-srcrpm-pkg-2536cc1c6047
+Maiquel Paiva (1):
+  Bluetooth: mgmt: Fix heap overflow and race condition in mesh handling
 
-Best regards,
---  
-Nathan Chancellor <nathan@kernel.org>
+ net/bluetooth/mgmt_util.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+-- 
+2.43.0
 
 
