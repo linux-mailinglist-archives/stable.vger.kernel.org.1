@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-216203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMJUHYgtj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216203-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:56:24 +0100
+	id 8CY0Cjkuj2nTLgEAu9opvQ
+	(envelope-from <stable+bounces-216206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:59:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2802136C17
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:56:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8184136D26
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B5D7B3014133
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2C3230D0E0E
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FA8360720;
-	Fri, 13 Feb 2026 13:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F97135FF49;
+	Fri, 13 Feb 2026 13:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBQEeK8R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0BuDyR1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B3A1684BE;
-	Fri, 13 Feb 2026 13:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D768F1684BE;
+	Fri, 13 Feb 2026 13:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990982; cv=none; b=dKfx2LJR5IFFzvFSLKv+vKETJPrfXB6e+MK90BhcjWucYoKg65a3jpd2/Lpu++FpLzWfqdCTL7NSSz3yHl7xVR211gtPzG9ke3LNabiyy0Z6MJz7hqCdzEeI3DaKvEzuikeEaKyVz7HAqWEYQniCfoJoDCw3IMsze2SNVG0iwx4=
+	t=1770990991; cv=none; b=tr6jXfAGlNwn3s1qcsakAuEnGLRsvD4M8TKnKMpPyCbGu/3oHsFQ8RaM77paheu3h9gvKkopwjgoIylZiYpzwbN+tmqpUshlF2L1j6RMvMwp2/THzmDUjfsUb9mqgAl03QRj5Mj5tEPqvZCUi5CfqKIAqDnUaa3ucKiwcdYjTag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990982; c=relaxed/simple;
-	bh=Vl/Hg2qhCf/BikaaTXzE6hBt0EWPbEqvqMdAmeuwsNo=;
+	s=arc-20240116; t=1770990991; c=relaxed/simple;
+	bh=eBkSII84j0IXvt+e1Ak5UMkdGLjj4aZFC5UMl0Ti/xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBeTprEvoYY+fJUXxOSQtJNJp0wubtVjEnzU0HWypUGdBQOLIdJGD+E6WxJ7bi9sJ4lsU+JUQkpIdhJKt1tddNlesffCM53I3/8UyTOHXBU5iiYi2kSDvCMUneokRXXDtPOdcJZQN3mT2fqPYYbsHdrnOgzH2QGlJgVD3f0j5O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBQEeK8R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE5AC19423;
-	Fri, 13 Feb 2026 13:56:21 +0000 (UTC)
+	 MIME-Version; b=TPYW4hRqG2UpXVMFxE9fJSGAZxGGvEw07DSvOVP7UP33/HfViacKShQWdFVEi6qoUd3IpUGL9Q8nyo25OsuVyF6vlXvIlV/ndPoBZ2UWmKZoaQUBDz+TLdmi69de2YSpQLJl1B+i27Fm18s+lLuG3FHEIRHnFCmorOoMz4TP01A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0BuDyR1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2DAC116C6;
+	Fri, 13 Feb 2026 13:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990982;
-	bh=Vl/Hg2qhCf/BikaaTXzE6hBt0EWPbEqvqMdAmeuwsNo=;
+	s=korg; t=1770990991;
+	bh=eBkSII84j0IXvt+e1Ak5UMkdGLjj4aZFC5UMl0Ti/xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBQEeK8R+OFxAloagsOjJDJYyjlTvVxxNSJ+xqOUVDAP/Kj+CY9+kFMU/3+Lyf7Yi
-	 Eqwi8bgF8fDB+tPY50gf6lpDXkRzPN/eDw5S64LdXsn9ixH8AHuMkZ7V2NCpFjSxz+
-	 ahHbfnnSctnm0jMXyv9/B27EzWy/tJs55qCr8od4=
+	b=s0BuDyR1AygAi6BeVxiKM7rIw4ZwmxPKG8gaY1wCrqpgIJ3I/nIytF2kBMw/XTvnV
+	 1uFfQ775CuHk5Dkt7rM3VtZ2F/cTAyO/msglxwyzQ6Kagr13+Z9N92ltJ4spgFFQCw
+	 ziJT5UPp2agYxNHPzeZRgSCLB0BINlK3FfvzVaNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 09/24] crypto: virtio - Add spinlock protection with virtqueue notification
+	tianshuo han <hantianshuo233@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 02/25] ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off reset in error paths
 Date: Fri, 13 Feb 2026 14:48:28 +0100
-Message-ID: <20260213134705.070635758@linuxfoundation.org>
+Message-ID: <20260213134703.975062335@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
-References: <20260213134704.728003077@linuxfoundation.org>
+In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
+References: <20260213134703.882698935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,87 +67,95 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216203-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216206-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: C2802136C17
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C8184136D26
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit b505047ffc8057555900d2d3a005d033e6967382 upstream.
+commit 010eb01ce23b34b50531448b0da391c7f05a72af upstream.
 
-When VM boots with one virtio-crypto PCI device and builtin backend,
-run openssl benchmark command with multiple processes, such as
-  openssl speed -evp aes-128-cbc -engine afalg  -seconds 10 -multi 32
+The problem occurs when a signed request fails smb2 signature verification
+check. In __process_request(), if check_sign_req() returns an error,
+set_smb2_rsp_status(work, STATUS_ACCESS_DENIED) is called.
+set_smb2_rsp_status() set work->next_smb2_rcv_hdr_off as zero. By resetting
+next_smb2_rcv_hdr_off to zero, the pointer to the next command in the chain
+is lost. Consequently, is_chained_smb2_message() continues to point to
+the same request header instead of advancing. If the header's NextCommand
+field is non-zero, the function returns true, causing __handle_ksmbd_work()
+to repeatedly process the same failed request in an infinite loop.
+This results in the kernel log being flooded with "bad smb2 signature"
+messages and high CPU usage.
 
-openssl processes will hangup and there is error reported like this:
- virtio_crypto virtio0: dataq.0:id 3 is not a head!
+This patch fixes the issue by changing the return value from
+SERVER_HANDLER_CONTINUE to SERVER_HANDLER_ABORT. This ensures that
+the processing loop terminates immediately rather than attempting to
+continue from an invalidated offset.
 
-It seems that the data virtqueue need protection when it is handled
-for virtio done notification. If the spinlock protection is added
-in virtcrypto_done_task(), openssl benchmark with multiple processes
-works well.
-
-Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Reported-by: tianshuo han <hantianshuo233@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/virtio/virtio_crypto_core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/smb/server/server.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -75,15 +75,20 @@ static void virtcrypto_done_task(unsigne
- 	struct data_queue *data_vq = (struct data_queue *)data;
- 	struct virtqueue *vq = data_vq->vq;
- 	struct virtio_crypto_request *vc_req;
-+	unsigned long flags;
- 	unsigned int len;
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -126,21 +126,21 @@ static int __process_request(struct ksmb
+ andx_again:
+ 	if (command >= conn->max_cmds) {
+ 		conn->ops->set_rsp_status(work, STATUS_INVALID_PARAMETER);
+-		return SERVER_HANDLER_CONTINUE;
++		return SERVER_HANDLER_ABORT;
+ 	}
  
-+	spin_lock_irqsave(&data_vq->lock, flags);
- 	do {
- 		virtqueue_disable_cb(vq);
- 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
-+			spin_unlock_irqrestore(&data_vq->lock, flags);
- 			if (vc_req->alg_cb)
- 				vc_req->alg_cb(vc_req, len);
-+			spin_lock_irqsave(&data_vq->lock, flags);
+ 	cmds = &conn->cmds[command];
+ 	if (!cmds->proc) {
+ 		ksmbd_debug(SMB, "*** not implemented yet cmd = %x\n", command);
+ 		conn->ops->set_rsp_status(work, STATUS_NOT_IMPLEMENTED);
+-		return SERVER_HANDLER_CONTINUE;
++		return SERVER_HANDLER_ABORT;
+ 	}
+ 
+ 	if (work->sess && conn->ops->is_sign_req(work, command)) {
+ 		ret = conn->ops->check_sign_req(work);
+ 		if (!ret) {
+ 			conn->ops->set_rsp_status(work, STATUS_ACCESS_DENIED);
+-			return SERVER_HANDLER_CONTINUE;
++			return SERVER_HANDLER_ABORT;
  		}
- 	} while (!virtqueue_enable_cb(vq));
-+	spin_unlock_irqrestore(&data_vq->lock, flags);
- }
+ 	}
  
- static void virtcrypto_dataq_callback(struct virtqueue *vq)
 
 
 
