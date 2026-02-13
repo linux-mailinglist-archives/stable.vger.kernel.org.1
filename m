@@ -1,96 +1,61 @@
-Return-Path: <stable+bounces-216277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJx7BX9Xj2lqQQEAu9opvQ
-	(envelope-from <stable+bounces-216277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:55:27 +0100
+	id aLhQIH1Vj2lqQQEAu9opvQ
+	(envelope-from <stable+bounces-216269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:46:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C311386AB
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:55:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5DAD1385AA
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 02167300BB96
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 16:55:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF2CF300F9F8
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 16:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B136C34FF41;
-	Fri, 13 Feb 2026 16:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C0532B98D;
+	Fri, 13 Feb 2026 16:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aCdtsMkt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6SjUb1d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60406299A87
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 16:55:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD07330D54
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 16:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771001724; cv=none; b=bN8M+xJPCU6k2ohJBsNceBBopBl/mEWDQ6OACdRp6oI7mlG3TvS9OvbTDATvgD6SVgN9RQ11kz+MHZI3q7rNKjh3BeEBSyPZtKB8z/TxVowVMtIUIZ7lD3U/LNCHbrEcz4qxGixw3B9YgEGlwuXB3eXuqjCLVmufqWyeT6NfbSw=
+	t=1771001106; cv=none; b=m44IjS9N65zg6s9ErrqSxlUHbrVgi8IsiTGET3yJoTwwOs7HRjlYGhMieIXuqFNg0MMXvQl4Y8HApVwP6WnSfFSUut5CW538JP7WXsRosr8d1ztL/xNuJQ16lL/NeYCYlmtZmnPsjOJhJQujdEKS7CzHlHhuoFY0rfUDhg/SGXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771001724; c=relaxed/simple;
-	bh=RD0u0t5zLEK6pLa3+Sqhn6/3CXcPdDtMjzVXUFAB/+8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lwBEM/70LQr4xFI1tA+vSy1oDKTS3YrUTrT3t/HEfnLUYs4OKagB2kZlYuWV57JG6gfv8RIv04dHM5CMN9/0GX6E2RGr6C1XzTlNJnDptSYYIwUE5Jiy5fhqu0E8Ub6axwjC3JHro0li9C+DPyK0JfBN0Onm5wxoREJjq86XBek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aCdtsMkt; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43768aa6ab2so94543f8f.1
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 08:55:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771001722; x=1771606522; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8ptauGZZMWrMiDu6t9/L2OG0QlvSuTICYS6yevNbRDk=;
-        b=aCdtsMktH4bwzf5FmL9w24nAGB2+Wwf3iPBV7MgFUWcf7Qv7CvwpEArVLGCHYVYpi4
-         TpQJrINBlfgAlIgzY/jJM/mnCxpFdKJUJKPeOdXZUCNRaim7n6UcOkOhzicTYrstyBAp
-         ZBe4vfCk5GzaE64bnLuJk6z2dBTMUH2IaRN0j8r9gT6e7qC4EdWjdh+rlttSqjMhsXSX
-         OEF/bAnFDdPC3xyaK6REnQj4QEBsXE9hIi0H25urPUw7KnVLgsld6r/e1lofi5Ztsauz
-         xWkHuBbwc4LZLr1+YUpx8KXFdMtI7HCTdLyJcxEd3ili6hzMdBCPRY0TeW7T+XMl7dbv
-         JKHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771001722; x=1771606522;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8ptauGZZMWrMiDu6t9/L2OG0QlvSuTICYS6yevNbRDk=;
-        b=iXs7qNjBlx03cDY1xEJBb317+5oLZQFoQ+pARPumsjRSw3MD2cV5Chtp4UW9yC2/Wf
-         gAJEOlGBvs3EN1Ot/QN/gJEEPe1Ys1xqfic3wmQHLoCorlPQney7F2z4gkz/v547vwMK
-         vtaDMp6R5wr8XrlP1WNdU3Lv0whtxce2kFMRYIFqlEZgw2GHjIyPf/5ll3zziqU8Jur+
-         85uS4Q9tGMSJwupxr5/uZ/uRctH3lMrzDhDA7jw260YmfF5PkcTDydY7rIhphObsT/eS
-         l2CzNCWQpfcHuWxuSCVg8pRQMSQtTthinDtAFpm5UDOe8NJO6NNTKShbwAQihhI6iu3b
-         NgBA==
-X-Forwarded-Encrypted: i=1; AJvYcCWfwJHDdCgHrfYmTdj8icfkzoARMH2vlevASBtX2dObwfnT1HKApyII3uxW5krrtatiVn1/OKU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7eABdFSd/6x582I5TgdrGe+kjh6nNrgVIAu30+Q5zoegAfXKD
-	xpTEM/srKRrcL1tkSNl8Kqczn111X+LsP5KZ9PvBxHhAHvJ/Lug7QR+f
-X-Gm-Gg: AZuq6aKKgrqzKZw6v0ZiLbSjYdk5dhFapOXjcT2WqbMgbX7vwQ5gz+x8y9C7ylxWAjh
-	YtdLcT+ekPSBdiJf/3PQbU/vzUEw+pCoUFdUMgKFLAf2qXHUdO2ebXOm3wJiWOGENlp1SyIPtSE
-	7iJcDevHuN0IRaZQ5g9mJqzR3rdOJlpE/MTg5e7OyI6RMxg77BaZL9pNjq7JnsKTM1nRUVRYpxm
-	9xkdsHeHZt+NK3QSjYVLTtCmKWRec+STRjkaiDMN93pCTv92f5PbaZg169OBJeiaDhMVQIyMw82
-	faL0GYhwzflsaFilxd1MT4eYgld8vDtvybQF+uA4OMSzbGC/4TfRucdUVRspyZVNUoXoii9frCu
-	oJPbkuImcrhzxk7+aqrxfY7NSf7LjGu8BghSvamFLggEKBSBr4npjCe3WRs3bII9riKbWOpp5g9
-	siHhnQ0rhn7e36z015dNkNAyZVDSu4vwx2tj0AtmfYYskjVYYj87m3nFjgsbVmW1ayNkxRoOgTT
-	bdSu1dAGyuUIHWxwA+N
-X-Received: by 2002:a05:600c:8b2e:b0:477:a478:3f94 with SMTP id 5b1f17b1804b1-4837105119cmr29305325e9.5.1771001721721;
-        Fri, 13 Feb 2026 08:55:21 -0800 (PST)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-82-204.paris.inria.fr. [128.93.82.204])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-48371a298ebsm24537975e9.13.2026.02.13.08.55.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Feb 2026 08:55:21 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	stable@vger.kernel.org,
-	Dariusz Marcinkiewicz <reksio@newterm.pl>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: ethernet: ec_bhf: Fix dma_free_coherent() dma handle
-Date: Fri, 13 Feb 2026 17:43:39 +0100
-Message-ID: <20260213164340.77272-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1771001106; c=relaxed/simple;
+	bh=ErS7FcqxpgIDO9+PtTjDefIu/LDlYv+5sZfprvQyozU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hXh2NcjD4n62hsOglPmhlmJktMgPSbcwpO6QyXBMRf2eNHE2qVKt/D0OOIljwQDT7CFt5HLMHZMsTVrMWuA+iIXwLREVkQzYNHsBaxn133n9PL0P2LZdyYTmUS03VHSGrl0w/GNSk1KNIJhVOFgShjVA/r1UbTD5n+hys8Kh0qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6SjUb1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322CDC116C6;
+	Fri, 13 Feb 2026 16:45:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771001105;
+	bh=ErS7FcqxpgIDO9+PtTjDefIu/LDlYv+5sZfprvQyozU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D6SjUb1dA+7KbC91xkH8Vy17ByW6fY3Kd8alOBdZ5rOQDMJ9+E0R8s9qMfj1krJ4F
+	 SaUZMMnK2lb+tKpfIkFmbKcgKEFFyEBrtoHgVJg/ayae+zBS/WxP7Qm8O2JVbXlASC
+	 Qoz/6ZxjoUVLEMKdn/18TuRd6unIt9sqET6eb5PaPKsjGAGp5tVd7GY0D7KHnEW4rD
+	 VfWqfrFbLKtf/VnfhIgN5xruQc2ddb9pOWMKCQG6qPLXtsfGp3mzkzozsFhkVMWFmb
+	 CdU0+kQBedeREUOO4CbBTS+LnIiFfer7esCI2/gOg2BO/Tp2lLIPbNBeSJBMs6H2O6
+	 Q1CRM2UAjjRxA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Gleb Chesnokov <Chesnokov.G@raidix.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/4] scsi: qla2xxx: Use named initializers for port_[d]state_str
+Date: Fri, 13 Feb 2026 11:45:00 -0500
+Message-ID: <20260213164503.3564614-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026021306-playful-overact-2bfb@gregkh>
+References: <2026021306-playful-overact-2bfb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,64 +64,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216277-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216269-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,newterm.pl,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fourierthomas@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B4C311386AB
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: D5DAD1385AA
 X-Rspamd-Action: no action
 
-dma_free_coherent() in error path takes priv->rx_buf.alloc_len as
-the dma handle. This would lead to improper unmapping of the buffer.
+From: Gleb Chesnokov <Chesnokov.G@raidix.com>
 
-Change the dma handle to priv->rx_buf.alloc_phys.
+[ Upstream commit 6e0e85d39e528da2915a2da261195f81bfde6915 ]
 
-Fixes: 6af55ff52b02 ("Driver for Beckhoff CX5020 EtherCAT master module.")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Make port_state_str and port_dstate_str a little more readable and
+maintainable by using named initializers.
+
+Also convert FCS_* macros into an enum.
+
+Link: https://lore.kernel.org/r/AS8PR10MB495215841EB25C16DBC0CB409D349@AS8PR10MB4952.EURPRD10.PROD.OUTLOOK.COM
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Gleb Chesnokov <Chesnokov.G@raidix.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 7adbd2b78090 ("scsi: qla2xxx: Free sp in error path to fix system crash")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ec_bhf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_def.h | 35 ++++++++++++++++++----------------
+ drivers/scsi/qla2xxx/qla_isr.c | 10 +++++-----
+ 2 files changed, 24 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/ec_bhf.c b/drivers/net/ethernet/ec_bhf.c
-index 67275aa4f65b..0c86cbb0313c 100644
---- a/drivers/net/ethernet/ec_bhf.c
-+++ b/drivers/net/ethernet/ec_bhf.c
-@@ -423,7 +423,7 @@ static int ec_bhf_open(struct net_device *net_dev)
+diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
+index 02a2fd1b150a9..5416d1f776c1b 100644
+--- a/drivers/scsi/qla2xxx/qla_def.h
++++ b/drivers/scsi/qla2xxx/qla_def.h
+@@ -2689,25 +2689,28 @@ struct event_arg {
+ /*
+  * Fibre channel port/lun states.
+  */
+-#define FCS_UNCONFIGURED	1
+-#define FCS_DEVICE_DEAD		2
+-#define FCS_DEVICE_LOST		3
+-#define FCS_ONLINE		4
++enum {
++	FCS_UNKNOWN,
++	FCS_UNCONFIGURED,
++	FCS_DEVICE_DEAD,
++	FCS_DEVICE_LOST,
++	FCS_ONLINE,
++};
  
- error_rx_free:
- 	dma_free_coherent(dev, priv->rx_buf.alloc_len, priv->rx_buf.alloc,
--			  priv->rx_buf.alloc_len);
-+			  priv->rx_buf.alloc_phys);
- out:
- 	return err;
+ extern const char *const port_state_str[5];
+ 
+-static const char * const port_dstate_str[] = {
+-	"DELETED",
+-	"GNN_ID",
+-	"GNL",
+-	"LOGIN_PEND",
+-	"LOGIN_FAILED",
+-	"GPDB",
+-	"UPD_FCPORT",
+-	"LOGIN_COMPLETE",
+-	"ADISC",
+-	"DELETE_PEND",
+-	"LOGIN_AUTH_PEND",
++static const char *const port_dstate_str[] = {
++	[DSC_DELETED]		= "DELETED",
++	[DSC_GNN_ID]		= "GNN_ID",
++	[DSC_GNL]		= "GNL",
++	[DSC_LOGIN_PEND]	= "LOGIN_PEND",
++	[DSC_LOGIN_FAILED]	= "LOGIN_FAILED",
++	[DSC_GPDB]		= "GPDB",
++	[DSC_UPD_FCPORT]	= "UPD_FCPORT",
++	[DSC_LOGIN_COMPLETE]	= "LOGIN_COMPLETE",
++	[DSC_ADISC]		= "ADISC",
++	[DSC_DELETE_PEND]	= "DELETE_PEND",
++	[DSC_LOGIN_AUTH_PEND]	= "LOGIN_AUTH_PEND",
+ };
+ 
+ /*
+diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
+index 1459ae380389a..8b13797d210d1 100644
+--- a/drivers/scsi/qla2xxx/qla_isr.c
++++ b/drivers/scsi/qla2xxx/qla_isr.c
+@@ -49,11 +49,11 @@ qla27xx_process_purex_fpin(struct scsi_qla_host *vha, struct purex_item *item)
  }
+ 
+ const char *const port_state_str[] = {
+-	"Unknown",
+-	"UNCONFIGURED",
+-	"DEAD",
+-	"LOST",
+-	"ONLINE"
++	[FCS_UNKNOWN]		= "Unknown",
++	[FCS_UNCONFIGURED]	= "UNCONFIGURED",
++	[FCS_DEVICE_DEAD]	= "DEAD",
++	[FCS_DEVICE_LOST]	= "LOST",
++	[FCS_ONLINE]		= "ONLINE"
+ };
+ 
+ static void
 -- 
-2.43.0
+2.51.0
 
 
