@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-216181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGDsFj8tj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:11 +0100
+	id aKa4JD0uj2nTLgEAu9opvQ
+	(envelope-from <stable+bounces-216207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:59:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFB1136B7D
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 364D5136D2D
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EA9293008D34
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:55:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B052630D3E15
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E27F35FF62;
-	Fri, 13 Feb 2026 13:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F1E35FF61;
+	Fri, 13 Feb 2026 13:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN4M5Rxh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQaDs9xy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D567E23D2AB;
-	Fri, 13 Feb 2026 13:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4514E1684BE;
+	Fri, 13 Feb 2026 13:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990905; cv=none; b=lNu43D8FSnwJQ+AP8sib3A+3FjT5Has3bqPdu1VS+ZsWotWraqZeBN99YXYb/UindD9Za4rfHphrwKEnW3IuegobELrP+Ee6MWjyRFmz0uT1jepB0oN9JXvR45g37GhBxkGe1bXygbMj6VVeaBipBrZWZYQC1z8Lq8GGsb9MvQo=
+	t=1770990995; cv=none; b=WH47RbndoNmcwgfEoOZ4GnjHAcAQmtsUwPuQEGuavZlUiJ7k8rOkNhg71qjs6w7pXnhxbwTVM0/YMk0gw9IVT6rOeMl+gy+LwqJEWGg+ehvqPh6JCmNHq1+PcqIhn+8u5AJdKTJgDThxMDTIS+C3LHvxpYTs6Fb+E1RyJE9JUy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990905; c=relaxed/simple;
-	bh=2HJgN1zSHNzz1egj2iVZH0bXN3BhuaSwyzqj0Fuh13w=;
+	s=arc-20240116; t=1770990995; c=relaxed/simple;
+	bh=20kUHWQHjD+ghrV7kGvRkHXq45Hh+hYj8kh026uMWaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZbMuvxa9xe35rZmnkxtADsVP7ygnHOH34zzHJw5QlWHY778Tx0eCK1HiaKpMACw5Sq4bfTE9G0seggRZg5djNQtHScVCibD07G330Du3seByGdF0yCL9c7ApHqGJbppy7Ag6AGlaMrDndL1sdja5vwP+HPfpD9I70texOF+F24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN4M5Rxh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE44C116C6;
-	Fri, 13 Feb 2026 13:55:05 +0000 (UTC)
+	 MIME-Version; b=F6pxqFj4j77pH+RlIuFKo184hDv83GIcZ5Bh8qcImn/uyMlZogE09Qj81hfTCT3PyJO/0LfGvBdMSq43VuqvSUeh9xvrSNN9ki+xFS7Gj7sssgdNFsOTnuh7+q0R8bLi8ZMG7t84XpdSF4rgjN3CPwyRxrdCSAP8pf22urXYqT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQaDs9xy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFD1C116C6;
+	Fri, 13 Feb 2026 13:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990905;
-	bh=2HJgN1zSHNzz1egj2iVZH0bXN3BhuaSwyzqj0Fuh13w=;
+	s=korg; t=1770990995;
+	bh=20kUHWQHjD+ghrV7kGvRkHXq45Hh+hYj8kh026uMWaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kN4M5RxhrJynFItHxQRK+CjPhrf8gAzoCnzWlDlObbQKpLoTln2TMKiNtV9OHTESt
-	 Hh0tNBhT+bbCufA+BDbJkLNyK/iUg12AQsPKmYbRYMPXPmr2Bz2VOThdWOvqiL31go
-	 xYJjfVUzfM2YMfunuYAGcfwOk7FXSl9c9XDzPtOA=
+	b=mQaDs9xyp8vtMT2ZjbRCki3clKMC2XqxLCaRmcIovDxHtcjnA06gQDT7KqZ+M8Mla
+	 SVyxGEniPYQUfTSz6/TCFcZcPC4DecFZVAgAOQx5EQdc5wG/iv134t2luUnGm5uBvl
+	 ipHtxtJ34suOQwjKjkLt55MR93y80Onvpd9fkbmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 10/24] crypto: virtio - Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 03/25] smb: server: fix leak of active_num_conn in ksmbd_tcp_new_connection()
 Date: Fri, 13 Feb 2026 14:48:29 +0100
-Message-ID: <20260213134705.106238319@linuxfoundation.org>
+Message-ID: <20260213134704.010276466@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
-References: <20260213134704.728003077@linuxfoundation.org>
+In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
+References: <20260213134703.882698935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +67,75 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216181-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216207-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 7DFB1136B7D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 364D5136D2D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit 14f86a1155cca1176abf55987b2fce7f7fcb2455 upstream.
+commit 77ffbcac4e569566d0092d5f22627dfc0896b553 upstream.
 
-With function virtio_crypto_skcipher_crypt_req(), there is already
-virtqueue_kick() call with spinlock held in function
-__virtio_crypto_skcipher_do_req(). Remove duplicated virtqueue_kick()
-function call here.
+On kthread_run() failure in ksmbd_tcp_new_connection(), the transport is
+freed via free_transport(), which does not decrement active_num_conn,
+leaking this counter.
 
-Fixes: d79b5d0bbf2e ("crypto: virtio - support crypto engine framework")
+Replace free_transport() with ksmbd_tcp_disconnect().
+
+Fixes: 0d0d4680db22e ("ksmbd: add max connections parameter")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/virtio/virtio_crypto_skcipher_algs.c |    2 --
- 1 file changed, 2 deletions(-)
+ fs/smb/server/transport_tcp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-+++ b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-@@ -550,8 +550,6 @@ int virtio_crypto_skcipher_crypt_req(
- 	if (ret < 0)
- 		return ret;
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -41,6 +41,7 @@ static struct ksmbd_transport_ops ksmbd_
  
--	virtqueue_kick(data_vq->vq);
--
- 	return 0;
- }
+ static void tcp_stop_kthread(struct task_struct *kthread);
+ static struct interface *alloc_iface(char *ifname);
++static void ksmbd_tcp_disconnect(struct ksmbd_transport *t);
+ 
+ #define KSMBD_TRANS(t)	(&(t)->transport)
+ #define TCP_TRANS(t)	((struct tcp_transport *)container_of(t, \
+@@ -219,7 +220,7 @@ static int ksmbd_tcp_new_connection(stru
+ 	if (IS_ERR(handler)) {
+ 		pr_err("cannot start conn thread\n");
+ 		rc = PTR_ERR(handler);
+-		free_transport(t);
++		ksmbd_tcp_disconnect(KSMBD_TRANS(t));
+ 	}
+ 	return rc;
  
 
 
