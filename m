@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-216241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216242-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IzbI2g3j2n2MgEAu9opvQ
-	(envelope-from <stable+bounces-216241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:38:32 +0100
+	id kNCjD2s3j2n2MgEAu9opvQ
+	(envelope-from <stable+bounces-216242-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:38:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F2C21371FF
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA2B13720F
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2182F3063416
+	by tor.lore.kernel.org (Postfix) with ESMTP id EC4AE3052AFC
 	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9620436167E;
-	Fri, 13 Feb 2026 14:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B70622E3F0;
+	Fri, 13 Feb 2026 14:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gx/GmjSq"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dNna3Hnf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712B3361DD7
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 14:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF87361DCF
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 14:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770993502; cv=none; b=W75OYhWLxN7KytpfJxwjVUjSDbPiU5k7sgP6bOzWlVg1NKqTP+1K6PJqEVx9WR0QkMm08YjtyWi31v2pbiFYCAdQ8KWr1XtHZoALdMx6tqwjSitGoMx2gynoFJO/oR182j0enzeYO8/MhJgImAWyV4nqDs1CC+NB8sCLyAQYL7A=
+	t=1770993503; cv=none; b=oP5K7gHfuXWbbbE3qCPajagMrqtB7fGmSitJ+1et8KBE1aTrjqyWa/PV1hSOJe6HHMMGIpJZ98JBnCNOcDg0wdwTzX2YxBW+L+Fp90b0RhEqZUPKgt73QlphVw6hlb9mrCzbI/Flbhn9H8fkgEmUyZEvUYoXXOBHVf3bxUe4W6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770993502; c=relaxed/simple;
-	bh=nTibB9VvAnMArBkmdQHWooCRiGNpPUf8nLZ7D5ImAVw=;
+	s=arc-20240116; t=1770993503; c=relaxed/simple;
+	bh=0oexpWMVPOMBg/tm6NN+hzxx55lhIoUeedDj8t8xquQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=drC8YA/0TXMQjGXhwgK9S0hUus6NDJO779luIj3DMGKiTwmxWxskv5t0Wy1O9Ch3h5Eu0ojDt1To4XW2ljUWqF1vjmYCHMIE3ZXqyT4uIRX/jTU9DvBLYYPXgVt1YZ7WtjfLCjUi8heKtZvJ2Z/MG6kemP5fuhp2ze5fmjVFFQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gx/GmjSq; arc=none smtp.client-ip=209.85.218.74
+	 To:Cc:Content-Type; b=X6SLNsqy9FY4cfIn4DKv9c6aJGRgZSpFOI6iTCp77KAtyso9GQ6AzzOFHMf0CZcuvR0dBcxmx71YTo8OhiFjVn3hibtol6sE2sQu56yDqgmleVDMfUk/5kTVsLQM2/AckxGc3RZPQczqK5TDVRQXwhnYJqR07DPIv7uq1kHAn8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dNna3Hnf; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b8fbf7b70c7so22122266b.1
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 06:38:20 -0800 (PST)
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b8fbf8701e3so25625266b.0
+        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 06:38:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770993499; x=1771598299; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1770993500; x=1771598300; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iwg8k07MnblHsBD301KLHziw381Y4vRMO8Vvy4eyPOQ=;
-        b=Gx/GmjSq0yDEqBviWvEbipl9nkUjCfYxOpHPCGt9uVCRd/kSYxE2OrUkz0mCVBpLwY
-         FgHwJWMVuSVvr73XLlrCIf14cxXg4snfPqCsAueP24Ai+T6/3pcbPk/4NY4vTYcrr7xE
-         kSe9YZEbWpUHEYNr5nPFuNxnes7luzNN0s0q/Lutg+4dPGrUlwblMC3a7teydjyi+2gv
-         08KXyQwkHoBASP7zkp7nStBX8qQJI0v7+CaDLOm+ENOfnU9QCinXDTtV1nrlY5qEZyv3
-         J4u+MImRZPM7oX/KURfyEWstLncoUq20m5ktsiKag01UwBhcg4GbgP9iY+Wi6NRJPeHr
-         QnsQ==
+        bh=jMJHo973aYDR+UWfROXQvwm6KfmNQpCUXcX+kTjqb1M=;
+        b=dNna3HnfUHP5a1oE/uvnsX54ALUN9S7UA5qz7ZxyY2quCQG5qjg0Xe2xE94c9wB4FX
+         Y4Ljt1vVEP1Crxy8AYIstboycUMCnPyBODqWxu5AZids0PpJSfNG34VL8bgTGryE9uaw
+         Vi5V9kdepSWK4D4O3N2YGEjf953HZWW4m8h7WxriGPLBR5tssCMtve+0oCpbl3+CNPcP
+         m3CVpNHip5j75iSmjgS5W3Sm3hOhOD5OZoCIq9wAjXDUm7vGDvU7R8otvySce7Z0531w
+         Pi0ij3KbDBLsxp5j4Dyt3WakiYBRLoT//HGqSDfCRlTuW82C+a4w0+TwXi9ZRUh1TDQR
+         1PwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770993499; x=1771598299;
+        d=1e100.net; s=20230601; t=1770993500; x=1771598300;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iwg8k07MnblHsBD301KLHziw381Y4vRMO8Vvy4eyPOQ=;
-        b=YjEJ5g9kkbnCYj7E4fcdVHlUqDCJ9IfA975eEnKhE7P7hor9oaU6uvVgtZg0S0pNrI
-         NtveJj2ta4eDP8v0jlzljEBkC8ha6JwJBZkx1dqt08sZnyLKXUx7Md+74EpY6JvGo6Aa
-         RHID5sjs5oW5VNpBzCBaFFT8OzQ82lQ0OAiN9/hPLoPhuADBApAgLfKptS7CernK0iPb
-         KYIayu3wQuIJkVY6uq8smB259/gUTXCdfgDa2ERfIQrUjtVFWI7UI2Y6rg8JrPk5/G1E
-         ip3f0wdMc4Bn0xHEfYSujD0gXsIqaMxuiGOwePNHV/+BAO/6vHdK6JI05ujcwcvFR1fZ
-         b5GA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSXnEEJbnJzaHYFcf3C4K4/TaR6TOOpoBAAhInkXfF5m5uE/tsZh7nUxtE5B7e/QU4g9+UKDc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywqxg1U9GOBdAjNQ18GnNyykhrSDUMPwMzQ4qWpqYidC7Fr5dsT
-	ni75pngX9VVmtvI9pOH9uXxAUNYWWGaCzuUzy7O4gbXRLOjRwqhirNmm1R+G6aGP03ob089uGYu
-	nQg==
-X-Received: from ejdbe22.prod.google.com ([2002:a17:906:f416:b0:b8f:7a4f:842f])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:c104:b0:b8f:7014:48fb
- with SMTP id a640c23a62f3a-b8fb41ddfdamr117462566b.16.1770993498644; Fri, 13
- Feb 2026 06:38:18 -0800 (PST)
-Date: Fri, 13 Feb 2026 14:38:13 +0000
+        bh=jMJHo973aYDR+UWfROXQvwm6KfmNQpCUXcX+kTjqb1M=;
+        b=dHS1XuJluut45BCudH4/db689wk07IKy/43sq/ofGED0Ew46NuHpg9TWZOVviRuGXu
+         jvHWu9IBv8+CemRVE0cbwNfuvd8Snu8J374cMBwxE+TRDOfAGhWq2DeH34i1msHESuwi
+         tytwNYBk7ne57ySlKZdkW0pvbNwxxKi9aHNPeVJRDom0YXzmfINu1KCH+TwwMTBHNjDj
+         ewk+JRaMa5fgZdtrUPHH88bU50RGeph5px4F13uQxf3lyVVcpR0yCSivWn290RYTogEN
+         TRydj/jVGSzQKdd0h8N/zNVxVHyvLyJxRd7LBZ63B7PrSHc0nr4UzIhSCyLMaOK0653z
+         MckQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxe9NsUMrCcno70Lbb9xYdf0CQ5IBZWa+8ENopQwpJX7Xpvn8xGnhMQ6XcMmDs8b9eD6WrN3o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUXcQSLUkApnJ8UKO+trXBv7qGxuTKCfx72kaHRLtXANi42AhQ
+	leoSFv4mO45Ubhh+1m1Y1Fv2Twd3lj6bJEtv1GxGqOyUlBjx93bffUNn+5CgbMb7caax38gxV8V
+	hMQ==
+X-Received: from ejrf19.prod.google.com ([2002:a17:906:7f93:b0:b88:47b9:4312])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:3f8a:b0:b88:22f1:768f
+ with SMTP id a640c23a62f3a-b8fb452e1e2mr118012766b.54.1770993500038; Fri, 13
+ Feb 2026 06:38:20 -0800 (PST)
+Date: Fri, 13 Feb 2026 14:38:14 +0000
 In-Reply-To: <20260213143815.1732675-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,9 +76,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260213143815.1732675-1-tabba@google.com>
 X-Mailer: git-send-email 2.53.0.273.g2a3d683680-goog
-Message-ID: <20260213143815.1732675-3-tabba@google.com>
-Subject: [PATCH v2 2/4] KVM: arm64: Optimise away S1POE handling when not
- supported by host
+Message-ID: <20260213143815.1732675-4-tabba@google.com>
+Subject: [PATCH v2 3/4] KVM: arm64: Fix ID register initialization for
+ non-protected pKVM guests
 From: Fuad Tabba <tabba@google.com>
 To: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org
@@ -98,7 +98,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-216241-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216242-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -112,38 +112,98 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4F2C21371FF
+X-Rspamd-Queue-Id: EFA2B13720F
 X-Rspamd-Action: no action
 
-Although ID register sanitisation prevents guests from seeing the
-feature, adding this check to the helper allows the compiler to entirely
-eliminate S1POE-specific code paths (such as context switching POR_EL1)
-when the host kernel is compiled without support (CONFIG_ARM64_POE is
-disabled).
+In protected mode, the hypervisor maintains a separate instance of
+the `kvm` structure for each VM. For non-protected VMs, this structure is
+initialized from the host's `kvm` state.
 
-This aligns with the pattern used for other optional features like SVE
-(kvm_has_sve()) and FPMR (kvm_has_fpmr()), ensuring no POE logic if the
-host lacks support, regardless of the guest configuration state.
+Currently, `pkvm_init_features_from_host()` copies the
+`KVM_ARCH_FLAG_ID_REGS_INITIALIZED` flag from the host without the
+underlying `id_regs` data being initialized. This results in the
+hypervisor seeing the flag as set while the ID registers remain zeroed.
 
+Consequently, `kvm_has_feat()` checks at EL2 fail (return 0) for
+non-protected VMs. This breaks logic that relies on feature detection,
+such as `ctxt_has_tcrx()` for TCR2_EL1 support. As a result, certain
+system registers (e.g., TCR2_EL1, PIR_EL1, POR_EL1) are not
+saved/restored during the world switch, which could lead to state
+corruption.
+
+Fix this by explicitly copying the ID registers from the host `kvm` to
+the hypervisor `kvm` for non-protected VMs during initialization, since
+we trust the host with its non-protected guests' features. Also ensure
+`KVM_ARCH_FLAG_ID_REGS_INITIALIZED` is cleared initially in
+`pkvm_init_features_from_host` so that `vm_copy_id_regs` can properly
+initialize them and set the flag once done.
+
+Fixes: 41d6028e28bd ("KVM: arm64: Convert the SVE guest vcpu flag to a vm flag")
 Signed-off-by: Fuad Tabba <tabba@google.com>
 ---
- arch/arm64/include/asm/kvm_host.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/hyp/nvhe/pkvm.c | 35 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index ac7f970c7883..7af72ca749a6 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1592,7 +1592,8 @@ void kvm_set_vm_id_reg(struct kvm *kvm, u32 reg, u64 val);
- 	(kvm_has_feat((k), ID_AA64MMFR3_EL1, S1PIE, IMP))
+diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+index 12b2acfbcfd1..59a010221818 100644
+--- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
++++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+@@ -345,6 +345,7 @@ static void pkvm_init_features_from_host(struct pkvm_hyp_vm *hyp_vm, const struc
+ 	/* No restrictions for non-protected VMs. */
+ 	if (!kvm_vm_is_protected(kvm)) {
+ 		hyp_vm->kvm.arch.flags = host_arch_flags;
++		hyp_vm->kvm.arch.flags &= ~BIT_ULL(KVM_ARCH_FLAG_ID_REGS_INITIALIZED);
  
- #define kvm_has_s1poe(k)				\
--	(kvm_has_feat((k), ID_AA64MMFR3_EL1, S1POE, IMP))
-+	(system_supports_poe() &&			\
-+	 kvm_has_feat((k), ID_AA64MMFR3_EL1, S1POE, IMP))
+ 		bitmap_copy(kvm->arch.vcpu_features,
+ 			    host_kvm->arch.vcpu_features,
+@@ -471,6 +472,35 @@ static int pkvm_vcpu_init_sve(struct pkvm_hyp_vcpu *hyp_vcpu, struct kvm_vcpu *h
+ 	return ret;
+ }
  
- #define kvm_has_ras(k)					\
- 	(kvm_has_feat((k), ID_AA64PFR0_EL1, RAS, IMP))
++static int vm_copy_id_regs(struct pkvm_hyp_vcpu *hyp_vcpu)
++{
++	struct pkvm_hyp_vm *hyp_vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
++	const struct kvm *host_kvm = hyp_vm->host_kvm;
++	struct kvm *kvm = &hyp_vm->kvm;
++
++	if (!test_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &host_kvm->arch.flags))
++		return -EINVAL;
++
++	if (test_and_set_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &kvm->arch.flags))
++		return 0;
++
++	memcpy(kvm->arch.id_regs, host_kvm->arch.id_regs, sizeof(kvm->arch.id_regs));
++
++	return 0;
++}
++
++static int pkvm_vcpu_init_sysregs(struct pkvm_hyp_vcpu *hyp_vcpu)
++{
++	int ret = 0;
++
++	if (pkvm_hyp_vcpu_is_protected(hyp_vcpu))
++		kvm_init_pvm_id_regs(&hyp_vcpu->vcpu);
++	else
++		ret = vm_copy_id_regs(hyp_vcpu);
++
++	return ret;
++}
++
+ static int init_pkvm_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu,
+ 			      struct pkvm_hyp_vm *hyp_vm,
+ 			      struct kvm_vcpu *host_vcpu)
+@@ -490,8 +520,9 @@ static int init_pkvm_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu,
+ 	hyp_vcpu->vcpu.arch.cflags = READ_ONCE(host_vcpu->arch.cflags);
+ 	hyp_vcpu->vcpu.arch.mp_state.mp_state = KVM_MP_STATE_STOPPED;
+ 
+-	if (pkvm_hyp_vcpu_is_protected(hyp_vcpu))
+-		kvm_init_pvm_id_regs(&hyp_vcpu->vcpu);
++	ret = pkvm_vcpu_init_sysregs(hyp_vcpu);
++	if (ret)
++		goto done;
+ 
+ 	ret = pkvm_vcpu_init_traps(hyp_vcpu);
+ 	if (ret)
 -- 
 2.53.0.273.g2a3d683680-goog
 
