@@ -1,202 +1,145 @@
-Return-Path: <stable+bounces-216047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216049-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPEmEtIHj2ltHQEAu9opvQ
-	(envelope-from <stable+bounces-216047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:15:30 +0100
+	id 0OoRJNUFj2ltHQEAu9opvQ
+	(envelope-from <stable+bounces-216049-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:07:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12A11359BE
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:15:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB55135735
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9214230CAE76
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:05:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 651A2301060B
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9892235A93C;
-	Fri, 13 Feb 2026 11:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06C133067C;
+	Fri, 13 Feb 2026 11:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMh8b0qX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJD5xfBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59476353EDB;
-	Fri, 13 Feb 2026 11:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9512A212550
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 11:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770980586; cv=none; b=r8LNljIN+xVrARtLnqsKC1KAGPIf+FGeBSnRMsgXILWAkmBOufI3ueVOk7/18v5YAcV7NT8MDhYSJB+hJHf+ZR5YhfdVdCnbu8JYaC7Eqi2ig4cculjQxMEwly36jj72O5tCbHMCi3nR0JwKUozyHZvnPPxfF8xVjd5+p8R7T2o=
+	t=1770980817; cv=none; b=KxGpsmDew5i93y0yW0VYOx1NFRfBYXYGsC8cB2lks5M9YFrKcCEQYWjgDEcvI1/suoWFSpS78Ygj9RmQnYkRD8YxZJ4Obxm2gCiV5aUJnNvZCkQ/YkfYC4mTLUJOEN4Fj4jTCH37Ey9n3UHQCEWFbFOZ7bFW2pudPyv6nL2CLbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770980586; c=relaxed/simple;
-	bh=iM4yoFDfsz9ptDHd2dIQ4m/xGPnBFa7Wx99OdkLGUUs=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NGBZir0D+h6thwRxG+6KaIcCpqMvNi5mHU16il5uKfRBeWk/WO2Iq9lH/g2Efldk2lGENcezg+sM6GWoX3PKheabknGfcihqDdIvP3jQ98QIMA+VT9hp3olSNQp+gfHDtoPPlOcnQ8IVOTGbl4qgdEoAHynKuRlrX8HNR3JJaII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMh8b0qX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E51C116C6;
-	Fri, 13 Feb 2026 11:03:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770980586;
-	bh=iM4yoFDfsz9ptDHd2dIQ4m/xGPnBFa7Wx99OdkLGUUs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KMh8b0qXB4oYN3kle1w4+vgjR8gj0/jKRE+jwPyg4IAxxfBpODm834q2JfS0QR0uO
-	 AH8GyymTyfVF0NfWEtyxlkNN1Orex3zpCE8SKSb0X6uhzoPM+5lIKi2lfbvxEXkkBu
-	 czJ824HU3Jg6zDhbbsoWst8dbVT1LSmr+HFN0x2MS81lzczTa1h01bLJLTyYrkse2H
-	 kdshFrq+2ppzaTnAdN0/628+DxA+j5DQTlLp3UVpQGv9aHwcEDaxmW91tjHuJo3SHq
-	 FjJpX7TZ0yrGiGEQ5RCd5Xp9V9MQ7LVlN/pqiPR9441lYp/qDr2NwriXO4GqEa6cAb
-	 oD7u5a19Esx6A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vqqwx-0000000ArRO-2W0g;
-	Fri, 13 Feb 2026 11:03:03 +0000
-Date: Fri, 13 Feb 2026 11:03:03 +0000
-Message-ID: <86ecmoc3dk.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <tabba@google.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	oliver.upton@linux.dev,
-	joey.gouly@arm.com,
-	suzuki.poulose@arm.com,
-	yuzenghui@huawei.com,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1 2/3] KVM: arm64: Fix ID register initialization for non-protected pKVM guests
-In-Reply-To: <20260212090252.158689-3-tabba@google.com>
-References: <20260212090252.158689-1-tabba@google.com>
-	<20260212090252.158689-3-tabba@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1770980817; c=relaxed/simple;
+	bh=WeXlhS6xdwcX5Q8escgCLndwGZckOARmCLWfgTjNrww=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PdI3Q1BxqeNZipLMx4SXfsPK7BC3yjaBs7zNV43yE/g9IhGmlS9XCFsXBUyGL57Id088PJLL+L4ihv3KsVnaVirXy0IVKGhjJYdV5GOCQ8jJK+wZAI+ej3i1lv+XjOw0fD1CmArngBsWKHmpOp1OGPlViWPt7Aw3bkCB/zcnwNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJD5xfBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4373AC116C6;
+	Fri, 13 Feb 2026 11:06:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770980817;
+	bh=WeXlhS6xdwcX5Q8escgCLndwGZckOARmCLWfgTjNrww=;
+	h=Subject:To:Cc:From:Date:From;
+	b=OJD5xfBQSIBRG7ZkEmdmcmdsiifr8TLV3U5/Ag8aQVfsr6AY1f9YIHV8uDpoA6k8L
+	 63tORg7zltN9e+GSclsSSDbLxLJE/7T/f8KFGe1GcaOjrWXl7MY6P4yVF2csiu+c82
+	 C1LxP5Z3GteLGOnjPSGLSXMQkMe6GP+jWJmmZyY4=
+Subject: FAILED: patch "[PATCH] crypto: virtio - Remove duplicated virtqueue_kick in" failed to apply to 5.10-stable tree
+To: maobibo@loongson.cn,herbert@gondor.apana.org.au,jasowang@redhat.com,mst@redhat.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 13 Feb 2026 12:06:45 +0100
+Message-ID: <2026021345-delivery-dealing-7b00@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: tabba@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216047-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216049-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C12A11359BE
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EEB55135735
 X-Rspamd-Action: no action
 
-On Thu, 12 Feb 2026 09:02:51 +0000,
-Fuad Tabba <tabba@google.com> wrote:
-> 
-> In protected mode, the hypervisor maintains a separate instance of
-> the `kvm` structure for each VM. For non-protected VMs, this structure is
-> initialized from the host's `kvm` state.
-> 
-> Currently, `pkvm_init_features_from_host()` copies the
-> `KVM_ARCH_FLAG_ID_REGS_INITIALIZED` flag from the host without the
-> underlying `id_regs` data being initialized. This results in the
-> hypervisor seeing the flag as set while the ID registers remain zeroed.
-> 
-> Consequently, `kvm_has_feat()` checks at EL2 fail (return 0) for
-> non-protected VMs. This breaks logic that relies on feature detection,
-> such as `ctxt_has_tcrx()` for TCR2_EL1 support. As a result, certain
-> system registers (e.g., TCR2_EL1, PIR_EL1, POR_EL1) are not
-> saved/restored during the world switch, which could lead to state
-> corruption.
-> 
-> Fix this by explicitly copying the ID registers from the host `kvm` to
-> the hypervisor `kvm` for non-protected VMs during vCPU initialization,
-> since we trust the host with its non-protected guests' features. Also
-> ensure `KVM_ARCH_FLAG_ID_REGS_INITIALIZED` is cleared initially in
-> `pkvm_init_features_from_host` so that `vm_copy_id_regs` can properly
-> initialize them and set the flag once done.
-> 
-> Fixes: 41d6028e28bd ("KVM: arm64: Convert the SVE guest vcpu flag to a vm flag")
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> ---
->  arch/arm64/kvm/hyp/nvhe/pkvm.c | 37 ++++++++++++++++++++++++++++++++--
->  1 file changed, 35 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-> index 12b2acfbcfd1..267854ed29c8 100644
-> --- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
-> +++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-> @@ -344,6 +344,8 @@ static void pkvm_init_features_from_host(struct pkvm_hyp_vm *hyp_vm, const struc
->  
->  	/* No restrictions for non-protected VMs. */
->  	if (!kvm_vm_is_protected(kvm)) {
-> +		clear_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &host_arch_flags);
-> +
->  		hyp_vm->kvm.arch.flags = host_arch_flags;
 
-Can't you just have
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-  		hyp_vm->kvm.arch.flags &= ~BIT_ULL(KVM_ARCH_FLAG_ID_REGS_INITIALIZED);
+To reproduce the conflict and resubmit, you may use the following commands:
 
-since there are no atomicity requirements here?
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 14f86a1155cca1176abf55987b2fce7f7fcb2455
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026021345-delivery-dealing-7b00@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
->  
->  		bitmap_copy(kvm->arch.vcpu_features,
-> @@ -471,6 +473,36 @@ static int pkvm_vcpu_init_sve(struct pkvm_hyp_vcpu *hyp_vcpu, struct kvm_vcpu *h
->  	return ret;
->  }
->  
-> +static int vm_copy_id_regs(struct pkvm_hyp_vcpu *hyp_vcpu)
-> +{
-> +	struct pkvm_hyp_vm *hyp_vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
-> +	const struct kvm *host_kvm = hyp_vm->host_kvm;
-> +	struct kvm *kvm = &hyp_vm->kvm;
-> +
-> +	if (!test_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &host_kvm->arch.flags))
-> +		return -EINVAL;
-> +
-> +	if (test_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &kvm->arch.flags))
-> +		return 0;
-> +
-> +	memcpy(kvm->arch.id_regs, host_kvm->arch.id_regs, sizeof(kvm->arch.id_regs));
-> +	set_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &kvm->arch.flags);
+Possible dependencies:
 
-This looks a bit odd. Can you have another vcpu doing this in
-parallel? You seem to be holding vm_table_lock at this stage, so
-that's probably OK,  but I'd have expected something like:
 
-	if (test_and_set_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &kvm->arch.flags))
-		return 0;
 
-	memcpy(kvm->arch.id_regs, host_kvm->arch.id_regs, sizeof(kvm->arch.id_regs));
+thanks,
 
-which makes the intent slightly clearer.
+greg k-h
 
-Thanks,
+------------------ original commit in Linus's tree ------------------
 
-	M.
+From 14f86a1155cca1176abf55987b2fce7f7fcb2455 Mon Sep 17 00:00:00 2001
+From: Bibo Mao <maobibo@loongson.cn>
+Date: Tue, 13 Jan 2026 11:05:55 +0800
+Subject: [PATCH] crypto: virtio - Remove duplicated virtqueue_kick in
+ virtio_crypto_skcipher_crypt_req
 
--- 
-Without deviation from the norm, progress is not possible.
+With function virtio_crypto_skcipher_crypt_req(), there is already
+virtqueue_kick() call with spinlock held in function
+__virtio_crypto_skcipher_do_req(). Remove duplicated virtqueue_kick()
+function call here.
+
+Fixes: d79b5d0bbf2e ("crypto: virtio - support crypto engine framework")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+diff --git a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
+index 1b3fb21a2a7d..11053d1786d4 100644
+--- a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
++++ b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
+@@ -541,8 +541,6 @@ int virtio_crypto_skcipher_crypt_req(
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	virtqueue_kick(data_vq->vq);
+-
+ 	return 0;
+ }
+ 
+
 
