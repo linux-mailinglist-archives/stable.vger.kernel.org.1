@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-216061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216062-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEZpGskIj2ltHQEAu9opvQ
-	(envelope-from <stable+bounces-216061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:19:37 +0100
+	id ONcJBcUIj2ltHQEAu9opvQ
+	(envelope-from <stable+bounces-216062-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:19:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873F9135AE3
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:19:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35246135ADC
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:19:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 275073108240
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:15:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 367DC304CA0D
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0E03559C4;
-	Fri, 13 Feb 2026 11:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295593570C9;
+	Fri, 13 Feb 2026 11:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZYbj9xd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gL3mevQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3124C21D3D6
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 11:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E070E1DA62E
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 11:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770981353; cv=none; b=LsvPwvyPg/j5sxx/MVDxdwDhgarD6VJ6rdnIVwukuYEY1Vza7ZcQ5jHh1STxr9TdXh7i4G0gMXUnG/2Q3OGttSwZN34G7tdZD/byFcfnfQpfLVpjmccI3wYvjmke0kZFO7sbFFMyCvSVpVuSqagPhA91V3G+FT/YdHjRE600s+E=
+	t=1770981357; cv=none; b=LhhGan6hIFJrv5YAlKffhoIgdRtgwGrjKp9QeL32VHeNcbQ4RQuaenchrhxztDQWothFa3TT811sp9orvlmbEijhEmW0J5t0+U7zSIPZPqE0GJaoOhhWx19DNmpzF2rIXrsAuIP3lzEZ8S+CkyejJVPaKFz61KHQUM0x8ug3rVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770981353; c=relaxed/simple;
-	bh=kW4ykkAXgN0IP/13FrzOdITNWUcafs3FrPyY0j61r6I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FTV7BOVe5hdwkbkFSkaH0dj1lzDLD7p0z/8orjkz81Q2RUNCkj3LEB7PuDXXC7ATh98NrrXm44dqdLtfKhmWfC+vRnnR3d5j4jSllnNgzoLdQvM7zSwymqVNHWwm2eYPf/pwq/PCryUu9LrSvgxm1RdsdnktUYUrR1Acf1QUreY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZYbj9xd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB82C116C6;
-	Fri, 13 Feb 2026 11:15:52 +0000 (UTC)
+	s=arc-20240116; t=1770981357; c=relaxed/simple;
+	bh=g/fVbC0vfNOYtsxq3/URJ2rYhXYeb5Xnp0b+FCEWGKE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IS0S1kj6uVaaIXIeKaGQEdxxg+id+xsAkDcWpFRD7y1/IndQMo3mBGJ/HIiUJ/U15beyPTDO7zmE14ymt5NLh1VpeJT8isEBdSLhm7Q5rLBShA0Xz+mEA3ee68DG8VJ2Mp+E2CBpa0eThcH04QmlJ0Qx3LL6JfwsfWiIqHrPJzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gL3mevQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CDFC116C6;
+	Fri, 13 Feb 2026 11:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770981352;
-	bh=kW4ykkAXgN0IP/13FrzOdITNWUcafs3FrPyY0j61r6I=;
+	s=korg; t=1770981356;
+	bh=g/fVbC0vfNOYtsxq3/URJ2rYhXYeb5Xnp0b+FCEWGKE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cZYbj9xdsrLXBk/suMk5VNFV5XMFVoF+xdhPrsUWC4nMlhoeEH+oYJh13AJJsAc5Q
-	 XukVo6wWF1ELdNAPlh0h+oId5i2k/T2UFs+GsL/mRhIfZ4TLDbs7bLRyqJQAKg3wTo
-	 P8UC/emXUkZ4G1iKhvBG5SS0wxWAezj0URvLGcZ4=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix bsg_done() causing double free" failed to apply to 6.1-stable tree
+	b=gL3mevQTsdJB9a9ftYs9bFEpCc34D3+PWvwhokcxV/z9C9gTX2tO/vzH/oM+5twUY
+	 jrYPRB+VPDZqN0UDAUUVa89Qx1GlQahqjVzpcoNmB+WXohDsDKS9EhoJOHUIF8K1Xe
+	 xywW75RlYa0xemmdZoqtcVYSsspbKW9qtfMWCLCA=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix bsg_done() causing double free" failed to apply to 5.15-stable tree
 To: agurumurthy@marvell.com,hmadhani2024@gmail.com,martin.petersen@oracle.com,njavali@marvell.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 13 Feb 2026 12:15:39 +0100
-Message-ID: <2026021339-catalyze-smolder-2322@gregkh>
+Date: Fri, 13 Feb 2026 12:15:40 +0100
+Message-ID: <2026021340-stoke-verdict-6272@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,14 +60,14 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_TO(0.00)[marvell.com,gmail.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-216061-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216062-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -80,26 +80,26 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gregkh:email,msgid.link:url,oracle.com:email,linuxfoundation.org:dkim,marvell.com:email]
-X-Rspamd-Queue-Id: 873F9135AE3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,marvell.com:email]
+X-Rspamd-Queue-Id: 35246135ADC
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x c2c68225b1456f4d0d393b5a8778d51bb0d5b1d0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026021339-catalyze-smolder-2322@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026021340-stoke-verdict-6272@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
