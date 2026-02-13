@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-216269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLhQIH1Vj2lqQQEAu9opvQ
-	(envelope-from <stable+bounces-216269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:46:53 +0100
+	id EPb3GoNVj2lqQQEAu9opvQ
+	(envelope-from <stable+bounces-216270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:46:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DAD1385AA
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:46:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0F61385B9
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:46:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF2CF300F9F8
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 16:45:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57B4E301990C
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 16:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C0532B98D;
-	Fri, 13 Feb 2026 16:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272BC363C6F;
+	Fri, 13 Feb 2026 16:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6SjUb1d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ES9jsGOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD07330D54
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 16:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF84F35FF59
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 16:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771001106; cv=none; b=m44IjS9N65zg6s9ErrqSxlUHbrVgi8IsiTGET3yJoTwwOs7HRjlYGhMieIXuqFNg0MMXvQl4Y8HApVwP6WnSfFSUut5CW538JP7WXsRosr8d1ztL/xNuJQ16lL/NeYCYlmtZmnPsjOJhJQujdEKS7CzHlHhuoFY0rfUDhg/SGXo=
+	t=1771001106; cv=none; b=dJNB9nfifNmJew/X+7d34KAuzxAqwLx2DeqV7cedyALht4DXBJM1ZsNbnJ7DALe4NKmlBx0idxLAQunFAOYxYrNyy/4k6W6JQ2g3Qaa9oWCKhlP1/r/czN9Cvl+GmKBpTVGSluQ0YiQNYp9Xo5Z1VZ26Hco36qQ0ydXXVp3Fh8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771001106; c=relaxed/simple;
-	bh=ErS7FcqxpgIDO9+PtTjDefIu/LDlYv+5sZfprvQyozU=;
+	bh=XV6oBxAfBEBTxaR/xy+JAeguaFmyKRlgdhHfBnDCBn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hXh2NcjD4n62hsOglPmhlmJktMgPSbcwpO6QyXBMRf2eNHE2qVKt/D0OOIljwQDT7CFt5HLMHZMsTVrMWuA+iIXwLREVkQzYNHsBaxn133n9PL0P2LZdyYTmUS03VHSGrl0w/GNSk1KNIJhVOFgShjVA/r1UbTD5n+hys8Kh0qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6SjUb1d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322CDC116C6;
+	 MIME-Version; b=CohyhBKTIaQ9HTau6D9GjfvtZlzv5EaGQgnzNI2RNoiK5HTI0RCYvPdBHA7aWWvSB7F8auUDnhEApZSZkE9RPl6pdessaLCvhEWUIinwTnfrLRoMgRZHo+0jWOTIPQPWtTUzH0qEAM9N7yDcho8zKi6v9dh/xCDw5io199nPTPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ES9jsGOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1139CC19424;
 	Fri, 13 Feb 2026 16:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771001105;
-	bh=ErS7FcqxpgIDO9+PtTjDefIu/LDlYv+5sZfprvQyozU=;
+	s=k20201202; t=1771001106;
+	bh=XV6oBxAfBEBTxaR/xy+JAeguaFmyKRlgdhHfBnDCBn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6SjUb1dA+7KbC91xkH8Vy17ByW6fY3Kd8alOBdZ5rOQDMJ9+E0R8s9qMfj1krJ4F
-	 SaUZMMnK2lb+tKpfIkFmbKcgKEFFyEBrtoHgVJg/ayae+zBS/WxP7Qm8O2JVbXlASC
-	 Qoz/6ZxjoUVLEMKdn/18TuRd6unIt9sqET6eb5PaPKsjGAGp5tVd7GY0D7KHnEW4rD
-	 VfWqfrFbLKtf/VnfhIgN5xruQc2ddb9pOWMKCQG6qPLXtsfGp3mzkzozsFhkVMWFmb
-	 CdU0+kQBedeREUOO4CbBTS+LnIiFfer7esCI2/gOg2BO/Tp2lLIPbNBeSJBMs6H2O6
-	 Q1CRM2UAjjRxA==
+	b=ES9jsGOy4otYln6CVcwI8c1z+k/05zmayiMf1YAKwL+M94Asc6qxaE4mCrDAzfb4D
+	 ykuyLTsSB8DylAmSBXV3t47kVpDGEKhXizGuTuT1jOkx6TqXuYQJWNv/2Rqq6gL/WQ
+	 xSLEofbyPe++wR7Oh43/8zhp0QbWJIAQ18UO8hyMlzw2F4FWMjTPxCp2QW2e1TeB9Y
+	 vsTPcxq5Th6v29ROHl50QPreXhQ8WcAR5cvWC13v6Ags5lboN4brK2M2nIgWZ5tx8G
+	 o0qHBlUJknN1j1O5CCQH58TL4Utla00zmk1Wnk2mtA0Jlxz4ru7fIpmndaLsyANwha
+	 xIcZlFtbRRHwA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Gleb Chesnokov <Chesnokov.G@raidix.com>,
+Cc: Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
 	Himanshu Madhani <himanshu.madhani@oracle.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 1/4] scsi: qla2xxx: Use named initializers for port_[d]state_str
-Date: Fri, 13 Feb 2026 11:45:00 -0500
-Message-ID: <20260213164503.3564614-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 2/4] scsi: qla2xxx: Remove dead code (GNN ID)
+Date: Fri, 13 Feb 2026 11:45:01 -0500
+Message-ID: <20260213164503.3564614-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026021306-playful-overact-2bfb@gregkh>
+In-Reply-To: <20260213164503.3564614-1-sashal@kernel.org>
 References: <2026021306-playful-overact-2bfb@gregkh>
+ <20260213164503.3564614-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,119 +72,244 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216269-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216270-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: D5DAD1385AA
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,marvell.com:email]
+X-Rspamd-Queue-Id: 9E0F61385B9
 X-Rspamd-Action: no action
 
-From: Gleb Chesnokov <Chesnokov.G@raidix.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit 6e0e85d39e528da2915a2da261195f81bfde6915 ]
+[ Upstream commit 87f6dafd50fb6d7214c32596a11b983138b09123 ]
 
-Make port_state_str and port_dstate_str a little more readable and
-maintainable by using named initializers.
+Remove stale/unused code (GNN ID).
 
-Also convert FCS_* macros into an enum.
-
-Link: https://lore.kernel.org/r/AS8PR10MB495215841EB25C16DBC0CB409D349@AS8PR10MB4952.EURPRD10.PROD.OUTLOOK.COM
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
 Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Gleb Chesnokov <Chesnokov.G@raidix.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Stable-dep-of: 7adbd2b78090 ("scsi: qla2xxx: Free sp in error path to fix system crash")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h | 35 ++++++++++++++++++----------------
- drivers/scsi/qla2xxx/qla_isr.c | 10 +++++-----
- 2 files changed, 24 insertions(+), 21 deletions(-)
+ drivers/scsi/qla2xxx/qla_def.h  |   3 -
+ drivers/scsi/qla2xxx/qla_gbl.h  |   3 -
+ drivers/scsi/qla2xxx/qla_gs.c   | 110 --------------------------------
+ drivers/scsi/qla2xxx/qla_init.c |   7 +-
+ drivers/scsi/qla2xxx/qla_os.c   |   3 -
+ 5 files changed, 1 insertion(+), 125 deletions(-)
 
 diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
-index 02a2fd1b150a9..5416d1f776c1b 100644
+index 5416d1f776c1b..810187916244e 100644
 --- a/drivers/scsi/qla2xxx/qla_def.h
 +++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -2689,25 +2689,28 @@ struct event_arg {
- /*
-  * Fibre channel port/lun states.
-  */
--#define FCS_UNCONFIGURED	1
--#define FCS_DEVICE_DEAD		2
--#define FCS_DEVICE_LOST		3
--#define FCS_ONLINE		4
-+enum {
-+	FCS_UNKNOWN,
-+	FCS_UNCONFIGURED,
-+	FCS_DEVICE_DEAD,
-+	FCS_DEVICE_LOST,
-+	FCS_ONLINE,
-+};
+@@ -2488,7 +2488,6 @@ struct ct_sns_desc {
  
- extern const char *const port_state_str[5];
+ enum discovery_state {
+ 	DSC_DELETED,
+-	DSC_GNN_ID,
+ 	DSC_GNL,
+ 	DSC_LOGIN_PEND,
+ 	DSC_LOGIN_FAILED,
+@@ -2701,7 +2700,6 @@ extern const char *const port_state_str[5];
  
--static const char * const port_dstate_str[] = {
--	"DELETED",
--	"GNN_ID",
--	"GNL",
--	"LOGIN_PEND",
--	"LOGIN_FAILED",
--	"GPDB",
--	"UPD_FCPORT",
--	"LOGIN_COMPLETE",
--	"ADISC",
--	"DELETE_PEND",
--	"LOGIN_AUTH_PEND",
-+static const char *const port_dstate_str[] = {
-+	[DSC_DELETED]		= "DELETED",
-+	[DSC_GNN_ID]		= "GNN_ID",
-+	[DSC_GNL]		= "GNL",
-+	[DSC_LOGIN_PEND]	= "LOGIN_PEND",
-+	[DSC_LOGIN_FAILED]	= "LOGIN_FAILED",
-+	[DSC_GPDB]		= "GPDB",
-+	[DSC_UPD_FCPORT]	= "UPD_FCPORT",
-+	[DSC_LOGIN_COMPLETE]	= "LOGIN_COMPLETE",
-+	[DSC_ADISC]		= "ADISC",
-+	[DSC_DELETE_PEND]	= "DELETE_PEND",
-+	[DSC_LOGIN_AUTH_PEND]	= "LOGIN_AUTH_PEND",
- };
- 
- /*
-diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
-index 1459ae380389a..8b13797d210d1 100644
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -49,11 +49,11 @@ qla27xx_process_purex_fpin(struct scsi_qla_host *vha, struct purex_item *item)
+ static const char *const port_dstate_str[] = {
+ 	[DSC_DELETED]		= "DELETED",
+-	[DSC_GNN_ID]		= "GNN_ID",
+ 	[DSC_GNL]		= "GNL",
+ 	[DSC_LOGIN_PEND]	= "LOGIN_PEND",
+ 	[DSC_LOGIN_FAILED]	= "LOGIN_FAILED",
+@@ -3497,7 +3495,6 @@ enum qla_work_type {
+ 	QLA_EVT_GPNFT,
+ 	QLA_EVT_GPNFT_DONE,
+ 	QLA_EVT_GNNFT_DONE,
+-	QLA_EVT_GNNID,
+ 	QLA_EVT_GFPNID,
+ 	QLA_EVT_SP_RETRY,
+ 	QLA_EVT_IIDMA,
+diff --git a/drivers/scsi/qla2xxx/qla_gbl.h b/drivers/scsi/qla2xxx/qla_gbl.h
+index e8c66cc4b71b4..ff140f4795d2a 100644
+--- a/drivers/scsi/qla2xxx/qla_gbl.h
++++ b/drivers/scsi/qla2xxx/qla_gbl.h
+@@ -730,9 +730,6 @@ int qla24xx_async_gffid(scsi_qla_host_t *vha, fc_port_t *fcport, bool);
+ int qla24xx_async_gpnft(scsi_qla_host_t *, u8, srb_t *);
+ void qla24xx_async_gpnft_done(scsi_qla_host_t *, srb_t *);
+ void qla24xx_async_gnnft_done(scsi_qla_host_t *, srb_t *);
+-int qla24xx_async_gnnid(scsi_qla_host_t *, fc_port_t *);
+-void qla24xx_handle_gnnid_event(scsi_qla_host_t *, struct event_arg *);
+-int qla24xx_post_gnnid_work(struct scsi_qla_host *, fc_port_t *);
+ int qla24xx_post_gfpnid_work(struct scsi_qla_host *, fc_port_t *);
+ int qla24xx_async_gfpnid(scsi_qla_host_t *, fc_port_t *);
+ void qla24xx_handle_gfpnid_event(scsi_qla_host_t *, struct event_arg *);
+diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
+index d0c3710b5cdf6..79d8f8b5ec3e8 100644
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -4216,116 +4216,6 @@ void qla_scan_work_fn(struct work_struct *work)
+ 	spin_unlock_irqrestore(&vha->work_lock, flags);
  }
  
- const char *const port_state_str[] = {
--	"Unknown",
--	"UNCONFIGURED",
--	"DEAD",
--	"LOST",
--	"ONLINE"
-+	[FCS_UNKNOWN]		= "Unknown",
-+	[FCS_UNCONFIGURED]	= "UNCONFIGURED",
-+	[FCS_DEVICE_DEAD]	= "DEAD",
-+	[FCS_DEVICE_LOST]	= "LOST",
-+	[FCS_ONLINE]		= "ONLINE"
- };
- 
- static void
+-/* GNN_ID */
+-void qla24xx_handle_gnnid_event(scsi_qla_host_t *vha, struct event_arg *ea)
+-{
+-	qla24xx_post_gnl_work(vha, ea->fcport);
+-}
+-
+-static void qla2x00_async_gnnid_sp_done(srb_t *sp, int res)
+-{
+-	struct scsi_qla_host *vha = sp->vha;
+-	fc_port_t *fcport = sp->fcport;
+-	u8 *node_name = fcport->ct_desc.ct_sns->p.rsp.rsp.gnn_id.node_name;
+-	struct event_arg ea;
+-	u64 wwnn;
+-
+-	fcport->flags &= ~FCF_ASYNC_SENT;
+-	wwnn = wwn_to_u64(node_name);
+-	if (wwnn)
+-		memcpy(fcport->node_name, node_name, WWN_SIZE);
+-
+-	memset(&ea, 0, sizeof(ea));
+-	ea.fcport = fcport;
+-	ea.sp = sp;
+-	ea.rc = res;
+-
+-	ql_dbg(ql_dbg_disc, vha, 0x204f,
+-	    "Async done-%s res %x, WWPN %8phC %8phC\n",
+-	    sp->name, res, fcport->port_name, fcport->node_name);
+-
+-	qla24xx_handle_gnnid_event(vha, &ea);
+-
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+-}
+-
+-int qla24xx_async_gnnid(scsi_qla_host_t *vha, fc_port_t *fcport)
+-{
+-	int rval = QLA_FUNCTION_FAILED;
+-	struct ct_sns_req       *ct_req;
+-	srb_t *sp;
+-
+-	if (!vha->flags.online || (fcport->flags & FCF_ASYNC_SENT))
+-		return rval;
+-
+-	qla2x00_set_fcport_disc_state(fcport, DSC_GNN_ID);
+-	/* ref: INIT */
+-	sp = qla2x00_get_sp(vha, fcport, GFP_ATOMIC);
+-	if (!sp)
+-		goto done;
+-
+-	fcport->flags |= FCF_ASYNC_SENT;
+-	sp->type = SRB_CT_PTHRU_CMD;
+-	sp->name = "gnnid";
+-	sp->gen1 = fcport->rscn_gen;
+-	sp->gen2 = fcport->login_gen;
+-	qla2x00_init_async_sp(sp, qla2x00_get_async_timeout(vha) + 2,
+-			      qla2x00_async_gnnid_sp_done);
+-
+-	/* CT_IU preamble  */
+-	ct_req = qla2x00_prep_ct_req(fcport->ct_desc.ct_sns, GNN_ID_CMD,
+-	    GNN_ID_RSP_SIZE);
+-
+-	/* GNN_ID req */
+-	ct_req->req.port_id.port_id = port_id_to_be_id(fcport->d_id);
+-
+-
+-	/* req & rsp use the same buffer */
+-	sp->u.iocb_cmd.u.ctarg.req = fcport->ct_desc.ct_sns;
+-	sp->u.iocb_cmd.u.ctarg.req_dma = fcport->ct_desc.ct_sns_dma;
+-	sp->u.iocb_cmd.u.ctarg.rsp = fcport->ct_desc.ct_sns;
+-	sp->u.iocb_cmd.u.ctarg.rsp_dma = fcport->ct_desc.ct_sns_dma;
+-	sp->u.iocb_cmd.u.ctarg.req_size = GNN_ID_REQ_SIZE;
+-	sp->u.iocb_cmd.u.ctarg.rsp_size = GNN_ID_RSP_SIZE;
+-	sp->u.iocb_cmd.u.ctarg.nport_handle = NPH_SNS;
+-
+-	ql_dbg(ql_dbg_disc, vha, 0xffff,
+-	    "Async-%s - %8phC hdl=%x loopid=%x portid %06x.\n",
+-	    sp->name, fcport->port_name,
+-	    sp->handle, fcport->loop_id, fcport->d_id.b24);
+-
+-	rval = qla2x00_start_sp(sp);
+-	if (rval != QLA_SUCCESS)
+-		goto done_free_sp;
+-	return rval;
+-
+-done_free_sp:
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+-	fcport->flags &= ~FCF_ASYNC_SENT;
+-done:
+-	return rval;
+-}
+-
+-int qla24xx_post_gnnid_work(struct scsi_qla_host *vha, fc_port_t *fcport)
+-{
+-	struct qla_work_evt *e;
+-	int ls;
+-
+-	ls = atomic_read(&vha->loop_state);
+-	if (((ls != LOOP_READY) && (ls != LOOP_UP)) ||
+-		test_bit(UNLOADING, &vha->dpc_flags))
+-		return 0;
+-
+-	e = qla2x00_alloc_work(vha, QLA_EVT_GNNID);
+-	if (!e)
+-		return QLA_FUNCTION_FAILED;
+-
+-	e->u.fcport.fcport = fcport;
+-	return qla2x00_post_work(vha, e);
+-}
+-
+ /* GPFN_ID */
+ void qla24xx_handle_gfpnid_event(scsi_qla_host_t *vha, struct event_arg *ea)
+ {
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index 5f3593680c953..05476ec582d08 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -1725,12 +1725,7 @@ int qla24xx_fcport_handle_login(struct scsi_qla_host *vha, fc_port_t *fcport)
+ 			}
+ 			break;
+ 		default:
+-			if (wwn == 0)    {
+-				ql_dbg(ql_dbg_disc, vha, 0xffff,
+-				    "%s %d %8phC post GNNID\n",
+-				    __func__, __LINE__, fcport->port_name);
+-				qla24xx_post_gnnid_work(vha, fcport);
+-			} else if (fcport->loop_id == FC_NO_LOOP_ID) {
++			if (fcport->loop_id == FC_NO_LOOP_ID) {
+ 				ql_dbg(ql_dbg_disc, vha, 0x20bd,
+ 				    "%s %d %8phC post gnl\n",
+ 				    __func__, __LINE__, fcport->port_name);
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index 2b6b5eb66bc7e..348c9deaec33e 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -5499,9 +5499,6 @@ qla2x00_do_work(struct scsi_qla_host *vha)
+ 		case QLA_EVT_GNNFT_DONE:
+ 			qla24xx_async_gnnft_done(vha, e->u.iosb.sp);
+ 			break;
+-		case QLA_EVT_GNNID:
+-			qla24xx_async_gnnid(vha, e->u.fcport.fcport);
+-			break;
+ 		case QLA_EVT_GFPNID:
+ 			qla24xx_async_gfpnid(vha, e->u.fcport.fcport);
+ 			break;
 -- 
 2.51.0
 
