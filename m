@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-216171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLI0LCItj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:42 +0100
+	id AKhPA7Qtj2nTLgEAu9opvQ
+	(envelope-from <stable+bounces-216180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5F5136B34
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4980A136C57
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C65193014043
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:54:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF67F308C81E
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65348360721;
-	Fri, 13 Feb 2026 13:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A401D432D;
+	Fri, 13 Feb 2026 13:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7m2mQqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFCse5JN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B5535CBD8;
-	Fri, 13 Feb 2026 13:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A59135FF6F;
+	Fri, 13 Feb 2026 13:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990871; cv=none; b=Jcnp2HRfnUcgoeyhXrYCFYwzqj/LFh7ZBtSKY7sxt/ysV7nPn9Y3276eXzeEYlzy2nzeLyq8ObfWJXfsXCSfl18z1OF0wCqQCFPu/i2s7mPLe57GXIWzFE5WsSgz/NqDhm+VH/4M1voP7fs5qHC3sJg/gOzADA+mwziXp7WUUD8=
+	t=1770990902; cv=none; b=P66HFe4Ue9OAWNgtXJCqIhSu63XbIMDUzGvMfXQSdfzsxSSejPIefEvAx6mtYq2ReBRLLjLcfYCAhjmqWvITLqWPqGcFxYs1XSmqXvqck4Y9kAKqxuip083DPQ1XbzWXDf1jrUaFWD9Ap2Bq1A8Ix3z3j5PpF6heFvkeWcTKoWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990871; c=relaxed/simple;
-	bh=TOJG7rV/ndur9fNA7C7R8itr15TLwjOCkrAn54q5OcU=;
+	s=arc-20240116; t=1770990902; c=relaxed/simple;
+	bh=bHQYFyfPyM1C5eDzdMCw8Lqhtaty7d5eI90fvGzeE4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NrVMsHorR1m18rM2lsa7zDsk7//7n3ClDeTTBL2JcnVuiYdj93OoC1MzfNYXGZT0lNXRi1gnv83/qUDaAiQZ24woSq0b8hkgOxXZR3oNpS5qvIoWWeT/wb15nQD8xixXP7K+pvnhB3l/U6abaGZA0TcOCJExeg7LLT013mBhnMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7m2mQqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC625C116C6;
-	Fri, 13 Feb 2026 13:54:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kCraM16nlmzcK1rNn3pYk9r1tL9O/KL3KB56c/hsxIVfmGtg0NQ6zkBS2cC3QEfeCz7IVIPidI9MZBCO6T/Lw2ZM79K+p/KoInzZJnt5RELKTitr9VuUV0tC2/Rg7ckLXpzMOCsOZ64jhGcuqu4OGCJbFceSfqzVcQKDvTqX5xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFCse5JN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F56C116C6;
+	Fri, 13 Feb 2026 13:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990871;
-	bh=TOJG7rV/ndur9fNA7C7R8itr15TLwjOCkrAn54q5OcU=;
+	s=korg; t=1770990902;
+	bh=bHQYFyfPyM1C5eDzdMCw8Lqhtaty7d5eI90fvGzeE4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7m2mQqLUBjSM70HJAUEjHESM+xRBrPOMzdVlGr/L9FRPZu9YsI/1yXTs6vtQCj6d
-	 lwrXO4VcKkcuICVCv023DXezzRkhfxIb05AY6kGtheVc/lFCON/Dlj5FBf7fOoezfF
-	 jBKiAjKt9gV7QIPLNKiJ0WrfwfQmJnmE4GC2ftHo=
+	b=jFCse5JNFxEpJJyViSiq0e0E12UkOPI7tNc82J86l0d9dIxHG1nHgni6iDYNNQbr7
+	 6D6QtH7kXgnfAIcKhJpin3L8GwVzwDAPhT4KkiZPLlRERSHK9pnQ8yOU9wPPjcY41+
+	 kZqKWscKzsOEcozG4u0JXdG7e5JrFjD8kOaGdD34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ad45f827c88778ff7df6@syzkaller.appspotmail.com,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>
-Subject: [PATCH 6.18 36/49] hfs: ensure sb->s_fs_info is always cleaned up
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 01/24] smb: client: split cached_fid bitfields to avoid shared-byte RMW races
 Date: Fri, 13 Feb 2026 14:48:20 +0100
-Message-ID: <20260213134710.196223927@linuxfoundation.org>
+Message-ID: <20260213134704.784204140@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
-References: <20260213134708.885500854@linuxfoundation.org>
+In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
+References: <20260213134704.728003077@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,205 +62,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,ibm.com,kernel.org,gmail.com,dubeyko.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216171-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216180-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,ad45f827c88778ff7df6];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,dubeyko.com:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: ED5F5136B34
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 4980A136C57
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit 05ce49a902be15dc93854cbfc20161205a9ee446 upstream.
+commit ec306600d5ba7148c9dbf8f5a8f1f5c1a044a241 upstream.
 
-When hfs was converted to the new mount api a bug was introduced by
-changing the allocation pattern of sb->s_fs_info. If setup_bdev_super()
-fails after a new superblock has been allocated by sget_fc(), but before
-hfs_fill_super() takes ownership of the filesystem-specific s_fs_info
-data it was leaked.
+is_open, has_lease and on_list are stored in the same bitfield byte in
+struct cached_fid but are updated in different code paths that may run
+concurrently. Bitfield assignments generate byte read–modify–write
+operations (e.g. `orb $mask, addr` on x86_64), so updating one flag can
+restore stale values of the others.
 
-Fix this by freeing sb->s_fs_info in hfs_kill_super().
+A possible interleaving is:
+    CPU1: load old byte (has_lease=1, on_list=1)
+    CPU2: clear both flags (store 0)
+    CPU1: RMW store (old | IS_OPEN) -> reintroduces cleared bits
+
+To avoid this class of races, convert these flags to separate bool
+fields.
 
 Cc: stable@vger.kernel.org
-Fixes: ffcd06b6d13b ("hfs: convert hfs to use the new mount api")
-Reported-by: syzbot+ad45f827c88778ff7df6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ad45f827c88778ff7df6
-Tested-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20251201222843.82310-2-mehdi.benhadjkhelifa@gmail.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: ebe98f1447bbc ("cifs: enable caching of directories for which a lease is held")
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfs/mdb.c   |   35 ++++++++++++++---------------------
- fs/hfs/super.c |   10 +++++++++-
- 2 files changed, 23 insertions(+), 22 deletions(-)
+ fs/smb/client/cached_dir.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/hfs/mdb.c
-+++ b/fs/hfs/mdb.c
-@@ -92,7 +92,7 @@ int hfs_mdb_get(struct super_block *sb)
- 		/* See if this is an HFS filesystem */
- 		bh = sb_bread512(sb, part_start + HFS_MDB_BLK, mdb);
- 		if (!bh)
--			goto out;
-+			return -EIO;
- 
- 		if (mdb->drSigWord == cpu_to_be16(HFS_SUPER_MAGIC))
- 			break;
-@@ -102,13 +102,14 @@ int hfs_mdb_get(struct super_block *sb)
- 		 * (should do this only for cdrom/loop though)
- 		 */
- 		if (hfs_part_find(sb, &part_start, &part_size))
--			goto out;
-+			return -EIO;
- 	}
- 
- 	HFS_SB(sb)->alloc_blksz = size = be32_to_cpu(mdb->drAlBlkSiz);
- 	if (!size || (size & (HFS_SECTOR_SIZE - 1))) {
- 		pr_err("bad allocation block size %d\n", size);
--		goto out_bh;
-+		brelse(bh);
-+		return -EIO;
- 	}
- 
- 	size = min(HFS_SB(sb)->alloc_blksz, (u32)PAGE_SIZE);
-@@ -125,14 +126,16 @@ int hfs_mdb_get(struct super_block *sb)
- 	brelse(bh);
- 	if (!sb_set_blocksize(sb, size)) {
- 		pr_err("unable to set blocksize to %u\n", size);
--		goto out;
-+		return -EIO;
- 	}
- 
- 	bh = sb_bread512(sb, part_start + HFS_MDB_BLK, mdb);
- 	if (!bh)
--		goto out;
--	if (mdb->drSigWord != cpu_to_be16(HFS_SUPER_MAGIC))
--		goto out_bh;
-+		return -EIO;
-+	if (mdb->drSigWord != cpu_to_be16(HFS_SUPER_MAGIC)) {
-+		brelse(bh);
-+		return -EIO;
-+	}
- 
- 	HFS_SB(sb)->mdb_bh = bh;
- 	HFS_SB(sb)->mdb = mdb;
-@@ -174,7 +177,7 @@ int hfs_mdb_get(struct super_block *sb)
- 
- 	HFS_SB(sb)->bitmap = kzalloc(8192, GFP_KERNEL);
- 	if (!HFS_SB(sb)->bitmap)
--		goto out;
-+		return -EIO;
- 
- 	/* read in the bitmap */
- 	block = be16_to_cpu(mdb->drVBMSt) + part_start;
-@@ -185,7 +188,7 @@ int hfs_mdb_get(struct super_block *sb)
- 		bh = sb_bread(sb, off >> sb->s_blocksize_bits);
- 		if (!bh) {
- 			pr_err("unable to read volume bitmap\n");
--			goto out;
-+			return -EIO;
- 		}
- 		off2 = off & (sb->s_blocksize - 1);
- 		len = min((int)sb->s_blocksize - off2, size);
-@@ -199,12 +202,12 @@ int hfs_mdb_get(struct super_block *sb)
- 	HFS_SB(sb)->ext_tree = hfs_btree_open(sb, HFS_EXT_CNID, hfs_ext_keycmp);
- 	if (!HFS_SB(sb)->ext_tree) {
- 		pr_err("unable to open extent tree\n");
--		goto out;
-+		return -EIO;
- 	}
- 	HFS_SB(sb)->cat_tree = hfs_btree_open(sb, HFS_CAT_CNID, hfs_cat_keycmp);
- 	if (!HFS_SB(sb)->cat_tree) {
- 		pr_err("unable to open catalog tree\n");
--		goto out;
-+		return -EIO;
- 	}
- 
- 	attrib = mdb->drAtrb;
-@@ -229,12 +232,6 @@ int hfs_mdb_get(struct super_block *sb)
- 	}
- 
- 	return 0;
--
--out_bh:
--	brelse(bh);
--out:
--	hfs_mdb_put(sb);
--	return -EIO;
- }
- 
- /*
-@@ -359,8 +356,6 @@ void hfs_mdb_close(struct super_block *s
-  * Release the resources associated with the in-core MDB.  */
- void hfs_mdb_put(struct super_block *sb)
- {
--	if (!HFS_SB(sb))
--		return;
- 	/* free the B-trees */
- 	hfs_btree_close(HFS_SB(sb)->ext_tree);
- 	hfs_btree_close(HFS_SB(sb)->cat_tree);
-@@ -373,6 +368,4 @@ void hfs_mdb_put(struct super_block *sb)
- 	unload_nls(HFS_SB(sb)->nls_disk);
- 
- 	kfree(HFS_SB(sb)->bitmap);
--	kfree(HFS_SB(sb));
--	sb->s_fs_info = NULL;
- }
---- a/fs/hfs/super.c
-+++ b/fs/hfs/super.c
-@@ -431,10 +431,18 @@ static int hfs_init_fs_context(struct fs
- 	return 0;
- }
- 
-+static void hfs_kill_super(struct super_block *sb)
-+{
-+	struct hfs_sb_info *hsb = HFS_SB(sb);
-+
-+	kill_block_super(sb);
-+	kfree(hsb);
-+}
-+
- static struct file_system_type hfs_fs_type = {
- 	.owner		= THIS_MODULE,
- 	.name		= "hfs",
--	.kill_sb	= kill_block_super,
-+	.kill_sb	= hfs_kill_super,
- 	.fs_flags	= FS_REQUIRES_DEV,
- 	.init_fs_context = hfs_init_fs_context,
- };
+--- a/fs/smb/client/cached_dir.h
++++ b/fs/smb/client/cached_dir.h
+@@ -34,10 +34,10 @@ struct cached_fid {
+ 	struct list_head entry;
+ 	struct cached_fids *cfids;
+ 	const char *path;
+-	bool has_lease:1;
+-	bool is_open:1;
+-	bool on_list:1;
+-	bool file_all_info_is_valid:1;
++	bool has_lease;
++	bool is_open;
++	bool on_list;
++	bool file_all_info_is_valid;
+ 	unsigned long time; /* jiffies of when lease was taken */
+ 	struct kref refcount;
+ 	struct cifs_fid fid;
 
 
 
