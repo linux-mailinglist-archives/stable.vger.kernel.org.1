@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-216199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EnRHH0tj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:56:13 +0100
+	id GOFrDvEtj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:58:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7E1136C06
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:56:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96EEA136CF9
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 97A5030131D3
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F093530A6EB0
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B4035FF61;
-	Fri, 13 Feb 2026 13:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C6435FF61;
+	Fri, 13 Feb 2026 13:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oI45KSno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmuZ5T6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE191684BE;
-	Fri, 13 Feb 2026 13:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9A71684BE;
+	Fri, 13 Feb 2026 13:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990966; cv=none; b=b5J8iI/sisGtYUnF+r3AYEco0kV7pT9su6kWIIs0aEM8uYTuWXRtMnZ+7sWMZHpLY/Pk95tNRgvbdBRU5APdj7rFrdBd+9gR+6nvNCu/c8ZZca/S215M/dczIsnKZ4JnC/nQyL5FkM0DPlCME0okTtssdvza2cxgn9L4sHcG5lU=
+	t=1770990972; cv=none; b=hbYRH/OXW57DHB+K8hqAC4naNTCMeOi2V/jdvOLoynYyIQUKgQoLFgxdHQSkukdBdS9zTscWoTfVU1R60PdVzN9zhm7vA6PMS35Ve4ivXoNMbFKiQmAhxDfL0kSzG0+90vzy1aMXBCkoBGj2f3zg6uwENMMEU8Ixn0jCrcOnC1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990966; c=relaxed/simple;
-	bh=iITgYstPR5UcWGk9Wy25YKvYXy+6LfcoVbtAiQ48ZCc=;
+	s=arc-20240116; t=1770990972; c=relaxed/simple;
+	bh=vIzNQ9Ftr8D9x99QpWZ8n+Q+s7aI7tjJiEWuumV2bKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0ceAyaD62U4R0WEc900chS34z/rUzRVqGQBrYFjQ7LmuXeEd7oFzQWNw0BCQwP9uEexnoPunR9lTAsBrCkdrcafxUGl8jKEVb/KAvVI2X4LlbOL44U4z0ZGU4IvDy7G7ytLXSuFqfAsBpdyFAVdU7mTF7Lxui5fIK9szaacoIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oI45KSno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0D9C116C6;
-	Fri, 13 Feb 2026 13:56:05 +0000 (UTC)
+	 MIME-Version; b=VDUeYMWwQl+FWDcbKWzRqyXpgHe9smjPwPQDEr5ec/WQKiVnlsESwtpjSqSwLHIyh3TlvkP+3WZiUU4KeZQu8nTSi/IgSxm7Z++c6KVJE7ImYlQe7LChrzImknPGRX3KVkfuITTq8jAwvtD8VVVgYI6e6Wx7V7qwFfc9jj9k3m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmuZ5T6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A99C116C6;
+	Fri, 13 Feb 2026 13:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990966;
-	bh=iITgYstPR5UcWGk9Wy25YKvYXy+6LfcoVbtAiQ48ZCc=;
+	s=korg; t=1770990972;
+	bh=vIzNQ9Ftr8D9x99QpWZ8n+Q+s7aI7tjJiEWuumV2bKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oI45KSnoVtarMi+p+uK2DpyluI1r8s96dJpDO3ZaJEqe+35IjyJklh/vGcX8yemSa
-	 FZFxBaLysupn74iCgjPaCD0nU+vDBFe5dpg/j7+DFP3bpi/5L2hXLDXG4/mdnQgDVf
-	 dyipiLF9r8ukBsL57my70xod7dH1oG6BkvRxqv9I=
+	b=mmuZ5T6FcMqJdSstlqEVZeO7CTuKb/0daGcckELCJMz+eSXbsWMq7XzwpGl3NHZHf
+	 W8eE3fvBkBFPSjFBskMUaJv5AW4c57dmTlHQSeE4p+JTghP+cg8S7DZOnkH/G1JxaW
+	 EjKS/5Z676IUjN135uvgEiGrxqWdyWos7pf0igQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenm Chen <zenmchen@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 05/24] Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
-Date: Fri, 13 Feb 2026 14:48:24 +0100
-Message-ID: <20260213134704.926389981@linuxfoundation.org>
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Kanchana P Sridhar <kanchana.p.sridhar@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 06/24] crypto: iaa - Fix out-of-bounds index in find_empty_iaa_compression_mode
+Date: Fri, 13 Feb 2026 14:48:25 +0100
+Message-ID: <20260213134704.963899569@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
 References: <20260213134704.728003077@linuxfoundation.org>
@@ -70,108 +70,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216199-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,molgen.mpg.de,intel.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216200-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,mpg.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 9C7E1136C06
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linux.dev:email,intel.com:email,apana.org.au:email]
+X-Rspamd-Queue-Id: 96EEA136CF9
 X-Rspamd-Action: no action
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 6c0568b7741a346088fd6dfced2d871f7d481d06 upstream.
+commit 48329301969f6d21b2ef35f678e40f72b59eac94 upstream.
 
-Add USB ID 7392:e611 for Edimax EW-7611UXB which is RTL8851BU-based
-Wi-Fi + Bluetooth adapter.
+The local variable 'i' is initialized with -EINVAL, but the for loop
+immediately overwrites it and -EINVAL is never returned.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below:
+If no empty compression mode can be found, the function would return the
+out-of-bounds index IAA_COMP_MODES_MAX, which would cause an invalid
+array access in add_iaa_compression_mode().
 
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=7392 ProdID=e611 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=802.11ax WLAN Adapter
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtw89_8851bu_git
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Fix both issues by returning either a valid index or -EINVAL.
 
-Cc: stable@vger.kernel.org # 6.6.x
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: b190447e0fa3 ("crypto: iaa - Add compression mode management along with fixed mode")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Acked-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/intel/iaa/iaa_crypto_main.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -519,6 +519,8 @@ static const struct usb_device_id quirks
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x7392, 0xe611), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -223,15 +223,13 @@ static struct iaa_compression_mode *iaa_
  
- 	/* Realtek 8852AE Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
+ static int find_empty_iaa_compression_mode(void)
+ {
+-	int i = -EINVAL;
++	int i;
+ 
+-	for (i = 0; i < IAA_COMP_MODES_MAX; i++) {
+-		if (iaa_compression_modes[i])
+-			continue;
+-		break;
+-	}
++	for (i = 0; i < IAA_COMP_MODES_MAX; i++)
++		if (!iaa_compression_modes[i])
++			return i;
+ 
+-	return i;
++	return -EINVAL;
+ }
+ 
+ static struct iaa_compression_mode *find_iaa_compression_mode(const char *name, int *idx)
 
 
 
