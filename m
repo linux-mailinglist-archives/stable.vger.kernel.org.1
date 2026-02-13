@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-216183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDFbA7ktj2nTLgEAu9opvQ
-	(envelope-from <stable+bounces-216183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:13 +0100
+	id GM9mORItj2kPKwEAu9opvQ
+	(envelope-from <stable+bounces-216169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E59136C69
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70234136B11
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48AF43090CEA
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:55:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63C21301410C
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2B235FF7D;
-	Fri, 13 Feb 2026 13:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA6C360720;
+	Fri, 13 Feb 2026 13:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EQEIsfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tf4HmBA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C7D1D432D;
-	Fri, 13 Feb 2026 13:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77B954723;
+	Fri, 13 Feb 2026 13:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990913; cv=none; b=kN8X+/kUTKnE1Cxg+H5QSqqlriOTUo0ejkYh/FAE3KcCQ1h5hqU7Xlb62IlRprP7yES7nk63AnDxMmi+5YyDGL7MurFSXOU48TlCGGJ0BiknrQ1V9qqj6IcjMHWIRCgpVmiNcUNvNBX37EORHc15DU0SSj8nM4QWHSXoqjLNwUE=
+	t=1770990864; cv=none; b=hryb+bYHbJhLsiOiXlVKUjutd6Nq/G+q8rWXyM7krD/UxCjbd6qe6TpvMRApHzohKn+6CiHrwlPIIzJbegmqJZSHXVjOPJv7bksdOpt1Q74L5kW/Sg6eaI/YkSSDXHpTegFC+74Q1Xg0KhUDE7dT/vnO8W9/KN/dY2HgtUVmiL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990913; c=relaxed/simple;
-	bh=vU+x3WRwUcWfecJzYHeoV9+SbgkfD99w4Asssa3L9HE=;
+	s=arc-20240116; t=1770990864; c=relaxed/simple;
+	bh=hWm9+rSxN38x3eJ8KT1megsh+OCKA4CEdDcgM/a2NxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TimjvycpgaEsaHjDhaRkWup/9w9H6apXGzzLUZeeBl+MYRLc03fwOI8hpCAUOdPVR8xItaUO2Vevx2DnukZv5QgKVT9/Y2kxLPggQGZV5OVSwiFV9fcySO1BwT9wzmB/+6UxHcqUxwys+rC8dWxJsCzqdxkYkvlz3VvwN71uaO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EQEIsfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B813C116C6;
-	Fri, 13 Feb 2026 13:55:13 +0000 (UTC)
+	 MIME-Version; b=Tp9KUohehazys0DsRx65ovwHfpBHjdegfn5gm0XQKAkpiCr51V/UlphGuT52T+N0ycQFQNtFSMSeOn6XjYgyY8sHhsRelUvNJBO8tCyuoQVPMTygquWTIIzQuqvc5/SZ6P32ggS8Ep3Rl+p36Dkilz2NwQbnaG9KCcwI+f8X5uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tf4HmBA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D385C116C6;
+	Fri, 13 Feb 2026 13:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990913;
-	bh=vU+x3WRwUcWfecJzYHeoV9+SbgkfD99w4Asssa3L9HE=;
+	s=korg; t=1770990864;
+	bh=hWm9+rSxN38x3eJ8KT1megsh+OCKA4CEdDcgM/a2NxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2EQEIsfh8FatDdu7CJwzbpxTp2N0PBAdXZEYq8xwz9RwKJvti2nwJPtDSeN1YABAr
-	 fQPW+kGCfii2ifYjq/9AVk/hHnjVcmcTrUv/MDhabZazeYlrsuVx/zmDSlcK/SG/RP
-	 AhYeht8inTs+0mFyl36p/Z3Mbgn6YOw0Bz4WJ12E=
+	b=tf4HmBA8lR8fsE3mLWtXTB3s0HqeISR1R6dnASQVZecInfLHH/KqU68PmTPbID6TI
+	 F/kf7lGQFx9gJHAqNdjKFz8BszudcWpYWo19WQl39oUVG0P23g99SqCQ9FpsCvUV3S
+	 bN8tzwYG4oguzFYorlnjn0BQvUHJo17ealHTk5DQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ali Tariq <alitariq45892@gmail.com>,
 	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.12 12/24] wifi: rtw88: Fix alignment fault in rtw_core_enable_beacon()
-Date: Fri, 13 Feb 2026 14:48:31 +0100
-Message-ID: <20260213134705.176372595@linuxfoundation.org>
+Subject: [PATCH 6.18 48/49] wifi: rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
+Date: Fri, 13 Feb 2026 14:48:32 +0100
+Message-ID: <20260213134710.619466359@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
-References: <20260213134704.728003077@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+References: <20260213134708.885500854@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216183-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216169-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,realtek.com];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,95 +90,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,realtek.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 79E59136C69
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 70234136B11
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Ali Tariq <alitariq45892@gmail.com>
 
-commit 0177aa828d966117ea30a44f2e1890fdb356118e upstream.
+commit 86c946bcc00f6390ef65e9614ae60a9377e454f8 upstream.
 
-rtw_core_enable_beacon() reads 4 bytes from an address that is not a
-multiple of 4. This results in a crash on some systems.
+The driver does not set hw->sta_data_size, which causes mac80211 to
+allocate insufficient space for driver private station data in
+__sta_info_alloc(). When rtl8xxxu_sta_add() accesses members of
+struct rtl8xxxu_sta_info through sta->drv_priv, this results in a
+slab-out-of-bounds write.
 
-Do 1 byte reads/writes instead.
+KASAN report on RISC-V (VisionFive 2) with RTL8192EU adapter:
 
-Unable to handle kernel paging request at virtual address ffff8000827e0522
-Mem abort info:
-  ESR = 0x0000000096000021
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x21: alignment fault
-Data abort info:
-  ISV = 0, ISS = 0x00000021, ISS2 = 0x00000000
-  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000005492000
-[ffff8000827e0522] pgd=0000000000000000, p4d=10000001021d9403, pud=10000001021da403, pmd=100000011061c403, pte=00780000f3200f13
-Internal error: Oops: 0000000096000021 [#1]  SMP
-Modules linked in: [...] rtw88_8822ce rtw88_8822c rtw88_pci rtw88_core [...]
-CPU: 0 UID: 0 PID: 73 Comm: kworker/u32:2 Tainted: G        W           6.17.9 #1-NixOS VOLUNTARY
-Tainted: [W]=WARN
-Hardware name: FriendlyElec NanoPC-T6 LTS (DT)
-Workqueue: phy0 rtw_c2h_work [rtw88_core]
-pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : rtw_pci_read32+0x18/0x40 [rtw88_pci]
-lr : rtw_core_enable_beacon+0xe0/0x148 [rtw88_core]
-sp : ffff800080cc3ca0
-x29: ffff800080cc3ca0 x28: ffff0001031fc240 x27: ffff000102100828
-x26: ffffd2cb7c9b4088 x25: ffff0001031fc2c0 x24: ffff000112fdef00
-x23: ffff000112fdef18 x22: ffff000111c29970 x21: 0000000000000001
-x20: 0000000000000001 x19: ffff000111c22040 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-x11: 0000000000000000 x10: 0000000000000000 x9 : ffffd2cb6507c090
-x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-x2 : 0000000000007f10 x1 : 0000000000000522 x0 : ffff8000827e0522
-Call trace:
- rtw_pci_read32+0x18/0x40 [rtw88_pci] (P)
- rtw_hw_scan_chan_switch+0x124/0x1a8 [rtw88_core]
- rtw_fw_c2h_cmd_handle+0x254/0x290 [rtw88_core]
- rtw_c2h_work+0x50/0x98 [rtw88_core]
- process_one_work+0x178/0x3f8
- worker_thread+0x208/0x418
- kthread+0x120/0x220
- ret_from_fork+0x10/0x20
-Code: d28fe202 8b020000 f9524400 8b214000 (b9400000)
----[ end trace 0000000000000000 ]---
+  BUG: KASAN: slab-out-of-bounds in rtl8xxxu_sta_add+0x31c/0x346
+  Write of size 8 at addr ffffffd6d3e9ae88 by task kworker/u16:0/12
 
-Fixes: ad6741b1e044 ("wifi: rtw88: Stop high queue during scan")
+Set hw->sta_data_size to sizeof(struct rtl8xxxu_sta_info) during
+probe, similar to how hw->vif_data_size is configured. This ensures
+mac80211 allocates sufficient space for the driver's per-station
+private data.
+
+Tested on StarFive VisionFive 2 v1.2A board.
+
+Fixes: eef55f1545c9 ("wifi: rtl8xxxu: support multiple interfaces in {add,remove}_interface()")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/lwfinger/rtw88/issues/418
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ali Tariq <alitariq45892@gmail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/6345300d-8c93-464c-9b05-d0d9af3c97ad@gmail.com
+Link: https://patch.msgid.link/20251225115430.13011-1-alitariq45892@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtl8xxxu/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -2408,10 +2408,10 @@ void rtw_core_enable_beacon(struct rtw_d
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -7927,6 +7927,7 @@ static int rtl8xxxu_probe(struct usb_int
+ 		goto err_set_intfdata;
  
- 	if (enable) {
- 		rtw_write32_set(rtwdev, REG_BCN_CTRL, BIT_EN_BCN_FUNCTION);
--		rtw_write32_clr(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
-+		rtw_write8_clr(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
- 	} else {
- 		rtw_write32_clr(rtwdev, REG_BCN_CTRL, BIT_EN_BCN_FUNCTION);
--		rtw_write32_set(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
-+		rtw_write8_set(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
- 	}
- }
+ 	hw->vif_data_size = sizeof(struct rtl8xxxu_vif);
++	hw->sta_data_size = sizeof(struct rtl8xxxu_sta_info);
  
+ 	hw->wiphy->max_scan_ssids = 1;
+ 	hw->wiphy->max_scan_ie_len = IEEE80211_MAX_DATA_LEN;
 
 
 
