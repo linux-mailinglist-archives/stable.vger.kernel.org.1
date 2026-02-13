@@ -1,146 +1,133 @@
-Return-Path: <stable+bounces-216243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uH1uKak3j2n2MgEAu9opvQ
-	(envelope-from <stable+bounces-216243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:39:37 +0100
+	id eN0JHkE7j2nHNAEAu9opvQ
+	(envelope-from <stable+bounces-216244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:54:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08BDD13722D
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:39:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4741374D2
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 15:54:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8CC530459D2
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:38:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DBECD300C3B2
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDFD361666;
-	Fri, 13 Feb 2026 14:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8037935FF5D;
+	Fri, 13 Feb 2026 14:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A0AC/4AE"
+	dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b="ROlp6K7b"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout02.platinum-mail.de (mx02.platinum-mail.de [89.58.18.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF37361DBA
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 14:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812931C5D44
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 14:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.18.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770993513; cv=none; b=WpasXCwY54NJ3jrMS+wtJCpFlp6WUZb4OwLWKFkmWKYlSW0C4aWos+BS7G4fZz9Z7fKTSx8hi1jAdneJC1XyeDyVVifrQxF4NTctXltl/qzb8cP4yTYs7D9g14Pdrnf72UYm6tqMYYXTVnpqzaIu+7YnXTHtWOZMdbPYzD8H3Zc=
+	t=1770994489; cv=none; b=LPJ18MRpyu5itYzWW8zhUDk/BOdgVqyjEAG1khppo1ugL9T1sNtp39pjV7MyVG1y7cBPjDOnXulHjclC8YuL0dizm+cWyKGs4T/iTL8f5u9v9g14TF7X3x3gy6sESLfvHIJgg4FztCbhCWDn6/G4jHRd/MzsnfpqHwTchN6F6Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770993513; c=relaxed/simple;
-	bh=2Yh7aBShA6c8gQ4pY43dXnO0B18sPgc8K/vuxbeNWds=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iukH8kp14U+qa1xE+efcoYw3fXwsm2wjVzhcnnAWBZKdsl5BTxjQkGpQwVepX7NMbEOsY6T8jGsLTjeO1NXsCpFmsWS6sXLm0u51pwzIhySA9AemuShaaJ75qhD+2b8OVWMsh7jqMOSSVf7D08hlob/K5rID1y54pG31Wh4wasA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A0AC/4AE; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-437700715ddso966974f8f.2
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 06:38:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770993501; x=1771598301; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/UGGDvqnPusZ8w3DOSxM5/L8hUMj6ctAm+38uUc+sw8=;
-        b=A0AC/4AEKRdtNHuciJzG5zvmaNxp1lGVqG0JFg9OQUcKS5HMAVC56gVveqQiiGJQgZ
-         vIYiryhGKvWyEcaBXvwrmQlJvyqQSKiDfsAlXPlVd5+5Ijrhym0ITk57hgUnuDXh3suG
-         TNcfjWyAQOG0CR/RgtJoQTTIBWxC7rc2fyIVJSKz5qI7RYfCV7Tz54Wf8XAfVJkqAyas
-         R76waxcS0XmdqwgnKMNsl1RFrzTAauZre6aTpHaDuboZMTM44RzSH/o86WSlvld2OZX3
-         pkZ4DzTFf3kkqBaJ5BNB9Egjk/8q5+d6glDG4wzLjyuyffqIT+0fH/GZIJq56HpAgFwv
-         GAjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770993501; x=1771598301;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/UGGDvqnPusZ8w3DOSxM5/L8hUMj6ctAm+38uUc+sw8=;
-        b=P28TSrLimvtweeRlnbJwhtaUd9xn8spX2UQLpXF2s86aB728GflYERgXCnrOOT3m5+
-         AR264p4h1LNuHVCSaJ11PWtTfKXlN1B75rTfu/xBLwAXwMdXGxB8aK4SzLUku1hmofnO
-         zoxbXO6Q57ha7b64hToCVGQLdLlr3ycgffX+99ZiPhoSVz7RJOXxpyMWY+wJuypu3z3f
-         dQFn1L/8GhOqY/dC5wgTYwW3wukLZBVlnTxDENX6FZma/XQN3mtSYGVaKL6+yjdoO5VR
-         JdWSMfCMZKJRFaklFZROgb+8OIsF5kZLUzocn+F6yIjVwgde8Z49o3y3o/+e6PcA3ojw
-         hCjA==
-X-Forwarded-Encrypted: i=1; AJvYcCWNMLDsQmBkXKsLUl7PDtul2fUVu50VXHYJ8LyNlA3ZhXAcU912BHvDgigIsTnR+lzr1OvZucE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoE+jaRsbBs12en6Dr2c7njWkGofO59/1At8ZYi5iwhvN5sgHv
-	hFiDoqUjJKydca7fiiddt0h+XwfrlJIQCL1Gb7WhTEvTqq9xwjxmLA1iRXS0ived6aPv8vMcE5j
-	Y7Q==
-X-Received: from wrqa11.prod.google.com ([2002:adf:f7cb:0:b0:437:72d9:7316])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:588d:0:b0:436:369f:39fa
- with SMTP id ffacd0b85a97d-43796af9ed9mr4847850f8f.44.1770993501337; Fri, 13
- Feb 2026 06:38:21 -0800 (PST)
-Date: Fri, 13 Feb 2026 14:38:15 +0000
-In-Reply-To: <20260213143815.1732675-1-tabba@google.com>
+	s=arc-20240116; t=1770994489; c=relaxed/simple;
+	bh=rCQXCA4sOgMqBuNz9h5ym+EIqDPcH2T+bV5q70m5J84=;
+	h=Mime-Version:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=m5T0nK6Ivkc0L4Buyvk5O4WibZ9gd2A/3OOMA+qHuegKSBU8yNYhoL3hTK+u8a0jeIzRa7ppRWQH6wLDKO/SPCRfRqUkIXYhVhXLdsQkQXOwdj9Gca/N60KxJkby1U1BNTWxoIH/bTtkmAVYs6ntKXmmRYPYXjMKiT5TjKGJdrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org; spf=pass smtp.mailfrom=achill.org; dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b=ROlp6K7b; arc=none smtp.client-ip=89.58.18.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=achill.org
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mailout02.platinum-mail.de (Mail Service) with ESMTPS id 7DAC19A2A0D
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 14:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; d=achill.org; s=mail; c=relaxed/simple;
+	t=1770994099; h=date:message-id:subject:from:to;
+	bh=rCQXCA4sOgMqBuNz9h5ym+EIqDPcH2T+bV5q70m5J84=;
+	b=ROlp6K7b2TW757tVGpMlY/IM75wHugAecNv2XzrEviC/XCoz0VL9j7UcAT1VZzBW8+fTJ/TD/W1
+	zPX7WnSnOGIXT+mQIV6F+aFdPdANj/+mYoUWZYPxzYDdCzXOGa0gFIbSrWwIPfKTrw8noMw0cjydy
+	HO10CP2yi3I+OFy6vS9+BYd4mecYbklllI4LNoWnhT1U8K3IvsnbW+x+f4AjFdk4wcrMWerZ1pkj3
+	KdL+mRknINFm7IBJELJpFC+muSnhuFLfkyIAHxOxelrWSBX0u8jfEXNO8qIcazWKNopL5aZWdOVzC
+	XZDZHtQIfonL/mh+VbSw9Xjug5zsT8lhG/Jw==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260213143815.1732675-1-tabba@google.com>
-X-Mailer: git-send-email 2.53.0.273.g2a3d683680-goog
-Message-ID: <20260213143815.1732675-5-tabba@google.com>
-Subject: [PATCH v2 4/4] KVM: arm64: Remove redundant kern_hyp_va() in unpin_host_sve_state()
-From: Fuad Tabba <tabba@google.com>
-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Cc: maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com, 
-	suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, 
-	will@kernel.org, tabba@google.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 13 Feb 2026 15:48:19 +0100
+Message-Id: <DGDX0HGRJJ3N.1F1EWJEDMYZND@achill.org>
+Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+ <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+ <lkft-triage@lists.linaro.org>, <pavel@nabladev.com>,
+ <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+ <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>, <conor@kernel.org>,
+ <hargar@microsoft.com>, <broonie@kernel.org>, <achill@achill.org>,
+ <sr@sladewatkins.com>
+Subject: Re: [PATCH 6.19 00/49] 6.19.1-rc1 review
+From: "Achill Gilgenast" <achill@achill.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <stable@vger.kernel.org>
+X-Greeting: Hi mom! Look, I'm in somebodys mail client!
+X-Mailer: aerc 0.21.0
+References: <20260213134708.713126210@linuxfoundation.org>
+In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[achill.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[achill.org:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-216243-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-216244-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[achill.org:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_NEQ_ENVFROM(0.00)[achill@achill.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 08BDD13722D
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,achill.org:mid,achill.org:dkim]
+X-Rspamd-Queue-Id: 8F4741374D2
 X-Rspamd-Action: no action
 
-The `sve_state` pointer in `hyp_vcpu->vcpu.arch` is initialized as a
-hypervisor virtual address during vCPU initialization in
-`pkvm_vcpu_init_sve()`.
+On Fri Feb 13, 2026 at 2:47 PM CET, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.19.1 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 15 Feb 2026 13:46:52 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.19.1-=
+rc1.gz
 
-`unpin_host_sve_state()` calls `kern_hyp_va()` on this address. Since
-`kern_hyp_va()` is idempotent, it's not a bug. However, it is
-unnecessary and potentially confusing. Remove the redundant conversion.
+Hey, the link to this patch (and all other stable-review patches from
+today) seem to be not uploaded yet. Is this expected?
 
-Signed-off-by: Fuad Tabba <tabba@google.com>
----
- arch/arm64/kvm/hyp/nvhe/pkvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-index 59a010221818..389fa5f09c3d 100644
---- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
-+++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-@@ -392,7 +392,7 @@ static void unpin_host_sve_state(struct pkvm_hyp_vcpu *hyp_vcpu)
- 	if (!vcpu_has_feature(&hyp_vcpu->vcpu, KVM_ARM_VCPU_SVE))
- 		return;
- 
--	sve_state = kern_hyp_va(hyp_vcpu->vcpu.arch.sve_state);
-+	sve_state = hyp_vcpu->vcpu.arch.sve_state;
- 	hyp_unpin_shared_mem(sve_state,
- 			     sve_state + vcpu_sve_state_size(&hyp_vcpu->vcpu));
- }
--- 
-2.53.0.273.g2a3d683680-goog
-
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
+ linux-6.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h=
 
