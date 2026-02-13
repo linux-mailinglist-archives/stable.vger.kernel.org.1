@@ -1,69 +1,85 @@
-Return-Path: <stable+bounces-216164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FJuMlgtj2ksLgEAu9opvQ
-	(envelope-from <stable+bounces-216164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:36 +0100
+	id aC+DAwkuj2nTLgEAu9opvQ
+	(envelope-from <stable+bounces-216204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:58:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C318136BBA
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:55:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C46F136D10
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:58:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60C34300FECE
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:54:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2FC373010B90
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3964D35CBD8;
-	Fri, 13 Feb 2026 13:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011F735FF7D;
+	Fri, 13 Feb 2026 13:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BeWW1OB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQ4G0VZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FF6241665;
-	Fri, 13 Feb 2026 13:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B830D1684BE;
+	Fri, 13 Feb 2026 13:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990848; cv=none; b=aGr6YLzdDOz5WqvjYEPpD7XDO+cuFqtcYANU/dNp+jB4JKRxxEumClH5bWNksTn4NB+EstIrsqMEtZuUHfV1wJ5ANqLf/PkRxHz8lgdTg1D13rBwxt1wPfZROU/T1kL2ra0D4rRoFJJr2MmXT6W+nNS1EHNdLZkBbCHMFNnoRN4=
+	t=1770990985; cv=none; b=kCdg8A8dciS7F43Pv/q4z49bHBL+gyi41/9I7Q1PJn6doqGIOZO4sq7t7bZSYSHKfGexwE1L7MUyaFEVmXH/bzpjrL/1uJllXzpOFTaC/kPeCLo5SMpgqkRxDOnHSYULvT91GooGeAXQcpmt9lFdwa6zi4WL/YGzu05/Qwv48Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990848; c=relaxed/simple;
-	bh=1bI950nj8yMLdXqzAL9/onlWZwG1UsaodzYo1LqufLE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PnsS8TlE20Ja0cQ47xZhQ32rJ1F1GfLBv5+aolDv9nMH7K83v/BCHdNZO1QjyqOjHVZOe2xxRS8x4nD95aAU4Jk5brMT5TsZUE1JLDDbE8PU8qzg4u/Ndj/cEX06z8d3TRRLHnDhzbkdNabGQ9Hj/JCaAJBkYB8p+Eea1lKlpB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BeWW1OB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812F3C116C6;
-	Fri, 13 Feb 2026 13:54:07 +0000 (UTC)
+	s=arc-20240116; t=1770990985; c=relaxed/simple;
+	bh=lHokdNlt0spSp5kdXs5W3zy6VNEqF2uUEHglaPmhzVI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ol7Fztap1pM7jtnnT0v1wr+x13bpdWcSZAVs25TtscmMkRizbGhvVcYY/uD97QJdvz5rRGxF1kV+ak1nr6Bw/SbCA57Xp71btTo397g1mRXxb0/Is7eszF+tz018IEP5MhM/NCF+SYG5OGP0NPf6iE3+nyK8OEMdBCZJC8+TztE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQ4G0VZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11D8C116C6;
+	Fri, 13 Feb 2026 13:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990847;
-	bh=1bI950nj8yMLdXqzAL9/onlWZwG1UsaodzYo1LqufLE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0BeWW1OBE763ZHi3f98wO5Fj1G3Ubu81pUhdbAZcWragt6pRootLKlTRhMtjXDmjH
-	 4F5WXykZdWvYa/aGmDogB+W/To4Qf8YAs6cfWizynS/Vrci70IKMCAg9qSQ3zmw3Py
-	 du1ObAeZ+2dnIkL0y+wDUrVfO6Hhb8cjzycnU2H0=
+	s=korg; t=1770990985;
+	bh=lHokdNlt0spSp5kdXs5W3zy6VNEqF2uUEHglaPmhzVI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OQ4G0VZzow5Dq5XMoqvc+Lr0ml05EoMF3y1A0DQ18U1xNaaEhDOfxM5x9w/gzYK/J
+	 +0aBoSOjEzZpv1FecDzD+k6CXUzjvRHVUBxr1dyhEphzWtbt5+4NHgbJAGgZxPvAPP
+	 4Hoo5uEhUZB0ZzarSSA0VoA1fXDsGmEPi/p1xsBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7eedce5eb281acd832f0@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>
-Subject: [PATCH 6.18 35/49] nilfs2: Fix potential block overflow that cause system hang
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@nabladev.com,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com
+Subject: [PATCH 6.12 00/24] 6.12.72-rc1 review
 Date: Fri, 13 Feb 2026 14:48:19 +0100
-Message-ID: <20260213134710.160871395@linuxfoundation.org>
+Message-ID: <20260213134704.728003077@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
-References: <20260213134708.885500854@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.72-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.12.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.12.72-rc1
+X-KernelTest-Deadline: 2026-02-15T13:47+00:00
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
@@ -76,98 +92,155 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,gmail.com,dubeyko.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-216204-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216164-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7eedce5eb281acd832f0];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,qq.com:email,dubeyko.com:email,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 2C318136BBA
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6C46F136D10
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.12.72 release.
+There are 24 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sun, 15 Feb 2026 13:46:52 +0000.
+Anything received after that time might be too late.
 
-From: Edward Adam Davis <eadavis@qq.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.72-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+and the diffstat can be found below.
 
-commit ed527ef0c264e4bed6c7b2a158ddf516b17f5f66 upstream.
+thanks,
 
-When a user executes the FITRIM command, an underflow can occur when
-calculating nblocks if end_block is too small. Since nblocks is of
-type sector_t, which is u64, a negative nblocks value will become a
-very large positive integer. This ultimately leads to the block layer
-function __blkdev_issue_discard() taking an excessively long time to
-process the bio chain, and the ns_segctor_sem lock remains held for a
-long period. This prevents other tasks from acquiring the ns_segctor_sem
-lock, resulting in the hang reported by syzbot in [1].
+greg k-h
 
-If the ending block is too small, typically if it is smaller than 4KiB
-range, depending on the usage of the segment 0, it may be possible to
-attempt a discard request beyond the device size causing the hang.
+-------------
+Pseudo-Shortlog of commits:
 
-Exiting successfully and assign the discarded size (0 in this case)
-to range->len.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.12.72-rc1
 
-Although the start and len values in the user input range are too small,
-a conservative strategy is adopted here to safely ignore them, which is
-equivalent to a no-op; it will not perform any trimming and will not
-throw an error.
+Danilo Krummrich <dakr@kernel.org>
+    gpio: omap: do not register driver in probe()
 
-[1]
-task:segctord state:D stack:28968 pid:6093 tgid:6093  ppid:2 task_flags:0x200040 flags:0x00080000
-Call Trace:
- rwbase_write_lock+0x3dd/0x750 kernel/locking/rwbase_rt.c:272
- nilfs_transaction_lock+0x253/0x4c0 fs/nilfs2/segment.c:357
- nilfs_segctor_thread_construct fs/nilfs2/segment.c:2569 [inline]
- nilfs_segctor_thread+0x6ec/0xe00 fs/nilfs2/segment.c:2684
+Ali Tariq <alitariq45892@gmail.com>
+    wifi: rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
 
-[ryusuke: corrected part of the commit message about the consequences]
+Liu Song <liu.song13@zte.com.cn>
+    PCI: endpoint: Avoid creating sub-groups asynchronously
 
-Fixes: 82e11e857be3 ("nilfs2: add nilfs_sufile_trim_fs to trim clean segs")
-Reported-by: syzbot+7eedce5eb281acd832f0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7eedce5eb281acd832f0
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/nilfs2/sufile.c |    4 ++++
- 1 file changed, 4 insertions(+)
+Darrick J. Wong <djwong@kernel.org>
+    xfs: fix UAF in xchk_btree_check_block_owner
 
---- a/fs/nilfs2/sufile.c
-+++ b/fs/nilfs2/sufile.c
-@@ -1093,6 +1093,9 @@ int nilfs_sufile_trim_fs(struct inode *s
- 	else
- 		end_block = start_block + len - 1;
- 
-+	if (end_block < nilfs->ns_first_data_block)
-+		goto out;
-+
- 	segnum = nilfs_get_segnum_of_block(nilfs, start_block);
- 	segnum_end = nilfs_get_segnum_of_block(nilfs, end_block);
- 
-@@ -1191,6 +1194,7 @@ int nilfs_sufile_trim_fs(struct inode *s
- out_sem:
- 	up_read(&NILFS_MDT(sufile)->mi_sem);
- 
-+out:
- 	range->len = ndiscarded << nilfs->ns_blocksize_bits;
- 	return ret;
- }
+Chao Yu <chao@kernel.org>
+    erofs: fix UAF issue for file-backed mounts w/ directio option
+
+Eric Dumazet <edumazet@google.com>
+    mptcp: fix race in mptcp_pm_nl_flush_addrs_doit()
+
+Daniele Palmas <dnlplm@gmail.com>
+    bus: mhi: host: pci_generic: Add Telit FE990B40 modem support
+
+Anil Gurumurthy <agurumurthy@marvell.com>
+    scsi: qla2xxx: Query FW again before proceeding with login
+
+Anil Gurumurthy <agurumurthy@marvell.com>
+    scsi: qla2xxx: Free sp in error path to fix system crash
+
+Anil Gurumurthy <agurumurthy@marvell.com>
+    scsi: qla2xxx: Delay module unload while fabric scan in progress
+
+Shreyas Deodhar <sdeodhar@marvell.com>
+    scsi: qla2xxx: Allow recovery for tape devices
+
+Anil Gurumurthy <agurumurthy@marvell.com>
+    scsi: qla2xxx: Validate sp before freeing associated memory
+
+Bitterblue Smith <rtl8821cerfe2@gmail.com>
+    wifi: rtw88: Fix alignment fault in rtw_core_enable_beacon()
+
+Edward Adam Davis <eadavis@qq.com>
+    nilfs2: Fix potential block overflow that cause system hang
+
+Bibo Mao <maobibo@loongson.cn>
+    crypto: virtio - Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req
+
+Bibo Mao <maobibo@loongson.cn>
+    crypto: virtio - Add spinlock protection with virtqueue notification
+
+Kees Cook <kees@kernel.org>
+    crypto: omap - Allocate OMAP_CRYPTO_FORCE_COPY scatterlists correctly
+
+Thorsten Blum <thorsten.blum@linux.dev>
+    crypto: octeontx - Fix length check to avoid truncation in ucode_load_store
+
+Thorsten Blum <thorsten.blum@linux.dev>
+    crypto: iaa - Fix out-of-bounds index in find_empty_iaa_compression_mode
+
+Zenm Chen <zenmchen@gmail.com>
+    Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
+
+Gui-Dong Han <hanguidong02@gmail.com>
+    driver core: enforce device_lock for driver_match_device()
+
+Henrique Carvalho <henrique.carvalho@suse.com>
+    smb: server: fix leak of active_num_conn in ksmbd_tcp_new_connection()
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off reset in error paths
+
+Henrique Carvalho <henrique.carvalho@suse.com>
+    smb: client: split cached_fid bitfields to avoid shared-byte RMW races
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |  4 +--
+ drivers/base/base.h                                |  9 +++++
+ drivers/base/bus.c                                 |  2 +-
+ drivers/base/dd.c                                  |  2 +-
+ drivers/bluetooth/btusb.c                          |  2 ++
+ drivers/bus/mhi/host/pci_generic.c                 | 13 +++++++
+ drivers/crypto/intel/iaa/iaa_crypto_main.c         | 12 +++----
+ drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c  |  2 +-
+ drivers/crypto/omap-crypto.c                       |  2 +-
+ drivers/crypto/virtio/virtio_crypto_core.c         |  5 +++
+ .../crypto/virtio/virtio_crypto_skcipher_algs.c    |  2 --
+ drivers/gpio/gpio-omap.c                           | 22 +++++++++---
+ drivers/net/wireless/realtek/rtl8xxxu/core.c       |  1 +
+ drivers/net/wireless/realtek/rtw88/main.c          |  4 +--
+ drivers/pci/endpoint/pci-ep-cfs.c                  | 15 +++-----
+ drivers/scsi/qla2xxx/qla_gs.c                      | 41 +++++++++++-----------
+ drivers/scsi/qla2xxx/qla_init.c                    | 28 +++++++++------
+ drivers/scsi/qla2xxx/qla_isr.c                     | 19 ++++++++--
+ drivers/scsi/qla2xxx/qla_os.c                      |  3 +-
+ fs/erofs/fileio.c                                  |  7 +++-
+ fs/nilfs2/sufile.c                                 |  4 +++
+ fs/smb/client/cached_dir.h                         |  8 ++---
+ fs/smb/server/server.c                             |  6 ++--
+ fs/smb/server/transport_tcp.c                      |  3 +-
+ fs/xfs/scrub/btree.c                               |  7 ++--
+ net/mptcp/pm_netlink.c                             | 16 +++++++--
+ 26 files changed, 159 insertions(+), 80 deletions(-)
 
 
 
