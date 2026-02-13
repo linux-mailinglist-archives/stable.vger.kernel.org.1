@@ -1,119 +1,141 @@
-Return-Path: <stable+bounces-216256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBtyKfRMj2nnPgEAu9opvQ
-	(envelope-from <stable+bounces-216256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:10:28 +0100
+	id 4CNpFWpNj2nnPgEAu9opvQ
+	(envelope-from <stable+bounces-216257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:12:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212F8137D70
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:10:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97534137D8F
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5BC863055029
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 16:10:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC0863032671
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 16:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA10364059;
-	Fri, 13 Feb 2026 16:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCF3356A10;
+	Fri, 13 Feb 2026 16:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0N4MtRw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B14426FD9A
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 16:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C4D274B2A
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 16:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770999006; cv=none; b=iMfNSq58vIyAMFqZBNaZLJ4Hx1T33Gj76FyDYf3m5RZMIyl0e84mm9PLJlhTKPvKpJUVYS3c7C1v88D6jpCgn55R4wkF6x8CuDZvKwKVss2znUZX/cc14PRfSeZpMfMfhzybqGphZMNVyPiVndj3Lf+t5UEf98gx3EXlLbG09DI=
+	t=1770999142; cv=none; b=XYyg9qAUl0ZQlOae8XogdchlcwXs42avMPEHhcaRSqw0boT8njuTcTiB/aRgui3MFKC1H6YhPrUqAZwQpYgXBRNYTqqlABajqhHwXWcZeoY/6n/wjAbqvjLoUJL+Lj1xyc6xzjvFWOFiNLESG35A82wxon6OvGBTWMJXY7C7gz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770999006; c=relaxed/simple;
-	bh=PaTE+hUFJrW/q2RrVjCX1ypAv799ScOA0C5Hk7SjdAY=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=HQeb3/6PyJlJPzPEVwKAEHP2rtKBvtvwn7sZrvjxpg0KYtbIiitrUYWrEeTv0YgD2rhTaY7yZd2oLpx84PKZZ1ultmwvh32PHYC3cVpbjcEzh2xS6zZE8Ae19H9OW2P8WD1dySgQCFGN7HNw+TVOa8fDQO51Se8TB8rN+Tv1dnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-6751720c676so9067467eaf.3
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 08:10:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770999003; x=1771603803;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yJRfcvfsXqKwKjWVZJwXtfVR/ggV9iIh5LOGQMM+Pxo=;
-        b=u/+LGchWXbPE++t2kIpbgWpRrDnPhAgPNIXUIjO6xK6D8agsqTqJZUUZcjf5Lb0UyI
-         feqaGLTcP/bfnDCxwUub1nYoY2kQhF/hZxYa65UXN40k1do9zvYSr7vbQYVPRySG8lHS
-         9vJIyy51H9YoJj+wNjLxP/qJiAs8QyFGzXmuxrQbmrBYaCdeWH/iIEplDKwTyD/mTaak
-         seUPdZ/o+wBMNV5xb6dHzp0MW2geX2ssl4dNA2JF2squAaobwU04pHt9v9GwDUQug9BB
-         1xIEWqvN6bC0AhAaSL1Z0XaMNYJ2Rw1QXGIBHqYC/1Ki/yKtb67U9frzrIkGNzzrLq2R
-         CaxA==
-X-Forwarded-Encrypted: i=1; AJvYcCUsSaU4kEXs1BvB9XC1yaUhXLdp4GEf5YxnP2iRGaDLcp6tEcJVatB7XLd1M80KWVzMIDlXcuo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBtpL/cy04ti/Ll34cwQgb6e13uLYZw9Jo4gVkC7UN3ylBAdLO
-	fDTH6WDsNgwHL+I//4BeDmFxiLNQomMBdcklb/60ZqmKFUVLOLZenmwZ6Gs+4hzge3d+kEtTyBp
-	z80wxLpMJjs0fFHwQHyIjEKguicIXmz5J/Sucv4rPOhDwFhh800pJ4/KtvrM=
+	s=arc-20240116; t=1770999142; c=relaxed/simple;
+	bh=VYj8nMv9cNNoGh1uq4ooiQVvF+VnpHCo43o5qHUxJhg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PPvHkR8uO/qSA6GB250HiQ5Vv22t+cCu18zlKsI/Q7BHt1Ti6PXZcNLe54AhwHWSoCtJCkLjXIXt7TmmXeiZbVJ0PvaXDwJoLSBpU87fpEqS9hPl57UpXsxD3LdGcpG9ItLma4YGZ/gtb1EMpJp2VyVRVUcoDhrvO2vP0JPy5lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0N4MtRw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69D5C116C6;
+	Fri, 13 Feb 2026 16:12:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770999141;
+	bh=VYj8nMv9cNNoGh1uq4ooiQVvF+VnpHCo43o5qHUxJhg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=R0N4MtRw21ESAU24hf04zLUKXd7JVWgml0BfmN7c15CEs52hUHXJ953P3FMyyc9hv
+	 sWH16/UCqryhSPOoHhjh4ZCkmNJMZMmMXOTHmk98w+ru0nzH7ILongu22r2RlyUZzj
+	 WRXW1KdZzf+k9toX7RV1QZvmKWb5l0y8CgphZTbkBAb2KFri6pfZowCj6758ARlq0w
+	 dFyiuZgWBviZxtyzvI06vbWmvV2yMGTWJaQ7qOO2abE3quoI0JpnH+dJHTzNAS3xdT
+	 Sbtxm6f5euJdBYibKFu2rnwnlG9MjFihRwL982d9cM3A8fxT56nezX4VhOdkxV9u6w
+	 YTXYHQk081Mew==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] bus: fsl-mc: Replace snprintf and sprintf with sysfs_emit in sysfs show functions
+Date: Fri, 13 Feb 2026 11:12:18 -0500
+Message-ID: <20260213161219.3554825-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026021346-water-matted-7833@gregkh>
+References: <2026021346-water-matted-7833@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:16ab:b0:662:facc:529f with SMTP id
- 006d021491bc7-677675807fdmr919935eaf.28.1770999003544; Fri, 13 Feb 2026
- 08:10:03 -0800 (PST)
-Date: Fri, 13 Feb 2026 08:10:03 -0800
-In-Reply-To: <20260213154336.434008-1-kartikey406@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <698f4cdb.a70a0220.2c38d7.00c8.GAE@google.com>
-Subject: Re: [syzbot] [kvm?] WARNING in kvm_gmem_fault_user_mapping
-From: syzbot <syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com>
-To: kartikey406@gmail.com, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.36 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=3c6097f9f42b05eb];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216256-lists,stable=lfdr.de,33a04338019ac7e43a44];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,nxp.com,csgroup.eu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216257-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	SUBJECT_HAS_QUESTION(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,googlegroups.com];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: 212F8137D70
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,csgroup.eu:email]
+X-Rspamd-Queue-Id: 97534137D8F
 X-Rspamd-Action: no action
 
-Hello,
+From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+[ Upstream commit a50522c805a6c575c80f41b04706e084d814e116 ]
 
-Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
-Tested-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+Use sysfs_emit() instead of snprintf()/sprintf()  when writing
+to sysfs buffers, as recommended by the kernel documentation.
 
-Tested on:
+Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+Acked-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20250822124339.1739290-1-chelsyratnawat2001@gmail.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Stable-dep-of: 148891e95014 ("bus: fsl-mc: fix use-after-free in driver_override_show()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-commit:         cee73b1e Merge tag 'riscv-for-linus-7.0-mw1' of git://..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=121b2994580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3c6097f9f42b05eb
-dashboard link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=13e342aa580000
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index dbc8d8f14ce7d..00278081daafd 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -175,8 +175,8 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
+ 
+-	return sprintf(buf, "fsl-mc:v%08Xd%s\n", mc_dev->obj_desc.vendor,
+-		       mc_dev->obj_desc.type);
++	return sysfs_emit(buf, "fsl-mc:v%08Xd%s\n", mc_dev->obj_desc.vendor,
++			mc_dev->obj_desc.type);
+ }
+ static DEVICE_ATTR_RO(modalias);
+ 
+@@ -202,7 +202,7 @@ static ssize_t driver_override_show(struct device *dev,
+ {
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n", mc_dev->driver_override);
++	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
+ }
+ static DEVICE_ATTR_RW(driver_override);
+ 
+-- 
+2.51.0
 
-Note: testing is done by a robot and is best-effort only.
 
