@@ -1,163 +1,171 @@
-Return-Path: <stable+bounces-216008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIMeBkp4jmlbCgEAu9opvQ
-	(envelope-from <stable+bounces-216008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:03:06 +0100
+	id qB8uD5iEjmkyCwEAu9opvQ
+	(envelope-from <stable+bounces-216009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:55:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2862132313
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:03:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E462132556
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 02:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D28F3061750
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 01:02:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E994F3068169
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 01:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EAA19C542;
-	Fri, 13 Feb 2026 01:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1r/4Yxz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485222144D7;
+	Fri, 13 Feb 2026 01:55:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531993EBF33;
-	Fri, 13 Feb 2026 01:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261281624C0
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 01:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.150.39.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770944575; cv=none; b=FNNIsLfFyH3TaroHblwyF+TD2VWF2IU6RMKmhNXEc3OEURMBCNFBqiIkOQ2psHcqkqiirt3EY5F49ejnBBmM8XbTJYTqgLZhKXFVvaZI9YsW8zrMEKnOqw3hfzqgvm5A5I3SCgn4wlszvefJ/CmH2ofrlrcw2LwRDL0Ke69c2CE=
+	t=1770947733; cv=none; b=B50Hhv2YVnr3R4rqVJspaUDkATlNpxoSnzPglhNyh2jGL55wHFkiabN+nrL+ChvGwwn8tZ0QyFMceDhhduNBhOBz4K9AI/kCWzr+e85rpsk2VCU0jSIrmFLiFhs++9hJWFtlLSStM5kt7y+y4hQnknerCflOCp8nU8LS8awm2j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770944575; c=relaxed/simple;
-	bh=KwbmCqQa/Q37dD8NJdF3IkFjL0StaTgXiGrl/kaJs5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DPaNHGvHT7Ilopg77ovsCEDwvjKKEwWacfk1Bf8XLe8amtRJJk4GzhjxqahKnRKkbIWx4pX7YdtVABdjduzISUZUnMKz1Or5zNbGH2oQKrEJu9KSBO9uLib2n0Kd/Px/Y+nRoA1sjxffg1opo626tU9CVDLNIyAnJbltgx7Dfos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1r/4Yxz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F376C4CEF7;
-	Fri, 13 Feb 2026 01:02:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770944574;
-	bh=KwbmCqQa/Q37dD8NJdF3IkFjL0StaTgXiGrl/kaJs5Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k1r/4Yxz7bCefYO+ld67cg3Bg1TPvFMtLZxiDotgFV/1EE86IolC4qpNqp2Mp/RCy
-	 0fy0cSCyNtjTmBWiQ77+78NduSt+GWYmjnFvDxs8CBtcLMGv7mb1DX6JgNxtFoY3L1
-	 DEjgpdi899HXRRQAn5rNrxP2U/PZooLV6dVFJCgMtBCMC4Kz9Tqd3HgGZWdLHffYVH
-	 hL0uj7J4B01tLYLd5n8E1DjU8C4IYDeYA9/VYamdSuBTAh9+JY81YNT9r4TzPP2hnm
-	 8yN78C7o4TLtT/LEfz5L+ccWzn7XHxIMqVipKdRAHCsKkCxESD1LO0x8/qd6IeXbkl
-	 fm6voAeBhpjIQ==
-Date: Thu, 12 Feb 2026 17:02:53 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: manivannan.sadhasivam@oss.qualcomm.com
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, stable@vger.kernel.org,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>
-Subject: Re: [PATCH v2 1/4] soc: qcom: ice: Remove platform_driver support
- and expose as a pure library
-Message-ID: <20260213010253.GA6208@quark>
-References: <20260210-qcom-ice-fix-v2-0-9c1ab5d6502c@oss.qualcomm.com>
- <20260210-qcom-ice-fix-v2-1-9c1ab5d6502c@oss.qualcomm.com>
+	s=arc-20240116; t=1770947733; c=relaxed/simple;
+	bh=jsdlg2Ynwh2r9K78xMh03EfD8NoasnFnvJCqCdLLk4A=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=V0WmYnmkqJtHRvpVLKOCdoICkiVM2U8O8UbLI5wzBnm/4FQK6xTxWrT7B9P+ftcyMtJKvoT+YvuV9J8L7jfH6YsI2V7ceKO/XvcceG7gYfTC9otgN/8ybBwN/Q6J+39YsHAIHt3UzZbUZ98gz6+gUJAT404Z4x4gQVvqtCcVt3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=129.150.39.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytium.com.cn
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwDHzZmGhI5pDBEYBw--.2511S2;
+	Fri, 13 Feb 2026 09:55:18 +0800 (CST)
+Received: from localhost.localdomain (unknown [218.76.62.144])
+	by mail (Coremail) with SMTP id AQAAfwC3Det8hI5p3QUbAA--.32458S3;
+	Fri, 13 Feb 2026 09:55:10 +0800 (CST)
+From: Cui Chao <cuichao1753@phytium.com.cn>
+To: cuichao1753@phytium.com.cn
+Cc: stable@vger.kernel.org,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Gregory Price <gourry@gourry.net>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH v4 1/1] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
+Date: Fri, 13 Feb 2026 09:55:06 +0800
+Message-Id: <20260213015506.2381118-2-cuichao1753@phytium.com.cn>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20260213015506.2381118-1-cuichao1753@phytium.com.cn>
+References: <20260213015506.2381118-1-cuichao1753@phytium.com.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260210-qcom-ice-fix-v2-1-9c1ab5d6502c@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAfwC3Det8hI5p3QUbAA--.32458S3
+X-CM-SenderInfo: pfxlux1drrlkut6sx5pwlxzhxfrphubq/1tbiAQAFAGmONAkAtAABsr
+Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=cuichao175
+	3@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoWxCr4rGryDtrWxuFyDAw43ZFb_yoW5CFW5pa
+	1agFZYgF4kJryxGFs7u3WUAw1IqFnYkF45GFZrCwnxZa1Ygw1Uuryavr1FvFn7tryfCF1r
+	XF4qy3WYvw1UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+	UUUUU
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216008-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cuichao1753@phytium.com.cn,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B2862132313
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[phytium.com.cn];
+	TAGGED_FROM(0.00)[bounces-216009-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,phytium.com.cn:mid,phytium.com.cn:email,gourry.net:email,huawei.com:email]
+X-Rspamd-Queue-Id: 5E462132556
 X-Rspamd-Action: no action
 
-On Tue, Feb 10, 2026 at 12:26:50PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
->  drivers/soc/qcom/ice.c | 118 ++++++++++++++++++-------------------------------
->  1 file changed, 44 insertions(+), 74 deletions(-)
+In some physical memory layout designs, the address space of CFMW (CXL
+Fixed Memory Window) resides between multiple segments of system memory
+belonging to the same NUMA node. In numa_cleanup_meminfo, these multiple
+segments of system memory are merged into a larger numa_memblk. When
+identifying which NUMA node the CFMW belongs to, it may be incorrectly
+assigned to the NUMA node of the merged system memory.
 
-I don't yet know enough to be confident that this is the correct fix,
-but there are a few things I noticed that look like bugs:
+When a CXL RAM region is created in userspace, the memory capacity of
+the newly created region is not added to the CFMW-dedicated NUMA node.
+Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
+containing RAM). This makes it impossible to clearly distinguish
+between the two types of memory, which may affect memory-tiering
+applications.
 
-> +static DEFINE_MUTEX(ice_mutex);
-> +struct qcom_ice *ice_handle;
+Example memory layout:
 
-ice_handle is used only in this file, so it should be static
+Physical address space:
+    0x00000000 - 0x1FFFFFFF  System RAM (node0)
+    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
+    0x40000000 - 0x5FFFFFFF  System RAM (node0)
+    0x60000000 - 0x7FFFFFFF  System RAM (node1)
 
-> @@ -643,41 +645,42 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
-[...]
-> +	ice = qcom_ice_create(&pdev->dev, base);
-> +	if (IS_ERR(ice)) {
->  		platform_device_put(pdev);
-> -		ice = ERR_PTR(-EINVAL);
-> +		return ice_handle;
->  	}
+After numa_cleanup_meminfo, the two node0 segments are merged into one:
+    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
+    0x60000000 - 0x7FFFFFFF  System RAM (node1)
 
-This error path returns NULL, where this patch seems to have been
-intended to remove NULL as a possible return value.
+So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
 
-> -static void qcom_ice_put(const struct qcom_ice *ice)
-> +static void qcom_ice_put(struct kref *kref)
->  {
-> -	struct platform_device *pdev = to_platform_device(ice->dev);
-> -
-> -	if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
-> -		platform_device_put(pdev);
-> +	platform_device_put(to_platform_device(ice_handle->dev));
-> +	ice_handle = NULL;
->  }
+To address this scenario, accurately identifying the correct NUMA node
+can be achieved by checking whether the region belongs to both
+numa_meminfo and numa_reserved_meminfo.
 
-Elsewhere ice_handle is protected by ice_mutex, but this seems to modify
-it without holding the mutex.
+While this issue is only observed in a QEMU configuration, and no known
+end users are impacted by this problem, it is likely that some firmware
+implementation is leaving memory map holes in a CXL Fixed Memory Window.
+CXL hotplug depends on mapping free window capacity, and it seems to be
+only a coincidence to have not hit this problem yet.
 
-I'm also wondering what happens if all consumer devices are removed.
-platform_device_put() gets executed on the ICE platform_device for each
-one, but does that actually drop the last reference and cause the
-resources allocated with devm_*() to be freed?  On do they stick around
-until/unless the ICE device is actually removed as well?
+Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
+Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+---
+ mm/numa_memblks.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
->  static void devm_of_qcom_ice_put(struct device *dev, void *res)
->  {
-> -	qcom_ice_put(*(struct qcom_ice **)res);
-> +	const struct qcom_ice *ice = *(struct qcom_ice **)res;
-> +	struct platform_device *pdev = to_platform_device(ice->dev);
-> +
-> +	if (!platform_get_resource_byname(pdev, IORESOURCE_MEM, "ice"))
-> +		kref_put(&ice_handle->refcount, qcom_ice_put);
->  }
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index 5b009a9cd8b4..0892d532908c 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -568,15 +568,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
+ int phys_to_target_node(u64 start)
+ {
+ 	int nid = meminfo_to_nid(&numa_meminfo, start);
++	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
+ 
+ 	/*
+-	 * Prefer online nodes, but if reserved memory might be
+-	 * hot-added continue the search with reserved ranges.
++	 * Prefer online nodes unless the address is also described
++	 * by reserved ranges, in which case use the reserved nid.
+ 	 */
+-	if (nid != NUMA_NO_NODE)
++	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
+ 		return nid;
+ 
+-	return meminfo_to_nid(&numa_reserved_meminfo, start);
++	return reserved_nid;
+ }
+ EXPORT_SYMBOL_GPL(phys_to_target_node);
+ 
+-- 
+2.33.0
 
-Above probably should use the ice local variable, not ice_handle.
-
-- Eric
 
