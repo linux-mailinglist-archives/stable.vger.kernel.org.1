@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-216120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCdQIbksj2kPKwEAu9opvQ
-	(envelope-from <stable+bounces-216120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:52:57 +0100
+	id yNbSEMQsj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBD31369EA
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:52:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9D3136A17
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DED5F300A637
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:51:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A6C3300D76D
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769B435F8B7;
-	Fri, 13 Feb 2026 13:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E77F35F8D4;
+	Fri, 13 Feb 2026 13:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj4F4ClO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7Za8vma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A24A241665;
-	Fri, 13 Feb 2026 13:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21204241665;
+	Fri, 13 Feb 2026 13:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990702; cv=none; b=IHFrCVqeoRFXOce7U1ARsOWUuTofnFlFHn3ANInW2LaU5RqSBeQMWHEFBLxppbnR/rbByynrtF0XnX8S/XCB9s7Qpkl9YAcWPbGz+t/vnunhCzNYT5yZ0HBB2sGDgIAMuQV92D7FYoNw/Csmwd3hiZLgOlD0Y661ak6UXoMI4yc=
+	t=1770990785; cv=none; b=GlXM/zNQshMBj47CSb7FKHpRDgc3JT49NSaFBG4Ovt527H6XGOfNdDj8avfLrh18jCWJNaPesMzf3rgv6u1K8zSyD+NJAzRjfWeyt1YN3MpAo65dXX9y41G5sc/iavfuJ+s/J0gU7NOR/OHllafByw+krJ8haVMwRk4X9vmhSy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990702; c=relaxed/simple;
-	bh=GsaXqYtaGWfpcoT+yXsHznlj768sIwMwV5WhztsUWRg=;
+	s=arc-20240116; t=1770990785; c=relaxed/simple;
+	bh=sBlJX5hvFTRY0zZyRB4mdWBs4jZm014t1pF+O7YcoyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAhvHxSdsGz28mekeDtrs7QnEfXLDDGA09S7wbXfSLz0tmqDLHK8y9oFAqtLq8BjfwPwRXDLxPcOGbhAke/C/3hdFe5bAcRGxQoQA/sg+aWu3s1Sz8//GxSitr9wN/r9Bvn48Ocj/Cs9eFXMCF0mLLUulFjAzNHMdo8LLeSpllw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj4F4ClO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F87C16AAE;
-	Fri, 13 Feb 2026 13:51:41 +0000 (UTC)
+	 MIME-Version; b=n+2e0B19k9k0SaTIXsAKHAEsDZgIAGTe5OYOzSfVYGoQH1C+3eOgxKR7tPWhba428tJLz8WTcBeXBwT698oH1fT53mpCU7UndOLc/p20DLAFGGevnHlrp2oV8UCdyQq7rlvjq9e96q0XkKf5k7ikSvbs8ACBdaYMJlDkwM02RqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7Za8vma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1A9C116C6;
+	Fri, 13 Feb 2026 13:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990702;
-	bh=GsaXqYtaGWfpcoT+yXsHznlj768sIwMwV5WhztsUWRg=;
+	s=korg; t=1770990785;
+	bh=sBlJX5hvFTRY0zZyRB4mdWBs4jZm014t1pF+O7YcoyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tj4F4ClOLFQO5ce9nAZPQMP6ZTMpiI8kIlyrp4fR1rCih6B87ypCJcNH0U0ZxJpHU
-	 vv1xWhk3hKJjzvDNqUASFOC4FlxNekE/QRhGbA+qe4hergE3pyUUJqUjXqW/JjqAfH
-	 3HhtQ66nr+a35pEG8pGRhBUbL/s756i7AH5cThUU=
+	b=r7Za8vmaH6cOw/a9tEQvtpa3lX3A56a13fBVzJcLeq1UK2MAprnfILkTfQfQHTKf9
+	 o/rZTFJ1lNDCs5P7c2go+PQl8dLMdc/SfvZLhIyrzdgVSlzqi5CYgPBMAD4rUHlovi
+	 fZ10m2UPaGTKsTXKYOlhZLm8o8IhzyUjDlndpA7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Song <liu.song13@zte.com.cn>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	stable@kernel.org
-Subject: [PATCH 6.19 48/49] PCI: endpoint: Avoid creating sub-groups asynchronously
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 23/49] smb: client: make use of smbdirect_socket.send_io.bcredits
 Date: Fri, 13 Feb 2026 14:48:07 +0100
-Message-ID: <20260213134710.469320618@linuxfoundation.org>
+Message-ID: <20260213134709.736503470@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
-References: <20260213134708.713126210@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+References: <20260213134708.885500854@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,129 +74,185 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216120-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216145-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,cfs_work.work:url]
-X-Rspamd-Queue-Id: DCBD31369EA
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samba.org:email,talpey.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: DE9D3136A17
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Song <liu.song13@zte.com.cn>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 7c5c7d06bd1f86d2c3ebe62be903a4ba42db4d2c upstream.
+commit 21538121efe6c8c5b51c742fa02cbe820bc48714 upstream.
 
-The asynchronous creation of sub-groups by a delayed work could lead to a
-NULL pointer dereference when the driver directory is removed before the
-work completes.
+It turns out that our code will corrupt the stream of
+reassabled data transfer messages when we trigger an
+immendiate (empty) send.
 
-The crash can be easily reproduced with the following commands:
+In order to fix this we'll have a single 'batch' credit per
+connection. And code getting that credit is free to use
+as much messages until remaining_length reaches 0, then
+the batch credit it given back and the next logical send can
+happen.
 
-  # cd /sys/kernel/config/pci_ep/functions/pci_epf_test
-  # for i in {1..20}; do mkdir test && rmdir test; done
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000088
-  ...
-  Call Trace:
-   configfs_register_group+0x3d/0x190
-   pci_epf_cfs_work+0x41/0x110
-   process_one_work+0x18f/0x350
-   worker_thread+0x25a/0x3a0
-
-Fix this issue by using configfs_add_default_group() API which does not
-have the deadlock problem as configfs_register_group() and does not require
-the delayed work handler.
-
-Fixes: e85a2d783762 ("PCI: endpoint: Add support in configfs to associate two EPCs with EPF")
-Signed-off-by: Liu Song <liu.song13@zte.com.cn>
-[mani: slightly reworded the description and added stable list]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20250710143845409gLM6JdlwPhlHG9iX3F6jK@zte.com.cn
+Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/pci-ep-cfs.c |   15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ fs/smb/client/smbdirect.c | 58 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 55 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/endpoint/pci-ep-cfs.c
-+++ b/drivers/pci/endpoint/pci-ep-cfs.c
-@@ -23,7 +23,6 @@ struct pci_epf_group {
- 	struct config_group group;
- 	struct config_group primary_epc_group;
- 	struct config_group secondary_epc_group;
--	struct delayed_work cfs_work;
- 	struct pci_epf *epf;
- 	int index;
- };
-@@ -103,7 +102,7 @@ static struct config_group
- 	secondary_epc_group = &epf_group->secondary_epc_group;
- 	config_group_init_type_name(secondary_epc_group, "secondary",
- 				    &pci_secondary_epc_type);
--	configfs_register_group(&epf_group->group, secondary_epc_group);
-+	configfs_add_default_group(secondary_epc_group, &epf_group->group);
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index ef3b237bccc1..dbb2d939bc44 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -657,6 +657,7 @@ static bool process_negotiation_response(
+ 			sp->max_frmr_depth * PAGE_SIZE);
+ 	sp->max_frmr_depth = sp->max_read_write_size / PAGE_SIZE;
  
- 	return secondary_epc_group;
++	atomic_set(&sc->send_io.bcredits.count, 1);
+ 	sc->recv_io.expected = SMBDIRECT_EXPECT_DATA_TRANSFER;
+ 	return true;
  }
-@@ -166,7 +165,7 @@ static struct config_group
- 
- 	config_group_init_type_name(primary_epc_group, "primary",
- 				    &pci_primary_epc_type);
--	configfs_register_group(&epf_group->group, primary_epc_group);
-+	configfs_add_default_group(primary_epc_group, &epf_group->group);
- 
- 	return primary_epc_group;
+@@ -1214,6 +1215,7 @@ static void smbd_send_batch_init(struct smbdirect_send_batch *batch,
+ 	batch->wr_cnt = 0;
+ 	batch->need_invalidate_rkey = need_invalidate_rkey;
+ 	batch->remote_key = remote_key;
++	batch->credit = 0;
  }
-@@ -570,15 +569,13 @@ static void pci_ep_cfs_add_type_group(st
- 		return;
+ 
+ static int smbd_send_batch_flush(struct smbdirect_socket *sc,
+@@ -1224,7 +1226,7 @@ static int smbd_send_batch_flush(struct smbdirect_socket *sc,
+ 	int ret = 0;
+ 
+ 	if (list_empty(&batch->msg_list))
+-		return 0;
++		goto release_credit;
+ 
+ 	first = list_first_entry(&batch->msg_list,
+ 				 struct smbdirect_send_io,
+@@ -1266,6 +1268,13 @@ static int smbd_send_batch_flush(struct smbdirect_socket *sc,
+ 		smbd_free_send_io(last);
  	}
  
--	configfs_register_group(&epf_group->group, group);
-+	configfs_add_default_group(group, &epf_group->group);
++release_credit:
++	if (is_last && !ret && batch->credit) {
++		atomic_add(batch->credit, &sc->send_io.bcredits.count);
++		batch->credit = 0;
++		wake_up(&sc->send_io.bcredits.wait_queue);
++	}
++
+ 	return ret;
  }
  
--static void pci_epf_cfs_work(struct work_struct *work)
-+static void pci_epf_cfs_add_sub_groups(struct pci_epf_group *epf_group)
+@@ -1291,6 +1300,25 @@ static int wait_for_credits(struct smbdirect_socket *sc,
+ 	} while (true);
+ }
+ 
++static int wait_for_send_bcredit(struct smbdirect_socket *sc,
++				 struct smbdirect_send_batch *batch)
++{
++	int ret;
++
++	if (batch->credit)
++		return 0;
++
++	ret = wait_for_credits(sc,
++			       &sc->send_io.bcredits.wait_queue,
++			       &sc->send_io.bcredits.count,
++			       1);
++	if (ret)
++		return ret;
++
++	batch->credit = 1;
++	return 0;
++}
++
+ static int wait_for_send_lcredit(struct smbdirect_socket *sc,
+ 				 struct smbdirect_send_batch *batch)
  {
--	struct pci_epf_group *epf_group;
- 	struct config_group *group;
+@@ -1338,6 +1366,19 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
+ 	struct smbdirect_send_io *request;
+ 	struct smbdirect_data_transfer *packet;
+ 	int new_credits = 0;
++	struct smbdirect_send_batch _batch;
++
++	if (!batch) {
++		smbd_send_batch_init(&_batch, false, 0);
++		batch = &_batch;
++	}
++
++	rc = wait_for_send_bcredit(sc, batch);
++	if (rc) {
++		log_outgoing(ERR, "disconnected not sending on wait_bcredit\n");
++		rc = -EAGAIN;
++		goto err_wait_bcredit;
++	}
  
--	epf_group = container_of(work, struct pci_epf_group, cfs_work.work);
- 	group = pci_ep_cfs_add_primary_group(epf_group);
- 	if (IS_ERR(group)) {
- 		pr_err("failed to create 'primary' EPC interface\n");
-@@ -637,9 +634,7 @@ static struct config_group *pci_epf_make
+ 	rc = wait_for_send_lcredit(sc, batch);
+ 	if (rc) {
+@@ -1432,8 +1473,14 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
+ 		     le32_to_cpu(packet->remaining_data_length));
  
- 	kfree(epf_name);
+ 	rc = smbd_post_send(sc, batch, request);
+-	if (!rc)
+-		return 0;
++	if (!rc) {
++		if (batch != &_batch)
++			return 0;
++
++		rc = smbd_send_batch_flush(sc, batch, true);
++		if (!rc)
++			return 0;
++	}
  
--	INIT_DELAYED_WORK(&epf_group->cfs_work, pci_epf_cfs_work);
--	queue_delayed_work(system_wq, &epf_group->cfs_work,
--			   msecs_to_jiffies(1));
-+	pci_epf_cfs_add_sub_groups(epf_group);
+ err_dma:
+ 	smbd_free_send_io(request);
+@@ -1447,6 +1494,11 @@ static int smbd_post_send_iter(struct smbdirect_socket *sc,
+ 	wake_up(&sc->send_io.lcredits.wait_queue);
  
- 	return &epf_group->group;
+ err_wait_lcredit:
++	atomic_add(batch->credit, &sc->send_io.bcredits.count);
++	batch->credit = 0;
++	wake_up(&sc->send_io.bcredits.wait_queue);
++
++err_wait_bcredit:
+ 	return rc;
+ }
  
+-- 
+2.53.0
+
 
 
 
