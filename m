@@ -1,73 +1,101 @@
-Return-Path: <stable+bounces-216288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AtwCTVnj2k+QwEAu9opvQ
-	(envelope-from <stable+bounces-216288-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 19:02:29 +0100
+	id kDe4L6dmj2k+QwEAu9opvQ
+	(envelope-from <stable+bounces-216286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 19:00:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE90D138CA4
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 19:02:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 338C1138C85
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 19:00:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF1B43037C17
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 18:02:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF8AD301FD5A
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 17:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91934285C9D;
-	Fri, 13 Feb 2026 18:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AE6364E93;
+	Fri, 13 Feb 2026 17:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="C+/XLghw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTJqddxE"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0834126AC3;
-	Fri, 13 Feb 2026 18:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22C924A07C
+	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 17:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771005740; cv=none; b=jR8tNUbhOGyqPz8J7hJRiIbPvPVFlmwfN6/237VHNUfVt/cLSB1epFHW7bVml2kXQbLBCccq24nEs44Mamw3Aj8fA8nHHsGb5wIgJMKRSjXXjJAETUPLSZ6w9T+ZAdt7RDLNmyXORt9N9I8IaGql4kfPbgYcxs0CXpQpheap3UI=
+	t=1771005595; cv=none; b=rjRx0teYhTJ+L0DomwNab+cltmUVpfPz2MpLstOcXGfj/pTtQ6S+cXBHLxzQjova974m/PSuy6uG5ZEgtmugzAx4v9sSz7mB/9Pn9bo2rQ5vLkmLRF83/8NW9ZjB8G5chxg9flLx4QFyEgyz1IPEYc4PHukWs2/GSegHND+ajlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771005740; c=relaxed/simple;
-	bh=T3H/rqZoAbTeAnPTNpF0gFaeTaj6/jZHM6Tp0VHclZo=;
+	s=arc-20240116; t=1771005595; c=relaxed/simple;
+	bh=xffl/tcUCbwQWS0kee51G6+d5C4oaOgdVrvYRW1YsQg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lPgDMeWaIzTJyiBe5s8zGg+HL2VhZyjWCeqsrQLs+5tI6LcOpK7NjI0qhlLkN8a8ylBOFyB/4V+EfrWf7Ie2bT+OAxlZDWbUpRZ1Wpu7rfjhu3iqo+Bn8gRMQrm+Fv9kJpMEG5ugawFuTBaB0N+ylVHo+mRvrJjFZmZyUnQO6Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=C+/XLghw; arc=none smtp.client-ip=192.19.144.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id AF743C0009CE;
-	Fri, 13 Feb 2026 09:57:04 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com AF743C0009CE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1771005424;
-	bh=T3H/rqZoAbTeAnPTNpF0gFaeTaj6/jZHM6Tp0VHclZo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C+/XLghwxfchni9o8dMUhYYwk0qw2ObvRrQVl8z4qD9STw6vjzvHlbYowwZ3NPa64
-	 R5UYhCKr/yY183iaJQbVAr8PDsMKBkbFLIOPnwrUdtVxHoNxThkDBnYZktjp/Z+ok3
-	 Y9zYBCL3oa/PuHQtd2MQB9FySPnWGvpBJPLoxOMM=
-Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id D2B1EAE93;
-	Fri, 13 Feb 2026 12:57:03 -0500 (EST)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: stable@vger.kernel.org
-Cc: Pierre Gondois <pierre.gondois@arm.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH stable 6.1 2/2] cacheinfo: Remove of_node_put() for fw_token
-Date: Fri, 13 Feb 2026 09:57:00 -0800
-Message-Id: <20260213175700.1964980-3-florian.fainelli@broadcom.com>
+	 MIME-Version; b=EjvKgpVJhc/QTfRi5cC+aHysDBvDmJrxVLfuZSrBZT/dgNvy53qlNLdvxcRcshT/Gb+lLxC8KS7hTQ2RyNujG1NGMNp1bBxbPPodwyhRwE6sbDT8CLikOar1b8HWRtpiOZyggJ4jQ96iwFR9abZyG3d/TUIu1K4C9sf0OJexF2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LTJqddxE; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-4043b27ddeaso725670fac.1
+        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 09:59:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771005592; x=1771610392; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1+HH55yaDIAkLqPY4ZxIlW7GY63xjVHzwe6z7jmBHtY=;
+        b=LTJqddxEzomKNgtOqzrPMXrIVYLcuhL5Zr1SC/YhV1jmN/hLcCSiq+G69VZXREXt1B
+         ELDOjkTgSUaWoZZfkcC96UMnpdVwtfGkbhosLw1rGer/nfcPRsQaqJEcTqiKsUCaast8
+         zCEuAgazVYHAaZ3KmCRKBq3m+febHpJlEFuX9TiNgBoHJY1v9Q8ekT/FvAh4ocZTiQKB
+         oB3eawC8TLcWaySwMxGJbFaNWPF4p+KNlgu+wYbMzsYbefzbtq1O5WUZ723Zhrmk0RlM
+         10tuXiBwVGsETEgivP9UrvXxZjqXecQTpwI3uvc0vjMTH4tMLFiRfo4MtQaR7qwPj7Or
+         3ZDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771005592; x=1771610392;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1+HH55yaDIAkLqPY4ZxIlW7GY63xjVHzwe6z7jmBHtY=;
+        b=nUJaGbOnNDvcEgKSAE5lOdmeJSyqBjxGs3AXlOUUISN+YCMMUB78Y8xXDgCisyOqI9
+         lniPhBSyo97GOoZiU4ltGgTyXT3po2tHUC0nxfN6ygi/Z/Jaztnt5AUZHfgpo7F7G/Y0
+         Fqhx4o7+IQ/g/Ja/+8Mt13dIoGo87DZF6Fz9gl6bZxIA9LOxgv5bUh3KIXXeOJjZiAoz
+         OHidsO66n9Nt0GprQx4Wv77KYrnH13i5JVSDabrlKBmohanGPTobKbyzM+Qld9Zrt4A8
+         SDsO+BYXkashxDFHSOiTYUSE33t0q4Y+ffsosIHogKc9CC4VjLwYZdphilA4Wit3iM8v
+         KZ3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXSDPEmB0Nyrz9Pgv/zONGFzBoScD4RpxvhE9RneXWUe+LYciCPgNTRGCPnLwGPNfwedKPvUBs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjSRl+kbpU9XZJrot2TsWL+RzCr7BXmZ3stB9R3wq+xr1gOtwk
+	+7eMYETKg4FfzUUEL6gFKXqx8zJDphA0ytFrmOslKjV/IVl0l2MzlFPN
+X-Gm-Gg: AZuq6aLf+FM4MvkxPSUOkR3v3ei73A9jWUD06ppYrCM7vyF1Imar0/YJPq+iWYE1BWC
+	gU7kyST/P25SrL78mu91VJ6KsEQxaXmaBYUqzT320qIQYRpOYJY9ZwN3fO5JwCBJqKL8x0Z4gk9
+	xNus8NlV/rnd65erHAlBPM/3CkIvQ/sq0IeeATNX85SQbA+rrSul3zRdoMCJQ5blgI6gkF7Rcxy
+	6uA+IYgs1tU1gVe2xMRG9uE+oWZc9djtfnmQ8J87v1vHX0CjF1jfRc9X3oMRIkDSXpGSaWkO3nO
+	A3gVA694LRbLYD2wDYX+nMyk9H9cZimXz7ZpeVK1t5WFxT5sN0dBxWRj2+II3YWlFpH5RK5o+GO
+	yaoHm5MhYdfYEIaUl3WHe3XSrZqhuyEBwluw/pCYpw28a2gvd3Dq6+xGTTdrLboTgl+OESKAI1O
+	EKdpEYkpt6HtSysvYPvW3bFDc3eWFnxuGKIYOt7Ip8PkNbObI2BisZ75zkyQc2rrNThwB9in1X
+X-Received: by 2002:a05:6870:6985:b0:404:3f0a:9351 with SMTP id 586e51a60fabf-40ef40ebc2dmr1412774fac.52.1771005592394;
+        Fri, 13 Feb 2026 09:59:52 -0800 (PST)
+Received: from ubuntu-BQM5.tailafa00.ts.net (cs244-84-dhcp.cs.colorado.edu. [128.138.244.84])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40eaeb42708sm7356270fac.0.2026.02.13.09.59.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Feb 2026 09:59:51 -0800 (PST)
+From: Ruitong Liu <cnitlrt@gmail.com>
+To: netdev@vger.kernel.org
+Cc: jhs@mojatatu.com,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ruitong Liu <cnitlrt@gmail.com>,
+	stable@vger.kernel.org,
+	Shuyuan Liu <L0x1c3r@gmail.com>
+Subject: [PATCH v3] net/sched: act_skbedit: fix divide-by-zero in tcf_skbedit_hash()
+Date: Sat, 14 Feb 2026 01:59:48 +0800
+Message-Id: <20260213175948.1505257-1-cnitlrt@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260213175700.1964980-1-florian.fainelli@broadcom.com>
-References: <20260213175700.1964980-1-florian.fainelli@broadcom.com>
+In-Reply-To: <20260211184848.731894-1-cnitlrt@gmail.com>
+References: <20260211184848.731894-1-cnitlrt@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,107 +106,87 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=dkimrelay];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[broadcom.com:query timed out,linuxfoundation.org:query timed out];
-	TAGGED_FROM(0.00)[bounces-216288-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[broadcom.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-216286-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[florian.fainelli@broadcom.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[cnitlrt@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,samsung.com:email,linux-m68k.org:email]
-X-Rspamd-Queue-Id: CE90D138CA4
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 338C1138C85
 X-Rspamd-Action: no action
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+Commit 38a6f0865796 ("net: sched: support hash selecting tx queue")
+added SKBEDIT_F_TXQ_SKBHASH support. The inclusive range size is
+computed as:
 
-commit 2613cc29c5723881ca603b1a3b50f0107010d5d6 upstream
+mapping_mod = queue_mapping_max - queue_mapping + 1;
 
-fw_token is used for DT/ACPI systems to identify CPUs sharing caches.
-For DT based systems, fw_token is set to a pointer to a DT node.
+The range size can be 65536 when the requested range covers all possible
+u16 queue IDs (e.g. queue_mapping=0 and queue_mapping_max=U16_MAX).
+That value cannot be represented in a u16 and previously wrapped to 0,
+so tcf_skbedit_hash() could trigger a divide-by-zero:
 
-commit 3da72e18371c ("cacheinfo: Decrement refcount in
-cache_setup_of_node()")
-doesn't increment the refcount of fw_token anymore in
-cache_setup_of_node(). fw_token is indeed used as a token and not
-as a (struct device_node*), so no reference to fw_token should be
-kept.
+queue_mapping += skb_get_hash(skb) % params->mapping_mod;
 
-However, [1] is triggered when hotplugging a CPU multiple times
-since cache_shared_cpu_map_remove() decrements the refcount to
-fw_token at each CPU unplugging, eventually reaching 0.
+Compute mapping_mod in a wider type and reject ranges larger than U16_MAX
+to prevent params->mapping_mod from becoming 0 and avoid the crash.
 
-Remove of_node_put() for fw_token in cache_shared_cpu_map_remove().
-
-[1]
-------------[ cut here ]------------
-refcount_t: saturated; leaking memory.
-WARNING: CPU: 4 PID: 32 at lib/refcount.c:22 refcount_warn_saturate (lib/refcount.c:22 (discriminator 3))
-Modules linked in:
-CPU: 4 PID: 32 Comm: cpuhp/4 Tainted: G        W          6.1.0-rc1-14091-g9fdf2ca7b9c8 #76
-Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform, BIOS EDK II Oct 31 2022
-pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : refcount_warn_saturate (lib/refcount.c:22 (discriminator 3))
-lr : refcount_warn_saturate (lib/refcount.c:22 (discriminator 3))
-[...]
-Call trace:
-[...]
-of_node_release (drivers/of/dynamic.c:335)
-kobject_put (lib/kobject.c:677 lib/kobject.c:704 ./include/linux/kref.h:65 lib/kobject.c:721)
-of_node_put (drivers/of/dynamic.c:49)
-free_cache_attributes.part.0 (drivers/base/cacheinfo.c:712)
-cacheinfo_cpu_pre_down (drivers/base/cacheinfo.c:718)
-cpuhp_invoke_callback (kernel/cpu.c:247 (discriminator 4))
-cpuhp_thread_fun (kernel/cpu.c:785)
-smpboot_thread_fn (kernel/smpboot.c:164 (discriminator 3))
-kthread (kernel/kthread.c:376)
-ret_from_fork (arch/arm64/kernel/entry.S:861)
----[ end trace 0000000000000000 ]---
-
-Fixes: 3da72e18371c ("cacheinfo: Decrement refcount in cache_setup_of_node()")
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Link: https://lore.kernel.org/r/20221116094958.2141072-1-pierre.gondois@arm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 38a6f0865796 ("net: sched: support hash selecting tx queue")
+Cc: stable@vger.kernel.org # 6.12+
+Reported-by: Ruitong Liu <cnitlrt@gmail.com>
+Closes: https://lore.kernel.org/all/20260211184848.731894-1-cnitlrt@gmail.com/
+Reported-by: Shuyuan Liu <L0x1c3r@gmail.com>
+Closes: https://lore.kernel.org/all/20260211184848.731894-1-cnitlrt@gmail.com/
+Signed-off-by: Ruitong Liu <cnitlrt@gmail.com>
 ---
- drivers/base/cacheinfo.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/sched/act_skbedit.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-index 54a66e4a3460..f41effceea7c 100644
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -409,8 +409,6 @@ static void cache_shared_cpu_map_remove(unsigned int cpu)
- 				}
+diff --git a/net/sched/act_skbedit.c b/net/sched/act_skbedit.c
+index 8c1d1554f657..5450c1293eb5 100644
+--- a/net/sched/act_skbedit.c
++++ b/net/sched/act_skbedit.c
+@@ -126,7 +126,7 @@ static int tcf_skbedit_init(struct net *net, struct nlattr *nla,
+ 	struct tcf_skbedit *d;
+ 	u32 flags = 0, *priority = NULL, *mark = NULL, *mask = NULL;
+ 	u16 *queue_mapping = NULL, *ptype = NULL;
+-	u16 mapping_mod = 1;
++	u32 mapping_mod = 1;
+ 	bool exists = false;
+ 	int ret = 0, err;
+ 	u32 index;
+@@ -194,6 +194,10 @@ static int tcf_skbedit_init(struct net *net, struct nlattr *nla,
  			}
- 		}
--		if (of_have_populated_dt())
--			of_node_put(this_leaf->fw_token);
- 	}
  
- 	/* cpu is no longer populated in the shared map */
+ 			mapping_mod = *queue_mapping_max - *queue_mapping + 1;
++			if (mapping_mod > U16_MAX) {
++				NL_SET_ERR_MSG_MOD(extack, "The range of queue_mapping is invalid.");
++				return -EINVAL;
++			}
+ 			flags |= SKBEDIT_F_TXQ_SKBHASH;
+ 		}
+ 		if (*pure_flags & SKBEDIT_F_INHERITDSFIELD)
 -- 
 2.34.1
 
