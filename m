@@ -1,218 +1,202 @@
-Return-Path: <stable+bounces-216046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHLGGh4Cj2kmHQEAu9opvQ
-	(envelope-from <stable+bounces-216046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:51:10 +0100
+	id MPEmEtIHj2ltHQEAu9opvQ
+	(envelope-from <stable+bounces-216047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:15:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC4E135415
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:51:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12A11359BE
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 12:15:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A5F230547E9
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 10:51:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9214230CAE76
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 11:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFF5225A34;
-	Fri, 13 Feb 2026 10:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9892235A93C;
+	Fri, 13 Feb 2026 11:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4h4rVJK5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMh8b0qX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831573B1BD
-	for <stable@vger.kernel.org>; Fri, 13 Feb 2026 10:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770979867; cv=pass; b=DYH2YhGjKQQjlBQDKkYju0V/LbV6vMiRqHr5KcZ7NcyuY/8VrNKJWHyVmMoHAZqbl0b3+Guv2wB4jsa7yNGMzjLgO5YFs6DQvUUj0erITizy69mgoHq9AscwxkMmVg7hVyEHDfyUml2wnEy0WTY6WrDndPI7MhUrQIjztEEFx3Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770979867; c=relaxed/simple;
-	bh=Et5jRAvnWujdT4NJpgwhGo8qHa9vdaYx/uBOpVvBCH0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B8Hnpqb/isjujaB1rzm5wJSNkcv9MVMbS9zRbSwj3yZR2p+3pulBgFlQsNn2Pt/b2WJM+HrwxjB/tJenaKo+mJ47zqY1g1Egq3X5CYw+/rAbfOdyjdbVKcpVSTnGKErZEZOLzvm7zunXy4deXbm2JG1IniReWJ0XxR7seeYho5c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4h4rVJK5; arc=pass smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-124a95e592fso538069c88.0
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 02:51:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770979865; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OKO1Binc2LWAkp05Q0iwVkpJ9UTLkQWh0BizpZhB0K/fk6kXDrIg2VeYFKqVvKUe6P
-         eLRWn44lIRKLbkSDDvfc7/b72D168XcUwzlkajPX+8OBk/W5x+L5Tj4/7885S8CfgLJ+
-         sm7PsxIGYDEtx6ElJwM4Nloq7bidcSYdUA7a3+T0a8Ar7ydkvTzFzF9ao93t+7Yjtk6b
-         4maA8qZRW4ujkVcRdAHOZugm51gVMBwjbpTc5ppA3yQlUqLqRj+3hNimYnqizY5X1hIK
-         RnfClB5Dm/nOh4Q1JGo4tdyeAW2t33LI07cJ3awCuiUcXZ+867F75lp3mwBlKcuUoDQH
-         nD9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=H2yjc4HwnZnDfH81aOY9V+Nb7nZlWZ+t7zlqHmmWMvI=;
-        fh=nxsmo+TaG0OmWWApLzL9TFB6KH0raDCGBOqJ3SfCXFg=;
-        b=fpcgp7LRlh5NU4Lzaa8e1gzxuS1ySBJqY4Eb+keLA/jJ2THEZPFFkyRTk+EIg8FRcp
-         E4TuGVyW4Ww4mHCYy1WIUN4WQl1thUJ4U9LHj2XVjJy1eg2TPNNia0954nVqPnh08lWq
-         xtMPypolhNs+n2UVjdA/usYQq6oSnfHtE/W1xc//OFmsFnpe5Ph9Rv8rfT97R5suY8Bb
-         K5EyCBYaEaHf5efq01LEPVwlLElZ0o9DPyLc7XhHGn3/hZEyK6KpNAx+kA2T09F2xOeg
-         DFO/FiTRtF52l4I2PKqClzxYBoKbKyEYpMOdW3q0kYoKWyCvSM562i69lnTL6bVckHth
-         LIGA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770979865; x=1771584665; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=H2yjc4HwnZnDfH81aOY9V+Nb7nZlWZ+t7zlqHmmWMvI=;
-        b=4h4rVJK5fzqZkHjyWYSIbhJYZBpaBEFJ0GumZGMXwgLTHljHFH+JswVfN1SWYevrxe
-         Ao4GiZdPwjfjCWWul9+q+gYy74PcMm2oZZwclKwlTPV4tpY1aJqNvBKqGA5Au/DcTuUK
-         vxlbfiag0KvTEe6a8N3/bR4OhSsSZBJn7hcd5j8l+ON33LGBpNTYYxszX0TdIUaz/q+w
-         JEkXiI5IxLHSDOfNQ5F4f//v5JGYM3hXZGy/BwxuPJaYSgPQKMiW1BXUs/lomsoVnPbm
-         VHTF3gDGNfPO5FlihwDp726vjpp5COch2R9pRvG9GSIv5yEXhO21ZaPulgDxv1g+CCVE
-         tlXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770979865; x=1771584665;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H2yjc4HwnZnDfH81aOY9V+Nb7nZlWZ+t7zlqHmmWMvI=;
-        b=Vhr/0b30HV+iafh06xWXD2qAu5psJFA9v7F4iPTdZExe+EtyUzm8luzMEhpNNKbkLo
-         DxG1s+NrPfStrjkekG0VcT5NtHz2z2PqzpIxxXEaA2SA5ukTroHzWYLk9Atj9MCl99jm
-         b0jvNLcuTvTulE1XEM30iu2lMW0PRiQ2wyJvViobbVZWRhkUt/SQNchIu5Gjl9k5/Owv
-         0O6p7vY7PpD3OPh2M0WnHxatXuTYFuz/AreMLMuDZkQV9nm8vP4b9LKN7mev56OCSZp2
-         5DbTd95zs/Bag50PbQ/YKiWKe3wdLEAF6l+fudyGveAonYWW4vJpPk/jbXbjmtR5Poi8
-         kkUg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUVQ4TcoejO3G0b2Hg1qX1/cTgyXUZ2klPXbhhItZ64QFFA6FyPF4xwqcU5LjNqs4MOozhyR8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmH+JRwd9ciQ/RgS/H/UAM14Mdrw+lHECVxSIWyBMBB5a6iynd
-	z9AD58hMq9+fUnswuTEkgJtba5eNbomqrvoktRNMJsDR/4HmZhW/WQjX8nE1b7k4hOeCMNRP8Yv
-	Un9xYVDIeDMVvHjPMSA9xy1gikBydZxwh+qSx+VJC
-X-Gm-Gg: AZuq6aLqxvGCO9Lzm1oSgde0SK0qnxc7MwYFg7rp0YYR84aMYQGlTAkzO3xXrcW/Air
-	KF+9XCwdjoxmX8Q41dW4j176HPk+AgF32mQ/WT2vZOhGYTkg/IbWe5sPlFie0yjkVMMw4p4sk9+
-	er/aU+C+Ky183Bmo6kcbcF9taqWJ8cl6ByDZP7lTiKBniHUWlMxoE1HeX36aObFprguwb89eqPN
-	NGDLgSLdzrjXad5ifo1OTFu/vO6uYIl47D0Ye5vTK6EqELzJvvn+nY/HmDco4gG3HwkwgS6k6RI
-	VjAccG2HD/8Vjz8b2ZkwH2lkAvHTiDT2EHn7ckGw/DuEA2vqwg==
-X-Received: by 2002:a05:7022:403:b0:119:e569:fbb2 with SMTP id
- a92af1059eb24-1273ae47f17mr592920c88.33.1770979865034; Fri, 13 Feb 2026
- 02:51:05 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59476353EDB;
+	Fri, 13 Feb 2026 11:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770980586; cv=none; b=r8LNljIN+xVrARtLnqsKC1KAGPIf+FGeBSnRMsgXILWAkmBOufI3ueVOk7/18v5YAcV7NT8MDhYSJB+hJHf+ZR5YhfdVdCnbu8JYaC7Eqi2ig4cculjQxMEwly36jj72O5tCbHMCi3nR0JwKUozyHZvnPPxfF8xVjd5+p8R7T2o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770980586; c=relaxed/simple;
+	bh=iM4yoFDfsz9ptDHd2dIQ4m/xGPnBFa7Wx99OdkLGUUs=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NGBZir0D+h6thwRxG+6KaIcCpqMvNi5mHU16il5uKfRBeWk/WO2Iq9lH/g2Efldk2lGENcezg+sM6GWoX3PKheabknGfcihqDdIvP3jQ98QIMA+VT9hp3olSNQp+gfHDtoPPlOcnQ8IVOTGbl4qgdEoAHynKuRlrX8HNR3JJaII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMh8b0qX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E51C116C6;
+	Fri, 13 Feb 2026 11:03:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770980586;
+	bh=iM4yoFDfsz9ptDHd2dIQ4m/xGPnBFa7Wx99OdkLGUUs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KMh8b0qXB4oYN3kle1w4+vgjR8gj0/jKRE+jwPyg4IAxxfBpODm834q2JfS0QR0uO
+	 AH8GyymTyfVF0NfWEtyxlkNN1Orex3zpCE8SKSb0X6uhzoPM+5lIKi2lfbvxEXkkBu
+	 czJ824HU3Jg6zDhbbsoWst8dbVT1LSmr+HFN0x2MS81lzczTa1h01bLJLTyYrkse2H
+	 kdshFrq+2ppzaTnAdN0/628+DxA+j5DQTlLp3UVpQGv9aHwcEDaxmW91tjHuJo3SHq
+	 FjJpX7TZ0yrGiGEQ5RCd5Xp9V9MQ7LVlN/pqiPR9441lYp/qDr2NwriXO4GqEa6cAb
+	 oD7u5a19Esx6A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vqqwx-0000000ArRO-2W0g;
+	Fri, 13 Feb 2026 11:03:03 +0000
+Date: Fri, 13 Feb 2026 11:03:03 +0000
+Message-ID: <86ecmoc3dk.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	oliver.upton@linux.dev,
+	joey.gouly@arm.com,
+	suzuki.poulose@arm.com,
+	yuzenghui@huawei.com,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1 2/3] KVM: arm64: Fix ID register initialization for non-protected pKVM guests
+In-Reply-To: <20260212090252.158689-3-tabba@google.com>
+References: <20260212090252.158689-1-tabba@google.com>
+	<20260212090252.158689-3-tabba@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260213095410.1862978-1-glider@google.com>
-In-Reply-To: <20260213095410.1862978-1-glider@google.com>
-From: Marco Elver <elver@google.com>
-Date: Fri, 13 Feb 2026 11:50:28 +0100
-X-Gm-Features: AZwV_Qj3kSyotLTHtMF94eaTev9fGUyX13rb1GtRDWyCVZcl4zIsPhmkTtg7Z6o
-Message-ID: <CANpmjNPJV-aQKnQ7Mtr6e8_12UR3C2S3abJx_ePFWmS1WV_UVg@mail.gmail.com>
-Subject: Re: [PATCH v1] mm/kfence: disable KFENCE upon KASAN HW tags enablement
-To: Alexander Potapenko <glider@google.com>
-Cc: akpm@linux-foundation.org, mark.rutland@arm.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, pimyn@google.com, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, 
-	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>, Greg KH <gregkh@linuxfoundation.org>, 
-	Kees Cook <kees@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tabba@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216046-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216047-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[elver@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux-foundation.org,arm.com,kvack.org,vger.kernel.org,googlegroups.com,google.com,gmail.com,tugraz.at,linuxfoundation.org,kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: BAC4E135415
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C12A11359BE
 X-Rspamd-Action: no action
 
-On Fri, 13 Feb 2026 at 10:54, Alexander Potapenko <glider@google.com> wrote:
->
-> KFENCE does not currently support KASAN hardware tags. As a result, the
-> two features are incompatible when enabled simultaneously.
->
-> Given that MTE provides deterministic protection and KFENCE is a
-> sampling-based debugging tool, prioritize the stronger hardware
-> protections. Disable KFENCE initialization and free the pre-allocated
-> pool if KASAN hardware tags are detected to ensure the system maintains
-> the security guarantees provided by MTE.
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Andrey Konovalov <andreyknvl@gmail.com>
-> Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-> Cc: Dmitry Vyukov <dvyukov@google.com>
-> Cc: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
-> Cc: Greg KH <gregkh@linuxfoundation.org>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-> Suggested-by: Marco Elver <elver@google.com>
-> Signed-off-by: Alexander Potapenko <glider@google.com>
-
-Reviewed-by: Marco Elver <elver@google.com>
-
-Just double-checking this is explicitly ok: If this is being skipped
-enablement at boot, a user is still free to do 'echo 123 >
-/sys/module/kfence/parameters/sample_interval' to re-enable KFENCE? In
-my opinion, this should be allowed.
-
-Thanks!
-
+On Thu, 12 Feb 2026 09:02:51 +0000,
+Fuad Tabba <tabba@google.com> wrote:
+> 
+> In protected mode, the hypervisor maintains a separate instance of
+> the `kvm` structure for each VM. For non-protected VMs, this structure is
+> initialized from the host's `kvm` state.
+> 
+> Currently, `pkvm_init_features_from_host()` copies the
+> `KVM_ARCH_FLAG_ID_REGS_INITIALIZED` flag from the host without the
+> underlying `id_regs` data being initialized. This results in the
+> hypervisor seeing the flag as set while the ID registers remain zeroed.
+> 
+> Consequently, `kvm_has_feat()` checks at EL2 fail (return 0) for
+> non-protected VMs. This breaks logic that relies on feature detection,
+> such as `ctxt_has_tcrx()` for TCR2_EL1 support. As a result, certain
+> system registers (e.g., TCR2_EL1, PIR_EL1, POR_EL1) are not
+> saved/restored during the world switch, which could lead to state
+> corruption.
+> 
+> Fix this by explicitly copying the ID registers from the host `kvm` to
+> the hypervisor `kvm` for non-protected VMs during vCPU initialization,
+> since we trust the host with its non-protected guests' features. Also
+> ensure `KVM_ARCH_FLAG_ID_REGS_INITIALIZED` is cleared initially in
+> `pkvm_init_features_from_host` so that `vm_copy_id_regs` can properly
+> initialize them and set the flag once done.
+> 
+> Fixes: 41d6028e28bd ("KVM: arm64: Convert the SVE guest vcpu flag to a vm flag")
+> Signed-off-by: Fuad Tabba <tabba@google.com>
 > ---
->  mm/kfence/core.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->
-> diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-> index 4f79ec7207525..71f87072baf9b 100644
-> --- a/mm/kfence/core.c
-> +++ b/mm/kfence/core.c
-> @@ -13,6 +13,7 @@
->  #include <linux/hash.h>
->  #include <linux/irq_work.h>
->  #include <linux/jhash.h>
-> +#include <linux/kasan-enabled.h>
->  #include <linux/kcsan-checks.h>
->  #include <linux/kfence.h>
->  #include <linux/kmemleak.h>
-> @@ -911,6 +912,20 @@ void __init kfence_alloc_pool_and_metadata(void)
->         if (!kfence_sample_interval)
->                 return;
->
-> +       /*
-> +        * If KASAN hardware tags are enabled, disable KFENCE, because it
-> +        * does not support MTE yet.
-> +        */
-> +       if (kasan_hw_tags_enabled()) {
-> +               pr_info("disabled as KASAN HW tags are enabled\n");
-> +               if (__kfence_pool) {
-> +                       memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
-> +                       __kfence_pool = NULL;
-> +               }
-> +               kfence_sample_interval = 0;
-> +               return;
-> +       }
+>  arch/arm64/kvm/hyp/nvhe/pkvm.c | 37 ++++++++++++++++++++++++++++++++--
+>  1 file changed, 35 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+> index 12b2acfbcfd1..267854ed29c8 100644
+> --- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
+> +++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+> @@ -344,6 +344,8 @@ static void pkvm_init_features_from_host(struct pkvm_hyp_vm *hyp_vm, const struc
+>  
+>  	/* No restrictions for non-protected VMs. */
+>  	if (!kvm_vm_is_protected(kvm)) {
+> +		clear_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &host_arch_flags);
 > +
->         /*
->          * If the pool has already been initialized by arch, there is no need to
->          * re-allocate the memory pool.
-> --
-> 2.53.0.273.g2a3d683680-goog
->
+>  		hyp_vm->kvm.arch.flags = host_arch_flags;
+
+Can't you just have
+
+  		hyp_vm->kvm.arch.flags &= ~BIT_ULL(KVM_ARCH_FLAG_ID_REGS_INITIALIZED);
+
+since there are no atomicity requirements here?
+
+>  
+>  		bitmap_copy(kvm->arch.vcpu_features,
+> @@ -471,6 +473,36 @@ static int pkvm_vcpu_init_sve(struct pkvm_hyp_vcpu *hyp_vcpu, struct kvm_vcpu *h
+>  	return ret;
+>  }
+>  
+> +static int vm_copy_id_regs(struct pkvm_hyp_vcpu *hyp_vcpu)
+> +{
+> +	struct pkvm_hyp_vm *hyp_vm = pkvm_hyp_vcpu_to_hyp_vm(hyp_vcpu);
+> +	const struct kvm *host_kvm = hyp_vm->host_kvm;
+> +	struct kvm *kvm = &hyp_vm->kvm;
+> +
+> +	if (!test_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &host_kvm->arch.flags))
+> +		return -EINVAL;
+> +
+> +	if (test_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &kvm->arch.flags))
+> +		return 0;
+> +
+> +	memcpy(kvm->arch.id_regs, host_kvm->arch.id_regs, sizeof(kvm->arch.id_regs));
+> +	set_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &kvm->arch.flags);
+
+This looks a bit odd. Can you have another vcpu doing this in
+parallel? You seem to be holding vm_table_lock at this stage, so
+that's probably OK,  but I'd have expected something like:
+
+	if (test_and_set_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &kvm->arch.flags))
+		return 0;
+
+	memcpy(kvm->arch.id_regs, host_kvm->arch.id_regs, sizeof(kvm->arch.id_regs));
+
+which makes the intent slightly clearer.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
