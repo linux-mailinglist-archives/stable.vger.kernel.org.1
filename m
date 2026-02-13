@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-216117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAwcJHssj2kPKwEAu9opvQ
-	(envelope-from <stable+bounces-216117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:55 +0100
+	id 0HX4IB0tj2kPKwEAu9opvQ
+	(envelope-from <stable+bounces-216153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D0D136945
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C96136B2D
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:54:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 78C6B3045A3F
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:51:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69C0830624BE
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EF035F8A4;
-	Fri, 13 Feb 2026 13:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7809B3563C3;
+	Fri, 13 Feb 2026 13:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfRkRMdQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGVnXtYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84C334CFC3;
-	Fri, 13 Feb 2026 13:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE3A241665;
+	Fri, 13 Feb 2026 13:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990691; cv=none; b=jbFwLXs69VeXdf6us0y4IY0gKyNc3mptzVWN9jwqpJBsI0LvIRq/DPYIjEUuHgFKw6A5jHxjP3w+VGZBHoi/bMja+AkEm7g+kJ93NnymzmqbwArHaeU6Z0tMA7xI/+i73lESvz/ID0CjLWTw2HU5Ba8rAis9c/UNTCBSZIikJbI=
+	t=1770990812; cv=none; b=UKzgSQ4bk2JiT1xR529hhOlHXhpi6ZNyudNFRRTpLSxBm/nKCZccKYILZKKUfPoI0kAkj7dXCNNZBnv/aMrSp6zitsUhc/2peYBRPUmUrfebM5TYR3oMQPPjZEodyYV2MWVPevWKOSmteZEQ7MnDX4pKfjFhYIcXAYAYSPQRWJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990691; c=relaxed/simple;
-	bh=q4ZlO541HUBPoaulywduV1mXVy+EbeAivDCWtLMrvWw=;
+	s=arc-20240116; t=1770990812; c=relaxed/simple;
+	bh=yar/u2ibSQS7nJxj0xU0eoLDgIK5AReF4u+HGqrFtOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9mV5763+3kF0QZlssVQJhssAQ7Txp1YUsHmOEwivtIu7L7o/WhVb9uW6FT/0q0qpSktSJbpsmBXcfErKo2ZXXrmWSBQuO6JUTownvW0yOEHKEpJUtf50uZHU0+9/o4qIp4tQ6QT4TBHa5ykNDgtbQTtHphRPEZt9wYUkx3sVYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfRkRMdQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2767BC116C6;
-	Fri, 13 Feb 2026 13:51:30 +0000 (UTC)
+	 MIME-Version; b=BPCXxrPnMkHP9mXmzZNLJT+mrbRqeC8pkNINSPa8TEVxJEenPJLf2xt25vgDm9rZSrllYSHoD1OG8KRHLsKM+ITE8R9siQY8Zd2lg2Uwrs+9/cvtnZRiw1V/Ue2X1sx3NgOwKknE/t8+dVJjQbshbR9WlUyaD8oiPhhsCqTcflI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGVnXtYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A36DC116C6;
+	Fri, 13 Feb 2026 13:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990691;
-	bh=q4ZlO541HUBPoaulywduV1mXVy+EbeAivDCWtLMrvWw=;
+	s=korg; t=1770990812;
+	bh=yar/u2ibSQS7nJxj0xU0eoLDgIK5AReF4u+HGqrFtOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nfRkRMdQsjliQR9ACnBVj7df4f24Lbcby8LWl8O8hT08aViTrFSqfnXc3o+R4DS3q
-	 ajoGDb46+311vOSNycVBwYtq77ND1GbKAqIuCgR6m7Ow1OGPHQjfKWf63o1eANbJ9M
-	 nLxLp+5gYZ4RcIiwQ9aW9wHUGw4COREfcYZOWilM=
+	b=RGVnXtYYlMr0w6zEaeowSjqwXyM37JKbpJ17ITsA4A5GPS3Ju1ravkmPxa6q7bsib
+	 SYW/clRFkLSh/JVoJ4GBqxM3jtCGZdntpFH3jeXRWWK2P3gM+4NYqDC4kHPavdN080
+	 XKmTSvtyOs18GR/HNOwq9t58uPpu+E9n1NkpqK/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenm Chen <zenmchen@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.19 28/49] Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
-Date: Fri, 13 Feb 2026 14:47:47 +0100
-Message-ID: <20260213134709.761948273@linuxfoundation.org>
+	tianshuo han <hantianshuo233@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 04/49] ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off reset in error paths
+Date: Fri, 13 Feb 2026 14:47:48 +0100
+Message-ID: <20260213134709.047294134@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
-References: <20260213134708.713126210@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+References: <20260213134708.885500854@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216117-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216153-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,molgen.mpg.de,intel.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,87 +91,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email]
-X-Rspamd-Queue-Id: 23D0D136945
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E0C96136B2D
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 6c0568b7741a346088fd6dfced2d871f7d481d06 upstream.
+commit 010eb01ce23b34b50531448b0da391c7f05a72af upstream.
 
-Add USB ID 7392:e611 for Edimax EW-7611UXB which is RTL8851BU-based
-Wi-Fi + Bluetooth adapter.
+The problem occurs when a signed request fails smb2 signature verification
+check. In __process_request(), if check_sign_req() returns an error,
+set_smb2_rsp_status(work, STATUS_ACCESS_DENIED) is called.
+set_smb2_rsp_status() set work->next_smb2_rcv_hdr_off as zero. By resetting
+next_smb2_rcv_hdr_off to zero, the pointer to the next command in the chain
+is lost. Consequently, is_chained_smb2_message() continues to point to
+the same request header instead of advancing. If the header's NextCommand
+field is non-zero, the function returns true, causing __handle_ksmbd_work()
+to repeatedly process the same failed request in an infinite loop.
+This results in the kernel log being flooded with "bad smb2 signature"
+messages and high CPU usage.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below:
+This patch fixes the issue by changing the return value from
+SERVER_HANDLER_CONTINUE to SERVER_HANDLER_ABORT. This ensures that
+the processing loop terminates immediately rather than attempting to
+continue from an invalidated offset.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=7392 ProdID=e611 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=802.11ax WLAN Adapter
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtw89_8851bu_git
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org # 6.6.x
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: tianshuo han <hantianshuo233@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/server.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -527,6 +527,8 @@ static const struct usb_device_id quirks
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x7392, 0xe611), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -126,21 +126,21 @@ static int __process_request(struct ksmb
+ andx_again:
+ 	if (command >= conn->max_cmds) {
+ 		conn->ops->set_rsp_status(work, STATUS_INVALID_PARAMETER);
+-		return SERVER_HANDLER_CONTINUE;
++		return SERVER_HANDLER_ABORT;
+ 	}
  
- 	/* Realtek 8852AE Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
+ 	cmds = &conn->cmds[command];
+ 	if (!cmds->proc) {
+ 		ksmbd_debug(SMB, "*** not implemented yet cmd = %x\n", command);
+ 		conn->ops->set_rsp_status(work, STATUS_NOT_IMPLEMENTED);
+-		return SERVER_HANDLER_CONTINUE;
++		return SERVER_HANDLER_ABORT;
+ 	}
+ 
+ 	if (work->sess && conn->ops->is_sign_req(work, command)) {
+ 		ret = conn->ops->check_sign_req(work);
+ 		if (!ret) {
+ 			conn->ops->set_rsp_status(work, STATUS_ACCESS_DENIED);
+-			return SERVER_HANDLER_CONTINUE;
++			return SERVER_HANDLER_ABORT;
+ 		}
+ 	}
+ 
 
 
 
