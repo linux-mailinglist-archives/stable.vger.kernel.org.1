@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-216182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJ8TILUtj2nTLgEAu9opvQ
-	(envelope-from <stable+bounces-216182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:09 +0100
+	id ICm7D5otj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:56:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D24ED136C60
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:57:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF442136C2B
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:56:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9A28308F801
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:55:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B0B773016252
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F46135FF62;
-	Fri, 13 Feb 2026 13:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3B7360722;
+	Fri, 13 Feb 2026 13:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDkFzRq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqCyjAUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525DB35FF61;
-	Fri, 13 Feb 2026 13:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A3C1D432D;
+	Fri, 13 Feb 2026 13:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990909; cv=none; b=rp3DhDnpYAVZ0lid/FHvcKVmrn5FBR0T1aoXSKZiD8x1PDiqUmRO+qaDxZJBAOP1NZbxgY1bggiVqTRix1y9Iwg5o+IdEUiSeuxFwV1YSP57V/gMjwLEna79yLOkSsOEtb6fVT+Ru/dlY4yunomqeA3qGKvD9bQr3WZXxsFU53c=
+	t=1770990999; cv=none; b=o7GCuh+M+mFBPb9U6GFpCdRf1XDKgRnLEyEHOTfwfOTo95TaMSjSh49Re/MxfuhdpWYaIdxFwbiE+HkoYhAezrOdv8qYTu3xksCcC6zRnLsjKmYbKrOBXUj4knu2snDEnTuRjdicGglMdsQAHsajVwrh9IpEaRhoFmgM1ocqB7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990909; c=relaxed/simple;
-	bh=/+ZBDWpQIsCzuzi3RGGcL5spJWbOHIhekl3k7ENqgy8=;
+	s=arc-20240116; t=1770990999; c=relaxed/simple;
+	bh=4ssSL+JoNOrJvmsasxqzVN0Rkspktc3g3ZthUi+W1ZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sbpjP3VsSm6wIASm2SyCQM9FqMMQFsJ4XkgeLUpjflbuDkk5wB2fDQLIcIWabDZoLk/ZRLFiz1MLPpPe2xMNP/XPr0/NkCnfYBHsd1E43jlk573Y17UjHBgSjfxHJc9JJqlG8Llzk+UFYCayELf502UCpsQqD6nm9eGRtURmSPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDkFzRq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C10C116C6;
-	Fri, 13 Feb 2026 13:55:08 +0000 (UTC)
+	 MIME-Version; b=XeNIqOWaFeQVzbE0eRATMRrMQFNdd/diRS4ryiUFtaPyTUYCGpI3EXaE2CDX3BUVJv0NfFI2jkeJ5ADdhDf5mv9tX7CGSSAA1f63utOOYwowQFpUKfzHDTm0eORy5bYjhkacD7T2RCM+am2XEnRphVOde5EOlsrfk022x42QXBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqCyjAUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28233C116C6;
+	Fri, 13 Feb 2026 13:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990909;
-	bh=/+ZBDWpQIsCzuzi3RGGcL5spJWbOHIhekl3k7ENqgy8=;
+	s=korg; t=1770990999;
+	bh=4ssSL+JoNOrJvmsasxqzVN0Rkspktc3g3ZthUi+W1ZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vDkFzRq4/949/IES4h4lCRrtyQDRO7J73nGu3Dp6LuPKcOtQlVBPUL6eiukpnKBeT
-	 XDr83NdCkPEvg8m5aYOhJpN+Y2jHQgV/qc1ZmSV29fN+lBzLZ/w5o9kpgVb/tXpIPv
-	 T5hNNyDncUQ76g50Pd6n8oPZtkzcNhMVkt8RXfuM=
+	b=YqCyjAUk50CTjsDCibAEEIAVcnyx5RCvv2rh1FtEnM+nd3TduK9nYklUwmutXyS6U
+	 b3GBwZ08cid8bSnbb+tjgRK2jlLZCWwcpsjxiwHRivZ041VVSTBW9rp9wAtGC3pM8E
+	 1gJnk7ntXIUsUxb6pIkkgmdfMaWqtfsX+7hVyH/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7eedce5eb281acd832f0@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>
-Subject: [PATCH 6.12 11/24] nilfs2: Fix potential block overflow that cause system hang
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Subject: [PATCH 6.6 04/25] driver core: enforce device_lock for driver_match_device()
 Date: Fri, 13 Feb 2026 14:48:30 +0100
-Message-ID: <20260213134705.141008653@linuxfoundation.org>
+Message-ID: <20260213134704.047053139@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
-References: <20260213134704.728003077@linuxfoundation.org>
+In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
+References: <20260213134703.882698935@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,108 +66,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,gmail.com,dubeyko.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216182-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216208-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7eedce5eb281acd832f0];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qq.com:email,dubeyko.com:email]
-X-Rspamd-Queue-Id: D24ED136C60
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: BF442136C2B
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-commit ed527ef0c264e4bed6c7b2a158ddf516b17f5f66 upstream.
+commit dc23806a7c47ec5f1293aba407fb69519f976ee0 upstream.
 
-When a user executes the FITRIM command, an underflow can occur when
-calculating nblocks if end_block is too small. Since nblocks is of
-type sector_t, which is u64, a negative nblocks value will become a
-very large positive integer. This ultimately leads to the block layer
-function __blkdev_issue_discard() taking an excessively long time to
-process the bio chain, and the ns_segctor_sem lock remains held for a
-long period. This prevents other tasks from acquiring the ns_segctor_sem
-lock, resulting in the hang reported by syzbot in [1].
+Currently, driver_match_device() is called from three sites. One site
+(__device_attach_driver) holds device_lock(dev), but the other two
+(bind_store and __driver_attach) do not. This inconsistency means that
+bus match() callbacks are not guaranteed to be called with the lock
+held.
 
-If the ending block is too small, typically if it is smaller than 4KiB
-range, depending on the usage of the segment 0, it may be possible to
-attempt a discard request beyond the device size causing the hang.
+Fix this by introducing driver_match_device_locked(), which guarantees
+holding the device lock using a scoped guard. Replace the unlocked calls
+in bind_store() and __driver_attach() with this new helper. Also add a
+lock assertion to driver_match_device() to enforce this guarantee.
 
-Exiting successfully and assign the discarded size (0 in this case)
-to range->len.
+This consistency also fixes a known race condition. The driver_override
+implementation relies on the device_lock, so the missing lock led to the
+use-after-free (UAF) reported in Bugzilla for buses using this field.
 
-Although the start and len values in the user input range are too small,
-a conservative strategy is adopted here to safely ignore them, which is
-equivalent to a no-op; it will not perform any trimming and will not
-throw an error.
+Stress testing the two newly locked paths for 24 hours with
+CONFIG_PROVE_LOCKING and CONFIG_LOCKDEP enabled showed no UAF recurrence
+and no lockdep warnings.
 
-[1]
-task:segctord state:D stack:28968 pid:6093 tgid:6093  ppid:2 task_flags:0x200040 flags:0x00080000
-Call Trace:
- rwbase_write_lock+0x3dd/0x750 kernel/locking/rwbase_rt.c:272
- nilfs_transaction_lock+0x253/0x4c0 fs/nilfs2/segment.c:357
- nilfs_segctor_thread_construct fs/nilfs2/segment.c:2569 [inline]
- nilfs_segctor_thread+0x6ec/0xe00 fs/nilfs2/segment.c:2684
-
-[ryusuke: corrected part of the commit message about the consequences]
-
-Fixes: 82e11e857be3 ("nilfs2: add nilfs_sufile_trim_fs to trim clean segs")
-Reported-by: syzbot+7eedce5eb281acd832f0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7eedce5eb281acd832f0
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+Suggested-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Fixes: 49b420a13ff9 ("driver core: check bus->match without holding device lock")
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Link: https://patch.msgid.link/20260113162843.12712-1-hanguidong02@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/sufile.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/base/base.h |    9 +++++++++
+ drivers/base/bus.c  |    2 +-
+ drivers/base/dd.c   |    2 +-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/sufile.c
-+++ b/fs/nilfs2/sufile.c
-@@ -1106,6 +1106,9 @@ int nilfs_sufile_trim_fs(struct inode *s
- 	else
- 		end_block = start_block + len - 1;
- 
-+	if (end_block < nilfs->ns_first_data_block)
-+		goto out;
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -165,9 +165,18 @@ void device_set_deferred_probe_reason(co
+ static inline int driver_match_device(struct device_driver *drv,
+ 				      struct device *dev)
+ {
++	device_lock_assert(dev);
 +
- 	segnum = nilfs_get_segnum_of_block(nilfs, start_block);
- 	segnum_end = nilfs_get_segnum_of_block(nilfs, end_block);
- 
-@@ -1203,6 +1206,7 @@ int nilfs_sufile_trim_fs(struct inode *s
- out_sem:
- 	up_read(&NILFS_MDT(sufile)->mi_sem);
- 
-+out:
- 	range->len = ndiscarded << nilfs->ns_blocksize_bits;
- 	return ret;
+ 	return drv->bus->match ? drv->bus->match(dev, drv) : 1;
  }
+ 
++static inline int driver_match_device_locked(struct device_driver *drv,
++					     struct device *dev)
++{
++	guard(device)(dev);
++	return driver_match_device(drv, dev);
++}
++
+ static inline void dev_sync_state(struct device *dev)
+ {
+ 	if (dev->bus->sync_state)
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -263,7 +263,7 @@ static ssize_t bind_store(struct device_
+ 	int err = -ENODEV;
+ 
+ 	dev = bus_find_device_by_name(bus, NULL, buf);
+-	if (dev && driver_match_device(drv, dev)) {
++	if (dev && driver_match_device_locked(drv, dev)) {
+ 		err = device_driver_attach(drv, dev);
+ 		if (!err) {
+ 			/* success */
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -1169,7 +1169,7 @@ static int __driver_attach(struct device
+ 	 * is an error.
+ 	 */
+ 
+-	ret = driver_match_device(drv, dev);
++	ret = driver_match_device_locked(drv, dev);
+ 	if (ret == 0) {
+ 		/* no match */
+ 		return 0;
 
 
 
