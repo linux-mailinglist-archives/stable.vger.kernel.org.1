@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-216109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YP0POE4sj2kPKwEAu9opvQ
-	(envelope-from <stable+bounces-216109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:10 +0100
+	id mIg5Huosj2ksLgEAu9opvQ
+	(envelope-from <stable+bounces-216135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84CCD13689E
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:51:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44FC136A9C
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 14:53:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99B013027D9C
-	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:51:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06181307242C
+	for <lists+stable@lfdr.de>; Fri, 13 Feb 2026 13:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03E83563C3;
-	Fri, 13 Feb 2026 13:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABBD35FF6F;
+	Fri, 13 Feb 2026 13:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4jCA2jI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0EoFCpw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B5B34CFC3;
-	Fri, 13 Feb 2026 13:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4F954723;
+	Fri, 13 Feb 2026 13:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770990664; cv=none; b=gqJWkVNHrffVmLd8mVzb4QNe20oWigqwvzRAvIYiyO0IA2mH8JMzn2rQHLbuPbGmv4Ng+rYfiVcPH7B8CAF3eCqGC/qVgMp8yraRiL4z5j/TcvoBsCqZu2e3MspepQnqTpwSsKNZ7HXu+9ByKC60coppiRxRM/ptRatO84kE/LI=
+	t=1770990752; cv=none; b=X7CoR52ExtnmQY9WtK+7NdxDnb3zO0VeuiMJLhXB4tt7hHv0lIsPh2PRxJCxBNnvrVrA4xbEH+Z/6sTosWaAljN66ZpZA1yR595Dxc/58OMjanS8NiLDPDznRk97BGiQ9GY8ke3UrUH3qDxF3SZCxKosVnA72yZRzvP7iWhFXlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770990664; c=relaxed/simple;
-	bh=aSFzd1IxUxvLwxA9Peyw0zz/dDUIU4JtukrtYJLMZnE=;
+	s=arc-20240116; t=1770990752; c=relaxed/simple;
+	bh=+iAArarCr0PM3ohnUBZLoSEORrTah6jKrA9zLdMtSuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jo2qJOyW+iqw+4qsJvQ+bKsAJqagmeg/A74m4blOEDqnlfATIaRNOvVpRsiVKWb4fZgskGO5w2SuC6o/DBuh818iWmBIBNve+3Tum4QekRsANUbF4Rs9VIhduxSzUsozbuq3N1MSmxa8OOqVgKfBBW59KUXzOCxPSJiHdwS0r+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4jCA2jI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359F1C116C6;
-	Fri, 13 Feb 2026 13:51:04 +0000 (UTC)
+	 MIME-Version; b=DgtgYa0glHpAalWRbOl0gC8FSyvXwwPbjByj5ZuJMfyWqfmgXB22LvD0Pn+3G1mLROJYYF2nZrmUbpH1z1oAsvvJ9+7x255YTPY/8GZz7N8m8YviB1twS/0Yo8sZ0CZCFlHtopAzzdy1azYvqZF4EIycOPJQd1mr2Vzw2X8C3vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0EoFCpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50943C116C6;
+	Fri, 13 Feb 2026 13:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770990664;
-	bh=aSFzd1IxUxvLwxA9Peyw0zz/dDUIU4JtukrtYJLMZnE=;
+	s=korg; t=1770990751;
+	bh=+iAArarCr0PM3ohnUBZLoSEORrTah6jKrA9zLdMtSuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y4jCA2jIfvPcv3MoQd0SaIJ832cCVv6xxutwe7XYbDuZ7RHFcZb7O+J7OfFLd/cqx
-	 QRLOnjbDzzp+bN0yBfCYpgn/MDlktbHBT4YPr3XFdZxj+dTPSmod72cmypGaef48YI
-	 n3qib7QBocVhu/GDHq1AWoXxrEv4ZT1C+Iv0fQ5o=
+	b=x0EoFCpwwO1eq5MZzw9BgMVSv9sROc+vfECS9D97uGBIyF1MAIz6XlfkhAtXQ8t5K
+	 4dKFQKwE0v7guf5+zt11jQx76fC5oCxgFj7ufJp1azqwndzqj8uEuEo4eu7NPCnc+T
+	 H6C1Jdq+bOUiKG5TKfrja2g/Az64r8PoRWGHjTqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.19 38/49] scsi: qla2xxx: Validate sp before freeing associated memory
-Date: Fri, 13 Feb 2026 14:47:57 +0100
-Message-ID: <20260213134710.116338961@linuxfoundation.org>
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 14/49] smb: client: make use of smbdirect_socket.recv_io.credits.available
+Date: Fri, 13 Feb 2026 14:47:58 +0100
+Message-ID: <20260213134709.409827711@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
-References: <20260213134708.713126210@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+References: <20260213134708.885500854@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +68,150 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216109-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216135-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,talpey.com,microsoft.com,kernel.org,vger.kernel.org,lists.samba.org,samba.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,oracle.com:email,marvell.com:email]
-X-Rspamd-Queue-Id: 84CCD13689E
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samba.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,talpey.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: D44FC136A9C
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit b6df15aec8c3441357d4da0eaf4339eb20f5999f upstream.
+commit 9911b1ed187a770a43950bf51f340ad4b7beecba upstream.
 
-System crash with the following signature
-[154563.214890] nvme nvme2: NVME-FC{1}: controller connect complete
-[154564.169363] qla2xxx [0000:b0:00.1]-3002:2: nvme: Sched: Set ZIO exchange threshold to 3.
-[154564.169405] qla2xxx [0000:b0:00.1]-ffffff:2: SET ZIO Activity exchange threshold to 5.
-[154565.539974] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 0080 0000.
-[154565.545744] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 00a0 0000.
-[154565.545857] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
-[154565.552760] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
-[154565.553079] BUG: kernel NULL pointer dereference, address: 00000000000000f8
-[154565.553080] #PF: supervisor read access in kernel mode
-[154565.553082] #PF: error_code(0x0000) - not-present page
-[154565.553084] PGD 80000010488ab067 P4D 80000010488ab067 PUD 104978a067 PMD 0
-[154565.553089] Oops: 0000 1 PREEMPT SMP PTI
-[154565.553092] CPU: 10 PID: 858 Comm: qla2xxx_2_dpc Kdump: loaded Tainted: G           OE     -------  ---  5.14.0-503.11.1.el9_5.x86_64 #1
-[154565.553096] Hardware name: HPE Synergy 660 Gen10/Synergy 660 Gen10 Compute Module, BIOS I43 09/30/2024
-[154565.553097] RIP: 0010:qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
-[154565.553141] Code: 00 00 e8 58 a3 ec d4 49 89 e9 ba 12 20 00 00 4c 89 e6 49 c7 c0 00 ee a8 c0 48 c7 c1 66 c0 a9 c0 bf 00 80 00 10 e8 15 69 00 00 <4c> 8b 8d f8 00 00 00 4d 85 c9 74 35 49 8b 84 24 00 19 00 00 48 8b
-[154565.553143] RSP: 0018:ffffb4dbc8aebdd0 EFLAGS: 00010286
-[154565.553145] RAX: 0000000000000000 RBX: ffff8ec2cf0908d0 RCX: 0000000000000002
-[154565.553147] RDX: 0000000000000000 RSI: ffffffffc0a9c896 RDI: ffffb4dbc8aebd47
-[154565.553148] RBP: 0000000000000000 R08: ffffb4dbc8aebd45 R09: 0000000000ffff0a
-[154565.553150] R10: 0000000000000000 R11: 000000000000000f R12: ffff8ec2cf0908d0
-[154565.553151] R13: ffff8ec2cf090900 R14: 0000000000000102 R15: ffff8ec2cf084000
-[154565.553152] FS:  0000000000000000(0000) GS:ffff8ed27f800000(0000) knlGS:0000000000000000
-[154565.553154] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[154565.553155] CR2: 00000000000000f8 CR3: 000000113ae0a005 CR4: 00000000007706f0
-[154565.553157] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[154565.553158] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[154565.553159] PKRU: 55555554
-[154565.553160] Call Trace:
-[154565.553162]  <TASK>
-[154565.553165]  ? show_trace_log_lvl+0x1c4/0x2df
-[154565.553172]  ? show_trace_log_lvl+0x1c4/0x2df
-[154565.553177]  ? qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
-[154565.553215]  ? __die_body.cold+0x8/0xd
-[154565.553218]  ? page_fault_oops+0x134/0x170
-[154565.553223]  ? snprintf+0x49/0x70
-[154565.553229]  ? exc_page_fault+0x62/0x150
-[154565.553238]  ? asm_exc_page_fault+0x22/0x30
+The logic off managing recv credits by counting posted recv_io and
+granted credits is racy.
 
-Check for sp being non NULL before freeing any associated memory
+That's because the peer might already consumed a credit,
+but between receiving the incoming recv at the hardware
+and processing the completion in the 'recv_done' functions
+we likely have a window where we grant credits, which
+don't really exist.
 
-Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-10-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+So we better have a decicated counter for the
+available credits, which will be incremented
+when we posted new recv buffers and drained when
+we grant the credits to the peer.
+
+Fixes: 5fb9b459b368 ("smb: client: count the number of posted recv_io messages in order to calculated credits")
+Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c |   34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ fs/smb/client/smbdirect.c |   34 ++++++++++++++++++++++++++++------
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3701,23 +3701,25 @@ int qla_fab_async_scan(scsi_qla_host_t *
- 	return rval;
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -618,6 +618,7 @@ static void smbd_post_send_credits(struc
+ 	struct smbdirect_recv_io *response;
+ 	struct smbdirect_socket *sc =
+ 		container_of(work, struct smbdirect_socket, recv_io.posted.refill_work);
++	int posted = 0;
  
- done_free_sp:
--	if (sp->u.iocb_cmd.u.ctarg.req) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.req,
--		    sp->u.iocb_cmd.u.ctarg.req_dma);
--		sp->u.iocb_cmd.u.ctarg.req = NULL;
--	}
--	if (sp->u.iocb_cmd.u.ctarg.rsp) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.rsp,
--		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
--		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
--	}
-+	if (sp) {
-+		if (sp->u.iocb_cmd.u.ctarg.req) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.req,
-+			    sp->u.iocb_cmd.u.ctarg.req_dma);
-+			sp->u.iocb_cmd.u.ctarg.req = NULL;
-+		}
-+		if (sp->u.iocb_cmd.u.ctarg.rsp) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.rsp,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
-+			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
-+		}
+ 	if (sc->status != SMBDIRECT_SOCKET_CONNECTED) {
+ 		return;
+@@ -640,9 +641,12 @@ static void smbd_post_send_credits(struc
+ 			}
  
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+		/* ref: INIT */
-+		kref_put(&sp->cmd_kref, qla2x00_sp_release);
+ 			atomic_inc(&sc->recv_io.posted.count);
++			posted += 1;
+ 		}
+ 	}
+ 
++	atomic_add(posted, &sc->recv_io.credits.available);
++
+ 	/* Promptly send an immediate packet as defined in [MS-SMBD] 3.1.1.1 */
+ 	if (atomic_read(&sc->recv_io.credits.count) <
+ 		sc->recv_io.credits.target - 1) {
+@@ -1033,19 +1037,38 @@ dma_mapping_failed:
+  */
+ static int manage_credits_prior_sending(struct smbdirect_socket *sc)
+ {
++	int missing;
++	int available;
+ 	int new_credits;
+ 
+ 	if (atomic_read(&sc->recv_io.credits.count) >= sc->recv_io.credits.target)
+ 		return 0;
+ 
+-	new_credits = atomic_read(&sc->recv_io.posted.count);
+-	if (new_credits == 0)
++	missing = (int)sc->recv_io.credits.target - atomic_read(&sc->recv_io.credits.count);
++	available = atomic_xchg(&sc->recv_io.credits.available, 0);
++	new_credits = (u16)min3(U16_MAX, missing, available);
++	if (new_credits <= 0) {
++		/*
++		 * If credits are available, but not granted
++		 * we need to re-add them again.
++		 */
++		if (available)
++			atomic_add(available, &sc->recv_io.credits.available);
+ 		return 0;
 +	}
  
- 	spin_lock_irqsave(&vha->work_lock, flags);
- 	vha->scan.scan_flags &= ~SF_SCANNING;
+-	new_credits -= atomic_read(&sc->recv_io.credits.count);
+-	if (new_credits <= 0)
+-		return 0;
++	if (new_credits < available) {
++		/*
++		 * Readd the remaining available again.
++		 */
++		available -= new_credits;
++		atomic_add(available, &sc->recv_io.credits.available);
++	}
+ 
++	/*
++	 * Remember we granted the credits
++	 */
++	atomic_add(new_credits, &sc->recv_io.credits.count);
+ 	return new_credits;
+ }
+ 
+@@ -1217,7 +1240,6 @@ wait_credit:
+ 	packet->credits_requested = cpu_to_le16(sp->send_credit_target);
+ 
+ 	new_credits = manage_credits_prior_sending(sc);
+-	atomic_add(new_credits, &sc->recv_io.credits.count);
+ 	packet->credits_granted = cpu_to_le16(new_credits);
+ 
+ 	packet->flags = 0;
 
 
 
