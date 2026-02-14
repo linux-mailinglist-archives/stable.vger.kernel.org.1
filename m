@@ -1,66 +1,73 @@
-Return-Path: <stable+bounces-216340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGtHNd3Jj2nMTgEAu9opvQ
-	(envelope-from <stable+bounces-216340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:25 +0100
+	id oGSzBrzIj2l9TgEAu9opvQ
+	(envelope-from <stable+bounces-216322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:58:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA6613A451
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA15F13A360
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:58:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5565A3020218
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:03:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D4F1C3008335
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6191CAA68;
-	Sat, 14 Feb 2026 01:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B436217723;
+	Sat, 14 Feb 2026 00:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nhYdmAbC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FfAYDfaD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F3B19004A;
-	Sat, 14 Feb 2026 01:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B85020E334;
+	Sat, 14 Feb 2026 00:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030982; cv=none; b=KB3g7xGxSwwL2VBbdPNDI0uOVQUGsQzUJcibLhDKSjN81BeiWXKwVLsiBIgMBY1BfgdcgZjaRh0rLmhfdfLdalVw0Rl7Qw2OwI3wAzCRWg5gkIiaIoIu1cgvlzkk1T/X7Lf7Kr+Wh8Ase2/I3xLP8xUuPXjJDKtY9XhCJpzWjhM=
+	t=1771030714; cv=none; b=ETUqDJ/+OBT0ibwGxugqJizamwFt8ol1neKw0Uyee2fLbn5sQuoqiQYGHtxzJciSQ98+dvf7zSNQ9/qDhJeu+q/Y5VolvEQW6/b4TrXBYcP1NbLkfD7kzPSikI2uAl2TdMjrUG/dY0peU/YiAjHexdQvVBHhToVw2y2L7rMr7xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030982; c=relaxed/simple;
-	bh=nIZP7J2rJK6heQEF/G+5BMtFT56zeXx3D62wxX97CE8=;
+	s=arc-20240116; t=1771030714; c=relaxed/simple;
+	bh=Fbguudayvr5/a8atI4mdtxwAWSlFxYIraPPOXe1sJ88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NQI8AchI9elvM4LjvB8/jCbCqySysxMqeA0/TcKDVprE7DCbDtnKyPNYF6XFHYf9rjf4n5gdvwJuE5CG5H+3HdZikox2y41e3TEb0ecWH1maFNcvgeHQGTCAKCZRLeKtjaYSusrY77Lm3WuuO8MmY80oK+3xEjQxPQdsttiy+Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhYdmAbC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE80C116C6;
-	Sat, 14 Feb 2026 01:03:01 +0000 (UTC)
+	 MIME-Version; b=gmuNyDykg3WYlcim5ZPEAJUDOXIiNumCmaazWWtTxVT+B4P8udACMdNt677WU3fUKa8Nd9hHFttcFu7891L+m/zAxoyY5ND4h0r4UdyOQlhWHITnUVmlbYW0zFx/jFuaW/hMSe7fHpw+glX/VqnnKDmdm3P2ondMI36/VK0W2cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FfAYDfaD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F52C19424;
+	Sat, 14 Feb 2026 00:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030982;
-	bh=nIZP7J2rJK6heQEF/G+5BMtFT56zeXx3D62wxX97CE8=;
+	s=k20201202; t=1771030713;
+	bh=Fbguudayvr5/a8atI4mdtxwAWSlFxYIraPPOXe1sJ88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nhYdmAbCMXAwGNW8+7trYD+vlaVsjyFDXxcXzU0evofbIR8Iy7tRmw9JYVHozURrW
-	 hSGx1150GzRyaNU0ujP5MOOGZtYAr0OGr/BQphIpl1GySBtRaVmLEfkXHnqFcCA5DO
-	 cD4/V3WkeW2YeBrzRDAyma9RoJ0wcbkLXCfylKiP4eoCMywOxVN0H6JIt4escBlbYa
-	 YWG8d39u/pAA3DZ1tQdtw550QnDpNw4V65vW72ozKes1FzPElASkKqkyz4XLkPXZ3/
-	 yo0qufLd10bWBA3OIGqjTsIHeMrRtmTgGCN5Ilk32oBjrFZB0FhusB04gK83uAMPbz
-	 P/Wphq9gGDVng==
+	b=FfAYDfaDrtDjmPTkhoEwGQc4K4nBSYKHRRf2EFllZ6YB7EJusBzPu9Cciz9h2oow9
+	 c0k5OXIJWc3wo83R4csKqdQP1v2YEeY5Tk/oG42nRTWK/a3vBFQTXvxHAfqEZwdDjF
+	 Z1rHenOIBJYoQhNXRblwA0xr8vEhvNrXN7OHlIL2tz2zhNYIw8a9u7vMZGnKT554Tv
+	 LObS6laFcKSsDehiRDGIHAzQPYLqlYOBtXc/vxdgaCxk8t6IebjMafzUyAbMaYf3Oc
+	 mLbGnF36oYStG2hHeBoRwIth0mf0IDP00bbbmILFZph4ucOlOpvnYkxvG5Nd8GBo0l
+	 WYPVjBEa3sJ+A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+Cc: Prathamesh Shete <pshete@nvidia.com>,
+	Petlozu Pravareshwar <petlozup@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>,
-	laurent.pinchart+renesas@ideasonboard.com,
-	neil.armstrong@linaro.org,
-	mchehab+huawei@kernel.org,
+	thierry.reding@gmail.com,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	ulf.hansson@linaro.org,
+	chleroy@kernel.org,
+	jirislaby@kernel.org,
 	yelangyan@huaqin.corp-partner.google.com,
-	jacopo.mondi@ideasonboard.com
-Subject: [PATCH AUTOSEL 6.19-5.10] media: omap3isp: isp_video_mbus_to_pix/pix_to_mbus fixes
+	linux-tegra@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.19] soc/tegra: pmc: Fix unsafe generic_handle_irq() call
 Date: Fri, 13 Feb 2026 19:58:09 -0500
-Message-ID: <20260214010245.3671907-9-sashal@kernel.org>
+Message-ID: <20260214005825.3665084-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
-References: <20260214010245.3671907-1-sashal@kernel.org>
+In-Reply-To: <20260214005825.3665084-1-sashal@kernel.org>
+References: <20260214005825.3665084-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,232 +77,391 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-216340-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216322-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[nvidia.com,kernel.org,gmail.com,linutronix.de,goodmis.org,linaro.org,huaqin.corp-partner.google.com,vger.kernel.org,lists.linux.dev];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco,renesas,huawei];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9BA6613A451
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: DA15F13A360
 X-Rspamd-Action: no action
 
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
+From: Prathamesh Shete <pshete@nvidia.com>
 
-[ Upstream commit 44c03802a5191626996ee9db4bac090b164ca340 ]
+[ Upstream commit e6d96073af681780820c94079b978474a8a44413 ]
 
-The isp_video_mbus_to_pix/pix_to_mbus functions did not take
-the last empty entry { 0, } of the formats array into account.
+Currently, when resuming from system suspend on Tegra platforms,
+the following warning is observed:
 
-As a result, isp_video_mbus_to_pix would accept code 0 and
-isp_video_pix_to_mbus would select code 0 if no match was found.
+WARNING: CPU: 0 PID: 14459 at kernel/irq/irqdesc.c:666
+Call trace:
+ handle_irq_desc+0x20/0x58 (P)
+ tegra186_pmc_wake_syscore_resume+0xe4/0x15c
+ syscore_resume+0x3c/0xb8
+ suspend_devices_and_enter+0x510/0x540
+ pm_suspend+0x16c/0x1d8
 
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+The warning occurs because generic_handle_irq() is being called from
+a non-interrupt context which is considered as unsafe.
+
+Fix this warning by deferring generic_handle_irq() call to an IRQ work
+which gets executed in hard IRQ context where generic_handle_irq()
+can be called safely.
+
+When PREEMPT_RT kernels are used, regular IRQ work (initialized with
+init_irq_work) is deferred to run in per-CPU kthreads in preemptible
+context rather than hard IRQ context. Hence, use the IRQ_WORK_INIT_HARD
+variant so that with PREEMPT_RT kernels, the IRQ work is processed in
+hardirq context instead of being deferred to a thread which is required
+for calling generic_handle_irq().
+
+On non-PREEMPT_RT kernels, both init_irq_work() and IRQ_WORK_INIT_HARD()
+execute in IRQ context, so this change has no functional impact for
+standard kernel configurations.
+
+Signed-off-by: Petlozu Pravareshwar <petlozup@nvidia.com>
+Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+[treding@nvidia.com: miscellaneous cleanups]
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information I need. Let me compile my complete
-analysis.
-
----
-
-## Complete Analysis: `media: omap3isp:
-isp_video_mbus_to_pix/pix_to_mbus fixes`
+## Complete Analysis
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-The commit describes a clear off-by-one bug: the `formats[]` array has a
-sentinel entry `{ 0, }` at the end (line 112 of `ispvideo.c`), and two
-functions fail to account for this sentinel when iterating the array.
-The author is **Hans Verkuil**, the V4L2 subsystem co-maintainer, and
-the fix is **Acked-by Sakari Ailus**, the OMAP3 ISP subsystem
-maintainer.
+**Subject**: "soc/tegra: pmc: Fix unsafe generic_handle_irq() call"
 
-### 2. CODE CHANGE ANALYSIS
+The commit message is unambiguous - it's fixing a **real, observable
+WARNING** during system resume on Tegra platforms. The warning backtrace
+is included:
 
-**The formats array** (lines 39-113) contains 22 real format entries
-plus a sentinel `{ 0, }`. The sentinel was added with the original file
-creation (commit `ad614acb7eca4`, circa 2009) with this comment:
-
-```109:112:drivers/media/platform/ti/omap3isp/ispvideo.c
-        /* Empty entry to catch the unsupported pixel code (0) used by
-the CCDC
-  - module and avoid NULL pointer dereferences.
-         */
-        { 0, }
+```
+WARNING: CPU: 0 PID: 14459 at kernel/irq/irqdesc.c:666
+Call trace:
+ handle_irq_desc+0x20/0x58 (P)
+ tegra186_pmc_wake_syscore_resume+0xe4/0x15c
+ syscore_resume+0x3c/0xb8
+ suspend_devices_and_enter+0x510/0x540
+ pm_suspend+0x16c/0x1d8
 ```
 
-**Bug #1 - `isp_video_mbus_to_pix`** (lines 139-180):
+The fix has been **Reviewed-by** and **Tested-by** Jon Hunter (NVIDIA
+kernel engineer), and authored by NVIDIA engineers who are experts on
+Tegra PMC.
 
-The loop `for (i = 0; i < ARRAY_SIZE(formats); ++i)` iterates over ALL
-entries including the sentinel. If `mbus->code == 0` (which can happen
-via the CCDC module as documented), the sentinel entry matches because
-its `code` field is 0. This means:
-- `formats[i].bpp = 0`, so `min_bpl = pix->width * 0 = 0`
-- `formats[i].pixelformat = 0` (invalid pixel format)
-- Buffer size calculation `pix->sizeimage = bytesperline * height` uses
-  incorrect values
-- The WARN_ON never fires because the sentinel "matched"
+### 2. CODE CHANGE ANALYSIS - The Bug
 
-**Fix**: Change to `ARRAY_SIZE(formats) - 1` to exclude sentinel. Now if
-code=0 is passed, no match is found, `i == ARRAY_SIZE(formats) - 1`, and
-the WARN_ON fires properly, returning 0.
+**Root cause**: `tegra186_pmc_wake_syscore_resume()` is called by
+`syscore_resume()` during system resume. Looking at `syscore_resume()`
+in `drivers/base/syscore.c:93-110`:
 
-**Bug #2 - `isp_video_pix_to_mbus`** (lines 182-202):
+```c
+void syscore_resume(void)
+{
+    WARN_ONCE(!irqs_disabled(), ...);
+    list_for_each_entry(syscore, &syscore_list, node)
+        if (syscore->ops->resume)
+            syscore->ops->resume(syscore->data);
+}
+```
 
-The existing comment says "Skip the last format in the loop so that it
-will be selected if no match is found." The intent was that the last
-real format (YUYV8_2X8) would be selected as default. But
-`ARRAY_SIZE(formats) - 1` points to the sentinel `{ 0, }`, not the last
-real format. When no pixelformat match is found:
-- `i == ARRAY_SIZE(formats) - 1` = sentinel index
-- `mbus->code = formats[i].code = 0` (invalid media bus code)
+This runs with **interrupts disabled** but **NOT in hard IRQ context**
+(i.e., `in_hardirq()` returns false). However, when
+`generic_handle_irq()` is called, it goes through `handle_irq_desc()`
+(in `kernel/irq/irqdesc.c:658-671`):
 
-**Fix**: Change to `ARRAY_SIZE(formats) - 2` to skip both sentinel and
-the actual last real format. On no match, `i == ARRAY_SIZE(formats) -
-2`, which is the last real entry (YUYV8_2X8), and `mbus->code` gets a
-valid default.
+```c
+int handle_irq_desc(struct irq_desc *desc)
+{
+    data = irq_desc_get_irq_data(desc);
+    if (WARN_ON_ONCE(!in_hardirq() &&
+irqd_is_handle_enforce_irqctx(data)))
+        return -EPERM;
+    generic_handle_irq_desc(desc);
+    return 0;
+}
+```
 
-**Compounding effect**: In `isp_video_set_format` (line 721-722), these
-functions are called sequentially:
-1. `isp_video_pix_to_mbus(&format->fmt.pix, &fmt)` — on unmatched
-   pixelformat, sets `code=0`
-2. `isp_video_mbus_to_pix(video, &fmt, &format->fmt.pix)` — then
-   `code=0` matches sentinel, uses `bpp=0`
+The ARM GIC v2 and GIC v3 interrupt controllers **set
+`IRQD_HANDLE_ENFORCE_IRQCTX` on ALL interrupts** they map (confirmed in
+`drivers/irqchip/irq-gic.c:1077` and `drivers/irqchip/irq-
+gic-v3.c:1585`). Since Tegra SoCs use ARM GIC, any IRQ going through the
+Tegra wake domain will have this flag set. Thus, calling
+`generic_handle_irq()` from the syscore resume context (not hard IRQ)
+triggers the `WARN_ON_ONCE`.
 
-This means any user providing an unsupported pixelformat gets:
-`pixelformat=0`, `sizeimage` miscalculated with `bpp=0`. This is a real
-data integrity and functional correctness bug.
+**Why it matters**: Beyond the WARN, the function returns `-EPERM`
+without actually handling the interrupt. This means **edge-triggered
+wake IRQs are silently dropped**, potentially causing missed wakeup
+events and device misbehavior after resume.
 
-### 3. CLASSIFICATION
+### 3. THE FIX
 
-This is a **real bug fix**: an off-by-one error in loop bounds that
-causes incorrect format selection and buffer size calculations. It is
-NOT a feature, cleanup, or cosmetic change.
+The fix:
+1. Adds `struct irq_work wake_work` and `u32 *wake_status` fields to
+   `struct tegra_pmc`
+2. Creates a new `tegra186_pmc_wake_handler()` function (the IRQ work
+   handler) that contains the logic previously in
+   `tegra186_pmc_process_wake_events()`
+3. `tegra186_pmc_wake_syscore_resume()` now saves wake status to
+   `pmc->wake_status[]` and queues the IRQ work via `irq_work_queue()`
+4. The IRQ work handler runs in **hard IRQ context** where
+   `generic_handle_irq()` is safe
+5. Uses `IRQ_WORK_INIT_HARD()` to ensure hard IRQ context even on
+   `PREEMPT_RT` kernels
+6. Adds a check in `tegra186_pmc_wake_syscore_suspend()` for unhandled
+   wake IRQs
 
-### 4. SCOPE AND RISK ASSESSMENT
+This is the **correct** fix pattern - using `irq_work` to defer IRQ
+handling to hard IRQ context is a well-established kernel pattern.
+Multiple other drivers have been fixed similarly (see commits
+`94ec234a16cf3`, `118c3ba24d04f`, `c6a91405ac5cd`, `f285de79569f9`,
+`f460c70125bcb` which all converted to `generic_handle_irq_safe()`).
 
-- **Size**: 4 lines changed in a single file (2 loop bound adjustments,
-  1 WARN_ON condition adjustment)
-- **Subsystem**: OMAP3 ISP media driver
-  (drivers/media/platform/ti/omap3isp/)
-- **Risk**: Extremely low. The change only adjusts array iteration
-  bounds to correctly account for the sentinel — the resulting behavior
-  is exactly what was originally intended.
-- **The fix is obviously correct**: the sentinel `{ 0, }` is not a valid
-  format entry, so it should not be considered in format lookup or
-  default selection.
+### 4. DEPENDENCY ANALYSIS
 
-### 5. USER IMPACT
+**Critical dependency**: This commit was written against the v6.19 tree
+which has the new `struct syscore` API from commit `a97fbc3ee3e2a`
+(v6.19-rc1 only). In stable trees (v6.6, v6.12), the functions use the
+old `struct syscore_ops` interface:
+- `tegra186_pmc_wake_syscore_resume(void)` (no `void *data` parameter)
+- `tegra186_pmc_wake_syscore_suspend(void)` (no `void *data` parameter)
+- `struct syscore_ops syscore` (not `struct syscore`)
 
-- Affects users of TI OMAP3 SoC platforms (e.g., BeagleBoard) using the
-  ISP camera subsystem
-- While niche hardware, users on these platforms have no workaround
-- The bug triggers when: (a) an unsupported pixelformat is set via
-  `VIDIOC_S_FMT` (pix_to_mbus selects code=0, then mbus_to_pix uses
-  bpp=0), or (b) `mbus->code` is 0 from the CCDC path
-- Impact: incorrect pixel format, wrong buffer size calculations — could
-  lead to video capture failures or buffer underflows
+**However**, the core fix logic (adding `irq_work`, deferring
+`generic_handle_irq()`) does NOT depend on the syscore API change. The
+fix can be backported with minor adaptation:
+- The function signatures need to match the old `syscore_ops` callbacks
+  (no `void *data`)
+- `IRQ_WORK_INIT_HARD` and `irq_work_queue` are available in v6.6+
+- The `irq_work` and `wake_status` additions to `struct tegra_pmc` are
+  self-contained
 
-### 6. STABILITY INDICATORS
+**Affected stable trees**: v6.6.y, v6.12.y (and any other active stable
+tree based on v6.2+, since commit `0474cc8489bda` introduced the buggy
+code in v6.2).
 
-- Author: Hans Verkuil — V4L2 co-maintainer, extremely experienced
-- Ack: Sakari Ailus — OMAP3 ISP maintainer
-- The bug has existed since the driver was first created (~2009), so the
-  fix addresses a long-standing correctness issue
-- The code path is in `isp_video_set_format` and `isp_video_try_format`,
-  both V4L2 ioctl handlers reachable from userspace
+### 5. SCOPE AND RISK
 
-### 7. DEPENDENCY CHECK
+- **Files changed**: 1 file (`drivers/soc/tegra/pmc.c`)
+- **Lines**: ~+60, ~-30 (net ~30 lines added)
+- **Subsystem**: Tegra SoC PMC - a self-contained platform driver
+- **Risk**: LOW - The change only affects Tegra platforms with wake
+  events. The `irq_work` mechanism is well-tested kernel infrastructure.
+  The fix has been reviewed and tested by NVIDIA engineers.
+- **Regression risk**: Very low - non-Tegra systems are unaffected. The
+  new code path is functionally equivalent but executes in the correct
+  context.
 
-- **No dependencies**: This is a self-contained 4-line fix touching only
-  loop bounds
-- **Code exists in all stable trees**: Verified that the buggy code is
-  identical in stable 6.6 (and would be the same in all older stable
-  trees since the driver has not changed in this area)
-- **Clean apply**: The patch will apply cleanly to all stable trees with
-  this driver
+### 6. USER IMPACT
 
-### 8. SUMMARY
+- **Who**: All users of NVIDIA Tegra186+ SoCs (Tegra186, Tegra194,
+  Tegra234) using suspend/resume
+- **Severity**: Every system resume triggers a kernel WARNING. Beyond
+  the warning itself, edge-triggered wake IRQs may be silently dropped
+  because `handle_irq_desc()` returns `-EPERM` without processing the
+  interrupt
+- **Real-world**: Tegra platforms are used in NVIDIA Jetson embedded
+  systems, automotive platforms, and gaming devices (Nintendo Switch)
 
-| Criterion | Assessment |
-|-----------|------------|
-| Fixes real bug | YES — off-by-one causing wrong format selection and
-buffer calculations |
-| Obviously correct | YES — excludes sentinel from search/default,
-matching original design intent |
-| Small and contained | YES — 4 lines changed in one file |
-| No new features | YES — pure bug fix |
-| Risk of regression | Very low — only corrects loop bounds to match
-array structure |
-| Applies to stable | YES — identical buggy code in all stable kernels |
-| Impact | Medium — affects OMAP3 ISP camera users when unsupported
-formats are requested |
+### 7. CONCLUSION
 
-The fix is small, surgical, obviously correct, fixes a real off-by-one
-logic bug that can cause incorrect buffer calculations (bpp=0) and
-invalid format selection (code=0/pixelformat=0), and is authored and
-reviewed by the relevant subsystem maintainers. The risk-to-benefit
-ratio strongly favors backporting.
+This is a clear bug fix for a real, reproducible issue that fires on
+every resume on affected hardware. The fix uses a well-established
+kernel pattern (irq_work) and is self-contained within a single platform
+driver file. It has been reviewed and tested by the subsystem
+maintainers. The fix will need minor adaptation for stable trees
+(different `syscore_ops` API), but the core logic is fully applicable.
+The bug exists in all stable trees from v6.2 onward.
 
 **YES**
 
- drivers/media/platform/ti/omap3isp/ispvideo.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/soc/tegra/pmc.c | 104 ++++++++++++++++++++++++++++------------
+ 1 file changed, 74 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/media/platform/ti/omap3isp/ispvideo.c b/drivers/media/platform/ti/omap3isp/ispvideo.c
-index 0e7f0bf2b3463..68e6a24be5614 100644
---- a/drivers/media/platform/ti/omap3isp/ispvideo.c
-+++ b/drivers/media/platform/ti/omap3isp/ispvideo.c
-@@ -148,12 +148,12 @@ static unsigned int isp_video_mbus_to_pix(const struct isp_video *video,
- 	pix->width = mbus->width;
- 	pix->height = mbus->height;
+diff --git a/drivers/soc/tegra/pmc.c b/drivers/soc/tegra/pmc.c
+index f3760a3b3026d..407fa840814c3 100644
+--- a/drivers/soc/tegra/pmc.c
++++ b/drivers/soc/tegra/pmc.c
+@@ -28,6 +28,7 @@
+ #include <linux/iopoll.h>
+ #include <linux/irqdomain.h>
+ #include <linux/irq.h>
++#include <linux/irq_work.h>
+ #include <linux/kernel.h>
+ #include <linux/of_address.h>
+ #include <linux/of_clk.h>
+@@ -468,6 +469,10 @@ struct tegra_pmc {
+ 	unsigned long *wake_sw_status_map;
+ 	unsigned long *wake_cntrl_level_map;
+ 	struct syscore syscore;
++
++	/* Pending wake IRQ processing */
++	struct irq_work wake_work;
++	u32 *wake_status;
+ };
  
--	for (i = 0; i < ARRAY_SIZE(formats); ++i) {
-+	for (i = 0; i < ARRAY_SIZE(formats) - 1; ++i) {
- 		if (formats[i].code == mbus->code)
- 			break;
+ static struct tegra_pmc *pmc = &(struct tegra_pmc) {
+@@ -1905,6 +1910,50 @@ static int tegra_pmc_parse_dt(struct tegra_pmc *pmc, struct device_node *np)
+ 	return 0;
+ }
+ 
++/* translate sc7 wake sources back into IRQs to catch edge triggered wakeups */
++static void tegra186_pmc_wake_handler(struct irq_work *work)
++{
++	struct tegra_pmc *pmc = container_of(work, struct tegra_pmc, wake_work);
++	unsigned int i, wake;
++
++	for (i = 0; i < pmc->soc->max_wake_vectors; i++) {
++		unsigned long status = pmc->wake_status[i];
++
++		for_each_set_bit(wake, &status, 32) {
++			irq_hw_number_t hwirq = wake + (i * 32);
++			struct irq_desc *desc;
++			unsigned int irq;
++
++			irq = irq_find_mapping(pmc->domain, hwirq);
++			if (!irq) {
++				dev_warn(pmc->dev,
++					 "No IRQ found for WAKE#%lu!\n",
++					 hwirq);
++				continue;
++			}
++
++			dev_dbg(pmc->dev,
++				"Resume caused by WAKE#%lu mapped to IRQ#%u\n",
++				hwirq, irq);
++
++			desc = irq_to_desc(irq);
++			if (!desc) {
++				dev_warn(pmc->dev,
++					 "No descriptor found for IRQ#%u\n",
++					 irq);
++				continue;
++			}
++
++			if (!desc->action || !desc->action->name)
++				continue;
++
++			generic_handle_irq(irq);
++		}
++
++		pmc->wake_status[i] = 0;
++	}
++}
++
+ static int tegra_pmc_init(struct tegra_pmc *pmc)
+ {
+ 	if (pmc->soc->max_wake_events > 0) {
+@@ -1923,6 +1972,18 @@ static int tegra_pmc_init(struct tegra_pmc *pmc)
+ 		pmc->wake_cntrl_level_map = bitmap_zalloc(pmc->soc->max_wake_events, GFP_KERNEL);
+ 		if (!pmc->wake_cntrl_level_map)
+ 			return -ENOMEM;
++
++		pmc->wake_status = kcalloc(pmc->soc->max_wake_vectors, sizeof(u32), GFP_KERNEL);
++		if (!pmc->wake_status)
++			return -ENOMEM;
++
++		/*
++		 * Initialize IRQ work for processing wake IRQs. Must use
++		 * HARD_IRQ variant to run in hard IRQ context on PREEMPT_RT
++		 * because we call generic_handle_irq() which requires hard
++		 * IRQ context.
++		 */
++		pmc->wake_work = IRQ_WORK_INIT_HARD(tegra186_pmc_wake_handler);
  	}
  
--	if (WARN_ON(i == ARRAY_SIZE(formats)))
-+	if (WARN_ON(i == ARRAY_SIZE(formats) - 1))
- 		return 0;
- 
- 	min_bpl = pix->width * formats[i].bpp;
-@@ -191,7 +191,7 @@ static void isp_video_pix_to_mbus(const struct v4l2_pix_format *pix,
- 	/* Skip the last format in the loop so that it will be selected if no
- 	 * match is found.
- 	 */
--	for (i = 0; i < ARRAY_SIZE(formats) - 1; ++i) {
-+	for (i = 0; i < ARRAY_SIZE(formats) - 2; ++i) {
- 		if (formats[i].pixelformat == pix->pixelformat)
- 			break;
+ 	if (pmc->soc->init)
+@@ -3129,47 +3190,30 @@ static void wke_clear_wake_status(struct tegra_pmc *pmc)
  	}
+ }
+ 
+-/* translate sc7 wake sources back into IRQs to catch edge triggered wakeups */
+-static void tegra186_pmc_process_wake_events(struct tegra_pmc *pmc, unsigned int index,
+-					     unsigned long status)
+-{
+-	unsigned int wake;
+-
+-	dev_dbg(pmc->dev, "Wake[%d:%d]  status=%#lx\n", (index * 32) + 31, index * 32, status);
+-
+-	for_each_set_bit(wake, &status, 32) {
+-		irq_hw_number_t hwirq = wake + 32 * index;
+-		struct irq_desc *desc;
+-		unsigned int irq;
+-
+-		irq = irq_find_mapping(pmc->domain, hwirq);
+-
+-		desc = irq_to_desc(irq);
+-		if (!desc || !desc->action || !desc->action->name) {
+-			dev_dbg(pmc->dev, "Resume caused by WAKE%ld, IRQ %d\n", hwirq, irq);
+-			continue;
+-		}
+-
+-		dev_dbg(pmc->dev, "Resume caused by WAKE%ld, %s\n", hwirq, desc->action->name);
+-		generic_handle_irq(irq);
+-	}
+-}
+-
+ static void tegra186_pmc_wake_syscore_resume(void *data)
+ {
+-	u32 status, mask;
+ 	unsigned int i;
++	u32 mask;
+ 
+ 	for (i = 0; i < pmc->soc->max_wake_vectors; i++) {
+ 		mask = readl(pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(i));
+-		status = readl(pmc->wake + WAKE_AOWAKE_STATUS_R(i)) & mask;
+-
+-		tegra186_pmc_process_wake_events(pmc, i, status);
++		pmc->wake_status[i] = readl(pmc->wake + WAKE_AOWAKE_STATUS_R(i)) & mask;
+ 	}
++
++	/* Schedule IRQ work to process wake IRQs (if any) */
++	irq_work_queue(&pmc->wake_work);
+ }
+ 
+ static int tegra186_pmc_wake_syscore_suspend(void *data)
+ {
++	unsigned int i;
++
++	/* Check if there are unhandled wake IRQs */
++	for (i = 0; i < pmc->soc->max_wake_vectors; i++)
++		if (pmc->wake_status[i])
++			dev_warn(pmc->dev,
++				 "Unhandled wake IRQs pending vector[%u]: 0x%x\n",
++				 i, pmc->wake_status[i]);
+ 	wke_read_sw_wake_status(pmc);
+ 
+ 	/* flip the wakeup trigger for dual-edge triggered pads
 -- 
 2.51.0
 
