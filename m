@@ -1,254 +1,261 @@
-Return-Path: <stable+bounces-216344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eF1JCQ/Kj2ndTgEAu9opvQ
-	(envelope-from <stable+bounces-216344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:04:15 +0100
+	id UIyaFdLIj2l9TgEAu9opvQ
+	(envelope-from <stable+bounces-216326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:58:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82F213A505
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:04:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0523813A383
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7843330825F2
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:03:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 84D5330338B4
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D801DE8AE;
-	Sat, 14 Feb 2026 01:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EA522129B;
+	Sat, 14 Feb 2026 00:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kO2aXw3w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2Br8zPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFFB1FF1AD;
-	Sat, 14 Feb 2026 01:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290F71E1C11;
+	Sat, 14 Feb 2026 00:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030988; cv=none; b=QBRHJr3qLuuQbwfNQJgJz5GpEUk0NPqPzMx4LpgbChOvD3cbbO+DnPIeOhU6AMehTFOdlwNHaatuD+H0NnwZuJhSoel5BSjM+k/f73ZL2NYM1maW7WA490MfSIe1cm/lJA7MH68s4O2SiD98FyCbqIhAfV2x2PUvMypi+6ynGOk=
+	t=1771030720; cv=none; b=BOkcrr4z9PVxtXyoU6x5F/YekcFpscuQGpRLMMngrluPVDQFFy6WSq4Hfw+mS4vIFoJ8jeLYBHiCUbjK7Bo5z4ZWGjccMN/J9f2udgc3coGkda+O+6euMfbkLRCRyeWMhkwUwts9Q4CPh0qxCE1yLLakh2DrhygwTbTDxVSWPoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030988; c=relaxed/simple;
-	bh=mRVQDQI3kidxYWJERZnJQhZL1iNNwlyK/wTFc6s9h1I=;
+	s=arc-20240116; t=1771030720; c=relaxed/simple;
+	bh=lw/MWmDXCokKVTEYvkD+CT9aaE5yW6806FAANXJoHFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XCLequJZdghHGPOTpz8j/SZ/0geRZyooezX13N2R1PQ03+qc6o6ighKIyEa4dlpnKC2C0h1deoxb6cFHTWTX9IGKP/fyEqFGmOV/KOQquCFTiYNRDHlpJQ89+yoXNiFTmz2JpMluhc6H+bWPQ8zJh3Aqu19ixMXvqliM1aD6nr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kO2aXw3w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C5FC116C6;
-	Sat, 14 Feb 2026 01:03:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O1NlJFI/MV58wef4URsjLhkOPHl0PucAhXA9WEmM8tft9PIRBzIfIcbYau193N5gk2OGp+ONHqR9zxMBLFdN/SmeCCGYY0c4uWb6Efo45PzVHj3/tB82zB62XLdc3wSJOzl21tqsUMnBaYjTOYh8kAZGt1i69T38rCpbfazwaKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2Br8zPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D59C19423;
+	Sat, 14 Feb 2026 00:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030987;
-	bh=mRVQDQI3kidxYWJERZnJQhZL1iNNwlyK/wTFc6s9h1I=;
+	s=k20201202; t=1771030720;
+	bh=lw/MWmDXCokKVTEYvkD+CT9aaE5yW6806FAANXJoHFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kO2aXw3wvD7U/q7BPMrMvGMX587LXQ6Ne4LfQbjddWvEGQp1e6SzF65N3LEBxrH7v
-	 k9dxVNdUdT1+IjQOp4lnKS6rQ4V3Ni2AYKhMaLl2gOjyPB21Xh9Q3kqYwGtGWaqN3G
-	 4t+beDE/ZfMJLpF9Zz25yvKLhx1rjY+1CTAfjrPYsAvMcvBQ5bwNjI5WTlBIQY7Cxv
-	 5LjdbPfSq6Q5SQWPTxzoMX/XZ43DlrGFlIbunh3LU8/8l9NQDNdwyC77WAyoOfF8TV
-	 Ez8FR3cZ1zDnoREppRdcgwhYLAR+YjsNgVZlCwVFs5gTiOZedu6HjNxip2J6E03IUL
-	 A9Ae2J+Fg8tUw==
+	b=d2Br8zPDPuN9YfsaCFZBXpw/zqsjROhR1UdRDiQg7h/cVUVQaz2RjDZ7njLkx12Qa
+	 RVS9/Ntt+Vn9g/g1IkuRYijKR+gaH/J3ZWTKIpbnpm27LacqF7Dyp3IJII3ue5WBq0
+	 V7aWG0BgQNhzE8J7i0WqRvWBn4rrSFArBmCSNRgjv1oGta2QkHmfQmtjrHcxNGrtZW
+	 8cYiVAwGl08pLtRR/dWbWB3ym9+CxMJw9Tv5DJfKxz1RNykopztICyKZ6mHtdX7gTi
+	 zxS1DyfqG7CsidEkJ1iFT5jw1ulc6WDiuDYAG5/xyTIfvXCgMLbYNw860SFVasFIdk
+	 WE/poqgqqYesA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Thorsten Schmelzer <tschmelzer@topcon.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+Cc: Lili Li <lili.li@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lars@metafoo.de,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] media: adv7180: fix frame interval in progressive mode
+	bp@alien8.de,
+	linux-edac@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.18] EDAC/igen6: Add more Intel Panther Lake-H SoCs support
 Date: Fri, 13 Feb 2026 19:58:13 -0500
-Message-ID: <20260214010245.3671907-13-sashal@kernel.org>
+Message-ID: <20260214005825.3665084-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
-References: <20260214010245.3671907-1-sashal@kernel.org>
+In-Reply-To: <20260214005825.3665084-1-sashal@kernel.org>
+References: <20260214005825.3665084-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-216344-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216326-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas,cisco];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[topcon.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:email,ragnatech.se:email]
-X-Rspamd-Queue-Id: A82F213A505
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 0523813A383
 X-Rspamd-Action: no action
 
-From: Thorsten Schmelzer <tschmelzer@topcon.com>
+From: Lili Li <lili.li@intel.com>
 
-[ Upstream commit 90289b67c5c1d4c18784059b27460d292e16d208 ]
+[ Upstream commit 4c36e6106997b6ad8f4a279b4bdbca3ed6f53c6c ]
 
-The ADV7280-M may internally convert interlaced video input to
-progressive video. If this mode is enabled, the ADV7280-M delivers
-progressive video frames at the field rate of 50 fields per second (PAL)
-or 60 fields per second (NTSC).
+Add more Intel Panther Lake-H SoC compute die IDs for EDAC support.
 
-Fix the reported frame interval if progressive video is enabled.
-
-Signed-off-by: Thorsten Schmelzer <tschmelzer@topcon.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Lili Li <lili.li@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Link: https://patch.msgid.link/20251124131537.3633983-1-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis of media: adv7180: fix frame interval in progressive mode
+Now I have a comprehensive picture. Let me summarize my analysis.
 
-### Commit Message Analysis
+## Detailed Analysis
 
-The commit message clearly states this is a **fix** for incorrect frame
-interval reporting when the ADV7280-M chip's de-interlacer is active.
-The chip converts interlaced video to progressive frames at the field
-rate (50 fps for PAL, 60 fps for NTSC), but the driver was reporting the
-interlaced frame rate (25 fps for PAL, 30 fps for NTSC). This means the
-reported frame interval was wrong by a factor of 2.
+### 1. Commit Message Analysis
 
-The commit has been reviewed by Niklas Söderlund and merged by Hans
-Verkuil (V4L2 maintainer), which are good trust indicators.
+The commit subject is "EDAC/igen6: Add more Intel Panther Lake-H SoCs
+support" and the body says "Add more Intel Panther Lake-H SoC compute
+die IDs for EDAC support." This is purely a **new device ID addition**
+to an existing driver. The commit is authored by Intel employees (Lili
+Li, Qiuxu Zhuo) who maintain this specific EDAC driver, and reviewed by
+the same team.
 
-### Code Change Analysis
+### 2. Code Change Analysis
 
-The change is extremely small and surgical - it adds a single
-conditional block:
+The diff is straightforward and mechanical:
 
-```c
-if (state->field == V4L2_FIELD_NONE)
-    fi->interval.denominator *= 2;
-```
+**Part 1 - Macro definitions** (lines ~280-290): Adds 10 new `#define`
+constants:
+- `DID_PTL_H_SKU4` through `DID_PTL_H_SKU13` with PCI device IDs
+  `0xb003`, `0xb004`, `0xb005`, `0xb008`, `0xb011`, `0xb014`, `0xb015`,
+  `0xb028`, `0xb029`, `0xb02a`
 
-This checks if the de-interlacer is active (`V4L2_FIELD_NONE` means
-progressive/non-interlaced output) and, if so, doubles the denominator
-of the frame interval fraction, effectively doubling the reported frame
-rate from 25→50 (PAL) or ~30→~60 (NTSC).
+**Part 2 - PCI device table** (lines ~675-695): Adds 10 new
+`PCI_VDEVICE` entries, all pointing to the existing `mtl_p_cfg`
+configuration structure — the same configuration used by the 3 initial
+PTL-H SKUs.
 
-The logic is straightforward:
-- Previously: PAL reported 1/25, NTSC reported 1001/30000
-- With fix when progressive: PAL reports 1/50, NTSC reports 1001/60000
+This is a textbook **PCI device ID addition**. No new logic, no new
+config structures, no new functions. Every new entry uses the identical
+`mtl_p_cfg` configuration as the existing PTL-H SKUs.
 
-This is mathematically correct - when de-interlacing at the field rate,
-you get twice as many frames per second.
+### 3. Classification
 
-### Bug Classification
+This falls squarely into the **"New Device IDs" exception** for stable
+trees:
+- The driver (`igen6_edac`) already exists in stable trees
+- The PTL-H configuration (`mtl_p_cfg`) and initial PTL-H support
+  already exist (since v6.13)
+- Only new PCI IDs are being added — enabling additional hardware
+  variants of the same SoC family
 
-This is a **correctness bug** in the V4L2 subdev frame interval
-reporting. Userspace applications querying the frame interval would get
-incorrect information when progressive mode is enabled. This could
-cause:
-- Video recording at wrong timestamps
-- A/V synchronization issues
-- Incorrect video playback speed
-- Applications making wrong decisions about buffer management based on
-  incorrect frame rates
+### 4. Scope and Risk Assessment
 
-### Scope and Risk Assessment
+- **Lines changed**: ~20 (10 `#define`s + 10 PCI table entries)
+- **Files touched**: 1 (`drivers/edac/igen6_edac.c`)
+- **Risk**: Extremely low. The PCI device table is a static array of ID-
+  to-config mappings. The new entries only match hardware with those
+  specific PCI IDs. If the hardware isn't present, the entries are
+  completely inert. Zero risk to existing functionality.
+- **Complexity**: Trivial — pure data addition with no logic changes.
 
-- **Lines changed**: ~5 lines added (including comments)
-- **Files touched**: 1 file (drivers/media/i2c/adv7180.c)
-- **Risk**: Very low. The change only affects the reported frame
-  interval when `state->field == V4L2_FIELD_NONE`. It cannot affect
-  interlaced mode operation at all.
-- **Complexity**: Trivial multiplication by 2 of an existing value,
-  gated by a clear condition.
+### 5. Dependency Check
 
-### Stable Kernel Criteria Check
+This commit has one critical dependency:
+- **Initial PTL-H support commit** (`0be9f1af39022`): "EDAC/igen6: Add
+  Intel Panther Lake-H SoCs support" — landed in **v6.13**. This commit
+  defined `DID_PTL_H_SKU1`-`SKU3` and the usage of `mtl_p_cfg` for
+  PTL-H.
 
-1. **Obviously correct and tested**: Yes - the math is straightforward
-   and it was reviewed by a domain expert.
-2. **Fixes a real bug**: Yes - incorrect frame interval reporting in
-   progressive mode.
-3. **Important issue**: Moderate - it causes incorrect metadata
-   reporting that affects video capture applications. Not a crash or
-   security issue, but a functional correctness bug that impacts real
-   users of ADV7280-M hardware.
-4. **Small and contained**: Yes - 5 lines in one file, one driver.
-5. **No new features**: Correct - this fixes existing behavior, doesn't
-   add new functionality.
-6. **Clean application**: The change is self-contained and should apply
-   cleanly to any kernel that has the `adv7180_get_frame_interval`
-   function with the `v4l2_subdev_state` parameter.
+Therefore:
+- **v6.1 LTS, v6.6 LTS, v6.12 stable**: The prerequisite commit is NOT
+  present. Backporting here would require first backporting the initial
+  PTL-H support.
+- **v6.13+ stable** (v6.13.y, v6.14.y, etc.): The prerequisite IS
+  present, so this patch can apply cleanly.
 
-### User Impact
+### 6. User Impact
 
-Users of ADV7280-M video decoder chips with de-interlacing enabled would
-get incorrect frame rate information from the V4L2 API. This is a real
-hardware used in embedded video capture applications (the author is from
-Topcon, a precision measurement/imaging company). The fix is important
-for correct video processing pipelines.
+EDAC (Error Detection And Correction) is critical infrastructure for
+detecting and reporting memory errors. Without these device IDs, users
+with Intel Panther Lake-H SoCs with these specific compute die IDs will
+get **no EDAC/ECC error reporting** — meaning memory errors could go
+undetected, leading to potential silent data corruption on affected
+hardware. This is exactly the kind of hardware enablement that stable
+users (particularly enterprise/embedded users) need.
 
-### Risk vs Benefit
+### 7. Stability Indicators
 
-- **Benefit**: Correct frame interval reporting for ADV7280-M users in
-  progressive mode
-- **Risk**: Essentially zero - the change is gated by a specific
-  condition and only affects metadata reporting, not actual video data
-  flow
+- Reviewed by Intel's EDAC team member (Qiuxu Zhuo)
+- Signed off by the RAS maintainer (Tony Luck)
+- Same pattern as dozens of prior device ID additions to this driver,
+  all of which have been successfully backported to stable trees (Arrow
+  Lake, Meteor Lake-P/PS, Raptor Lake-P, Alder Lake-N, etc.)
 
-### Concerns
+### 8. Verdict
 
-- The `state->field` and `V4L2_SUBDEV_FORMAT_ACTIVE` API patterns need
-  to exist in the target stable tree. This is a relatively modern V4L2
-  API pattern, so it should be checked which stable versions have the
-  relevant code.
-- No dependency on other commits - this is a standalone fix.
+This is a classic, textbook device ID addition:
+- Purely mechanical addition of PCI device IDs
+- Uses existing infrastructure (no new code paths)
+- Enables EDAC support on additional Panther Lake-H hardware variants
+- Extremely low risk — inert on systems without matching hardware
+- The only concern is dependency on initial PTL-H support (v6.13+), but
+  this is manageable
 
-### Conclusion
-
-This is a clean, small, obviously correct bug fix for a real issue
-affecting hardware users. It meets all stable kernel criteria. The fix
-is trivial, well-reviewed, and carries essentially no regression risk.
+The commit matches the stable kernel rules for device ID additions
+perfectly. It's small, contained, obviously correct, and enables real
+hardware support for real users.
 
 **YES**
 
- drivers/media/i2c/adv7180.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/edac/igen6_edac.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
-index 378f4e6af12cb..5cbc973df684d 100644
---- a/drivers/media/i2c/adv7180.c
-+++ b/drivers/media/i2c/adv7180.c
-@@ -507,6 +507,13 @@ static int adv7180_get_frame_interval(struct v4l2_subdev *sd,
- 		fi->interval.denominator = 25;
- 	}
+diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
+index 553c31a2d9226..839b6dd3629e9 100644
+--- a/drivers/edac/igen6_edac.c
++++ b/drivers/edac/igen6_edac.c
+@@ -274,6 +274,16 @@ static struct work_struct ecclog_work;
+ #define DID_PTL_H_SKU1	0xb000
+ #define DID_PTL_H_SKU2	0xb001
+ #define DID_PTL_H_SKU3	0xb002
++#define DID_PTL_H_SKU4	0xb003
++#define DID_PTL_H_SKU5	0xb004
++#define DID_PTL_H_SKU6	0xb005
++#define DID_PTL_H_SKU7	0xb008
++#define DID_PTL_H_SKU8	0xb011
++#define DID_PTL_H_SKU9	0xb014
++#define DID_PTL_H_SKU10	0xb015
++#define DID_PTL_H_SKU11	0xb028
++#define DID_PTL_H_SKU12	0xb029
++#define DID_PTL_H_SKU13	0xb02a
  
-+	/*
-+	 * If the de-interlacer is active, the chip produces full video frames
-+	 * at the field rate.
-+	 */
-+	if (state->field == V4L2_FIELD_NONE)
-+		fi->interval.denominator *= 2;
-+
- 	return 0;
- }
- 
+ /* Compute die IDs for Wildcat Lake with IBECC */
+ #define DID_WCL_SKU1	0xfd00
+@@ -636,6 +646,16 @@ static struct pci_device_id igen6_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU1), (kernel_ulong_t)&mtl_p_cfg },
+ 	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU2), (kernel_ulong_t)&mtl_p_cfg },
+ 	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU3), (kernel_ulong_t)&mtl_p_cfg },
++	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU4), (kernel_ulong_t)&mtl_p_cfg },
++	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU5), (kernel_ulong_t)&mtl_p_cfg },
++	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU6), (kernel_ulong_t)&mtl_p_cfg },
++	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU7), (kernel_ulong_t)&mtl_p_cfg },
++	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU8), (kernel_ulong_t)&mtl_p_cfg },
++	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU9), (kernel_ulong_t)&mtl_p_cfg },
++	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU10), (kernel_ulong_t)&mtl_p_cfg },
++	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU11), (kernel_ulong_t)&mtl_p_cfg },
++	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU12), (kernel_ulong_t)&mtl_p_cfg },
++	{ PCI_VDEVICE(INTEL, DID_PTL_H_SKU13), (kernel_ulong_t)&mtl_p_cfg },
+ 	{ PCI_VDEVICE(INTEL, DID_WCL_SKU1), (kernel_ulong_t)&wcl_cfg },
+ 	{ },
+ };
 -- 
 2.51.0
 
