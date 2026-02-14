@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-216342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216324-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBl5EQXKj2ndTgEAu9opvQ
-	(envelope-from <stable+bounces-216342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:04:05 +0100
+	id OLWtN/3Ij2l9TgEAu9opvQ
+	(envelope-from <stable+bounces-216324-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:59:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A2613A4E2
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:04:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4D813A394
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:59:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A70113079F58
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:03:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55F2630745C6
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FB1221FB1;
-	Sat, 14 Feb 2026 01:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE70212F89;
+	Sat, 14 Feb 2026 00:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="exSiechR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QbgsOnKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A00A15E5BB;
-	Sat, 14 Feb 2026 01:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32B81DE887;
+	Sat, 14 Feb 2026 00:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030985; cv=none; b=D2NP9INwOY22YPd6iadbcyUrBzhSUxRsMfqipbUdR86pkn1n/7d/0oe6eRcKI2k3PjcgAJAf9RqlhSAbib6AeejPtTc1X5YzSIbv+oCx8de6ML+F2UXW+Cse+hHP7ROgvBaN2SAKyJU/8CTfOLxEKcvaGBP/1QHmItqOuxbu1Ow=
+	t=1771030718; cv=none; b=mm5FmwC/w0hwqwEkokdnZe6MtUIxhz2W4ka034r7xjPO+S1HhFpqd3lIUXsDWVLzLDqZANkN96f/fNApf46Iv9GKU03O1DmKWK29LT+Z0sw2yHqLulwhPA6JNC3EAixupqL/zqaVtgtzRN+5sZEZv4qXu/HCAkM9fY+IWzj7yWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030985; c=relaxed/simple;
-	bh=SQImZMhCTVZnM1Yiox7tTnc0iVVS1xw8KwjmrbjwgfU=;
+	s=arc-20240116; t=1771030718; c=relaxed/simple;
+	bh=oJk5DkIzIOcPUBLFNrFEmh7/x9GuEfuX178fRIzZMwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NscIFpsr/ftBhnKGU9IE20j+76NEyS0mE//5Kh05TT31er98Ghlmsi0cItNYVntuF5UG/agByaukH7IGBVQ1+xdVjKksRh4CiXmzpivY/65Gj4/OfCeWb73C0QMsmuqdUhM4D9BXPBhq3++P2ymQgiSi2yeIJNd4LmVKuuQuVVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exSiechR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FFBC16AAE;
-	Sat, 14 Feb 2026 01:03:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s5rvxWYuIMzZmZjitFdqofupeWMfYVqL+a1ubUVk1ncPLko28rLiwy3/CM/o/FvzpKrQdTMHom9Hkos9zWPWl4dX6PGRmnnr0fTQEbO/VMHzs4sXMLsX+U7fY6YYLtIdvYfh4fVWr3Rpi9a/ySCBy+lT4ipx5ty3kccqdN3cVoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QbgsOnKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D757FC2BC9E;
+	Sat, 14 Feb 2026 00:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030985;
-	bh=SQImZMhCTVZnM1Yiox7tTnc0iVVS1xw8KwjmrbjwgfU=;
+	s=k20201202; t=1771030717;
+	bh=oJk5DkIzIOcPUBLFNrFEmh7/x9GuEfuX178fRIzZMwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exSiechRTZLkqWZwmYGGsz3oUP3JFAp2YpgUgBpfhlzuKCVWtn/8mts/w5CKqEOGk
-	 +VNbQNsSgD6GzaIW0OV4HOK8O+eN4Z6p37A7Bkl/TxNA4q2qbUbO1hSrclrysREMSa
-	 Fm6NurJzEZ9sahH/XYybq+08UOQSWYgfiRKU/wslhYK8hxvyeVNBB50lTLZRiB9x2k
-	 5yzf2QMpp7rKSDm7ILQO44BN8EDCu9pWTj5WtXdmEQZRJlrQFAg9J53DOqxI/o1Qby
-	 QwL28mIU3qX10TaLfLoKPOIsExlXah6bDY03QmZ5WBI9UJqprRzHPf6j/2Kv0b1m21
-	 VZrE632OTpo5g==
+	b=QbgsOnKvNGoeM8gsCJjbgpA4VJ5Ol+CkxSQwNWDpAbt/dFdDCP+Hc/uoaZ40xwF5o
+	 fCI8oRpgAIgNNgru8t2L8+E8a33SHfW10kwyoaXEG1BA9vkMH6MHSuQyMlR8+HARD8
+	 cuo7e4H7k0BX1Dy9w1dwiaScg99M2sJX7eRu9NBYxhuD18xOvZIyK5ZGywQ2u6RuhP
+	 PUTzdrtDFs7hktatKeOWqMylKPl9653rkRdahPt0ykv4n2bhPagIL1l7c0IbYkD9Xq
+	 r+wfLQmeIrr+ZLNhzWOgLJzEp0gsWwRXpP21GvHF820ANvNoSBa1j0qSzthGJjXvV6
+	 JKPvPciL9qnhg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
-	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	intel-xe@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.19-6.12] drm/xe: Only toggle scheduling in TDR if GuC is running
+	sudeep.holla@kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.19-6.12] firmware: arm_ffa: Unmap Rx/Tx buffers on init failure
 Date: Fri, 13 Feb 2026 19:58:11 -0500
-Message-ID: <20260214010245.3671907-11-sashal@kernel.org>
+Message-ID: <20260214005825.3665084-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
-References: <20260214010245.3671907-1-sashal@kernel.org>
+In-Reply-To: <20260214005825.3665084-1-sashal@kernel.org>
+References: <20260214005825.3665084-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,229 +75,182 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216342-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216324-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D3A2613A4E2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 4E4D813A394
 X-Rspamd-Action: no action
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit dd1ef5e2456558876244795bb22a4d90cb24f160 ]
+[ Upstream commit 9fda364cb78c8b9e1abe4029f877300c94655742 ]
 
-If the firmware is not running during TDR (e.g., when the driver is
-unloading), there's no need to toggle scheduling in the GuC. In such
-cases, skip this step.
+ffa_init() maps the Rx/Tx buffers via ffa_rxtx_map() but on the
+partition setup failure path it never unmaps them.
 
-v4:
- - Bail on wait UC not running (Niranjana)
+Add the missing ffa_rxtx_unmap() call in the error path so that
+the Rx/Tx buffers are properly released before freeing the backing
+pages.
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Link: https://patch.msgid.link/20260110012739.2888434-4-matthew.brost@intel.com
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Message-Id: <20251210031656.56194-1-lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a comprehensive understanding of this commit. Let me
-summarize my analysis.
+## Analysis
 
----
+### 1. Commit Message Analysis
 
-## Comprehensive Analysis
+The commit message clearly describes a **resource leak on an error
+path**: `ffa_init()` maps Rx/Tx buffers via `ffa_rxtx_map()`, but when
+`ffa_setup_partitions()` fails, the error path frees the backing pages
+without first unmapping the buffers from the firmware. The fix adds the
+missing `ffa_rxtx_unmap()` call. The commit was accepted by the FF-A
+subsystem maintainer Sudeep Holla.
 
-### 1. COMMIT MESSAGE ANALYSIS
+### 2. Code Change Analysis
 
-The commit message states: "If the firmware is not running during TDR
-(e.g., when the driver is unloading), there's no need to toggle
-scheduling in the GuC. In such cases, skip this step."
+The fix is a **single line addition**:
 
-This is clearly a bug fix for a race condition during driver unloading.
-The "v4" tag and review from Niranjana Vishwanathapura confirm this went
-through review iterations. The specific mention of "Bail on wait UC not
-running" in v4 notes shows the second hunk was specifically requested by
-reviewers.
-
-### 2. CODE CHANGE ANALYSIS
-
-The patch makes exactly **two** small, surgical changes in
-`guc_exec_queue_timedout_job()`:
-
-**Change 1 (line 1307):** Adds `&& xe_uc_fw_is_running(&guc->fw)` to the
-condition guarding `disable_scheduling()`:
-
-```c
-// Before:
-if (!exec_queue_destroyed(q)) {
-// After:
-if (!exec_queue_destroyed(q) && xe_uc_fw_is_running(&guc->fw)) {
+```2071:2071:drivers/firmware/arm_ffa/driver.c
+        ffa_rxtx_unmap(drv_info->vm_id);
 ```
 
-This prevents `disable_scheduling()` from being called when the GuC
-firmware is not running. `disable_scheduling()` sends a command to the
-GuC via `xe_guc_ct_send()` and sets the `exec_queue_pending_disable`
-flag. If the firmware is dead, the send will fail (return `-ECANCELED`
-from `__guc_ct_send_locked` when `ct->state ==
-XE_GUC_CT_STATE_STOPPED`), but the `pending_disable` flag is already
-set. This means the subsequent `wait_event_timeout` will wait a full 5
-seconds for a G2H response that will **never** come, then trigger a
-spurious GT reset via `trigger_reset`.
+inserted between `ffa_notifications_cleanup()` and the `free_pages:`
+label.
 
-**Change 2 (line 1341):** Adds `!xe_uc_fw_is_running(&guc->fw) ||` to
-the wait condition:
+**Understanding the bug mechanism:**
 
-```c
-// Before:
-ret = wait_event_timeout(guc->ct.wq,
-                         !exec_queue_pending_disable(q) ||
-                         xe_guc_read_stopped(guc) ||
-                         vf_recovery(guc), HZ * 5);
-// After:
-ret = wait_event_timeout(guc->ct.wq,
-                         !xe_uc_fw_is_running(&guc->fw) ||
-                         !exec_queue_pending_disable(q) ||
-                         xe_guc_read_stopped(guc) ||
-                         vf_recovery(guc), HZ * 5);
-```
+The `ffa_init()` function follows this flow:
+1. Allocates Rx/Tx buffer pages (lines 2038-2048)
+2. Maps them to firmware via `ffa_rxtx_map()` (line 2050) — this is an
+   FF-A SMC/HVC call to the secure firmware (e.g., TrustZone / Hafnium
+   hypervisor)
+3. Sets up partitions via `ffa_setup_partitions()` (line 2065)
+4. If partition setup fails, falls through to `free_pages:` which frees
+   the backing pages
 
-This is a safety net: even if `disable_scheduling` was somehow called
-before firmware went down (a TOCTOU race between the first check and the
-CT send), the wait will immediately resolve when firmware goes down
-rather than hanging for 5 seconds.
+The problem: Step 4 **never calls `ffa_rxtx_unmap()`**, so the firmware
+retains stale references to the freed physical pages. The `ffa_exit()`
+function (line 2081-2089) correctly calls `ffa_rxtx_unmap()` before
+freeing pages, confirming the error path was simply missing this
+cleanup.
 
-### 3. BUG MECHANISM
+**Consequences of the bug:**
+- The firmware (running in secure world or EL2 hypervisor) still holds
+  mappings to physical addresses of freed kernel pages
+- Those freed pages can be reallocated for other kernel purposes
+- The firmware could write to these stale mappings, causing **memory
+  corruption** of unrelated kernel data
+- On systems with a stage-2 hypervisor, the mapping entries are also
+  leaked
 
-Without this fix, during driver unloading:
-1. TDR (Timeout Detection and Recovery) fires for a pending job
-2. GuC firmware has already been stopped (driver is unloading)
-3. `disable_scheduling()` sends a command to the dead GuC
-4. The CT send fails but `exec_queue_pending_disable` is already set
-5. The `wait_event_timeout` waits 5 full seconds for a response that
-   never arrives
-6. Timeout triggers `trigger_reset` path → spurious
-   `xe_gt_reset_async()` + `xe_devcoredump()`
-7. This causes unnecessary GT resets, devcoredumps, and potentially
-   warnings/errors during teardown
+### 3. Bug Origin
 
-### 4. COMPANION COMMIT
+The bug was introduced by commit
+`0c565d16b80074e57e3e56240d13fc6cd6ed0334` ("firmware: arm_ffa: Handle
+partitions setup failures"), which first made `ffa_setup_partitions()`
+return an error and added an error path in `ffa_init()`. Before this
+commit, `ffa_setup_partitions()` was void and never triggered error
+cleanup. This commit landed in **v6.8**. The error path was later
+restructured by `be61da9385766` (v6.15), but the missing unmap persisted
+through both versions.
 
-Commit `9b42321a02c50` ("drm/xe/guc: Check GuC running state before
-deregistering exec queue") by Shuicheng Lin already fixed the
-**identical** issue in the `__guc_exec_queue_process_msg_cleanup()`
-path. That commit has `Fixes: dd08ebf6c352` and `Cc:
-stable@vger.kernel.org` tags and is already in the tree. The commit
-being analyzed is the same type of fix but for the TDR path — it's a
-parallel fix for the same class of bug in a different code path.
+### 4. Classification
 
-### 5. DEPENDENCY CHECK
+This is a **resource leak / firmware-side stale mapping fix** on an
+error path. It is NOT a new feature, API change, or refactoring — it is
+purely adding missing cleanup.
 
-The patch depends on:
-- `#include "xe_uc_fw.h"` being present — **already added** by
-  `9b42321a02c50`
-- The `xe_uc_fw_is_running()` function — **already exists** in
-  `xe_uc_fw.h`
-- The `guc->fw` field — **always existed** in `struct xe_guc`
+### 5. Scope and Risk Assessment
 
-The patch applies cleanly to the current tree. No additional
-dependencies.
+- **Lines changed**: 1 line added
+- **Files changed**: 1 file (`drivers/firmware/arm_ffa/driver.c`)
+- **Risk**: Extremely low. The `ffa_rxtx_unmap()` function is already
+  used in `ffa_exit()` for normal cleanup. Adding it to the error path
+  is the obvious correct fix. The function itself just issues an FF-A
+  call to the firmware.
+- **Regression potential**: Near zero. This only affects the failure
+  path of `ffa_setup_partitions()`, and calling unmap before freeing is
+  strictly correct.
 
-### 6. SCOPE AND RISK
+### 6. User Impact
 
-- **Lines changed:** 2 lines modified (one condition added, one wait
-  condition added)
-- **Files affected:** 1 (`xe_guc_submit.c`)
-- **Risk:** Very low — both changes are additive conditions that skip
-  operations when firmware is not running. They can never make things
-  worse because if firmware IS running, behavior is identical.
-- **Subsystem:** GPU driver (xe), limited blast radius
+This affects ARM platforms using FF-A (Firmware Framework for Arm) —
+notably ARM TrustZone/OP-TEE systems, Arm CCA systems, and virtualized
+ARM environments with Hafnium. While `ffa_setup_partitions()` failure is
+not the most common path, when it does occur, the consequences (firmware
+holding stale page references, potential memory corruption) are severe.
 
-### 7. USER IMPACT
+### 7. Stable Kernel Criteria Check
 
-This affects Intel Xe GPU users who experience:
-- Spurious GT resets and warnings during driver unload/unbind
-- 5-second hangs in TDR path when GuC firmware isn't running
-- Unnecessary devcoredumps during teardown
+| Criterion | Met? |
+|---|---|
+| Obviously correct and tested | Yes — mirrors `ffa_exit()` cleanup
+exactly |
+| Fixes a real bug | Yes — resource leak + potential memory corruption |
+| Important issue | Yes — firmware-side stale mapping to freed kernel
+pages |
+| Small and contained | Yes — 1 line in 1 file |
+| No new features | Yes — purely error-path cleanup |
+| Applies cleanly | Yes — for v6.8+ trees (may need minor adjustment for
+v6.8-v6.14 which used `cleanup_notifs:` label) |
 
-Without the fix, the driver teardown sequence can be disrupted by TDR
-firing at the wrong time, leading to error messages and potentially
-slower/buggy driver unload.
+### 8. Dependency Check
 
-### 8. STABILITY ASSESSMENT
+The fix depends on `0c565d16b80074e57e3e56240d13fc6cd6ed0334` (v6.8) for
+the error path to exist, and on `be61da9385766` (v6.15) for the exact
+code structure in the diff. For stable trees between v6.8 and v6.14, a
+trivially adjusted backport would be needed (placing the unmap call
+inside the `cleanup_notifs:` section instead of inline). The fix is
+self-contained and has no other dependencies.
 
-- **Reviewed-by:** Niranjana Vishwanathapura (Intel)
-- **Author:** Matthew Brost (Intel Xe maintainer and key contributor)
-- **Pattern:** Identical to the already-accepted companion fix
-  `9b42321a02c50`
-- The fix is purely defensive — it adds a "firmware running" guard
-  before sending commands
+### Conclusion
 
-### 9. CLASSIFICATION
-
-This is a **bug fix** that prevents:
-- Spurious GT resets during driver unload
-- Unnecessary 5-second timeouts/hangs
-- False "Schedule disable failed to respond" warnings
-- Unneeded devcoredumps
-
-It is NOT a feature addition — it's a guard against calling into dead
-firmware.
-
-### Verdict
-
-This commit fixes a real bug in the TDR path of the Xe GPU driver where
-attempting to communicate with dead GuC firmware during driver unloading
-causes spurious timeouts, unnecessary GT resets, and error messages. The
-fix is small (2 line changes), surgically targeted, obviously correct,
-reviewed by Intel engineers, and follows the exact same pattern as the
-companion commit `9b42321a02c50` that is already accepted for stable.
-The dependency on `xe_uc_fw.h` include is satisfied by the companion
-commit. Risk is minimal as the change only skips operations when
-firmware is not running.
+This is a textbook error-path resource leak fix: a single line adding
+missing firmware unmap before freeing the backing pages. The bug leaves
+the firmware holding stale references to freed kernel memory, which
+could lead to memory corruption. The fix is minimal, obviously correct
+(mirrors `ffa_exit()`), and accepted by the subsystem maintainer. It
+meets all stable kernel criteria.
 
 **YES**
 
- drivers/gpu/drm/xe/xe_guc_submit.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_ffa/driver.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index f6ba2b0f074d2..ced13f17fb720 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1304,7 +1304,7 @@ guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)
- 		if (exec_queue_reset(q))
- 			err = -EIO;
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index c72ee47565856..7209a630f6d16 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -2068,6 +2068,7 @@ static int __init ffa_init(void)
  
--		if (!exec_queue_destroyed(q)) {
-+		if (!exec_queue_destroyed(q) && xe_uc_fw_is_running(&guc->fw)) {
- 			/*
- 			 * Wait for any pending G2H to flush out before
- 			 * modifying state
-@@ -1339,6 +1339,7 @@ guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)
- 		 */
- 		smp_rmb();
- 		ret = wait_event_timeout(guc->ct.wq,
-+					 !xe_uc_fw_is_running(&guc->fw) ||
- 					 !exec_queue_pending_disable(q) ||
- 					 xe_guc_read_stopped(guc) ||
- 					 vf_recovery(guc), HZ * 5);
+ 	pr_err("failed to setup partitions\n");
+ 	ffa_notifications_cleanup();
++	ffa_rxtx_unmap(drv_info->vm_id);
+ free_pages:
+ 	if (drv_info->tx_buffer)
+ 		free_pages_exact(drv_info->tx_buffer, rxtx_bufsz);
 -- 
 2.51.0
 
