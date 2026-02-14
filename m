@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-216487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BBuCLCYkGkObgEAu9opvQ
-	(envelope-from <stable+bounces-216487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 16:45:52 +0100
+	id 2M8sJrKckGmYbgEAu9opvQ
+	(envelope-from <stable+bounces-216489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 17:02:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E35AE13C5AD
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 16:45:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F7C13C639
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 17:02:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02F593014954
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 15:45:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 76D38302D501
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 16:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEEE2F363C;
-	Sat, 14 Feb 2026 15:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="mv2f3Fj4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC9730E853;
+	Sat, 14 Feb 2026 16:02:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484101DFF7;
-	Sat, 14 Feb 2026 15:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A201A9B58;
+	Sat, 14 Feb 2026 16:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771083945; cv=none; b=gZ03702w73NMGFeQ9RB2y1TEQd12CwU5jsEnNAh6T0FfXY165V2P/Cgmcu/QrCuG2FwzNEUW/zwA4QtLkzAJTFVyEOUuZXJZGUYrqFZrESjxGhQkn9uf1+MV3IFNdzbYX565m28c0e7CRn2Dp8zHQiv1otI4R+Remyt1EYNg3mU=
+	t=1771084945; cv=none; b=F517Rpaml96gsbFArw5bqoYN702/NNb0xJFG+Ndz5sRI3lHLFJQ1TiHKA6R2gBiB8i8HZxjCWRHJxbzHX3IdoWPV0isucZq986FGT/A3nAM3hy0gN01MKxwU/m/oqgVgCbqmvFrqeE3qPwyz2Sqiv3dJDpkE9C38MwL0jLA5dYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771083945; c=relaxed/simple;
-	bh=2b/Hz7E/hS5O1BPXPF/6BmcIdM80RX59SIW0Jgmtuqs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ln5UDrhZ6pB+rOqTKkFBIr2nYWHSfQkD/b73YcYEoXPY++5w02vZliz5pYDXUu3YIDvcX40oFCy6CgbvtfgP6yhB4dfDjOMvMntg/noGSC0vcdVIvK3JV9pG1zTBFrXWPrJ1uaPjtaLsZWjxTbVrYccMJDugorDIGDdnfQsd3ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=mv2f3Fj4; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from debian.lan (unknown [104.28.230.246])
-	by mail.ispras.ru (Postfix) with ESMTPSA id B6F56406C740;
-	Sat, 14 Feb 2026 15:45:33 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru B6F56406C740
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1771083934;
-	bh=oTfkgZXpjapkYtjWtm270jN3Ycp4DQI4x3V+ugTHea8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mv2f3Fj46VPIZWHd8f6zo+6m8q8FsHAiojEklclq9MlEeTmnAfY8889uGbTAJnKfg
-	 6faZYPMahC8PrKiGmQ1mGdcuGGgpzT9a8ZNmZDKEkgXqVU44v6lhGUsv0y2qpcWeUq
-	 5IJgwxHFhsnunKkxXWQDQpbDplTLWxgtRct77UrI=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	NeilBrown <neil@brown.name>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
+	s=arc-20240116; t=1771084945; c=relaxed/simple;
+	bh=szOSM7pLLVaMb8SAb89V/OUI3Wkne7RuUiEbJGlLJrE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B9MWtM2GzrnWNu8BO6Bid6pOKTuzeVxx6vkJ6jCH5QUTfG5R2roGm4Y5XDMaUmuj6XZDXVBsOVMLQccBxWuv43/wesQ+7PhpRlNVkA/ns8wFS5DvSAEtxLjyAdIvAnYHd5XA/1EY1kDp92rgffg7iP1GkYLyx/pDo6YR+NQvEfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+From: Brett A C Sheffield <bacs@librecast.net>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error paths
-Date: Sat, 14 Feb 2026 18:45:14 +0300
-Message-ID: <20260214154515.1229565-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.51.0
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@nabladev.com,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com,
+	Brett A C Sheffield <bacs@librecast.net>
+Subject: Re: [PATCH 6.12 00/24] 6.12.72-rc1 review
+Date: Sat, 14 Feb 2026 16:01:58 +0000
+Message-ID: <20260214160205.4401-1-bacs@librecast.net>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
+References: <20260213134704.728003077@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,89 +68,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ispras.ru,none];
-	R_DKIM_ALLOW(-0.20)[ispras.ru:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216487-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,brown.name];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[librecast.net];
+	TAGGED_FROM(0.00)[bounces-216489-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pchelkin@ispras.ru,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ispras.ru:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E35AE13C5AD
+	R_DKIM_NA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[librecast.net:mid,librecast.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 38F7C13C639
 X-Rspamd-Action: no action
 
-There are two places where ksmbd_vfs_kern_path_end_removing() needs to be
-called in order to balance what the corresponding successful call to
-ksmbd_vfs_kern_path_start_removing() has done, i.e. drop inode locks and
-put the taken references.  Otherwise there might be potential deadlocks
-and unbalanced locks which are caught like:
+# Librecast Test Results
 
-BUG: workqueue leaked lock or atomic: kworker/5:21/0x00000000/7596
-     last function: handle_ksmbd_work
-2 locks held by kworker/5:21/7596:
- #0: ffff8881051ae448 (sb_writers#3){.+.+}-{0:0}, at: ksmbd_vfs_kern_path_locked+0x142/0x660
- #1: ffff888130e966c0 (&type->i_mutex_dir_key#3/1){+.+.}-{4:4}, at: ksmbd_vfs_kern_path_locked+0x17d/0x660
-CPU: 5 PID: 7596 Comm: kworker/5:21 Not tainted 6.1.162-00456-gc29b353f383b #138
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-Workqueue: ksmbd-io handle_ksmbd_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x44/0x5b
- process_one_work.cold+0x57/0x5c
- worker_thread+0x82/0x600
- kthread+0x153/0x190
- ret_from_fork+0x22/0x30
- </TASK>
+020/020 [ OK ] liblcrq
+010/010 [ OK ] libmld
+120/120 [ OK ] liblibrecast
 
-Found by Linux Verification Center (linuxtesting.org).
+CPU/kernel: Linux auntie 6.12.72-rc1-g4b487d46d595 #1 SMP PREEMPT_DYNAMIC Sat Feb 14 15:07:47 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
-Fixes: d5fc1400a34b ("smb/server: avoid deadlock when linking with ReplaceIfExists")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- fs/smb/server/smb2pdu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index cbb31efdbaa2..2782eea214d0 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6115,14 +6115,14 @@ static int smb2_create_link(struct ksmbd_work *work,
- 				rc = -EINVAL;
- 				ksmbd_debug(SMB, "cannot delete %s\n",
- 					    link_name);
--				goto out;
- 			}
- 		} else {
- 			rc = -EEXIST;
- 			ksmbd_debug(SMB, "link already exists\n");
--			goto out;
- 		}
- 		ksmbd_vfs_kern_path_end_removing(&path);
-+		if (rc)
-+			goto out;
- 	}
- 	rc = ksmbd_vfs_link(work, target_name, link_name);
- 	if (rc)
--- 
-2.51.0
-
+Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
