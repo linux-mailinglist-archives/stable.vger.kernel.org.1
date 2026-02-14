@@ -1,178 +1,230 @@
-Return-Path: <stable+bounces-216318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PNsNpPIj2l9TgEAu9opvQ
-	(envelope-from <stable+bounces-216318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:57:55 +0100
+	id gDBxM73Jj2nMTgEAu9opvQ
+	(envelope-from <stable+bounces-216332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:02:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CABF13A33F
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C35313A3E8
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8912830233D4
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:57:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 317EE301DC33
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B724DF59;
-	Sat, 14 Feb 2026 00:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DD81CAA68;
+	Sat, 14 Feb 2026 01:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="nLXxsvDX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VoDQrvxR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1141F471F
-	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 00:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030665; cv=pass; b=Vlt+8BpcxdtcqnnAmvGax3YWArndMWrOdQCm7KcQcHmQ+JHoLYUu87Jb0k34cJn3h8+CQ5Kv3rd8iqb+WGyIKecC22ux2NUjhjTxj6k9CJ43QlnYFAQyoipPIWIkAecLXEBW4KKu9YX8QZgSvfLL05JuEOvWOabUnJ9w/A4CxPg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030665; c=relaxed/simple;
-	bh=sHr1Cl/Gl9fpAr8sKGi8KjHqbPHHwCS/wUW/pNi/eTM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CeO8sNSXlgCwSIRBWNT5dJDlYCNWkIXrWnppp7jJTd+x5PyLyxcrXcOEoGQBu+0ljUfSKesGbE0mPDmAd4leMET57GKXhT2eVlpMsjM9H+mJjVGZ6w00Yb6L2HosQbMLL2ZgFD+QHsqgN8gOudkWmZztiref1WPoOEQA9BBrgCU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=nLXxsvDX; arc=pass smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-89577f866d6so20907576d6.0
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 16:57:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771030662; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LzLNfeZiTAROW50egGMDK2RcbA5u5xvaUx0GLnuuzg1x2ogyP1Pkv+Znl8tr3aRXSZ
-         Hur+jlb3d7i5+k0m0Fz0C9MLVWggTGkxT9QLf6ZoA2R7+93+gvr3aK/oXu1aFrIegDq4
-         9PCAQEkaMnwmA1U88Nxk6LKnkGfoNbt0+PentdLS+koFkzDrI7u0J0l8nHZXAh9seOH4
-         lal2AnXyhU4j6oepDmxDqI1Vl0j+hpXl9wuTFsPPQwdB8+wDSDgLss5K8P+uaGHEsBC3
-         T19NpRc24cOawfYV+Q64W7J3471O+UmSarteAjJtiiYZ+2GJMOxftQNWn8Q35Fw+btd+
-         HAOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SU6MnRDhwPzTEBvQJvMDhOJ2GyLQFBxvyqaP+MaDgQg=;
-        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
-        b=IDlwxzmoOaU8i2RqmBqlrTRId1TpIL5dK0heiqqx9R0QnPlUAbpWQnd71GUaWVdS0+
-         uoo/ogEl7lHh4236SpwWv+8MXK+2AkuGx+D4/pzOUmpsURLfUvcJVARpvfgkGHJs2fWQ
-         f83ov2fkfxYiDKX6N3bUurr+jUIEo1/xMDth9V0MtCD+mjtgzC5hMU+KJr//9P8UG8kt
-         m84J6zqJHb/1qvQV1Br82I+S+wf5YdRTLmCCTRdDswnMK4qnJ6/weMCF68eoSu9orKX3
-         nNhb9m/c+HidblFnefp439sJ9bZZed5RrRPV+yNKreCIDd6MmvHgC0kG2y5qhZjg4RR6
-         pD+w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1771030662; x=1771635462; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SU6MnRDhwPzTEBvQJvMDhOJ2GyLQFBxvyqaP+MaDgQg=;
-        b=nLXxsvDXfwwnXXIBhtpLK8r3SzWE81XYud1eYX3p6xDVaZjKy5S3iQ8Bs6BRsDc5cb
-         o8u8Dr4ZNivx3RSjJrWL2Cvzdmm6a7NqHOwISMX2OENEzkgtumDSwDTwh6Q/5XgKxt6q
-         Jvt3aVVVc5i/ZABLeeywi/VnGo+is84U5HzLq8WXYkicPVFHUmI/mZt+GZyhDYyajNCO
-         i6VSqFNRPiI1M5WRQCE/6C6CKkTSGsuTFytLbYFcFxbjxW47NKOPfVM39mt754Dahwu0
-         gyiUgHHzzmjO90cA4/RFbr9HzaYFZpE9p6o0ZBMVo/huLGPzghKKd4iCAlKczRWpQb3w
-         DcQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771030662; x=1771635462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SU6MnRDhwPzTEBvQJvMDhOJ2GyLQFBxvyqaP+MaDgQg=;
-        b=GReUPN40lzvfuh4MySsFNWx3EAXxXunsTEV6gOf3Ud3HJTOqMhb5qqGDNmZwYiBkcN
-         TDxZYyZ9QX/bwp1/zJJERty4I6MhfeZnnM+PyPxYNaqSwCdDWiAaCxjrIJiyOYHpxEPe
-         tNtd1gvFsCCbIXPZYe8cLDtxqt4IVXrzhc4rKuClvAllryb35y6wraNTWFOdPBAdr+3M
-         5X1+um6HpbHsHo9m0qAdmsNIPZkTabexmClPPcsrjAqXQg+J0rKZ78BBUtvvOT27fpUK
-         GqY3DL/48hWpg+8Q/yQdlrJRKgHq7CIWUyjTxIo3fib0pDONw2yV+7GXSFOn0RhD7py3
-         Ir2g==
-X-Gm-Message-State: AOJu0YyLc4unBjoUu5k4Rq2P9z8fLRJzEskG0tVuVOAfjShUGPZPbUfG
-	XorL4ZI+HBv0E5nXP9hGuIsrmsWIZF5LoYCe50J0g6PhW4fJqlWOUMcXEpdHKMFM0jKUH9ZYz3k
-	WrgVozJXn2FB7buuPszzaEdSqgq10CRchRMjUSP9Tlw==
-X-Gm-Gg: AZuq6aImQmy4Sd0lChjTTZ8/BubAHFe9pX8H+JslWd7scNimh2+sfRl2F8Ebnb3RQOL
-	Tok9BpK6GPUcDVEkDK77SN+drE93KeC1sQhepzWVzEvyZ70LpFe4x9niTWrZ/HipqiV0IhMusgd
-	j7hE48GmlbwHxOxRUBeklTCrWgDjAkiz98ebtpvcs8vQJ6O0RqWRtCzQ4Np+hxVIPHpS5ogAuMy
-	/PRSpTaEKv/vTvoe23LSLuQOCwrhli2lZp7WmpPkNh3NuLZGw1M21w/HSZ3SeQhwISdT10xZa3g
-	JLswnUnu
-X-Received: by 2002:a05:6214:f2f:b0:895:496f:1a71 with SMTP id
- 6a1803df08f44-8973f3270admr30874566d6.28.1771030661914; Fri, 13 Feb 2026
- 16:57:41 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AEA3EBF2C;
+	Sat, 14 Feb 2026 01:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771030968; cv=none; b=Esy4nXOqErLpAev6DzGYDkIfYaRHLAV6L1cWSCWjkyRBcW9nqGTp482IMXvjo3Isb/ssAh3HuL+CmsTNhwcLd/SIJIj91TXpfIEpLR3VKqp0tiehFZRUzErHBNgYatdMzcHvGcjCtTZ5i7aYYztYGbgD1oezjyFefGuklWr/Ecg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771030968; c=relaxed/simple;
+	bh=UePWfbBxgT7I3H7m3efoMmny1MCBrzsMkljxq39MG+8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o7ezbsZUm6IoghiB5xpB2+Trk9vmX2OG4CP4R4og313PoZ/+rx3RRUtMzQYD01PuKZVh3hMw5JLVSxskp0SNygAz+YuOVXHmp6uHjX0JIUls8dkmfBNXflIWtGgksQzINRo1D73ENkQo0kCqpMuawxv7cCJkY/KYvYwrdV6ySpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VoDQrvxR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE4CC116C6;
+	Sat, 14 Feb 2026 01:02:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771030967;
+	bh=UePWfbBxgT7I3H7m3efoMmny1MCBrzsMkljxq39MG+8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VoDQrvxRxIPXIqF379p3ekn1CgqfqdSFbkoV2ss+HNVqRh9ioOu7DOlEffIGyZS2a
+	 5y6icfR6IrBl59gV5ya02eK7f/nuUuiU0r211BrfuDqVwb8L8Y1f/EGPBYxgypMPqI
+	 TyGTgq6IdSDKgcHh8MnBrAfFjPVJrEoclBCJF8WC3L7bbcpeKfjuUUarKL3lUsitZR
+	 87gr2vopQU6fD65E3W3flvJIYwN+PpFxPVutUqrAomkPSX9iIe5xj4DxNKCamfaFWS
+	 Sl9iSF5PXYhZ1u9eC5gpt2Ph9Mce+cauTcEsHFJXgmLVXxuGQpBTKxLRdw2lBeye9T
+	 qhCUNdpHT0FyQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.12] media: ipu6: Close firmware streams on streaming enable failure
+Date: Fri, 13 Feb 2026 19:58:01 -0500
+Message-ID: <20260214010245.3671907-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260213134708.885500854@linuxfoundation.org>
-In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
-From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Fri, 13 Feb 2026 19:57:30 -0500
-X-Gm-Features: AZwV_QhayJbInj89dprU9BzQFB3-jRrbL_KUJPSMlYjl_XfLKIdFgNNjVeSQGuo
-Message-ID: <CAOBMUvgi+=sneGYgUKCoJMhZwd2x55ih9tZa2_LX=Y67pMSEJw@mail.gmail.com>
-Subject: Re: [PATCH 6.18 00/49] 6.18.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[ciq.com,reject];
-	R_DKIM_ALLOW(-0.20)[ciq.com:s=s1];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216318-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-216332-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ciq.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bmastbergen@ciq.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ciq.com:email,ciq.com:dkim,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 9CABF13A33F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 4C35313A3E8
 X-Rspamd-Action: no action
 
-On Fri, Feb 13, 2026 at 8:52=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.18.11 release.
-> There are 49 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 15 Feb 2026 13:46:52 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.18.11-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.18.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-Builds successfully.  Boots and works on qemu and Intel Core i7-10810U
+[ Upstream commit 5925a92cc70d10c7d3124923c36da09b9c1a6eeb ]
 
-Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
+When enabling streaming fails, the stream is stopped in firmware but not
+closed. Do this to release resources on firmware side.
 
-Thanks,
-Brett
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Bingbu Cao <bingbu.cao@intel.com>
+Tested-by: Mehdi Djait <mehdi.djait@linux.intel.com> # Dell XPS 9315
+Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+## Analysis
+
+### Commit Message Analysis
+
+The commit message is clear and directly describes a bug fix: when
+streaming enable fails, the firmware stream is stopped but not closed,
+leading to a resource leak on the firmware side. The fix adds a
+`close_streaming_firmware(av)` call in the error path.
+
+Key signals:
+- "Close firmware streams on streaming enable failure" — error path fix
+- "release resources on firmware side" — resource leak fix
+- Has **Reviewed-by** from two people (Bingbu Cao, Mehdi Djait)
+- Has **Tested-by** on real hardware (Dell XPS 9315)
+- Reviewed by subsystem maintainer (Hans Verkuil)
+
+### Code Change Analysis
+
+The change is a **single line addition**:
+
+```c
+out_media_entity_stop_streaming_firmware:
+        stop_streaming_firmware(av);
++       close_streaming_firmware(av);
+
+        return ret;
+```
+
+This is in the error path (`goto
+out_media_entity_stop_streaming_firmware`) that handles the case where
+`v4l2_subdev_enable_streams()` fails. The existing code already called
+`stop_streaming_firmware(av)` to stop the stream, but neglected to call
+`close_streaming_firmware(av)` to release the firmware resources.
+
+This is a classic **resource leak on error path** — one of the most
+common and important bug fix patterns for stable backports. The firmware
+stream is opened and stopped but never closed, which means firmware-side
+resources are leaked every time streaming enable fails.
+
+### Classification
+
+- **Bug type**: Resource leak (firmware resources not released on error
+  path)
+- **Pattern**: Missing cleanup call in error handler — a textbook error
+  path fix
+- **Not a feature addition**: Just completing the error handling that
+  should have been there
+
+### Scope and Risk Assessment
+
+- **Lines changed**: 1 line added
+- **Files changed**: 1 file
+- **Risk**: Extremely low — adding a missing cleanup call in an error
+  path
+- **Subsystem**: Intel IPU6 camera driver (media subsystem)
+- The fix follows the obvious pattern: the normal shutdown path
+  presumably calls both `stop_streaming_firmware()` and
+  `close_streaming_firmware()`, so the error path should too
+
+### User Impact
+
+- Affects users with Intel IPU6 camera hardware (common in modern Intel
+  laptops)
+- Without this fix, firmware resources leak when streaming setup fails,
+  which could lead to the camera becoming unusable until reboot
+- Tested on Dell XPS 9315 — a popular laptop model
+
+### Stability Indicators
+
+- Reviewed by two developers
+- Tested on real hardware
+- Single-line, obviously correct fix
+- No risk of regression — only adds cleanup that was missing
+
+### Dependency Check
+
+The fix is self-contained. It only adds a call to
+`close_streaming_firmware()` which already exists in the codebase. The
+IPU6 driver was added in the 6.8 timeframe, so this would be relevant
+for stable trees that include the IPU6 driver.
+
+### Conclusion
+
+This is a textbook stable backport candidate:
+1. **Obviously correct**: The error path stops streaming but doesn't
+   close it — the fix adds the missing close call
+2. **Fixes a real bug**: Firmware resource leak on error path
+3. **Small and contained**: Single line addition
+4. **No new features**: Just completing error handling
+5. **Well-reviewed and tested**: Multiple reviews and hardware testing
+6. **Low risk**: Cannot introduce regression — only affects an error
+   path by adding necessary cleanup
+
+**YES**
+
+ drivers/media/pci/intel/ipu6/ipu6-isys-video.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-video.c b/drivers/media/pci/intel/ipu6/ipu6-isys-video.c
+index dec8f5ffcfa5f..919b77107cef7 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-isys-video.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-isys-video.c
+@@ -1066,6 +1066,7 @@ int ipu6_isys_video_set_streaming(struct ipu6_isys_video *av, int state,
+ 
+ out_media_entity_stop_streaming_firmware:
+ 	stop_streaming_firmware(av);
++	close_streaming_firmware(av);
+ 
+ 	return ret;
+ }
+-- 
+2.51.0
+
 
