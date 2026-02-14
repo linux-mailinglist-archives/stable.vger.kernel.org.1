@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-216462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCd1IazUj2nXTwEAu9opvQ
-	(envelope-from <stable+bounces-216462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:49:32 +0100
+	id EGu3D5vcj2l+UAEAu9opvQ
+	(envelope-from <stable+bounces-216463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 03:23:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7EC13AB83
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:49:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C93C13AC3E
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 03:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1733F303CE9F
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:49:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 060253038285
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97D31F03DE;
-	Sat, 14 Feb 2026 01:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3E617A2FB;
+	Sat, 14 Feb 2026 02:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="imXThll3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NGHZbV0v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D73D5474F
-	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 01:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A1A78F59
+	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 02:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771033766; cv=none; b=SDQ/cv9I6GBdEyQWZ2F5bZLyKrkQq+5hffJ02Otbxd4sApi/bQUbPdAabkjGhn5WjWkXOEDEag4/yl+PqOTH8zvumMmfsC0MUmlwbwpbXcVECq7ErDBg+PtxcsnkiWTBLdgRUK+pmajr2CgsJY9kWxsODSwv4atqispmzEv5Pq0=
+	t=1771035799; cv=none; b=UiXDKK6kbB5GJlQ7FGR32uy9AmDmAYwhWgFYz2mEcf19/ej53maDZoL75umViuYPC63aTqjvEJDtgZ142kPgjxM/xb6nadGQu2k/MS8PfHJbjUThbMPSy0tbV5ghz+q4OjsOSBMjo4LsWj7oxAzjnaeh68r3EwNMSU40MpDJhfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771033766; c=relaxed/simple;
-	bh=HFWh0/6Ca1MZO9qIa1wj4J5dJVV1TpuKjTzBSEprzpA=;
+	s=arc-20240116; t=1771035799; c=relaxed/simple;
+	bh=ridQD8P1dsH2FX8RqVka7S2ww1xcA9HFtWqJLWF8S+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObYy8NhCJeqUOmRfsbFK88LG/6Eet+kwTbiWsJFTECwKt+8vYu9VEa7/CfVOivW09K9p66PEAcETN3qTo5H7vRDz+8cqMXd3eEW6qfbvyqPzClRgd9rD5FNX9nnOzseDIuTekIQ49MB1oYKeMCC8FYVR2YJzjrylcX22f5onZzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=imXThll3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF17C16AAE;
-	Sat, 14 Feb 2026 01:49:25 +0000 (UTC)
+	 MIME-Version; b=Hw8T26LU/vlVjXcQ61vEnL/pbR/vBfWN8md+K/B3dFibZh0Zwj5fno4t0SB9IKdAsBGCnbjxtSz6JO3n81J30j+A68m2Dm9JEeU2Y53QyVFdKRX9eFoWCYXcKGTlLOZENZMqwBSYc09L+bsTaxABF9RJAmsANuF/kuAi9tHLPGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NGHZbV0v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD106C116C6;
+	Sat, 14 Feb 2026 02:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771033766;
-	bh=HFWh0/6Ca1MZO9qIa1wj4J5dJVV1TpuKjTzBSEprzpA=;
+	s=k20201202; t=1771035798;
+	bh=ridQD8P1dsH2FX8RqVka7S2ww1xcA9HFtWqJLWF8S+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imXThll3kcMjoFAV1PuXn74zxhRdkR1JMFdwlQ0MMhDHZwmfFV9QPr9xNfuYl68FD
-	 qHWwZ7TAn/GZcuZ8Tl3zA6MVoLiDHHKqkEBj84+0dZzfU+FRX5jCRAmw6P31JpGyqS
-	 mXdfHb/moN5n3KAWoTzaRWvEkIEM0v5PNup2pOf++cMkF8KDSaTec/6RL7JBxX+S9S
-	 pGykwc5KN12HiTYm3gp8xXoEy5d56CYwhcG4PUUJYjeYYqJE3FIqoyz3/iv+hGMkSr
-	 liyJW2yWeU+tIreZByRuk3TXQRKtGWauPEO7AIX4YSlSwkF0iVPtjQnMoUzmSl0kio
-	 vkEJjNjfDYFRQ==
+	b=NGHZbV0vByVDhAQZg3+Q0F1yOcfB6l2hXzVLNx26n44tSk+0tM8yZJxBtEc7NXgqI
+	 lEefYbEdZKutgF98zwIOTHjGX8aG86g6gCPg8w8PszauT2i3I82fQ5WbJ6VJ10ZubP
+	 Jq3qxL1YLTHy6lJrb7WbOWr5cCOEAquGbPDo6OAP4381YfkTIi59rHfyyAxdIExvjh
+	 i6D/C/4RGhUnKzckmOzTDk5QiAwOzINeVEwIGWAmUZZ86BmYp5jeXXMndrgik/2SrZ
+	 fg7Vlcq7fjiDf1p2z/lR5WHlAsFBeKHG6nI71vEn5AnOxO+qoQVj7B1LnnQy358qFj
+	 8WqqOL3VCVcxw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Liu Song <liu.song13@zte.com.cn>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	stable@kernel.org,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] PCI: endpoint: Avoid creating sub-groups asynchronously
-Date: Fri, 13 Feb 2026 20:49:23 -0500
-Message-ID: <20260214014923.3899226-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/3] PCI: endpoint: Automatically create a function specific attributes group
+Date: Fri, 13 Feb 2026 21:23:13 -0500
+Message-ID: <20260214022316.4103092-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214014923.3899226-1-sashal@kernel.org>
-References: <2026021303-salt-retread-63e7@gregkh>
- <20260214014923.3899226-1-sashal@kernel.org>
+In-Reply-To: <2026021308-foil-sycamore-7994@gregkh>
+References: <2026021308-foil-sycamore-7994@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,12 +71,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216462-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216463-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -90,107 +89,273 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cfs_work.work:url,zte.com.cn:email]
-X-Rspamd-Queue-Id: DB7EC13AB83
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8C93C13AC3E
 X-Rspamd-Action: no action
 
-From: Liu Song <liu.song13@zte.com.cn>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 7c5c7d06bd1f86d2c3ebe62be903a4ba42db4d2c ]
+[ Upstream commit 70b3740f2c1941e2006d61539131b70d20cba9a6 ]
 
-The asynchronous creation of sub-groups by a delayed work could lead to a
-NULL pointer dereference when the driver directory is removed before the
-work completes.
+A PCI endpoint function driver can define function specific attributes
+under its function configfs directory using the add_cfs() endpoint driver
+operation. This is done by tying up the mkdir operation for the function
+configfs directory to a call to the add_cfs() operation.  However, there
+are no checks preventing the user from repeatedly creating function
+specific attribute directories with different names, resulting in the same
+endpoint specific attributes group being added multiple times, which also
+result in an invalid reference counting for the attribute groups. E.g.,
+using the pci-epf-ntb function driver as an example, the user creates the
+function as follows:
 
-The crash can be easily reproduced with the following commands:
+  $ modprobe pci-epf-ntb
+  $ cd /sys/kernel/config/pci_ep/functions/pci_epf_ntb
+  $ mkdir func0
+  $ tree func0
+  func0/
+  |-- baseclass_code
+  |-- cache_line_size
+  |-- ...
+  `-- vendorid
 
-  # cd /sys/kernel/config/pci_ep/functions/pci_epf_test
-  # for i in {1..20}; do mkdir test && rmdir test; done
+  $ mkdir func0/attrs
+  $ tree func0
+  func0/
+  |-- attrs
+  |   |-- db_count
+  |   |-- mw1
+  |   |-- mw2
+  |   |-- mw3
+  |   |-- mw4
+  |   |-- num_mws
+  |   `-- spad_count
+  |-- baseclass_code
+  |-- cache_line_size
+  |-- ...
+  `-- vendorid
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000088
+At this point, the function can be started by linking the EP controller.
+However, if the user mistakenly creates again a directory:
+
+  $ mkdir func0/attrs2
+  $ tree func0
+  func0/
+  |-- attrs
+  |   |-- db_count
+  |   |-- mw1
+  |   |-- mw2
+  |   |-- mw3
+  |   |-- mw4
+  |   |-- num_mws
+  |   `-- spad_count
+  |-- attrs2
+  |   |-- db_count
+  |   |-- mw1
+  |   |-- mw2
+  |   |-- mw3
+  |   |-- mw4
+  |   |-- num_mws
+  |   `-- spad_count
+  |-- baseclass_code
+  |-- cache_line_size
+  |-- ...
+  `-- vendorid
+
+The endpoint function specific attributes are duplicated and cause a crash
+when the endpoint function device is torn down:
+
+  refcount_t: addition on 0; use-after-free.
+  WARNING: CPU: 2 PID: 834 at lib/refcount.c:25 refcount_warn_saturate+0xc8/0x144
+  CPU: 2 PID: 834 Comm: rmdir Not tainted 6.3.0-rc1 #1
+  Hardware name: Pine64 RockPro64 v2.1 (DT)
+  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
   ...
-  Call Trace:
-   configfs_register_group+0x3d/0x190
-   pci_epf_cfs_work+0x41/0x110
-   process_one_work+0x18f/0x350
-   worker_thread+0x25a/0x3a0
+  Call trace:
+  refcount_warn_saturate+0xc8/0x144
+  config_item_get+0x7c/0x80
+  configfs_rmdir+0x17c/0x30c
+  vfs_rmdir+0x8c/0x204
+  do_rmdir+0x158/0x184
+  __arm64_sys_unlinkat+0x64/0x80
+  invoke_syscall+0x48/0x114
+  ...
 
-Fix this issue by using configfs_add_default_group() API which does not
-have the deadlock problem as configfs_register_group() and does not require
-the delayed work handler.
+Fix this by modifying pci_epf_cfs_work() to execute the new function
+pci_ep_cfs_add_type_group() which itself calls pci_epf_type_add_cfs() to
+obtain the function specific attribute group and the group name (directory
+name) from the endpoint function driver. If the function driver defines an
+attribute group, pci_ep_cfs_add_type_group() then proceeds to register this
+group using configfs_register_group(), thus automatically exposing the
+function type specific configfs attributes to the user. E.g.:
 
-Fixes: e85a2d783762 ("PCI: endpoint: Add support in configfs to associate two EPCs with EPF")
-Signed-off-by: Liu Song <liu.song13@zte.com.cn>
-[mani: slightly reworded the description and added stable list]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+  $ modprobe pci-epf-ntb
+  $ cd /sys/kernel/config/pci_ep/functions/pci_epf_ntb
+  $ mkdir func0
+  $ tree func0
+  func0/
+  |-- baseclass_code
+  |-- cache_line_size
+  |-- ...
+  |-- pci_epf_ntb.0
+  |   |-- db_count
+  |   |-- mw1
+  |   |-- mw2
+  |   |-- mw3
+  |   |-- mw4
+  |   |-- num_mws
+  |   `-- spad_count
+  |-- primary
+  |-- ...
+  `-- vendorid
+
+With this change, there is no need for the user to create or delete
+directories in the endpoint function attributes directory. The
+pci_epf_type_group_ops group operations are thus removed.
+
+Also update the documentation for the pci-epf-ntb and pci-epf-vntb function
+drivers to reflect this change, removing the explanations showing the need
+to manually create the sub-directory for the function specific attributes.
+
+Link: https://lore.kernel.org/r/20230415023542.77601-2-dlemoal@kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20250710143845409gLM6JdlwPhlHG9iX3F6jK@zte.com.cn
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Stable-dep-of: 7c5c7d06bd1f ("PCI: endpoint: Avoid creating sub-groups asynchronously")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-ep-cfs.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ Documentation/PCI/endpoint/pci-ntb-howto.rst  | 11 ++---
+ Documentation/PCI/endpoint/pci-vntb-howto.rst | 13 +++---
+ drivers/pci/endpoint/pci-ep-cfs.c             | 42 +++++++++----------
+ 3 files changed, 29 insertions(+), 37 deletions(-)
 
+diff --git a/Documentation/PCI/endpoint/pci-ntb-howto.rst b/Documentation/PCI/endpoint/pci-ntb-howto.rst
+index 1884bf29caba4..4261e7157ef1c 100644
+--- a/Documentation/PCI/endpoint/pci-ntb-howto.rst
++++ b/Documentation/PCI/endpoint/pci-ntb-howto.rst
+@@ -88,13 +88,10 @@ commands can be used::
+ 	# echo 0x104c > functions/pci_epf_ntb/func1/vendorid
+ 	# echo 0xb00d > functions/pci_epf_ntb/func1/deviceid
+ 
+-In order to configure NTB specific attributes, a new sub-directory to func1
+-should be created::
+-
+-	# mkdir functions/pci_epf_ntb/func1/pci_epf_ntb.0/
+-
+-The NTB function driver will populate this directory with various attributes
+-that can be configured by the user::
++The PCI endpoint framework also automatically creates a sub-directory in the
++function attribute directory. This sub-directory has the same name as the name
++of the function device and is populated with the following NTB specific
++attributes that can be configured by the user::
+ 
+ 	# ls functions/pci_epf_ntb/func1/pci_epf_ntb.0/
+ 	db_count    mw1         mw2         mw3         mw4         num_mws
+diff --git a/Documentation/PCI/endpoint/pci-vntb-howto.rst b/Documentation/PCI/endpoint/pci-vntb-howto.rst
+index 4ab8e4a26d4be..70d3bc90893f3 100644
+--- a/Documentation/PCI/endpoint/pci-vntb-howto.rst
++++ b/Documentation/PCI/endpoint/pci-vntb-howto.rst
+@@ -84,13 +84,10 @@ commands can be used::
+ 	# echo 0x1957 > functions/pci_epf_vntb/func1/vendorid
+ 	# echo 0x0809 > functions/pci_epf_vntb/func1/deviceid
+ 
+-In order to configure NTB specific attributes, a new sub-directory to func1
+-should be created::
+-
+-	# mkdir functions/pci_epf_vntb/func1/pci_epf_vntb.0/
+-
+-The NTB function driver will populate this directory with various attributes
+-that can be configured by the user::
++The PCI endpoint framework also automatically creates a sub-directory in the
++function attribute directory. This sub-directory has the same name as the name
++of the function device and is populated with the following NTB specific
++attributes that can be configured by the user::
+ 
+ 	# ls functions/pci_epf_vntb/func1/pci_epf_vntb.0/
+ 	db_count    mw1         mw2         mw3         mw4         num_mws
+@@ -103,7 +100,7 @@ A sample configuration for NTB function is given below::
+ 	# echo 1 > functions/pci_epf_vntb/func1/pci_epf_vntb.0/num_mws
+ 	# echo 0x100000 > functions/pci_epf_vntb/func1/pci_epf_vntb.0/mw1
+ 
+-A sample configuration for virtual NTB driver for virutal PCI bus::
++A sample configuration for virtual NTB driver for virtual PCI bus::
+ 
+ 	# echo 0x1957 > functions/pci_epf_vntb/func1/pci_epf_vntb.0/vntb_vid
+ 	# echo 0x080A > functions/pci_epf_vntb/func1/pci_epf_vntb.0/vntb_pid
 diff --git a/drivers/pci/endpoint/pci-ep-cfs.c b/drivers/pci/endpoint/pci-ep-cfs.c
-index a2b81a64fcd11..c28c3f094496a 100644
+index 6f7253d420dbf..76cffd1c18d8a 100644
 --- a/drivers/pci/endpoint/pci-ep-cfs.c
 +++ b/drivers/pci/endpoint/pci-ep-cfs.c
-@@ -23,7 +23,6 @@ struct pci_epf_group {
+@@ -23,6 +23,7 @@ struct pci_epf_group {
  	struct config_group group;
  	struct config_group primary_epc_group;
  	struct config_group secondary_epc_group;
--	struct delayed_work cfs_work;
++	struct config_group *type_group;
+ 	struct delayed_work cfs_work;
  	struct pci_epf *epf;
  	int index;
+@@ -502,34 +503,29 @@ static struct configfs_item_operations pci_epf_ops = {
+ 	.release		= pci_epf_release,
  };
-@@ -100,7 +99,7 @@ static struct config_group
- 	secondary_epc_group = &epf_group->secondary_epc_group;
- 	config_group_init_type_name(secondary_epc_group, "secondary",
- 				    &pci_secondary_epc_type);
--	configfs_register_group(&epf_group->group, secondary_epc_group);
-+	configfs_add_default_group(secondary_epc_group, &epf_group->group);
  
- 	return secondary_epc_group;
- }
-@@ -160,7 +159,7 @@ static struct config_group
+-static struct config_group *pci_epf_type_make(struct config_group *group,
+-					      const char *name)
+-{
+-	struct pci_epf_group *epf_group = to_pci_epf_group(&group->cg_item);
+-	struct config_group *epf_type_group;
+-
+-	epf_type_group = pci_epf_type_add_cfs(epf_group->epf, group);
+-	return epf_type_group;
+-}
+-
+-static void pci_epf_type_drop(struct config_group *group,
+-			      struct config_item *item)
+-{
+-	config_item_put(item);
+-}
+-
+-static struct configfs_group_operations pci_epf_type_group_ops = {
+-	.make_group     = &pci_epf_type_make,
+-	.drop_item      = &pci_epf_type_drop,
+-};
+-
+ static const struct config_item_type pci_epf_type = {
+-	.ct_group_ops	= &pci_epf_type_group_ops,
+ 	.ct_item_ops	= &pci_epf_ops,
+ 	.ct_attrs	= pci_epf_attrs,
+ 	.ct_owner	= THIS_MODULE,
+ };
  
- 	config_group_init_type_name(primary_epc_group, "primary",
- 				    &pci_primary_epc_type);
--	configfs_register_group(&epf_group->group, primary_epc_group);
-+	configfs_add_default_group(primary_epc_group, &epf_group->group);
- 
- 	return primary_epc_group;
- }
-@@ -561,15 +560,13 @@ static void pci_ep_cfs_add_type_group(struct pci_epf_group *epf_group)
++static void pci_ep_cfs_add_type_group(struct pci_epf_group *epf_group)
++{
++	struct config_group *group;
++
++	group = pci_epf_type_add_cfs(epf_group->epf, &epf_group->group);
++	if (!group)
++		return;
++
++	if (IS_ERR(group)) {
++		dev_err(&epf_group->epf->dev,
++			"failed to create epf type specific attributes\n");
++		return;
++	}
++
++	configfs_register_group(&epf_group->group, group);
++}
++
+ static void pci_epf_cfs_work(struct work_struct *work)
+ {
+ 	struct pci_epf_group *epf_group;
+@@ -547,6 +543,8 @@ static void pci_epf_cfs_work(struct work_struct *work)
+ 		pr_err("failed to create 'secondary' EPC interface\n");
  		return;
  	}
- 
--	configfs_register_group(&epf_group->group, group);
-+	configfs_add_default_group(group, &epf_group->group);
++
++	pci_ep_cfs_add_type_group(epf_group);
  }
  
--static void pci_epf_cfs_work(struct work_struct *work)
-+static void pci_epf_cfs_add_sub_groups(struct pci_epf_group *epf_group)
- {
--	struct pci_epf_group *epf_group;
- 	struct config_group *group;
- 
--	epf_group = container_of(work, struct pci_epf_group, cfs_work.work);
- 	group = pci_ep_cfs_add_primary_group(epf_group);
- 	if (IS_ERR(group)) {
- 		pr_err("failed to create 'primary' EPC interface\n");
-@@ -628,9 +625,7 @@ static struct config_group *pci_epf_make(struct config_group *group,
- 
- 	kfree(epf_name);
- 
--	INIT_DELAYED_WORK(&epf_group->cfs_work, pci_epf_cfs_work);
--	queue_delayed_work(system_wq, &epf_group->cfs_work,
--			   msecs_to_jiffies(1));
-+	pci_epf_cfs_add_sub_groups(epf_group);
- 
- 	return &epf_group->group;
- 
+ static struct config_group *pci_epf_make(struct config_group *group,
 -- 
 2.51.0
 
