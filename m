@@ -1,65 +1,64 @@
-Return-Path: <stable+bounces-216338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHRrEtfJj2nMTgEAu9opvQ
-	(envelope-from <stable+bounces-216338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:19 +0100
+	id MAqXELfIj2l9TgEAu9opvQ
+	(envelope-from <stable+bounces-216319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:58:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF75A13A442
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9915713A34F
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 877EB300C309
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:03:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A897303A6CA
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D671F4615;
-	Sat, 14 Feb 2026 01:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B751DEFE0;
+	Sat, 14 Feb 2026 00:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cG67LwAT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eZiw7URf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA14E3EBF2C;
-	Sat, 14 Feb 2026 01:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FFEDF59;
+	Sat, 14 Feb 2026 00:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030978; cv=none; b=jQScHTZwYJd+2HfRhL0P/6iocftaRaJI5D1US+S/eRTB1FZmRKVNjl/KfzosOCV6dumM7SjGdVYgskjtAeoiHP4+QVfX8bc0bblHMIL8BibKTHsdzwh4z5wdy2SFZa83moKPL0rdwtO7ViCt/YvoUOHJded9vdvroOi52pKtiF8=
+	t=1771030707; cv=none; b=sQhLgOKQBmOPb9PhEW0fX33pATd2o58IMy3oiJIjtXpimP3SHfoTuWIplxINX02CeErDFlB+Ns+PA4ZHPKgoJxaEyNUuOS4SSSczxWZmi+UH/SngqYysaATu2IeSi0hXMdPK/JgGDW0YR8NGb27ShMKp9rDqRDy955lWU26jbYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030978; c=relaxed/simple;
-	bh=kgi9BhdcthCxSA6dJ0nmZZtNScX+mzCCARdeMeRePEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S+y4aPKOeRdzfRrWiXPl03yTH0C+VPm/wT1AslPWxPXYlNhtcHDO4FYRlJmjgRWImQ8HWICx4Ldw8OJLGvrQPJvlS3KppoU0cSankhzfvvgceNYhoOhj/nZ84Jgmm8+JJSPtOJMXq5KqyYS++4UgyGRAkkFXlUhed8/aqviv+a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cG67LwAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8027DC116C6;
-	Sat, 14 Feb 2026 01:02:57 +0000 (UTC)
+	s=arc-20240116; t=1771030707; c=relaxed/simple;
+	bh=/kd1Oo5eC6W/FB1ali0jRnimMqmPzi1EFI4is2YTTHk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ydst4DyhcVHw6Qani4ArtoDp8hYh+a49Ukxa67hcvbWZcbWla67a9YYOoruQvMuFAA/h7NnqmReje3+jPBRXTVkctnv+66kqWYgVUhCUCzr0fKRw71xjBnxvC+tAdscFO+UMtmyWDHtUYlw6VD7x+VDjXT2CVFje3jdGIHDho7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eZiw7URf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF05C116C6;
+	Sat, 14 Feb 2026 00:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030978;
-	bh=kgi9BhdcthCxSA6dJ0nmZZtNScX+mzCCARdeMeRePEc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cG67LwAT9CCzYTOtmJc4ianN/J6sEP6Eix9nSgsauwRCXB1qqpY7trqyUR78aMNBn
-	 1D4Le9XXrtn0IOEUe8etj/6CBVkrQ6A4cdRmPLzZ1CLzda/YedtTu1+6FIhguez7Df
-	 cbiP25YmouBFMMkpiGmZ8Dpv+a3Mj3A0Ezjk0hmBgU2PC/yrUdXIDU9UVv382Zr8NC
-	 PIwjepUhNXTFoma3Zo1mBq+hSe0Xt3jtMf6j+mpRZO0h883V8tJtEcCRRfm5pCUknX
-	 EMnUnb9PWMqMwW6mpQUMhIP1LmL1ib12gfoiLPARhA0Z8nMZZ5mStellW5ShkKYGYX
-	 OtigkaBx1MyYg==
+	s=k20201202; t=1771030707;
+	bh=/kd1Oo5eC6W/FB1ali0jRnimMqmPzi1EFI4is2YTTHk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eZiw7URfWD0nB1Gad02PxbIKoyFjRMpfVWMZzghc/4Nbig0iatt2KI9dxDAgH8FA0
+	 ENNsIvme4cPQfq2K6Z8RAcjPucIDo8/fbyylrhkjQRrdaSxqumuV9u4USMWrgko/Fj
+	 +f97aCmadvKJ42vRxPciTPJ5J4CfEhkeQRd6PnVjT6DXAuSTolRXPjkr3q70IJSVMj
+	 Xh1eS2iGcmUn84V0FIeIeBKs9wIyKTZK8gqmK32ZP7X7of0xa0qW8nHQcQY2zXsTY5
+	 PTy8bifNhWfHf/YyT+UueQl5sxcbsRl/C1ZQfd05TmhJOio3BY6GqPvqwj7brSott1
+	 Cya7pe1eYB36w==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Thorsten Schmelzer <tschmelzer@topcon.com>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] HID: multitouch: add eGalaxTouch EXC3188 support
+	guoren@kernel.org,
+	neil.armstrong@linaro.org,
+	geert@linux-m68k.org,
+	brauner@kernel.org,
+	yelangyan@huaqin.corp-partner.google.com,
+	schuster.simon@siemens-energy.com,
+	linux-csky@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-5.10] parisc: Prevent interrupts during reboot
 Date: Fri, 13 Feb 2026 19:58:07 -0500
-Message-ID: <20260214010245.3671907-7-sashal@kernel.org>
+Message-ID: <20260214005825.3665084-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
-References: <20260214010245.3671907-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,158 +68,226 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216338-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmx.de,kernel.org,linaro.org,linux-m68k.org,huaqin.corp-partner.google.com,siemens-energy.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-216319-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,topcon.com:email,suse.com:email]
-X-Rspamd-Queue-Id: EF75A13A442
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email]
+X-Rspamd-Queue-Id: 9915713A34F
 X-Rspamd-Action: no action
 
-From: Thorsten Schmelzer <tschmelzer@topcon.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 8e4ac86b2ddd36fe501e20ecfcc080e536df1f48 ]
+[ Upstream commit 35ac5a728c878594f2ea6c43b57652a16be3c968 ]
 
-Add support for the for the EXC3188 touchscreen from eGalaxy.
-
-Signed-off-by: Thorsten Schmelzer <tschmelzer@topcon.com>
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis
+Now I have all the information I need for a thorough analysis. Here is
+my complete assessment:
 
-### Commit Message Analysis
+---
 
-The commit adds support for the eGalaxTouch EXC3188 touchscreen device
-by adding a new USB device ID (0xC000) to the existing HID multitouch
-driver. The commit message is straightforward: "Add support for the
-EXC3188 touchscreen from eGalaxy."
+## Detailed Analysis: "parisc: Prevent interrupts during reboot"
 
-### Code Change Analysis
+### 1. COMMIT MESSAGE ANALYSIS
 
-The changes are minimal and confined to two files:
+The commit message is minimal: "parisc: Prevent interrupts during
+reboot". It clearly states the problem it's fixing -- interrupts are not
+properly disabled during the reboot path on PA-RISC systems. The author
+is **Helge Deller**, the long-time parisc maintainer and the most
+authoritative developer for this architecture. The commit has no
+`Fixes:` tag or `Cc: stable` (as expected for autosel candidates).
 
-1. **`drivers/hid/hid-ids.h`**: Adds a single `#define` for the new
-   device ID:
-  ```c
-  #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C000  0xc000
-  ```
+### 2. CODE CHANGE ANALYSIS
 
-2. **`drivers/hid/hid-multitouch.c`**: Adds a 3-line entry to the
-   `mt_devices[]` device ID table:
-  ```c
-  { .driver_data = MT_CLS_EGALAX_SERIAL,
-  MT_USB_DEVICE(USB_VENDOR_ID_DWAV,
-  USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C000) },
-  ```
+The change is **one single effective line of code** plus a comment:
 
-The new device uses `MT_CLS_EGALAX_SERIAL`, which is an existing device
-class already used by several other eGalax devices (A001, 73F7, 7349).
-No new code paths, no new driver logic, no behavioral changes.
+```c
+/* prevent interrupts during reboot */
+set_eiem(0);
+```
 
-### Classification: New Device ID Addition
+This is inserted into `machine_restart()` in
+`arch/parisc/kernel/process.c` immediately after
+`pdc_chassis_send_status(PDC_CHASSIS_DIRECT_SHUTDOWN)` and before
+`pdc_do_reset()`.
 
-This falls squarely into the **"New Device IDs"** exception category for
-stable backports:
-- The driver (`hid-multitouch`) already exists in stable trees
-- Only the device ID is new
-- It uses an existing device class (`MT_CLS_EGALAX_SERIAL`)
-- The pattern is identical to many other eGalax entries already in the
-  table
+**What `set_eiem(0)` does:** On PA-RISC, the EIEM (External Interrupt
+Enable Mask, Control Register 15) controls which external interrupts can
+fire. Setting it to 0 **masks all external interrupts at the hardware
+level**, preventing any interrupt from being delivered to the CPU. This
+is defined as:
 
-### Risk Assessment
+```82:82:arch/parisc/include/asm/special_insns.h
+#define set_eiem(val)   mtctl(val, CR_EIEM)
+```
 
-- **Risk: Extremely low** — This is a pure device ID addition to an
-  existing table. It cannot affect any existing device. The new entry
-  only matches the specific USB vendor/product ID pair (0x0aec/0xc000).
-- **Scope: Minimal** — 4 lines added across 2 files (1 define + 3 lines
-  in device table)
-- **Dependencies: None** — Completely self-contained, no other commits
-  needed
+**The bug:** Without this line, external interrupts remain enabled
+during the entire reboot sequence. This means:
 
-### User Impact
+a) **Deadlock risk in `pdc_do_reset()`**: The `pdc_do_reset()` function
+acquires `pdc_lock` via `spin_lock_irqsave()`:
 
-Without this patch, users with the eGalaxTouch EXC3188 touchscreen have
-a non-functional device. With this patch, the touchscreen works using
-the existing, well-tested eGalax serial multitouch driver class. This is
-exactly the kind of hardware enablement that stable users need — their
-hardware simply doesn't work without it.
+```1236:1246:arch/parisc/kernel/firmware.c
+int pdc_do_reset(void)
+{
+        int retval;
+        unsigned long flags;
 
-### Stability Indicators
+        spin_lock_irqsave(&pdc_lock, flags);
+        retval = mem_pdc_call(PDC_BROADCAST_RESET, PDC_DO_RESET);
+        spin_unlock_irqrestore(&pdc_lock, flags);
 
-- Uses existing driver infrastructure (no new code paths)
-- Follows the exact same pattern as ~20 other eGalax device entries
-- Signed off by the HID subsystem maintainer (Jiri Kosina)
-- Has been reviewed and accepted through the normal HID subsystem
-  process
+        return retval;
+}
+```
 
-### Conclusion
+While `spin_lock_irqsave` disables local interrupts, the PA-RISC EIEM
+hardware mask is a separate mechanism. On PA-RISC, the external
+interrupt delivery path goes through the EIEM -- an interrupt fires only
+if the corresponding EIEM bit is set AND the EIRR (External Interrupt
+Request Register) bit is set. If a hardware interrupt fires between
+`pdc_chassis_send_status()` (which also uses `pdc_lock`) and
+`pdc_do_reset()`, or during the firmware calls themselves, it could
+interfere with the reset process.
 
-This is a textbook example of a device ID addition that should be
-backported to stable. It enables real hardware for real users, has zero
-risk of regression, requires no dependencies, and follows established
-patterns in the driver. These types of commits are explicitly called out
-in stable kernel rules as appropriate for backporting.
+b) **Interference with firmware reset**: `pdc_do_reset()` calls into PDC
+firmware (`mem_pdc_call(PDC_BROADCAST_RESET, PDC_DO_RESET)`). Firmware
+calls on PA-RISC are sensitive to the processor state. An interrupt
+arriving during or between firmware calls can corrupt the reset
+sequence, potentially causing the machine to **hang instead of
+rebooting**.
+
+c) **The `gsc_writel(CMD_RESET, COMMAND_GLOBAL)` fallback**: If
+`pdc_do_reset()` returns (on machines that don't implement
+`PDC_BROADCAST_RESET`), the code tries a hardware reset via
+`gsc_writel`. Interrupts during this path are equally problematic.
+
+### 3. ESTABLISHED PATTERN IN PARISC AND OTHER ARCHITECTURES
+
+**PA-RISC internal precedent:**
+- `parisc_terminate()` in `traps.c` uses the exact same pattern:
+  `set_eiem(0)` followed by `local_irq_disable()` before critical
+  shutdown operations (line 428-429)
+- The SMP CPU hotplug code (`smp.c:481`) uses `set_eiem(0)` to disable
+  all external interrupts when taking a CPU offline
+
+**Other architectures ALL disable interrupts before reset:**
+- ARM: `local_irq_disable()` at line 136 of `arch/arm/kernel/reboot.c`
+- ARM64: `local_irq_disable()` at line 141 of
+  `arch/arm64/kernel/process.c`
+- x86: `local_irq_disable()` at line 100 of `arch/x86/kernel/reboot.c`
+- xtensa: `local_irq_disable()` at line 524 of
+  `arch/xtensa/kernel/setup.c`
+- nios2: `local_irq_disable()` at line 49 of
+  `arch/nios2/kernel/process.c`
+- csky: `local_irq_disable()` at line 25 of `arch/csky/kernel/power.c`
+- MIPS falcon: `local_irq_disable()` at line 37 of
+  `arch/mips/lantiq/falcon/reset.c`
+
+PA-RISC was the **outlier** in not disabling interrupts before reboot.
+This commit fixes that deficiency.
+
+### 4. CLASSIFICATION
+
+This is a **bug fix** -- specifically fixing a potential hang/crash
+during reboot caused by unmasked interrupts during firmware calls. It is
+NOT a new feature, optimization, or cleanup.
+
+### 5. SCOPE AND RISK ASSESSMENT
+
+- **Lines changed**: 3 (1 blank line, 1 comment, 1 functional line)
+- **Files touched**: 1 (`arch/parisc/kernel/process.c`)
+- **Subsystem**: parisc architecture, reboot path
+- **Risk**: **Extremely low**. Disabling interrupts before a system
+  reset is universally accepted as correct and necessary. The
+  `set_eiem(0)` pattern is already used in the same codebase for similar
+  critical paths.
+
+### 6. USER IMPACT
+
+- **Who is affected**: All PA-RISC Linux users who reboot their machines
+- **What happens without the fix**: Potential hang during reboot,
+  requiring a hard power cycle. This could be intermittent and timing-
+  dependent, making it hard to reproduce but very real.
+- **Severity if triggered**: System hang requiring manual intervention
+  (power cycle)
+
+### 7. STABILITY INDICATORS
+
+- Author is the subsystem maintainer (highest trust level)
+- Pattern is well-established across all other architectures
+- The exact same `set_eiem(0)` call is used in the parisc
+  `parisc_terminate()` function already
+- The change is trivially small and obviously correct
+
+### 8. DEPENDENCY CHECK
+
+- No dependencies on other commits
+- The `set_eiem()` macro has existed since the earliest parisc code
+- The `machine_restart()` function is largely unchanged across all
+  stable trees
+- This will apply cleanly to any kernel version that has parisc support
+
+### Summary
+
+This is a trivially small, obviously correct fix that prevents
+interrupts during the reboot sequence on PA-RISC systems. Without it, an
+untimely interrupt can interfere with PDC firmware calls during reset,
+potentially causing the machine to hang instead of rebooting. Every
+other Linux architecture disables interrupts before reboot; parisc was
+the outlier. The fix uses the same `set_eiem(0)` pattern already used in
+`parisc_terminate()` and SMP CPU offline code. The risk is essentially
+zero -- there is no conceivable way that disabling interrupts right
+before a hardware reset could cause a regression.
 
 **YES**
 
- drivers/hid/hid-ids.h        | 1 +
- drivers/hid/hid-multitouch.c | 3 +++
- 2 files changed, 4 insertions(+)
+ arch/parisc/kernel/process.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 5a18cb41e6d79..6d8b64872cefe 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -437,6 +437,7 @@
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_7349	0x7349
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_73F7	0x73f7
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001	0xa001
-+#define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C000	0xc000
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002	0xc002
- 
- #define USB_VENDOR_ID_EDIFIER		0x2d99
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index f21850f7d89e4..7daa8f6d81870 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2212,6 +2212,9 @@ static const struct hid_device_id mt_devices[] = {
- 	{ .driver_data = MT_CLS_EGALAX_SERIAL,
- 		MT_USB_DEVICE(USB_VENDOR_ID_DWAV,
- 			USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001) },
-+	{ .driver_data = MT_CLS_EGALAX_SERIAL,
-+		MT_USB_DEVICE(USB_VENDOR_ID_DWAV,
-+			USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C000) },
- 	{ .driver_data = MT_CLS_EGALAX,
- 		MT_USB_DEVICE(USB_VENDOR_ID_DWAV,
- 			USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002) },
+diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
+index e64ab5d2a40d6..703644e5bfc4a 100644
+--- a/arch/parisc/kernel/process.c
++++ b/arch/parisc/kernel/process.c
+@@ -85,6 +85,9 @@ void machine_restart(char *cmd)
+ #endif
+ 	/* set up a new led state on systems shipped with a LED State panel */
+ 	pdc_chassis_send_status(PDC_CHASSIS_DIRECT_SHUTDOWN);
++
++	/* prevent interrupts during reboot */
++	set_eiem(0);
+ 	
+ 	/* "Normal" system reset */
+ 	pdc_do_reset();
 -- 
 2.51.0
 
