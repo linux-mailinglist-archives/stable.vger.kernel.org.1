@@ -1,218 +1,308 @@
-Return-Path: <stable+bounces-216345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216328-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mN+MLeXJj2nMTgEAu9opvQ
-	(envelope-from <stable+bounces-216345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:33 +0100
+	id qJaOFBTJj2mZTgEAu9opvQ
+	(envelope-from <stable+bounces-216328-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:00:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035D813A470
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0573913A3BB
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:00:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1D2333008CAA
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:03:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4850E3084F37
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B617B1FF1AD;
-	Sat, 14 Feb 2026 01:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2385A212F89;
+	Sat, 14 Feb 2026 00:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E1xuw1AG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eG/vwvGV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B663EBF2C;
-	Sat, 14 Feb 2026 01:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7E91FF5E3;
+	Sat, 14 Feb 2026 00:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030989; cv=none; b=n72P4BcmNsq+SDLV5V66C88RVvjLYOiJuMdIAgv5ng/HT0Eyp+vwOZMAMJWAHZ6yPafh3uvyg4myuUtQES2H1khALzBdKFlICK+2kppAWuj/kPPrCvhHwxintgrUl1RLg9hpW4BGuCofi9U9ITXKuQTI2xmTLyhsYyHakzb2V6E=
+	t=1771030724; cv=none; b=G7Xzs1Pvun4TH8E3N/8mm+kjcEdjhIWYB6h/8PaIiPEpdL6EA7642lqR6yy8+M7LuKrHla8uHLBC35cYEPJ3cb6vPu3lDceclFsb1viDstd8cPjQQOXqKvm5hADiU3v47nM0JTjet54K9Twrn+HA1iOKinBbMsEOQMMPUMTYsuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030989; c=relaxed/simple;
-	bh=PLayDhKqDcanYXVlN+N4aQogtWC6XliezDBW70sXeuo=;
+	s=arc-20240116; t=1771030724; c=relaxed/simple;
+	bh=rM84Vu3aZRI3MGaYNq8NQGpcoNuGw7GEZzVwqJyg4RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B04pXhxyzXmtovZoyKUxC+VuqiEdmDFz45GsxWnueikhbqtW5RcjHe0su1NwCpJpUdkghzF1OrmY3oycBMmHB40O3vtSSZE3Ys31Q7NG4yI5lc1MSxYeCWgttQ6pTiNs92EmVH8OamgTAN+hUHeNDVHH5jj+OKxLcLAlJRgBARU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E1xuw1AG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4795EC16AAE;
-	Sat, 14 Feb 2026 01:03:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kC8HBt1KhQjZOqKKiSTwJRQFHdJho0983GJhCt3PgSUxkK6VBgt6O3GZihqpYjBsRsZhXgODw/Y8TlfKrzo4Au0m+gZOisN1ZmEthXkZHiU9WXVIdHSuNfTrSIpbiLdci9QhuoWrkEKsJvwGpfTDgoTfFwix/3J6OQFnv8cqLfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eG/vwvGV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AEFC116C6;
+	Sat, 14 Feb 2026 00:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030989;
-	bh=PLayDhKqDcanYXVlN+N4aQogtWC6XliezDBW70sXeuo=;
+	s=k20201202; t=1771030724;
+	bh=rM84Vu3aZRI3MGaYNq8NQGpcoNuGw7GEZzVwqJyg4RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1xuw1AGsiVSw7oa3qGWgn4Jt+DCPsGjANoz3nQA4J9LOgDfwH+MGlydsN0uHshfw
-	 xXNkczADqlYv9HX6qo3iRj+1WOgofNuTp/EX+qAJQ0D55QOp5MZ5RLDLPtAD7LZkNb
-	 d0/L/yejMHdkQ65eDP7VfZatue6Uc1aTNzKypNyWhUQemQ+/pN1nqxYfe3ROOD1NFE
-	 yzLqZGXn9sZiBfcyEg/3bCov7RlmbW2eobPBPOIQ5LeILqMnkKjfTpUKlB8gIPGu9z
-	 n6KdPdtQv9hez13XdGiVR89gixzmSCBDqfUYWLkh/wNUYuJU7dlLwiBljBZbr6klTr
-	 pgj05BPBlmdgg==
+	b=eG/vwvGVlFFBdy6Rq6n19EKRLEKbzUYYghKKS0dtLnS9SKjGas2B0t6pp6X/dXGo2
+	 JDGkiBPzCK2u2G9UijJSxg/Xef9WO55W1btJAW2tvRbH8kh3Z23MMs8r+z6/wUZasg
+	 5Qv/24TEbWK/v8J0iS49ICBa+ysuZk3ywGbf8filTTxigU3kS5kS9+3+SSZtp3T4Nt
+	 KwGEPVUdEdK55QKVaRAKuzvKNo6f4TJ6t+vV92af1e6NdJIa26OSo7jwZMVBb7IR6s
+	 2MnhHpPgKM2jzTgggpF6a5my9oesgs0Cl67DDFElVfJd2RZY2DQ2t8X0TOd6VjZbpd
+	 Z3TsArguC/FZA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Donet Tom <donettom@linux.ibm.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Tomas Melin <tomas.melin@vaisala.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	amd-gfx@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.19-5.15] drm/amdkfd: Fix GART PTE for non-4K pagesize in svm_migrate_gart_map()
-Date: Fri, 13 Feb 2026 19:58:14 -0500
-Message-ID: <20260214010245.3671907-14-sashal@kernel.org>
+	neil.armstrong@linaro.org,
+	neal.frager@amd.com,
+	conor.dooley@microchip.com,
+	yelangyan@huaqin.corp-partner.google.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.19-6.12] Revert "arm64: zynqmp: Add an OP-TEE node to the device tree"
+Date: Fri, 13 Feb 2026 19:58:15 -0500
+Message-ID: <20260214005825.3665084-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
-References: <20260214010245.3671907-1-sashal@kernel.org>
+In-Reply-To: <20260214005825.3665084-1-sashal@kernel.org>
+References: <20260214005825.3665084-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,amd.com,gmail.com,kernel.org,lists.freedesktop.org];
+	TAGGED_FROM(0.00)[bounces-216328-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216345-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 035D813A470
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,vaisala.com:email]
+X-Rspamd-Queue-Id: 0573913A3BB
 X-Rspamd-Action: no action
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Tomas Melin <tomas.melin@vaisala.com>
 
-[ Upstream commit 6c160001661b6c4e20f5c31909c722741e14c2d8 ]
+[ Upstream commit c197179990124f991fca220d97fac56779a02c6d ]
 
-In svm_migrate_gart_map(), while migrating GART mapping, the number of
-bytes copied for the GART table only accounts for CPU pages. On non-4K
-systems, each CPU page can contain multiple GPU pages, and the GART
-requires one 8-byte PTE per GPU page. As a result, an incorrect size was
-passed to the DMA, causing only a partial update of the GART table.
+This reverts commit 06d22ed6b6635b17551f386b50bb5aaff9b75fbe.
 
-Fix this function to work correctly on non-4K page-size systems by
-accounting for the number of GPU pages per CPU page when calculating the
-number of bytes to be copied.
+OP-TEE logic in U-Boot automatically injects a reserved-memory
+node along with optee firmware node to kernel device tree.
+The injection logic is dependent on that there is no manually
+defined optee node. Having the node in zynqmp.dtsi effectively
+breaks OP-TEE's insertion of the reserved-memory node, causing
+memory access violations during runtime.
 
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/20251125-revert-zynqmp-optee-v1-1-d2ce4c0fcaf6@vaisala.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-This confirms the issue. At line 362, `amdgpu_gart_map` already
-correctly iterates `AMDGPU_GPU_PAGES_IN_CPU_PAGE` times per CPU page
-(inner loop `j`). So it generates `npages *
-AMDGPU_GPU_PAGES_IN_CPU_PAGE` PTEs (each 8 bytes), totaling `npages * 8
-* AMDGPU_GPU_PAGES_IN_CPU_PAGE` bytes. But the DMA copy was only copying
-`npages * 8` bytes — a mismatch that results in partial GART updates on
-non-4K systems.
+Now I have a comprehensive understanding. Let me compile the full
+analysis.
 
-### 3. Classification
+---
 
-This is a clear **bug fix** for incorrect DMA size calculation. On
-non-4K page systems (common on aarch64 and POWER architectures), only a
-fraction of the GART PTEs would be DMA-copied to the GPU page table,
-leading to:
-- **GPU page faults** when accessing unmapped entries
-- **Potential data corruption** if stale GART entries point to wrong
-  memory
-- **GPU hangs** or crashes during SVM (Shared Virtual Memory) migration
+## Detailed Analysis
 
-### 4. Scope and Risk Assessment
+### 1. COMMIT MESSAGE ANALYSIS
 
-- **Lines changed**: 1 line (minimal)
-- **Files changed**: 1 file
-- **Risk**: Very low. On 4K page systems (x86),
-  `AMDGPU_GPU_PAGES_IN_CPU_PAGE` = 1, so the behavior is unchanged. The
-  fix only affects non-4K systems where it was broken.
-- **Subsystem**: AMD KFD (Kernel Fusion Driver) — GPU compute path, used
-  for HPC and AI workloads on AMD GPUs
+This is a **revert** commit. It reverts
+`06d22ed6b6635b17551f386b50bb5aaff9b75fbe` ("arm64: zynqmp: Add an OP-
+TEE node to the device tree"), which was merged for v6.9-rc1 (January
+2024).
 
-### 5. User Impact
+The revert message explains a concrete, real-world problem:
+- U-Boot's OP-TEE logic automatically injects a `reserved-memory` node
+  and `optee` firmware node into the kernel device tree at boot time
+- This U-Boot injection logic checks for the **absence** of a manually-
+  defined optee node — if one already exists, it skips injection
+  entirely
+- The original commit added a static optee node to `zynqmp.dtsi`, which
+  prevents U-Boot from injecting the `reserved-memory` node
+- Without the reserved-memory node, **memory access violations occur
+  during runtime**
 
-This affects users running:
-- AMD GPUs with KFD/ROCm on **aarch64 or POWER** systems (which commonly
-  use 64K pages)
-- SVM (Shared Virtual Memory) migration operations
-- Without this fix, GPU compute workloads would be broken or unreliable
-  on non-4K page systems
+This is not speculative — the commit describes actual runtime memory
+access violations.
 
-### 6. Stability Indicators
+### 2. CODE CHANGE ANALYSIS
 
-- Reviewed and acked by 3 AMD DRM maintainers/developers
-- The fix is mathematically obvious — the existing `amdgpu_gart_map`
-  function already generates `AMDGPU_GPU_PAGES_IN_CPU_PAGE` PTEs per CPU
-  page, so the copy size must match
-- No-op on 4K page systems, so zero risk of regression for x86
+The change is extremely small and surgical — it removes exactly 5 lines
+(4 lines of DT node content + 1 blank line):
 
-### 7. Dependency Check
+```195:198:arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+                optee: optee  {
+                        compatible = "linaro,optee-tz";
+                        method = "smc";
+                };
+```
 
-The fix uses `AMDGPU_GPU_PAGES_IN_CPU_PAGE` which has been defined in
-`amdgpu_gart.h` for a long time. The `svm_migrate_gart_map` function and
-the surrounding code exist in all recent stable trees. No additional
-dependencies needed.
+This removes a statically-defined OP-TEE node from the ZynqMP base
+device tree include file (`zynqmp.dtsi`). The `optee` label is not
+referenced by any other DTS file in the xilinx directory tree, so there
+are no broken cross-references.
 
-### Summary
+### 3. BUG MECHANISM
+
+The bug mechanism is an interaction between the Linux kernel device tree
+and U-Boot bootloader:
+
+1. **U-Boot's OP-TEE initialization**: U-Boot contains logic that
+   detects if OP-TEE is running and, if so, dynamically modifies the FDT
+   (Flattened Device Tree) before passing it to Linux. It adds:
+   - A `reserved-memory` node describing memory regions reserved for OP-
+     TEE
+   - The `optee` firmware node pointing to the TEE
+
+2. **Conditional injection**: U-Boot's injection is conditioned on there
+   being **no existing optee node** in the DT. If one is found, U-Boot
+   assumes the DT is already properly configured and skips injection.
+
+3. **The problem**: The static optee node in `zynqmp.dtsi` has
+   `compatible = "linaro,optee-tz"` and `method = "smc"`, but it does
+   NOT include the critical `reserved-memory` region. When U-Boot sees
+   this node, it skips its injection. The kernel then boots with:
+   - An optee node (so the OP-TEE driver probes and starts communicating
+     with the secure world)
+   - **No reserved-memory** for OP-TEE (so the kernel may allocate and
+     use memory that OP-TEE also uses)
+
+4. **Result**: Memory access violations at runtime. The kernel and OP-
+   TEE stomp on each other's memory. This is a data corruption and crash
+   bug.
+
+### 4. CLASSIFICATION
+
+This is a **device tree fix** that addresses a **runtime memory
+corruption/access violation** bug. It falls squarely in the "DT updates
+for existing hardware" exception category. The severity is high:
+- Memory access violations = potential crashes, data corruption,
+  security boundary violations (TEE compromise)
+- Affects all ZynqMP boards running OP-TEE with U-Boot
+
+### 5. ORIGINAL COMMIT ANALYSIS
+
+The original commit (06d22ed6b6635) claimed "having the DT node present
+doesn't cause any side effects." This turned out to be **wrong** — it
+has a significant side effect with U-Boot's standard OP-TEE injection
+flow. The original commit was a feature addition ("add it in case
+someone tries to load OP-TEE") that turned out to cause a real bug.
+
+### 6. SCOPE AND RISK ASSESSMENT
+
+- **Lines changed**: 5 lines removed (1 file)
+- **Risk**: Extremely low — removing a DT node that shouldn't have been
+  there
+- **Side effects**: None negative. If someone was using the static optee
+  node WITHOUT U-Boot injection, they would need to add it back in their
+  board-specific DT overlay. However, the standard OP-TEE workflow on
+  ZynqMP uses U-Boot injection, and the original commit was explicitly
+  designed as a convenience, not a necessity.
+- **Regression potential**: Near zero — the only "regression" is
+  returning to the pre-6.9 behavior, which worked correctly
+
+### 7. AFFECTED STABLE TREES
+
+The original commit (06d22ed6b6635) is present in:
+- v6.9 through v6.19 (all current stable trees from 6.9 onward)
+- Critically, it's in **6.12.y** (current LTS tree)
+
+The fix is relevant to 6.12.y, 6.13.y, and any other maintained stable
+tree based on 6.9+.
+
+### 8. DEPENDENCY CHECK
+
+The revert has **zero dependencies**. It simply removes 5 lines from a
+DTS file. No other code or DT changes are needed. The `optee` label is
+not referenced by any other file. The revert will apply cleanly to any
+stable tree that has the original commit.
+
+### 9. USER IMPACT
+
+- **Who is affected**: All ZynqMP users running OP-TEE with standard
+  U-Boot boot flow
+- **Severity**: HIGH — runtime memory access violations can cause:
+  - Kernel crashes/panics
+  - OP-TEE secure world corruption
+  - Silent data corruption
+  - Potential security boundary violation (TEE memory exposed to normal
+    world)
+- **Platform**: Xilinx ZynqMP (common in embedded, industrial,
+  automotive applications)
+
+### 10. TRUST INDICATORS
+
+- Submitted by Tomas Melin (Vaisala), indicating real-world usage and
+  testing
+- Accepted by Michal Simek (AMD/Xilinx SoC maintainer), indicating
+  subsystem maintainer approval
+- The commit message clearly explains the mechanism and consequences
+- Clean revert of a well-identified problematic commit
+
+### CONCLUSION
 
 This is a textbook stable backport candidate:
-- **Obviously correct**: One-line fix that aligns DMA copy size with the
-  actual number of PTEs generated
-- **Fixes a real bug**: Partial GART table update on non-4K page systems
-- **Small and contained**: Single line change in a single file
-- **No new features**: Pure bug fix
-- **Low risk**: No-op on 4K (x86) systems; fixes broken behavior on
-  non-4K systems
-- **Well-reviewed**: Multiple AMD maintainer acks/reviews
+1. **Fixes a real bug**: Runtime memory access violations on ZynqMP with
+   OP-TEE
+2. **Obviously correct**: Clean revert of a commit that introduced the
+   problem
+3. **Small and contained**: 5-line removal from a single DTS file
+4. **No new features**: Removes a broken feature addition
+5. **Zero risk**: Returns to the pre-6.9 behavior that worked correctly
+6. **No dependencies**: Self-contained change
+7. **Real-world impact**: Affects ZynqMP users with OP-TEE
+   (embedded/industrial platforms)
+8. **Applies to active stable trees**: The buggy commit is in 6.12.y LTS
+   and other maintained stables
+
+The fix is small, surgical, and meets all stable kernel criteria.
 
 **YES**
 
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/xilinx/zynqmp.dtsi | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-index 6ada7b4af7c68..5086caac3fd06 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-@@ -61,7 +61,7 @@ svm_migrate_gart_map(struct amdgpu_ring *ring, u64 npages,
- 	*gart_addr = adev->gmc.gart_start;
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+index 938b014ca9231..b55c6b2e8e0e1 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
++++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
+@@ -192,11 +192,6 @@ psci {
+ 	};
  
- 	num_dw = ALIGN(adev->mman.buffer_funcs->copy_num_dw, 8);
--	num_bytes = npages * 8;
-+	num_bytes = npages * 8 * AMDGPU_GPU_PAGES_IN_CPU_PAGE;
- 
- 	r = amdgpu_job_alloc_with_ib(adev, &adev->mman.high_pr,
- 				     AMDGPU_FENCE_OWNER_UNDEFINED,
+ 	firmware {
+-		optee: optee  {
+-			compatible = "linaro,optee-tz";
+-			method = "smc";
+-		};
+-
+ 		zynqmp_firmware: zynqmp-firmware {
+ 			compatible = "xlnx,zynqmp-firmware";
+ 			#power-domain-cells = <1>;
 -- 
 2.51.0
 
