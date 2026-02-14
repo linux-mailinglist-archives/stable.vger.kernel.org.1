@@ -1,292 +1,228 @@
-Return-Path: <stable+bounces-216459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Ce5GiXMj2nMTgEAu9opvQ
-	(envelope-from <stable+bounces-216459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:13:09 +0100
+	id GUkHAbHJj2nMTgEAu9opvQ
+	(envelope-from <stable+bounces-216329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:02:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F1B13A9F7
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:13:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E24513A3D3
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 68A8F30D488A
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:07:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D1F04301F787
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F162227E83;
-	Sat, 14 Feb 2026 01:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E66315E5BB;
+	Sat, 14 Feb 2026 01:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlzGwqOF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K7J9BrXP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75C1225775;
-	Sat, 14 Feb 2026 01:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502933EBF2C
+	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 01:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771031269; cv=none; b=WLeH/83eH0ULXe3iK3YE3hz45NfPZNNyc9IPZ3Gw6IGPD1D2AxbeEIPRm7Q8ere5CyYfpBPXJv2osKcP2YqTmyp/1ipWhVxYjI6k/q01UZmyVktWleXM5wK2cb8ylIDh8v+gEsRnmZ86sXD5TGg8Q0dkUYOn5D928oGtxBlsjd8=
+	t=1771030956; cv=none; b=M+jy/YYtDZTCPraA2x9ntmWxwiR8wsYN0ApF2yoptLqy6XamK4c4t+ZRCRVcCHGDcg6ku/Om2Hu1WduGsbeVRXsx215FIbMC0nP5tIDQT55EiLabxC40jgh3MH4t4SypIhdItopBHOa8sRbOYlGW699j5+/YojLyxySM9V40Vr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771031269; c=relaxed/simple;
-	bh=D3nQp3mjhljowC6Lb3lZezNFF0d+eU3c+W7RdEXbv2Q=;
+	s=arc-20240116; t=1771030956; c=relaxed/simple;
+	bh=VVIxGS2Ll6x0YYt0DsHqkMf0zOzOkPiYOtxQOsF9+/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JeyNR1X9FSeD8Bu0nS4v1qmIMe7A4Vs1hTyK44ou/NzwsP13EvVxVFM3VFkqEF+WIWxUJO7biJTz88/nrbyQJ//+3aUhncBQKoJUz3PHUYR5xDXG+7shZGgunjuXkvriVsPieWoZVvScGJcKzxieuBGeaFjOxptwbf4ae11WcQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlzGwqOF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1254DC16AAE;
-	Sat, 14 Feb 2026 01:07:47 +0000 (UTC)
+	 MIME-Version; b=njiOwQlNVx/EhWUqLBRDIDhK7M8EsTfG9D4NRjjCAd/it6S1OtnBoX0BHUv0yeUvIBufGUk9lICKWs7Wj2RLZrKhTLO/i4MbVzerGCzpHGCIf2NikxrTgvwnv+8fgN4seSDHefXn1B6DA5ptJZ898ntRF8FBPJZTnxd7tM0tm2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K7J9BrXP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4FCC116C6;
+	Sat, 14 Feb 2026 01:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771031269;
-	bh=D3nQp3mjhljowC6Lb3lZezNFF0d+eU3c+W7RdEXbv2Q=;
+	s=k20201202; t=1771030955;
+	bh=VVIxGS2Ll6x0YYt0DsHqkMf0zOzOkPiYOtxQOsF9+/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlzGwqOFIYfxZX4Dub5nPUTzg8UPQZzkgtFkZzMhlQnqa0DjkMdX0O0llHDPxfl76
-	 ThYaGYudifd0Uk3PA6oV7cq5E0tBKAkOjb1+Km8GK7u02m+veF13OjBgmmV/b3i5k2
-	 NZBxULTo2nCcwGSvSrGxBlWv9OOFaou/UCQyxjM1B6/jwr6jRa57mnTJjT1wuuvPEx
-	 aB41MCw5l45IZiWbgNTyGxPrP2gJKtMTyrO4xWrZbZBIG7CCs1u/Oe5QX9+V3QNG4M
-	 NiABugBpsPjBjdeFm9yhqGxWRivYTtu1wCoa4eWVPRq02rXcbuxzGpsO6M6jzWYSP0
-	 vkvTQaROmoDtQ==
+	b=K7J9BrXPCpNX7X9Dmz6DTvriKoL2RAy7zLRkmEcTK1Dv1ci39ycGjw35DJTzOgXtb
+	 9R69dwIgW6zCFjlPZO4cjeU9XANAZDao2QPcCSDaCroOhqrGWSSMxZzj2ye4l0oh+6
+	 EnWE3KzxauKAT/FEAudKSONwoY/YfwStCb9Sr9TUw46Zh+pG0t8VLgP+oN8wAxaIB4
+	 ve2UAdKwXmdXL7DRx5JVCE3tkfRZX0aGRls+Hbhl2zYIl0dnfZOXzY5XT2coY++xyO
+	 R+umpjRlkujPbJF7J9so4cAUvvVws/cDfQ4E8TNd+mK8ItyNTjxbi5qgjiR5y2/hLF
+	 RcT/2fyXlMH7A==
 From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Chenyu Chen <chen-yu.chen@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Alvin.Lee2@amd.com,
-	Dillon.Varone@amd.com,
-	nicholas.kazlauskas@amd.com,
-	aurabindo.pillai@amd.com,
-	mwen@igalia.com,
-	Charlene.Liu@amd.com,
-	Yihan.Zhu@amd.com,
-	yelangyan@huaqin.corp-partner.google.com,
-	Ilya.Bakoulin@amd.com
-Subject: [PATCH AUTOSEL 6.19-6.12] drm/amd/display: Add signal type check for dcn401 get_phyd32clk_src
-Date: Fri, 13 Feb 2026 20:00:07 -0500
-Message-ID: <20260214010245.3671907-127-sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] scsi: qla2xxx: Fix bsg_done() causing double free
+Date: Fri, 13 Feb 2026 20:02:33 -0500
+Message-ID: <20260214010233.3700281-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
-References: <20260214010245.3671907-1-sashal@kernel.org>
+In-Reply-To: <2026021338-rotunda-guru-146e@gregkh>
+References: <2026021338-rotunda-guru-146e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216459-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[marvell.com,gmail.com,oracle.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216329-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 28F1B13A9F7
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,marvell.com:email]
+X-Rspamd-Queue-Id: 5E24513A3D3
 X-Rspamd-Action: no action
 
-From: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-[ Upstream commit c979d8db7b0f293111f2e83795ea353c8ed75de9 ]
+[ Upstream commit c2c68225b1456f4d0d393b5a8778d51bb0d5b1d0 ]
 
-Trying to access link enc on a dpia link will cause a crash otherwise
+Kernel panic observed on system,
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
-Signed-off-by: Chenyu Chen <chen-yu.chen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000
+[5353358.825194] #PF: supervisor write access in kernel mode
+[5353358.825195] #PF: error_code(0x0002) - not-present page
+[5353358.825196] PGD 100006067 P4D 0
+[5353358.825198] Oops: 0002 [#1] PREEMPT SMP NOPTI
+[5353358.825200] CPU: 5 PID: 2132085 Comm: qlafwupdate.sub Kdump: loaded Tainted: G        W    L    -------  ---  5.14.0-503.34.1.el9_5.x86_64 #1
+[5353358.825203] Hardware name: HPE ProLiant DL360 Gen11/ProLiant DL360 Gen11, BIOS 2.44 01/17/2025
+[5353358.825204] RIP: 0010:memcpy_erms+0x6/0x10
+[5353358.825211] RSP: 0018:ff591da8f4f6b710 EFLAGS: 00010246
+[5353358.825212] RAX: ff5f5e897b024000 RBX: 0000000000007090 RCX: 0000000000001000
+[5353358.825213] RDX: 0000000000001000 RSI: ff591da8f4fed090 RDI: ff5f5e897b024000
+[5353358.825214] RBP: 0000000000010000 R08: ff5f5e897b024000 R09: 0000000000000000
+[5353358.825215] R10: ff46cf8c40517000 R11: 0000000000000001 R12: 0000000000008090
+[5353358.825216] R13: ff591da8f4f6b720 R14: 0000000000001000 R15: 0000000000000000
+[5353358.825218] FS:  00007f1e88d47740(0000) GS:ff46cf935f940000(0000) knlGS:0000000000000000
+[5353358.825219] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[5353358.825220] CR2: ff5f5e897b024000 CR3: 0000000231532004 CR4: 0000000000771ef0
+[5353358.825221] PKRU: 55555554
+[5353358.825222] Call Trace:
+[5353358.825223]  <TASK>
+[5353358.825224]  ? show_trace_log_lvl+0x1c4/0x2df
+[5353358.825229]  ? show_trace_log_lvl+0x1c4/0x2df
+[5353358.825232]  ? sg_copy_buffer+0xc8/0x110
+[5353358.825236]  ? __die_body.cold+0x8/0xd
+[5353358.825238]  ? page_fault_oops+0x134/0x170
+[5353358.825242]  ? kernelmode_fixup_or_oops+0x84/0x110
+[5353358.825244]  ? exc_page_fault+0xa8/0x150
+[5353358.825247]  ? asm_exc_page_fault+0x22/0x30
+[5353358.825252]  ? memcpy_erms+0x6/0x10
+[5353358.825253]  sg_copy_buffer+0xc8/0x110
+[5353358.825259]  qla2x00_process_vendor_specific+0x652/0x1320 [qla2xxx]
+[5353358.825317]  qla24xx_bsg_request+0x1b2/0x2d0 [qla2xxx]
+
+Most routines in qla_bsg.c call bsg_done() only for success cases.
+However a few invoke it for failure case as well leading to a double
+free. Validate before calling bsg_done().
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-12-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/scsi/qla2xxx/qla_bsg.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-LLM Generated explanations, may be completely bogus:
-
-Now I have all the data I need. Let me compile the complete analysis.
-
----
-
-## Detailed Analysis
-
-### 1. COMMIT MESSAGE ANALYSIS
-
-The commit message is clear and explicit: **"Trying to access link enc
-on a dpia link will cause a crash otherwise"**. This is a crash fix. The
-commit has proper review (Reviewed-by: Charlene Liu), was tested
-(Tested-by: Daniel Wheeler), and was signed off by the AMD display
-subsystem maintainers.
-
-### 2. CODE CHANGE ANALYSIS
-
-The change is extremely small and surgical — it moves one line of code
-inside a conditional block.
-
-**The Bug:**
-In `dcn401_enable_stream_calc()`, the function `get_phyd32clk_src()` was
-called **unconditionally** for every stream:
-
-```906:942:drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-// BEFORE (buggy):
-if (dc->link_srv->dp_is_128b_132b_signal(pipe_ctx))
-    *dp_hpo_inst = pipe_ctx->stream_res.hpo_dp_stream_enc->inst;
-
-*phyd32clk = get_phyd32clk_src(pipe_ctx->stream->link);  // Called for
-ALL links
-```
-
-`get_phyd32clk_src()` dereferences `link->link_enc->transmitter`:
-
-```888:904:drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-static enum phyd32clk_clock_source get_phyd32clk_src(struct dc_link
-*link)
-{
-        switch (link->link_enc->transmitter) {  // NULL deref if
-link_enc is NULL
-        // ...
-        }
-}
-```
-
-For **DPIA (DisplayPort over USB4/Thunderbolt) links**, `link->link_enc`
-is NULL because DPIA links use a different path and never create a
-traditional link encoder. This is confirmed by the DPIA link
-construction in `link_factory.c`:
-
-```870:871:drivers/gpu/drm/amd/display/dc/link/link_factory.c
-        /* TODO: Create link encoder */
-```
-
-The comment confirms no link encoder is created for DPIA endpoints.
-
-**The Fix:**
-The fix moves `get_phyd32clk_src()` inside the
-`dp_is_128b_132b_signal()` conditional:
-
-```c
-// AFTER (fixed):
-if (dc->link_srv->dp_is_128b_132b_signal(pipe_ctx)) {
-    *dp_hpo_inst = pipe_ctx->stream_res.hpo_dp_stream_enc->inst;
-    *phyd32clk = get_phyd32clk_src(pipe_ctx->stream->link);  // Only for
-128b/132b
-}
-```
-
-This is correct because:
-- `phyd32clk` is ONLY used inside a `dp_is_128b_132b_signal()` guard in
-  the caller `dcn401_enable_stream()` (lines 966-972), so it only needs
-  to be computed for 128b/132b signals
-- DPIA links that are 128b/132b signals *do* have an HPO DP link encoder
-  (checked by `dp_is_128b_132b_signal`), and they should have the proper
-  link_enc context available in that path
-- The dcn20 equivalent (`dcn20_enable_stream`) already has the **correct
-  pattern** — `get_phyd32clk_src()` is called inside the
-  `dp_is_128b_132b_signal()` block (line 3054). The dcn401 code was
-  simply written incorrectly when the calculation was refactored into
-  `dcn401_enable_stream_calc`.
-
-### 3. CLASSIFICATION
-
-This is a **NULL pointer dereference crash fix**. When a DPIA link is
-used (USB4/Thunderbolt display tunneling), the code dereferences
-`link->link_enc->transmitter` where `link_enc` is NULL, causing a kernel
-crash.
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-- **Lines changed:** 4 lines modified (one statement moved inside
-  existing braces)
-- **Files touched:** 1 file only
-- **Complexity:** Extremely low — just moving a call into an existing
-  conditional block
-- **Risk of regression:** Very low. The `phyd32clk` variable is only
-  consumed inside the same `dp_is_128b_132b_signal()` check in the
-  caller, so skipping its computation for non-128b/132b signals has no
-  effect. This matches the dcn20 behavior exactly.
-
-### 5. USER IMPACT
-
-- **Who is affected:** Users with AMD DCN4.01 GPUs (RDNA 4 / Radeon RX
-  9000 series) using USB-C / Thunderbolt displays (DPIA endpoints)
-- **Severity:** Kernel crash/NULL pointer dereference — the system would
-  crash when trying to enable a stream on a DPIA link
-- **Frequency:** Every time a DPIA display is connected on affected
-  hardware
-
-### 6. STABILITY INDICATORS
-
-- Reviewed-by: Charlene Liu (AMD display team)
-- Tested-by: Daniel Wheeler (AMD QA)
-- Follows the same pattern already proven correct in dcn20
-- Related commit d7f5a61e1b04e also fixed a `link->enc NULL pointer
-  access` in the same file, indicating this is a known class of bugs for
-  dcn401
-
-### 7. DEPENDENCY CHECK
-
-- This commit is self-contained — no dependencies on other patches
-- DCN401 code exists in stable trees from v6.11 onwards
-- The code around the change doesn't appear to have changed
-  significantly, so clean application is expected for recent stable
-  branches
-
-### 8. CONCLUSION
-
-This is a textbook stable backport candidate:
-- **Fixes a real crash** (NULL pointer dereference)
-- **Small and surgical** (4 lines, 1 file)
-- **Obviously correct** (matches the pattern already used in dcn20's
-  `dcn20_enable_stream`)
-- **Low regression risk** (the moved statement's output is only consumed
-  inside the same condition)
-- **Has proper review and testing**
-- **Affects real hardware** (USB4/Thunderbolt displays on RDNA 4 GPUs)
-- **Applicable to stable** (dcn401 exists from v6.11 onwards)
-
-**YES**
-
- drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-index e1f5b1a34cde8..f04cbdb3d3814 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-@@ -916,10 +916,10 @@ static void dcn401_enable_stream_calc(
- 			pipe_ctx->stream->link->cur_link_settings.lane_count;
- 	uint32_t active_total_with_borders;
+diff --git a/drivers/scsi/qla2xxx/qla_bsg.c b/drivers/scsi/qla2xxx/qla_bsg.c
+index 10431a67d202b..f43969ed87bf9 100644
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -1546,8 +1546,9 @@ qla2x00_update_optrom(struct bsg_job *bsg_job)
+ 	ha->optrom_buffer = NULL;
+ 	ha->optrom_state = QLA_SWAITING;
+ 	mutex_unlock(&ha->optrom_mutex);
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		       bsg_reply->reply_payload_rcv_len);
++	if (!rval)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 	return rval;
+ }
  
--	if (dc->link_srv->dp_is_128b_132b_signal(pipe_ctx))
-+	if (dc->link_srv->dp_is_128b_132b_signal(pipe_ctx)) {
- 		*dp_hpo_inst = pipe_ctx->stream_res.hpo_dp_stream_enc->inst;
--
--	*phyd32clk = get_phyd32clk_src(pipe_ctx->stream->link);
-+		*phyd32clk = get_phyd32clk_src(pipe_ctx->stream->link);
-+	}
+@@ -2612,8 +2613,9 @@ qla2x00_manage_host_stats(struct bsg_job *bsg_job)
+ 				    sizeof(struct ql_vnd_mng_host_stats_resp));
  
- 	if (dc_is_tmds_signal(pipe_ctx->stream->signal))
- 		dcn401_calculate_dccg_tmds_div_value(pipe_ctx, tmds_div);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	return ret;
+ }
+@@ -2702,8 +2704,9 @@ qla2x00_get_host_stats(struct bsg_job *bsg_job)
+ 							       bsg_job->reply_payload.sg_cnt,
+ 							       data, response_len);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	kfree(data);
+ host_stat_out:
+@@ -2802,8 +2805,9 @@ qla2x00_get_tgt_stats(struct bsg_job *bsg_job)
+ 				    bsg_job->reply_payload.sg_cnt, data,
+ 				    response_len);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ tgt_stat_out:
+ 	kfree(data);
+@@ -2864,8 +2868,9 @@ qla2x00_manage_host_port(struct bsg_job *bsg_job)
+ 				    bsg_job->reply_payload.sg_cnt, &rsp_data,
+ 				    sizeof(struct ql_vnd_mng_host_port_resp));
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	return ret;
+ }
+@@ -3240,7 +3245,8 @@ int qla2x00_mailbox_passthru(struct bsg_job *bsg_job)
+ 
+ 	bsg_job->reply_len = sizeof(*bsg_job->reply);
+ 	bsg_reply->result = DID_OK << 16;
+-	bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
+ 
+ 	kfree(req_data);
+ 
 -- 
 2.51.0
 
