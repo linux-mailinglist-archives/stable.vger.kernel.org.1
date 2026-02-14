@@ -1,166 +1,181 @@
-Return-Path: <stable+bounces-216474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LfqHkBTkGmRYgEAu9opvQ
-	(envelope-from <stable+bounces-216474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 11:49:36 +0100
+	id acu2LkBckGljYwEAu9opvQ
+	(envelope-from <stable+bounces-216475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 12:28:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC90113BB79
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 11:49:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4274013BBE4
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 12:28:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2E5943001FA8
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 10:49:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1373F30071C9
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 11:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA32F27F01B;
-	Sat, 14 Feb 2026 10:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92211274641;
+	Sat, 14 Feb 2026 11:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="M1at+PyS"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Tk9n+s8Y"
 X-Original-To: stable@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF6812D21B
-	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 10:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120CD1A5B84;
+	Sat, 14 Feb 2026 11:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771066171; cv=none; b=HaHN6LzBPHXsGlwgeka/YAtWKNY5ZAYyfxekBhnff5WAqExYScKr1DeJ5sn5aAxkYZEBjgPEBdI3X7DPJWAqgKxZZ65M2yA2JKWqE9g2zbajcQpqZg1ie3wGZWjFdpxUWTiGccPwRUDoHHV7svn8USGPcNF6tQED+VZK56fIJt8=
+	t=1771068475; cv=none; b=AXYykXYSV8v4OQqGDyDg5v5Dw3w6MQXkEvzGcAJSHVz4Cm7JNTNF1T+Jjcb+Ih/ylXU0QW83h8sBESxCSuZ9t+604R9dCpkWwFrXyFIbe+V0Oq/kjC2KGpVg7PrJqBfkxI1P2DGOqVwdUxYJjH5TpjQKxR69qAA446Mo7tZQFCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771066171; c=relaxed/simple;
-	bh=LddL1mqYYKdgxhZ9ut2uCmSEL2JV+R5/3tmzzGmvXNQ=;
+	s=arc-20240116; t=1771068475; c=relaxed/simple;
+	bh=WMKkP1gXuvQ6yuG26KiG7r1QVW79MHrjnC00JJMO1jc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sNKGWDcsIMnMpUxzSnbQXY/OYkh01wwGMABTPCiAPiHlJfmSr+Ct09ixqdFza9zo39it803t5q3yNq/LGE89B0eV1jI6/1EsvX+jhI2J0hrAFGsL9UAUnD4iVpCLcVycVTbIQ8sAB2dpqd74Vv18UgRVb1GsJINOKIGXmKiQLKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=M1at+PyS; arc=none smtp.client-ip=35.89.44.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
-	by cmsmtp with ESMTPS
-	id rCVbvIvuqVCBNrDDIvX2nb; Sat, 14 Feb 2026 10:49:24 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id rDDIvonivh8QWrDDIvvVND; Sat, 14 Feb 2026 10:49:24 +0000
-X-Authority-Analysis: v=2.4 cv=Mcdsu4/f c=1 sm=1 tr=0 ts=69905334
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=daB2H/VCzLVSE7xeCBijYx8DyaBQpr6ixiTfBA5EM20=; b=M1at+PySIcReLlITOBDuOepiWD
-	R39j8dAtPRfdyPH1XBclhxFDXqHLlMS2//vNUvtLuAeQAMYk+tAE5du63GLQVNklUTmKodygxlzIB
-	lvFi097WesmGqH/0pDKabuD86xmLyvVEjZgcLAKnmfhnMBv/L/GfT9l1f12/+d3DUcsPHg0oFF5s6
-	zbLqt2PzGIt1dL7igewIwnnz2VExiVWvw8MUu77FLqc2VJLyoa9O7uyoXCFJcIsuulb/byvB3KeLh
-	BaiF2Bsf3q1AMpE0k5HUOaHH9Y7tHdp6aSOJpgMtDGya3kt08TxZofsQs2H5Z1BlQHmrAcIgNreqb
-	9ENkB46w==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:39336 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vrDDH-00000003YmS-2lDm;
-	Sat, 14 Feb 2026 03:49:23 -0700
-Message-ID: <146196d3-a9b0-410d-9a0e-f6fb54778500@w6rz.net>
-Date: Sat, 14 Feb 2026 02:49:22 -0800
+	 In-Reply-To:Content-Type; b=YZEsrMBTJqERtD+v5o3NjOzN9sDNn5S/qUg0i9uptbNqT7zbgq+dawaX5BHzdbEyOaSY8IiW9oocgbpi9Ct7Bgxyk1PqlO+zUkbEErTHoIkcDGOUKcYhuG1NM76v/Ak1uDznCZt6xDu5c7wUCT+zN5TIZ5++LVJ6N6g6Vf9a+nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Tk9n+s8Y; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <b398d163-7b58-402b-a37d-9562d658a62d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771068470;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fpYezoVv7JEZ5/A/iares9/UqeOLdNYr44Ew2wojbn4=;
+	b=Tk9n+s8YHiNSW3Ydfv5tEgx2GFe+9h/u1Mml7AZX78lUW2mQMjwgfWAy9do87rOWaqTeQB
+	kGOSkvGGCCTTUw/dG0vNn1z/N4LSngM5+mytnSnCW364ddlLTuGyj+Ax3siRt3uDYmtCAf
+	oByqFUDCSSnXhCuOlZhuu0qScHK/x/g=
+Date: Sat, 14 Feb 2026 19:27:44 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/25] 6.6.125-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260213134703.882698935@linuxfoundation.org>
+Subject: Re: [PATCH v2] mm: thp: deny THP for files on anonymous inodes
 Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
+ ackerleytng@google.com, linux-mm@kvack.org, npache@redhat.com,
+ linux-kernel@vger.kernel.org, Liam.Howlett@oracle.com,
+ syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, ryan.roberts@arm.com,
+ stable@vger.kernel.org, ziy@nvidia.com, dev.jain@arm.com, i@maskray.me,
+ baohua@kernel.org, shy828301@gmail.com, akpm@linux-foundation.org,
+ david@kernel.org
+References: <20260214001535.435626-1-kartikey406@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260214001535.435626-1-kartikey406@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1vrDDH-00000003YmS-2lDm
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:39336
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 79
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfOX2VAh1wP/PJu/SR76PtRiDqxx8NwN9iF7f3hNF/8OJ8TEl4cpxetS47x4ZGuQcNqhTsdPywDpoorh/MML17JgJ9D0TEQmn4aGfVijrBlYuj1iU9XKB
- N6bVwERgZOfdtHplF4aQj1js6grq7yFMLIbJ9nr3uDwUeVpI/bDt8Jv1dymhwAXG4pNPjlDQzDSPmQ==
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216474-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216475-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[w6rz.net];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FROM_HAS_DN(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	HAS_X_SOURCE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,w6rz.net:mid,w6rz.net:email]
-X-Rspamd-Queue-Id: AC90113BB79
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linux.alibaba.com,oracle.com,google.com,kvack.org,redhat.com,vger.kernel.org,syzkaller.appspotmail.com,arm.com,nvidia.com,maskray.me,kernel.org,gmail.com,linux-foundation.org];
+	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linux.dev:mid,linux.dev:dkim,linux.dev:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 4274013BBE4
 X-Rspamd-Action: no action
 
-On 2/13/26 05:48, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.125 release.
-> There are 25 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 15 Feb 2026 13:46:52 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.125-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Tested-by: Ron Economos <re@w6rz.net>
+On 2026/2/14 08:15, Deepanshu Kartikey wrote:
+> file_thp_enabled() incorrectly allows THP for files on anonymous inodes
+> (e.g. guest_memfd and secretmem). These files are created via
+> alloc_file_pseudo(), which does not call get_write_access() and leaves
+> inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
+> true, they appear as read-only regular files when
+> CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
+> collapse.
+> 
+> Anonymous inodes can never pass the inode_is_open_for_write() check
+> since their i_writecount is never incremented through the normal VFS
+> open path. The right thing to do is to exclude them from THP eligibility
+> altogether, since CONFIG_READ_ONLY_THP_FOR_FS was designed for real
+> filesystem files (e.g. shared libraries), not for pseudo-filesystem
+> inodes.
+> 
+> For guest_memfd, this allows khugepaged and MADV_COLLAPSE to create
+> large folios in the page cache via the collapse path, but the
+> guest_memfd fault handler does not support large folios. This triggers
+> WARN_ON_ONCE(folio_test_large(folio)) in kvm_gmem_fault_user_mapping().
+> 
+> For secretmem, collapse_file() tries to copy page contents through the
+> direct map, but secretmem pages are removed from the direct map. This
+> can result in a kernel crash:
 
+Good catch, thanks!
+
+For secretmem, file_thp_enabled() can incorrectly return true
+(i_writecount=0, S_ISREG=1), so the mapping becomes eligible for file
+THP collapse ...
+
+However, if any folio is dirty, collapse bails out early with
+SCAN_PAGE_DIRTY_OR_WRITEBACK, as secretmem doesn't support normal
+writeback, IIUC.
+
+> 
+>      BUG: unable to handle page fault for address: ffff88810284d000
+>      RIP: 0010:memcpy_orig+0x16/0x130
+>      Call Trace:
+>       collapse_file
+>       hpage_collapse_scan_file
+>       madvise_collapse
+> 
+> Secretmem is not affected by the crash on upstream as the memory failure
+> recovery handles the failed copy gracefully, but it still triggers
+> confusing false memory failure reports:
+> 
+>      Memory failure: 0x106d96f: recovery action for clean unevictable
+>      LRU page: Recovered
+
+Right. On my setup, that would hit SCAN_COPY_MC in 
+hpage_collapse_scan_file()
+rather than a hard crash.
+
+> 
+> Check IS_ANON_FILE(inode) in file_thp_enabled() to deny THP for all
+> anonymous inode files.
+> 
+> Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
+> Link: https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=U6rs6S7iP0gkR9enr7HoGtA@mail.gmail.com
+> Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
+> Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
+> Tested-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+> ---
+
+Confirmed that file_thp_enabled() is working as expected now with this fix.
+
+Tested-by: Lance Yang <lance.yang@linux.dev>
+
+
+Cheers,
+Lance
 
