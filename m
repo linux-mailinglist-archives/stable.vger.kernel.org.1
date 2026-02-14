@@ -1,308 +1,278 @@
-Return-Path: <stable+bounces-216328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216346-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJaOFBTJj2mZTgEAu9opvQ
-	(envelope-from <stable+bounces-216328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:00:04 +0100
+	id sFpvK+3Jj2nMTgEAu9opvQ
+	(envelope-from <stable+bounces-216346-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0573913A3BB
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:00:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6D613A490
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4850E3084F37
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:58:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 17A533013DF0
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2385A212F89;
-	Sat, 14 Feb 2026 00:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492A321E087;
+	Sat, 14 Feb 2026 01:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eG/vwvGV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CTAxUgYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7E91FF5E3;
-	Sat, 14 Feb 2026 00:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF333EBF2C;
+	Sat, 14 Feb 2026 01:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030724; cv=none; b=G7Xzs1Pvun4TH8E3N/8mm+kjcEdjhIWYB6h/8PaIiPEpdL6EA7642lqR6yy8+M7LuKrHla8uHLBC35cYEPJ3cb6vPu3lDceclFsb1viDstd8cPjQQOXqKvm5hADiU3v47nM0JTjet54K9Twrn+HA1iOKinBbMsEOQMMPUMTYsuU=
+	t=1771030991; cv=none; b=p/YWYNXSCJOocmvdK6HvmM3MyYKFAZkOyro6qoD3NPa9VhHwG2BAyQ7/yxTriLOoO4uBUszOeTozvW7VDFtCqPlDXyE2LyG3z6ugV4tFXCnKuH3GlVdd38eGIJVl0KaOxjpEE8sMJSWnRK44Ja0HoH1sxM14dW7kmwWkmxwFs44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030724; c=relaxed/simple;
-	bh=rM84Vu3aZRI3MGaYNq8NQGpcoNuGw7GEZzVwqJyg4RA=;
+	s=arc-20240116; t=1771030991; c=relaxed/simple;
+	bh=gaA3jb1vSP5RLu1ltGFAqS2zH//J+KBUkCpHH0YIUoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kC8HBt1KhQjZOqKKiSTwJRQFHdJho0983GJhCt3PgSUxkK6VBgt6O3GZihqpYjBsRsZhXgODw/Y8TlfKrzo4Au0m+gZOisN1ZmEthXkZHiU9WXVIdHSuNfTrSIpbiLdci9QhuoWrkEKsJvwGpfTDgoTfFwix/3J6OQFnv8cqLfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eG/vwvGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AEFC116C6;
-	Sat, 14 Feb 2026 00:58:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QEqGF849k1gijDOYN0EbocJND+/1HSpppN+VTBffveQ98CuSIKhtEhCfSJe+tM/8xLe5mSLPAVaPz/bsCiFwyyfOeI8/pkChsnU4JgJ0xo4SI5zvAkoLLWT9K8YyQL9NkSglBI3f83JR84HPYbDaqYkSQ2Fe98d4/3/p9fqMbUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CTAxUgYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC4BC116C6;
+	Sat, 14 Feb 2026 01:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030724;
-	bh=rM84Vu3aZRI3MGaYNq8NQGpcoNuGw7GEZzVwqJyg4RA=;
+	s=k20201202; t=1771030990;
+	bh=gaA3jb1vSP5RLu1ltGFAqS2zH//J+KBUkCpHH0YIUoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eG/vwvGVlFFBdy6Rq6n19EKRLEKbzUYYghKKS0dtLnS9SKjGas2B0t6pp6X/dXGo2
-	 JDGkiBPzCK2u2G9UijJSxg/Xef9WO55W1btJAW2tvRbH8kh3Z23MMs8r+z6/wUZasg
-	 5Qv/24TEbWK/v8J0iS49ICBa+ysuZk3ywGbf8filTTxigU3kS5kS9+3+SSZtp3T4Nt
-	 KwGEPVUdEdK55QKVaRAKuzvKNo6f4TJ6t+vV92af1e6NdJIa26OSo7jwZMVBb7IR6s
-	 2MnhHpPgKM2jzTgggpF6a5my9oesgs0Cl67DDFElVfJd2RZY2DQ2t8X0TOd6VjZbpd
-	 Z3TsArguC/FZA==
+	b=CTAxUgYk/qWjqbdIFt9SOv6Ma7XK1ktVXZZX+ABvLbj7yj9F7jHC3bKjjoAsEnNKG
+	 EJn5JKvkqMPAkyCt+1rwu9XYaiGQxxbcNVwbSzmhRuxfcbFbMx//UvwiA/5MSeqrwL
+	 I2t9lOM4OGocwlJAAvJ3zvcjrYwro5AAzzkwYCMOvPNgpEBGGWrztaAHehjZJ5QZer
+	 HtSEiNoV5SkpIYAcIvc1vbQiuogdt/TVPMlU3XccHhaYTLZKZIcAIkO0exXL2C8Al5
+	 Ll8wngNbghXgcEF9iCFk33RffyJqpnPFfLY+Z4npuMaFMh3mAOkbnYs4tBmtNHbrma
+	 KbeHsvhzj7Sig==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Tomas Melin <tomas.melin@vaisala.com>,
-	Michal Simek <michal.simek@amd.com>,
+Cc: =?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	neil.armstrong@linaro.org,
-	neal.frager@amd.com,
-	conor.dooley@microchip.com,
-	yelangyan@huaqin.corp-partner.google.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.19-6.12] Revert "arm64: zynqmp: Add an OP-TEE node to the device tree"
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.18] HID: pidff: Do not set out of range trigger button
 Date: Fri, 13 Feb 2026 19:58:15 -0500
-Message-ID: <20260214005825.3665084-9-sashal@kernel.org>
+Message-ID: <20260214010245.3671907-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214005825.3665084-1-sashal@kernel.org>
-References: <20260214005825.3665084-1-sashal@kernel.org>
+In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
+References: <20260214010245.3671907-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216328-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,suse.com,kernel.org,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216346-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,vaisala.com:email]
-X-Rspamd-Queue-Id: 0573913A3BB
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6E6D613A490
 X-Rspamd-Action: no action
 
-From: Tomas Melin <tomas.melin@vaisala.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit c197179990124f991fca220d97fac56779a02c6d ]
+[ Upstream commit e01a029654f7fb67d7151365410aa22be4e63dbe ]
 
-This reverts commit 06d22ed6b6635b17551f386b50bb5aaff9b75fbe.
+Some games (mainly observed with Kylotonn's WRC Serises) set trigger
+button to a random value, or always the same one, out of range.
+I observed 307 and other values but, for example, my Moza R9 only
+exposes 128 buttons AND it's trigger button field is 8-bit. This causes
+errors to appear in dmesg.
 
-OP-TEE logic in U-Boot automatically injects a reserved-memory
-node along with optee firmware node to kernel device tree.
-The injection logic is dependent on that there is no manually
-defined optee node. Having the node in zynqmp.dtsi effectively
-breaks OP-TEE's insertion of the reserved-memory node, causing
-memory access violations during runtime.
+Only set the trigger button and trigger interval in the trigger button
+is in range of the field.
 
-Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/r/20251125-revert-zynqmp-optee-v1-1-d2ce4c0fcaf6@vaisala.com
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a comprehensive understanding. Let me compile the full
-analysis.
-
----
+Now I have a complete picture. Let me provide my analysis.
 
 ## Detailed Analysis
 
-### 1. COMMIT MESSAGE ANALYSIS
+### 1. Commit Message Analysis
 
-This is a **revert** commit. It reverts
-`06d22ed6b6635b17551f386b50bb5aaff9b75fbe` ("arm64: zynqmp: Add an OP-
-TEE node to the device tree"), which was merged for v6.9-rc1 (January
-2024).
+The commit clearly describes a **real-world bug**: games (specifically
+Kylotonn's WRC Series) set the trigger button to random out-of-range
+values (e.g., 307) when the hardware only supports 128 buttons with an
+8-bit field. This causes errors in dmesg. The author is the driver's
+2025 co-maintainer (Tomasz Pakula, noted at line 6 of the file).
 
-The revert message explains a concrete, real-world problem:
-- U-Boot's OP-TEE logic automatically injects a `reserved-memory` node
-  and `optee` firmware node into the kernel device tree at boot time
-- This U-Boot injection logic checks for the **absence** of a manually-
-  defined optee node — if one already exists, it skips injection
-  entirely
-- The original commit added a static optee node to `zynqmp.dtsi`, which
-  prevents U-Boot from injecting the `reserved-memory` node
-- Without the reserved-memory node, **memory access violations occur
-  during runtime**
+### 2. Code Change Analysis
 
-This is not speculative — the commit describes actual runtime memory
-access violations.
+**The bug mechanism:** In `pidff_set_effect_report()`, the trigger
+button value from userspace (`effect->trigger.button`) is written
+directly to the HID field value without any bounds checking:
 
-### 2. CODE CHANGE ANALYSIS
-
-The change is extremely small and surgical — it removes exactly 5 lines
-(4 lines of DT node content + 1 blank line):
-
-```195:198:arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-                optee: optee  {
-                        compatible = "linaro,optee-tz";
-                        method = "smc";
-                };
+```526:526:drivers/hid/usbhid/hid-pidff.c
+        pidff->set_effect[PID_TRIGGER_BUTTON].value[0] =
+effect->trigger.button;
 ```
 
-This removes a statically-defined OP-TEE node from the ZynqMP base
-device tree include file (`zynqmp.dtsi`). The `optee` label is not
-referenced by any other DTS file in the xilinx directory tree, so there
-are no broken cross-references.
+When this value exceeds what the HID field can hold (e.g., 307 in an
+8-bit field with max 128), the `implement()` function in `hid-core.c`
+catches it and emits a **non-rate-limited** warning:
 
-### 3. BUG MECHANISM
+```1472:1477:drivers/hid/hid-core.c
+                if (unlikely(value > m)) {
+                        hid_warn(hid,
+                                 "%s() called with too large value %d
+(n: %d)! (%s)\n",
+                                 __func__, value, n, current->comm);
+                        value &= m;
+                }
+```
 
-The bug mechanism is an interaction between the Linux kernel device tree
-and U-Boot bootloader:
+`hid_warn` maps to `dev_warn()` which is **not rate-limited** (unlike
+`hid_warn_ratelimited`). Since force feedback effects can be updated at
+frame rate (60-144+ Hz), this can produce hundreds of kernel warnings
+per second during gameplay.
 
-1. **U-Boot's OP-TEE initialization**: U-Boot contains logic that
-   detects if OP-TEE is running and, if so, dynamically modifies the FDT
-   (Flattened Device Tree) before passing it to Linux. It adds:
-   - A `reserved-memory` node describing memory regions reserved for OP-
-     TEE
-   - The `optee` firmware node pointing to the TEE
+**The fix adds a simple bounds check:** If `trigger.button` exceeds
+`field->logical_maximum`, both trigger button and trigger repeat
+interval are set to 0 (disabled), which is the correct semantic - an
+invalid trigger button should mean "no trigger." Otherwise, the values
+pass through normally. The fix is +10 lines of straightforward
+validation logic.
 
-2. **Conditional injection**: U-Boot's injection is conditioned on there
-   being **no existing optee node** in the DT. If one is found, U-Boot
-   assumes the DT is already properly configured and skips injection.
+### 3. Impact Assessment
 
-3. **The problem**: The static optee node in `zynqmp.dtsi` has
-   `compatible = "linaro,optee-tz"` and `method = "smc"`, but it does
-   NOT include the critical `reserved-memory` region. When U-Boot sees
-   this node, it skips its injection. The kernel then boots with:
-   - An optee node (so the OP-TEE driver probes and starts communicating
-     with the secure world)
-   - **No reserved-memory** for OP-TEE (so the kernel may allocate and
-     use memory that OP-TEE also uses)
+- **Who is affected:** Users of HID PID force feedback devices (racing
+  wheels like Moza R9, Thrustmaster, etc.) playing games that set out-
+  of-range trigger button values (WRC Series and likely others).
+- **What happens without the fix:**
+  1. **Kernel log flooding** - unrestricted `hid_warn()` called per-
+     frame can fill system logs
+  2. **Silent value corruption** - `implement()` masks the value with `&
+     m`, mapping to a random valid button rather than disabling the
+     trigger
+  3. **Performance degradation** from excessive logging
+- **Severity:** Moderate - causes persistent dmesg spam and incorrect
+  device behavior, but no crash/corruption/security issue.
 
-4. **Result**: Memory access violations at runtime. The kernel and OP-
-   TEE stomp on each other's memory. This is a data corruption and crash
-   bug.
+### 4. Scope and Risk
 
-### 4. CLASSIFICATION
+- **Size:** Very small - 10 lines added in one function in one file
+- **Risk:** Near-zero regression risk. Only adds an `if/else` bounds
+  check with a sensible default
+- **Subsystem:** HID force feedback - well-contained, affects only FF-
+  capable USB HID devices
 
-This is a **device tree fix** that addresses a **runtime memory
-corruption/access violation** bug. It falls squarely in the "DT updates
-for existing hardware" exception category. The severity is high:
-- Memory access violations = potential crashes, data corruption,
-  security boundary violations (TEE compromise)
-- Affects all ZynqMP boards running OP-TEE with U-Boot
+### 5. Backport Applicability
 
-### 5. ORIGINAL COMMIT ANALYSIS
+- **v6.18.y:** Patch applies cleanly (function matches HEAD context)
+- **v6.15-v6.17:** Function has same structure with `pidff_set_time()` -
+  minor context adjustment needed
+- **v6.14 and earlier (LTS: v6.12.y, v6.6.y, v6.1.y, v5.15.y):**
+  Function uses old code pattern (direct `.value[0]` assignment instead
+  of `pidff_set_time()`). The fix concept is trivially portable but the
+  patch won't apply as-is. The old code at v6.14 is:
+  ```c
+  pidff->set_effect[PID_TRIGGER_BUTTON].value[0] =
+  effect->trigger.button;
+  pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] =
+  effect->trigger.interval;
+  ```
+  The bug has existed since the driver was created (~2007).
 
-The original commit (06d22ed6b6635) claimed "having the DT node present
-doesn't cause any side effects." This turned out to be **wrong** — it
-has a significant side effect with U-Boot's standard OP-TEE injection
-flow. The original commit was a feature addition ("add it in case
-someone tries to load OP-TEE") that turned out to cause a real bug.
+### 6. Stable Criteria Assessment
 
-### 6. SCOPE AND RISK ASSESSMENT
+| Criteria | Assessment |
+|---|---|
+| Obviously correct and tested | Yes - simple bounds check, tested with
+Moza R9 + WRC games |
+| Fixes a real bug | Yes - out-of-range values cause log spam and wrong
+behavior |
+| Important issue | Moderate - dmesg flooding + incorrect FF behavior |
+| Small and contained | Yes - 10 lines in one function |
+| No new features | Correct - pure input validation |
 
-- **Lines changed**: 5 lines removed (1 file)
-- **Risk**: Extremely low — removing a DT node that shouldn't have been
-  there
-- **Side effects**: None negative. If someone was using the static optee
-  node WITHOUT U-Boot injection, they would need to add it back in their
-  board-specific DT overlay. However, the standard OP-TEE workflow on
-  ZynqMP uses U-Boot injection, and the original commit was explicitly
-  designed as a convenience, not a necessity.
-- **Regression potential**: Near zero — the only "regression" is
-  returning to the pre-6.9 behavior, which worked correctly
+### 7. Concerns
 
-### 7. AFFECTED STABLE TREES
+- The patch uses C99 mixed declarations (`s32 trigger_button_max = ...`
+  in the middle of the function body). While this is accepted in modern
+  kernel coding, some older stable trees may have stricter compilation
+  settings. For LTS backports, this should be declared at function
+  scope.
+- For LTS trees (6.12.y and earlier), a hand-adapted backport is needed
+  since the 2025 refactoring isn't present.
 
-The original commit (06d22ed6b6635) is present in:
-- v6.9 through v6.19 (all current stable trees from 6.9 onward)
-- Critically, it's in **6.12.y** (current LTS tree)
+### Conclusion
 
-The fix is relevant to 6.12.y, 6.13.y, and any other maintained stable
-tree based on 6.9+.
-
-### 8. DEPENDENCY CHECK
-
-The revert has **zero dependencies**. It simply removes 5 lines from a
-DTS file. No other code or DT changes are needed. The `optee` label is
-not referenced by any other file. The revert will apply cleanly to any
-stable tree that has the original commit.
-
-### 9. USER IMPACT
-
-- **Who is affected**: All ZynqMP users running OP-TEE with standard
-  U-Boot boot flow
-- **Severity**: HIGH — runtime memory access violations can cause:
-  - Kernel crashes/panics
-  - OP-TEE secure world corruption
-  - Silent data corruption
-  - Potential security boundary violation (TEE memory exposed to normal
-    world)
-- **Platform**: Xilinx ZynqMP (common in embedded, industrial,
-  automotive applications)
-
-### 10. TRUST INDICATORS
-
-- Submitted by Tomas Melin (Vaisala), indicating real-world usage and
-  testing
-- Accepted by Michal Simek (AMD/Xilinx SoC maintainer), indicating
-  subsystem maintainer approval
-- The commit message clearly explains the mechanism and consequences
-- Clean revert of a well-identified problematic commit
-
-### CONCLUSION
-
-This is a textbook stable backport candidate:
-1. **Fixes a real bug**: Runtime memory access violations on ZynqMP with
-   OP-TEE
-2. **Obviously correct**: Clean revert of a commit that introduced the
-   problem
-3. **Small and contained**: 5-line removal from a single DTS file
-4. **No new features**: Removes a broken feature addition
-5. **Zero risk**: Returns to the pre-6.9 behavior that worked correctly
-6. **No dependencies**: Self-contained change
-7. **Real-world impact**: Affects ZynqMP users with OP-TEE
-   (embedded/industrial platforms)
-8. **Applies to active stable trees**: The buggy commit is in 6.12.y LTS
-   and other maintained stables
-
-The fix is small, surgical, and meets all stable kernel criteria.
+This is a valid input validation fix that prevents kernel log flooding
+and incorrect force feedback behavior caused by userspace (games)
+sending out-of-range trigger button values. The fix is small, obviously
+correct, zero-risk, and addresses a real-world problem reported by force
+feedback device users. Despite needing adaptation for older LTS trees,
+the concept is trivially portable.
 
 **YES**
 
- arch/arm64/boot/dts/xilinx/zynqmp.dtsi | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-index 938b014ca9231..b55c6b2e8e0e1 100644
---- a/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-+++ b/arch/arm64/boot/dts/xilinx/zynqmp.dtsi
-@@ -192,11 +192,6 @@ psci {
- 	};
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 95377c5f63356..a4e700b40ba9b 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -523,9 +523,19 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 	pidff_set_duration(&pidff->set_effect[PID_DURATION],
+ 			   effect->replay.length);
  
- 	firmware {
--		optee: optee  {
--			compatible = "linaro,optee-tz";
--			method = "smc";
--		};
--
- 		zynqmp_firmware: zynqmp-firmware {
- 			compatible = "xlnx,zynqmp-firmware";
- 			#power-domain-cells = <1>;
+-	pidff->set_effect[PID_TRIGGER_BUTTON].value[0] = effect->trigger.button;
+-	pidff_set_time(&pidff->set_effect[PID_TRIGGER_REPEAT_INT],
+-		       effect->trigger.interval);
++	/* Some games set this to random values that can be out of range */
++	s32 trigger_button_max =
++		pidff->set_effect[PID_TRIGGER_BUTTON].field->logical_maximum;
++	if (effect->trigger.button <= trigger_button_max) {
++		pidff->set_effect[PID_TRIGGER_BUTTON].value[0] =
++			effect->trigger.button;
++		pidff_set_time(&pidff->set_effect[PID_TRIGGER_REPEAT_INT],
++			       effect->trigger.interval);
++	} else {
++		pidff->set_effect[PID_TRIGGER_BUTTON].value[0] = 0;
++		pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] = 0;
++	}
++
+ 	pidff->set_effect[PID_GAIN].value[0] =
+ 		pidff->set_effect[PID_GAIN].field->logical_maximum;
+ 
 -- 
 2.51.0
 
