@@ -1,73 +1,65 @@
-Return-Path: <stable+bounces-216322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGSzBrzIj2l9TgEAu9opvQ
-	(envelope-from <stable+bounces-216322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:58:36 +0100
+	id QOVUK/7Jj2ndTgEAu9opvQ
+	(envelope-from <stable+bounces-216341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA15F13A360
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:58:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D15713A4D3
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D4F1C3008335
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:58:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EF02530731A7
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B436217723;
-	Sat, 14 Feb 2026 00:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7008121B192;
+	Sat, 14 Feb 2026 01:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FfAYDfaD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mSKAxcG0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B85020E334;
-	Sat, 14 Feb 2026 00:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3277719004A;
+	Sat, 14 Feb 2026 01:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030714; cv=none; b=ETUqDJ/+OBT0ibwGxugqJizamwFt8ol1neKw0Uyee2fLbn5sQuoqiQYGHtxzJciSQ98+dvf7zSNQ9/qDhJeu+q/Y5VolvEQW6/b4TrXBYcP1NbLkfD7kzPSikI2uAl2TdMjrUG/dY0peU/YiAjHexdQvVBHhToVw2y2L7rMr7xA=
+	t=1771030984; cv=none; b=TgBgxVQjZciAnAzjZOQmxlrHs3kViSbt+nMUVzT4z1U4u/tiZBCSKwSd4HxQ9UiA8ZNdz9QRYHUkeOcY5mmLK4zXF69rWF+e4fQ85O8NYfaoxlveDCgY0pAxKDaQLUsF0CfnDN8gDyb+JpDqvW50Q+Bbz9IDv4dQqPlL6ZOj0sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030714; c=relaxed/simple;
-	bh=Fbguudayvr5/a8atI4mdtxwAWSlFxYIraPPOXe1sJ88=;
+	s=arc-20240116; t=1771030984; c=relaxed/simple;
+	bh=6b252clNGbTBiGvYimlqoZL3gDDB5lrGWWn8G9K6lTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmuNyDykg3WYlcim5ZPEAJUDOXIiNumCmaazWWtTxVT+B4P8udACMdNt677WU3fUKa8Nd9hHFttcFu7891L+m/zAxoyY5ND4h0r4UdyOQlhWHITnUVmlbYW0zFx/jFuaW/hMSe7fHpw+glX/VqnnKDmdm3P2ondMI36/VK0W2cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FfAYDfaD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F52C19424;
-	Sat, 14 Feb 2026 00:58:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BUIOXqpXs/cZELl93te/CcVSzM8CmdEmx76Cm2JF7UIEsA4uTjkq8u+7d+3sgvqxHadlzXyNEiNwYHIkCzUWmGkRZ/6g0YGOawd2wU0Ly824nYp+JYmcEuUYHlMdy8y6HEKDXAzIpgIGt8nzvCiPJtrnaJ5jQKmboNmHjxM2UmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mSKAxcG0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2605BC116C6;
+	Sat, 14 Feb 2026 01:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030713;
-	bh=Fbguudayvr5/a8atI4mdtxwAWSlFxYIraPPOXe1sJ88=;
+	s=k20201202; t=1771030984;
+	bh=6b252clNGbTBiGvYimlqoZL3gDDB5lrGWWn8G9K6lTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FfAYDfaDrtDjmPTkhoEwGQc4K4nBSYKHRRf2EFllZ6YB7EJusBzPu9Cciz9h2oow9
-	 c0k5OXIJWc3wo83R4csKqdQP1v2YEeY5Tk/oG42nRTWK/a3vBFQTXvxHAfqEZwdDjF
-	 Z1rHenOIBJYoQhNXRblwA0xr8vEhvNrXN7OHlIL2tz2zhNYIw8a9u7vMZGnKT554Tv
-	 LObS6laFcKSsDehiRDGIHAzQPYLqlYOBtXc/vxdgaCxk8t6IebjMafzUyAbMaYf3Oc
-	 mLbGnF36oYStG2hHeBoRwIth0mf0IDP00bbbmILFZph4ucOlOpvnYkxvG5Nd8GBo0l
-	 WYPVjBEa3sJ+A==
+	b=mSKAxcG0oRJ7QzUBVtbQsO8WB1CesdfKRPRqjh1NJPpZYMOZhU1pZ6+MELcFoox0b
+	 RVgHpUhOK7MOU6Qsl/k7CvY2WqJgHbwoOM264ujdTWT1IDbgvZt0UsGJprHRo2ehmP
+	 HxPoQB/qTvPbIZMQR7MDB0jYdrJaOFpcj8C6vFbiy4LpBBkP/516dIMFVsALf4X1WI
+	 EDjpSec+ywpN9/WluGwjhFMWNNaFipVbkkiFzIFgdvKTTM1/p9koK3/H4ThFgU9F/I
+	 KEqLenL7VGXwgXlMgwIA4WoXtqzONRKM/djOZ7/ikgZ2PwzTKs2blRIG8GQ7LAL/B7
+	 HjI4bIOi8eIJA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Prathamesh Shete <pshete@nvidia.com>,
-	Petlozu Pravareshwar <petlozup@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+Cc: Ming Qian <ming.qian@oss.nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	thierry.reding@gmail.com,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	ulf.hansson@linaro.org,
-	chleroy@kernel.org,
-	jirislaby@kernel.org,
-	yelangyan@huaqin.corp-partner.google.com,
-	linux-tegra@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.19] soc/tegra: pmc: Fix unsafe generic_handle_irq() call
-Date: Fri, 13 Feb 2026 19:58:09 -0500
-Message-ID: <20260214005825.3665084-3-sashal@kernel.org>
+	ming.qian@nxp.com,
+	eagle.zhou@nxp.com,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.1] media: amphion: Clear last_buffer_dequeued flag for DEC_CMD_START
+Date: Fri, 13 Feb 2026 19:58:10 -0500
+Message-ID: <20260214010245.3671907-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214005825.3665084-1-sashal@kernel.org>
-References: <20260214005825.3665084-1-sashal@kernel.org>
+In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
+References: <20260214010245.3671907-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,391 +69,174 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-216341-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216322-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[nvidia.com,kernel.org,gmail.com,linutronix.de,goodmis.org,linaro.org,huaqin.corp-partner.google.com,vger.kernel.org,lists.linux.dev];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: DA15F13A360
+	TAGGED_RCPT(0.00)[stable,cisco];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email,collabora.com:email]
+X-Rspamd-Queue-Id: 3D15713A4D3
 X-Rspamd-Action: no action
 
-From: Prathamesh Shete <pshete@nvidia.com>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-[ Upstream commit e6d96073af681780820c94079b978474a8a44413 ]
+[ Upstream commit d85f3207d75df6d7a08be6526b15ff398668206c ]
 
-Currently, when resuming from system suspend on Tegra platforms,
-the following warning is observed:
+The V4L2_DEC_CMD_START command may be used to handle the dynamic source
+change, which will triggers an implicit decoder drain.
+The last_buffer_dequeued flag is set in the implicit decoder drain,
+so driver need to clear it to continue the following decoding flow.
 
-WARNING: CPU: 0 PID: 14459 at kernel/irq/irqdesc.c:666
-Call trace:
- handle_irq_desc+0x20/0x58 (P)
- tegra186_pmc_wake_syscore_resume+0xe4/0x15c
- syscore_resume+0x3c/0xb8
- suspend_devices_and_enter+0x510/0x540
- pm_suspend+0x16c/0x1d8
-
-The warning occurs because generic_handle_irq() is being called from
-a non-interrupt context which is considered as unsafe.
-
-Fix this warning by deferring generic_handle_irq() call to an IRQ work
-which gets executed in hard IRQ context where generic_handle_irq()
-can be called safely.
-
-When PREEMPT_RT kernels are used, regular IRQ work (initialized with
-init_irq_work) is deferred to run in per-CPU kthreads in preemptible
-context rather than hard IRQ context. Hence, use the IRQ_WORK_INIT_HARD
-variant so that with PREEMPT_RT kernels, the IRQ work is processed in
-hardirq context instead of being deferred to a thread which is required
-for calling generic_handle_irq().
-
-On non-PREEMPT_RT kernels, both init_irq_work() and IRQ_WORK_INIT_HARD()
-execute in IRQ context, so this change has no functional impact for
-standard kernel configurations.
-
-Signed-off-by: Petlozu Pravareshwar <petlozup@nvidia.com>
-Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-[treding@nvidia.com: miscellaneous cleanups]
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Complete Analysis
+## Analysis of commit: "media: amphion: Clear last_buffer_dequeued flag
+for DEC_CMD_START"
 
-### 1. COMMIT MESSAGE ANALYSIS
+### 1. Commit Message Analysis
 
-**Subject**: "soc/tegra: pmc: Fix unsafe generic_handle_irq() call"
+The commit message clearly describes a bug fix:
+- When `V4L2_DEC_CMD_START` is used to handle dynamic source changes, an
+  implicit decoder drain is triggered
+- The drain sets the `last_buffer_dequeued` flag
+- This flag is never cleared, which **breaks the subsequent decoding
+  flow**
+- The fix clears the flag when `DEC_CMD_START` is issued, allowing
+  decoding to continue
 
-The commit message is unambiguous - it's fixing a **real, observable
-WARNING** during system resume on Tegra platforms. The warning backtrace
-is included:
+Keywords: "need to clear it to continue the following decoding flow" —
+this indicates the decoder becomes stuck/non-functional without this
+fix.
 
-```
-WARNING: CPU: 0 PID: 14459 at kernel/irq/irqdesc.c:666
-Call trace:
- handle_irq_desc+0x20/0x58 (P)
- tegra186_pmc_wake_syscore_resume+0xe4/0x15c
- syscore_resume+0x3c/0xb8
- suspend_devices_and_enter+0x510/0x540
- pm_suspend+0x16c/0x1d8
-```
+### 2. Code Change Analysis
 
-The fix has been **Reviewed-by** and **Tested-by** Jon Hunter (NVIDIA
-kernel engineer), and authored by NVIDIA engineers who are experts on
-Tegra PMC.
-
-### 2. CODE CHANGE ANALYSIS - The Bug
-
-**Root cause**: `tegra186_pmc_wake_syscore_resume()` is called by
-`syscore_resume()` during system resume. Looking at `syscore_resume()`
-in `drivers/base/syscore.c:93-110`:
-
+The change is a **single line addition**:
 ```c
-void syscore_resume(void)
-{
-    WARN_ONCE(!irqs_disabled(), ...);
-    list_for_each_entry(syscore, &syscore_list, node)
-        if (syscore->ops->resume)
-            syscore->ops->resume(syscore->data);
-}
+vb2_clear_last_buffer_dequeued(v4l2_m2m_get_dst_vq(inst->fh.m2m_ctx));
 ```
 
-This runs with **interrupts disabled** but **NOT in hard IRQ context**
-(i.e., `in_hardirq()` returns false). However, when
-`generic_handle_irq()` is called, it goes through `handle_irq_desc()`
-(in `kernel/irq/irqdesc.c:658-671`):
+This is added in the `V4L2_DEC_CMD_START` case of `vdec_decoder_cmd()`,
+right after the existing `vdec_cmd_start(inst)` call.
 
-```c
-int handle_irq_desc(struct irq_desc *desc)
-{
-    data = irq_desc_get_irq_data(desc);
-    if (WARN_ON_ONCE(!in_hardirq() &&
-irqd_is_handle_enforce_irqctx(data)))
-        return -EPERM;
-    generic_handle_irq_desc(desc);
-    return 0;
-}
-```
+**What the bug mechanism is:**
+- `last_buffer_dequeued` is a flag in the vb2 (Video Buffer 2) queue
+  framework
+- When set, it signals that the last buffer has been dequeued and no
+  more buffers will come
+- During dynamic source change handling, an implicit drain sets this
+  flag
+- Without clearing it on `DEC_CMD_START`, the capture queue thinks it's
+  done and won't deliver any more buffers
+- This effectively **breaks video decoding** after a source change event
 
-The ARM GIC v2 and GIC v3 interrupt controllers **set
-`IRQD_HANDLE_ENFORCE_IRQCTX` on ALL interrupts** they map (confirmed in
-`drivers/irqchip/irq-gic.c:1077` and `drivers/irqchip/irq-
-gic-v3.c:1585`). Since Tegra SoCs use ARM GIC, any IRQ going through the
-Tegra wake domain will have this flag set. Thus, calling
-`generic_handle_irq()` from the syscore resume context (not hard IRQ)
-triggers the `WARN_ON_ONCE`.
+**The fix uses well-known V4L2 APIs:**
+- `vb2_clear_last_buffer_dequeued()` — standard V4L2 helper function
+- `v4l2_m2m_get_dst_vq()` — standard M2M helper to get the destination
+  (capture) queue
 
-**Why it matters**: Beyond the WARN, the function returns `-EPERM`
-without actually handling the interrupt. This means **edge-triggered
-wake IRQs are silently dropped**, potentially causing missed wakeup
-events and device misbehavior after resume.
+### 3. Classification
 
-### 3. THE FIX
+This is a **clear bug fix**. Without this patch, the amphion video
+decoder becomes non-functional after handling a dynamic source change
+event. The decoder gets stuck because the capture queue won't deliver
+any more buffers.
 
-The fix:
-1. Adds `struct irq_work wake_work` and `u32 *wake_status` fields to
-   `struct tegra_pmc`
-2. Creates a new `tegra186_pmc_wake_handler()` function (the IRQ work
-   handler) that contains the logic previously in
-   `tegra186_pmc_process_wake_events()`
-3. `tegra186_pmc_wake_syscore_resume()` now saves wake status to
-   `pmc->wake_status[]` and queues the IRQ work via `irq_work_queue()`
-4. The IRQ work handler runs in **hard IRQ context** where
-   `generic_handle_irq()` is safe
-5. Uses `IRQ_WORK_INIT_HARD()` to ensure hard IRQ context even on
-   `PREEMPT_RT` kernels
-6. Adds a check in `tegra186_pmc_wake_syscore_suspend()` for unhandled
-   wake IRQs
+### 4. Scope and Risk Assessment
 
-This is the **correct** fix pattern - using `irq_work` to defer IRQ
-handling to hard IRQ context is a well-established kernel pattern.
-Multiple other drivers have been fixed similarly (see commits
-`94ec234a16cf3`, `118c3ba24d04f`, `c6a91405ac5cd`, `f285de79569f9`,
-`f460c70125bcb` which all converted to `generic_handle_irq_safe()`).
+- **Lines changed:** 1 line added
+- **Files touched:** 1 file (`drivers/media/platform/amphion/vdec.c`)
+- **Complexity:** Extremely low — calls a standard framework function
+- **Risk of regression:** Very low — this is a targeted fix in a
+  specific command handler, using a well-established API
+- **Subsystem:** Media/V4L2 driver for NXP amphion video decoder
 
-### 4. DEPENDENCY ANALYSIS
+### 5. User Impact
 
-**Critical dependency**: This commit was written against the v6.19 tree
-which has the new `struct syscore` API from commit `a97fbc3ee3e2a`
-(v6.19-rc1 only). In stable trees (v6.6, v6.12), the functions use the
-old `struct syscore_ops` interface:
-- `tegra186_pmc_wake_syscore_resume(void)` (no `void *data` parameter)
-- `tegra186_pmc_wake_syscore_suspend(void)` (no `void *data` parameter)
-- `struct syscore_ops syscore` (not `struct syscore`)
+- **Who is affected:** Users of NXP i.MX8 SoCs (common in
+  embedded/industrial applications) that use the amphion video decoder
+- **Severity:** The bug causes the video decoder to stop working after a
+  dynamic source change — this is a functional failure, not a minor
+  issue
+- **Real-world scenario:** Dynamic source changes happen when video
+  stream parameters change mid-stream (resolution change, codec
+  reconfiguration). This is a normal operational scenario in media
+  playback.
 
-**However**, the core fix logic (adding `irq_work`, deferring
-`generic_handle_irq()`) does NOT depend on the syscore API change. The
-fix can be backported with minor adaptation:
-- The function signatures need to match the old `syscore_ops` callbacks
-  (no `void *data`)
-- `IRQ_WORK_INIT_HARD` and `irq_work_queue` are available in v6.6+
-- The `irq_work` and `wake_status` additions to `struct tegra_pmc` are
-  self-contained
+### 6. Stability Indicators
 
-**Affected stable trees**: v6.6.y, v6.12.y (and any other active stable
-tree based on v6.2+, since commit `0474cc8489bda` introduced the buggy
-code in v6.2).
+- **Reviewed-by:** Nicolas Dufresne (Collabora, well-known V4L2
+  contributor)
+- **Signed-off-by:** Hans Verkuil (V4L2 subsystem maintainer)
+- The patch is obviously correct — it follows the same pattern used by
+  other V4L2 M2M drivers
 
-### 5. SCOPE AND RISK
+### 7. Dependency Check
 
-- **Files changed**: 1 file (`drivers/soc/tegra/pmc.c`)
-- **Lines**: ~+60, ~-30 (net ~30 lines added)
-- **Subsystem**: Tegra SoC PMC - a self-contained platform driver
-- **Risk**: LOW - The change only affects Tegra platforms with wake
-  events. The `irq_work` mechanism is well-tested kernel infrastructure.
-  The fix has been reviewed and tested by NVIDIA engineers.
-- **Regression risk**: Very low - non-Tegra systems are unaffected. The
-  new code path is functionally equivalent but executes in the correct
-  context.
+- The fix uses `vb2_clear_last_buffer_dequeued()` and
+  `v4l2_m2m_get_dst_vq()`, which are long-standing V4L2 framework
+  functions available in all stable trees that contain the amphion
+  driver
+- No dependency on other patches — this is a self-contained one-line fix
 
-### 6. USER IMPACT
+### Summary
 
-- **Who**: All users of NVIDIA Tegra186+ SoCs (Tegra186, Tegra194,
-  Tegra234) using suspend/resume
-- **Severity**: Every system resume triggers a kernel WARNING. Beyond
-  the warning itself, edge-triggered wake IRQs may be silently dropped
-  because `handle_irq_desc()` returns `-EPERM` without processing the
-  interrupt
-- **Real-world**: Tegra platforms are used in NVIDIA Jetson embedded
-  systems, automotive platforms, and gaming devices (Nintendo Switch)
-
-### 7. CONCLUSION
-
-This is a clear bug fix for a real, reproducible issue that fires on
-every resume on affected hardware. The fix uses a well-established
-kernel pattern (irq_work) and is self-contained within a single platform
-driver file. It has been reviewed and tested by the subsystem
-maintainers. The fix will need minor adaptation for stable trees
-(different `syscore_ops` API), but the core logic is fully applicable.
-The bug exists in all stable trees from v6.2 onward.
+This is a textbook stable backport candidate:
+- **Obviously correct:** Single line calling a standard API at the right
+  place
+- **Fixes a real bug:** Decoder stops working after dynamic source
+  change
+- **Small and contained:** 1 line, 1 file
+- **No new features:** Just fixes existing functionality
+- **Low risk:** Uses established framework API, reviewed by subsystem
+  maintainer
+- **Real user impact:** Video decoding breaks without it
 
 **YES**
 
- drivers/soc/tegra/pmc.c | 104 ++++++++++++++++++++++++++++------------
- 1 file changed, 74 insertions(+), 30 deletions(-)
+ drivers/media/platform/amphion/vdec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soc/tegra/pmc.c b/drivers/soc/tegra/pmc.c
-index f3760a3b3026d..407fa840814c3 100644
---- a/drivers/soc/tegra/pmc.c
-+++ b/drivers/soc/tegra/pmc.c
-@@ -28,6 +28,7 @@
- #include <linux/iopoll.h>
- #include <linux/irqdomain.h>
- #include <linux/irq.h>
-+#include <linux/irq_work.h>
- #include <linux/kernel.h>
- #include <linux/of_address.h>
- #include <linux/of_clk.h>
-@@ -468,6 +469,10 @@ struct tegra_pmc {
- 	unsigned long *wake_sw_status_map;
- 	unsigned long *wake_cntrl_level_map;
- 	struct syscore syscore;
-+
-+	/* Pending wake IRQ processing */
-+	struct irq_work wake_work;
-+	u32 *wake_status;
- };
- 
- static struct tegra_pmc *pmc = &(struct tegra_pmc) {
-@@ -1905,6 +1910,50 @@ static int tegra_pmc_parse_dt(struct tegra_pmc *pmc, struct device_node *np)
- 	return 0;
- }
- 
-+/* translate sc7 wake sources back into IRQs to catch edge triggered wakeups */
-+static void tegra186_pmc_wake_handler(struct irq_work *work)
-+{
-+	struct tegra_pmc *pmc = container_of(work, struct tegra_pmc, wake_work);
-+	unsigned int i, wake;
-+
-+	for (i = 0; i < pmc->soc->max_wake_vectors; i++) {
-+		unsigned long status = pmc->wake_status[i];
-+
-+		for_each_set_bit(wake, &status, 32) {
-+			irq_hw_number_t hwirq = wake + (i * 32);
-+			struct irq_desc *desc;
-+			unsigned int irq;
-+
-+			irq = irq_find_mapping(pmc->domain, hwirq);
-+			if (!irq) {
-+				dev_warn(pmc->dev,
-+					 "No IRQ found for WAKE#%lu!\n",
-+					 hwirq);
-+				continue;
-+			}
-+
-+			dev_dbg(pmc->dev,
-+				"Resume caused by WAKE#%lu mapped to IRQ#%u\n",
-+				hwirq, irq);
-+
-+			desc = irq_to_desc(irq);
-+			if (!desc) {
-+				dev_warn(pmc->dev,
-+					 "No descriptor found for IRQ#%u\n",
-+					 irq);
-+				continue;
-+			}
-+
-+			if (!desc->action || !desc->action->name)
-+				continue;
-+
-+			generic_handle_irq(irq);
-+		}
-+
-+		pmc->wake_status[i] = 0;
-+	}
-+}
-+
- static int tegra_pmc_init(struct tegra_pmc *pmc)
- {
- 	if (pmc->soc->max_wake_events > 0) {
-@@ -1923,6 +1972,18 @@ static int tegra_pmc_init(struct tegra_pmc *pmc)
- 		pmc->wake_cntrl_level_map = bitmap_zalloc(pmc->soc->max_wake_events, GFP_KERNEL);
- 		if (!pmc->wake_cntrl_level_map)
- 			return -ENOMEM;
-+
-+		pmc->wake_status = kcalloc(pmc->soc->max_wake_vectors, sizeof(u32), GFP_KERNEL);
-+		if (!pmc->wake_status)
-+			return -ENOMEM;
-+
-+		/*
-+		 * Initialize IRQ work for processing wake IRQs. Must use
-+		 * HARD_IRQ variant to run in hard IRQ context on PREEMPT_RT
-+		 * because we call generic_handle_irq() which requires hard
-+		 * IRQ context.
-+		 */
-+		pmc->wake_work = IRQ_WORK_INIT_HARD(tegra186_pmc_wake_handler);
- 	}
- 
- 	if (pmc->soc->init)
-@@ -3129,47 +3190,30 @@ static void wke_clear_wake_status(struct tegra_pmc *pmc)
- 	}
- }
- 
--/* translate sc7 wake sources back into IRQs to catch edge triggered wakeups */
--static void tegra186_pmc_process_wake_events(struct tegra_pmc *pmc, unsigned int index,
--					     unsigned long status)
--{
--	unsigned int wake;
--
--	dev_dbg(pmc->dev, "Wake[%d:%d]  status=%#lx\n", (index * 32) + 31, index * 32, status);
--
--	for_each_set_bit(wake, &status, 32) {
--		irq_hw_number_t hwirq = wake + 32 * index;
--		struct irq_desc *desc;
--		unsigned int irq;
--
--		irq = irq_find_mapping(pmc->domain, hwirq);
--
--		desc = irq_to_desc(irq);
--		if (!desc || !desc->action || !desc->action->name) {
--			dev_dbg(pmc->dev, "Resume caused by WAKE%ld, IRQ %d\n", hwirq, irq);
--			continue;
--		}
--
--		dev_dbg(pmc->dev, "Resume caused by WAKE%ld, %s\n", hwirq, desc->action->name);
--		generic_handle_irq(irq);
--	}
--}
--
- static void tegra186_pmc_wake_syscore_resume(void *data)
- {
--	u32 status, mask;
- 	unsigned int i;
-+	u32 mask;
- 
- 	for (i = 0; i < pmc->soc->max_wake_vectors; i++) {
- 		mask = readl(pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(i));
--		status = readl(pmc->wake + WAKE_AOWAKE_STATUS_R(i)) & mask;
--
--		tegra186_pmc_process_wake_events(pmc, i, status);
-+		pmc->wake_status[i] = readl(pmc->wake + WAKE_AOWAKE_STATUS_R(i)) & mask;
- 	}
-+
-+	/* Schedule IRQ work to process wake IRQs (if any) */
-+	irq_work_queue(&pmc->wake_work);
- }
- 
- static int tegra186_pmc_wake_syscore_suspend(void *data)
- {
-+	unsigned int i;
-+
-+	/* Check if there are unhandled wake IRQs */
-+	for (i = 0; i < pmc->soc->max_wake_vectors; i++)
-+		if (pmc->wake_status[i])
-+			dev_warn(pmc->dev,
-+				 "Unhandled wake IRQs pending vector[%u]: 0x%x\n",
-+				 i, pmc->wake_status[i]);
- 	wke_read_sw_wake_status(pmc);
- 
- 	/* flip the wakeup trigger for dual-edge triggered pads
+diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
+index c0d2aabb9e0e3..f25dbcebdccf6 100644
+--- a/drivers/media/platform/amphion/vdec.c
++++ b/drivers/media/platform/amphion/vdec.c
+@@ -724,6 +724,7 @@ static int vdec_decoder_cmd(struct file *file, void *fh, struct v4l2_decoder_cmd
+ 	switch (cmd->cmd) {
+ 	case V4L2_DEC_CMD_START:
+ 		vdec_cmd_start(inst);
++		vb2_clear_last_buffer_dequeued(v4l2_m2m_get_dst_vq(inst->fh.m2m_ctx));
+ 		break;
+ 	case V4L2_DEC_CMD_STOP:
+ 		vdec_cmd_stop(inst);
 -- 
 2.51.0
 
