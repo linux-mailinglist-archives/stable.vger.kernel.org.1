@@ -1,197 +1,172 @@
-Return-Path: <stable+bounces-216482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216483-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMvzKKJzkGn9ZwEAu9opvQ
-	(envelope-from <stable+bounces-216482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 14:07:46 +0100
+	id OHN5A8JzkGmxZwEAu9opvQ
+	(envelope-from <stable+bounces-216483-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 14:08:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638BD13C0FE
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 14:07:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D21113C11C
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 14:08:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C965C3020F3C
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 13:06:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D1F83020D5A
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 13:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5793130DEBE;
-	Sat, 14 Feb 2026 13:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA5942A9D;
+	Sat, 14 Feb 2026 13:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="t7zLrhI2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k+aLND/e"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B829D30ACE6;
-	Sat, 14 Feb 2026 13:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5332E23183B
+	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 13:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771074360; cv=none; b=f0LrY4oks1LQWK9Zckp1yfv+dKULxZc6fo2XntnWD4gDLdYcBwSpfv6eGswLV7u4o372NizbgIoInkfNpZE0r4I0amCRcn6RfOMEp+Lsw5ZQXhNnC5HJZaKw00VwcpMo4ljVa5vGWWRnyRP+jyjy/UH0OWFrjCe1T3UK+luqGK0=
+	t=1771074430; cv=none; b=jpTHPPdLYNl+DEasKy+td5DDChanFEoRlgpfn+0qNROCywSLZKPLPLKlK6cFqDuPUVXKpt0uPK+FN02XjexP8SFglZka7EkKfgXoWDfHekAbXhHXSXQUEWivrSatfWYQJbZUnHiC4xtn6fpsEFZ/vdXwkL8eVEf73KQFhKTx3y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771074360; c=relaxed/simple;
-	bh=1bI32zm3Wuz81PE4dSrg/j+dht98RHbmddpIHH4Hlnk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DO39WCA4qNOBsA9GLHzWBgaUXgmzfpCKWgYR23pPbn47gjJN3ey3fGQR9ivhCCPFYSoE+/l17wm/m5LmhVhRqZoDFfqQhewfaug25bHjNAgBwDK1bJvAdU3UWZ6Rt7SX/rKKd0jKJ2MRMi7gOYiuphzyDdh0dnU8E19PjNEFQUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=t7zLrhI2; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from mail.ideasonboard.com (unknown [IPv6:2401:4900:1c30:6452:b7eb:ea26:c129:40a5])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id B8F7D557;
-	Sat, 14 Feb 2026 14:05:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1771074308;
-	bh=1bI32zm3Wuz81PE4dSrg/j+dht98RHbmddpIHH4Hlnk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=t7zLrhI2bxolPEA9Ycz4btF5G38lWEn6YFifQad9QEck0v0DkDZZUsmYhqNhtWIMU
-	 EfB49bn5RyBQVozXZMcGifXLwLgWq5zuEU9/BNHKvSXaOxjtWfmoHONYUD4ZDsI/hC
-	 juEMTGPFJhLg8xqcOPIE44sv6HLXVotdwEXNqMhM=
-From: Jai Luthra <jai.luthra@ideasonboard.com>
-Date: Sat, 14 Feb 2026 18:35:22 +0530
-Subject: [PATCH v2 2/2] media: i2c: imx283: Fix hang when going from large
- to small resolution
+	s=arc-20240116; t=1771074430; c=relaxed/simple;
+	bh=oFjwAFBbpEqkWb7J9rjxfaX2HDa2WcOxalZpGcADY7I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KKAChUuaW4DcNZWury6wwrrCqxTf5VQ296HahHGEdC1lxkdeMLoNXmE9tCs48lQo67oo8Hc0e2C0EG3zPFWZq7WP4luXcZCCAcZIFJEwhlLsb2Vk2Jq/Afmd9iGH+N9d2VHQHgf/sLCSBj5AmW8/p0M1Hd3sI3eksbvWBDSN2GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k+aLND/e; arc=none smtp.client-ip=74.125.82.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1271257ae53so1921816c88.1
+        for <stable@vger.kernel.org>; Sat, 14 Feb 2026 05:07:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771074427; x=1771679227; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/pWQnDuja70dnDBF3+5g2m3Cq8SMK2BPpVuO+rxHDm8=;
+        b=k+aLND/eDgoJILFU1aDhhyEyoc4t6EOiKF2rTJMeCG+vPd1TLu+JAmibehjBrBwaEv
+         Ss9r73qfhes/68FXgfNo4iq+6IpatBs1uzQVuRVEoKepL4gquxwy/Sb8IpQnddXvjiGt
+         ovBbkJkhS1YiR7oqnA285im19lpvQXEXmKYOq1DWu5Kz3RmNfA2/XsFKui7Lmp63UZQu
+         2eCfORabFC1xBKHhEuQ/h3LccEwN66VUBfsCtwY8TXDfkL2wCEjHYdpxYvCRbz3neELb
+         BxVNwwvNHf+5Fk2Q94aiD0u2lDuQ6aUQPPWxqYjd1JRbTZpiUzeUrKMOuzuSnWABJuCB
+         fPBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771074427; x=1771679227;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/pWQnDuja70dnDBF3+5g2m3Cq8SMK2BPpVuO+rxHDm8=;
+        b=SuLgEJDoruKQWbG31bMRWjHm8fOG89gahRjr5md1aihlbjO9unxA8xTfxwGahRlSzy
+         8RtP4xA5wDGSBdEn+DUALc033xvbi2B9pIwbAQplG1SOgfbC47nOZAxd1/5/hcaJjhU8
+         8bMgPBurbqfttrbj4kchtM2yfAPp9LKjTjl4SnWs71Og26XwYvEueEd1cEKq3odiDgdo
+         BKp6zFnl0V+MnQ/TI952SoLL8VFwb+H9Qlp0u1x5PBMXajkvTk8PKdr9Nu0gGt5HAQiE
+         qPO3LMHCGdcwnLIyDkUuagg3qkH6AOlw21uM1bN/bD4DFFHSdTTPWbMMxEdYFV4OYSdd
+         httg==
+X-Gm-Message-State: AOJu0YxYF0IzF28irfN+eavlC/GQRco09TK2u8d0bRagPOR/qlc8tbpr
+	PV70OwnVAYsexFP+jONtUQq0fJ7kfFbpI/2aHgMCgWv6XThBJDkFtWSD
+X-Gm-Gg: AZuq6aIb4A/W97WT0f/ZCBbatPR6T0VNIjaWqjBhhEAoQqHjaqqBeC+nwtqSUMGvLrn
+	x4uE7soYRNxbWsZ7FabJuEJLND/n8Yqf0MNTulm5Y5h/CsBKXhKVgLZjRuhCYyVGv0gLw+P6140
+	e5NzUg5ZrFxUN2E04FbP/mi5VIcbIUr5uAmN6/YgOiQGuipKekyaLM7aGr09H4nXOty21eZRJ/Z
+	K8qPwlEgUCfMY7HuZrg5gItbRln7tnSFl++E3wavbJdv80SAjQoVJwvQLeHGFU3+ndET1oymeFS
+	kOFCzkq0X71ly7ZlpuSJBL6ZoXJgbGrXAnkVvkjtVhQMakr67vKjWjjKE42F7bVC6Ly0SOWmHpY
+	r29o+Upp5Izw73z50vLro3UCQjQhKqeOdWiDmQTVofvXx9DopzFdVaRbKFDsC/dTftnL0Ks7gYz
+	6Gc6lMq1D7k/3Ez2a50cy1tQSrU7XMh4/sm1K42Ibn6ndu4G4i4PtMQt+djd1iibtdPi2qARe7T
+	I7rpdUfh/+0EuHs3JZLwuVNmg==
+X-Received: by 2002:a05:7022:4189:b0:11c:ec20:ea1f with SMTP id a92af1059eb24-1273ae40123mr2155474c88.33.1771074427199;
+        Sat, 14 Feb 2026 05:07:07 -0800 (PST)
+Received: from kernel.. ([45.232.185.208])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742c6430asm2170362c88.6.2026.02.14.05.07.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Feb 2026 05:07:06 -0800 (PST)
+From: Maiquel Paiva <maiquelpaiva@gmail.com>
+To: linux-bluetooth@vger.kernel.org,
+	luiz.dentz@gmail.com,
+	gregkh@linuxfoundation.org,
+	marcel@holtmann.org
+Cc: stable@vger.kernel.org,
+	Maiquel Paiva <maiquelpaiva@gmail.com>
+Subject: [PATCH v9] Bluetooth: mgmt: Fix race condition in mesh handling
+Date: Sat, 14 Feb 2026 13:06:10 +0000
+Message-ID: <20260214130610.68236-1-maiquelpaiva@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260214-imx283-hang-fix-v2-2-f4fd3de0f020@ideasonboard.com>
-References: <20260214-imx283-hang-fix-v2-0-f4fd3de0f020@ideasonboard.com>
-In-Reply-To: <20260214-imx283-hang-fix-v2-0-f4fd3de0f020@ideasonboard.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>, 
- Umang Jain <uajain@igalia.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jai Luthra <jai.luthra@ideasonboard.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3059;
- i=jai.luthra@ideasonboard.com; h=from:subject:message-id;
- bh=1bI32zm3Wuz81PE4dSrg/j+dht98RHbmddpIHH4Hlnk=;
- b=owEBbQKS/ZANAwAKAUPekfkkmnFFAcsmYgBpkHMjpIkzUOGT0RO4B4XLPadRh6OklvYO8EGON
- 4uZxBtbC2CJAjMEAAEKAB0WIQRN4NgY5dV16NRar8VD3pH5JJpxRQUCaZBzIwAKCRBD3pH5JJpx
- RcxtEACuyBK3Bs66l5wh9jubNR0KjGMm1Oq70uqrpdd+ghu5xZRGQIAb+2HxJVKzkhxAtgEiKAc
- 2TXEeWKxfmOjrcRusA8AM92Puf1pI1FG72i34Oy98mIsZZYJC7LGc2ZJ/PmPfghrHSexps0z6HT
- cp7C65iwpPxfRH938TLpObYus4kgtKzYrwNODlcJMC4OyPBCgrc0gjWoMl8IqYgwJZnzLdVB5MK
- JtMGHJNxeTQyu4HegJQ6dSTJlE/kVXqSokDfC8PFRi88WZeay1sQEaDK63Q3ZQARUyOEfOKeGT0
- n+2etPJ3HkqGzNciSchf1cD90FvIkRq+qDroz5hDOTTnE+gKbrnOvVsbTPy5TdLbTC27mUc2bA9
- bYTPI6Ss9EgeEzt3PrYx+3cAEcnQsFX6ubJ8X95fPuY6T7tNGEiKm23R7bWgyIgOtWMZHEDYhp7
- v/V/mQ3DGTOaNMtsrW6UJnL0YlY6Le7Lc2ZaWnDH5FlYBlrB6CxnAl+/UULBv3ifbjk9VrlOln/
- NE0IGQ6QgLNpT1ejxEp3zACFQbzN+3TXi1lhUfUue/2AGJmMyH2uKyJv4Lk31kE73J3q18iLnWy
- HsdxTR8FE2S0gj+VkEpd2jOdS7/sXtvbFoG43ilopg6H1FBo2rDYY/MeH199xd4dAiYuCPOXME0
- mK4R+rnnAqbFhWg==
-X-Developer-Key: i=jai.luthra@ideasonboard.com; a=openpgp;
- fpr=4DE0D818E5D575E8D45AAFC543DE91F9249A7145
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216482-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216483-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,linuxfoundation.org,holtmann.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jai.luthra@ideasonboard.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[maiquelpaiva@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ideasonboard.com:mid,ideasonboard.com:dkim,ideasonboard.com:email]
-X-Rspamd-Queue-Id: 638BD13C0FE
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6D21113C11C
 X-Rspamd-Action: no action
 
-When switching between modes (e.g. full resolution to binned),
-standby_cancel() previously cleared XMSTA (starting master mode data
-output) before the new mode's MDSEL, crop, and timing registers were
-programmed in start_streaming(). This caused the sensor to briefly
-output MIPI data using the previous mode's configuration.
+This patch addresses race conditions in mesh handling within mgmt_util.c.
 
-On receivers like imx-mipi-csis, this leads to FIFO overflow errors
-when switching from a higher to a lower resolution, as the receiver is
-configured for the new smaller frame size but receives stale
-full-resolution data.
+The functions mgmt_mesh_add and mgmt_mesh_find modify or traverse the
+mesh_pending list without locking. This patch uses guard(mutex) with
+the existing mgmt_pending_lock to protect the critical sections, as
+suggested by maintainers in previous reviews.
 
-Fix this by moving the XMSTA and SYNCDRV register writes from
-standby_cancel() to the end of start_streaming(), after all mode,
-crop, and timing registers have been configured. Also explicitly stop
-master mode (XMSTA=1) when stopping the stream, matching the pattern
-used by other Sony sensor drivers (imx290, imx415).
+Note: The heap buffer overflow fix previously included in earlier
+versions of this patch series has already been merged upstream.
 
-Use named macros IMX283_XMSTA_START/STOP instead of raw 0/BIT(0) for
-readability.
-
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
 Cc: stable@vger.kernel.org
-Fixes: ccb4eb4496fa ("media: i2c: Add imx283 camera sensor driver")
-Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Maiquel Paiva <maiquelpaiva@gmail.com>
 ---
- drivers/media/i2c/imx283.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ net/bluetooth/mgmt_util.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/imx283.c b/drivers/media/i2c/imx283.c
-index 9b3094a57873c6e8ff8c41d058ea3b0012642cac..1be6164c2d15524690b738aa725a6708e84487d0 100644
---- a/drivers/media/i2c/imx283.c
-+++ b/drivers/media/i2c/imx283.c
-@@ -129,7 +129,8 @@
- 
- /* Master Mode Operation Control */
- #define IMX283_REG_XMSTA		CCI_REG8(0x3105)
--#define   IMX283_XMSTA			BIT(0)
-+#define   IMX283_XMSTA_START		0
-+#define   IMX283_XMSTA_STOP		BIT(0)
- 
- #define IMX283_REG_SYNCDRV		CCI_REG8(0x3107)
- #define   IMX283_SYNCDRV_XHS_XVS	(0xa0 | 0x02)
-@@ -1023,8 +1024,6 @@ static int imx283_standby_cancel(struct imx283 *imx283)
- 	usleep_range(19000, 20000);
- 
- 	cci_write(imx283->cci, IMX283_REG_CLAMP, IMX283_CLPSQRST, &ret);
--	cci_write(imx283->cci, IMX283_REG_XMSTA, 0, &ret);
--	cci_write(imx283->cci, IMX283_REG_SYNCDRV, IMX283_SYNCDRV_XHS_XVS, &ret);
- 
- 	return ret;
- }
-@@ -1117,6 +1116,10 @@ static int imx283_start_streaming(struct imx283 *imx283,
- 	/* Apply customized values from controls (HMAX/VMAX/SHR) */
- 	ret =  __v4l2_ctrl_handler_setup(imx283->sd.ctrl_handler);
- 
-+	/* Start master mode */
-+	cci_write(imx283->cci, IMX283_REG_XMSTA, IMX283_XMSTA_START, &ret);
-+	cci_write(imx283->cci, IMX283_REG_SYNCDRV, IMX283_SYNCDRV_XHS_XVS, &ret);
-+
- 	return ret;
- }
- 
-@@ -1153,12 +1156,14 @@ static int imx283_disable_streams(struct v4l2_subdev *sd,
- 				  u64 streams_mask)
+diff --git a/net/bluetooth/mgmt_util.c b/net/bluetooth/mgmt_util.c
+index 6ccc3a3f68de..eee4bc05f6e5 100644
+--- a/net/bluetooth/mgmt_util.c
++++ b/net/bluetooth/mgmt_util.c
+@@ -397,8 +397,7 @@ struct mgmt_mesh_tx *mgmt_mesh_find(struct hci_dev *hdev, u8 handle)
  {
- 	struct imx283 *imx283 = to_imx283(sd);
--	int ret;
-+	int ret = 0;
+ 	struct mgmt_mesh_tx *mesh_tx;
  
- 	if (pad != IMAGE_PAD)
- 		return -EINVAL;
+-	if (list_empty(&hdev->mesh_pending))
+-		return NULL;
++	guard(mutex)(&hdev->mgmt_pending_lock);
  
--	ret = cci_write(imx283->cci, IMX283_REG_STANDBY, IMX283_STANDBY, NULL);
-+	cci_write(imx283->cci, IMX283_REG_XMSTA, IMX283_XMSTA_STOP, &ret);
-+	cci_write(imx283->cci, IMX283_REG_STANDBY, IMX283_STANDBY, &ret);
+ 	list_for_each_entry(mesh_tx, &hdev->mesh_pending, list) {
+ 		if (mesh_tx->handle == handle)
+@@ -420,6 +419,8 @@ struct mgmt_mesh_tx *mgmt_mesh_add(struct sock *sk, struct hci_dev *hdev,
+ 	if (!mesh_tx)
+ 		return NULL;
+ 
++	guard(mutex)(&hdev->mgmt_pending_lock);
 +
- 	if (ret)
- 		dev_err(imx283->dev, "Failed to stop stream\n");
- 
-
+ 	hdev->mesh_send_ref++;
+ 	if (!hdev->mesh_send_ref)
+ 		hdev->mesh_send_ref++;
 -- 
-2.53.0
+2.43.0
 
 
