@@ -1,76 +1,77 @@
-Return-Path: <stable+bounces-216327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oH2MMg/Jj2l9TgEAu9opvQ
-	(envelope-from <stable+bounces-216327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:59:59 +0100
+	id mN+MLeXJj2nMTgEAu9opvQ
+	(envelope-from <stable+bounces-216345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CC713A3B2
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:59:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 035D813A470
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C911C3082657
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:58:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1D2333008CAA
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CFC1F471F;
-	Sat, 14 Feb 2026 00:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B617B1FF1AD;
+	Sat, 14 Feb 2026 01:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jNDRoq9A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E1xuw1AG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD9CDF59;
-	Sat, 14 Feb 2026 00:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B663EBF2C;
+	Sat, 14 Feb 2026 01:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030722; cv=none; b=KzDLVLui0hpPbetn6FLIAQm8Dj9C1iYGlIQmJDYuK8FeCPJYYDACvT0KE0actGyy2a35v58BKasp9qaOcbFl+uEAJ6mgNx3yddKbXkPOwTS7mYzONGTc7rhoJO8rcE6+2luYyBCxasaWReLT8GoYYdqed8MnrZw7rSPrdIdFqp8=
+	t=1771030989; cv=none; b=n72P4BcmNsq+SDLV5V66C88RVvjLYOiJuMdIAgv5ng/HT0Eyp+vwOZMAMJWAHZ6yPafh3uvyg4myuUtQES2H1khALzBdKFlICK+2kppAWuj/kPPrCvhHwxintgrUl1RLg9hpW4BGuCofi9U9ITXKuQTI2xmTLyhsYyHakzb2V6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030722; c=relaxed/simple;
-	bh=0PgCKvV754f0VqOtNSpEryR/Pm+XV6SuCNVQ+/aHTbU=;
+	s=arc-20240116; t=1771030989; c=relaxed/simple;
+	bh=PLayDhKqDcanYXVlN+N4aQogtWC6XliezDBW70sXeuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u8LYotk04zgzGCPWKtj0hp3jMOheh68vuI5Q2vnnULTlDVHZb6H8fUzJJ6lYjnQkqy5uXxzuzWQaJgN6wSpFL+vyrTZwSdwrj1hxnh1UoAUhtgB4PiZkWXgivcqEbpuOywRyJedSHRmwAtObWVvggJZw6PAclqAEjZOGwiZDVI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jNDRoq9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C9BC19424;
-	Sat, 14 Feb 2026 00:58:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B04pXhxyzXmtovZoyKUxC+VuqiEdmDFz45GsxWnueikhbqtW5RcjHe0su1NwCpJpUdkghzF1OrmY3oycBMmHB40O3vtSSZE3Ys31Q7NG4yI5lc1MSxYeCWgttQ6pTiNs92EmVH8OamgTAN+hUHeNDVHH5jj+OKxLcLAlJRgBARU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E1xuw1AG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4795EC16AAE;
+	Sat, 14 Feb 2026 01:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030722;
-	bh=0PgCKvV754f0VqOtNSpEryR/Pm+XV6SuCNVQ+/aHTbU=;
+	s=k20201202; t=1771030989;
+	bh=PLayDhKqDcanYXVlN+N4aQogtWC6XliezDBW70sXeuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jNDRoq9ArjxtEzPtbR5sCV2MZ//RJCAuZ+v/joZ/wKBjpZQpk//GrzEKj2qdHE1+L
-	 p5YHpyvp09yigXL/88w+oQtNMt1X4pG6LsS93pId2+BuzrYySD18GDEEEHx/W9sNZC
-	 jI3mtDjE4OoXNHGDWufyJ31G7K42OemDDSuz1rE1DGbu1EJQGMg9WYJyTkbNZBjaxO
-	 gOKxh0FS/j7LCz2/PTC7nBTaFB/YB+5vV+0gylhcfC7W+gBa94NsdHzxMPnJJfbiXd
-	 COLsoWovFdC31s6K0sVwQQIo74XZ+l0/krWaQybJQh2Z0+9XN72GCSpf7qBEQko84C
-	 Kr4K9mLCeksCw==
+	b=E1xuw1AGsiVSw7oa3qGWgn4Jt+DCPsGjANoz3nQA4J9LOgDfwH+MGlydsN0uHshfw
+	 xXNkczADqlYv9HX6qo3iRj+1WOgofNuTp/EX+qAJQ0D55QOp5MZ5RLDLPtAD7LZkNb
+	 d0/L/yejMHdkQ65eDP7VfZatue6Uc1aTNzKypNyWhUQemQ+/pN1nqxYfe3ROOD1NFE
+	 yzLqZGXn9sZiBfcyEg/3bCov7RlmbW2eobPBPOIQ5LeILqMnkKjfTpUKlB8gIPGu9z
+	 n6KdPdtQv9hez13XdGiVR89gixzmSCBDqfUYWLkh/wNUYuJU7dlLwiBljBZbr6klTr
+	 pgj05BPBlmdgg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
-	Thierry Reding <treding@nvidia.com>,
+Cc: Donet Tom <donettom@linux.ibm.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	neil.armstrong@linaro.org,
-	yelangyan@huaqin.corp-partner.google.com,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] arm64: tegra: smaug: Add usb-role-switch support
+	Felix.Kuehling@amd.com,
+	amd-gfx@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.19-5.15] drm/amdkfd: Fix GART PTE for non-4K pagesize in svm_migrate_gart_map()
 Date: Fri, 13 Feb 2026 19:58:14 -0500
-Message-ID: <20260214005825.3665084-8-sashal@kernel.org>
+Message-ID: <20260214010245.3671907-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214005825.3665084-1-sashal@kernel.org>
-References: <20260214005825.3665084-1-sashal@kernel.org>
+In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
+References: <20260214010245.3671907-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.34 / 15.00];
@@ -78,199 +79,140 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[tecnico.ulisboa.pt,nvidia.com,kernel.org,gmail.com,linaro.org,huaqin.corp-partner.google.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[linux.ibm.com,amd.com,gmail.com,kernel.org,lists.freedesktop.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216327-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216345-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 77CC713A3B2
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 035D813A470
 X-Rspamd-Action: no action
 
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit dfa93788dd8b2f9c59adf45ecf592082b1847b7b ]
+[ Upstream commit 6c160001661b6c4e20f5c31909c722741e14c2d8 ]
 
-The USB2 port on Smaug is configured for OTG operation but lacked the
-required 'usb-role-switch' property, leading to a failed probe and a
-non-functioning USB port. Add the property along with setting the default
-role to host.
+In svm_migrate_gart_map(), while migrating GART mapping, the number of
+bytes copied for the GART table only accounts for CPU pages. On non-4K
+systems, each CPU page can contain multiple GPU pages, and the GART
+requires one 8-byte PTE per GPU page. As a result, an incorrect size was
+passed to the DMA, causing only a partial update of the GART table.
 
-Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fix this function to work correctly on non-4K page-size systems by
+accounting for the number of GPU pages per CPU page when calculating the
+number of bytes to be copied.
+
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed for a thorough analysis.
+This confirms the issue. At line 362, `amdgpu_gart_map` already
+correctly iterates `AMDGPU_GPU_PAGES_IN_CPU_PAGE` times per CPU page
+(inner loop `j`). So it generates `npages *
+AMDGPU_GPU_PAGES_IN_CPU_PAGE` PTEs (each 8 bytes), totaling `npages * 8
+* AMDGPU_GPU_PAGES_IN_CPU_PAGE` bytes. But the DMA copy was only copying
+`npages * 8` bytes — a mismatch that results in partial GART updates on
+non-4K systems.
 
----
+### 3. Classification
 
-## Complete Analysis
+This is a clear **bug fix** for incorrect DMA size calculation. On
+non-4K page systems (common on aarch64 and POWER architectures), only a
+fraction of the GART PTEs would be DMA-copied to the GPU page table,
+leading to:
+- **GPU page faults** when accessing unmapped entries
+- **Potential data corruption** if stale GART entries point to wrong
+  memory
+- **GPU hangs** or crashes during SVM (Shared Virtual Memory) migration
 
-### 1. COMMIT MESSAGE ANALYSIS
+### 4. Scope and Risk Assessment
 
-**Subject:** `arm64: tegra: smaug: Add usb-role-switch support`
+- **Lines changed**: 1 line (minimal)
+- **Files changed**: 1 file
+- **Risk**: Very low. On 4K page systems (x86),
+  `AMDGPU_GPU_PAGES_IN_CPU_PAGE` = 1, so the behavior is unchanged. The
+  fix only affects non-4K systems where it was broken.
+- **Subsystem**: AMD KFD (Kernel Fusion Driver) — GPU compute path, used
+  for HPC and AI workloads on AMD GPUs
 
-**Body:** The commit message clearly states the problem: the USB2 port
-on Smaug (Google Pixel C) is configured for OTG operation (`mode =
-"otg"`) but lacked the required `usb-role-switch` property, **leading to
-a failed probe and a non-functioning USB port**. This is a clear bug
-fix, not a feature addition.
+### 5. User Impact
 
-**Author/Signoffs:** Authored by Diogo Ivo, signed off by Thierry Reding
-(NVIDIA's Tegra device tree maintainer).
+This affects users running:
+- AMD GPUs with KFD/ROCm on **aarch64 or POWER** systems (which commonly
+  use 64K pages)
+- SVM (Shared Virtual Memory) migration operations
+- Without this fix, GPU compute workloads would be broken or unreliable
+  on non-4K page systems
 
-### 2. CODE CHANGE ANALYSIS
+### 6. Stability Indicators
 
-The patch adds exactly **two lines** to a device tree file:
+- Reviewed and acked by 3 AMD DRM maintainers/developers
+- The fix is mathematically obvious — the existing `amdgpu_gart_map`
+  function already generates `AMDGPU_GPU_PAGES_IN_CPU_PAGE` PTEs per CPU
+  page, so the copy size must match
+- No-op on 4K page systems, so zero risk of regression for x86
 
-```1811:1812:arch/arm64/boot/dts/nvidia/tegra210-smaug.dts
-                                usb-role-switch;
-                                role-switch-default-mode = "host";
-```
+### 7. Dependency Check
 
-These are added to the `usb2-0` port node within the XUSB pad controller
-(`padctl@7009f000`), which already has `mode = "otg"`.
+The fix uses `AMDGPU_GPU_PAGES_IN_CPU_PAGE` which has been defined in
+`amdgpu_gart.h` for a long time. The `svm_migrate_gart_map` function and
+the surrounding code exist in all recent stable trees. No additional
+dependencies needed.
 
-### 3. ROOT CAUSE OF THE BUG
+### Summary
 
-The bug was introduced by commit `f67213cee2b35` ("phy: tegra: xusb: Add
-usb-role-switch support"), which was merged in **v5.7-rc1**. This commit
-added the following mandatory check to
-`tegra_xusb_usb2_port_parse_dt()`:
-
-```765:777:drivers/phy/tegra/xusb.c
-        /* usb-role-switch property is mandatory for OTG/Peripheral
-modes */
-        if (usb2->mode == USB_DR_MODE_PERIPHERAL ||
-            usb2->mode == USB_DR_MODE_OTG) {
-                if (of_property_read_bool(np, "usb-role-switch")) {
-                        err = tegra_xusb_setup_usb_role_switch(port);
-                        if (err < 0)
-                                return err;
-                        tegra_xusb_parse_usb_role_default_mode(port);
-                } else {
-                        dev_err(&port->dev, "usb-role-switch not found
-for %s mode",
-                                modes[usb2->mode]);
-                        return -EINVAL;
-                }
-        }
-```
-
-If the DT node has `mode = "otg"` but **does NOT** have the `usb-role-
-switch` property, the driver returns `-EINVAL`, causing the entire XUSB
-pad controller probe to **fail**. This means the USB port doesn't work
-at all.
-
-When commit `f67213cee2b35` was merged, the companion DTS updates were
-done for other Tegra boards (Jetson TX1 in `dbf91ff001e54`, Jetson Nano
-in `88d1049e16eaa`, Jetson TX2 in `6895c83fda8c9`), but **Smaug was
-missed**. The smaug DTS had `mode = "otg"` since v4.9 (commit
-`4d3457826abb1`) but was never updated with the required `usb-role-
-switch` property.
-
-### 4. IMPACT AND AFFECTED VERSIONS
-
-- **Broken since:** v5.7 (when `usb-role-switch` became mandatory for
-  OTG mode)
-- **Affected stable trees:** All active LTS kernels: **5.15.y, 6.1.y,
-  6.6.y, 6.12.y**
-- **Device:** Google Pixel C (Tegra210 Smaug) — a widely sold consumer
-  tablet
-- **Symptom:** Complete USB port probe failure. The XUSB pad controller
-  fails to initialize, making the USB-C port non-functional. This is not
-  a subtle degradation; it's a **total hardware functionality loss**.
-
-### 5. CLASSIFICATION
-
-This falls squarely into the **Device Tree (DT) update** exception
-category:
-- It's a DT fix for existing hardware with an existing driver
-- It corrects an incorrect/incomplete hardware description
-- It only affects a specific ARM64 platform (Smaug/Pixel C)
-- Zero risk of regression to other platforms
-
-### 6. SCOPE AND RISK ASSESSMENT
-
-- **Size:** 2 lines added to a single DTS file
-- **Risk:** Extremely low. Adding a `usb-role-switch` boolean property
-  and a `role-switch-default-mode` string property to a DT node is
-  trivially safe:
-  - `usb-role-switch` enables the existing role-switch code path that is
-    already used by every other Tegra OTG board
-  - `role-switch-default-mode = "host"` is simply ignored on kernels
-    before v6.3 (unused DT properties are silently ignored)
-- **No functional dependencies:** While this commit appears in a series
-  with `c256740c4b1ff` (tegra-udc node) and `8acdb94dcfd37`
-  (DisplayPort), this patch is fully independent — it only adds
-  properties to the pad controller's port node, which is separate from
-  the UDC node.
-
-### 7. BACKPORT FEASIBILITY
-
-The patch modifies only the smaug DTS file with a trivial 2-line
-addition. The context around it (`usb2-0` port node with `mode = "otg"`)
-has been stable since v4.9 and exists identically in all stable trees.
-This will apply cleanly.
-
-### 8. CONCLUSION
-
-This is a textbook DT bug fix: a missing required property (`usb-role-
-switch`) causes a complete probe failure for the USB port on the Google
-Pixel C tablet. The fix is a trivial 2-line DTS addition that:
-
-1. Fixes a real bug (non-functioning USB port due to probe failure with
-   `-EINVAL`)
-2. Is obviously correct (follows the exact same pattern as every other
-   Tegra OTG board)
-3. Is extremely small and contained (2 lines in one DTS file)
-4. Has zero regression risk (only affects one specific device)
-5. Has been broken since v5.7, affecting all current stable trees
-6. Falls into the explicit "DT updates for existing hardware" exception
-   category
-
-The only mild concern is that this commit hasn't merged to mainline yet
-(it's in a `next-*` branch). Stable backports typically track mainline
-commits. However, from a purely technical standpoint, this is an ideal
-stable fix.
+This is a textbook stable backport candidate:
+- **Obviously correct**: One-line fix that aligns DMA copy size with the
+  actual number of PTEs generated
+- **Fixes a real bug**: Partial GART table update on non-4K page systems
+- **Small and contained**: Single line change in a single file
+- **No new features**: Pure bug fix
+- **Low risk**: No-op on 4K (x86) systems; fixes broken behavior on
+  non-4K systems
+- **Well-reviewed**: Multiple AMD maintainer acks/reviews
 
 **YES**
 
- arch/arm64/boot/dts/nvidia/tegra210-smaug.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts b/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts
-index 5aa6afd56cbc6..dfbd1c72388c1 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra210-smaug.dts
-@@ -1809,6 +1809,8 @@ usb2-0 {
- 				status = "okay";
- 				vbus-supply = <&usbc_vbus>;
- 				mode = "otg";
-+				usb-role-switch;
-+				role-switch-default-mode = "host";
- 			};
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+index 6ada7b4af7c68..5086caac3fd06 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+@@ -61,7 +61,7 @@ svm_migrate_gart_map(struct amdgpu_ring *ring, u64 npages,
+ 	*gart_addr = adev->gmc.gart_start;
  
- 			usb3-0 {
+ 	num_dw = ALIGN(adev->mman.buffer_funcs->copy_num_dw, 8);
+-	num_bytes = npages * 8;
++	num_bytes = npages * 8 * AMDGPU_GPU_PAGES_IN_CPU_PAGE;
+ 
+ 	r = amdgpu_job_alloc_with_ib(adev, &adev->mman.high_pr,
+ 				     AMDGPU_FENCE_OWNER_UNDEFINED,
 -- 
 2.51.0
 
