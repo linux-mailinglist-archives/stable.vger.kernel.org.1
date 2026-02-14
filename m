@@ -1,215 +1,222 @@
-Return-Path: <stable+bounces-216311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFwXF/i9j2niTAEAu9opvQ
-	(envelope-from <stable+bounces-216311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:12:40 +0100
+	id SEy5Ob++j2ktTQEAu9opvQ
+	(envelope-from <stable+bounces-216312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:15:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD47413A1F3
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:12:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AEC13A213
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 24891301FA80
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:12:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B58FA3045A87
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FDF13C8E8;
-	Sat, 14 Feb 2026 00:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E7A1C5D57;
+	Sat, 14 Feb 2026 00:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K8zzbYU9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZC5OKy8Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68F2145B3F
-	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 00:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3D5944F
+	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 00:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771027953; cv=none; b=Bq5qTgZ4c1ct36R/B09E2fqRD3btIz1CJmEuPUPoSO46D5yrjp5UZdzJzpVBuucQc5oUYN45jsPgJzqGwkan1Pep5YC3UXWgC/9f7qPK+KNyb2Yh90qyhH8y4Mi/zxfqoUMQwN+NJus224mM+5BkVTMgnC1HoiaxFP8BB7virmI=
+	t=1771028149; cv=none; b=tWbxPSlttAcBYglyY01vwSQVT0sTdtM8B9MNUNr8HTq5GJ9ahEUpn4TiyEHxTHmiW6JZ+Vumsi4ojtoUb20Q5+djrEvUDLbdBa1IA+jeYWQhEbut+cK5IeKVToKMGx6sEHpoH+eD+ygbzPT7UOuNm5u/G3XhN70j6+NkhyrWLSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771027953; c=relaxed/simple;
-	bh=aBiHy1g5Xkc5IxdeCktMrrpGsFp7xUT4c0xxkiTjR9I=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=FSrA6Vhp44p79fK1lgrh1YUApimetwbTLTlVcJB7d+e3m4I78/TqttwCA8OpyyoK6VQI2fxwsIixoDkLZmoasDXqPVc0HKb0jshVH0jVcGFXoQouMNHxD3obzIFl4QvQqO2U5kv2Bqo1b5VZJ2tnxWWVbpwCwErvdnA8Id0KlQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K8zzbYU9; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b6ce1b57b9cso1271458a12.1
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 16:12:30 -0800 (PST)
+	s=arc-20240116; t=1771028149; c=relaxed/simple;
+	bh=1Y2gDnp3k+QmNTMZEb9ab0smo7tRUetnDbZaljZPbCM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RrSu2uNaqWrczpb/bCsozwNDrUbnuU5i3VHGk4/R5w2b+eUj1lYjOqfsX0HdskNykJAX2s/RR7udY94E88w72TSeK9dsN5ZDlPuCEbNttRIeVvb/zCtNaxrYVitpvlujaqtRx4jst/LtyXGOEvSXZMhNU7aGs8BsjoWK4XmX8BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZC5OKy8Q; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8230f8f27cfso825957b3a.0
+        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 16:15:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771027950; x=1771632750; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/SseZuPVACGvCyr+zfyDhJIPT4Lkz8kZ02Cj7LiP/hw=;
-        b=K8zzbYU9+hAD31AsSqII/oDsvF+VT4t2EaZti+P0lZrFDiW6HPhMS8dc1OGauzer14
-         gm614zNXU4GvDJvVmOtJu3MYE+ngD0xiRm/0CdesaH24F3POOgf+8qZ+bk9mKbrGvaGX
-         0Qf7NqTG6xbYV7+vcPWIID4Gc23FJdPpSmPEkhJWR2I3dzBJC20pKbBNg8amB/U4Qe4/
-         tIOK4TJk0wVuxOFfesnikc39KkvUqE6Z2q7KTS8ktl6i+6AywhfVdx+jxzua4gd4B4b7
-         aDHhj8/U1y9x32pbN7Zm8/2laQRrcEdQKqxIXqXfcteBxNQAJMWV2qfqJiy6FgH9w07Z
-         XugQ==
+        d=gmail.com; s=20230601; t=1771028147; x=1771632947; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oJSrOsjXaV/MjMNYMY7kpWcAneJSnkLcnWKVI0es/80=;
+        b=ZC5OKy8Qo3etyte0LktEA8nVYZ3TInj/LoY9YwldgrW7b2NB7kvmWFGxhl0WKmpnpz
+         ALnxVYNxX+isa8SGnk/tp36i7cEoAxXXbcFlD7JNVw6Wr5DgcqHIbJnf9BJ38EekSdzR
+         0cB+lEacc68ZsUkM8mGUp+u+H4pCRT45mgHHlRAjihEJLZh/pE3iwfqrQgNtikKLroi9
+         8s+J0lSSxGv4oOf9e0u9V8Z3BmipWHrX/Adnnf0DYlIeJu0qqnnXPMc1ltXRJwc32wK0
+         jPEDEGnxR7QeBe1D7EGN4B+zpox7gH0LXiN378vhz5TGVDw0ZbwRknY3OvPLvrv6KJDR
+         VIxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771027950; x=1771632750;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/SseZuPVACGvCyr+zfyDhJIPT4Lkz8kZ02Cj7LiP/hw=;
-        b=RFOpvxznAfzEcFqLI0yqvrIlsHilegDnbcT21+bIN/wymHv671e12EkTE1jJmLDA5D
-         l0vvSdh0ZCu+7cBg25gHlMIIXa9gJ/+AtvTrw+eFiRtXB5b/xwqcNKtuUzhTYf0UUQvS
-         A8pB9nv/urlt/IjUUrho4QPQxdw0BzaStAT93D6V5ljGzzsbq6sHhjnJP8j7qbfCSc8Q
-         6L7oRB0SFVNMX3WQUdC3js4XJJxF7arlQHmoCbRzN3OCu6Tfe6EiVVshci/b667si84o
-         sD8Co22aaom8LLlcCfyvp/uU7uSgAuQGN7qCZSopuJ8fr3FWa6C9Vwi4MOUJ+dldREG+
-         ahEg==
-X-Forwarded-Encrypted: i=1; AJvYcCX14UYi03YxKVF8UX9Vn3Tfm07ZayZ8NjUvtiBxM3G0/z6NyshMwOq/DIIbna+TRgcHyRtQb0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfWo4Arsn/chPkeLBhVhvUp25oal4vbWX7lF1gGUyMHqRoURCk
-	9tgyis3y/MHfh9vMdc2YkRmqvYBvktu5cYB/f5hMv0smakYF0fB9RgHaevdFMXotjxVQ9HZQKaS
-	1phYhMT5V2jpNAg==
-X-Received: from pgbfe12.prod.google.com ([2002:a05:6a02:288c:b0:c64:8fdc:63f7])
- (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:e598:b0:38d:fa67:e87f with SMTP id adf61e73a8af0-394837805a6mr901084637.12.1771027949947;
- Fri, 13 Feb 2026 16:12:29 -0800 (PST)
-Date: Fri, 13 Feb 2026 16:12:26 -0800
+        d=1e100.net; s=20230601; t=1771028147; x=1771632947;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oJSrOsjXaV/MjMNYMY7kpWcAneJSnkLcnWKVI0es/80=;
+        b=EtG2/+4EAdgBczjzkKpX9spVNfUkTF5rpCgDfWesc3tnIzbIKcpJkYmJ6Zdk+5cvYA
+         5bV9I1uYO0o4/afQ3bQkNlv60PCnkLbVqKU+KWZmYgpoqB1wOIKN/XGxXS9h2TSeNgJP
+         d5r0dM18eD3faSCeQit1IsMc6LaWVyOiZPpzmLq3xxez6IxsxNIVos3BkVy7X55SkRJd
+         ENsyXWKhtwgofb9nwR6dJhcqrFrVbSg1fiS0HGREPppfYWgFxlqRAoFAuzvJVmmPwj+c
+         3G3KavQJo93PMSUMD0cMYnYdv8zFIu77WtOu/h55bga4UxSKS395i4j6SaGn/VHFEYTv
+         UKBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVZRU1XEM0uYNFXpi91x/sSWbPZeYrm/Pb2mtQAbkYquhY32x4ymRH7EUd9gwYJBTKnEMz+dXs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTAm6GJG/mpSGpwXXYbIsmHmz4SI0JwNESIFT7E5NAowa04ivP
+	+DVYPMhRK2nvRG5Bc75KzrOR/O0wgare6DwW3zvvzaqOByRW5T4SLet/
+X-Gm-Gg: AZuq6aJr5GJxsHL3AZlrscVNPAXNqauY5VTItOR2jt8skNIBWUd+HuBpzlT7slrA3du
+	4I0D+STba3mzdMWqLPzvHNrrSNTO9Vq7XUaYR7hzLfSGUOriMYuZSWVkG44SuWQqusZEAvIIlga
+	Yb2wJ0m7k+aVGT2M50uRRRtg8UgttSvj7JiWCpUmtX9FP8McXGr23UBl6YqxyAO3fpKpDtuEUOs
+	kzDOomIF7ebvUANCi3asf1kRIVeJUSeH5RR8j3OrG1jKlMP6KKJva5PFyQ/Xu07PcK0uPIwv/6s
+	YAiO5MbOR+qzgEvC+TmGsi/enrtPjvJeeZhEdjbXxmNywErx1amL0tuEQ4+tKQcY7zIe2Q5FAPy
+	Qo8A62M8YRuuliUQCVcDZVVyvA71y9Sp4XDjm6TX0+WYxEcYn1D5ot2c6KTsRkZxvaxJAvkB1Xy
+	XI2vx5YUOI2gSm4/oyrvTMBXJ/RXgcNTwM2291TSAXaTho9L2A5wZd2vRdR4XyzSGvUN9dbb2VM
+	0wb8mQExsyFJOxE
+X-Received: by 2002:a05:6300:408d:b0:38d:ec2d:80e5 with SMTP id adf61e73a8af0-3946c9220ddmr3409951637.45.1771028146749;
+        Fri, 13 Feb 2026 16:15:46 -0800 (PST)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:1ca3:229:a9f4:8c87])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6e52fcfc08sm217762a12.1.2026.02.13.16.15.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Feb 2026 16:15:45 -0800 (PST)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	i@maskray.me,
+	shy828301@gmail.com,
+	ackerleytng@google.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com,
+	stable@vger.kernel.org,
+	Deepanshu Kartikey <Kartikey406@gmail.com>
+Subject: [PATCH v2] mm: thp: deny THP for files on anonymous inodes
+Date: Sat, 14 Feb 2026 05:45:35 +0530
+Message-ID: <20260214001535.435626-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.273.g2a3d683680-goog
-Message-ID: <20260214001226.744193-1-joshwash@google.com>
-Subject: [PATCH net] gve: fix incorrect buffer cleanup in gve_tx_clean_pending_packets
- for QPL
-From: Joshua Washington <joshwash@google.com>
-To: netdev@vger.kernel.org
-Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Rushil Gupta <rushilg@google.com>, Bailey Forrest <bcf@google.com>, linux-kernel@vger.kernel.org, 
-	Ankit Garg <nktgrg@google.com>, stable@vger.kernel.org, 
-	Jordan Rhee <jordanrhee@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-216312-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_TO(0.00)[linux-foundation.org,kernel.org,oracle.com,nvidia.com,linux.alibaba.com,redhat.com,arm.com,linux.dev,maskray.me,gmail.com,google.com];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-216311-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[google.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[kvack.org,vger.kernel.org,gmail.com,syzkaller.appspotmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joshwash@google.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CD47413A1F3
+	FROM_NEQ_ENVFROM(0.00)[kartikey406@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: 48AEC13A213
 X-Rspamd-Action: no action
 
-From: Ankit Garg <nktgrg@google.com>
+file_thp_enabled() incorrectly allows THP for files on anonymous inodes
+(e.g. guest_memfd and secretmem). These files are created via
+alloc_file_pseudo(), which does not call get_write_access() and leaves
+inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
+true, they appear as read-only regular files when
+CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
+collapse.
 
-In DQ-QPL mode, gve_tx_clean_pending_packets() incorrectly uses the RDA
-buffer cleanup path. It iterates num_bufs times and attempts to unmap
-entries in the dma array.
+Anonymous inodes can never pass the inode_is_open_for_write() check
+since their i_writecount is never incremented through the normal VFS
+open path. The right thing to do is to exclude them from THP eligibility
+altogether, since CONFIG_READ_ONLY_THP_FOR_FS was designed for real
+filesystem files (e.g. shared libraries), not for pseudo-filesystem
+inodes.
 
-This leads to two issues:
-1. The dma array shares storage with tx_qpl_buf_ids (union).
- Interpreting buffer IDs as DMA addresses results in attempting to
- unmap incorrect memory locations.
-2. num_bufs in QPL mode (counting 2K chunks) can significantly exceed
- the size of the dma array, causing out-of-bounds access warnings
-(trace below is how we noticed this issue).
+For guest_memfd, this allows khugepaged and MADV_COLLAPSE to create
+large folios in the page cache via the collapse path, but the
+guest_memfd fault handler does not support large folios. This triggers
+WARN_ON_ONCE(folio_test_large(folio)) in kvm_gmem_fault_user_mapping().
 
-UBSAN: array-index-out-of-bounds in
-drivers/net/ethernet/drivers/net/ethernet/google/gve/gve_tx_dqo.c:178:5 index 18 is out of
-range for type 'dma_addr_t[18]' (aka 'unsigned long long[18]')
-Workqueue: gve gve_service_task [gve]
-Call Trace:
-<TASK>
-dump_stack_lvl+0x33/0xa0
-__ubsan_handle_out_of_bounds+0xdc/0x110
-gve_tx_stop_ring_dqo+0x182/0x200 [gve]
-gve_close+0x1be/0x450 [gve]
-gve_reset+0x99/0x120 [gve]
-gve_service_task+0x61/0x100 [gve]
-process_scheduled_works+0x1e9/0x380
+For secretmem, collapse_file() tries to copy page contents through the
+direct map, but secretmem pages are removed from the direct map. This
+can result in a kernel crash:
 
-Fix this by properly checking for QPL mode and delegating to
-gve_free_tx_qpl_bufs() to reclaim the buffers.
+    BUG: unable to handle page fault for address: ffff88810284d000
+    RIP: 0010:memcpy_orig+0x16/0x130
+    Call Trace:
+     collapse_file
+     hpage_collapse_scan_file
+     madvise_collapse
 
+Secretmem is not affected by the crash on upstream as the memory failure
+recovery handles the failed copy gracefully, but it still triggers
+confusing false memory failure reports:
+
+    Memory failure: 0x106d96f: recovery action for clean unevictable
+    LRU page: Recovered
+
+Check IS_ANON_FILE(inode) in file_thp_enabled() to deny THP for all
+anonymous inode files.
+
+Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
+Link: https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=U6rs6S7iP0gkR9enr7HoGtA@mail.gmail.com
+Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
+Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
+Tested-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
 Cc: stable@vger.kernel.org
-Fixes: a6fb8d5a8b69 ("gve: Tx path for DQO-QPL")
-Signed-off-by: Ankit Garg <nktgrg@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
 ---
- drivers/net/ethernet/google/gve/gve_tx_dqo.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+v2:
+  - Use IS_ANON_FILE(inode) to deny THP for all anonymous inode files
+    instead of checking for specific subsystems (David Hildenbrand)
+  - Updated Fixes tag to 7fbb5e188248 which removed the VM_EXEC
+    requirement that accidentally protected secretmem
+  - Expanded commit message with implications for both guest_memfd
+    and secretmem
+---
+ mm/huge_memory.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-index 40b89b3e..6a31cb49 100644
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -167,6 +167,9 @@ gve_free_pending_packet(struct gve_tx_ring *tx,
- 	}
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 40cf59301c21..d3beddd8cc30 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -94,6 +94,9 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
+ 
+ 	inode = file_inode(vma->vm_file);
+ 
++	if (IS_ANON_FILE(inode))
++		return false;
++
+ 	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
  }
  
-+static void gve_unmap_packet(struct device *dev,
-+			     struct gve_tx_pending_packet_dqo *pkt);
-+
- /* gve_tx_free_desc - Cleans up all pending tx requests and buffers.
-  */
- static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
-@@ -176,21 +179,12 @@ static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
- 	for (i = 0; i < tx->dqo.num_pending_packets; i++) {
- 		struct gve_tx_pending_packet_dqo *cur_state =
- 			&tx->dqo.pending_packets[i];
--		int j;
--
--		for (j = 0; j < cur_state->num_bufs; j++) {
--			if (j == 0) {
--				dma_unmap_single(tx->dev,
--					dma_unmap_addr(cur_state, dma[j]),
--					dma_unmap_len(cur_state, len[j]),
--					DMA_TO_DEVICE);
--			} else {
--				dma_unmap_page(tx->dev,
--					dma_unmap_addr(cur_state, dma[j]),
--					dma_unmap_len(cur_state, len[j]),
--					DMA_TO_DEVICE);
--			}
--		}
-+
-+		if (tx->dqo.qpl)
-+			gve_free_tx_qpl_bufs(tx, cur_state);
-+		else
-+			gve_unmap_packet(tx->dev, cur_state);
-+
- 		if (cur_state->skb) {
- 			dev_consume_skb_any(cur_state->skb);
- 			cur_state->skb = NULL;
-@@ -1165,6 +1159,9 @@ static void gve_unmap_packet(struct device *dev,
- {
- 	int i;
- 
-+	if (!pkt->num_bufs)
-+		return;
-+
- 	/* SKB linear portion is guaranteed to be mapped */
- 	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
- 			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
 -- 
-2.53.0.273.g2a3d683680-goog
+2.43.0
 
 
