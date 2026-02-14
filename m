@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-216324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLWtN/3Ij2l9TgEAu9opvQ
-	(envelope-from <stable+bounces-216324-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:59:41 +0100
+	id QJ6AN+XJj2ndTgEAu9opvQ
+	(envelope-from <stable+bounces-216343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4D813A394
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:59:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB07713A476
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:03:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55F2630745C6
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:58:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9E7A43026212
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE70212F89;
-	Sat, 14 Feb 2026 00:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C60521576E;
+	Sat, 14 Feb 2026 01:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QbgsOnKv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="prTrF2vv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32B81DE887;
-	Sat, 14 Feb 2026 00:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25B61E1E12;
+	Sat, 14 Feb 2026 01:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030718; cv=none; b=mm5FmwC/w0hwqwEkokdnZe6MtUIxhz2W4ka034r7xjPO+S1HhFpqd3lIUXsDWVLzLDqZANkN96f/fNApf46Iv9GKU03O1DmKWK29LT+Z0sw2yHqLulwhPA6JNC3EAixupqL/zqaVtgtzRN+5sZEZv4qXu/HCAkM9fY+IWzj7yWM=
+	t=1771030987; cv=none; b=WZoYaYtQsxZgSrFiugwbXGJE4fWVsAvnGLeSRZ9X5351+/rod58THvJHDV/yrjhFIDYtxWbt18dDOwVBjrEaH6nwu45OJfvinmRBUsKgs75iyK3BT/V+aBL2FOW8htWHi6GxYrSyLkHGn+hXLvzCiwKk/5Ub8hFGXi3o4kSyCPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030718; c=relaxed/simple;
-	bh=oJk5DkIzIOcPUBLFNrFEmh7/x9GuEfuX178fRIzZMwE=;
+	s=arc-20240116; t=1771030987; c=relaxed/simple;
+	bh=ZfejrtQksITQTSmObej8g8NSFF1QgqkmRIETHoIRC1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s5rvxWYuIMzZmZjitFdqofupeWMfYVqL+a1ubUVk1ncPLko28rLiwy3/CM/o/FvzpKrQdTMHom9Hkos9zWPWl4dX6PGRmnnr0fTQEbO/VMHzs4sXMLsX+U7fY6YYLtIdvYfh4fVWr3Rpi9a/ySCBy+lT4ipx5ty3kccqdN3cVoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QbgsOnKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D757FC2BC9E;
-	Sat, 14 Feb 2026 00:58:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SENeL3XKofJvJUs8cPUqY2cAPAIyklvEoSyex8AbEkPxcwMjlwm4cy+tO1NMh1/Ah0ZjAF6wKrZzEIz8getTRgXiHUtgxDM90ajYLPc3N2mipLcLww4Z2Y7kLyP7mGWZnJUdM1l1NMV82mLVC2JqKPoV4VwhNTp7LWwNUDYjlUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=prTrF2vv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89B8C19424;
+	Sat, 14 Feb 2026 01:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030717;
-	bh=oJk5DkIzIOcPUBLFNrFEmh7/x9GuEfuX178fRIzZMwE=;
+	s=k20201202; t=1771030986;
+	bh=ZfejrtQksITQTSmObej8g8NSFF1QgqkmRIETHoIRC1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QbgsOnKvNGoeM8gsCJjbgpA4VJ5Ol+CkxSQwNWDpAbt/dFdDCP+Hc/uoaZ40xwF5o
-	 fCI8oRpgAIgNNgru8t2L8+E8a33SHfW10kwyoaXEG1BA9vkMH6MHSuQyMlR8+HARD8
-	 cuo7e4H7k0BX1Dy9w1dwiaScg99M2sJX7eRu9NBYxhuD18xOvZIyK5ZGywQ2u6RuhP
-	 PUTzdrtDFs7hktatKeOWqMylKPl9653rkRdahPt0ykv4n2bhPagIL1l7c0IbYkD9Xq
-	 r+wfLQmeIrr+ZLNhzWOgLJzEp0gsWwRXpP21GvHF820ANvNoSBa1j0qSzthGJjXvV6
-	 JKPvPciL9qnhg==
+	b=prTrF2vvUcNWn+D8qSDjnY27/GjKiWw46Suxiqe10vykiXPutmJWYn5TKXhOCat8m
+	 MSpyxawS6mSM+zufkBeYPsrsMHH+UO7/dVMLGOchR6DZ22N1Dar/DOBIQHdeiF/TWk
+	 43x3L3pzxDqS3vw3kjC4zmyB7sj22YoKf1W8LaJvvQYbvcT8tlYspyhJTEOkh2Ob2e
+	 yCLSGAbUa3vrkDFilNBUSTkWazy/A1ZZdbhXovNuvO7fgTCPMacHkzay+0tlJ6FmUS
+	 97nPimiyVgKDh44tcewF9NpFbspd9JI1BcNGgH12HxjF65GWwXKCVP1VxYIkJ61dde
+	 sUo7pTV1YL6lA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+Cc: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Santhosh Kumar K <s-k6@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sudeep.holla@kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.19-6.12] firmware: arm_ffa: Unmap Rx/Tx buffers on init failure
-Date: Fri, 13 Feb 2026 19:58:11 -0500
-Message-ID: <20260214005825.3665084-5-sashal@kernel.org>
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.18] spi: cadence-qspi: Try hard to disable the clocks
+Date: Fri, 13 Feb 2026 19:58:12 -0500
+Message-ID: <20260214010245.3671907-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214005825.3665084-1-sashal@kernel.org>
-References: <20260214005825.3665084-1-sashal@kernel.org>
+In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
+References: <20260214010245.3671907-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,187 +71,131 @@ X-stable-base: Linux 6.19
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216324-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-216343-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 4E4D813A394
+	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,bootlin.com:email,ti.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sang-engineering.com:email]
+X-Rspamd-Queue-Id: CB07713A476
 X-Rspamd-Action: no action
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
 
-[ Upstream commit 9fda364cb78c8b9e1abe4029f877300c94655742 ]
+[ Upstream commit 612227b392eed94a3398dc03334a84a699a82276 ]
 
-ffa_init() maps the Rx/Tx buffers via ffa_rxtx_map() but on the
-partition setup failure path it never unmaps them.
+In the remove path, we should try hard to perform all steps as we simply
+cannot fail.
 
-Add the missing ffa_rxtx_unmap() call in the error path so that
-the Rx/Tx buffers are properly released before freeing the backing
-pages.
+The "no runtime PM" quirk must only alter the state of the RPM core, but
+the clocks should still be disabled if that is possible. Move the
+disable call outside of the RPM quirk.
 
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Message-Id: <20251210031656.56194-1-lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
+Tested-by: Santhosh Kumar K <s-k6@ti.com>
+Link: https://patch.msgid.link/20260122-schneider-6-19-rc1-qspi-v4-9-f9c21419a3e6@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis
+So the `CQSPI_DISABLE_RUNTIME_PM` quirk is used by `socfpga_qspi` (Intel
+SoCFPGA platforms). These are real, deployed embedded systems.
 
-### 1. Commit Message Analysis
+### Stability Indicators
 
-The commit message clearly describes a **resource leak on an error
-path**: `ffa_init()` maps Rx/Tx buffers via `ffa_rxtx_map()`, but when
-`ffa_setup_partitions()` fails, the error path frees the backing pages
-without first unmapping the buffers from the firmware. The fix adds the
-missing `ffa_rxtx_unmap()` call. The commit was accepted by the FF-A
-subsystem maintainer Sudeep Holla.
+- **Tested-by:** Two testers: Wolfram Sang and Santhosh Kumar K — both
+  are known kernel contributors
+- **Reviewed through proper channels:** Has a Link: to the mailing list
+  patch series
+- **Part of a series:** The commit is "v4-9" suggesting it's patch 9 in
+  a series. This is a concern for dependency.
 
-### 2. Code Change Analysis
+Let me check if this patch is self-contained or requires other patches
+from the series.
 
-The fix is a **single line addition**:
+The change itself is self-contained — it only modifies the logic of the
+`cqspi_remove()` function. The `ret` variable is newly added and
+initialized in this function. No new functions, types, or macros are
+introduced. The change doesn't depend on other patches.
 
-```2071:2071:drivers/firmware/arm_ffa/driver.c
-        ffa_rxtx_unmap(drv_info->vm_id);
-```
+### Assessment
 
-inserted between `ffa_notifications_cleanup()` and the `free_pages:`
-label.
+**What it fixes:** Clock resource leak on driver removal for platforms
+with the `CQSPI_DISABLE_RUNTIME_PM` quirk (specifically SoCFPGA).
+Without this fix, the QSPI clock remains enabled after driver removal,
+which wastes power and can prevent proper power state transitions.
 
-**Understanding the bug mechanism:**
+**Meets stable rules:**
+- Obviously correct: Yes — the logic change is clear and straightforward
+- Fixes a real bug: Yes — resource leak (clock not disabled on remove)
+- Small and contained: Yes — ~6 lines in one file
+- No new features: Correct — this is purely a bug fix
 
-The `ffa_init()` function follows this flow:
-1. Allocates Rx/Tx buffer pages (lines 2038-2048)
-2. Maps them to firmware via `ffa_rxtx_map()` (line 2050) — this is an
-   FF-A SMC/HVC call to the secure firmware (e.g., TrustZone / Hafnium
-   hypervisor)
-3. Sets up partitions via `ffa_setup_partitions()` (line 2065)
-4. If partition setup fails, falls through to `free_pages:` which frees
-   the backing pages
+**Risk:** Very low. The change is minimal, the logic is straightforward,
+and it has been tested by two people.
 
-The problem: Step 4 **never calls `ffa_rxtx_unmap()`**, so the firmware
-retains stale references to the freed physical pages. The `ffa_exit()`
-function (line 2081-2089) correctly calls `ffa_rxtx_unmap()` before
-freeing pages, confirming the error path was simply missing this
-cleanup.
+**Concern:** This is part of a larger series (patch 9 of N), but the
+change itself appears self-contained. The only question is whether the
+code it modifies exists in stable trees — the cadence-qspi driver and
+the `CQSPI_DISABLE_RUNTIME_PM` quirk have been around for a while, so
+this should apply.
 
-**Consequences of the bug:**
-- The firmware (running in secure world or EL2 hypervisor) still holds
-  mappings to physical addresses of freed kernel pages
-- Those freed pages can be reallocated for other kernel purposes
-- The firmware could write to these stale mappings, causing **memory
-  corruption** of unrelated kernel data
-- On systems with a stage-2 hypervisor, the mapping entries are also
-  leaked
-
-### 3. Bug Origin
-
-The bug was introduced by commit
-`0c565d16b80074e57e3e56240d13fc6cd6ed0334` ("firmware: arm_ffa: Handle
-partitions setup failures"), which first made `ffa_setup_partitions()`
-return an error and added an error path in `ffa_init()`. Before this
-commit, `ffa_setup_partitions()` was void and never triggered error
-cleanup. This commit landed in **v6.8**. The error path was later
-restructured by `be61da9385766` (v6.15), but the missing unmap persisted
-through both versions.
-
-### 4. Classification
-
-This is a **resource leak / firmware-side stale mapping fix** on an
-error path. It is NOT a new feature, API change, or refactoring — it is
-purely adding missing cleanup.
-
-### 5. Scope and Risk Assessment
-
-- **Lines changed**: 1 line added
-- **Files changed**: 1 file (`drivers/firmware/arm_ffa/driver.c`)
-- **Risk**: Extremely low. The `ffa_rxtx_unmap()` function is already
-  used in `ffa_exit()` for normal cleanup. Adding it to the error path
-  is the obvious correct fix. The function itself just issues an FF-A
-  call to the firmware.
-- **Regression potential**: Near zero. This only affects the failure
-  path of `ffa_setup_partitions()`, and calling unmap before freeing is
-  strictly correct.
-
-### 6. User Impact
-
-This affects ARM platforms using FF-A (Firmware Framework for Arm) —
-notably ARM TrustZone/OP-TEE systems, Arm CCA systems, and virtualized
-ARM environments with Hafnium. While `ffa_setup_partitions()` failure is
-not the most common path, when it does occur, the consequences (firmware
-holding stale page references, potential memory corruption) are severe.
-
-### 7. Stable Kernel Criteria Check
-
-| Criterion | Met? |
-|---|---|
-| Obviously correct and tested | Yes — mirrors `ffa_exit()` cleanup
-exactly |
-| Fixes a real bug | Yes — resource leak + potential memory corruption |
-| Important issue | Yes — firmware-side stale mapping to freed kernel
-pages |
-| Small and contained | Yes — 1 line in 1 file |
-| No new features | Yes — purely error-path cleanup |
-| Applies cleanly | Yes — for v6.8+ trees (may need minor adjustment for
-v6.8-v6.14 which used `cleanup_notifs:` label) |
-
-### 8. Dependency Check
-
-The fix depends on `0c565d16b80074e57e3e56240d13fc6cd6ed0334` (v6.8) for
-the error path to exist, and on `be61da9385766` (v6.15) for the exact
-code structure in the diff. For stable trees between v6.8 and v6.14, a
-trivially adjusted backport would be needed (placing the unmap call
-inside the `cleanup_notifs:` section instead of inline). The fix is
-self-contained and has no other dependencies.
-
-### Conclusion
-
-This is a textbook error-path resource leak fix: a single line adding
-missing firmware unmap before freeing the backing pages. The bug leaves
-the firmware holding stale references to freed kernel memory, which
-could lead to memory corruption. The fix is minimal, obviously correct
-(mirrors `ffa_exit()`), and accepted by the subsystem maintainer. It
-meets all stable kernel criteria.
+This is a clear resource leak fix in the driver removal path, it's
+small, tested, and low risk.
 
 **YES**
 
- drivers/firmware/arm_ffa/driver.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-cadence-quadspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index c72ee47565856..7209a630f6d16 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -2068,6 +2068,7 @@ static int __init ffa_init(void)
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index b1c95b1c343fc..1ce433a8d64a5 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -2042,6 +2042,7 @@ static void cqspi_remove(struct platform_device *pdev)
+ 	const struct cqspi_driver_platdata *ddata;
+ 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
+ 	struct device *dev = &pdev->dev;
++	int ret = 0;
  
- 	pr_err("failed to setup partitions\n");
- 	ffa_notifications_cleanup();
-+	ffa_rxtx_unmap(drv_info->vm_id);
- free_pages:
- 	if (drv_info->tx_buffer)
- 		free_pages_exact(drv_info->tx_buffer, rxtx_bufsz);
+ 	ddata = of_device_get_match_data(dev);
+ 
+@@ -2061,8 +2062,10 @@ static void cqspi_remove(struct platform_device *pdev)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
+ 
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
+-		if (pm_runtime_get_sync(&pdev->dev) >= 0)
+-			clk_disable(cqspi->clk);
++		ret = pm_runtime_get_sync(&pdev->dev);
++
++	if (ret >= 0)
++		clk_disable(cqspi->clk);
+ 
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+ 		pm_runtime_put_sync(&pdev->dev);
 -- 
 2.51.0
 
