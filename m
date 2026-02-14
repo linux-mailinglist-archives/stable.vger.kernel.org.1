@@ -1,178 +1,172 @@
-Return-Path: <stable+bounces-216492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id u/4SKiKskGmfcAEAu9opvQ
-	(envelope-from <stable+bounces-216492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 18:08:50 +0100
+	id 6J0UKV6wkGkUcQEAu9opvQ
+	(envelope-from <stable+bounces-216493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 18:26:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B340B13C8CC
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 18:08:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B076313C9D5
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 18:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D4D9E3013886
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 17:08:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 92C1A30011A8
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 17:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D1A226CFE;
-	Sat, 14 Feb 2026 17:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD262DCBF4;
+	Sat, 14 Feb 2026 17:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zF/5yCSQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RBPiI+Vf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037DB1D54FA;
-	Sat, 14 Feb 2026 17:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408AA405F7
+	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 17:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771088919; cv=none; b=NdZM1ttACWkt7WEDQRKkfykugf1whfv2oF2s7w+RB6zg8ygIDLWjBX1eXI1WXzvT29A4ZQNpxsZAj17KktbZzc5XqS9C2sCTscdXKFBTANdWyPs9tmAYky2JS7LOGO90B2Y940buuGOQCzUneEai3FwFpg2UGOSQV9UlV+vUSs4=
+	t=1771090009; cv=none; b=CYvYDlvko79nVmvkiZ0xieNLc+SJ+xWWLXPQ4i04KJmDlIzo2asiylNY8eAR2kOD9di+ralMY2DxVxCb1hoelteWLV/PccbEIfy0oI4lXMnkThaPZITB2Rnh0T4Zz36I3gqg5v1rbsDRwzYKqOYxxYOHvEmvWMA5y2Lr8c0mwEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771088919; c=relaxed/simple;
-	bh=WLxojpvFkihbh2F5J4jmA4uuqMuar9HCoUphkvqFeS0=;
-	h=Date:To:From:Subject:Message-Id; b=hgc3vVa8DXWyLOaXbnk7kB5snpaiaNELsKqxMZBy2wdvvy6OkE64f4P/L6C97DT5iByUfIIZYVBRKwIGBgQmRkXnjxFAkTG/3ibF3lsMPK9fZ5mTRi5ldFKXAuvEQejz5uWb9PaqW6CEc5RMQAhTzpN8ZysR4dFO6bFVNzWdfYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zF/5yCSQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C5AC16AAE;
-	Sat, 14 Feb 2026 17:08:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1771088918;
-	bh=WLxojpvFkihbh2F5J4jmA4uuqMuar9HCoUphkvqFeS0=;
-	h=Date:To:From:Subject:From;
-	b=zF/5yCSQGpj6VeeXo48UyDZxVGvjynFWMfGs6aQ+vmTEFlRwf1S45VwLX35V61F0l
-	 tPFq1heWbbLmghE3j2e7N13hoNimUOLTwsHjcn0DLSksJYNMyFO03Nihv1gH4YnB77
-	 QJSDAYYKf5DBwt0hm7EotfHFQYooh84fbKE1/eqU=
-Date: Sat, 14 Feb 2026 09:08:38 -0800
-To: mm-commits@vger.kernel.org,wangyinfeng@phytium.com.cn,stable@vger.kernel.org,rppt@kernel.org,jonathan.cameron@huawei.com,gourry@gourry.net,david@kernel.org,dan.j.williams@intel.com,cuichao1753@phytium.com.cn,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged] mm-numa_memblks-identify-the-accurate-numa-id-of-cfmw.patch removed from -mm tree
-Message-Id: <20260214170838.97C5AC16AAE@smtp.kernel.org>
+	s=arc-20240116; t=1771090009; c=relaxed/simple;
+	bh=JmgrEbFXF3iirx+fHtUdii6WOI5aA1OhnHy+MB7423c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JCWzvXh1gwZwuAfMyP5mYqdTyrwxsqXSAEpAZEuLg+7wmdLXlcb/DdGnDAZ57Jbqc07CmHlsqCaH1B8Dngpdcs9icEag9KYTlZWyzoMFVeYHz7ufl6kB/hM+DQuZV6zQTRkv6XR5TaNWNmyEicV0im0ljt3ob55sKJU4HDlTK/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RBPiI+Vf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C41C16AAE;
+	Sat, 14 Feb 2026 17:26:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771090008;
+	bh=JmgrEbFXF3iirx+fHtUdii6WOI5aA1OhnHy+MB7423c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RBPiI+VfiexHNXmCAGeiTp0Et7a22VefA1E1d/Kk2KJR1vmyOMdjC7CKw5IctjXj0
+	 jHUIYID6jfD6KVp2YaItX3OroH+Gauh+5weU6wVpmzw7bZKHZFLT/H/rlm3+/LhY2h
+	 f5U2UldE1JFCBRtjdMDN0wkkroVOxBvU7BIGtk4iXHNsfFKr0/gGrWTssFF7B+NMBE
+	 iio9pLXoB1kHeUkcfL9juR50wl+HCV1/kz9V3HNx2w1lY1fR2h9VaG9z6bAlq+mBJd
+	 3zZCUFQIeArEvlag6HgdSl70wBEAkrYSW6ADcfHLcJxCF6vyBifqygxX1wCDVpsPZt
+	 /fRDMl5OfBSjQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] scsi: qla2xxx: Fix bsg_done() causing double free
+Date: Sat, 14 Feb 2026 12:26:46 -0500
+Message-ID: <20260214172646.638487-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026021341-remarry-footsore-fd7e@gregkh>
+References: <2026021341-remarry-footsore-fd7e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216492-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[marvell.com,gmail.com,oracle.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216493-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gourry.net:email,intel.com:email,phytium.com.cn:email,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: B340B13C8CC
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: B076313C9D5
 X-Rspamd-Action: no action
 
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-The quilt patch titled
-     Subject: mm: numa_memblks: identify the accurate NUMA ID of CFMW
-has been removed from the -mm tree.  Its filename was
-     mm-numa_memblks-identify-the-accurate-numa-id-of-cfmw.patch
+[ Upstream commit c2c68225b1456f4d0d393b5a8778d51bb0d5b1d0 ]
 
-This patch was dropped because it was merged into mainline or a subsystem tree
+Kernel panic observed on system,
 
-------------------------------------------------------
-From: Cui Chao <cuichao1753@phytium.com.cn>
-Subject: mm: numa_memblks: identify the accurate NUMA ID of CFMW
-Date: Wed, 11 Feb 2026 18:33:20 +0800
+[5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000
+[5353358.825194] #PF: supervisor write access in kernel mode
+[5353358.825195] #PF: error_code(0x0002) - not-present page
+[5353358.825196] PGD 100006067 P4D 0
+[5353358.825198] Oops: 0002 [#1] PREEMPT SMP NOPTI
+[5353358.825200] CPU: 5 PID: 2132085 Comm: qlafwupdate.sub Kdump: loaded Tainted: G        W    L    -------  ---  5.14.0-503.34.1.el9_5.x86_64 #1
+[5353358.825203] Hardware name: HPE ProLiant DL360 Gen11/ProLiant DL360 Gen11, BIOS 2.44 01/17/2025
+[5353358.825204] RIP: 0010:memcpy_erms+0x6/0x10
+[5353358.825211] RSP: 0018:ff591da8f4f6b710 EFLAGS: 00010246
+[5353358.825212] RAX: ff5f5e897b024000 RBX: 0000000000007090 RCX: 0000000000001000
+[5353358.825213] RDX: 0000000000001000 RSI: ff591da8f4fed090 RDI: ff5f5e897b024000
+[5353358.825214] RBP: 0000000000010000 R08: ff5f5e897b024000 R09: 0000000000000000
+[5353358.825215] R10: ff46cf8c40517000 R11: 0000000000000001 R12: 0000000000008090
+[5353358.825216] R13: ff591da8f4f6b720 R14: 0000000000001000 R15: 0000000000000000
+[5353358.825218] FS:  00007f1e88d47740(0000) GS:ff46cf935f940000(0000) knlGS:0000000000000000
+[5353358.825219] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[5353358.825220] CR2: ff5f5e897b024000 CR3: 0000000231532004 CR4: 0000000000771ef0
+[5353358.825221] PKRU: 55555554
+[5353358.825222] Call Trace:
+[5353358.825223]  <TASK>
+[5353358.825224]  ? show_trace_log_lvl+0x1c4/0x2df
+[5353358.825229]  ? show_trace_log_lvl+0x1c4/0x2df
+[5353358.825232]  ? sg_copy_buffer+0xc8/0x110
+[5353358.825236]  ? __die_body.cold+0x8/0xd
+[5353358.825238]  ? page_fault_oops+0x134/0x170
+[5353358.825242]  ? kernelmode_fixup_or_oops+0x84/0x110
+[5353358.825244]  ? exc_page_fault+0xa8/0x150
+[5353358.825247]  ? asm_exc_page_fault+0x22/0x30
+[5353358.825252]  ? memcpy_erms+0x6/0x10
+[5353358.825253]  sg_copy_buffer+0xc8/0x110
+[5353358.825259]  qla2x00_process_vendor_specific+0x652/0x1320 [qla2xxx]
+[5353358.825317]  qla24xx_bsg_request+0x1b2/0x2d0 [qla2xxx]
 
-In some physical memory layout designs, the address space of CFMW (CXL
-Fixed Memory Window) resides between multiple segments of system memory
-belonging to the same NUMA node.  In numa_cleanup_meminfo, these multiple
-segments of system memory are merged into a larger numa_memblk.  When
-identifying which NUMA node the CFMW belongs to, it may be incorrectly
-assigned to the NUMA node of the merged system memory.
+Most routines in qla_bsg.c call bsg_done() only for success cases.
+However a few invoke it for failure case as well leading to a double
+free. Validate before calling bsg_done().
 
-When a CXL RAM region is created in userspace, the memory capacity of the
-newly created region is not added to the CFMW-dedicated NUMA node. 
-Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
-containing RAM).  This makes it impossible to clearly distinguish between
-the two types of memory, which may affect memory-tiering applications.
-
-Example memory layout:
-
-Physical address space:
-    0x00000000 - 0x1FFFFFFF  System RAM (node0)
-    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
-    0x40000000 - 0x5FFFFFFF  System RAM (node0)
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
-
-After numa_cleanup_meminfo, the two node0 segments are merged into one:
-    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
-
-So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
-
-To address this scenario, accurately identifying the correct NUMA node can
-be achieved by checking whether the region belongs to both numa_meminfo
-and numa_reserved_meminfo.
-
-While this issue is only observed in a QEMU configuration, and no known
-end users are impacted by this problem, it is likely that some firmware
-implementation is leaving memory map holes in a CXL Fixed Memory Window. 
-CXL hotplug depends on mapping free window capacity, and it seems to be
-only a coincidence to have not hit this problem yet.
-
-Link: https://lkml.kernel.org/r/20260213060347.2389818-2-cuichao1753@phytium.com.cn
-Link: https://lkml.kernel.org/r/20260211103320.2064211-2-cuichao1753@phytium.com.cn
-Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
-Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Wang Yinfeng <wangyinfeng@phytium.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-12-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ applied only to qla2x00_update_optrom() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/scsi/qla2xxx/qla_bsg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- mm/numa_memblks.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
---- a/mm/numa_memblks.c~mm-numa_memblks-identify-the-accurate-numa-id-of-cfmw
-+++ a/mm/numa_memblks.c
-@@ -570,15 +570,16 @@ static int meminfo_to_nid(struct numa_me
- int phys_to_target_node(u64 start)
- {
- 	int nid = meminfo_to_nid(&numa_meminfo, start);
-+	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
- 
- 	/*
--	 * Prefer online nodes, but if reserved memory might be
--	 * hot-added continue the search with reserved ranges.
-+	 * Prefer online nodes unless the address is also described
-+	 * by reserved ranges, in which case use the reserved nid.
- 	 */
--	if (nid != NUMA_NO_NODE)
-+	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
- 		return nid;
- 
--	return meminfo_to_nid(&numa_reserved_meminfo, start);
-+	return reserved_nid;
+diff --git a/drivers/scsi/qla2xxx/qla_bsg.c b/drivers/scsi/qla2xxx/qla_bsg.c
+index 4324f4643e834..c37945ac9eca7 100644
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -1523,8 +1523,9 @@ qla2x00_update_optrom(struct bsg_job *bsg_job)
+ 	ha->optrom_buffer = NULL;
+ 	ha->optrom_state = QLA_SWAITING;
+ 	mutex_unlock(&ha->optrom_mutex);
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		       bsg_reply->reply_payload_rcv_len);
++	if (!rval)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 	return rval;
  }
- EXPORT_SYMBOL_GPL(phys_to_target_node);
  
-_
-
-Patches currently in -mm which might be from cuichao1753@phytium.com.cn are
-
+-- 
+2.51.0
 
 
