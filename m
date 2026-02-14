@@ -1,71 +1,64 @@
-Return-Path: <stable+bounces-216323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DSzFcnIj2l9TgEAu9opvQ
-	(envelope-from <stable+bounces-216323-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:58:49 +0100
+	id SBl5EQXKj2ndTgEAu9opvQ
+	(envelope-from <stable+bounces-216342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:04:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90A213A375
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:58:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A2613A4E2
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:04:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 38A1F3030D09
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:58:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A70113079F58
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D943D1DE894;
-	Sat, 14 Feb 2026 00:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FB1221FB1;
+	Sat, 14 Feb 2026 01:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSPOji4Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="exSiechR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD53DF59;
-	Sat, 14 Feb 2026 00:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A00A15E5BB;
+	Sat, 14 Feb 2026 01:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030716; cv=none; b=qubeDRzJKSzPTUx9OUg1os/3A/T1upEGLMQALl4YrDGBnWTrntcw3e9UnoAXOf4UJZfmMMteaPjemcj9NlAPZiHUr+EnuOV8XNoEMiY4N3aw7WzEAHJpXWNohTJa2fIVgqIq05ijViww6T+oREB2J9Y9R13z9umhsjcA4o8NkKE=
+	t=1771030985; cv=none; b=D2NP9INwOY22YPd6iadbcyUrBzhSUxRsMfqipbUdR86pkn1n/7d/0oe6eRcKI2k3PjcgAJAf9RqlhSAbib6AeejPtTc1X5YzSIbv+oCx8de6ML+F2UXW+Cse+hHP7ROgvBaN2SAKyJU/8CTfOLxEKcvaGBP/1QHmItqOuxbu1Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030716; c=relaxed/simple;
-	bh=9iUqq9ZQm+L4L0WZKC72XnpCTsO/DQnYd7c8gUn/SE0=;
+	s=arc-20240116; t=1771030985; c=relaxed/simple;
+	bh=SQImZMhCTVZnM1Yiox7tTnc0iVVS1xw8KwjmrbjwgfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IemN7T633Takz/Z6u6dSP5EKllL3UFgJaKOjh7PJtTCqcnUEOQ1pvTjXqXRMRUFCuIaBvqYrxkOOhDVb746PZkpc0jY87EfLx8tbzueaqrP4VbWvQ9wglWfH1CphZDroairT7BISALRI5et15YnBwLDABkxQWLqR1+bYVYTrUSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSPOji4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6F6C116C6;
-	Sat, 14 Feb 2026 00:58:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NscIFpsr/ftBhnKGU9IE20j+76NEyS0mE//5Kh05TT31er98Ghlmsi0cItNYVntuF5UG/agByaukH7IGBVQ1+xdVjKksRh4CiXmzpivY/65Gj4/OfCeWb73C0QMsmuqdUhM4D9BXPBhq3++P2ymQgiSi2yeIJNd4LmVKuuQuVVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exSiechR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FFBC16AAE;
+	Sat, 14 Feb 2026 01:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030716;
-	bh=9iUqq9ZQm+L4L0WZKC72XnpCTsO/DQnYd7c8gUn/SE0=;
+	s=k20201202; t=1771030985;
+	bh=SQImZMhCTVZnM1Yiox7tTnc0iVVS1xw8KwjmrbjwgfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GSPOji4QqRHEiVmQFrnVKtGcaTfBjnT6aA1QsEkaEWonVkmgh0rnEcOKlTFWQWz0+
-	 rohVvlNTwGRwJ5BD/WMHRvCn//sgxvZnF4Ep9Oy+5ZCjoh6G1nicpreyBkFjpdRUqp
-	 mtvOEG13lGoj0U/sMHC9g1m07QX0iGnmdslL7nzKMLsT9spX8NKdXlVMsjwfSf9DRf
-	 K2Qc9byZ5fj8hEP9a4TDGbmz2umM7YRUms39SEHrnm1bMN2CdJJ+Q3ulzuXlk4b3Wj
-	 i5QLJ6DkuWaztI4JOZbUSXZwpLJKPwxH8ZUETJ3WnoFWWfZ+XvuE5P9LTDFb2k8ptX
-	 Nad12yEq/jcvg==
+	b=exSiechRTZLkqWZwmYGGsz3oUP3JFAp2YpgUgBpfhlzuKCVWtn/8mts/w5CKqEOGk
+	 +VNbQNsSgD6GzaIW0OV4HOK8O+eN4Z6p37A7Bkl/TxNA4q2qbUbO1hSrclrysREMSa
+	 Fm6NurJzEZ9sahH/XYybq+08UOQSWYgfiRKU/wslhYK8hxvyeVNBB50lTLZRiB9x2k
+	 5yzf2QMpp7rKSDm7ILQO44BN8EDCu9pWTj5WtXdmEQZRJlrQFAg9J53DOqxI/o1Qby
+	 QwL28mIU3qX10TaLfLoKPOIsExlXah6bDY03QmZ5WBI9UJqprRzHPf6j/2Kv0b1m21
+	 VZrE632OTpo5g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
-	kernel test robot <lkp@intel.com>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	nathan@kernel.org,
-	mingo@kernel.org,
-	ardb@kernel.org,
-	Neeraj.Upadhyay@amd.com,
-	aik@amd.com,
-	yelangyan@huaqin.corp-partner.google.com,
-	ashish.kalra@amd.com,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.19-6.18] x86/sev: Use kfree_sensitive() when freeing a SNP message descriptor
-Date: Fri, 13 Feb 2026 19:58:10 -0500
-Message-ID: <20260214005825.3665084-4-sashal@kernel.org>
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	intel-xe@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.19-6.12] drm/xe: Only toggle scheduling in TDR if GuC is running
+Date: Fri, 13 Feb 2026 19:58:11 -0500
+Message-ID: <20260214010245.3671907-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214005825.3665084-1-sashal@kernel.org>
-References: <20260214005825.3665084-1-sashal@kernel.org>
+In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
+References: <20260214010245.3671907-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,193 +72,233 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-216342-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216323-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email,alien8.de:email]
-X-Rspamd-Queue-Id: C90A213A375
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D3A2613A4E2
 X-Rspamd-Action: no action
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit af05e558988ed004a20fc4de7d0f80cfbba663f0 ]
+[ Upstream commit dd1ef5e2456558876244795bb22a4d90cb24f160 ]
 
-Use the proper helper instead of an open-coded variant.
+If the firmware is not running during TDR (e.g., when the driver is
+unloading), there's no need to toggle scheduling in the GuC. In such
+cases, skip this step.
 
-Closes: https://lore.kernel.org/r/202512202235.WHPQkLZu-lkp@intel.com
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Julia Lawall <julia.lawall@inria.fr>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://patch.msgid.link/20260112114147.GBaWTd-8HSy_Xp4S3X@fat_crate.local
+v4:
+ - Bail on wait UC not running (Niranjana)
+
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Link: https://patch.msgid.link/20260110012739.2888434-4-matthew.brost@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a thorough understanding. Let me compile my full analysis.
+Now I have a comprehensive understanding of this commit. Let me
+summarize my analysis.
 
 ---
 
-## Detailed Analysis
+## Comprehensive Analysis
 
-### 1. Commit Message Analysis
+### 1. COMMIT MESSAGE ANALYSIS
 
-The commit message is intentionally understated: "Use the proper helper
-instead of an open-coded variant." However, this is a **security-
-relevant fix** flagged by automated static analysis tools. It was:
+The commit message states: "If the firmware is not running during TDR
+(e.g., when the driver is unloading), there's no need to toggle
+scheduling in the GuC. In such cases, skip this step."
 
-- **Reported-by: kernel test robot** (automated scanner from Intel)
-- **Reported-by: Julia Lawall** (well-known for Coccinelle semantic
-  patches that detect exactly these patterns)
-- **Reviewed-by: Tom Lendacky** (AMD SEV subsystem maintainer)
-- **Authored-by: Borislav Petkov** (x86 co-maintainer, AMD SEV expert)
+This is clearly a bug fix for a race condition during driver unloading.
+The "v4" tag and review from Niranjana Vishwanathapura confirm this went
+through review iterations. The specific mention of "Bail on wait UC not
+running" in v4 notes shows the second hunk was specifically requested by
+reviewers.
 
-### 2. Code Change Analysis
+### 2. CODE CHANGE ANALYSIS
 
-The change is in `snp_msg_free()` in `arch/x86/coco/sev/core.c`:
+The patch makes exactly **two** small, surgical changes in
+`guc_exec_queue_timedout_job()`:
 
-**Before:**
+**Change 1 (line 1307):** Adds `&& xe_uc_fw_is_running(&guc->fw)` to the
+condition guarding `disable_scheduling()`:
+
 ```c
-memset(mdesc, 0, sizeof(*mdesc));
-kfree(mdesc);
+// Before:
+if (!exec_queue_destroyed(q)) {
+// After:
+if (!exec_queue_destroyed(q) && xe_uc_fw_is_running(&guc->fw)) {
 ```
 
-**After:**
+This prevents `disable_scheduling()` from being called when the GuC
+firmware is not running. `disable_scheduling()` sends a command to the
+GuC via `xe_guc_ct_send()` and sets the `exec_queue_pending_disable`
+flag. If the firmware is dead, the send will fail (return `-ECANCELED`
+from `__guc_ct_send_locked` when `ct->state ==
+XE_GUC_CT_STATE_STOPPED`), but the `pending_disable` flag is already
+set. This means the subsequent `wait_event_timeout` will wait a full 5
+seconds for a G2H response that will **never** come, then trigger a
+spurious GT reset via `trigger_reset`.
+
+**Change 2 (line 1341):** Adds `!xe_uc_fw_is_running(&guc->fw) ||` to
+the wait condition:
+
 ```c
-kfree_sensitive(mdesc);
+// Before:
+ret = wait_event_timeout(guc->ct.wq,
+                         !exec_queue_pending_disable(q) ||
+                         xe_guc_read_stopped(guc) ||
+                         vf_recovery(guc), HZ * 5);
+// After:
+ret = wait_event_timeout(guc->ct.wq,
+                         !xe_uc_fw_is_running(&guc->fw) ||
+                         !exec_queue_pending_disable(q) ||
+                         xe_guc_read_stopped(guc) ||
+                         vf_recovery(guc), HZ * 5);
 ```
 
-This is a **critical difference** despite appearing cosmetic:
+This is a safety net: even if `disable_scheduling` was somehow called
+before firmware went down (a TOCTOU race between the first check and the
+CT send), the wait will immediately resolve when firmware goes down
+rather than hanging for 5 seconds.
 
-1. **`memset()` can be optimized away**: When `memset()` is followed
-   immediately by `kfree()`, the compiler can perform dead store
-   elimination (DSE). Since the memory is about to be freed and no code
-   reads the zeroed values, the compiler may determine the `memset()` is
-   a dead store and remove it entirely. This is increasingly common with
-   modern GCC and Clang optimization levels, and especially with LTO.
+### 3. BUG MECHANISM
 
-2. **`kfree_sensitive()` uses `memzero_explicit()`**: This function
-   calls `memset()` followed by `barrier_data()`, which is a compiler
-   barrier that prevents the zero operation from being optimized away.
-   This is the canonical kernel API specifically designed for clearing
-   sensitive data before freeing.
+Without this fix, during driver unloading:
+1. TDR (Timeout Detection and Recovery) fires for a pending job
+2. GuC firmware has already been stopped (driver is unloading)
+3. `disable_scheduling()` sends a command to the dead GuC
+4. The CT send fails but `exec_queue_pending_disable` is already set
+5. The `wait_event_timeout` waits 5 full seconds for a response that
+   never arrives
+6. Timeout triggers `trigger_reset` path → spurious
+   `xe_gt_reset_async()` + `xe_devcoredump()`
+7. This causes unnecessary GT resets, devcoredumps, and potentially
+   warnings/errors during teardown
 
-3. **`kfree_sensitive()` clears the entire slab allocation**: Via
-   `ksize()`, it zeros the whole allocated slab object (which may be
-   larger than `sizeof(*mdesc)`), while the original code only zeroed
-   `sizeof(*mdesc)`. This provides more thorough clearing of any padding
-   or slab slack space.
+### 4. COMPANION COMMIT
 
-### 3. Sensitivity of the Data
+Commit `9b42321a02c50` ("drm/xe/guc: Check GuC running state before
+deregistering exec queue") by Shuicheng Lin already fixed the
+**identical** issue in the `__guc_exec_queue_process_msg_cleanup()`
+path. That commit has `Fixes: dd08ebf6c352` and `Cc:
+stable@vger.kernel.org` tags and is already in the tree. The commit
+being analyzed is the same type of fix but for the TDR path — it's a
+parallel fix for the same class of bug in a different code path.
 
-The `snp_msg_desc` structure contains:
+### 5. DEPENDENCY CHECK
 
-- **`secret_request` and `secret_response`** (embedded `struct
-  snp_guest_msg`): These are **double-buffered encrypted/decrypted guest
-  messages** used for communication between the SEV-SNP guest VM and the
-  AMD Secure Processor (ASP). The comment in the struct says "Avoid
-  information leakage by double-buffering shared messages in fields that
-  are in regular encrypted memory." Each `snp_guest_msg` contains auth
-  tags, sequence numbers, and a full-page payload.
-- **`vmpck`**: Pointer to the VM Platform Communication Key.
-- **`ctx`**: AES-GCM crypto context (freed separately via `kfree()`).
-- **`secrets`**: Pointer to the SNP secrets page.
-- **`os_area_msg_seqno`**: Message sequence number.
+The patch depends on:
+- `#include "xe_uc_fw.h"` being present — **already added** by
+  `9b42321a02c50`
+- The `xe_uc_fw_is_running()` function — **already exists** in
+  `xe_uc_fw.h`
+- The `guc->fw` field — **always existed** in `struct xe_guc`
 
-This is AMD SEV-SNP code. The entire purpose of SEV-SNP is to protect
-guest VM memory from the hypervisor. Leaving cryptographic state and
-message contents in freed slab memory directly undermines the security
-guarantees of the technology.
+The patch applies cleanly to the current tree. No additional
+dependencies.
 
-### 4. History and Stable Tree Applicability
+### 6. SCOPE AND RISK
 
-- `snp_msg_free()` was introduced in commit c5529418d0507 ("x86/sev:
-  Carve out and export SNP guest messaging init routines"), which landed
-  in **v6.14-rc1**.
-- The buggy `memset() + kfree()` pattern was introduced by this same
-  refactoring commit.
-- The fix applies to all stable trees from **v6.14 onwards**: 6.14.y,
-  6.15.y, 6.16.y, 6.17.y, 6.18.y.
-- I confirmed the vulnerable code exists in v6.14 and that
-  `kfree_sensitive()` is available there.
-- It does NOT apply to 6.12.y, 6.6.y, or older LTS trees (they use a
-  different code structure in `drivers/virt/coco/sev-guest/`).
+- **Lines changed:** 2 lines modified (one condition added, one wait
+  condition added)
+- **Files affected:** 1 (`xe_guc_submit.c`)
+- **Risk:** Very low — both changes are additive conditions that skip
+  operations when firmware is not running. They can never make things
+  worse because if firmware IS running, behavior is identical.
+- **Subsystem:** GPU driver (xe), limited blast radius
 
-### 5. Risk Assessment
+### 7. USER IMPACT
 
-- **Size**: 3 lines changed to 2 lines (net -1 line). One of the
-  smallest possible changes.
-- **Risk**: Essentially zero. `kfree_sensitive()` is the standard kernel
-  API for this exact use case, has been available since v5.9, and is
-  used in 300+ call sites across the kernel.
-- **No dependencies**: The fix is entirely self-contained.
-- **No behavioral change** from a functional perspective — same memory
-  is freed — only ensures the zeroing actually happens at runtime.
+This affects Intel Xe GPU users who experience:
+- Spurious GT resets and warnings during driver unload/unbind
+- 5-second hangs in TDR path when GuC firmware isn't running
+- Unnecessary devcoredumps during teardown
 
-### 6. Classification
+Without the fix, the driver teardown sequence can be disrupted by TDR
+firing at the wrong time, leading to error messages and potentially
+slower/buggy driver unload.
 
-This is a **security fix** in **security-critical AMD SEV-SNP code**.
-The pattern of `memset() + kfree()` for sensitive data is a well-known
-anti-pattern that has been the subject of multiple CVEs in other
-software projects. While the compiler may or may not optimize it away in
-current builds, it is a latent security vulnerability that could
-manifest with different compiler versions, optimization flags, or LTO
-configurations.
+### 8. STABILITY ASSESSMENT
 
-### 7. Verdict
+- **Reviewed-by:** Niranjana Vishwanathapura (Intel)
+- **Author:** Matthew Brost (Intel Xe maintainer and key contributor)
+- **Pattern:** Identical to the already-accepted companion fix
+  `9b42321a02c50`
+- The fix is purely defensive — it adds a "firmware running" guard
+  before sending commands
 
-This commit:
-- Fixes a real security issue (potential leakage of cryptographic data
-  in freed memory)
-- Is in security-critical code (AMD SEV-SNP guest messaging)
-- Is extremely small and surgical (2 lines -> 1 line)
-- Uses the canonical kernel API (`kfree_sensitive()`)
-- Has zero risk of regression
-- Was reviewed by the AMD SEV maintainer
-- Was flagged by two independent automated/semi-automated analysis tools
-- Applies cleanly to stable trees v6.14+
-- Has no dependencies on other commits
+### 9. CLASSIFICATION
+
+This is a **bug fix** that prevents:
+- Spurious GT resets during driver unload
+- Unnecessary 5-second timeouts/hangs
+- False "Schedule disable failed to respond" warnings
+- Unneeded devcoredumps
+
+It is NOT a feature addition — it's a guard against calling into dead
+firmware.
+
+### Verdict
+
+This commit fixes a real bug in the TDR path of the Xe GPU driver where
+attempting to communicate with dead GuC firmware during driver unloading
+causes spurious timeouts, unnecessary GT resets, and error messages. The
+fix is small (2 line changes), surgically targeted, obviously correct,
+reviewed by Intel engineers, and follows the exact same pattern as the
+companion commit `9b42321a02c50` that is already accepted for stable.
+The dependency on `xe_uc_fw.h` include is satisfied by the companion
+commit. Risk is minimal as the change only skips operations when
+firmware is not running.
 
 **YES**
 
- arch/x86/coco/sev/core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_submit.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 9ae3b11754e65..c8ddb9febe3d9 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -2008,8 +2008,7 @@ void snp_msg_free(struct snp_msg_desc *mdesc)
- 	free_shared_pages(mdesc->request, sizeof(struct snp_guest_msg));
- 	iounmap((__force void __iomem *)mdesc->secrets);
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index f6ba2b0f074d2..ced13f17fb720 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -1304,7 +1304,7 @@ guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)
+ 		if (exec_queue_reset(q))
+ 			err = -EIO;
  
--	memset(mdesc, 0, sizeof(*mdesc));
--	kfree(mdesc);
-+	kfree_sensitive(mdesc);
- }
- EXPORT_SYMBOL_GPL(snp_msg_free);
- 
+-		if (!exec_queue_destroyed(q)) {
++		if (!exec_queue_destroyed(q) && xe_uc_fw_is_running(&guc->fw)) {
+ 			/*
+ 			 * Wait for any pending G2H to flush out before
+ 			 * modifying state
+@@ -1339,6 +1339,7 @@ guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)
+ 		 */
+ 		smp_rmb();
+ 		ret = wait_event_timeout(guc->ct.wq,
++					 !xe_uc_fw_is_running(&guc->fw) ||
+ 					 !exec_queue_pending_disable(q) ||
+ 					 xe_guc_read_stopped(guc) ||
+ 					 vf_recovery(guc), HZ * 5);
 -- 
 2.51.0
 
