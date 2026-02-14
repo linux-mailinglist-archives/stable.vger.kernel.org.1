@@ -1,135 +1,196 @@
-Return-Path: <stable+bounces-216461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKUNEajUj2nXTwEAu9opvQ
-	(envelope-from <stable+bounces-216461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:49:28 +0100
+	id sCd1IazUj2nXTwEAu9opvQ
+	(envelope-from <stable+bounces-216462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:49:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3DC13AB7C
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:49:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7EC13AB83
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:49:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 198AF300753D
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1733F303CE9F
 	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13970191F92;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97D31F03DE;
 	Sat, 14 Feb 2026 01:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qAjz47Na"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="imXThll3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE705474F
-	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 01:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D73D5474F
+	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 01:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771033765; cv=none; b=ItS9y4EHYhpLJ6qoBBKnpL2HJnCk6yvfpkuGKc6HCRFW8HwnKA97d33e6paGPBEZsoe5+78KX96JleSKAC8vDssMJdvXv/tA80uglH0ki2//PjO3/PLLHtM7ZyMM8zDn4eldUQiI315dPi/D9aK1h0/eg8Fzc1JOGMvK2DeQF+0=
+	t=1771033766; cv=none; b=SDQ/cv9I6GBdEyQWZ2F5bZLyKrkQq+5hffJ02Otbxd4sApi/bQUbPdAabkjGhn5WjWkXOEDEag4/yl+PqOTH8zvumMmfsC0MUmlwbwpbXcVECq7ErDBg+PtxcsnkiWTBLdgRUK+pmajr2CgsJY9kWxsODSwv4atqispmzEv5Pq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771033765; c=relaxed/simple;
-	bh=oA6XVbp8UxEuLBdaHDl5bBXAQ/Jax8QX0CfDmu6UcY4=;
+	s=arc-20240116; t=1771033766; c=relaxed/simple;
+	bh=HFWh0/6Ca1MZO9qIa1wj4J5dJVV1TpuKjTzBSEprzpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YX3FMCqcXbFjkXocOo5wV9nz35kAlAhP3u2VA9hYpG9zhTStulhc3AM43Gst/cla4EmwPbPkGORQHwil34YM8QIsjEJaI96aF4o1rXHpdI17ZfUPqI72iQdvXWE7a/Iys/Jdr6QZC/ipVehM125UBletaYhVeO7rREGvqBt/D/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qAjz47Na; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5248C116C6;
-	Sat, 14 Feb 2026 01:49:24 +0000 (UTC)
+	 MIME-Version; b=ObYy8NhCJeqUOmRfsbFK88LG/6Eet+kwTbiWsJFTECwKt+8vYu9VEa7/CfVOivW09K9p66PEAcETN3qTo5H7vRDz+8cqMXd3eEW6qfbvyqPzClRgd9rD5FNX9nnOzseDIuTekIQ49MB1oYKeMCC8FYVR2YJzjrylcX22f5onZzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=imXThll3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF17C16AAE;
+	Sat, 14 Feb 2026 01:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771033765;
-	bh=oA6XVbp8UxEuLBdaHDl5bBXAQ/Jax8QX0CfDmu6UcY4=;
+	s=k20201202; t=1771033766;
+	bh=HFWh0/6Ca1MZO9qIa1wj4J5dJVV1TpuKjTzBSEprzpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qAjz47NaZhfEjE8XKbWOjDLggwJEi0bYb2Qzhq7+amh9A9hplwVJSgKV4mgZvjGBj
-	 yXja3dtNC3wF2sJkDqDW0t4htOnc5C3esUfzZrTTba97xDSD5qmkGngRXflGVRDvPC
-	 yC8l9tNQxWFePIKWzLNF9h3Fd/AVkgD7Dsbp5BKg4tcFJ0bT0LLvWorCxTh1aw7Nas
-	 H0XXwTA/o5Qzf4CkciqlmxvkGlZczj7a0kgfbUyB8oJCcISVI1a777kEQ9TVy4tMgg
-	 Aqgts7MRmXwRiUaaBpFvpIbqm7EhQJOT6V37NxcSCNIuhLTvPq6pDQz7YHAlzdaVhr
-	 4zqO5eYtS5HAw==
+	b=imXThll3kcMjoFAV1PuXn74zxhRdkR1JMFdwlQ0MMhDHZwmfFV9QPr9xNfuYl68FD
+	 qHWwZ7TAn/GZcuZ8Tl3zA6MVoLiDHHKqkEBj84+0dZzfU+FRX5jCRAmw6P31JpGyqS
+	 mXdfHb/moN5n3KAWoTzaRWvEkIEM0v5PNup2pOf++cMkF8KDSaTec/6RL7JBxX+S9S
+	 pGykwc5KN12HiTYm3gp8xXoEy5d56CYwhcG4PUUJYjeYYqJE3FIqoyz3/iv+hGMkSr
+	 liyJW2yWeU+tIreZByRuk3TXQRKtGWauPEO7AIX4YSlSwkF0iVPtjQnMoUzmSl0kio
+	 vkEJjNjfDYFRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+Cc: Liu Song <liu.song13@zte.com.cn>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
+	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 1/2] PCI: endpoint: Remove unused field in struct pci_epf_group
-Date: Fri, 13 Feb 2026 20:49:22 -0500
-Message-ID: <20260214014923.3899226-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 2/2] PCI: endpoint: Avoid creating sub-groups asynchronously
+Date: Fri, 13 Feb 2026 20:49:23 -0500
+Message-ID: <20260214014923.3899226-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026021303-salt-retread-63e7@gregkh>
+In-Reply-To: <20260214014923.3899226-1-sashal@kernel.org>
 References: <2026021303-salt-retread-63e7@gregkh>
+ <20260214014923.3899226-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216461-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216462-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[wanadoo.fr,kernel.org,google.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AC3DC13AB7C
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cfs_work.work:url,zte.com.cn:email]
+X-Rspamd-Queue-Id: DB7EC13AB83
 X-Rspamd-Action: no action
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Liu Song <liu.song13@zte.com.cn>
 
-[ Upstream commit 328e4dffbeecc0f2cc5a149dee6c11a0577c9671 ]
+[ Upstream commit 7c5c7d06bd1f86d2c3ebe62be903a4ba42db4d2c ]
 
-In "struct pci_epf_group", the 'type_group' field is unused.
+The asynchronous creation of sub-groups by a delayed work could lead to a
+NULL pointer dereference when the driver directory is removed before the
+work completes.
 
-This was added, but already unused, by commit 70b3740f2c19 ("PCI: endpoint:
-Automatically create a function specific attributes group").
+The crash can be easily reproduced with the following commands:
 
-Thus, remove it.
+  # cd /sys/kernel/config/pci_ep/functions/pci_epf_test
+  # for i in {1..20}; do mkdir test && rmdir test; done
 
-Found with cppcheck, unusedStructMember.
+  BUG: kernel NULL pointer dereference, address: 0000000000000088
+  ...
+  Call Trace:
+   configfs_register_group+0x3d/0x190
+   pci_epf_cfs_work+0x41/0x110
+   process_one_work+0x18f/0x350
+   worker_thread+0x25a/0x3a0
 
-[kwilczynski: commit log]
-Link: https://lore.kernel.org/linux-pci/6507d44b6c60a19af35a605e2d58050be8872ab6.1712341008.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Fix this issue by using configfs_add_default_group() API which does not
+have the deadlock problem as configfs_register_group() and does not require
+the delayed work handler.
+
+Fixes: e85a2d783762 ("PCI: endpoint: Add support in configfs to associate two EPCs with EPF")
+Signed-off-by: Liu Song <liu.song13@zte.com.cn>
+[mani: slightly reworded the description and added stable list]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: 7c5c7d06bd1f ("PCI: endpoint: Avoid creating sub-groups asynchronously")
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20250710143845409gLM6JdlwPhlHG9iX3F6jK@zte.com.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-ep-cfs.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/endpoint/pci-ep-cfs.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/pci/endpoint/pci-ep-cfs.c b/drivers/pci/endpoint/pci-ep-cfs.c
-index c17dff4bd19b4..a2b81a64fcd11 100644
+index a2b81a64fcd11..c28c3f094496a 100644
 --- a/drivers/pci/endpoint/pci-ep-cfs.c
 +++ b/drivers/pci/endpoint/pci-ep-cfs.c
 @@ -23,7 +23,6 @@ struct pci_epf_group {
  	struct config_group group;
  	struct config_group primary_epc_group;
  	struct config_group secondary_epc_group;
--	struct config_group *type_group;
- 	struct delayed_work cfs_work;
+-	struct delayed_work cfs_work;
  	struct pci_epf *epf;
  	int index;
+ };
+@@ -100,7 +99,7 @@ static struct config_group
+ 	secondary_epc_group = &epf_group->secondary_epc_group;
+ 	config_group_init_type_name(secondary_epc_group, "secondary",
+ 				    &pci_secondary_epc_type);
+-	configfs_register_group(&epf_group->group, secondary_epc_group);
++	configfs_add_default_group(secondary_epc_group, &epf_group->group);
+ 
+ 	return secondary_epc_group;
+ }
+@@ -160,7 +159,7 @@ static struct config_group
+ 
+ 	config_group_init_type_name(primary_epc_group, "primary",
+ 				    &pci_primary_epc_type);
+-	configfs_register_group(&epf_group->group, primary_epc_group);
++	configfs_add_default_group(primary_epc_group, &epf_group->group);
+ 
+ 	return primary_epc_group;
+ }
+@@ -561,15 +560,13 @@ static void pci_ep_cfs_add_type_group(struct pci_epf_group *epf_group)
+ 		return;
+ 	}
+ 
+-	configfs_register_group(&epf_group->group, group);
++	configfs_add_default_group(group, &epf_group->group);
+ }
+ 
+-static void pci_epf_cfs_work(struct work_struct *work)
++static void pci_epf_cfs_add_sub_groups(struct pci_epf_group *epf_group)
+ {
+-	struct pci_epf_group *epf_group;
+ 	struct config_group *group;
+ 
+-	epf_group = container_of(work, struct pci_epf_group, cfs_work.work);
+ 	group = pci_ep_cfs_add_primary_group(epf_group);
+ 	if (IS_ERR(group)) {
+ 		pr_err("failed to create 'primary' EPC interface\n");
+@@ -628,9 +625,7 @@ static struct config_group *pci_epf_make(struct config_group *group,
+ 
+ 	kfree(epf_name);
+ 
+-	INIT_DELAYED_WORK(&epf_group->cfs_work, pci_epf_cfs_work);
+-	queue_delayed_work(system_wq, &epf_group->cfs_work,
+-			   msecs_to_jiffies(1));
++	pci_epf_cfs_add_sub_groups(epf_group);
+ 
+ 	return &epf_group->group;
+ 
 -- 
 2.51.0
 
