@@ -1,182 +1,178 @@
-Return-Path: <stable+bounces-216317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216318-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJa4F+jHj2lVTgEAu9opvQ
-	(envelope-from <stable+bounces-216317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:55:04 +0100
+	id 8PNsNpPIj2l9TgEAu9opvQ
+	(envelope-from <stable+bounces-216318-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:57:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0BB13A320
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:55:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CABF13A33F
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C7C13037D6E
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:55:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8912830233D4
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1641DEFE0;
-	Sat, 14 Feb 2026 00:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B724DF59;
+	Sat, 14 Feb 2026 00:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6xsXtkQ"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="nLXxsvDX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801D919D07E
-	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 00:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030501; cv=none; b=fZwGgNjf6+Absus3aZ0li74RRYSNvHI+oRp9LKqVfvwBGphhcgiUqwKq7+xAvE9blRqe013zSHF25DYGtS/UMYwjVbYB35mRaY1eOYV7dmurDeQ2I2OPdMkgVA8WQMs6l6tZtxFFMVCWcen4QTkapyMrYyw76mJ0TrlHIbHo6Dg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030501; c=relaxed/simple;
-	bh=LEvBgpxNVvcvTNo3aq17v8SiTTeQsSiGkVIJLmgaKNM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJvlC5LYZgSLqi3/lWnjW/PGCeyFzK1kQQSOET/p8lGF2D4uhsWhzJAMLoxGr6omBrVKDPpcBmR2l2mJiZgUYx1ERJH+EgPWwKsSFD3VC8eLExbnKdBclJ7280jOQppbtPLhL7q0qA11ztonLTiH2vlJjYCgCp+toR2RkJtmJ4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6xsXtkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A07C116C6;
-	Sat, 14 Feb 2026 00:55:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030501;
-	bh=LEvBgpxNVvcvTNo3aq17v8SiTTeQsSiGkVIJLmgaKNM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S6xsXtkQNvECCOQDzA2a01dIWXhUdNbgqqjVVJj2MZNmCm7JBP6P9a80fXUN+dYNC
-	 H2YRxaoGV0ryOPXBXq1eo99Y63E4zc2hhgJfdifZ8jlSfPQx16wRoOpL0T/80/gsfW
-	 SG5eagamODQ7i5DO/bplhYjdeuKehYmlYNgdIIKQIrTmbHdfP44qGlyUErMi2tDRbd
-	 02yBPwpegpYbWZ7/8n1/lnDx5iU5EBEh/ukCjpDlvgKJeFHLYh3PbkEvxaMwl9z+s8
-	 FGIziGAhpP/eDimtIq2K6UDy1m5MVMB0mE4btQI4ZK0bCbGzbRe9rzb5TldT06QAuO
-	 XexMkqAhHLfLA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] scsi: qla2xxx: Free sp in error path to fix system crash
-Date: Fri, 13 Feb 2026 19:54:58 -0500
-Message-ID: <20260214005458.3653377-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026021307-undivided-gazing-4aaa@gregkh>
-References: <2026021307-undivided-gazing-4aaa@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1141F471F
+	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 00:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771030665; cv=pass; b=Vlt+8BpcxdtcqnnAmvGax3YWArndMWrOdQCm7KcQcHmQ+JHoLYUu87Jb0k34cJn3h8+CQ5Kv3rd8iqb+WGyIKecC22ux2NUjhjTxj6k9CJ43QlnYFAQyoipPIWIkAecLXEBW4KKu9YX8QZgSvfLL05JuEOvWOabUnJ9w/A4CxPg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771030665; c=relaxed/simple;
+	bh=sHr1Cl/Gl9fpAr8sKGi8KjHqbPHHwCS/wUW/pNi/eTM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CeO8sNSXlgCwSIRBWNT5dJDlYCNWkIXrWnppp7jJTd+x5PyLyxcrXcOEoGQBu+0ljUfSKesGbE0mPDmAd4leMET57GKXhT2eVlpMsjM9H+mJjVGZ6w00Yb6L2HosQbMLL2ZgFD+QHsqgN8gOudkWmZztiref1WPoOEQA9BBrgCU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=nLXxsvDX; arc=pass smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-89577f866d6so20907576d6.0
+        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 16:57:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771030662; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LzLNfeZiTAROW50egGMDK2RcbA5u5xvaUx0GLnuuzg1x2ogyP1Pkv+Znl8tr3aRXSZ
+         Hur+jlb3d7i5+k0m0Fz0C9MLVWggTGkxT9QLf6ZoA2R7+93+gvr3aK/oXu1aFrIegDq4
+         9PCAQEkaMnwmA1U88Nxk6LKnkGfoNbt0+PentdLS+koFkzDrI7u0J0l8nHZXAh9seOH4
+         lal2AnXyhU4j6oepDmxDqI1Vl0j+hpXl9wuTFsPPQwdB8+wDSDgLss5K8P+uaGHEsBC3
+         T19NpRc24cOawfYV+Q64W7J3471O+UmSarteAjJtiiYZ+2GJMOxftQNWn8Q35Fw+btd+
+         HAOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SU6MnRDhwPzTEBvQJvMDhOJ2GyLQFBxvyqaP+MaDgQg=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=IDlwxzmoOaU8i2RqmBqlrTRId1TpIL5dK0heiqqx9R0QnPlUAbpWQnd71GUaWVdS0+
+         uoo/ogEl7lHh4236SpwWv+8MXK+2AkuGx+D4/pzOUmpsURLfUvcJVARpvfgkGHJs2fWQ
+         f83ov2fkfxYiDKX6N3bUurr+jUIEo1/xMDth9V0MtCD+mjtgzC5hMU+KJr//9P8UG8kt
+         m84J6zqJHb/1qvQV1Br82I+S+wf5YdRTLmCCTRdDswnMK4qnJ6/weMCF68eoSu9orKX3
+         nNhb9m/c+HidblFnefp439sJ9bZZed5RrRPV+yNKreCIDd6MmvHgC0kG2y5qhZjg4RR6
+         pD+w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ciq.com; s=s1; t=1771030662; x=1771635462; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SU6MnRDhwPzTEBvQJvMDhOJ2GyLQFBxvyqaP+MaDgQg=;
+        b=nLXxsvDXfwwnXXIBhtpLK8r3SzWE81XYud1eYX3p6xDVaZjKy5S3iQ8Bs6BRsDc5cb
+         o8u8Dr4ZNivx3RSjJrWL2Cvzdmm6a7NqHOwISMX2OENEzkgtumDSwDTwh6Q/5XgKxt6q
+         Jvt3aVVVc5i/ZABLeeywi/VnGo+is84U5HzLq8WXYkicPVFHUmI/mZt+GZyhDYyajNCO
+         i6VSqFNRPiI1M5WRQCE/6C6CKkTSGsuTFytLbYFcFxbjxW47NKOPfVM39mt754Dahwu0
+         gyiUgHHzzmjO90cA4/RFbr9HzaYFZpE9p6o0ZBMVo/huLGPzghKKd4iCAlKczRWpQb3w
+         DcQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771030662; x=1771635462;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SU6MnRDhwPzTEBvQJvMDhOJ2GyLQFBxvyqaP+MaDgQg=;
+        b=GReUPN40lzvfuh4MySsFNWx3EAXxXunsTEV6gOf3Ud3HJTOqMhb5qqGDNmZwYiBkcN
+         TDxZYyZ9QX/bwp1/zJJERty4I6MhfeZnnM+PyPxYNaqSwCdDWiAaCxjrIJiyOYHpxEPe
+         tNtd1gvFsCCbIXPZYe8cLDtxqt4IVXrzhc4rKuClvAllryb35y6wraNTWFOdPBAdr+3M
+         5X1+um6HpbHsHo9m0qAdmsNIPZkTabexmClPPcsrjAqXQg+J0rKZ78BBUtvvOT27fpUK
+         GqY3DL/48hWpg+8Q/yQdlrJRKgHq7CIWUyjTxIo3fib0pDONw2yV+7GXSFOn0RhD7py3
+         Ir2g==
+X-Gm-Message-State: AOJu0YyLc4unBjoUu5k4Rq2P9z8fLRJzEskG0tVuVOAfjShUGPZPbUfG
+	XorL4ZI+HBv0E5nXP9hGuIsrmsWIZF5LoYCe50J0g6PhW4fJqlWOUMcXEpdHKMFM0jKUH9ZYz3k
+	WrgVozJXn2FB7buuPszzaEdSqgq10CRchRMjUSP9Tlw==
+X-Gm-Gg: AZuq6aImQmy4Sd0lChjTTZ8/BubAHFe9pX8H+JslWd7scNimh2+sfRl2F8Ebnb3RQOL
+	Tok9BpK6GPUcDVEkDK77SN+drE93KeC1sQhepzWVzEvyZ70LpFe4x9niTWrZ/HipqiV0IhMusgd
+	j7hE48GmlbwHxOxRUBeklTCrWgDjAkiz98ebtpvcs8vQJ6O0RqWRtCzQ4Np+hxVIPHpS5ogAuMy
+	/PRSpTaEKv/vTvoe23LSLuQOCwrhli2lZp7WmpPkNh3NuLZGw1M21w/HSZ3SeQhwISdT10xZa3g
+	JLswnUnu
+X-Received: by 2002:a05:6214:f2f:b0:895:496f:1a71 with SMTP id
+ 6a1803df08f44-8973f3270admr30874566d6.28.1771030661914; Fri, 13 Feb 2026
+ 16:57:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260213134708.885500854@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Fri, 13 Feb 2026 19:57:30 -0500
+X-Gm-Features: AZwV_QhayJbInj89dprU9BzQFB3-jRrbL_KUJPSMlYjl_XfLKIdFgNNjVeSQGuo
+Message-ID: <CAOBMUvgi+=sneGYgUKCoJMhZwd2x55ih9tZa2_LX=Y67pMSEJw@mail.gmail.com>
+Subject: Re: [PATCH 6.18 00/49] 6.18.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[ciq.com,reject];
+	R_DKIM_ALLOW(-0.20)[ciq.com:s=s1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[marvell.com,gmail.com,oracle.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-216317-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216318-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[ciq.com:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bmastbergen@ciq.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,oracle.com:email]
-X-Rspamd-Queue-Id: BA0BB13A320
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ciq.com:email,ciq.com:dkim,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 9CABF13A33F
 X-Rspamd-Action: no action
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+On Fri, Feb 13, 2026 at 8:52=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.18.11 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 15 Feb 2026 13:46:52 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.18.11-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.18.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-[ Upstream commit 7adbd2b7809066c75f0433e5e2a8e114b429f30f ]
+Builds successfully.  Boots and works on qemu and Intel Core i7-10810U
 
-System crash seen during load/unload test in a loop,
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
-[61110.449331] qla2xxx [0000:27:00.0]-0042:0: Disabled MSI-X.
-[61110.467494] =============================================================================
-[61110.467498] BUG qla2xxx_srbs (Tainted: G           OE    --------  --- ): Objects remaining in qla2xxx_srbs on __kmem_cache_shutdown()
-[61110.467501] -----------------------------------------------------------------------------
-
-[61110.467502] Slab 0x000000000ffc8162 objects=51 used=1 fp=0x00000000e25d3d85 flags=0x57ffffc0010200(slab|head|node=1|zone=2|lastcpupid=0x1fffff)
-[61110.467509] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G           OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
-[61110.467513] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
-[61110.467515] Call Trace:
-[61110.467516]  <TASK>
-[61110.467519]  dump_stack_lvl+0x34/0x48
-[61110.467526]  slab_err.cold+0x53/0x67
-[61110.467534]  __kmem_cache_shutdown+0x16e/0x320
-[61110.467540]  kmem_cache_destroy+0x51/0x160
-[61110.467544]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
-[61110.467607]  ? __do_sys_delete_module.constprop.0+0x178/0x280
-[61110.467613]  ? syscall_trace_enter.constprop.0+0x145/0x1d0
-[61110.467616]  ? do_syscall_64+0x5c/0x90
-[61110.467619]  ? exc_page_fault+0x62/0x150
-[61110.467622]  ? entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[61110.467626]  </TASK>
-[61110.467627] Disabling lock debugging due to kernel taint
-[61110.467635] Object 0x0000000026f7e6e6 @offset=16000
-[61110.467639] ------------[ cut here ]------------
-[61110.467639] kmem_cache_destroy qla2xxx_srbs: Slab cache still has objects when called from qla2x00_module_exit+0x93/0x99 [qla2xxx]
-[61110.467659] WARNING: CPU: 53 PID: 455206 at mm/slab_common.c:520 kmem_cache_destroy+0x14d/0x160
-[61110.467718] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G    B      OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
-[61110.467720] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
-[61110.467721] RIP: 0010:kmem_cache_destroy+0x14d/0x160
-[61110.467724] Code: 99 7d 07 00 48 89 ef e8 e1 6a 07 00 eb b3 48 8b 55 60 48 8b 4c 24 20 48 c7 c6 70 fc 66 90 48 c7 c7 f8 ef a1 90 e8 e1 ed 7c 00 <0f> 0b eb 93 c3 cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 55 48 89
-[61110.467725] RSP: 0018:ffffa304e489fe80 EFLAGS: 00010282
-[61110.467727] RAX: 0000000000000000 RBX: ffffffffc0d9a860 RCX: 0000000000000027
-[61110.467729] RDX: ffff8fd5ff9598a8 RSI: 0000000000000001 RDI: ffff8fd5ff9598a0
-[61110.467730] RBP: ffff8fb6aaf78700 R08: 0000000000000000 R09: 0000000100d863b7
-[61110.467731] R10: ffffa304e489fd20 R11: ffffffff913bef48 R12: 0000000040002000
-[61110.467731] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-[61110.467733] FS:  00007f64c89fb740(0000) GS:ffff8fd5ff940000(0000) knlGS:0000000000000000
-[61110.467734] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[61110.467735] CR2: 00007f0f02bfe000 CR3: 00000020ad6dc005 CR4: 0000000000770ee0
-[61110.467736] PKRU: 55555554
-[61110.467737] Call Trace:
-[61110.467738]  <TASK>
-[61110.467739]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
-[61110.467755]  ? __do_sys_delete_module.constprop.0+0x178/0x280
-
-Free sp in the error path to fix the crash.
-
-Fixes: f352eeb75419 ("scsi: qla2xxx: Add ability to use GPNFT/GNNFT for RSCN handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-9-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/scsi/qla2xxx/qla_gs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
-index b08a92d346f5f..f56fc7eea9d76 100644
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3958,8 +3958,8 @@ int qla24xx_async_gpnft(scsi_qla_host_t *vha, u8 fc4_type, srb_t *sp)
- 	if (vha->scan.scan_flags & SF_SCANNING) {
- 		spin_unlock_irqrestore(&vha->work_lock, flags);
- 		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0xffff,
--		    "%s: scan active\n", __func__);
--		return rval;
-+		    "%s: scan active for sp:%p\n", __func__, sp);
-+		goto done_free_sp;
- 	}
- 	vha->scan.scan_flags |= SF_SCANNING;
- 	spin_unlock_irqrestore(&vha->work_lock, flags);
--- 
-2.51.0
-
+Thanks,
+Brett
 
