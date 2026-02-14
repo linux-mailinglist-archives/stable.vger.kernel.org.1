@@ -1,161 +1,229 @@
-Return-Path: <stable+bounces-216415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216460-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMuoIFDLj2nMTgEAu9opvQ
-	(envelope-from <stable+bounces-216415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:09:36 +0100
+	id MOtECKPUj2nXTwEAu9opvQ
+	(envelope-from <stable+bounces-216460-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:49:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2894F13A91D
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:09:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A198F13AB74
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 02:49:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BBFE330A57E8
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:06:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9769C3007501
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB362222D0;
-	Sat, 14 Feb 2026 01:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F6A191F92;
+	Sat, 14 Feb 2026 01:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="EFf4L2QN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TEuQLUDr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC52217704
-	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 01:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD09D5474F
+	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 01:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771031162; cv=none; b=LkXJk2lPF+DzteTZBsj/yDpxzYnvfuWHmV7j/xE0844WfxvwPYONdClHk75OZ9q6orz9/L+W7S/8n/pD2SDLruNbbBu7GYeZZuf/wXSm3cflcbUUdq/wjX+UqqtiYZtqQnNlZBIuP1V6j/I1ct7RKk1fqfmOxTIhlPx6x0IpWC0=
+	t=1771033759; cv=none; b=JsDfCcRP4DbXygv66OBnPNStDyqsVN5jCrn7baUr/1+5VFf0IuIJ6r3Q1VE7HxnHExpGBmetSG9QoqeQ0VCtNOHGqZDB1UXVNst64uWrMi5JLfeaB7t4AeMXVrfun2Ok+OVh7u8miXShNaTSMHcDeVHughRBNDtl5FzM0m64Qxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771031162; c=relaxed/simple;
-	bh=FEmd0AKqUxl0fXw2shyi1YhQuDt7hoHaK3mkhmqaYiQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kb08fYvhyJ1FDWobAoIUoS2f7nwx7ZpB6p2zjBAqnKWCg79hFR89O4d0P/h8lInToxNlJFpDVl7yZZ03injJs6Ft88FN5lr+l9EDDNhuXxzoDg9zp4fyIkAFb8EL/Gk+m3rk2np9jWOJfWjmkVF24pjTTnOR/VC9qifMquWLKLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=EFf4L2QN; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4806cc07ce7so13189875e9.1
-        for <stable@vger.kernel.org>; Fri, 13 Feb 2026 17:06:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1771031159; x=1771635959; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=A7lM/++ZWcxxWntKLxyYjecJbGQkBr43eWhSpcYnMls=;
-        b=EFf4L2QNMQBIJMLByfqkwDaCWZ45WkfmMzZhIiq7hHTFBCoNBzC0ygfoRPrvz0JaF0
-         puw7dMeAr/kvQc/d/Ld0x/WriFEP3xUjNhwp5qbFe5Y3FZ2HOLnIfoADQ0aNKUT8iMAJ
-         5UZ4GcaRrWxkOqAgth0H0VH9J0qV6/MgVJV0JrXQZ3Y5zrJq2LRRXjnUWthGnxUhgZCV
-         f4lqmuLCLZ97n9Fopo0I8vt5huYNJFaMrHP/ZxgD/H0RWsLa/oOadCvmy1nhIDeMJLp7
-         LMVg44VM5P9jwUKNUibfT5gr2OS97oZ002rA0W2SQn4NGqbYfeWHv4Ooi0g+i6d51pyc
-         8u8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771031159; x=1771635959;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=A7lM/++ZWcxxWntKLxyYjecJbGQkBr43eWhSpcYnMls=;
-        b=CgnuFjGoCU3j6CwnQ7/gjRsvsYZZq6tJ0nxIRTxtITVqDZ3/Ce3/iRjMDCq6MkMEzJ
-         sVx1sk3rbzX2P9tuaeOSBYCfpIrP/JU+bu7/ILqXAhrDhb8E2Nt4S9FIcoCgjYjKaNqm
-         ikcGSPKG5x7oZKIas0D1wJK198YKNqM1sIPqYj8rTdDpiEvTK2PAO27cUm9vargznL7z
-         zXnPvtym4vERmniKij2m29XB6NGm0CJqrcYO1zEkh7BdtpHVdXta9zEcR/uCVObh5YO7
-         RL17yNo5LjclDoQ/1A9Oh/ZWPaILfDdlyD1YstbsnFD5dbAKF43MzgQTy6hSbQykr3p+
-         COuw==
-X-Forwarded-Encrypted: i=1; AJvYcCWrJ+dDGFVi68L/tHIIBf1NvM6FthE1svc3yODNI5Pd15ZleSaiO7o6EqVy4Cc2+9+Naz5YqQ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUkhWkkGonuchG3sO2VGy7svuhY7CToe7RDmAmWG3hZ5AjL92+
-	cM33a+XgGdC9Wo+y0EjXC8W0+CkaQzD9q98jOUuM32xKtURWl6Cq9gg=
-X-Gm-Gg: AZuq6aKbYe7HH9ZTMtUArScaawBvUUy6Jf8ceEtGHhMZ3QpgX4QTpeOsznBfOLCyxks
-	1m4nxNJPP0n9ezAZNUih3f2Qyft342r3fSxm2tafx9xtYFU86I6JJ+LtIdpd4EvpD3CLcndFdvp
-	etqL+IoU1mcIEOqSAvdsvIopGh1oLndfN4URX2sQ5p7Q9fdE4PPmZyvuWSHvUeugttx4q2dzdZg
-	RGDB+sUNCptk+L8TJa/SUmpL9bCwkbECTeulKIGMn0JTfC+WARlqJj1hdU6bJllm96fOrXd0TPf
-	21MSZL1lDrUv6hj8H+m2TaffJn56X8zGZwpKMu2cano+Q74TxAth9y7PQj8ACPZPhs2L+3eyAvN
-	G+uWL3SMdp/tP0H7yMTletCHbYOo2U0fYXcnLvE0ysRYHiQAaAP34k8iUceOexwMYyPrbPf1wxr
-	hG2ATMRETT58xx/rP3rfbh5W2nCbY+ND2pTVYsh/EXymb8Mm5r4RCqWr8XQAi3MbnX42gGz7w/W
-	Tek
-X-Received: by 2002:a05:600c:4e92:b0:480:1c53:208b with SMTP id 5b1f17b1804b1-48373a7bbf2mr67553285e9.36.1771031158546;
-        Fri, 13 Feb 2026 17:05:58 -0800 (PST)
-Received: from [192.168.1.3] (p5b2ac4a9.dip0.t-ipconnect.de. [91.42.196.169])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48371a3647asm26346165e9.22.2026.02.13.17.05.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Feb 2026 17:05:58 -0800 (PST)
-Message-ID: <db777a81-1611-47d2-bf01-c6cced29a019@googlemail.com>
-Date: Sat, 14 Feb 2026 02:05:50 +0100
+	s=arc-20240116; t=1771033759; c=relaxed/simple;
+	bh=VVIxGS2Ll6x0YYt0DsHqkMf0zOzOkPiYOtxQOsF9+/w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gGEX9KTtK3/x3JPiPdYSKGKEzGPag6FceBD2XxRBtqmlyc0eA4Goqq2vxsR7AiEyqtySj2xh08yjIuBs82+QlwMVb85yC0xjxZZwo1tzVnxazryWPiT6AlfItjJdIpFxQir6TrW95MkY9y6yadHgXx+Btw8GMXLd3Pn46BxMZhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TEuQLUDr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8056C116C6;
+	Sat, 14 Feb 2026 01:49:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771033759;
+	bh=VVIxGS2Ll6x0YYt0DsHqkMf0zOzOkPiYOtxQOsF9+/w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TEuQLUDrz7lY4z3Q2KR2irCav1QJYntvMhZtROqfxDc8n8fecrwEa2JYOiFi2V7PD
+	 fpsN1OwEdv1bvfD8O/uLNYklcIqqlFxm1zBpw8rKktwTqgCRUyKsy/wa68QqqH1OQw
+	 kldqFsoq4IGIvkzoAXfSZmn2ZKHeX3aXuII3ZEIMcEipWbcthKH7TZU8xSzJTIBFVP
+	 01K7mEOkHqlJgrEDVIhp1d2UlO+JtJ4wxi7vM6bWSirVLII5jeSyCTfotYjZmjqmL7
+	 ZiYcANFI3GenJKafW2buBpFmFZF6XcRTLk/7RChootl+JTbotcO4YCdWgRmSnPbIEr
+	 iqBUDfX36eohw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] scsi: qla2xxx: Fix bsg_done() causing double free
+Date: Fri, 13 Feb 2026 20:49:14 -0500
+Message-ID: <20260214014914.3893755-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026021339-catalyze-smolder-2322@gregkh>
+References: <2026021339-catalyze-smolder-2322@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 00/25] 6.6.125-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260213134703.882698935@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20260213134703.882698935@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216415-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[googlemail.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[marvell.com,gmail.com,oracle.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216460-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[peters-netzplatz.de:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,googlemail.com:mid,googlemail.com:dkim,mailvelope.com:url]
-X-Rspamd-Queue-Id: 2894F13A91D
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: A198F13AB74
 X-Rspamd-Action: no action
 
-Am 13.02.2026 um 14:48 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.125 release.
-> There are 25 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+[ Upstream commit c2c68225b1456f4d0d393b5a8778d51bb0d5b1d0 ]
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Kernel panic observed on system,
 
+[5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000
+[5353358.825194] #PF: supervisor write access in kernel mode
+[5353358.825195] #PF: error_code(0x0002) - not-present page
+[5353358.825196] PGD 100006067 P4D 0
+[5353358.825198] Oops: 0002 [#1] PREEMPT SMP NOPTI
+[5353358.825200] CPU: 5 PID: 2132085 Comm: qlafwupdate.sub Kdump: loaded Tainted: G        W    L    -------  ---  5.14.0-503.34.1.el9_5.x86_64 #1
+[5353358.825203] Hardware name: HPE ProLiant DL360 Gen11/ProLiant DL360 Gen11, BIOS 2.44 01/17/2025
+[5353358.825204] RIP: 0010:memcpy_erms+0x6/0x10
+[5353358.825211] RSP: 0018:ff591da8f4f6b710 EFLAGS: 00010246
+[5353358.825212] RAX: ff5f5e897b024000 RBX: 0000000000007090 RCX: 0000000000001000
+[5353358.825213] RDX: 0000000000001000 RSI: ff591da8f4fed090 RDI: ff5f5e897b024000
+[5353358.825214] RBP: 0000000000010000 R08: ff5f5e897b024000 R09: 0000000000000000
+[5353358.825215] R10: ff46cf8c40517000 R11: 0000000000000001 R12: 0000000000008090
+[5353358.825216] R13: ff591da8f4f6b720 R14: 0000000000001000 R15: 0000000000000000
+[5353358.825218] FS:  00007f1e88d47740(0000) GS:ff46cf935f940000(0000) knlGS:0000000000000000
+[5353358.825219] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[5353358.825220] CR2: ff5f5e897b024000 CR3: 0000000231532004 CR4: 0000000000771ef0
+[5353358.825221] PKRU: 55555554
+[5353358.825222] Call Trace:
+[5353358.825223]  <TASK>
+[5353358.825224]  ? show_trace_log_lvl+0x1c4/0x2df
+[5353358.825229]  ? show_trace_log_lvl+0x1c4/0x2df
+[5353358.825232]  ? sg_copy_buffer+0xc8/0x110
+[5353358.825236]  ? __die_body.cold+0x8/0xd
+[5353358.825238]  ? page_fault_oops+0x134/0x170
+[5353358.825242]  ? kernelmode_fixup_or_oops+0x84/0x110
+[5353358.825244]  ? exc_page_fault+0xa8/0x150
+[5353358.825247]  ? asm_exc_page_fault+0x22/0x30
+[5353358.825252]  ? memcpy_erms+0x6/0x10
+[5353358.825253]  sg_copy_buffer+0xc8/0x110
+[5353358.825259]  qla2x00_process_vendor_specific+0x652/0x1320 [qla2xxx]
+[5353358.825317]  qla24xx_bsg_request+0x1b2/0x2d0 [qla2xxx]
 
-Beste Grüße,
-Peter Schneider
+Most routines in qla_bsg.c call bsg_done() only for success cases.
+However a few invoke it for failure case as well leading to a double
+free. Validate before calling bsg_done().
 
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-12-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/scsi/qla2xxx/qla_bsg.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/scsi/qla2xxx/qla_bsg.c b/drivers/scsi/qla2xxx/qla_bsg.c
+index 10431a67d202b..f43969ed87bf9 100644
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -1546,8 +1546,9 @@ qla2x00_update_optrom(struct bsg_job *bsg_job)
+ 	ha->optrom_buffer = NULL;
+ 	ha->optrom_state = QLA_SWAITING;
+ 	mutex_unlock(&ha->optrom_mutex);
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		       bsg_reply->reply_payload_rcv_len);
++	if (!rval)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 	return rval;
+ }
+ 
+@@ -2612,8 +2613,9 @@ qla2x00_manage_host_stats(struct bsg_job *bsg_job)
+ 				    sizeof(struct ql_vnd_mng_host_stats_resp));
+ 
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	return ret;
+ }
+@@ -2702,8 +2704,9 @@ qla2x00_get_host_stats(struct bsg_job *bsg_job)
+ 							       bsg_job->reply_payload.sg_cnt,
+ 							       data, response_len);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	kfree(data);
+ host_stat_out:
+@@ -2802,8 +2805,9 @@ qla2x00_get_tgt_stats(struct bsg_job *bsg_job)
+ 				    bsg_job->reply_payload.sg_cnt, data,
+ 				    response_len);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ tgt_stat_out:
+ 	kfree(data);
+@@ -2864,8 +2868,9 @@ qla2x00_manage_host_port(struct bsg_job *bsg_job)
+ 				    bsg_job->reply_payload.sg_cnt, &rsp_data,
+ 				    sizeof(struct ql_vnd_mng_host_port_resp));
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	return ret;
+ }
+@@ -3240,7 +3245,8 @@ int qla2x00_mailbox_passthru(struct bsg_job *bsg_job)
+ 
+ 	bsg_job->reply_len = sizeof(*bsg_job->reply);
+ 	bsg_reply->result = DID_OK << 16;
+-	bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
+ 
+ 	kfree(req_data);
+ 
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.51.0
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
