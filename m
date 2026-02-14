@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-216316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAh9MsvHj2lVTgEAu9opvQ
-	(envelope-from <stable+bounces-216316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:54:35 +0100
+	id CJa4F+jHj2lVTgEAu9opvQ
+	(envelope-from <stable+bounces-216317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:55:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B8613A312
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:54:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0BB13A320
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 01:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED152303AB41
-	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:54:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C7C13037D6E
+	for <lists+stable@lfdr.de>; Sat, 14 Feb 2026 00:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71F11DF75B;
-	Sat, 14 Feb 2026 00:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1641DEFE0;
+	Sat, 14 Feb 2026 00:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAcSrBrT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6xsXtkQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F1619D07E
-	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 00:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801D919D07E
+	for <stable@vger.kernel.org>; Sat, 14 Feb 2026 00:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030470; cv=none; b=cirpDZ8d91iNs6rUHksDh3nBZ+h2QKs37iZTBkfizJ8ooW9NohpZ1rjqxukXUhkZExERs1/lAuf7Xe3dSZkg9W54EnB2+1bY/CHQJLUfWA+zOjtSqarTZCrwhNKqDZ+ULoNatjfyRBbWmJaFu7GXzwIQjPK3H7r9iF6XnUvQiFY=
+	t=1771030501; cv=none; b=fZwGgNjf6+Absus3aZ0li74RRYSNvHI+oRp9LKqVfvwBGphhcgiUqwKq7+xAvE9blRqe013zSHF25DYGtS/UMYwjVbYB35mRaY1eOYV7dmurDeQ2I2OPdMkgVA8WQMs6l6tZtxFFMVCWcen4QTkapyMrYyw76mJ0TrlHIbHo6Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030470; c=relaxed/simple;
-	bh=laCmPknrNJDJ59NiOTvNEWvIYgj2NcZ0tHcEU6jopPs=;
+	s=arc-20240116; t=1771030501; c=relaxed/simple;
+	bh=LEvBgpxNVvcvTNo3aq17v8SiTTeQsSiGkVIJLmgaKNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p4ZhG0iM7ir/6omHF2ZHoYmv+pI9KHsYtS9Wg8bJUpdRH+xIZWKnhWjT5DvLnonD5RV7C26stncti+cv5V0X0RJ6Jka0P6mOhs5ALcyUEBALjWhGCMv2tY+4UTQ49lhXS+nOIyCqY5VYAOnDNfhtkDyE9ytGF/V+Q/mzRWkf05U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAcSrBrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41EBC16AAE;
-	Sat, 14 Feb 2026 00:54:29 +0000 (UTC)
+	 MIME-Version; b=DJvlC5LYZgSLqi3/lWnjW/PGCeyFzK1kQQSOET/p8lGF2D4uhsWhzJAMLoxGr6omBrVKDPpcBmR2l2mJiZgUYx1ERJH+EgPWwKsSFD3VC8eLExbnKdBclJ7280jOQppbtPLhL7q0qA11ztonLTiH2vlJjYCgCp+toR2RkJtmJ4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6xsXtkQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A07C116C6;
+	Sat, 14 Feb 2026 00:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030470;
-	bh=laCmPknrNJDJ59NiOTvNEWvIYgj2NcZ0tHcEU6jopPs=;
+	s=k20201202; t=1771030501;
+	bh=LEvBgpxNVvcvTNo3aq17v8SiTTeQsSiGkVIJLmgaKNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAcSrBrTJWFHeYPkwIaSwXQw6LuhjBvQOHaPCalE6F+DLI7mmz8+oC9SxjRdJKA3y
-	 KmmsOpZ8XrzeUcSwAM5BPpJYkdyuQ5ooYcOs0JOCGmdp6gfXSjx4qg8T8XkKK5+Uc2
-	 jIEvnh1cc3Syfe/8ZCKj92AoNNywFwa7/75SLtiTRJl+QfYQ6o2WLFhGMn7AaMVOEv
-	 McG8Ls2AA2WgWUMbAHSq5HR5yaHWOTMyIQ9qzPLHnCI+MA6aVHxIA8h+rrMBrA/t1l
-	 S6sdyKjVrAWNUTONT9xVKN9PwhNMsjXXNIJ9ej7TKD4BnbJ8tlh++WkpgiwaxpWmY1
-	 5q7s1jysyo9nQ==
+	b=S6xsXtkQNvECCOQDzA2a01dIWXhUdNbgqqjVVJj2MZNmCm7JBP6P9a80fXUN+dYNC
+	 H2YRxaoGV0ryOPXBXq1eo99Y63E4zc2hhgJfdifZ8jlSfPQx16wRoOpL0T/80/gsfW
+	 SG5eagamODQ7i5DO/bplhYjdeuKehYmlYNgdIIKQIrTmbHdfP44qGlyUErMi2tDRbd
+	 02yBPwpegpYbWZ7/8n1/lnDx5iU5EBEh/ukCjpDlvgKJeFHLYh3PbkEvxaMwl9z+s8
+	 FGIziGAhpP/eDimtIq2K6UDy1m5MVMB0mE4btQI4ZK0bCbGzbRe9rzb5TldT06QAuO
+	 XexMkqAhHLfLA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Gui-Dong Han <hanguidong02@gmail.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+Cc: Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] bus: fsl-mc: fix use-after-free in driver_override_show()
-Date: Fri, 13 Feb 2026 19:54:27 -0500
-Message-ID: <20260214005427.3653008-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y] scsi: qla2xxx: Free sp in error path to fix system crash
+Date: Fri, 13 Feb 2026 19:54:58 -0500
+Message-ID: <20260214005458.3653377-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260214005427.3653008-1-sashal@kernel.org>
-References: <2026021347-applicant-whooping-9898@gregkh>
- <20260214005427.3653008-1-sashal@kernel.org>
+In-Reply-To: <2026021307-undivided-gazing-4aaa@gregkh>
+References: <2026021307-undivided-gazing-4aaa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,73 +71,111 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,nxp.com,kernel.org];
+	FREEMAIL_CC(0.00)[marvell.com,gmail.com,oracle.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-216316-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216317-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email]
-X-Rspamd-Queue-Id: 27B8613A312
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,oracle.com:email]
+X-Rspamd-Queue-Id: BA0BB13A320
 X-Rspamd-Action: no action
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-[ Upstream commit 148891e95014b5dc5878acefa57f1940c281c431 ]
+[ Upstream commit 7adbd2b7809066c75f0433e5e2a8e114b429f30f ]
 
-The driver_override_show() function reads the driver_override string
-without holding the device_lock. However, driver_override_store() uses
-driver_set_override(), which modifies and frees the string while holding
-the device_lock.
+System crash seen during load/unload test in a loop,
 
-This can result in a concurrent use-after-free if the string is freed
-by the store function while being read by the show function.
+[61110.449331] qla2xxx [0000:27:00.0]-0042:0: Disabled MSI-X.
+[61110.467494] =============================================================================
+[61110.467498] BUG qla2xxx_srbs (Tainted: G           OE    --------  --- ): Objects remaining in qla2xxx_srbs on __kmem_cache_shutdown()
+[61110.467501] -----------------------------------------------------------------------------
 
-Fix this by holding the device_lock around the read operation.
+[61110.467502] Slab 0x000000000ffc8162 objects=51 used=1 fp=0x00000000e25d3d85 flags=0x57ffffc0010200(slab|head|node=1|zone=2|lastcpupid=0x1fffff)
+[61110.467509] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G           OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
+[61110.467513] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
+[61110.467515] Call Trace:
+[61110.467516]  <TASK>
+[61110.467519]  dump_stack_lvl+0x34/0x48
+[61110.467526]  slab_err.cold+0x53/0x67
+[61110.467534]  __kmem_cache_shutdown+0x16e/0x320
+[61110.467540]  kmem_cache_destroy+0x51/0x160
+[61110.467544]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467607]  ? __do_sys_delete_module.constprop.0+0x178/0x280
+[61110.467613]  ? syscall_trace_enter.constprop.0+0x145/0x1d0
+[61110.467616]  ? do_syscall_64+0x5c/0x90
+[61110.467619]  ? exc_page_fault+0x62/0x150
+[61110.467622]  ? entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[61110.467626]  </TASK>
+[61110.467627] Disabling lock debugging due to kernel taint
+[61110.467635] Object 0x0000000026f7e6e6 @offset=16000
+[61110.467639] ------------[ cut here ]------------
+[61110.467639] kmem_cache_destroy qla2xxx_srbs: Slab cache still has objects when called from qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467659] WARNING: CPU: 53 PID: 455206 at mm/slab_common.c:520 kmem_cache_destroy+0x14d/0x160
+[61110.467718] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G    B      OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
+[61110.467720] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
+[61110.467721] RIP: 0010:kmem_cache_destroy+0x14d/0x160
+[61110.467724] Code: 99 7d 07 00 48 89 ef e8 e1 6a 07 00 eb b3 48 8b 55 60 48 8b 4c 24 20 48 c7 c6 70 fc 66 90 48 c7 c7 f8 ef a1 90 e8 e1 ed 7c 00 <0f> 0b eb 93 c3 cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 55 48 89
+[61110.467725] RSP: 0018:ffffa304e489fe80 EFLAGS: 00010282
+[61110.467727] RAX: 0000000000000000 RBX: ffffffffc0d9a860 RCX: 0000000000000027
+[61110.467729] RDX: ffff8fd5ff9598a8 RSI: 0000000000000001 RDI: ffff8fd5ff9598a0
+[61110.467730] RBP: ffff8fb6aaf78700 R08: 0000000000000000 R09: 0000000100d863b7
+[61110.467731] R10: ffffa304e489fd20 R11: ffffffff913bef48 R12: 0000000040002000
+[61110.467731] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[61110.467733] FS:  00007f64c89fb740(0000) GS:ffff8fd5ff940000(0000) knlGS:0000000000000000
+[61110.467734] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[61110.467735] CR2: 00007f0f02bfe000 CR3: 00000020ad6dc005 CR4: 0000000000770ee0
+[61110.467736] PKRU: 55555554
+[61110.467737] Call Trace:
+[61110.467738]  <TASK>
+[61110.467739]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467755]  ? __do_sys_delete_module.constprop.0+0x178/0x280
 
-Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
+Free sp in the error path to fix the crash.
+
+Fixes: f352eeb75419 ("scsi: qla2xxx: Add ability to use GPNFT/GNNFT for RSCN handling")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20251202174438.12658-1-hanguidong02@gmail.com
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-9-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ Context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_gs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index 8e1000a01231b..dc35de3e4379e 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -199,8 +199,12 @@ static ssize_t driver_override_show(struct device *dev,
- 				    struct device_attribute *attr, char *buf)
- {
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
-+	ssize_t len;
- 
--	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
-+	device_lock(dev);
-+	len = sysfs_emit(buf, "%s\n", mc_dev->driver_override);
-+	device_unlock(dev);
-+	return len;
- }
- static DEVICE_ATTR_RW(driver_override);
- 
+diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
+index b08a92d346f5f..f56fc7eea9d76 100644
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -3958,8 +3958,8 @@ int qla24xx_async_gpnft(scsi_qla_host_t *vha, u8 fc4_type, srb_t *sp)
+ 	if (vha->scan.scan_flags & SF_SCANNING) {
+ 		spin_unlock_irqrestore(&vha->work_lock, flags);
+ 		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0xffff,
+-		    "%s: scan active\n", __func__);
+-		return rval;
++		    "%s: scan active for sp:%p\n", __func__, sp);
++		goto done_free_sp;
+ 	}
+ 	vha->scan.scan_flags |= SF_SCANNING;
+ 	spin_unlock_irqrestore(&vha->work_lock, flags);
 -- 
 2.51.0
 
