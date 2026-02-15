@@ -1,239 +1,239 @@
-Return-Path: <stable+bounces-216646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id rnUKJlxNkmk7swEAu9opvQ
-	(envelope-from <stable+bounces-216646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 23:49:00 +0100
+	id WNKLA0JekmmUtQEAu9opvQ
+	(envelope-from <stable+bounces-216647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 01:01:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52AB13FED0
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 23:48:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B619314063A
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 01:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18638301A722
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 22:48:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DAC4B301F16E
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 00:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1862B30BBAC;
-	Sun, 15 Feb 2026 22:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F082D77F5;
+	Mon, 16 Feb 2026 00:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hjRTxaN9"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="eLVOZcBg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10626.protonmail.ch (mail-10626.protonmail.ch [79.135.106.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B97326158C
-	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 22:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771195735; cv=pass; b=SKsPEeMsoXmif9kcixQYpn9CB2QcQVqxA6LKUjFvc9/QHb8RasbFL/eKMi2XYEU/7APt96nY7Oxuk2U2osY3r7ZjjG1XPCbk0MuFeYq2WDLZMpKk9Sz0ftKMNLaMBWBanUB9p0ZepXl8Gv650qYionYlDqvSOaoW/NUb+SXT7MU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771195735; c=relaxed/simple;
-	bh=YQtu3zlzSmUdYoQNnQZceEbrqfuqwQux6loH2dpaFVY=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QNOkNoAaIl5FfX2MsFeEm0NYxoGSsWyjFmbU4Viud5l5JjUmR4eVIkyRX0+rbGlo3Hbs+YT/5axuohhdiGu+VzVhLKWdtQi8r+jNWdx4C4M44SgdpPt3CQfIFHNIDARrJsdqxpskzLSFNUveSRytAcBBzrwJ+JOVk0b/iBaE2u0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hjRTxaN9; arc=pass smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5664848545fso936581e0c.3
-        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 14:48:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771195733; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BD02kRysX8PCD7EsBIPx0HRiE2VhlW7qEroMrZgih2TdkvQ0ivc7r/LTvtpaS84Pnq
-         MW2bKOzHhWFAdBX31cLoCVtqi6pRryoRpEKTV9J+Inuq1/eMOjVZhf9OcvxjzbCyQy/s
-         9eAzg6xo9rKujPuuKaWN8Jfwpw/UNYFeWTqbFhVFC1x04cFeQeAoQ9ml/BpGdaUEu8FD
-         ZNUZhIdTMBIxa6cRuj1C9T5cFwdf/vEywrnD8kJ9X8h89TCqgDTyE7wBLfFjPVGVLS4B
-         04NP8zwbcfxob1yYK79rYtApNta0yH6+RyLsY0OQR/6WyV8ryec/xASe8vM60BzU1QZI
-         CQxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=aB7V1WHeYzB7KogdF1kJespp6q092hH6CqwnHTfTF00=;
-        fh=qLaJJRP1RzRL/Xum7q4Ks+eqXu1zXzN/Ca8lka2i4p8=;
-        b=ZHWB95fRa/NU9eD3H6PkLUD4k9lv3cRflg9s10epy3ne+FHYJjLXolK/9Gs8xp41wj
-         ABNstUNNPjqJ2lO1acGdW8sEBgmaT0Ek4FrWGnC2ULSwh5Zga/zZ6L5s6RqS7hWErp3I
-         VOtm3kIluLiv4s1CQn5kbh+Uxjx9c2edASgtvz4EHB9/AUvCW+P2MYLWFY6hAHHkHyj6
-         yVpsTpPUd2R9m2Y1xbCJtneG+2ZPKsbZVbCWYLWLxr2fNGbLtm8qC8Ht/rJ1V3d4vOUH
-         1HvI/MsMY42dVN4SqisevFe+KAjdHUk4WoHwYoTc4662r9tvtdXqhKzANtcHf+inowvq
-         5eow==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771195733; x=1771800533; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aB7V1WHeYzB7KogdF1kJespp6q092hH6CqwnHTfTF00=;
-        b=hjRTxaN9Dbu9VVLLRQmuTdvDEL72kWHLAa2VZgpI56rU8NSDwvz9aHLUeOVsca/4Et
-         EiXlpMh83rUQDXADpcQu3DStLXEqvBw1j0hDe4Op6gjUtKlEBmulvfsjvP4f47ZUE99J
-         jbAzmWSHCRL/jhaEs6mre+5uwiAnDjLbSQ48G5m4i1omJFkvI6cylrKnNpgni4lfpl1t
-         tCEESPSUC4zUzW+meXE9uubBG6PNtKyGSiccEH555osEbG3/icOQXm+ypNgIVg/LZWgp
-         67thw+yyYrogCjcvorBoI8w1goMLf6gUHEGSztAxClCrXq91ei37hvPY/BwtoWaQA1yd
-         m9wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771195733; x=1771800533;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aB7V1WHeYzB7KogdF1kJespp6q092hH6CqwnHTfTF00=;
-        b=Z1prWV0u4DTrdP/777i0WW/Q7IUqmp8VkPS2ZnRqUAmfAYvfQOmZaX89ty7TDHW9JC
-         buuMvjUS3SlaVun0poRDSeMaALmWKD6EvatsKi7KMNfgjC72aj2eEmX3bULPw5UY6uZs
-         YeloPZfOIc1x1v6veKWGR4i5FagvfAzAGkI4IWg15GW7Tsv4PEYaoecu96EU5PR8CbpK
-         yLI+RdksWgb2H0ixTa8eo2a4gOk5XRx+0mfiAVnzUKqqRp8ccGO9lKcCqwHB1MWPaAKT
-         SvtraRFY988BlwElk0lfFweHWL9MMd+qyb4/oJ/SxAyl7kIHLl8E15nM+swa5+Jx9yqc
-         hwDg==
-X-Forwarded-Encrypted: i=1; AJvYcCVYvl/u06MWKHdnaqii8g5UPdO5yAPtBmcs7gvJtdQFIG8f4MX0WBE70nqJtrQoDTVYlBoKkh0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxG7cP7v3EwqfGvVqMBm2J4D5MVysrzEdoVrIpS4WL15V1Cjgr1
-	WLhb0LOQ45e9mTmhgYBVxT/264hUP5hADzpwZuMQyQF/g7OPUABd/aCHqewP+aXICBUnhDoG7FB
-	UOKOAR4/acYTYahCU8Pbj+xE2YtAIrs/U3YVYzqa6
-X-Gm-Gg: AZuq6aJUtq7xurR0tGwgsjzkpPlyiXmJPwlHFzCswEkaslRHRbBBZuUoOrVqtPCdlxE
-	Vs9KFOH1SjnR8bfQcenwP5cUA66jHnq4HFC1NZCBgRBUOAIQMu1XkmBvx08LLEkPmP2RJdOcprm
-	3SPrlk+S2xyGSlNngJSL2IboMFiduM2QVt4zAhY431zRPt1qSC+FtujNgYRxi9EgJCEStePOxgJ
-	PW7s22IuPWIqZW9WcNF2KDRMnqqDbIbteahBsO6PTb0JOw1D0AeSY+h2e2QaO8JANXqYlkQJF0b
-	YIIUjY0LDRtvB2c9bKetqfwtEmtiG8BSWGBYObO46w==
-X-Received: by 2002:a05:6122:d92:b0:563:7d93:b135 with SMTP id
- 71dfb90a1353d-56768179fb7mr2621169e0c.2.1771195732879; Sun, 15 Feb 2026
- 14:48:52 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 15 Feb 2026 14:48:51 -0800
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 15 Feb 2026 14:48:51 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <b398d163-7b58-402b-a37d-9562d658a62d@linux.dev>
-References: <20260214001535.435626-1-kartikey406@gmail.com> <b398d163-7b58-402b-a37d-9562d658a62d@linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAA22BEC34;
+	Mon, 16 Feb 2026 00:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.26
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771200006; cv=none; b=lM1uBqL/6UR1xpqwlwzMuWx90WLd7wa2MsotmGkcOOC3metPC5ARsk80rNEse6FPlB5VRSuws5o0hH75es7j1Dbb9kT5GnZ66A8FR8/H4/sMpgcUSnY1TJ7ENQ5sq20tCOZg+x4NWbyVj8cUeokS/guaGqa0t+d6TLsvj+L0X1k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771200006; c=relaxed/simple;
+	bh=pIyTiYlPCmwG5BM06DH+2PcY/nU0p1oiKIsZc+1Vfo4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PW+x6xBD/nA3B2mNBf3LKqEaKngnj4HVObPYkj84IjgD5DD7rABfKIQR/knxDtSU36aEIUpPcz3HZDbGDEKQV9kZ9Ty/fE74JZpD23F7ggz1Wx+zv72oeaVLcDJGqrUVr9tTGPzGbZHk2RFgSDOCBFO5y/IbsRiPRNJw/gOSaAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=eLVOZcBg; arc=none smtp.client-ip=79.135.106.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1771199992; x=1771459192;
+	bh=Vq4MRGQlwbD9/X9K1AE53pSxNPlwQjtekgVqFl2j9LY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=eLVOZcBgD1I/U+beyo0L5LSDmKDjh24nBCbRYEh0awnhyZDM9ylPOGJrov5KlJ7xJ
+	 +AGdj4wolbfy1ncxU1qvvfRoK+lRKRXJruvFE+8Y4Hy35rL3HPhnUR9gQmAkgdPeeN
+	 tzeV89g0+0LW+4J3VChX0L279QkTddfDlrnbSQ+/4/T7/gfUDfTtpsAo16jfuqD7Sb
+	 bxy5PGYSZkcYwLcNYX6sG8WS7X3YIDnN2g8bxEFQSM2r3TPpUpb2YKgs57SXjQ+yUm
+	 jMxL67C9qfwUMQAF/3cv7Xszce6R77bCO9OeIrh86z/9xCps7ktevcLVrr2lS2WLo5
+	 bQx1hy3oRkFoA==
+Date: Sun, 15 Feb 2026 23:59:47 +0000
+To: Victor Nogueira <victor@mojatatu.com>
+From: Paul Moses <p@1g4.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v6 1/1] net/sched: act_gate: snapshot parameters with RCU on replace
+Message-ID: <6KeZDQIaJkCfZ-04S-pj5o5agVs4F_vy9xt4MfPb_6XS7MKcW-iX-9Av0O0bcURgoTn3T5bcHqRdM4FfSt8BWfjgHmbuHIUG80UYa7Ag-s4=@1g4.org>
+In-Reply-To: <CA+NMeC805yf4CECdjJh4EmP0RK1AgxAN25V7n+qvOqNMrhVyNA@mail.gmail.com>
+References: <20260213113849.136695-1-p@1g4.org> <20260213113849.136695-2-p@1g4.org> <CA+NMeC805yf4CECdjJh4EmP0RK1AgxAN25V7n+qvOqNMrhVyNA@mail.gmail.com>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 78b7175c3d8ae967ba87ded08884dfae37e7db62
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 15 Feb 2026 14:48:51 -0800
-X-Gm-Features: AaiRm52UXXicsi141L_UNf5JmMFNKNoMBVCTGWwMUSkJ1ZSHoalesk6JUL2jVjU
-Message-ID: <CAEvNRgGLAnZkfPZt32-wyCaefu-tvG9WcX3zq1Xe7fsTabZqmA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: thp: deny THP for files on anonymous inodes
-To: Lance Yang <lance.yang@linux.dev>, Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com, 
-	linux-mm@kvack.org, npache@redhat.com, linux-kernel@vger.kernel.org, 
-	Liam.Howlett@oracle.com, 
-	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, ryan.roberts@arm.com, 
-	stable@vger.kernel.org, ziy@nvidia.com, dev.jain@arm.com, i@maskray.me, 
-	baohua@kernel.org, shy828301@gmail.com, akpm@linux-foundation.org, 
-	david@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216646-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216647-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[linux.dev,gmail.com];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_CC(0.00)[linux.alibaba.com,oracle.com,kvack.org,redhat.com,vger.kernel.org,syzkaller.appspotmail.com,arm.com,nvidia.com,maskray.me,kernel.org,gmail.com,linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ackerleytng@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
+	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[1g4.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,appspotmail.com:email,linux.dev:email]
-X-Rspamd-Queue-Id: D52AB13FED0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,1g4.org:mid,1g4.org:dkim,1g4.org:email]
+X-Rspamd-Queue-Id: B619314063A
 X-Rspamd-Action: no action
 
-Lance Yang <lance.yang@linux.dev> writes:
+1. hrtimer_get_expires() just returns the stored node.expires and
+   hrtimer_cancel() doesn=E2=80=99t clear it, so expires=3D=3D0 is not a re=
+liable
+   inactivity test. Logic was that although I detected no observable
+   behavior difference, relying on stale expires could theoretically
+   cause infrequent subtle intermittent misses of intended behavior.
+   It's maybe more appropriate to leave it alone for stable or at
+   least not in this patch/series?
 
-> On 2026/2/14 08:15, Deepanshu Kartikey wrote:
->> file_thp_enabled() incorrectly allows THP for files on anonymous inodes
->> (e.g. guest_memfd and secretmem). These files are created via
->> alloc_file_pseudo(), which does not call get_write_access() and leaves
->> inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
->> true, they appear as read-only regular files when
->> CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
->> collapse.
->>
->> Anonymous inodes can never pass the inode_is_open_for_write() check
->> since their i_writecount is never incremented through the normal VFS
->> open path. The right thing to do is to exclude them from THP eligibility
->> altogether, since CONFIG_READ_ONLY_THP_FOR_FS was designed for real
->> filesystem files (e.g. shared libraries), not for pseudo-filesystem
->> inodes.
->>
->> For guest_memfd, this allows khugepaged and MADV_COLLAPSE to create
->> large folios in the page cache via the collapse path, but the
->> guest_memfd fault handler does not support large folios. This triggers
->> WARN_ON_ONCE(folio_test_large(folio)) in kvm_gmem_fault_user_mapping().
->>
->> For secretmem, collapse_file() tries to copy page contents through the
->> direct map, but secretmem pages are removed from the direct map. This
->> can result in a kernel crash:
->
-> Good catch, thanks!
->
-> For secretmem, file_thp_enabled() can incorrectly return true
-> (i_writecount=0, S_ISREG=1), so the mapping becomes eligible for file
-> THP collapse ...
->
-> However, if any folio is dirty, collapse bails out early with
-> SCAN_PAGE_DIRTY_OR_WRITEBACK, as secretmem doesn't support normal
-> writeback, IIUC.
->
+2. Agreed. This was a mistake.
 
-Yup! In the reproducers [1] I had to try to avoid setting the dirty flag
-on the pages.
+3. It's the same pattern used in sch_taprio and it's documented in
+   Documentation/memory-barriers.txt: the compiler may merge/discard/
+   invent/reorder plain accesses and READ_ONCE()/WRITE_ONCE() exist to
+   make intentional lockless shared variable accesses well defined.
+   Since tk_offset is read with READ_ONCE() outside tcf_lock, the writer
+   uses WRITE_ONCE() to pair with that lockless read.
 
-[1] https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=U6rs6S7iP0gkR9enr7HoGtA@mail.gmail.com
+4. Agreed, I=E2=80=99ll remove the redundant guard.
 
->>
->>      BUG: unable to handle page fault for address: ffff88810284d000
->>      RIP: 0010:memcpy_orig+0x16/0x130
->>      Call Trace:
->>       collapse_file
->>       hpage_collapse_scan_file
->>       madvise_collapse
->>
->> Secretmem is not affected by the crash on upstream as the memory failure
->> recovery handles the failed copy gracefully, but it still triggers
->> confusing false memory failure reports:
->>
->>      Memory failure: 0x106d96f: recovery action for clean unevictable
->>      LRU page: Recovered
->
-> Right. On my setup, that would hit SCAN_COPY_MC in
-> hpage_collapse_scan_file()
-> rather than a hard crash.
->
+5. goto_ch is initialized to NULL and tcf_action_check_ctrlact() only sets
+   it on success, so the current code is safe, but I agree that it's confus=
+ing,
+   I'll improve.
 
-Deepanshu, were you able to trigger a hard crash on some earlier kernel?
-I only saw this false memory failure log.
+Thanks
+Paul
 
->>
->> Check IS_ANON_FILE(inode) in file_thp_enabled() to deny THP for all
->> anonymous inode files.
->>
->> Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
->> Link: https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=U6rs6S7iP0gkR9enr7HoGtA@mail.gmail.com
->> Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
->> Closes: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
->> Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
->> Tested-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
->> ---
->
-> Confirmed that file_thp_enabled() is working as expected now with this fix.
->
-> Tested-by: Lance Yang <lance.yang@linux.dev>
->
->
-> Cheers,
-> Lance
+
+
+On Sunday, February 15th, 2026 at 2:45 PM, Victor Nogueira <victor@mojatatu=
+.com> wrote:
+
+> On Fri, Feb 13, 2026 at 8:39=E2=80=AFAM Paul Moses <p@1g4.org> wrote:
+> >
+> > The gate action can be replaced while the hrtimer callback or dump path=
+ is
+> > walking the schedule list.
+> >
+> > Convert the parameters to an RCU-protected snapshot and swap updates un=
+der
+> > tcf_lock, freeing the previous snapshot via call_rcu(). When REPLACE om=
+its
+> > the entry list, preserve the existing schedule so the effective state i=
+s
+> > unchanged.
+> > [...]
+> > diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> > index c1f75f2727576..60c80e609ec3d 100644
+> > --- a/net/sched/act_gate.c
+> > +++ b/net/sched/act_gate.c
+> > [...]
+> > @@ -56,11 +59,10 @@ static void gate_start_timer(struct tcf_gate *gact,=
+ ktime_t start)
+> >  {
+> >         ktime_t expires;
+> >
+> > -       expires =3D hrtimer_get_expires(&gact->hitimer);
+> > -       if (expires =3D=3D 0)
+> > -               expires =3D KTIME_MAX;
+> > -
+> > -       start =3D min_t(ktime_t, start, expires);
+> > +       if (hrtimer_active(&gact->hitimer)) {
+> > +               expires =3D hrtimer_get_expires(&gact->hitimer);
+> > +               start =3D min_t(ktime_t, start, expires);
+> > +       }
+>=20
+> Is this change really necessary?
+>=20
+> > [...]
+> >  static int parse_gate_list(struct nlattr *list_attr,
+> >                            struct tcf_gate_params *sched,
+> >                            struct netlink_ext_ack *extack)
+> > @@ -261,7 +294,6 @@ static int parse_gate_list(struct nlattr *list_attr=
+,
+> >         }
+> >
+> >         sched->num_entries =3D i;
+> > -
+> >         return i;
+>=20
+> Removing this line also seems unnecessary.
+>=20
+> > [...]
+> > +static void gate_setup_timer(struct tcf_gate *gact, s32 clockid,
+> > +                            enum tk_offsets tko)
+> > +{
+> > +       WRITE_ONCE(gact->tk_offset, tko);
+>=20
+> Why do you need this WRITE_ONCE?
+>=20
+> >  static int tcf_gate_init(struct net *net, struct nlattr *nla,
+> > [...]
+> > @@ -366,6 +407,60 @@ static int tcf_gate_init(struct net *net, struct n=
+lattr *nla,
+> > [...]
+> > +       if (ret !=3D ACT_P_CREATED) {
+> > [...]
+> > +               if (use_old_entries) {
+> > +                       err =3D tcf_gate_copy_entries(p, cur_p, extack)=
+;
+> > +                       if (!err && !tb[TCA_GATE_CYCLE_TIME])
+>=20
+> This check for TCA_GATE_CYCLE_TIME seems unnecessary.
+> If I understand your code correctly, cycletime will be overwritten
+> further down if TCA_GATE_CYCLE_TIME was specified.
+>=20
+> > +                               cycletime =3D cur_p->tcfg_cycletime;
+> > [...]
+> > @@ -434,33 +532,47 @@ static int tcf_gate_init(struct net *net, struct =
+nlattr *nla,
+> > [...]
+> > -chain_put:
+> > +unlock:
+> >         spin_unlock_bh(&gact->tcf_lock);
+> >
+> > +err_free:
+> > +       release_entry_list(&p->entries);
+> > +       kfree(p);
+> > +release_idr:
+> >         if (goto_ch)
+> >                 tcf_chain_put_by_act(goto_ch);
+> > -release_idr:
+> > [...]
+>=20
+> This looks weird.
+> You will go to the release_idr label when tcf_action_check_ctrlact fails,
+> so the "if (goto_ch)" part of the code will be reached in that code path.
+> I believe it would be better to keep the "chain_put" label and keep
+> "release_idr" below it (as it was before your change).
+> Something like:
+>=20
+> chain_put:
+>         if (goto_ch)
+>                 tcf_chain_put_by_act(goto_ch);
+> release_idr:
+>         ...
+>=20
+> cheers,
+> Victor
+> 
 
