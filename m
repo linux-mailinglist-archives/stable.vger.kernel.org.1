@@ -1,191 +1,249 @@
-Return-Path: <stable+bounces-216614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id NgxEJebZkWlpnQEAu9opvQ
-	(envelope-from <stable+bounces-216614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 15:36:22 +0100
+	id aEOZKU3gkWkxngEAu9opvQ
+	(envelope-from <stable+bounces-216615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 16:03:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB49613EDD3
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 15:36:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D888F13EE87
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 16:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 024BB30099A2
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 14:36:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92531300D31F
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 15:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4802C0F75;
-	Sun, 15 Feb 2026 14:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7F33EBF12;
+	Sun, 15 Feb 2026 15:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="NMAEH/ID"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DWx0CH7o"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2702E40B;
-	Sun, 15 Feb 2026 14:36:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5CA1367;
+	Sun, 15 Feb 2026 15:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771166171; cv=none; b=WrPkWxEGboZfXM/5yt1hlaRzY9Ep5ZwzthXvoQlhL3uilom7WNSQy2NgpzIFllohpNL4cJHtixH3BSAjJSlPGdcF3yaWp6/kbJhsBb6u2MjP3mE4o7IMwXmeJx8UoCYEYzudxYHxy8biM8xscrsiDNiCZIuvJ3XyaGnBlRPKAvU=
+	t=1771167816; cv=none; b=mU9ICs/8spOR1FNjwkNVTePFVTvzYM9dCUvJjNtPo8h/2qXvuf+zuRgycodZnCN+5VAD1qq/yYMW/PBGX4JIc4gH2Tg6x/1vnzTmIc17eLaVGhC9jlvLypl0cw6Mm8emhZ2uJ4bxyXRro9wji6PwP1TBr7AYNS3A1jV2Jtcxp1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771166171; c=relaxed/simple;
-	bh=3Ww52zb41J2ri1tFZFVrNIzoaKWhfdUxuU2A5vJH/pY=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=my2czkYfCSZKo1ySi6W1nYuDNQwBf3LWsxmC1g1x/sY1vU54vR6vsYdcqdrb2WUCONbWw6vlveBNWCrp9LjgEpruJX2tMEQQ3FWdfI9LxBGXAoC/sxzMDwG+tZBcZtASb9/yowKC719xKbitXkBLM/GXbIiNzBuJuQdRqI05GtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=NMAEH/ID; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from monstersaurus.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 69CE1FE;
-	Sun, 15 Feb 2026 15:35:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1771166117;
-	bh=3Ww52zb41J2ri1tFZFVrNIzoaKWhfdUxuU2A5vJH/pY=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=NMAEH/ID9u66gouYZTd43njQd1hjKqBGK+TisGW3HuIZYvqXj1QOKjVT1TRzCO2pD
-	 Y59t5ceIKtzJL/aQjFVJ+QK5yDhQmXW4Kh4gUfALrBwK3TDSo6i8YNWD8HZl45Wfbl
-	 B+8gBTYZ1FytbRe7ifczdrZ6oh1U63m2C8Ur9wII=
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1771167816; c=relaxed/simple;
+	bh=wVaofg3E0qedZW4L4ZDRs8qnTvcQSmBPaPzB3h+kGYc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Qh5esvv8zxF/x1q75bwqqCfkFKJJd0G+8JRm/z5Ioxeq0GEGPV8ktsThx53KienL6M+BUop+UdVqBNl64gwWsRrJOB8aut/awet5od9SgYdTvTkI+IjoDXGnqM5iJO+u2HNvnchGRg1GAdOV1yNCP/cqYW1yW1VTCsl0CdYsLSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DWx0CH7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F713C4CEF7;
+	Sun, 15 Feb 2026 15:03:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771167816;
+	bh=wVaofg3E0qedZW4L4ZDRs8qnTvcQSmBPaPzB3h+kGYc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DWx0CH7o0sEmtJRskSBMOmmzvzDqQohLC0hu4t2WNlqt08XF6S7S6ecDs1wZSh14h
+	 EPS+3XqDVQYI1hIujeITSqnc/fKITevb4L97Bv2+lNfKv56kk/d5RVGcAgxdR3mvT/
+	 p1ZFfNvnTvQn/OOjLP0VfMPgrB8YW6OaCTxrTGEGv7xBeNOK2bbdXbn8mMSw0Aaa/V
+	 zR2qNnwh7UiBI8Pc9QXacICzXAPaIMFKDyU6MxQnWgGbGfDY3n2d1V3Js4gQYsG+EA
+	 10KuPCT+Tgow/2F4pmql/Ujujs3Y9FVOz2M6q/ASs5pEyaKSU37Xbe2Eidk5p96zpX
+	 mbWAM8v1GjkjA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Sergey Matyukevich <geomatsi@gmail.com>,
+	Andy Chiu <andybnac@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	neil.armstrong@linaro.org,
+	philmd@linaro.org,
+	cleger@rivosinc.com,
+	yelangyan@huaqin.corp-partner.google.com,
+	yongxuan.wang@sifive.com,
+	alexghiti@rivosinc.com,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.19-6.12] riscv: vector: init vector context with proper vlenb
+Date: Sun, 15 Feb 2026 10:03:18 -0500
+Message-ID: <20260215150333.2150455-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260214-imx283-hang-fix-v2-2-f4fd3de0f020@ideasonboard.com>
-References: <20260214-imx283-hang-fix-v2-0-f4fd3de0f020@ideasonboard.com> <20260214-imx283-hang-fix-v2-2-f4fd3de0f020@ideasonboard.com>
-Subject: Re: [PATCH v2 2/2] media: i2c: imx283: Fix hang when going from large to small resolution
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Jai Luthra <jai.luthra@ideasonboard.com>, stable@vger.kernel.org
-To: Hans Verkuil <hverkuil@kernel.org>, Jai Luthra <jai.luthra@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, Umang Jain <uajain@igalia.com>
-Date: Sun, 15 Feb 2026 14:36:04 +0000
-Message-ID: <177116616492.1941913.17937000377442408101@ping.linuxembedded.co.uk>
-User-Agent: alot/0.9.1
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216614-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216615-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,dabbelt.com,eecs.berkeley.edu,linaro.org,rivosinc.com,huaqin.corp-partner.google.com,sifive.com,lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kieran.bingham@ideasonboard.com,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ideasonboard.com:+]
-X-Rspamd-Queue-Id: AB49613EDD3
+	RCPT_COUNT_TWELVE(0.00)[15];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: D888F13EE87
 X-Rspamd-Action: no action
 
-Quoting Jai Luthra (2026-02-14 13:05:22)
-> When switching between modes (e.g. full resolution to binned),
-> standby_cancel() previously cleared XMSTA (starting master mode data
-> output) before the new mode's MDSEL, crop, and timing registers were
-> programmed in start_streaming(). This caused the sensor to briefly
-> output MIPI data using the previous mode's configuration.
->=20
-> On receivers like imx-mipi-csis, this leads to FIFO overflow errors
-> when switching from a higher to a lower resolution, as the receiver is
-> configured for the new smaller frame size but receives stale
-> full-resolution data.
->=20
-> Fix this by moving the XMSTA and SYNCDRV register writes from
-> standby_cancel() to the end of start_streaming(), after all mode,
-> crop, and timing registers have been configured. Also explicitly stop
-> master mode (XMSTA=3D1) when stopping the stream, matching the pattern
-> used by other Sony sensor drivers (imx290, imx415).
->=20
-> Use named macros IMX283_XMSTA_START/STOP instead of raw 0/BIT(0) for
-> readability.
+From: Sergey Matyukevich <geomatsi@gmail.com>
 
-All seems to make sense and explains (and resolves) the issues I've seen
-on my i.MX8MP board with this module.
+[ Upstream commit ef3ff40346db8476a9ef7269fc9d1837e7243c40 ]
 
-Thanks for digging into all of this.
+The vstate in thread_struct is zeroed when the vector context is
+initialized. That includes read-only register vlenb, which holds
+the vector register length in bytes. Zeroed state persists until
+mstatus.VS becomes 'dirty' and a context switch saves the actual
+hardware values.
 
-Tested-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+This can expose the zero vlenb value to the user-space in early
+debug scenarios, e.g. when ptrace attaches to a traced process
+early, before any vector instruction except the first one was
+executed.
 
-=20
-> Cc: stable@vger.kernel.org
-> Fixes: ccb4eb4496fa ("media: i2c: Add imx283 camera sensor driver")
-> Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
-> ---
->  drivers/media/i2c/imx283.c | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/media/i2c/imx283.c b/drivers/media/i2c/imx283.c
-> index 9b3094a57873c6e8ff8c41d058ea3b0012642cac..1be6164c2d15524690b738aa7=
-25a6708e84487d0 100644
-> --- a/drivers/media/i2c/imx283.c
-> +++ b/drivers/media/i2c/imx283.c
-> @@ -129,7 +129,8 @@
-> =20
->  /* Master Mode Operation Control */
->  #define IMX283_REG_XMSTA               CCI_REG8(0x3105)
-> -#define   IMX283_XMSTA                 BIT(0)
-> +#define   IMX283_XMSTA_START           0
-> +#define   IMX283_XMSTA_STOP            BIT(0)
-> =20
->  #define IMX283_REG_SYNCDRV             CCI_REG8(0x3107)
->  #define   IMX283_SYNCDRV_XHS_XVS       (0xa0 | 0x02)
-> @@ -1023,8 +1024,6 @@ static int imx283_standby_cancel(struct imx283 *imx=
-283)
->         usleep_range(19000, 20000);
-> =20
->         cci_write(imx283->cci, IMX283_REG_CLAMP, IMX283_CLPSQRST, &ret);
-> -       cci_write(imx283->cci, IMX283_REG_XMSTA, 0, &ret);
-> -       cci_write(imx283->cci, IMX283_REG_SYNCDRV, IMX283_SYNCDRV_XHS_XVS=
-, &ret);
-> =20
->         return ret;
->  }
-> @@ -1117,6 +1116,10 @@ static int imx283_start_streaming(struct imx283 *i=
-mx283,
->         /* Apply customized values from controls (HMAX/VMAX/SHR) */
->         ret =3D  __v4l2_ctrl_handler_setup(imx283->sd.ctrl_handler);
-> =20
-> +       /* Start master mode */
-> +       cci_write(imx283->cci, IMX283_REG_XMSTA, IMX283_XMSTA_START, &ret=
-);
-> +       cci_write(imx283->cci, IMX283_REG_SYNCDRV, IMX283_SYNCDRV_XHS_XVS=
-, &ret);
-> +
->         return ret;
->  }
-> =20
-> @@ -1153,12 +1156,14 @@ static int imx283_disable_streams(struct v4l2_sub=
-dev *sd,
->                                   u64 streams_mask)
->  {
->         struct imx283 *imx283 =3D to_imx283(sd);
-> -       int ret;
-> +       int ret =3D 0;
-> =20
->         if (pad !=3D IMAGE_PAD)
->                 return -EINVAL;
-> =20
-> -       ret =3D cci_write(imx283->cci, IMX283_REG_STANDBY, IMX283_STANDBY=
-, NULL);
-> +       cci_write(imx283->cci, IMX283_REG_XMSTA, IMX283_XMSTA_STOP, &ret);
-> +       cci_write(imx283->cci, IMX283_REG_STANDBY, IMX283_STANDBY, &ret);
-> +
->         if (ret)
->                 dev_err(imx283->dev, "Failed to stop stream\n");
-> =20
->=20
-> --=20
-> 2.53.0
->
+Fix this by specifying proper vlenb on vector context init.
+
+Signed-off-by: Sergey Matyukevich <geomatsi@gmail.com>
+Reviewed-by: Andy Chiu <andybnac@gmail.com>
+Tested-by: Andy Chiu <andybnac@gmail.com>
+Link: https://patch.msgid.link/20251214163537.1054292-3-geomatsi@gmail.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+The calculation `riscv_v_vsize / 32` is used consistently throughout the
+codebase (e.g., `arch/riscv/kvm/vcpu_vector.c:26` and
+`arch/riscv/include/asm/vector.h:157`), confirming it's the correct
+formula.
+
+### Summary of Analysis
+
+**What the bug is:**
+When RISC-V vector context is first allocated (either for kernel
+preemptive V use or on the first user-space vector instruction), the
+`__riscv_v_ext_state` structure is zeroed, including the `vlenb` field.
+The `vlenb` field represents the vector register length in bytes — a
+read-only hardware property. This zero value persists until a context
+switch with `mstatus.VS == dirty` causes the hardware values to be
+saved.
+
+**User impact:**
+When ptrace (debuggers like GDB/LLDB) attaches to a process early —
+before any vector instruction has been executed or before a context
+switch has saved hardware values — ptrace reads `vlenb` as 0 instead of
+the actual hardware value. This is incorrect data being exposed to
+userspace, which can cause debuggers and tracing tools to malfunction.
+
+**Fix characteristics:**
+- **Small and surgical**: The core fix is a single line addition:
+  `ctx->vlenb = riscv_v_vsize / 32;`
+- **Function rename**: `riscv_v_thread_zalloc` →
+  `riscv_v_thread_ctx_alloc` (reflects that it now does more than
+  zalloc)
+- **Obviously correct**: Uses the same formula as everywhere else in the
+  kernel (`riscv_v_vsize / 32`)
+- **Well-tested**: Has `Reviewed-by` and `Tested-by` from Andy Chiu, the
+  RISC-V vector subsystem author
+- **No new features**: Fixes incorrect initialization of existing state
+- **Low risk**: Only affects RISC-V vector state initialization; the
+  value being set is identical to what hardware would provide
+
+**Stable criteria check:**
+1. Obviously correct and tested — YES (reviewed + tested by maintainer,
+   formula used elsewhere)
+2. Fixes a real bug — YES (incorrect data exposed to userspace via
+   ptrace)
+3. Important issue — YES (debugging tools get wrong hardware info;
+   incorrect userspace-visible state)
+4. Small and contained — YES (one functional line change + rename)
+5. No new features — YES (fixes existing behavior)
+
+**Dependencies:**
+The code structure with `riscv_v_thread_zalloc` exists in stable trees
+(it was introduced with RISC-V V extension support). The fix is self-
+contained and should apply cleanly or with minimal adjustment.
+
+**Risk assessment:**
+Very low risk. The fix adds a single assignment of a value that would
+eventually be set by hardware anyway. The formula `riscv_v_vsize / 32`
+is well-established and used identically in multiple other places. The
+worst case if this were somehow wrong would be an incorrect vlenb value
+— but since it's using exactly the same calculation as the rest of the
+kernel, this is essentially zero risk.
+
+**YES**
+
+ arch/riscv/kernel/vector.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/arch/riscv/kernel/vector.c b/arch/riscv/kernel/vector.c
+index 3ed071dab9d83..b112166d51e9f 100644
+--- a/arch/riscv/kernel/vector.c
++++ b/arch/riscv/kernel/vector.c
+@@ -111,8 +111,8 @@ bool insn_is_vector(u32 insn_buf)
+ 	return false;
+ }
+ 
+-static int riscv_v_thread_zalloc(struct kmem_cache *cache,
+-				 struct __riscv_v_ext_state *ctx)
++static int riscv_v_thread_ctx_alloc(struct kmem_cache *cache,
++				    struct __riscv_v_ext_state *ctx)
+ {
+ 	void *datap;
+ 
+@@ -122,13 +122,15 @@ static int riscv_v_thread_zalloc(struct kmem_cache *cache,
+ 
+ 	ctx->datap = datap;
+ 	memset(ctx, 0, offsetof(struct __riscv_v_ext_state, datap));
++	ctx->vlenb = riscv_v_vsize / 32;
++
+ 	return 0;
+ }
+ 
+ void riscv_v_thread_alloc(struct task_struct *tsk)
+ {
+ #ifdef CONFIG_RISCV_ISA_V_PREEMPTIVE
+-	riscv_v_thread_zalloc(riscv_v_kernel_cachep, &tsk->thread.kernel_vstate);
++	riscv_v_thread_ctx_alloc(riscv_v_kernel_cachep, &tsk->thread.kernel_vstate);
+ #endif
+ }
+ 
+@@ -214,12 +216,14 @@ bool riscv_v_first_use_handler(struct pt_regs *regs)
+ 	 * context where VS has been off. So, try to allocate the user's V
+ 	 * context and resume execution.
+ 	 */
+-	if (riscv_v_thread_zalloc(riscv_v_user_cachep, &current->thread.vstate)) {
++	if (riscv_v_thread_ctx_alloc(riscv_v_user_cachep, &current->thread.vstate)) {
+ 		force_sig(SIGBUS);
+ 		return true;
+ 	}
++
+ 	riscv_v_vstate_on(regs);
+ 	riscv_v_vstate_set_restore(current, regs);
++
+ 	return true;
+ }
+ 
+-- 
+2.51.0
+
 
