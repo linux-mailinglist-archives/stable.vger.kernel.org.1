@@ -1,98 +1,56 @@
-Return-Path: <stable+bounces-216636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GBrBLMFkmnNpQEAu9opvQ
-	(envelope-from <stable+bounces-216636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 18:43:15 +0100
+	id QIFBKuQXkmmuqwEAu9opvQ
+	(envelope-from <stable+bounces-216638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 20:00:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BEBC13F447
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 18:43:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BD313F784
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 20:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B410E3000B36
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 17:43:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4EDF8300404E
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 19:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBB22BDC04;
-	Sun, 15 Feb 2026 17:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA03258CDC;
+	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="QNBfCUzu";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PxHDBkmo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1KgH7+L"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA702522BA;
-	Sun, 15 Feb 2026 17:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54781149E17;
+	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771177389; cv=none; b=kqNQxyShDMTUbpRoi04ZfhwbBvAmNp7xAUHO2/SYYg2uA9NelALLVMRawyTS8Z6NZJzrc/rYAuni8+Syv1bT7I2QkoxFDl4KbG5t6asAUMV/6FRebPcQgvJ4/VXPaQSr46SUHhynmlnUetAYOlxVyFgjqKcHNmFunkli6hi/OzQ=
+	t=1771182046; cv=none; b=iRn3LeuFawwBpij6xlyUaHVxA5TrUiTA3fAoQyjmagJSDbZOAF/gX/ej70buvEex8pKTPapdE9vsSgMWOI2Mze6XoufSbyAN6yvLDi96Ls+2ZdEPl7y7ZSDelMCVnmEZewJdYusODOW830FTf+o6HeuLM0VUbjVAVVYwmDazjsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771177389; c=relaxed/simple;
-	bh=HqeldGCK+iEIB8wQse0rxtB7a5CB8yjvv3RNNlcVeiY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=duoL9fj6PjyxVbI6c1qHFm5YrQJX7KwpnsPLCwM+5wZDCnB+hknvvGwBk/q3g8QADbBFD7d5wagBmPxXp+dVm5hjJbRaBMdSo1Rba1YKbB/DjXAnJWluk1IH4Y9529qSsGdBR/FWH5A5MaxpWS615/9/Sh1Pq46hWt3Ao81FArw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=QNBfCUzu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PxHDBkmo; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id 394C4EC0658;
-	Sun, 15 Feb 2026 12:43:06 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Sun, 15 Feb 2026 12:43:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm2; t=1771177386; x=1771263786; bh=sc
-	QgAVxVgqOJys8W+gujBo5wP01cbiK3aqH/Vwsgpew=; b=QNBfCUzu+XGswyGF7E
-	0HrGal6S1408Hq85fOtCZurEouMFVSiBXH1/7KmeCElpVfZikfjAtQfpxAJ9A3+R
-	RO2ZN0gIb2luyXMHJ6UJmzLqaE+t8WMEsDqS9rDEgTyJ7hvdBRIoivK4DttUB16c
-	f+hXAK4Ybk9SgGV+CrNIltSf8Y/QCQTXbZGRoXEhyUsHniBvIL28NkZKTY4t2/MZ
-	8T7ooyjIQTeZQn6yvwvr/AH2Kah3LkwqtDwL5xl27QxgMWAfS7sELdcYX9LEZHMI
-	d5lyB7yO0HI/J6jcKEUUTf5cMKDJrYWFpseGpyFeCoWfD8DTNx+OP6UrDFdbs5od
-	i5WA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1771177386; x=1771263786; bh=scQgAVxVgqOJys8W+gujBo5wP01c
-	biK3aqH/Vwsgpew=; b=PxHDBkmoAHH4yoAj5IWgZ7qytieoNV+myX/ErHLZui99
-	C+e0OMFwy4urQiRh8Xpl9SafWvlAxmak9AZe1+4OlHvbJ9JMMJu5iJOUs7mcvEpk
-	E3KAkOsRlivXPY9ULkDVLgYyLvksdH17TBJ+jchEYGJcRnTrc2LhvsuLrq8FTljR
-	bp4QMDCNTHOvd22U4QxTTvpvKG2KhSDARSC4RkmMKsEhsofDQHlq2rjV4yoJAbuc
-	VBUpa1A2nRM92JCtq/xbtC4/04LrP52PiNu4RlT7n7zCj2sNTQah2AVZ+J7WPZnt
-	K+zonKpV+iyVFD5r3yNuePNAHTejZYSroBCtMkcJyQ==
-X-ME-Sender: <xms:qAWSacfzOW2t8rIOVD9-Fzd42s_3s6hf3FTrDKSSxSUVqe9-LD0NEw>
-    <xme:qAWSaXnhi7EFbRFWBDxGJHQOT6Y9Rxs8gMSBa9bzBejSirB4CqW4GGQ5p7EbkqqhG
-    3JljLoBaaolRbXHtZ6szJOWC8vNsEJp54ROx-aecD2amKfxrrNPbw>
-X-ME-Received: <xmr:qAWSaWD0rN69pIcKL3PVZmjV9gVmUQiH_7EKu-ADoH8DdTGg1dgvkMzL8dZQ9WpI4HxV3U63IV1XrDm-Vs7kLEnjpW3R9aE106etzQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudegiedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeflrghnnhgvucfi
-    rhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnhepfeehle
-    dtheefteejfedvheetuedttdetleegudeuteejveetieefuedvfeffvdeinecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehjsehjrghnnhgruhdrnhgvthdpnhgspghrtghpthhtohepudei
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmrdhsiiihphhrohifshhkihessh
-    grmhhsuhhnghdrtghomhdprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehlihhnuhigqdhmvgguihgrsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhopehjse
-    hjrghnnhgruhdrnhgvthdprhgtphhtthhopehhvhgvrhhkuhhilheskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheprghnughriigvjhdrphesshgrmhhsuhhnghdrtghomhdprhgtph
-    htthhopehtiihimhhmvghrmhgrnhhnsehsuhhsvgdruggv
-X-ME-Proxy: <xmx:qAWSaRfL6vdEm1C2qkoXfwvMeoo1YeGDAT14JvQTrBXwpHxHCxmv3g>
-    <xmx:qAWSaZ4oUIt12MBSqmo-erRRLunYhYxrnlKCppKeX4UYXQDIzVuukQ>
-    <xmx:qAWSaTMJyXjpyg7qR9Nda4eMBwO32KXALb0g3GEczidXsHuPwDPgiA>
-    <xmx:qAWSaSFf1nqf5a6KNXgU0yZsxgSelSgV4324waqxfvCXBRo4_bvL1Q>
-    <xmx:qgWSaahN6oabijPrFOjFSR08-K-hD88wBYDIkx703jBmqyRHGasX7pi1>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 15 Feb 2026 12:43:03 -0500 (EST)
-From: Janne Grunau <j@jannau.net>
-Date: Sun, 15 Feb 2026 18:42:59 +0100
-Subject: [PATCH] media: videobuf2: Set vma_flags in vb2_dma_sg_mmap
+	s=arc-20240116; t=1771182046; c=relaxed/simple;
+	bh=dF6Y79PNFZiEWY4PL7UAYOsByXEL30pvzMVmxPOmG+M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=O5yEtCC7+PF402DxX/LsUhTzGK3rlCte8fV6vVFkMehxz+FvK7RJpJyabJT/u3gZ+C6Orvy3nV9vAoVrYATnHljcYh0RXfmg9E4AjZR+42/vm8qH0Q1Xog9+6RDcJZh5PG4Wl9oP8zkfDA2NPsHu2Ux2gWwRbhxUC5PQi/Wo9W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1KgH7+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E037DC4CEF7;
+	Sun, 15 Feb 2026 19:00:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771182046;
+	bh=dF6Y79PNFZiEWY4PL7UAYOsByXEL30pvzMVmxPOmG+M=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=o1KgH7+LhD3TEf0tPDKzs1kn7jCsso0QwavbDCyLHecAK4XCm/GNcyjjZqgKTk3ex
+	 RumMat0lb0X1jHE4nvAhMsq3PaZTM6mISazj4P0ETFPYbdrfb5EU/KYCl3PWsXOpoB
+	 DTZT4x3v6t1qjXlHZrvrsC6sUV6cW8vlqug6WueqsAdE0j7CaCTheeCsAuGcxZd9QW
+	 SjCYmkeU9ry8EF6kV91Z4PoewvDDqyG9BeWrixIPrskNEWSC0ORB6463rnk+u9YWLv
+	 PsbXiQfRf6XCPWDkZ+wZrWl2LXXkucTT58UxNyoJbo/9lZRMFfxea1NSRf3A3mDYbK
+	 2eCiYwr1CcosA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7130E63F0C;
+	Sun, 15 Feb 2026 19:00:45 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Subject: [PATCH v3 0/3] mm/swap: hibernate: improve hibernate performance
+ with new allocator
+Date: Mon, 16 Feb 2026 03:00:24 +0800
+Message-Id: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,161 +59,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260215-media-vb2-dma-sg-v1-1-91b6aa6c1cec@jannau.net>
-X-B4-Tracking: v=1; b=H4sIAKIFkmkC/x3MPQqAMAxA4atIZgP9QQevIg7RpDVDq7Qggnh3i
- +M3vPdAlaJSYeoeKHJp1SM32L6DbaccBZWbwRk3GmcHTMJKeK0OORHWiCaQ94EpMAu07CwS9P6
- X8/K+H/k1qEViAAAA
-X-Change-ID: 20260215-media-vb2-dma-sg-0fa33fdafdde
-To: Tomasz Figa <tfiga@chromium.org>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Andrzej Pietrasiewicz <andrzej.p@samsung.com>, 
- Kyungmin Park <kyungmin.park@samsung.com>, 
- Hans Verkuil <hverkuil@kernel.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Janne Grunau <j@jannau.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5294; i=j@jannau.net;
- s=yk2025; h=from:subject:message-id;
- bh=5MO24xI2BDGeb+100l8k8E9pFIay5d55n+ZsgN9zhQA=;
- b=owGbwMvMwCW2UNrmdq9+ahrjabUkhsxJrMsOptyrmOTte/zG/Ycrfv9YOI/5zWZHqVPcUQ0r7
- Obt1Z5yv6OUhUGMi0FWTJElSftlB8PqGsWY2gdhMHNYmUCGMHBxCsBETl1g+Kd7Y82dlfM6Pgkq
- F5pvexNzMV33b0ZIfCd7nuz3UxWux1oY/meuTmVk/209Z4JPcp97e0AYw9RJ3aFreEytLB43H3A
- +xAMA
-X-Developer-Key: i=j@jannau.net; a=openpgp;
- fpr=8B336A6BE4E5695E89B8532B81E806F586338419
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33MQQ7CIBCF4asY1mLoVEp15T2Miw4d7CykDRCia
+ Xp3aRMXunD5v+R9s4gUmKI472YRKHPk0Zeo9zthh87fSXJfWoCCRkEFcmCk4LtEcqLgpENj2ho
+ BQYMopymQ4+cGXm+lB45pDK/Nz9W6fij9S+VKKum0JjoRNabHSyJvyaeDHR9ixTL8B6AA1kFrj
+ UZ1RPMNLMvyBjRrLPjvAAAA
+X-Change-ID: 20260212-hibernate-perf-fb7783b2b252
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+ Carsten Grohmann <mail@carstengrohmann.de>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
+ "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, 
+ Carsten Grohmann <carstengrohmann@gmx.de>, Kairui Song <kasong@tencent.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771182044; l=2672;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=dF6Y79PNFZiEWY4PL7UAYOsByXEL30pvzMVmxPOmG+M=;
+ b=5uoOa6dYgg4V5j9K4LZOCSYQHHvdzzvl/ZfwhWzim0Y8GqweS5RWo5Oj7ZRfTiSEws3cK37UU
+ m12I+YzVF1MCrOSc0F7thaGgrMnaF+aPi3RmD6LyKbPtfzcj9ZdLYcB
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[jannau.net:s=fm2,messagingengine.com:s=fm3];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216638-lists,stable=lfdr.de,kasong.tencent.com];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[jannau.net];
-	FREEMAIL_TO(0.00)[chromium.org,samsung.com,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216636-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[jannau.net:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.org,huaweicloud.com,gmail.com,redhat.com,carstengrohmann.de,vger.kernel.org,gmx.de,tencent.com];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[j@jannau.net,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,jannau.net:mid,jannau.net:dkim,jannau.net:email]
-X-Rspamd-Queue-Id: 5BEBC13F447
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	HAS_REPLYTO(0.00)[kasong@tencent.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[carstengrohmann.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D3BD313F784
 X-Rspamd-Action: no action
 
-vb2_dma_contig sets VMA flags VM_DONTEXPAND and VM_DONTDUMP and I do not
-see a reason why vb2_dma_sg should behave differently. This avoids
-hitting `WARN_ON(!(vma->vm_flags & VM_DONTEXPAND));` in
-drm_gem_mmap_obj() during mmap() of an imported dma-buf from the out of
-tree Apple ISP camera capture driver which uses vb2_dma_sg_memops.
+The new swap allocator didn't provide a high-performance allocation
+method for hibernate, and just left it using the easy slow path. As a
+result, hibernate performance is quite bad on some devices
 
-gst-launch-1.0 v4l2src ! gtk4paintablesink
+Fix it by implementing hibernate support for the fast allocation path.
 
-[   38.201528] ------------[ cut here ]------------
-[   38.202135] WARNING: CPU: 7 PID: 2362 at drivers/gpu/drm/drm_gem.c:1144 drm_gem_mmap_obj+0x1f8/0x210
-[   38.203278] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer
-snd_seq snd_seq_device uinput nf_conntrack_netbios_ns
-nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
-nft_reject_inet nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat
-nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables qrtr bnep
-nls_ascii i2c_dev loop fuse dm_multipath nfnetlink brcmfmac_wcc
-hid_magicmouse hci_bcm4377 brcmfmac brcmutil bluetooth ecdh_generic
-cfg80211 ecc btrfs xor xor_neon rfkill hid_apple raid6_pq joydev
-aop_als apple_nvmem_spmi industrialio snd_soc_aop apple_z2
-snd_soc_cs42l84 tps6598x snd_soc_tas2764 macsmc_reboot spi_nor
-macsmc_hwmon rtc_macsmc gpio_macsmc macsmc_power regmap_spmi
-macsmc_input dockchannel_hid panel_summit appledrm nvme_apple dwc3
-snd_soc_macaudio drm_client_lib nvme_core phy_apple_atc hwmon
-apple_sart apple_dockchannel macsmc apple_rtkit_helper
-spmi_apple_controller aop apple_wdt mfd_core nvmem_apple_efuses
-pinctrl_apple_gpio apple_isp apple_dcp videobuf2_dma_sg mux_core
-spi_apple
-[   38.203300]  videobuf2_memops i2c_pasemi_platform snd_soc_apple_mca videobuf2_v4l2 videodev clk_apple_nco videobuf2_common snd_pcm_dmaengine adpdrm asahi apple_admac adpdrm_mipi drm_dma_helper pwm_apple i2c_pasemi_core drm_display_helper mc cec apple_dart ofpart apple_soc_cpufreq leds_pwm phram
-[   38.217677] CPU: 7 UID: 1000 PID: 2362 Comm: gst-launch-1.0 Tainted: G        W           6.17.6+ #asahi-dev PREEMPT(full)
-[   38.219040] Tainted: [W]=WARN
-[   38.219398] Hardware name: Apple MacBook Pro (13-inch, M2, 2022) (DT)
-[   38.220213] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   38.221088] pc : drm_gem_mmap_obj+0x1f8/0x210
-[   38.221643] lr : drm_gem_mmap_obj+0x78/0x210
-[   38.222178] sp : ffffc0008dc678e0
-[   38.222579] x29: ffffc0008dc678e0 x28: 0000000000042a97 x27: ffff8000b701b480
-[   38.223465] x26: 00000000000000fb x25: ffffc0008dc67d20 x24: ffffc0008dc67968
-[   38.224402] x23: ffff8000e3ca5600 x22: ffff8000265b7800 x21: ffff80003000c0c0
-[   38.225279] x20: 0000000000000000 x19: ffff8000b68c5200 x18: ffffc0008dc67968
-[   38.226151] x17: 0000000000000000 x16: 0000000000000000 x15: ffffc000810a30a8
-[   38.227042] x14: 00007fff637effff x13: 00005555de91ffff x12: 00007fff63293fff
-[   38.227942] x11: 0000000000000000 x10: ffff8000184ecf08 x9 : ffffc0007a1900c8
-[   38.228824] x8 : ffffc0008dc67968 x7 : 0000000000000012 x6 : ffffc0015cf1c000
-[   38.229703] x5 : ffffc0008dc676a0 x4 : ffffc00081a27dc0 x3 : 0000000000000038
-[   38.230607] x2 : 0000000000000003 x1 : 0000000000000003 x0 : 00000000100000fb
-[   38.231488] Call trace:
-[   38.231806]  drm_gem_mmap_obj+0x1f8/0x210 (P)
-[   38.232342]  drm_gem_mmap+0x140/0x260
-[   38.232813]  __mmap_region+0x488/0x9a0
-[   38.233277]  mmap_region+0xd0/0x148
-[   38.233703]  do_mmap+0x350/0x5c0
-[   38.234148]  vm_mmap_pgoff+0x14c/0x200
-[   38.234612]  ksys_mmap_pgoff+0x150/0x208
-[   38.235107]  __arm64_sys_mmap+0x34/0x50
-[   38.235611]  invoke_syscall+0x50/0x120
-[   38.236075]  el0_svc_common.constprop.0+0x48/0xf0
-[   38.236680]  do_el0_svc+0x24/0x38
-[   38.237113]  el0_svc+0x38/0x168
-[   38.237507]  el0t_64_sync_handler+0xa0/0xe8
-[   38.238034]  el0t_64_sync+0x198/0x1a0
-[   38.238491] ---[ end trace 0000000000000000 ]---
+This regression seems only happen with SSD devices with poor 4k
+performance. I've tested on several different NVME and SSD setups, the
+performance diff is tiny on them, but testing on a Samsung SSD 830
+Series (SATA II, 3.0 Gbps) showed a big difference [1]:
 
-There were discussions in [1] at the end of 2023 that mmap() on imported
-dma-bufs should not be supported but as of v6.17 drm_gem_shmem_mmap() in
-drm_gem_shmem_helper.c still supports it.
-This might affect all gpu or accel drivers using drm_gem_shmem_mmap() or
-the wrapper drm_gem_shmem_object_mmap().
+Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) thanks
+to Carsten Grohmann [1]:
+6.19:               324 seconds
+After this series:  35 seconds
 
-[1] https://lore.kernel.org/dri-devel/bc7f7844-0aa3-4802-b203-69d58e8be2fa@linux.intel.com/
+Test result with SAMSUNG MZ7LH480HAHQ-00005 (SATA 3.2, 6.0 Gb/s):
+Before 0ff67f990bd4: Wrote 2230700 kbytes in 4.47 seconds (499.03 MB/s)
+After 0ff67f990bd4: Wrote 2215472 kbytes in 4.44 seconds (498.98 MB/s)
+After this series: Wrote 2038748 kbytes in 4.04 seconds (504.64 MB/s)
 
-Cc: stable@vger.kernel.org
-Fixes: 5ba3f757f059 ("[media] v4l: videobuf2: add DMA scatter/gather allocator")
-Signed-off-by: Janne Grunau <j@jannau.net>
+Test result with Memblaze P5910DT0384M00:
+Before 0ff67f990bd4: Wrote 2222772 kbytes in 0.84 seconds (2646.15 MB/s)
+After 0ff67f990bd4: Wrote 2224184 kbytes in 0.90 seconds (2471.31 MB/s)
+After this series: Wrote 1559088 kbytes in 0.55 seconds (2834.70 MB/s)
+
+The performance is almost the same for blazing fast SSDs, but for some
+SSDs, the performance is several times better.
+
+Patch 1 improves the hibernate performance by using the fast path, and
+patch 2 cleans up the code a bit since there are now multiple fast path
+users using similar conventions.
+
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Tested-by: Carsten Grohmann <mail@carstengrohmann.de>
+Link: https://lore.kernel.org/linux-mm/8b4bdcfa-ce3f-4e23-839f-31367df7c18f@gmx.de/ [1]
 ---
-included DRM maintainers due to warning triggered from DRM code.
----
- drivers/media/common/videobuf2/videobuf2-dma-sg.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes in v3:
+- Split the indention change to a standalone patch.
+- Update mail address and add Cc stable.
+- Link to v2: https://lore.kernel.org/r/20260215-hibernate-perf-v2-0-cf28c75b04b7@tencent.com
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-dma-sg.c b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-index b3bf2173c14e1b3bedb8ab0bd60c889a0b97cbe3..7c30731cb9a57bebb3cf418e627e7c9f09ba8642 100644
---- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-+++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-@@ -345,6 +345,7 @@ static int vb2_dma_sg_mmap(void *buf_priv, struct vm_area_struct *vma)
- 		return err;
- 	}
- 
-+	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
- 	/*
- 	 * Use common vm_area operations to track buffer refcount.
- 	 */
+Changes in v2:
+- Based on mm-unstable, resend using b4's relay to fix mismathed patch content.
+- Link to v1: https://lore.kernel.org/r/20260215-hibernate-perf-v1-0-f55ee9ee67db@tencent.com
 
 ---
-base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
-change-id: 20260215-media-vb2-dma-sg-0fa33fdafdde
+Kairui Song (3):
+      mm, swap: speed up hibernation allocation and writeout
+      mm, swap: reduce indention for hibernate allocation helper
+      mm, swap: merge common convention and simplify allocation helper
+
+ mm/swapfile.c | 55 +++++++++++++++++++++++++------------------------------
+ 1 file changed, 25 insertions(+), 30 deletions(-)
+---
+base-commit: 53f061047924205138ad9bc315885255f7cc4944
+change-id: 20260212-hibernate-perf-fb7783b2b252
 
 Best regards,
 -- 
-Janne Grunau <j@jannau.net>
+Kairui Song <kasong@tencent.com>
+
 
 
