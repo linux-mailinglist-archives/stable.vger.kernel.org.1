@@ -1,190 +1,189 @@
-Return-Path: <stable+bounces-216606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id NxSYOqyRkWkNkAEAu9opvQ
-	(envelope-from <stable+bounces-216606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 10:28:12 +0100
+	id sF+sOYiXkWm1kAEAu9opvQ
+	(envelope-from <stable+bounces-216607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 10:53:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7A213E63F
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 10:28:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6B613E6C1
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 10:53:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2BCD13003830
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 09:28:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B1B13013A53
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 09:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1321E834E;
-	Sun, 15 Feb 2026 09:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5DD2C15B8;
+	Sun, 15 Feb 2026 09:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="nmrI89n9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UeQSPNb6"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DBF17ADE0;
-	Sun, 15 Feb 2026 09:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771147687; cv=none; b=sFJ4did+RP2AuuHjvdJsqyecRWcw341bnLXusHUeTdtE/DmNFzXlZOVpXT3uJrvlpi68+SnrCTAlMLCBoA5HwaLlAewA9dkhZeZtsPT4QPuLqlmRqEEyhaMQHAbmQSQTXscqA90ZM6LKfjLGOB5t46guRWmMNDo+8Jy3rv+sLhY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771147687; c=relaxed/simple;
-	bh=C0H44V/77PoBqbHQWID2vzYJZg/RjwktuHel3C+HrYI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g3p0t6CUWesOutSkQXqon8FQyrKofShXxgxrcl7BRL3O8HuD/qhmxdyVkno5Rg/9enk3Pwshs3VvzyckbPmIIXIJaKYrSvn2TJ/zLxSh9nOaUdlbHN3OekGoJgI03FUyC0cixDpprzQF8W1YnA8HFwWMmIQ/ziKJ24Jo7d/AxDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=nmrI89n9; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id E369B14C2D6;
-	Sun, 15 Feb 2026 10:28:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1771147684;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tY4YZyEw5GxWBlYlZZdYm+ln93eMRUDbVlzcSMzvuws=;
-	b=nmrI89n9xgsq1K6iAvyqggRb7h0vexmNSwL6Bh1pWLCGJcHyU1rfJNHXg8FCNorfUMN9/k
-	bMXEW09Oi6Kze22NS6Fl/tHXrXLRTnrtIoZzSawfGAmLAGTZRTnsu0fzpcRcoqhcBj7IP8
-	tim7v6Qj+haIbpIZrHPTonmi/etJ5lpSl2YBWHqhU1unqCtbKo2EuO9uB3E/rrkxDrKjkq
-	fcpcq9VeCExAoV/XVh9t8iZTYdwWNXs0vqVlf6bno+eN7CTKQCV7kI5wEU+vkpkBpQzEul
-	NKEXP38UXmVOABhbvdiLejkh0MLS8+4N0ORwCSEaVaxzjLnasFWjwTK2PO0l5Q==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 24e3fc66;
-	Sun, 15 Feb 2026 09:28:00 +0000 (UTC)
-Date: Sun, 15 Feb 2026 18:27:45 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eryu Guan <eguan@linux.alibaba.com>,
-	Yiwen Jiang <jiangyiwen@huawei.com>, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] 9p: fix WARN_ON when dropping nlink on files with nlink=0
-Message-ID: <aZGRkaFZPXfZW8a0@codewreck.org>
-References: <20260126-9p-v1-1-dc234d53ae87@debian.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E36258CE5
+	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 09:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771149183; cv=pass; b=QGXddBWKRT8it8PIH6tIeSDpkkbIC28rxJcvu3JqTtHYI475v7cluXz5UyMvR+wVvRtsDf7nI8IUasupnwum0wnikGbvmKFR+UO4g/+ejlyDqs+lK2HL5+dvbrvHAJwPv0WrVmge2X/h1jJ8vWKkq7x3fnZxcnoaaQMDjvJ+zho=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771149183; c=relaxed/simple;
+	bh=kQikKF6juBdGKxuw8IzgwBn4/K2a8sJRjg4e9moexBs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Na46KqQQghqqD58245vNNduwuOyATZOg9FLQNZ9P8LABQ5N8o/dR4wAufjOIJodm5LNkvN5+V8DjEC0dR/PMbrJwN5SRZ0OkNvz2Sdpo+nc6OkJzZKDuqHFKQ8ASu3tiEQnom7nXUVpnOrN/n+oIYNFhPJ1S+JH8+7S1NVsXAnM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UeQSPNb6; arc=pass smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59e6b7b11ebso2590745e87.3
+        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 01:53:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771149179; cv=none;
+        d=google.com; s=arc-20240605;
+        b=d3EY/v4QpKB5cwQYGBd8NrLYNWwEYZsil3JfPWOYX8hJ/c5LSqnR3gsjOmHgXYUmcn
+         PKWNvz/yfYwrEbgET3CgaNmGZEqYr9hUokC0Akri5nOOhLYZrJnXjD1eCztnB/MO89zi
+         VOozeQYXSOV0h4RKriK0JKeg1sd04cW2wOLQgTf9FJeRXf8+JoWiCyZX/JUUE8ZuzehT
+         y/M0o64uFTB5h48kF1YhSInsrlegmJMV/RW9S0MoTgtx3hRxNZigkWnkAq/5gZf7rxn/
+         y1qTT5hEjvFuJgUzT0hxjhZuu9Eyao+r49OzR4HjqCFoBnXaGSudZIrVbNUwg121D4oH
+         lZDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=iZyRXh8wmezgi23bMQ+xFQaZsVQ+vGJeFePHICiWcJQ=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=lUNFPTOqi29PJuJO5a9nOB+7ucRyhJzhsrombaVNyapayhzC5tJqEwQP+HJEXWHWRL
+         8CQOI212DROaJWkvLzwX0Bqx+hkPJA856GAhTBolOBAenPL73Uym3yD8pjFyhBZYPRMG
+         QWUYlWukF6kweuVI9hdHxbrJuDhsTzaH/0Syq/8JwOkXGgDaPgPZFTf60R9Kduh0+BOI
+         Y4MgRBvZPTk8H0bChvyT81L0bOjVaO9AVzDeTLpcsyE8V2ipLspwz9pfZ9JCPydNsJ+a
+         zKP7O/ujFUMYgOAetvXQRzxApZt5SU1gKjnZMhsMce8+eXSHoU2CNJT+jQ3b95NC0m42
+         JuUg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771149179; x=1771753979; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iZyRXh8wmezgi23bMQ+xFQaZsVQ+vGJeFePHICiWcJQ=;
+        b=UeQSPNb6PIdpbA1UhgFZMNeDl4RE6qnEV7DbsCneIjjN6tmUC5P8eUAQhkHEbU32LG
+         rYx48H7e0uwkaZBcMjBs6C/wXNAnFq1Dd4dEbZV2yDZJ91Y/ND2pZWMGkvnoQQI70tGm
+         GEz0wjcaZa62xUttmZx9rS3tZtPe6WgeIJ3iiRzW1I1El8+fawwiUbBcuXgyhFAwvm0r
+         62v8YzQvmPBbrpkKHYfMTuLu66EGOUJejqIFQe683CL7N7Ty6HIRRVjki/8SBjU4t9bn
+         AiEFApkEeVKYByUMZCdwTjm1mQvvVJE6DAhob1fhYZfgeryiBltZFAJvCRgvbIxsk3OM
+         o10w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771149179; x=1771753979;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=iZyRXh8wmezgi23bMQ+xFQaZsVQ+vGJeFePHICiWcJQ=;
+        b=Q0BBqjL08m1rFK+jiSFkrB4PxCBCuHmJc5MpZctiPhcrsGhhqDWPAvFM+bUhHBUFnH
+         Cbdirkch2PMi0YI8pk16B7kP7U9OMNPKP9JMTy/SRJ3fzdsZSheiltrxvKh5fd4XOlan
+         /5Rel8Job2Bw+jytfii6Afp7u6CxPsvZzBE5q9N/2Lz3RXJN30NQ79x3P/7tI6Rp0TvI
+         9+IqY/t/JbiQthHD434AxOsYlkjSCo4HzL5WEwUUPXJvPNrSqF8l01XT8QoBBBFIEmyu
+         mIGQ1ZBemr+nsyz+8UJFTCHqwZ6cHG3Z1FcjZDEa7A6Qo1Csm0THBTBrW8snpH87NXVk
+         CxMA==
+X-Gm-Message-State: AOJu0YxZmR1ID+t0gJ0N2HCpMLydxkM2fy6nIGw7crWBzkaN9YAvSlPf
+	vbbIf1nf3C5BGjlY6N4gRt9w0G5TrUFm/7oFdVJOoVPxXWvCADWocwdJgu49oy8nFU6geBZcdZQ
+	6VCd0D6Y86kAZSQ/VNWV8+dj+ZONA8wc=
+X-Gm-Gg: AZuq6aLvL0FGa8/S3pWmu2PwtzssFfiPj4Qv+hJLuRY4n9BvuZ8tos6rdTKTeVV8Mw3
+	CC+1oGj9eukaTBYYDzRA+X5vqYTi12pnCvLYaO8j+OWV63WRon1qP7ATENYPX9p0FVi4x2J3Og9
+	8QTcGlpxmW/+N/xiCi+35uSqsxmGcRNGoJS/Ydz4t5uVEEzi9GVH8BHpmls4VWWXujMmcFLQmFl
+	wuF+kXG2y4RCCk4V8pLSE06J3tM+mKbqeRT3PDhvi+1sPVJhCCm/1Wn8DmsybCV2piozj7xSqgg
+	eXr8uxzxGpCyQ+r/51CKeqzhB/MV9V4damE6wM6U
+X-Received: by 2002:a05:6512:3f0f:b0:59e:508b:c00d with SMTP id
+ 2adb3069b0e04-59f6d38d4c9mr1367158e87.51.1771149179242; Sun, 15 Feb 2026
+ 01:52:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260126-9p-v1-1-dc234d53ae87@debian.org>
+References: <20260213134708.885500854@linuxfoundation.org>
+In-Reply-To: <20260213134708.885500854@linuxfoundation.org>
+From: Dileep malepu <dileep.debian@gmail.com>
+Date: Sun, 15 Feb 2026 15:22:47 +0530
+X-Gm-Features: AaiRm5228V0C2EobLJmqGCpcjuPo_PX51gEoGd8XHRSjnUrUWBkc7U1Y2kcKbNQ
+Message-ID: <CAC-m1rrHNiCp1sKgE_V3++fHBe7nAtMKmMneZmQ48MBDBRA4ig@mail.gmail.com>
+Subject: Re: [PATCH 6.18 00/49] 6.18.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[codewreck.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[codewreck.org:s=2];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[codewreck.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216606-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216607-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[asmadeus@codewreck.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dileepdebian@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[codewreck.org:mid,codewreck.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6F7A213E63F
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 5B6B613E6C1
 X-Rspamd-Action: no action
 
-Breno Leitao wrote on Mon, Jan 26, 2026 at 02:23:37AM -0800:
-> v9fs_dec_count() guards against decrementing nlink on directories that
-> have nlink <= 2, but does not guard against decrementing nlink on
-> regular files that already have nlink == 0.
-> 
-> In the 9p filesystem, the client caches inode metadata including nlink,
-> but the server is the source of truth. During an unlink operation, the
-> following race can occur:
+On Fri, Feb 13, 2026 at 7:22=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
->   1. Client initiates unlink, server processes it and sets nlink to 0
->   2. Client fetches updated inode metadata (nlink=0) before unlink returns
->   3. Client's v9fs_remove() completes successfully
->   4. Client calls v9fs_dec_count() which calls drop_nlink() on nlink=0
+> This is the start of the stable review cycle for the 6.18.11 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 15 Feb 2026 13:46:52 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.18.11-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.18.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
+> -------------
+Build and Boot Report of linux-6.18.11-rc-1
 
-Thanks for the patch and sorry for the delay
+Build and boot tested on 6.18.11 using qemu. The Kernel
+was successfully Build and booted in virtual environment without
+any issue.
 
+Build details:
+Architectures: arm64, x86_64
+Kernel version: 6.18.11
+Configuration: defconfig
+Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git
+Commit: 1dd43fd284b6ab499dac1355db7b07d12669f73b
 
-hmm.. I'm not actually sure if we should call drop_nlink() at all in
-cacheless mode, actually..
-We don't really care about nlink in this context, as inode should be
-gone immediately anyway, or does nlink hitting zero imply something
-else?
-
-So we could get the v9fs_session_info out of the inode
-(v9fs_inode2v9ses) and just return if CACHE_META is set?
-
-Others opinion would be great, but I get the feeling that just checking
-before update only makes the race smaller, and not totally fixed.
-
-
-> This race is easily triggered under heavy unlink workloads, such as
-> stress-ng's unlink stressor, producing the following warning:
-> 
->   WARNING: fs/inode.c:417 at drop_nlink+0x4c/0xc8
->   Call trace:
->    drop_nlink+0x4c/0xc8
->    v9fs_remove+0x1e0/0x250 [9p]
->    v9fs_vfs_unlink+0x20/0x38 [9p]
->    vfs_unlink+0x13c/0x258
->    ...
-> 
-> Fix this by returning early from v9fs_dec_count() if the inode's nlink
-> is already zero, extending the protection that commit ac89b2ef9b55
-> ("9p: don't maintain dir i_nlink if the exported fs doesn't either")
-> added for directories to also cover regular files.
-> 
-> Fixes: ac89b2ef9b55 ("9p: don't maintain dir i_nlink if the exported fs doesn't either")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  fs/9p/vfs_inode.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-> index 97abe65bf7c1f..b75f656af4c98 100644
-> --- a/fs/9p/vfs_inode.c
-> +++ b/fs/9p/vfs_inode.c
-> @@ -488,10 +488,16 @@ static int v9fs_at_to_dotl_flags(int flags)
->   * - ext4 (with dir_nlink feature enabled) sets nlink to 1 if a dir has more
->   *   than EXT4_LINK_MAX (65000) links.
->   *
-> + * For regular files, the server may have already decremented nlink to 0
-> + * before the client's unlink completes, so we must also guard against
-> + * decrementing an already-zero nlink.
-> + *
->   * @inode: inode whose nlink is being dropped
->   */
->  static void v9fs_dec_count(struct inode *inode)
->  {
-> +	if (!inode->i_nlink)
-> +		return;
->  	if (!S_ISDIR(inode->i_mode) || inode->i_nlink > 2)
->  		drop_nlink(inode);
->  }
-> 
-> ---
-> base-commit: ca3a02fda4da8e2c1cb6baee5d72352e9e2cfaea
-> change-id: 20260126-9p-50d206e2f6f6
-> 
-> Best regards,
-
--- 
-Dominique Martinet | Asmadeus
+Tested-by: Dileep Malepu <dileep.debian@gmail.com>
 
