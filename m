@@ -1,189 +1,209 @@
-Return-Path: <stable+bounces-216637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMT0IO8XkmmuqwEAu9opvQ
-	(envelope-from <stable+bounces-216637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 20:01:03 +0100
+	id iGXyBr4skmmVrgEAu9opvQ
+	(envelope-from <stable+bounces-216639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:29:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A67813F79B
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 20:01:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E4213FA5C
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:29:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C951530247FA
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 19:00:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADCFD3032062
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 20:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A4B251793;
-	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3D62FB969;
+	Sun, 15 Feb 2026 20:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LShGTUaK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TrqH4eQj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5473E45C0B;
-	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771182046; cv=none; b=XWefdkYSG8+zcSl1QL8Ic++7nyVzZALB/ka7YOeioDdG6SYr7lImYDeYZN0tNngAS1TqlAtn1YHcPq1gJjYBbG6K0tBztGHxQjMJi8V5JHAe04/EwSPH9Lxf9JjMfkMR5+KvV+s+BI+NI5nRFEXXIjt/PTxt/7hrmki0u5OT9Ls=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771182046; c=relaxed/simple;
-	bh=ijCT+Mg7d3790XUMIRWeaMLVEKai5+A/PxJRt61VFl4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=t8XbF2HRR2F4huQK6QI3XLQzdVpwYLm66nJ5wYfyei9oOtvST1RXSTB3o3apwiPgViCc5hEc6h+NOZVw9ZFH8zGa4eH2yGutegngg4WgqTPtcRyxghwSZU0wCXy1QFAmI6au1RJHfGsbq8tbXyaPizpTzqs3t8/8RizuhvtAvRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LShGTUaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0F206C19423;
-	Sun, 15 Feb 2026 19:00:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771182046;
-	bh=ijCT+Mg7d3790XUMIRWeaMLVEKai5+A/PxJRt61VFl4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=LShGTUaKXyZSjrhS6kwYIBt9hwvtSZhKlGZ3HR5nedonqog3puYIOht/6vFCjqTal
-	 plQBeXpP/93WLZBN6lsrIvrqsqhSuqp6SQgf4qRj8bi2hf1RRyEmrT5iPAQMW0KGqv
-	 W32voWw9gmpyrIbRs62TdMAElqJ9DZa+0NLjrAw3cknSmdgbEQ/V4XgNUtfPK8Xwpz
-	 B4i72hk0ZKsxsuql1hIdGObH7NMvKG6VVoCLpujon5PodgwPCBZbLM6TN3DrG/zQgo
-	 oRd4N/sGgPQYeLP6fjRp6pbo4vp4ZKnPhvlZrTZrC7d9aieSMiTjd5hB7T3X4D+IEM
-	 6m3Xjc0Rplf5Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC6A4E63F0B;
-	Sun, 15 Feb 2026 19:00:45 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Mon, 16 Feb 2026 03:00:25 +0800
-Subject: [PATCH v3 1/3] mm, swap: speed up hibernation allocation and
- writeout
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45001548C
+	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 20:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771187385; cv=pass; b=V0XacenJRntUXEBiVqgSHZG6um+uKx45bJ40SHKg25RchhBm5UlVvK/8yiTl5ucpPFzj43onrblS4RhBky1ckFMxblIJRLT32vP7ssyP9pGIghn9qqyFHnRoyFk5heVMDt30aI/QJLizapfBNd9izW8RpBy7yeTvG9YKbYNtR9g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771187385; c=relaxed/simple;
+	bh=EoOlafacNg61H7V8WCD8xonXQS4mC6A5GkwHOiBDzls=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G4VUYce/yHfZSbkbtXfVPp38vMkQ1dYYSRLT3syX08JROjdF9lIYb672u+rMdbTqP0wAWEiVhJ4yfzb9zNrT3Rj9Wm35IHh4aNzSjw3NMWKaWxY1u9e8tbNo5t3yjcCUuQJwaozqK0rOVO9pBzegkkRpjPJh4/JjqvFNZT22+ZU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TrqH4eQj; arc=pass smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8cb40277a8bso271645285a.1
+        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 12:29:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771187383; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lAT5ay8bGiyxh4+ukJLlpPQSB/yz7El6cO0m3tWy6JP00JruCHdbxYyfYUUbK6zDZA
+         dHnUxt81w8R3YIW8vmurcTF9qkaZxP2q7GmMxmOmHHL32NKb6w5HKYSfOWOspVY64zvt
+         puYYa4F2kLonO+opwM/N9G7sgTA0hAatjCqcVFEB+VB7Ta4mF4svt7YBUaEpU3UzhqiE
+         jD0wrB0zmEEG1HZTb3aL0r0zPa1bUxrNjq3m2P1SFl3Fn++Ps+oczFaTQs9R0gX99tHG
+         3TQcotEZ7qlfZcdDA/h8OsrlQhxl3+ViEWooIc+lccrfjKUTcE7yS0FYfdoPJZCb3hwA
+         6Wuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZpCYDdCiDeg+luhgldp27Z2qAd8kF5mmiEZcYj/iMpI=;
+        fh=V2KL2WPNklQIwpAe2Bv0SddZX68COc+gM+HXUQnvEdE=;
+        b=Jef3ATcYpw+lrKndK9Dn6uztlnGhRDtWu+/dFIuzJvlMtnSRHRGW8wYkEPy7IjtWRQ
+         2rt1ozamBLTeGcUp19cnHYuIKPLAfGYIEZc+fbAlKFx+4liY2Myd7MGjb1et0ytP+Jyf
+         5l98tJVRSom6qjJaJZKih6i9TU5hIORpV+GmGHQLJHwmIINgyfQplC+nJrhwsEYuQbZk
+         ubKG7e3vmV2ScKbIP3uS617KxWD0qDte62FZTrqQ76mXz6c2X6dke4u3rORw0G3CHnCk
+         0iE4Uma6l6fn3KOjEoSH94YMLTzxBwUgvu1yJNFIoHmKh2RoTvbdCU8SAuVmyAf4NSoM
+         khJA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771187383; x=1771792183; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZpCYDdCiDeg+luhgldp27Z2qAd8kF5mmiEZcYj/iMpI=;
+        b=TrqH4eQjR9Ayp5Wo1c9Mcrwzu+boPciSS2xpP0fow7mLVOqNMPnyORYCewgokYHRLC
+         OlmeDwJyRE9Akw1jIP4Qf8e8WFkQAnm7NRO/5mFCu4FIpz3Lv/zwmB/vaSbj3Zcft4r4
+         asJO5TT6JNu5uoOc2/2paVHBLqr8tVmBc8Y5k4Zx9WaD50howSUgwLAvTLqFmcQhFyKr
+         6CXr0Hh1fnUDKdQlE3QDbLBweX86eb5wFiLxjay+bYUwd83I0jNCgH7xwwxj4iCW/CoU
+         kIrKDTEcTSRh73tpNJowTQVpE3HpdjFuwzOl7x5xaPIsKYOsdgohDRD8IvNUc38SDMkG
+         4Lcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771187383; x=1771792183;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZpCYDdCiDeg+luhgldp27Z2qAd8kF5mmiEZcYj/iMpI=;
+        b=LM9dovqry3YLUFZ7AaWSy3XDefgiKKP8dcZuI2AIvDZC56q99InzKRSRRZMIN7zlCa
+         ysvtPAHQCYq8XtizbQSrpiXv1XrO06A1Fz+tVA7DwO9zMafnqF3KAHDK0gAVaVp42RbT
+         rQNNWZ5moyFGl8WPT4iq1wFTNvYN/hidOYFJ7te0H82VYX5joZxHlUpDJSCHi2dUfep5
+         N1cx8Xc05ternfnv2paDcngXnL5SgraP7XPt+aWcttbnjSbmwlfmSRGpGuDR4CNDkSq1
+         ciy4rlhDvXdAgzZyIbE0SmrB/NfMh0yn5L9FUj3xIxRnERQ8dlDosUSP1l2vdMlVP32o
+         B4lg==
+X-Forwarded-Encrypted: i=1; AJvYcCWVAtKmfJV+bsPCMhksyIhyhV6HGMyEY/Rueupuf8LDJqP046Et3CQmDVyDgGZcavLQW2buJTA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9EszIx+rqtQ/X2haVRBXhqOZYNHACIo518YMzCaVV3WVnzFrp
+	sL23R0V+nRLMe8tE5V33ZrXmfIp5kClUE/WAhL53v7pnJsuVVsYogUlZ5pVn87cCfgaaQoQtRe3
+	Fx0Bw99qym/TnhRtdN2bdPVCbbgCR9vU=
+X-Gm-Gg: AZuq6aLRtAJXt3NHZs8nQlVGqudo+koeSCfaLX0TkGYpMuMPm3YpsPKtY5kq5dHkANN
+	16kw9yt8p2N+VaAsaca4WVh7y0y5qvVpgIio7OZLZ45x2vnQ4Pw72ZixCCqZzXoXlwKgARMY+My
+	emLsaYm1KXvj+2QgkpDioyGT+P7zNC9Nb64HbqkliABGlgy09GTrso8Kb6PsH0Q8REelmesjhN1
+	zvdEOsg4L79pkdpZSq18tiAGwxRbKhz+EaqM5KKAA+Eirqzq8EPbEB4uOS3O9Y9zhFWWmjpsSgJ
+	shuBFg==
+X-Received: by 2002:a05:620a:2942:b0:8ca:2cf9:819b with SMTP id
+ af79cd13be357-8cb422696a6mr1011942885a.30.1771187383348; Sun, 15 Feb 2026
+ 12:29:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260216-hibernate-perf-v3-1-74e025091145@tencent.com>
-References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com>
-In-Reply-To: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
- Carsten Grohmann <mail@carstengrohmann.de>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
- "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, 
- Carsten Grohmann <carstengrohmann@gmx.de>, Kairui Song <kasong@tencent.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771182044; l=2673;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=AP2Agry4RlYj89KzjPUleAMF+xnfApgEpjtkm4VqQJg=;
- b=oWPcjSUKtm8Q5thSWVCe+iAtBfoyhjpcOXkpVbNik48lhQotclHLHkRYpDUJ3lggMApH+ajKj
- ubJcoDilvf7DOAEJdCiVlTXLq6u98zsCp55n45Ahcmc5887iscwJsNb
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
+References: <20260214001535.435626-1-kartikey406@gmail.com>
+In-Reply-To: <20260214001535.435626-1-kartikey406@gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 16 Feb 2026 04:29:32 +0800
+X-Gm-Features: AaiRm50syQHB3kctGnJnEjyiXqT8j1X7hIANEB9brrbUxqOPyK3vC3uGRbBzxPE
+Message-ID: <CAGsJ_4xZd9QCjcJo+j-iWox+O61+MJKui54pqek072LdSnh26w@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: thp: deny THP for files on anonymous inodes
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	lance.yang@linux.dev, i@maskray.me, shy828301@gmail.com, 
+	ackerleytng@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216637-lists,stable=lfdr.de,kasong.tencent.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-216639-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.org,huaweicloud.com,gmail.com,redhat.com,carstengrohmann.de,vger.kernel.org,gmx.de,tencent.com];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[21cnbao@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.org,oracle.com,nvidia.com,linux.alibaba.com,redhat.com,arm.com,linux.dev,maskray.me,gmail.com,google.com,kvack.org,vger.kernel.org,syzkaller.appspotmail.com];
+	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	HAS_REPLYTO(0.00)[kasong@tencent.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[carstengrohmann.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tencent.com:mid,tencent.com:email,tencent.com:replyto]
-X-Rspamd-Queue-Id: 4A67813F79B
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 43E4213FA5C
 X-Rspamd-Action: no action
 
-From: Kairui Song <kasong@tencent.com>
+On Sat, Feb 14, 2026 at 8:15=E2=80=AFAM Deepanshu Kartikey
+<kartikey406@gmail.com> wrote:
+>
+> file_thp_enabled() incorrectly allows THP for files on anonymous inodes
+> (e.g. guest_memfd and secretmem). These files are created via
+> alloc_file_pseudo(), which does not call get_write_access() and leaves
+> inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
+> true, they appear as read-only regular files when
+> CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
+> collapse.
+>
+> Anonymous inodes can never pass the inode_is_open_for_write() check
+> since their i_writecount is never incremented through the normal VFS
+> open path. The right thing to do is to exclude them from THP eligibility
+> altogether, since CONFIG_READ_ONLY_THP_FOR_FS was designed for real
+> filesystem files (e.g. shared libraries), not for pseudo-filesystem
+> inodes.
+>
+> For guest_memfd, this allows khugepaged and MADV_COLLAPSE to create
+> large folios in the page cache via the collapse path, but the
+> guest_memfd fault handler does not support large folios. This triggers
+> WARN_ON_ONCE(folio_test_large(folio)) in kvm_gmem_fault_user_mapping().
+>
+> For secretmem, collapse_file() tries to copy page contents through the
+> direct map, but secretmem pages are removed from the direct map. This
+> can result in a kernel crash:
+>
+>     BUG: unable to handle page fault for address: ffff88810284d000
+>     RIP: 0010:memcpy_orig+0x16/0x130
+>     Call Trace:
+>      collapse_file
+>      hpage_collapse_scan_file
+>      madvise_collapse
+>
+> Secretmem is not affected by the crash on upstream as the memory failure
+> recovery handles the failed copy gracefully, but it still triggers
+> confusing false memory failure reports:
+>
+>     Memory failure: 0x106d96f: recovery action for clean unevictable
+>     LRU page: Recovered
+>
+> Check IS_ANON_FILE(inode) in file_thp_enabled() to deny THP for all
+> anonymous inode files.
+>
+> Link: https://syzkaller.appspot.com/bug?extid=3D33a04338019ac7e43a44
+> Link: https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=3DU6rs=
+6S7iP0gkR9enr7HoGtA@mail.gmail.com
+> Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D33a04338019ac7e43a44
+> Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility"=
+)
+> Tested-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
 
-Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
-hibernation has been using the swap slot slow allocation path for
-simplification, which turns out might cause regression for some
-devices because the allocator now rotates clusters too often, leading to
-slower allocation and more random distribution of data.
+LGTM,
 
-Fast allocation is not complex, so implement hibernation support as
-well.
-
-Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
-performance is several times better [1]:
-6.19:               324 seconds
-After this series:  35 seconds
-
-Fixes: 0ff67f990bd4 ("mm, swap: remove swap slot cache")
-Reported-by: Carsten Grohmann <mail@carstengrohmann.de>
-Closes: https://lore.kernel.org/linux-mm/20260206121151.dea3633d1f0ded7bbf49c22e@linux-foundation.org/
-Link: https://lore.kernel.org/linux-mm/8b4bdcfa-ce3f-4e23-839f-31367df7c18f@gmx.de/ [1]
-Cc: stable@vger.kernel.org
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/swapfile.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index c6863ff7152c..32e0e7545ab8 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1926,8 +1926,9 @@ void swap_put_entries_direct(swp_entry_t entry, int nr)
- /* Allocate a slot for hibernation */
- swp_entry_t swap_alloc_hibernation_slot(int type)
- {
--	struct swap_info_struct *si = swap_type_to_info(type);
--	unsigned long offset;
-+	struct swap_info_struct *pcp_si, *si = swap_type_to_info(type);
-+	unsigned long pcp_offset, offset = SWAP_ENTRY_INVALID;
-+	struct swap_cluster_info *ci;
- 	swp_entry_t entry = {0};
- 
- 	if (!si)
-@@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
- 	if (get_swap_device_info(si)) {
- 		if (si->flags & SWP_WRITEOK) {
- 			/*
--			 * Grab the local lock to be compliant
--			 * with swap table allocation.
-+			 * Try the local cluster first if it matches the device. If
-+			 * not, try grab a new cluster and override local cluster.
- 			 */
- 			local_lock(&percpu_swap_cluster.lock);
--			offset = cluster_alloc_swap_entry(si, NULL);
-+			pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
-+			pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
-+			if (pcp_si == si && pcp_offset) {
-+				ci = swap_cluster_lock(si, pcp_offset);
-+				if (cluster_is_usable(ci, 0))
-+					offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
-+				else
-+					swap_cluster_unlock(ci);
-+			}
-+			if (!offset)
-+				offset = cluster_alloc_swap_entry(si, NULL);
- 			local_unlock(&percpu_swap_cluster.lock);
- 			if (offset)
- 				entry = swp_entry(si->type, offset);
-
--- 
-2.52.0
-
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
