@@ -1,264 +1,199 @@
-Return-Path: <stable+bounces-216611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ntVgDdLTkWnpnAEAu9opvQ
-	(envelope-from <stable+bounces-216611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 15:10:26 +0100
+	id wIvwMSbUkWnpnAEAu9opvQ
+	(envelope-from <stable+bounces-216612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 15:11:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54EF513ECD4
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 15:10:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E37A13ECE6
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 15:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2F511300538F
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 14:10:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C679300D319
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 14:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE7A29B204;
-	Sun, 15 Feb 2026 14:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD12E2DF155;
+	Sun, 15 Feb 2026 14:11:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V6VG1AAL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66079194C96;
-	Sun, 15 Feb 2026 14:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771164620; cv=none; b=jfSnrMliI1z3leF71OU/SeDwe4dxlvhjlGlYXUzUnRy/T2yAEnMUwDUikI947Wa8FnowRSL/8QYQZym+zI7m+8NDv6tTbxDyvBfyEzgZiHXA+LeDdhCZDeI7ChhgHgXzwNPKoRLby2klM8a7/pcPjomiBJRCOHhl2GaB09PRT1M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771164620; c=relaxed/simple;
-	bh=2yStp3xIxZCnJt/Lg5CSUzoUxFjXzXcqf0vrc6IeYec=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q2WdZ51a5qa4M9l5iBG+L70dzWU8V1rQbXFMiZ0ReK1y6s68K8p4bsCvz45hBaHu6HmS/B4TdngxwCcLk3PlLuCW7D9re6KlfQUzf6Yz3F0RlTX4u76dkfQNJOiG5zojYDtDPL4IkQckgoq+7dUZLTbSKbNNE1XJZe03U+2ltFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.227])
-	by gateway (Coremail) with SMTP id _____8DxusLB05FplJ0SAA--.58272S3;
-	Sun, 15 Feb 2026 22:10:09 +0800 (CST)
-Received: from kernelserver (unknown [223.64.68.227])
-	by front1 (Coremail) with SMTP id qMiowJCxdcC705Fpp5xGAA--.20583S2;
-	Sun, 15 Feb 2026 22:10:07 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH for 6.6 & 6.12] LoongArch: Rework KASAN initialization for PTW-enabled systems
-Date: Sun, 15 Feb 2026 22:09:53 +0800
-Message-ID: <20260215140953.1224579-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995041A3029
+	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 14:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771164705; cv=pass; b=Dn9YonR6Lhmtt/VBH6fqic/izFrcuyK2IxS7os0gAnTyxeY27pB/jGtKvpc79oCUWQDwTRk+l0gZQszEjNTzyy86G1Z0hffr7QGtGmaLU5kDewcUHFhYRx3ttOo2j/7mATrdf4VhVjKK0QH02nvaRnjw61MLAymHtDm6qaSlvfI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771164705; c=relaxed/simple;
+	bh=IS67sc4Ha9dtdSU+DoGA1J2xownlpl0HA1i2nBo07Do=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=iDjjHvQmYFvFr8ZYwZYfWrC9wwbTkzfmj5Gc7ppEcUGc6HbUPG0KrXfmJlIigFcJ5WoPnk5rDZxWPOUPo1EkiFHq/INf0EG1TcfFp9u02rqTuzv4PHlrwPw+5+x9Fv/ImzEa++OoK7d2lfOiIonZ1NB/f4a1SBrMa3FX2hoP7SA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V6VG1AAL; arc=pass smtp.client-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2baacadad3eso96744eec.2
+        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 06:11:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771164704; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bLVf8N8xSP7IZ+R2se+dKwOR/ErBQYtFXqsPTCB1YvS7/RSprwWsppVx++7hbRzKuN
+         CdELFdJwF1uRw9eST/QBs8eR2IlwhE4DL6WnWWUW9efg9EHCDrr7UOgQO54U8vfm2ArA
+         P340IF4ePGvy6mV9F59l6DE1fDAbc+zfAd5zIUznuWTZoFPBcbA/yOJlayFqZnnRfIHM
+         FVAp86AyR/1tKJyb0tiyTI3dI6Kb+FYhUeSf8XRJ3q80dSYl6YyZPIwqU/6R+7MitPsy
+         IOpCI1+tZEURFPjAYxaYD+L4rbrSRwmsBBrMnd9FscDoPkAEdQlW9K/2YLeWW2f6xWq7
+         TrDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=lmAu+Za+Ffpbk5WZHW0bF6Gwlmx16jAYsYG2pCm96Tk=;
+        fh=LCYLlxsZ/HspS3ogAVzZzymBBDtcepSBqE08Mo+go8Y=;
+        b=Iw6+4pMuX2mQUBJvPKtu/Pm3T/kGU7xQLQfE5wtnY+XYKuG467Nq7VQkGCNgDarZq4
+         RtMvg0RgqC630fU2lzO9W+7/KRecizBNOjVoEUZjeubMckC8Tqi/G0BVOwB7CvDxVpTI
+         C5BDVTAnXObybzdNJ08BdTFLMEBUaJQWcjlLY7o5pQgNFPYELc2S+eSoSMG1pKkLRT7z
+         6YgVWJREBWCF7vrI9cGd3XQemKLopP06f7HBjG4Iswk1bRFkMMvqWncVA/pmArcsz4/z
+         w94xWIVCoeZRq7oJUEHcPMpt3vCa7LPiQ5EiGZBog25MU8ZL4D7OCKKz+5QOo+e4Hv5L
+         kmEA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771164704; x=1771769504; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lmAu+Za+Ffpbk5WZHW0bF6Gwlmx16jAYsYG2pCm96Tk=;
+        b=V6VG1AAL/WR0gifhVmdJpLYLkwCMeAM1l5parGTPYr2nLFFpCIE/a8AIMC38McGez3
+         iRsufDna4Ypab/2gw5qgA+FNHVvIQfleUCxIwTx8shSTYTGYUNs7LG1vUAglyEg6HyuH
+         xh11EttFv5sbj20frQ6uUuDfujLDicmD0rCej5/x6RFvNLvvUB7Vp//5iYs/XyzZzoOB
+         BRlr5RwuXG7DCuSS+hbyy3wEmlF/4b8Cgo3ogtqcLHxn5u3MQpPH7QAPPyJM+zWJC5PW
+         qkPp5EBlkvrsNj54Ujps/jRe+GgpMy7ZjfN8whbtzN8mZw0ooFEyjSqGHKLDQrsRbhGL
+         KewA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771164704; x=1771769504;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lmAu+Za+Ffpbk5WZHW0bF6Gwlmx16jAYsYG2pCm96Tk=;
+        b=tte4dxTcINPCw3jybXkoySiWexC0FOHw4bz70SMnLnRNu0qj/JG/gdaujIx/VhCxyY
+         6jI+A/HZFTwzJHUIYmY3Y4ra8ozFXKPRlhQbOUGdCly/3Ktk9s2J+N1w9Sf/5XMnKuQU
+         O4sQ0isQ6yXKk9hnLzOa8swiAYxraO9iju4rHivWRyJ6XFmoJ7fxXeBHct6a42xHPLct
+         CuDJFNIkCeZo41ZWvjiAkmjXma1rjTDFe2Mj2t4unIGrdynYCDS/sHPSjiguGGM8kBQ2
+         V5EsAXz4ZoSC2QhGEF1Y8G8aGZtxse25GFrJLpK+nI9BqIGqOnOdcWsDB+GGYPGLYFXJ
+         SqZw==
+X-Gm-Message-State: AOJu0YwIxu031vHZ7KLm1EU6kscKtxSXnNRy3lSKHZeo8TNzd8DO51Pr
+	VUQxjQ7K5HibfAU68u/TE2bOv1+T/j6adLnBK+xiqoYQoR7342HnM3hwidpuabguULaxF8BL3xt
+	oolH8d9MVp9UCbbL599XCjtzy7vatNw0=
+X-Gm-Gg: AZuq6aLIeuPIRWj6I6o/iiYsOewOkhX8zMPg6KGPgQybnDXp1AVJpXh0TkGX4gMV6N9
+	g1Xg4Iz0k4FtZ3XuK9H0Iemfk6EXqWquwm2FxLwSg7905cXHI8QyUdVHFlFiDWdtZ8gqYcF4ki2
+	+iswn2HH+txUmN4dpFHbrnsvkmK4nbkDJvr32+ill7NRGD158RtO0/M2a3JOmmDvwX0WPBTCTK9
+	qtGtrcr0UDFBWBRz/S8LKIv2CIa9owZGcKjFNrNWctCBB0f3yXpG1x8f1BEBb4747h8+i4qHf3H
+	rAoIPuYG3kEF4AC+MnnSu+dSMiP+Rwsze7NhzWyxmxcVpJJRpoNsreaKgSkUpNjekY5CD1vndPq
+	NxJpHTMZXyBkMvVawwPq8Ir5S
+X-Received: by 2002:a05:7300:bc0e:b0:2ba:b16f:8092 with SMTP id
+ 5a478bee46e88-2bab9ec5ef6mr1638797eec.0.1771164703649; Sun, 15 Feb 2026
+ 06:11:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxdcC705Fpp5xGAA--.20583S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Wry5Kw1fAF4kWw45KF1UCFX_yoW7Cw1xpr
-	WkKa48Gr4vvr4qqanxGw1UAry8Jwn3Ca97tFWaqa95Kay3CFy0qr1DGFykZr17WrW7JFyY
-	9w1SvFWDGF45tacCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
-	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
-	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64
-	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkUUUUU=
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 15 Feb 2026 15:11:31 +0100
+X-Gm-Features: AaiRm51kWsntpYAMki_wBOn4FdlRNmJALQ-XrmQQ5z16DZEm77O5QapQ1SrWrNI
+Message-ID: <CANiq72n3qPsoy2u1KxfyV4ZCjJyDZLkK-54i7EesTH=TE9h1jw@mail.gmail.com>
+Subject: Consider backporting rustdoc fixes for 6.18.y
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
+	David Gow <davidgow@google.com>
+Cc: stable@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	linux-pci@vger.kernel.org, driver-core@lists.linux.dev, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DMARC_NA(0.00)[loongson.cn];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	R_DKIM_NA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216611-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-216612-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,loongson.cn:mid,loongson.cn:email]
-X-Rspamd-Queue-Id: 54EF513ECD4
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org,arm.com,collabora.com,google.com,lists.linux.dev];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2E37A13ECE6
 X-Rspamd-Action: no action
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Hi Greg, Sasha, David,
 
-commit 5ec5ac4ca27e4daa234540ac32f9fc5219377d53 upstream.
+I have been seeing these warnings (errors with `WERROR=y`) in stable
+6.18 UML + Rust on the `rustdoc` target [1].
 
-"kasan_early_stage = false" indicates that kasan is fully initialized,
-so it should be put at end of kasan_init().
+Unless David (who works around UML + Rust) or the different
+maintainers (Cc'd) have a concern, please consider backporting:
 
-Otherwise bringing up the primary CPU failed when CONFIG_KASAN is set
-on PTW-enabled systems, here are the call chains:
+  a9a42f0754b6 ("rust: device: fix broken intra-doc links")
+  32cb3840386f ("rust: dma: fix broken intra-doc links")
+  4c9f6a782f60 ("rust: driver: fix broken intra-doc links to example
+driver types")
 
-    kernel_entry()
-      start_kernel()
-        setup_arch()
-          kasan_init()
-            kasan_early_stage = false
+They had Fixes tags, but not Cc: stable tags.
 
-The reason is PTW-enabled systems have speculative accesses which means
-memory accesses to the shadow memory after kasan_init() may be executed
-by hardware before. However, accessing shadow memory is safe only after
-kasan fully initialized because kasan_init() uses a temporary PGD table
-until we have populated all levels of shadow page tables and writen the
-PGD register. Moving "kasan_early_stage = false" later can defer the
-occasion of kasan_arch_is_ready(), so as to avoid speculative accesses
-on shadow pages.
+I hope that helps & thanks!
 
-After moving "kasan_early_stage = false" to the end, kasan_init() can no
-longer call kasan_mem_to_shadow() for shadow address conversion because
-it will always return kasan_early_shadow_page. On the other hand, we
-should keep the current logic of kasan_mem_to_shadow() for both the early
-and final stage because there may be instrumentation before kasan_init().
+Cheers,
+Miguel
 
-To solve this, we factor out a new mem_to_shadow() function from current
-kasan_mem_to_shadow() for the shadow address conversion in kasan_init().
+[1]
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/mm/kasan_init.c | 77 ++++++++++++++++++----------------
- 1 file changed, 40 insertions(+), 37 deletions(-)
+    error: unresolved link to `kernel::pci::Device`
+       --> rust/kernel/device.rs:158:22
+        |
+    158 | /// [`pci::Device`]: kernel::pci::Device
+        |                      ^^^^^^^^^^^^^^^^^^^ no item named `pci`
+in module `kernel`
+        |
+        = note: `-D rustdoc::broken-intra-doc-links` implied by `-D warnings`
+        = help: to override `-D warnings` add
+`#[allow(rustdoc::broken_intra_doc_links)]`
 
-diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
-index d2681272d8f0..9337380a70eb 100644
---- a/arch/loongarch/mm/kasan_init.c
-+++ b/arch/loongarch/mm/kasan_init.c
-@@ -42,39 +42,43 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
- 
- bool kasan_early_stage = true;
- 
--void *kasan_mem_to_shadow(const void *addr)
-+static void *mem_to_shadow(const void *addr)
- {
--	if (!kasan_arch_is_ready()) {
-+	unsigned long offset = 0;
-+	unsigned long maddr = (unsigned long)addr;
-+	unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
-+
-+	if (maddr >= FIXADDR_START)
- 		return (void *)(kasan_early_shadow_page);
--	} else {
--		unsigned long maddr = (unsigned long)addr;
--		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
--		unsigned long offset = 0;
--
--		if (maddr >= FIXADDR_START)
--			return (void *)(kasan_early_shadow_page);
--
--		maddr &= XRANGE_SHADOW_MASK;
--		switch (xrange) {
--		case XKPRANGE_CC_SEG:
--			offset = XKPRANGE_CC_SHADOW_OFFSET;
--			break;
--		case XKPRANGE_UC_SEG:
--			offset = XKPRANGE_UC_SHADOW_OFFSET;
--			break;
--		case XKPRANGE_WC_SEG:
--			offset = XKPRANGE_WC_SHADOW_OFFSET;
--			break;
--		case XKVRANGE_VC_SEG:
--			offset = XKVRANGE_VC_SHADOW_OFFSET;
--			break;
--		default:
--			WARN_ON(1);
--			return NULL;
--		}
- 
--		return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
-+	maddr &= XRANGE_SHADOW_MASK;
-+	switch (xrange) {
-+	case XKPRANGE_CC_SEG:
-+		offset = XKPRANGE_CC_SHADOW_OFFSET;
-+		break;
-+	case XKPRANGE_UC_SEG:
-+		offset = XKPRANGE_UC_SHADOW_OFFSET;
-+		break;
-+	case XKPRANGE_WC_SEG:
-+		offset = XKPRANGE_WC_SHADOW_OFFSET;
-+		break;
-+	case XKVRANGE_VC_SEG:
-+		offset = XKVRANGE_VC_SHADOW_OFFSET;
-+		break;
-+	default:
-+		WARN_ON(1);
-+		return NULL;
- 	}
-+
-+	return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
-+}
-+
-+void *kasan_mem_to_shadow(const void *addr)
-+{
-+	if (kasan_arch_is_ready())
-+		return mem_to_shadow(addr);
-+	else
-+		return (void *)(kasan_early_shadow_page);
- }
- 
- const void *kasan_shadow_to_mem(const void *shadow_addr)
-@@ -295,10 +299,8 @@ void __init kasan_init(void)
- 	/* Maps everything to a single page of zeroes */
- 	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, true);
- 
--	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
--					kasan_mem_to_shadow((void *)KFENCE_AREA_END));
--
--	kasan_early_stage = false;
-+	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
-+					mem_to_shadow((void *)KFENCE_AREA_END));
- 
- 	/* Populate the linear mapping */
- 	for_each_mem_range(i, &pa_start, &pa_end) {
-@@ -308,13 +310,13 @@ void __init kasan_init(void)
- 		if (start >= end)
- 			break;
- 
--		kasan_map_populate((unsigned long)kasan_mem_to_shadow(start),
--			(unsigned long)kasan_mem_to_shadow(end), NUMA_NO_NODE);
-+		kasan_map_populate((unsigned long)mem_to_shadow(start),
-+			(unsigned long)mem_to_shadow(end), NUMA_NO_NODE);
- 	}
- 
- 	/* Populate modules mapping */
--	kasan_map_populate((unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR),
--		(unsigned long)kasan_mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
-+	kasan_map_populate((unsigned long)mem_to_shadow((void *)MODULES_VADDR),
-+		(unsigned long)mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
- 	/*
- 	 * KAsan may reuse the contents of kasan_early_shadow_pte directly, so we
- 	 * should make sure that it maps the zero page read-only.
-@@ -329,5 +331,6 @@ void __init kasan_init(void)
- 
- 	/* At this point kasan is fully initialized. Enable error messages */
- 	init_task.kasan_depth = 0;
-+	kasan_early_stage = false;
- 	pr_info("KernelAddressSanitizer initialized.\n");
- }
--- 
-2.52.0
+    error: unresolved link to `::kernel::pci::Device`
+      --> rust/kernel/dma.rs:29:70
+       |
+    29 | /// where the underlying bus is DMA capable, such as
+[`pci::Device`](::kernel::pci::Device) or
+       |
+       ^^^^^^^^^^^^^^^^^^^^^ no item named `pci` in module `kernel`
 
+    error: unresolved link to `kernel::auxiliary::Driver`
+      --> rust/kernel/driver.rs:82:28
+       |
+    82 | //! [`auxiliary::Driver`]: kernel::auxiliary::Driver
+       |                            ^^^^^^^^^^^^^^^^^^^^^^^^^ no item
+named `auxiliary` in module `kernel`
+
+    error: unresolved link to `kernel::pci::Driver`
+      --> rust/kernel/driver.rs:90:22
+       |
+    90 | //! [`pci::Driver`]: kernel::pci::Driver
+       |                      ^^^^^^^^^^^^^^^^^^^ no item named `pci`
+in module `kernel`
 
