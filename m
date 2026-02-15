@@ -1,209 +1,238 @@
-Return-Path: <stable+bounces-216639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGXyBr4skmmVrgEAu9opvQ
-	(envelope-from <stable+bounces-216639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:29:50 +0100
+	id iD2eIxAwkmk8rwEAu9opvQ
+	(envelope-from <stable+bounces-216640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:44:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E4213FA5C
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B58913FAAB
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADCFD3032062
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 20:29:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86B803008D2F
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 20:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3D62FB969;
-	Sun, 15 Feb 2026 20:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D24D3043BE;
+	Sun, 15 Feb 2026 20:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TrqH4eQj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P01W/YS3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45001548C
-	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 20:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA129274B59
+	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 20:43:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771187385; cv=pass; b=V0XacenJRntUXEBiVqgSHZG6um+uKx45bJ40SHKg25RchhBm5UlVvK/8yiTl5ucpPFzj43onrblS4RhBky1ckFMxblIJRLT32vP7ssyP9pGIghn9qqyFHnRoyFk5heVMDt30aI/QJLizapfBNd9izW8RpBy7yeTvG9YKbYNtR9g=
+	t=1771188234; cv=pass; b=mhLWz/sjORjqSbRGocJ41wTseH9pKhhgyCTSRcwJ1jdeRsSNTcfP6L+T0cajGIsnRX1r5lGyXKHIqNBBqQFpF9GcnUNobaY5ZudPmHOQ10SVIPb+Nr4KROEGLRoA4uCWI557pZpqAbWfTSNzZR8RrdEEoell+EF5fBQekSQtsaM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771187385; c=relaxed/simple;
-	bh=EoOlafacNg61H7V8WCD8xonXQS4mC6A5GkwHOiBDzls=;
+	s=arc-20240116; t=1771188234; c=relaxed/simple;
+	bh=zD5CZP34AdfNzMLyyeRSFpmesixbFhvK4lsi6vLs53Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G4VUYce/yHfZSbkbtXfVPp38vMkQ1dYYSRLT3syX08JROjdF9lIYb672u+rMdbTqP0wAWEiVhJ4yfzb9zNrT3Rj9Wm35IHh4aNzSjw3NMWKaWxY1u9e8tbNo5t3yjcCUuQJwaozqK0rOVO9pBzegkkRpjPJh4/JjqvFNZT22+ZU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TrqH4eQj; arc=pass smtp.client-ip=209.85.222.179
+	 To:Cc:Content-Type; b=QxxFr8LNeY2fx0Cn5fWFavAWST2hT/vKo8709Wud3ksQsdGjzx0DlwkI0vEERAKVhPZC2rMVvYeS8bBw9mIn8GTekmVnuHBJh/TDkQvfi+L7nPZxpyP0CXSqZocYNb2F4lISpTy7MTM31lcmbg6CZpykQtPMetZTiDypOoh1D/M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P01W/YS3; arc=pass smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8cb40277a8bso271645285a.1
-        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 12:29:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771187383; cv=none;
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5069ad750b7so24360431cf.2
+        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 12:43:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771188232; cv=none;
         d=google.com; s=arc-20240605;
-        b=lAT5ay8bGiyxh4+ukJLlpPQSB/yz7El6cO0m3tWy6JP00JruCHdbxYyfYUUbK6zDZA
-         dHnUxt81w8R3YIW8vmurcTF9qkaZxP2q7GmMxmOmHHL32NKb6w5HKYSfOWOspVY64zvt
-         puYYa4F2kLonO+opwM/N9G7sgTA0hAatjCqcVFEB+VB7Ta4mF4svt7YBUaEpU3UzhqiE
-         jD0wrB0zmEEG1HZTb3aL0r0zPa1bUxrNjq3m2P1SFl3Fn++Ps+oczFaTQs9R0gX99tHG
-         3TQcotEZ7qlfZcdDA/h8OsrlQhxl3+ViEWooIc+lccrfjKUTcE7yS0FYfdoPJZCb3hwA
-         6Wuw==
+        b=U3WsdydvKKbRK0wjbPq/ZXM5CKeMQfoT10ZpgrR/MXDYkWKfPtgHiyHja5ENKFclS4
+         XzxA6SdvgrGNw3kWj1sB3YCCopmAwiHPSNfuzTxVOtzu2i+pLcNqM0zyBviIRKCx52Qg
+         fMII3hNFE0316/jqsK16XNwRKcCGKzgGv7tuwLEMJEx0+MrVwNT+XG8EZvTIyFbMCjwF
+         hUMLieXh16Rwcyvha4XH5y4uPT2rkHkWxgT71b5vTi0+fks2NeivXk7F09+eKkpWvc/D
+         OmoxdBCDwVc+oBFniMKbD3HqAtzRyt/sdETj4DpYkqehJBRjz6VTlUKIsyMkGZB2u1E4
+         eNyg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZpCYDdCiDeg+luhgldp27Z2qAd8kF5mmiEZcYj/iMpI=;
-        fh=V2KL2WPNklQIwpAe2Bv0SddZX68COc+gM+HXUQnvEdE=;
-        b=Jef3ATcYpw+lrKndK9Dn6uztlnGhRDtWu+/dFIuzJvlMtnSRHRGW8wYkEPy7IjtWRQ
-         2rt1ozamBLTeGcUp19cnHYuIKPLAfGYIEZc+fbAlKFx+4liY2Myd7MGjb1et0ytP+Jyf
-         5l98tJVRSom6qjJaJZKih6i9TU5hIORpV+GmGHQLJHwmIINgyfQplC+nJrhwsEYuQbZk
-         ubKG7e3vmV2ScKbIP3uS617KxWD0qDte62FZTrqQ76mXz6c2X6dke4u3rORw0G3CHnCk
-         0iE4Uma6l6fn3KOjEoSH94YMLTzxBwUgvu1yJNFIoHmKh2RoTvbdCU8SAuVmyAf4NSoM
-         khJA==;
+        bh=sUYiczTId7sm36/pcGB9sAOFpwsRYPpRXY+ssJjaFVI=;
+        fh=o33bYlUZG8tGkoIQzAdbLNHGplYT/qVoKeBp24mIeAE=;
+        b=YZ7/yAXgWt4o5PoCouMFqHbNZQEpRGaFzjC444pnJNtwhqxmA7Nmw5XbQNkLuk2l4T
+         ZaI82auT7f/U/bi1ebwO0D2ibE2XQ47w3aP/tT3XAWENWMiLJKUdKUM0+al4cjS+awgr
+         kGivybifT/snZIu1Vlo1v61j3TVjYiqaxRPlePjb47Iq5Nkh+tEMJi9e3kUdLYxGA//b
+         hjOMd8xhhdAwFqupNBoJIgj3sZfNG4Q1a6AyEVGWPDXiv0/h+8iv0B4Xozk6+AmpitLY
+         CrMl+OHAVvlQv7WdLEz6oOYT+7X5AAJaaEIVW5fq6MRndkQf1fW6cL0eM1K/7RWC0Vi0
+         iMDw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771187383; x=1771792183; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771188232; x=1771793032; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZpCYDdCiDeg+luhgldp27Z2qAd8kF5mmiEZcYj/iMpI=;
-        b=TrqH4eQjR9Ayp5Wo1c9Mcrwzu+boPciSS2xpP0fow7mLVOqNMPnyORYCewgokYHRLC
-         OlmeDwJyRE9Akw1jIP4Qf8e8WFkQAnm7NRO/5mFCu4FIpz3Lv/zwmB/vaSbj3Zcft4r4
-         asJO5TT6JNu5uoOc2/2paVHBLqr8tVmBc8Y5k4Zx9WaD50howSUgwLAvTLqFmcQhFyKr
-         6CXr0Hh1fnUDKdQlE3QDbLBweX86eb5wFiLxjay+bYUwd83I0jNCgH7xwwxj4iCW/CoU
-         kIrKDTEcTSRh73tpNJowTQVpE3HpdjFuwzOl7x5xaPIsKYOsdgohDRD8IvNUc38SDMkG
-         4Lcg==
+        bh=sUYiczTId7sm36/pcGB9sAOFpwsRYPpRXY+ssJjaFVI=;
+        b=P01W/YS3AfVe08mAkH9z8nsJGx0/Xe85vHYoQX52xDEMBB6Hi5jfkaGwvfWpr+gSVn
+         P2FSv+LCICN3h2beM9mP4p5wEttmT0LkQKhBua2nqhIhqq3+OcAJiHpdsRpGlXQQX7gM
+         Hafq/AtZymrPZtlwX21Vcs68/YB9YBRc2cZtpksa+iVu4kATPWVuz4V3T2B4O9oQBRtV
+         3kuXALGHHl0lHnMn2b2cz4IVOPKm35xKDfOzJbgpt7mEJ65w8k/McAg5Qc4FSBKk08YO
+         Kc3jf/FA/879scNf4Z359q61Di+xNajDL4cGN9i6irzvAHY+bW3lixUcVAiW3+RwIhZZ
+         v0Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771187383; x=1771792183;
+        d=1e100.net; s=20230601; t=1771188232; x=1771793032;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ZpCYDdCiDeg+luhgldp27Z2qAd8kF5mmiEZcYj/iMpI=;
-        b=LM9dovqry3YLUFZ7AaWSy3XDefgiKKP8dcZuI2AIvDZC56q99InzKRSRRZMIN7zlCa
-         ysvtPAHQCYq8XtizbQSrpiXv1XrO06A1Fz+tVA7DwO9zMafnqF3KAHDK0gAVaVp42RbT
-         rQNNWZ5moyFGl8WPT4iq1wFTNvYN/hidOYFJ7te0H82VYX5joZxHlUpDJSCHi2dUfep5
-         N1cx8Xc05ternfnv2paDcngXnL5SgraP7XPt+aWcttbnjSbmwlfmSRGpGuDR4CNDkSq1
-         ciy4rlhDvXdAgzZyIbE0SmrB/NfMh0yn5L9FUj3xIxRnERQ8dlDosUSP1l2vdMlVP32o
-         B4lg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVAtKmfJV+bsPCMhksyIhyhV6HGMyEY/Rueupuf8LDJqP046Et3CQmDVyDgGZcavLQW2buJTA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9EszIx+rqtQ/X2haVRBXhqOZYNHACIo518YMzCaVV3WVnzFrp
-	sL23R0V+nRLMe8tE5V33ZrXmfIp5kClUE/WAhL53v7pnJsuVVsYogUlZ5pVn87cCfgaaQoQtRe3
-	Fx0Bw99qym/TnhRtdN2bdPVCbbgCR9vU=
-X-Gm-Gg: AZuq6aLRtAJXt3NHZs8nQlVGqudo+koeSCfaLX0TkGYpMuMPm3YpsPKtY5kq5dHkANN
-	16kw9yt8p2N+VaAsaca4WVh7y0y5qvVpgIio7OZLZ45x2vnQ4Pw72ZixCCqZzXoXlwKgARMY+My
-	emLsaYm1KXvj+2QgkpDioyGT+P7zNC9Nb64HbqkliABGlgy09GTrso8Kb6PsH0Q8REelmesjhN1
-	zvdEOsg4L79pkdpZSq18tiAGwxRbKhz+EaqM5KKAA+Eirqzq8EPbEB4uOS3O9Y9zhFWWmjpsSgJ
-	shuBFg==
-X-Received: by 2002:a05:620a:2942:b0:8ca:2cf9:819b with SMTP id
- af79cd13be357-8cb422696a6mr1011942885a.30.1771187383348; Sun, 15 Feb 2026
- 12:29:43 -0800 (PST)
+        bh=sUYiczTId7sm36/pcGB9sAOFpwsRYPpRXY+ssJjaFVI=;
+        b=OhZXR8gu3pw8l4FXU7dNn/rPqNNah3uqbitkgHzVexYEvmd4d91RkNZNJyot+JOFjX
+         QNH5yE+iVLJFYUpbhgScqHi5vQoLoTKyR6ezjQ1qPM6OB+7871WKE7bphB1aA+mz7/dD
+         VS/rIDbc+fykarYtht1+eSMZKQ6xu5EeXmwS+9Lfr3hlINWIQIv2+RrQWpA1Bu+0okj4
+         Tx67KPpVNYpZgFRXkM8IJBSjmXOYuUYA3Is69Knv7Nw9Z3UVLxSdNK5q0XIXAtzh1Jip
+         RAXcbTabwsEPd+noGTTYK6uGUSn1HLNf95mc2OCi3dljO7nXxv2GqOaqwJ0TCHoAN3uA
+         wcPA==
+X-Forwarded-Encrypted: i=1; AJvYcCWY3zprzEK1olbefFHnaENXrtYxYqW4Moxxc/nt4jM2uprqozagwrhcWTSP0tddN44kUxLYz34=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdJ87vJ/QqaYGvbHkQqiBv03QlndCKXzbu78PNdm6Jn+5pbtDI
+	Ugpmw/aLLGjSOQ46XfwsWlJwnDrUMLK7HFvmZbmi684eKQljWRYxFnPQecePpj8GT1HUyncmYbp
+	lxDiFR5VA7vl65Iffl3XfgvM4t3Zjicc=
+X-Gm-Gg: AZuq6aLYioIn1ozW+63Jw50CZ21xodkZihN/T6/6li52ohozXzIhgnlrHREADJfLEkx
+	mCfuD+1DambNq7GmdzXl0IMoEATDyUutW99xpGXvMiZ2DLWrskgyfEJHUhU0Uj5nhsIF5GmrfcG
+	XDXzOQ4rY/lyw8FanVMOitGrQDeCRwSZGxtaWHjSSorF3HK+aafLwERl6jnobB80mcIzBDIajWv
+	a7EkiYIGgNkblGOGCfGQRnGaRwItDawzBPJpmdOfBx2anJHMrjb9OG/3HYNn5jjkCRDHOzwJjJI
+	KuXafw==
+X-Received: by 2002:a05:622a:58c:b0:501:4ff5:ae3 with SMTP id
+ d75a77b69052e-506b3ffff08mr84696281cf.42.1771188231378; Sun, 15 Feb 2026
+ 12:43:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260214001535.435626-1-kartikey406@gmail.com>
-In-Reply-To: <20260214001535.435626-1-kartikey406@gmail.com>
+References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com> <20260216-hibernate-perf-v3-1-74e025091145@tencent.com>
+In-Reply-To: <20260216-hibernate-perf-v3-1-74e025091145@tencent.com>
 From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 16 Feb 2026 04:29:32 +0800
-X-Gm-Features: AaiRm50syQHB3kctGnJnEjyiXqT8j1X7hIANEB9brrbUxqOPyK3vC3uGRbBzxPE
-Message-ID: <CAGsJ_4xZd9QCjcJo+j-iWox+O61+MJKui54pqek072LdSnh26w@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: thp: deny THP for files on anonymous inodes
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	lance.yang@linux.dev, i@maskray.me, shy828301@gmail.com, 
-	ackerleytng@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, stable@vger.kernel.org
+Date: Mon, 16 Feb 2026 04:43:40 +0800
+X-Gm-Features: AaiRm52fgDtfNvU3kxKbZLjl0RB593izYUrm1DGrHb9hftHazRJhLykKi9hoAlw
+Message-ID: <CAGsJ_4zTCnL-bYN+nMXJEDPqHtF3hgiyHwyCoTc+nb-t6wouRg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] mm, swap: speed up hibernation allocation and writeout
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	linux-kernel@vger.kernel.org, 
+	"open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, Carsten Grohmann <carstengrohmann@gmx.de>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216640-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216639-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[kvack.org,linux-foundation.org,kernel.org,huaweicloud.com,gmail.com,redhat.com,carstengrohmann.de,vger.kernel.org,gmx.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[21cnbao@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.org,oracle.com,nvidia.com,linux.alibaba.com,redhat.com,arm.com,linux.dev,maskray.me,gmail.com,google.com,kvack.org,vger.kernel.org,syzkaller.appspotmail.com];
-	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,appspotmail.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 43E4213FA5C
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 3B58913FAAB
 X-Rspamd-Action: no action
 
-On Sat, Feb 14, 2026 at 8:15=E2=80=AFAM Deepanshu Kartikey
-<kartikey406@gmail.com> wrote:
+On Mon, Feb 16, 2026 at 3:00=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
 >
-> file_thp_enabled() incorrectly allows THP for files on anonymous inodes
-> (e.g. guest_memfd and secretmem). These files are created via
-> alloc_file_pseudo(), which does not call get_write_access() and leaves
-> inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
-> true, they appear as read-only regular files when
-> CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
-> collapse.
+> From: Kairui Song <kasong@tencent.com>
 >
-> Anonymous inodes can never pass the inode_is_open_for_write() check
-> since their i_writecount is never incremented through the normal VFS
-> open path. The right thing to do is to exclude them from THP eligibility
-> altogether, since CONFIG_READ_ONLY_THP_FOR_FS was designed for real
-> filesystem files (e.g. shared libraries), not for pseudo-filesystem
-> inodes.
+> Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
+> hibernation has been using the swap slot slow allocation path for
+> simplification, which turns out might cause regression for some
+> devices because the allocator now rotates clusters too often, leading to
+> slower allocation and more random distribution of data.
 >
-> For guest_memfd, this allows khugepaged and MADV_COLLAPSE to create
-> large folios in the page cache via the collapse path, but the
-> guest_memfd fault handler does not support large folios. This triggers
-> WARN_ON_ONCE(folio_test_large(folio)) in kvm_gmem_fault_user_mapping().
+> Fast allocation is not complex, so implement hibernation support as
+> well.
 >
-> For secretmem, collapse_file() tries to copy page contents through the
-> direct map, but secretmem pages are removed from the direct map. This
-> can result in a kernel crash:
+> Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
+> performance is several times better [1]:
+> 6.19:               324 seconds
+> After this series:  35 seconds
 >
->     BUG: unable to handle page fault for address: ffff88810284d000
->     RIP: 0010:memcpy_orig+0x16/0x130
->     Call Trace:
->      collapse_file
->      hpage_collapse_scan_file
->      madvise_collapse
->
-> Secretmem is not affected by the crash on upstream as the memory failure
-> recovery handles the failed copy gracefully, but it still triggers
-> confusing false memory failure reports:
->
->     Memory failure: 0x106d96f: recovery action for clean unevictable
->     LRU page: Recovered
->
-> Check IS_ANON_FILE(inode) in file_thp_enabled() to deny THP for all
-> anonymous inode files.
->
-> Link: https://syzkaller.appspot.com/bug?extid=3D33a04338019ac7e43a44
-> Link: https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=3DU6rs=
-6S7iP0gkR9enr7HoGtA@mail.gmail.com
-> Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D33a04338019ac7e43a44
-> Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility"=
-)
-> Tested-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+> Fixes: 0ff67f990bd4 ("mm, swap: remove swap slot cache")
+> Reported-by: Carsten Grohmann <mail@carstengrohmann.de>
+> Closes: https://lore.kernel.org/linux-mm/20260206121151.dea3633d1f0ded7bb=
+f49c22e@linux-foundation.org/
+> Link: https://lore.kernel.org/linux-mm/8b4bdcfa-ce3f-4e23-839f-31367df7c1=
+8f@gmx.de/ [1]
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/swapfile.c | 21 ++++++++++++++++-----
+>  1 file changed, 16 insertions(+), 5 deletions(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index c6863ff7152c..32e0e7545ab8 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1926,8 +1926,9 @@ void swap_put_entries_direct(swp_entry_t entry, int=
+ nr)
+>  /* Allocate a slot for hibernation */
+>  swp_entry_t swap_alloc_hibernation_slot(int type)
+>  {
+> -       struct swap_info_struct *si =3D swap_type_to_info(type);
+> -       unsigned long offset;
+> +       struct swap_info_struct *pcp_si, *si =3D swap_type_to_info(type);
+> +       unsigned long pcp_offset, offset =3D SWAP_ENTRY_INVALID;
+> +       struct swap_cluster_info *ci;
+>         swp_entry_t entry =3D {0};
+>
+>         if (!si)
+> @@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
+>         if (get_swap_device_info(si)) {
+>                 if (si->flags & SWP_WRITEOK) {
+>                         /*
+> -                        * Grab the local lock to be compliant
+> -                        * with swap table allocation.
+> +                        * Try the local cluster first if it matches the =
+device. If
+> +                        * not, try grab a new cluster and override local=
+ cluster.
+>                          */
+>                         local_lock(&percpu_swap_cluster.lock);
+> -                       offset =3D cluster_alloc_swap_entry(si, NULL);
+> +                       pcp_si =3D this_cpu_read(percpu_swap_cluster.si[0=
+]);
+> +                       pcp_offset =3D this_cpu_read(percpu_swap_cluster.=
+offset[0]);
+> +                       if (pcp_si =3D=3D si && pcp_offset) {
+> +                               ci =3D swap_cluster_lock(si, pcp_offset);
+> +                               if (cluster_is_usable(ci, 0))
+> +                                       offset =3D alloc_swap_scan_cluste=
+r(si, ci, NULL, pcp_offset);
+> +                               else
+> +                                       swap_cluster_unlock(ci);
+> +                       }
+> +                       if (!offset)
 
-LGTM,
+I assume you mean SWAP_ENTRY_INVALID? Would that be more readable?
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+> +                               offset =3D cluster_alloc_swap_entry(si, N=
+ULL);
+>                         local_unlock(&percpu_swap_cluster.lock);
+>                         if (offset)
+>                                 entry =3D swp_entry(si->type, offset);
+>
+> --
+> 2.52.0
+
+Thanks
+Barry
 
