@@ -1,238 +1,252 @@
-Return-Path: <stable+bounces-216640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iD2eIxAwkmk8rwEAu9opvQ
-	(envelope-from <stable+bounces-216640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:44:00 +0100
+	id 6K1yC9Uwkmk8rwEAu9opvQ
+	(envelope-from <stable+bounces-216641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:47:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B58913FAAB
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8067913FB34
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:47:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86B803008D2F
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 20:43:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC4D4303744E
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 20:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D24D3043BE;
-	Sun, 15 Feb 2026 20:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96AD3081D6;
+	Sun, 15 Feb 2026 20:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P01W/YS3"
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="ibfGqydY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA129274B59
-	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 20:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674D2306487
+	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 20:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771188234; cv=pass; b=mhLWz/sjORjqSbRGocJ41wTseH9pKhhgyCTSRcwJ1jdeRsSNTcfP6L+T0cajGIsnRX1r5lGyXKHIqNBBqQFpF9GcnUNobaY5ZudPmHOQ10SVIPb+Nr4KROEGLRoA4uCWI557pZpqAbWfTSNzZR8RrdEEoell+EF5fBQekSQtsaM=
+	t=1771188355; cv=pass; b=LuU7EOuQBj1UlIscicFuWFwsYu1SY5Px70jNumcVxfg0bJlc9p/6U8OLhLiZKfl7xTraF1JBEqQf46fUaWy0LozsQKtowFFqkML33mS3cB7PF9ZoO2AxFj13Ib7PCwEsn9dZ5IwJLvvBzrc84AhUAyxdfI95b8Gg+SAA8DQgPlE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771188234; c=relaxed/simple;
-	bh=zD5CZP34AdfNzMLyyeRSFpmesixbFhvK4lsi6vLs53Q=;
+	s=arc-20240116; t=1771188355; c=relaxed/simple;
+	bh=Ds1v+eswAQASNf0hpI4AxWNGtflZxsZg+jHzXoyFoeo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QxxFr8LNeY2fx0Cn5fWFavAWST2hT/vKo8709Wud3ksQsdGjzx0DlwkI0vEERAKVhPZC2rMVvYeS8bBw9mIn8GTekmVnuHBJh/TDkQvfi+L7nPZxpyP0CXSqZocYNb2F4lISpTy7MTM31lcmbg6CZpykQtPMetZTiDypOoh1D/M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P01W/YS3; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5069ad750b7so24360431cf.2
-        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 12:43:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771188232; cv=none;
+	 To:Cc:Content-Type; b=k+6UEwdCesgWpqDKGK2Fl4yr4I0ISkKFAS00KXbBGweYxxjC1oXiXFry+WDwIhKW5hG+qUP/XI8vCKhqEc1nbPg6cxauYwVT63CxvRVVIhXinRRVrLwHkWwRX2eq128TmIhh+ym5KYUIdQK2+O/o6hojhszh94fmsAED69S9mgQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=ibfGqydY; arc=pass smtp.client-ip=74.125.224.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64ae5f0777dso2390360d50.3
+        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 12:45:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771188353; cv=none;
         d=google.com; s=arc-20240605;
-        b=U3WsdydvKKbRK0wjbPq/ZXM5CKeMQfoT10ZpgrR/MXDYkWKfPtgHiyHja5ENKFclS4
-         XzxA6SdvgrGNw3kWj1sB3YCCopmAwiHPSNfuzTxVOtzu2i+pLcNqM0zyBviIRKCx52Qg
-         fMII3hNFE0316/jqsK16XNwRKcCGKzgGv7tuwLEMJEx0+MrVwNT+XG8EZvTIyFbMCjwF
-         hUMLieXh16Rwcyvha4XH5y4uPT2rkHkWxgT71b5vTi0+fks2NeivXk7F09+eKkpWvc/D
-         OmoxdBCDwVc+oBFniMKbD3HqAtzRyt/sdETj4DpYkqehJBRjz6VTlUKIsyMkGZB2u1E4
-         eNyg==
+        b=IDEsnR3XDQqaL3ilt6TjX8eKCD6btIt1kI0+5HaSQXL1xkokNEMYwHIM/C9jdgOhM7
+         QHU+iGYVwiBENTOJjvCnoP0AWhq0Thpt4e6/FeH6OKjEXdMzfYx1ot8v61TogFbQaXKF
+         5isOefR0uOXz6jTxqgGhPccv0CBMAMfkOEAcrTb9qdXBVoZrwF9nFgnRMSgJSlO+eS37
+         AA1dIbsX/K00iT15E6NW/Q9+4PL4Hbf+HJQdnLwar3BFLZ7ojhfNRR28i4o95zv/31Le
+         e/T6VIgVCKD3SL/VCUqsYq5TA9hVTTdixfhw2jWeaxT1RBCzk6mo2spKBsE17MrV9WFg
+         X7BA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=sUYiczTId7sm36/pcGB9sAOFpwsRYPpRXY+ssJjaFVI=;
-        fh=o33bYlUZG8tGkoIQzAdbLNHGplYT/qVoKeBp24mIeAE=;
-        b=YZ7/yAXgWt4o5PoCouMFqHbNZQEpRGaFzjC444pnJNtwhqxmA7Nmw5XbQNkLuk2l4T
-         ZaI82auT7f/U/bi1ebwO0D2ibE2XQ47w3aP/tT3XAWENWMiLJKUdKUM0+al4cjS+awgr
-         kGivybifT/snZIu1Vlo1v61j3TVjYiqaxRPlePjb47Iq5Nkh+tEMJi9e3kUdLYxGA//b
-         hjOMd8xhhdAwFqupNBoJIgj3sZfNG4Q1a6AyEVGWPDXiv0/h+8iv0B4Xozk6+AmpitLY
-         CrMl+OHAVvlQv7WdLEz6oOYT+7X5AAJaaEIVW5fq6MRndkQf1fW6cL0eM1K/7RWC0Vi0
-         iMDw==;
+        bh=Oo6CzlM7VCP6Q08h+JHjGQ7qEb9AnSPDb+La4GMe/pg=;
+        fh=I7Xo11hVuQhAg/heIUZiP9fkCgAHSXjN541v8bfuFFc=;
+        b=O9Sz8vyUxru99sErpJ4BPe/zikgDBnGzYThXllH3iS0yHtuDtBTWuXFqx1bMQQoqRR
+         eQpFEbPwmf8Yt0vUuMmO0FckdCju+FdD3RtX65aBUDaqj4nDaOo/t5vAhEZIbp9OeMqP
+         SkO78bxFVJ882zvow5XAtdPklBIJund3pzy0w90WBD9fP2w6ziNcnoTPKbdrt/NJ6oTP
+         ebGSEKIqphKEdny1crbpJ4SaNwF++HN6Ne2jHiDJ8ZK1wuzU8XTNZLR2p2E6oFMCea8l
+         Gpb3L1QLgSKIMOk3tgHWZhz1YjxuN/EztFJcLJm+VztIOMzA677cB9LC+QxaHYEefct6
+         cIyA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771188232; x=1771793032; darn=vger.kernel.org;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1771188353; x=1771793153; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sUYiczTId7sm36/pcGB9sAOFpwsRYPpRXY+ssJjaFVI=;
-        b=P01W/YS3AfVe08mAkH9z8nsJGx0/Xe85vHYoQX52xDEMBB6Hi5jfkaGwvfWpr+gSVn
-         P2FSv+LCICN3h2beM9mP4p5wEttmT0LkQKhBua2nqhIhqq3+OcAJiHpdsRpGlXQQX7gM
-         Hafq/AtZymrPZtlwX21Vcs68/YB9YBRc2cZtpksa+iVu4kATPWVuz4V3T2B4O9oQBRtV
-         3kuXALGHHl0lHnMn2b2cz4IVOPKm35xKDfOzJbgpt7mEJ65w8k/McAg5Qc4FSBKk08YO
-         Kc3jf/FA/879scNf4Z359q61Di+xNajDL4cGN9i6irzvAHY+bW3lixUcVAiW3+RwIhZZ
-         v0Bg==
+        bh=Oo6CzlM7VCP6Q08h+JHjGQ7qEb9AnSPDb+La4GMe/pg=;
+        b=ibfGqydYU4sLq7R4H3NPDplUcl77UxdcOQQYg4doFoKMXtetTwP5xOev4u9a5YT3z7
+         iqXrziQEmYbs3fd/wunDwAyDLmW0TLD/47pnOkMArti683CM4T4A7efDkOH/b/eLSSFF
+         ScLVN4tTFjE8AGU6DyVZcaA0hFREKZ+kjhDh0Deex5fyOtAr6pAvPlIDTy+zrXabgGrB
+         sR6By92k0lxLbk6CeeuAeiH5UpYglY++sk2H12OHgJlqjxFdQhJV5QQTHgJoIyMi5ZrW
+         iUwRnlJoMl/oKPOtcOTMLhv24/rohtj1D3PKdn/scvhSb+erqls7ql3tS6mSrLLqGK0j
+         njkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771188232; x=1771793032;
+        d=1e100.net; s=20230601; t=1771188353; x=1771793153;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=sUYiczTId7sm36/pcGB9sAOFpwsRYPpRXY+ssJjaFVI=;
-        b=OhZXR8gu3pw8l4FXU7dNn/rPqNNah3uqbitkgHzVexYEvmd4d91RkNZNJyot+JOFjX
-         QNH5yE+iVLJFYUpbhgScqHi5vQoLoTKyR6ezjQ1qPM6OB+7871WKE7bphB1aA+mz7/dD
-         VS/rIDbc+fykarYtht1+eSMZKQ6xu5EeXmwS+9Lfr3hlINWIQIv2+RrQWpA1Bu+0okj4
-         Tx67KPpVNYpZgFRXkM8IJBSjmXOYuUYA3Is69Knv7Nw9Z3UVLxSdNK5q0XIXAtzh1Jip
-         RAXcbTabwsEPd+noGTTYK6uGUSn1HLNf95mc2OCi3dljO7nXxv2GqOaqwJ0TCHoAN3uA
-         wcPA==
-X-Forwarded-Encrypted: i=1; AJvYcCWY3zprzEK1olbefFHnaENXrtYxYqW4Moxxc/nt4jM2uprqozagwrhcWTSP0tddN44kUxLYz34=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdJ87vJ/QqaYGvbHkQqiBv03QlndCKXzbu78PNdm6Jn+5pbtDI
-	Ugpmw/aLLGjSOQ46XfwsWlJwnDrUMLK7HFvmZbmi684eKQljWRYxFnPQecePpj8GT1HUyncmYbp
-	lxDiFR5VA7vl65Iffl3XfgvM4t3Zjicc=
-X-Gm-Gg: AZuq6aLYioIn1ozW+63Jw50CZ21xodkZihN/T6/6li52ohozXzIhgnlrHREADJfLEkx
-	mCfuD+1DambNq7GmdzXl0IMoEATDyUutW99xpGXvMiZ2DLWrskgyfEJHUhU0Uj5nhsIF5GmrfcG
-	XDXzOQ4rY/lyw8FanVMOitGrQDeCRwSZGxtaWHjSSorF3HK+aafLwERl6jnobB80mcIzBDIajWv
-	a7EkiYIGgNkblGOGCfGQRnGaRwItDawzBPJpmdOfBx2anJHMrjb9OG/3HYNn5jjkCRDHOzwJjJI
-	KuXafw==
-X-Received: by 2002:a05:622a:58c:b0:501:4ff5:ae3 with SMTP id
- d75a77b69052e-506b3ffff08mr84696281cf.42.1771188231378; Sun, 15 Feb 2026
- 12:43:51 -0800 (PST)
+        bh=Oo6CzlM7VCP6Q08h+JHjGQ7qEb9AnSPDb+La4GMe/pg=;
+        b=ncyWuaag5YmH8UyNL4+7HULXbK2JVh4wb2QH0dZQzCFJo9JkkGUYlaYlBAudsFyRju
+         dY1nX8bWoxz/1IYwKIUVyMTEqbMSdhOFqRj5n9fuTL0/m5QQF53an+z4ORWS40tCEfqW
+         dlz++WedudQRvMO2W++6h3paNDSws4gxJZ47rH0QPAWLvH8eJWNRBpiciDLa4+kN6dtd
+         ZqYZ1BnJZMYauJT8ZWmQ6giJyqcYH7ysvlJVgq4tFNQfTs/PEzxgPRrFxcCWg7fyZ3qm
+         REY3jwa0GZ4uuvUDHtGBacVKEQJ5bQ+de+pFKj80nXngRirOT/xRCZAMwjJDHzzIzJVC
+         +OSw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9+U6SiUlWmU/CVTmm9jUQo+DJ/pKPUcJdSOIjHW6im7t0XxAyfMs9dvemK5SaXdaf8HHRS40=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhUclxzpTuB8qSdgwt2+fa1gsdjck+Hjvf/RtzsWAWhI8tpRkc
+	4ysF22XBOnv9ANQb6R4mvRtVaCNcxn1Fd+/ZDlTogNLHn1ct9HXUlfKUYrr+egoDn2h04JwQNNM
+	0pRH3PIFjJp0vnLWQMxyDkFVSovDap+ZgLPv2YjEW
+X-Gm-Gg: AZuq6aKxmMjaWdfC4apgEyIFaNBlEw22rHowzXzcb3vmG12I1Mf0kK0Uvokvaw38JML
+	eHmg6m0b5GIUk6Z4XH64fABONpbkh37AJw5LZBw4vLosZHNRfMWNWoWfUKZqVXzKHJaW60cAPE/
+	ijB1r7VBexpu02kJF2culb6eNjjep1oEyyoBBqv2IeZLc5rhSVTMTOXWeNsnJbbGBRpuiTjuYEy
+	tY30HIGlYQd564KTXbXswf/grmxumoF3EC9LFfoE9nxYWzGzQJNDOIXSaMZ2Dlm2HlvqsUfKKrj
+	FT9zgRQ9R2UOumpqWs+8NA==
+X-Received: by 2002:a05:690c:e3e6:b0:794:ecaf:c501 with SMTP id
+ 00721157ae682-797a0cc95d1mr132565667b3.46.1771188353173; Sun, 15 Feb 2026
+ 12:45:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com> <20260216-hibernate-perf-v3-1-74e025091145@tencent.com>
-In-Reply-To: <20260216-hibernate-perf-v3-1-74e025091145@tencent.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 16 Feb 2026 04:43:40 +0800
-X-Gm-Features: AaiRm52fgDtfNvU3kxKbZLjl0RB593izYUrm1DGrHb9hftHazRJhLykKi9hoAlw
-Message-ID: <CAGsJ_4zTCnL-bYN+nMXJEDPqHtF3hgiyHwyCoTc+nb-t6wouRg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] mm, swap: speed up hibernation allocation and writeout
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, 
-	"open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, Carsten Grohmann <carstengrohmann@gmx.de>, 
+References: <20260213113849.136695-1-p@1g4.org> <20260213113849.136695-2-p@1g4.org>
+In-Reply-To: <20260213113849.136695-2-p@1g4.org>
+From: Victor Nogueira <victor@mojatatu.com>
+Date: Sun, 15 Feb 2026 17:45:42 -0300
+X-Gm-Features: AaiRm50bUFQOD3H73oRgDuJ6_T-ZnN2l_KlSeCgNXBjOKlK31-17mnd8s7B7Xek
+Message-ID: <CA+NMeC805yf4CECdjJh4EmP0RK1AgxAN25V7n+qvOqNMrhVyNA@mail.gmail.com>
+Subject: Re: [PATCH net v6 1/1] net/sched: act_gate: snapshot parameters with
+ RCU on replace
+To: Paul Moses <p@1g4.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
+	Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[mojatatu-com.20230601.gappssmtp.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216640-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[mojatatu.com];
+	TAGGED_FROM(0.00)[bounces-216641-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[kvack.org,linux-foundation.org,kernel.org,huaweicloud.com,gmail.com,redhat.com,carstengrohmann.de,vger.kernel.org,gmx.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[mojatatu-com.20230601.gappssmtp.com:+];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[21cnbao@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[victor@mojatatu.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 3B58913FAAB
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 8067913FB34
 X-Rspamd-Action: no action
 
-On Mon, Feb 16, 2026 at 3:00=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
+On Fri, Feb 13, 2026 at 8:39=E2=80=AFAM Paul Moses <p@1g4.org> wrote:
 >
-> From: Kairui Song <kasong@tencent.com>
+> The gate action can be replaced while the hrtimer callback or dump path i=
+s
+> walking the schedule list.
 >
-> Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
-> hibernation has been using the swap slot slow allocation path for
-> simplification, which turns out might cause regression for some
-> devices because the allocator now rotates clusters too often, leading to
-> slower allocation and more random distribution of data.
->
-> Fast allocation is not complex, so implement hibernation support as
-> well.
->
-> Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
-> performance is several times better [1]:
-> 6.19:               324 seconds
-> After this series:  35 seconds
->
-> Fixes: 0ff67f990bd4 ("mm, swap: remove swap slot cache")
-> Reported-by: Carsten Grohmann <mail@carstengrohmann.de>
-> Closes: https://lore.kernel.org/linux-mm/20260206121151.dea3633d1f0ded7bb=
-f49c22e@linux-foundation.org/
-> Link: https://lore.kernel.org/linux-mm/8b4bdcfa-ce3f-4e23-839f-31367df7c1=
-8f@gmx.de/ [1]
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/swapfile.c | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index c6863ff7152c..32e0e7545ab8 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1926,8 +1926,9 @@ void swap_put_entries_direct(swp_entry_t entry, int=
- nr)
->  /* Allocate a slot for hibernation */
->  swp_entry_t swap_alloc_hibernation_slot(int type)
+> Convert the parameters to an RCU-protected snapshot and swap updates unde=
+r
+> tcf_lock, freeing the previous snapshot via call_rcu(). When REPLACE omit=
+s
+> the entry list, preserve the existing schedule so the effective state is
+> unchanged.
+> [...]
+> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> index c1f75f2727576..60c80e609ec3d 100644
+> --- a/net/sched/act_gate.c
+> +++ b/net/sched/act_gate.c
+> [...]
+> @@ -56,11 +59,10 @@ static void gate_start_timer(struct tcf_gate *gact, k=
+time_t start)
 >  {
-> -       struct swap_info_struct *si =3D swap_type_to_info(type);
-> -       unsigned long offset;
-> +       struct swap_info_struct *pcp_si, *si =3D swap_type_to_info(type);
-> +       unsigned long pcp_offset, offset =3D SWAP_ENTRY_INVALID;
-> +       struct swap_cluster_info *ci;
->         swp_entry_t entry =3D {0};
+>         ktime_t expires;
 >
->         if (!si)
-> @@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
->         if (get_swap_device_info(si)) {
->                 if (si->flags & SWP_WRITEOK) {
->                         /*
-> -                        * Grab the local lock to be compliant
-> -                        * with swap table allocation.
-> +                        * Try the local cluster first if it matches the =
-device. If
-> +                        * not, try grab a new cluster and override local=
- cluster.
->                          */
->                         local_lock(&percpu_swap_cluster.lock);
-> -                       offset =3D cluster_alloc_swap_entry(si, NULL);
-> +                       pcp_si =3D this_cpu_read(percpu_swap_cluster.si[0=
-]);
-> +                       pcp_offset =3D this_cpu_read(percpu_swap_cluster.=
-offset[0]);
-> +                       if (pcp_si =3D=3D si && pcp_offset) {
-> +                               ci =3D swap_cluster_lock(si, pcp_offset);
-> +                               if (cluster_is_usable(ci, 0))
-> +                                       offset =3D alloc_swap_scan_cluste=
-r(si, ci, NULL, pcp_offset);
-> +                               else
-> +                                       swap_cluster_unlock(ci);
-> +                       }
-> +                       if (!offset)
+> -       expires =3D hrtimer_get_expires(&gact->hitimer);
+> -       if (expires =3D=3D 0)
+> -               expires =3D KTIME_MAX;
+> -
+> -       start =3D min_t(ktime_t, start, expires);
+> +       if (hrtimer_active(&gact->hitimer)) {
+> +               expires =3D hrtimer_get_expires(&gact->hitimer);
+> +               start =3D min_t(ktime_t, start, expires);
+> +       }
 
-I assume you mean SWAP_ENTRY_INVALID? Would that be more readable?
+Is this change really necessary?
 
-> +                               offset =3D cluster_alloc_swap_entry(si, N=
-ULL);
->                         local_unlock(&percpu_swap_cluster.lock);
->                         if (offset)
->                                 entry =3D swp_entry(si->type, offset);
+> [...]
+>  static int parse_gate_list(struct nlattr *list_attr,
+>                            struct tcf_gate_params *sched,
+>                            struct netlink_ext_ack *extack)
+> @@ -261,7 +294,6 @@ static int parse_gate_list(struct nlattr *list_attr,
+>         }
 >
-> --
-> 2.52.0
+>         sched->num_entries =3D i;
+> -
+>         return i;
 
-Thanks
-Barry
+Removing this line also seems unnecessary.
+
+> [...]
+> +static void gate_setup_timer(struct tcf_gate *gact, s32 clockid,
+> +                            enum tk_offsets tko)
+> +{
+> +       WRITE_ONCE(gact->tk_offset, tko);
+
+Why do you need this WRITE_ONCE?
+
+>  static int tcf_gate_init(struct net *net, struct nlattr *nla,
+> [...]
+> @@ -366,6 +407,60 @@ static int tcf_gate_init(struct net *net, struct nla=
+ttr *nla,
+> [...]
+> +       if (ret !=3D ACT_P_CREATED) {
+> [...]
+> +               if (use_old_entries) {
+> +                       err =3D tcf_gate_copy_entries(p, cur_p, extack);
+> +                       if (!err && !tb[TCA_GATE_CYCLE_TIME])
+
+This check for TCA_GATE_CYCLE_TIME seems unnecessary.
+If I understand your code correctly, cycletime will be overwritten
+further down if TCA_GATE_CYCLE_TIME was specified.
+
+> +                               cycletime =3D cur_p->tcfg_cycletime;
+> [...]
+> @@ -434,33 +532,47 @@ static int tcf_gate_init(struct net *net, struct nl=
+attr *nla,
+> [...]
+> -chain_put:
+> +unlock:
+>         spin_unlock_bh(&gact->tcf_lock);
+>
+> +err_free:
+> +       release_entry_list(&p->entries);
+> +       kfree(p);
+> +release_idr:
+>         if (goto_ch)
+>                 tcf_chain_put_by_act(goto_ch);
+> -release_idr:
+> [...]
+
+This looks weird.
+You will go to the release_idr label when tcf_action_check_ctrlact fails,
+so the "if (goto_ch)" part of the code will be reached in that code path.
+I believe it would be better to keep the "chain_put" label and keep
+"release_idr" below it (as it was before your change).
+Something like:
+
+chain_put:
+        if (goto_ch)
+                tcf_chain_put_by_act(goto_ch);
+release_idr:
+        ...
+
+cheers,
+Victor
 
