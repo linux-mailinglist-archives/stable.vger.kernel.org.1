@@ -1,186 +1,145 @@
-Return-Path: <stable+bounces-216600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216601-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKSpK+oRkWnRewEAu9opvQ
-	(envelope-from <stable+bounces-216600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 01:23:06 +0100
+	id oHlMIcQekWn1fQEAu9opvQ
+	(envelope-from <stable+bounces-216601-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 02:17:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D31113DD15
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 01:23:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D742513DDC4
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 02:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 450B13012CC0
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 00:23:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE5CB3018AE7
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 01:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A902017B50A;
-	Sun, 15 Feb 2026 00:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546561A238C;
+	Sun, 15 Feb 2026 01:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fAzw/vJo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cCh4NLTX"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2DC42AA9;
-	Sun, 15 Feb 2026 00:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B7B1FD4
+	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 01:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771114979; cv=none; b=J7VGGZdDMac/13m84/RZ18CKoenTTINmsrf9t+jjgS3GGGrmS+cez/b+QxZxAOUjjZtjabraYdNOcQU54ypR1Le7+eNlSaNnbrTATIsFNH5kY09gKaKlBScssf5Lt2RFSxV657L86s6L+C1t5jSGFeBBSymvsuBbME5W+d0vUHY=
+	t=1771118270; cv=none; b=Uved5iZvqcJZ00NKVgh8d+4/7yynK70UyvBD5nm+2qsV6mIUUqMeSipLHmZRbDJB9Ks/3gcUlGz/k7f1IuAD9JhQY0ah5mtSmm64ZqJ8ftI6G+uT3kqLn5rBh+yt8T/9Pz5vg9fEsDuMsf34hnNVF8D3/gG7Aro8JY6grMI8xFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771114979; c=relaxed/simple;
-	bh=oJT6TjXlSm4w7F9vF23Hoz9HGuEu0EhzhtQZT+102e4=;
-	h=To:Cc:Message-ID:From:Subject:Date; b=cG9a8w/y2FU+ix5kD5kBlbow/bi4N/JauwhXSRW4m4O2AGnGXLQYA2yK0ySNOiDAPRpvexEMyDWSC381LsX6ZaXSdTL6Flso/9UpeZkj3/hWFZ4a9tb5FjTSiVM//hVpkR/6ORInPxTyHLWksK/8gxDN4Wp4G9iw4TrAjvaefOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fAzw/vJo; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id EEA6F7A0010;
-	Sat, 14 Feb 2026 19:22:55 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Sat, 14 Feb 2026 19:22:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1771114975; x=1771201375; bh=hc2F8xxBgw9KFLMT7GGYPqWvc2/v
-	LKLhR9u451GcYGM=; b=fAzw/vJoD4OA++mzSv7rPKdhnwXiJFxFF8L1eN2Lnsdp
-	8dsGqWc/v5Iny/jI+26i/HYJIVmk5QIDNGp8wjvDNSlCayGxAb/433cq06R6xVC8
-	zpVFirCnEOeXk89Cd2KiS+eCjCPsK6frOKVx/hLb/aKmQDt7/eewhAQYQFZNPOCf
-	T+Wa+cT7OyHAD9ZvIsYO5fquQVPcWsoflpy2mf5YsXCN0T18QUshBD/o5r9HEcKD
-	93Mtde2G+1JTdYeOSjfmTlgyCUfeKHgHt+FNBQzSMhnioSLdMgc8oH1jV/9KfiGj
-	bKDVQBH2ABn1FtRO4rw7SFnSqrYl3Manie1Z2D8J1A==
-X-ME-Sender: <xms:3hGRaRFBSZ-wixRZ882PFQBCq2seclqI1OwLrLEFrBn-QN8M7LTf5A>
-    <xme:3hGRaS7hHdQ99m5LFmr7hxVm8vtf2aLv52B7DbfklWFfxVvOTEpa5j4eHuw6mZ_CM
-    EaE6WuCm7wM_hnqmEXlS51YnHjriSOmfUkbQ9UHTK3sXYdiZSXaG74>
-X-ME-Received: <xmr:3hGRaXltFhfl8XPh2kMrmcBs_-93fWCVLJPVDy5dwIgtlpYHP-hJBHLJjsQK>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvuddvheegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepvfevkffhufffsedttdertddttddtnecuhfhrohhmpefhihhnnhcuvfhhrghinhcu
-    oehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ehfffggeefveegvedtiefffeevuedtgefhueehieetffejfefggeevfeeuvdduleenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinh
-    eslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeelpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrd
-    gtohhmpdhrtghpthhtoheprhhitghhrghrugesnhhougdrrghtpdhrtghpthhtohepvhhi
-    ghhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshht
-    rggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqhh
-    grrhguvghnihhnghesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
-    uhigqdhmthgusehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplh
-    hinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:3hGRad5T6ATE_vJgdFk5xWyKGWNArPEh3uG-VxlbzGzXHQBrgMJrUg>
-    <xmx:3hGRaYQBCwOjV2BkMkwFfAROFHD_LTYiyvZ7sO69rVRcueGOomu-sg>
-    <xmx:3hGRaby0vuUEW5XKErtaLXaxmE82IPweYfpI-MLPDCYgK6yxjzsfdw>
-    <xmx:3hGRaQpFpGG7GUnYK-oOTPa_ewvSwIusT5iIAeCYQRRmFRm-4Yr8oA>
-    <xmx:3xGRad8IAf8GkErZGecpHHYgVU64nmYTMllA1M_rYIj9p3VzcKTMgAGL>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 14 Feb 2026 19:22:53 -0500 (EST)
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-    Richard Weinberger <richard@nod.at>,
-    Vignesh Raghavendra <vigneshr@ti.com>,
-    Miguel Ojeda <ojeda@kernel.org>,
-    Kees Cook <kees@kernel.org>
-Cc: stable@vger.kernel.org,
-    linux-hardening@vger.kernel.org,
-    linux-mtd@lists.infradead.org,
-    linux-kernel@vger.kernel.org
-Message-ID: <92af570970aadee773f2b0b18179efef0f34be93.1771114891.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH] mtd: Avoid boot crash in RedBoot partition table parser
-Date: Sun, 15 Feb 2026 11:21:31 +1100
+	s=arc-20240116; t=1771118270; c=relaxed/simple;
+	bh=iz4IPCYgmd0zxp2pmO3hhfxlqapGe6gDT73zq9bGoQc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dLAPjFCj3EsTqUAuMA/l3qlUNoE2Stag78pIhexeJwWdXTZMKbchd6eZWbN4hp5xWYii81uPfZSWXy60qt7DtjZLC6zaXi93a7pEqlHfBtRdtg9k/3zBO/sUr/KzQ/I4TKebiRo/MxI8ClmaJ9xS3wjJIMI1/gv79LbxQnCj074=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cCh4NLTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D55C4AF0B
+	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 01:17:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771118269;
+	bh=iz4IPCYgmd0zxp2pmO3hhfxlqapGe6gDT73zq9bGoQc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=cCh4NLTXCsDANssG5VDcUy6t7wMpUn18rhpDfWgC9k5JjDEmaViDukOs0W//982jn
+	 tkbH+f9/K1AE0iMWgDGH5yZEKdcVSEUIKBvnVCBnb09WDQM6+SkRZK3Qx6zn/ZKvDQ
+	 R+piSU2IOe+P+PdXG2MRleXZfDUL/PBMAJZQLhEtg9cVJy0ouTA7fuqHkFGwF8UElB
+	 M1JSwBALCjWFoBNt4Btq1sPWeinrvZJIIxHOW4heDbVoUiH12HkSMYlEPNhFVSz/5I
+	 TV8PshPpdTg9MEiX96f4Efh4Xo1nM8IkVMze+NvO6AWE9zTjOjKUGaX8m7w4YrLeay
+	 1tVzr1t57FEfg==
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b8d7f22d405so234102466b.0
+        for <stable@vger.kernel.org>; Sat, 14 Feb 2026 17:17:49 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXDXTU344QMQOlnoSH05uqcVVWvd3wcAWaDvCpGWf9gMOwoGD0xsZpA+SS6M7tBIZxbhdSy3vc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoQwfngqdi5AY1PCFuiKTAUWOMbCa0kLBMPOdttIGgMxKZhmpm
+	0Rci74/bTKChNSKNV7H0cS05t+5AEb36Mqw1asbnJutNu3NVs/L40uiZ8sthmci+Y2v4kVZjx1a
+	hCzk/KdUykNfxhQwO6pEL31ccxHeYqxQ=
+X-Received: by 2002:a17:907:2dac:b0:b83:95ca:589b with SMTP id
+ a640c23a62f3a-b8fb414bc9bmr367211566b.10.1771118268235; Sat, 14 Feb 2026
+ 17:17:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260214154515.1229565-1-pchelkin@ispras.ru>
+In-Reply-To: <20260214154515.1229565-1-pchelkin@ispras.ru>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Sun, 15 Feb 2026 10:17:36 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd8mQH2-oNRGA_OyUU=P9nnC1xHjZ_aFCVw3cWoMV4FMDg@mail.gmail.com>
+X-Gm-Features: AaiRm53LscNWOEOSlouq28oNORInmE7eOEhK2K3ouXn1BcY4kTYGjCCdINSPOm0
+Message-ID: <CAKYAXd8mQH2-oNRGA_OyUU=P9nnC1xHjZ_aFCVw3cWoMV4FMDg@mail.gmail.com>
+Subject: Re: [PATCH] ksmbd: call ksmbd_vfs_kern_path_end_removing() on some
+ error paths
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Steve French <smfrench@gmail.com>, NeilBrown <neil@brown.name>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Tom Talpey <tom@talpey.com>, linux-cifs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[messagingengine.com:s=fm3];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-216600-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[linux-m68k.org];
-	DKIM_TRACE(0.00)[messagingengine.com:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216601-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,brown.name,chromium.org,talpey.com,vger.kernel.org,linuxtesting.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fthain@linux-m68k.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1D31113DD15
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: D742513DDC4
 X-Rspamd-Action: no action
 
-Given CONFIG_FORTIFY_SOURCE=y, and given a recent compiler,
-commit 439a1bcac648 ("fortify: Use __builtin_dynamic_object_size() when
-available") produces the warning below and an oops.
-
-    Searching for RedBoot partition table in 50000000.flash at offset 0x7e0000
-    ------------[ cut here ]------------
-    WARNING: lib/string_helpers.c:1035 at 0xc029e04c, CPU#0: swapper/0/1
-    memcmp: detected buffer overflow: 15 byte read of buffer size 14
-    Modules linked in:
-    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.19.0 #1 NONE
-
-I couldn't see how memcmp() exceeds the buffer here, so the simplest way
-to prevent the regression was to perform memcmp() on the original name
-rather than the copy.
-
-Cc: stable@vger.kernel.org
-Cc: linux-hardening@vger.kernel.org
-Fixes: 439a1bcac648 ("fortify: Use __builtin_dynamic_object_size() when available")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
----
-I put commit 439a1bcac648 into a Fixes tag because git bisect identified
-that commit as the source of the regression. But I don't know anything
-about __builtin_dynamic_object_size() or its limitations. So perhaps the
-real bug lies elsewhere. The compiler I'm using is this one:
-
-$ armeb-softfloat-linux-musleabi-gcc --version
-armeb-softfloat-linux-musleabi-gcc (Gentoo Hardened 13.4.1_p20250807 p8) 13.4.1 20250807
----
- drivers/mtd/parsers/redboot.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/mtd/parsers/redboot.c b/drivers/mtd/parsers/redboot.c
-index 3b55b676ca6b..6e253f6c45c9 100644
---- a/drivers/mtd/parsers/redboot.c
-+++ b/drivers/mtd/parsers/redboot.c
-@@ -269,14 +269,14 @@ static int parse_redboot_partitions(struct mtd_info *master,
- 		parts[i].name = names;
- 
- 		strcpy(names, fl->img->name);
-+		names += strlen(names) + 1;
-+
- #ifdef CONFIG_MTD_REDBOOT_PARTS_READONLY
--		if (!memcmp(names, "RedBoot", 8) ||
--		    !memcmp(names, "RedBoot config", 15) ||
--		    !memcmp(names, "FIS directory", 14)) {
-+		if (!memcmp(fl->img->name, "RedBoot", 8) ||
-+		    !memcmp(fl->img->name, "RedBoot config", 15) ||
-+		    !memcmp(fl->img->name, "FIS directory", 14))
- 			parts[i].mask_flags = MTD_WRITEABLE;
--		}
- #endif
--		names += strlen(names) + 1;
- 
- #ifdef CONFIG_MTD_REDBOOT_PARTS_UNALLOCATED
- 		if (fl->next && fl->img->flash_base + fl->img->size + master->erasesize <= fl->next->img->flash_base) {
--- 
-2.49.1
-
+On Sun, Feb 15, 2026 at 12:45=E2=80=AFAM Fedor Pchelkin <pchelkin@ispras.ru=
+> wrote:
+>
+> There are two places where ksmbd_vfs_kern_path_end_removing() needs to be
+> called in order to balance what the corresponding successful call to
+> ksmbd_vfs_kern_path_start_removing() has done, i.e. drop inode locks and
+> put the taken references.  Otherwise there might be potential deadlocks
+> and unbalanced locks which are caught like:
+>
+> BUG: workqueue leaked lock or atomic: kworker/5:21/0x00000000/7596
+>      last function: handle_ksmbd_work
+> 2 locks held by kworker/5:21/7596:
+>  #0: ffff8881051ae448 (sb_writers#3){.+.+}-{0:0}, at: ksmbd_vfs_kern_path=
+_locked+0x142/0x660
+>  #1: ffff888130e966c0 (&type->i_mutex_dir_key#3/1){+.+.}-{4:4}, at: ksmbd=
+_vfs_kern_path_locked+0x17d/0x660
+> CPU: 5 PID: 7596 Comm: kworker/5:21 Not tainted 6.1.162-00456-gc29b353f38=
+3b #138
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian=
+-1.17.0-1 04/01/2014
+> Workqueue: ksmbd-io handle_ksmbd_work
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x44/0x5b
+>  process_one_work.cold+0x57/0x5c
+>  worker_thread+0x82/0x600
+>  kthread+0x153/0x190
+>  ret_from_fork+0x22/0x30
+>  </TASK>
+>
+> Found by Linux Verification Center (linuxtesting.org).
+>
+> Fixes: d5fc1400a34b ("smb/server: avoid deadlock when linking with Replac=
+eIfExists")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Applied it to #ksmbd-for-next-next.
+Thanks!
 
