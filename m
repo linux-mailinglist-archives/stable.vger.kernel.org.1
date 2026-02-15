@@ -1,180 +1,146 @@
-Return-Path: <stable+bounces-216644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216645-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SCntGag6kmnUsAEAu9opvQ
-	(envelope-from <stable+bounces-216644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 22:29:12 +0100
+	id YI/oCUo/kml8sQEAu9opvQ
+	(envelope-from <stable+bounces-216645-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 22:48:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B996613FC2B
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 22:29:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A2213FD02
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 22:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F40430125DF
-	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:29:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ACA7E3011079
+	for <lists+stable@lfdr.de>; Sun, 15 Feb 2026 21:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A0D285C91;
-	Sun, 15 Feb 2026 21:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2AE309EEE;
+	Sun, 15 Feb 2026 21:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oiraeQSU"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nLGda3Vz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD796199E94;
-	Sun, 15 Feb 2026 21:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506DB1494C3
+	for <stable@vger.kernel.org>; Sun, 15 Feb 2026 21:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771190945; cv=none; b=Nkq/tscprWeTOQRfo4JYfY22ATCM+8mK2A2VfvaAQUk0F2cWQB09ZxXZrLOalyMnfH55JgSSGybWPktoAR+e3q85HLDnaQVf1bj/9Cp+nN89LiEqg7PWweoW6tomXRgfqzfGgwBA75RBDupmvyzN9mswVKqF/oKFH58kExCC56Y=
+	t=1771192135; cv=none; b=JsMHFFu+ZF1LHvBQXPvnCDa/sCEVLKblJ1yr/MPnJ0lHvRVet5juNqrpO3I3SXI1uFjCKUaR/uHELxxEAwj9SG2pg2p0oNwh/o+AI6kO6ByRx+c3G2etSN4C5TYo006XMiGADhqmMB7G5lMOYFFi4f5POU/vSPTR5ojRbihRJZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771190945; c=relaxed/simple;
-	bh=nhkYLIHqPzVUQP5I+FqQq6d2TGUdr1qSSnQAKviJDBE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=irvgNnu/iygYxutJUZSXxo6/kyH32S7PxtFm0vvlVppcXLx10Tce/dUyVAn+25ez1FrlYEHEb2MEa2brfb/vMkktClLw9arVrccvQ6EhG7KruIk2daqItQMRxalbd4H19lMGxFXswQYaTi18/8qHekfpwOhyifBeDlo9nHEDFOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oiraeQSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A07C4CEF7;
-	Sun, 15 Feb 2026 21:29:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771190945;
-	bh=nhkYLIHqPzVUQP5I+FqQq6d2TGUdr1qSSnQAKviJDBE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oiraeQSU79utJMzPGQlp3tbHg2H+kOlRsEOQVqjB6vXrp0beJdvC7Yuyp1R07RMgJ
-	 rIBHVL4qEXrX6PfpyAPvnAICFwh0QuC8nm5LgPr/HPNLbjHSMOCKd7UNyW7AzTdi56
-	 6z/k4Z3zG42iqY71WwqXoA/8IFKSM0ZfBj57VtZ40IA9rti/bQ+r6J2STfB2YDWq8l
-	 D5h0m3ioMcVeqhriUX/ZMzNJuVH4r6zdckXlqulEnMk6NgSqarwK9UZ7ep6o2pto7o
-	 5OxtwPF1ETfftIyuzWH1bi8GZdaMr84+ecn5nokXfj5JuUdimZyT2lbkWj63szYaL+
-	 rtUvosdLvL3MA==
-Date: Sun, 15 Feb 2026 16:29:01 -0500
-From: Nathan Chancellor <nathan@kernel.org>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Nicolas Schier <nsc@kernel.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Steve French <smfrench@gmail.com>
-Subject: Re: [PATCH 0/2] kbuild: rpm-pkg: Address -debuginfo build regression
- with RPM < 4.20.0
-Message-ID: <20260215212901.GA695045@ax162>
-References: <20260210-kbuild-fix-debuginfo-rpm-v1-0-0730b92b14bc@kernel.org>
- <aY8wyR572eZYWVJY@sgarzare-redhat>
- <20260213191138.GA2131983@ax162>
- <CAGxU2F7FFNgb781_A7a1oL63n9Oy8wsyWceKhUpeZ6mLk=focw@mail.gmail.com>
+	s=arc-20240116; t=1771192135; c=relaxed/simple;
+	bh=QJw44MwvpOuGRv3GT8g3Dmz6RLDQVI45QEd/BEkgkGo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=QbSZGoX6oLFf/4h17tXgOLu1RlWPcOMnCOE6wnxE3PYbCGMGizf4oXjms2ord8BcG3ccwvnQPPrygM15XLcVvQxx1f1/KOMzBDUFKd+d806dIJvzXQj+oy3wyFC1eiz+Mb09cQfC+EJ85J+5P1PxhFA9mbwRvrICuszISqgaD3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nLGda3Vz; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771192122;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=98u/mhEqw/mlD21bgRdDI+M2Mw8p79SKwci4AWwqc9s=;
+	b=nLGda3Vzr5Y5NM5gJVHotmPxaWHDgePF6zCsEFeovvzIdPqJYOMW19qUuGfzdT0wYmzpe9
+	YxdTYmunGjeNjmbKJAkCtf7+cN+4AQ7U8nELfjj5s6fryPRsui7iGe+i/v9mXcHSyQLS8W
+	9T29ib2rctwBUsNvk/DyjXBiXDb+c0s=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGxU2F7FFNgb781_A7a1oL63n9Oy8wsyWceKhUpeZ6mLk=focw@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: Re: [PATCH] crypto: atmel-sha204a - Fix OTP sysfs read and error
+ handling
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <CAFXKEHbCrp57ruvCF2TXXcnoJF93Z5bdUd7Nt5WtM9_abtc66w@mail.gmail.com>
+Date: Sun, 15 Feb 2026 22:48:07 +0100
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ stable@vger.kernel.org,
+ linux-crypto@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2E9C85C9-AD05-4BB3-A945-5ADECCB5C7E4@linux.dev>
+References: <20260215124125.465162-2-thorsten.blum@linux.dev>
+ <CAFXKEHbCrp57ruvCF2TXXcnoJF93Z5bdUd7Nt5WtM9_abtc66w@mail.gmail.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216644-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216645-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B996613FC2B
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C9A2213FD02
 X-Rspamd-Action: no action
 
-On Fri, Feb 13, 2026 at 08:41:24PM +0100, Stefano Garzarella wrote:
-> mmm, that it's odd indeed.
-> Without this series applied, I had issues on Fedora 42 (RPM version 
-> 4.20.1), but it worked on Fedora 43 (RPM version 6.0.1).
-> 
-> I just retried on Fedora 42 to build commit cee73b1e840c ("Merge tag 
-> 'riscv-for-linus-7.0-mw1' of 
-> git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux") and I have 
-> the following errors:
-> 
-> RPM build errors:
->     Dependency tokens must begin with alpha-numeric, '_' or '/': #�) = 0x0d000002
->     Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x47161b0700
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x339b1a000ac0
->     Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x36000000
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7508200000000000
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e76000000000400
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x803ab2b00000000
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1a00000000005e00
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x125590000000060
->     Dependency tokens must begin with alpha-numeric, '_' or '/': = 0x03080000
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x818000000003600
->     Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->     Dependency tokens must begin with alpha-numeric, '_' or '/': $) = 0x1c01040000004d00
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x63c300000000000
->     Illegal char '?' (0xffffffd8) in: 3�
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1320f691700
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e17101500
->     Version required: ksym(g) =
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->     Dependency tokens must begin with alpha-numeric, '_' or '/': p) = 0x3875480000005c
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ]) = 0xfc22000000003000
->     Dependency tokens must begin with alpha-numeric, '_' or '/': 2) = 0x5d0d03cc22
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ]) = 0x32042c1c
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1c11a3d1b00
->     Version required: ksym(�) =
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3220312e322e3400
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x322e353120295400
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x2029554e47282000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->     Illegal char ')' (0x29) in: (GNU)
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->     Dependency tokens must begin with alpha-numeric, '_' or '/': #) = 0x031c0000
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x570d03ea11
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x4000000520d03c0
->     Dependency tokens must begin with alpha-numeric, '_' or '/': C) = 0x690d03cf33
->     Dependency tokens must begin with alpha-numeric, '_' or '/': �l) = 0x102000001471140
->     Dependency tokens must begin with alpha-numeric, '_' or '/': i) = 0x4a00000000011000
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e00000000240000
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x42111503a533
->     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0xea1303bb33000000
->     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-> 
-> But if I apply this series on top, everything is fine.
+On 15. Feb 2026, at 22:09, Lothar Rubusch wrote:
+> I tried to verify your patch on hardware today, unfortunately it did
+> not work for me.
+>=20
+> My setup works with current atsha204a module in the below described =
+way. When
+> trying to dump the OTP zone on exactly the same hardware with a =
+patched module,
+> it only prints '0' and nothing more, see below.
+>=20
+> [...]
 
-Okay interesting! I have not seen that error yet... I wonder if adding
-'AutoReqProv: no' to the kernel-debuginfo subpackage (like the
-kernel-devel subpackage) would avoid that for rpm 4.20.0... Probably not
-that big of a deal if it is resolved with rpm 6.0.1 but it would be good
-to avoid as many corner cases as possible.
+Hi Lothar,
 
-Cheers,
-Nathan
+thank you for your feedback. I made a small mistake in the return value
+where I forgot to add the previous length 'len'. Sorry about that!
+
+Unfortunately, I don't have the hardware right now to test this - could
+you try if it works with the following change?
+
+Thanks,
+Thorsten
+
+
+diff --git a/drivers/crypto/atmel-sha204a.c =
+b/drivers/crypto/atmel-sha204a.c
+index 793c8d739a0a..431672517dba 100644
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -134,7 +134,7 @@ static ssize_t otp_show(struct device *dev,
+
+	for (i =3D 0; i < OTP_ZONE_SIZE; i++)
+		len +=3D sysfs_emit_at(buf, len, "%02X", otp[i]);
+-	return sysfs_emit_at(buf, len, "\n");
++	return len + sysfs_emit_at(buf, len, "\n");
+}
+static DEVICE_ATTR_RO(otp);
+
 
