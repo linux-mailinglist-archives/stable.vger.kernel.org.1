@@ -1,175 +1,161 @@
-Return-Path: <stable+bounces-216701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICvLLyYrk2kI2AEAu9opvQ
-	(envelope-from <stable+bounces-216701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:35:18 +0100
+	id WBePC7cqk2kI2AEAu9opvQ
+	(envelope-from <stable+bounces-216702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:33:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F36144B9E
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:35:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A649144B64
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:33:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8235D306758F
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 14:30:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2B961300E24A
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 14:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6D33126A8;
-	Mon, 16 Feb 2026 14:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7E22FFF9B;
+	Mon, 16 Feb 2026 14:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Qa9uZkRU";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nCgMZuW4";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Qa9uZkRU";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nCgMZuW4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5wQWQey"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FCD27E05A
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 14:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C841D5AD4;
+	Mon, 16 Feb 2026 14:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771252228; cv=none; b=TSwt751GlhxIIjQTez0HkTUfg7e5JqBbwqmvu/lM6EdLKPKmTjMoPLWtYyzBmLVgwTRQ2jUuxqjmSYRC/eEwDbdyOhSx/Wl4C8PPXxg2dZhsCWgl3YVha5UzUbv/MoNf7jfz8AcoFKSL2aXBbI+5NuNXjUQmgJKwH9WvEcCBZ1Y=
+	t=1771252404; cv=none; b=McZEiddIOMJ04ccOuk3Aub0ygXxjHGCUs+2gT8dmxEUstcQVadcVYHX03t9XZYYF0uLiFwXF+hNqPgOMcRWdDODHI48QIfxMIWxR7/w/HAT7zVVby0EOrz3f5hZJRs1RH1hgaa+rGA5u5CKxYK4gvNP2ujoy4Fp0J5PPEzGY4bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771252228; c=relaxed/simple;
-	bh=LfwF1Ustxl521oNcCGBnS2/rkhLjIvrZKg86LKR75jw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YpAD4ymoqGsYHmpBrKmK5kzRvc+XPMr5bh3O9LEdnlaAwQM50rXdgpDTpAO58KcEUworeTCxP1+AoQ19fPz17tUwb0C49BjIx8UIz5nGuiOcbit5VEll35EOCgfChL6md2YKygcdncyxFe4gihPvyJEezs8hEHLNpraMk9ldfRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Qa9uZkRU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nCgMZuW4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Qa9uZkRU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nCgMZuW4; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2AC795BF3B;
-	Mon, 16 Feb 2026 14:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771252225; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LfwF1Ustxl521oNcCGBnS2/rkhLjIvrZKg86LKR75jw=;
-	b=Qa9uZkRUTz6ZorLfxbjcgYamN4xfaH7Qj8e6TkkNl/FNlw4H56QG1K/+xNtuvQHzGcuo0f
-	ibAUXC6N9uvgEIrCBe5kL7Z1AuKpJ3F7S7aH7+z+m9jIGv6KMVDPDZQxt3B93VeQ26TazC
-	QAEYS+45Ga3GNorBqxoZQeuNqhDG3Tc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771252225;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LfwF1Ustxl521oNcCGBnS2/rkhLjIvrZKg86LKR75jw=;
-	b=nCgMZuW4/ekQW1Ai1XGtUYtqnpU5bmhWmI56rGyNRA350iXQ9+GQHPxZVbP5NyiTo+urt0
-	v0sKanocVL4i2bCQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Qa9uZkRU;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nCgMZuW4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771252225; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LfwF1Ustxl521oNcCGBnS2/rkhLjIvrZKg86LKR75jw=;
-	b=Qa9uZkRUTz6ZorLfxbjcgYamN4xfaH7Qj8e6TkkNl/FNlw4H56QG1K/+xNtuvQHzGcuo0f
-	ibAUXC6N9uvgEIrCBe5kL7Z1AuKpJ3F7S7aH7+z+m9jIGv6KMVDPDZQxt3B93VeQ26TazC
-	QAEYS+45Ga3GNorBqxoZQeuNqhDG3Tc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771252225;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LfwF1Ustxl521oNcCGBnS2/rkhLjIvrZKg86LKR75jw=;
-	b=nCgMZuW4/ekQW1Ai1XGtUYtqnpU5bmhWmI56rGyNRA350iXQ9+GQHPxZVbP5NyiTo+urt0
-	v0sKanocVL4i2bCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CDA123EA62;
-	Mon, 16 Feb 2026 14:30:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Ft5RMgAqk2mWLQAAD6G6ig
-	(envelope-from <krisman@suse.de>); Mon, 16 Feb 2026 14:30:24 +0000
-From: Gabriel Krisman Bertazi <krisman@suse.de>
-To: =?utf-8?Q?Asbj=C3=B8rn?= Sloth =?utf-8?Q?T=C3=B8nnesen?=
- <ast@fiberby.net>
-Cc: Jens Axboe <axboe@kernel.dk>,  Breno Leitao <leitao@debian.org>,
-  io-uring@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  stable@vger.kernel.org
-Subject: Re: [PATCH] io_uring/cmd_net: fix too strict requirement on ioctl
-In-Reply-To: <20260216-io-uring-fix@fiberby.net> (=?utf-8?Q?=22Asbj=C3=B8r?=
- =?utf-8?Q?n?= Sloth =?utf-8?Q?T=C3=B8nnesen=22's?=
-	message of "Mon, 16 Feb 2026 10:27:18 +0000")
-Organization: SUSE
-References: <20260216-io-uring-fix@fiberby.net>
-Date: Mon, 16 Feb 2026 09:30:12 -0500
-Message-ID: <87ikbw92x7.fsf@mailhost.krisman.be>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1771252404; c=relaxed/simple;
+	bh=tdvq/uSw/SrS/YKQsh0ba9OJ9N9xO33wfZZWMx/DXKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MEiIwU9lK9S7DjITgzGaVN8E4WRoHk5mYHRnzcLcFklWT/SnCJ81FIKCLHwR+bf2L5pSiJBih0vuUoEFA2EW/lfnQ0uooNA/3gSsXPmLfTb3T1cQ3Q0e/cAItIuGpryhiB79tWDGggw7UCnRR7BF6sm7/0oc5HV9ab/AQwF1xps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5wQWQey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D824EC116C6;
+	Mon, 16 Feb 2026 14:33:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771252403;
+	bh=tdvq/uSw/SrS/YKQsh0ba9OJ9N9xO33wfZZWMx/DXKs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d5wQWQeylbWgP1GbWxstrqs1FzxRCEcyUhbch+SYWqRkVL4z4smlWATiKCX0WGcBh
+	 rVa6IM6OafPQkweBeAfihJeX791duLHNUzv5e8UwO8l3qAbaD+ygM6w0lgW6QXv5xw
+	 5cDDCWi1hUfHY/OcqwiRsMDwGzjX41/9L86GxQ6hGAnVIubw2X3QNwJzRoEnkvFX69
+	 lDQOCR82mJsr704qxan+aFzr887YTawp8cDI6Ebc1KuG0TeQY9Xyb3MqyJvPrKDUEW
+	 kwGlv5OqT4T3p5PM+A6Mefxo5UgDuJewImoicwptL252dgw664IgusAfaacQmuqfQ3
+	 yNV5peljAVPiQ==
+Date: Mon, 16 Feb 2026 14:33:17 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.19 00/49] 6.19.1-rc1 review
+Message-ID: <7dfd0e63-a725-4fac-b2a0-f2e621d99d1b@sirena.org.uk>
+References: <20260213134708.713126210@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3RM9jDFn4myFtdW9"
+Content-Disposition: inline
+In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
+X-Cookie: Beware the one behind you.
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-216701-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216702-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krisman@suse.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailhost.krisman.be:mid,fiberby.net:email]
-X-Rspamd-Queue-Id: 10F36144B9E
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sirena.org.uk:url,sirena.org.uk:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8A649144B64
 X-Rspamd-Action: no action
 
-Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net> writes:
 
-> Attempting SOCKET_URING_OP_SETSOCKOPT on an AF_NETLINK socket resulted
-> in an -EOPNOTSUPP, as AF_NETLINK doesn't have an ioctl in its struct
-> proto, but only in struct proto_ops.
->
-> Prior to the blamed commit, io_uring_cmd_sock() only had two cmd_op
-> operations, both requiring ioctl, thus the check was warranted.
->
-> Since then, 4 new cmd_op operations have been added, none of which
-> depend on ioctl. This patch moves the ioctl check, so it only applies
-> to the original operations.
->
-> AFAICT, the ioctl requirement was unintentional, and it wasn't
-> visible in the blamed patch within 3 lines of context.
->
-> Cc: stable@vger.kernel.org
-> Fixes: a5d2f99aff6b ("io_uring/cmd: Introduce SOCKET_URING_OP_GETSOCKOPT")
-> Signed-off-by: Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net>
+--3RM9jDFn4myFtdW9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
+On Fri, Feb 13, 2026 at 02:47:19PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.19.1 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
+> Gui-Dong Han <hanguidong02@gmail.com>
+>     driver core: enforce device_lock for driver_match_device()
 
---=20
-Gabriel Krisman Bertazi
+As you'd expect v6.19 is also affected by the breakage here:
+
+# bad: [fdd37e7f30acd1978b8c205b62562dbe7b17b015] Linux 6.19.1-rc1
+# good: [05f7e89ab9731565d8a62e3b5d1ec206485eeb0b] Linux 6.19
+git bisect start 'fdd37e7f30acd1978b8c205b62562dbe7b17b015' '05f7e89ab9731565d8a62e3b5d1ec206485eeb0b'
+# test job: [fdd37e7f30acd1978b8c205b62562dbe7b17b015] https://lava.sirena.org.uk/scheduler/job/2457262
+# bad: [fdd37e7f30acd1978b8c205b62562dbe7b17b015] Linux 6.19.1-rc1
+git bisect bad fdd37e7f30acd1978b8c205b62562dbe7b17b015
+# test job: [f7a05eebaf2882496333b04ca6fc5697be454b29] https://lava.sirena.org.uk/scheduler/job/2457550
+# good: [f7a05eebaf2882496333b04ca6fc5697be454b29] smb: client: let smbd_post_send_negotiate_req() use smbd_post_send()
+git bisect good f7a05eebaf2882496333b04ca6fc5697be454b29
+# test job: [446b9894f78d8b8ba44628370191593e41d96255] https://lava.sirena.org.uk/scheduler/job/2457610
+# bad: [446b9894f78d8b8ba44628370191593e41d96255] wifi: rtw88: Fix alignment fault in rtw_core_enable_beacon()
+git bisect bad 446b9894f78d8b8ba44628370191593e41d96255
+# test job: [1b3bc6d65b96f215b17512174d20a045423f6d52] https://lava.sirena.org.uk/scheduler/job/2457672
+# bad: [1b3bc6d65b96f215b17512174d20a045423f6d52] crypto: octeontx - Fix length check to avoid truncation in ucode_load_store
+git bisect bad 1b3bc6d65b96f215b17512174d20a045423f6d52
+# test job: [a96368be3ad4b175cb3f91323b686e94be00c930] https://lava.sirena.org.uk/scheduler/job/2458025
+# bad: [a96368be3ad4b175cb3f91323b686e94be00c930] Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
+git bisect bad a96368be3ad4b175cb3f91323b686e94be00c930
+# test job: [15c160f44ececb2caf42a5d6508991c31d73f59c] https://lava.sirena.org.uk/scheduler/job/2458104
+# bad: [15c160f44ececb2caf42a5d6508991c31d73f59c] driver core: enforce device_lock for driver_match_device()
+git bisect bad 15c160f44ececb2caf42a5d6508991c31d73f59c
+# test job: [d7290ea01ac970dc255508b467fe0016d02be2f5] https://lava.sirena.org.uk/scheduler/job/2458145
+# good: [d7290ea01ac970dc255508b467fe0016d02be2f5] smb: client: let send_done handle a completion without IB_SEND_SIGNALED
+git bisect good d7290ea01ac970dc255508b467fe0016d02be2f5
+# first bad commit: [15c160f44ececb2caf42a5d6508991c31d73f59c] driver core: enforce device_lock for driver_match_device()
+
+--3RM9jDFn4myFtdW9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmTKqwACgkQJNaLcl1U
+h9AnuAf/Sk6iW8Jk7tATGvH//wM5RThppEJZyyW8c0zJj3crXgaf9vDi7EFG2Wec
+mgbanCs3El19r3QJ/SKmFLNtg+4XeGrK26yyAVesHr4KD8oy1/YOPC5jHhf+R+fO
+Mt+y9CMn72mTnK/y0Pkt+tLgZefMgAqsHayemPc0I3RngF7U4zsi23dJUkO53lkO
+Xp74trz2duf8cElYMNUwLQay/w/5ibYwOuqE86chR5cl+6ZKyLzPCcxJmud5fSDl
+J6P/6kesuOQZEXVYLWbxIyCr/fyEJrEvblnDt3d20y8HabiKnuvrwFgzoI4zz2iu
+pLnnedbZlGd9IwqNxnfXFeC0ntyXsg==
+=rvTl
+-----END PGP SIGNATURE-----
+
+--3RM9jDFn4myFtdW9--
 
