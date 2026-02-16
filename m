@@ -1,262 +1,187 @@
-Return-Path: <stable+bounces-216749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNxKN3lpk2m64QEAu9opvQ
-	(envelope-from <stable+bounces-216749-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 20:01:13 +0100
+	id 2H5zEn9xk2lq5AEAu9opvQ
+	(envelope-from <stable+bounces-216750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 20:35:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B1B14727C
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 20:01:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7211474F4
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 20:35:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1999E303526E
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 19:00:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D685530238F3
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 19:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973FF2E0925;
-	Mon, 16 Feb 2026 19:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112702E03EC;
+	Mon, 16 Feb 2026 19:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DF3HR9Ka"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xOvG0rY7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CA7139579
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 19:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC01270EDF
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 19:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.178
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771268418; cv=pass; b=S8dlPi6/GguL6QNDqlfyqDZaUgbHFgvEcseTktMVrFgJqKGLgTwq7MW8j2tyDjAy21i/CYliYDFZI0Xi+huoMb9qfmgHPWtoeoEP0EVO013C2dzSHHsLNvAhs0Kz5eps213xLSgfF6oou4CsYwk3JvWQCTZyY8lXA9lnjCj4cDw=
+	t=1771270522; cv=pass; b=cD457MXaKa05WHH71w39YbJsw6/dMbtbLeY+9OIjSlGDxy2lBhWf8LwnJb31a8OeQHnsubHpCjRqeH6Ds397d1BK5fge6VatruIBNzJkAtUTw5eS8X55Kk7XUK2v6KjA4sfvPmaqnrB5ZN1hNGuDYuoS1mB8m8vju+hnD7d4j9E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771268418; c=relaxed/simple;
-	bh=Ga5Fo+bcIzl/eYt/Ks6U/NQEee3M/us9KJVMxZfcK2I=;
+	s=arc-20240116; t=1771270522; c=relaxed/simple;
+	bh=lO+bK9Mu7MYuKeo9UdHDyn6ieBIT5VFZ66T2AkNb8CQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oyZaGZlyA16GWmyq9rVDbBm2dkeaQ8XkgaVJz3jw+h+s8L+eHoSfkLHrjTNsxZPoJ3P0eUXrgByvctOKkACjEtMl33TCfLyAAlm21k5TDphIjABBg2ujNlP0hdWm88VQ9ayHV3vWJbXGuGoVFpV4cfuePCIRI5uv3ZUZQLji4Sg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DF3HR9Ka; arc=pass smtp.client-ip=209.85.167.51
+	 To:Cc:Content-Type; b=MIQLuVWw2nIqBF8iVjMTQY82UkNFFKYOZgTM6bucKloyEarvqX941r76TsaFDVOikIPmL7BLDbmqbP+p5k9WzWXmyBqQ7b9q87Cylcfl3SbsjyVUdu0EOhD3LIu2GVCA+5z64wEmnSxOxrDTDP3E7VD967oS2K90ZVMAPNBbgeU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xOvG0rY7; arc=pass smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59e5aa4ca41so2727711e87.2
-        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 11:00:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771268415; cv=none;
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8cb3e0093e3so343426285a.0
+        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 11:35:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771270520; cv=none;
         d=google.com; s=arc-20240605;
-        b=Q7hs0TGk/8IHvug3mD4349U1LeSbJJfoxr0fBh+C2eI1zkxQuVxPwNZVh5/vmUBd6Y
-         yP77Pwu3Z9Q0ekm53RnJpDlad9MBCGkuyb2+yQZVNc0tZK0WEUnG6FDPu6ugqNE4HiVT
-         OwmJ2MV0FrB9Zis+6NLdUx5eX5Uexecj5U5FBYq4Ux59YDqQ/kAHILSYIalO1TXVacm4
-         dccqHSc7pU+qdPe/dHkmetOoTW5NRDzQOnKX5okbYRYm6n2jnA/7MGQSfxQyVSk+E84d
-         HIGhJe2gXUMmia5D/0vSyWBq+Ss/cJnhn75FdvsCLz8R8N3FZuJvbtv0RrRdMv3nHNI2
-         x8Dw==
+        b=KHo3RsMngIzDAgIstPh5uMeydOk8zW0YBQngTmX1Lc4kOlu3rnpikUF5sYvwZ3rozx
+         m4Lny5zHY41zaoe6JVTaLRervtL+34HO3ysFJf5XULnUWU5pKNgnr/bn+5/jikwnzNmg
+         FjeEc8O8GX5w2+JGlOduitnD2JrbLXqFvEApA1pHY3puD9NGGjYSKBMxRE714IDnNXLj
+         MuOw6w9m/6mn3a0znQ2nWwZ2mmBn18KCypfb0sLZPK1ZgMYSAvQnou7v/0USPpMq4nNN
+         AZdE2fkoyXzpIVR/AeKHDXlaBCx/v4fpBg8FblD+Eaj2TGky6GvDTc+FZ2fW35RABE93
+         l8Xg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=jG2+rAaRrsn87ljy4pWId0GXGpI/9AO1yGU6K9ZS4+Q=;
-        fh=KERlnmb7EOJsQuObaCb3VoyPJxDtZsX1KX9DYH+Qa+A=;
-        b=Uh5v6gOzdA/CATElXplPrttBsK6rRAiZEpzOp0F7PB9YI1ZU5YiYetwJNO+ZWy3kId
-         2PDA1YEI52GvfD9bbMhr41lQA9SG/88wMpTtEvbJy62pkLH2dKUpzuQpRtVdQwhC+fsp
-         OSfS7s8e7hgNmHtoGYYLx8Ij8hTj1OuzpxCYTTjrGP0QbpoBDZJJNPrbP8zId1h94s8a
-         FLB9Vw0EXwcAB65XAqMmYjbn9u8BmhQ4Tml3+HfctW4SecIV1OhqNWxpyYVOa6XltqyO
-         cf9l45VvNZJCeoXeYFq1J0bqCrC4H9KzpGNsGM7mZHufGBBKAgdW+nSZj9Co4jxWyJNf
-         duBg==;
+        bh=3/4pYCOXiv022CJVxKfr6DPQdE+zuRGsnBhvnTlxe/E=;
+        fh=wFrJ4xAX0w2LUeSINof79vRO9gB3FFyAA1TxKDTbFSM=;
+        b=kja7jnR+2UuAzBbDFtkawLxyD2kTGDZ40RycVXXyZ53DrPv9elhOvz5VKNQuuwYQwl
+         0ZurEXLWHRkN+jcf9ZOJw7BisoN44vWvQW3/w59bFLryohQ+iQMeB+oY6D8sQdCgwY7Q
+         Oato8zYyu/m/pF8qCaFxgMTbMuSdCzSxm2N8orD9vLqkqIrg0jkJEL/NZsbONdR9u4Dq
+         0S1Uwi633W4n5i4QI53/uFBqPqSz7RGpLYj7JBvwOm68OYJvxL05e4LSlwRkPdAc4VQ1
+         R7WNLxwt74FZ2WV0moChBhgvUGSEtyasyXm88r1Rg+TAoIPgLiPbbDj8AFSTk4c/1JrB
+         aO9w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771268415; x=1771873215; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771270520; x=1771875320; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jG2+rAaRrsn87ljy4pWId0GXGpI/9AO1yGU6K9ZS4+Q=;
-        b=DF3HR9Ka4dEZUKITnKPJ1v5mizQjpSmbnFNBrwE0HWNs51LTfLDpc2ptLOQf2pvFUD
-         MXYEHPtWENBs3kjHL2IUpmJxGVnDF3zRVfYPNyY16owIVDarmq00C2QVs6YNQ3MD7hkx
-         iaOW/xEX67xVQbpSpIO9XNezB6A0Zvq1cUg9CX8JG0aRb7fOUZLs4w7xpaS8Ost2hm9Q
-         qEh/JS5hMRrhIE9ODPnoAR2/TYbeKRCrvgTG9WjtOM8MVyNm0x/TqjXYi5cITpGMkIiR
-         hjNdMi/a0O/JXzPocquphtsKWfz/TWYNzMQAvYHQMGfeMELfz2Jt/H+DnyfwNKsdYB7A
-         eHoQ==
+        bh=3/4pYCOXiv022CJVxKfr6DPQdE+zuRGsnBhvnTlxe/E=;
+        b=xOvG0rY7IXpAUGFBVer4uYmxjj9t5AiuauUd9I+yZ3w37fcKHAcqPBPDXjG16VNFLv
+         BVw4Jmx1p/MJY9tlQ4rDyCI9MtiazvSCjp24P4jkVm3XcQj941CLabbUQs/fSH77lm5n
+         OHZlllQBhNSsJB0Tzyc3NfJHtsICv1jpdatLIXhVToNO3lPEN00NVa+UAapxLAeOwACe
+         BjbUcsQ+nITSi3GFjsPk5kkI2WDqCZA+BL8ITTdx/cGAr3N5LzQ2bUFjLpO4KfRhlkbw
+         9YOf4Z5JI2a2gaH5RJ+R/VSj9pjYg1f74Ic09zuXjuABU9dfKED9mxVlknkLAIMJlXGf
+         OlwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771268415; x=1771873215;
+        d=1e100.net; s=20230601; t=1771270520; x=1771875320;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jG2+rAaRrsn87ljy4pWId0GXGpI/9AO1yGU6K9ZS4+Q=;
-        b=V4V2j8Mws0J/Jjvp4MTAxxGGHy+yvcYMIZfv6V2fJKtJ6Q93lxV0/IVXXfL83DAuVT
-         a4OQc0T6XqW73meJBz5Xlyt4oXYFqZUPa+22+zHk6hVuQ/LBndsK/uPrAwyfZu+9xUVT
-         a4dn3bXg+sESmXYftLCSCvKCmu4PBaDg1k/UKg0m+ZXVqB2NxxpwCSE5TUlrZGXEfWlc
-         DCgvKlZmak2XP+UDe67rjtXMxwYOf4xFGNsDGCvUaR8I6oFTnLTW+bwAfzfvAldgkQiC
-         +dQ6l/HnXLHhFJmnioHZie5q4SkuSf9UbC65Xh3md6BIxkxxNsOiK/RN5GkC9T/lk+CA
-         J9hg==
-X-Gm-Message-State: AOJu0YzJUPtS0AnJrtJjXTMfct2gG0GFC4wRnZg8tDlzjSQCK4VK5oau
-	T95UnN2GdoRdqdlk3SjZGkfA4zZVgRjGKYRja9L6w3Hbajf9dPu13uZK0yLQJ8WfsCxyDHIZOm4
-	Uahoa8QNOpT8h5axFLvzANbYH2uR9OgVOYD11XVeThAznhkv2P7uFSVIU
-X-Gm-Gg: AZuq6aJJDhjc3O4S6LctfeUdOeX9YccQfJ6TAnntvucKWlRTBs+XBZqx0SEcP2ARh3F
-	nbf6SAEs8Bref9gOYGW8AUtJPH+p8ujHBusMi3ukWvaWN69Yj4LxY9dV9npmGwUnud+77px7ox/
-	5CODkUQmvS9d9Z7hxBDwRSsHyRKjgVA+Lj974SVWdpoZTldLug6AgEgXHWs31hnHOAPWJ917sKN
-	bW6JYNJFfoLSUc5+14XxoGIoCweA5+cFPg4bs0TbYEFmWtlZOdDgnWqf7fKTs3Kfs12IiiAtIry
-	Z+JmoZaLO9lTmuiO
-X-Received: by 2002:a05:6512:4157:b0:59f:6b77:a8d9 with SMTP id
- 2adb3069b0e04-59f6b77a90amr2298964e87.44.1771268414229; Mon, 16 Feb 2026
- 11:00:14 -0800 (PST)
+        bh=3/4pYCOXiv022CJVxKfr6DPQdE+zuRGsnBhvnTlxe/E=;
+        b=UaZilg59J7md/OhWBXARf4KwmUxt/SEFgiLxuIabGYfqMudJWYuUl2SSmD9/SlU/vm
+         9CQN/wUVSQQlwyGa0DHkGasP+4LBGAzCoHEjkl6USZNv5Wok0aahK/x4xDvXb0eb8T+U
+         0iyukj+5e7MlH5b7RzoNL6W04PPcbLadbPv4fGqFPc0Q7oTGEt24/D2HuOxSEDF54cyQ
+         dKDRVGZZNy2hfVDG7PDvb4A/258CNDaJofjMgZfmVGq0UnOU2+Sblb6U/4ip7VBaqi1H
+         XfakLmZIPG8WsS3n+P+cuGxGUiWuB20a6r7xEq5twHT+ieoh+SlzrG075CXvpd8VHVNL
+         BPZw==
+X-Forwarded-Encrypted: i=1; AJvYcCUiOfFnr36ngr4IxlcCvSVDGEJYA41mEI18k4wE8Dhdu079f4SM50GtXbwBohVoyKeWuRkPeoA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBF1E4WOs1F1dqoo31Qqje4hbf0UiLQ2oQiZ060Mz9k04ccMgA
+	LJdTfQ9fXF45vZnkLwc4fP0zYNs4fpFmlSVp06OWIHjP7futz6LvdpmqrD+B/uigE1TzUOLdAv8
+	6pVFJ1OVkg/UllU3DP2O6kbL6t/FglDq/z5/dlTAy
+X-Gm-Gg: AZuq6aLz/kDoCDFYuXPprZd00Y5wON3aE5PXnKZXJnOEkZIg+xNX6i3mquAdHXO4IkY
+	hYHNCFzjAVUamVDTzh45+1TGzuFYOYottsrraUjTnkSK0Hogj7bhuN1JxoLUo+fU7P0BM+2WJ93
+	vWd7ZaSiXO9EVQLpNsPtePDIs3MXBD0cGB3HM/V2N8VcQ4N5tEdtCrMyt62nxCU1ps4NLvjYPRC
+	9AVH1ngRWS2IZAMbnzgzFVxEGLfQhiXkEuv2LfuWKQLWEmN0/P6g19OwaEFmt02yvWSY++PvTVs
+	JI15+w==
+X-Received: by 2002:a05:622a:452:b0:4f1:b6bc:5833 with SMTP id
+ d75a77b69052e-506a8339f20mr138771171cf.54.1771270520092; Mon, 16 Feb 2026
+ 11:35:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260213211702.447894-1-joshwash@google.com> <20260213211702.447894-4-joshwash@google.com>
- <2026021654-catsup-occupier-6753@gregkh> <CALuQH+UsbSxrOwkdUba=AFO7dDOrdtLmM5NOpQ__ASNW0GF5pg@mail.gmail.com>
-In-Reply-To: <CALuQH+UsbSxrOwkdUba=AFO7dDOrdtLmM5NOpQ__ASNW0GF5pg@mail.gmail.com>
-From: Joshua Washington <joshwash@google.com>
-Date: Mon, 16 Feb 2026 11:00:01 -0800
-X-Gm-Features: AaiRm5022GNOxtbATHx5xZr7Cj3bGxFp7RTUOuhX2CpK-Az07LCVCDnxU22WgyE
-Message-ID: <CALuQH+Xsai9RWAwinJ6uG6Q9a_ocyaLrq2LtjY=6oVgFctK52w@mail.gmail.com>
-Subject: Re: [PATCH 6.6.y] gve: defer interrupt enabling until NAPI registration
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Ankit Garg <nktgrg@google.com>, 
-	Jordan Rhee <jordanrhee@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>
+References: <20260216185245.182450-1-fabian@druschke.network>
+In-Reply-To: <20260216185245.182450-1-fabian@druschke.network>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 16 Feb 2026 20:35:09 +0100
+X-Gm-Features: AaiRm527v4bN50uqJaTKPZnLghfuSIQLXbcR_aKPBlVFvua47bkhjT9D0EIuN2E
+Message-ID: <CANn89iKemBSmj=e4Zi5Otitop+kYYBNfGzVDRPk1jv8rJxsbtA@mail.gmail.com>
+Subject: Re: [PATCH] r8169: avoid OOM when allocating RX buffers
+To: Fabian Druschke <fabian@druschke.network>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Fabian Druschke <fdruschke@outlook.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joshwash@google.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216750-lists,stable=lfdr.de];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_CC(0.00)[gmail.com,realtek.com,davemloft.net,kernel.org,redhat.com,vger.kernel.org,outlook.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216749-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[google.com:+]
-X-Rspamd-Queue-Id: 40B1B14727C
+X-Rspamd-Queue-Id: 8C7211474F4
 X-Rspamd-Action: no action
 
-Hello,
+On Mon, Feb 16, 2026 at 7:53=E2=80=AFPM Fabian Druschke <fabian@druschke.ne=
+twork> wrote:
+>
+> From: Fabian Druschke <fdruschke@outlook.com>
+>
+> r8169 allocates order-2 pages for RX buffers during rtl_open(). Under hea=
+vy
+> memory fragmentation this allocation may trigger the global OOM killer,
+> causing unrelated user processes to be killed.
+>
+> Use a GFP mask that avoids OOM killer invocation so the allocation can fa=
+il
+> gracefully and rtl_open() returns -ENOMEM instead.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fabian Druschke <fdruschke@outlook.com>
+> ---
+>  drivers/net/ethernet/realtek/r8169_main.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethe=
+rnet/realtek/r8169_main.c
+> index 3507c2e28110..3525e889ec1c 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> @@ -3952,7 +3952,8 @@ static struct page *rtl8169_alloc_rx_data(struct rt=
+l8169_private *tp,
+>         dma_addr_t mapping;
+>         struct page *data;
+>
+> -       data =3D alloc_pages_node(node, GFP_KERNEL, get_order(R8169_RX_BU=
+F_SIZE));
+> +       gfp_t gfp =3D GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
+> +       data =3D alloc_pages_node(node, gfp, get_order(R8169_RX_BUF_SIZE)=
+);
+>         if (!data)
+>                 return NULL;
 
-I was also wondering if the way I'd sent the patches was okay, with
-major.minory.y patches for each of the stable kernels, or if I should
-send them differently in V2. Lore seems to have grouped all 4 patches
-into a series, which seemed a bit odd to me, but was probably related
-to the fact that I'd only used a single send-email command.
+Control path prefers to wait a bit so that the NIC can be setup, this
+could be used for instance to enable swaping over the network.
 
-Thanks,
-Josh
-
-On Mon, Feb 16, 2026 at 10:41=E2=80=AFAM Joshua Washington <joshwash@google=
-.com> wrote:
->
-> Hi,
->
-> The original fixes tag was unfortunately attached to a commit that was
-> introduced as part of the 6.9 kernel. This mistake was made because
-> there was a significant driver refactor made to resource allocation at
-> around that time:
-> https://lore.kernel.org/netdev/20240122182632.1102721-1-shailend@google.c=
-om/.
-> I did not realize until later that the logic being fixed should have
-> been backported much further back, to the initial commit of the
-> driver.
->
-> I will send a V2 with the suggested changes, thanks.
->
-> Josh
->
-> On Mon, Feb 16, 2026 at 1:58=E2=80=AFAM Greg KH <gregkh@linuxfoundation.o=
-rg> wrote:
-> >
-> > On Fri, Feb 13, 2026 at 01:17:02PM -0800, Joshua Washington wrote:
-> > > From: Ankit Garg <nktgrg@google.com>
-> > >
-> > > [ Upstream commit 3d970eda003441f66551a91fda16478ac0711617 ]
-> > >
-> > > Currently, interrupts are automatically enabled immediately upon
-> > > request. This allows interrupt to fire before the associated NAPI
-> > > context is fully initialized and cause failures like below:
-> > >
-> > > [    0.946369] Call Trace:
-> > > [    0.946369]  <IRQ>
-> > > [    0.946369]  __napi_poll+0x2a/0x1e0
-> > > [    0.946369]  net_rx_action+0x2f9/0x3f0
-> > > [    0.946369]  handle_softirqs+0xd6/0x2c0
-> > > [    0.946369]  ? handle_edge_irq+0xc1/0x1b0
-> > > [    0.946369]  __irq_exit_rcu+0xc3/0xe0
-> > > [    0.946369]  common_interrupt+0x81/0xa0
-> > > [    0.946369]  </IRQ>
-> > > [    0.946369]  <TASK>
-> > > [    0.946369]  asm_common_interrupt+0x22/0x40
-> > > [    0.946369] RIP: 0010:pv_native_safe_halt+0xb/0x10
-> > >
-> > > Use the `IRQF_NO_AUTOEN` flag when requesting interrupts to prevent a=
-uto
-> > > enablement and explicitly enable the interrupt in NAPI initialization
-> > > path (and disable it during NAPI teardown).
-> > >
-> > > This ensures that interrupt lifecycle is strictly coupled with
-> > > readiness of NAPI context.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 893ce44df565 ("gve: Add basic driver framework for Compute Eng=
-ine Virtual NIC")
-> >
-> > Why did you change the Fixes line here?  Did the original commit lie
-> > about it?  If so, that's fine, but this is really going to cause tools =
-a
-> > mess to keep track of...
-> >
-> >
-> > > Signed-off-by: Ankit Garg <nktgrg@google.com>
-> > > Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-> > > Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-> > > Link: https://patch.msgid.link/20251219102945.2193617-1-hramamurthy@g=
-oogle.com
-> > > Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> > > Signed-off-by: Joshua Washington <joshwash@google.com>
-> > > ---
-> > >
-> > > Note: This patch has been modified form the original to re-introduce =
-the
-> > > irq member to struct gve_notify_block, which was introuduced in commi=
-t
-> > > 9a5e0776d11f ("gve: Avoid rescheduling napi if on wrong cpu").
-> >
-> > Can you put this in a "comment" above your signed off like:
-> >
-> > Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> > [ modified to re-introduce the irq member to struct gve_notify_block,
-> >   which was introuduced in commit 9a5e0776d11f ("gve: Avoid reschedulin=
-g
-> >   napi if on wrong cpu"). ]
-> > Signed-off-by: Joshua Washington <joshwash@google.com>
-> >
-> > Also, it's "from", not "form" :)
-> >
-> > Same for all of the other backports here, can you fix them all up
-> > please and send a v2?
-> >
-> > thanks,
-> >
-> > greg k-h
->
->
->
-> --
->
-> Joshua Washington | Software Engineer | joshwash@google.com | (414) 366-4=
-423
-
-
-
---=20
-
-Joshua Washington | Software Engineer | joshwash@google.com | (414) 366-442=
-3
+Note that this is GFP_KERNEL here, not GFP_KERNEL_ACCOUNT , OOM seems
+reasonable here.
 
