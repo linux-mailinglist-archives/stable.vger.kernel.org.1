@@ -1,200 +1,136 @@
-Return-Path: <stable+bounces-216691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216692-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCK5DpsCk2nF0wEAu9opvQ
-	(envelope-from <stable+bounces-216691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 12:42:19 +0100
+	id SPIpAKsCk2nF0wEAu9opvQ
+	(envelope-from <stable+bounces-216692-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 12:42:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93393143111
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 12:42:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC77143121
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 12:42:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5349F3014640
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 11:42:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 58717301477C
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 11:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEE02FFF98;
-	Mon, 16 Feb 2026 11:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BAC2FFDF7;
+	Mon, 16 Feb 2026 11:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ivCbp51k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+UobP0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6312FD67C
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 11:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3894727055D;
+	Mon, 16 Feb 2026 11:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771242129; cv=none; b=dsVNchRioen0XqOpg5V8sHn2NftBj5sV3+S2Y5y3ml5xERTnT0j4ZOzoligD9avH6Y/FQSnR6N+IiX4/3tNCyx4Ax6w+tcBE/lAFrrHA0Qdyo9U/Q6iT/9Ir0kHl9CYs5Ko9jXPOZBKIrWaHDzl0Z8Fl4I0wbIzMEUKfl8NfmfE=
+	t=1771242152; cv=none; b=oBkacmkGn5VovF4vs/RN28EXrITmBVCZN4BeniSQHkWgSJJMQa0Tc4qme2vxtWkU/tfDJ2Q0Fxjv8cyTqS8KfwaMl2Zhd24V7WI1NQ4xZQXbWsBSYwPP21nShTr7loMdw7Q+nwbweY7b2hmixb9XDpQvMmxOX+cIeum2tAH0kXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771242129; c=relaxed/simple;
-	bh=9hXGM8HbOdUBIOFybUfPfYVQaewsRJkOkMaOUlDB7Zc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ThkTSjtTMT7QWTtk24qubwbiHdgcEJsLm6TrQBxH4ZdBfZIRnkxz2ItyYagerHxfms9T6jKLN6ftUL9oqaYZj0Hkx/HD+o2E6BiH0Q6vPKbeXq56Q2jV2lA2A1DUowAmQoeYm+Tc2C6Gdz7roaEOHhDAR79fISZlNACgk4NqNyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ivCbp51k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CBBC116C6
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 11:42:08 +0000 (UTC)
+	s=arc-20240116; t=1771242152; c=relaxed/simple;
+	bh=Qx+31xXss3wDM1nInZOJ0M/8jEm5MlSdby4C9beFIfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CbQ/1XWRI9tUeqeRjGmn7yWCD5hIDP8dqB/QUm9WEIc3EL6dG1a8R2igDJ3rvzBQKme/GEIXhH8OCpcE4xjmRplJadrttWn247FWPJcr16YgJuS4iEaqqriOGYkpZyoJWkqefJUpCyoNsJkfZqB8QDqW6blDcWQWNyBfslMhUOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+UobP0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA2FC116C6;
+	Mon, 16 Feb 2026 11:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771242128;
-	bh=9hXGM8HbOdUBIOFybUfPfYVQaewsRJkOkMaOUlDB7Zc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ivCbp51kDHFaICcgaXXMsnuOitabovibwaxrFh8tK7+74Wmp2AoGJgDd7v2w0gj1N
-	 qSkIGanaQIHcVJfCyQLeWO+6NlmErl4KHag8aKLQsVHx4UL+QSWSTwMqbtaJbykFGL
-	 ZDexMq4jvnW25ALy7a2ps7BL+Nt9icNv50Y4MdHfP6KEXdpzY5+9Suh3YJb/R4RaXM
-	 pvmlC8BQLGbufdnxiElbz8XuizIl5R9jlOLfhD/gtWItSXvjnDGyNQjdMSRt1lLcQ6
-	 b50s2VNYzRacwZ5pFqYzFHZKeCRgE34ysU7yS4E2keLjjeKYnN82VBlH661P/5d4vR
-	 xYzK7qsu3moSw==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b884a84e622so409357466b.1
-        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 03:42:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUwAJxPB0U5gd5X2trjOIFM5jQI2oL5AzGDFTQLhv1+xrUfczyzwiu2FlEaF1C8U29KBw8uyiU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNCFe1O8NbMhyPaaT9NYsum5VQ4epuCAYBpa9OgTzSj7qSiYQu
-	0qdv599/3A1SEDTA6JJ0K830zgWhpTyUg+ZI/HzWnMLPlvLEZxxciKXnp4IUuuyQprXRWEPAHyK
-	m3MMpXiBuCJcsH9Jk4BejZhO8ujdmfpM=
-X-Received: by 2002:a17:907:747:b0:b8d:c69c:bd5d with SMTP id
- a640c23a62f3a-b8facd3e5e1mr579572166b.29.1771242127562; Mon, 16 Feb 2026
- 03:42:07 -0800 (PST)
+	s=k20201202; t=1771242151;
+	bh=Qx+31xXss3wDM1nInZOJ0M/8jEm5MlSdby4C9beFIfs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V+UobP0HGdLyHcZpBnEe64ITgmrdp2Ro1uGK3FvCTnrTYVvWuoiHx7yGiOBswplOb
+	 E+mzODRkv+mlRPDVHY471u4jqR0+Nxhrsp8m9MmUc+duAcGYtnZ6XgmBnhIJS2wIJ5
+	 /vC2tCCGnUIEV3zjsCA9z6Z9ms9LQyglThJkeiGVsCZ4F5FZTFTrlIiN4wA84DjRaX
+	 9fYiJCGz2c5e5ytaV840soJ+WeWSXr1hixbimtQNb8DTYwLrXDyYByFTR6/eyab2sN
+	 PBa8KOAo4sZumhPYPc33WNlYnXtWYrROCTZ+VMS9KemNDZI6gG0sIxyhe/Y9XOhMgl
+	 iaZRTpYhR8PaQ==
+Date: Mon, 16 Feb 2026 06:42:27 -0500
+From: Nathan Chancellor <nathan@kernel.org>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Nicolas Schier <nsc@kernel.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Steve French <smfrench@gmail.com>
+Subject: Re: [PATCH 0/2] kbuild: rpm-pkg: Address -debuginfo build regression
+ with RPM < 4.20.0
+Message-ID: <20260216114227.GA213868@ax162>
+References: <20260210-kbuild-fix-debuginfo-rpm-v1-0-0730b92b14bc@kernel.org>
+ <aY8wyR572eZYWVJY@sgarzare-redhat>
+ <20260213191138.GA2131983@ax162>
+ <CAGxU2F7FFNgb781_A7a1oL63n9Oy8wsyWceKhUpeZ6mLk=focw@mail.gmail.com>
+ <20260215212901.GA695045@ax162>
+ <aZLTsduMY7H-QoA2@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <d1f0953814413fbcace1d625ce1227b9aa2d7c0a.1771211471.git.wqu@suse.com>
-In-Reply-To: <d1f0953814413fbcace1d625ce1227b9aa2d7c0a.1771211471.git.wqu@suse.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Mon, 16 Feb 2026 11:41:30 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H7HUfej7oqtMgjQBd-XP2HMetGxJ_UgVC7V9mtS+W+PYA@mail.gmail.com>
-X-Gm-Features: AaiRm50aksMHfSSjmKfUEmODxv1B9W6PDDlnDEyQUGgCJJTWxp3zAIctxUWXJqE
-Message-ID: <CAL3q7H7HUfej7oqtMgjQBd-XP2HMetGxJ_UgVC7V9mtS+W+PYA@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: do not mark inode incompressible after inline
- attempt failed
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZLTsduMY7H-QoA2@sgarzare-redhat>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216691-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216692-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 93393143111
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6EC77143121
 X-Rspamd-Action: no action
 
-On Mon, Feb 16, 2026 at 3:19=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
->
-> [BUG]
-> The following sequence will set the file with nocompress flag:
->
->   # mkfs.btrfs -f $dev
->   # mount $dev $mnt -o max_inline=3D4,compress
->   # xfs_io -f -c "pwrite 0 2k" -c sync $mnt/foobar
->
-> The resulted inode will have NOCOMPRESS flag, even if the content itself
+On Mon, Feb 16, 2026 at 09:25:25AM +0100, Stefano Garzarella wrote:
+> Oh, yeah, I just tried the following change on top of commit cee73b1e840c
+> ("Merge tag 'riscv-for-linus-7.0-mw1' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux"), so without this
+> series applied:
+> 
+> diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
+> index 0f1c8de1bd95..86ca327ebccf 100644
+> --- a/scripts/package/kernel.spec
+> +++ b/scripts/package/kernel.spec
+> @@ -50,6 +50,7 @@ against the %{version} kernel package.
+>  %if %{with_debuginfo}
+>  %package debuginfo
+>  Summary: Debug information package for the Linux kernel
+> +AutoReqProv: no
+>  %description debuginfo
+>  This package provides debug information for the kernel image and modules from the
+>  %{version} package.
+> 
+> And I'm able to generate RPMs too without errors!
 
-resulted -> resulting
+Great, thanks for confirming! Does it still work with:
 
-> (all 0xcd) can still be compressed very well:
->
->         item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
->                 generation 9 transid 10 size 2097152 nbytes 1052672
->                 block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
->                 sequence 257 flags 0x8(NOCOMPRESS)
->
-> Please note that, this behavior is there even before commit 59615e2c1f63
-> ("btrfs: reject single block sized compression early").
->
-> [CAUSE]
-> At compress_file_range(), after btrfs_compress_folios() call, we try
-> making an inlined extent by calling cow_file_range_inline().
->
-> But cow_file_range_inline() calls can_cow_file_range_inline() which has
-> more accurate checks on if the range can be inlined.
->
-> One of the user configurable condition is the "max_inline=3D" mount
+  AutoReq: 0
+  AutoProv: 1
 
-condition -> conditions
+as I notice that is what the %_debuginfo_template in /usr/lib/rpm/macros
+uses by default. I suspect that the automatic requires is where things
+explodes and I think we do want the automatic provides because I believe
+that is how the "this package provides this debug build ID" generation
+happens.
 
-> option. If that value is set low (like the example, 4 bytes, which can
-> not store any header), or the compressed content is just slightly larger
-> than 2K (the default value, meaning a 50% compression ratio),
-> cow_file_range_inline() will return 1 immediately.
->
-> And since we're here only to try inline the compressed data, the range
-> is no larger than a single fs block.
->
-> Thus compression is never going to make it a win, we fallback to mark
-> the inode incompressible unavoidably.
->
-> [FIX]
-> Just add an extra check after inline attempt, so that if the inline
-> attempt failed, do not set the nocompress flag.
->
-> As there is no way to remove that flag, and the default 50% compression
-> ratio is way too strict for the whole inode.
->
-> Cc: stable@vger.kernel.org
-
-If we don't have a Fixes tag here, at least add a minimum version to
-backport to.
-
-Otherwise, it looks good, thanks.
-
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> ---
-> This is the smallest fix for backport.
->
-> There will be a proper but much bigger fix to extract the inline attempt
-> into a dedicated helper inside run_delalloc_range() other than put them
-> deep inside cow_file_range() and compress_file_range().
-> ---
->  fs/btrfs/inode.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-> index 19c6fbb1273c..4523b689711d 100644
-> --- a/fs/btrfs/inode.c
-> +++ b/fs/btrfs/inode.c
-> @@ -1061,6 +1061,12 @@ static void compress_file_range(struct btrfs_work =
-*work)
->                         mapping_set_error(mapping, -EIO);
->                 return;
->         }
-> +       /*
-> +        * If a single block at file offset 0 can not be inlined, fallbac=
-k
-> +        * to regular writes without marking the file incompressible.
-> +        */
-> +       if (start =3D=3D 0 && end <=3D blocksize)
-> +               goto cleanup_and_bail_uncompressed;
->
->         /*
->          * We aren't doing an inline extent. Round the compressed size up=
- to a
-> --
-> 2.52.0
->
->
+Cheers,
+Nathan
 
