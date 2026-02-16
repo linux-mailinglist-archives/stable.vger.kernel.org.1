@@ -1,131 +1,193 @@
-Return-Path: <stable+bounces-216687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJWjK3fykmlA0QEAu9opvQ
-	(envelope-from <stable+bounces-216687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 11:33:27 +0100
+	id CFyAG7fykmlA0QEAu9opvQ
+	(envelope-from <stable+bounces-216688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 11:34:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A8F14260A
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 11:33:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E369B142638
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 11:34:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE6743010BA0
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 10:33:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 721323012E93
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 10:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE662EA171;
-	Mon, 16 Feb 2026 10:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D4E2FFF9B;
+	Mon, 16 Feb 2026 10:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTX/0nrD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZmr5E8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D408A26AA91
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 10:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA8C2EC553
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 10:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771238004; cv=none; b=MzC4V0JtCBUjHPUNj9vFdlIuyRYx0eFi3aht0gty1nhkDEinbqlm2/ysNOUfm+SMy2n+cWflF07ymynZU7tVS7v3c1lZzAdLzKO7CnqdVhege79zjXS8Mbc6Iy5Rf7PJBXWFWpgxY8Ut9/VXcJwQXwMiM7+Q5qdO1W+jE08kPTs=
+	t=1771238063; cv=none; b=EsjGIQA4RHQwe4on7em8nopyMYxqX0d891X5ZONXbqGvhPjAoeZm4zghp9sDgcDpjyPzldKC898IVhVc2xWET+7t/TswheqGWKaioFReizTkHE283kbndnSWFcaFHLdjUCBgw4XRR0qWhoW8bwLlP27XX1mEpfxhD3WPIc7dt7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771238004; c=relaxed/simple;
-	bh=wEea2a57fmMrVtXKzRP7FIt5G42cLGQ/H2iWwmffM2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QthMlCJo523ohof8/7eSdcWxP5qHRNC0zLHFi0tkQCT/kfW+CfGqb/yf/VL5YgabhkVupXJfZY7M0LMuLJk4e5uExExME+XigxjU+13dKOix/T3wMCBpDOfTiZNUmhwPQEa02fH06N2rxPn6EneuPFv49H77Uw4dipCIZKDnOTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTX/0nrD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3958EC116C6;
-	Mon, 16 Feb 2026 10:33:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771238004;
-	bh=wEea2a57fmMrVtXKzRP7FIt5G42cLGQ/H2iWwmffM2k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CTX/0nrDEVJY7Me4kDE4zuOlMRJzx6ARGszd15y5hLeAdVUUBqig5oGUG3f0oLCTh
-	 Gt9K3XPM+Bg7T2aWAeB/XZgPjPkjJ2WSb7kmVKzMDUSGVuoRZKEhJkGqUB3XZv4WkK
-	 CT8ICCR8tlTqRu48xvwF64fAwSXJaL659aGJis60=
-Date: Mon, 16 Feb 2026 11:33:21 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Rajani Kantha <681739313@139.com>
-Cc: bvanassche@acm.org, adrian.hunter@intel.com, martin.petersen@oracle.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 6.1] scsi: ufs: core: Fix handling of lrbp->cmd
-Message-ID: <2026021601-justify-reusable-0fdd@gregkh>
-References: <20260213030257.1688-1-681739313@139.com>
+	s=arc-20240116; t=1771238063; c=relaxed/simple;
+	bh=Q2+hdYFmtAqtMLq5tkMs+y+f+ZfaEJRBdIpsjZu0z9k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I4IJ9ewKVAra2gkx/aI0CEx8dV3jQ+LKqfMN7JpZjcPdTi2LHwl7o5aw9tRrZkSicpGi7u6c+vG1wknXerwT7mO99GLqxCQBXbxN7oSQbb0m4fWrHybbbxkoBCX1un/AZENDfe4KiElN93BfM8RFetqXkscXgFEyFxikDWrnz9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZmr5E8Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73D7C2BCB2
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 10:34:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771238062;
+	bh=Q2+hdYFmtAqtMLq5tkMs+y+f+ZfaEJRBdIpsjZu0z9k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HZmr5E8Yxr2sSwM2NhDYJO4EcvdjbLjxsyzGZFJgjJenrLc5BjbcRfn4Hz3pBiqeD
+	 CbqyvquORxWmOngSD+c75j0MHWotUbv30t9eVLe3nf18JEjdrEourXDZSGM0PcxlO/
+	 QXtQoiLczDOGTzrQ9yllzfUB1i5+b0r/Lcc5286PL/rniAQwEyOn/WrX5/1vYBbXX4
+	 9mqdYxcAKHjFCxULE437ojze3bVUQMlTcSoREqPacxWGzxiQOr6Ny8yQij4uIbYB71
+	 P2M1G1RVcuWLXZTzTCIrzbMejMp220z4nHeDcWoGUmw6TNlSA0t9GaGhsRglUep68E
+	 3OI5Lp0ARIgSQ==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b8f7a30515aso386255166b.0
+        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 02:34:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVvxfxUZCqMO7U20SwTNI2VTh/0eDh6ZdTfTS37rajkNs1PZ8YSWYK750qoGMwEDtYaaxzVefM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdEHEBxTE+ngGpfUuAkNyqITRIinN5OkUE83VOyWFQPC6U4xbM
+	ihW7XbbxgGZu+X8nZInyDTuLw6PQ58FgNIjMdYq5GnoeHDF9F6WL5Xk4x2MgPZLAejHBoRKLiq5
+	s/YQXzwjxHJ9u1+A+MHHmjmfQ9PB+QUY=
+X-Received: by 2002:a17:907:3d9f:b0:b88:7431:3942 with SMTP id
+ a640c23a62f3a-b8fc3ca80f2mr390011766b.33.1771238061395; Mon, 16 Feb 2026
+ 02:34:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260213030257.1688-1-681739313@139.com>
+References: <20260215140953.1224579-1-chenhuacai@loongson.cn>
+ <2026021631-sabbath-wrangle-3496@gregkh> <CAAhV-H42+WuWpKqFc6MMv8cZ_U8Ve15qtb4DkOd9Yj6Z4ZFE_w@mail.gmail.com>
+ <2026021602-unsalted-straining-edfb@gregkh>
+In-Reply-To: <2026021602-unsalted-straining-edfb@gregkh>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Mon, 16 Feb 2026 18:34:17 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4x_739RjgJYmWOXVrfFkAwCf+ArzQHK6i42kUVqTvLMA@mail.gmail.com>
+X-Gm-Features: AaiRm50VTFo3OX3Hse0aNUdm3jS1-phvYT_ZMWjuDkhf5xbRCVOepju_XRZEFvg
+Message-ID: <CAAhV-H4x_739RjgJYmWOXVrfFkAwCf+ArzQHK6i42kUVqTvLMA@mail.gmail.com>
+Subject: Re: [PATCH for 6.6 & 6.12] LoongArch: Rework KASAN initialization for
+ PTW-enabled systems
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>, 
+	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, Tiezhu Yang <yangtiezhu@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[139.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-216687-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216688-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,acm.org:email]
-X-Rspamd-Queue-Id: 13A8F14260A
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E369B142638
 X-Rspamd-Action: no action
 
-On Fri, Feb 13, 2026 at 11:02:57AM +0800, Rajani Kantha wrote:
-> From: Bart Van Assche <bvanassche@acm.org>
-> 
-> ufshcd_queuecommand() may be called two times in a row for a SCSI command
-> before it is completed. Hence make the following changes:
-> 
->  - In the functions that submit a command, do not check the old value of
->    lrbp->cmd nor clear lrbp->cmd in error paths.
-> 
->  - In ufshcd_release_scsi_cmd(), do not clear lrbp->cmd.
-> 
-> See also scsi_send_eh_cmnd().
-> 
-> This commit prevents that the following appears if a command times out:
-> 
-> WARNING: at drivers/ufs/core/ufshcd.c:2965 ufshcd_queuecommand+0x6f8/0x9a8
-> Call trace:
->  ufshcd_queuecommand+0x6f8/0x9a8
->  scsi_send_eh_cmnd+0x2c0/0x960
->  scsi_eh_test_devices+0x100/0x314
->  scsi_eh_ready_devs+0xd90/0x114c
->  scsi_error_handler+0x2b4/0xb70
->  kthread+0x16c/0x1e0
-> 
-> Fixes: 5a0b0cb9bee7 ("[SCSI] ufs: Add support for sending NOP OUT UPIU")
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> Link: https://lore.kernel.org/r/20230524203659.1394307-3-bvanassche@acm.org
-> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-> [ Removed the change in ufshcd_advanced_rpmb_req_handler() due to missing
-> commit:6ff265fc5ef6("scsi: ufs: core: bsg: Add advanced RPMB support in ufs_bsg") ]
-> Signed-off-by: Rajani Kantha <681739313@139.com>
-> ---
->  drivers/ufs/core/ufshcd.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
+On Mon, Feb 16, 2026 at 6:20=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Mon, Feb 16, 2026 at 06:09:31PM +0800, Huacai Chen wrote:
+> > Hi, Greg,
+> >
+> > On Mon, Feb 16, 2026 at 5:52=E2=80=AFPM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Sun, Feb 15, 2026 at 10:09:53PM +0800, Huacai Chen wrote:
+> > > > From: Tiezhu Yang <yangtiezhu@loongson.cn>
+> > > >
+> > > > commit 5ec5ac4ca27e4daa234540ac32f9fc5219377d53 upstream.
+> > > >
+> > > > "kasan_early_stage =3D false" indicates that kasan is fully initial=
+ized,
+> > > > so it should be put at end of kasan_init().
+> > > >
+> > > > Otherwise bringing up the primary CPU failed when CONFIG_KASAN is s=
+et
+> > > > on PTW-enabled systems, here are the call chains:
+> > > >
+> > > >     kernel_entry()
+> > > >       start_kernel()
+> > > >         setup_arch()
+> > > >           kasan_init()
+> > > >             kasan_early_stage =3D false
+> > > >
+> > > > The reason is PTW-enabled systems have speculative accesses which m=
+eans
+> > > > memory accesses to the shadow memory after kasan_init() may be exec=
+uted
+> > > > by hardware before. However, accessing shadow memory is safe only a=
+fter
+> > > > kasan fully initialized because kasan_init() uses a temporary PGD t=
+able
+> > > > until we have populated all levels of shadow page tables and writen=
+ the
+> > > > PGD register. Moving "kasan_early_stage =3D false" later can defer =
+the
+> > > > occasion of kasan_arch_is_ready(), so as to avoid speculative acces=
+ses
+> > > > on shadow pages.
+> > > >
+> > > > After moving "kasan_early_stage =3D false" to the end, kasan_init()=
+ can no
+> > > > longer call kasan_mem_to_shadow() for shadow address conversion bec=
+ause
+> > > > it will always return kasan_early_shadow_page. On the other hand, w=
+e
+> > > > should keep the current logic of kasan_mem_to_shadow() for both the=
+ early
+> > > > and final stage because there may be instrumentation before kasan_i=
+nit().
+> > > >
+> > > > To solve this, we factor out a new mem_to_shadow() function from cu=
+rrent
+> > > > kasan_mem_to_shadow() for the shadow address conversion in kasan_in=
+it().
+> > >
+> > > The subject line AND the commit text here do not match the upstream
+> > > commit AND the diff is different and you did not explain what changed=
+ or
+> > > why :(
+> > The subject line is exactly the same as the upstream commit (no differe=
+nce).
+> >
+> > The changes in the commit message is because the text of the patch has
+> > changed (this is why the upstream commit cannot be applied), and I
+> > think the commit message should exactly reflect the text.
+>
+> No, the commit message should match exactly what is merged in Linus's
+> tree and then the comments before your new signed-off-by should describe
+> what is different here from what is in Linus's tree.  Don't rework
+> changelog text for stable backports, that only confuses everyone
+> involved and it makes it look like you are doing different things than
+> expected (i.e. attempting to get stuff that is NOT upstream merged.)
+OK, let me try a V2.
 
-No hint as to what the upstream git commit id this is?  :(
+Huacai
 
+>
+> thanks,
+>
+> greg k-h
 
