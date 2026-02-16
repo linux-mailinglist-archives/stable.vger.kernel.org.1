@@ -1,201 +1,160 @@
-Return-Path: <stable+bounces-216758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id /+lFMbOnk2mG7QEAu9opvQ
-	(envelope-from <stable+bounces-216758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 00:26:43 +0100
+	id GDW3FICok2nI7QEAu9opvQ
+	(envelope-from <stable+bounces-216759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 00:30:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D12A14813C
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 00:26:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F24BD148155
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 00:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B61F301325A
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 23:26:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32823301692A
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 23:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A594C2C2346;
-	Mon, 16 Feb 2026 23:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369642F1FFE;
+	Mon, 16 Feb 2026 23:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DOGQX9UQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bnFEokJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6B922FE0E;
-	Mon, 16 Feb 2026 23:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD0A2EB87D;
+	Mon, 16 Feb 2026 23:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771284398; cv=none; b=VRDw3KiSXmTIQNUlVyY9pBqp32xCZWz9mG9k4Lfqml2vATzudbB9/NQsnPUP5vKgP1vzqa2c2nl43HdwBCqmOxUGeHJ/qqSVEyomqdDjcE8y25oJIUwtM8ctjAboFQz1GM9hQ2UzqFYKMjTKoWvG9UyXew7yYUNRZ6Gbf0fmc+M=
+	t=1771284602; cv=none; b=SWKIJWGYweX8eiq77AowXwT++5f7j8vzUonClEYMXTcp3fTSTPB97YkZKf7YzaKHJaoxrAwMUZYEcgLCOfKXpthf4jOA49nRp8hZwr46V/5s6vDQSAxEZ8dFyA5HQgOMSGtQeezg4/qjkBSuREUVdsYM+q7vXblf/MVPdValeFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771284398; c=relaxed/simple;
-	bh=ssjv9Kr7MZ13eUSS+beOYAfhQx0ZYeS/67c2Lfb9HYk=;
-	h=Date:To:From:Subject:Message-Id; b=ST8O9NOGMW3IZ6nOJ1OgD+13eWtsw2M1jmVixMhCNT1pIoOCUPHz+VsduXBV9QW3sQTjR9sORa43jLfyvdRxh2wiIkDcI0q20h9UryOvOPnIoCiep/WgWF3lInUi0HAyLZFPzZVaschDMiQgkICholsvrF/bSFaOdfGMCJOSeYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DOGQX9UQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA73C116C6;
-	Mon, 16 Feb 2026 23:26:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1771284397;
-	bh=ssjv9Kr7MZ13eUSS+beOYAfhQx0ZYeS/67c2Lfb9HYk=;
-	h=Date:To:From:Subject:From;
-	b=DOGQX9UQXAN8lvFfWL4/ZNuHYhiOsGRuWg/83eshJRTeU2R4UavDP0oPZtySFllPp
-	 LYrDmDMPfTrmZn+tZrR6+hA6gE9Q/U3hQui5t5Bxa5cx2tJ6r5YA/U8VoF3vCX1hS8
-	 K8EzVjG0KX4sjtFFlyKeh/JuibdF7C3U2mht9ryM=
-Date: Mon, 16 Feb 2026 15:26:37 -0800
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,stable@vger.kernel.org,shy828301@gmail.com,ryan.roberts@arm.com,npache@redhat.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,lance.yang@linux.dev,Kartikey406@gmail.com,i@maskray.me,dev.jain@arm.com,david@kernel.org,baolin.wang@linux.alibaba.com,baohua@kernel.org,ackerleytng@google.com,kartikey406@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-thp-deny-thp-for-files-on-anonymous-inodes.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260216232637.BBA73C116C6@smtp.kernel.org>
+	s=arc-20240116; t=1771284602; c=relaxed/simple;
+	bh=zJni9qH/aXdFgGEL8tygAGQGCbtksHU+HEbi5M5fT7Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ysh4kxIaqr54QfxUPf9WmsAK4tWsSjFNCou6KLwMns2r33BZhcvbzw9cvkM3rqiGTBzP0911XfKnTxjvWfjgSGwRDkBLyefh85FlS7r7/3jATH9ZuhXYDFK0omgxY6/FySyWwIfJCzpmCnQ3GZh5Z6xkh8l2UzaSn6EfW9X47wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bnFEokJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2192FC116C6;
+	Mon, 16 Feb 2026 23:29:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771284601;
+	bh=zJni9qH/aXdFgGEL8tygAGQGCbtksHU+HEbi5M5fT7Y=;
+	h=From:Date:Subject:To:Cc:From;
+	b=bnFEokJWobDiDZXIc48kqdT7LLlAchC14mQP3yNjJx1EzCW+D9GS7jy4dSrxBqMYB
+	 sEtqQVfvWBQjBgf6uyJYTNY2kyqzEK/Bd/X8wX9G7sGpR0MMLqXp2Lo16gR219sVeQ
+	 7bGhCgznvKChlq0FMdvIsSqWC4/dZA472uIDsIAy9QymW9tEpx9FN5N+zeFgrmUe2b
+	 hZmutSxbl3vl3XmDWzKWlUlM7YaqjGzqLYho5O5TnaXYCjRGPEB8mVc9Z8iKNN5OFa
+	 7zGfbCqyx5FS3Xcw7chxHU8s13SqHNXSjGhQdVSRUm5wZA4E6BmNZglz10DJNu7JT5
+	 1DVTvKIWdN8HQ==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 16 Feb 2026 16:29:54 -0700
+Subject: [PATCH] kbuild: rpm-pkg: Disable automatic requires for manual
+ debuginfo package
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260216-improve-manual-debuginfo-template-v1-1-e584b3f8d3be@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNywrCMBBA0V8ps3agjVLEXxEXmXRSR5oHeRSh9
+ N+N7fJs7t0gcxLO8Og2SLxKluAbhksH5q39zChTM6hejb0aRhQXU1gZnfZVLzgx1Vm8DVjYxUU
+ XRrJ0tbe7MooMtE5MbOV7PJ6v07nSh035h2Hff0Ae0ImFAAAA
+X-Change-ID: 20260216-improve-manual-debuginfo-template-bfb3f482c2bc
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Stefano Garzarella <sgarzare@redhat.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2467; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=zJni9qH/aXdFgGEL8tygAGQGCbtksHU+HEbi5M5fT7Y=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJmTV5RXaJo+3DlFSfEl18NaTr7bxnEirB33XE9f8H3p0
+ PxwlfzxjlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRpL0M/0wqXs/I7ZiXsY5f
+ NSlaxCPLkvlkurGD5fMNArfTXf5/OsXIsHx+8ZSJmu3XDOplxQ4J3o2YkxWoWcpmsOL41r01PzJ
+ OMAMA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,gmail.com,arm.com,redhat.com,oracle.com,linux.dev,maskray.me,kernel.org,linux.alibaba.com,google.com,linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-216758-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216759-lists,stable=lfdr.de];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1D12A14813C
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+]
+X-Rspamd-Queue-Id: F24BD148155
 X-Rspamd-Action: no action
 
+Stefano reports that after commit 62089b804895 ("kbuild: rpm-pkg:
+Generate debuginfo package manually"), building with an rpm package
+using rpm 4.20.0 fails with:
 
-The patch titled
-     Subject: mm: thp: deny THP for files on anonymous inodes
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-thp-deny-thp-for-files-on-anonymous-inodes.patch
+  RPM build errors:
+      Dependency tokens must begin with alpha-numeric, '_' or '/': #�) = 0x0d000002
+      Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
+      Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
+      Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+      Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
+      Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
+      Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-thp-deny-thp-for-files-on-anonymous-inodes.patch
+This error comes from the automatic requirements feature of rpm. The
+-debuginfo subpackage has no dependencies, so disable this feature with
+'AutoReq: 0' for this subpackage, avoiding the error. This matches the
+official %_debug_template macro that rpm provides. While automatic
+provides should be default enabled, be explicit like %_debug_template
+does.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Additionally, while in the area, add the manual debug information
+package to the Development/Debug group, further aligning with
+%_debug_template.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: mm: thp: deny THP for files on anonymous inodes
-Date: Sat, 14 Feb 2026 05:45:35 +0530
-
-file_thp_enabled() incorrectly allows THP for files on anonymous inodes
-(e.g. guest_memfd and secretmem). These files are created via
-alloc_file_pseudo(), which does not call get_write_access() and leaves
-inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
-true, they appear as read-only regular files when
-CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
-collapse.
-
-Anonymous inodes can never pass the inode_is_open_for_write() check
-since their i_writecount is never incremented through the normal VFS
-open path. The right thing to do is to exclude them from THP eligibility
-altogether, since CONFIG_READ_ONLY_THP_FOR_FS was designed for real
-filesystem files (e.g. shared libraries), not for pseudo-filesystem
-inodes.
-
-For guest_memfd, this allows khugepaged and MADV_COLLAPSE to create
-large folios in the page cache via the collapse path, but the
-guest_memfd fault handler does not support large folios. This triggers
-WARN_ON_ONCE(folio_test_large(folio)) in kvm_gmem_fault_user_mapping().
-
-For secretmem, collapse_file() tries to copy page contents through the
-direct map, but secretmem pages are removed from the direct map. This
-can result in a kernel crash:
-
-    BUG: unable to handle page fault for address: ffff88810284d000
-    RIP: 0010:memcpy_orig+0x16/0x130
-    Call Trace:
-     collapse_file
-     hpage_collapse_scan_file
-     madvise_collapse
-
-Secretmem is not affected by the crash on upstream as the memory failure
-recovery handles the failed copy gracefully, but it still triggers
-confusing false memory failure reports:
-
-    Memory failure: 0x106d96f: recovery action for clean unevictable
-    LRU page: Recovered
-
-Check IS_ANON_FILE(inode) in file_thp_enabled() to deny THP for all
-anonymous inode files.
-
-Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
-Link: https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=U6rs6S7iP0gkR9enr7HoGtA@mail.gmail.com
-Link: https://lkml.kernel.org/r/20260214001535.435626-1-kartikey406@gmail.com
-Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
-Tested-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-Tested-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Fangrui Song <i@maskray.me>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 62089b804895 ("kbuild: rpm-pkg: Generate debuginfo package manually")
+Reported-by: Stefano Garzarella <sgarzare@redhat.com>
+Closes: https://lore.kernel.org/CAGxU2F7FFNgb781_A7a1oL63n9Oy8wsyWceKhUpeZ6mLk=focw@mail.gmail.com/
+Tested-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
-
- mm/huge_memory.c |    3 +++
+ scripts/package/kernel.spec | 3 +++
  1 file changed, 3 insertions(+)
 
---- a/mm/huge_memory.c~mm-thp-deny-thp-for-files-on-anonymous-inodes
-+++ a/mm/huge_memory.c
-@@ -94,6 +94,9 @@ static inline bool file_thp_enabled(stru
- 
- 	inode = file_inode(vma->vm_file);
- 
-+	if (IS_ANON_FILE(inode))
-+		return false;
-+
- 	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
- }
- 
-_
+diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
+index bccf58bdd45f..b3c956205af0 100644
+--- a/scripts/package/kernel.spec
++++ b/scripts/package/kernel.spec
+@@ -48,6 +48,9 @@ against the %{version} kernel package.
+ %if %{with_debuginfo_manual}
+ %package debuginfo
+ Summary: Debug information package for the Linux kernel
++Group: Development/Debug
++AutoReq: 0
++AutoProv: 1
+ %description debuginfo
+ This package provides debug information for the kernel image and modules from the
+ %{version} package.
 
-Patches currently in -mm which might be from kartikey406@gmail.com are
+---
+base-commit: afdfb71c018e9a0aa2e51fb8186d3fb1acdd3f0e
+change-id: 20260216-improve-manual-debuginfo-template-bfb3f482c2bc
 
-mm-thp-deny-thp-for-files-on-anonymous-inodes.patch
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
 
 
