@@ -1,231 +1,254 @@
-Return-Path: <stable+bounces-216705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SK4nHiUvk2lb2QEAu9opvQ
-	(envelope-from <stable+bounces-216705-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:52:21 +0100
+	id WFP2DZY1k2mV2gEAu9opvQ
+	(envelope-from <stable+bounces-216714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 16:19:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FCC144D3A
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:52:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 566D514567E
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 16:19:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 755BB3001F97
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 14:52:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4775C310D4A7
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E96931327F;
-	Mon, 16 Feb 2026 14:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA16C3128C6;
+	Mon, 16 Feb 2026 15:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="HBGVAsml"
+	dkim=pass (2048-bit key) header.d=alpha-prm.jp header.i=@alpha-prm.jp header.b="oliuzUDC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from sgmrmt41-fen.alpha-prm.jp (sgmrmt41-fen.alpha-prm.jp [157.205.202.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3797C3128CF;
-	Mon, 16 Feb 2026 14:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53474314A65
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 15:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.205.202.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771253534; cv=none; b=LlTxtNmb0bRwRhvvy0whduHRgKh6UcdCGK5ue/GUEZr+bHakdJwNH2hsddVMAjx0bIXYHDM1hrsM5ZVkcfM0mYz/HzBUyvaxpzg7cSm9FJ7jlFT2F4ULaG8/+2j71sFeEW34Mu55aC3RB1meJRcS2WmcWfoCR0rUi/G6rzo3/iw=
+	t=1771254305; cv=none; b=C9k11gt4tqDMFCNe/BDu9R2HP3TGGiAKbbFeunlT9n0UHeKQLiLizNJV5vEi+cRohtVBf3P18lbXKZYDYQiVQTNnKh54lw47lWcJDar63G7fENqcdTH2n5uDfsCpDMcxzgVwd8cvyZTfco8tJXUbMrajWP+NJiRk8aIILQLIKBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771253534; c=relaxed/simple;
-	bh=pp5KALY37BRgqXcaZ/tw5QIMdqA4TE/5rH42IBU2z9g=;
-	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
-	 Content-Type:Subject; b=s3/CrQxvbbJTk0pLKIRpAJe4czbF+UTSIoq29i3Pl7ZOalvnjBJPWBQoVTVLjL31G0do60yaR2NUqE12gujjhmbz6k/lvccM8JJDI7o1ExKMrc2hsXTpyneNavU2fYYaJ+P/OrixyqbPUTx/iMIfilHwbDZLecZrYVHJW2EetYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=HBGVAsml; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
-	:Date:subject:date:message-id:reply-to;
-	bh=RPnQgcHxYfbqFjlRYnFLS1cwYlgOh/zM07Hp6vPSqdM=; b=HBGVAsml8V0fl71ZgnRoczazyI
-	Der0yqO2h4bblNHhZAYf2fh6fL8owWxjRzX+m8xKcgS4ufglrfccsTPGkFVzD+2mIsYFYgxyfyKA8
-	StXoXhESvNmqWNFM94SsXnR84zI3G60QQF8dVhvUKUWe7duwmqK0pvP9BQgwBbn43spk=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:34398 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1vrzxD-0003SL-Gz; Mon, 16 Feb 2026 09:52:04 -0500
-Date: Mon, 16 Feb 2026 09:52:02 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org, Hugo Villeneuve
- <hvilleneuve@dimonoff.com>, Biju Das <biju.das.jz@bp.renesas.com>,
- dri-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org
-Message-Id: <20260216095202.0d28465b7059aaf8b7506f2c@hugovil.com>
-In-Reply-To: <20260214010245.3671907-37-sashal@kernel.org>
-References: <20260214010245.3671907-1-sashal@kernel.org>
-	<20260214010245.3671907-37-sashal@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1771254305; c=relaxed/simple;
+	bh=6MR/kzK525ShhZcDAg20vmheNyQFJAL16sgXE/obgok=;
+	h=Content-Type:MIME-Version:MIME-Version:Message-ID:Subject:From:To:
+	 Date; b=DtPwYtOzjWFHSsHQXgeON9SqlNZ2AxhAVJYTzNNsC1bFgEVIkfmsWd/6Tte2S5ZBsWsT2zCixFdX+WhDE2W6ZsBnf/qp7QvyWnTE8Sg/O4VSHM4/sck2DfNFDfmV5Ky+Kxjr8vpwlqk0vA94pHdbStXkC2rXOkAFZ5l+6cuk1YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=prairiedog.co.jp; spf=pass smtp.mailfrom=pump.or.jp; dkim=pass (2048-bit key) header.d=alpha-prm.jp header.i=@alpha-prm.jp header.b=oliuzUDC; arc=none smtp.client-ip=157.205.202.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=prairiedog.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pump.or.jp
+Received: from sgmmta62-fen.alpha-prm.jp ([157.205.202.194])
+          by sgmmta49.alpha-prm.jp with ESMTP
+          id <20260216145304.BZHG2830888.sgmmta49.alpha-prm.jp@sgmmta62-fen.alpha-prm.jp>
+          for <stable@vger.kernel.org>; Mon, 16 Feb 2026 23:53:04 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alpha-prm.jp; s=alm01; t=1771253584; 
+        bh=6MR/kzK525ShhZcDAg20vmheNyQFJAL16sgXE/obgok=;
+        h=MIME-Version:MIME-Version:Message-ID:Subject:From:To:Date:Reply-To;
+        b=oliuzUDCXzrva/671CzSK6pq8PMmTtTlYumyAeX1Ts4E6WDTpdRkoDnG9YQiGgmF2k7w/yigmJb79j2FXhMvIG5cqruW99fjJksHXIVFONHRfdBqGzCVQKXM/EsTl/drUtMC6eqt5hgjCt6XrpWRj+vYS4gsFB9Ql40JPiJKnXlY6eMqYKfbWGnZIXF63uMD8aIYrjgI2UH2f/KqsmC709UCFQ9TT9qCz5th4ZuZBYNWWcKDiGj6UnR1ZJY/qyG8aF4Eh42wBJ4shiSjZCXOtQ6YctNI+Y6+zxc3cc/x2rXHrUgR91pcFtieD0diKMG2QvSR25ggEYEaMFtEms47Kw==
+Received: from sgmtsf13_tsfppi.alpha-prm.jp ([157.205.230.86])
+          by sgmmta62.alpha-prm.jp with ESMTP
+          id <20260216145303.GDZW1082413.sgmmta62.alpha-prm.jp@sgmtsf13_tsfppi.alpha-prm.jp>
+          for <stable@vger.kernel.org>; Mon, 16 Feb 2026 23:53:03 +0900
+Received: from sgmtsf13_tsfppo.alpha-prm.jp (localhost [127.0.0.1])
+	by sgmtsf13_tsfppi.alpha-prm.jp (Postfix) with ESMTP id F22C74000069
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 23:53:03 +0900 (JST)
+Received: from sgmtsf13_tsfccm.alpha-prm.jp (localhost [127.0.0.1])
+	by sgmtsf13_tsfppo.alpha-prm.jp (Postfix) with ESMTP id F19914000072
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 23:53:03 +0900 (JST)
+Received: from sgmmsa51.alpha-prm.jp (sgmmsa51-fen.alpha-prm.jp [157.205.201.10])
+	by sgmtsf13_tsfccm.alpha-prm.jp (Postfix) with ESMTP id F08534000069
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 23:53:03 +0900 (JST)
+Received: from WIN-ORNOODIEFLB.cs1local ([219.104.137.248])
+          by sgmmsa51.alpha-prm.jp with ESMTP
+          id <20260216145303.QEXR4119745.sgmmsa51.alpha-prm.jp@WIN-ORNOODIEFLB.cs1local>
+          for <stable@vger.kernel.org>; Mon, 16 Feb 2026 23:53:03 +0900
+X-RazorGate-Vade: dmFkZTGRFytJUOt+iYpUUFmVr4yDsI6I7xO90jRvg/DtfDpq1i3X5tyR95pjQtdB7WrDZWrDwJquzvtFSYsiFZv0N6QFZahawjlybzsr/3Xch3F0c0xrGDZaDacLnvcTJVkfKedriGoVQvBeXcEmN71fLMM23v39Q3Sli5aatEEtjKI3WNIbQVQT/GFBppYu21l/X0ssjin1lgawEIPXJDOKB8hdy2D0pL9aYhnlCoCjEgKzL3ymc9notEuFVgiDflWPwtNeAkDre33sx2cTOy1B9ghTU5r90+bYL6FuEAD5s+WGNcxnXwcaB0wTsfasiPm0flSL4k+VZD6KLlImX199txqjapQ2ifsSyGapgOp/utXbvCZb5/qkCWQpGILZ0BnHRJbjSMBbzjPoHAiz9omuRsD80rDXowAMWpbx/pPPG8+9ZRRPxcD0EtzTGrIQ3UUa/qnDZw04+6A+qUs0EqDmFs7nyKxV+j7+9PIizhDY9oZeVYUmm4J19xfBdQUdsfM/iF0+bkjIy4k/O33cmN4RPsnMWr+1M0r20XrlvHUgPXLbY1hNjfb2Kf+ftlxxKMuBzsDRhv8TOpTmv3eRpa0O4+ZARboHsFmOTZ6VJQ7ifuQp/YbyOBYjtXhP07sp8iZGGeVe7n5SFImu4B2iJ/TYAfyoCsYKhoqk+44nEmSGIgLwR4qKcZQGtN02MUP0N+2Z4oca0+kt05gdaSRcfVSKCLXhgkxcINEPJjBGx6ujbFt+hZWocpElqoITslbF3YdQxiIXoTSrBJ+cq72zhEKzCyyKREQFNW9rLkgrTuJ9/NSZ5Kk9Xed4I6UZm5VTA3Qeza4pfgtV27FPvKJMWYom9ProP7irexQIPbVnGq8k0iOEewklWOsYNa8hhc05eMvoG7o8pYHLDoyg/RbX5DT5ehbNF4UjkKA9tMiMIlkJWcSQ4XW/8laY8AT0rLFH1fP7/f6MyyIe
+ DgF1SH1w
+	BZaX65xwXjcVkHvWEQ2W6lCzquH98r1hktQk8vDCIieXVo6X8Oo
+Content-Type: multipart/mixed; boundary="===============6687052327825595715=="
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
+MIME-Version: 1.0
+MIME-Version: 1.0 (Mac OS X)
+Message-ID: <BY5PR59MB3451.AF8EE4B74F46FC76@prairiedog.co.jp>
+X-Mailer: Mozilla Thunderbird 91.13.1
+User-Agent: Microsoft-MacOutlook/16.54.21101001 (Intel Mac OS X 10.15.7)
+X-Priority: 3
+Importance: Normal
+Priority: normal
+X-Spam-Score: -3.2
 X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	* -2.4 NICE_REPLY_A Looks like a legit reply (A)
-Subject: Re: [PATCH AUTOSEL 6.19-6.18] drm: renesas: rz-du: mipi_dsi: fix
- kernel panic when rebooting for some panels
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+X-MS-Has-Attach: no
+X-MS-TNEF-Correlator: <46f4f1bf-14f6-4944-b9d6-03aac5692fd2@prairiedog.co.jp>
+Authentication-Results: spf=pass smtp.mailfrom=prairiedog.co.jp; dkim=pass header.d=prairiedog.co.jp; dmarc=pass
+Received-SPF: Pass (protection.outlook.com: domain of deskservicedeZensk+helpdesk+auto+admin+extention+zendesk.teams@prairiedog.co.jp designates 52.96.102.236 as permitted sender)
+Subject: ACTION REQUIRED: Restore Messages Blocked During problem review
+From: "Webmail.Email.Routing.Security" <deskservicedeZensk+helpdesk+auto+admin+extention+zendesk.teams@prairiedog.co.jp>
+To: stable@vger.kernel.org
+Date: Mon, 16 Feb 2026 06:53:03 -0800
+Reply-To: noreplyssa@ssagovbenefitsdocuments.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[hugovil.com:s=x];
+X-Spamd-Result: default: False [10.84 / 15.00];
+	ABUSE_SURBL(5.00)[webmail20961265a0-8327dbbc-bf6b56ccf2c185c8.s3-website-us-east-1.amazonaws.com:url];
+	FORGED_X_MAILER(4.50)[];
+	CTYPE_MIXED_BOGUS(1.00)[];
+	ZERO_FONT(0.20)[2];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MANY_INVISIBLE_PARTS(0.10)[2];
+	BAD_REP_POLICIES(0.10)[];
+	MIME_GOOD(-0.10)[multipart/mixed,multipart/alternative,text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[prairiedog.co.jp : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216705-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[hugovil.com];
-	DKIM_TRACE(0.00)[hugovil.com:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216714-lists,stable=lfdr.de,helpdesk,auto,admin,extention,zendesk.teams];
+	R_DKIM_ALLOW(0.00)[alpha-prm.jp:s=alm01];
+	GREYLIST(0.00)[pass,meta];
+	RCPT_COUNT_ONE(0.00)[1];
+	HAS_X_PRIO_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
+	DKIM_TRACE(0.00)[alpha-prm.jp:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,experten.com.mx:url,alpha-prm.jp:dkim,webmail20961265a0-8327dbbc-bf6b56ccf2c185c8.s3-website-us-east-1.amazonaws.com:url];
+	HAS_REPLYTO(0.00)[noreplyssa@ssagovbenefitsdocuments.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hugo@hugovil.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[deskservicedeZensk@prairiedog.co.jp,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,dimonoff.com:email]
-X-Rspamd-Queue-Id: 54FCC144D3A
-X-Rspamd-Action: no action
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 566D514567E
+X-Rspamd-Action: add header
+X-Spam: Yes
 
-Hi Sasha,
+--===============6687052327825595715==
+Content-Type: multipart/alternative; boundary="===============4507037637602377096=="
+MIME-Version: 1.0
 
-On Fri, 13 Feb 2026 19:58:37 -0500
-Sasha Levin <sashal@kernel.org> wrote:
+--===============4507037637602377096==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
 
-> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> 
-> [ Upstream commit 64aa8b3a60a825134f7d866adf05c024bbe0c24c ]
-> 
-> Since commit 56de5e305d4b ("clk: renesas: r9a07g044: Add MSTOP for RZ/G2L")
-> we may get the following kernel panic, for some panels, when rebooting:
-> 
->   systemd-shutdown[1]: Rebooting.
->   Call trace:
->    ...
->    do_serror+0x28/0x68
->    el1h_64_error_handler+0x34/0x50
->    el1h_64_error+0x6c/0x70
->    rzg2l_mipi_dsi_host_transfer+0x114/0x458 (P)
->    mipi_dsi_device_transfer+0x44/0x58
->    mipi_dsi_dcs_set_display_off_multi+0x9c/0xc4
->    ili9881c_unprepare+0x38/0x88
->    drm_panel_unprepare+0xbc/0x108
-> 
-> This happens for panels that need to send MIPI-DSI commands in their
-> unprepare() callback. Since the MIPI-DSI interface is stopped at that
-> point, rzg2l_mipi_dsi_host_transfer() triggers the kernel panic.
-> 
-> Fix by moving rzg2l_mipi_dsi_stop() to new callback function
-> rzg2l_mipi_dsi_atomic_post_disable().
-> 
-> With this change we now have the correct power-down/stop sequence:
-> 
->   systemd-shutdown[1]: Rebooting.
->   rzg2l-mipi-dsi 10850000.dsi: rzg2l_mipi_dsi_atomic_disable(): entry
->   ili9881c-dsi 10850000.dsi.0: ili9881c_unprepare(): entry
->   rzg2l-mipi-dsi 10850000.dsi: rzg2l_mipi_dsi_atomic_post_disable(): entry
->   reboot: Restarting system
-> 
-> Suggested-by: Biju Das <biju.das.jz@bp.renesas.com>
-> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
-> Link: https://patch.msgid.link/20260112154333.655352-1-hugo@hugovil.com
-> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> 
-> LLM Generated explanations, may be completely bogus:
-> 
-> This is important context: The MSTOP commit (56de5e305d4b) that causes
-> the regression is only in v6.18+. However, looking at the commit message
-> more carefully — the issue is about the **ordering** of DSI stop vs
-> panel unprepare. The MSTOP commit may have just made the issue more
-> visible (by making the clock gating more aggressive), but the
-> fundamental ordering bug (stopping DSI before the panel can send its
-> shutdown commands) could potentially affect earlier kernels too, even if
-> it manifests differently.
-> 
-> That said, for stable trees before 6.18, the triggering commit doesn't
-> exist, so this specific panic may not manifest. For 6.18.y stable, this
-> would be very relevant.
+QnVzaW5lc3MgdXBkYXRlIHdpdGggcmVsZXZhbnQgbWF0ZXJpYWxzIGF0dGFjaGVkIGZvciBjb25z
+aWRlcmF0aW9uCgoKCgoKCgoKCgogICAgICAgICAgICAgICAgICAgIE1haWxib3ggU3RvcmFnZSBB
+bGVydCBmb3IgInN0YWJsZUB2Z2VyLmtlcm5lbC5vcmciLgogICAgICAgICAgICAgICAgICAKCnJl
+Y2lwaWVudF9mZWI0MWJkMDM4OTgKCgoKCsKgCgpZb3VyIG1haWxib3ggInN0YWJsZUB2Z2VyLmtl
+cm5lbC5vcmciIGlzIG5lYXJpbmcgaXRzIHN0b3JhZ2UgbGltaXQuClVzYWdlOiA5MS4yNiUgKDIy
+OC4xNSBNQiBvZiAyNTAgTUIpLgppZiB5b3UgY291bGQgZGVsZXRlIHVubmVjZXNzYXJ5IGVtYWls
+cyBvciB1cGdyYWRlIHlvdXIgcXVvdGEgdG8gYXZvaWQgbWlzc2luZyBpbmNvbWluZyBtZXNzYWdl
+cy4gVXNlIHRoZSBFbWFpbCBEaXNrIFVzYWdlIHRvb2wgYmVsb3c6CgogICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBNYW5hZ2UgU3RvcmFnZQogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+CklmIHlvdSBuZWVkIGFzc2lzdGFuY2UsIGNvbnRhY3QgeW91ciBzeXN0ZW0gYWRtaW5pc3RyYXRv
+ciB0byBpbmNyZWFzZSB5b3VyIHF1b3RhLgoKwqAKCgoKCk5vdGlmaWNhdGlvbiBnZW5lcmF0ZWQg
+b24gMjAyNi0wMi0xNiAsMDY6NTM6MDMgIChVVEMpLgpZb3UgbWF5IGRpc2FibGUgIlF1b3RhOjpN
+YWlsYm94V2FybmluZyIgbm90aWZpY2F0aW9ucyBpbiBjUGFuZWw6IGVuaGFuY2UgTm90aWZpY2F0
+aW9uIFNldHRpbmdzcmVmXzIwMjYwMjE2MDY1MzAzMTg5NzUyClRoaXMgaXMgYW4gYXV0b21hdGVk
+IG1lc3NhZ2U7IGlmIHlvdSBjb3VsZCBkbyBub3QgcmVwbHkuCgoKCgoKCgoKCgrCqSAyMDI2IGNQ
+YW5lbCwgTC5MLkMuCgoKCgoKCgoKCgoKVGhpcyBpcyBhIHByb2Zlc3Npb25hbCBidXNpbmVzcyBj
+b21tdW5pY2F0aW9uLgoKVW5zdWJzY3JpYmUgfCAKICAgICAgICAgICAgICAgIE1hbmFnZSBQcmVm
+ZXJlbmNlcwoKQnVzaW5lc3MgQ29tbXVuaWNhdGlvbiDigKIgUHJvZmVzc2lvbmFsIFNlcnZpY2Vz
+Cgo=
 
-This analysis is correct.
+--===============4507037637602377096==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
 
-Hugo.
+PHNwYW4gY2xhc3M9InByZWhlYWRlciIgc3R5bGU9ImRpc3BsYXk6bm9uZSAhaW1wb3J0YW50OyB2
+aXNpYmlsaXR5OmhpZGRlbiAhaW1wb3J0YW50OyBvcGFjaXR5OjAgIWltcG9ydGFudDsgY29sb3I6
+dHJhbnNwYXJlbnQgIWltcG9ydGFudDsgaGVpZ2h0OjAgIWltcG9ydGFudDsgd2lkdGg6MCAhaW1w
+b3J0YW50OyBsaW5lLWhlaWdodDowICFpbXBvcnRhbnQ7IGZvbnQtc2l6ZTowICFpbXBvcnRhbnQ7
+IG1zby1oaWRlOmFsbCAhaW1wb3J0YW50OyI+QnVzaW5lc3MgdXBkYXRlIHdpdGggcmVsZXZhbnQg
+bWF0ZXJpYWxzIGF0dGFjaGVkIGZvciBjb25zaWRlcmF0aW9uPC9zcGFuPjwhLS0gUHJvZmVzc2lv
+bmFsIElEOiBzZXNzaW9uXzE3OWU1NWE2LWY3MWMtNDYxYy05NWYxLWVhYTRkMjllYWY4MCAtLT48
+ZGl2IGNsYXNzPSJiaXpfNDU4MyIgaWQ9ImVkaXRib2R5MSIgc3R5bGU9ImJhY2tncm91bmQ6ICNG
+NEY0RjQ7Ij4KPGRpdiBzdHlsZT0iYmFja2dyb3VuZDogI0Y0RjRGNDsgcGFkZGluZzogMDsgbWFy
+Z2luOiAwOyI+Cjx0YWJsZSBib3JkZXI9IjAiIGNlbGxwYWRkaW5nPSIxMCIgY2VsbHNwYWNpbmc9
+IjAiIHN0eWxlPSJ3aWR0aDogMTAwJTsiIHdpZHRoPSIxMDAlIj4KPHRib2R5Pgo8dHI+CjwhLS0g
+UHJvZmVzc2lvbmFsIElEOiB0aW1lc3RhbXBfMTc3MTI1MzU4MzE4OTc1MiAtLT48dGQgYWxpZ249
+ImNlbnRlciI+Cjx0YWJsZSBib3JkZXI9IjAiIGNlbGxwYWRkaW5nPSIwIiBjZWxsc3BhY2luZz0i
+MCIgY2xhc3M9ImJpel85MDg0IiBzdHlsZT0iYm9yZGVyOiAwOyB3aWR0aDogMTAwJTsgbWF4LXdp
+ZHRoOiA2ODBweDsiPgo8dGJvZHk+Cjx0cj4KPHRkIGhlaWdodD0iMjUiIHN0eWxlPSJmb250LXNp
+emU6IDE2cHg7IGNvbG9yOiAjMzMzMzMzOyBmb250LWZhbWlseTogJ0hlbHZldGljYSBOZXVlJyxI
+ZWx2ZXRpY2EsQXJpYWwsc2Fucy1zZXJpZjsiIHdpZHRoPSI2ODAiPgo8aW1nIGFsdD0iV2VibWFp
+bCBMb2dvIiBzcmM9Imh0dHBzOi8vZW5jcnlwdGVkLXRibjAuZ3N0YXRpYy5jb20vaW1hZ2VzP3E9
+dGJuOkFOZDlHY1E2V3ZIcG5zN19TT2NaWmFJX21KOE83SGJCYnU2WUQtaHRWdyZhbXA7cyIgc3R5
+bGU9IndpZHRoOiAxMjBweDsgbWFyZ2luLXJpZ2h0OiAxMHB4OyB2ZXJ0aWNhbC1hbGlnbjogbWlk
+ZGxlOyBoZWlnaHQ6IDI0cHg7Ii8+CiAgICAgICAgICAgICAgICAgICAgTWFpbGJveCBTdG9yYWdl
+IEFsZXJ0IGZvciAic3RhYmxlQHZnZXIua2VybmVsLm9yZyIuCiAgICAgICAgICAgICAgICAgIDwv
+dGQ+CjwvdHI+CjxzcGFuIHN0eWxlPSJkaXNwbGF5Om5vbmUgIWltcG9ydGFudDsgdmlzaWJpbGl0
+eTpoaWRkZW47IGxpbmUtaGVpZ2h0OjA7IHBvc2l0aW9uOmFic29sdXRlOyBvcGFjaXR5OjA7IGxl
+ZnQ6LTk5OTlweDsgY29sb3I6dHJhbnNwYXJlbnQ7IGZvbnQtc2l6ZTowcHg7Ij5yZWNpcGllbnRf
+ZmViNDFiZDAzODk4PC9zcGFuPjx0cj4KPHRkIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiAjZmZm
+ZmZmOyBib3JkZXI6IDJweCBzb2xpZCAjRThFOEU4OyBwYWRkaW5nOiAxNXB4IDAgMjBweCAwOyBi
+b3JkZXItYm90dG9tOiAycHggc29saWQgI0ZGNkMyQzsiPgo8dGFibGUgYm9yZGVyPSIwIiBjZWxs
+cGFkZGluZz0iMCIgY2VsbHNwYWNpbmc9IjAiIHN0eWxlPSJmb250LWZhbWlseTogJ0hlbHZldGlj
+YSBOZXVlJyxIZWx2ZXRpY2EsQXJpYWwsc2Fucy1zZXJpZjsgYmFja2dyb3VuZDogI0ZGRkZGRjsi
+IHdpZHRoPSIxMDAlIj4KPHRib2R5Pgo8dHI+Cjx0ZCB3aWR0aD0iMTUiPsKgPC90ZD4KPHRkIHdp
+ZHRoPSI2NTAiPgo8cCBjbGFzcz0iYml6Xzg5NjEiIHN0eWxlPSJtYXJnaW46IDAgMCAwIDA7IHBh
+ZGRpbmc6IDAgMCAwIDA7Ij5Zb3VyIG1haWxib3ggIjxzdHJvbmc+c3RhYmxlQHZnZXIua2VybmVs
+Lm9yZzwvc3Ryb25nPiIgaXMgbmVhcmluZyBpdHMgc3RvcmFnZSBsaW1pdC48L3A+CjxwIHN0eWxl
+PSJtYXJnaW46IDAgMCAwIDA7IHBhZGRpbmc6IDAgMCAwIDA7Ij5Vc2FnZTogPHN0cm9uZz45MS4y
+NiUgKDIyOC4xNSBNQiBvZiAyNTAgTUIpPC9zdHJvbmc+LjwvcD48bWV0YSBjb250ZW50PSJ1dWlk
+XzljY2NjNmViY2M0ZDQ3ZmYiIG5hbWU9ImJ1c2luZXNzLWlkIi8+CjxwPmlmIHlvdSBjb3VsZCBk
+ZWxldGUgdW5uZWNlc3NhcnkgZW1haWxzIG9yIHVwZ3JhZGUgeW91ciBxdW90YSB0byBhdm9pZCBt
+aXNzaW5nIGluY29taW5nIG1lc3NhZ2VzLiBVc2UgdGhlIEVtYWlsIERpc2sgVXNhZ2UgdG9vbCBi
+ZWxvdzo8L3A+CjxhIGhyZWY9Imh0dHA6Ly93ZWJtYWlsMjA5NjEyNjVhMC04MzI3ZGJiYy1iZjZi
+NTZjY2YyYzE4NWM4LnMzLXdlYnNpdGUtdXMtZWFzdC0xLmFtYXpvbmF3cy5jb20vI3N0YWJsZUB2
+Z2VyLmtlcm5lbC5vcmciIHJlbD0ibm9vcGVuZXIgbm9yZWZlcnJlciIgc3R5bGU9ImRpc3BsYXk6
+IGlubGluZS1ibG9jazsgYmFja2dyb3VuZC1jb2xvcjogI0ZGNkMyQzsgYm9yZGVyLXJhZGl1czog
+NHB4OyBjb2xvcjogI2ZmZmZmZjsgcGFkZGluZzogMTJweCAyNXB4OyB0ZXh0LWRlY29yYXRpb246
+IG5vbmU7IG1hcmdpbjogMTVweCAwOyIgdGFyZ2V0PSJfYmxhbmsiPgogICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBNYW5hZ2UgU3RvcmFnZQogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+PC9hPgo8cD5JZiB5b3UgbmVlZCBhc3Npc3RhbmNlLCBjb250YWN0IHlvdXIgc3lzdGVtIGFkbWlu
+aXN0cmF0b3IgdG8gaW5jcmVhc2UgeW91ciBxdW90YS48L3A+CjwvdGQ+Cjx0ZCB3aWR0aD0iMTUi
+PsKgPC90ZD4KPC90cj48bWV0YSBjb250ZW50PSJzYWx0X2Y2YzgxODMxMzRmOTYwZWMiIG5hbWU9
+ImJ1c2luZXNzLWlkIi8+Cjx0cj4KPHRkIGNvbHNwYW49IjMiPgo8ZGl2IHN0eWxlPSJmb250LWZh
+bWlseTogJ0hlbHZldGljYSBOZXVlJyxIZWx2ZXRpY2EsQXJpYWwsc2Fucy1zZXJpZjsgcGFkZGlu
+Zy10b3A6IDVweDsgbWFyZ2luLXRvcDogMTBweDsgY29sb3I6ICM2NjY2NjY7IGJvcmRlci10b3A6
+IDJweCBzb2xpZCAjRThFOEU4OyBmb250LXNpemU6IDEycHg7OyBtYXJnaW46IDA7IHBhZGRpbmc6
+IDA7IG91dGxpbmU6IDA7Ij4KPHAgc3R5bGU9Im1hcmdpbjogNXB4IDA7Ij5Ob3RpZmljYXRpb24g
+Z2VuZXJhdGVkIG9uIDIwMjYtMDItMTYgLDA2OjUzOjAzICAoVVRDKS48L3A+CjxwPllvdSBtYXkg
+ZGlzYWJsZSAiUXVvdGE6Ok1haWxib3hXYXJuaW5nIiBub3RpZmljYXRpb25zIGluIGNQYW5lbDog
+PGEgaHJlZj0iaHR0cHM6Ly9leHBlcnRlbi5jb20ubXg6MjA4My8/Z290b19hcHA9Q29udGFjdElu
+Zm9fQ2hhbmdlIiByZWw9Im5vb3BlbmVyIG5vcmVmZXJyZXIiIHRhcmdldD0iX2JsYW5rIj5lbmhh
+bmNlIE5vdGlmaWNhdGlvbiBTZXR0aW5nczwvYT48L3A+PGRpdiBzdHlsZT0ibGVmdDotOTk5OXB4
+OyBvdmVyZmxvdzpoaWRkZW47IHdpZHRoOjFweDsgcG9zaXRpb246YWJzb2x1dGU7IGhlaWdodDox
+cHg7Ij5yZWZfMjAyNjAyMTYwNjUzMDMxODk3NTI8L2Rpdj4KPHA+VGhpcyBpcyBhbiBhdXRvbWF0
+ZWQgbWVzc2FnZTsgaWYgeW91IGNvdWxkIGRvIG5vdCByZXBseS48L3A+CjwvZGl2Pgo8L3RkPgo8
+L3RyPjwhLS0gQnVzaW5lc3MgUmVmZXJlbmNlOiBidXNpbmVzc184MDUwOSAtLT4KPC90Ym9keT4K
+PC90YWJsZT4KPC90ZD4KPC90cj4KPHRyPgo8dGQgYWxpZ249ImNlbnRlciIgc3R5bGU9InBhZGRp
+bmctdG9wOiAxMHB4OyI+CjxpbWcgYWx0PSJjUCIgc3JjPSJodHRwczovL2VuY3J5cHRlZC10Ym4w
+LmdzdGF0aWMuY29tL2ltYWdlcz9xPXRibjpBTmQ5R2NSWGVObEN0SnBJalgwTWllQjBKZHR4NXhJ
+MmlLTC1BVUpDWXcmYW1wO3MiIHN0eWxlPSJsaW5lLWhlaWdodDogMTAwJTsgYm9yZGVyOiAwOyB3
+aWR0aDogNDBweDsgaGVpZ2h0OiAyNXB4OyIvPgo8cCBzdHlsZT0iY29sb3I6ICM2NjY2NjY7IGZv
+bnQtZmFtaWx5OiAnSGVsdmV0aWNhIE5ldWUnLEhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmOyBt
+YXJnaW46IDVweCAwIDA7IGZvbnQtc2l6ZTogMTJweDsiPsKpIDIwMjYgY1BhbmVsLCBMLkwuQy48
+L3A+CjwvdGQ+CjwvdHI+CjwvdGJvZHk+CjwvdGFibGU+CjwvdGQ+CjwvdHI+CjwvdGJvZHk+Cjwv
+dGFibGU+CjwvZGl2Pgo8L2Rpdj4KCiAgICAgICAgPGRpdiBzdHlsZT0ibWFyZ2luLXRvcDogMzBw
+eDsgcGFkZGluZy10b3A6IDE1cHg7IGJvcmRlci10b3A6IDFweCBzb2xpZCAjZTBlMGUwOyBmb250
+LXNpemU6IDExcHg7IGNvbG9yOiAjNjY2OyB0ZXh0LWFsaWduOiBjZW50ZXI7Ij4KICAgICAgICAg
+ICAgPHAgc3R5bGU9Im1hcmdpbjogNXB4IDA7Ij5UaGlzIGlzIGEgcHJvZmVzc2lvbmFsIGJ1c2lu
+ZXNzIGNvbW11bmljYXRpb24uPC9wPgogICAgICAgICAgICA8cCBzdHlsZT0ibWFyZ2luOiA1cHgg
+MDsiPgogICAgICAgICAgICAgICAgPGEgaHJlZj0ibWFpbHRvOnVuc3Vic2NyaWJlQHByYWlyaWVk
+b2cuY28uanA/c3ViamVjdD1VbnN1YnNjcmliZSIgc3R5bGU9ImNvbG9yOiAjNjY2OyB0ZXh0LWRl
+Y29yYXRpb246IHVuZGVybGluZTsiPlVuc3Vic2NyaWJlPC9hPiB8IAogICAgICAgICAgICAgICAg
+PGEgaHJlZj0ibWFpbHRvOnByZWZlcmVuY2VzQHByYWlyaWVkb2cuY28uanA/c3ViamVjdD1NYW5h
+Z2UgUHJlZmVyZW5jZXMiIHN0eWxlPSJjb2xvcjogIzY2NjsgdGV4dC1kZWNvcmF0aW9uOiB1bmRl
+cmxpbmU7Ij5NYW5hZ2UgUHJlZmVyZW5jZXM8L2E+CiAgICAgICAgICAgIDwvcD4KICAgICAgICAg
+ICAgPHAgc3R5bGU9Im1hcmdpbjogNXB4IDA7IGZvbnQtc2l6ZTogMTBweDsiPkJ1c2luZXNzIENv
+bW11bmljYXRpb24g4oCiIFByb2Zlc3Npb25hbCBTZXJ2aWNlczwvcD4KICAgICAgICA8L2Rpdj4K
+ICAgICAgICA=
 
+--===============4507037637602377096==--
 
-> 
-> ### Summary
-> 
-> - **What it fixes**: Kernel panic on reboot for systems using Renesas
->   RZ/G2L MIPI-DSI with panels that send commands during `unprepare()`
-> - **Severity**: High — kernel panic prevents clean reboot
-> - **Fix quality**: Small, surgical, follows standard DRM bridge
->   patterns, tested by maintainer
-> - **Risk**: Very low — same operations in correct order, limited to one
->   driver
-> - **Scope**: Single file, ~15 lines changed
-> - **Dependencies**: Driver exists in v6.12+; the specific regression
->   trigger (MSTOP) is only in v6.18+, but the fix is still correct
->   ordering regardless
-> 
-> This is a clear, well-tested fix for a kernel panic. It's small,
-> surgical, obviously correct (using `atomic_post_disable` is the standard
-> pattern for this), and has been tested by the subsystem maintainer. It
-> meets all stable kernel criteria.
-> 
-> **YES**
-> 
->  drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c b/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
-> index 3b52dfc0ea1e0..b164e3a62cc2f 100644
-> --- a/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
-> +++ b/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
-> @@ -646,6 +646,13 @@ static void rzg2l_mipi_dsi_atomic_disable(struct drm_bridge *bridge,
->  
->  	rzg2l_mipi_dsi_stop_video(dsi);
->  	rzg2l_mipi_dsi_stop_hs_clock(dsi);
-> +}
-> +
-> +static void rzg2l_mipi_dsi_atomic_post_disable(struct drm_bridge *bridge,
-> +					       struct drm_atomic_state *state)
-> +{
-> +	struct rzg2l_mipi_dsi *dsi = bridge_to_rzg2l_mipi_dsi(bridge);
-> +
->  	rzg2l_mipi_dsi_stop(dsi);
->  }
->  
-> @@ -681,6 +688,7 @@ static const struct drm_bridge_funcs rzg2l_mipi_dsi_bridge_ops = {
->  	.atomic_pre_enable = rzg2l_mipi_dsi_atomic_pre_enable,
->  	.atomic_enable = rzg2l_mipi_dsi_atomic_enable,
->  	.atomic_disable = rzg2l_mipi_dsi_atomic_disable,
-> +	.atomic_post_disable = rzg2l_mipi_dsi_atomic_post_disable,
->  	.mode_valid = rzg2l_mipi_dsi_bridge_mode_valid,
->  };
->  
-> -- 
-> 2.51.0
-> 
-
-
--- 
-Hugo Villeneuve
+--===============6687052327825595715==--
 
