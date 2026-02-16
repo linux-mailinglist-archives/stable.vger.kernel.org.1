@@ -1,174 +1,140 @@
-Return-Path: <stable+bounces-216755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216757-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yK/WBkePk2n16QEAu9opvQ
-	(envelope-from <stable+bounces-216755-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 22:42:31 +0100
+	id wKqhJbOVk2kd6wEAu9opvQ
+	(envelope-from <stable+bounces-216757-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 23:09:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766D6147C92
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 22:42:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB43A147DAA
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 23:09:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 62AC33020008
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 21:42:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBD1A301D6A4
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 22:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60D82874E0;
-	Mon, 16 Feb 2026 21:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1945289378;
+	Mon, 16 Feb 2026 22:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YjWMmn0t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qpNKsgy3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871AE17993;
-	Mon, 16 Feb 2026 21:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51332820AC;
+	Mon, 16 Feb 2026 22:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771278143; cv=none; b=KAgZ35Wg/KH9WCR+Aq7hG2FoITuY7+GafdxRBsuOCfYk319TtQvT0Wbj9878SG6wjAJN04uaLeQLGWuGSIvEhanvPamijcdLSJj2K9zm2uU273xa95vAMWNFykG5A521JNEF/yU7EpUGavfki/67TGRVCyDcsFs5FIBgmXXzf7w=
+	t=1771279790; cv=none; b=WUFCQ3yMtwUW9vXD04R5OyBrj4ov/1kn6wGa1pPYqeSwKHxwb5PyHELGmk/jGuTob/XvcmX1Jrgbwz0v81xAj6XLqqikzfXRkg+TVF4RXgIrE84OSwhDeSSun/hGb3mhTEnWtU9TqMdSURn9LT6Ibq/kz2KlYcr77yeTyhdpM8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771278143; c=relaxed/simple;
-	bh=pxG2R/oIRqyOnH4hhkbbvKCS8frX1294bfA4gX/512w=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=C8lda91eEoGA7QybK9anDaL8bkxxSqfTfSEhU6KodrzPa3yk1VcWx3XvS5gE+MBNd6SXhmw2K6/YqcI+Ed7bmjqFrDIGLBVtX0dstufFqg8o08bKa0i5QNLovpOzN0uOLkUIpGhaabjg0cfDrh8t2HXgH1OX+r7OIN17quUDTs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YjWMmn0t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE26C116C6;
-	Mon, 16 Feb 2026 21:42:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1771278143;
-	bh=pxG2R/oIRqyOnH4hhkbbvKCS8frX1294bfA4gX/512w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YjWMmn0tghKh9oBaQL6bH1tVOUfoWNCuJsciuQDOZy4C7hfJzpiRkwKDi+UkbDVEC
-	 LT8ySi0JC2Sn8ojPtBuQpLLzMNMT6ROmG5/Eqx1Z/mWal5lZVoO7AwTf38Bd9vhfWP
-	 4bFqH2fsVN8P8/8E2zPzvBRjlDEM1HJT2gI9HUFo=
-Date: Mon, 16 Feb 2026 13:42:22 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kasong@tencent.com
-Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>,
- linux-mm@kvack.org, Chris Li <chrisl@kernel.org>, Kemeng Shi
- <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
- <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Carsten Grohmann
- <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>,
- linux-kernel@vger.kernel.org, "open list:SUSPEND TO RAM"
- <linux-pm@vger.kernel.org>, Carsten Grohmann <carstengrohmann@gmx.de>,
- stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] mm, swap: speed up hibernation allocation and
- writeout
-Message-Id: <20260216134222.5ec936d6503e72348227c58d@linux-foundation.org>
-In-Reply-To: <20260216-hibernate-perf-v4-1-1ba9f0bf1ec9@tencent.com>
-References: <20260216-hibernate-perf-v4-0-1ba9f0bf1ec9@tencent.com>
-	<20260216-hibernate-perf-v4-1-1ba9f0bf1ec9@tencent.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1771279790; c=relaxed/simple;
+	bh=zOzp8N4OurZfP7u7Ty54SkroNFz43EvcoD2XN1P6v8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LVIfxbBqMPH3UTHjZF0j8p3iQiYBzRaqeblivJ0ewGz50vRFa526izDb7dAWP+ikXzn6EwEUy5nm+TEX1/9ySXFSvcPsmwC3CwHfsLOAkowNEMfygZlUXCszZO6++HP13ZzYs5iCcACy5aJUXVO4e70muzecM6swwWlTpkVUuwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qpNKsgy3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5502C116C6;
+	Mon, 16 Feb 2026 22:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771279790;
+	bh=zOzp8N4OurZfP7u7Ty54SkroNFz43EvcoD2XN1P6v8k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qpNKsgy3KWYdCDG8dyzgHCMB/ON8MYPfSYabGQyPdWqZDwXaN+yyhRQzOgYXHEp+V
+	 gSu/Cw7fZhK/URC7W+ZlUPmD0cuAf5OHoNbi24H2Xw/I3WGUsLDCKG/CsN8rfCzsid
+	 TQLxEvOTLph0LDuRH9Jt5QFMec2ba/IRYm1FsYLlek1gSg2JQY5MyxIl3a+MSi1whV
+	 uHqR4slP18DEW3UZvx73vT8AtqlZfm75iiDTKiUw5UgsCDLqFtJ6ZA9RZ0/tinfOvc
+	 j4HIfZU55zR8scGAVxwn6iHZB7M8D9lVUHTWzLmfzAEk8TxIXZhH7nYZS/3PZ7WfDz
+	 EdUVKySVv7Ehw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: lyude@redhat.com,
+	airlied@gmail.com
+Cc: dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] nouveau/gsp: fix memory leak in r535_gsp_acpi_dod() unwind paths
+Date: Mon, 16 Feb 2026 23:09:42 +0100
+Message-ID: <20260216220944.19633-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_TO(0.00)[redhat.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-216757-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216755-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,kvack.org,huaweicloud.com,gmail.com,redhat.com,carstengrohmann.de,vger.kernel.org,gmx.de];
-	TAGGED_RCPT(0.00)[stable,kasong.tencent.com];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:mid,linux-foundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 766D6147C92
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EB43A147DAA
 X-Rspamd-Action: no action
 
-On Mon, 16 Feb 2026 22:58:02 +0800 Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
+acpi_evaluate_object() allocates the output buffer when called with
+ACPI_ALLOCATE_BUFFER.
 
-> From: Kairui Song <kasong@tencent.com>
-> 
-> Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
-> hibernation has been using the swap slot slow allocation path for
-> simplification, which turns out might cause regression for some
-> devices because the allocator now rotates clusters too often, leading to
-> slower allocation and more random distribution of data.
-> 
-> Fast allocation is not complex, so implement hibernation support as
-> well.
-> 
-> Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
-> performance is several times better [1]:
-> 6.19:               324 seconds
-> After this series:  35 seconds
+Subsequent unwind path do not free the ACPI object however, hence fix
+it.
 
-Thanks.
+Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
+Fixes: a9b9b42b54b2 ("nouveau/gsp: free acpi object after use")
+Cc: stable@vger.kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-I'll merge only [1/3] at this time, into mm-unstable at this time (I'll
-move it to mm-unstable after resyncing mm.git with upstream).
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
+index a575a8dbf727..214ce78b0645 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/gsp.c
+@@ -863,17 +863,18 @@ r535_gsp_acpi_dod(acpi_handle handle, DOD_METHOD_DATA *dod)
+ 
+ 	if (_DOD->type != ACPI_TYPE_PACKAGE ||
+ 	    _DOD->package.count > ARRAY_SIZE(dod->acpiIdList))
+-		return;
++		goto out_free;
+ 
+ 	for (int i = 0; i < _DOD->package.count; i++) {
+ 		if (WARN_ON(_DOD->package.elements[i].type != ACPI_TYPE_INTEGER))
+-			return;
++			goto out_free;
+ 
+ 		dod->acpiIdList[i] = _DOD->package.elements[i].integer.value;
+ 		dod->acpiIdListLen += sizeof(dod->acpiIdList[0]);
+ 	}
+ 
+ 	dod->status = 0;
++out_free:
+ 	kfree(output.pointer);
+ }
+ #endif
 
-We don't want the other two patches present during testing of this
-backportable fix because doing so partially invalidates that testing -
-[2/3] and[3/3] might accidentally fix issues which [1/3] added.  It happens,
-occasionally.
-
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1926,8 +1926,9 @@ void swap_put_entries_direct(swp_entry_t entry, int nr)
->  /* Allocate a slot for hibernation */
->  swp_entry_t swap_alloc_hibernation_slot(int type)
->  {
-> -	struct swap_info_struct *si = swap_type_to_info(type);
-> -	unsigned long offset;
-> +	struct swap_info_struct *pcp_si, *si = swap_type_to_info(type);
-> +	unsigned long pcp_offset, offset = SWAP_ENTRY_INVALID;
-> +	struct swap_cluster_info *ci;
->  	swp_entry_t entry = {0};
->  
->  	if (!si)
-> @@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
->  	if (get_swap_device_info(si)) {
->  		if (si->flags & SWP_WRITEOK) {
->  			/*
-> -			 * Grab the local lock to be compliant
-> -			 * with swap table allocation.
-> +			 * Try the local cluster first if it matches the device. If
-> +			 * not, try grab a new cluster and override local cluster.
->  			 */
-
-nanonit, worrying about 80-cols is rather old fashioned but there's no
-reason to overflow 80 in a block comment!
-
->  			local_lock(&percpu_swap_cluster.lock);
-> -			offset = cluster_alloc_swap_entry(si, NULL);
-> +			pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
-> +			pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
-> +			if (pcp_si == si && pcp_offset) {
-> +				ci = swap_cluster_lock(si, pcp_offset);
-> +				if (cluster_is_usable(ci, 0))
-> +					offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
-> +				else
-> +					swap_cluster_unlock(ci);
-> +			}
-> +			if (!offset)
-> +				offset = cluster_alloc_swap_entry(si, NULL);
->  			local_unlock(&percpu_swap_cluster.lock);
->  			if (offset)
->  				entry = swp_entry(si->type, offset);
+base-commit: 9478c166c46934160135e197b049b5a05753f2ad
+-- 
+2.53.0
 
 
