@@ -1,242 +1,361 @@
-Return-Path: <stable+bounces-216711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNRuH9Izk2lx2gEAu9opvQ
-	(envelope-from <stable+bounces-216711-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 16:12:18 +0100
+	id GD6yHxM2k2mV2gEAu9opvQ
+	(envelope-from <stable+bounces-216715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 16:21:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C47145379
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 16:12:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5BE9145716
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 16:21:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64A9E3102E53
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:05:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D3D6F30062CB
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A3B318BA4;
-	Mon, 16 Feb 2026 15:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B580318B96;
+	Mon, 16 Feb 2026 15:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="d/19mU7z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gAHfG1Gw"
 X-Original-To: stable@vger.kernel.org
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010023.outbound.protection.outlook.com [52.101.193.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BFD3101A7;
-	Mon, 16 Feb 2026 15:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C01031BC94
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 15:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771254182; cv=fail; b=Odb7cLq+6tea6JdowR7cdlIy/Om1Oda3oLP2ggEqxBy1owWYswaT9i4j5E+FSFEV4mllwVqHY2sm4/OMIB9hq+N5sHnosDMy6TX6GvNGv1fPqdFJ7/vySFy+/bd+IqwRAtAo5Yt8K8C/XJrCIViXxWhJg5A1xVsXwYDbM7d2sdM=
+	t=1771255030; cv=pass; b=RuxTFHukyFOwXxwZI4/EM4YROV+RA7J1SWcpX4OejiRGAHApWMWaSg9JTALmTlk1nJWz1u94zmVNMm1t1xeZ/DvwsjcXF783i8OTRCrmCan5dFHRa5U9kb7WzTIFe2Zg5OjSOyyyDfeIYKNH0Q+mTg4btLMFwXoo/qtohyX8k1g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771254182; c=relaxed/simple;
-	bh=Dk7dKA/sB1+VM2Pd6XWVnODOoAYJPXcd9mVL+gAKOtw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=E07dNBOuKgcy+Cr2fjYvC4G+oon7gLvV7AfjIqERowAzB5KnatXXe7Xg/J6vs+s+iSfuFHEKQU4HLOtT4IZ1EumY/8bzcvtM9TupZ0tI6SOeeOYjFh59D45B+64OQwu2o4lzwvA1NZQ1+omQLwNY0lmd7giAHS61jCK0aUgywT0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=d/19mU7z; arc=fail smtp.client-ip=52.101.193.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jgX8i3bxfAlBpx8GVyjFpj5Dh5Ll6K1FiZb9xigZiGptupkwqtgbylYHVpeP8j/cDZ5gAWJ5BO23Z4Tp3/8umvPk/9U0s1JuDixOIvSPpkw6fhPuX/fGzcvVhtBjLH/Cb6SDA439xhL4Yv3NvDghoAX2RU8ZldIRZ7L30P8PmpDF8rc7FzckWFijRT4VbHfUI1wcuRen31opgIiRhV+naMUe49dLS52EBr3ek3PPAd3D6onb9/dIL0TXNK5yODzGlYi6ONmMZQVxWmC3AZwulPaHpeSESZM21bkKtdK+poRQoBpbVXRIOzjkY04RC1todBy1937ECSJNsed/oa3AMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WJQGWe+52GWvHNE/C7uPWTwf6Mrui+bdTEv6LkD20fM=;
- b=tGBecd/LAxvNu0WJqw8RBn4q44rplPPU5Rt5fQCVrppQISiNdE1LYZPRKYraHogKOVOyBRIehRU7JT2Tb2ZOsAqx2xsk9Yk7RQVyngtrzWviHAmcog64A51dPCFnfDDAFHGMem3aTlkkFrQiAVLUPOWw05EWY2HRKj/Ev4JgYj22oNUbbQWl0wrZD9oZNfGvvePCFdgqahEAdpKslQrYmwcNUrdFHS+tVMhIAiDZUjqH2VjfsYpUjTGSszlKDDVzzv1W/Fn9sn2sOwcmeTy96CqkdMp+oR1jOdDNb7xc7XH9aSVvnHDBKe7ym6wPdjXZF5YQliGC+MdLlb4zuNTGNw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WJQGWe+52GWvHNE/C7uPWTwf6Mrui+bdTEv6LkD20fM=;
- b=d/19mU7z3SrKPiZ/XRrXW6oXedgToHUZEv6EdYYM2UpObC4EKm4el3ayV+GYhyio7xEkRxB4uu5q8OEZV3qHN8KHt5u1+CbUN+8YegPFDfnYRZRBhC7Y5tiP8QpBncc0yuqLhNBJU7FhUp/Wjs6SECahJRupdI+Bx3GZoJyCKnLAp+NNeYnQx1FME5VArjMqjgxqu5Xe6Le6CcdzeNDa6JSrJdzcN0oEziJSJdkxl4+GrhFNR98O7VveuXZQZVFfJpqrThz5Oozo7mZHCgY76z/8zmsxPl3oASoTKlIXE8brYhbXsqrW+csg7LWe9WQor1IJ+G+g0aw5xmMKvQ8WTA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by IA1PR12MB8588.namprd12.prod.outlook.com (2603:10b6:208:44f::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Mon, 16 Feb
- 2026 15:02:53 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9611.013; Mon, 16 Feb 2026
- 15:02:53 +0000
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Gal Pressman <gal.pressman@linux.dev>,
-	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	linux-rdma@vger.kernel.org,
-	Michael Margolin <mrgolin@amazon.com>,
-	Yossi Leybovich <sleybo@amazon.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Cc: Abhijit Gangurde <abhijit.gangurde@amd.com>,
-	Allen Hubbe <allen.hubbe@amd.com>,
-	Andrew Boyer <andrew.boyer@amd.com>,
-	Gal Pressman <galpress@amazon.com>,
-	Mustafa Ismail <mustafa.ismail@intel.com>,
-	patches@lists.linux.dev,
-	Roland Dreier <rolandd@cisco.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	stable@vger.kernel.org,
-	Steve Wise <swise@opengridcomputing.com>
-Subject: [PATCH rc 4/4] RDMA/ionic: Fix kernel stack leak in ionic_create_cq()
-Date: Mon, 16 Feb 2026 11:02:50 -0400
-Message-ID: <4-v1-83e918d69e73+a9-rdma_udata_rc_jgg@nvidia.com>
-In-Reply-To: <0-v1-83e918d69e73+a9-rdma_udata_rc_jgg@nvidia.com>
-References:
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MN0P221CA0013.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:52a::18) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	s=arc-20240116; t=1771255030; c=relaxed/simple;
+	bh=XfW1/fGTUJOoZviWyc/RCpgfeHSoIXmfHJAt8VuqUtU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ROUP37WuEOdK3vABUQtbF72YE+doS99KY7MmocHgqUQG2zQtYW64u4RbqOWrzI+37k9LEfX+qP2dtQi1Tixw6ukhcPU+IdhjtG5xFcPagRA3thxGHz97jBEtk5+gL/NBcXdWwbr02ZD3AkYueXqyAfWqu56W/T0aiqp3R8PV9pk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gAHfG1Gw; arc=pass smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ba716126f5so165946eec.3
+        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 07:17:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771255028; cv=none;
+        d=google.com; s=arc-20240605;
+        b=low3anfGQ14eyHNqMNyOnnXvORkK3wfgIUUktfKm2S81ZwtnjoV1amxnbPzpK9P7aJ
+         BV0JT4RCQCe4Y6nZjso2AWCaFNsJL60O1QtuCF5T7WGN4ua29Jtc2oQmg+v/sUNyZvyy
+         zoI4EY0hNTLVx/Bn9/k9NhHuyzzEVPflf3euf9wbp4L/sDlCPl5LWvT1uwud9G8moXVJ
+         fJT1aFBJfC6tlq89MQoS0mhrFdwrcFOnQZBbqYmnGwlC05ZNWRzBC4FeFnOi+P5xEmsV
+         eJrAG2Nc3CePTVN4qDF0jo/PSDC4+3vo7s2zUSACgtJHln9sqBcd6ltTAYXdL+r0h7lS
+         qgcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=YKPC9P2MdUr1p8+ptPTrIBFkfHYN1KOmv4Jan9hFXOc=;
+        fh=IQDzjbo6DjUKIuKjqcreqVARO/JCT6uv1K7ecgEgAYU=;
+        b=VZ/wVxiY2dtSh9ekPkSVVTeA2r0jxbT5GyCdpVtd5ieFRoVgXenG+Q1PBwc41m+L8R
+         cbwK6sdVjlfpVmla4i1MpNteltYUit4E1jSwAyeD+fNTjcGmoccB0otLDgBv2sHS6FqZ
+         QJa/Zpjc2KE4BpxHPnXo97J/kAqI4LUbCquoRxIvZ/ECrLfmS1FLZINrIPV8upK8RieT
+         2THahe147dhTmRI4HI8IA8LB9qzWwTfSkES1GSeoYo8OsUhHTD1qIIApGS3s1yldrrBx
+         f9egdF2Smoj5JQ72Dqc6cO8KpQXDdwdF8sqGF6jpqgIS+6btz30fHKzxwkLpWjEHC1Wq
+         oMxg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771255028; x=1771859828; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YKPC9P2MdUr1p8+ptPTrIBFkfHYN1KOmv4Jan9hFXOc=;
+        b=gAHfG1Gw1JZ5+71Ve4Dux2laR2qp716aeEdKXH+GbfPV//ElqImayqiYCeO6P4l93S
+         Dty9ZI3++MTheP1n/eyI2FnPoIwMa+dJJ8KOrLNTOwzIE6LjNND00rX1cn9rECaRzbHG
+         btPS0mZbT85bjpclSYRTOoOO+B0mO0jnsPTBWb2WD47XIAbAUIGHBtz47bj1rILZaPcj
+         +CT1a14okr+ZE8nHc0iGDa3vRrJgkgOgYGpRpr5oVd+9N0mT7bx6ixlRBWFHiSO0OnlN
+         R12nEum8pXtyZXc3Kr1uTq7a2+ZWsAzWWFfPZw59Ycqt+uM81cYrM57YxciY1zcsiQf4
+         R+xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771255028; x=1771859828;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YKPC9P2MdUr1p8+ptPTrIBFkfHYN1KOmv4Jan9hFXOc=;
+        b=QXOoym0aREGn9Pgf3JDROVV4LDxFRdTvrHR840bthALo3ndh4NWcEvbKY5gKlLpXXW
+         h21BF3C+4p000g7kqYJWv0E2wLP31bnjZ8GLJfJTo/b/kowm3Pyn512/45pq81EY4Kxs
+         26oiyNoCaKuokViZvCieyQOx0KM6BLZrZxUjdBX9E5OU1qrCy70DuY8DGqb5mKOL/PPU
+         2s0g6nrzvJ95aQbWgIU1wFOlItk5YRWfdPC1tuY2zIc7nJEAp8puPbPgro/4/W58HgSr
+         u/kHPlDwf1Y/oQxweJDgask8u3ezQ/Gs0pQ4gKusNvnBZPWK0N+LCqe/TJRXh48GrT8x
+         CN5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVBBaSRH9EVkU1mfkLnhgFoaM5ukxjPDZ1TxR4F7LYa/apljVt9Ehz/A2cgA/S4KJUMKQ+wWd8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcV3IWubtpipcSy0XIqQLR5s7QReROVPaKSf5GkM79YFm5s9ts
+	vdwWHLtuVzWvs9el3a/Z1REiDV5sOLg8kqoeDQt4PwxzMLy67PRMARY1A8mmAkfTCUfkbS8rYbh
+	C7aayoV4ThHLc4o4rttcQQcN6gxMUwEJnig==
+X-Gm-Gg: AZuq6aKqQwDVET7Kc6JVOL7MASyJqLQNu3kjNzM6D1j2Q5zPAStZvEa0/C6THqIQpem
+	itrHLdQwNNygMuCtTHNCBYCN8Hin02d+figwo60MPOL2V3W5LkvfaGpZacCBmZewnrk8fdqFLNw
+	zvef/LOp5MmeB73OMv45g/IQ3N7MYBkQGtFPHABccOQuA4ezJGrg7um8+qKLi5hzHJ3DBye9yOm
+	i4KngPsBmcixezfWcTF3LL+fE+SFC8gY3p+m7m5eiqvEP/WnILpmxE29ioBRYOVWR6JC117qJOC
+	IV/na6i55vlykOrxi+Ujnp44fowdWrkSlPriKFAzCAO/F0zbgwU846jgfFhgkuerNCcD3i7Hiv2
+	yqU4U
+X-Received: by 2002:a05:693c:3747:b0:2ba:7321:cf91 with SMTP id
+ 5a478bee46e88-2baba0158e1mr2351361eec.3.1771255027376; Mon, 16 Feb 2026
+ 07:17:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|IA1PR12MB8588:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70536687-5c8e-4294-b9ab-08de6d6c74c1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1PAaW56ErGwjtQvOOpmqXqrvsKwQA2TyUY8qMfLa14JxgANNfIb5Whx4cI13?=
- =?us-ascii?Q?2YWgmrwss38sLOTUpQ5v1iQhoOUMf760T+I4raRp0arzzTlZ0SepLOp0lTCO?=
- =?us-ascii?Q?srbAM/MpG0Ad/EjmbOto+rClAdhEZgeJYF8A4LYUCXu+Ywqol9Esvj83Q++M?=
- =?us-ascii?Q?9wKN6qpxrFsiLVUHIWdogL+ZksNWMmjuojlyGYetyJOhXzEd93bBSx9AYelh?=
- =?us-ascii?Q?/WvmQFPrnMO22UqLfQMLRV/GgbFwsw113yO2SPBMu8yGFWtxB4AMwWlsrCO8?=
- =?us-ascii?Q?CBZcSdJ0C1q6SdGqZqb+Phf3eIHhkc2ewLAjLvqS2oBRy6CuzdyzFfzWXCYx?=
- =?us-ascii?Q?odIk5eh0GZGBRUQvmknlu/ICkudZibjVeq1nT357MjTTajEs/qWGknVytd0X?=
- =?us-ascii?Q?6a4Kci4qW91MUDQrrMHaMLmyVQJ2R8sGB1wEZyYW7/pr9dInB5hjOdzcob45?=
- =?us-ascii?Q?ysHoNDllgVUmmVV6wiEl7zKI0jV4uquIKdJxuqGumPGPUPquYdvV5So6hGk8?=
- =?us-ascii?Q?QRDVM7ZSV+4KD3ts16eFIfpOvMPJo64itnhWLoXjSz9HQexPGVZNsxTIMeFn?=
- =?us-ascii?Q?+sgMk2zXB1TvZnWYqK+bxIjurDMI1oQ1F+xClDrLC43IDm/Zimu7Z6j7Dwqa?=
- =?us-ascii?Q?DT4Gr2FK7JEqTToVpA+yis6VanedMgfpL7RBWVvFqgUNVo+LXGCk+FgbX1QG?=
- =?us-ascii?Q?SLYLMLPNIihjpb7E0VDJN4BJt/5Kth0lBArJlWzOD/n3fW3ToBic7BCDGj6A?=
- =?us-ascii?Q?8NcK8uz208yXHP+NUKNqbaBz31X14VM4JZs/ekH9W100HwXaGDY9cPWGxa64?=
- =?us-ascii?Q?nc220iwpunidAe4ytUNzBbHEA8YrCjJFLqLAgwK5zzug4Udob5BvMJj6sOQu?=
- =?us-ascii?Q?MX0IHUt0vUu75aAjDZS+QLn4cJzuSs0nO+RdkcKsaCvaFDuAJ7CkbkAFGIHH?=
- =?us-ascii?Q?meOUtoGODo0aihsYneOn4Ln3cJdWxIhml+OIzIB3ryPtuV9scStL7kleFFk4?=
- =?us-ascii?Q?BOBAuN1LY9tqIdOiY4EZ0ACu29/ft0YbjhNM4qvD8Hf5ti38oAApa4NfnB7T?=
- =?us-ascii?Q?Ta+T8VMgG80WvJn5cLo0i9p159Syxbq1Be8hnJ0WTouSeSzNfxkgyRKcv2xj?=
- =?us-ascii?Q?bhExESttRDumDt6Schm+yO+OxXNU55JjyzsXvFnVLU35jNRl1gnvRQWfel9i?=
- =?us-ascii?Q?qco3mDkPpfEu6FQhcRiuE/sGIyvfyBVsDXSUK2htM/BUvuvXjjKKg1B8TRjL?=
- =?us-ascii?Q?nWK9+RwQfee++8p37bzhzgelDDX1zhIjLt+OEouhgkrj+03GdO089C6nViS3?=
- =?us-ascii?Q?Urh8vPSfVyUM4ecfP8IkIK/wQvieWF8CIOnZoU9RxwiZVd7y2bJJBK39Xq8r?=
- =?us-ascii?Q?byLWOybpKwhGDqvoBl6WVVnSoGnyEcXLQJfUPEwAC86fGuvxxos1SICy1F28?=
- =?us-ascii?Q?pVxRMk+eay/o8ka4zmn4djIwyMyG7LNjVF1fQ1oLCgtxf8leGo3+KqPekKpf?=
- =?us-ascii?Q?pBxMmCttX4PRv+uwSyVJFunFeD8K72MIt7sl5/ZviYP47D/MqucbX6GpxJKT?=
- =?us-ascii?Q?TzHynYllfrJJ4GrNBHk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9EIlL8Of969mUjT4XePVRKPLEXG0Jq9754mByVI/h1d2+2SiGf0UybtyvHOt?=
- =?us-ascii?Q?9uZuVUKZqSc4cIpciyt3iSLMuFAhMwsXDjjeYql89+AsHbAWC2rPCGNOEx73?=
- =?us-ascii?Q?5GzeHG7c0PRmrlkUNaP5dvU4PBWmtcp6HL4KV/w73pa84kbpeORRYV7tlIV8?=
- =?us-ascii?Q?MrFwaAhBTMgjWAVC6vwuKgNxJOQUwmP0SoUCqoQUG7j74T0lOrKl45RZi7JL?=
- =?us-ascii?Q?ZJHfABp1cWTwzB0YnX8v1ZZRBNb/++0H47DTlj0OgA+eoyha6aviI95/YIST?=
- =?us-ascii?Q?MBExLrHJPJWwspT3GIfZWkC70kAkUEpC5lDwmeUF1ZybOtMD3/PTqQlSO6yG?=
- =?us-ascii?Q?Hz1ItlsUNJShRrLNBQ7p0Pww56y1xL8nE37Fcf4YKAcgg4geaxsQ/BKTdIpJ?=
- =?us-ascii?Q?6gidJArqKlqjowSPI8QujQGmRRk3gayDspkQCL3qeijbbefA2z2aWXxhqGKN?=
- =?us-ascii?Q?YFC+SK3aXkrpA/xhWB7SkOGVd2vWF3G710R0dUWPNlI9OpyesvH9/K0ecL8s?=
- =?us-ascii?Q?RXq1NeC6EtSgrgM4s6k08IvCXQKZlnvbM8BoDTFyCeqdEYIcco8g0Vs2CHrZ?=
- =?us-ascii?Q?2hVdOYSDxYYLdJor2TAKuCjUhKgHJtRjolOCVPgg2JqEpSw/iw9g9hGlEnqG?=
- =?us-ascii?Q?uHt2edq6mGNdbR31wZOxeKrmHNzPrQ26iwFvY5hw1fxfk2hviW4298g3/I4t?=
- =?us-ascii?Q?HQjqY/0TB1YEpC8FYYLjyBtRvRzOipeMQv4uIefhIZ6VKWudWHa/5+z+4t8j?=
- =?us-ascii?Q?/mO+sieRo2Yr2TkAh6zY+0pI4bSmOwyaEJYd1gFLmjdktsLENXkOdGrr41aA?=
- =?us-ascii?Q?sk7u9RSCtteLif03SUTH+Wa734CEjMN67eAEIxhQDnzRuqiGz2PFlYGdsdBc?=
- =?us-ascii?Q?V+SCwxNh22l1jfsabMEsbzid8Wg9IMJZ+XgtOK0hxhtoESVHVbQpcrEvA0OZ?=
- =?us-ascii?Q?QrfTLF/2wjDw/7etgoSyEDrjnJarpva4she17V1ybE7/LW5SxRfxTAGK2OTz?=
- =?us-ascii?Q?kPV8aqu/Q/ZGZ0ydt/kzzn/zVFEk04FNGDlpoWJCVtuntls1FKIDjzsp4YMN?=
- =?us-ascii?Q?Ccb38FMSWgH3GdS91maE9L3sJomUvwoNBUkMi2aHsm0uKmsZdlAPdL1AJDd7?=
- =?us-ascii?Q?HEhGdTTcRXwGbQnnPaWzQAqF6wCb7wK++TkqEirxDm2BH2UT+8F8rkKtuB5b?=
- =?us-ascii?Q?kOZ/4RAKJuH+A6Skr1ZrzdMMrjfgQdueKTXamUS3VwBEegtRof8HR6aF/Qpf?=
- =?us-ascii?Q?XmcvY2A/jTsgWohFHMjI9lxObw2JLaI4Ov6ZwPCb60e4WEjj05r4Iq2tdkbA?=
- =?us-ascii?Q?47vFU/SaeA6HiytZt5gey9fBZKf6ExXei+ZvNS7UkEJyNTyJyw62HfkTWn5d?=
- =?us-ascii?Q?za96kGLUcf2hEjs9sr2Dlyro2AAzR0+ePAQX6MnOMQILql/XJ2kIxqQN9Hx4?=
- =?us-ascii?Q?3jbL6qT8aJ+U/XRSiWpz+fZIRiqim8VlcmRQr4XPxzJaWReX0DhSFzGMjDbm?=
- =?us-ascii?Q?y5qIGA/TQ92fuKo8owsUaft16X1l8mUUFLmmZJhPRDq4sqJ/muYx8MDts6oU?=
- =?us-ascii?Q?BmzaWzo0KEt0XouyFfuucbzimmekYNXf7DgoM7gX+7ZVX0cHn29B1oB0IAaC?=
- =?us-ascii?Q?hm6FQrEqgPkSHpePn3NgRv3sWU9zPJSLiU/kq4xXYGOQhKId2K5DjO+iX3Nl?=
- =?us-ascii?Q?yXciIYUfl4ZWRTUctW6PTlaN4RcuQOa/QzraodlV+tX4/emT?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70536687-5c8e-4294-b9ab-08de6d6c74c1
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 15:02:51.9960
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 11+YltF7UY48OBQIG6Gz4pbXKWcpwKaRmbi8ua6rCSRcthWEGqiLD+22NYFI2xiY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8588
+References: <20260216044735.6814-1-mario.kleiner.de@gmail.com>
+In-Reply-To: <20260216044735.6814-1-mario.kleiner.de@gmail.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Mon, 16 Feb 2026 10:16:55 -0500
+X-Gm-Features: AaiRm51WrxeDGXyaEQrCB3OfmfTE87V2C5BJQUcl4yyEMYoSRmsnvc_EPo28dIM
+Message-ID: <CADnq5_PfxV9r+LEAhvR_MRGOC_Xgp8vRWgMk8o9qKzur3bw2ag@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/display: Prevent cursor bo's from being pinned to
+ VRAM address zero
+To: Mario Kleiner <mario.kleiner.de@gmail.com>
+Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	stable@vger.kernel.org, Harry Wentland <harry.wentland@amd.com>, 
+	Leo Li <sunpeng.li@amd.com>, Alex Deucher <alexander.deucher@amd.com>
+Content-Type: multipart/mixed; boundary="000000000000b73185064af27275"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-1.06 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-216711-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-216715-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	HAS_ATTACHMENT(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alexdeucher@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:mid,nvidia.com:email,Nvidia.com:dkim]
-X-Rspamd-Queue-Id: 02C47145379
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,gitlab.freedesktop.org:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: E5BE9145716
 X-Rspamd-Action: no action
 
-struct ionic_cq_resp resp {
-    __u32 cqid[2];         // offset 0 - PARTIALLY SET (see below)
-    __u8  udma_mask;       // offset 8 - SET (resp.udma_mask = vcq->udma_mask)
-    __u8  rsvd[7];         // offset 9 - NEVER SET <- LEAK
-};
+--000000000000b73185064af27275
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-rsvd[7]: 7 bytes of stack memory leaked unconditionally.
+On Mon, Feb 16, 2026 at 12:02=E2=80=AFAM Mario Kleiner
+<mario.kleiner.de@gmail.com> wrote:
+>
+> Why?
+>
+> On some AMD gpu's in some configurations, the start of the VRAM domain, a=
+s
+> reported by amdgpu_ttm_domain_start(adev, AMDGPU_GEM_DOMAIN_VRAM), is
+> placed at address 0 during GMC init. This is a problem if, during a curso=
+r
+> plane update, the cursor image bo, which gets always pinned into VRAM,
+> is placed at offset zero of the VRAM domain, and thereby at the
+> absolute address afb->address 0.
+>
+> The display hw apparently doesn't like such a zero start address for at
+> least native cursor mode, as various checks inside DC are in place, e.g.,
+> high level dc_stream_check_cursor_attributes(), and lower level DCN
+> version specific cursor hw programming checks, which do reject cursor
+> attribute updates with attributes->address.quad_part =3D=3D 0.
+>
+> User visible symptoms of this are seriously broken mouse cursors under
+> both X11 and Wayland (tested with KDE/KWin, GNOME/Mutter, GDM login
+> manager): Mouse cursor flickers, is invisible, randomly becomes invisible=
+,
+> or fails to adapt the cursor shape to the context, e.g., when moving from
+> a text input field to other windows, or window decorations etc. This make=
+s
+> the cursor irritating and impossible to use.
+>
+> The drm.debug=3D4 log shows DRM KMS debug messages of the form
+> "DC: Cursor address is 0!", and the general syslog prints errors like
+> "[drm:amdgpu_dm_plane_handle_cursor_update [amdgpu]] *ERROR* DC failed to
+> set cursor attributes"
+>
+> I observe this bug on my dual-gpu Apple 2017 MacBookPro since Linux 4.11,
+> where the kernels early EFI setup force-enables both the Intel iGPU and
+> AMD dGPU. This leads to the AMD VRAM start being placed at 0x0 and then
+> causes massive cursor problems. On earlier kernels, only the AMD dGPU was
+> exposed, the Intel iGPU was disabled / hidden from Linux by EFI firmware.
+> This caused the AMD gpu to place VRAM start at the non-zero
+> address 0x000000F400000000, and the mouse cursor worked fine. I confirmed
+> with umr that the mmMC_VM_FB_LOCATION register of my Polaris 11 gpu indee=
+d
+> read back 0x0000 in the lower 16 bits in the dual-gpu case, causing
+> gmc_v8_0_vram_gtt_location() to setup start of VRAM domain at zero.
+> I don't know what causes the change, but most likely the UEFI firmware
+> somehow triggers this change before main kernel boot - calling into the
+> VBIOS, I guess.
+>
+> There is at least one 8 months old bug report in AMD's issue tracker,
+> reporting the same symptoms on other AMD setups, cfe.:
+> https://gitlab.freedesktop.org/drm/amd/-/issues/4302
+>
+> So unless there is another more clean and reliable way to prevent the
+> cursor bo from being placed at address zero, or unless the display hw
+> is actually fine with address zero and those checks in DC are overly
+> cautious, this needs to be fixed.
+>
+> Note that simply removing the "zero address -> reject cursor update"
+> checks worked on my Polaris11 with DCE 11.2 display engine, fixing the
+> cursor without causing any other obvious trouble. So maybe this is only
+> a limitation of recent DCN engine versions, or a pointless check.
+>
+> How?
+>
+> Add a new AMD bo placement flag which requests bo pinning / placement at
+> non-zero VRAM address only during amdgpu_bo_pin(). Use this flag for bo's
+> on the cursor plane during amdgpu_dm_plane_helper_prepare_fb().
+>
+> I don't know if this is the best approach. It feels hacky, but it is the
+> only approach I was able to do and it seems to work fine enough.
+>
+> If this is a good enough fix, it should be backported, but backporting
+> to earlier than Linux 6.12 might be cumbersome due to changes to the
+> amdgpu_bo_pin() implementation.
 
-cqid[2]: The loop at line 1256 iterates over udma_idx but skips indices
-where !(vcq->udma_mask & BIT(udma_idx)). The array has 2 entries but
-udma_count could be 1, meaning cqid[1] might never be written via
-ionic_create_cq_common(). If udma_mask only has bit 0 set, cqid[1] (4
-bytes) is also leaked. So potentially 11 bytes leaked.
+Thanks for tracking this down.  I think this patch would be cleaner
+and easier to apply to older kernels.
 
-Cc: stable@vger.kernel.org
-Fixes: e8521822c733 ("RDMA/ionic: Register device ops for control path")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
----
- drivers/infiniband/hw/ionic/ionic_controlpath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Alex
 
-diff --git a/drivers/infiniband/hw/ionic/ionic_controlpath.c b/drivers/infiniband/hw/ionic/ionic_controlpath.c
-index ea12d9b8e125fe..83573721af2c08 100644
---- a/drivers/infiniband/hw/ionic/ionic_controlpath.c
-+++ b/drivers/infiniband/hw/ionic/ionic_controlpath.c
-@@ -1218,7 +1218,7 @@ int ionic_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
- 		rdma_udata_to_drv_context(udata, struct ionic_ctx, ibctx);
- 	struct ionic_vcq *vcq = to_ionic_vcq(ibcq);
- 	struct ionic_tbl_buf buf = {};
--	struct ionic_cq_resp resp;
-+	struct ionic_cq_resp resp = {};
- 	struct ionic_cq_req req;
- 	int udma_idx = 0, rc;
- 
--- 
-2.43.0
+>
+> Signed-off-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+> Tested-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+> Cc: <stable@vger.kernel.org> # v6.12+
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Leo Li <sunpeng.li@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_object.c            | 11 +++++++++++
+>  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c   |  6 ++++--
+>  include/uapi/drm/amdgpu_drm.h                         |  7 +++++++
+>  3 files changed, 22 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm=
+/amd/amdgpu/amdgpu_object.c
+> index 1fb956400696..97131fc8fbdf 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+> @@ -975,6 +975,17 @@ int amdgpu_bo_pin(struct amdgpu_bo *bo, u32 domain)
+>                 if (bo->flags & AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS &&
+>                     bo->placements[i].mem_type =3D=3D TTM_PL_VRAM)
+>                         bo->placements[i].flags |=3D TTM_PL_FLAG_CONTIGUO=
+US;
+> +
+> +               /* Ensure bo is never pinned at amdgpu_bo_gpu_offset() =
+=3D=3D 0
+> +                * for VRAM allocations, as some of the DC code does not
+> +                * like that, e.g., mouse cursor display image bo's.
+> +                */
+> +               if (bo->flags & AMDGPU_GEM_CREATE_VRAM_NON_ZERO_ADDRESS &=
+&
+> +                   bo->placements[i].mem_type =3D=3D TTM_PL_VRAM &&
+> +                   !bo->placements[i].fpfn &&
+> +                   !amdgpu_ttm_domain_start(adev, TTM_PL_VRAM)) {
+> +                       bo->placements[i].fpfn =3D 1;
+> +               }
+>         }
+>
+>         r =3D ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/dr=
+ivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> index 394880ec1078..cd7f53d3036c 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> @@ -959,10 +959,12 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct=
+ drm_plane *plane,
+>                 goto error_unlock;
+>         }
+>
+> -       if (plane->type !=3D DRM_PLANE_TYPE_CURSOR)
+> +       if (plane->type !=3D DRM_PLANE_TYPE_CURSOR) {
+>                 domain =3D amdgpu_display_supported_domains(adev, rbo->fl=
+ags);
+> -       else
+> +       } else {
+>                 domain =3D AMDGPU_GEM_DOMAIN_VRAM;
+> +               rbo->flags |=3D AMDGPU_GEM_CREATE_VRAM_NON_ZERO_ADDRESS;
+> +       }
+>
+>         rbo->flags |=3D AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
+>         r =3D amdgpu_bo_pin(rbo, domain);
+> diff --git a/include/uapi/drm/amdgpu_drm.h b/include/uapi/drm/amdgpu_drm.=
+h
+> index 1d34daa0ebcd..6dee7653c54e 100644
+> --- a/include/uapi/drm/amdgpu_drm.h
+> +++ b/include/uapi/drm/amdgpu_drm.h
+> @@ -181,6 +181,13 @@ extern "C" {
+>  #define AMDGPU_GEM_CREATE_EXT_COHERENT         (1 << 15)
+>  /* Set PTE.D and recompress during GTT->VRAM moves according to TILING f=
+lags. */
+>  #define AMDGPU_GEM_CREATE_GFX12_DCC            (1 << 16)
+> +/* Flag that BO must not be placed in VRAM domain at offset zero if the
+> + * VRAM domain itself starts at address zero.
+> + *
+> + * Used internally to prevent placement of cursor image BO at that locat=
+ion,
+> + * as the display hardware doesn't like that for hardware cursors.
+> + */
+> +#define AMDGPU_GEM_CREATE_VRAM_NON_ZERO_ADDRESS (1 << 17)
+>
+>  struct drm_amdgpu_gem_create_in  {
+>         /** the requested memory size */
+> --
+> 2.43.0
+>
 
+--000000000000b73185064af27275
+Content-Type: text/x-patch; charset="US-ASCII"; 
+	name="0001-drm-amdgpu-keep-vga-memory-on-MacBooks-with-switchab.patch"
+Content-Disposition: attachment; 
+	filename="0001-drm-amdgpu-keep-vga-memory-on-MacBooks-with-switchab.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mlpbhyi90>
+X-Attachment-Id: f_mlpbhyi90
+
+RnJvbSBlMDU1YjRmNjg3OWMzNjIyMTdhMjRjMmQ2YWJhOTI1YWVmM2MxNzg0IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBBbGV4IERldWNoZXIgPGFsZXhhbmRlci5kZXVjaGVyQGFtZC5j
+b20+CkRhdGU6IE1vbiwgMTYgRmViIDIwMjYgMTA6MDI6MzIgLTA1MDAKU3ViamVjdDogW1BBVENI
+XSBkcm0vYW1kZ3B1OiBrZWVwIHZnYSBtZW1vcnkgb24gTWFjQm9va3Mgd2l0aCBzd2l0Y2hhYmxl
+CiBncmFwaGljcwoKT24gSW50ZWwgTWFjQm9va1Byb3Mgd2l0aCBzd2l0Y2hhYmxlIGdyYXBoaWNz
+LCB3aGVuIHRoZSBpR1BVCmlzIGVuYWJsZWQsIHRoZSBhZGRyZXNzIG9mIFZSQU0gZ2V0cyBwdXQg
+YXQgMCBpbiB0aGUgR1BVJ3MKdmlydHVhbCBhZGRyZXNzIHNwYWNlLiAgVGhpcyBpcyBub24tc3Rh
+bmRhcmQgYW5kIHNlZW1zIHRvIGNhdXNlCmlzc3VlcyB3aXRoIHRoZSBjdXJzb3IgaWYgaXQgc2Vu
+ZHMgdXAgYXQgMC4gIFdlIGFscmVhZHkgcmVzZXJ2ZQpoYXZlIHRoZSBmcmFtZXdvcmsgdG8gcmVz
+ZXJ2ZSBtZW1vcnkgYXQgMCBpbiB0aGUgYWRkcmVzcyBzcGFjZSwKc28gZW5hYmxlIGl0IGhlcmUg
+aWYgdGhlIHZyYW0gc3RhcnQgYWRkcmVzcyBpcyAwLgoKQ2xvc2VzOiBodHRwczovL2dpdGxhYi5m
+cmVlZGVza3RvcC5vcmcvZHJtL2FtZC8tL2lzc3Vlcy80MzAyCkNjOiA8c3RhYmxlQHZnZXIua2Vy
+bmVsLm9yZz4gIyB2Ni4xMisKQ2M6IE1hcmlvIEtsZWluZXIgPG1hcmlvLmtsZWluZXIuZGVAZ21h
+aWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBBbGV4IERldWNoZXIgPGFsZXhhbmRlci5kZXVjaGVyQGFt
+ZC5jb20+Ci0tLQogZHJpdmVycy9ncHUvZHJtL2FtZC9hbWRncHUvYW1kZ3B1X2dtYy5jIHwgMTAg
+KysrKysrKysrKwogMSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQg
+YS9kcml2ZXJzL2dwdS9kcm0vYW1kL2FtZGdwdS9hbWRncHVfZ21jLmMgYi9kcml2ZXJzL2dwdS9k
+cm0vYW1kL2FtZGdwdS9hbWRncHVfZ21jLmMKaW5kZXggNTZlNDYyMzhlNjcyMy4uNDRmZjgwMGE1
+NzE1NSAxMDA2NDQKLS0tIGEvZHJpdmVycy9ncHUvZHJtL2FtZC9hbWRncHUvYW1kZ3B1X2dtYy5j
+CisrKyBiL2RyaXZlcnMvZ3B1L2RybS9hbWQvYW1kZ3B1L2FtZGdwdV9nbWMuYwpAQCAtMTA2Nyw2
+ICsxMDY3LDE2IEBAIHZvaWQgYW1kZ3B1X2dtY19nZXRfdmJpb3NfYWxsb2NhdGlvbnMoc3RydWN0
+IGFtZGdwdV9kZXZpY2UgKmFkZXYpCiAJY2FzZSBDSElQX1JFTk9JUjoKIAkJYWRldi0+bW1hbi5r
+ZWVwX3N0b2xlbl92Z2FfbWVtb3J5ID0gdHJ1ZTsKIAkJYnJlYWs7CisJY2FzZSBDSElQX1BPTEFS
+SVMxMDoKKwljYXNlIENISVBfUE9MQVJJUzExOgorCWNhc2UgQ0hJUF9QT0xBUklTMTI6CisJCS8q
+IE1hY0Jvb2tQcm9zIHdpdGggc3dpdGNoYWJsZSBncmFwaGljcyBwdXQgVlJBTSBhdCAwIHdoZW4K
+KwkJICogdGhlIGlHUFUgaXMgZW5hYmxlZCB3aGljaCByZXN1bHRzIGluIGN1cnNvciBpc3N1ZXMg
+aWYKKwkJICogdGhlIGN1cnNvciBlbmRzIHVwIGF0IDAuICBSZXNlcnZlIHZyYW0gYXQgMCBpbiB0
+aGF0IGNhc2UuCisJCSAqLworCQlpZiAoYWRldi0+Z21jLnZyYW1fc3RhcnQgPT0gMCkKKwkJCWFk
+ZXYtPm1tYW4ua2VlcF9zdG9sZW5fdmdhX21lbW9yeSA9IHRydWU7CisJCWJyZWFrOwogCWRlZmF1
+bHQ6CiAJCWFkZXYtPm1tYW4ua2VlcF9zdG9sZW5fdmdhX21lbW9yeSA9IGZhbHNlOwogCQlicmVh
+azsKLS0gCjIuNTMuMAoK
+--000000000000b73185064af27275--
 
