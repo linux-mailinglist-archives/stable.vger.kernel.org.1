@@ -1,181 +1,157 @@
-Return-Path: <stable+bounces-216650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AxIfBmSOkmk9uwEAu9opvQ
-	(envelope-from <stable+bounces-216650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 04:26:28 +0100
+	id EHYFOIuTkmmSuwEAu9opvQ
+	(envelope-from <stable+bounces-216651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 04:48:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5107D140BE4
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 04:26:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BB4140C91
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 04:48:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D235300F501
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 03:18:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6B2283016270
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 03:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06672236F2;
-	Mon, 16 Feb 2026 03:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCE2273D6D;
+	Mon, 16 Feb 2026 03:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="LxguobRa";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="LxguobRa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VL3XD3fb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA9E7261C
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 03:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C91C1A3154;
+	Mon, 16 Feb 2026 03:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771211933; cv=none; b=LTikOmGkfx97QyUIyt2cHz5ImDLOMYR7pZXzQX0c52WzU1hXnl6tRsOrP3DRJgC1yp9V8YrXFXbVw6Wjoy/RiGXYH0aeWFfYiSiac/SjGxIVCnPb5rh3Cq6i26IaZ7t0VLqr+jX68+AUFiSEpeu9z6ADA3ylcgvDNoVkIz439Gs=
+	t=1771213689; cv=none; b=piz2nQvg55aizTXnaFvi3DrNExzebbdC+gRhf0v0ybCgjsXZFbic9cPd6tLCy+oa8HyY4R3c9rml96kgOuEMrg1I2O3m/ieogDKt4uvUBB5GthSrqogWYFUW4lsZTEY8bct+to8XZ7Cu9121Pyax5bRNPBmHyQM/MHumxhGQlho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771211933; c=relaxed/simple;
-	bh=CtJNjRpFQcdFn76G8PFmePltuw/VNR1/U6A/E65wQeg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rVSz8Vrkt3Tt5L1MHQhqIsuTxLw1f0G3BfbUQwrk1r0onwMFZaN8ckq0DZutvztJ9Yr5ahQF4meznGAR8skR0aeJ1FWTjJUyf/Rcjw1pAt9X/aV599ZWlKzUJev62pNL2QIJesXuNkEuJ5fsNkwg7L+lvnZJkbpUody+8jDfLKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=LxguobRa; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=LxguobRa; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from x1pro.suse.cz (unknown [IPv6:2a07:de40:6183:1a::1022])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 32A553F26E;
-	Mon, 16 Feb 2026 03:18:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1771211930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=OJ6ReTypNNQEoX8ylYb19hiniXUsOHHTtAetayTOIhA=;
-	b=LxguobRaPC/y+6qzhBr/I0TSRv4htqUp0qEqFjnJPTTw5K1ZsiDEn0cGcnZ19l1hI+1vKW
-	728o7TKB9XnKrYWlw8M6a6fjRsgjNtIh41ByXLhFn/tDD+ZO4vCzMmPY75r8VWzVzsIAzQ
-	r16YbYHmxOx7LsZOwbcU3OvAY8h0pV4=
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=LxguobRa
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1771211930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=OJ6ReTypNNQEoX8ylYb19hiniXUsOHHTtAetayTOIhA=;
-	b=LxguobRaPC/y+6qzhBr/I0TSRv4htqUp0qEqFjnJPTTw5K1ZsiDEn0cGcnZ19l1hI+1vKW
-	728o7TKB9XnKrYWlw8M6a6fjRsgjNtIh41ByXLhFn/tDD+ZO4vCzMmPY75r8VWzVzsIAzQ
-	r16YbYHmxOx7LsZOwbcU3OvAY8h0pV4=
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] btrfs: do not mark inode incompressible after inline attempt failed
-Date: Mon, 16 Feb 2026 13:48:47 +1030
-Message-ID: <d1f0953814413fbcace1d625ce1227b9aa2d7c0a.1771211471.git.wqu@suse.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1771213689; c=relaxed/simple;
+	bh=/NPRv+JQITdsPcw91sGKoR3MwuItH/IfrV7CAXxvdLY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CU7t/yvFoUc9KfTm1WTDwdjJkwPLJZdwRXnZO1gEJYPSRdZ+sHasKkti0lO0f2zGvK4YivaZ5OlA64V5kol2w/VMrY5/BWJJBmSoXgcHD+uiJtQnbBNLMhvALsH613TzXT9fMYQl+RNetnhx/6Jq0uDTAEyDEdQKu5/tiTNxrhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VL3XD3fb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B08C116C6;
+	Mon, 16 Feb 2026 03:48:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771213688;
+	bh=/NPRv+JQITdsPcw91sGKoR3MwuItH/IfrV7CAXxvdLY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VL3XD3fbyw22MhDDqOFJdA+5mYO6/roW15CItSAIEQLzhRtQfPbWE7ul+2/9BjBL7
+	 Ww9lnvmAgWCjAv8G1Oar+k8JAyRBS5g+Wd20y3uPKWkBK4ZaYeEjpNNmh15TSg5vhy
+	 p4YXKpHsFbMfPadGW3yY6kHZMG9J/nCdCsN10TBeMaGSAvc2G8CsH5pfJCO68XJSJk
+	 Iu7fP+5f0SUWSj28PrWyoR+IPnb+4WEjMa9R74QByK64ZoTxsMjytkuDeOIq9xGNql
+	 WB/aO3tT4pddNr7qYP9svlNInez/SxOOfFlANHtOsei1dzdJKntdyVsZyH2OtbrKEy
+	 Yyr/hx/6vlEwA==
+Date: Sun, 15 Feb 2026 19:48:08 -0800
+From: Kees Cook <kees@kernel.org>
+To: Finn Thain <fthain@linux-m68k.org>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Miguel Ojeda <ojeda@kernel.org>, stable@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mtd: Avoid boot crash in RedBoot partition table parser
+Message-ID: <202602151911.AD092DFFCD@keescook>
+References: <92af570970aadee773f2b0b18179efef0f34be93.1771114891.git.fthain@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: YES
-X-Spamd-Bar: ++++++++++++++++
-X-Spam-Level: ****************
-X-Spam-Score: 16.68
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92af570970aadee773f2b0b18179efef0f34be93.1771114891.git.fthain@linux-m68k.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [4.34 / 15.00];
-	SPAM_FLAG(5.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	TAGGED_FROM(0.00)[bounces-216650-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	GREYLIST(0.00)[pass,body];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-216651-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kees@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5107D140BE4
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 77BB4140C91
 X-Rspamd-Action: no action
 
-[BUG]
-The following sequence will set the file with nocompress flag:
+On Sun, Feb 15, 2026 at 11:21:31AM +1100, Finn Thain wrote:
+>     memcmp: detected buffer overflow: 15 byte read of buffer size 14
+> [...]
+> -		    !memcmp(names, "RedBoot config", 15) ||
 
-  # mkfs.btrfs -f $dev
-  # mount $dev $mnt -o max_inline=4,compress
-  # xfs_io -f -c "pwrite 0 2k" -c sync $mnt/foobar
+The warning is saying that "names" is detected to be 14 bytes in size. It
+is allocated here, and nulllen can be ignored (it is fixed size, either 0
+or sizeof(nullstring), and skipped over):
 
-The resulted inode will have NOCOMPRESS flag, even if the content itself
-(all 0xcd) can still be compressed very well:
+        parts = kzalloc(sizeof(*parts) * nrparts + nulllen + namelen, GFP_KERNEL);
+	...
+        nullname = (char *)&parts[nrparts];
+	...
+        names = nullname + nulllen;
 
-	item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
-		generation 9 transid 10 size 2097152 nbytes 1052672
-		block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
-		sequence 257 flags 0x8(NOCOMPRESS)
+so "names" is pointing to the final "namelen" many bytes of the
+allocation. Calculating "namelen" happens via an earlier for loop:
 
-Please note that, this behavior is there even before commit 59615e2c1f63
-("btrfs: reject single block sized compression early").
+        buf = vmalloc(master->erasesize);
+	...
+        ret = mtd_read(master, offset, master->erasesize, &retlen,
+                       (void *)buf);
+	...
+        numslots = (master->erasesize / sizeof(struct fis_image_desc));
+	...
+        for (i = 0; i < numslots; i++) {
+		...
+                namelen += strlen(buf[i].name) + 1;
 
-[CAUSE]
-At compress_file_range(), after btrfs_compress_folios() call, we try
-making an inlined extent by calling cow_file_range_inline().
+So namelen could be basically any length at all. This fortify warning
+looks legit to me -- this code used to be reading beyond the end of
+the allocation.
 
-But cow_file_range_inline() calls can_cow_file_range_inline() which has
-more accurate checks on if the range can be inlined.
+Your patch looks technically correct, but why not just use strcmp? Both
+arguments are NUL-terminated. The memcmp() calls were all including the
+NUL byte, so they're effectively doing strcmp except that they weren't
+stopping at the first NUL byte. So probably just better to do:
 
-One of the user configurable condition is the "max_inline=" mount
-option. If that value is set low (like the example, 4 bytes, which can
-not store any header), or the compressed content is just slightly larger
-than 2K (the default value, meaning a 50% compression ratio),
-cow_file_range_inline() will return 1 immediately.
-
-And since we're here only to try inline the compressed data, the range
-is no larger than a single fs block.
-
-Thus compression is never going to make it a win, we fallback to mark
-the inode incompressible unavoidably.
-
-[FIX]
-Just add an extra check after inline attempt, so that if the inline
-attempt failed, do not set the nocompress flag.
-
-As there is no way to remove that flag, and the default 50% compression
-ratio is way too strict for the whole inode.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
-This is the smallest fix for backport.
-
-There will be a proper but much bigger fix to extract the inline attempt
-into a dedicated helper inside run_delalloc_range() other than put them
-deep inside cow_file_range() and compress_file_range().
----
- fs/btrfs/inode.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 19c6fbb1273c..4523b689711d 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1061,6 +1061,12 @@ static void compress_file_range(struct btrfs_work *work)
- 			mapping_set_error(mapping, -EIO);
- 		return;
- 	}
-+	/*
-+	 * If a single block at file offset 0 can not be inlined, fallback
-+	 * to regular writes without marking the file incompressible.
-+	 */
-+	if (start == 0 && end <= blocksize)
-+		goto cleanup_and_bail_uncompressed;
+diff --git a/drivers/mtd/parsers/redboot.c b/drivers/mtd/parsers/redboot.c
+index 3b55b676ca6b..c06ba7a2a34b 100644
+--- a/drivers/mtd/parsers/redboot.c
++++ b/drivers/mtd/parsers/redboot.c
+@@ -270,9 +270,9 @@ static int parse_redboot_partitions(struct mtd_info *master,
  
- 	/*
- 	 * We aren't doing an inline extent. Round the compressed size up to a
--- 
-2.52.0
+ 		strcpy(names, fl->img->name);
+ #ifdef CONFIG_MTD_REDBOOT_PARTS_READONLY
+-		if (!memcmp(names, "RedBoot", 8) ||
+-		    !memcmp(names, "RedBoot config", 15) ||
+-		    !memcmp(names, "FIS directory", 14)) {
++		if (!strcmp(names, "RedBoot") ||
++		    !strcmp(names, "RedBoot config") ||
++		    !strcmp(names, "FIS directory")) {
+ 			parts[i].mask_flags = MTD_WRITEABLE;
+ 		}
+ #endif
 
+
+-- 
+Kees Cook
 
