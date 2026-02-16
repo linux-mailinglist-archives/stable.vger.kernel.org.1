@@ -1,427 +1,271 @@
-Return-Path: <stable+bounces-216652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +G4ENWadkmmpvAEAu9opvQ
-	(envelope-from <stable+bounces-216652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 05:30:30 +0100
+	id sFhwHV+ikmnqvwEAu9opvQ
+	(envelope-from <stable+bounces-216653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 05:51:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48BC8140DBD
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 05:30:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF40C140E2F
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 05:51:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6D1B3013252
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 04:28:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97C77300C038
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 04:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A382C15AB;
-	Mon, 16 Feb 2026 04:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60BC2DECBF;
+	Mon, 16 Feb 2026 04:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4yM8kj4B"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CBYsMLnd"
 X-Original-To: stable@vger.kernel.org
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011029.outbound.protection.outlook.com [40.107.208.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD05C2C11FA
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 04:27:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771216081; cv=fail; b=LH7SXUf8embSE1nvpKye+cNP9pZPrEPrI2RkLNLYIecps5Rx+T3fhqsVVsl1nun7DCAypysniMuruZjHZHcw6hXvOhkBfOzkGP6CSMU5L8lSXd9kqlpcGRcY0bDzC9AM3si+iRDYYgEKPsCfTUSfRDrS/EHO/F6CKXkT4MzVSJw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771216081; c=relaxed/simple;
-	bh=K7A3Sv2tNofkIMwWoTIwZgDsegZsa5oDEABUsiAQa00=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oemlYrmlaQ3lZOiccoGHq7AjrKCpPwjcwFLmlGbZrQc3xqf8B9AHTb4Bbf43GNQ15O5NKM3ndNqCtv/I9vdNmrRauI4bOqLnV7N6FLVlVV2xJoWIwER3EYRK/7DT2jJzGmpj1U6MIPNJ32Y5pNiRPfv/bZWRXm2QSimiaoUEbjY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4yM8kj4B; arc=fail smtp.client-ip=40.107.208.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jYqykuX0wLNbaxLWNRvF/aM42pI0+yHk3mnEeF9TSz0JxQwdyGpTe6FPtnt53hneDUZf/uWgSwI50mTrIDc9ASVR4CDEszJzd+rkhBzr3qh/jge3LCAP6i3R17UDHnmUZjGHtNKGoHYAd27glmHyktU0vx9gxYZ/LrmRv5lJc6dZjwuMk12eHLl8lLLBf+IRvyon0fed/JdJ5bUoj19GSyncf8Mh7GPV2wdVk6HwgewaseCS4ux8FnlCxg1Yr+bCorZewlgKsSzkMTVlIvKMz2jqzeROvxrRkF8UaGg6oTuVgWxK1wze6Ei0pawO2pI54aE3JzAupdENCYSqknlecg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9dfB+8pbQjNY6cJ1YQJcgDbcJ102r+3pkmj5Ggd04TU=;
- b=k9jfJ3aKjRchOHloq+9VLMcDBeTRdeT+WiLsq8cAafKlHEfAFD8E3PcuaE0nNELIRynAQWIftVb5Zk0DN/uSQmTW+EVkKEosFkX8bbmKuVQKGVX8bTo7GI+cCnrSXxLmjE9QmqiqqL5xVxegNu8C9RFbPplXakTmRQHgu7rASSQu8wRQKBVK6qiBz7rmPVtGy4fx5NYqdCpSmL1TwQNbDKn5KB0a5BdeSXEIovMjZDlssblNEkWlut5TBvRbO8jdSLXBths84d0BiozpcVLw6aW86gGsKnsIH0nIEFbOeBs+8e6vb7qV6Jhhs3bR3S8DdEw6ean/4C5k2IwsZc0cdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9dfB+8pbQjNY6cJ1YQJcgDbcJ102r+3pkmj5Ggd04TU=;
- b=4yM8kj4BRV3B7DcDxzmfFYm/j7PRvSMNw1aJn4dMF2RWbdIyWT/ZUCmkichzNBA6kQLmcW7occKB0fWxLZ9KaJXfioSC4Yu4OvhH1l+XvVdX/cMDc2uMc7ZHbp/lUqrUXlG+9+bIokjndibQXvUrw9YI9G9bIbLmZD1RGGPTddI=
-Received: from SJ0PR03CA0192.namprd03.prod.outlook.com (2603:10b6:a03:2ef::17)
- by IA1PR12MB6604.namprd12.prod.outlook.com (2603:10b6:208:3a0::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Mon, 16 Feb
- 2026 04:27:53 +0000
-Received: from SJ5PEPF000001C9.namprd05.prod.outlook.com
- (2603:10b6:a03:2ef:cafe::b8) by SJ0PR03CA0192.outlook.office365.com
- (2603:10b6:a03:2ef::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9611.16 via Frontend Transport; Mon,
- 16 Feb 2026 04:27:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ5PEPF000001C9.mail.protection.outlook.com (10.167.242.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Mon, 16 Feb 2026 04:27:52 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 15 Feb
- 2026 22:27:52 -0600
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 15 Feb
- 2026 22:27:51 -0600
-Received: from amd.com (10.180.168.240) by satlexmb07.amd.com (10.181.42.216)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17 via Frontend
- Transport; Sun, 15 Feb 2026 22:27:50 -0600
-Date: Mon, 16 Feb 2026 04:27:39 +0000
-From: Ankit Soni <Ankit.Soni@amd.com>
-To: Sasha Levin <sashal@kernel.org>
-CC: <patches@lists.linux.dev>, <stable@vger.kernel.org>, Vasant Hegde
-	<vasant.hegde@amd.com>, Joerg Roedel <joerg.roedel@amd.com>,
-	<joro@8bytes.org>, <iommu@lists.linux.dev>
-Subject: Re: [PATCH AUTOSEL 6.19-6.6] iommu/amd: move wait_on_sem() out of
- spinlock
-Message-ID: <igfz7pgt4cfa267cgz2kmbv6hqcenv6ciyphxxovkahkvl2p2a@3gekp2natjr4>
-References: <20260214212452.782265-1-sashal@kernel.org>
- <20260214212452.782265-94-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5198526056D
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 04:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771217498; cv=none; b=WmZfZMZztT2Kb+oTtN76Zs3qr1fJq/M7Bt4Nr53oNiGqiXl+Bdlly0CfkIG0rXV+dCMp5jRwvR/WfwIpbP/beCqt9m+og4/Y2JrLF6YDjHHKMX17wHebMqHEFOdTB81oYKY2Dhd60VZR9Of5dJHuXh/On/7IMBVeUlaHKyJZm1Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771217498; c=relaxed/simple;
+	bh=Hfz+oJ1aBM80OSFW15db1tYTLRdf7+8TILGAOyrNlQ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YdTepyPbJt9AvkfH2vxh/Aq2UqvFhFnSfX9wuZNIVbMGKGcNrBUBEQalwKS2jSB58NBxc62ooUcgHep4W8Uq6gEEV1fjsHTwzlO6QpS994bSEWfYNJn3YSsG+sC+WWytakGDkmsKcfg8PC/YwJbCf0x+NQJgm80oZ7vFk8iOYow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CBYsMLnd; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-482f2599980so30022275e9.0
+        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 20:51:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771217494; x=1771822294; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gfbNSZ0Cjv7uEpR3TUvJNrpdOHJt8bEzYAt9jyX7fc4=;
+        b=CBYsMLnd6KVKXhOutin9+eBdIsjri4KCr8b3+37jPrOqbW0PYY4leMQWZjB96MbnfV
+         AYEm1lNNGOrxqsd43GgK657MSDPKnLnjk7K+JyrUa7zdQjn08oO6dLuYh8POviLs8kkf
+         xdPtwIfpzWBRfeNgAaEg487oZsFsWCNPdWjBJXL+rsdzHCIvLKGf0dQ+5PHlZJ1zGti2
+         YrmgErg64qXinfQsZ88/HnhPN5DIPuiXhSrgyHs60Cadlz7hNjm9nUHE5zP2R9JH7esR
+         aak54jYTibd82rvLhP0b+tyte9V3V0KOtPgmIpap1k1qyp4+folH/+m8LIjAZvbQiSfI
+         9Nfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771217494; x=1771822294;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gfbNSZ0Cjv7uEpR3TUvJNrpdOHJt8bEzYAt9jyX7fc4=;
+        b=oBMrtm8sgdd96GNT8W0gbJjwXfWwaxIXt4TBwRFi3vySJADY5ToLOPTOtZ59+fD0iP
+         K6uyUki94o3Bm7tR14QTVdyoMAiPL3sFpAf70Tm32/OMbzx4mCC1ifqkjyw7ZJESF/jG
+         bxBUkzDJV69nf4UrCxamqGjtAzkVnbPlpWUSE5v4GOm+06OfJdBavoHRcOYVwNyppfeG
+         mcpQ2Cnpyq25vS3oiQNR8aKgB8gKPIrLKbG6lBdajqmtzRvlDrJ+VcA4out6uX7hPgpF
+         vzyUGG2kab18LrrKvRpdQPvCH0EFwouCI0B3q2rfb/UA7gWiamnGW6AZKPIwwzQauxXL
+         we1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUezgWPC1JfKIL+dDQc0g7y0HhGTSCNSq0O6ZA7nJBtDukAP6eP8MQJW1HzOBZPE0IVUk5ooyc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYkQNUlbwvPE7/OkLjV2ZUABod0eyHYTOAayg5TkzqRoA8UWTX
+	mWbma31eu7mZCShHrcbeOjQabTeiyqSAuv+VMee37tGLK7nxYdwMK7F1
+X-Gm-Gg: AZuq6aKd5G/8whGsHu+VgSLfZj8VfbvojBnxQg1JRzQj6Ty5xg/yRAHYnNFsDam5sQ9
+	Kj/EuTfsfmy6Q//pnvIcPG4Li2/M5fClqPQS1YQ+C05X7lhWVenKQQDhEAFtD3b8hEixJH35MeM
+	jwonr8A9iIqZUFBu9JZINT+FPIBXV8l3zNEwH8apn3Q1FJY+2/uuXYYt5QQZ39cYmuAhazBYH2p
+	wUmoxSS3DrWJqL0CxCKYOQMWw6fOcuqxDPwBB1Kxw4v+c9pKAHRWAtsRzZ3gfA6JCfAmCPW2SQH
+	PkScagqBel9Cg0K7dAF606qXjj3fA/v/MUFBC2eCU85JgwBvt/t+1rvU9dJO6EDHki0Lmm84axX
+	ITb2/Rk/9V6IDhqw23JjOqxG+7G4UgsMg6WDIiaVey7OoJGb5+hI4XKvPQtIENDfF65HDuN7FNJ
+	U+pPZiQfWxyIQ0oFq3DKIjQgD5h2WO4hiaiuZmWN8LLjZ+AvS2p19rm1VfyDVAGtJrXS/1ZNKxT
+	LAIbxhm5GJFQeT5L0oKW71DlARVqG2VMW5abWpbRpVeXXHjjLQLFVbfOg==
+X-Received: by 2002:a05:600c:4f4b:b0:477:98f7:2aec with SMTP id 5b1f17b1804b1-48373a160b8mr176746765e9.3.1771217493331;
+        Sun, 15 Feb 2026 20:51:33 -0800 (PST)
+Received: from groovy.localdomain (dynamic-2a02-3100-6670-3f00-a1f3-fb2e-d2ae-14c6.310.pool.telefonica.de. [2a02:3100:6670:3f00:a1f3:fb2e:d2ae:14c6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796acf5b9sm21514219f8f.34.2026.02.15.20.51.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Feb 2026 20:51:32 -0800 (PST)
+From: Mario Kleiner <mario.kleiner.de@gmail.com>
+To: amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org,
+	Mario Kleiner <mario.kleiner.de@gmail.com>,
+	stable@vger.kernel.org,
+	Harry Wentland <harry.wentland@amd.com>,
+	Leo Li <sunpeng.li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH] drm/amd/display: Prevent cursor bo's from being pinned to VRAM address zero
+Date: Mon, 16 Feb 2026 05:47:35 +0100
+Message-ID: <20260216044735.6814-1-mario.kleiner.de@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260214212452.782265-94-sashal@kernel.org>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001C9:EE_|IA1PR12MB6604:EE_
-X-MS-Office365-Filtering-Correlation-Id: d3927035-4ec1-4cce-f1d8-08de6d13c03b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SHBPVFkxTDFKU2RIMGVtcWRFZ2pYYXp0VTVMdnZnbXdPWVNIQXpJaXB4ZzRK?=
- =?utf-8?B?alh2MUM4NTUzNWF6OTJKTXBUR1FmenI4S2RzejNzd2RPQWpYQ0tTY2F2Nk1m?=
- =?utf-8?B?T0l0WjduenNjYnRGRU51NFVORDZYUXFGbG1hQTU2UDJOeUM5NFNnM0NXMkRP?=
- =?utf-8?B?TVlQeG9XSi9HZno0Z3E0N256Rng4b0hhWVBUd0ovNU9yMkpYbG5SMlBYL2Er?=
- =?utf-8?B?Q0M1Q1RYZzh2MTQ2RDJjRHVXRzNTMWtQQjYwWUN0akNrejhkeW1YUk1lZEIr?=
- =?utf-8?B?ZUlCMGpoMm05WnJQNTc4eG5LNTRVQ0RKSEx0b1k1aERCMzJpWnpwY3lsa1da?=
- =?utf-8?B?dmo3NWt4MWhvU1dYaktqZytyRTFDbjdpc2pLcVBLb2tDcmpkK2g2bDN2SU9i?=
- =?utf-8?B?bmF5YUdlSEtGVE9wcWlBZWhzYnBEWW14SVFmbW5vQklpMjlYU3k3NHVDR0kr?=
- =?utf-8?B?OEhGVmZFV1BpYlpCQUhnRzBpTk5lNkhhVzdra2R5SkZTVUwwaElwUk9hRWFW?=
- =?utf-8?B?WDIwcEprYUF1NlVWdmtWaHhla3hBR1hWekR1R3NwNmZLRDE4SzlrS2xnQVJ3?=
- =?utf-8?B?OXF4ZEQ5N3dJU2lCS3NoVXdCYkFXNG5HdFpPVEdKMm0yNCtVSk9QTEVURUVV?=
- =?utf-8?B?YU43b1V6ZDNadlowTi96OWRtVHRxdHpQd1FuODRWajRLMEJ2aUpvNlo2dUF4?=
- =?utf-8?B?N0NMNU1pc3lKSDZjWjI5UGxlaHFuTEl2N1ptTEFGak1yZ0lTR0g3aHlMWnZs?=
- =?utf-8?B?aDdmemNXNUowUWRWSFNScDduWmUvMWdLUnd2YVU1eXU4b3llSEx0bFZYd0NR?=
- =?utf-8?B?RWgrajRRbjU3aEd6S0tLQ3NRQXpERWJnK3hSUzI1U1E3aUZmc2Q2S29zUFMv?=
- =?utf-8?B?dlRlUjl6SjJLN2VRRUllY0hJNG54ZTg0VVNxNTdRNVE0NVVQVzlPcXFUTVNT?=
- =?utf-8?B?R3oraGh4T0lBUnVkQXpJYlJ3dU1qOWVJZDQ1NWRjL0JlZ2M2cjQwMURKcUx4?=
- =?utf-8?B?RStOYVpnWE00WHg1WkZwQjQyckJaSkhSRTh5cE00akZxaVJhUFJxUFN4L1lL?=
- =?utf-8?B?THB3bm5JK2tqRDRCUzlSQkNnZVF6cXp2VUJ5Y2xlNUtzSy9UR2NyN21kcExj?=
- =?utf-8?B?Witic2xZL3RyNGh2V3lsVzh0Z1NUbmFld2FmWUxZL2ZYaEpLd3NKc3JuU3R5?=
- =?utf-8?B?Vk8reXlvbUlrMXN4N3B6eVhpQlJOc1RmT2VGY2thNnROcSt1Zm1kWnpqMTdy?=
- =?utf-8?B?ZkxWdCtIMW9mKzVYc00xSnh2RW9tbkNaVFpqT1h3RG82NkdWRUtpM3ZNVDR6?=
- =?utf-8?B?dTZjQVBNaHJyVWJYUFZSWDhJQU5NSmZBbTRVc2l1YlhPQ011elJDc1JKY09h?=
- =?utf-8?B?MHA4S0FrTllISDVHeHA3QytoS1huei80eGtZVjc3Mk5FTS95KzhyT3I3SUx6?=
- =?utf-8?B?cmsrMDgzVitHdmMrY0FZVUNrQUdpbmszME4vUXNXMm1LS0ZtYTFPQXl5Vng5?=
- =?utf-8?B?TStXd1RwejViTlpnQ0hGckpyMFd5RyswR1RwNXF0SVQ3UnhQMzM3b0FYb25D?=
- =?utf-8?B?N0l2eXE1NjRoajN4Tm9WV2VmaFpvR3dpSXdxVEgrT1RLUUd2d0RORytnemIv?=
- =?utf-8?B?bTZ0K2IvSGpxV29UdWZBOVJRL3k0RjA3SEdYRWZmNFQ2S2poMVdRTHhOKzZa?=
- =?utf-8?B?ZFk3Qk9TaVFQWDRzSkZzYW1BWXcrbTI2ZjRmWG5BTjdVS2x1Ym1UOFlRdFVv?=
- =?utf-8?B?YUZ0TG14OFJhY2RuTmNIb29WSkMrWkQ1L2R3ZlhlQlQ1NEJibjF2ZmtkUTBZ?=
- =?utf-8?B?UVFoWG02MUwwcytIc2g4UVVGNXdQQjl0eTFURnFBVkNwZ2JkOTZuRlNKc3d6?=
- =?utf-8?B?OVdaYmRxenQwbFJ1dGtiMkNuTHhaNVVTRm1YdWlFeUFHazREWEwxdFZrT0lY?=
- =?utf-8?B?U2YyWFJTM2h0dXNHS3I4cXE3Z3hUcmt1KzJnQSthVkFpVXhKNW5wM0JhQ2I4?=
- =?utf-8?B?WS82cDdPZ3FDeXArL3dJMk0rdDF6aHl1dVltSTlMVHA4NmNTQ3ppbE9sYWRu?=
- =?utf-8?B?ZEI5aWE3OHArNUxaLzF4Z21hMG1Bc2ZBeDdId3VSd3ZOZWlsV2pBc0NkcWtn?=
- =?utf-8?B?UnFKSzhOUEdjQ09KaXV5S2FjWitxS2ozTThveU5SYTlIU0dUbGEvbWphR3JT?=
- =?utf-8?B?YmFEeW51bWRqK2lzU0lCSmZzdDNsK1J3WnRBbHJpZWxvNTJjZmZMSW9hSFhC?=
- =?utf-8?B?c3JrdzM3Q2FRaXAvTDd4S083SmdnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	+nTPjCw5J2i9HkELT4ab8O59bThJx2+MgnO+94N88s6JonJAgKAfqMqNQ/E3WIhCEstjnGcDAxRHFZEbSs8tgcTtRopj7cGPbEpG2dpGHIzSD5AO48nGI4/yg9vyytV4VZWWbv0S76J53EyLK80anBXDNQKqdjI6PUizyho2z6Talm2f70rc4bTnRz7D+ltqYDTEFrj5O+mK2zfWKekF+6Nq+zT0pNPoz4xiDuBnQRs/I53o/LwJpqC0+EALwLPAbFiasUTdZqGGrPS3AuWwxts25VOmLORqxuDkWB6cRHMHvzB/uxBGvZwSNnrYrAXqPKWnuJDAmfCvDN1SUWOxMgDQaAhBBvxbnSZSenh3k2981Qn5y5xQWHhLEaowFw1j1h19NzuFNvtND0Dq0Cm+Nx8EBXIaH+3S+j2wG5WNFTYj83UeCAX+tVZJgGG1Zauk
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 04:27:52.9054
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3927035-4ec1-4cce-f1d8-08de6d13c03b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001C9.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6604
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216652-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,amd.com:dkim];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[amd.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Ankit.Soni@amd.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216653-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,gmail.com,vger.kernel.org,amd.com];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 48BC8140DBD
+	FROM_NEQ_ENVFROM(0.00)[mariokleinerde@gmail.com,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CF40C140E2F
 X-Rspamd-Action: no action
 
-On Sat, Feb 14, 2026 at 04:23:59PM -0500, Sasha Levin wrote:
-> From: Ankit Soni <Ankit.Soni@amd.com>
-> 
-> [ Upstream commit d2a0cac10597068567d336e85fa3cbdbe8ca62bf ]
-> 
-> With iommu.strict=1, the existing completion wait path can cause soft
-> lockups under stressed environment, as wait_on_sem() busy-waits under the
-> spinlock with interrupts disabled.
-> 
-> Move the completion wait in iommu_completion_wait() out of the spinlock.
-> wait_on_sem() only polls the hardware-updated cmd_sem and does not require
-> iommu->lock, so holding the lock during the busy wait unnecessarily
-> increases contention and extends the time with interrupts disabled.
-> 
-> Signed-off-by: Ankit Soni <Ankit.Soni@amd.com>
-> Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-> Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> 
-> LLM Generated explanations, may be completely bogus:
-> 
-> Now I understand the full picture. Let me analyze the commit as
-> presented in the diff.
-> 
-> ### 3. Bug Being Fixed
-> 
-> **Soft lockup**: `wait_on_sem()` busy-waits for up to ~100ms
-> (`LOOP_TIMEOUT=100000` iterations of `udelay(1)`) while holding
-> `iommu->lock` with interrupts disabled via `raw_spin_lock_irqsave`.
-> Under heavy IOMMU flush activity with `iommu.strict=1`, this can trigger
-> soft lockup warnings and starve other CPUs waiting for the same lock.
-> 
-> This is a **real, user-visible stability issue** - soft lockups cause
-> watchdog warnings and can lead to system hangs on heavily-loaded systems
-> using AMD IOMMU with strict mode.
-> 
-> ### 4. Changes in Detail
-> 
-> **Change A: `wait_on_sem()` comparison logic**
-> - Old: `*iommu->cmd_sem != data` — exact equality match
-> - New: `(__s64)(READ_ONCE(*iommu->cmd_sem) - data) < 0` — monotonic "not
->   yet reached" check
-> 
-> This is critical for correctness when moving `wait_on_sem()` outside the
-> lock. With the lock held, commands were strictly serialized. Outside the
-> lock, the semaphore value could jump past the expected value if a later
-> completion overtakes the check. The monotonic comparison handles this
-> correctly. The `READ_ONCE` also prevents compiler optimization issues.
-> 
-> **Change B & C: Moving `wait_on_sem()` outside spinlock**
-> In both `iommu_completion_wait()` and `iommu_flush_irt_and_complete()`,
-> the spinlock is released immediately after queueing commands, before the
-> busy-wait.
-> 
-> ### 5. Concurrency Safety Analysis
-> 
-> The subagent raised a concern about a race condition: the
-> `atomic64_inc_return` happens OUTSIDE the lock, so concurrent callers
-> could get sequence numbers allocated out of order relative to command
-> queue insertion.
-> 
-> **However, the monotonic comparison (`< 0` on signed difference) in the
-> updated `wait_on_sem()` makes this safe**:
-> 
-> Consider the scenario:
-> - Thread A gets seq=1, Thread B gets seq=2
-> - Thread B queues completion wait for 2, Thread A queues completion wait
->   for 1
-> - IOMMU processes: completion_wait(2) first, then completion_wait(1)
-> - cmd_sem is written to 2, then 1
-> 
-> With old `!=` comparison:
-> - Thread A waits for `cmd_sem == 1` — would work when IOMMU writes 1
-> - Thread B waits for `cmd_sem == 2` — would see cmd_sem jump from 2→1,
->   missing the match!
-> 
-> With new `(__s64)(cmd_sem - data) < 0` comparison:
-> - Thread B waits for `cmd_sem >= 2` — satisfied when cmd_sem=2
-> - Thread A waits for `cmd_sem >= 1` — satisfied when cmd_sem=2 (or 1)
-> - **But wait**: cmd_sem is written to 2, then 1. After hardware writes
->   1, the value is 1. Thread B checking `cmd_sem >= 2` would fail because
->   cmd_sem=1!
-> 
+Why?
 
-Hi,
+On some AMD gpu's in some configurations, the start of the VRAM domain, as
+reported by amdgpu_ttm_domain_start(adev, AMDGPU_GEM_DOMAIN_VRAM), is
+placed at address 0 during GMC init. This is a problem if, during a cursor
+plane update, the cursor image bo, which gets always pinned into VRAM,
+is placed at offset zero of the VRAM domain, and thereby at the
+absolute address afb->address 0.
 
-It’s a good catch and a valid potential issue. However, Srikanth Aithal
-already reported this earlier, and a fix has been added.
-Please check the link below
-https://lore.kernel.org/linux-iommu/c20ac675bae8565ca6307eae65efe8b71345e62d.1769054653.git.Ankit.Soni@amd.com/
+The display hw apparently doesn't like such a zero start address for at
+least native cursor mode, as various checks inside DC are in place, e.g.,
+high level dc_stream_check_cursor_attributes(), and lower level DCN
+version specific cursor hw programming checks, which do reject cursor
+attribute updates with attributes->address.quad_part == 0.
 
-Thanks,
-Ankit
+User visible symptoms of this are seriously broken mouse cursors under
+both X11 and Wayland (tested with KDE/KWin, GNOME/Mutter, GDM login
+manager): Mouse cursor flickers, is invisible, randomly becomes invisible,
+or fails to adapt the cursor shape to the context, e.g., when moving from
+a text input field to other windows, or window decorations etc. This makes
+the cursor irritating and impossible to use.
 
-> Actually, this analysis reveals there IS a potential issue with out-of-
-> order sequence numbers being written non-monotonically. But the key
-> insight from the commit message is: "cmd_sem holds a monotonically non-
-> decreasing completion sequence number." The hardware writes the values
-> in command buffer order, and even though the queue insertions might
-> reorder, each individual thread's `wait_on_sem()` checks if its own
-> value has been reached. With the monotonic comparison, if the hardware
-> writes 2 (from Thread B's command) first, Thread A (waiting for 1) would
-> see `cmd_sem=2 >= 1` and proceed. Then the hardware writes 1 (from
-> Thread A's command), which doesn't regress because... actually it would
-> set cmd_sem to 1 after it was 2.
-> 
-> This is actually where the companion patch becomes relevant. However,
-> examining more carefully: in the pre-patch code, the
-> `atomic64_inc_return` was also done outside the lock! Look at the
-> current code at line 1434 — `data =
-> atomic64_inc_return(&iommu->cmd_sem_val)` is before
-> `raw_spin_lock_irqsave` at line 1437. So the out-of-order sequence
-> number issue **already exists** in the current code. This patch doesn't
-> make it worse; it actually makes it better by changing from exact
-> equality to monotonic comparison.
-> 
-> ### 6. Risk Assessment
-> 
-> - **Files changed**: 1 file
-> - **Lines changed**: ~25 lines of actual logic change (moving unlock,
->   changing comparison)
-> - **Subsystem**: AMD IOMMU — important for AMD server/desktop users
-> - **Risk**: LOW — the change is logically sound; `wait_on_sem()` only
->   reads a hardware-updated memory location
-> - **Regression potential**: LOW — the lock still protects command buffer
->   operations; only the polling is moved outside
-> 
-> ### 7. Dependency Check
-> 
-> The commit is self-contained. While a companion commit exists to further
-> improve correctness by serializing sequence allocation under the lock,
-> this commit stands on its own:
-> 1. It fixes the immediate soft lockup problem
-> 2. The monotonic comparison improves correctness over the existing `!=`
->    check
-> 3. The pre-existing race with `atomic64_inc_return` outside the lock is
->    not made worse
-> 
-> ### 8. Classification
-> 
-> - **Bug type**: Soft lockup / system hang — HIGH priority for stable
-> - **User impact**: Users with AMD IOMMU and `iommu.strict=1` under heavy
->   I/O can experience soft lockups
-> - **Fix quality**: Reviewed by AMD developer, merged by subsystem
->   maintainer
-> - **Stable criteria**: Obviously correct, fixes a real bug, small scope,
->   no new features
-> 
-> ### Conclusion
-> 
-> This commit fixes a real soft lockup bug that can cause system hangs on
-> AMD IOMMU systems under stress with `iommu.strict=1`. The fix is small,
-> surgical (moving the busy-wait outside the spinlock), and logically
-> sound — `wait_on_sem()` only polls hardware-updated memory and doesn't
-> need the lock. The additional improvement to the comparison logic
-> (monotonic instead of equality) is also correct and prevents false
-> timeouts. The commit is from AMD's own developer, reviewed by another
-> AMD developer, and merged by the IOMMU maintainer.
-> 
-> The fix meets all stable kernel criteria: it fixes a real stability
-> issue (soft lockups), is small and contained, doesn't add new features,
-> and has low regression risk.
-> 
-> **YES**
-> 
->  drivers/iommu/amd/iommu.c | 25 +++++++++++++++++--------
->  1 file changed, 17 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-> index 7c12be1b247f4..c8b65d6d971e0 100644
-> --- a/drivers/iommu/amd/iommu.c
-> +++ b/drivers/iommu/amd/iommu.c
-> @@ -1185,7 +1185,12 @@ static int wait_on_sem(struct amd_iommu *iommu, u64 data)
->  {
->  	int i = 0;
->  
-> -	while (*iommu->cmd_sem != data && i < LOOP_TIMEOUT) {
-> +	/*
-> +	 * cmd_sem holds a monotonically non-decreasing completion sequence
-> +	 * number.
-> +	 */
-> +	while ((__s64)(READ_ONCE(*iommu->cmd_sem) - data) < 0 &&
-> +	       i < LOOP_TIMEOUT) {
->  		udelay(1);
->  		i += 1;
->  	}
-> @@ -1437,14 +1442,13 @@ static int iommu_completion_wait(struct amd_iommu *iommu)
->  	raw_spin_lock_irqsave(&iommu->lock, flags);
->  
->  	ret = __iommu_queue_command_sync(iommu, &cmd, false);
-> +	raw_spin_unlock_irqrestore(&iommu->lock, flags);
-> +
->  	if (ret)
-> -		goto out_unlock;
-> +		return ret;
->  
->  	ret = wait_on_sem(iommu, data);
->  
-> -out_unlock:
-> -	raw_spin_unlock_irqrestore(&iommu->lock, flags);
-> -
->  	return ret;
->  }
->  
-> @@ -3120,13 +3124,18 @@ static void iommu_flush_irt_and_complete(struct amd_iommu *iommu, u16 devid)
->  	raw_spin_lock_irqsave(&iommu->lock, flags);
->  	ret = __iommu_queue_command_sync(iommu, &cmd, true);
->  	if (ret)
-> -		goto out;
-> +		goto out_err;
->  	ret = __iommu_queue_command_sync(iommu, &cmd2, false);
->  	if (ret)
-> -		goto out;
-> +		goto out_err;
-> +	raw_spin_unlock_irqrestore(&iommu->lock, flags);
-> +
->  	wait_on_sem(iommu, data);
-> -out:
-> +	return;
-> +
-> +out_err:
->  	raw_spin_unlock_irqrestore(&iommu->lock, flags);
-> +	return;
->  }
->  
->  static inline u8 iommu_get_int_tablen(struct iommu_dev_data *dev_data)
-> -- 
-> 2.51.0
-> 
+The drm.debug=4 log shows DRM KMS debug messages of the form
+"DC: Cursor address is 0!", and the general syslog prints errors like
+"[drm:amdgpu_dm_plane_handle_cursor_update [amdgpu]] *ERROR* DC failed to
+set cursor attributes"
+
+I observe this bug on my dual-gpu Apple 2017 MacBookPro since Linux 4.11,
+where the kernels early EFI setup force-enables both the Intel iGPU and
+AMD dGPU. This leads to the AMD VRAM start being placed at 0x0 and then
+causes massive cursor problems. On earlier kernels, only the AMD dGPU was
+exposed, the Intel iGPU was disabled / hidden from Linux by EFI firmware.
+This caused the AMD gpu to place VRAM start at the non-zero
+address 0x000000F400000000, and the mouse cursor worked fine. I confirmed
+with umr that the mmMC_VM_FB_LOCATION register of my Polaris 11 gpu indeed
+read back 0x0000 in the lower 16 bits in the dual-gpu case, causing
+gmc_v8_0_vram_gtt_location() to setup start of VRAM domain at zero.
+I don't know what causes the change, but most likely the UEFI firmware
+somehow triggers this change before main kernel boot - calling into the
+VBIOS, I guess.
+
+There is at least one 8 months old bug report in AMD's issue tracker,
+reporting the same symptoms on other AMD setups, cfe.:
+https://gitlab.freedesktop.org/drm/amd/-/issues/4302
+
+So unless there is another more clean and reliable way to prevent the
+cursor bo from being placed at address zero, or unless the display hw
+is actually fine with address zero and those checks in DC are overly
+cautious, this needs to be fixed.
+
+Note that simply removing the "zero address -> reject cursor update"
+checks worked on my Polaris11 with DCE 11.2 display engine, fixing the
+cursor without causing any other obvious trouble. So maybe this is only
+a limitation of recent DCN engine versions, or a pointless check.
+
+How?
+
+Add a new AMD bo placement flag which requests bo pinning / placement at
+non-zero VRAM address only during amdgpu_bo_pin(). Use this flag for bo's
+on the cursor plane during amdgpu_dm_plane_helper_prepare_fb().
+
+I don't know if this is the best approach. It feels hacky, but it is the
+only approach I was able to do and it seems to work fine enough.
+
+If this is a good enough fix, it should be backported, but backporting
+to earlier than Linux 6.12 might be cumbersome due to changes to the
+amdgpu_bo_pin() implementation.
+
+Signed-off-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+Tested-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+Cc: <stable@vger.kernel.org> # v6.12+
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_object.c            | 11 +++++++++++
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c   |  6 ++++--
+ include/uapi/drm/amdgpu_drm.h                         |  7 +++++++
+ 3 files changed, 22 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+index 1fb956400696..97131fc8fbdf 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+@@ -975,6 +975,17 @@ int amdgpu_bo_pin(struct amdgpu_bo *bo, u32 domain)
+ 		if (bo->flags & AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS &&
+ 		    bo->placements[i].mem_type == TTM_PL_VRAM)
+ 			bo->placements[i].flags |= TTM_PL_FLAG_CONTIGUOUS;
++
++		/* Ensure bo is never pinned at amdgpu_bo_gpu_offset() == 0
++		 * for VRAM allocations, as some of the DC code does not
++		 * like that, e.g., mouse cursor display image bo's.
++		 */
++		if (bo->flags & AMDGPU_GEM_CREATE_VRAM_NON_ZERO_ADDRESS &&
++		    bo->placements[i].mem_type == TTM_PL_VRAM &&
++		    !bo->placements[i].fpfn &&
++		    !amdgpu_ttm_domain_start(adev, TTM_PL_VRAM)) {
++			bo->placements[i].fpfn = 1;
++		}
+ 	}
+ 
+ 	r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index 394880ec1078..cd7f53d3036c 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -959,10 +959,12 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct drm_plane *plane,
+ 		goto error_unlock;
+ 	}
+ 
+-	if (plane->type != DRM_PLANE_TYPE_CURSOR)
++	if (plane->type != DRM_PLANE_TYPE_CURSOR) {
+ 		domain = amdgpu_display_supported_domains(adev, rbo->flags);
+-	else
++	} else {
+ 		domain = AMDGPU_GEM_DOMAIN_VRAM;
++		rbo->flags |= AMDGPU_GEM_CREATE_VRAM_NON_ZERO_ADDRESS;
++	}
+ 
+ 	rbo->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
+ 	r = amdgpu_bo_pin(rbo, domain);
+diff --git a/include/uapi/drm/amdgpu_drm.h b/include/uapi/drm/amdgpu_drm.h
+index 1d34daa0ebcd..6dee7653c54e 100644
+--- a/include/uapi/drm/amdgpu_drm.h
++++ b/include/uapi/drm/amdgpu_drm.h
+@@ -181,6 +181,13 @@ extern "C" {
+ #define AMDGPU_GEM_CREATE_EXT_COHERENT		(1 << 15)
+ /* Set PTE.D and recompress during GTT->VRAM moves according to TILING flags. */
+ #define AMDGPU_GEM_CREATE_GFX12_DCC		(1 << 16)
++/* Flag that BO must not be placed in VRAM domain at offset zero if the
++ * VRAM domain itself starts at address zero.
++ *
++ * Used internally to prevent placement of cursor image BO at that location,
++ * as the display hardware doesn't like that for hardware cursors.
++ */
++#define AMDGPU_GEM_CREATE_VRAM_NON_ZERO_ADDRESS (1 << 17)
+ 
+ struct drm_amdgpu_gem_create_in  {
+ 	/** the requested memory size */
+-- 
+2.43.0
+
 
