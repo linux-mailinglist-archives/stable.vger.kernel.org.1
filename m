@@ -1,154 +1,131 @@
-Return-Path: <stable+bounces-216686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMZUOGjxkmlA0QEAu9opvQ
-	(envelope-from <stable+bounces-216686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 11:28:56 +0100
+	id yJWjK3fykmlA0QEAu9opvQ
+	(envelope-from <stable+bounces-216687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 11:33:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B221425A0
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 11:28:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A8F14260A
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 11:33:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 88DDD30066B9
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 10:28:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE6743010BA0
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 10:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3612FFFA4;
-	Mon, 16 Feb 2026 10:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE662EA171;
+	Mon, 16 Feb 2026 10:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="bElWKRco"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTX/0nrD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464412FF67A;
-	Mon, 16 Feb 2026 10:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D408A26AA91
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 10:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771237728; cv=none; b=q5vdUZyuFp+viDGZZY+6Fy0J4FuVzzTFpxVHHMxcL88UedIPaIozeVwZuMkqyhhwrf07N8uNhvNs3OrkoLRdrFTyZE1Ml/WqqA6Jeh/ug/mbyWRHFSxIYgkFb2wbuhjbaH6bLEcnu+XsIlKGWCrjApgAeObuP5yqE8BtjkpsZWg=
+	t=1771238004; cv=none; b=MzC4V0JtCBUjHPUNj9vFdlIuyRYx0eFi3aht0gty1nhkDEinbqlm2/ysNOUfm+SMy2n+cWflF07ymynZU7tVS7v3c1lZzAdLzKO7CnqdVhege79zjXS8Mbc6Iy5Rf7PJBXWFWpgxY8Ut9/VXcJwQXwMiM7+Q5qdO1W+jE08kPTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771237728; c=relaxed/simple;
-	bh=zvTyan5qupPAd8ZhYvh6WTVKUc7a46aewxejGUk+eo0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cP8z3VZrEyXcSvBhIup0nqNao2XLij+jTlPl9bM53oYPkDVuUVsEISak8Vxc+qxosPEKFebsEBa61fIqaAZcsf9exQWg/DCSUzRTi0rFJ0Ttu56xgFb8KRpUIuqtXP/bfvC+fk0tNAnB1Uv0iaUmW99cIVn/SFsnZiy/M3jWWDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=bElWKRco; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1771237724;
-	bh=zvTyan5qupPAd8ZhYvh6WTVKUc7a46aewxejGUk+eo0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bElWKRcoQ2OGY66Y65eHcyN6Go3vy0FJUiqEuBsK/ZcIT5KnKKsxYTaGm61pXjL3/
-	 et6gAxJYm1KQwKpiyPT1ArTAgEo/hDA5jj8oHw5OQp0AHG2A42yMztg7MLUD23QoJ6
-	 I3sQPNypgjTGK0P8XHPL7gcQ5jV8+2H9dOJW7pOXy3NqCl+RTmWp58z9p0wR1Yk+A6
-	 J4fUX8Vgu1rB5RUMBjIplfd2llWRnZVxcRZsGMXnTcOHn85+D3YoSJthUWAyDpE8WW
-	 el7Y9Gbdd4H6Xzp4bCdOKhcz6i0+I02TS0B3TZ5UwQS834SlPlYSRbk1Gxx8u0Uihc
-	 QYKfKlMeLA9Ag==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 3597F60103;
-	Mon, 16 Feb 2026 10:28:17 +0000 (UTC)
-Received: by x201s (Postfix, from userid 1000)
-	id 52E112003E2; Mon, 16 Feb 2026 10:27:49 +0000 (UTC)
-From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Breno Leitao <leitao@debian.org>,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1771238004; c=relaxed/simple;
+	bh=wEea2a57fmMrVtXKzRP7FIt5G42cLGQ/H2iWwmffM2k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QthMlCJo523ohof8/7eSdcWxP5qHRNC0zLHFi0tkQCT/kfW+CfGqb/yf/VL5YgabhkVupXJfZY7M0LMuLJk4e5uExExME+XigxjU+13dKOix/T3wMCBpDOfTiZNUmhwPQEa02fH06N2rxPn6EneuPFv49H77Uw4dipCIZKDnOTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTX/0nrD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3958EC116C6;
+	Mon, 16 Feb 2026 10:33:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771238004;
+	bh=wEea2a57fmMrVtXKzRP7FIt5G42cLGQ/H2iWwmffM2k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CTX/0nrDEVJY7Me4kDE4zuOlMRJzx6ARGszd15y5hLeAdVUUBqig5oGUG3f0oLCTh
+	 Gt9K3XPM+Bg7T2aWAeB/XZgPjPkjJ2WSb7kmVKzMDUSGVuoRZKEhJkGqUB3XZv4WkK
+	 CT8ICCR8tlTqRu48xvwF64fAwSXJaL659aGJis60=
+Date: Mon, 16 Feb 2026 11:33:21 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Rajani Kantha <681739313@139.com>
+Cc: bvanassche@acm.org, adrian.hunter@intel.com, martin.petersen@oracle.com,
 	stable@vger.kernel.org
-Subject: [PATCH] io_uring/cmd_net: fix too strict requirement on ioctl
-Date: Mon, 16 Feb 2026 10:27:18 +0000
-Message-ID: <20260216-io-uring-fix@fiberby.net>
-X-Mailer: git-send-email 2.51.0
+Subject: Re: [PATCH 6.1] scsi: ufs: core: Fix handling of lrbp->cmd
+Message-ID: <2026021601-justify-reusable-0fdd@gregkh>
+References: <20260213030257.1688-1-681739313@139.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260213030257.1688-1-681739313@139.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.39 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MIXED_CHARSET(0.77)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[fiberby.net,reject];
-	R_DKIM_ALLOW(-0.20)[fiberby.net:s=202008];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[fiberby.net:+];
-	TAGGED_FROM(0.00)[bounces-216686-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[139.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ast@fiberby.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216687-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C4B221425A0
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,acm.org:email]
+X-Rspamd-Queue-Id: 13A8F14260A
 X-Rspamd-Action: no action
 
-Attempting SOCKET_URING_OP_SETSOCKOPT on an AF_NETLINK socket resulted
-in an -EOPNOTSUPP, as AF_NETLINK doesn't have an ioctl in its struct
-proto, but only in struct proto_ops.
+On Fri, Feb 13, 2026 at 11:02:57AM +0800, Rajani Kantha wrote:
+> From: Bart Van Assche <bvanassche@acm.org>
+> 
+> ufshcd_queuecommand() may be called two times in a row for a SCSI command
+> before it is completed. Hence make the following changes:
+> 
+>  - In the functions that submit a command, do not check the old value of
+>    lrbp->cmd nor clear lrbp->cmd in error paths.
+> 
+>  - In ufshcd_release_scsi_cmd(), do not clear lrbp->cmd.
+> 
+> See also scsi_send_eh_cmnd().
+> 
+> This commit prevents that the following appears if a command times out:
+> 
+> WARNING: at drivers/ufs/core/ufshcd.c:2965 ufshcd_queuecommand+0x6f8/0x9a8
+> Call trace:
+>  ufshcd_queuecommand+0x6f8/0x9a8
+>  scsi_send_eh_cmnd+0x2c0/0x960
+>  scsi_eh_test_devices+0x100/0x314
+>  scsi_eh_ready_devs+0xd90/0x114c
+>  scsi_error_handler+0x2b4/0xb70
+>  kthread+0x16c/0x1e0
+> 
+> Fixes: 5a0b0cb9bee7 ("[SCSI] ufs: Add support for sending NOP OUT UPIU")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> Link: https://lore.kernel.org/r/20230524203659.1394307-3-bvanassche@acm.org
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+> [ Removed the change in ufshcd_advanced_rpmb_req_handler() due to missing
+> commit:6ff265fc5ef6("scsi: ufs: core: bsg: Add advanced RPMB support in ufs_bsg") ]
+> Signed-off-by: Rajani Kantha <681739313@139.com>
+> ---
+>  drivers/ufs/core/ufshcd.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
 
-Prior to the blamed commit, io_uring_cmd_sock() only had two cmd_op
-operations, both requiring ioctl, thus the check was warranted.
-
-Since then, 4 new cmd_op operations have been added, none of which
-depend on ioctl. This patch moves the ioctl check, so it only applies
-to the original operations.
-
-AFAICT, the ioctl requirement was unintentional, and it wasn't
-visible in the blamed patch within 3 lines of context.
-
-Cc: stable@vger.kernel.org
-Fixes: a5d2f99aff6b ("io_uring/cmd: Introduce SOCKET_URING_OP_GETSOCKOPT")
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
----
- io_uring/cmd_net.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/io_uring/cmd_net.c b/io_uring/cmd_net.c
-index cb2775936fb8..57ddaf874611 100644
---- a/io_uring/cmd_net.c
-+++ b/io_uring/cmd_net.c
-@@ -160,16 +160,19 @@ int io_uring_cmd_sock(struct io_uring_cmd *cmd, unsigned int issue_flags)
- 	struct proto *prot = READ_ONCE(sk->sk_prot);
- 	int ret, arg = 0;
- 
--	if (!prot || !prot->ioctl)
--		return -EOPNOTSUPP;
--
- 	switch (cmd->cmd_op) {
- 	case SOCKET_URING_OP_SIOCINQ:
-+		if (!prot || !prot->ioctl)
-+			return -EOPNOTSUPP;
-+
- 		ret = prot->ioctl(sk, SIOCINQ, &arg);
- 		if (ret)
- 			return ret;
- 		return arg;
- 	case SOCKET_URING_OP_SIOCOUTQ:
-+		if (!prot || !prot->ioctl)
-+			return -EOPNOTSUPP;
-+
- 		ret = prot->ioctl(sk, SIOCOUTQ, &arg);
- 		if (ret)
- 			return ret;
-
-base-commit: bb7a3fc2c976b5d0deb35a54ca237519816d7ba9
--- 
-2.51.0
+No hint as to what the upstream git commit id this is?  :(
 
 
