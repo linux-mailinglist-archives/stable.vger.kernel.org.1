@@ -1,268 +1,166 @@
-Return-Path: <stable+bounces-216698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAAJE/opk2kI2AEAu9opvQ
-	(envelope-from <stable+bounces-216698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:30:18 +0100
+	id SC+CAX8qk2kI2AEAu9opvQ
+	(envelope-from <stable+bounces-216699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:32:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D20B144AF9
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:30:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5128F144B45
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:32:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B60B63028018
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 14:26:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 305553047E62
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 14:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37E53115AE;
-	Mon, 16 Feb 2026 14:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0740A3115B8;
+	Mon, 16 Feb 2026 14:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKKTqoXW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7041E32CF;
-	Mon, 16 Feb 2026 14:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD22311956;
+	Mon, 16 Feb 2026 14:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771251978; cv=none; b=UyUE/5XVj60d+Wccp/kjGYdSSr/ieHmotw1H4oQtvDq/5QEEIm6ue5DcgGhgnymwaqBBHk9wdZKFDRttOxO69NqKXyciuBvWduJ5CbBfGGu7Qc/S5jI84JfIv5FUEW9wsiMQMCNN6r8zrnnzIJtH+OogX4Hq/nchwOTSINXQXZM=
+	t=1771252081; cv=none; b=R1gzjRVukxAfZEjcVmMa9x6dxRPTKGrQrFl5ncNS/lT/bma2NugTkSbNc6Fi7fOFaoqDw4D+RuEntcMdMgugcRj12nBWCmZxXL1AiEuRoTj/664TBy5VoRMV4NtKg4riOzqthlvkkDNFT9VBkoSkLKwjCfxqpeJMfbY/03saepE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771251978; c=relaxed/simple;
-	bh=rLmnyxyErHYiXtdh+CV6iMzJzbzCJSo0gnxl2xhAGRA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=krtCZ+06owxagtKfJqttFcTewe+dNAw/tokQdwvHKKoIC+ie7f+19pcBXGcE2i3nNkkDw2h77GeIiLSE/xSnVuqCvekefqBHYcfyPWh4DUzXT5Xm/5NTAxnmSHxzLINk27PVUbejMoZLAySTa/OocWnafRQzBHo227N29ffTFZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.227])
-	by gateway (Coremail) with SMTP id _____8Dx88D_KJNpetISAA--.82S3;
-	Mon, 16 Feb 2026 22:26:07 +0800 (CST)
-Received: from kernelserver (unknown [223.64.68.227])
-	by front1 (Coremail) with SMTP id qMiowJCxdcD3KJNpUiFHAA--.20742S2;
-	Mon, 16 Feb 2026 22:26:03 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH V2 for 6.6 & 6.12] LoongArch: Rework KASAN initialization for PTW-enabled systems
-Date: Mon, 16 Feb 2026 22:25:50 +0800
-Message-ID: <20260216142550.1479337-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1771252081; c=relaxed/simple;
+	bh=5nz2OJpV61GKofyMFvAjG4uF6VnT6LnAQ0wLv8/Wj3g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B4gFHdH617oky6StrlFUodVm+P4c0p8iuFn+9ZkYsV2EFXN9FvXXaK4Dd1VstW3RBXoiTFjzog0txQv5dD65l9KvlX5ok+nGxylCZZP8+yWijRVtKC+wvKI9dDcGAKB0HfJr2uc5Zdt8sAOvojo2VvnBte1fR9agzllzBZ21KQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKKTqoXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392D3C19423;
+	Mon, 16 Feb 2026 14:27:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771252081;
+	bh=5nz2OJpV61GKofyMFvAjG4uF6VnT6LnAQ0wLv8/Wj3g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fKKTqoXW4W+TtIDjfnenI14+xSIZHOzBLxVZMuyalJ8eVfM0tTFQ6A+ZvCbBxSw7O
+	 4ExZGAgKccORaLELk1yTq+1214fQksQBIUjQu39P1CrjMqLJqPN3GK/60PfERMu5PK
+	 o6hCEMXENrQEZNWTZQ/as0+Ab8SEaTeO6dUlqqzibcnlePu7guiKgN/Se1f4NSw141
+	 2boL7ISrf9XiHoR+jVV+ma24ykEPCE23zYJmZItCj3KG0uHae0Tekk6zHdj0qjszzp
+	 Dd6h7+b7rYI5olZQMLz9EtlEP5URerUPeAFRci/jhtbXgoaGT7gDLPA5MfQ7GfKdyu
+	 etm/c67Z7/3Kw==
+Date: Mon, 16 Feb 2026 14:27:54 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 00/24] 6.12.72-rc1 review
+Message-ID: <bde6d2f9-f554-49f1-9af8-084c4cdea035@sirena.org.uk>
+References: <20260213134704.728003077@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxdcD3KJNpUiFHAA--.20742S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Wry5Kw1fAF4kAr1kGr13KFX_yoW7ur43pr
-	WkKa48Kr4vvr4qqwsxGw1UZry8Jws3Ca97tFZxta9Ykay7CF1Fqr1kGF97ZF1UWrW8JF1Y
-	9w1SvFWDGr45JacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
-	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1Y
-	6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
-	AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE
-	2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
-	C2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73
-	UjIFyTuYvjxU2MKZDUUUU
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3IOga9Aj2sP226xt"
+Content-Disposition: inline
+In-Reply-To: <20260213134704.728003077@linuxfoundation.org>
+X-Cookie: Beware the one behind you.
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DMARC_NA(0.00)[loongson.cn];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	R_DKIM_NA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216698-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:mid,loongson.cn:email]
-X-Rspamd-Queue-Id: 8D20B144AF9
+	TAGGED_FROM(0.00)[bounces-216699-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:url,sirena.org.uk:mid]
+X-Rspamd-Queue-Id: 5128F144B45
 X-Rspamd-Action: no action
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 5ec5ac4ca27e4daa234540ac32f9fc5219377d53 upstream.
+--3IOga9Aj2sP226xt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-kasan_init_generic() indicates that kasan is fully initialized, so it
-should be put at end of kasan_init().
+On Fri, Feb 13, 2026 at 02:48:19PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.72 release.
+> There are 24 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Otherwise bringing up the primary CPU failed when CONFIG_KASAN is set
-on PTW-enabled systems, here are the call chains:
+As I've mentioned before putting -rcs out on a Friday afternoon isn't
+ideal for getting results...
 
-    kernel_entry()
-      start_kernel()
-        setup_arch()
-          kasan_init()
-            kasan_init_generic()
+> Gui-Dong Han <hanguidong02@gmail.com>
+>     driver core: enforce device_lock for driver_match_device()
 
-The reason is PTW-enabled systems have speculative accesses which means
-memory accesses to the shadow memory after kasan_init() may be executed
-by hardware before. However, accessing shadow memory is safe only after
-kasan fully initialized because kasan_init() uses a temporary PGD table
-until we have populated all levels of shadow page tables and writen the
-PGD register. Moving kasan_init_generic() later can defer the occasion
-of kasan_enabled(), so as to avoid speculative accesses on shadow pages.
+This breaks boot on at least the Arm Juno platform, upstream it
+introduced regressions on quite a few systems due to drivers registering
+in the probe of other devices.  That's obviously not a great pattern but
+a regreession is a regression.
 
-After moving kasan_init_generic() to the end, kasan_init() can no longer
-call kasan_mem_to_shadow() for shadow address conversion because it will
-always return kasan_early_shadow_page. On the other hand, we should keep
-the current logic of kasan_mem_to_shadow() for both the early and final
-stage because there may be instrumentation before kasan_init().
+bisect:
 
-To solve this, we factor out a new mem_to_shadow() function from current
-kasan_mem_to_shadow() for the shadow address conversion in kasan_init().
+# bad: [4b487d46d595999554fb81524f66ed3d1a73b615] Linux 6.12.72-rc1
+# good: [ae591174b1f2e6b81ffe182fb621bba910bfb44e] Linux 6.12.71
+git bisect start '4b487d46d595999554fb81524f66ed3d1a73b615' 'ae591174b1f2e6b81ffe182fb621bba910bfb44e'
+# test job: [4b487d46d595999554fb81524f66ed3d1a73b615] https://lava.sirena.org.uk/scheduler/job/2455882
+# bad: [4b487d46d595999554fb81524f66ed3d1a73b615] Linux 6.12.72-rc1
+git bisect bad 4b487d46d595999554fb81524f66ed3d1a73b615
+# test job: [b3b78ed0290627689bb76932b290f649d7a55ea7] https://lava.sirena.org.uk/scheduler/job/2456102
+# bad: [b3b78ed0290627689bb76932b290f649d7a55ea7] wifi: rtw88: Fix alignment fault in rtw_core_enable_beacon()
+git bisect bad b3b78ed0290627689bb76932b290f649d7a55ea7
+# test job: [5be98c74259c3e953c4eb9989166b5b5225196a6] https://lava.sirena.org.uk/scheduler/job/2456393
+# bad: [5be98c74259c3e953c4eb9989166b5b5225196a6] crypto: iaa - Fix out-of-bounds index in find_empty_iaa_compression_mode
+git bisect bad 5be98c74259c3e953c4eb9989166b5b5225196a6
+# test job: [c9e18834e4b2f69c0b1798440b9d531109cc16f2] https://lava.sirena.org.uk/scheduler/job/2456585
+# good: [c9e18834e4b2f69c0b1798440b9d531109cc16f2] smb: server: fix leak of active_num_conn in ksmbd_tcp_new_connection()
+git bisect good c9e18834e4b2f69c0b1798440b9d531109cc16f2
+# test job: [c34376e5a52a35ade9960d259ca1e8910db72013] https://lava.sirena.org.uk/scheduler/job/2456855
+# bad: [c34376e5a52a35ade9960d259ca1e8910db72013] Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
+git bisect bad c34376e5a52a35ade9960d259ca1e8910db72013
+# test job: [3454ada4952bf8ac7c9a7b6aec0e18aa87226170] https://lava.sirena.org.uk/scheduler/job/2457085
+# bad: [3454ada4952bf8ac7c9a7b6aec0e18aa87226170] driver core: enforce device_lock for driver_match_device()
+git bisect bad 3454ada4952bf8ac7c9a7b6aec0e18aa87226170
+# first bad commit: [3454ada4952bf8ac7c9a7b6aec0e18aa87226170] driver core: enforce device_lock for driver_match_device()
 
-[ Huacai: To backport from upstream to 6.6 & 6.12, kasan_enabled() is
-          replaced with kasan_arch_is_ready() and kasan_init_generic()
-          is replaced with "kasan_early_stage = false". ]
+--3IOga9Aj2sP226xt
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/mm/kasan_init.c | 77 ++++++++++++++++++----------------
- 1 file changed, 40 insertions(+), 37 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
-index d2681272d8f0..9337380a70eb 100644
---- a/arch/loongarch/mm/kasan_init.c
-+++ b/arch/loongarch/mm/kasan_init.c
-@@ -42,39 +42,43 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
- 
- bool kasan_early_stage = true;
- 
--void *kasan_mem_to_shadow(const void *addr)
-+static void *mem_to_shadow(const void *addr)
- {
--	if (!kasan_arch_is_ready()) {
-+	unsigned long offset = 0;
-+	unsigned long maddr = (unsigned long)addr;
-+	unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
-+
-+	if (maddr >= FIXADDR_START)
- 		return (void *)(kasan_early_shadow_page);
--	} else {
--		unsigned long maddr = (unsigned long)addr;
--		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
--		unsigned long offset = 0;
--
--		if (maddr >= FIXADDR_START)
--			return (void *)(kasan_early_shadow_page);
--
--		maddr &= XRANGE_SHADOW_MASK;
--		switch (xrange) {
--		case XKPRANGE_CC_SEG:
--			offset = XKPRANGE_CC_SHADOW_OFFSET;
--			break;
--		case XKPRANGE_UC_SEG:
--			offset = XKPRANGE_UC_SHADOW_OFFSET;
--			break;
--		case XKPRANGE_WC_SEG:
--			offset = XKPRANGE_WC_SHADOW_OFFSET;
--			break;
--		case XKVRANGE_VC_SEG:
--			offset = XKVRANGE_VC_SHADOW_OFFSET;
--			break;
--		default:
--			WARN_ON(1);
--			return NULL;
--		}
- 
--		return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
-+	maddr &= XRANGE_SHADOW_MASK;
-+	switch (xrange) {
-+	case XKPRANGE_CC_SEG:
-+		offset = XKPRANGE_CC_SHADOW_OFFSET;
-+		break;
-+	case XKPRANGE_UC_SEG:
-+		offset = XKPRANGE_UC_SHADOW_OFFSET;
-+		break;
-+	case XKPRANGE_WC_SEG:
-+		offset = XKPRANGE_WC_SHADOW_OFFSET;
-+		break;
-+	case XKVRANGE_VC_SEG:
-+		offset = XKVRANGE_VC_SHADOW_OFFSET;
-+		break;
-+	default:
-+		WARN_ON(1);
-+		return NULL;
- 	}
-+
-+	return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
-+}
-+
-+void *kasan_mem_to_shadow(const void *addr)
-+{
-+	if (kasan_arch_is_ready())
-+		return mem_to_shadow(addr);
-+	else
-+		return (void *)(kasan_early_shadow_page);
- }
- 
- const void *kasan_shadow_to_mem(const void *shadow_addr)
-@@ -295,10 +299,8 @@ void __init kasan_init(void)
- 	/* Maps everything to a single page of zeroes */
- 	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, true);
- 
--	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
--					kasan_mem_to_shadow((void *)KFENCE_AREA_END));
--
--	kasan_early_stage = false;
-+	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
-+					mem_to_shadow((void *)KFENCE_AREA_END));
- 
- 	/* Populate the linear mapping */
- 	for_each_mem_range(i, &pa_start, &pa_end) {
-@@ -308,13 +310,13 @@ void __init kasan_init(void)
- 		if (start >= end)
- 			break;
- 
--		kasan_map_populate((unsigned long)kasan_mem_to_shadow(start),
--			(unsigned long)kasan_mem_to_shadow(end), NUMA_NO_NODE);
-+		kasan_map_populate((unsigned long)mem_to_shadow(start),
-+			(unsigned long)mem_to_shadow(end), NUMA_NO_NODE);
- 	}
- 
- 	/* Populate modules mapping */
--	kasan_map_populate((unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR),
--		(unsigned long)kasan_mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
-+	kasan_map_populate((unsigned long)mem_to_shadow((void *)MODULES_VADDR),
-+		(unsigned long)mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
- 	/*
- 	 * KAsan may reuse the contents of kasan_early_shadow_pte directly, so we
- 	 * should make sure that it maps the zero page read-only.
-@@ -329,5 +331,6 @@ void __init kasan_init(void)
- 
- 	/* At this point kasan is fully initialized. Enable error messages */
- 	init_task.kasan_depth = 0;
-+	kasan_early_stage = false;
- 	pr_info("KernelAddressSanitizer initialized.\n");
- }
--- 
-2.52.0
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmTKWkACgkQJNaLcl1U
+h9BKQQf9FqauNyb5+361+eFHS8cjLhCHpyAUjSwmNCA+oGXA7LTSo6r7QZC8souA
+XKUhVKWsZienkjQlPGaBwob+v3LSVBAKRpyGiaVtrWjcOFCkzFphVOmuj2sE1a2O
+HR6xPPITk6dpN8J2C6Q1vnvuvsiyjAnAFnnpM3py++RU/Qf45xy/675PUdGIfkh+
+EVr+EqBRxtBVOE/qbyRhG5gJMV+fwWDTbsXGn2WzSOLQMUUl4xT+dUu/gBx92bXz
+ltyAY8AOcreZABz3UbHQHtbd2mojo5Bet7epAPXDu6LJopVFA9rKozZ0dChy/cRH
+6S34p0X8KNhicVZ0Jxfmk7GxA3xwNw==
+=hfwa
+-----END PGP SIGNATURE-----
 
+--3IOga9Aj2sP226xt--
 
