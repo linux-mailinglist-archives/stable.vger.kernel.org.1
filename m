@@ -1,456 +1,181 @@
-Return-Path: <stable+bounces-216649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2G8YLNVvkmnftwEAu9opvQ
-	(envelope-from <stable+bounces-216649-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 02:16:05 +0100
+	id AxIfBmSOkmk9uwEAu9opvQ
+	(envelope-from <stable+bounces-216650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 04:26:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706851408E3
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 02:16:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5107D140BE4
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 04:26:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD5EF300AC3F
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 01:16:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D235300F501
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 03:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5044821257E;
-	Mon, 16 Feb 2026 01:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06672236F2;
+	Mon, 16 Feb 2026 03:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="c7biDVNS"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="LxguobRa";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="LxguobRa"
 X-Original-To: stable@vger.kernel.org
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11021131.outbound.protection.outlook.com [40.107.74.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C5C1E2834;
-	Mon, 16 Feb 2026 01:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771204560; cv=fail; b=U6gwDIzhfQeofuIeIGhPDAcm8ydSpSzao7b4jXsMvFVjVTh7JJDikytVA4Zxlbx00Lxdyu7Mfl6vZuQ4Hu+ueDjnaQVjvwvo4dJx0cQhHR7Try8ZiHs9fwiw2l4uG1ouDWgA9UeO8CAt7PndsTFgxGPsJFyfkgMibGiOmPis6gE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771204560; c=relaxed/simple;
-	bh=mzZE+sEW9kuQjrlFoGTYPxUnHPKT1DvgFRPYh1ZwqWE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=YVIiMfWkLxswf6qwl6NHgUxVkZGZJL9IYWdGr8Z70ncz8jLA7zGeOFn7jdD1JjdgGaSTXAinVWT45gee1jmhVb0OgjlN2s/3Ob4/mMmq33Gf/CW7+Um8NWTwthH0uFyLM/A9l7BuWa3NI9U+XqTPhsUGgslu2y/G/TcpNtBl2W0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=c7biDVNS; arc=fail smtp.client-ip=40.107.74.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SSp+3eKaXatCIWE0PmkNwoJ/Mj+l2wMoHVoYvnn5Ch7IALfrvh840FQuQ4B18s1ym/QCcj/iX+tqVd7G5R52nUQrF4Oh0AgIwy2uuJwqqqY4hCf63djJ8YYyexauHpCXXyCPkraZkux3yYAI7B6T11AnvKSUv9rINNXpYJ/wsfzEd4HP81F1NgNofudAtZRTslrAbv8utQ5XqVQ/xwBbqw9Fsx/B32yM1EiMal8Pbd4223QZyOonWB1sJ4FecOQBpTAWS0TOBdObaX4zYeXAa/Z3z1kbjXPVucsY8NpxVQkhY3H8WI5aJ1e6qSGySqoTmZj6R+1LPGFMLVerxCx71A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VuQdlJP7iE/4gjxLUvqkyOCdebFpnRR/7SjK4z0/TEo=;
- b=sSvOxu+KeejhtG4ILTlcNouF8+K1Wxcc3tEy4hJIjEY1qoaq46ALfGZCgjG/OSx8g6wps/Mup3msYBQRL9ptkVmyqB38WZn4dyYKszFJ5Y2DNHzT+1EdryHnHgH7XFDCwv0rBG3ZprA+UEyWWE9KTC18EDwd/A6WVDl8mVeogjxXAOUvaJT538SHbYz+YlWJ5/Y9rxbUN2l2qMdGzUodE9++IC8SX34bZNCs81HiJs2zZax99LjNi6+wxQ7JCVK1x89jlXPP+pSuuoVTB0Gx9FwGU/EPHDWMNi5A0mcot9vY7D7/sg9obONmyppppTOvMze4fHzWZntYL14ED0gsOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VuQdlJP7iE/4gjxLUvqkyOCdebFpnRR/7SjK4z0/TEo=;
- b=c7biDVNSVINa/UcEWLN41jHISJxVB4L0ZQg5HFN0AGHqmr7PYPNzoUXfLodAM6yLW/LM18HfXO3JeMlHfB293XqVho6eOtxN6WILICQJ9vayXds6vVkD4ecOYHJ+ju0jdint4x3KOX/gV4DWmk6ydAX/glGXPFtl5wN2HYc2x2A=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
- by OS9P286MB4566.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:2fb::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Mon, 16 Feb
- 2026 01:15:54 +0000
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9611.013; Mon, 16 Feb 2026
- 01:15:54 +0000
-Date: Mon, 16 Feb 2026 10:15:52 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org, 
-	Niklas Cassel <cassel@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, jingoohan1@gmail.com, 
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.19-6.18] PCI: dwc: ep: Cache MSI outbound iATU
- mapping
-Message-ID: <oxgnleyoexgrpii4qz3ikcyktmjojckn2ln7zlpkxfyqojnk4u@pgkrkefmudkv>
-References: <20260214212452.782265-1-sashal@kernel.org>
- <20260214212452.782265-50-sashal@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260214212452.782265-50-sashal@kernel.org>
-X-ClientProxiedBy: TYWPR01CA0006.jpnprd01.prod.outlook.com
- (2603:1096:400:a9::11) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:38f::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA9E7261C
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 03:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771211933; cv=none; b=LTikOmGkfx97QyUIyt2cHz5ImDLOMYR7pZXzQX0c52WzU1hXnl6tRsOrP3DRJgC1yp9V8YrXFXbVw6Wjoy/RiGXYH0aeWFfYiSiac/SjGxIVCnPb5rh3Cq6i26IaZ7t0VLqr+jX68+AUFiSEpeu9z6ADA3ylcgvDNoVkIz439Gs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771211933; c=relaxed/simple;
+	bh=CtJNjRpFQcdFn76G8PFmePltuw/VNR1/U6A/E65wQeg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rVSz8Vrkt3Tt5L1MHQhqIsuTxLw1f0G3BfbUQwrk1r0onwMFZaN8ckq0DZutvztJ9Yr5ahQF4meznGAR8skR0aeJ1FWTjJUyf/Rcjw1pAt9X/aV599ZWlKzUJev62pNL2QIJesXuNkEuJ5fsNkwg7L+lvnZJkbpUody+8jDfLKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=LxguobRa; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=LxguobRa; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from x1pro.suse.cz (unknown [IPv6:2a07:de40:6183:1a::1022])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 32A553F26E;
+	Mon, 16 Feb 2026 03:18:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1771211930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=OJ6ReTypNNQEoX8ylYb19hiniXUsOHHTtAetayTOIhA=;
+	b=LxguobRaPC/y+6qzhBr/I0TSRv4htqUp0qEqFjnJPTTw5K1ZsiDEn0cGcnZ19l1hI+1vKW
+	728o7TKB9XnKrYWlw8M6a6fjRsgjNtIh41ByXLhFn/tDD+ZO4vCzMmPY75r8VWzVzsIAzQ
+	r16YbYHmxOx7LsZOwbcU3OvAY8h0pV4=
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=LxguobRa
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1771211930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=OJ6ReTypNNQEoX8ylYb19hiniXUsOHHTtAetayTOIhA=;
+	b=LxguobRaPC/y+6qzhBr/I0TSRv4htqUp0qEqFjnJPTTw5K1ZsiDEn0cGcnZ19l1hI+1vKW
+	728o7TKB9XnKrYWlw8M6a6fjRsgjNtIh41ByXLhFn/tDD+ZO4vCzMmPY75r8VWzVzsIAzQ
+	r16YbYHmxOx7LsZOwbcU3OvAY8h0pV4=
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] btrfs: do not mark inode incompressible after inline attempt failed
+Date: Mon, 16 Feb 2026 13:48:47 +1030
+Message-ID: <d1f0953814413fbcace1d625ce1227b9aa2d7c0a.1771211471.git.wqu@suse.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|OS9P286MB4566:EE_
-X-MS-Office365-Filtering-Correlation-Id: aac557b5-2b3f-4203-0a11-08de6cf8ee61
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|376014|366016|27256017;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VUdKU1VxZ2lseGpHMDZ5N2NUSjVGdnlzV0ExakJhM2p5MEZLdC9EVU1kMWg1?=
- =?utf-8?B?QjhaZ0pnbGZ3S29veVpBZ3FWclBISTRibmtYL0dIcDB1b2UvS1ZWUmNhaERG?=
- =?utf-8?B?TER3d25YcnhSeENkaHEvMC9QRG5PcFpYZytyVlR5SkdVTmdIT3FGUDVHaEZD?=
- =?utf-8?B?SkRhd3QwVlpQSDZvbXhaZ3RKcHNLeGx1Um05Yk9Udi9wNktRWCtObldYUGhX?=
- =?utf-8?B?Q05RL2l1aFZkY0xmTzdQakczVm94b0hudlhsMEdGbEwyczVyMUhaZzBnZ1hs?=
- =?utf-8?B?MUgxWkNBWmFFTmsvdGE3SC9VRG9wOTRZR0hIWmNrTmhpNmE5RllJSStsaGZK?=
- =?utf-8?B?Sm1rQ09RVFBXdFd1YVJGVFpraWM2NUkzeWRsV3ZGcDRCSEJtUXhlcUtzUWgv?=
- =?utf-8?B?UnNBeWtqK1BJS0xzcjVLMFVORFQwZTZ4U21YdlEwYTVPNDd5TlZvR0d6clFs?=
- =?utf-8?B?b3U1NUVJVnZDd01NdXpkdStLZnJXYXJXeUdCWkF6eUVRZnJ3NjlxVDYyMVVx?=
- =?utf-8?B?SS9Vd1lOaC8wOVBKNEJUT1JDclUzS3NyTlVmTzRVeVhiK1lvUE1xeUROSTg5?=
- =?utf-8?B?anRCakNwNVpsSlh2OFZyOEd5a002enljWlBrOFF4RUVla2xZY0NJYnpQQm5w?=
- =?utf-8?B?Ui9xeEdUU0FqcytvU1p1K1JDSzhaVUJNU05FejdhWXFQdlB5ZGhMTjhEQllH?=
- =?utf-8?B?aG9RNkoxY3NXVEowcVVIOTlzWjBmRXZmbGJpcVQ0dDI3TExTZGdxV1h0eVZj?=
- =?utf-8?B?TWlQQXo0Q2NSVDF0NW1JK08rMytWNjJMMjRIYlgwL1pacGVSTWgwQlNpOVpz?=
- =?utf-8?B?N20xM3dTVTdmb1FhVWNuTEZXbVByYmlVMytaWHZnaGJEbis0blZtRW0rcDV6?=
- =?utf-8?B?QWxwY0FENjlSamFVaDcwa2EzZi9mNEZ3a3hSd003cDRBRklIYUFUMm91bUls?=
- =?utf-8?B?MG5URUtJNFBJM3RkTmFQK1VOYm5aMFh3ZjBoZDF2S2o0QXowYzFnR3ZTd1pV?=
- =?utf-8?B?NlY5OHgwSjNtOGRzeThNKy96cTRoNnpHeUhWVGticE8xQldXdThJa1d6eGd1?=
- =?utf-8?B?UldXelhkRWpLM2c3NXk1M0xOTmVaNmtocUs4MVFHbmZEaC9OMDRHakZhK3M4?=
- =?utf-8?B?TkdoWHRtVW9RdGNjbHppbGgxTVRTeklleEZ4OGo2SklyZDV2LzRzTTF2N1Nx?=
- =?utf-8?B?ODJXUDdHYkdobGNrM3VRN1hkYkFjNW4wMXpVSUJzSFlsTG8zN1QwNFd4bm1a?=
- =?utf-8?B?UW0xaSt0YXJIY2htZWdwMlFjTy81cytSSVlkNC8vdGFoOHZ0NTd5Q3QzRDY0?=
- =?utf-8?B?Vll6MDRQTXU1RFVPRUJVNGZ3UG1lck42dmR6TEI2MEFaUzdYZGRSZE00a2dm?=
- =?utf-8?B?d0dTV0hkVHZKWExZODZxSSs4VmFVb0xHRkNEamNhZmRiMFo5RkpVZE1YaG81?=
- =?utf-8?B?UHo1SFZiTi9URktRajZxcDhMa2lEUDlKTEcrbnNOeFJkSGxvSWh2Z2JVSmdo?=
- =?utf-8?B?NWlDM1JyanBzbVp5aXh1QnBHTElpWmNBT05SOS9DWGFidnR4WWFKemFGMTVo?=
- =?utf-8?B?Z0Z6TkM0VjliVXB5SUFpM2NodFkrQkdXejE5dU5XR05TVjBSMmY3WWduQk5L?=
- =?utf-8?B?MkJHbHJteWtvb1dCLzU2TFJIWnBZVitFK0Z6WDM3Mld5U3lqU3FITkQwd1Fm?=
- =?utf-8?B?eWxMNzUySm5OOURHakdLYWN6SDJuSHZUc3RkcWF5NEFRSWROV01VSXV5K0dW?=
- =?utf-8?B?anF0R0Y5NEJ4dFIvKzZVVFFBZVEvVEU2Q1pQamhuMXd6LzdRVTdwK0hZZ0RT?=
- =?utf-8?B?WGQ4UlJ0Y21DdThEMjZmVFBTd1RIU0orUDc5QmdPUWpJVXl6ZWxYNGhFTnpF?=
- =?utf-8?B?RlRhdGxyK3Uwc21hbXhuVVNhYjJLOXpRZ0htLzk2cHVzUFdBWTRRNnExSSts?=
- =?utf-8?B?b0pkcVUvSmZRemdXSTNxYUFMQ1NyYzZwdjlSZ3E4c1FDdVBadERVR2VjVk5u?=
- =?utf-8?B?eko3Y2VsbTlzNU9VZW5meElid3R0dTc0dWdIUkhOVWNyT08xTGp0WGlXVldm?=
- =?utf-8?B?RGZhN1FvUU15YjdObmF4bkZ2aEtrRGhsM05LcU5FZEtlQmpDSDdoV3pNQTlv?=
- =?utf-8?Q?HQR0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(366016)(27256017);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bGRZQzBBSUYxNHRsT1JJWTlLanNpUXVtZ1lwSGF6c0ZVY0lLZ0ltV3RtOGVz?=
- =?utf-8?B?Y1VNdE9UUE5scXF5Z2o1RHhidTlSdG04S1VYZTdEQzRmQ3FCYWpnblhJSDdJ?=
- =?utf-8?B?MjhqMjlXNCthMnBzRnhPU3I3akhtS1FnSFFBUkpjS3FBY09SQm9CMVgrcVVN?=
- =?utf-8?B?OE5PSmNNalhZYkJJY0ZVN2ZXWDFUYlhCSllzTUU4YjBVZXRJL3lFVzRBNkJQ?=
- =?utf-8?B?WndESXZEeVJFWWhheE5IQlhtbC9PTFRpaDV4TWJPekF6U2lKVTRySmFNMUNW?=
- =?utf-8?B?VXdPN1VMVW5uQkp1N0tZU3N6azNEMGk0MzZaT0tPZkFrQWZSdDMyTVpsY0hZ?=
- =?utf-8?B?ZXVnbENCSHBVTklrK1pRalBDc3ZkQnB4NEw1Zm9NNnZnUk1yY2xlaEtDZmlZ?=
- =?utf-8?B?N0JxbjFpZXUxSnRPendXTnYzaCtPZHdFQzQrcnBpWFdpdjA5TFMwN1k3eHU1?=
- =?utf-8?B?Yk9QblpQVi8rR1VOak8vNHl2M0t3ZEtnWnhWcnZ6YUJHN01zdTl3dzNUT0N6?=
- =?utf-8?B?Z1NpU1Q1Z240YXNmNGNwYWt4YktseTNJRm0xcGhVbWtrem1GQTFjYWNzY2tz?=
- =?utf-8?B?Z0pISE5tTDZjOStaaSt5RjRrUXlvcVJRbTJvOFJwZXNCYW5sQkpBMzlLcGtv?=
- =?utf-8?B?MHAxQlhuT0tCUWRhSHo4SmZnU2hEL0JKdlp3UFJXUVlQc2J5YTdiSWZBc204?=
- =?utf-8?B?eUsvVHNrNEZTOFI4UzZBZGlGR2h1ZHQ3WHNxRitpVERiWC9Lblk2MXFjNG5v?=
- =?utf-8?B?dTVQYU5rSEdBV1pEM0NSdGh4YTZsY3JZbjk2TXNNOHg2WVFRL25SU09idFFh?=
- =?utf-8?B?VVMwNEZCcmZIWlZISFhKbEZyT0k3cThIZmF5eXVCRXNrTW1sWW9hTEJVai9v?=
- =?utf-8?B?bkxtTjJVdmhHeTVPc1kyOXZIUGxDUzBWNEJVT0dBMlF2ajBKZnZCaWc2dk4z?=
- =?utf-8?B?STZkVm0zeXZHUXJuTHdhajJZeElmTE1SOHV3SlZVQWxkV25jZVdCUUw3bGdl?=
- =?utf-8?B?WHRvSjBVS3hiNzllT0pYcGEvMHZ4c2F3UnFRRkVsL3c0UEU1VGw5elp6cUhR?=
- =?utf-8?B?amR3OVdKSzVqVHBobURYdHhjMHpMMk9DZDhZVXZGL1VVMCtDUVZhSTBOVnNL?=
- =?utf-8?B?OU5kM1JPb2N5WVR2WS84Y1hUMjM0NVBlNy8rbTNLMVFCSGU4MEdZQlZMQWJW?=
- =?utf-8?B?bnIyazYybmdDVXZ4ZUk2TXVwODQ2MUIrQzV5SzJSaVRhQUtmQWZNYUxiR0J3?=
- =?utf-8?B?Y0J0Z3kydFVCVXIxeUJjQ0xWNjVCbzVZUUNDeHAwVXA4QWxySDlKSHFOcFA3?=
- =?utf-8?B?TXNjWTRiR1NwMkxDbEh2UHNjVG9TeUVlS29Tb0lraDd2a25GdTM4dUlOa1ZJ?=
- =?utf-8?B?bW83K3JBcFFrcEtjYkxEbkl6bmxSTDdqa0xveUhMQ1JMVEl3Rk5mZitidC8x?=
- =?utf-8?B?YzFGckNhSDB1MHFacHU5ajFBRmtCUVJTdFpCcFBlTURSYVdPeUd2aVJ3NnIz?=
- =?utf-8?B?Vi9qNk5oaTFiTXJ5YmJJa3ZNUzJtTVFBREhUc2I2dTlVSmtsdWZkdHEvcTQv?=
- =?utf-8?B?SVVKak8zK09sMnhYblQ4TDJrYlNWK3lxTW55OUhUa0plL01uNVd6cWdLT084?=
- =?utf-8?B?MVBWN0JVcTdZNW1TWnN1emtQZjIvTGRwdU9uMCtwa1FRVGVsdmhKWW9XbE9r?=
- =?utf-8?B?c0RyOVFWZUlISkRhREFCSWRHNENSMFROTXFtRndCMU9CUjd3NVVxa2oxU29M?=
- =?utf-8?B?WitzREQ2WnUrYmg2SU9Qcm9UU1kvY3hWUnlsT1dialVpUW9jOHdFa0JqVURU?=
- =?utf-8?B?TXZyWllkVi9lZzdBY3pXVmE4NlNWMlNSYUt1dERVc1NsaERZdEVJckhKdFFE?=
- =?utf-8?B?VTlPWmlGdUpuZ09NY2pRZjMwZVp3TUdpSlUwcFFTaXRPWkJUR0Nzc0FtQWF6?=
- =?utf-8?B?L2VaaHBBRmJidUNtU1R4dG1NY3dIdGduZ0pzdXVWZVE5MzZwcnNObFZzYXly?=
- =?utf-8?B?SlU5SWdmRnhRUHU3Sm41QUdZWWYrTXlYZ1NJdU44Ym5vOTduenhHODNtd3RN?=
- =?utf-8?B?U1V4RjRLczUxcFRDdGZYTWtRYmlFakpTWEZObXZPMEw2UE04RjNacXNmdXIy?=
- =?utf-8?B?VUpvc2FXRFpjZU5TaTJGdlFwUEZ5alRtdmxYV3QvN1RLRW1XNHFWUEcwVUxr?=
- =?utf-8?B?VjhrcHpEalhMQ3YrMU9XWVlKNjRNK0NzUTN2NnU0NmM0VnFoL1ZXNGFOWTJM?=
- =?utf-8?B?dTdEbFJYSWltZUd6NnYyRDFKVGRJQURkQ2RhaGlyRUVFQkxMNlgzRWliTG10?=
- =?utf-8?B?Yko5NzJhNGVETXovY1RoOHpuN0RnTkNBaG8xenV5MjZJK3Y3SUVXdzZ5VTNa?=
- =?utf-8?Q?hLhCsrFBIVCrRyaOZSkZUremtrGcXqOBxZnpT?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: aac557b5-2b3f-4203-0a11-08de6cf8ee61
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 01:15:54.0839
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: agyJRj1yNAiEoGwVJOsHbHw9BSVgOx9IVeDaJO07VswrWcYwQ3ecSv2IdVi5Z59EatLFI4Xr7nOpYgQgKL5CVg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9P286MB4566
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: YES
+X-Spamd-Bar: ++++++++++++++++
+X-Spam-Level: ****************
+X-Spam-Score: 16.68
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[valinux.co.jp,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[valinux.co.jp:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [4.34 / 15.00];
+	SPAM_FLAG(5.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-216649-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-216650-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	GREYLIST(0.00)[pass,body];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[den@valinux.co.jp,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[valinux.co.jp:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,valinux.co.jp:email,valinux.co.jp:dkim]
-X-Rspamd-Queue-Id: 706851408E3
+	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5107D140BE4
 X-Rspamd-Action: no action
 
-On Sat, Feb 14, 2026 at 04:23:15PM -0500, Sasha Levin wrote:
-> From: Koichiro Den <den@valinux.co.jp>
-> 
-> [ Upstream commit 8719c64e76bf258cc8f44109740c854f2e2ead2e ]
-> 
-> dw_pcie_ep_raise_msi_irq() currently programs an outbound iATU window
-> for the MSI target address on every interrupt and tears it down again
-> via dw_pcie_ep_unmap_addr().
-> 
-> On systems that heavily use the AXI bridge interface (for example when
-> the integrated eDMA engine is active), this means the outbound iATU
-> registers are updated while traffic is in flight. The DesignWare
-> endpoint databook 5.40a - "3.10.6.1 iATU Outbound Programming Overview"
-> warns that updating iATU registers in this situation is not supported,
-> and the behavior is undefined.
-> 
-> Under high MSI and eDMA load this pattern results in occasional bogus
-> outbound transactions and IOMMU faults, on the RC side, such as:
-> 
->   ipmmu-vmsa eed40000.iommu: Unhandled fault: status 0x00001502 iova 0xfe000000
-> 
-> followed by the system becoming unresponsive. This is the actual output
-> observed on Renesas R-Car S4, with its ipmmu_hc used with PCIe ch0.
-> 
-> There is no need to reprogram the iATU region used for MSI on every
-> interrupt. The host-provided MSI address is stable while MSI is enabled,
-> and the endpoint driver already dedicates a scratch buffer for MSI
-> generation.
-> 
-> Cache the aligned MSI address and map size, program the outbound iATU
-> once, and keep the window enabled. Subsequent interrupts only perform a
-> write to the MSI scratch buffer, avoiding dynamic iATU reprogramming in
-> the hot path and fixing the lockups seen under load.
-> 
-> dw_pcie_ep_raise_msix_irq() is not modified, as each vector can have a
-> different msg_addr, and because the msg_addr is allowed to be changed
-> while the vector is masked. Neither problem is easy to solve with the
-> current design. Instead, the plan is for the DWC vendor drivers to
-> transition to dw_pcie_ep_raise_msix_irq_doorbell(), which does not rely
-> on the iATU.
-> 
-> Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> [cassel: improve commit message]
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-> Link: https://patch.msgid.link/20251222110144.3299523-2-cassel@kernel.org
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
+[BUG]
+The following sequence will set the file with nocompress flag:
 
-Hi Sasha,
+  # mkfs.btrfs -f $dev
+  # mount $dev $mnt -o max_inline=4,compress
+  # xfs_io -f -c "pwrite 0 2k" -c sync $mnt/foobar
 
-Could you please hold off on backporting this patch until the follow-up
-regression fix:
+The resulted inode will have NOCOMPRESS flag, even if the content itself
+(all 0xcd) can still be compressed very well:
 
-  [PATCH] PCI: dwc: ep: Fix regression in dw_pcie_ep_raise_msi_irq()
-  https://lore.kernel.org/all/20260210181225.3926165-2-cassel@kernel.org/
+	item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
+		generation 9 transid 10 size 2097152 nbytes 1052672
+		block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
+		sequence 257 flags 0x8(NOCOMPRESS)
 
-lands upstream, so the both commits can be taken together?
+Please note that, this behavior is there even before commit 59615e2c1f63
+("btrfs: reject single block sized compression early").
 
-The original fix ("PCI: dwc: ep: Cache MSI outbound iATU mapping") addresses an
-issue that is only observable under high load, and had existed for a long time
-without being reported until I posted the original fix. However, it later turned
-out to introduce a regression that can lead to a system hang on some platform.
+[CAUSE]
+At compress_file_range(), after btrfs_compress_folios() call, we try
+making an inlined extent by calling cow_file_range_inline().
 
-Backporting the initial commit without the follow-up fix would therefore risk
-introducing a more severe problem into stable trees, at least temporarily. I
-think it would be more preferable to take both commits together.
+But cow_file_range_inline() calls can_cow_file_range_inline() which has
+more accurate checks on if the range can be inlined.
 
-Niklas, please let me know if you would like to add anything.
+One of the user configurable condition is the "max_inline=" mount
+option. If that value is set low (like the example, 4 bytes, which can
+not store any header), or the compressed content is just slightly larger
+than 2K (the default value, meaning a 50% compression ratio),
+cow_file_range_inline() will return 1 immediately.
 
-Thanks,
-Koichiro
+And since we're here only to try inline the compressed data, the range
+is no larger than a single fs block.
 
-> 
-> LLM Generated explanations, may be completely bogus:
-> 
-> This confirms the **current state of the code** (before the patch is
-> applied) still has the map/unmap on every call pattern at lines 705-712.
-> The patch hasn't been applied yet to this tree — this is the candidate
-> being evaluated.
-> 
-> ### 8. STANDALONE ASSESSMENT
-> 
-> Looking at the dependency analysis more carefully: the agent found that
-> in some stable tree, this commit was brought in as part of a 10-commit
-> dependency chain for a different fix. However, **that doesn't change the
-> standalone value of this commit**. The commit itself:
-> 
-> 1. **Is a standalone bug fix** — it fixes iATU reprogramming under load
->    causing IOMMU faults and system lockups on real hardware
-> 2. **Has no prerequisite patches** — `dw_pcie_ep_align_addr`,
->    `dw_pcie_ep_map_addr`, and `dw_pcie_ep_unmap_addr` all exist in the
->    current tree
-> 3. **Only adds internal fields to a struct** — no API changes needed
->    from other patches
-> 4. **Applies cleanly** to the current code (the pre-patch code matches
->    lines 704-712)
-> 
-> ### RISK vs BENEFIT
-> 
-> **Benefit**: HIGH
-> - Fixes real system lockups under load on DWC PCIe endpoint platforms
-> - The bug is documented by the hardware vendor's databook as "undefined
->   behavior"
-> - Concrete symptoms reported on Renesas R-Car S4
-> - System becomes unresponsive — this is a critical stability issue
-> 
-> **Risk**: LOW-MEDIUM
-> - The change is well-contained within 2 files, single subsystem
-> - The caching logic is straightforward and defensive (WARN_ON_ONCE on
->   unexpected address change)
-> - Proper cleanup on endpoint stop prevents resource leaks
-> - Only affects DWC PCIe endpoint users
-> 
-> ### CONCERNS
-> 
-> 1. The change modifies `struct dw_pcie_ep` by adding 3 fields — this is
->    safe as long as no out-of-tree modules depend on this struct layout
->    (unlikely given it's a controller-specific struct).
-> 2. The WARN_ON_ONCE path returns -EINVAL if MSI address changes — this
->    is a safe fallback since the databook says reprogramming under load
->    is undefined anyway.
-> 3. The commit applies cleanly to the current tree based on code
->    inspection.
-> 
-> ### CONCLUSION
-> 
-> This commit fixes a **real, documented hardware bug** that causes
-> **system lockups** on DesignWare PCIe endpoint platforms under load. The
-> fix is:
-> - **Obviously correct**: Caching an iATU mapping that the hardware
->   vendor's databook says should not be reprogrammed while traffic is in
->   flight
-> - **Well-tested**: Verified on Renesas R-Car S4
-> - **Contained**: 2 files, single subsystem, no API changes
-> - **Defensive**: WARN_ON_ONCE + -EINVAL on unexpected conditions, proper
->   cleanup on stop
-> 
-> This clearly meets all stable kernel criteria for a backport.
-> 
-> **YES**
-> 
->  .../pci/controller/dwc/pcie-designware-ep.c   | 48 ++++++++++++++++---
->  drivers/pci/controller/dwc/pcie-designware.h  |  5 ++
->  2 files changed, 47 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> index 19571ac2b9617..18b20cc877d9e 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> @@ -601,6 +601,16 @@ static void dw_pcie_ep_stop(struct pci_epc *epc)
->  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
->  
-> +	/*
-> +	 * Tear down the dedicated outbound window used for MSI
-> +	 * generation. This avoids leaking an iATU window across
-> +	 * endpoint stop/start cycles.
-> +	 */
-> +	if (ep->msi_iatu_mapped) {
-> +		dw_pcie_ep_unmap_addr(epc, 0, 0, ep->msi_mem_phys);
-> +		ep->msi_iatu_mapped = false;
-> +	}
-> +
->  	dw_pcie_stop_link(pci);
->  }
->  
-> @@ -702,14 +712,37 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	msg_addr = ((u64)msg_addr_upper) << 32 | msg_addr_lower;
->  
->  	msg_addr = dw_pcie_ep_align_addr(epc, msg_addr, &map_size, &offset);
-> -	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
-> -				  map_size);
-> -	if (ret)
-> -		return ret;
->  
-> -	writel(msg_data | (interrupt_num - 1), ep->msi_mem + offset);
-> +	/*
-> +	 * Program the outbound iATU once and keep it enabled.
-> +	 *
-> +	 * The spec warns that updating iATU registers while there are
-> +	 * operations in flight on the AXI bridge interface is not
-> +	 * supported, so we avoid reprogramming the region on every MSI,
-> +	 * specifically unmapping immediately after writel().
-> +	 */
-> +	if (!ep->msi_iatu_mapped) {
-> +		ret = dw_pcie_ep_map_addr(epc, func_no, 0,
-> +					  ep->msi_mem_phys, msg_addr,
-> +					  map_size);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ep->msi_iatu_mapped = true;
-> +		ep->msi_msg_addr = msg_addr;
-> +		ep->msi_map_size = map_size;
-> +	} else if (WARN_ON_ONCE(ep->msi_msg_addr != msg_addr ||
-> +				ep->msi_map_size != map_size)) {
-> +		/*
-> +		 * The host changed the MSI target address or the required
-> +		 * mapping size changed. Reprogramming the iATU at runtime is
-> +		 * unsafe on this controller, so bail out instead of trying to
-> +		 * update the existing region.
-> +		 */
-> +		return -EINVAL;
-> +	}
->  
-> -	dw_pcie_ep_unmap_addr(epc, func_no, 0, ep->msi_mem_phys);
-> +	writel(msg_data | (interrupt_num - 1), ep->msi_mem + offset);
->  
->  	return 0;
->  }
-> @@ -1087,6 +1120,9 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
->  	struct device *dev = pci->dev;
->  
->  	INIT_LIST_HEAD(&ep->func_list);
-> +	ep->msi_iatu_mapped = false;
-> +	ep->msi_msg_addr = 0;
-> +	ep->msi_map_size = 0;
->  
->  	epc = devm_pci_epc_create(dev, &epc_ops);
->  	if (IS_ERR(epc)) {
-> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-> index 31685951a0804..f555926a526ea 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware.h
-> +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> @@ -479,6 +479,11 @@ struct dw_pcie_ep {
->  	void __iomem		*msi_mem;
->  	phys_addr_t		msi_mem_phys;
->  	struct pci_epf_bar	*epf_bar[PCI_STD_NUM_BARS];
-> +
-> +	/* MSI outbound iATU state */
-> +	bool			msi_iatu_mapped;
-> +	u64			msi_msg_addr;
-> +	size_t			msi_map_size;
->  };
->  
->  struct dw_pcie_ops {
-> -- 
-> 2.51.0
-> 
+Thus compression is never going to make it a win, we fallback to mark
+the inode incompressible unavoidably.
+
+[FIX]
+Just add an extra check after inline attempt, so that if the inline
+attempt failed, do not set the nocompress flag.
+
+As there is no way to remove that flag, and the default 50% compression
+ratio is way too strict for the whole inode.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+---
+This is the smallest fix for backport.
+
+There will be a proper but much bigger fix to extract the inline attempt
+into a dedicated helper inside run_delalloc_range() other than put them
+deep inside cow_file_range() and compress_file_range().
+---
+ fs/btrfs/inode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 19c6fbb1273c..4523b689711d 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1061,6 +1061,12 @@ static void compress_file_range(struct btrfs_work *work)
+ 			mapping_set_error(mapping, -EIO);
+ 		return;
+ 	}
++	/*
++	 * If a single block at file offset 0 can not be inlined, fallback
++	 * to regular writes without marking the file incompressible.
++	 */
++	if (start == 0 && end <= blocksize)
++		goto cleanup_and_bail_uncompressed;
+ 
+ 	/*
+ 	 * We aren't doing an inline extent. Round the compressed size up to a
+-- 
+2.52.0
+
 
