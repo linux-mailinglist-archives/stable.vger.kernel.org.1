@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-216675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216676-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FdZDRHmkmlSzwEAu9opvQ
-	(envelope-from <stable+bounces-216675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 10:40:33 +0100
+	id SBoiHC7mkmlSzwEAu9opvQ
+	(envelope-from <stable+bounces-216676-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 10:41:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6187F142039
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 10:40:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9BF714204E
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 10:41:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 699CD3037D6E
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 09:39:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37A7D3013277
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 09:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8622E54BD;
-	Mon, 16 Feb 2026 09:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4D72DF6F6;
+	Mon, 16 Feb 2026 09:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3erYfHG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EU/gpfQj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B2F262FF8;
-	Mon, 16 Feb 2026 09:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C6E2E54BD;
+	Mon, 16 Feb 2026 09:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771234765; cv=none; b=e075SS+27FkdLAOLGmZBICcdwp6BAe06vGU5RdvevZqFVhq15hvDJdvwkUzp+9Uq8ciyebC1eJHi3AjZI2kbvNruUeS3KObsMYFY9Jrfy5QVsqUWITFIDwD5WINLlEHqc5BJ/jYdm4KUrW//xcC2+CUtU+JfKY3iVQ/sgb42Rh0=
+	t=1771234767; cv=none; b=sR12H+2qmttLbRB+qWqzUGHUXF3yPzqVApLsWV3MGROkrhYEu99y6t/MPG1BGxpcTC9vElfAH8cD3+q1DdhOEwfdR6kSYt8qfzshgatM2gU/ccvXmKMbEGJl7wt9Zo5h2qifj6wErnH8KiRj1aaOxLIvc70BpkVJLxkPL0/s5wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771234765; c=relaxed/simple;
-	bh=qCLEztmkje3HdPk+UXVqkK4jVN6/2aF80JXWdMBbSp4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dastuh/USFEWF9MEzGnq2STn2RsiDvO61W0izwFtnfwdH29EOfc6ERNUDwKquDU+HsTC6xsCGlChJj9hV465QqFqcCaoxybAolwUv8OaNUR2mfcqr/1ehiZ/UDr01kYDcFzT6pdPt3t1cSYOE5pkDXKinTNWbUVq0o6dwIQddkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3erYfHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D04EC19422;
-	Mon, 16 Feb 2026 09:39:23 +0000 (UTC)
+	s=arc-20240116; t=1771234767; c=relaxed/simple;
+	bh=9PF8IPfRLsmSt/Om1pxqZu6/yirSXEh9/dgHIIaiWOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZVMYz0MK6v0v6zmC6mGPSH2zCEqwl+yVn/A1Ek4xALckhqxg2df+Z6uKHG/a7W3VfgAjETqmR4SmCyhEIYivX7VmTIbiNU7uiIvQHIavY/kyiuoYGT048Lzc4rigHK5qPO97Da9EUOviURLxp/zIPHHuid08op1rwbL/ktGBi8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EU/gpfQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065C2C116C6;
+	Mon, 16 Feb 2026 09:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771234764;
-	bh=qCLEztmkje3HdPk+UXVqkK4jVN6/2aF80JXWdMBbSp4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r3erYfHGflA/EcvJXZwzUe5UiupHsgFiwFcK3MvdyYOJra3qgcUxg1Pvd9u0ym+r+
-	 yMkmWlQc7ZS3GysrQMjbCthUBwl1AVTWC11QjTQSiWLyc7eCABKiW3a/MHesfUDm+H
-	 l7yr2AbZd4+uVo/FVLYIjyriExQCgL5ui3SSUb40=
+	s=korg; t=1771234767;
+	bh=9PF8IPfRLsmSt/Om1pxqZu6/yirSXEh9/dgHIIaiWOI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EU/gpfQjpEpSlcklKOIYtCkG6AhOQIG9qZ5HlV95++aNdhSoXFRIUKTapiTf7BC3W
+	 bX3It3g/6D2I8nJGG21g4Hpl2OL9QWWN6CrTf14RnAZHqn3Y43sg1DfcdkPDxGveJi
+	 Miupmgv+Y9ZQZdX3m756jmqP8RBcftlA1X5xbHNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -49,1261 +48,195 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.6.125
-Date: Mon, 16 Feb 2026 10:39:14 +0100
-Message-ID: <2026021614-caddy-underpass-c3b5@gregkh>
+Subject: Linux 6.18.11
+Date: Mon, 16 Feb 2026 10:39:20 +0100
+Message-ID: <2026021621-dicing-rudder-7078@gregkh>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026021613-rescuer-encroach-5787@gregkh>
-References: <2026021613-rescuer-encroach-5787@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [2.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-216676-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216675-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,free_list.next:url]
-X-Rspamd-Queue-Id: 6187F142039
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C9BF714204E
 X-Rspamd-Action: no action
 
-diff --git a/Makefile b/Makefile
-index 4ec8ec24a354..4a944e807690 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 6
--SUBLEVEL = 124
-+SUBLEVEL = 125
- EXTRAVERSION =
- NAME = Pinguïn Aangedreven
- 
-diff --git a/drivers/base/base.h b/drivers/base/base.h
-index 0b491449b022..35e14bebbfb2 100644
---- a/drivers/base/base.h
-+++ b/drivers/base/base.h
-@@ -165,9 +165,18 @@ void device_set_deferred_probe_reason(const struct device *dev, struct va_format
- static inline int driver_match_device(struct device_driver *drv,
- 				      struct device *dev)
- {
-+	device_lock_assert(dev);
-+
- 	return drv->bus->match ? drv->bus->match(dev, drv) : 1;
- }
- 
-+static inline int driver_match_device_locked(struct device_driver *drv,
-+					     struct device *dev)
-+{
-+	guard(device)(dev);
-+	return driver_match_device(drv, dev);
-+}
-+
- static inline void dev_sync_state(struct device *dev)
- {
- 	if (dev->bus->sync_state)
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index b97e13a52c33..27f8442a3aa9 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -263,7 +263,7 @@ static ssize_t bind_store(struct device_driver *drv, const char *buf,
- 	int err = -ENODEV;
- 
- 	dev = bus_find_device_by_name(bus, NULL, buf);
--	if (dev && driver_match_device(drv, dev)) {
-+	if (dev && driver_match_device_locked(drv, dev)) {
- 		err = device_driver_attach(drv, dev);
- 		if (!err) {
- 			/* success */
-diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index 7e2fb159bb89..07f1332dd3a4 100644
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -1169,7 +1169,7 @@ static int __driver_attach(struct device *dev, void *data)
- 	 * is an error.
- 	 */
- 
--	ret = driver_match_device(drv, dev);
-+	ret = driver_match_device_locked(drv, dev);
- 	if (ret == 0) {
- 		/* no match */
- 		return 0;
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 1309e9318bdb..eaeacdadb202 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -516,6 +516,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x7392, 0xe611), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 
- 	/* Realtek 8852AE Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
-diff --git a/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c b/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
-index c4250e5fcf8f..11dfbd4beba9 100644
---- a/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
-+++ b/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
-@@ -1336,7 +1336,7 @@ static ssize_t ucode_load_store(struct device *dev,
- 	int del_grp_idx = -1;
- 	int ucode_idx = 0;
- 
--	if (strlen(buf) > OTX_CPT_UCODE_NAME_LENGTH)
-+	if (count >= OTX_CPT_UCODE_NAME_LENGTH)
- 		return -EINVAL;
- 
- 	eng_grps = container_of(attr, struct otx_cpt_eng_grps, ucode_load_attr);
-diff --git a/drivers/crypto/omap-crypto.c b/drivers/crypto/omap-crypto.c
-index a4cc6bf146ec..0345c9383d50 100644
---- a/drivers/crypto/omap-crypto.c
-+++ b/drivers/crypto/omap-crypto.c
-@@ -21,7 +21,7 @@ static int omap_crypto_copy_sg_lists(int total, int bs,
- 	struct scatterlist *tmp;
- 
- 	if (!(flags & OMAP_CRYPTO_FORCE_SINGLE_ENTRY)) {
--		new_sg = kmalloc_array(n, sizeof(*sg), GFP_KERNEL);
-+		new_sg = kmalloc_array(n, sizeof(*new_sg), GFP_KERNEL);
- 		if (!new_sg)
- 			return -ENOMEM;
- 
-diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
-index b909c6a2bf1c..6ec9a95b4db0 100644
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -77,15 +77,20 @@ static void virtcrypto_done_task(unsigned long data)
- 	struct data_queue *data_vq = (struct data_queue *)data;
- 	struct virtqueue *vq = data_vq->vq;
- 	struct virtio_crypto_request *vc_req;
-+	unsigned long flags;
- 	unsigned int len;
- 
-+	spin_lock_irqsave(&data_vq->lock, flags);
- 	do {
- 		virtqueue_disable_cb(vq);
- 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
-+			spin_unlock_irqrestore(&data_vq->lock, flags);
- 			if (vc_req->alg_cb)
- 				vc_req->alg_cb(vc_req, len);
-+			spin_lock_irqsave(&data_vq->lock, flags);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
-+	spin_unlock_irqrestore(&data_vq->lock, flags);
- }
- 
- static void virtcrypto_dataq_callback(struct virtqueue *vq)
-diff --git a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-index 23c41d87d835..487f60e35df1 100644
---- a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-+++ b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-@@ -550,8 +550,6 @@ int virtio_crypto_skcipher_crypt_req(
- 	if (ret < 0)
- 		return ret;
- 
--	virtqueue_kick(data_vq->vq);
--
- 	return 0;
- }
- 
-diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
-index a927680c66f8..772fddc02b81 100644
---- a/drivers/gpio/gpio-omap.c
-+++ b/drivers/gpio/gpio-omap.c
-@@ -799,10 +799,13 @@ static struct platform_device omap_mpuio_device = {
- 
- static inline void omap_mpuio_init(struct gpio_bank *bank)
- {
--	platform_set_drvdata(&omap_mpuio_device, bank);
-+	static bool registered;
- 
--	if (platform_driver_register(&omap_mpuio_driver) == 0)
--		(void) platform_device_register(&omap_mpuio_device);
-+	platform_set_drvdata(&omap_mpuio_device, bank);
-+	if (!registered) {
-+		(void)platform_device_register(&omap_mpuio_device);
-+		registered = true;
-+	}
- }
- 
- /*---------------------------------------------------------------------*/
-@@ -1575,13 +1578,24 @@ static struct platform_driver omap_gpio_driver = {
-  */
- static int __init omap_gpio_drv_reg(void)
- {
--	return platform_driver_register(&omap_gpio_driver);
-+	int ret;
-+
-+	ret = platform_driver_register(&omap_mpuio_driver);
-+	if (ret)
-+		return ret;
-+
-+	ret = platform_driver_register(&omap_gpio_driver);
-+	if (ret)
-+		platform_driver_unregister(&omap_mpuio_driver);
-+
-+	return ret;
- }
- postcore_initcall(omap_gpio_drv_reg);
- 
- static void __exit omap_gpio_exit(void)
- {
- 	platform_driver_unregister(&omap_gpio_driver);
-+	platform_driver_unregister(&omap_mpuio_driver);
- }
- module_exit(omap_gpio_exit);
- 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index dc62f141f403..ff438be4c186 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -431,6 +431,8 @@ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
- 	 */
- 	linkmode_zero(modes);
- 	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT, modes);
-+	phy_interface_zero(interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_1000BASEX, interfaces);
- }
- 
- #define SFP_QUIRK(_v, _p, _m, _f) \
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 0d0b5123b5fe..c7396ae9256b 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -2401,10 +2401,10 @@ void rtw_core_enable_beacon(struct rtw_dev *rtwdev, bool enable)
- 
- 	if (enable) {
- 		rtw_write32_set(rtwdev, REG_BCN_CTRL, BIT_EN_BCN_FUNCTION);
--		rtw_write32_clr(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
-+		rtw_write8_clr(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
- 	} else {
- 		rtw_write32_clr(rtwdev, REG_BCN_CTRL, BIT_EN_BCN_FUNCTION);
--		rtw_write32_set(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
-+		rtw_write8_set(rtwdev, REG_TXPAUSE, BIT_HIGH_QUEUE);
- 	}
- }
- 
-diff --git a/drivers/scsi/qla2xxx/qla_gs.c b/drivers/scsi/qla2xxx/qla_gs.c
-index d2bddca7045a..4cef9a349343 100644
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3356,9 +3356,6 @@ void qla_fab_scan_finish(scsi_qla_host_t *vha, srb_t *sp)
- 			    atomic_read(&fcport->state) == FCS_ONLINE) ||
- 				do_delete) {
- 				if (fcport->loop_id != FC_NO_LOOP_ID) {
--					if (fcport->flags & FCF_FCP2_DEVICE)
--						continue;
--
- 					ql_log(ql_log_warn, vha, 0x20f0,
- 					       "%s %d %8phC post del sess\n",
- 					       __func__, __LINE__,
-@@ -3625,8 +3622,8 @@ int qla_fab_async_scan(scsi_qla_host_t *vha, srb_t *sp)
- 	if (vha->scan.scan_flags & SF_SCANNING) {
- 		spin_unlock_irqrestore(&vha->work_lock, flags);
- 		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x2012,
--		    "%s: scan active\n", __func__);
--		return rval;
-+		    "%s: scan active for sp:%p\n", __func__, sp);
-+		goto done_free_sp;
- 	}
- 	vha->scan.scan_flags |= SF_SCANNING;
- 	if (!sp)
-@@ -3791,23 +3788,25 @@ int qla_fab_async_scan(scsi_qla_host_t *vha, srb_t *sp)
- 	return rval;
- 
- done_free_sp:
--	if (sp->u.iocb_cmd.u.ctarg.req) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.req,
--		    sp->u.iocb_cmd.u.ctarg.req_dma);
--		sp->u.iocb_cmd.u.ctarg.req = NULL;
--	}
--	if (sp->u.iocb_cmd.u.ctarg.rsp) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.rsp,
--		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
--		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
--	}
-+	if (sp) {
-+		if (sp->u.iocb_cmd.u.ctarg.req) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.req,
-+			    sp->u.iocb_cmd.u.ctarg.req_dma);
-+			sp->u.iocb_cmd.u.ctarg.req = NULL;
-+		}
-+		if (sp->u.iocb_cmd.u.ctarg.rsp) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.rsp,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
-+			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
-+		}
- 
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+		/* ref: INIT */
-+		kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+	}
- 
- 	spin_lock_irqsave(&vha->work_lock, flags);
- 	vha->scan.scan_flags &= ~SF_SCANNING;
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index e881d704b45d..b736575e2d9f 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -1859,15 +1859,6 @@ void qla2x00_handle_rscn(scsi_qla_host_t *vha, struct event_arg *ea)
- 	case RSCN_PORT_ADDR:
- 		fcport = qla2x00_find_fcport_by_nportid(vha, &ea->id, 1);
- 		if (fcport) {
--			if (ql2xfc2target &&
--			    fcport->flags & FCF_FCP2_DEVICE &&
--			    atomic_read(&fcport->state) == FCS_ONLINE) {
--				ql_dbg(ql_dbg_disc, vha, 0x2115,
--				       "Delaying session delete for FCP2 portid=%06x %8phC ",
--					fcport->d_id.b24, fcport->port_name);
--				return;
--			}
--
- 			if (vha->hw->flags.edif_enabled && DBELL_ACTIVE(vha)) {
- 				/*
- 				 * On ipsec start by remote port, Target port
-@@ -2471,8 +2462,23 @@ qla24xx_handle_plogi_done_event(struct scsi_qla_host *vha, struct event_arg *ea)
- 	    ea->sp->gen1, fcport->rscn_gen,
- 	    ea->data[0], ea->data[1], ea->iop[0], ea->iop[1]);
- 
--	if ((fcport->fw_login_state == DSC_LS_PLOGI_PEND) ||
--	    (fcport->fw_login_state == DSC_LS_PRLI_PEND)) {
-+	if (fcport->fw_login_state == DSC_LS_PLOGI_PEND) {
-+		ql_dbg(ql_dbg_disc, vha, 0x20ea,
-+		    "%s %d %8phC Remote is trying to login\n",
-+		    __func__, __LINE__, fcport->port_name);
-+		/*
-+		 * If we get here, there is port thats already logged in,
-+		 * but it's state has not moved ahead. Recheck with FW on
-+		 * what state it is in and proceed ahead
-+		 */
-+		if (!N2N_TOPO(vha->hw)) {
-+			fcport->fw_login_state = DSC_LS_PRLI_COMP;
-+			qla24xx_post_gpdb_work(vha, fcport, 0);
-+		}
-+		return;
-+	}
-+
-+	if (fcport->fw_login_state == DSC_LS_PRLI_PEND) {
- 		ql_dbg(ql_dbg_disc, vha, 0x20ea,
- 		    "%s %d %8phC Remote is trying to login\n",
- 		    __func__, __LINE__, fcport->port_name);
-diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
-index ae2bea27a18a..38214f8e30fa 100644
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -1676,13 +1676,28 @@ qla2x00_async_event(scsi_qla_host_t *vha, struct rsp_que *rsp, uint16_t *mb)
- 
- 			/* Port logout */
- 			fcport = qla2x00_find_fcport_by_loopid(vha, mb[1]);
--			if (!fcport)
-+			if (!fcport) {
-+				ql_dbg(ql_dbg_async, vha, 0x5011,
-+					"Could not find fcport:%04x %04x %04x\n",
-+					mb[1], mb[2], mb[3]);
- 				break;
--			if (atomic_read(&fcport->state) != FCS_ONLINE)
-+			}
-+
-+			if (atomic_read(&fcport->state) != FCS_ONLINE) {
-+				ql_dbg(ql_dbg_async, vha, 0x5012,
-+					"Port state is not online State:0x%x \n",
-+					atomic_read(&fcport->state));
-+				ql_dbg(ql_dbg_async, vha, 0x5012,
-+					"Scheduling session for deletion \n");
-+				fcport->logout_on_delete = 0;
-+				qlt_schedule_sess_for_deletion(fcport);
- 				break;
-+			}
-+
- 			ql_dbg(ql_dbg_async, vha, 0x508a,
- 			    "Marking port lost loopid=%04x portid=%06x.\n",
- 			    fcport->loop_id, fcport->d_id.b24);
-+
- 			if (qla_ini_mode_enabled(vha)) {
- 				fcport->logout_on_delete = 0;
- 				qlt_schedule_sess_for_deletion(fcport);
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index d10389ee92ba..b08abdf5ebf4 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -1194,7 +1194,8 @@ qla2x00_wait_for_hba_ready(scsi_qla_host_t *vha)
- 	while ((qla2x00_reset_active(vha) || ha->dpc_active ||
- 		ha->flags.mbox_busy) ||
- 	       test_bit(FX00_RESET_RECOVERY, &vha->dpc_flags) ||
--	       test_bit(FX00_TARGET_SCAN, &vha->dpc_flags)) {
-+	       test_bit(FX00_TARGET_SCAN, &vha->dpc_flags) ||
-+	       (vha->scan.scan_flags & SF_SCANNING)) {
- 		if (test_bit(UNLOADING, &base_vha->dpc_flags))
- 			break;
- 		msleep(1000);
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index eed88aba2cfe..3e7bf76be22b 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -100,6 +100,8 @@ struct cqspi_st {
- 	bool			apb_ahb_hazard;
- 
- 	bool			is_jh7110; /* Flag for StarFive JH7110 SoC */
-+	refcount_t		refcount;
-+	refcount_t		inflight_ops;
- };
- 
- struct cqspi_driver_platdata {
-@@ -705,6 +707,9 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
- 	u8 *rxbuf_end = rxbuf + n_rx;
- 	int ret = 0;
- 
-+	if (!refcount_read(&cqspi->refcount))
-+		return -ENODEV;
-+
- 	writel(from_addr, reg_base + CQSPI_REG_INDIRECTRDSTARTADDR);
- 	writel(remaining, reg_base + CQSPI_REG_INDIRECTRDBYTES);
- 
-@@ -1021,6 +1026,9 @@ static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
- 	unsigned int write_bytes;
- 	int ret;
- 
-+	if (!refcount_read(&cqspi->refcount))
-+		return -ENODEV;
-+
- 	writel(to_addr, reg_base + CQSPI_REG_INDIRECTWRSTARTADDR);
- 	writel(remaining, reg_base + CQSPI_REG_INDIRECTWRBYTES);
- 
-@@ -1412,11 +1420,29 @@ static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
- static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
- {
- 	int ret;
-+	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
-+
-+	if (refcount_read(&cqspi->inflight_ops) == 0)
-+		return -ENODEV;
-+
-+	if (!refcount_read(&cqspi->refcount))
-+		return -EBUSY;
-+
-+	refcount_inc(&cqspi->inflight_ops);
-+
-+	if (!refcount_read(&cqspi->refcount)) {
-+		if (refcount_read(&cqspi->inflight_ops))
-+			refcount_dec(&cqspi->inflight_ops);
-+		return -EBUSY;
-+	}
- 
- 	ret = cqspi_mem_process(mem, op);
- 	if (ret)
- 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
- 
-+	if (refcount_read(&cqspi->inflight_ops) > 1)
-+		refcount_dec(&cqspi->inflight_ops);
-+
- 	return ret;
- }
- 
-@@ -1847,6 +1873,9 @@ static int cqspi_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	refcount_set(&cqspi->refcount, 1);
-+	refcount_set(&cqspi->inflight_ops, 1);
-+
- 	ret = devm_request_irq(dev, irq, cqspi_irq_handler, 0,
- 			       pdev->name, cqspi);
- 	if (ret) {
-@@ -1899,6 +1928,11 @@ static void cqspi_remove(struct platform_device *pdev)
- {
- 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
- 
-+	refcount_set(&cqspi->refcount, 0);
-+
-+	if (!refcount_dec_and_test(&cqspi->inflight_ops))
-+		cqspi_wait_idle(cqspi);
-+
- 	spi_unregister_controller(cqspi->host);
- 	cqspi_controller_enable(cqspi, 0);
- 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 78ebdf20c1ef..4703e2a93568 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1526,17 +1526,24 @@ static __net_init int nfsd_net_init(struct net *net)
- 	retval = nfsd_stat_counters_init(nn);
- 	if (retval)
- 		goto out_repcache_error;
-+
- 	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
- 	nn->nfsd_svcstats.program = &nfsd_program;
-+	if (!nfsd_proc_stat_init(net)) {
-+		retval = -ENOMEM;
-+		goto out_proc_error;
-+	}
-+
- 	nn->nfsd_versions = NULL;
- 	nn->nfsd4_minorversions = NULL;
- 	nfsd4_init_leases_net(nn);
- 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
- 	seqlock_init(&nn->writeverf_lock);
--	nfsd_proc_stat_init(net);
- 
- 	return 0;
- 
-+out_proc_error:
-+	nfsd_stat_counters_destroy(nn);
- out_repcache_error:
- 	nfsd_idmap_shutdown(net);
- out_idmap_error:
-diff --git a/fs/nfsd/stats.c b/fs/nfsd/stats.c
-index 9f606fa08bd4..0a629a18831f 100644
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -115,11 +115,11 @@ void nfsd_stat_counters_destroy(struct nfsd_net *nn)
- 	nfsd_percpu_counters_destroy(nn->counter, NFSD_STATS_COUNTERS_NUM);
- }
- 
--void nfsd_proc_stat_init(struct net *net)
-+struct proc_dir_entry *nfsd_proc_stat_init(struct net *net)
- {
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 
--	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
-+	return svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
- }
- 
- void nfsd_proc_stat_shutdown(struct net *net)
-diff --git a/fs/nfsd/stats.h b/fs/nfsd/stats.h
-index d2753e975dfd..b1f7d21cbcd1 100644
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -15,7 +15,7 @@ void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
- int nfsd_stat_counters_init(struct nfsd_net *nn);
- void nfsd_stat_counters_destroy(struct nfsd_net *nn);
--void nfsd_proc_stat_init(struct net *net);
-+struct proc_dir_entry *nfsd_proc_stat_init(struct net *net);
- void nfsd_proc_stat_shutdown(struct net *net);
- 
- static inline void nfsd_stats_rc_hits_inc(struct nfsd_net *nn)
-diff --git a/fs/nilfs2/sufile.c b/fs/nilfs2/sufile.c
-index 58ca7c936393..aa39cdce5993 100644
---- a/fs/nilfs2/sufile.c
-+++ b/fs/nilfs2/sufile.c
-@@ -1091,6 +1091,9 @@ int nilfs_sufile_trim_fs(struct inode *sufile, struct fstrim_range *range)
- 	else
- 		end_block = start_block + len - 1;
- 
-+	if (end_block < nilfs->ns_first_data_block)
-+		goto out;
-+
- 	segnum = nilfs_get_segnum_of_block(nilfs, start_block);
- 	segnum_end = nilfs_get_segnum_of_block(nilfs, end_block);
- 
-@@ -1188,6 +1191,7 @@ int nilfs_sufile_trim_fs(struct inode *sufile, struct fstrim_range *range)
- out_sem:
- 	up_read(&NILFS_MDT(sufile)->mi_sem);
- 
-+out:
- 	range->len = ndiscarded << nilfs->ns_blocksize_bits;
- 	return ret;
- }
-diff --git a/fs/smb/client/cached_dir.h b/fs/smb/client/cached_dir.h
-index bc8a812ff95f..96697c78b3a6 100644
---- a/fs/smb/client/cached_dir.h
-+++ b/fs/smb/client/cached_dir.h
-@@ -34,10 +34,10 @@ struct cached_fid {
- 	struct list_head entry;
- 	struct cached_fids *cfids;
- 	const char *path;
--	bool has_lease:1;
--	bool is_open:1;
--	bool on_list:1;
--	bool file_all_info_is_valid:1;
-+	bool has_lease;
-+	bool is_open;
-+	bool on_list;
-+	bool file_all_info_is_valid;
- 	unsigned long time; /* jiffies of when lease was taken */
- 	struct kref refcount;
- 	struct cifs_fid fid;
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index 80050b217898..598601a4bf92 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -126,21 +126,21 @@ static int __process_request(struct ksmbd_work *work, struct ksmbd_conn *conn,
- andx_again:
- 	if (command >= conn->max_cmds) {
- 		conn->ops->set_rsp_status(work, STATUS_INVALID_PARAMETER);
--		return SERVER_HANDLER_CONTINUE;
-+		return SERVER_HANDLER_ABORT;
- 	}
- 
- 	cmds = &conn->cmds[command];
- 	if (!cmds->proc) {
- 		ksmbd_debug(SMB, "*** not implemented yet cmd = %x\n", command);
- 		conn->ops->set_rsp_status(work, STATUS_NOT_IMPLEMENTED);
--		return SERVER_HANDLER_CONTINUE;
-+		return SERVER_HANDLER_ABORT;
- 	}
- 
- 	if (work->sess && conn->ops->is_sign_req(work, command)) {
- 		ret = conn->ops->check_sign_req(work);
- 		if (!ret) {
- 			conn->ops->set_rsp_status(work, STATUS_ACCESS_DENIED);
--			return SERVER_HANDLER_CONTINUE;
-+			return SERVER_HANDLER_ABORT;
- 		}
- 	}
- 
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index 08275db6446c..d05af46257cf 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -41,6 +41,7 @@ static struct ksmbd_transport_ops ksmbd_tcp_transport_ops;
- 
- static void tcp_stop_kthread(struct task_struct *kthread);
- static struct interface *alloc_iface(char *ifname);
-+static void ksmbd_tcp_disconnect(struct ksmbd_transport *t);
- 
- #define KSMBD_TRANS(t)	(&(t)->transport)
- #define TCP_TRANS(t)	((struct tcp_transport *)container_of(t, \
-@@ -219,7 +220,7 @@ static int ksmbd_tcp_new_connection(struct socket *client_sk)
- 	if (IS_ERR(handler)) {
- 		pr_err("cannot start conn thread\n");
- 		rc = PTR_ERR(handler);
--		free_transport(t);
-+		ksmbd_tcp_disconnect(KSMBD_TRANS(t));
- 	}
- 	return rc;
- 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 9f25cfd96f98..4b805d7f5769 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1859,16 +1859,26 @@ static void __reset_counters(struct pm_nl_pernet *pernet)
- static int mptcp_nl_cmd_flush_addrs(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct pm_nl_pernet *pernet = genl_info_pm_nl(info);
--	LIST_HEAD(free_list);
-+	struct list_head free_list;
- 
- 	spin_lock_bh(&pernet->lock);
--	list_splice_init(&pernet->local_addr_list, &free_list);
-+	free_list = pernet->local_addr_list;
-+	INIT_LIST_HEAD_RCU(&pernet->local_addr_list);
- 	__reset_counters(pernet);
- 	pernet->next_id = 1;
- 	bitmap_zero(pernet->id_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
- 	spin_unlock_bh(&pernet->lock);
--	mptcp_nl_remove_addrs_list(sock_net(skb->sk), &free_list);
-+
-+	if (free_list.next == &pernet->local_addr_list)
-+		return 0;
-+
- 	synchronize_rcu();
-+
-+	/* Adjust the pointers to free_list instead of pernet->local_addr_list */
-+	free_list.prev->next = &free_list;
-+	free_list.next->prev = &free_list;
-+
-+	mptcp_nl_remove_addrs_list(sock_net(skb->sk), &free_list);
- 	__flush_addrs(&free_list);
- 	return 0;
- }
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 120d9bd53321..a0a5d19fa850 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6615,7 +6615,7 @@ static int nft_setelem_catchall_insert(const struct net *net,
- 		}
- 	}
- 
--	catchall = kmalloc(sizeof(*catchall), GFP_KERNEL);
-+	catchall = kmalloc(sizeof(*catchall), GFP_KERNEL_ACCOUNT);
- 	if (!catchall)
- 		return -ENOMEM;
- 
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index 52cdfee17f73..7ca4f0d21fe2 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -535,7 +535,7 @@ nft_match_large_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
- 	struct xt_match *m = expr->ops->data;
- 	int ret;
- 
--	priv->info = kmalloc(XT_ALIGN(m->matchsize), GFP_KERNEL);
-+	priv->info = kmalloc(XT_ALIGN(m->matchsize), GFP_KERNEL_ACCOUNT);
- 	if (!priv->info)
- 		return -ENOMEM;
- 
-@@ -808,7 +808,7 @@ nft_match_select_ops(const struct nft_ctx *ctx,
- 		goto err;
- 	}
- 
--	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL);
-+	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL_ACCOUNT);
- 	if (!ops) {
- 		err = -ENOMEM;
- 		goto err;
-@@ -898,7 +898,7 @@ nft_target_select_ops(const struct nft_ctx *ctx,
- 		goto err;
- 	}
- 
--	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL);
-+	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL_ACCOUNT);
- 	if (!ops) {
- 		err = -ENOMEM;
- 		goto err;
-diff --git a/net/netfilter/nft_log.c b/net/netfilter/nft_log.c
-index 5defe6e4fd98..e35588137995 100644
---- a/net/netfilter/nft_log.c
-+++ b/net/netfilter/nft_log.c
-@@ -163,7 +163,7 @@ static int nft_log_init(const struct nft_ctx *ctx,
- 
- 	nla = tb[NFTA_LOG_PREFIX];
- 	if (nla != NULL) {
--		priv->prefix = kmalloc(nla_len(nla) + 1, GFP_KERNEL);
-+		priv->prefix = kmalloc(nla_len(nla) + 1, GFP_KERNEL_ACCOUNT);
- 		if (priv->prefix == NULL)
- 			return -ENOMEM;
- 		nla_strscpy(priv->prefix, nla, nla_len(nla) + 1);
-diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
-index 8c8eb14d647b..05cd1e6e6a2f 100644
---- a/net/netfilter/nft_meta.c
-+++ b/net/netfilter/nft_meta.c
-@@ -952,7 +952,7 @@ static int nft_secmark_obj_init(const struct nft_ctx *ctx,
- 	if (tb[NFTA_SECMARK_CTX] == NULL)
- 		return -EINVAL;
- 
--	priv->ctx = nla_strdup(tb[NFTA_SECMARK_CTX], GFP_KERNEL);
-+	priv->ctx = nla_strdup(tb[NFTA_SECMARK_CTX], GFP_KERNEL_ACCOUNT);
- 	if (!priv->ctx)
- 		return -ENOMEM;
- 
-diff --git a/net/netfilter/nft_numgen.c b/net/netfilter/nft_numgen.c
-index 7d29db7c2ac0..bd058babfc82 100644
---- a/net/netfilter/nft_numgen.c
-+++ b/net/netfilter/nft_numgen.c
-@@ -66,7 +66,7 @@ static int nft_ng_inc_init(const struct nft_ctx *ctx,
- 	if (priv->offset + priv->modulus - 1 < priv->offset)
- 		return -EOVERFLOW;
- 
--	priv->counter = kmalloc(sizeof(*priv->counter), GFP_KERNEL);
-+	priv->counter = kmalloc(sizeof(*priv->counter), GFP_KERNEL_ACCOUNT);
- 	if (!priv->counter)
- 		return -ENOMEM;
- 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index ebd0f704c863..c3ada6798d4a 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -610,6 +610,30 @@ static void *nft_pipapo_get(const struct net *net, const struct nft_set *set,
- 			 nft_genmask_cur(net), get_jiffies_64());
- }
- 
-+
-+/**
-+ * lt_calculate_size() - Get storage size for lookup table with overflow check
-+ * @groups:	Amount of bit groups
-+ * @bb:		Number of bits grouped together in lookup table buckets
-+ * @bsize:	Size of each bucket in lookup table, in longs
-+ *
-+ * Return: allocation size including alignment overhead, negative on overflow
-+ */
-+static ssize_t lt_calculate_size(unsigned int groups, unsigned int bb,
-+				 unsigned int bsize)
-+{
-+	ssize_t ret = groups * NFT_PIPAPO_BUCKETS(bb) * sizeof(long);
-+
-+	if (check_mul_overflow(ret, bsize, &ret))
-+		return -1;
-+	if (check_add_overflow(ret, NFT_PIPAPO_ALIGN_HEADROOM, &ret))
-+		return -1;
-+	if (ret > INT_MAX)
-+		return -1;
-+
-+	return ret;
-+}
-+
- /**
-  * pipapo_resize() - Resize lookup or mapping table, or both
-  * @f:		Field containing lookup and mapping tables
-@@ -628,6 +652,7 @@ static int pipapo_resize(struct nft_pipapo_field *f, int old_rules, int rules)
- 	union nft_pipapo_map_bucket *new_mt, *old_mt = f->mt;
- 	size_t new_bucket_size, copy;
- 	int group, bucket;
-+	ssize_t lt_size;
- 
- 	new_bucket_size = DIV_ROUND_UP(rules, BITS_PER_LONG);
- #ifdef NFT_PIPAPO_ALIGN
-@@ -643,10 +668,11 @@ static int pipapo_resize(struct nft_pipapo_field *f, int old_rules, int rules)
- 	else
- 		copy = new_bucket_size;
- 
--	new_lt = kvzalloc(f->groups * NFT_PIPAPO_BUCKETS(f->bb) *
--			  new_bucket_size * sizeof(*new_lt) +
--			  NFT_PIPAPO_ALIGN_HEADROOM,
--			  GFP_KERNEL);
-+	lt_size = lt_calculate_size(f->groups, f->bb, new_bucket_size);
-+	if (lt_size < 0)
-+		return -ENOMEM;
-+
-+	new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
- 	if (!new_lt)
- 		return -ENOMEM;
- 
-@@ -845,7 +871,7 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
- {
- 	unsigned long *new_lt;
- 	int groups, bb;
--	size_t lt_size;
-+	ssize_t lt_size;
- 
- 	lt_size = f->groups * NFT_PIPAPO_BUCKETS(f->bb) * f->bsize *
- 		  sizeof(*f->lt);
-@@ -855,15 +881,17 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
- 		groups = f->groups * 2;
- 		bb = NFT_PIPAPO_GROUP_BITS_LARGE_SET;
- 
--		lt_size = groups * NFT_PIPAPO_BUCKETS(bb) * f->bsize *
--			  sizeof(*f->lt);
-+		lt_size = lt_calculate_size(groups, bb, f->bsize);
-+		if (lt_size < 0)
-+			return;
- 	} else if (f->bb == NFT_PIPAPO_GROUP_BITS_LARGE_SET &&
- 		   lt_size < NFT_PIPAPO_LT_SIZE_LOW) {
- 		groups = f->groups / 2;
- 		bb = NFT_PIPAPO_GROUP_BITS_SMALL_SET;
- 
--		lt_size = groups * NFT_PIPAPO_BUCKETS(bb) * f->bsize *
--			  sizeof(*f->lt);
-+		lt_size = lt_calculate_size(groups, bb, f->bsize);
-+		if (lt_size < 0)
-+			return;
- 
- 		/* Don't increase group width if the resulting lookup table size
- 		 * would exceed the upper size threshold for a "small" set.
-@@ -874,7 +902,7 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
- 		return;
- 	}
- 
--	new_lt = kvzalloc(lt_size + NFT_PIPAPO_ALIGN_HEADROOM, GFP_KERNEL);
-+	new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
- 	if (!new_lt)
- 		return;
- 
-@@ -1150,7 +1178,7 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
- 		scratch = kzalloc_node(struct_size(scratch, map,
- 						   bsize_max * 2) +
- 				       NFT_PIPAPO_ALIGN_HEADROOM,
--				       GFP_KERNEL, cpu_to_node(i));
-+				       GFP_KERNEL_ACCOUNT, cpu_to_node(i));
- 		if (!scratch) {
- 			/* On failure, there's no need to undo previous
- 			 * allocations: this means that some scratch maps have
-@@ -1323,7 +1351,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 	struct nft_pipapo_match *new;
- 	int i;
- 
--	new = kmalloc(struct_size(new, f, old->field_count), GFP_KERNEL);
-+	new = kmalloc(struct_size(new, f, old->field_count), GFP_KERNEL_ACCOUNT);
- 	if (!new)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -1347,13 +1375,15 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 
- 	for (i = 0; i < old->field_count; i++) {
- 		unsigned long *new_lt;
-+		ssize_t lt_size;
- 
- 		memcpy(dst, src, offsetof(struct nft_pipapo_field, lt));
- 
--		new_lt = kvzalloc(src->groups * NFT_PIPAPO_BUCKETS(src->bb) *
--				  src->bsize * sizeof(*dst->lt) +
--				  NFT_PIPAPO_ALIGN_HEADROOM,
--				  GFP_KERNEL);
-+		lt_size = lt_calculate_size(src->groups, src->bb, src->bsize);
-+		if (lt_size < 0)
-+			goto out_lt;
-+
-+		new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
- 		if (!new_lt)
- 			goto out_lt;
- 
-@@ -1367,7 +1397,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 		if (src->rules > (INT_MAX / sizeof(*src->mt)))
- 			goto out_mt;
- 
--		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL);
-+		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL_ACCOUNT);
- 		if (!dst->mt)
- 			goto out_mt;
- 
-diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
-index 3e3ae29dde33..f77a5bf69911 100644
---- a/net/netfilter/nft_tunnel.c
-+++ b/net/netfilter/nft_tunnel.c
-@@ -503,13 +503,14 @@ static int nft_tunnel_obj_init(const struct nft_ctx *ctx,
- 			return err;
- 	}
- 
--	md = metadata_dst_alloc(priv->opts.len, METADATA_IP_TUNNEL, GFP_KERNEL);
-+	md = metadata_dst_alloc(priv->opts.len, METADATA_IP_TUNNEL,
-+				GFP_KERNEL_ACCOUNT);
- 	if (!md)
- 		return -ENOMEM;
- 
- 	memcpy(&md->u.tun_info, &info, sizeof(info));
- #ifdef CONFIG_DST_CACHE
--	err = dst_cache_init(&md->u.tun_info.dst_cache, GFP_KERNEL);
-+	err = dst_cache_init(&md->u.tun_info.dst_cache, GFP_KERNEL_ACCOUNT);
- 	if (err < 0) {
- 		metadata_dst_free(md);
- 		return err;
-diff --git a/tools/testing/selftests/net/mptcp/pm_netlink.sh b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-index 3528e730e4d3..c089d4e06d59 100755
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -127,6 +127,10 @@ id 8 flags signal 10.0.1.8" "id limit"
- ip netns exec $ns1 ./pm_nl_ctl flush
- check "ip netns exec $ns1 ./pm_nl_ctl dump" "" "flush addrs"
- 
-+ip netns exec $ns1 ./pm_nl_ctl add 10.0.1.1 flags unknown
-+check "ip netns exec $ns1 ./pm_nl_ctl dump" "id 1 flags  10.0.1.1" "ignore unknown flags"
-+ip netns exec $ns1 ./pm_nl_ctl flush
-+
- ip netns exec $ns1 ./pm_nl_ctl limits 9 1 2>/dev/null
- check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "rcv addrs above hard limit"
- 
-diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-index 234c267dd2aa..f586f1272bd7 100644
---- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-+++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-@@ -29,6 +29,8 @@
- #define IPPROTO_MPTCP 262
- #endif
- 
-+#define MPTCP_PM_ADDR_FLAG_UNKNOWN _BITUL(7)
-+
- static void syntax(char *argv[])
- {
- 	fprintf(stderr, "%s add|ann|rem|csf|dsf|get|set|del|flush|dump|events|listen|accept [<args>]\n", argv[0]);
-@@ -825,6 +827,8 @@ int add_addr(int fd, int pm_family, int argc, char *argv[])
- 					flags |= MPTCP_PM_ADDR_FLAG_BACKUP;
- 				else if (!strcmp(tok, "fullmesh"))
- 					flags |= MPTCP_PM_ADDR_FLAG_FULLMESH;
-+				else if (!strcmp(tok, "unknown"))
-+					flags |= MPTCP_PM_ADDR_FLAG_UNKNOWN;
- 				else
- 					error(1, errno,
- 					      "unknown flag %s", argv[arg]);
-@@ -1030,6 +1034,13 @@ static void print_addr(struct rtattr *attrs, int len)
- 					printf(",");
- 			}
- 
-+			if (flags & MPTCP_PM_ADDR_FLAG_UNKNOWN) {
-+				printf("unknown");
-+				flags &= ~MPTCP_PM_ADDR_FLAG_UNKNOWN;
-+				if (flags)
-+					printf(",");
-+			}
-+
- 			/* bump unknown flags, if any */
- 			if (flags)
- 				printf("0x%x", flags);
-diff --git a/tools/testing/vsock/control.c b/tools/testing/vsock/control.c
-index d2deb4b15b94..0066e0324d35 100644
---- a/tools/testing/vsock/control.c
-+++ b/tools/testing/vsock/control.c
-@@ -27,6 +27,7 @@
- 
- #include "timeout.h"
- #include "control.h"
-+#include "util.h"
- 
- static int control_fd = -1;
- 
-@@ -50,7 +51,6 @@ void control_init(const char *control_host,
- 
- 	for (ai = result; ai; ai = ai->ai_next) {
- 		int fd;
--		int val = 1;
- 
- 		fd = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
- 		if (fd < 0)
-@@ -65,11 +65,8 @@ void control_init(const char *control_host,
- 			break;
- 		}
- 
--		if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR,
--			       &val, sizeof(val)) < 0) {
--			perror("setsockopt");
--			exit(EXIT_FAILURE);
--		}
-+		setsockopt_int_check(fd, SOL_SOCKET, SO_REUSEADDR, 1,
-+				     "setsockopt SO_REUSEADDR");
- 
- 		if (bind(fd, ai->ai_addr, ai->ai_addrlen) < 0)
- 			goto next;
-diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
-index 751fe7c6632e..e67e26636f57 100644
---- a/tools/testing/vsock/util.c
-+++ b/tools/testing/vsock/util.c
-@@ -12,6 +12,7 @@
- #include <stdint.h>
- #include <stdlib.h>
- #include <signal.h>
-+#include <string.h>
- #include <unistd.h>
- #include <assert.h>
- #include <sys/epoll.h>
-@@ -420,3 +421,145 @@ unsigned long hash_djb2(const void *data, size_t len)
- 
- 	return hash;
- }
-+
-+/* Set "unsigned long long" socket option and check that it's indeed set */
-+void setsockopt_ull_check(int fd, int level, int optname,
-+			  unsigned long long val, char const *errmsg)
-+{
-+	unsigned long long chkval;
-+	socklen_t chklen;
-+	int err;
-+
-+	err = setsockopt(fd, level, optname, &val, sizeof(val));
-+	if (err) {
-+		fprintf(stderr, "setsockopt err: %s (%d)\n",
-+			strerror(errno), errno);
-+		goto fail;
-+	}
-+
-+	chkval = ~val; /* just make storage != val */
-+	chklen = sizeof(chkval);
-+
-+	err = getsockopt(fd, level, optname, &chkval, &chklen);
-+	if (err) {
-+		fprintf(stderr, "getsockopt err: %s (%d)\n",
-+			strerror(errno), errno);
-+		goto fail;
-+	}
-+
-+	if (chklen != sizeof(chkval)) {
-+		fprintf(stderr, "size mismatch: set %zu got %d\n", sizeof(val),
-+			chklen);
-+		goto fail;
-+	}
-+
-+	if (chkval != val) {
-+		fprintf(stderr, "value mismatch: set %llu got %llu\n", val,
-+			chkval);
-+		goto fail;
-+	}
-+	return;
-+fail:
-+	fprintf(stderr, "%s  val %llu\n", errmsg, val);
-+	exit(EXIT_FAILURE);
-+;
-+}
-+
-+/* Set "int" socket option and check that it's indeed set */
-+void setsockopt_int_check(int fd, int level, int optname, int val,
-+			  char const *errmsg)
-+{
-+	int chkval;
-+	socklen_t chklen;
-+	int err;
-+
-+	err = setsockopt(fd, level, optname, &val, sizeof(val));
-+	if (err) {
-+		fprintf(stderr, "setsockopt err: %s (%d)\n",
-+			strerror(errno), errno);
-+		goto fail;
-+	}
-+
-+	chkval = ~val; /* just make storage != val */
-+	chklen = sizeof(chkval);
-+
-+	err = getsockopt(fd, level, optname, &chkval, &chklen);
-+	if (err) {
-+		fprintf(stderr, "getsockopt err: %s (%d)\n",
-+			strerror(errno), errno);
-+		goto fail;
-+	}
-+
-+	if (chklen != sizeof(chkval)) {
-+		fprintf(stderr, "size mismatch: set %zu got %d\n", sizeof(val),
-+			chklen);
-+		goto fail;
-+	}
-+
-+	if (chkval != val) {
-+		fprintf(stderr, "value mismatch: set %d got %d\n", val, chkval);
-+		goto fail;
-+	}
-+	return;
-+fail:
-+	fprintf(stderr, "%s val %d\n", errmsg, val);
-+	exit(EXIT_FAILURE);
-+}
-+
-+static void mem_invert(unsigned char *mem, size_t size)
-+{
-+	size_t i;
-+
-+	for (i = 0; i < size; i++)
-+		mem[i] = ~mem[i];
-+}
-+
-+/* Set "timeval" socket option and check that it's indeed set */
-+void setsockopt_timeval_check(int fd, int level, int optname,
-+			      struct timeval val, char const *errmsg)
-+{
-+	struct timeval chkval;
-+	socklen_t chklen;
-+	int err;
-+
-+	err = setsockopt(fd, level, optname, &val, sizeof(val));
-+	if (err) {
-+		fprintf(stderr, "setsockopt err: %s (%d)\n",
-+			strerror(errno), errno);
-+		goto fail;
-+	}
-+
-+	 /* just make storage != val */
-+	chkval = val;
-+	mem_invert((unsigned char *)&chkval, sizeof(chkval));
-+	chklen = sizeof(chkval);
-+
-+	err = getsockopt(fd, level, optname, &chkval, &chklen);
-+	if (err) {
-+		fprintf(stderr, "getsockopt err: %s (%d)\n",
-+			strerror(errno), errno);
-+		goto fail;
-+	}
-+
-+	if (chklen != sizeof(chkval)) {
-+		fprintf(stderr, "size mismatch: set %zu got %d\n", sizeof(val),
-+			chklen);
-+		goto fail;
-+	}
-+
-+	if (memcmp(&chkval, &val, sizeof(val)) != 0) {
-+		fprintf(stderr, "value mismatch: set %ld:%ld got %ld:%ld\n",
-+			val.tv_sec, val.tv_usec, chkval.tv_sec, chkval.tv_usec);
-+		goto fail;
-+	}
-+	return;
-+fail:
-+	fprintf(stderr, "%s val %ld:%ld\n", errmsg, val.tv_sec, val.tv_usec);
-+	exit(EXIT_FAILURE);
-+}
-+
-+void enable_so_zerocopy_check(int fd)
-+{
-+	setsockopt_int_check(fd, SOL_SOCKET, SO_ZEROCOPY, 1,
-+			     "setsockopt SO_ZEROCOPY");
-+}
-diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
-index fb99208a95ea..a05438851919 100644
---- a/tools/testing/vsock/util.h
-+++ b/tools/testing/vsock/util.h
-@@ -50,4 +50,11 @@ void list_tests(const struct test_case *test_cases);
- void skip_test(struct test_case *test_cases, size_t test_cases_len,
- 	       const char *test_id_str);
- unsigned long hash_djb2(const void *data, size_t len);
-+void setsockopt_ull_check(int fd, int level, int optname,
-+			  unsigned long long val, char const *errmsg);
-+void setsockopt_int_check(int fd, int level, int optname, int val,
-+			  char const *errmsg);
-+void setsockopt_timeval_check(int fd, int level, int optname,
-+			      struct timeval val, char const *errmsg);
-+void enable_so_zerocopy_check(int fd);
- #endif /* UTIL_H */
-diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index 793d688cd4da..01ad8cfa9bde 100644
---- a/tools/testing/vsock/vsock_test.c
-+++ b/tools/testing/vsock/vsock_test.c
-@@ -503,17 +503,13 @@ static void test_seqpacket_msg_bounds_server(const struct test_opts *opts)
- 
- 	sock_buf_size = SOCK_BUF_SIZE;
- 
--	if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE,
--		       &sock_buf_size, sizeof(sock_buf_size))) {
--		perror("setsockopt(SO_VM_SOCKETS_BUFFER_MAX_SIZE)");
--		exit(EXIT_FAILURE);
--	}
-+	setsockopt_ull_check(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE,
-+			     sock_buf_size,
-+			     "setsockopt(SO_VM_SOCKETS_BUFFER_MAX_SIZE)");
- 
--	if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
--		       &sock_buf_size, sizeof(sock_buf_size))) {
--		perror("setsockopt(SO_VM_SOCKETS_BUFFER_SIZE)");
--		exit(EXIT_FAILURE);
--	}
-+	setsockopt_ull_check(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
-+			     sock_buf_size,
-+			     "setsockopt(SO_VM_SOCKETS_BUFFER_SIZE)");
- 
- 	/* Ready to receive data. */
- 	control_writeln("SRVREADY");
-@@ -648,10 +644,8 @@ static void test_seqpacket_timeout_client(const struct test_opts *opts)
- 	tv.tv_sec = RCVTIMEO_TIMEOUT_SEC;
- 	tv.tv_usec = 0;
- 
--	if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, (void *)&tv, sizeof(tv)) == -1) {
--		perror("setsockopt(SO_RCVTIMEO)");
--		exit(EXIT_FAILURE);
--	}
-+	setsockopt_timeval_check(fd, SOL_SOCKET, SO_RCVTIMEO, tv,
-+				 "setsockopt(SO_RCVTIMEO)");
- 
- 	read_enter_ns = current_nsec();
- 
-@@ -928,11 +922,8 @@ static void test_stream_poll_rcvlowat_client(const struct test_opts *opts)
- 		exit(EXIT_FAILURE);
- 	}
- 
--	if (setsockopt(fd, SOL_SOCKET, SO_RCVLOWAT,
--		       &lowat_val, sizeof(lowat_val))) {
--		perror("setsockopt(SO_RCVLOWAT)");
--		exit(EXIT_FAILURE);
--	}
-+	setsockopt_int_check(fd, SOL_SOCKET, SO_RCVLOWAT,
-+			     lowat_val, "setsockopt(SO_RCVLOWAT)");
- 
- 	control_expectln("SRVSENT");
- 
+I'm announcing the release of the 6.18.11 kernel.
+
+All users of the 6.18 kernel series must upgrade.
+
+The updated 6.18.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.18.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile                                            |    2 
+ drivers/base/base.h                                 |    9 
+ drivers/base/bus.c                                  |    2 
+ drivers/base/dd.c                                   |    2 
+ drivers/bluetooth/btusb.c                           |    2 
+ drivers/bus/fsl-mc/fsl-mc-bus.c                     |    6 
+ drivers/crypto/intel/iaa/iaa_crypto_main.c          |   12 
+ drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c   |    2 
+ drivers/crypto/omap-crypto.c                        |    2 
+ drivers/crypto/virtio/virtio_crypto_core.c          |    5 
+ drivers/crypto/virtio/virtio_crypto_skcipher_algs.c |    2 
+ drivers/gpio/gpio-omap.c                            |   22 
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c            |   38 +
+ drivers/net/wireless/realtek/rtl8xxxu/core.c        |    1 
+ drivers/net/wireless/realtek/rtw88/main.c           |    4 
+ drivers/pci/endpoint/pci-ep-cfs.c                   |   15 
+ drivers/scsi/qla2xxx/qla_gs.c                       |   41 -
+ drivers/scsi/qla2xxx/qla_init.c                     |   28 -
+ drivers/scsi/qla2xxx/qla_isr.c                      |   19 
+ drivers/scsi/qla2xxx/qla_os.c                       |    3 
+ fs/erofs/fileio.c                                   |    7 
+ fs/hfs/mdb.c                                        |   35 -
+ fs/hfs/super.c                                      |   10 
+ fs/nilfs2/sufile.c                                  |    4 
+ fs/smb/client/cached_dir.h                          |    8 
+ fs/smb/client/smbdirect.c                           |  523 +++++++++++++++-----
+ fs/smb/common/smbdirect/smbdirect_socket.h          |   18 
+ fs/smb/server/mgmt/user_session.c                   |    5 
+ fs/smb/server/mgmt/user_session.h                   |    1 
+ fs/smb/server/server.c                              |    6 
+ fs/smb/server/smb2pdu.c                             |   12 
+ fs/smb/server/transport_rdma.c                      |  147 +++++
+ fs/smb/server/transport_tcp.c                       |    3 
+ fs/xfs/scrub/btree.c                                |    7 
+ io_uring/io-wq.c                                    |   27 -
+ io_uring/io-wq.h                                    |    1 
+ io_uring/tctx.c                                     |   11 
+ sound/hda/codecs/conexant.c                         |    1 
+ 38 files changed, 798 insertions(+), 245 deletions(-)
+
+Ali Tariq (1):
+      wifi: rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
+
+Anil Gurumurthy (4):
+      scsi: qla2xxx: Validate sp before freeing associated memory
+      scsi: qla2xxx: Delay module unload while fabric scan in progress
+      scsi: qla2xxx: Free sp in error path to fix system crash
+      scsi: qla2xxx: Query FW again before proceeding with login
+
+Bibo Mao (2):
+      crypto: virtio - Add spinlock protection with virtqueue notification
+      crypto: virtio - Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req
+
+Bitterblue Smith (1):
+      wifi: rtw88: Fix alignment fault in rtw_core_enable_beacon()
+
+Chao Yu (1):
+      erofs: fix UAF issue for file-backed mounts w/ directio option
+
+Danilo Krummrich (1):
+      gpio: omap: do not register driver in probe()
+
+Darrick J. Wong (1):
+      xfs: fix UAF in xchk_btree_check_block_owner
+
+Edward Adam Davis (1):
+      nilfs2: Fix potential block overflow that cause system hang
+
+Greg Kroah-Hartman (1):
+      Linux 6.18.11
+
+Gui-Dong Han (2):
+      driver core: enforce device_lock for driver_match_device()
+      bus: fsl-mc: fix use-after-free in driver_override_show()
+
+Henrique Carvalho (2):
+      smb: client: split cached_fid bitfields to avoid shared-byte RMW races
+      smb: server: fix leak of active_num_conn in ksmbd_tcp_new_connection()
+
+Jeongjun Park (1):
+      drm/exynos: vidi: use ctx->lock to protect struct vidi_context member variables related to memory alloc/free
+
+Kees Cook (1):
+      crypto: omap - Allocate OMAP_CRYPTO_FORCE_COPY scatterlists correctly
+
+Li Chen (2):
+      io_uring/io-wq: add exit-on-idle state
+      io_uring: allow io-wq workers to exit when unused
+
+Liu Song (1):
+      PCI: endpoint: Avoid creating sub-groups asynchronously
+
+Mehdi Ben Hadj Khelifa (1):
+      hfs: ensure sb->s_fs_info is always cleaned up
+
+Namjae Jeon (2):
+      ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off reset in error paths
+      ksmbd: add chann_lock to protect ksmbd_chann_list xarray
+
+Shreyas Deodhar (1):
+      scsi: qla2xxx: Allow recovery for tape devices
+
+Stefan Metzmacher (20):
+      smb: smbdirect: introduce smbdirect_socket.recv_io.credits.available
+      smb: smbdirect: introduce smbdirect_socket.send_io.bcredits.*
+      smb: server: make use of smbdirect_socket.recv_io.credits.available
+      smb: server: let recv_done() queue a refill when the peer is low on credits
+      smb: server: make use of smbdirect_socket.send_io.bcredits
+      smb: server: fix last send credit problem causing disconnects
+      smb: server: let send_done handle a completion without IB_SEND_SIGNALED
+      smb: client: make use of smbdirect_socket.recv_io.credits.available
+      smb: client: let recv_done() queue a refill when the peer is low on credits
+      smb: client: let smbd_post_send() make use of request->wr
+      smb: client: remove pointless sc->recv_io.credits.count rollback
+      smb: client: remove pointless sc->send_io.pending handling in smbd_post_send_iter()
+      smb: client: port and use the wait_for_credits logic used by server
+      smb: client: split out smbd_ib_post_send()
+      smb: client: introduce and use smbd_{alloc, free}_send_io()
+      smb: client: use smbdirect_send_batch processing
+      smb: client: make use of smbdirect_socket.send_io.bcredits
+      smb: client: fix last send credit problem causing disconnects
+      smb: client: let smbd_post_send_negotiate_req() use smbd_post_send()
+      smb: client: let send_done handle a completion without IB_SEND_SIGNALED
+
+Takashi Iwai (1):
+      ALSA: hda/conexant: Add quirk for HP ZBook Studio G4
+
+Thorsten Blum (2):
+      crypto: iaa - Fix out-of-bounds index in find_empty_iaa_compression_mode
+      crypto: octeontx - Fix length check to avoid truncation in ucode_load_store
+
+Zenm Chen (1):
+      Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
+
 
