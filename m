@@ -1,165 +1,206 @@
-Return-Path: <stable+bounces-216657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wN5uM+CzkmmtwgEAu9opvQ
-	(envelope-from <stable+bounces-216657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 07:06:24 +0100
+	id KD93HPW1kmkLwwEAu9opvQ
+	(envelope-from <stable+bounces-216658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 07:15:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2F11410D7
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 07:06:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D63FF141153
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 07:15:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D37BA300B468
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 06:06:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F12DA300C01B
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 06:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECB12D4801;
-	Mon, 16 Feb 2026 06:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFB32248B3;
+	Mon, 16 Feb 2026 06:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WOyCHyyi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jPbAfU9f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDA62882BB
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 06:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771221978; cv=none; b=tMRjtaKx/LTnmxbL3JBpUbUT4tX2Wu+BwmQ0cVtnG4IldOk0QdXHaCbxOylTsJM14dqGrh2hyUk6PSCEcryh22S7FzVgpPFB8MfdubXYUulkNtzfrmQktPG2iUGxCrNNeJM3+6PIguDasjZH+8c026Pvk2JqK0+CkVVbngBRnVw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771221978; c=relaxed/simple;
-	bh=4YmefSX0GwRR0tYsar7+DiwN/P8tBU7V/nz8QCE6CBE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pUjmpqF0cokuK4a4GzEPZklwPCjgg+kwfA6l7k68KwqFKW8fWjDGT1OmG8nWXcyShJKDV5DIYyQEHXr6HOEp0kEIVksS4XSbnnKzs6K+shkjQ/EvuqsG6DewAbEPa8tu9PbiMqfNlx8huHvwkTGXjLVe3tvbXwN8gxR8NL3fIH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WOyCHyyi; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEE32D6401
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 06:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771222511; cv=pass; b=Q4M8rNUn7jV7UnJR07VBhm/kCBwjUa7fMZ/Vqvo48alVhyfmCHUXoGMe45uT9Pmvd4FH16bUvBzt81Azu8RLTRwuG+qj8Eb5XtvkSghszC8/8/KMIoddY+5rXNrpIhWS16i8Oe1qKAJyWiCJFzz4Yu3sFlMY/c6FvUb1bPl9EjI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771222511; c=relaxed/simple;
+	bh=HaSzBXUNN04aYNe53ChzspTUmhSMQPEgxnlRMM8HFwI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q84IPVY4MkC6zntaBFRpxomLdatnIHBML6gF32A7Q9TNKwyeNlv+pnBjiTjHIoxgQj9ZwU+h8pmBLXAQsMw8nkLbwnQgPRejRo+WG9meX71ltmZwBf2HDVPFhbblbMqZfzjfWsyU1hULx5EPhotZc0W4LmQyJevROQX4UqkSM14=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jPbAfU9f; arc=pass smtp.client-ip=74.125.224.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a9296b3926so18633055ad.1
-        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 22:06:16 -0800 (PST)
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-6497b819b07so285476d50.3
+        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 22:15:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771222509; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GtR/t7XsBnoIz/FZmKvozsv7fGszWxvlwgz916euuQSUXKkd4IkMixyJU5/qez6wOj
+         Gb4Imx6RrfiNup19ulEoOVNJ8/EZ9wl2rgORkOYVJRHIFlZTXmUxYtorKcANybk2Z5XA
+         ZDvZxQdXbyJJJjY/JVKpC9gKQZ6/klIXBXn8dml5kMXroprgIAxgxpz1Ym/fJpWiJu5Q
+         91FOIC4z1OJeEB8usJC+E2NCjW0g8VTEf3bN+LxnRMoqqEG38ohoDvL1DKgbb9fPdaLW
+         IRgntkPSk0ix7qdHc/8lkVWJlSBwpD/jNtwkyQBIUHU5u47ub4Fp0WIrH/1MAynCZiXt
+         qogg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7OLaxPGmMOUlM+H5QGZLEwi3fIBF1FV98gq1aRG1ib4=;
+        fh=IUMOx1z9QMNU5Hwyhdf/yjv77uIk5x25Z+rRCaZ/QyI=;
+        b=OH+aae/fZx0kM1Uzc5xAEa5+oot3YvsvPFYt00nJCdCTLr2hHt2C730rKbB3eipd2A
+         XIVJ4Uuoeb0ODvn7UQqIsjnXGqP5Mh294HbqYf0WfTm6TLoNzW1InsYdTW9jDmbMFk45
+         mjfxwGf5g/746oQXGk6SvrqmTprgrgl4NurzA6r+A4a0WpYr14YlkaoN3722iw9dH1cs
+         Cs6KXzYZsfrnzKMJENi5F7EdHydmKkGdLjMJcIdNhn//Ljvpkl963AJr+pKn6YGwLT+7
+         gm+Ozf1n974eYdEUymr/gfVEvZGmfdB97A5i2mRtMGnHYOzaB9fdkrJbdUyAlUsDf6I4
+         FzqA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771221976; x=1771826776; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+1+2hICCHy9jpCc/dQXjjfX/dwmXFH+Uwwb20tfSQEQ=;
-        b=WOyCHyyiuBQim8CjPJTuOULXbDHyKLR+v4PmezkoeeYzB4nYzJU4XthXIEnuVnV6YR
-         2HMDk4fn5/GNiXoQDVdY+dsJR32T0tCd4nnRTUTZGapaj1Wbe6+5ujZkgnb96KtPead1
-         5uSZuU5rJJ6PQIYqgIRwMSYGpflsE10LcIg/Wn8vvvgGFE8SsoMJiDI4aBibZYUup1Ju
-         JEnBz82Bt9QYEZF+tE8csICogr6Mfe8zhFWDLiezBKdDVl/MHE6PPgs94KWs+lELuKrQ
-         8mneu6JOqBiuu2rgevfBinzsCgKIFajpIRpYm3lQKGrPX91FAf3IKJW7fLKf1DXtAATH
-         XJ7A==
+        d=gmail.com; s=20230601; t=1771222509; x=1771827309; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7OLaxPGmMOUlM+H5QGZLEwi3fIBF1FV98gq1aRG1ib4=;
+        b=jPbAfU9fpOvTdNAOFKKMwY8S93s5YCtH+Ea7FyM5/d3WpyAg5b7pAQQ6i3xu+Woo2C
+         tndQrbO2jbts6slbUm1/pwb+recmUQXIV31abg2yztPyQnhuBAl3toY8KGf2eOKcyaO+
+         54UFzqNU3HuMa7KELjTrl4Lh4Th7HzikqK4km+BNzq6zdXsLnZZ4+LhaN0J+cgPMm4A7
+         jLTK7WGufzDQEFdE+DK8qj6Ci0w7vIKjeex51FXEBrC9SjVyEZnfiO9R0O3sWvSX3jJb
+         h/sGdyxChBCO8hO78FZONwz6F4iU574OXUka8zM4+kYrhkXY0LpINIRQdtZ9ZlumbILe
+         ldqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771221976; x=1771826776;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+1+2hICCHy9jpCc/dQXjjfX/dwmXFH+Uwwb20tfSQEQ=;
-        b=tT5iz4Tgs5Iq3SsPftOKocEfyPASnDJghRmuubG8/eSbSoBh0jUx7Id82o9mnr003Q
-         /2ls158O1aDTqGZUYzfmwfZSRDLzzR8ZcsqnCqIu70rXGR4hvv+aZKETClPLtBa21Hld
-         rtYwTH8e5+pcp5i5r+B5K5/ka7dGH82eyfjTC8VJUHO+IDCI+wmqflXzPE/rFjTMt/zs
-         x1m90rZu/tlNoMTpRGbUSA54aFz0XmH7nYbhqQJL6Tfsg+ucZcTw4v193EfS7hY425M3
-         2HGjqCC0cYDh9oUvA27ccJ9Wyn2RiDDr5IiTAL6DhihGLrQXAipEQnI8Mv7eKpWxXeC8
-         3mmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTOE3BWJT50krT9xoRNQJrf16z0G5Gd8ZFMJM1wR+RKj4AVNbAlUdVA4RabMm573GD4NKb6A0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ9KZ9XwozWb0yyh+VfHcjVxcnNVXxkOj7EiR7ueuhHbfvWfBE
-	oireCN1BFOuahmSrEA/LbR8Dw4klHJA929sVJc+1RXJrit1sMLtlvPeZ
-X-Gm-Gg: AZuq6aJ8JGqieJLQDYUCcEx0NYioC805tazQ8IMIZtgw02uut4lJIlW9kzvID0KHrUa
-	BgWrdUrfHoszICQBLcfJKqKpDCjRy4uc1YnO376HA2PnV7s05+vluoDEHfZPKnGBNVGwJwhaQtT
-	BxHsl1qzpKfPnXIK7Fe7VBvPqkevzgq55RlHCEz3GBUhU4D8tKgG3NyvQVWtduK632HsFlHAFaA
-	7fRDfs4A7b0fZHK7BVqdh09LKZQ027845352ZZmsRyUptGjFrrG8snTO/IwjZbLecd2k6r8gHEq
-	Wr8p27uUQ7S6lR+swdW2we8L66xJSsfVUrJoc63z18PHOL3fitNMKzcEXirhoQAjWZj3r76kR+7
-	qxq/b4+3Q13LoLQDiyO04o8yUJt4//iMe2QgwKzwuMoD1wlo80Dc0xvSAXIPOwDP2eWujGSLlyR
-	8Kf94aG3uoK6rl5x/Cjd+YoCDpuy2vTeAVU7nSPWwqoYQnxgW0NJlQg3AZUjnib5CTkTvhhQ==
-X-Received: by 2002:a17:903:247:b0:2a9:634d:de98 with SMTP id d9443c01a7336-2ab5055e59dmr101213855ad.23.1771221976325;
-        Sun, 15 Feb 2026 22:06:16 -0800 (PST)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1aadd47csm57750265ad.65.2026.02.15.22.06.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Feb 2026 22:06:15 -0800 (PST)
-Date: Mon, 16 Feb 2026 14:06:09 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Barry Song <21cnbao@gmail.com>
-Cc: kasong@tencent.com, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, "open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, 
-	Carsten Grohmann <carstengrohmann@gmx.de>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mm, swap: speed up hibernation allocation and
- writeout
-Message-ID: <aZKzUoZLp_3lK1s2@KASONG-MC4>
-References: <20260216-hibernate-perf-v3-0-74e025091145@tencent.com>
- <20260216-hibernate-perf-v3-1-74e025091145@tencent.com>
- <CAGsJ_4zTCnL-bYN+nMXJEDPqHtF3hgiyHwyCoTc+nb-t6wouRg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1771222509; x=1771827309;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7OLaxPGmMOUlM+H5QGZLEwi3fIBF1FV98gq1aRG1ib4=;
+        b=Xyx5V7RiYZ6WttT4sWWQZDZRhokdn4LoNtd9wUZ9g9v0cgiUoCAcXFiGbxCtbi/5pp
+         nMMYdMuHvsa7pXiJQwBoVB0EOtwH0xPoYSNwJAqiUKPuo72p3sw+gMSf4UbA1I59xLUq
+         ATOJE2LUqEVIWaT+DAyi01g5kkIz9ElQ1n6fc63IyZV+9poaFtWToIzPc6Cuu6JVEDXf
+         FwLgMCjUFDs7l2sz0AU6hYd49tlo91K7qrEOCcUIehKpmDVu9eTL+Wqk498FU+eAdTe8
+         uBIHdJL1H0mjPCN7ZCiIn8S1NFDnoEWo0RSzBNbLJQwWRCF54ckJ7pnyDj0IPmbixchU
+         UPBw==
+X-Forwarded-Encrypted: i=1; AJvYcCWkmjVoRKBJrgX6ChQFYQ8Go9nM1/9TS/74BxSWMlZ4Dmi749+lh37Pe4lYy11TwPfXSOJEI1E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywj6ngn6NrE63sKnu1UKeGhDaS5Wz9R1dfO0+FUUbL4/wws0J1n
+	Me7sZYOZL6Vplr+15FUfsbMQ1YzDe9m3ghVafBrU/NseazJcDlHfx7XWnevPEZXR7tawP5sxgtu
+	WFDPP1sR2fTmbOytz7MONCV2vVoxaeXs=
+X-Gm-Gg: AZuq6aLOeQ5chBGPiuCfzOs/OZGjgSwrbuFskgqo869BfgvJ4ewYet9kkj/HPtXoauU
+	aFgbagIx4LGanBNmxIalDdPftiprOZAF1N+8TJR0SrlUlmoBseSrIOatkx2K6AKqW3XT5nuf/0R
+	wWGFkMpzSmsw17SDY3U9V/OcdJS8JW8NcFoId5BRux5i4Efb7kPZnRerqGL/4cv91mcOlzb9CZH
+	a7b/CJ/6MUZG8B1s5gT70ke8favl6egXrK/wjzl/Q7AxXeYRGSmOiaCRc5+thkCQHmEgR7wgPre
+	2Gy7
+X-Received: by 2002:a05:690e:688:b0:649:af59:a1c4 with SMTP id
+ 956f58d0204a3-64c14b2f43cmr5633576d50.2.1771222509351; Sun, 15 Feb 2026
+ 22:15:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGsJ_4zTCnL-bYN+nMXJEDPqHtF3hgiyHwyCoTc+nb-t6wouRg@mail.gmail.com>
+References: <20260215124125.465162-2-thorsten.blum@linux.dev>
+ <CAFXKEHbCrp57ruvCF2TXXcnoJF93Z5bdUd7Nt5WtM9_abtc66w@mail.gmail.com> <2E9C85C9-AD05-4BB3-A945-5ADECCB5C7E4@linux.dev>
+In-Reply-To: <2E9C85C9-AD05-4BB3-A945-5ADECCB5C7E4@linux.dev>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Mon, 16 Feb 2026 07:14:33 +0100
+X-Gm-Features: AZwV_QhV-rE-2L6EhZdu8wVKACqD128xWZDEOzyJLFfwFvFndTo9tJvFuP2QOSc
+Message-ID: <CAFXKEHb+D__WYugjdbqUSSnubfsOeibfH-Q33eJGjG3kvfndwg@mail.gmail.com>
+Subject: Re: [PATCH] crypto: atmel-sha204a - Fix OTP sysfs read and error handling
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	stable@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216657-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[tencent.com,kvack.org,linux-foundation.org,kernel.org,huaweicloud.com,gmail.com,redhat.com,carstengrohmann.de,vger.kernel.org,gmx.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216658-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ryncsn@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 1C2F11410D7
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lrubusch@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: D63FF141153
 X-Rspamd-Action: no action
 
-On Mon, Feb 16, 2026 at 04:43:40AM +0800, Barry Song wrote:
-> > @@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
-> >         if (get_swap_device_info(si)) {
-> >                 if (si->flags & SWP_WRITEOK) {
-> >                         /*
-> > -                        * Grab the local lock to be compliant
-> > -                        * with swap table allocation.
-> > +                        * Try the local cluster first if it matches the device. If
-> > +                        * not, try grab a new cluster and override local cluster.
-> >                          */
-> >                         local_lock(&percpu_swap_cluster.lock);
-> > -                       offset = cluster_alloc_swap_entry(si, NULL);
-> > +                       pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
-> > +                       pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
-> > +                       if (pcp_si == si && pcp_offset) {
-> > +                               ci = swap_cluster_lock(si, pcp_offset);
-> > +                               if (cluster_is_usable(ci, 0))
-> > +                                       offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
-> > +                               else
-> > +                                       swap_cluster_unlock(ci);
-> > +                       }
-> > +                       if (!offset)
-> 
-> I assume you mean SWAP_ENTRY_INVALID? Would that be more readable?
+Hi Thorsten,
 
-Yes, it's very common in swapfile.c to check !offset since
-SWAP_ENTRY_INVALID is zero. But I agree checking SWAP_ENTRY_INVALID
-is more readable and maintainable, I'll change to SWAP_ENTRY_INVALID,
-also use this macro more in further codes.
+On Sun, Feb 15, 2026 at 10:48=E2=80=AFPM Thorsten Blum <thorsten.blum@linux=
+.dev> wrote:
+>
+> On 15. Feb 2026, at 22:09, Lothar Rubusch wrote:
+> > I tried to verify your patch on hardware today, unfortunately it did
+> > not work for me.
+> >
+> > My setup works with current atsha204a module in the below described way=
+. When
+> > trying to dump the OTP zone on exactly the same hardware with a patched=
+ module,
+> > it only prints '0' and nothing more, see below.
+> >
+> > [...]
+>
+> Hi Lothar,
+>
+> thank you for your feedback. I made a small mistake in the return value
+> where I forgot to add the previous length 'len'. Sorry about that!
+>
+> Unfortunately, I don't have the hardware right now to test this - could
+> you try if it works with the following change?
+>
+> Thanks,
+> Thorsten
+>
+>
+> diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204=
+a.c
+> index 793c8d739a0a..431672517dba 100644
+> --- a/drivers/crypto/atmel-sha204a.c
+> +++ b/drivers/crypto/atmel-sha204a.c
+> @@ -134,7 +134,7 @@ static ssize_t otp_show(struct device *dev,
+>
+>         for (i =3D 0; i < OTP_ZONE_SIZE; i++)
+>                 len +=3D sysfs_emit_at(buf, len, "%02X", otp[i]);
+> -       return sysfs_emit_at(buf, len, "\n");
+> +       return len + sysfs_emit_at(buf, len, "\n");
+> }
+> static DEVICE_ATTR_RO(otp);
+>
 
-Thanks!
+This would work. I'd squash this fixup together with the proposed
+patch and resubmit
+a fixed version.
+
+8<-------------------------------------------------------------->8
+root@dut02:~/atsha204a-modif# insmod atmel-i2c.ko
+root@dut02:~/atsha204a-modif# insmod atmel-sha204a.ko
+root@dut02:~/atsha204a-modif# cat /sys/bus/i2c/devices/1-0064/atsha204a/otp
+0001ED86032D0002154C033750FFFFFF20B0F703DB0CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF=
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+8<-------------------------------------------------------------->8
+
+Best,
+L
 
