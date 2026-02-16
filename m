@@ -1,267 +1,456 @@
-Return-Path: <stable+bounces-216648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDvdMDRgkmmUtQEAu9opvQ
-	(envelope-from <stable+bounces-216648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 01:09:24 +0100
+	id 2G8YLNVvkmnftwEAu9opvQ
+	(envelope-from <stable+bounces-216649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 02:16:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 231771406F6
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 01:09:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706851408E3
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 02:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 871403001B70
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 00:06:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DD5EF300AC3F
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 01:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2ED72AD37;
-	Mon, 16 Feb 2026 00:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5044821257E;
+	Mon, 16 Feb 2026 01:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="HqvX0NIf"
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="c7biDVNS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f227.google.com (mail-yw1-f227.google.com [209.85.128.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11021131.outbound.protection.outlook.com [40.107.74.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B716625
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 00:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C5C1E2834;
+	Mon, 16 Feb 2026 01:15:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.131
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771200378; cv=pass; b=bPXMt1eHHXuI74zkNsuA9ve4b3jeNDvtUArRU2CdY+I3D+OmFJ9pWOoWjSP3cozOSTWk6LDBXFV3mHdFz+dEwGdDAzle++mcglcGBI470HcttLlGYttXYck4OWZUcXcNCiNE4nqFHpRzhTjFtwbz6uYbpOmDa6Ld5xjgXcHNaGU=
+	t=1771204560; cv=fail; b=U6gwDIzhfQeofuIeIGhPDAcm8ydSpSzao7b4jXsMvFVjVTh7JJDikytVA4Zxlbx00Lxdyu7Mfl6vZuQ4Hu+ueDjnaQVjvwvo4dJx0cQhHR7Try8ZiHs9fwiw2l4uG1ouDWgA9UeO8CAt7PndsTFgxGPsJFyfkgMibGiOmPis6gE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771200378; c=relaxed/simple;
-	bh=Dr1KWNAuRDOulMLc8w+lzLoSt8lrkb2jNBdZR42gWvk=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=lpqRiAVaVk9+QT8I2ePn5cIYMVY4ppM63y3S5UhZEWqXe+I/T39w3jQvBAzVvFnPxsSJ5Sdnjr29rMAS51WSTRe2Xy/6MnIKgEei9/rDqw/niUcpKkvneMSUup3AP4dHFIAo+OfQDQNZgajpIEyQnzjE/rvkFSMLWT6PQuKZsmo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=HqvX0NIf; arc=pass smtp.client-ip=209.85.128.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-yw1-f227.google.com with SMTP id 00721157ae682-7964f1405a0so27544527b3.1
-        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 16:06:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771200376; x=1771805176;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WifWIe4gCYXTyj3CSC85WTGTnQxnGiSL/QIqHzjf7Eo=;
-        b=DEvLk8D/otBDv5vo1LhhbZgxU3egZ4tJHwRfgYwbUxgi/9lmkf3BXtChzUt5Y6K81X
-         W4AE7ajcdvonGshmlFAzvvW2KfsaWSg9exBvhsjoVwHK8ign6f3Xlb76PldWNptTXwQW
-         NQv/KQQMzVrvhuyFPmaZX5hiqfbTnzV3hkZONVLLalWIW+PbFZYw/87K3xGOQnEWGZNG
-         NgMF25ncGJwtnqpSrX3x9lXxCGE1MQrDuVkohWqun5CuoJwQSvBeuDOoeCSeUohnkiyb
-         OS2S2pXFdzMZMSjLR7jqJvQn/qRSyQsaRkqkEfeELPqKML+B/1wbNTVOmjHsCYRNx3Sv
-         lAqA==
-X-Gm-Message-State: AOJu0YwAA2IM1to1EXTA9MYU0QwR015Q0b7hU1TmB6KQF5wusOBsgdbo
-	1H0qvV8wHOczmIewd9X/gIwfdZrU24vc7vLdMhvbqVAhud0i5J/wpfeLp+v4trt5tgZ92hqQFTA
-	R+RerT7EL0ckjNk8XUgyyyqVEDDCtCOOKDeLsQkXojZBf+KOM7vaBeVj1+CxYOw2h8J0eee/0Y6
-	nB2xQISQOXWp66t4/3TurrYgYOt+cMBfTe7sK0JT2sGWyBfGT7HntvPk4KcrhL3SrvCteXjAFI3
-	f+5SAeXTOA=
-X-Gm-Gg: AZuq6aKLgbdqqu7MH0h/WKzuLLXjkY805sQYRGx6/Bdc9Yc1ZP0jgPibFgtgv5yNBr2
-	JatdRrmtuq97wPADwVmwGp4IhGIdYRMAoAZo8YmiAwy4HU7WhkiPV4W0iOu+X0bCsE6zm2pGE7H
-	p9aYHfUYxYeOaM+ODSwcxdTNMUPFsiwcF5mLAO0YT4RglHFX93D/l1apLssdJbWFHQOofCan1HO
-	7m8enJWm1AGlBakTrO8wAk1bDGjQPJZLIKp0QH1Vro9nci7UrX13cH1zB72pDg2rs88cBJ4sByM
-	q1toX+UZwmTgN5V/lGfq7RYY75gbGeExhwED00lKHxyBXX5mQi0T0xWFr9Y/lWJAuLf3CkRXqSl
-	Xu7dLe0ay6BVKFBMLCcegcEPs1+18Ya4TIQ42D9r+VyOzdum5d2kD99drwt4R/hA9jaDNGK4+fT
-	qf9gltMa6oVilpkIxzErjoGzYtFXdb86Lr7sDCD2CLqAnJOV+jfg+CN4fNmgQ=
-X-Received: by 2002:a05:690c:4a13:b0:796:6e88:30f8 with SMTP id 00721157ae682-797ac5d7eb6mr48530767b3.35.1771200376415;
-        Sun, 15 Feb 2026 16:06:16 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-7966c25f4f1sm13909037b3.27.2026.02.15.16.06.15
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 15 Feb 2026 16:06:16 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-b8842248611so325093566b.0
-        for <stable@vger.kernel.org>; Sun, 15 Feb 2026 16:06:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771200374; cv=none;
-        d=google.com; s=arc-20240605;
-        b=g3/UV0lOr9UEDYupsHtQSKvl+KW5rl+PMUNaCTGNJz11PbOb1U2k88syRBdanuSLZV
-         zHs/MIFco2V0l3PjvhEnwtIRWidSo6ajgI9P9OKNeT/iY9nZuILsjwO7uoGfbwEu7wif
-         quZpHQZFBpT4/7wl7b5GlY2OF/q72v1CHKGf/Kp77zRK0wIdp9DzKilmpdHw0TGCqQeb
-         ySWSKJQNRUZbbxyye9aCg8vkvg9IU+by5TqpKJkD0GkASlpcdwjEsT/BVHrxcNzJ7jcY
-         eHdD9rooh99YHVbLQ/D1A3oborw9iOn803ha1h9eCxBBX0r29fyD9cUnII0E1U3C4/tH
-         VNnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=WifWIe4gCYXTyj3CSC85WTGTnQxnGiSL/QIqHzjf7Eo=;
-        fh=RvEWwL4CdzthXqFPrJY1v5EhszSUJtREhzms1oh7XMQ=;
-        b=VPM6wwQZMc+V2K0hC3uXjJFA5cxS3j6ErnaGSVkH/oLm9cMc23P5XrOWc+EmkSOfTZ
-         yr5pEb5rGMXZD8zqJf3/nTj8++tFlD5wqcg2rk0Ksz8oL4a6K8Tl45GfKWXm/Fc5yBaR
-         Za5fKQ/Uo7qmYuhjsTB03GqS2jG79v6KDIN7bndYLu84KAaNHqFt4JmELgbwLqrY41og
-         N09SptVzHM64RiIHMIzPBtZplvMXvkOcPzfqn61KQIYs9sA8dCNgxiol6or14FTmLNFU
-         o4GKz94JaJTV324pdlREZAdYLFAmqJV2D5IWqi65YgqSq47Cc9I+jPitLqZuoX+JLb93
-         RuxA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1771200374; x=1771805174; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=WifWIe4gCYXTyj3CSC85WTGTnQxnGiSL/QIqHzjf7Eo=;
-        b=HqvX0NIfcLbC3y28htKl5PeRazM2bmrYFbC7sQyFs5rlOmfRhD/IxG+TaHlCgDlhwI
-         jkro0nMuG8lKzOAMLUGtLAJU0IVxulQ9yUIP0p0gzEPf+W1QeOaDhhxs+K3gYHGrYOpF
-         KH7NxEcGh08G9VlR0aVvRn4dbACYqqRvFBwSo=
-X-Received: by 2002:a17:907:3da4:b0:b8e:7d43:ede9 with SMTP id a640c23a62f3a-b8fb44cc036mr451359166b.44.1771200373867;
-        Sun, 15 Feb 2026 16:06:13 -0800 (PST)
-X-Received: by 2002:a17:907:3da4:b0:b8e:7d43:ede9 with SMTP id
- a640c23a62f3a-b8fb44cc036mr451358566b.44.1771200373401; Sun, 15 Feb 2026
- 16:06:13 -0800 (PST)
+	s=arc-20240116; t=1771204560; c=relaxed/simple;
+	bh=mzZE+sEW9kuQjrlFoGTYPxUnHPKT1DvgFRPYh1ZwqWE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=YVIiMfWkLxswf6qwl6NHgUxVkZGZJL9IYWdGr8Z70ncz8jLA7zGeOFn7jdD1JjdgGaSTXAinVWT45gee1jmhVb0OgjlN2s/3Ob4/mMmq33Gf/CW7+Um8NWTwthH0uFyLM/A9l7BuWa3NI9U+XqTPhsUGgslu2y/G/TcpNtBl2W0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=c7biDVNS; arc=fail smtp.client-ip=40.107.74.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SSp+3eKaXatCIWE0PmkNwoJ/Mj+l2wMoHVoYvnn5Ch7IALfrvh840FQuQ4B18s1ym/QCcj/iX+tqVd7G5R52nUQrF4Oh0AgIwy2uuJwqqqY4hCf63djJ8YYyexauHpCXXyCPkraZkux3yYAI7B6T11AnvKSUv9rINNXpYJ/wsfzEd4HP81F1NgNofudAtZRTslrAbv8utQ5XqVQ/xwBbqw9Fsx/B32yM1EiMal8Pbd4223QZyOonWB1sJ4FecOQBpTAWS0TOBdObaX4zYeXAa/Z3z1kbjXPVucsY8NpxVQkhY3H8WI5aJ1e6qSGySqoTmZj6R+1LPGFMLVerxCx71A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VuQdlJP7iE/4gjxLUvqkyOCdebFpnRR/7SjK4z0/TEo=;
+ b=sSvOxu+KeejhtG4ILTlcNouF8+K1Wxcc3tEy4hJIjEY1qoaq46ALfGZCgjG/OSx8g6wps/Mup3msYBQRL9ptkVmyqB38WZn4dyYKszFJ5Y2DNHzT+1EdryHnHgH7XFDCwv0rBG3ZprA+UEyWWE9KTC18EDwd/A6WVDl8mVeogjxXAOUvaJT538SHbYz+YlWJ5/Y9rxbUN2l2qMdGzUodE9++IC8SX34bZNCs81HiJs2zZax99LjNi6+wxQ7JCVK1x89jlXPP+pSuuoVTB0Gx9FwGU/EPHDWMNi5A0mcot9vY7D7/sg9obONmyppppTOvMze4fHzWZntYL14ED0gsOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VuQdlJP7iE/4gjxLUvqkyOCdebFpnRR/7SjK4z0/TEo=;
+ b=c7biDVNSVINa/UcEWLN41jHISJxVB4L0ZQg5HFN0AGHqmr7PYPNzoUXfLodAM6yLW/LM18HfXO3JeMlHfB293XqVho6eOtxN6WILICQJ9vayXds6vVkD4ecOYHJ+ju0jdint4x3KOX/gV4DWmk6ydAX/glGXPFtl5wN2HYc2x2A=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by OS9P286MB4566.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:2fb::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Mon, 16 Feb
+ 2026 01:15:54 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9611.013; Mon, 16 Feb 2026
+ 01:15:54 +0000
+Date: Mon, 16 Feb 2026 10:15:52 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org, 
+	Niklas Cassel <cassel@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, jingoohan1@gmail.com, 
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.19-6.18] PCI: dwc: ep: Cache MSI outbound iATU
+ mapping
+Message-ID: <oxgnleyoexgrpii4qz3ikcyktmjojckn2ln7zlpkxfyqojnk4u@pgkrkefmudkv>
+References: <20260214212452.782265-1-sashal@kernel.org>
+ <20260214212452.782265-50-sashal@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260214212452.782265-50-sashal@kernel.org>
+X-ClientProxiedBy: TYWPR01CA0006.jpnprd01.prod.outlook.com
+ (2603:1096:400:a9::11) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Sun, 15 Feb 2026 16:06:01 -0800
-X-Gm-Features: AaiRm50xSD2_5z-IaGln0HxcGU_Ccp6PrQlP-mrZP14bm9vcphW0SP1HOYXP3Bk
-Message-ID: <CACKFLik3qQ46i3_wRpm0OnaNnMcMc-hVNrFt_0U9yzzjNrm4VA@mail.gmail.com>
-Subject: Request 2 bnxt_en patches for 6.12
-To: stable@vger.kernel.org
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000212e2b064ae5b969"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|OS9P286MB4566:EE_
+X-MS-Office365-Filtering-Correlation-Id: aac557b5-2b3f-4203-0a11-08de6cf8ee61
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|376014|366016|27256017;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VUdKU1VxZ2lseGpHMDZ5N2NUSjVGdnlzV0ExakJhM2p5MEZLdC9EVU1kMWg1?=
+ =?utf-8?B?QjhaZ0pnbGZ3S29veVpBZ3FWclBISTRibmtYL0dIcDB1b2UvS1ZWUmNhaERG?=
+ =?utf-8?B?TER3d25YcnhSeENkaHEvMC9QRG5PcFpYZytyVlR5SkdVTmdIT3FGUDVHaEZD?=
+ =?utf-8?B?SkRhd3QwVlpQSDZvbXhaZ3RKcHNLeGx1Um05Yk9Udi9wNktRWCtObldYUGhX?=
+ =?utf-8?B?Q05RL2l1aFZkY0xmTzdQakczVm94b0hudlhsMEdGbEwyczVyMUhaZzBnZ1hs?=
+ =?utf-8?B?MUgxWkNBWmFFTmsvdGE3SC9VRG9wOTRZR0hIWmNrTmhpNmE5RllJSStsaGZK?=
+ =?utf-8?B?Sm1rQ09RVFBXdFd1YVJGVFpraWM2NUkzeWRsV3ZGcDRCSEJtUXhlcUtzUWgv?=
+ =?utf-8?B?UnNBeWtqK1BJS0xzcjVLMFVORFQwZTZ4U21YdlEwYTVPNDd5TlZvR0d6clFs?=
+ =?utf-8?B?b3U1NUVJVnZDd01NdXpkdStLZnJXYXJXeUdCWkF6eUVRZnJ3NjlxVDYyMVVx?=
+ =?utf-8?B?SS9Vd1lOaC8wOVBKNEJUT1JDclUzS3NyTlVmTzRVeVhiK1lvUE1xeUROSTg5?=
+ =?utf-8?B?anRCakNwNVpsSlh2OFZyOEd5a002enljWlBrOFF4RUVla2xZY0NJYnpQQm5w?=
+ =?utf-8?B?Ui9xeEdUU0FqcytvU1p1K1JDSzhaVUJNU05FejdhWXFQdlB5ZGhMTjhEQllH?=
+ =?utf-8?B?aG9RNkoxY3NXVEowcVVIOTlzWjBmRXZmbGJpcVQ0dDI3TExTZGdxV1h0eVZj?=
+ =?utf-8?B?TWlQQXo0Q2NSVDF0NW1JK08rMytWNjJMMjRIYlgwL1pacGVSTWgwQlNpOVpz?=
+ =?utf-8?B?N20xM3dTVTdmb1FhVWNuTEZXbVByYmlVMytaWHZnaGJEbis0blZtRW0rcDV6?=
+ =?utf-8?B?QWxwY0FENjlSamFVaDcwa2EzZi9mNEZ3a3hSd003cDRBRklIYUFUMm91bUls?=
+ =?utf-8?B?MG5URUtJNFBJM3RkTmFQK1VOYm5aMFh3ZjBoZDF2S2o0QXowYzFnR3ZTd1pV?=
+ =?utf-8?B?NlY5OHgwSjNtOGRzeThNKy96cTRoNnpHeUhWVGticE8xQldXdThJa1d6eGd1?=
+ =?utf-8?B?UldXelhkRWpLM2c3NXk1M0xOTmVaNmtocUs4MVFHbmZEaC9OMDRHakZhK3M4?=
+ =?utf-8?B?TkdoWHRtVW9RdGNjbHppbGgxTVRTeklleEZ4OGo2SklyZDV2LzRzTTF2N1Nx?=
+ =?utf-8?B?ODJXUDdHYkdobGNrM3VRN1hkYkFjNW4wMXpVSUJzSFlsTG8zN1QwNFd4bm1a?=
+ =?utf-8?B?UW0xaSt0YXJIY2htZWdwMlFjTy81cytSSVlkNC8vdGFoOHZ0NTd5Q3QzRDY0?=
+ =?utf-8?B?Vll6MDRQTXU1RFVPRUJVNGZ3UG1lck42dmR6TEI2MEFaUzdYZGRSZE00a2dm?=
+ =?utf-8?B?d0dTV0hkVHZKWExZODZxSSs4VmFVb0xHRkNEamNhZmRiMFo5RkpVZE1YaG81?=
+ =?utf-8?B?UHo1SFZiTi9URktRajZxcDhMa2lEUDlKTEcrbnNOeFJkSGxvSWh2Z2JVSmdo?=
+ =?utf-8?B?NWlDM1JyanBzbVp5aXh1QnBHTElpWmNBT05SOS9DWGFidnR4WWFKemFGMTVo?=
+ =?utf-8?B?Z0Z6TkM0VjliVXB5SUFpM2NodFkrQkdXejE5dU5XR05TVjBSMmY3WWduQk5L?=
+ =?utf-8?B?MkJHbHJteWtvb1dCLzU2TFJIWnBZVitFK0Z6WDM3Mld5U3lqU3FITkQwd1Fm?=
+ =?utf-8?B?eWxMNzUySm5OOURHakdLYWN6SDJuSHZUc3RkcWF5NEFRSWROV01VSXV5K0dW?=
+ =?utf-8?B?anF0R0Y5NEJ4dFIvKzZVVFFBZVEvVEU2Q1pQamhuMXd6LzdRVTdwK0hZZ0RT?=
+ =?utf-8?B?WGQ4UlJ0Y21DdThEMjZmVFBTd1RIU0orUDc5QmdPUWpJVXl6ZWxYNGhFTnpF?=
+ =?utf-8?B?RlRhdGxyK3Uwc21hbXhuVVNhYjJLOXpRZ0htLzk2cHVzUFdBWTRRNnExSSts?=
+ =?utf-8?B?b0pkcVUvSmZRemdXSTNxYUFMQ1NyYzZwdjlSZ3E4c1FDdVBadERVR2VjVk5u?=
+ =?utf-8?B?eko3Y2VsbTlzNU9VZW5meElid3R0dTc0dWdIUkhOVWNyT08xTGp0WGlXVldm?=
+ =?utf-8?B?RGZhN1FvUU15YjdObmF4bkZ2aEtrRGhsM05LcU5FZEtlQmpDSDdoV3pNQTlv?=
+ =?utf-8?Q?HQR0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(366016)(27256017);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bGRZQzBBSUYxNHRsT1JJWTlLanNpUXVtZ1lwSGF6c0ZVY0lLZ0ltV3RtOGVz?=
+ =?utf-8?B?Y1VNdE9UUE5scXF5Z2o1RHhidTlSdG04S1VYZTdEQzRmQ3FCYWpnblhJSDdJ?=
+ =?utf-8?B?MjhqMjlXNCthMnBzRnhPU3I3akhtS1FnSFFBUkpjS3FBY09SQm9CMVgrcVVN?=
+ =?utf-8?B?OE5PSmNNalhZYkJJY0ZVN2ZXWDFUYlhCSllzTUU4YjBVZXRJL3lFVzRBNkJQ?=
+ =?utf-8?B?WndESXZEeVJFWWhheE5IQlhtbC9PTFRpaDV4TWJPekF6U2lKVTRySmFNMUNW?=
+ =?utf-8?B?VXdPN1VMVW5uQkp1N0tZU3N6azNEMGk0MzZaT0tPZkFrQWZSdDMyTVpsY0hZ?=
+ =?utf-8?B?ZXVnbENCSHBVTklrK1pRalBDc3ZkQnB4NEw1Zm9NNnZnUk1yY2xlaEtDZmlZ?=
+ =?utf-8?B?N0JxbjFpZXUxSnRPendXTnYzaCtPZHdFQzQrcnBpWFdpdjA5TFMwN1k3eHU1?=
+ =?utf-8?B?Yk9QblpQVi8rR1VOak8vNHl2M0t3ZEtnWnhWcnZ6YUJHN01zdTl3dzNUT0N6?=
+ =?utf-8?B?Z1NpU1Q1Z240YXNmNGNwYWt4YktseTNJRm0xcGhVbWtrem1GQTFjYWNzY2tz?=
+ =?utf-8?B?Z0pISE5tTDZjOStaaSt5RjRrUXlvcVJRbTJvOFJwZXNCYW5sQkpBMzlLcGtv?=
+ =?utf-8?B?MHAxQlhuT0tCUWRhSHo4SmZnU2hEL0JKdlp3UFJXUVlQc2J5YTdiSWZBc204?=
+ =?utf-8?B?eUsvVHNrNEZTOFI4UzZBZGlGR2h1ZHQ3WHNxRitpVERiWC9Lblk2MXFjNG5v?=
+ =?utf-8?B?dTVQYU5rSEdBV1pEM0NSdGh4YTZsY3JZbjk2TXNNOHg2WVFRL25SU09idFFh?=
+ =?utf-8?B?VVMwNEZCcmZIWlZISFhKbEZyT0k3cThIZmF5eXVCRXNrTW1sWW9hTEJVai9v?=
+ =?utf-8?B?bkxtTjJVdmhHeTVPc1kyOXZIUGxDUzBWNEJVT0dBMlF2ajBKZnZCaWc2dk4z?=
+ =?utf-8?B?STZkVm0zeXZHUXJuTHdhajJZeElmTE1SOHV3SlZVQWxkV25jZVdCUUw3bGdl?=
+ =?utf-8?B?WHRvSjBVS3hiNzllT0pYcGEvMHZ4c2F3UnFRRkVsL3c0UEU1VGw5elp6cUhR?=
+ =?utf-8?B?amR3OVdKSzVqVHBobURYdHhjMHpMMk9DZDhZVXZGL1VVMCtDUVZhSTBOVnNL?=
+ =?utf-8?B?OU5kM1JPb2N5WVR2WS84Y1hUMjM0NVBlNy8rbTNLMVFCSGU4MEdZQlZMQWJW?=
+ =?utf-8?B?bnIyazYybmdDVXZ4ZUk2TXVwODQ2MUIrQzV5SzJSaVRhQUtmQWZNYUxiR0J3?=
+ =?utf-8?B?Y0J0Z3kydFVCVXIxeUJjQ0xWNjVCbzVZUUNDeHAwVXA4QWxySDlKSHFOcFA3?=
+ =?utf-8?B?TXNjWTRiR1NwMkxDbEh2UHNjVG9TeUVlS29Tb0lraDd2a25GdTM4dUlOa1ZJ?=
+ =?utf-8?B?bW83K3JBcFFrcEtjYkxEbkl6bmxSTDdqa0xveUhMQ1JMVEl3Rk5mZitidC8x?=
+ =?utf-8?B?YzFGckNhSDB1MHFacHU5ajFBRmtCUVJTdFpCcFBlTURSYVdPeUd2aVJ3NnIz?=
+ =?utf-8?B?Vi9qNk5oaTFiTXJ5YmJJa3ZNUzJtTVFBREhUc2I2dTlVSmtsdWZkdHEvcTQv?=
+ =?utf-8?B?SVVKak8zK09sMnhYblQ4TDJrYlNWK3lxTW55OUhUa0plL01uNVd6cWdLT084?=
+ =?utf-8?B?MVBWN0JVcTdZNW1TWnN1emtQZjIvTGRwdU9uMCtwa1FRVGVsdmhKWW9XbE9r?=
+ =?utf-8?B?c0RyOVFWZUlISkRhREFCSWRHNENSMFROTXFtRndCMU9CUjd3NVVxa2oxU29M?=
+ =?utf-8?B?WitzREQ2WnUrYmg2SU9Qcm9UU1kvY3hWUnlsT1dialVpUW9jOHdFa0JqVURU?=
+ =?utf-8?B?TXZyWllkVi9lZzdBY3pXVmE4NlNWMlNSYUt1dERVc1NsaERZdEVJckhKdFFE?=
+ =?utf-8?B?VTlPWmlGdUpuZ09NY2pRZjMwZVp3TUdpSlUwcFFTaXRPWkJUR0Nzc0FtQWF6?=
+ =?utf-8?B?L2VaaHBBRmJidUNtU1R4dG1NY3dIdGduZ0pzdXVWZVE5MzZwcnNObFZzYXly?=
+ =?utf-8?B?SlU5SWdmRnhRUHU3Sm41QUdZWWYrTXlYZ1NJdU44Ym5vOTduenhHODNtd3RN?=
+ =?utf-8?B?U1V4RjRLczUxcFRDdGZYTWtRYmlFakpTWEZObXZPMEw2UE04RjNacXNmdXIy?=
+ =?utf-8?B?VUpvc2FXRFpjZU5TaTJGdlFwUEZ5alRtdmxYV3QvN1RLRW1XNHFWUEcwVUxr?=
+ =?utf-8?B?VjhrcHpEalhMQ3YrMU9XWVlKNjRNK0NzUTN2NnU0NmM0VnFoL1ZXNGFOWTJM?=
+ =?utf-8?B?dTdEbFJYSWltZUd6NnYyRDFKVGRJQURkQ2RhaGlyRUVFQkxMNlgzRWliTG10?=
+ =?utf-8?B?Yko5NzJhNGVETXovY1RoOHpuN0RnTkNBaG8xenV5MjZJK3Y3SUVXdzZ5VTNa?=
+ =?utf-8?Q?hLhCsrFBIVCrRyaOZSkZUremtrGcXqOBxZnpT?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: aac557b5-2b3f-4203-0a11-08de6cf8ee61
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 01:15:54.0839
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: agyJRj1yNAiEoGwVJOsHbHw9BSVgOx9IVeDaJO07VswrWcYwQ3ecSv2IdVi5Z59EatLFI4Xr7nOpYgQgKL5CVg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9P286MB4566
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_SMIME(-2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[valinux.co.jp,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[valinux.co.jp:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216649-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216648-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	HAS_ATTACHMENT(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[broadcom.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michael.chan@broadcom.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[den@valinux.co.jp,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[valinux.co.jp:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 231771406F6
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,valinux.co.jp:email,valinux.co.jp:dkim]
+X-Rspamd-Queue-Id: 706851408E3
 X-Rspamd-Action: no action
 
---000000000000212e2b064ae5b969
-Content-Type: text/plain; charset="UTF-8"
+On Sat, Feb 14, 2026 at 04:23:15PM -0500, Sasha Levin wrote:
+> From: Koichiro Den <den@valinux.co.jp>
+> 
+> [ Upstream commit 8719c64e76bf258cc8f44109740c854f2e2ead2e ]
+> 
+> dw_pcie_ep_raise_msi_irq() currently programs an outbound iATU window
+> for the MSI target address on every interrupt and tears it down again
+> via dw_pcie_ep_unmap_addr().
+> 
+> On systems that heavily use the AXI bridge interface (for example when
+> the integrated eDMA engine is active), this means the outbound iATU
+> registers are updated while traffic is in flight. The DesignWare
+> endpoint databook 5.40a - "3.10.6.1 iATU Outbound Programming Overview"
+> warns that updating iATU registers in this situation is not supported,
+> and the behavior is undefined.
+> 
+> Under high MSI and eDMA load this pattern results in occasional bogus
+> outbound transactions and IOMMU faults, on the RC side, such as:
+> 
+>   ipmmu-vmsa eed40000.iommu: Unhandled fault: status 0x00001502 iova 0xfe000000
+> 
+> followed by the system becoming unresponsive. This is the actual output
+> observed on Renesas R-Car S4, with its ipmmu_hc used with PCIe ch0.
+> 
+> There is no need to reprogram the iATU region used for MSI on every
+> interrupt. The host-provided MSI address is stable while MSI is enabled,
+> and the endpoint driver already dedicates a scratch buffer for MSI
+> generation.
+> 
+> Cache the aligned MSI address and map size, program the outbound iATU
+> once, and keep the window enabled. Subsequent interrupts only perform a
+> write to the MSI scratch buffer, avoiding dynamic iATU reprogramming in
+> the hot path and fixing the lockups seen under load.
+> 
+> dw_pcie_ep_raise_msix_irq() is not modified, as each vector can have a
+> different msg_addr, and because the msg_addr is allowed to be changed
+> while the vector is masked. Neither problem is easy to solve with the
+> current design. Instead, the plan is for the DWC vendor drivers to
+> transition to dw_pcie_ep_raise_msix_irq_doorbell(), which does not rely
+> on the iATU.
+> 
+> Signed-off-by: Koichiro Den <den@valinux.co.jp>
+> [cassel: improve commit message]
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+> Link: https://patch.msgid.link/20251222110144.3299523-2-cassel@kernel.org
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
 
-I'd like to request these 2 patches to be applied to the 6.12 stable kernel:
+Hi Sasha,
 
-8ff617513996 ("bnxt_en: hide CONFIG_DETECT_HUNG_TASK specific code")
-0fcad44a86bd ("bnxt_en: Change FW message timeout warning")
+Could you please hold off on backporting this patch until the follow-up
+regression fix:
 
-Without the patches, an annoying warning message is always logged when
-the bnxt_en driver is loaded for every device.  With the patches, the
-warning will be more restricted and logged when necessary.
+  [PATCH] PCI: dwc: ep: Fix regression in dw_pcie_ep_raise_msi_irq()
+  https://lore.kernel.org/all/20260210181225.3926165-2-cassel@kernel.org/
 
-Thanks.
+lands upstream, so the both commits can be taken together?
 
---000000000000212e2b064ae5b969
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+The original fix ("PCI: dwc: ep: Cache MSI outbound iATU mapping") addresses an
+issue that is only observable under high load, and had existed for a long time
+without being reported until I posted the original fix. However, it later turned
+out to introduce a regression that can lead to a system hang on some platform.
 
-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
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCB79vqn
-yesrHPXDZNyEyQTrMEC24N35t5Ast1R7urPIDzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjAyMTYwMDA2MTRaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQB8jFgtJjNwIJmYHugPtaxVreXnWXgJJui8llLsiukx
-6+vnlXRUA9VGwxcWrdlOIZZlu9yP76AF2F9iiCmTAiY6s8b4gFef7b0jTeTp8HXNJbV3Mpg1/oc9
-4MwNCYtKjtGC/9JdWRq9N6c0jHZFn1wM0gQRmYtX88LdC9uB6mAyPNADPpK79it1euti1OoMcbag
-OZ181AgWONuFOij7dCZ/BEYmP0//uXg/A04wkGCb+yrE/4jkpwCKJ1v87qJBwFwQimgZ82qIiCG6
-3ucI4uu21tIkYlT3lhCxr25LrBabs564ZTiICeCCNqSu2wTFU+4i3yZP5t7vNry+tfcynxVP
---000000000000212e2b064ae5b969--
+Backporting the initial commit without the follow-up fix would therefore risk
+introducing a more severe problem into stable trees, at least temporarily. I
+think it would be more preferable to take both commits together.
+
+Niklas, please let me know if you would like to add anything.
+
+Thanks,
+Koichiro
+
+> 
+> LLM Generated explanations, may be completely bogus:
+> 
+> This confirms the **current state of the code** (before the patch is
+> applied) still has the map/unmap on every call pattern at lines 705-712.
+> The patch hasn't been applied yet to this tree — this is the candidate
+> being evaluated.
+> 
+> ### 8. STANDALONE ASSESSMENT
+> 
+> Looking at the dependency analysis more carefully: the agent found that
+> in some stable tree, this commit was brought in as part of a 10-commit
+> dependency chain for a different fix. However, **that doesn't change the
+> standalone value of this commit**. The commit itself:
+> 
+> 1. **Is a standalone bug fix** — it fixes iATU reprogramming under load
+>    causing IOMMU faults and system lockups on real hardware
+> 2. **Has no prerequisite patches** — `dw_pcie_ep_align_addr`,
+>    `dw_pcie_ep_map_addr`, and `dw_pcie_ep_unmap_addr` all exist in the
+>    current tree
+> 3. **Only adds internal fields to a struct** — no API changes needed
+>    from other patches
+> 4. **Applies cleanly** to the current code (the pre-patch code matches
+>    lines 704-712)
+> 
+> ### RISK vs BENEFIT
+> 
+> **Benefit**: HIGH
+> - Fixes real system lockups under load on DWC PCIe endpoint platforms
+> - The bug is documented by the hardware vendor's databook as "undefined
+>   behavior"
+> - Concrete symptoms reported on Renesas R-Car S4
+> - System becomes unresponsive — this is a critical stability issue
+> 
+> **Risk**: LOW-MEDIUM
+> - The change is well-contained within 2 files, single subsystem
+> - The caching logic is straightforward and defensive (WARN_ON_ONCE on
+>   unexpected address change)
+> - Proper cleanup on endpoint stop prevents resource leaks
+> - Only affects DWC PCIe endpoint users
+> 
+> ### CONCERNS
+> 
+> 1. The change modifies `struct dw_pcie_ep` by adding 3 fields — this is
+>    safe as long as no out-of-tree modules depend on this struct layout
+>    (unlikely given it's a controller-specific struct).
+> 2. The WARN_ON_ONCE path returns -EINVAL if MSI address changes — this
+>    is a safe fallback since the databook says reprogramming under load
+>    is undefined anyway.
+> 3. The commit applies cleanly to the current tree based on code
+>    inspection.
+> 
+> ### CONCLUSION
+> 
+> This commit fixes a **real, documented hardware bug** that causes
+> **system lockups** on DesignWare PCIe endpoint platforms under load. The
+> fix is:
+> - **Obviously correct**: Caching an iATU mapping that the hardware
+>   vendor's databook says should not be reprogrammed while traffic is in
+>   flight
+> - **Well-tested**: Verified on Renesas R-Car S4
+> - **Contained**: 2 files, single subsystem, no API changes
+> - **Defensive**: WARN_ON_ONCE + -EINVAL on unexpected conditions, proper
+>   cleanup on stop
+> 
+> This clearly meets all stable kernel criteria for a backport.
+> 
+> **YES**
+> 
+>  .../pci/controller/dwc/pcie-designware-ep.c   | 48 ++++++++++++++++---
+>  drivers/pci/controller/dwc/pcie-designware.h  |  5 ++
+>  2 files changed, 47 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index 19571ac2b9617..18b20cc877d9e 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -601,6 +601,16 @@ static void dw_pcie_ep_stop(struct pci_epc *epc)
+>  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  
+> +	/*
+> +	 * Tear down the dedicated outbound window used for MSI
+> +	 * generation. This avoids leaking an iATU window across
+> +	 * endpoint stop/start cycles.
+> +	 */
+> +	if (ep->msi_iatu_mapped) {
+> +		dw_pcie_ep_unmap_addr(epc, 0, 0, ep->msi_mem_phys);
+> +		ep->msi_iatu_mapped = false;
+> +	}
+> +
+>  	dw_pcie_stop_link(pci);
+>  }
+>  
+> @@ -702,14 +712,37 @@ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	msg_addr = ((u64)msg_addr_upper) << 32 | msg_addr_lower;
+>  
+>  	msg_addr = dw_pcie_ep_align_addr(epc, msg_addr, &map_size, &offset);
+> -	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
+> -				  map_size);
+> -	if (ret)
+> -		return ret;
+>  
+> -	writel(msg_data | (interrupt_num - 1), ep->msi_mem + offset);
+> +	/*
+> +	 * Program the outbound iATU once and keep it enabled.
+> +	 *
+> +	 * The spec warns that updating iATU registers while there are
+> +	 * operations in flight on the AXI bridge interface is not
+> +	 * supported, so we avoid reprogramming the region on every MSI,
+> +	 * specifically unmapping immediately after writel().
+> +	 */
+> +	if (!ep->msi_iatu_mapped) {
+> +		ret = dw_pcie_ep_map_addr(epc, func_no, 0,
+> +					  ep->msi_mem_phys, msg_addr,
+> +					  map_size);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ep->msi_iatu_mapped = true;
+> +		ep->msi_msg_addr = msg_addr;
+> +		ep->msi_map_size = map_size;
+> +	} else if (WARN_ON_ONCE(ep->msi_msg_addr != msg_addr ||
+> +				ep->msi_map_size != map_size)) {
+> +		/*
+> +		 * The host changed the MSI target address or the required
+> +		 * mapping size changed. Reprogramming the iATU at runtime is
+> +		 * unsafe on this controller, so bail out instead of trying to
+> +		 * update the existing region.
+> +		 */
+> +		return -EINVAL;
+> +	}
+>  
+> -	dw_pcie_ep_unmap_addr(epc, func_no, 0, ep->msi_mem_phys);
+> +	writel(msg_data | (interrupt_num - 1), ep->msi_mem + offset);
+>  
+>  	return 0;
+>  }
+> @@ -1087,6 +1120,9 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
+>  	struct device *dev = pci->dev;
+>  
+>  	INIT_LIST_HEAD(&ep->func_list);
+> +	ep->msi_iatu_mapped = false;
+> +	ep->msi_msg_addr = 0;
+> +	ep->msi_map_size = 0;
+>  
+>  	epc = devm_pci_epc_create(dev, &epc_ops);
+>  	if (IS_ERR(epc)) {
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 31685951a0804..f555926a526ea 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -479,6 +479,11 @@ struct dw_pcie_ep {
+>  	void __iomem		*msi_mem;
+>  	phys_addr_t		msi_mem_phys;
+>  	struct pci_epf_bar	*epf_bar[PCI_STD_NUM_BARS];
+> +
+> +	/* MSI outbound iATU state */
+> +	bool			msi_iatu_mapped;
+> +	u64			msi_msg_addr;
+> +	size_t			msi_map_size;
+>  };
+>  
+>  struct dw_pcie_ops {
+> -- 
+> 2.51.0
+> 
 
