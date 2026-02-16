@@ -1,161 +1,141 @@
-Return-Path: <stable+bounces-216702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBePC7cqk2kI2AEAu9opvQ
-	(envelope-from <stable+bounces-216702-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:33:27 +0100
+	id 6L1vElYsk2mZ2AEAu9opvQ
+	(envelope-from <stable+bounces-216703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:40:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A649144B64
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:33:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DBCA144C12
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2B961300E24A
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 14:33:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38F2E301809E
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 14:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7E22FFF9B;
-	Mon, 16 Feb 2026 14:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041253101A6;
+	Mon, 16 Feb 2026 14:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5wQWQey"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="f9zauxWB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C841D5AD4;
-	Mon, 16 Feb 2026 14:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D037F2066DE;
+	Mon, 16 Feb 2026 14:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771252404; cv=none; b=McZEiddIOMJ04ccOuk3Aub0ygXxjHGCUs+2gT8dmxEUstcQVadcVYHX03t9XZYYF0uLiFwXF+hNqPgOMcRWdDODHI48QIfxMIWxR7/w/HAT7zVVby0EOrz3f5hZJRs1RH1hgaa+rGA5u5CKxYK4gvNP2ujoy4Fp0J5PPEzGY4bs=
+	t=1771252814; cv=none; b=a/wiUlMNoPgM73ryAa8UlO7wgJZOw+Mn3kvwiXdFKMFMkLQqqb9D8eOhQCLk5Ff85/jiXKnOerypRWJkeFofRgXCHRAaOL1NCO65DVOhjjuEwDVstLUVr5x9J6QaYT4PQhuyYH0H81ly5aLbox1vSt1CCKx+MSfsBmzkRHYQUAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771252404; c=relaxed/simple;
-	bh=tdvq/uSw/SrS/YKQsh0ba9OJ9N9xO33wfZZWMx/DXKs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MEiIwU9lK9S7DjITgzGaVN8E4WRoHk5mYHRnzcLcFklWT/SnCJ81FIKCLHwR+bf2L5pSiJBih0vuUoEFA2EW/lfnQ0uooNA/3gSsXPmLfTb3T1cQ3Q0e/cAItIuGpryhiB79tWDGggw7UCnRR7BF6sm7/0oc5HV9ab/AQwF1xps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5wQWQey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D824EC116C6;
-	Mon, 16 Feb 2026 14:33:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771252403;
-	bh=tdvq/uSw/SrS/YKQsh0ba9OJ9N9xO33wfZZWMx/DXKs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d5wQWQeylbWgP1GbWxstrqs1FzxRCEcyUhbch+SYWqRkVL4z4smlWATiKCX0WGcBh
-	 rVa6IM6OafPQkweBeAfihJeX791duLHNUzv5e8UwO8l3qAbaD+ygM6w0lgW6QXv5xw
-	 5cDDCWi1hUfHY/OcqwiRsMDwGzjX41/9L86GxQ6hGAnVIubw2X3QNwJzRoEnkvFX69
-	 lDQOCR82mJsr704qxan+aFzr887YTawp8cDI6Ebc1KuG0TeQY9Xyb3MqyJvPrKDUEW
-	 kwGlv5OqT4T3p5PM+A6Mefxo5UgDuJewImoicwptL252dgw664IgusAfaacQmuqfQ3
-	 yNV5peljAVPiQ==
-Date: Mon, 16 Feb 2026 14:33:17 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.19 00/49] 6.19.1-rc1 review
-Message-ID: <7dfd0e63-a725-4fac-b2a0-f2e621d99d1b@sirena.org.uk>
-References: <20260213134708.713126210@linuxfoundation.org>
+	s=arc-20240116; t=1771252814; c=relaxed/simple;
+	bh=PPD5qFqP6lh6kRJaYA/2EEJC1OAlpD0UD8DSfL6ftSo=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=QJdtWOSJG5wMUx/UjajAjk4BBcmr3/RdT3/roa4Jk/Tyi7QZuFZEV5x6AC9cynzWBYZIoFDLZqRtxa7pcMoz+tixZvBQKNpxWysHa0D7JKytOJulzPRNdCCq4p4VLBHmk01MzoEhixPZD0FCbmKLUvMhO/jstCCxSOz2GygpM6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=f9zauxWB; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from mail.ideasonboard.com (unknown [IPv6:2401:4900:1c30:6452:b7eb:ea26:c129:40a5])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4AEC14B3;
+	Mon, 16 Feb 2026 15:39:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1771252753;
+	bh=PPD5qFqP6lh6kRJaYA/2EEJC1OAlpD0UD8DSfL6ftSo=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=f9zauxWBeZjoKRlWREyigfCu9r58KxhcG0wAzm39hfhqt4mcWNS/9YDLLAYWipcEV
+	 3STgyWqA0d6cXxtw7AdPck2cDbuT5kAco8m03dHFHtMZi8IjcpsML/J/3v9J1TICib
+	 PbzO5MrG9sP9oDeicqbc+GpmFnnb/MLN4cFeeERM=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3RM9jDFn4myFtdW9"
-Content-Disposition: inline
-In-Reply-To: <20260213134708.713126210@linuxfoundation.org>
-X-Cookie: Beware the one behind you.
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260213-mainline-imx283-v2-v2-1-be40a3770ebf@ideasonboard.com>
+References: <20260213-mainline-imx283-v2-v2-0-be40a3770ebf@ideasonboard.com> <20260213-mainline-imx283-v2-v2-1-be40a3770ebf@ideasonboard.com>
+Subject: Re: [PATCH v2 01/25] media: i2c: imx283: Report correct V4L2_SEL_TGT_CROP
+From: Jai Luthra <jai.luthra@ideasonboard.com>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Kieran Bingham <kieran.bingham@ideasonboard.com>, Stefan Klug <stefan.klug@ideasonboard.com>, stable@vger.kernel.org
+To: Hans Verkuil <hverkuil@kernel.org>, Kieran Bingham <kieran.bingham@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, Umang Jain <uajain@igalia.com>
+Date: Mon, 16 Feb 2026 20:09:59 +0530
+Message-ID: <177125279980.14753.13990598198179653991@freya>
+User-Agent: alot/0.13.dev20+g31692a239
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216702-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216703-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jai.luthra@ideasonboard.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sirena.org.uk:url,sirena.org.uk:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8A649144B64
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9DBCA144C12
 X-Rspamd-Action: no action
 
+Quoting Kieran Bingham (2026-02-13 19:31:40)
+> From: Stefan Klug <stefan.klug@ideasonboard.com>
+>=20
+> The target crop rectangle is initialized with the crop of the default
+> sensor mode. This is incorrect when a different sensor mode gets
+> selected. Fix that by updating the crop rectangle when changing the
+> sensor mode.
+>=20
+> Cc: stable@vger.kernel.org # v6.10-rc1-70-gccb4eb4496fa
+> Fixes: ccb4eb4496fa ("media: i2c: Add imx283 camera sensor driver")
+> Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+> Tested-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+> Signed-off-by: Stefan Klug <stefan.klug@ideasonboard.com>
 
---3RM9jDFn4myFtdW9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>=20
 
-On Fri, Feb 13, 2026 at 02:47:19PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.19.1 release.
-> There are 49 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-> Gui-Dong Han <hanguidong02@gmail.com>
->     driver core: enforce device_lock for driver_match_device()
-
-As you'd expect v6.19 is also affected by the breakage here:
-
-# bad: [fdd37e7f30acd1978b8c205b62562dbe7b17b015] Linux 6.19.1-rc1
-# good: [05f7e89ab9731565d8a62e3b5d1ec206485eeb0b] Linux 6.19
-git bisect start 'fdd37e7f30acd1978b8c205b62562dbe7b17b015' '05f7e89ab9731565d8a62e3b5d1ec206485eeb0b'
-# test job: [fdd37e7f30acd1978b8c205b62562dbe7b17b015] https://lava.sirena.org.uk/scheduler/job/2457262
-# bad: [fdd37e7f30acd1978b8c205b62562dbe7b17b015] Linux 6.19.1-rc1
-git bisect bad fdd37e7f30acd1978b8c205b62562dbe7b17b015
-# test job: [f7a05eebaf2882496333b04ca6fc5697be454b29] https://lava.sirena.org.uk/scheduler/job/2457550
-# good: [f7a05eebaf2882496333b04ca6fc5697be454b29] smb: client: let smbd_post_send_negotiate_req() use smbd_post_send()
-git bisect good f7a05eebaf2882496333b04ca6fc5697be454b29
-# test job: [446b9894f78d8b8ba44628370191593e41d96255] https://lava.sirena.org.uk/scheduler/job/2457610
-# bad: [446b9894f78d8b8ba44628370191593e41d96255] wifi: rtw88: Fix alignment fault in rtw_core_enable_beacon()
-git bisect bad 446b9894f78d8b8ba44628370191593e41d96255
-# test job: [1b3bc6d65b96f215b17512174d20a045423f6d52] https://lava.sirena.org.uk/scheduler/job/2457672
-# bad: [1b3bc6d65b96f215b17512174d20a045423f6d52] crypto: octeontx - Fix length check to avoid truncation in ucode_load_store
-git bisect bad 1b3bc6d65b96f215b17512174d20a045423f6d52
-# test job: [a96368be3ad4b175cb3f91323b686e94be00c930] https://lava.sirena.org.uk/scheduler/job/2458025
-# bad: [a96368be3ad4b175cb3f91323b686e94be00c930] Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
-git bisect bad a96368be3ad4b175cb3f91323b686e94be00c930
-# test job: [15c160f44ececb2caf42a5d6508991c31d73f59c] https://lava.sirena.org.uk/scheduler/job/2458104
-# bad: [15c160f44ececb2caf42a5d6508991c31d73f59c] driver core: enforce device_lock for driver_match_device()
-git bisect bad 15c160f44ececb2caf42a5d6508991c31d73f59c
-# test job: [d7290ea01ac970dc255508b467fe0016d02be2f5] https://lava.sirena.org.uk/scheduler/job/2458145
-# good: [d7290ea01ac970dc255508b467fe0016d02be2f5] smb: client: let send_done handle a completion without IB_SEND_SIGNALED
-git bisect good d7290ea01ac970dc255508b467fe0016d02be2f5
-# first bad commit: [15c160f44ececb2caf42a5d6508991c31d73f59c] driver core: enforce device_lock for driver_match_device()
-
---3RM9jDFn4myFtdW9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmTKqwACgkQJNaLcl1U
-h9AnuAf/Sk6iW8Jk7tATGvH//wM5RThppEJZyyW8c0zJj3crXgaf9vDi7EFG2Wec
-mgbanCs3El19r3QJ/SKmFLNtg+4XeGrK26yyAVesHr4KD8oy1/YOPC5jHhf+R+fO
-Mt+y9CMn72mTnK/y0Pkt+tLgZefMgAqsHayemPc0I3RngF7U4zsi23dJUkO53lkO
-Xp74trz2duf8cElYMNUwLQay/w/5ibYwOuqE86chR5cl+6ZKyLzPCcxJmud5fSDl
-J6P/6kesuOQZEXVYLWbxIyCr/fyEJrEvblnDt3d20y8HabiKnuvrwFgzoI4zz2iu
-pLnnedbZlGd9IwqNxnfXFeC0ntyXsg==
-=rvTl
------END PGP SIGNATURE-----
-
---3RM9jDFn4myFtdW9--
+> ---
+>  drivers/media/i2c/imx283.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/drivers/media/i2c/imx283.c b/drivers/media/i2c/imx283.c
+> index 8ab63ad8f385..e5c04d259625 100644
+> --- a/drivers/media/i2c/imx283.c
+> +++ b/drivers/media/i2c/imx283.c
+> @@ -956,6 +956,7 @@ static int imx283_set_pad_format(struct v4l2_subdev *=
+sd,
+>                                  struct v4l2_subdev_state *sd_state,
+>                                  struct v4l2_subdev_format *fmt)
+>  {
+> +       struct v4l2_rect *crop;
+>         struct v4l2_mbus_framefmt *format;
+>         const struct imx283_mode *mode;
+>         struct imx283 *imx283 =3D to_imx283(sd);
+> @@ -982,6 +983,9 @@ static int imx283_set_pad_format(struct v4l2_subdev *=
+sd,
+> =20
+>         *format =3D fmt->format;
+> =20
+> +       crop =3D v4l2_subdev_state_get_crop(sd_state, IMAGE_PAD);
+> +       *crop =3D mode->crop;
+> +
+>         return 0;
+>  }
+> =20
+>=20
+> --=20
+> 2.52.0
+>
 
