@@ -1,227 +1,268 @@
-Return-Path: <stable+bounces-216697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BVMNs0jk2kX1wEAu9opvQ
-	(envelope-from <stable+bounces-216697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:03:57 +0100
+	id SAAJE/opk2kI2AEAu9opvQ
+	(envelope-from <stable+bounces-216698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:30:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EC914466B
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:03:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D20B144AF9
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:30:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 903E53009895
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 14:03:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B60B63028018
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 14:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F8D310771;
-	Mon, 16 Feb 2026 14:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IHifOcj6";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DrioTlSY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37E53115AE;
+	Mon, 16 Feb 2026 14:26:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD7B3101A7
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 14:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7041E32CF;
+	Mon, 16 Feb 2026 14:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771250633; cv=none; b=fu/tgPqSLCDh7bjSOhFjNfTXt1DqvJBWfIFBFv8yYb8Y9MY1Aqqj9KQVyyYEqFuIVaVQrRFYo5ZA/EDb/+X/EplsguN4lYOyoKhY6yRurEd3gNSkIkYX99sok6BJHTsWWz8DMOe3ScmiyyJCWQRwzICkmhvulUFkz6Mddera2qA=
+	t=1771251978; cv=none; b=UyUE/5XVj60d+Wccp/kjGYdSSr/ieHmotw1H4oQtvDq/5QEEIm6ue5DcgGhgnymwaqBBHk9wdZKFDRttOxO69NqKXyciuBvWduJ5CbBfGGu7Qc/S5jI84JfIv5FUEW9wsiMQMCNN6r8zrnnzIJtH+OogX4Hq/nchwOTSINXQXZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771250633; c=relaxed/simple;
-	bh=qvgtxZHIyxGZTtSdGu40CUd9mGNaZbI8z3wr2u95YMs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o5qrpS4Zu5XyRwhQdCY/ta5K4cLUrFxoSmzvaGnWRziTRlxIWFD+9h3GHrd8HStEEzVDR3W8XcMqOsTHCgY3okDVD0cz0Ln3aX7MYXT+dsoOiPBw8paRizODt1Pio9FEt9junvXBcrUhXIkp751tfTmrGN9PFKKGrER81GeAOJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IHifOcj6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DrioTlSY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771250631;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wgbev9M35IzSPMmROskqj3DwY+teLZJngKA0ChkN4m0=;
-	b=IHifOcj6KdoRn84i3K8WOiA75sjEY0d5uLGwmouR15q5f30K1Ij7uFmeucP73MWri3IJj+
-	PKNywR2Y1VPmRjIrq1YNDjXg2wrMkBEjn/J/KbTiYouo61RQBljy6m02AEIsUAO/JdvPnX
-	J6sF4B4sZXwe4mV3W+ApmIHH1Yn4zS0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-504-SAobLsfANwCTsy4vQd7-YQ-1; Mon, 16 Feb 2026 09:03:50 -0500
-X-MC-Unique: SAobLsfANwCTsy4vQd7-YQ-1
-X-Mimecast-MFC-AGG-ID: SAobLsfANwCTsy4vQd7-YQ_1771250629
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48070c21420so38404615e9.0
-        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 06:03:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1771250629; x=1771855429; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wgbev9M35IzSPMmROskqj3DwY+teLZJngKA0ChkN4m0=;
-        b=DrioTlSYFzlxXCytb0RyMn2bL0Wu9oQaKOuPGQkeb062Mb4mFprNNm73zl3obNkmPF
-         5ZLfpt4wKMVG8+gcL+1H0OhJ8ogjIQ+uEw5/B302QbCZweaHCuI3Ei+/r0cGO13yB6gi
-         8EM7tBdLwS1KT37fhJacVaTWGilIu2sZ/JqZ82qFKV7nK973RGWImgFWTufspEs3arDB
-         6yFgOGnAvjMtqJTj5WcBkgyJnFuVHXupXURP39CqFh3gYLOQYAoIIPC4GzWz9Bm8Wwlj
-         do0hyKXp1QNHQjove2mh7o8B0HLj9pSGj1x3BLrzq7Nscy3sbB8f0g5RAE12naIIQLTy
-         r6Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771250629; x=1771855429;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wgbev9M35IzSPMmROskqj3DwY+teLZJngKA0ChkN4m0=;
-        b=kes0B5peXkPTcg2DbqMiPxkqBsFXWpok5AiJ+ryobkqVy6stpj957nMsfLItRE4ciq
-         OHbNStSmPNYU9GyTl//lnUfPsYRaWcpp546T7Dk2OKg1axwKdp0TEi4VQy2f242yJZmA
-         oN8w1QEd9rk6ANXilxg23UyNeAACVpzlGyvjC+FmaJcWwlUcYJ4Ey+iArttMx+U1WAH1
-         phLpSxGophZrcmg2v11n1WOvP6TLFsaXzHkXMkn0b+9hbN9ZjwpM0RL0NGoEGfC26I35
-         7/Iws4bAog80yWPpH+lf44RlI1qOdRi6Ohwv/noOiGIrbmeczjzV7YALTZG5xNBvacoh
-         la3A==
-X-Forwarded-Encrypted: i=1; AJvYcCXIt/Iv+E+ZvsaJgzyjacHolu+OwZzvJTctbgNJ+pfaO+ciUA9TcSCGI4Zywd0r2NV7HpGd2nw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBVU6NnaY22EHu6vL9A5CsOParXXTBhkQnDKTYxVNbHO9wjuRZ
-	9hd3e8N6U0ymFaOsBwIhHpmtR2ui6BH/oRYeAHMRGFkRVIXCB5uI2cbQ1zNXTAsgnouWfytUmsZ
-	vk2jxvDVb6vkxIam1mVxxrRmRjoy2y7eeAkpjNDZizBSKmsufRhY36WNE2A==
-X-Gm-Gg: AZuq6aLUfcPASN1IJyxFRdRNtb4iPyWT+4g/g51u0qQiVd4tfyuH4QaqzJrhODFwK3+
-	4alJwwJMbFdbTbWnk6/+n7prnP6wySgV82lS7kNc88umJgoKnVDjU8TbNQMN600+CCHIcSudS0V
-	r/EtFJujJt3hgTgsgy1kUVqpYQ9DGyOfIZFEKnt8pexja5ZBU1Q3ZBlhFdYoQ/sM2yp/mbyv8+O
-	1pRdj+5P51BIXvWPplVr36JYxGkhl+FPn0Xa7kc/hDF1Y7aZoPQOVWl/81xefnIjhMsodOr53G3
-	59TTTN7efZipX238vtFVFnoJb0mAX3icn1UH5ci8IAtGSc5MlJaEDSKiaTMpqedwf0FI1lUR16O
-	Nn5Ori+sTOJ5tfIc3QIQMIbPAWUGlzYxf2Sqcs33F37/Rpf55wUIIW2JSKr8E55eybiMfgm8=
-X-Received: by 2002:a05:600c:3b87:b0:475:ddad:c3a9 with SMTP id 5b1f17b1804b1-48378da53a2mr143994935e9.13.1771250628182;
-        Mon, 16 Feb 2026 06:03:48 -0800 (PST)
-X-Received: by 2002:a05:600c:3b87:b0:475:ddad:c3a9 with SMTP id 5b1f17b1804b1-48378da53a2mr143994065e9.13.1771250627605;
-        Mon, 16 Feb 2026 06:03:47 -0800 (PST)
-Received: from sgarzare-redhat (host-82-53-134-58.retail.telecomitalia.it. [82.53.134.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48371a02a79sm180910655e9.3.2026.02.16.06.03.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Feb 2026 06:03:47 -0800 (PST)
-Date: Mon, 16 Feb 2026 15:03:40 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nsc@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Steve French <smfrench@gmail.com>
-Subject: Re: [PATCH 0/2] kbuild: rpm-pkg: Address -debuginfo build regression
- with RPM < 4.20.0
-Message-ID: <aZMi3Sg-7Z6IZ99d@sgarzare-redhat>
-References: <20260210-kbuild-fix-debuginfo-rpm-v1-0-0730b92b14bc@kernel.org>
- <aY8wyR572eZYWVJY@sgarzare-redhat>
- <20260213191138.GA2131983@ax162>
- <CAGxU2F7FFNgb781_A7a1oL63n9Oy8wsyWceKhUpeZ6mLk=focw@mail.gmail.com>
- <20260215212901.GA695045@ax162>
- <aZLTsduMY7H-QoA2@sgarzare-redhat>
- <20260216114227.GA213868@ax162>
+	s=arc-20240116; t=1771251978; c=relaxed/simple;
+	bh=rLmnyxyErHYiXtdh+CV6iMzJzbzCJSo0gnxl2xhAGRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=krtCZ+06owxagtKfJqttFcTewe+dNAw/tokQdwvHKKoIC+ie7f+19pcBXGcE2i3nNkkDw2h77GeIiLSE/xSnVuqCvekefqBHYcfyPWh4DUzXT5Xm/5NTAxnmSHxzLINk27PVUbejMoZLAySTa/OocWnafRQzBHo227N29ffTFZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.227])
+	by gateway (Coremail) with SMTP id _____8Dx88D_KJNpetISAA--.82S3;
+	Mon, 16 Feb 2026 22:26:07 +0800 (CST)
+Received: from kernelserver (unknown [223.64.68.227])
+	by front1 (Coremail) with SMTP id qMiowJCxdcD3KJNpUiFHAA--.20742S2;
+	Mon, 16 Feb 2026 22:26:03 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Xuerui Wang <kernel@xen0n.name>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH V2 for 6.6 & 6.12] LoongArch: Rework KASAN initialization for PTW-enabled systems
+Date: Mon, 16 Feb 2026 22:25:50 +0800
+Message-ID: <20260216142550.1479337-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260216114227.GA213868@ax162>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxdcD3KJNpUiFHAA--.20742S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW3Wry5Kw1fAF4kAr1kGr13KFX_yoW7ur43pr
+	WkKa48Kr4vvr4qqwsxGw1UZry8Jws3Ca97tFZxta9Ykay7CF1Fqr1kGF97ZF1UWrW8JF1Y
+	9w1SvFWDGr45JacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
+	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1Y
+	6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7
+	AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE
+	2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcV
+	C2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73
+	UjIFyTuYvjxU2MKZDUUUU
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216697-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 96EC914466B
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DMARC_NA(0.00)[loongson.cn];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216698-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:mid,loongson.cn:email]
+X-Rspamd-Queue-Id: 8D20B144AF9
 X-Rspamd-Action: no action
 
-On Mon, Feb 16, 2026 at 06:42:27AM -0500, Nathan Chancellor wrote:
->On Mon, Feb 16, 2026 at 09:25:25AM +0100, Stefano Garzarella wrote:
->> Oh, yeah, I just tried the following change on top of commit cee73b1e840c
->> ("Merge tag 'riscv-for-linus-7.0-mw1' of
->> git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux"), so without this
->> series applied:
->>
->> diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
->> index 0f1c8de1bd95..86ca327ebccf 100644
->> --- a/scripts/package/kernel.spec
->> +++ b/scripts/package/kernel.spec
->> @@ -50,6 +50,7 @@ against the %{version} kernel package.
->>  %if %{with_debuginfo}
->>  %package debuginfo
->>  Summary: Debug information package for the Linux kernel
->> +AutoReqProv: no
->>  %description debuginfo
->>  This package provides debug information for the kernel image and modules from the
->>  %{version} package.
->>
->> And I'm able to generate RPMs too without errors!
->
->Great, thanks for confirming! Does it still work with:
->
->  AutoReq: 0
->  AutoProv: 1
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-Yep, I tried this (compared to the previous email, just to be sure I get 
-you):
+commit 5ec5ac4ca27e4daa234540ac32f9fc5219377d53 upstream.
 
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index 86ca327ebccf..f5d0fa34c51b 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -50,7 +50,8 @@ against the %{version} kernel package.
-  %if %{with_debuginfo}
-  %package debuginfo
-  Summary: Debug information package for the Linux kernel
--AutoReqProv: no
-+AutoReq: 0
-+AutoProv: 1
-  %description debuginfo
-  This package provides debug information for the kernel image and modules from the
-  %{version} package.
+kasan_init_generic() indicates that kasan is fully initialized, so it
+should be put at end of kasan_init().
 
-And I'm able to generate RPMs without errors.
+Otherwise bringing up the primary CPU failed when CONFIG_KASAN is set
+on PTW-enabled systems, here are the call chains:
 
+    kernel_entry()
+      start_kernel()
+        setup_arch()
+          kasan_init()
+            kasan_init_generic()
 
->
->as I notice that is what the %_debuginfo_template in /usr/lib/rpm/macros
->uses by default. I suspect that the automatic requires is where things
->explodes and I think we do want the automatic provides because I believe
->that is how the "this package provides this debug build ID" generation
->happens.
+The reason is PTW-enabled systems have speculative accesses which means
+memory accesses to the shadow memory after kasan_init() may be executed
+by hardware before. However, accessing shadow memory is safe only after
+kasan fully initialized because kasan_init() uses a temporary PGD table
+until we have populated all levels of shadow page tables and writen the
+PGD register. Moving kasan_init_generic() later can defer the occasion
+of kasan_enabled(), so as to avoid speculative accesses on shadow pages.
 
-Oh I see, I also have:
+After moving kasan_init_generic() to the end, kasan_init() can no longer
+call kasan_mem_to_shadow() for shadow address conversion because it will
+always return kasan_early_shadow_page. On the other hand, we should keep
+the current logic of kasan_mem_to_shadow() for both the early and final
+stage because there may be instrumentation before kasan_init().
 
-     #	Template for debug information sub-package.
-     %_debuginfo_template \
-     %package debuginfo\
-     Summary: Debug information for package %{name}\
-     Group: Development/Debug\
-     AutoReq: 0\
-     AutoProv: 1\
-     %description debuginfo\
-     This package provides debug information for package %{name}.\
-     Debug information is useful when developing applications that use this\
-     package or when debugging this package.\
-     %files debuginfo -f debugfiles.list\
-     %{nil}
+To solve this, we factor out a new mem_to_shadow() function from current
+kasan_mem_to_shadow() for the shadow address conversion in kasan_init().
 
-So I guess I tested the right thing and it works ;-)
+[ Huacai: To backport from upstream to 6.6 & 6.12, kasan_enabled() is
+          replaced with kasan_arch_is_ready() and kasan_init_generic()
+          is replaced with "kasan_early_stage = false". ]
 
-Thanks,
-Stefano
+Cc: stable@vger.kernel.org
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/mm/kasan_init.c | 77 ++++++++++++++++++----------------
+ 1 file changed, 40 insertions(+), 37 deletions(-)
+
+diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
+index d2681272d8f0..9337380a70eb 100644
+--- a/arch/loongarch/mm/kasan_init.c
++++ b/arch/loongarch/mm/kasan_init.c
+@@ -42,39 +42,43 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
+ 
+ bool kasan_early_stage = true;
+ 
+-void *kasan_mem_to_shadow(const void *addr)
++static void *mem_to_shadow(const void *addr)
+ {
+-	if (!kasan_arch_is_ready()) {
++	unsigned long offset = 0;
++	unsigned long maddr = (unsigned long)addr;
++	unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
++
++	if (maddr >= FIXADDR_START)
+ 		return (void *)(kasan_early_shadow_page);
+-	} else {
+-		unsigned long maddr = (unsigned long)addr;
+-		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
+-		unsigned long offset = 0;
+-
+-		if (maddr >= FIXADDR_START)
+-			return (void *)(kasan_early_shadow_page);
+-
+-		maddr &= XRANGE_SHADOW_MASK;
+-		switch (xrange) {
+-		case XKPRANGE_CC_SEG:
+-			offset = XKPRANGE_CC_SHADOW_OFFSET;
+-			break;
+-		case XKPRANGE_UC_SEG:
+-			offset = XKPRANGE_UC_SHADOW_OFFSET;
+-			break;
+-		case XKPRANGE_WC_SEG:
+-			offset = XKPRANGE_WC_SHADOW_OFFSET;
+-			break;
+-		case XKVRANGE_VC_SEG:
+-			offset = XKVRANGE_VC_SHADOW_OFFSET;
+-			break;
+-		default:
+-			WARN_ON(1);
+-			return NULL;
+-		}
+ 
+-		return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
++	maddr &= XRANGE_SHADOW_MASK;
++	switch (xrange) {
++	case XKPRANGE_CC_SEG:
++		offset = XKPRANGE_CC_SHADOW_OFFSET;
++		break;
++	case XKPRANGE_UC_SEG:
++		offset = XKPRANGE_UC_SHADOW_OFFSET;
++		break;
++	case XKPRANGE_WC_SEG:
++		offset = XKPRANGE_WC_SHADOW_OFFSET;
++		break;
++	case XKVRANGE_VC_SEG:
++		offset = XKVRANGE_VC_SHADOW_OFFSET;
++		break;
++	default:
++		WARN_ON(1);
++		return NULL;
+ 	}
++
++	return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
++}
++
++void *kasan_mem_to_shadow(const void *addr)
++{
++	if (kasan_arch_is_ready())
++		return mem_to_shadow(addr);
++	else
++		return (void *)(kasan_early_shadow_page);
+ }
+ 
+ const void *kasan_shadow_to_mem(const void *shadow_addr)
+@@ -295,10 +299,8 @@ void __init kasan_init(void)
+ 	/* Maps everything to a single page of zeroes */
+ 	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, true);
+ 
+-	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
+-					kasan_mem_to_shadow((void *)KFENCE_AREA_END));
+-
+-	kasan_early_stage = false;
++	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
++					mem_to_shadow((void *)KFENCE_AREA_END));
+ 
+ 	/* Populate the linear mapping */
+ 	for_each_mem_range(i, &pa_start, &pa_end) {
+@@ -308,13 +310,13 @@ void __init kasan_init(void)
+ 		if (start >= end)
+ 			break;
+ 
+-		kasan_map_populate((unsigned long)kasan_mem_to_shadow(start),
+-			(unsigned long)kasan_mem_to_shadow(end), NUMA_NO_NODE);
++		kasan_map_populate((unsigned long)mem_to_shadow(start),
++			(unsigned long)mem_to_shadow(end), NUMA_NO_NODE);
+ 	}
+ 
+ 	/* Populate modules mapping */
+-	kasan_map_populate((unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR),
+-		(unsigned long)kasan_mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
++	kasan_map_populate((unsigned long)mem_to_shadow((void *)MODULES_VADDR),
++		(unsigned long)mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
+ 	/*
+ 	 * KAsan may reuse the contents of kasan_early_shadow_pte directly, so we
+ 	 * should make sure that it maps the zero page read-only.
+@@ -329,5 +331,6 @@ void __init kasan_init(void)
+ 
+ 	/* At this point kasan is fully initialized. Enable error messages */
+ 	init_task.kasan_depth = 0;
++	kasan_early_stage = false;
+ 	pr_info("KernelAddressSanitizer initialized.\n");
+ }
+-- 
+2.52.0
 
 
