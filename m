@@ -1,242 +1,122 @@
-Return-Path: <stable+bounces-216740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kC8UE4xPk2nA3QEAu9opvQ
-	(envelope-from <stable+bounces-216740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 18:10:36 +0100
+	id KJ3fD+RUk2lD3gEAu9opvQ
+	(envelope-from <stable+bounces-216741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 18:33:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6E11468BE
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 18:10:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 964E0146B8E
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 18:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C68803029E62
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 17:10:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7963630156F7
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 17:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3212D77E5;
-	Mon, 16 Feb 2026 17:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D69265CBE;
+	Mon, 16 Feb 2026 17:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ODwx7o+G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BBrM+5yN"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA6A25A2DD;
-	Mon, 16 Feb 2026 17:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6D033993
+	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 17:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771261819; cv=none; b=PmHEHjp8Lck/fj37scqMj/cFTZQsJ690HY3eOIjZcn7Ie2e8oDWWPUEmOKe8/ye4X2NWI1oYT2yiNiWQRxP05NO5nIH8a/chRHtlhUpXWuRzi0WpEQydSjLdvca6hRdGDPQhOPXlagYM/VVnvksgr1ksB8n2hyRHH65Ghqg4Tdk=
+	t=1771263199; cv=none; b=MK59VETMqs/qq/IP3fjnFhsMz892gQuaPLRufu/PWRlryEA1gDGb6ORFOrhHZWM8iwYAILspwR5FW9Xm6lvHBS/b+BbCOzyWADT0W4hwY4el2HNw7Sa0teoZieA5qtKeuID5n6dCKqgLZupoLJoddZhhbl2NiyjpsraJHZFEcPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771261819; c=relaxed/simple;
-	bh=pjtaSxteYo4kDsypwM3PMDwT+PPkMmWSMijBa4iqp5c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UY3keg+v093cI6xE3LwNYsQ9cIKL3AVjCtiWC8IXWv2OpZgJ9C+XK5IxdgHeUm8tPkSsUPsLTCwMcoxy2z46B+uqYWrtB/BcWk2HpCRMw3P6zeR9ZvJnHdKlWmimW6PI4Wh1MiVsRgR8roiwfIsSMN5MhzORl/1STSklAb9It3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ODwx7o+G; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771261817; x=1802797817;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pjtaSxteYo4kDsypwM3PMDwT+PPkMmWSMijBa4iqp5c=;
-  b=ODwx7o+GhO1agbWyi/dR70AsgdoF0HpQuTTxqaCAW1UM5X2OqtKtWwRK
-   qv1T5qfuT4SAQLak7IIOQgbwFCXKrdLXwav1ER4T06J+X/pZi+kAg/QVI
-   zTgmXR/HHBCiU4L+s9IdzjmQEanbf2QVaVmSmjsNkcFIphdoEEKqZ5q97
-   V9qI1hieoLADSXSJY9q+ELj8oAQAz3sVJeztxMPkfcvTrRdH7bb1hn8w4
-   8XibhBsQ3IDfLaFFoYdhXh7oLwgh6dK5m6/B2pp6/Gi1qjhyKZT6WfoRQ
-   WAghMBc2p4KtuC1UdRUBV9FCm27U2RD4NpAcp/ich4EJyt8i/SjYrCeqU
-   A==;
-X-CSE-ConnectionGUID: TA+JTFKnTQKRwxDjO2n9ng==
-X-CSE-MsgGUID: EvW5VvkPQL+I4qfXNmfxZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="94975296"
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; 
-   d="scan'208";a="94975296"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 09:10:17 -0800
-X-CSE-ConnectionGUID: QvFofH9ETA+BJDABLax6hA==
-X-CSE-MsgGUID: 7+v6bMo6TniUf959kO1p1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; 
-   d="scan'208";a="212623084"
-Received: from spandruv-desk1.amr.corp.intel.com (HELO [10.125.109.113]) ([10.125.109.113])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 09:10:16 -0800
-Message-ID: <1bc0b798-9cef-4dfd-af06-7674b699af1b@intel.com>
-Date: Mon, 16 Feb 2026 09:10:15 -0800
+	s=arc-20240116; t=1771263199; c=relaxed/simple;
+	bh=W2R+ulVW4Ddxn3DA4p20lOhEWkpo9PpZPDzZZi14Ebs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qU2mOE+VyTYRoYsv1T/0ARCAtgF2ckAOCGtzmn9CcBpniY4HFVDWamX54LMVM0kYIMZ9reVnMutQhdFOrjq7wA8bTOgvY5syks6B7Uejjsfi7iIPt1KgpdGlBkBeaf+3SUOINXqaqLi6I4jTttWRKdx3bGCLO/eaP9AJdl/8zc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BBrM+5yN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55928C19422;
+	Mon, 16 Feb 2026 17:33:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771263199;
+	bh=W2R+ulVW4Ddxn3DA4p20lOhEWkpo9PpZPDzZZi14Ebs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BBrM+5yNI6tRf56gCsiOAX1WZTvAsERaa6PfxA6eztS1rdouvHlPjEqzPIzhWeYtl
+	 JFttHEcSQP2Kg+eQ24D/Ptehj9RG6o2DdSJ1p/JnWPSqsdLBsPzKaTp6xXJ0mA4j2P
+	 zpGycp/SHftog/ZOKE2x5Yt3OseFLfU3aH5B+jEp5tMBhO7OE5+FXLDD5XpKNLwURg
+	 Oy4HUoLL203d3tj99EaANjUS40oGu2a4LxiZv+bJwm/YdyIao7S3htUY+JjtVtRUVE
+	 XwMoLB6vUv+LjR8DoXx9hXToiS7+9CYi2rdpqJs4F/1zqhVgGuNy6SHkB9j2vWuYd5
+	 N1YP+Rr6FOgGQ==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: stable@vger.kernel.org
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 6.6.y 0/4] mm/hugetlb: fixes for PMD table sharing (incl. using mmu_gather)
+Date: Mon, 16 Feb 2026 18:33:06 +0100
+Message-ID: <20260216173310.230841-1-david@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026012603-stingily-washbasin-9371@gregkh>
+References: <2026012603-stingily-washbasin-9371@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/fred: Fix early boot failures on SEV-ES/SNP guests
-To: "Nikunj A. Dadhania" <nikunj@amd.com>, bp@alien8.de
-Cc: tglx@kernel.org, mingo@redhat.com, kvm@vger.kernel.org,
- dave.hansen@linux.intel.com, hpa@zytor.com, xin@zytor.com,
- seanjc@google.com, pbonzini@redhat.com, x86@kernel.org, jon.grimm@amd.com,
- stable@vger.kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
- linux-kernel@vger.kernel.org, sohil.mehta@intel.com,
- andrew.cooper3@citrix.com
-References: <20260205051030.1225975-1-nikunj@amd.com>
- <9c8c2d69-5434-4416-ba37-897ce00e2b11@intel.com>
- <02df7890-83c2-4047-8c88-46fbc6e0a892@intel.com>
- <103bc1df-4caf-430a-9c8b-fcee78b3dd1d@amd.com>
- <5cf9358a-a5c3-4d4b-b82f-16d69fa30f3e@amd.com>
- <317f7def-9ac7-41e1-8754-808cd08f88cb@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <317f7def-9ac7-41e1-8754-808cd08f88cb@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-216741-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.hansen@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216740-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+]
-X-Rspamd-Queue-Id: BF6E11468BE
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 964E0146B8E
 X-Rspamd-Action: no action
 
-> CR pinning can prematurely enable features during secondary CPU bringup
-> before their supporting infrastructure is initialized. Specifically, when
-> FRED is enabled, cr4_init() sets CR4.FRED via the pinned mask early in
-> start_secondary(), long before cpu_init_fred_exceptions() configures the
-> required FRED MSRs. This creates a window where exceptions cannot be
-> properly handled.
+Backport of [1] for 6.6.
 
-This is a collision of FRED, CR-pinning and SEV. Future me would
-appreciate having all that background in one place:
+This is effectively identical to the 6.12 [2] backport.
 
-	== CR Pinning Background ==
+[1] https://lore.kernel.org/linux-mm/20251223214037.580860-1-david@kernel.org/
+[2] https://lore.kernel.org/r/20260216165213.225922-1-david@kernel.org 
 
-	Modern CPU hardening features like SMAP/SMEP are enabled by
-	flipping control register (CR) bits. Attackers find these
-	features inconvenient and often try to disable them.
+David Hildenbrand (Arm) (1):
+  mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables
+    using mmu_gather
 
-	CR-pinning is a kernel hardening feature that detects when
-	security-sensitive control bits are flipped off, complains about
-	it, then turns them back on. The CR-pinning checks are performed
-	in the CR manipulation helpers.
+David Hildenbrand (Red Hat) (2):
+  mm/hugetlb: fix hugetlb_pmd_shared()
+  mm/hugetlb: fix two comments related to huge_pmd_unshare()
 
-	X86_CR4_FRED controls FRED enabling and is pinned. There is a
-	single, system-wide static key that controls CR-pinning
-	behavior. The static key is enabled by the boot CPU after it has
-	established its CR configuration.
+Jane Chu (1):
+  mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
 
-	The end result is that CR-pinning is not active while
-	initializing the boot CPU but it is active while bringing up
-	secondary CPUs.
+ include/asm-generic/tlb.h |  77 +++++++++++++++++++-
+ include/linux/hugetlb.h   |  17 +++--
+ include/linux/mm_types.h  |   6 ++
+ mm/hugetlb.c              | 146 ++++++++++++++++++++------------------
+ mm/mmu_gather.c           |  33 +++++++++
+ mm/rmap.c                 |  25 ++++---
+ 6 files changed, 219 insertions(+), 85 deletions(-)
 
-	== FRED Background ==
-
-	FRED is a new hardware entry/exit feature for the kernel. It is
-	not on by default and started out as Intel-only. AMD is just
-	adding support now.
-
-	FRED has MSRs for configuration and is enabled by the pinned
-	X86_CR4_FRED bit. It should not be enabled until after MSRs are
-	properly initialized.
-
-	== SEV Background ==
-
-	Some flavors of AMD SEV have special virtualization exceptions:
-	#VC. These exceptions happen in "weird" places like when
-	accessing MMIO, running CPUID or even accessing apparently
-	normal kernel memory.
-
-	Writes to the console can generate #VC.
-
-	== Problem ==
-
-	CR-pinning implicitly enables FRED on secondary CPUs at a
-	different point than the boot CPU. This point is *before* the
-	CPU has done an explicit cr4_set_bits(X86_CR4_FRED) and before
-	the MSRs are initialized. This means that there is a window
-	where no exceptions can be handled.
-
-	For SEV-ES/SNP and TDX guests, any console output during this
-	window triggers #VC or #VE exceptions that result in triple
-	faults because the exception handlers rely on FRED MSRs that
-	aren't yet configured.
-
-	== Fix ==
-
-	Defer CR-pinning enforcement during secondary CPU bringup. This
-	avoids any implicit CR changes during CPU bringup, ensuring that
-	FRED is not enabled before it is configured and able to handle a
-	 #VC.
-
-	This also aligns boot and secondary CPU bringup.
-
-	Note: FRED is not on by default anywhere so this is not likely
-	to be causing many problems. The only reason this was noticed
-	was that AMD started to enable FRED and was turning it on.
-
-With that, you can add:
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+-- 
+2.43.0
 
 
