@@ -1,130 +1,189 @@
-Return-Path: <stable+bounces-216753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216754-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFjiNFONk2mK6QEAu9opvQ
-	(envelope-from <stable+bounces-216753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 22:34:11 +0100
+	id 4bD/JOmOk2n16QEAu9opvQ
+	(envelope-from <stable+bounces-216754-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 22:40:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341BA147C65
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 22:34:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3E3147C82
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 22:40:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC408301D6A8
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 21:34:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B3DB301E976
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 21:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472D1234964;
-	Mon, 16 Feb 2026 21:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2035428689A;
+	Mon, 16 Feb 2026 21:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="pg4lzm1v"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vzgDHhB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0B1221FBD
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 21:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF64E22A4E9;
+	Mon, 16 Feb 2026 21:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771277649; cv=none; b=tuTnfoIXcZNyDPg4lxQ0RX65imYKVo05t6EVulsR9ZQcQnuV/WI4FPSUB/SUp3cXWAM/OErUObyCcnPIoieP6Jn68yd+YlQapF3X0ZQhxYcr+6Vm9QoyPAg6PQdjfgmQUZKxa/y5aXgMEaL/BTNyH5bTzEArXyzhNRLt+0dd7U8=
+	t=1771278050; cv=none; b=hcwhq0BzMKxqTZNSrmcEyB9t5+g3OP1Qrp8WGceaWrQZjWc5gpFNgSwj/+GbfjXeWUIHZy/aWD4yz8pDH7u/o+Jk2MxCDr4iOBOo+zuE3EULo7Ob0598HWDyxvjzjh31Erhn6aV5cmlYPhjf3LV7MvFISs4aT7Ip5DkfXG6CE4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771277649; c=relaxed/simple;
-	bh=4Jhi0Vr3WXvd41rWnA4mEWtsa/pMMuB6bKxFzG1Y6MM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZgE2/GvSAagO/y6sft8NCEN8KMqz4BOC7J77IoUwqgdfz2jTdblCZ6dSQbo81WsIzC58GPGWnnUlPeNcMHx61gYZSofcgiSlQ5bsUzmY2saWoYwiODZIWO7s7DpDFbB7nspf7SYxqb7JhRcNDKTJDcDD/QDh7TiMRQgWwL2nAoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=pg4lzm1v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C9FC19424
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 21:34:07 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="pg4lzm1v"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1771277645;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Jhi0Vr3WXvd41rWnA4mEWtsa/pMMuB6bKxFzG1Y6MM=;
-	b=pg4lzm1vGCmu3Lu10RGonaCTVeTzyusq3restCYrd/AEXLzYE8PfHFjVd3+jZ3uOoLLmI4
-	VPvkGDF9hoHbRHyncFTN9uUqaepKkrJXo5+5QnpEMX+I3sHfkvGwdWm90fRt0cnd3kN8P3
-	ep0/rRtvafVpdJnQOOizS8N/2gUFxgk=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 0dbb423e (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
-	for <stable@vger.kernel.org>;
-	Mon, 16 Feb 2026 21:34:05 +0000 (UTC)
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7d1890f7ee4so2116999a34.0
-        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 13:34:05 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXJHmFBimy2VPkWNBvWtRC4uLn/ms+r/bCEr98HXONqlzpBRMEyFcaEIEjcusSGdr0f2PZ2u20=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOZ/XO7/wCHPT+3ZjVvlf7fWfXL4FSP3Cu0aW4eO/Z/tmHBI5J
-	w5fFSiebr77QHd7kIUyRoPwZAEzgbOf/8AbiRJuyEMGeX85FLoWYu0g9ERnLeztciRxXCo2gJHE
-	edv85r/3961wQRf1EE0n3cRPX5+KwFZM=
-X-Received: by 2002:a05:6830:378d:b0:7d4:96c3:3f96 with SMTP id
- 46e09a7af769-7d4c2fe5e18mr8466173a34.6.1771277644702; Mon, 16 Feb 2026
- 13:34:04 -0800 (PST)
+	s=arc-20240116; t=1771278050; c=relaxed/simple;
+	bh=25lyj0yevGlOXb2vwwSwfsjHCCw0F4q0tDg2kNGaNfE=;
+	h=Date:To:From:Subject:Message-Id; b=g+nhu6daTlp5ov4q1TwpUZRJoKia2KYgiWR0VH6G3lCO0PUXfXzQmlQffVNL8HOvou5g7hUv5Kc0381/XZAEDtBOGJdmCiJwQr7zPXwzAO6l4yFJZAgg3sWWq7ItZVZk3on0qfiSXLfup0YDt2vBDkVeWYwVDs16iFRY50TsKe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vzgDHhB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B71C116C6;
+	Mon, 16 Feb 2026 21:40:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1771278050;
+	bh=25lyj0yevGlOXb2vwwSwfsjHCCw0F4q0tDg2kNGaNfE=;
+	h=Date:To:From:Subject:From;
+	b=vzgDHhB0vi0z9ymDDQQ/oqzbg18i9Ts1wYupsTJQsOGxaXPeDtOMajMwU4DFK4yHB
+	 nxUEXpPudI0/rJJExOSHkI6+/s59ebGbGNJ13MG5EZHpmXKeedimeZ5OzLcvEuUlJW
+	 6JWC7QSSHRcl4yeuxP/B1lqaVjLF6Q/s1LGHE+KI=
+Date: Mon, 16 Feb 2026 13:40:49 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,mail@carstengrohmann.de,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-swap-speed-up-hibernation-allocation-and-writeout.patch added to mm-unstable branch
+Message-Id: <20260216214050.38B71C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <c05f3968fa63b630ce22d65aa03e6dcef4bf4e83.1771277247.git.daniel@iogearbox.net>
-In-Reply-To: <c05f3968fa63b630ce22d65aa03e6dcef4bf4e83.1771277247.git.daniel@iogearbox.net>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Mon, 16 Feb 2026 22:33:53 +0100
-X-Gmail-Original-Message-ID: <CAHmME9rsvaargjbZO8SkswOToUATuWpkQDVykEUty-kWPyu7gA@mail.gmail.com>
-X-Gm-Features: AaiRm50xU5jthBlVzEVvTQWKub0ovtPSQ-UjS9U-vZNQZmb0qL-2F9sAcjUof5k
-Message-ID: <CAHmME9rsvaargjbZO8SkswOToUATuWpkQDVykEUty-kWPyu7gA@mail.gmail.com>
-Subject: Re: [PATCH stable v5.15,v6.1] Revert "wireguard: device: enable
- threaded NAPI"
-To: Daniel Borkmann <daniel@iogearbox.net>
-Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, netdev@vger.kernel.org, 
-	kuba@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[zx2c4.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[zx2c4.com:s=20210105];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-216754-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216753-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[zx2c4.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Jason@zx2c4.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,huaweicloud.com,gmail.com,carstengrohmann.de,kernel.org,redhat.com,tencent.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,zx2c4.com:email,zx2c4.com:dkim]
-X-Rspamd-Queue-Id: 341BA147C65
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huaweicloud.com:email,tencent.com:email,linux-foundation.org:email,linux-foundation.org:dkim,smtp.kernel.org:mid]
+X-Rspamd-Queue-Id: AA3E3147C82
 X-Rspamd-Action: no action
 
-On Mon, Feb 16, 2026 at 10:31=E2=80=AFPM Daniel Borkmann <daniel@iogearbox.=
-net> wrote:
-> Technically, the backport of commit db9ae3b6b43c ("wireguard: device:
-> enable threaded NAPI") to stable should not have happened since it is
-> more of an optimization rather than a pure fix and addresses a NAPI
-> situation with utilizing many WireGuard tunnel devices in parallel.
 
-Indeed.
+The patch titled
+     Subject: mm, swap: speed up hibernation allocation and writeout
+has been added to the -mm mm-unstable branch.  Its filename is
+     mm-swap-speed-up-hibernation-allocation-and-writeout.patch
 
-> Revert it from stable given the backport triggers a regression for
-> mentioned kernels.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-speed-up-hibernation-allocation-and-writeout.patch
 
-Thanks.
+This patch will later appear in the mm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Acked-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-If that helps with Greg queueing this up.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Jason
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Kairui Song <kasong@tencent.com>
+Subject: mm, swap: speed up hibernation allocation and writeout
+Date: Mon, 16 Feb 2026 22:58:02 +0800
+
+Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
+hibernation has been using the swap slot slow allocation path for
+simplification, which turns out might cause regression for some devices
+because the allocator now rotates clusters too often, leading to slower
+allocation and more random distribution of data.
+
+Fast allocation is not complex, so implement hibernation support as well.
+
+Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
+performance is several times better [1]:
+6.19:               324 seconds
+After this series:  35 seconds
+
+Link: https://lkml.kernel.org/r/20260216-hibernate-perf-v4-1-1ba9f0bf1ec9@tencent.com
+Link: https://lore.kernel.org/linux-mm/8b4bdcfa-ce3f-4e23-839f-31367df7c18f@gmx.de/ [1]
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Fixes: 0ff67f990bd4 ("mm, swap: remove swap slot cache")
+Reported-by: Carsten Grohmann <mail@carstengrohmann.de>
+Closes: https://lore.kernel.org/linux-mm/20260206121151.dea3633d1f0ded7bbf49c22e@linux-foundation.org/
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/swapfile.c |   21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
+
+--- a/mm/swapfile.c~mm-swap-speed-up-hibernation-allocation-and-writeout
++++ a/mm/swapfile.c
+@@ -1926,8 +1926,9 @@ out:
+ /* Allocate a slot for hibernation */
+ swp_entry_t swap_alloc_hibernation_slot(int type)
+ {
+-	struct swap_info_struct *si = swap_type_to_info(type);
+-	unsigned long offset;
++	struct swap_info_struct *pcp_si, *si = swap_type_to_info(type);
++	unsigned long pcp_offset, offset = SWAP_ENTRY_INVALID;
++	struct swap_cluster_info *ci;
+ 	swp_entry_t entry = {0};
+ 
+ 	if (!si)
+@@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(
+ 	if (get_swap_device_info(si)) {
+ 		if (si->flags & SWP_WRITEOK) {
+ 			/*
+-			 * Grab the local lock to be compliant
+-			 * with swap table allocation.
++			 * Try the local cluster first if it matches the device. If
++			 * not, try grab a new cluster and override local cluster.
+ 			 */
+ 			local_lock(&percpu_swap_cluster.lock);
+-			offset = cluster_alloc_swap_entry(si, NULL);
++			pcp_si = this_cpu_read(percpu_swap_cluster.si[0]);
++			pcp_offset = this_cpu_read(percpu_swap_cluster.offset[0]);
++			if (pcp_si == si && pcp_offset) {
++				ci = swap_cluster_lock(si, pcp_offset);
++				if (cluster_is_usable(ci, 0))
++					offset = alloc_swap_scan_cluster(si, ci, NULL, pcp_offset);
++				else
++					swap_cluster_unlock(ci);
++			}
++			if (!offset)
++				offset = cluster_alloc_swap_entry(si, NULL);
+ 			local_unlock(&percpu_swap_cluster.lock);
+ 			if (offset)
+ 				entry = swp_entry(si->type, offset);
+_
+
+Patches currently in -mm which might be from kasong@tencent.com are
+
+mm-swap-speed-up-hibernation-allocation-and-writeout.patch
+
 
