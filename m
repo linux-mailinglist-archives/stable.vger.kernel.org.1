@@ -1,138 +1,152 @@
-Return-Path: <stable+bounces-216721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOxgM1w8k2kg2wEAu9opvQ
-	(envelope-from <stable+bounces-216721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 16:48:44 +0100
+	id 0DU9Om8/k2kg2wEAu9opvQ
+	(envelope-from <stable+bounces-216722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 17:01:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869B6145C2F
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 16:48:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86E9145DD0
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 17:01:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7E6F83016256
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 15:48:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F15FB3007B97
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 16:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE5031AF3B;
-	Mon, 16 Feb 2026 15:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94B63321D4;
+	Mon, 16 Feb 2026 16:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eOb5IkJz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LCtA6DBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0BA2690EC;
-	Mon, 16 Feb 2026 15:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3F83321B0;
+	Mon, 16 Feb 2026 16:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771256920; cv=none; b=UGDLmcAyfa3Iggllvs9HUmJl2XkHoVRSgFU76nfiW3uAJzle7HGevpczHGxIsgyte/vUKVh0xv0sa1T9X9jBKWBO8lSoi8TcsuzHTo4Ftwf/B+3bjdfGU7YtCICqtAKQuBW2OHEwPOsC4bN0mpYjNM3KUc9OIuF9O+GJnG7pGsQ=
+	t=1771257698; cv=none; b=vD1zr4Kfs4dAaO1oH5X8jXc4RbKtOoD9xAnsQMPAqbMKxen61ynP17ML6285fMTOWypg4m9Bg4VFw3B7YMbpkczGANsIPE1QUzlW9Xcc/xnMuCIp/OlAaxDs0IS3NoSeJ+Maq9C1xT8RHZZF4R+H55ginl0XXizU1MkJnspb6CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771256920; c=relaxed/simple;
-	bh=kvmk9Nk3azwvwuhSY2Z7ciR0/RZ1Vx+Arvb+7UIojmo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cPe7MMZhtWiJ0MxQkOik9AFIBkWGy04GdpSH185BOmxtXam2u4T7quf61JsijZp/nBZdubAm1L9rBzs13otEP444V+2WuNaa/A86DuiaYaV14EPhxYG0iYR+uNmudlRPIOje81l0SrPprp8u6DjCvLvc0XYZLJE3kd1fjvW1w3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eOb5IkJz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F23C116C6;
-	Mon, 16 Feb 2026 15:48:40 +0000 (UTC)
+	s=arc-20240116; t=1771257698; c=relaxed/simple;
+	bh=jIVr4EMhbxLfBhJVNM0uEaoaqlclfdp51xNGeOTr5GA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=RjPzreJPd4mEqFqymwT1uYnZs2VhmxcOO99RDAkTExEpVcuekrVShyJdsJMt1VHktCw1OptF7tGy95sOZlbLttQHNmqICSTPD6P1XMKnM3itJ/0QldcNpKuwO2eAHWJyPxrrd1e0igAyAUalpwAA93rrKzK8xvwbiBPbEtB1Q0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LCtA6DBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884F3C116C6;
+	Mon, 16 Feb 2026 16:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771256920;
-	bh=kvmk9Nk3azwvwuhSY2Z7ciR0/RZ1Vx+Arvb+7UIojmo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eOb5IkJzK82iQS6KiaoOpFZVzWcl+YPajcvGAV0rW9idL5difTNhQK/Kh8RO1Bca3
-	 ON6nXSSPWZvBW12HwX0H8BjoAo1WgiU0Sy0LVs59Ej/Bb2rLDS9051M5BS+GRKIv7O
-	 XAZCPu4z/pYzggzQsWgzlP4+Bbv+18LCVa3RAwI9lX+MRJMkDBnOuKJKQkXIv97ZvL
-	 h7PFVtPf5RPCGlQDxwEd51CJwLL7weFyuvaxAhxwANFGivIJ45Fk+I+uusP1ipBbDt
-	 hpJsRy8sP6JYuruMcg0kvReJzeRluESlD6i0wknXXHZyN9j1qDqG8SwVcdRS59yTn7
-	 BtLV0ysSX1rlQ==
-Date: Mon, 16 Feb 2026 10:48:39 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Helge Deller <deller@gmx.de>, guoren@kernel.org,
-	neil.armstrong@linaro.org, brauner@kernel.org,
-	yelangyan@huaqin.corp-partner.google.com,
-	schuster.simon@siemens-energy.com, linux-csky@vger.kernel.org,
-	Parisc List <linux-parisc@vger.kernel.org>
-Subject: Re: [PATCH AUTOSEL 6.19-5.10] parisc: Prevent interrupts during
- reboot
-Message-ID: <aZM8VwMcSOhNHJHc@laps>
-References: <20260214005825.3665084-1-sashal@kernel.org>
- <CAMuHMdVeGv=f-Oo1=GQLghn_hwpe2YN5OS79fQsy2uccwyVUZg@mail.gmail.com>
- <aZMXwfvJjG0YkuF5@laps>
- <CAMuHMdX1Mdqp7+Oz9dqe3b2VqMzpp5L7AvBJxRZuUjb0vY6gCw@mail.gmail.com>
+	s=k20201202; t=1771257698;
+	bh=jIVr4EMhbxLfBhJVNM0uEaoaqlclfdp51xNGeOTr5GA=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=LCtA6DBCVr2TBT0CKrY9VzbcKdaAfJZKXvoj0/rq4OZKGoPR/Re+zt5a2cymZ2kDP
+	 8fsXBmWb4FWDjLLH3kMul1dyw8djkfljTza8dDj5BsxWrV5PRKLTRIiOof0J/t0902
+	 QzuwmEFerI/QaM6eYs4w8xkxTcT5I/t6HpQ9BoQ4n+Zi3gLQF8Mjbu6cQZnt1EKFiV
+	 HBVCDGCbxAgj9RR09OluRcyPb1/RTNX3ZWwjJGdMz2/Z6VjCqwn/NHU9bUw3j4IexT
+	 wyOacJbmuBKoDbzGysoiCy5qyl4lS1iS33dMxU5I8de2PCojIR9g6hsMGRUPcI5scz
+	 YZu4FV30SqvIg==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdX1Mdqp7+Oz9dqe3b2VqMzpp5L7AvBJxRZuUjb0vY6gCw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Feb 2026 17:01:33 +0100
+Message-Id: <DGGIG6WA0F2Y.Q5UZ6D6EE43W@kernel.org>
+To: "Mark Brown" <broonie@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 6.12 00/24] 6.12.72-rc1 review
+Cc: <stable@vger.kernel.org>, <patches@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
+ <akpm@linux-foundation.org>, <linux@roeck-us.net>, <shuah@kernel.org>,
+ <patches@kernelci.org>, <lkft-triage@lists.linaro.org>,
+ <pavel@nabladev.com>, <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+ <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>, <conor@kernel.org>,
+ <hargar@microsoft.com>, <achill@achill.org>, <sr@sladewatkins.com>
+References: <20260213134704.728003077@linuxfoundation.org>
+ <bde6d2f9-f554-49f1-9af8-084c4cdea035@sirena.org.uk>
+ <DGGI5PT256ZX.E11J217J4EEK@kernel.org>
+In-Reply-To: <DGGI5PT256ZX.E11J217J4EEK@kernel.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MV_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-216722-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216721-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmx.de,kernel.org,linaro.org,huaqin.corp-partner.google.com,siemens-energy.com];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[hanguidong02.gmail.com:query timed out];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[get_maintainer.pl:url,linux-m68k.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gaisler.com:email,linaro.org:email,gmx.de:email]
-X-Rspamd-Queue-Id: 869B6145C2F
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: D86E9145DD0
 X-Rspamd-Action: no action
 
-On Mon, Feb 16, 2026 at 02:28:14PM +0100, Geert Uytterhoeven wrote:
->Hi Sasha,
->
->On Mon, 16 Feb 2026 at 14:12, Sasha Levin <sashal@kernel.org> wrote:
->> On Mon, Feb 16, 2026 at 11:21:25AM +0100, Geert Uytterhoeven wrote:
->> >Cc linux-parisc
->> >
->> >How did you (or the LLM?) came up with that CC list?!?
+On Mon Feb 16, 2026 at 4:47 PM CET, Danilo Krummrich wrote:
+> On Mon Feb 16, 2026 at 3:27 PM CET, Mark Brown wrote:
+>> On Fri, Feb 13, 2026 at 02:48:19PM +0100, Greg Kroah-Hartman wrote:
+>>> Gui-Dong Han <hanguidong02@gmail.com>
+>>>     driver core: enforce device_lock for driver_match_device()
 >>
->> Interesting...
->>
->> $ ~/linux/scripts/get_maintainer.pl --pattern-depth=1 --no-rolestats --nor --nos 0001-parisc-Prevent-interrupts-during-reboot.patch
->> Neil Armstrong <neil.armstrong@linaro.org>
->> "Guo Ren (Alibaba Damo Academy)" <guoren@kernel.org>
->> Christian Brauner <brauner@kernel.org>
->> Geert Uytterhoeven <geert@linux-m68k.org>
->> Andreas Larsson <andreas@gaisler.com>
->> Helge Deller <deller@gmx.de>
->> Langyan Ye <yelangyan@huaqin.corp-partner.google.com>
->> Simon Schuster <schuster.simon@siemens-energy.com>
+>> This breaks boot on at least the Arm Juno platform, upstream it
+>> introduced regressions on quite a few systems due to drivers registering
+>> in the probe of other devices.  That's obviously not a great pattern but
+>> a regreession is a regression.
 >
->Still doesn't explain linux-csky?
+> Just for reference, I've also sent the following to the stable patch appl=
+y
+> notice:
+>
+> "This commit reveals a few driver bugs resulting in deadlocks without the
+> following fixes:
+>
+>   - 1. ed1ac3c977dd ("iommu/arm-smmu-qcom: do not register driver in prob=
+e()")
 
-Oh, that was there because the LLM mentioned csky in it's comparison with other
-archs and get_maintainer.pl used keyword matching.
+One additional note, we want this commit backported regardless, as it also =
+fixes
+commit 0b4eeee2876f ("iommu/arm-smmu-qcom: Register the TBU driver in
+qcom_smmu_impl_init").
 
-If you grab the actual patch that was sent in the AUTOSEL mail:
+I.e. the current code is racy in terms of async probe and the driver is nev=
+er
+unregistered even if built as module and the module is unloaded, which is a
+potential UAF.
 
-$ ~/linux/scripts/get_maintainer.pl --pattern-depth=1 --no-rolestats --nor --nos raw
-Guo Ren <guoren@kernel.org>
-linux-csky@vger.kernel.org
+>   - 2. 730e5ebff40c ("gpio: omap: do not register driver in probe()")
+>   - 3. https://lore.kernel.org/lkml/20260212235842.85934-1-dakr@kernel.or=
+g/
+>
+> The third one will hopefully be picked up by the clk folks soon.
+>
+> (1) should be required since v6.11, (2) since (basically forever) v2.6.22=
+ and
+> (3) since v5.11.
+>
+> We should also consider that we do not know if (especially older) stable =
+trees
+> have similar cases that we did not catch in linux-next."
+>
+> - Danilo
 
--- 
-Thanks,
-Sasha
 
