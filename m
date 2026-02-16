@@ -1,254 +1,243 @@
-Return-Path: <stable+bounces-216669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216670-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AgBGIrUkmlMywEAu9opvQ
-	(envelope-from <stable+bounces-216669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 09:25:46 +0100
+	id cMntGYfgkmknzgEAu9opvQ
+	(envelope-from <stable+bounces-216670-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 10:16:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF7A14185F
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 09:25:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C5F141E4D
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 10:16:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 69EFF300B44F
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 08:25:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BE74301951F
+	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 09:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7343C227EA8;
-	Mon, 16 Feb 2026 08:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FEA2C032C;
+	Mon, 16 Feb 2026 09:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QCJc/4tC";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZukPKZ14"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TF5WUBZs"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAADA2797AC
-	for <stable@vger.kernel.org>; Mon, 16 Feb 2026 08:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB623283686;
+	Mon, 16 Feb 2026 09:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771230341; cv=none; b=ontLZ/pcXezpNKtEHBHqp81aP1NbUECLZV0mKgRIF8zQ4CxymXao+iPxAENC2hg+nHLTDC80VCFW6jsTAHIEwkqsTlB2sdeHl1X8MbsVLd/KDeTJSwv33tJxm9SFSvPqVIVcLqCGtYJF45w5xi3o5lwXxPJffCQnURThWj04Bl0=
+	t=1771233356; cv=none; b=ozMYvkvKh5Fmu/Ri3xPJcLwTqZWxbOcwQSpy/EDoTSMh8MiT5uhxG41Pnf1vT4qO3BcFBICx1AcGTrsg6WI8QAkd3Akt9hA867fV+li5j3T2EPcpUUxYVbwvgTBo5Ex3iNk8Me5CsN2Up3UT5qSX1nV83o0/1loNmZ/Ks5SXEAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771230341; c=relaxed/simple;
-	bh=nInKCgIP+A0LTqJCkbRxrySrnisfW77dFmLRGjVFfwA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dFwzXOtKjU1qT4ny+3VsqVJHe4rDPsWDI2pDIwIRi8YmBvvjp7zpgAGqB6Z9nKNsaNIEuMNRWdqpucYctDzx/t6wLING2WVITSuk7fZCsU/JqyllNZXKcRd+qly6AoUCvy08HULDCpmyoMk9nOMSXMi59kALTVatv/Qhg6Mop7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QCJc/4tC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZukPKZ14; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771230339;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DTyr5ePnFbB0QkSaBB5Ia4C9W9pTREiW3R9ckzEINXQ=;
-	b=QCJc/4tCnTp1tkXY668VL99Mo6kvIdxHNo+GBJ2JBsiu6cyZo656uIjt46MKmeioEPjAxJ
-	B0NHfSgYZ51iAb7Nps2ChExuHFHmYBlMSvH6E3j6b92nZOBdZprfMZc9jq5qH6nAjPwU9a
-	Z+i2+rF+Kt3ZJ2fU/TH+wPD6JjAvItQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-cKi1wtWIOHWG65X2tptxyA-1; Mon, 16 Feb 2026 03:25:37 -0500
-X-MC-Unique: cKi1wtWIOHWG65X2tptxyA-1
-X-Mimecast-MFC-AGG-ID: cKi1wtWIOHWG65X2tptxyA_1771230336
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4837907ec88so29873785e9.0
-        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 00:25:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1771230336; x=1771835136; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DTyr5ePnFbB0QkSaBB5Ia4C9W9pTREiW3R9ckzEINXQ=;
-        b=ZukPKZ14dE4BWjimW2qGgAt9hmnF/7esIloQHYp2TGUs8zdy7FNR7Eh1xLMQQhZqwt
-         Iim/Q5njlU/ITL/R0jNIoKobT5Qz8zR6xErBzbp5snkSSgB0fVDkNHFSM349pvuqTYFo
-         DbBM1rvk8QMNcppes6D2m5CoxyBuQK5QGBCzemQn9o2ISyQftmKOeB/M+MafuuUfqLXX
-         tNHTXqh/tVnK+Xp/spdKhYcMNHdOQC1ZBvrR9pWgIt8hvckX2xtu8+9SU+Sg1cbqpaud
-         0eqYPqZOW1NZq9HtRRHHJzKIAZ9L/TA9B/OT65XNsvIdvUT1zN2lsFi77ARqBikzoIqd
-         k1+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771230336; x=1771835136;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DTyr5ePnFbB0QkSaBB5Ia4C9W9pTREiW3R9ckzEINXQ=;
-        b=hmqU8+XW75686uGCd8+nQT1jeB8qdna+2qQKU1FoPtxGno4D5QZemr3sfGfRc9lSh3
-         A1Jce47PGAriIdUy9emULqz2t8z0l0wIEdG1QQyi4JTjrzY804RW1hFEAye5dbaL8jlH
-         MTwdrCiUCRzhcHmoxcMyVNFKZb1pllQttzC8qEfA5f2QUY8mNqDIBUpKzQ52gQ1Cjzbu
-         0pSiKsVTtcaYwvdTHj9Q2OxUDfVSCczzaYECdEugQmOgFox3t2XnOXjZeVj1c8SmW2m7
-         SM4Q8Ep2QygsMjfzpQ2KLWn48Y8HCnDyvK0YwgVavQbTqmFm/E3gKcIIAkIAYMBf/ee0
-         6pog==
-X-Forwarded-Encrypted: i=1; AJvYcCVREUKACJdbOkEvhBjdmIt6aMWZyH14XeOve53lhC3U7Lq2Syh0SnuGGEVumHtR725i0C99280=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJDKOiGCVG6+lqkDcbgaatDch7GQzxGHBrhoGBGqEUmVoNNUvH
-	b1gffptRmyNR69k5tHEpami2bxBbuTKzKCYXttL/iwoeHkc2JSIVF87/I7v8iDGTnNM484Toxb3
-	s0HviirRCRVnhixOBMCCSGsofVw48FIDcYiYOeEX5xbx7mWwdsl87jXUPNQ==
-X-Gm-Gg: AZuq6aJiz6odpcB9YIxWR17Trp6gKRpY2Zqi9DEGhEHW2Jg+p6RD5WelSmAs4El5waW
-	7ePNGwqtiAWVvJL4uLXjXfzVRRczLsyXtgCOObEKi9y6hE4LdGZTMgu0kc2xNsbmQQt2jYgYJjR
-	l098zDgLhQMO6TcZRbJBDflYOaTlR7OJKhYawmUHxdTHvOH1b9yQkvWIsvzqKCakp/0axTDIAdB
-	C5AvT9nV8eQgG3SJCQUcvuRoKzouL2cfvfdYGsJXST5Gvde4MfVfXVlb1zdEU8l2sF+vwpbBF9Y
-	wsyuiXt2wTFO1jhBZC0AdBtxy/8WNHvSZe3VLfNffhc3C99hYb9+OtmcTAcHtsauAIfQFQ0OraW
-	OUwhRIGlRE3mW29qklCtImnixkytbPOfRkbZbHszfzmWGheUv32fJwnA4wVEBJrSG8F0/4uw=
-X-Received: by 2002:a05:600c:190c:b0:477:5af7:6fa with SMTP id 5b1f17b1804b1-48373a59a74mr134122955e9.32.1771230336351;
-        Mon, 16 Feb 2026 00:25:36 -0800 (PST)
-X-Received: by 2002:a05:600c:190c:b0:477:5af7:6fa with SMTP id 5b1f17b1804b1-48373a59a74mr134122665e9.32.1771230335778;
-        Mon, 16 Feb 2026 00:25:35 -0800 (PST)
-Received: from sgarzare-redhat (host-82-53-134-58.retail.telecomitalia.it. [82.53.134.58])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48371a298b5sm78451155e9.12.2026.02.16.00.25.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Feb 2026 00:25:35 -0800 (PST)
-Date: Mon, 16 Feb 2026 09:25:25 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicolas Schier <nsc@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Steve French <smfrench@gmail.com>
-Subject: Re: [PATCH 0/2] kbuild: rpm-pkg: Address -debuginfo build regression
- with RPM < 4.20.0
-Message-ID: <aZLTsduMY7H-QoA2@sgarzare-redhat>
-References: <20260210-kbuild-fix-debuginfo-rpm-v1-0-0730b92b14bc@kernel.org>
- <aY8wyR572eZYWVJY@sgarzare-redhat>
- <20260213191138.GA2131983@ax162>
- <CAGxU2F7FFNgb781_A7a1oL63n9Oy8wsyWceKhUpeZ6mLk=focw@mail.gmail.com>
- <20260215212901.GA695045@ax162>
+	s=arc-20240116; t=1771233356; c=relaxed/simple;
+	bh=dVsal1CIvDQ3bPRYCauiSKo1ZGzigVFtu8J4Hka9Zw4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oE1XmIYuxv5UOG9EawWLU2RUvezHx41a6aYjmtmk7xWG7uZyUYxYQGVxLbMFnqNP44MU5XNofcu1C7TmmzGpVN2XH3KFvW+Bg0dXvEPm2grU9tSE5VPCXfelxOa7M9sIpfiLBqiKX2SuJXo0gZjohVxm1CfFzW75mUbSWjKd+LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TF5WUBZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DC3C19422;
+	Mon, 16 Feb 2026 09:15:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771233355;
+	bh=dVsal1CIvDQ3bPRYCauiSKo1ZGzigVFtu8J4Hka9Zw4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TF5WUBZsSpwCg15ZU7CtyPKG2ogxsj1lnVMN2jgOEi2RT/OMaUMzIt3WPqqx6W/Zw
+	 zE8+UIljH2rh/0dSPTPCo+Vfnhs6xfJrbpjWy9yHWbPzMkOszDL3IAnWfYYjmSd5X/
+	 vTib+OzwVuZ+dKCGVEA157b2BYI59RELI3e6G+g0=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.19.1
+Date: Mon, 16 Feb 2026 10:15:50 +0100
+Message-ID: <2026021651-jot-sprinkled-aa8b@gregkh>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260215212901.GA695045@ax162>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-216670-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216669-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9CF7A14185F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D0C5F141E4D
 X-Rspamd-Action: no action
 
-On Sun, Feb 15, 2026 at 04:29:01PM -0500, Nathan Chancellor wrote:
->On Fri, Feb 13, 2026 at 08:41:24PM +0100, Stefano Garzarella wrote:
->> mmm, that it's odd indeed.
->> Without this series applied, I had issues on Fedora 42 (RPM version
->> 4.20.1), but it worked on Fedora 43 (RPM version 6.0.1).
->>
->> I just retried on Fedora 42 to build commit cee73b1e840c ("Merge tag
->> 'riscv-for-linus-7.0-mw1' of
->> git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux") and I have
->> the following errors:
->>
->> RPM build errors:
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': #�) = 0x0d000002
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x47161b0700
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x339b1a000ac0
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x36000000
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7508200000000000
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e76000000000400
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x803ab2b00000000
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1a00000000005e00
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x125590000000060
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': = 0x03080000
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x818000000003600
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': $) = 0x1c01040000004d00
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x63c300000000000
->>     Illegal char '?' (0xffffffd8) in: 3�
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1320f691700
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e17101500
->>     Version required: ksym(g) =
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': p) = 0x3875480000005c
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ]) = 0xfc22000000003000
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': 2) = 0x5d0d03cc22
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ]) = 0x32042c1c
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x1c11a3d1b00
->>     Version required: ksym(�) =
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3220312e322e3400
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x322e353120295400
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x2029554e47282000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->>     Illegal char ')' (0x29) in: (GNU)
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': #) = 0x031c0000
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x570d03ea11
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 
->>     0x4000000520d03c0
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': C) = 0x690d03cf33
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': �l) = 0x102000001471140
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': i) = 0x4a00000000011000
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x2e00000000240000
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x42111503a533
->>     Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0xea1303bb33000000
->>     Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->>
->> But if I apply this series on top, everything is fine.
->
->Okay interesting! I have not seen that error yet... I wonder if adding
->'AutoReqProv: no' to the kernel-debuginfo subpackage (like the
->kernel-devel subpackage) would avoid that for rpm 4.20.0... Probably not
->that big of a deal if it is resolved with rpm 6.0.1 but it would be good
->to avoid as many corner cases as possible.
+I'm announcing the release of the 6.19.1 kernel.
 
-Oh, yeah, I just tried the following change on top of commit 
-cee73b1e840c ("Merge tag 'riscv-for-linus-7.0-mw1' of 
-git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux"), so without 
-this series applied:
+All users of the 6.19 kernel series must upgrade.
 
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index 0f1c8de1bd95..86ca327ebccf 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -50,6 +50,7 @@ against the %{version} kernel package.
-  %if %{with_debuginfo}
-  %package debuginfo
-  Summary: Debug information package for the Linux kernel
-+AutoReqProv: no
-  %description debuginfo
-  This package provides debug information for the kernel image and modules from the
-  %{version} package.
+The updated 6.19.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.19.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-And I'm able to generate RPMs too without errors!
+thanks,
 
-Thanks,
-Stefano
+greg k-h
+
+------------
+
+ Makefile                                            |    2 
+ drivers/base/base.h                                 |    9 
+ drivers/base/bus.c                                  |    2 
+ drivers/base/dd.c                                   |    2 
+ drivers/bluetooth/btusb.c                           |    2 
+ drivers/bus/fsl-mc/fsl-mc-bus.c                     |    6 
+ drivers/crypto/intel/iaa/iaa_crypto_main.c          |   12 
+ drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c   |    2 
+ drivers/crypto/omap-crypto.c                        |    2 
+ drivers/crypto/virtio/virtio_crypto_core.c          |    5 
+ drivers/crypto/virtio/virtio_crypto_skcipher_algs.c |    2 
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c            |   38 +
+ drivers/net/wireless/realtek/rtl8xxxu/core.c        |    1 
+ drivers/net/wireless/realtek/rtw88/main.c           |    4 
+ drivers/pci/endpoint/pci-ep-cfs.c                   |   15 
+ drivers/scsi/qla2xxx/qla_gs.c                       |   41 -
+ drivers/scsi/qla2xxx/qla_init.c                     |   28 -
+ drivers/scsi/qla2xxx/qla_isr.c                      |   19 
+ drivers/scsi/qla2xxx/qla_os.c                       |    3 
+ fs/erofs/fileio.c                                   |    7 
+ fs/hfs/mdb.c                                        |   35 -
+ fs/hfs/super.c                                      |   10 
+ fs/nilfs2/sufile.c                                  |    4 
+ fs/smb/client/cached_dir.h                          |    8 
+ fs/smb/client/smbdirect.c                           |  523 +++++++++++++++-----
+ fs/smb/common/smbdirect/smbdirect_socket.h          |   18 
+ fs/smb/server/mgmt/user_session.c                   |    5 
+ fs/smb/server/mgmt/user_session.h                   |    1 
+ fs/smb/server/server.c                              |    6 
+ fs/smb/server/smb2pdu.c                             |   12 
+ fs/smb/server/transport_rdma.c                      |  147 +++++
+ fs/smb/server/transport_tcp.c                       |    3 
+ fs/xfs/scrub/btree.c                                |    7 
+ io_uring/io-wq.c                                    |   27 -
+ io_uring/io-wq.h                                    |    1 
+ io_uring/tctx.c                                     |   11 
+ kernel/sched/core.c                                 |    7 
+ kernel/sched/sched.h                                |    6 
+ sound/hda/codecs/conexant.c                         |    1 
+ 39 files changed, 787 insertions(+), 247 deletions(-)
+
+Ali Tariq (1):
+      wifi: rtl8xxxu: fix slab-out-of-bounds in rtl8xxxu_sta_add
+
+Anil Gurumurthy (4):
+      scsi: qla2xxx: Validate sp before freeing associated memory
+      scsi: qla2xxx: Delay module unload while fabric scan in progress
+      scsi: qla2xxx: Free sp in error path to fix system crash
+      scsi: qla2xxx: Query FW again before proceeding with login
+
+Bibo Mao (2):
+      crypto: virtio - Add spinlock protection with virtqueue notification
+      crypto: virtio - Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req
+
+Bitterblue Smith (1):
+      wifi: rtw88: Fix alignment fault in rtw_core_enable_beacon()
+
+Chao Yu (1):
+      erofs: fix UAF issue for file-backed mounts w/ directio option
+
+Darrick J. Wong (1):
+      xfs: fix UAF in xchk_btree_check_block_owner
+
+Edward Adam Davis (1):
+      nilfs2: Fix potential block overflow that cause system hang
+
+Greg Kroah-Hartman (1):
+      Linux 6.19.1
+
+Gui-Dong Han (2):
+      driver core: enforce device_lock for driver_match_device()
+      bus: fsl-mc: fix use-after-free in driver_override_show()
+
+Henrique Carvalho (2):
+      smb: client: split cached_fid bitfields to avoid shared-byte RMW races
+      smb: server: fix leak of active_num_conn in ksmbd_tcp_new_connection()
+
+Jeongjun Park (1):
+      drm/exynos: vidi: use ctx->lock to protect struct vidi_context member variables related to memory alloc/free
+
+Kees Cook (1):
+      crypto: omap - Allocate OMAP_CRYPTO_FORCE_COPY scatterlists correctly
+
+Li Chen (2):
+      io_uring/io-wq: add exit-on-idle state
+      io_uring: allow io-wq workers to exit when unused
+
+Liu Song (1):
+      PCI: endpoint: Avoid creating sub-groups asynchronously
+
+Mehdi Ben Hadj Khelifa (1):
+      hfs: ensure sb->s_fs_info is always cleaned up
+
+Namjae Jeon (2):
+      ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off reset in error paths
+      ksmbd: add chann_lock to protect ksmbd_chann_list xarray
+
+Shreyas Deodhar (1):
+      scsi: qla2xxx: Allow recovery for tape devices
+
+Stefan Metzmacher (20):
+      smb: smbdirect: introduce smbdirect_socket.recv_io.credits.available
+      smb: smbdirect: introduce smbdirect_socket.send_io.bcredits.*
+      smb: server: make use of smbdirect_socket.recv_io.credits.available
+      smb: server: let recv_done() queue a refill when the peer is low on credits
+      smb: server: make use of smbdirect_socket.send_io.bcredits
+      smb: server: fix last send credit problem causing disconnects
+      smb: server: let send_done handle a completion without IB_SEND_SIGNALED
+      smb: client: make use of smbdirect_socket.recv_io.credits.available
+      smb: client: let recv_done() queue a refill when the peer is low on credits
+      smb: client: let smbd_post_send() make use of request->wr
+      smb: client: remove pointless sc->recv_io.credits.count rollback
+      smb: client: remove pointless sc->send_io.pending handling in smbd_post_send_iter()
+      smb: client: port and use the wait_for_credits logic used by server
+      smb: client: split out smbd_ib_post_send()
+      smb: client: introduce and use smbd_{alloc, free}_send_io()
+      smb: client: use smbdirect_send_batch processing
+      smb: client: make use of smbdirect_socket.send_io.bcredits
+      smb: client: fix last send credit problem causing disconnects
+      smb: client: let smbd_post_send_negotiate_req() use smbd_post_send()
+      smb: client: let send_done handle a completion without IB_SEND_SIGNALED
+
+Takashi Iwai (1):
+      ALSA: hda/conexant: Add quirk for HP ZBook Studio G4
+
+Thomas Gleixner (1):
+      sched/mmcid: Don't assume CID is CPU owned on mode switch
+
+Thorsten Blum (2):
+      crypto: iaa - Fix out-of-bounds index in find_empty_iaa_compression_mode
+      crypto: octeontx - Fix length check to avoid truncation in ucode_load_store
+
+Zenm Chen (1):
+      Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
 
 
