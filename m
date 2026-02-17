@@ -1,207 +1,179 @@
-Return-Path: <stable+bounces-216898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oh3ZAPfGlGn4HgIAu9opvQ
-	(envelope-from <stable+bounces-216898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:23 +0100
+	id sIr3E9fHlGnCHgIAu9opvQ
+	(envelope-from <stable+bounces-216899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:56:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DE414FBEF
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E73DD14FC99
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:56:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 799153039F48
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:52:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEEAB303AA92
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9877F37756F;
-	Tue, 17 Feb 2026 19:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E683783C8;
+	Tue, 17 Feb 2026 19:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cHrNUZ0o"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rQwFnpJt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5E2377562
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 19:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF63925D1E9;
+	Tue, 17 Feb 2026 19:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771357938; cv=none; b=dw5fiBxUvKA/lfTxb5hN2aADJP2YL5r8UXFkDIpFAN943Ob7qmB9DoFugin2jqx2c2rCGynw/PQf34xCA8Ku4sdLmQW3ddFdNDg4RhRazQDHzbJ/LqtM2qggE3gnVPP1RkLpDrxoz6zi4JScOj8ve8pUS4dEilOXy2zJhW4y6sc=
+	t=1771358160; cv=none; b=JVhklWVEnpf+RAzbc10jxK0mV9Kj3ZnDNQbRoHhUYsH8niBGoZVW4W4iw50aMcBGP3bmCofpMGoW1b/e/zUS4pzYUUDgJD3nFzrsj1I5EQdqp0UiRy6nngwE92qwlphf9QBGn4M4DebE0scOw8kDQck1zlrBpMlrbm9EaIfOCQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771357938; c=relaxed/simple;
-	bh=VAW7x/orn0Huy1YPMtPk3NZT1Exwl+gFPT2lNA8f6u8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UARTPWL8eVZEZwx5AXEkvl0GqpzNwGRbw1mRq1mzfRzGbKOfadVkGEugIHkEQ4/WsDy8s2Dg1paVWYg5yZBebBosBroP3N7U1VLN7Gy2Sm/p9bDRlOQsOPd0Mv8Q7Ss26p6knOImzBm88hRj3KfHnT3Pfm6ZV14GXs2pwIq0Jbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cHrNUZ0o; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ad147cdf07so39653845ad.2
-        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 11:52:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771357937; x=1771962737; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iIA4TK+EsNVXqdzbzcC79ZPWkysGWEOBK8gataHwNFU=;
-        b=cHrNUZ0oKVq0H/hVcbYt5aFVdyn1hReUqZTrCDXfOjJVj+7WCesuFGQsI7MacE3XXm
-         MdBjz/2awP7uvxTUipf8dhyP+7KP9blqcPJY1rTvmp3lunYJ7DLpvGXNysraGgS2d/Oz
-         nJUzqSrPcMf+EUsayLeH5Af2oAod59l8IXrmCRO2DxgaqiFsUAnwKBsT0TNsHSmEg0qx
-         kSN6ZIyA/jbJKudXN1BOcwdlmPGj2b0cx1D7sme3apZ+h/WwEzqq0ZMd3LwzGuCZOS0j
-         Byn6SX22XgYKDeraEdM/q9f1XUWtmcHVZfR9W2OcF3foP7egpsix+z0mKF6i8vPmGFGe
-         dFKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771357937; x=1771962737;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iIA4TK+EsNVXqdzbzcC79ZPWkysGWEOBK8gataHwNFU=;
-        b=Yt4NgXSp7EFwAO+pivsBAFRvlS5d2/mCa4UIkWFFjv+Ayx+MH3L8Tn36us/Kpy6sCd
-         l8AJm1cJQcUOQJaL2E2aQXFWvsgMRRgVb2Tid1pYiGn2WMNBjLJU0HRe1q19UT3SG03v
-         xZSCH0Foac7lxfAthUCGRquCDRYeYfeqrjsjgF7XVpgwukxqXW12tBjW2hD/DBe5kWq/
-         rVM6M2NWqQJUig2jWfYxZ8Cqv0TiSMhL7tlnH7jEhVk/Kx0ldgiswN5HykbRCH+6QlyA
-         93goaE8fNott/h5jTleu/O2srvrAo0yz9eq2s4hP76101XuMpkpFK9ctbfXjM4cZE2+z
-         E7sA==
-X-Gm-Message-State: AOJu0Yx6TgGdj9jg0wki/1UDJjA3aBZOeV3/sAYoWXsuU2kt3pkxg+Ts
-	n0npRN/C1ciGObT32A6us4PvRGKxOk9dmttS5oyadg92ENvYq4cnHdmNpIf0qWQLLKo+0ykO0Og
-	5TG+0wQWU+uNKLdIohz93U0ywsNLFBMctk7Ti2ZuxouXaj+aV34cFaybP8uWmYnSg6iihid7jmK
-	aMWzjBi03KtyYEcRqElH2CMEsuhtrOx438mvgL8TPMjEP0Idc=
-X-Received: from plmo18.prod.google.com ([2002:a17:903:18d2:b0:2a8:759b:173d])
- (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:8c6:b0:2a9:4998:6636 with SMTP id d9443c01a7336-2ad1745d452mr126992585ad.20.1771357936243;
- Tue, 17 Feb 2026 11:52:16 -0800 (PST)
-Date: Tue, 17 Feb 2026 11:52:07 -0800
-In-Reply-To: <20260217195207.1449764-1-joshwash@google.com>
+	s=arc-20240116; t=1771358160; c=relaxed/simple;
+	bh=giOWjCQH6wS7nPGAjIXXxjZXzDGkoQy3N64lkyRWLIU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AoTS1/PTuSZqWVEJrAmPYTtY2pkBd/MZQZa+r58i9KZtgw0NYa/7AaO0SqVsEjZKUU2MSB6LnrLeJqWQ/4jaDaIoR9ut1tmBrSFp1XwBitEy0JqCUbBA0YAqKbhJzwmowdHxCexsFaoJ7LZ4d71w3YKCbwBFAmyUnQO92aUUOq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rQwFnpJt; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61HIrcqT3309338;
+	Tue, 17 Feb 2026 19:55:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=e857/+
+	XeurNCek9z3d0m6OAoBNZWbSgBh2bjyUUuag0=; b=rQwFnpJtsfcYzwPDbQcIKu
+	ekmHddiYKtxEeHXMKXNEpvVuOqXLlRr9nGpiTRULQzHhxB2awY3iPqz5bS8Z2B+B
+	Pj3LM4xdWI5T//EvRUDJu3j8XOWDMl1X/4R9NwRaKMO2vsQ/rfp4Xq5SaJgx0wMC
+	YBHFsp7xNXTgScI/NLZeU4tlaISi6qjH4myFVLlCaYbqqmwsr4vFUfOn49H+rB+o
+	rmp1khhp0o+bjZGEJYJMwryWd44paL58QgrzmiREN83FalcciY473QnMZNgUMNDi
+	47iCQ4FyF2tIP5Si4KjXbyzCcIlXQmoIiLsumzYRE8D1uZ3dIpvZeKEYqGhD4vBw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj4kdcje-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Feb 2026 19:55:47 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61HJ2Ek4023889;
+	Tue, 17 Feb 2026 19:55:46 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb454u1x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Feb 2026 19:55:46 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61HJtia315205048
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Feb 2026 19:55:44 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 535B55805E;
+	Tue, 17 Feb 2026 19:55:44 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 746505806D;
+	Tue, 17 Feb 2026 19:55:43 +0000 (GMT)
+Received: from [9.61.242.249] (unknown [9.61.242.249])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Feb 2026 19:55:43 +0000 (GMT)
+Message-ID: <2818bf62-54c0-4416-82fe-b47f5ae2fcd0@linux.ibm.com>
+Date: Tue, 17 Feb 2026 11:55:43 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260217195207.1449764-1-joshwash@google.com>
-X-Mailer: git-send-email 2.53.0.310.g728cabbaf7-goog
-Message-ID: <20260217195207.1449764-4-joshwash@google.com>
-Subject: [PATCH v2 6.6.y] gve: defer interrupt enabling until NAPI registration
-From: Joshua Washington <joshwash@google.com>
-To: stable@vger.kernel.org
-Cc: Ankit Garg <nktgrg@google.com>, Jordan Rhee <jordanrhee@google.com>, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Joshua Washington <joshwash@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 3/9] PCI: Avoid saving config space state in reset path
+To: Keith Busch <kbusch@kernel.org>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, helgaas@kernel.org, lukas@wunner.de,
+        alex@shazbot.org, clg@redhat.com, stable@vger.kernel.org,
+        schnelle@linux.ibm.com, mjrosato@linux.ibm.com,
+        Bjorn Helgaas <bhelgaas@google.com>
+References: <20260217182257.1582-1-alifm@linux.ibm.com>
+ <20260217182257.1582-4-alifm@linux.ibm.com> <aZS9X_CQBuo7gQpC@kbusch-mbp>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <aZS9X_CQBuo7gQpC@kbusch-mbp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDE2MSBTYWx0ZWRfX2IajmBNvZO4m
+ xz49fdcSeGPQCx0IV0Yg7M1K5w/9IEEfEBKxWEulgeRiRR8tHisoPFVV55AUfxTSaCKulminPve
+ YdQu4M5zeYQ0WJJIOu23o06cjxhH6PdE0tKURyBSFnw6Hl5pF9hf22HXv0ubu1iAdNsdoqT3OS5
+ hZokVyLkBpdg5yxWldf7vkZecg77k6WCRsaa89Sylyj6RZe10eiKBPKVGokXC1nvQLdc97lgLCp
+ kjtUenJd6GK3mBUDjjjImNRbNecRAJacHuVqJIE5fDQrRlHFoUY0Zj1h/aVgOlqVu9vd3Djl9sL
+ wU5ABf/j+MtiD7yEueQbbEvU6i7J4TqJNMIsEphVNo5XBWhgWQcbuWF90JgNhNCfTU+acvj6RHn
+ BE7SJ3JR6K33yYxUT4SZRWPiXLqCklm6YQvzx3Ca3kOu4XvWZCKcVSGokT9XRWiRW67C+PsuMhr
+ Z9gWGqWVWGfqaOg1uRg==
+X-Proofpoint-ORIG-GUID: wnIxsI2QEjug02k4k4EMN77zuRDJq61H
+X-Proofpoint-GUID: kq08CJRypp2_CBkq94u-gkvRos6n1SBo
+X-Authority-Analysis: v=2.4 cv=M7hA6iws c=1 sm=1 tr=0 ts=6994c7c3 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=Q7f48Jf6utwjRvlCK7UA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-17_03,2026-02-16_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1011 phishscore=0
+ impostorscore=0 suspectscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602170161
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216898-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[joshwash@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pci:email]
-X-Rspamd-Queue-Id: 96DE414FBEF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216899-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ibm.com:+]
+X-Rspamd-Queue-Id: E73DD14FC99
 X-Rspamd-Action: no action
 
-From: Ankit Garg <nktgrg@google.com>
 
-[ Upstream commit 3d970eda003441f66551a91fda16478ac0711617 ]
+On 2/17/2026 11:11 AM, Keith Busch wrote:
+> On Tue, Feb 17, 2026 at 10:22:51AM -0800, Farhan Ali wrote:
+>> The current reset process saves the device's config space state before
+>> reset and restores it afterward. However errors may occur unexpectedly and
+>> it may then be impossible to save config space because the device may be
+>> inaccessible (e.g. DPC) or config space may be corrupted. This results in
+>> saving corrupted values that get written back to the device during state
+>> restoration.
+>>
+>> Since commit a2f1e22390ac ("PCI/ERR: Ensure error recoverability at all times"),
+>> we now save the state of device at enumeration. On every restore we should
+>> either use the enumeration saved state or driver's intentional saved state,
+>> never a state saved at the unpredictable time of an error recovery reset.
+> The vfio driver calls pci_try_reset_function after pci_enable_device,
+> but before calling pci_store_saved_state. Won't this change, then, mean
+> that the PCI Command register will get restored to the wrong state with
+> the resources disabled?
 
-Currently, interrupts are automatically enabled immediately upon
-request. This allows interrupt to fire before the associated NAPI
-context is fully initialized and cause failures like below:
+Yes I think you are right, with this change the PCI Command register 
+gets restored to state at enumeration. So we will lose the updated state 
+after pci_clear_master() and pci_enable_device(). I think we can update 
+the vfio driver to call pci_save_state() after pci_enable_device()?
 
-[    0.946369] Call Trace:
-[    0.946369]  <IRQ>
-[    0.946369]  __napi_poll+0x2a/0x1e0
-[    0.946369]  net_rx_action+0x2f9/0x3f0
-[    0.946369]  handle_softirqs+0xd6/0x2c0
-[    0.946369]  ? handle_edge_irq+0xc1/0x1b0
-[    0.946369]  __irq_exit_rcu+0xc3/0xe0
-[    0.946369]  common_interrupt+0x81/0xa0
-[    0.946369]  </IRQ>
-[    0.946369]  <TASK>
-[    0.946369]  asm_common_interrupt+0x22/0x40
-[    0.946369] RIP: 0010:pv_native_safe_halt+0xb/0x10
+Thanks
 
-Use the `IRQF_NO_AUTOEN` flag when requesting interrupts to prevent auto
-enablement and explicitly enable the interrupt in NAPI initialization
-path (and disable it during NAPI teardown).
+Farhan
 
-This ensures that interrupt lifecycle is strictly coupled with
-readiness of NAPI context.
-
-Cc: stable@vger.kernel.org
-Fixes: 893ce44df565 ("gve: Add basic driver framework for Compute Engine Virtual NIC")
-Signed-off-by: Ankit Garg <nktgrg@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Link: https://patch.msgid.link/20251219102945.2193617-1-hramamurthy@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ modified to re-introduce the irq member to struct gve_notify_block,
-  which was introuduced in commit 9a5e0776d11f ("gve: Avoid rescheduling
-  napi if on wrong cpu"). ]
-Signed-off-by: Joshua Washington <joshwash@google.com>
----
- drivers/net/ethernet/google/gve/gve.h      | 1 +
- drivers/net/ethernet/google/gve/gve_main.c | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index d59e28c86775..f6e43cf96a46 100644
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -585,6 +585,7 @@ struct gve_notify_block {
- 	struct gve_priv *priv;
- 	struct gve_tx_ring *tx; /* tx rings on this block */
- 	struct gve_rx_ring *rx; /* rx rings on this block */
-+	u32 irq;
- };
-
- /* Tracks allowed and current queue settings */
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index b2c648fe3875..08f444ee10c7 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -407,9 +407,10 @@ static int gve_alloc_notify_blocks(struct gve_priv *priv)
- 		snprintf(block->name, sizeof(block->name), "gve-ntfy-blk%d@pci:%s",
- 			 i, pci_name(priv->pdev));
- 		block->priv = priv;
-+		block->irq = priv->msix_vectors[msix_idx].vector;
- 		err = request_irq(priv->msix_vectors[msix_idx].vector,
- 				  gve_is_gqi(priv) ? gve_intr : gve_intr_dqo,
--				  0, block->name, block);
-+				  IRQF_NO_AUTOEN, block->name, block);
- 		if (err) {
- 			dev_err(&priv->pdev->dev,
- 				"Failed to receive msix vector %d\n", i);
-@@ -575,6 +576,7 @@ static void gve_add_napi(struct gve_priv *priv, int ntfy_idx,
- 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
-
- 	netif_napi_add(priv->dev, &block->napi, gve_poll);
-+	enable_irq(block->irq);
- }
-
- static void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
-@@ -582,6 +584,7 @@ static void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
- 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
-
- 	netif_napi_del(&block->napi);
-+	disable_irq(block->irq);
- }
-
- static int gve_register_xdp_qpls(struct gve_priv *priv)
---
-2.53.0.273.g2a3d683680-goog
 
 
