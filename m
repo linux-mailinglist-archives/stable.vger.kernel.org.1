@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-217058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KLPMALUlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:02 +0100
+	id OMt6MRzVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6F41504D1
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 616B615071E
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 622B4300A52C
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0D487305FDBC
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C443928851C;
-	Tue, 17 Feb 2026 20:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CAC28D8E8;
+	Tue, 17 Feb 2026 20:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TofMXs8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vB8KvdwC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86923261B70;
-	Tue, 17 Feb 2026 20:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FF829BDB4;
+	Tue, 17 Feb 2026 20:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361278; cv=none; b=F5U8g0T+Lb9eoSyJ4CTXVlxts/sziWVBQ6nDtyE8nYh4a00tdXKE3VPwuF563w6ETh+IVVvZENXssTA57+Em0/Wf/Yom0sJ3g+2jR0VfpDY3hUt3P1j+pOeCEHEYCe24sgmJw5HtqQhFPtfoeiqXvPxqGAy2GZ1zrfC/52Q2MP4=
+	t=1771361510; cv=none; b=ao1BRhf025r7GE6VtNWLy3YxASPBriLbcu73Z+CQ4X12BNWjrWzhIa+jsQDh0XCwMwC3MrDQd+aAwOB0WalwVrSTCvjOV2aUJ7VlT0rrjrkrb7nYpNtDxtlFKVA9XJgsmVbBMoEgrQ/jPtv8dIzlSb/Ae+7vVBuj5kQCXKJj7N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361278; c=relaxed/simple;
-	bh=P89CDAfKdMFHfEPvSYjUlA+vJKb9YQw1nEci2gI+8Z8=;
+	s=arc-20240116; t=1771361510; c=relaxed/simple;
+	bh=vb73SZitYE8F++/ZmlcBi5J4YG1Z6HRWtlhO6xOeE30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTGdufLUmCGXUHJpH7Rrcrox6MNplQ4NhMPubH15u/KSFD00a2+5up8R30qU3GKBexsGA5+S4VcisWzp41cgm/dvRYKtUAEpXlIb59Na9kMxV70IQyn67ZK2yqNgIf3i6HeN9knRvPWUrMOcnxD9Q8+Ci+Z86VgNZ8t6iMOSSA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TofMXs8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAC4C4CEF7;
-	Tue, 17 Feb 2026 20:47:57 +0000 (UTC)
+	 MIME-Version; b=dBX3zJyycFw/pyhvNgSdP7UCkmr+dhKznS3a1Q9BSgQASj+4rN3YvXIm25O6/fkSRcaoe4T2Jnuev2jmK5ta5IPUjDF9clbrwqicjz8g8FsIaO0HDGDIJa+vWoto928GwIhL//tjHQZq55m2MClhReX3gYvUoQ4Qe+iDlYuLVBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vB8KvdwC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2C5C4CEF7;
+	Tue, 17 Feb 2026 20:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361278;
-	bh=P89CDAfKdMFHfEPvSYjUlA+vJKb9YQw1nEci2gI+8Z8=;
+	s=korg; t=1771361510;
+	bh=vb73SZitYE8F++/ZmlcBi5J4YG1Z6HRWtlhO6xOeE30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TofMXs8p4EGr07QaZSKaIdRuLSrn/2p5Lp6BCzuVBZCFAmVX96nkBngXtiNBDzyeP
-	 QkIF4n5LROC6rxjtIjJl0GiMMm682LI5Ahr3zwWHBy7aakZkwcxAS69rr1jJcKY0lE
-	 9FUmcPSMj4SmXBFLgasK/zU9Y6BCWw9yQSRD+YF4=
+	b=vB8KvdwCYFl8HYQWJ07MbHzWCSQGcOaq+sHHW6arPrfKLJKGr9VSE+mJI0vuXUPxS
+	 /A1wAFqJi2HYQIopOpdy7BcCnFiPcfwOV8Y8I+7mZ6RJvWMsrlIjw0N/cd8jHsV/hl
+	 i6kFRF6oILP5S3xbRfDVQLp8gbqJzy6wFEDiLih0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rajani Kantha <681739313@139.com>
-Subject: [PATCH 6.1 53/64] net: stmmac: Fix accessing freed irq affinity_hint
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 09/43] ALSA: hda/realtek - fixed speaker no sound
 Date: Tue, 17 Feb 2026 21:31:49 +0100
-Message-ID: <20260217200009.495087811@linuxfoundation.org>
+Message-ID: <20260217200006.827358407@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,92 +67,87 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217058-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217126-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org,139.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,139.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6E6F41504D1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,realtek.com:email]
+X-Rspamd-Queue-Id: 616B615071E
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit c60d101a226f18e9a8f01bb4c6ca2b47dfcb15ef ]
+[ Upstream commit 630fbc6e870eb06c5126cc97a3abecbe012272c8 ]
 
-The cpumask should not be a local variable, since its pointer is saved
-to irq_desc and may be accessed from procfs.
-To fix it, use the persistent mask cpumask_of(cpu#).
+If it play a 5s above silence media stream, it will cause silence
+detection trigger.
+Speaker will make no sound when you use another app to play a stream.
+Add this patch will solve this issue.
 
-Cc: stable@vger.kernel.org
-Fixes: 8deec94c6040 ("net: stmmac: set IRQ affinity hint for multi MSI vectors")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250318032424.112067-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rajani Kantha <681739313@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+GPIO2: Mute Hotkey GPIO3: Mic Mute LED
+Enable this will turn on hotkey and LED support.
+
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/f4929e137a7949238cc043d861a4d9f8@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ sound/hda/codecs/realtek/alc269.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3518,7 +3518,6 @@ static int stmmac_request_irq_multi_msi(
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index a77f16abc6df0..55ef52fefaef4 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -3371,11 +3371,22 @@ static void alc287_alc1318_playback_pcm_hook(struct hda_pcm_stream *hinfo,
+ 				   struct snd_pcm_substream *substream,
+ 				   int action)
  {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 	enum request_irq_err irq_err;
--	cpumask_t cpu_mask;
- 	int irq_idx = 0;
- 	char *int_name;
- 	int ret;
-@@ -3630,9 +3629,8 @@ static int stmmac_request_irq_multi_msi(
- 			irq_idx = i;
- 			goto irq_error;
- 		}
--		cpumask_clear(&cpu_mask);
--		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
--		irq_set_affinity_hint(priv->rx_irq[i], &cpu_mask);
-+		irq_set_affinity_hint(priv->rx_irq[i],
-+				      cpumask_of(i % num_online_cpus()));
++	static const struct coef_fw dis_coefs[] = {
++		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
++		WRITE_COEF(0x28, 0x0004), WRITE_COEF(0x29, 0xb023),
++	}; /* Disable AMP silence detection */
++	static const struct coef_fw en_coefs[] = {
++		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
++		WRITE_COEF(0x28, 0x0084), WRITE_COEF(0x29, 0xb023),
++	}; /* Enable AMP silence detection */
++
+ 	switch (action) {
+ 	case HDA_GEN_PCM_ACT_OPEN:
++		alc_process_coef_fw(codec, dis_coefs);
+ 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x954f); /* write gpio3 to high */
+ 		break;
+ 	case HDA_GEN_PCM_ACT_CLOSE:
++		alc_process_coef_fw(codec, en_coefs);
+ 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x554f); /* write gpio3 as default value */
+ 		break;
  	}
- 
- 	/* Request Tx MSI irq */
-@@ -3655,9 +3653,8 @@ static int stmmac_request_irq_multi_msi(
- 			irq_idx = i;
- 			goto irq_error;
- 		}
--		cpumask_clear(&cpu_mask);
--		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
--		irq_set_affinity_hint(priv->tx_irq[i], &cpu_mask);
-+		irq_set_affinity_hint(priv->tx_irq[i],
-+				      cpumask_of(i % num_online_cpus()));
- 	}
- 
- 	return 0;
+-- 
+2.51.0
+
 
 
 
