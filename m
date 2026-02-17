@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-217033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216945-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qP/8HqvTlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:35 +0100
+	id KP6cFH/SlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216945-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CC1150418
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CA0150137
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D2BDF300E62B
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:46:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7DCC13012849
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB51266581;
-	Tue, 17 Feb 2026 20:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E177377563;
+	Tue, 17 Feb 2026 20:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZlrguF1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPmL75Jv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC9129A1;
-	Tue, 17 Feb 2026 20:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119C4374178;
+	Tue, 17 Feb 2026 20:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361193; cv=none; b=GqLsY61SWj+5J+CcslmG4QL0xGdf9DhD6vbI8hV0G3pH4nRxg6QLMTO/tFsg98rhieDQFYfwhez4IdMqy5XxfL0MEFGHxu0rFwcMAlFkKZMcW3KhhPovXn/0njPoB9vftxBQ0bt14wOgR7U/IBJAdI3XPh/xdyMB6KhuJlmYv7g=
+	t=1771360891; cv=none; b=VDwOHZ+zGHwyMc0F23iSxw7k/ijUTPQZzkcSBDqNm4glQK9vZhz7a+iU5Bir1w7lvvxGR/G4EGPpfcUWE5ho42gxTTaTPjTjaCGUwL44hXTvo22FyCwBOXGLxY8XEE0EqiXjbjACxFYCocI8nNIcLK/F5xQiE0Ij/DP1LVGKEd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361193; c=relaxed/simple;
-	bh=MmUrVW4O9PNYsaDu3si3+uxqzfkzrTDyYeVOEQyMgW4=;
+	s=arc-20240116; t=1771360891; c=relaxed/simple;
+	bh=byuJ2LCUHRD/PNHQgiLvOmPWmeV3d7lQnGiNPq2NpVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fI/2trHiRXMhDabBfdIOLJ+K04pQGn8xdiSHcbFhhNOkpacFSKuZ63RuA1zvzuQNL9fSzeFq0wCLBF3KrcLblJeYOyLdP8E7W+JagZ6IB5MSJm/ugB3fzPF6K7Fn2ARWNUu6bwgoGhuWXKC8qHvwhQsoQZPPEovQwsC+h2Qdkb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZlrguF1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68D8C4CEF7;
-	Tue, 17 Feb 2026 20:46:32 +0000 (UTC)
+	 MIME-Version; b=hAaDRA4NSHwkIJXHZympflHINk7+SM3tUOQRrmrx9TFEl2sSeST7CC/MVm/dB5PQmd21nmXkl+2GoBw6rLDxi/H44qtGyXu0cUnREv29ktRwIlfTvK6a/wC4Ef7tPMUT5Z/EJmcOXqVX4juKt64PKWST6rN1GByoXGtnFa5rCFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPmL75Jv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE2AC4CEF7;
+	Tue, 17 Feb 2026 20:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361193;
-	bh=MmUrVW4O9PNYsaDu3si3+uxqzfkzrTDyYeVOEQyMgW4=;
+	s=korg; t=1771360890;
+	bh=byuJ2LCUHRD/PNHQgiLvOmPWmeV3d7lQnGiNPq2NpVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZlrguF1TkOCQkGcz+SXCiGsFR9fC0/GWRujhjmclPezSmG9hsYUvCp/Ojuum0Do2
-	 z+vWUe7SOFN+IWWJ7L7BYisMUodk/NmNDBXyan8Z7+dqot0Jzor3/IKtrAYkuRFrsC
-	 lIocWNsS7yxm1z1AajNqXGMmAkRSxCbAOuB6IDNc=
+	b=pPmL75JvJYYgvXGT6e2nh7Qe5VknkyL2nKme6dazxvQWXNYVrSEX95NGo88FPnR79
+	 wdsTkHV8jQFL59N78brd1/s+jOb9jP9/hCOwOlSEtHnoESREw33kSi6AqH3DNh+ZoP
+	 zi6Iq2bafFoTnJr0R7K2g1wlzoSpdUrjemxdRPso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 04/64] crypto: octeontx - Fix length check to avoid truncation in ucode_load_store
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 38/39] USB: serial: option: add Telit FN920C04 RNDIS compositions
 Date: Tue, 17 Feb 2026 21:31:00 +0100
-Message-ID: <20260217200007.674285368@linuxfoundation.org>
+Message-ID: <20260217200005.674461286@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200004.221651386@linuxfoundation.org>
+References: <20260217200004.221651386@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217033-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-216945-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E1CC1150418
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 18CA0150137
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit 5565a72b24fa7935a9f30af386e92c8c9dfb23b9 upstream.
+commit 509f403f3ccec14188036212118651bf23599396 upstream.
 
-OTX_CPT_UCODE_NAME_LENGTH limits the microcode name to 64 bytes. If a
-user writes a string of exactly 64 characters, the original code used
-'strlen(buf) > 64' to check the length, but then strscpy() copies only
-63 characters before adding a NUL terminator, silently truncating the
-copied string.
+Add the following compositions:
 
-Fix this off-by-one error by using 'count' directly for the length check
-to ensure long names are rejected early and copied without truncation.
+0x10a1: RNDIS + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  9 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a1 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=d128dba9
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10a6: RNDIS + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 10 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a6 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=d128dba9
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+0x10ab: RNDIS + tty (AT) + tty (diag) + DPL (Data Packet Logging) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 11 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10ab Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=d128dba9
+C:  #Ifs= 6 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
 Cc: stable@vger.kernel.org
-Fixes: d9110b0b01ff ("crypto: marvell - add support for OCTEON TX CPT engine")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
-+++ b/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
-@@ -1337,7 +1337,7 @@ static ssize_t ucode_load_store(struct d
- 	int del_grp_idx = -1;
- 	int ucode_idx = 0;
- 
--	if (strlen(buf) > OTX_CPT_UCODE_NAME_LENGTH)
-+	if (count >= OTX_CPT_UCODE_NAME_LENGTH)
- 		return -EINVAL;
- 
- 	eng_grps = container_of(attr, struct otx_cpt_eng_grps, ucode_load_attr);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1401,12 +1401,16 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a1, 0xff),	/* Telit FN20C04 (RNDIS) */
++	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a2, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a3, 0xff),	/* Telit FN920C04 (ECM) */
+ 	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a6, 0xff),	/* Telit FN920C04 (RNDIS) */
++	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a7, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a8, 0xff),	/* Telit FN920C04 (ECM) */
+@@ -1415,6 +1419,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10ab, 0xff),	/* Telit FN920C04 (RNDIS) */
++	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10b0, 0xff, 0xff, 0x30),	/* Telit FE990B (rmnet) */
+ 	  .driver_info = NCTRL(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10b0, 0xff, 0xff, 0x40) },
 
 
 
