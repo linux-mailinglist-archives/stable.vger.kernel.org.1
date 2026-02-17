@@ -1,161 +1,117 @@
-Return-Path: <stable+bounces-217192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJ/ZKU/slGnUIwIAu9opvQ
-	(envelope-from <stable+bounces-217192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 23:31:43 +0100
+	id 0ALSLdrslGnUIwIAu9opvQ
+	(envelope-from <stable+bounces-217193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 23:34:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164AB1517DE
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 23:31:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7E715183D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 23:34:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71CDF301A3AF
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 22:31:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D46C53044367
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 22:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E468A5B21A;
-	Tue, 17 Feb 2026 22:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771382F6907;
+	Tue, 17 Feb 2026 22:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mPRl2kSi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sD2Htsze"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18E71EB5B
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 22:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394BD28469F;
+	Tue, 17 Feb 2026 22:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771367480; cv=none; b=XwhI9dMirWyrHIY3YLF/rJZntUh+Sio4DK0h8y/cyfW7rHN16BRyzaBTyeN5h+YuEbs4f9b2IIo5sCHLuYXirp1+280soLhrF18SKn4eFel1kSbZqTMJVJwiCjYHmHmSsAUE8C6t5aUrbwmeR2/DmM4pv6EbVVHPHXb5Iy8Xei4=
+	t=1771367636; cv=none; b=aifD01hfTaY5rxE3dhGTkSjNASshEGXY5h9JwXJU2vvmrWS3rKFvILrDuM2Sjjikzg0qL9L5h0izi/bBCHItM1i5D+TA+foxmbFpyc6m5G3TYhwEFeNmEuLNH32rFM7vGTrQsTl6GNxTgrJjbKTy9fPg0Faug7MDy1w9Uu+nTsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771367480; c=relaxed/simple;
-	bh=/hcfgfnNsUh12ni1Y2Sk4wBfr48WfmgnZhgYQyw2Gts=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JHwkyJqbQqLzyB675cuMz44NDEmnQRQ2jKSupUOoF6wM7kdrapr947K83ZX4O+0GJi7NeyLHkQjTAZ/HIfjc4G5WQDX9rMypzW6xiaZLHI9c+wuAWw5Xq9/jPSHd6gTbdUXV2HO+LUfcuJvvaopGTj7Rf/9uNtB2pRNQC3jhg4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mPRl2kSi; arc=none smtp.client-ip=74.125.82.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12732e6a123so693507c88.1
-        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 14:31:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771367479; x=1771972279; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MX1GlaEzkiiHgH7rrnveVU7hjk2Hhd6hxXYdLPwdnSQ=;
-        b=mPRl2kSi+cx3rZRcqT7wfeBmewdjsOnUP+6aTIbGyGSML4BTecehMO7GHi2iPHImEC
-         RMNQrEjp+KUmlHWpQjqZtY7Bx9dBAUNRncVVa3wLs+WguGodoorACsjLZ/V1aSi8dg2N
-         xgyGATzHQbag0VjuCkUrTe7J6Js0ZXIcnT+O0DluWXOqhvyjwAEsjg40upvZtubNy3bv
-         mEkOCU5CuiwD2HrYwVlHGUjmAK6NEph7O4sAWxZstqQCl1Mu8XTpAYC6q6M+iZ8mTrc/
-         h0Vj9YkUgPLi/nvO4whB++rj39cVbo79izA8ESMRsNKBtTytnGHJrbTPayG//dD67Y3f
-         NOMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771367479; x=1771972279;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MX1GlaEzkiiHgH7rrnveVU7hjk2Hhd6hxXYdLPwdnSQ=;
-        b=hIlZRUO+pSPcoFPmWXqzF7trd5uPvkaVljd6pntdkK6TNmWsvA/b30IqT+bjgjUi2h
-         aO3MvegrLTmpN7xD4vYpc4KGMCCY18xYdXR6G0TplyPpT0wvdB/aJaIkvfUmi72x/36L
-         8PyzpRwqSQLbeOM7A+GeMcGgmO/X3qiiZUtdqj/rR7IsTMVFQv5IaTRbbmOSY41KOfAv
-         3sJDaeMRXay/rp0Uro49mAf8XrSU7XorWAfMoYiVAMHzA4OhgShGorL8j42Xl6JQgO84
-         0A0GUTQRFERRUXVyWudeunbhRG29DEpKT6KLT8CdHWBegSGD+J4CpnijZPDzZFu11K70
-         fBYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWzvJdYI1JoNN8AZIQm7YUdRg/4xeh8ZO3eseaGGaV/uBuXY/VN8fI+C2duMDK/3ITTFpAA4pQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRyt6ubYtsY0kdOCLHdbpbM/4URMUOM1ihm4Tm8gXqehu6/CHU
-	PFz3olne2hXTpSgbMSaInBWN2780OHlfQB7hPxydEzBvSuS7oMkX7zsT
-X-Gm-Gg: AZuq6aKVSrDSaFx5JjFWAJZnCSShYxzD93EsbCNF0w5eYwzbQolFxNJ3s5zVkv0ag79
-	WQnKmxCbqVACDjbt6ozR/yYrHQsuOI9eCK7dM4Hg/9S+bSW/tcIgwPKsTNYQtabmo2Lht5BoQjC
-	N5oKFdZ6CgCIMQKZKdez/p84/z/56gq+NFpKc9QE/f2ez3h7D/8aj/ovPymEDM/2Ksr3WGvO6no
-	h2usTvPd1uUgtOabhdV4FQ2576Hjy37W9Jv+v2xBv4TnHUhzU5hH5VpUcsg4Y3HwcKqCQtXwPfB
-	HidUwlR0N3GCEuT1pnwNrA5WGY7tWrOqT/mkCAmWoD+zUHFQFs3/R/9PWOYzpSJWaiYsnaUoZ8u
-	CYAHTZCo2eDp9m+Z9uz9WMj9C5BBYrGowuT72ff+0Jyish8IWzMV+F5U6C4/bJ+PkfbMOuCe69u
-	HIZUXYfGJywS6hpwl+xJID+WqvJ2vy7Z7lKqMukmxpQN8+CXWVZw==
-X-Received: by 2002:a05:7022:926:b0:11b:9386:a3cf with SMTP id a92af1059eb24-1273ae8f205mr8215143c88.48.1771367478665;
-        Tue, 17 Feb 2026 14:31:18 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742c63feesm19433128c88.4.2026.02.17.14.31.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Feb 2026 14:31:18 -0800 (PST)
-Message-ID: <cd0e8049-36d0-4ab3-89a2-eeb01459bc6f@gmail.com>
-Date: Tue, 17 Feb 2026 14:31:16 -0800
+	s=arc-20240116; t=1771367636; c=relaxed/simple;
+	bh=LlrpJcHFap7X5mLuKnk4GuwG/MJaw1lF4+KlirxoQsU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rkmmVGZJNNr8o291H7Aa4iA83ItMPgAiHIONIb5VlR9LhBoDPKKBjkPQhnargweuL3XC8dxOcIq+96eLlj9R4AdJUT3F2TGsyzsh6yN7vpQCT3Br8FLyNPSx8JnJXRM3UzmudIgxVzMDWFP4MU4cLvgH+WG9qjhWQcU4Hw0YLxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sD2Htsze; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582D9C4CEF7;
+	Tue, 17 Feb 2026 22:33:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771367635;
+	bh=LlrpJcHFap7X5mLuKnk4GuwG/MJaw1lF4+KlirxoQsU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sD2Htsze+iZt25IH8dAnf2DJw4ZsoPTkKAPtN5Ye2aU0EcKrki7UIIQdIwDzkTnMg
+	 +p5cFlEmi8RiSfyfqH0WFd92Q5C/QPKRcptTLFOMgCSP4HN7cfi8u2Jv6rbT0pDyI1
+	 KhvLbXIqrrcIk6ROYypQTNkrrlUDM5yL4bjN1/XCquDZi8IhscHqCOq+BCfx3Mq25p
+	 XMxX3bNOnJLRNnTd1KNznSlC8fPP648e3XjdRtNhI0ScEIU/EL+np1vf7WG5y6ZIFy
+	 KQXxqXCc/vqriOBt15Uq65/AXFvbY7aJPzhfrvIkaQo2OHeIkXW3jwwH3WCWQz/9vC
+	 0etW/OG9elpPQ==
+Date: Tue, 17 Feb 2026 14:33:54 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Fabian Druschke <fdruschke@outlook.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Fabian Druschke <fabian@druschke.network>,
+ Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, "David S .
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] r8169: avoid OOM when allocating RX buffers
+Message-ID: <20260217143354.3366db18@kernel.org>
+In-Reply-To: <GVZP280MB1013A39E6B154E88E8CBB87EAF6DA@GVZP280MB1013.SWEP280.PROD.OUTLOOK.COM>
+References: <20260216185245.182450-1-fabian@druschke.network>
+	<64b1a578-5325-4d51-9b10-2b54fcaa0a7f@lunn.ch>
+	<GVZP280MB1013A39E6B154E88E8CBB87EAF6DA@GVZP280MB1013.SWEP280.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/64] 6.1.164-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260217200007.505931165@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217192-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lunn.ch,druschke.network,gmail.com,realtek.com,davemloft.net,google.com,redhat.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-217193-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[outlook.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 164AB1517DE
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2E7E715183D
 X-Rspamd-Action: no action
 
-On 2/17/26 12:30, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.164 release.
-> There are 64 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, 17 Feb 2026 22:50:30 +0100 Fabian Druschke wrote:
+> Ahoy! Thanks for clarification! Didn't know it was intended behaviour.
 > 
-> Responses should be made by Thu, 19 Feb 2026 19:59:50 +0000.
-> Anything received after that time might be too late.
+> We've encountered this issue specifically with this Realtek NIC on 
+> ShredOS due to lack of mlx5, mlx4 etc.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.164-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> For NICs like ixgbe we didn't encounter this issue so i was thinking 
+> about a bug.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Most / all "professional grade"(??) NICs support scatter, where larger 
+frames are written into multiple chunks, 4kB each. order-2 allocations
+on the fast path are a bad idea. One way to alleviate the performance
+implications would be to use page pool, but that doesn't help with the
+initial fill, just the datapath :(
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+reminder: please avoid top posting when replying on the mailing list
 
