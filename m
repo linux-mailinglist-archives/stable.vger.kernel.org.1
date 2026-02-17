@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-217121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOJHIBHVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:33 +0100
+	id gIv8AfLTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE0C1506F4
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491921504AC
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01B5A305CE34
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E9AE300C93D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9D028D8E8;
-	Tue, 17 Feb 2026 20:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB4A266581;
+	Tue, 17 Feb 2026 20:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bllCpPTA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiX4o8ks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C466929A1;
-	Tue, 17 Feb 2026 20:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81C829A1;
+	Tue, 17 Feb 2026 20:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361493; cv=none; b=k7e8y/2CENif//8u1zJS0jl2fGAmvFjvFDgTy8atLJaaWwxdcYZjrdeboMkr0P6jBcMDa/DgZ5/RJ//rYA5dvBcsCR9dxt8LXEnua9eJOg5v6KKXUw/4uXdoxs7v8cEZdJvXOLuENvMOxTXinApnT88py2/rbKjnWBRV0DBBREM=
+	t=1771361261; cv=none; b=GvFoSOEVFjsSr4hAumR7RmH5eiife3MP24sJ+JW1TNHtwKQJ6OFTSrqL62/f1odTq+qLYB/mPo9tihMBLzc0A2l1QPe+4lahQtGIswaXgfe2OyoC13Dl8CWVUbGKV9psZpVuiKCnOsxJrlErZbs8/6Zrmk5yA+h7Lu/cj4y6IL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361493; c=relaxed/simple;
-	bh=KUoF+ByEwtCSyEpOp5csEQUQlqY7znbosPuc5NUxajc=;
+	s=arc-20240116; t=1771361261; c=relaxed/simple;
+	bh=hntm5bmJkAKQx0vsAvtkmyPs/RIfIj3X8KQqKh0cKQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YcooU3Xqiz/hygk3XlGNIwEJ3oylE9k0BnG6EUa2LWXheC6DeYm/Ec8dkVvJqnt82cwP6EMFON5FX6khJFoOMhfJpTf3tJZK6prxv8bxayFO2hgOdDPtJs78GfshXetbkBnFp0vOR2gUgLFDfPLuD3lnKQm79s+e0kM+rFjAezA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bllCpPTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C8EC4CEF7;
-	Tue, 17 Feb 2026 20:51:33 +0000 (UTC)
+	 MIME-Version; b=ukBLPulfSHkSe4RfStlJ1vY+pc+VnBlgaMZ9Z7HApBfqlxbRTiDsK0f98xz0o3RzoQ5WR9peZF0xqSAlodWjYhtswMB4fr+YmYCJ0r3e9Zzn22kBDNqatS1cmAb7eVUzusdHa0jYPm2BuBseCo7LonfonU4WqRvbe0RC5S+DYHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiX4o8ks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD7AC4CEF7;
+	Tue, 17 Feb 2026 20:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361493;
-	bh=KUoF+ByEwtCSyEpOp5csEQUQlqY7znbosPuc5NUxajc=;
+	s=korg; t=1771361261;
+	bh=hntm5bmJkAKQx0vsAvtkmyPs/RIfIj3X8KQqKh0cKQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bllCpPTA4ZWIDsdYF6dy5K87/GrTEV8PKlICbQJNWs/anMBROaM59bcBnvBCXwZWp
-	 S+hFc9VADXo6Ou+0SEpXyMPl/Fb0OK2q8W1IyLiPbHAWTaLapA9vMy9Hcm89orFvju
-	 30VQwVo+khmIODT8TCy7V/75/sJvZoRiM1ZFVQvQ=
+	b=RiX4o8ks1HtnZ5womVHOjYSl8ed4HzU4R2WwQuOkYVhzG+wuOPPqaut39gT5+gD+6
+	 ZNV7qBKewd3tGYxCiG7Dy7EPmQjWq6afDrcrFSwXylcpmYNtnqxNxV2JOpM8XiaCMR
+	 +UNKXL6XDrCmHnCLkYXpa6hLno/Ez66qY91jzLAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.18 04/43] rust: driver: fix broken intra-doc links to example driver types
+	Shay Drory <shayd@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.1 48/64] devlink: rate: Unset parent pointer in devl_rate_nodes_destroy
 Date: Tue, 17 Feb 2026 21:31:44 +0100
-Message-ID: <20260217200006.639674811@linuxfoundation.org>
+Message-ID: <20260217200009.306235272@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +67,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-217121-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-217053-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,kernel.org,139.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0CE0C1506F4
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,qemu.org:url,139.com:email]
+X-Rspamd-Queue-Id: 491921504AC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Shay Drory <shayd@nvidia.com>
 
-commit 4c9f6a782f6078dc94450fcb22e65d520bfa0775 upstream.
+[ Upstream commit f94c1a114ac209977bdf5ca841b98424295ab1f0 ]
 
-The `auxiliary` and `pci` modules are conditional on
-`CONFIG_AUXILIARY_BUS` and `CONFIG_PCI` respectively. When these are
-disabled, the intra-doc links to `auxiliary::Driver` and `pci::Driver`
-break, causing rustdoc warnings (or errors with `-D warnings`).
+The function devl_rate_nodes_destroy is documented to "Unset parent for
+all rate objects". However, it was only calling the driver-specific
+`rate_leaf_parent_set` or `rate_node_parent_set` ops and decrementing
+the parent's refcount, without actually setting the
+`devlink_rate->parent` pointer to NULL.
 
-error: unresolved link to `kernel::auxiliary::Driver`
-  --> rust/kernel/driver.rs:82:28
-   |
-82 | //! [`auxiliary::Driver`]: kernel::auxiliary::Driver
-   |                            ^^^^^^^^^^^^^^^^^^^^^^^^^ no item named `auxiliary` in module `kernel`
+This leaves a dangling pointer in the `devlink_rate` struct, which cause
+refcount error in netdevsim[1] and mlx5[2]. In addition, this is
+inconsistent with the behavior of `devlink_nl_rate_parent_node_set`,
+where the parent pointer is correctly cleared.
 
-Fix this by making the documentation for these examples conditional on
-the corresponding configuration options.
+This patch fixes the issue by explicitly setting `devlink_rate->parent`
+to NULL after notifying the driver, thus fulfilling the function's
+documented behavior for all rate objects.
 
-Fixes: 970a7c68788e ("driver: rust: expand documentation for driver infrastructure")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Closes: https://lore.kernel.org/rust-for-linux/20251209.151817.744108529426448097.fujita.tomonori@gmail.com/
-Link: https://patch.msgid.link/20251227-driver-types-v1-1-1916154fbe5e@google.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+[1]
+repro steps:
+echo 1 > /sys/bus/netdevsim/new_device
+devlink dev eswitch set netdevsim/netdevsim1 mode switchdev
+echo 1 > /sys/bus/netdevsim/devices/netdevsim1/sriov_numvfs
+devlink port function rate add netdevsim/netdevsim1/test_node
+devlink port function rate set netdevsim/netdevsim1/128 parent test_node
+echo 1 > /sys/bus/netdevsim/del_device
+
+dmesg:
+refcount_t: decrement hit 0; leaking memory.
+WARNING: CPU: 8 PID: 1530 at lib/refcount.c:31 refcount_warn_saturate+0x42/0xe0
+CPU: 8 UID: 0 PID: 1530 Comm: bash Not tainted 6.18.0-rc4+ #1 NONE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:refcount_warn_saturate+0x42/0xe0
+Call Trace:
+ <TASK>
+ devl_rate_leaf_destroy+0x8d/0x90
+ __nsim_dev_port_del+0x6c/0x70 [netdevsim]
+ nsim_dev_reload_destroy+0x11c/0x140 [netdevsim]
+ nsim_drv_remove+0x2b/0xb0 [netdevsim]
+ device_release_driver_internal+0x194/0x1f0
+ bus_remove_device+0xc6/0x130
+ device_del+0x159/0x3c0
+ device_unregister+0x1a/0x60
+ del_device_store+0x111/0x170 [netdevsim]
+ kernfs_fop_write_iter+0x12e/0x1e0
+ vfs_write+0x215/0x3d0
+ ksys_write+0x5f/0xd0
+ do_syscall_64+0x55/0x10f0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+[2]
+devlink dev eswitch set pci/0000:08:00.0 mode switchdev
+devlink port add pci/0000:08:00.0 flavour pcisf pfnum 0 sfnum 1000
+devlink port function rate add pci/0000:08:00.0/group1
+devlink port function rate set pci/0000:08:00.0/32768 parent group1
+modprobe -r mlx5_ib mlx5_fwctl mlx5_core
+
+dmesg:
+refcount_t: decrement hit 0; leaking memory.
+WARNING: CPU: 7 PID: 16151 at lib/refcount.c:31 refcount_warn_saturate+0x42/0xe0
+CPU: 7 UID: 0 PID: 16151 Comm: bash Not tainted 6.17.0-rc7_for_upstream_min_debug_2025_10_02_12_44 #1 NONE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+RIP: 0010:refcount_warn_saturate+0x42/0xe0
+Call Trace:
+ <TASK>
+ devl_rate_leaf_destroy+0x8d/0x90
+ mlx5_esw_offloads_devlink_port_unregister+0x33/0x60 [mlx5_core]
+ mlx5_esw_offloads_unload_rep+0x3f/0x50 [mlx5_core]
+ mlx5_eswitch_unload_sf_vport+0x40/0x90 [mlx5_core]
+ mlx5_sf_esw_event+0xc4/0x120 [mlx5_core]
+ notifier_call_chain+0x33/0xa0
+ blocking_notifier_call_chain+0x3b/0x50
+ mlx5_eswitch_disable_locked+0x50/0x110 [mlx5_core]
+ mlx5_eswitch_disable+0x63/0x90 [mlx5_core]
+ mlx5_unload+0x1d/0x170 [mlx5_core]
+ mlx5_uninit_one+0xa2/0x130 [mlx5_core]
+ remove_one+0x78/0xd0 [mlx5_core]
+ pci_device_remove+0x39/0xa0
+ device_release_driver_internal+0x194/0x1f0
+ unbind_store+0x99/0xa0
+ kernfs_fop_write_iter+0x12e/0x1e0
+ vfs_write+0x215/0x3d0
+ ksys_write+0x5f/0xd0
+ do_syscall_64+0x53/0x1f0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: d75559845078 ("devlink: Allow setting parent node of rate objects")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1763381149-1234377-1-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Routine devl_rate_nodes_destroy is moved to net/devlink/rate.c by commit
+ 7cc7194e85ca ("devlink: push rate related code into separate file") after linux-6.6.
+ This fix applies the same update to its original location in net/devlink/leftover.c. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/driver.rs |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/devlink/leftover.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -33,7 +33,14 @@
- //! }
- //! ```
- //!
--//! For specific examples see [`auxiliary::Driver`], [`pci::Driver`] and [`platform::Driver`].
-+//! For specific examples see:
-+//!
-+//! * [`platform::Driver`](kernel::platform::Driver)
-+#![cfg_attr(
-+    CONFIG_AUXILIARY_BUS,
-+    doc = "* [`auxiliary::Driver`](kernel::auxiliary::Driver)"
-+)]
-+#![cfg_attr(CONFIG_PCI, doc = "* [`pci::Driver`](kernel::pci::Driver)")]
- //!
- //! The `probe()` callback should return a `Result<Pin<KBox<Self>>>`, i.e. the driver's private
- //! data. The bus abstraction should store the pointer in the corresponding bus device. The generic
-@@ -79,7 +86,6 @@
- //!
- //! For this purpose the generic infrastructure in [`device_id`] should be used.
- //!
--//! [`auxiliary::Driver`]: kernel::auxiliary::Driver
- //! [`Core`]: device::Core
- //! [`Device`]: device::Device
- //! [`Device<Core>`]: device::Device<device::Core>
-@@ -87,8 +93,6 @@
- //! [`DeviceContext`]: device::DeviceContext
- //! [`device_id`]: kernel::device_id
- //! [`module_driver`]: kernel::module_driver
--//! [`pci::Driver`]: kernel::pci::Driver
--//! [`platform::Driver`]: kernel::platform::Driver
+--- a/net/devlink/leftover.c
++++ b/net/devlink/leftover.c
+@@ -10274,13 +10274,15 @@ void devl_rate_nodes_destroy(struct devl
+ 		if (!devlink_rate->parent)
+ 			continue;
  
- use crate::error::{Error, Result};
- use crate::{acpi, device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
+-		refcount_dec(&devlink_rate->parent->refcnt);
+ 		if (devlink_rate_is_leaf(devlink_rate))
+ 			ops->rate_leaf_parent_set(devlink_rate, NULL, devlink_rate->priv,
+ 						  NULL, NULL);
+ 		else if (devlink_rate_is_node(devlink_rate))
+ 			ops->rate_node_parent_set(devlink_rate, NULL, devlink_rate->priv,
+ 						  NULL, NULL);
++
++		refcount_dec(&devlink_rate->parent->refcnt);
++		devlink_rate->parent = NULL;
+ 	}
+ 	list_for_each_entry_safe(devlink_rate, tmp, &devlink->rate_list, list) {
+ 		if (devlink_rate_is_node(devlink_rate)) {
 
 
 
