@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-217118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217150-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SE6iId3UlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:41 +0100
+	id WDnjAz7VlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217150-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EE615067A
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE3515076D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B2FE30048C1
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44A8A3018083
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3886A28C009;
-	Tue, 17 Feb 2026 20:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81F228D8E8;
+	Tue, 17 Feb 2026 20:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URzkAKtP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqOVZiA0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09F329A1;
-	Tue, 17 Feb 2026 20:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4D029A1;
+	Tue, 17 Feb 2026 20:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361484; cv=none; b=DyTJPP6b/HclfKtBE+t+oP1M0x124Qv8KRAdTWab6iRfxd6guF9izs5GG68QpAKo/wmRKdhUOADFcirLPt5R3qFg0m0DIYgPun93/xdf7kdf1tFOuGsue5Tss4IYr6v7pkXlu0TUiK1MQ7qEefRCmHiaB98AdwxrkrEnI/sC9/Y=
+	t=1771361594; cv=none; b=ZV698vCJDUn/3JnG5Cfa4fL2p4lQutOVVbfz+M1vfjeQznlMkfTFHS8HzBsln48nEuWuwKyuKSVeY5R1wzX5/pKKctfdSYxaN0D1wJAUT/79g5mXyK3OpEfgGNrxNI+iBb1AMEyj42T9Hueo3EseKFJajWzSVazkZLEsZtZrpZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361484; c=relaxed/simple;
-	bh=GkhAcBEW6+rmux7skzfGaLZR87NLaS+AXGmpBZiNXaU=;
+	s=arc-20240116; t=1771361594; c=relaxed/simple;
+	bh=NJgEb67H9q2qmjrPjkvYuqkZrqQSD6OvbRTJu5IB4R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GbCqemFEM6aNbV1ht0YtAaaplehCE5rjjYJrcZ8MVUBSh6osdsC2eSkvZiHP7AaENoRR09I9pW+oisHtQlBC06qI4t6pf80s3TYce6K/yBFhoZ3bMhluZhUneoXbbjClFIT67gjXLNTfe7J9CF5uflam/pZsEj9LGrTE/eOSSuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URzkAKtP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFF8C4CEF7;
-	Tue, 17 Feb 2026 20:51:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ulki8PeiPTeY2+2oY9N2IJiMp6tJTfbLE7b95iaF1tZGVPFiWwoFQwKCzxYzP/ReHQiFjzo/+q/C8eqm9ktjy7KYGg907nrNXMIwPAo4rweZJ784bQhF/bUobRXHCqRESzFBuaYYrd0GQTGI5oqG4UTNWnUH2JF3yMinJxJh99I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqOVZiA0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3EFC4CEF7;
+	Tue, 17 Feb 2026 20:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361483;
-	bh=GkhAcBEW6+rmux7skzfGaLZR87NLaS+AXGmpBZiNXaU=;
+	s=korg; t=1771361594;
+	bh=NJgEb67H9q2qmjrPjkvYuqkZrqQSD6OvbRTJu5IB4R0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URzkAKtPe/E5h+IeH+B9GCvM53rCxUiLQOMlkYVzibPzqYoxCafVyWvgnWPQ+jA+L
-	 QMNufoAQmbsYjr3vcHPtiJKvZBsH2wUqk/1KNupa1RS2HLM4ZNZNmzbi4eG0rYDnYu
-	 qmv8AxJBaLJ1gxkraDkjd/lOMlVPT8CqekJLoT74=
+	b=UqOVZiA0HX1LkgfuxB3994qEds9uv8qVoJsvgre4+F06VtMc+Vy9RUvBK968wYiVB
+	 jV65YDWN0nBGn9Ku4gCqF6xMIfmqYYVa6RFPTURwSFwKcAi9g2phF50IFvbHgvBWAQ
+	 S3FDyi0SM4TUHWdFNI7OdbrKryQKmZF9llz6oX5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Chen Ridong <chenridong@huawei.com>
-Subject: [PATCH 6.18 29/43] cpuset: Fix missing adaptation for cpuset_is_populated
+	gongqi <550230171hxy@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 18/42] platform/x86/amd/pmc: Add quirk for MECHREVO Wujie 15X Pro
 Date: Tue, 17 Feb 2026 21:32:09 +0100
-Message-ID: <20260217200007.587713721@linuxfoundation.org>
+Message-ID: <20260217200006.701284929@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,62 +74,67 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217150-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217118-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,huawei.com:email]
-X-Rspamd-Queue-Id: 02EE615067A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8CE3515076D
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: gongqi <550230171hxy@gmail.com>
 
-Commit b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
-was backported to the long‑term support (LTS) branches. However, because
-commit d5cf4d34a333 ("cgroup/cpuset: Don't track # of local child
-partitions") was not backported, a corresponding adaptation to the
-backported code is still required.
+[ Upstream commit 2b4e00d8e70ca8736fda82447be6a4e323c6d1f5 ]
 
-To ensure correct behavior, replace cgroup_is_populated with
-cpuset_is_populated in the partition_is_populated function.
+The MECHREVO Wujie 15X Pro suffers from spurious IRQ issues related to
+the AMD PMC. Add it to the quirk list to use the spurious_8042 fix.
 
-Cc: stable@vger.kernel.org	# 6.1+
-Fixes: b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
-Cc: Waiman Long <longman@redhat.com>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: gongqi <550230171hxy@gmail.com>
+Link: https://patch.msgid.link/20260122155501.376199-4-550230171hxy@gmail.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -385,7 +385,7 @@ static inline bool partition_is_populate
- 	    cs->attach_in_progress)
- 		return true;
- 	if (!excluded_child && !cs->nr_subparts)
--		return cgroup_is_populated(cs->css.cgroup);
-+		return cpuset_is_populated(cs);
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index a5031339dac8c..a6006b4ec2cc0 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -296,6 +296,13 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
+ 		}
+ 	},
++	{
++		.ident = "MECHREVO Wujie 15X Pro",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
++		}
++	},
+ 	{}
+ };
  
- 	rcu_read_lock();
- 	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
+-- 
+2.51.0
+
 
 
 
