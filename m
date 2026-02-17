@@ -1,331 +1,200 @@
-Return-Path: <stable+bounces-217127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217049-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAnKGe7UlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217127-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:58 +0100
+	id KAopJ+LTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217049-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200E31506A5
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D20150494
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7CE40301672E
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89051300A124
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B20F2DB78B;
-	Tue, 17 Feb 2026 20:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9857C28C009;
+	Tue, 17 Feb 2026 20:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHP2pH0t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaEtV9O+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1A0261B70;
-	Tue, 17 Feb 2026 20:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC6F29A1;
+	Tue, 17 Feb 2026 20:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361514; cv=none; b=AlfcOSJJ1qPhm0lD2ISM8LUnanq3Emp9/nhJwBJKUBpfP2mGtPMqU7m4g8DW0dnUPR9lWY/ht7KZ0E5Z0oIE0XRA93PDscaRaP4/PvlDcIQWbtXBIKXl6ZplZjxxs0vqz+gAdr6l6Wv9XFcwEpxYpPzx+OhoOPNSuvRh7kaTwo4=
+	t=1771361247; cv=none; b=Jamj1IdhMgX5ECLx3o4J+A6ZlJclOk795B2VgyzjEsHn5iet7HjcHfZeYmSKIO2YyY40a+68NZU5z8jtyeazXlEMijsIDdFDLOqvlnE5yro3PInDI0DDHeFzJivJbobBvdfo2rWTN8hQFOJkeGp/iKRQiYa/qMFaF/rbOmyvmTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361514; c=relaxed/simple;
-	bh=IlZ9nycSdH1faeylTXtqRUWy9q82Tprd+DwAXBmQg0Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EBcYY6469XAxDyr1oaXQOs5QzfIGgwUM45XN7r4RnjZueb2WFP1jOKePDEdaKwWYU3mohvWJMYa6H0PPEokpaOmWzXbPev8OqWBAIYuvIdKNEscH4bLT4VipbOehdxm52KYS7FgPsx9Oxqng9ywMdUBoPH8crMn4ZDuBCPIr1Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHP2pH0t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C6AC19421;
-	Tue, 17 Feb 2026 20:51:53 +0000 (UTC)
+	s=arc-20240116; t=1771361247; c=relaxed/simple;
+	bh=zmavyfpG/qktzPnfuBoj+gWDk59vJO2FyZiYH9s6nbs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WoFKViiInseBSWSJ6tRi0eQCCobYzJq0kZitKQ+9XIbm0BTfFIqASNaPwz+d3zfafUNhycMVP+an4ALna4FydODJI8pmXVgJgQf23pUn0ICVDedv+kCB/J5sTrNt/+tLKU0yIQzJMep0l1XgWDs89Pm4cVQr6YbjJ7kOWfYvbLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JaEtV9O+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBCDC4CEF7;
+	Tue, 17 Feb 2026 20:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361514;
-	bh=IlZ9nycSdH1faeylTXtqRUWy9q82Tprd+DwAXBmQg0Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=GHP2pH0tk0UroYp+m7mqQs9Q9brcYARlSueB3yCaAwVSs2SUHazMBpP4/aX2x/6pO
-	 zfksFrYHbbfpQlCH7hkEONIz3r5XKJvkSTG71kPltgCMXs83p5NCVXCYUtPGKDJ7pZ
-	 Jq117iuJCa13FE3/3g6ZD01yKF16WNzcvJmx2TtU=
+	s=korg; t=1771361247;
+	bh=zmavyfpG/qktzPnfuBoj+gWDk59vJO2FyZiYH9s6nbs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JaEtV9O+qMHcsZZrN4itbXW1JvvhuOYjjF2GsFVHzVrJTbjm8d4Q9Fk0kRGXQTV5U
+	 nqzOiRziuH0h4tUZPMsUSP/wfzajj5ov3TVi4TnXjvgBoUGK0JmmjP62oQsXLIAMlw
+	 ANZi6sQ+7mbuaJ4Zswvl4i3ThTzSojH7HwKHjKII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: [PATCH 6.18 00/43] 6.18.13-rc1 review
-Date: Tue, 17 Feb 2026 21:31:40 +0100
-Message-ID: <20260217200006.470920131@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 45/64] selftests: mptcp: check subflow errors in close events
+Date: Tue, 17 Feb 2026 21:31:41 +0100
+Message-ID: <20260217200009.193434125@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.13-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.18.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.18.13-rc1
-X-KernelTest-Deadline: 2026-02-19T20:00+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217127-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217049-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 200E31506A5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 17D20150494
 X-Rspamd-Action: no action
 
-This is the start of the stable review cycle for the 6.18.13 release.
-There are 43 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Thu, 19 Feb 2026 19:59:50 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.13-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-and the diffstat can be found below.
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-thanks,
+commit 2ef9e3a3845d0a20b62b01f5b731debd0364688d upstream.
 
-greg k-h
+This validates the previous commit: subflow closed events should contain
+an error field when a subflow got closed with an error, e.g. reset or
+timeout.
 
--------------
-Pseudo-Shortlog of commits:
+For this test, the chk_evt_nr helper has been extended to check
+attributes in the matched events.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.18.13-rc1
+In this test, the 2 subflow closed events should have an error.
 
-Chao Yu <chao@kernel.org>
-    f2fs: fix to do sanity check on node footer in {read,write}_end_io
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
-Chao Yu <chao@kernel.org>
-    f2fs: fix to do sanity check on node footer in __write_node_folio()
+Fixes: 15cc10453398 ("mptcp: deliver ssk errors to msk")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-4-7f71e1bc4feb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mptcp_join.sh, because in this version, commit
+  20ccc7c5f7a3 ("selftests: mptcp: join: validate event numbers") has
+  been backported with adaptations to display results correctly, see
+  commit 5dc9170eee96 ("selftests: mptcp: join: validate event numbers")
+  for more details. The same type of adaptations had to be made here as
+  well. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   25 +++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    USB: serial: option: add Telit FN920C04 RNDIS compositions
-
-Danilo Krummrich <dakr@kernel.org>
-    iommu/arm-smmu-qcom: do not register driver in probe()
-
-Yeongjin Gil <youngjin.gil@samsung.com>
-    f2fs: optimize f2fs_overwrite_io() for f2fs_iomap_begin
-
-Chao Yu <chao@kernel.org>
-    f2fs: fix to avoid mapping wrong physical block for swapfile
-
-Daeho Jeong <daehojeong@google.com>
-    f2fs: support non-4KB block size without packed_ssa feature
-
-Chao Yu <chao@kernel.org>
-    f2fs: fix to avoid UAF in f2fs_write_end_io()
-
-Yongpeng Yang <yangyongpeng@xiaomi.com>
-    f2fs: fix out-of-bounds access in sysfs attribute read/write
-
-Yongpeng Yang <yangyongpeng@xiaomi.com>
-    f2fs: fix IS_CHECKPOINTED flag inconsistency issue caused by concurrent atomic commit and checkpoint writes
-
-Chao Yu <chao@kernel.org>
-    f2fs: fix to check sysfs filename w/ gc_pin_file_thresh correctly
-
-Zhiguo Niu <zhiguo.niu@unisoc.com>
-    f2fs: fix to add gc count stat in f2fs_gc_range
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    fbdev: smscufx: properly copy ioctl memory to kernelspace
-
-Guangshuo Li <lgs201920130244@gmail.com>
-    fbdev: rivafb: fix divide error in nv3_arb()
-
-Chen Ridong <chenridong@huawei.com>
-    cpuset: Fix missing adaptation for cpuset_is_populated
-
-Tiezhu Yang <yangtiezhu@loongson.cn>
-    LoongArch: Rework KASAN initialization for PTW-enabled systems
-
-David Hildenbrand (Red Hat) <david@kernel.org>
-    mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather
-
-Otto Pflüger <otto.pflueger@abscue.de>
-    arm64: dts: mediatek: mt8183: Add missing endpoint IDs to display graph
-
-Alban Bedel <alban.bedel@lht.dlh.de>
-    gpiolib: acpi: Fix gpio count with string references
-
-Jens Axboe <axboe@kernel.dk>
-    io_uring/fdinfo: be a bit nicer when looping a lot of SQEs/CQEs
-
-Ziyi Guo <n7l8m4@u.northwestern.edu>
-    ASoC: fsl_xcvr: fix missing lock in fsl_xcvr_mode_put()
-
-Melissa Wen <mwen@igalia.com>
-    drm/amd/display: remove assert around dpp_base replacement
-
-Melissa Wen <mwen@igalia.com>
-    drm/amd/display: extend delta clamping logic to CM3 LUT helper
-
-Deepanshu Kartikey <kartikey406@gmail.com>
-    tracing/dma: Cap dma_map_sg tracepoint arrays to prevent buffer overflow
-
-Charles Keepax <ckeepax@opensource.cirrus.com>
-    ASoC: cs42l43: Correct handling of 3-pole jack load detection
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    platform/x86: panasonic-laptop: Fix sysfs group leak in error path
-
-Maciej Strozek <mstrozek@opensource.cirrus.com>
-    ASoC: sof_sdw: Add a quirk for Lenovo laptop using sidecar amps with cs42l43
-
-gongqi <550230171hxy@gmail.com>
-    platform/x86/amd/pmc: Add quirk for MECHREVO Wujie 15X Pro
-
-Breno Baptista <brenomb07@gmail.com>
-    ALSA: hda/realtek: Enable headset mic for Acer Nitro 5
-
-Dirk Su <dirk.su@canonical.com>
-    ASoC: amd: yc: Add quirk for HP 200 G2a 16
-
-Tagir Garaev <tgaraev653@gmail.com>
-    ASoC: Intel: sof_es8336: Add DMI quirk for Huawei BOD-WXX9
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    platform/x86: classmate-laptop: Add missing NULL pointer checks
-
-Brahmajit Das <listout@listout.xyz>
-    drm/tegra: hdmi: sor: Fix error: variable ‘j’ set but not used
-
-Deepanshu Kartikey <kartikey406@gmail.com>
-    romfs: check sb_set_blocksize() return value
-
-Kailang Yang <kailang@realtek.com>
-    ALSA: hda/realtek - fixed speaker no sound
-
-Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
-    ASoC: cs35l45: Corrects ASP_TX5 DAPM widget channel
-
-Zhang Heng <zhangheng@kylinos.cn>
-    ALSA: hda/realtek: Add quirk for Inspur S14-G1
-
-Xuewen Yan <xuewen.yan@unisoc.com>
-    gpio: sprd: Change sprd_gpio lock to raw_spin_lock
-
-Anatolii Shirykalov <pipocavsobake@gmail.com>
-    ASoC: amd: yc: Add ASUS ExpertBook PM1503CDA to quirks list
-
-Alice Ryhl <aliceryhl@google.com>
-    rust: driver: fix broken intra-doc links to example driver types
-
-FUJITA Tomonori <fujita.tomonori@gmail.com>
-    rust: dma: fix broken intra-doc links
-
-FUJITA Tomonori <fujita.tomonori@gmail.com>
-    rust: device: fix broken intra-doc links
-
-Anil Gurumurthy <agurumurthy@marvell.com>
-    scsi: qla2xxx: Fix bsg_done() causing double free
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |   4 +-
- arch/arm64/boot/dts/mediatek/mt8183.dtsi           |  37 ++++++-
- arch/loongarch/mm/kasan_init.c                     |  80 +++++++-------
- drivers/gpio/gpio-sprd.c                           |   8 +-
- drivers/gpio/gpiolib-acpi-core.c                   |   1 +
- .../gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c |  30 ++++-
- .../drm/amd/display/dc/dwb/dcn30/dcn30_cm_common.h |   2 +-
- .../drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c    |   9 +-
- .../drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c    |  18 +--
- .../drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c  |  16 +--
- drivers/gpu/drm/tegra/hdmi.c                       |   4 +-
- drivers/gpu/drm/tegra/sor.c                        |   4 +-
- drivers/iommu/arm/arm-smmu/arm-smmu-impl.c         |  14 +++
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c         |  14 ++-
- drivers/iommu/arm/arm-smmu/arm-smmu.c              |  24 +++-
- drivers/iommu/arm/arm-smmu/arm-smmu.h              |   5 +
- drivers/platform/x86/amd/pmc/pmc-quirks.c          |   7 ++
- drivers/platform/x86/classmate-laptop.c            |  32 ++++++
- drivers/platform/x86/panasonic-laptop.c            |   4 +-
- drivers/scsi/qla2xxx/qla_bsg.c                     |  28 +++--
- drivers/usb/serial/option.c                        |   6 +
- drivers/video/fbdev/riva/riva_hw.c                 |   3 +
- drivers/video/fbdev/smscufx.c                      |   8 +-
- fs/f2fs/data.c                                     |  51 ++++++---
- fs/f2fs/f2fs.h                                     |  64 ++++++++---
- fs/f2fs/gc.c                                       |  24 ++--
- fs/f2fs/node.c                                     |  50 +++++----
- fs/f2fs/node.h                                     |   8 --
- fs/f2fs/recovery.c                                 |   6 +-
- fs/f2fs/segment.c                                  |  86 +++++++-------
- fs/f2fs/segment.h                                  |   9 +-
- fs/f2fs/super.c                                    |  26 ++---
- fs/f2fs/sysfs.c                                    |  62 +++++++++--
- fs/romfs/super.c                                   |   5 +-
- include/asm-generic/tlb.h                          |  77 ++++++++++++-
- include/linux/f2fs_fs.h                            |  73 +++++++-----
- include/linux/hugetlb.h                            |  15 ++-
- include/linux/mm_types.h                           |   1 +
- include/trace/events/dma.h                         |  25 ++++-
- io_uring/fdinfo.c                                  |  11 +-
- kernel/cgroup/cpuset.c                             |   2 +-
- mm/hugetlb.c                                       | 123 ++++++++++++---------
- mm/mmu_gather.c                                    |  33 ++++++
- mm/rmap.c                                          |  25 +++--
- rust/kernel/device.rs                              |   6 +-
- rust/kernel/dma.rs                                 |   5 +-
- rust/kernel/driver.rs                              |  12 +-
- sound/hda/codecs/realtek/alc269.c                  |  13 +++
- sound/soc/amd/yc/acp6x-mach.c                      |  14 +++
- sound/soc/codecs/cs35l45.c                         |   2 +-
- sound/soc/codecs/cs42l43-jack.c                    |  37 ++++++-
- sound/soc/fsl/fsl_xcvr.c                           |   3 +
- sound/soc/intel/boards/sof_es8336.c                |   9 ++
- sound/soc/intel/boards/sof_sdw.c                   |   1 +
- 54 files changed, 877 insertions(+), 359 deletions(-)
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3212,21 +3212,28 @@ userspace_pm_add_sf()
+ 	sleep 1
+ }
+ 
+-# $1: ns ; $2: event type ; $3: count
++# $1: ns ; $2: event type ; $3: count ; [ $4: attr ; $5: attr count ]
+ chk_evt_nr()
+ {
+ 	local ns=${1}
+ 	local evt_name="${2}"
+ 	local exp="${3}"
++	local attr="${4}"
++	local attr_exp="${5}"
+ 
+ 	local evts="${evts_ns1}"
+ 	local evt="${!evt_name}"
++	local attr_name
+ 	local count
+ 
++	if [ -n "${attr}" ]; then
++		attr_name=", ${attr}: ${attr_exp}"
++	fi
++
+ 	evt_name="${evt_name:16}" # without MPTCP_LIB_EVENT_
+ 	[ "${ns}" == "ns2" ] && evts="${evts_ns2}"
+ 
+-	printf "%-${nr_blank}s %s" " " "event ${ns} ${evt_name} (${exp})"
++	printf "%-${nr_blank}s %s" " " "event ${ns} ${evt_name} (${exp}${attr_name})"
+ 
+ 	count=$(grep -cw "type:${evt}" "${evts}")
+ 	if [ "${count}" != "${exp}" ]; then
+@@ -3234,6 +3241,18 @@ chk_evt_nr()
+ 		fail_test
+ 		dump_stats
+ 		cat "${evts}"
++		return
++	elif [ -z "${attr}" ]; then
++		echo "[ ok ]"
++		return
++	fi
++
++	count=$(grep -w "type:${evt}" "${evts}" | grep -c ",${attr}:")
++	if [ "${count}" != "${attr_exp}" ]; then
++		echo "[fail] got ${count} event attributes, expected ${attr_exp}"
++		fail_test
++		dump_stats
++		grep -w "type:${evt}" "${evts}"
+ 	else
+ 		echo "[ ok ]"
+ 	fi
+@@ -3375,7 +3394,7 @@ userspace_tests()
+ 			chk_subflow_nr "" "after reject" 1
+ 			userspace_pm_add_sf $ns2 10.0.1.2 0
+ 			wait_event ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
+-			chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
++			chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2 error 2
+ 		fi
+ 		kill_wait "${tests_pid}"
+ 		kill_events_pids
 
 
 
