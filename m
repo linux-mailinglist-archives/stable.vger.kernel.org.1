@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-217056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHd+IPzTlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:56 +0100
+	id qHU9GGTTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF631504C2
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DC215036F
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E029C300A4FB
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 377C3300517D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097CF2773E4;
-	Tue, 17 Feb 2026 20:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D74D29BDB4;
+	Tue, 17 Feb 2026 20:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bY3ZuDr1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXPO/MVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08AF7A13A;
-	Tue, 17 Feb 2026 20:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EDD29A1;
+	Tue, 17 Feb 2026 20:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361271; cv=none; b=ZMWh2shG8ZsWz9vjf7NNzT1qwynT3XgdKbeXqzWyt/8YoI72Qc+hLOipgih7uC+dTT5eFAA6Y7yuBT5K+y50uogAstcU7sPsZKNTPMFnwuOqVO2NFo+3IU6MPEM/SPeuOf7aD5ChMC/ciSTS7m5Ji20ceCrDNwJ5pWSoAEzxSkE=
+	t=1771361116; cv=none; b=L1pihPyDuR1/F3xSwuSjKKrWsK1CGK49qxMqZEW8hcVm4qsARv5cVXw7Q1v780tboOIktNv53BISlS8mGPbUkPO9oPpk81k2JKFRxUy9NCoEYNe7s6ejw/CoPAfNmuA6iSyEXArsBWoVBRgZSw9jRJArbArXDy58OItWC3hPnkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361271; c=relaxed/simple;
-	bh=CMlJTUOMHSnsUa4eEc+2gmR5i313TSrLZXYySsc67L4=;
+	s=arc-20240116; t=1771361116; c=relaxed/simple;
+	bh=hOKB7+jDzhbWzql8IcUfHBc5XYz3mGIrB/zj5PZFDOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQf9WiiUkkkt2+nOz6EWyFvELko+V5SwuD+FLspTeCBCVW+4IH9VHbtUPXtU0pwiTHFus3M8wMpYVpQwikDv4YHH/wJ4GzwDOHNIQ8+uQJ8EtLt3Jl8bCuX/7enXRBK/V/4ukK2sEB6n7ynzBgGToiPKT6+W5pydjvey/yZRoK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bY3ZuDr1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A44C4CEF7;
-	Tue, 17 Feb 2026 20:47:51 +0000 (UTC)
+	 MIME-Version; b=u7QQcUBQfULt2CmCqvfzdtKvLnefEFnUsHETtIvZh3VbQtNm6MD7FLEdldEwS4eyPXJzljsj/D8AbBYtSzWzIrXvH07Au9AYRMigAM+haWWNOCrKNllx475WyZlz/eimFmg0AN3419esKGZ7BtNRbsue22ipJWmryuBnL6EOd0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXPO/MVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B63C4CEF7;
+	Tue, 17 Feb 2026 20:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361271;
-	bh=CMlJTUOMHSnsUa4eEc+2gmR5i313TSrLZXYySsc67L4=;
+	s=korg; t=1771361115;
+	bh=hOKB7+jDzhbWzql8IcUfHBc5XYz3mGIrB/zj5PZFDOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bY3ZuDr1aaJhB7Ex6yWjedZvYRptLXmcexCC+HVaA1FN0Ar8MrHNey8uZntPzNeIl
-	 hrgS7dDm87HHqBAZgmxoT2Erl2uxOQ6w5JM3/0wApLBNgLygmgrGqTl9hGzOzVpGEL
-	 w4DxFrGEhy0jzzfUjJOFK/NqdfiHc771mKqjULqI=
+	b=MXPO/MVl3xAMqRD2d3xNMf/5mf+CWNWB2OB0y1gNXNvY35w3yS2nCGuwF1Mc/0CDt
+	 tdyeDBgaXHbqq5hwem1iGEzoazJ9CuMsyR7XMb0kiNZ6IttzBCfOm1JmKs0BZBbbX7
+	 eu3rVKcu1QNyCQ0X4s9CY1VKYQyyy7/wCXxXy8Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Disseldorp <ddiss@suse.de>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.1 51/64] ksmbd: set ATTR_CTIME flags when setting mtime
+	stable@kernel.org,
+	Jinbao Liu <liujinbao1@xiaomi.com>,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 38/39] f2fs: fix out-of-bounds access in sysfs attribute read/write
 Date: Tue, 17 Feb 2026 21:31:47 +0100
-Message-ID: <20260217200009.420080764@linuxfoundation.org>
+Message-ID: <20260217200004.411057081@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,133 +72,210 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217056-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217010-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,kernel.org,microsoft.com,139.com];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,139.com:email,suse.de:email,opensuse.org:url]
-X-Rspamd-Queue-Id: EAF631504C2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B8DC215036F
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-[ Upstream commit 21e46a79bbe6c4e1aa73b3ed998130f2ff07b128 ]
+[ Upstream commit 98ea0039dbfdd00e5cc1b9a8afa40434476c0955 ]
 
-David reported that the new warning from setattr_copy_mgtime is coming
-like the following.
+Some f2fs sysfs attributes suffer from out-of-bounds memory access and
+incorrect handling of integer values whose size is not 4 bytes.
 
-[  113.215316] ------------[ cut here ]------------
-[  113.215974] WARNING: CPU: 1 PID: 31 at fs/attr.c:300 setattr_copy+0x1ee/0x200
-[  113.219192] CPU: 1 UID: 0 PID: 31 Comm: kworker/1:1 Not tainted 6.13.0-rc1+ #234
-[  113.220127] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-[  113.221530] Workqueue: ksmbd-io handle_ksmbd_work [ksmbd]
-[  113.222220] RIP: 0010:setattr_copy+0x1ee/0x200
-[  113.222833] Code: 24 28 49 8b 44 24 30 48 89 53 58 89 43 6c 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 48 89 df e8 77 d6 ff ff e9 cd fe ff ff <0f> 0b e9 be fe ff ff 66 0
-[  113.225110] RSP: 0018:ffffaf218010fb68 EFLAGS: 00010202
-[  113.225765] RAX: 0000000000000120 RBX: ffffa446815f8568 RCX: 0000000000000003
-[  113.226667] RDX: ffffaf218010fd38 RSI: ffffa446815f8568 RDI: ffffffff94eb03a0
-[  113.227531] RBP: ffffaf218010fb90 R08: 0000001a251e217d R09: 00000000675259fa
-[  113.228426] R10: 0000000002ba8a6d R11: ffffa4468196c7a8 R12: ffffaf218010fd38
-[  113.229304] R13: 0000000000000120 R14: ffffffff94eb03a0 R15: 0000000000000000
-[  113.230210] FS:  0000000000000000(0000) GS:ffffa44739d00000(0000) knlGS:0000000000000000
-[  113.231215] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  113.232055] CR2: 00007efe0053d27e CR3: 000000000331a000 CR4: 00000000000006b0
-[  113.232926] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  113.233812] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  113.234797] Call Trace:
-[  113.235116]  <TASK>
-[  113.235393]  ? __warn+0x73/0xd0
-[  113.235802]  ? setattr_copy+0x1ee/0x200
-[  113.236299]  ? report_bug+0xf3/0x1e0
-[  113.236757]  ? handle_bug+0x4d/0x90
-[  113.237202]  ? exc_invalid_op+0x13/0x60
-[  113.237689]  ? asm_exc_invalid_op+0x16/0x20
-[  113.238185]  ? setattr_copy+0x1ee/0x200
-[  113.238692]  btrfs_setattr+0x80/0x820 [btrfs]
-[  113.239285]  ? get_stack_info_noinstr+0x12/0xf0
-[  113.239857]  ? __module_address+0x22/0xa0
-[  113.240368]  ? handle_ksmbd_work+0x6e/0x460 [ksmbd]
-[  113.240993]  ? __module_text_address+0x9/0x50
-[  113.241545]  ? __module_address+0x22/0xa0
-[  113.242033]  ? unwind_next_frame+0x10e/0x920
-[  113.242600]  ? __pfx_stack_trace_consume_entry+0x10/0x10
-[  113.243268]  notify_change+0x2c2/0x4e0
-[  113.243746]  ? stack_depot_save_flags+0x27/0x730
-[  113.244339]  ? set_file_basic_info+0x130/0x2b0 [ksmbd]
-[  113.244993]  set_file_basic_info+0x130/0x2b0 [ksmbd]
-[  113.245613]  ? process_scheduled_works+0xbe/0x310
-[  113.246181]  ? worker_thread+0x100/0x240
-[  113.246696]  ? kthread+0xc8/0x100
-[  113.247126]  ? ret_from_fork+0x2b/0x40
-[  113.247606]  ? ret_from_fork_asm+0x1a/0x30
-[  113.248132]  smb2_set_info+0x63f/0xa70 [ksmbd]
+For example:
+vm:~# echo 65537 > /sys/fs/f2fs/vde/carve_out
+vm:~# cat /sys/fs/f2fs/vde/carve_out
+65537
+vm:~# echo 4294967297 > /sys/fs/f2fs/vde/atgc_age_threshold
+vm:~# cat /sys/fs/f2fs/vde/atgc_age_threshold
+1
 
-ksmbd is trying to set the atime and mtime via notify_change without also
-setting the ctime. so This patch add ATTR_CTIME flags when setting mtime
-to avoid a warning.
+carve_out maps to {struct f2fs_sb_info}->carve_out, which is a 8-bit
+integer. However, the sysfs interface allows setting it to a value
+larger than 255, resulting in an out-of-range update.
 
-Reported-by: David Disseldorp <ddiss@suse.de>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+atgc_age_threshold maps to {struct atgc_management}->age_threshold,
+which is a 64-bit integer, but its sysfs interface cannot correctly set
+values larger than UINT_MAX.
+
+The root causes are:
+1. __sbi_store() treats all default values as unsigned int, which
+prevents updating integers larger than 4 bytes and causes out-of-bounds
+writes for integers smaller than 4 bytes.
+
+2. f2fs_sbi_show() also assumes all default values are unsigned int,
+leading to out-of-bounds reads and incorrect access to integers larger
+than 4 bytes.
+
+This patch introduces {struct f2fs_attr}->size to record the actual size
+of the integer associated with each sysfs attribute. With this
+information, sysfs read and write operations can correctly access and
+update values according to their real data size, avoiding memory
+corruption and truncation.
+
+Fixes: b59d0bae6ca3 ("f2fs: add sysfs support for controlling the gc_thread")
+Cc: stable@kernel.org
+Signed-off-by: Jinbao Liu <liujinbao1@xiaomi.com>
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ adapted F2FS_STAT_ATTR macro to include .size field ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ fs/f2fs/sysfs.c |   65 +++++++++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 58 insertions(+), 7 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5739,15 +5739,13 @@ static int set_file_basic_info(struct ks
- 		attrs.ia_valid |= (ATTR_ATIME | ATTR_ATIME_SET);
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -48,6 +48,7 @@ struct f2fs_attr {
+ 			 const char *, size_t);
+ 	int struct_type;
+ 	int offset;
++	int size;
+ 	int id;
+ };
+ 
+@@ -249,11 +250,30 @@ static ssize_t main_blkaddr_show(struct
+ 			(unsigned long long)MAIN_BLKADDR(sbi));
+ }
+ 
++static ssize_t __sbi_show_value(struct f2fs_attr *a,
++		struct f2fs_sb_info *sbi, char *buf,
++		unsigned char *value)
++{
++	switch (a->size) {
++	case 1:
++		return sysfs_emit(buf, "%u\n", *(u8 *)value);
++	case 2:
++		return sysfs_emit(buf, "%u\n", *(u16 *)value);
++	case 4:
++		return sysfs_emit(buf, "%u\n", *(u32 *)value);
++	case 8:
++		return sysfs_emit(buf, "%llu\n", *(u64 *)value);
++	default:
++		f2fs_bug_on(sbi, 1);
++		return sysfs_emit(buf,
++				"show sysfs node value with wrong type\n");
++	}
++}
++
+ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
+ 			struct f2fs_sb_info *sbi, char *buf)
+ {
+ 	unsigned char *ptr = NULL;
+-	unsigned int *ui;
+ 
+ 	ptr = __struct_ptr(sbi, a->struct_type);
+ 	if (!ptr)
+@@ -316,9 +336,30 @@ static ssize_t f2fs_sbi_show(struct f2fs
+ 			sbi->gc_reclaimed_segs[sbi->gc_segment_mode]);
  	}
  
--	attrs.ia_valid |= ATTR_CTIME;
- 	if (file_info->ChangeTime)
--		attrs.ia_ctime = ksmbd_NTtimeToUnix(file_info->ChangeTime);
--	else
--		attrs.ia_ctime = inode->i_ctime;
-+		inode_set_ctime_to_ts(inode,
-+				ksmbd_NTtimeToUnix(file_info->ChangeTime));
+-	ui = (unsigned int *)(ptr + a->offset);
++	return __sbi_show_value(a, sbi, buf, ptr + a->offset);
++}
  
- 	if (file_info->LastWriteTime) {
- 		attrs.ia_mtime = ksmbd_NTtimeToUnix(file_info->LastWriteTime);
--		attrs.ia_valid |= (ATTR_MTIME | ATTR_MTIME_SET);
-+		attrs.ia_valid |= (ATTR_MTIME | ATTR_MTIME_SET | ATTR_CTIME);
+-	return sprintf(buf, "%u\n", *ui);
++static void __sbi_store_value(struct f2fs_attr *a,
++			struct f2fs_sb_info *sbi,
++			unsigned char *ui, unsigned long value)
++{
++	switch (a->size) {
++	case 1:
++		*(u8 *)ui = value;
++		break;
++	case 2:
++		*(u16 *)ui = value;
++		break;
++	case 4:
++		*(u32 *)ui = value;
++		break;
++	case 8:
++		*(u64 *)ui = value;
++		break;
++	default:
++		f2fs_bug_on(sbi, 1);
++		f2fs_err(sbi, "store sysfs node value with wrong type");
++	}
+ }
+ 
+ static ssize_t __sbi_store(struct f2fs_attr *a,
+@@ -559,7 +600,7 @@ out:
+ 		return count;
  	}
  
- 	if (file_info->Attributes) {
-@@ -5789,8 +5787,6 @@ static int set_file_basic_info(struct ks
- 			return -EACCES;
+-	*ui = (unsigned int)t;
++	__sbi_store_value(a, sbi, ptr + a->offset, t);
  
- 		inode_lock(inode);
--		inode->i_ctime = attrs.ia_ctime;
--		attrs.ia_valid &= ~ATTR_CTIME;
- 		rc = notify_change(user_ns, dentry, &attrs, NULL);
- 		inode_unlock(inode);
- 	}
+ 	return count;
+ }
+@@ -655,19 +696,28 @@ static struct f2fs_attr f2fs_attr_sb_##_
+ 	.id	= F2FS_FEATURE_##_feat,				\
+ }
+ 
+-#define F2FS_ATTR_OFFSET(_struct_type, _name, _mode, _show, _store, _offset) \
++#define F2FS_ATTR_OFFSET(_struct_type, _name, _mode, _show, _store, _offset, _size) \
+ static struct f2fs_attr f2fs_attr_##_name = {			\
+ 	.attr = {.name = __stringify(_name), .mode = _mode },	\
+ 	.show	= _show,					\
+ 	.store	= _store,					\
+ 	.struct_type = _struct_type,				\
+-	.offset = _offset					\
++	.offset = _offset,					\
++	.size = _size						\
+ }
+ 
++#define F2FS_RO_ATTR(struct_type, struct_name, name, elname)	\
++	F2FS_ATTR_OFFSET(struct_type, name, 0444,		\
++		f2fs_sbi_show, NULL,				\
++		offsetof(struct struct_name, elname),		\
++		sizeof_field(struct struct_name, elname))
++
++
+ #define F2FS_RW_ATTR(struct_type, struct_name, name, elname)	\
+ 	F2FS_ATTR_OFFSET(struct_type, name, 0644,		\
+ 		f2fs_sbi_show, f2fs_sbi_store,			\
+-		offsetof(struct struct_name, elname))
++		offsetof(struct struct_name, elname),		\
++		sizeof_field(struct struct_name, elname))
+ 
+ #define F2FS_GENERAL_RO_ATTR(name) \
+ static struct f2fs_attr f2fs_attr_##name = __ATTR(name, 0444, name##_show, NULL)
+@@ -678,6 +728,7 @@ static struct f2fs_attr f2fs_attr_##_nam
+ 	.show = f2fs_sbi_show,					\
+ 	.struct_type = _struct_type,				\
+ 	.offset = offsetof(struct _struct_name, _elname),       \
++	.size = sizeof_field(struct _struct_name, _elname),	\
+ }
+ 
+ F2FS_RW_ATTR(GC_THREAD, f2fs_gc_kthread, gc_urgent_sleep_time,
 
 
 
