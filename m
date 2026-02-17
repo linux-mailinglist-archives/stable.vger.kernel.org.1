@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-216993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPSpBCjTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:24 +0100
+	id MA+TFODTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D801502E8
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC13215048D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B277A300E389
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B61F230333A2
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60EC378821;
-	Tue, 17 Feb 2026 20:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7B729BDB4;
+	Tue, 17 Feb 2026 20:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHghswyS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdYWGzA3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B4529B8E8;
-	Tue, 17 Feb 2026 20:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F8D266581;
+	Tue, 17 Feb 2026 20:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361058; cv=none; b=CEYuObIpAX+bT+G69rGPtH0Q6ozTusxyWxEx5LOw2bbSBWZqXhKTSO3Y545t6PXrKPc73U4zKzhJYU38fWByQGH+diuj6hjS6M9mPRKupjXl2inFVvSrhtiwr/90TynTzgRfo61FfTuIuprhVmJE1gFcwMC/P5/0fHi83cM4vag=
+	t=1771361237; cv=none; b=Cm50pk+SzRoM2FutTCT9h/vPfnP56yZt/BBdI5wfvowp7GEaMdN6yemMjlnLRgC9PVxkZb7BfiXJUQKtiQnPq121Ghq/aokPHqaux+5crEtxO9tiUy8MnNE+EI/hkq2TKWUtzTMTC54XODkjrNDJcTE3nXd8gnUXDG4+yS/RR7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361058; c=relaxed/simple;
-	bh=ZqXuNWszsvHDkVmBrNhX/Fk/XAIW57B5n6J8QXt67kA=;
+	s=arc-20240116; t=1771361237; c=relaxed/simple;
+	bh=ZhcE3WBzT6oOl+Yzl9dqfY62cZ/J8zKoZF4nsaTWfZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E6QEWOlSotMLZOpakEv1i+jyhnHN8YCQMgNwa8NhpnxRYHe10kBvThJLij71CPHXGrY/Gl0r6ibjy0xTrQxbynl8HOeaBqqz4AlngYt8yqMoKuVuVS7EyabupXFfVOiUnChyTVsk+ObGejUx4AEJo1X/KRGFCGQxelY9nZ7wS/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHghswyS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE1BC4CEF7;
-	Tue, 17 Feb 2026 20:44:17 +0000 (UTC)
+	 MIME-Version; b=q0+XD/lQs8IjM1gB1eK3QWbQwUJS7+O7rKtk+rvu+jgIUdxwVyFzApTpCesiitXS28N6PtL06XM/EcWwLEkBUr0sZh4GUdJFY8BNDlCmMMRfOonzGRPBD1cgswaE+etLYh8WD37VDx+XS/8+Jb0Nflvbm8Rh/KG/Q1itMZGN2Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdYWGzA3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A90C4CEF7;
+	Tue, 17 Feb 2026 20:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361058;
-	bh=ZqXuNWszsvHDkVmBrNhX/Fk/XAIW57B5n6J8QXt67kA=;
+	s=korg; t=1771361237;
+	bh=ZhcE3WBzT6oOl+Yzl9dqfY62cZ/J8zKoZF4nsaTWfZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHghswySZt7DaORnAvsu+Sq8WdhxPE0eqZZXovJNziJiwwpbdXa++h51i+4LBxZ69
-	 XNT85YLLc8WDTcu/ORbI/P9AYK0xb0Ljlm+nqAX15m0gl0wOeQPCb129yU17jqg9yG
-	 I0jgvuwOxjkDqLrziHi5lhbL4x23VipRPu6+INx0=
+	b=QdYWGzA3cNpuzxmHt7RHfxFBAAl7zxpUc0uU5XmMKb9QapPnb+VPi5jw9gqXVDxfj
+	 skFAgdyoJBNJtOK5jPBmXSBLTb+mkkV3DMgyr+GsqK7fZdRImApsQqdGUoAB4RCrbc
+	 fjxK6MPKrAK8MplfEth/rrr1n6FI+gfuRU59hMt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	Gleb Chesnokov <Chesnokov.G@raidix.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 28/39] scsi: qla2xxx: Use named initializers for port_[d]state_str
-Date: Tue, 17 Feb 2026 21:31:37 +0100
-Message-ID: <20260217200004.022832008@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 42/64] mptcp: schedule rtx timer only after pushing data
+Date: Tue, 17 Feb 2026 21:31:38 +0100
+Message-ID: <20260217200009.081605431@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,124 +67,107 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216993-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217046-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,raidix.com:email]
-X-Rspamd-Queue-Id: 92D801502E8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CC13215048D
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gleb Chesnokov <Chesnokov.G@raidix.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 6e0e85d39e528da2915a2da261195f81bfde6915 ]
+commit 2ea6190f42d0416a4310e60a7fcb0b49fcbbd4fb upstream.
 
-Make port_state_str and port_dstate_str a little more readable and
-maintainable by using named initializers.
+The MPTCP protocol usually schedule the retransmission timer only
+when there is some chances for such retransmissions to happen.
 
-Also convert FCS_* macros into an enum.
+With a notable exception: __mptcp_push_pending() currently schedule
+such timer unconditionally, potentially leading to unnecessary rtx
+timer expiration.
 
-Link: https://lore.kernel.org/r/AS8PR10MB495215841EB25C16DBC0CB409D349@AS8PR10MB4952.EURPRD10.PROD.OUTLOOK.COM
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Gleb Chesnokov <Chesnokov.G@raidix.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 7adbd2b78090 ("scsi: qla2xxx: Free sp in error path to fix system crash")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue is present since the blamed commit below but become easily
+reproducible after commit 27b0e701d387 ("mptcp: drop bogus optimization
+in __mptcp_check_push()")
+
+Fixes: 33d41c9cd74c ("mptcp: more accurate timeout")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-3-9e4781a6c1b8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in protocol.c, because commit 0fa1b3783a17 ("mptcp: use
+  get_send wrapper") is not in this version, and is changing the
+  context. The same modification can still be applied. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h |   35 +++++++++++++++++++----------------
- drivers/scsi/qla2xxx/qla_isr.c |   10 +++++-----
- 2 files changed, 24 insertions(+), 21 deletions(-)
+ net/mptcp/protocol.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -2689,25 +2689,28 @@ struct event_arg {
- /*
-  * Fibre channel port/lun states.
-  */
--#define FCS_UNCONFIGURED	1
--#define FCS_DEVICE_DEAD		2
--#define FCS_DEVICE_LOST		3
--#define FCS_ONLINE		4
-+enum {
-+	FCS_UNKNOWN,
-+	FCS_UNCONFIGURED,
-+	FCS_DEVICE_DEAD,
-+	FCS_DEVICE_LOST,
-+	FCS_ONLINE,
-+};
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1666,7 +1666,7 @@ void __mptcp_push_pending(struct sock *s
+ 	struct mptcp_sendmsg_info info = {
+ 				.flags = flags,
+ 	};
+-	bool do_check_data_fin = false;
++	bool copied = false;
+ 	struct mptcp_data_frag *dfrag;
+ 	int len;
  
- extern const char *const port_state_str[5];
+@@ -1703,7 +1703,7 @@ void __mptcp_push_pending(struct sock *s
+ 				goto out;
+ 			}
  
--static const char * const port_dstate_str[] = {
--	"DELETED",
--	"GNN_ID",
--	"GNL",
--	"LOGIN_PEND",
--	"LOGIN_FAILED",
--	"GPDB",
--	"UPD_FCPORT",
--	"LOGIN_COMPLETE",
--	"ADISC",
--	"DELETE_PEND",
--	"LOGIN_AUTH_PEND",
-+static const char *const port_dstate_str[] = {
-+	[DSC_DELETED]		= "DELETED",
-+	[DSC_GNN_ID]		= "GNN_ID",
-+	[DSC_GNL]		= "GNL",
-+	[DSC_LOGIN_PEND]	= "LOGIN_PEND",
-+	[DSC_LOGIN_FAILED]	= "LOGIN_FAILED",
-+	[DSC_GPDB]		= "GPDB",
-+	[DSC_UPD_FCPORT]	= "UPD_FCPORT",
-+	[DSC_LOGIN_COMPLETE]	= "LOGIN_COMPLETE",
-+	[DSC_ADISC]		= "ADISC",
-+	[DSC_DELETE_PEND]	= "DELETE_PEND",
-+	[DSC_LOGIN_AUTH_PEND]	= "LOGIN_AUTH_PEND",
- };
+-			do_check_data_fin = true;
++			copied = true;
+ 			info.sent += ret;
+ 			len -= ret;
  
- /*
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -49,11 +49,11 @@ qla27xx_process_purex_fpin(struct scsi_q
+@@ -1717,11 +1717,14 @@ void __mptcp_push_pending(struct sock *s
+ 		mptcp_push_release(ssk, &info);
+ 
+ out:
+-	/* ensure the rtx timer is running */
+-	if (!mptcp_rtx_timer_pending(sk))
+-		mptcp_reset_rtx_timer(sk);
+-	if (do_check_data_fin)
++	/* Avoid scheduling the rtx timer if no data has been pushed; the timer
++	 * will be updated on positive acks by __mptcp_cleanup_una().
++	 */
++	if (copied) {
++		if (!mptcp_rtx_timer_pending(sk))
++			mptcp_reset_rtx_timer(sk);
+ 		mptcp_check_send_data_fin(sk);
++	}
  }
  
- const char *const port_state_str[] = {
--	"Unknown",
--	"UNCONFIGURED",
--	"DEAD",
--	"LOST",
--	"ONLINE"
-+	[FCS_UNKNOWN]		= "Unknown",
-+	[FCS_UNCONFIGURED]	= "UNCONFIGURED",
-+	[FCS_DEVICE_DEAD]	= "DEAD",
-+	[FCS_DEVICE_LOST]	= "LOST",
-+	[FCS_ONLINE]		= "ONLINE"
- };
- 
- static void
+ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool first)
 
 
 
