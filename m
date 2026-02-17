@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-217148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJyqDTjVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217148-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:12 +0100
+	id ELS1ElHUlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC29150749
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FC915057F
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E2AB301457D
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1CD293016ADD
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4B52D6E76;
-	Tue, 17 Feb 2026 20:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F5E28D8E8;
+	Tue, 17 Feb 2026 20:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiR6WHI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bh1g9oQd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C719F29A1;
-	Tue, 17 Feb 2026 20:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF0729A1;
+	Tue, 17 Feb 2026 20:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361587; cv=none; b=E44H6/IitYcAeTU7eU3Fg0g5/M8V+pRe5fh4l5Qdfft/uySBkKSLtr4vtJxy624VA0jWLk61Rm7vizgHs8aGLZrt3YHeHjSc8N4DE72Ph414bgcpR47VssW7HRBflZVLuuFgHL6RiLws5782DSJH0Ad34PIM5DtCXXbyC/WH9y4=
+	t=1771361359; cv=none; b=ZFvlW12JychZLwqdWw1RuhKryln8CmmT1IZe8laYc8C/otv2/tH1B7Nn8jyLeI36TO4d+rACe6qUeSLWvl8DeDHimjs2Bnx/qEepKfTbHMtcxpCEpH5EaOwJSePz9yHao0C4J397v/Q+8Tjnzv+tQyhp8akUdMtLxnJjpo1C12M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361587; c=relaxed/simple;
-	bh=5CjTl4uDFTjxuduZoouL5pkW3EjWhK1wacK3r+x2/ac=;
+	s=arc-20240116; t=1771361359; c=relaxed/simple;
+	bh=SY4NIyOHlkAa+6RepDgstPKX09Ja9XxgpGCuzRPR4n4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sE8C4/sV1DFhXwmh+gFvMOCnQDEK2HK8dT60w+776kZC1nI4DeykD+owUarAkmzZ7StXmqpJrKDpGpU2PFYqAAx9FrTea3flQUXWT0j5aZAzcOFfnpzdteyDp1iHUB1GxNXVEroAf+W2Pfsq5PtcZ0Rl+3wXFfllz6LWwqui8n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiR6WHI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DBDC4CEF7;
-	Tue, 17 Feb 2026 20:53:07 +0000 (UTC)
+	 MIME-Version; b=CcDlMarDT3QwzMJsGUmlX92MXHVmHOhKBgXiDcm4Ntx+SO+BZ+MOXfZJILW5UrvITAtoXtu+bxt8pV7wFyZOH0hok3USl0vgqYl0vlF/u2a3M/WOMX7bFcPRDeZwqp36W59ZM53h3Td0J3n4PTIJ/hBATm9ZFPpcwNKyfIDy1is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bh1g9oQd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B4EC4CEF7;
+	Tue, 17 Feb 2026 20:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361587;
-	bh=5CjTl4uDFTjxuduZoouL5pkW3EjWhK1wacK3r+x2/ac=;
+	s=korg; t=1771361358;
+	bh=SY4NIyOHlkAa+6RepDgstPKX09Ja9XxgpGCuzRPR4n4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiR6WHI6NDe2N/QqXRdOhT6AowNDwL2HUVIkSB7puXVlxhoWr98ugsPFKSu4C3slW
-	 eonQzoU3ufn7p4cGEmKKerxJdzXXKRNL6b6MxrBiJi2vlcypwBRl74V6WfKKP+FuE5
-	 iv7C++DRX/9QjDxftRF2z3xM99Nah+zuzJCXVJR8=
+	b=bh1g9oQdzStRWkYvXSm5//nwpjFwZpAQsnwYlDAJgHox9GM6XonJO1mC1e2+Omz4y
+	 B0v4fovAMzZiJEhfiS3YDlrTTRcc1DObRIAz+1lvNjWqhhNXsHD9+czsXS2b/2ve82
+	 ny07f8VQRFcBfzp+WZEjFFox/nOIusyM+axMhvO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dirk Su <dirk.su@canonical.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 16/42] ASoC: amd: yc: Add quirk for HP 200 G2a 16
-Date: Tue, 17 Feb 2026 21:32:07 +0100
-Message-ID: <20260217200006.626340801@linuxfoundation.org>
+	stable@kernel.org,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Xiaolong Guo <guoxiaolong2008@gmail.com>
+Subject: [PATCH 6.19 12/18] f2fs: fix to avoid mapping wrong physical block for swapfile
+Date: Tue, 17 Feb 2026 21:32:08 +0100
+Message-ID: <20260217200003.164093527@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
-References: <20260217200005.998240758@linuxfoundation.org>
+In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
+References: <20260217200002.683975158@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,73 +69,173 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217148-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217081-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,google.com,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8AC29150749
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: B2FC915057F
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dirk Su <dirk.su@canonical.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 611c7d2262d5645118e0b3a9a88475d35a8366f2 ]
+commit 5c145c03188bc9ba1c29e0bc4d527a5978fc47f9 upstream.
 
-Fix the missing mic on HP 200 G2a 16 by adding quirk with the
-board ID 8EE4
+Xiaolong Guo reported a f2fs bug in bugzilla [1]
 
-Signed-off-by: Dirk Su <dirk.su@canonical.com>
-Link: https://patch.msgid.link/20260129065038.39349-1-dirk.su@canonical.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=220951
+
+Quoted:
+
+"When using stress-ng's swap stress test on F2FS filesystem with kernel 6.6+,
+the system experiences data corruption leading to either:
+1 dm-verity corruption errors and device reboot
+2 F2FS node corruption errors and boot hangs
+
+The issue occurs specifically when:
+1 Using F2FS filesystem (ext4 is unaffected)
+2 Swapfile size is less than F2FS section size (2MB)
+3 Swapfile has fragmented physical layout (multiple non-contiguous extents)
+4 Kernel version is 6.6+ (6.1 is unaffected)
+
+The root cause is in check_swap_activate() function in fs/f2fs/data.c. When the
+first extent of a small swapfile (< 2MB) is not aligned to section boundaries,
+the function incorrectly treats it as the last extent, failing to map
+subsequent extents. This results in incorrect swap_extent creation where only
+the first extent is mapped, causing subsequent swap writes to overwrite wrong
+physical locations (other files' data).
+
+Steps to Reproduce
+1 Setup a device with F2FS-formatted userdata partition
+2 Compile stress-ng from https://github.com/ColinIanKing/stress-ng
+3 Run swap stress test: (Android devices)
+adb shell "cd /data/stressng; ./stress-ng-64 --metrics-brief --timeout 60
+--swap 0"
+
+Log:
+1 Ftrace shows in kernel 6.6, only first extent is mapped during second
+f2fs_map_blocks call in check_swap_activate():
+stress-ng-swap-8990: f2fs_map_blocks: ino=11002, file offset=0, start
+blkaddr=0x43143, len=0x1
+(Only 4KB mapped, not the full swapfile)
+2 in kernel 6.1, both extents are correctly mapped:
+stress-ng-swap-5966: f2fs_map_blocks: ino=28011, file offset=0, start
+blkaddr=0x13cd4, len=0x1
+stress-ng-swap-5966: f2fs_map_blocks: ino=28011, file offset=1, start
+blkaddr=0x60c84b, len=0xff
+
+The problematic code is in check_swap_activate():
+if ((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
+    nr_pblocks % blks_per_sec ||
+    !f2fs_valid_pinned_area(sbi, pblock)) {
+    bool last_extent = false;
+
+    not_aligned++;
+
+    nr_pblocks = roundup(nr_pblocks, blks_per_sec);
+    if (cur_lblock + nr_pblocks > sis->max)
+        nr_pblocks -= blks_per_sec;
+
+    /* this extent is last one */
+    if (!nr_pblocks) {
+        nr_pblocks = last_lblock - cur_lblock;
+        last_extent = true;
+    }
+
+    ret = f2fs_migrate_blocks(inode, cur_lblock, nr_pblocks);
+    if (ret) {
+        if (ret == -ENOENT)
+            ret = -EINVAL;
+        goto out;
+    }
+
+    if (!last_extent)
+        goto retry;
+}
+
+When the first extent is unaligned and roundup(nr_pblocks, blks_per_sec)
+exceeds sis->max, we subtract blks_per_sec resulting in nr_pblocks = 0. The
+code then incorrectly assumes this is the last extent, sets nr_pblocks =
+last_lblock - cur_lblock (entire swapfile), and performs migration. After
+migration, it doesn't retry mapping, so subsequent extents are never processed.
+"
+
+In order to fix this issue, we need to lookup block mapping info after
+we migrate all blocks in the tail of swapfile.
+
+Cc: stable@kernel.org
+Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
+Cc: Daeho Jeong <daehojeong@google.com>
+Reported-and-tested-by: Xiaolong Guo <guoxiaolong2008@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220951
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/f2fs/data.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 4f75a7d9b0e70..6d073ecad6f02 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -633,6 +633,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "8BD6"),
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -3935,6 +3935,7 @@ static int check_swap_activate(struct sw
+ 
+ 	while (cur_lblock < last_lblock && cur_lblock < sis->max) {
+ 		struct f2fs_map_blocks map;
++		bool last_extent = false;
+ retry:
+ 		cond_resched();
+ 
+@@ -3960,11 +3961,10 @@ retry:
+ 		pblock = map.m_pblk;
+ 		nr_pblocks = map.m_len;
+ 
+-		if ((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
+-				nr_pblocks % blks_per_sec ||
+-				f2fs_is_sequential_zone_area(sbi, pblock)) {
+-			bool last_extent = false;
+-
++		if (!last_extent &&
++			((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
++			nr_pblocks % blks_per_sec ||
++			f2fs_is_sequential_zone_area(sbi, pblock))) {
+ 			not_aligned++;
+ 
+ 			nr_pblocks = roundup(nr_pblocks, blks_per_sec);
+@@ -3985,8 +3985,8 @@ retry:
+ 				goto out;
+ 			}
+ 
+-			if (!last_extent)
+-				goto retry;
++			/* lookup block mapping info after block migration */
++			goto retry;
  		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
-+			DMI_MATCH(DMI_BOARD_NAME, "8EE4"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
--- 
-2.51.0
-
+ 
+ 		if (cur_lblock + nr_pblocks >= sis->max)
 
 
 
