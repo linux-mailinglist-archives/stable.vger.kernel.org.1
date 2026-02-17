@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-216953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BrTDqHSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:09 +0100
+	id kBAQGAzTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D6215017D
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB89C150289
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 04DC4301689C
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 34AD23008C8E
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB9B3783AB;
-	Tue, 17 Feb 2026 20:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1E1378821;
+	Tue, 17 Feb 2026 20:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01jkR8r6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hNN5fpG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF2A36F431;
-	Tue, 17 Feb 2026 20:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23A13783AF;
+	Tue, 17 Feb 2026 20:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360918; cv=none; b=FeSs3If6f0RpF1/EhE5B9LL4QQSlExNHxXMI5auotFGFsHIsK4STG34TXOAEfGc6v/hzLeBie+PFBbQsx/HmLoa72n9tah8xlIC3BbxZIvj5Qqj5/L8qynDKLfO4dfTiuAbrkhcxuCNZnsE/eHXMInCuOEvH58vPb4ebRyDMbiQ=
+	t=1771361021; cv=none; b=dHf7vgkbHi6w/3zf5kxFvwGnuJcY9HEAmYP0QTHhnJKjOtKzmyAGrAxJwJhT+3KQjKtP0f6tEObmlH0dr9cF7n9iXR+v48Lp1ZSKw8QhCSME/irxGmcCG38c46aB5Z23pitscvItwey+4RcpnS5PyImGQBKKimBF8bbOan+MOzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360918; c=relaxed/simple;
-	bh=q8NNeIZaZFtybRSwGeIlRtuZJ+Tm8O4cyeP+FYPLwNk=;
+	s=arc-20240116; t=1771361021; c=relaxed/simple;
+	bh=3aZxbUid4x/OUPlmP310sX20j2yaBwsQGJ7bdoOb+1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmMKLZWfGB+Sb9X5EChaIb3skjWUxCvKWQuGsipYGyflZXnIU0N7WmB87OGpAxBY025Tx6YI27Asc03+qtHi7gjRClGmwFFTWBEn356Zji2Lti+eVe93RxZfe24FypzfsnSG0mAU1NrQ6sE2EH6svLTKkNKh6cDIciOoLmug9l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01jkR8r6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C10C4CEF7;
-	Tue, 17 Feb 2026 20:41:57 +0000 (UTC)
+	 MIME-Version; b=LZ51oshXFz3sY2EGcCEt04sixdhL/g1aYAsAsqDsGk/yp4o53eVw8biownV8A+cDdJ4ae3dq2nDyQxrzskV752K9oKG5P6yqoXysMMPzLy1WQTIUDvGEg50V95yBApjXcHQ7905DQWbYC1J+YWgz4vY0eLZk8H3pjuCnj2nR9Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hNN5fpG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09174C4CEF7;
+	Tue, 17 Feb 2026 20:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360918;
-	bh=q8NNeIZaZFtybRSwGeIlRtuZJ+Tm8O4cyeP+FYPLwNk=;
+	s=korg; t=1771361021;
+	bh=3aZxbUid4x/OUPlmP310sX20j2yaBwsQGJ7bdoOb+1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=01jkR8r6YlowMHpNPGEgRo93UkMWWb6eR1WGPoASfAHt8oFISZNWQEAOYaesu1DV4
-	 u231Q31pB3Y6l8O+sV1Fb2LZijI/NFaKX88OHiMqbraNDUYfNY5BpH5Bgfea5RTiw/
-	 8Im4vYnFEuJEZDQJaJJ6xb634hMg8P8/0IoZ8JjI=
+	b=2hNN5fpGKU4kahYiZZqA65WKDTwxIlcwE3Qo/otVkiP/FrwtlYfB5TkaG3GkvfAwT
+	 aGH22uMtOEHCMVZrJ5Ip7H9K33skRj4kqucxfMqyarYwTY7wxA9i9uOsdtAs6OvOqs
+	 6PyzNnZJ8bMJlq95rMOr32UF0eevBcSspdpmmL0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 5.10 14/24] fs: dlm: fix invalid derefence of sb_lvbptr
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 5.15 18/39] btrfs: fix racy bitfield write in btrfs_clear_space_info_full()
 Date: Tue, 17 Feb 2026 21:31:27 +0100
-Message-ID: <20260217200001.258709701@linuxfoundation.org>
+Message-ID: <20260217200003.630708137@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
-References: <20260217200000.708219618@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,121 +68,276 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216953-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,139.com];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216982-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,bur.io,163.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: D3D6215017D
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,suse.com:email]
+X-Rspamd-Queue-Id: AB89C150289
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 7175e131ebba47afef47e6ac4d5bab474d1e6e49 ]
+[ Upstream commit 38e818718c5e04961eea0fa8feff3f100ce40408 ]
 
-I experience issues when putting a lkbsb on the stack and have sb_lvbptr
-field to a dangled pointer while not using DLM_LKF_VALBLK. It will crash
-with the following kernel message, the dangled pointer is here
-0xdeadbeef as example:
+>From the memory-barriers.txt document regarding memory barrier ordering
+guarantees:
 
-[  102.749317] BUG: unable to handle page fault for address: 00000000deadbeef
-[  102.749320] #PF: supervisor read access in kernel mode
-[  102.749323] #PF: error_code(0x0000) - not-present page
-[  102.749325] PGD 0 P4D 0
-[  102.749332] Oops: 0000 [#1] PREEMPT SMP PTI
-[  102.749336] CPU: 0 PID: 1567 Comm: lock_torture_wr Tainted: G        W         5.19.0-rc3+ #1565
-[  102.749343] Hardware name: Red Hat KVM/RHEL-AV, BIOS 1.16.0-2.module+el8.7.0+15506+033991b0 04/01/2014
-[  102.749344] RIP: 0010:memcpy_erms+0x6/0x10
-[  102.749353] Code: cc cc cc cc eb 1e 0f 1f 00 48 89 f8 48 89 d1 48 c1 e9 03 83 e2 07 f3 48 a5 89 d1 f3 a4 c3 66 0f 1f 44 00 00 48 89 f8 48 89 d1 <f3> a4 c3 0f 1f 80 00 00 00 00 48 89 f8 48 83 fa 20 72 7e 40 38 fe
-[  102.749355] RSP: 0018:ffff97a58145fd08 EFLAGS: 00010202
-[  102.749358] RAX: ffff901778b77070 RBX: 0000000000000000 RCX: 0000000000000040
-[  102.749360] RDX: 0000000000000040 RSI: 00000000deadbeef RDI: ffff901778b77070
-[  102.749362] RBP: ffff97a58145fd10 R08: ffff901760b67a70 R09: 0000000000000001
-[  102.749364] R10: ffff9017008e2cb8 R11: 0000000000000001 R12: ffff901760b67a70
-[  102.749366] R13: ffff901760b78f00 R14: 0000000000000003 R15: 0000000000000001
-[  102.749368] FS:  0000000000000000(0000) GS:ffff901876e00000(0000) knlGS:0000000000000000
-[  102.749372] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  102.749374] CR2: 00000000deadbeef CR3: 000000017c49a004 CR4: 0000000000770ef0
-[  102.749376] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  102.749378] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  102.749379] PKRU: 55555554
-[  102.749381] Call Trace:
-[  102.749382]  <TASK>
-[  102.749383]  ? send_args+0xb2/0xd0
-[  102.749389]  send_common+0xb7/0xd0
-[  102.749395]  _unlock_lock+0x2c/0x90
-[  102.749400]  unlock_lock.isra.56+0x62/0xa0
-[  102.749405]  dlm_unlock+0x21e/0x330
-[  102.749411]  ? lock_torture_stats+0x80/0x80 [dlm_locktorture]
-[  102.749416]  torture_unlock+0x5a/0x90 [dlm_locktorture]
-[  102.749419]  ? preempt_count_sub+0xba/0x100
-[  102.749427]  lock_torture_writer+0xbd/0x150 [dlm_locktorture]
-[  102.786186]  kthread+0x10a/0x130
-[  102.786581]  ? kthread_complete_and_exit+0x20/0x20
-[  102.787156]  ret_from_fork+0x22/0x30
-[  102.787588]  </TASK>
-[  102.787855] Modules linked in: dlm_locktorture torture rpcsec_gss_krb5 intel_rapl_msr intel_rapl_common kvm_intel iTCO_wdt iTCO_vendor_support kvm vmw_vsock_virtio_transport qxl irqbypass vmw_vsock_virtio_transport_common drm_ttm_helper crc32_pclmul joydev crc32c_intel ttm vsock virtio_scsi virtio_balloon snd_pcm drm_kms_helper virtio_console snd_timer snd drm soundcore syscopyarea i2c_i801 sysfillrect sysimgblt i2c_smbus pcspkr fb_sys_fops lpc_ich serio_raw
-[  102.792536] CR2: 00000000deadbeef
-[  102.792930] ---[ end trace 0000000000000000 ]---
+ (*) These guarantees do not apply to bitfields, because compilers often
+     generate code to modify these using non-atomic read-modify-write
+     sequences.  Do not attempt to use bitfields to synchronize parallel
+     algorithms.
 
-This patch fixes the issue by checking also on DLM_LKF_VALBLK on exflags
-is set when copying the lvbptr array instead of if it's just null which
-fixes for me the issue.
+ (*) Even in cases where bitfields are protected by locks, all fields
+     in a given bitfield must be protected by one lock.  If two fields
+     in a given bitfield are protected by different locks, the compiler's
+     non-atomic read-modify-write sequences can cause an update to one
+     field to corrupt the value of an adjacent field.
 
-I think this patch can fix other dlm users as well, depending how they
-handle the init, freeing memory handling of sb_lvbptr and don't set
-DLM_LKF_VALBLK for some dlm_lock() calls. It might a there could be a
-hidden issue all the time. However with checking on DLM_LKF_VALBLK the
-user always need to provide a sb_lvbptr non-null value. There might be
-more intelligent handling between per ls lvblen, DLM_LKF_VALBLK and
-non-null to report the user the way how DLM API is used is wrong but can
-be added for later, this will only fix the current behaviour.
+btrfs_space_info has a bitfield sharing an underlying word consisting of
+the fields full, chunk_alloc, and flush:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-[ Adjust context ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
+struct btrfs_space_info {
+        struct btrfs_fs_info *     fs_info;              /*     0     8 */
+        struct btrfs_space_info *  parent;               /*     8     8 */
+        ...
+        int                        clamp;                /*   172     4 */
+        unsigned int               full:1;               /*   176: 0  4 */
+        unsigned int               chunk_alloc:1;        /*   176: 1  4 */
+        unsigned int               flush:1;              /*   176: 2  4 */
+        ...
+
+Therefore, to be safe from parallel read-modify-writes losing a write to
+one of the bitfield members protected by a lock, all writes to all the
+bitfields must use the lock. They almost universally do, except for
+btrfs_clear_space_info_full() which iterates over the space_infos and
+writes out found->full = 0 without a lock.
+
+Imagine that we have one thread completing a transaction in which we
+finished deleting a block_group and are thus calling
+btrfs_clear_space_info_full() while simultaneously the data reclaim
+ticket infrastructure is running do_async_reclaim_data_space():
+
+          T1                                             T2
+btrfs_commit_transaction
+  btrfs_clear_space_info_full
+  data_sinfo->full = 0
+  READ: full:0, chunk_alloc:0, flush:1
+                                              do_async_reclaim_data_space(data_sinfo)
+                                              spin_lock(&space_info->lock);
+                                              if(list_empty(tickets))
+                                                space_info->flush = 0;
+                                                READ: full: 0, chunk_alloc:0, flush:1
+                                                MOD/WRITE: full: 0, chunk_alloc:0, flush:0
+                                                spin_unlock(&space_info->lock);
+                                                return;
+  MOD/WRITE: full:0, chunk_alloc:0, flush:1
+
+and now data_sinfo->flush is 1 but the reclaim worker has exited. This
+breaks the invariant that flush is 0 iff there is no work queued or
+running. Once this invariant is violated, future allocations that go
+into __reserve_bytes() will add tickets to space_info->tickets but will
+see space_info->flush is set to 1 and not queue the work. After this,
+they will block forever on the resulting ticket, as it is now impossible
+to kick the worker again.
+
+I also confirmed by looking at the assembly of the affected kernel that
+it is doing RMW operations. For example, to set the flush (3rd) bit to 0,
+the assembly is:
+  andb    $0xfb,0x60(%rbx)
+and similarly for setting the full (1st) bit to 0:
+  andb    $0xfe,-0x20(%rax)
+
+So I think this is really a bug on practical systems.  I have observed
+a number of systems in this exact state, but am currently unable to
+reproduce it.
+
+Rather than leaving this footgun lying around for the future, take
+advantage of the fact that there is room in the struct anyway, and that
+it is already quite large and simply change the three bitfield members to
+bools. This avoids writes to space_info->full having any effect on
+writes to space_info->flush, regardless of locking.
+
+Fixes: 957780eb2788 ("Btrfs: introduce ticketed enospc infrastructure")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ The context change is due to the commit cc0517fe779f
+("btrfs: tweak extent/chunk allocation for space_info sub-space")
+and the commit 45a59513b4b2
+("btrfs: add support for reclaiming from sub-space space_info")
+in v6.16 which are irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/lock.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/block-group.c |    6 +++---
+ fs/btrfs/space-info.c  |   20 ++++++++++----------
+ fs/btrfs/space-info.h  |    6 +++---
+ 3 files changed, 16 insertions(+), 16 deletions(-)
 
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -3635,7 +3635,7 @@ static void send_args(struct dlm_rsb *r,
- 	case DLM_MSG_REQUEST_REPLY:
- 	case DLM_MSG_CONVERT_REPLY:
- 	case DLM_MSG_GRANT:
--		if (!lkb->lkb_lvbptr)
-+		if (!lkb->lkb_lvbptr || !(lkb->lkb_exflags & DLM_LKF_VALBLK))
- 			break;
- 		memcpy(ms->m_extra, lkb->lkb_lvbptr, r->res_ls->ls_lvblen);
- 		break;
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -3699,7 +3699,7 @@ int btrfs_chunk_alloc(struct btrfs_trans
+ 			mutex_unlock(&fs_info->chunk_mutex);
+ 		} else {
+ 			/* Proceed with allocation */
+-			space_info->chunk_alloc = 1;
++			space_info->chunk_alloc = true;
+ 			wait_for_alloc = false;
+ 			spin_unlock(&space_info->lock);
+ 		}
+@@ -3735,7 +3735,7 @@ int btrfs_chunk_alloc(struct btrfs_trans
+ 	spin_lock(&space_info->lock);
+ 	if (ret < 0) {
+ 		if (ret == -ENOSPC)
+-			space_info->full = 1;
++			space_info->full = true;
+ 		else
+ 			goto out;
+ 	} else {
+@@ -3745,7 +3745,7 @@ int btrfs_chunk_alloc(struct btrfs_trans
+ 
+ 	space_info->force_alloc = CHUNK_ALLOC_NO_FORCE;
+ out:
+-	space_info->chunk_alloc = 0;
++	space_info->chunk_alloc = false;
+ 	spin_unlock(&space_info->lock);
+ 	mutex_unlock(&fs_info->chunk_mutex);
+ 
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -178,7 +178,7 @@ void btrfs_clear_space_info_full(struct
+ 	struct btrfs_space_info *found;
+ 
+ 	list_for_each_entry(found, head, list)
+-		found->full = 0;
++		found->full = false;
+ }
+ 
+ static int create_space_info(struct btrfs_fs_info *info, u64 flags)
+@@ -271,7 +271,7 @@ void btrfs_update_space_info(struct btrf
+ 	found->bytes_readonly += bytes_readonly;
+ 	found->bytes_zone_unusable += bytes_zone_unusable;
+ 	if (total_bytes > 0)
+-		found->full = 0;
++		found->full = false;
+ 	btrfs_try_granting_tickets(info, found);
+ 	spin_unlock(&found->lock);
+ 	*space_info = found;
+@@ -941,7 +941,7 @@ static void btrfs_async_reclaim_metadata
+ 	spin_lock(&space_info->lock);
+ 	to_reclaim = btrfs_calc_reclaim_metadata_size(fs_info, space_info);
+ 	if (!to_reclaim) {
+-		space_info->flush = 0;
++		space_info->flush = false;
+ 		spin_unlock(&space_info->lock);
+ 		return;
+ 	}
+@@ -953,7 +953,7 @@ static void btrfs_async_reclaim_metadata
+ 		flush_space(fs_info, space_info, to_reclaim, flush_state, false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -996,7 +996,7 @@ static void btrfs_async_reclaim_metadata
+ 					flush_state = FLUSH_DELAYED_ITEMS_NR;
+ 					commit_cycles--;
+ 				} else {
+-					space_info->flush = 0;
++					space_info->flush = false;
+ 				}
+ 			} else {
+ 				flush_state = FLUSH_DELAYED_ITEMS_NR;
+@@ -1158,7 +1158,7 @@ static void btrfs_async_reclaim_data_spa
+ 
+ 	spin_lock(&space_info->lock);
+ 	if (list_empty(&space_info->tickets)) {
+-		space_info->flush = 0;
++		space_info->flush = false;
+ 		spin_unlock(&space_info->lock);
+ 		return;
+ 	}
+@@ -1169,7 +1169,7 @@ static void btrfs_async_reclaim_data_spa
+ 		flush_space(fs_info, space_info, U64_MAX, ALLOC_CHUNK_FORCE, false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1182,7 +1182,7 @@ static void btrfs_async_reclaim_data_spa
+ 			    data_flush_states[flush_state], false);
+ 		spin_lock(&space_info->lock);
+ 		if (list_empty(&space_info->tickets)) {
+-			space_info->flush = 0;
++			space_info->flush = false;
+ 			spin_unlock(&space_info->lock);
+ 			return;
+ 		}
+@@ -1199,7 +1199,7 @@ static void btrfs_async_reclaim_data_spa
+ 				if (maybe_fail_all_tickets(fs_info, space_info))
+ 					flush_state = 0;
+ 				else
+-					space_info->flush = 0;
++					space_info->flush = false;
+ 			} else {
+ 				flush_state = 0;
+ 			}
+@@ -1510,7 +1510,7 @@ static int __reserve_bytes(struct btrfs_
+ 				 */
+ 				maybe_clamp_preempt(fs_info, space_info);
+ 
+-				space_info->flush = 1;
++				space_info->flush = true;
+ 				trace_btrfs_trigger_flush(fs_info,
+ 							  space_info->flags,
+ 							  orig_bytes, flush,
+--- a/fs/btrfs/space-info.h
++++ b/fs/btrfs/space-info.h
+@@ -28,11 +28,11 @@ struct btrfs_space_info {
+ 				   flushing. The value is >> clamp, so turns
+ 				   out to be a 2^clamp divisor. */
+ 
+-	unsigned int full:1;	/* indicates that we cannot allocate any more
++	bool full;		/* indicates that we cannot allocate any more
+ 				   chunks for this space */
+-	unsigned int chunk_alloc:1;	/* set if we are allocating a chunk */
++	bool chunk_alloc;	/* set if we are allocating a chunk */
+ 
+-	unsigned int flush:1;		/* set if we are trying to make space */
++	bool flush;		/* set if we are trying to make space */
+ 
+ 	unsigned int force_alloc;	/* set if we need to force a chunk
+ 					   alloc for this space */
 
 
 
