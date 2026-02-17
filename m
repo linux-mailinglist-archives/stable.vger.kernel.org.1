@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-216986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wB6sLhvTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:11 +0100
+	id +FGDMjrUlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3EC1502C4
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E96A15053C
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C141A30091D1
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 53072304609E
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5945A3783D0;
-	Tue, 17 Feb 2026 20:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A202028C009;
+	Tue, 17 Feb 2026 20:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1L+vOmS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rC3lSs4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB033783AF;
-	Tue, 17 Feb 2026 20:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662B6261B70;
+	Tue, 17 Feb 2026 20:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361035; cv=none; b=Q4lmdyHljUCxaUrXh3EjeYXz+Xh91SCoapRem5nbk5VwGxYhr3n9OpBzfZxfLRBXTSHQdG5YG49oEHLLYT2KhXszZ69o3SokKiM0AQL2UZTnQ+9a7FuItju1+F+qP8KOUwAlgtdfUIyfxgY01rRhxiD/YpIL4P3tyJ5biZbzTto=
+	t=1771361324; cv=none; b=IEnSdxpQS2ZMODbFe56afRj9ZZPpkOFmdez31Qz59GvVaRxYgDpILs7aSlV0qwqIFDhpBywSQFYfjJwYSwZtsAiKWxAqxL/b4Sw8J4XZ0k8iOZXjP0KaObNdmgRJOl9a3xmyMaQ4W0zkFUEfkgZO4i5SNJYRzVylHZ3csRMD7Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361035; c=relaxed/simple;
-	bh=Zo8oWG0kdb2VyAav1IxKMgNqUVCH07uUWi/AOpk2GLc=;
+	s=arc-20240116; t=1771361324; c=relaxed/simple;
+	bh=u79HbR9jmIkQokuRhBKq1PxF+4uhckXTZBaMYrf3MOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dW544kPBaLgK+X22dpQ0LPPFB/CALieKoaNVYm5PLBTIbNYH9CU4m2x+9jN7cL2zmEUPSmD2SoXQ4ZFgHQlu0ehrFwObJdBySKeM66Kab9L+yn/sV+sDrz6f1aLIXYru63HSzmnoeNTHG0QX6Fmue5PzfT/muwCSddZSZDDibvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1L+vOmS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C72FC19421;
-	Tue, 17 Feb 2026 20:43:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AgwBfJvVuw7LU/88Ob0lBzrkqYBtrQTYLLi2poVExuF77Wl1oahIZjC13Kt4PRVNT6Y4/Y4Au7UZWtNO+tJ7nsFVGtu3EdXxU7QY/VSzz6CQQDddM+sKk+CE4c7HCVe0gWmvlpkYVKv+pE23j/O90Oh/8Rkq7ZZswnz1SstZSYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rC3lSs4f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6865C4CEF7;
+	Tue, 17 Feb 2026 20:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361034;
-	bh=Zo8oWG0kdb2VyAav1IxKMgNqUVCH07uUWi/AOpk2GLc=;
+	s=korg; t=1771361324;
+	bh=u79HbR9jmIkQokuRhBKq1PxF+4uhckXTZBaMYrf3MOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m1L+vOmSH3ZTpBBN+9a73V4aqG/4rupLjamvfIAuNg6tNEY59gxVBNBwvHsZMYNAd
-	 0dElhCCwXQdKvRLb9f64TxnIPcXFfCAfuWleAWOohm7Zq27pb0myMjRrXX1DMex//r
-	 7qPcQ+XGfB7mEjfKn9HV/rm2D/XrIoCMg9FJY8LY=
+	b=rC3lSs4f1nLNXWWK/S+YvS+AlgxzsfBDLI1nx8KSOzcnJA48b1yEJKTYup4o8ZNvU
+	 clE7X5746A021xhpNpupgbkCYgpPOxI5s2YG6Eokmj5K364FmOAQ+GBclNBfT3OBrR
+	 1ZhOy9HPi1VC4cXUnNgm1iK+Ni31ViiuPkfF8fs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 21/39] selftests: mptcp: pm: ensure unknown flags are ignored
-Date: Tue, 17 Feb 2026 21:31:30 +0100
-Message-ID: <20260217200003.746835566@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 35/64] platform/x86: classmate-laptop: Add missing NULL pointer checks
+Date: Tue, 17 Feb 2026 21:31:31 +0100
+Message-ID: <20260217200008.827327607@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +63,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216986-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217071-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: EB3EC1502C4
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6E96A15053C
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 29f4801e9c8dfd12bdcb33b61a6ac479c7162bd7 upstream.
+[ Upstream commit fe747d7112283f47169e9c16e751179a9b38611e ]
 
-This validates the previous commit: the userspace can set unknown flags
--- the 7th bit is currently unused -- without errors, but only the
-supported ones are printed in the endpoints dumps.
+In a few places in the Classmate laptop driver, code using the accel
+object may run before that object's address is stored in the driver
+data of the input device using it.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+For example, cmpc_accel_sensitivity_store_v4() is the "show" method
+of cmpc_accel_sensitivity_attr_v4 which is added in cmpc_accel_add_v4(),
+before calling dev_set_drvdata() for inputdev->dev.  If the sysfs
+attribute is accessed prematurely, the dev_get_drvdata(&inputdev->dev)
+call in in cmpc_accel_sensitivity_store_v4() returns NULL which
+leads to a NULL pointer dereference going forward.
 
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-2-9e4781a6c1b8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in pm_netlink.sh, because some refactoring have been done
-  later on: commit 0d16ed0c2e74 ("selftests: mptcp: add
-  {get,format}_endpoint(s) helpers") and commit c99d57d0007a
-  ("selftests: mptcp: use pm_nl endpoint ops") are not in this version.
-  The same operation can still be done at the same place, without using
-  the new helpers.
-  Also, commit 1dc88d241f92 ("selftests: mptcp: pm_nl_ctl: always look
-  for errors") is not in this version, and create a conflict in the
-  context which is not related to the modification here.
-  Conflicts in pm_nl_ctl.c, because commit 69c6ce7b6eca ("selftests:
-  mptcp: add implicit endpoint test case") is not in this version, and
-  caused a conflict in the context which is not related to the
-  modification here. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Moreover, sysfs attributes using the input device are added before
+initializing that device by cmpc_add_acpi_notify_device() and if one
+of them is accessed before running that function, a NULL pointer
+dereference will occur.
+
+For example, cmpc_accel_sensitivity_attr_v4 is added before calling
+cmpc_add_acpi_notify_device() and if it is read prematurely, the
+dev_get_drvdata(&acpi->dev) call in cmpc_accel_sensitivity_show_v4()
+returns NULL which leads to a NULL pointer dereference going forward.
+
+Fix this by adding NULL pointer checks in all of the relevant places.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/12825381.O9o76ZdvQC@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/pm_netlink.sh |    4 ++++
- tools/testing/selftests/net/mptcp/pm_nl_ctl.c   |   11 +++++++++++
- 2 files changed, 15 insertions(+)
+ drivers/platform/x86/classmate-laptop.c | 32 +++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
-+++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
-@@ -124,6 +124,10 @@ id 8 flags signal 10.0.1.8" "id limit"
- ip netns exec $ns1 ./pm_nl_ctl flush
- check "ip netns exec $ns1 ./pm_nl_ctl dump" "" "flush addrs"
+diff --git a/drivers/platform/x86/classmate-laptop.c b/drivers/platform/x86/classmate-laptop.c
+index 9309ab5792cbc..ac02b22154d62 100644
+--- a/drivers/platform/x86/classmate-laptop.c
++++ b/drivers/platform/x86/classmate-laptop.c
+@@ -208,7 +208,12 @@ static ssize_t cmpc_accel_sensitivity_show_v4(struct device *dev,
  
-+ip netns exec $ns1 ./pm_nl_ctl add 10.0.1.1 flags unknown
-+check "ip netns exec $ns1 ./pm_nl_ctl dump" "id 1 flags  10.0.1.1" "ignore unknown flags"
-+ip netns exec $ns1 ./pm_nl_ctl flush
+ 	acpi = to_acpi_device(dev);
+ 	inputdev = dev_get_drvdata(&acpi->dev);
++	if (!inputdev)
++		return -ENXIO;
 +
- ip netns exec $ns1 ./pm_nl_ctl limits 9 1
- check "ip netns exec $ns1 ./pm_nl_ctl limits" "$default_limits" "rcv addrs above hard limit"
+ 	accel = dev_get_drvdata(&inputdev->dev);
++	if (!accel)
++		return -ENXIO;
  
---- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-+++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-@@ -22,6 +22,8 @@
- #define MPTCP_PM_NAME		"mptcp_pm"
- #endif
+ 	return sprintf(buf, "%d\n", accel->sensitivity);
+ }
+@@ -225,7 +230,12 @@ static ssize_t cmpc_accel_sensitivity_store_v4(struct device *dev,
  
-+#define MPTCP_PM_ADDR_FLAG_UNKNOWN _BITUL(7)
+ 	acpi = to_acpi_device(dev);
+ 	inputdev = dev_get_drvdata(&acpi->dev);
++	if (!inputdev)
++		return -ENXIO;
 +
- static void syntax(char *argv[])
- {
- 	fprintf(stderr, "%s add|get|set|del|flush|dump|accept [<args>]\n", argv[0]);
-@@ -238,6 +240,8 @@ int add_addr(int fd, int pm_family, int
- 					flags |= MPTCP_PM_ADDR_FLAG_BACKUP;
- 				else if (!strcmp(tok, "fullmesh"))
- 					flags |= MPTCP_PM_ADDR_FLAG_FULLMESH;
-+				else if (!strcmp(tok, "unknown"))
-+					flags |= MPTCP_PM_ADDR_FLAG_UNKNOWN;
- 				else
- 					error(1, errno,
- 					      "unknown flag %s", argv[arg]);
-@@ -435,6 +439,13 @@ static void print_addr(struct rtattr *at
- 				if (flags)
- 					printf(",");
- 			}
-+
-+			if (flags & MPTCP_PM_ADDR_FLAG_UNKNOWN) {
-+				printf("unknown");
-+				flags &= ~MPTCP_PM_ADDR_FLAG_UNKNOWN;
-+				if (flags)
-+					printf(",");
-+			}
+ 	accel = dev_get_drvdata(&inputdev->dev);
++	if (!accel)
++		return -ENXIO;
  
- 			/* bump unknown flags, if any */
- 			if (flags)
+ 	r = kstrtoul(buf, 0, &sensitivity);
+ 	if (r)
+@@ -257,7 +267,12 @@ static ssize_t cmpc_accel_g_select_show_v4(struct device *dev,
+ 
+ 	acpi = to_acpi_device(dev);
+ 	inputdev = dev_get_drvdata(&acpi->dev);
++	if (!inputdev)
++		return -ENXIO;
++
+ 	accel = dev_get_drvdata(&inputdev->dev);
++	if (!accel)
++		return -ENXIO;
+ 
+ 	return sprintf(buf, "%d\n", accel->g_select);
+ }
+@@ -274,7 +289,12 @@ static ssize_t cmpc_accel_g_select_store_v4(struct device *dev,
+ 
+ 	acpi = to_acpi_device(dev);
+ 	inputdev = dev_get_drvdata(&acpi->dev);
++	if (!inputdev)
++		return -ENXIO;
++
+ 	accel = dev_get_drvdata(&inputdev->dev);
++	if (!accel)
++		return -ENXIO;
+ 
+ 	r = kstrtoul(buf, 0, &g_select);
+ 	if (r)
+@@ -303,6 +323,8 @@ static int cmpc_accel_open_v4(struct input_dev *input)
+ 
+ 	acpi = to_acpi_device(input->dev.parent);
+ 	accel = dev_get_drvdata(&input->dev);
++	if (!accel)
++		return -ENXIO;
+ 
+ 	cmpc_accel_set_sensitivity_v4(acpi->handle, accel->sensitivity);
+ 	cmpc_accel_set_g_select_v4(acpi->handle, accel->g_select);
+@@ -551,7 +573,12 @@ static ssize_t cmpc_accel_sensitivity_show(struct device *dev,
+ 
+ 	acpi = to_acpi_device(dev);
+ 	inputdev = dev_get_drvdata(&acpi->dev);
++	if (!inputdev)
++		return -ENXIO;
++
+ 	accel = dev_get_drvdata(&inputdev->dev);
++	if (!accel)
++		return -ENXIO;
+ 
+ 	return sprintf(buf, "%d\n", accel->sensitivity);
+ }
+@@ -568,7 +595,12 @@ static ssize_t cmpc_accel_sensitivity_store(struct device *dev,
+ 
+ 	acpi = to_acpi_device(dev);
+ 	inputdev = dev_get_drvdata(&acpi->dev);
++	if (!inputdev)
++		return -ENXIO;
++
+ 	accel = dev_get_drvdata(&inputdev->dev);
++	if (!accel)
++		return -ENXIO;
+ 
+ 	r = kstrtoul(buf, 0, &sensitivity);
+ 	if (r)
+-- 
+2.51.0
+
 
 
 
