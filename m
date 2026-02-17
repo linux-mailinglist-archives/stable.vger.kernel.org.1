@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-217145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGiEB03VlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:33 +0100
+	id GLPLIp7UlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:50:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D181507AE
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F01150607
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:50:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 17B7D305A496
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 63F5C300BE9A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F35284B3B;
-	Tue, 17 Feb 2026 20:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E10378D8B;
+	Tue, 17 Feb 2026 20:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ll9Zizdo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3N02QSP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727F3280CC1;
-	Tue, 17 Feb 2026 20:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791952773E4;
+	Tue, 17 Feb 2026 20:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361577; cv=none; b=LHYGR3uOK2XEOAHNhpt0IZ7lcq7CU70uJqK07KRwIDTgsa/DHIyN8kjOQdlWj9iv25k1BUljvqD9A4fNW1bedgNcBeFfYpSx4jazr7rXYmRaNyJCAtgkzf5TMTDe9/Mz5AmyugNby+M+R5KyC6FPZa7wv3mZbVbBwkk6QDVNNx0=
+	t=1771361403; cv=none; b=hht+p5TB8LRp1mTN0t+sDciQyuiUUWQkMcAY40qgTnvJ5cbA5tPZs/gd/RBLPfK3JX8GbkD4V1DF3hkaWeoBTh/mtltmOkocv9DmbkG9oZY99TlLAKvl7/mVuy1LcVsQP+hA6CMLn961JTKE7JVpqxXKq0gjuCZsaUQQZbEp0zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361577; c=relaxed/simple;
-	bh=F/1NJ1/HBgNpi3KJo94n2lEb/Dis9gk6tvIdBV8rNHU=;
+	s=arc-20240116; t=1771361403; c=relaxed/simple;
+	bh=hG+Xk8DSJ0HvpEZV6tAcapqqG7MI5+YzJgtDa2m+CmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KDd4a7/+wYuTv+bzvz1dx2eMZ/2HI+CAf/RNXnJobe47hpjcMTSomAtkCQmXiXot2BWrjlQpTTjEZDJ27FNOEVUk4PnpnCYFhGC3eCeam1+gZj69y1k4Vy5dlEwg5QKMCHs6xmoHUU+WdUFvDQGWpcz9h010PTrwEqa5bqtVMac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ll9Zizdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E6EC4CEF7;
-	Tue, 17 Feb 2026 20:52:56 +0000 (UTC)
+	 MIME-Version; b=RByx2ptI2lXllzHyS4trLd/w5N+U2A3R9s2vvWXduBjy5lPjS772lai1CdJO3+MWSnHUgby9tXeApuD96dCpVzJyATqxnDs9n/OjPCqfF/gsQlv7BfbohJ3gd5FWFAFZ9HhB20yUfshNs8kiqAIcSmo46pDWanJ6bAP6v0Dzhek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3N02QSP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF54C2BC86;
+	Tue, 17 Feb 2026 20:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361577;
-	bh=F/1NJ1/HBgNpi3KJo94n2lEb/Dis9gk6tvIdBV8rNHU=;
+	s=korg; t=1771361403;
+	bh=hG+Xk8DSJ0HvpEZV6tAcapqqG7MI5+YzJgtDa2m+CmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ll9ZizdoxcdjamToWzFAUumggf1kX6rbavHxrI1cnOpBITSObpxtvDOjuPJAqkSIX
-	 K5H32yXRkww3RJC9s0gAa5/bdNnCPKpizvtSl+OsM8k1A7QGVKsn0AUiupm4oSzpcM
-	 CPrw6x0VtlFes9z7g10s9tUD0frtbXP1QeWBd7/o=
+	b=d3N02QSP+OboLWXCyfPFXUJcUojVqVKpCsgQIIFciQV/C5+J2/3MsZmKlG5ehVPvD
+	 J1jvo/VBM3m7vAL3M2RTrupnRrO/v0TSKX2z3fuDnpB6tGksjh0M9c32KVCU3QO0gh
+	 1BnYv72aj29S/OUlSXcipziRWYO96r+2NL66k0SQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <listout@listout.xyz>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: =?UTF-8?q?=5BPATCH=206=2E12=2013/42=5D=20=3D=3FUTF-8=3Fq=3Fdrm/tegra=3A=3D20hdmi=3A=3D20sor=3A=3D20Fix=3D20error=3A=3D20variable=3D20=3F=3D=20=3D=3FUTF-8=3Fq=3F=3DE2=3D80=3D98j=3DE2=3D80=3D99=3D20set=3D20but=3D20not=3D20used=3F=3D?=
+	stable@kernel.org,
+	Sheng Yong <shengyong1@xiaomi.com>,
+	Jinbao Liu <liujinbao1@xiaomi.com>,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.19 08/18] f2fs: fix IS_CHECKPOINTED flag inconsistency issue caused by concurrent atomic commit and checkpoint writes
 Date: Tue, 17 Feb 2026 21:32:04 +0100
-Message-ID: <20260217200006.513716862@linuxfoundation.org>
+Message-ID: <20260217200003.010195257@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
-References: <20260217200005.998240758@linuxfoundation.org>
+In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
+References: <20260217200002.683975158@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +66,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,listout.xyz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	TAGGED_FROM(0.00)[bounces-217145-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217094-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	SUBJECT_HAS_QUESTION(0.00)[]
-X-Rspamd-Queue-Id: 86D181507AE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,xiaomi.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: D3F01150607
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-[ Upstream commit 1beee8d0c263b3e239c8d6616e4f8bb700bed658 ]
+commit 7633a7387eb4d0259d6bea945e1d3469cd135bbc upstream.
 
-The variable j is set, however never used in or outside the loop, thus
-resulting in dead code.
-Building with GCC 16 results in a build error due to
--Werror=unused-but-set-variable= enabled by default.
-This patch clean up the dead code and fixes the build error.
+During SPO tests, when mounting F2FS, an -EINVAL error was returned from
+f2fs_recover_inode_page. The issue occurred under the following scenario
 
-Example build log:
-drivers/gpu/drm/tegra/sor.c:1867:19: error: variable ‘j’ set but not used [-Werror=unused-but-set-variable=]
- 1867 |         size_t i, j;
-      |                   ^
+Thread A                                     Thread B
+f2fs_ioc_commit_atomic_write
+ - f2fs_do_sync_file // atomic = true
+  - f2fs_fsync_node_pages
+    : last_folio = inode folio
+    : schedule before folio_lock(last_folio) f2fs_write_checkpoint
+                                              - block_operations// writeback last_folio
+                                              - schedule before f2fs_flush_nat_entries
+    : set_fsync_mark(last_folio, 1)
+    : set_dentry_mark(last_folio, 1)
+    : folio_mark_dirty(last_folio)
+    - __write_node_folio(last_folio)
+      : f2fs_down_read(&sbi->node_write)//block
+                                              - f2fs_flush_nat_entries
+                                                : {struct nat_entry}->flag |= BIT(IS_CHECKPOINTED)
+                                              - unblock_operations
+                                                : f2fs_up_write(&sbi->node_write)
+                                             f2fs_write_checkpoint//return
+      : f2fs_do_write_node_page()
+f2fs_ioc_commit_atomic_write//return
+                                             SPO
 
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250901212020.3757519-1-listout@listout.xyz
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thread A calls f2fs_need_dentry_mark(sbi, ino), and the last_folio has
+already been written once. However, the {struct nat_entry}->flag did not
+have the IS_CHECKPOINTED set, causing set_dentry_mark(last_folio, 1) and
+write last_folio again after Thread B finishes f2fs_write_checkpoint.
+
+After SPO and reboot, it was detected that {struct node_info}->blk_addr
+was not NULL_ADDR because Thread B successfully write the checkpoint.
+
+This issue only occurs in atomic write scenarios. For regular file
+fsync operations, the folio must be dirty. If
+block_operations->f2fs_sync_node_pages successfully submit the folio
+write, this path will not be executed. Otherwise, the
+f2fs_write_checkpoint will need to wait for the folio write submission
+to complete, as sbi->nr_pages[F2FS_DIRTY_NODES] > 0. Therefore, the
+situation where f2fs_need_dentry_mark checks that the {struct
+nat_entry}->flag /wo the IS_CHECKPOINTED flag, but the folio write has
+already been submitted, will not occur.
+
+Therefore, for atomic file fsync, sbi->node_write should be acquired
+through __write_node_folio to ensure that the IS_CHECKPOINTED flag
+correctly indicates that the checkpoint write has been completed.
+
+Fixes: 608514deba38 ("f2fs: set fsync mark only for the last dnode")
+Cc: stable@kernel.org
+Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
+Signed-off-by: Jinbao Liu <liujinbao1@xiaomi.com>
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/hdmi.c | 4 ++--
- drivers/gpu/drm/tegra/sor.c  | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ fs/f2fs/node.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/hdmi.c b/drivers/gpu/drm/tegra/hdmi.c
-index 09987e372e3ef..02b260cbbf0c8 100644
---- a/drivers/gpu/drm/tegra/hdmi.c
-+++ b/drivers/gpu/drm/tegra/hdmi.c
-@@ -658,7 +658,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
- {
- 	const u8 *ptr = data;
- 	unsigned long offset;
--	size_t i, j;
-+	size_t i;
- 	u32 value;
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1774,8 +1774,13 @@ static bool __write_node_folio(struct fo
+ 		goto redirty_out;
+ 	}
  
- 	switch (ptr[0]) {
-@@ -691,7 +691,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
- 	 * - subpack_low: bytes 0 - 3
- 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
- 	 */
--	for (i = 3, j = 0; i < size; i += 7, j += 8) {
-+	for (i = 3; i < size; i += 7) {
- 		size_t rem = size - i, num = min_t(size_t, rem, 4);
+-	if (atomic && !test_opt(sbi, NOBARRIER))
+-		fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
++	if (atomic) {
++		if (!test_opt(sbi, NOBARRIER))
++			fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
++		if (IS_INODE(folio))
++			set_dentry_mark(folio,
++				f2fs_need_dentry_mark(sbi, ino_of_node(folio)));
++	}
  
- 		value = tegra_hdmi_subpack(&ptr[i], num);
-diff --git a/drivers/gpu/drm/tegra/sor.c b/drivers/gpu/drm/tegra/sor.c
-index bad3b8fcc7269..c2a57f85051ae 100644
---- a/drivers/gpu/drm/tegra/sor.c
-+++ b/drivers/gpu/drm/tegra/sor.c
-@@ -1864,7 +1864,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
- {
- 	const u8 *ptr = data;
- 	unsigned long offset;
--	size_t i, j;
-+	size_t i;
- 	u32 value;
- 
- 	switch (ptr[0]) {
-@@ -1897,7 +1897,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
- 	 * - subpack_low: bytes 0 - 3
- 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
- 	 */
--	for (i = 3, j = 0; i < size; i += 7, j += 8) {
-+	for (i = 3; i < size; i += 7) {
- 		size_t rem = size - i, num = min_t(size_t, rem, 4);
- 
- 		value = tegra_sor_hdmi_subpack(&ptr[i], num);
--- 
-2.51.0
-
+ 	/* should add to global list before clearing PAGECACHE status */
+ 	if (f2fs_in_warm_node_list(sbi, folio)) {
+@@ -1916,8 +1921,9 @@ continue_unlock:
+ 					if (is_inode_flag_set(inode,
+ 								FI_DIRTY_INODE))
+ 						f2fs_update_inode(inode, folio);
+-					set_dentry_mark(folio,
+-						f2fs_need_dentry_mark(sbi, ino));
++					if (!atomic)
++						set_dentry_mark(folio,
++							f2fs_need_dentry_mark(sbi, ino));
+ 				}
+ 				/* may be written by other thread */
+ 				if (!folio_test_dirty(folio))
 
 
 
