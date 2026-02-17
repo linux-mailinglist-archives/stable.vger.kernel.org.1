@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-217129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFL1OjTVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:08 +0100
+	id +ExYIbLVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:55:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3989915073A
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BF7150889
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14BA53050EEE
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F127A30166C6
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183602E6CB8;
-	Tue, 17 Feb 2026 20:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5129528D8E8;
+	Tue, 17 Feb 2026 20:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heUzaPKh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzhVJbE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F7129A1;
-	Tue, 17 Feb 2026 20:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1551A29A1;
+	Tue, 17 Feb 2026 20:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361520; cv=none; b=le7OOYgV7p0WOsCQa5OWQsI30xoarm7qtH0KA3UbU5PjYw6dpnEEKbbiVcBLZCVmgQ0DEO3AoMecNu23pyK2Dq3R+notAywz85i6nByAdZ74wDS4y/U16J4i4ohH0X6pQAT2POY6vhOW2FTO3hgOgPW8lrgxk29/wwaC8oOCOpI=
+	t=1771361703; cv=none; b=UUSXwDwn+tuPwTyEFlK2i5ZOpuxGsHhRnPpuv535mzmHJGlb5Z+7F+hliIOuvtf4J0uEaUohPHzqIfLf/hdPhUaKCF7byHMGKUTm/P8+Xc/gSfns0n8n0gijMlOYQ4N0K6cjaDUqirA21dB27N3PLKBvg+bCiCXjJtbDbnVNNc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361520; c=relaxed/simple;
-	bh=s/yLWTowxAaNP5XCe1iyP/l2n06/YMdW+UlVfeigkec=;
+	s=arc-20240116; t=1771361703; c=relaxed/simple;
+	bh=k5x8mTZoKcajvqpru/dYlUWyMrCTvhjYdTI7el+KzKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSV0SsYWRj18tUN7exvPvo8q75baKUz3Bxcqt7NwI+gm6Us9xcq2BMxPCfNyTGP7xLeWDoj9IFvBObsS7YDQyPyT5kkqtJmyfL00vrJVYFSXxDzTqwaOI+05vvzWI2Mp0RTmwRVgKdb/NP5+DywCT0HAjuBMfLCdAYmojwS78uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heUzaPKh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4E1C4CEF7;
-	Tue, 17 Feb 2026 20:52:00 +0000 (UTC)
+	 MIME-Version; b=e2+J0w8WuLwc4d4njGKqp8Srvgrdr/GAs+C0GQZAHCg5hqSyWewbbf1WmHKNx6sWym4qIJv+YsdtHMNEhgZ1Masaxe3eWh0mCVxRAreQiPBz2sxQfnStEaovHYBfG6ccdP0HYpuGo9aT8DbyMcSEEbVm6IcRAOLbwE+ihVaII3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzhVJbE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE4CC4CEF7;
+	Tue, 17 Feb 2026 20:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361520;
-	bh=s/yLWTowxAaNP5XCe1iyP/l2n06/YMdW+UlVfeigkec=;
+	s=korg; t=1771361703;
+	bh=k5x8mTZoKcajvqpru/dYlUWyMrCTvhjYdTI7el+KzKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=heUzaPKhsnh8BzyYaCmUdPnRZnjR8z0Ztc4Z4Yzbbd5mAqHa3kOkL12GC2z/ge36G
-	 6cfliiCzHIBGHSwXwylvn85mgvci+1/rGlnENLSYdyLg7KApw5VnJ5RWPx/vd6nYwz
-	 BvbOScSggvXpXoMMfxwGMBERFjk+cmkP1NN9Ojss=
+	b=PzhVJbE6digBwu0KWgwV12VOYFyp3i6tplrmz9pSsK5nBEiSsvm8D3uyDame7hCca
+	 bs2sSM0GTw8Q0mb9zDD+X7KLiCNOYzq5qS/WzMDEnCznIc2xuqS/3N80CARq3Tq1mo
+	 bfkv2M8wlqftuLtWNNXNV2Fl0pVVDQDJzC5evaPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.18 41/43] USB: serial: option: add Telit FN920C04 RNDIS compositions
-Date: Tue, 17 Feb 2026 21:32:21 +0100
-Message-ID: <20260217200008.040266726@linuxfoundation.org>
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: [PATCH 6.12 31/42] Revert "wireguard: device: enable threaded NAPI"
+Date: Tue, 17 Feb 2026 21:32:22 +0100
+Message-ID: <20260217200007.188610133@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,159 +64,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217182-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-217129-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3989915073A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iogearbox.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,zx2c4.com:email]
+X-Rspamd-Queue-Id: 24BF7150889
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 509f403f3ccec14188036212118651bf23599396 upstream.
+This reverts commit 933466fc50a8e4eb167acbd0d8ec96a078462e9c which is
+commit db9ae3b6b43c79b1ba87eea849fd65efa05b4b2e upstream.
 
-Add the following compositions:
+We have had three independent production user reports in combination
+with Cilium utilizing WireGuard as encryption underneath that k8s Pod
+E/W traffic to certain peer nodes fully stalled. The situation appears
+as follows:
 
-0x10a1: RNDIS + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  9 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a1 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=d128dba9
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+  - Occurs very rarely but at random times under heavy networking load.
+  - Once the issue triggers the decryption side stops working completely
+    for that WireGuard peer, other peers keep working fine. The stall
+    happens also for newly initiated connections towards that particular
+    WireGuard peer.
+  - Only the decryption side is affected, never the encryption side.
+  - Once it triggers, it never recovers and remains in this state,
+    the CPU/mem on that node looks normal, no leak, busy loop or crash.
+  - bpftrace on the affected system shows that wg_prev_queue_enqueue
+    fails, thus the MAX_QUEUED_PACKETS (1024 skbs!) for the peer's
+    rx_queue is reached.
+  - Also, bpftrace shows that wg_packet_rx_poll for that peer is never
+    called again after reaching this state for that peer. For other
+    peers wg_packet_rx_poll does get called normally.
+  - Commit db9ae3b ("wireguard: device: enable threaded NAPI")
+    switched WireGuard to threaded NAPI by default. The default has
+    not been changed for triggering the issue, neither did CPU
+    hotplugging occur (i.e. 5bd8de2 ("wireguard: queueing: always
+    return valid online CPU in wg_cpumask_choose_online()")).
+  - The issue has been observed with stable kernels of v5.15 as well as
+    v6.1. It was reported to us that v5.10 stable is working fine, and
+    no report on v6.6 stable either (somewhat related discussion in [0]
+    though).
+  - In the WireGuard driver the only material difference between v5.10
+    stable and v5.15 stable is the switch to threaded NAPI by default.
 
-0x10a6: RNDIS + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 10 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10a6 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=d128dba9
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+    [0] https://lore.kernel.org/netdev/CA+wXwBTT74RErDGAnj98PqS=wvdh8eM1pi4q6tTdExtjnokKqA@mail.gmail.com/
 
-0x10ab: RNDIS + tty (AT) + tty (diag) + DPL (Data Packet Logging) + adb
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 11 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10ab Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FN920
-S:  SerialNumber=d128dba9
-C:  #Ifs= 6 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Breakdown of the problem:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+  1) skbs arriving for decryption are enqueued to the peer->rx_queue in
+     wg_packet_consume_data via wg_queue_enqueue_per_device_and_peer.
+  2) The latter only moves the skb into the MPSC peer queue if it does
+     not surpass MAX_QUEUED_PACKETS (1024) which is kept track in an
+     atomic counter via wg_prev_queue_enqueue.
+  3) In case enqueueing was successful, the skb is also queued up
+     in the device queue, round-robin picks a next online CPU, and
+     schedules the decryption worker.
+  4) The wg_packet_decrypt_worker, once scheduled, picks these up
+     from the queue, decrypts the packets and once done calls into
+     wg_queue_enqueue_per_peer_rx.
+  5) The latter updates the state to PACKET_STATE_CRYPTED on success
+     and calls napi_schedule on the per peer->napi instance.
+  6) NAPI then polls via wg_packet_rx_poll. wg_prev_queue_peek checks
+     on the peer->rx_queue. It will wg_prev_queue_dequeue if the
+     queue->peeked skb was not cached yet, or just return the latter
+     otherwise. (wg_prev_queue_drop_peeked later clears the cache.)
+  7) From an ordering perspective, the peer->rx_queue has skbs in order
+     while the device queue with the per-CPU worker threads from a
+     global ordering PoV can finish the decryption and signal the skb
+     PACKET_STATE_CRYPTED out of order.
+  8) A situation can be observed that the first packet coming in will
+     be stuck waiting for the decryption worker to be scheduled for
+     a longer time when the system is under pressure.
+  9) While this is the case, the other CPUs in the meantime finish
+     decryption and call into napi_schedule.
+ 10) Now in wg_packet_rx_poll it picks up the first in-order skb
+     from the peer->rx_queue and sees that its state is still
+     PACKET_STATE_UNCRYPTED. The NAPI poll routine then exits early
+     with work_done = 0 and calls napi_complete_done, signalling
+     it "finished" processing.
+ 11) The assumption in wg_packet_decrypt_worker is that when the
+     decryption finished the subsequent napi_schedule will always
+     lead to a later invocation of wg_packet_rx_poll to pick up
+     the finished packet.
+ 12) However, it appears that a later napi_schedule does /not/
+     schedule a later poll and thus no wg_packet_rx_poll.
+ 13) If this situation happens exactly for the corner case where
+     the decryption worker of the first packet is stuck and waiting
+     to be scheduled, and the network load for WireGuard is very
+     high then the queue can build up to MAX_QUEUED_PACKETS.
+ 14) If this situation occurs, then no new decryption worker will
+     be scheduled and also no new napi_schedule to make forward
+     progress.
+ 15) This means the peer->rx_queue stops processing packets completely
+     and they are indefinitely stuck waiting for a new NAPI poll on
+     that peer which never happens. New packets for that peer are
+     then dropped due to full queue, as it has been observed on the
+     production machines.
+
+Technically, the backport of commit db9ae3b6b43c ("wireguard: device:
+enable threaded NAPI") to stable should not have happened since it is
+more of an optimization rather than a pure fix and addresses a NAPI
+situation with utilizing many WireGuard tunnel devices in parallel.
+Revert it from stable given the backport triggers a regression for
+mentioned kernels.
+
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireguard/device.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1401,12 +1401,16 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(0) | RSVD(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a1, 0xff),	/* Telit FN20C04 (RNDIS) */
-+	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a2, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a3, 0xff),	/* Telit FN920C04 (ECM) */
- 	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a6, 0xff),	/* Telit FN920C04 (RNDIS) */
-+	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a7, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a8, 0xff),	/* Telit FN920C04 (ECM) */
-@@ -1415,6 +1419,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10ab, 0xff),	/* Telit FN920C04 (RNDIS) */
-+	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10b0, 0xff, 0xff, 0x30),	/* Telit FE990B (rmnet) */
- 	  .driver_info = NCTRL(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10b0, 0xff, 0xff, 0x40) },
+--- a/drivers/net/wireguard/device.c
++++ b/drivers/net/wireguard/device.c
+@@ -364,7 +364,6 @@ static int wg_newlink(struct net *src_ne
+ 	if (ret < 0)
+ 		goto err_free_handshake_queue;
+ 
+-	dev_set_threaded(dev, true);
+ 	ret = register_netdevice(dev);
+ 	if (ret < 0)
+ 		goto err_uninit_ratelimiter;
 
 
 
