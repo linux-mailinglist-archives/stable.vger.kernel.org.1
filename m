@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-217097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217050-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAu7G7bUlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:02 +0100
+	id yM45B+bTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217050-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F6A150625
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7105215049B
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3F7B6300B285
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:50:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BD35300B137
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6116436EAB3;
-	Tue, 17 Feb 2026 20:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F896261B70;
+	Tue, 17 Feb 2026 20:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkTE0RvK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5pd/T9V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234F3284B3B;
-	Tue, 17 Feb 2026 20:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632AF29A1;
+	Tue, 17 Feb 2026 20:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361413; cv=none; b=VXaX7DJplUYYYWWnOUrRuyki3pVwABAkqX18ZJgVEkijufQz58yAd3lSzM4t0adcQCvpflQ3XhAkpadoY9gvxcTNZr695vZT4Xlc/AtLDmMKSVfJNoahF/qR6AfVXbD5PJAPn4fKVGyuI1mXnerWviHkXzadvfbBGrPFr03r+Lw=
+	t=1771361250; cv=none; b=W7b7vyLt043iJnwSGHFQM4WtRbKQjL+sucKddWfIQaukHKa8RvG5dNPVRw9AWz56pf254I0Na4UPxvfVo7tRZmnqbUMZXQku1JNNhPHt86Sxz+ucDtJDC8I1ORaw55AIDovyM9/h6YGo+6KOfVcrMH1LqYLGIr038Gfqb1AHoOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361413; c=relaxed/simple;
-	bh=98jNaeX6WtI0E9SUA/uZX45wHWx4sKEZthzPgXjE5l0=;
+	s=arc-20240116; t=1771361250; c=relaxed/simple;
+	bh=/b7BXlaSMkbf91LHGJJuTIxOJGtIGs7a/dOrBpK9Pec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gc5qbEGwdnQRx8OcbGCc1jElU1ieSlMuWWcmlrPy1LAR5FUM97Jv+UkTM4+1zS/SfANEG0ScqOYOHTbQMcyVffPc8289R1D8fWW0COvfyBUEm3Lk+7io7hZuHLS2QHmivNzXmoD5w5d4DUkBO8cCpo+V2yNOh7LLkIKQiKediO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkTE0RvK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F21DC19421;
-	Tue, 17 Feb 2026 20:50:12 +0000 (UTC)
+	 MIME-Version; b=Ld7f9PROERS76ITMBMxza6BY6Rz5gSSp1rZi59lhqZZS+NyC1kXCmrTlNS1NbNzJuR17lqhgH+QpBfYq+wKP/dFYGgwXMHTi+lyRjQ4/rtr9HunuXbhbRp3pTzOa1y7mX3OtrD6gT5y3SrlUYIoLoVIyciiv3BxCNS43DsxZG0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5pd/T9V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77CCC4CEF7;
+	Tue, 17 Feb 2026 20:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361413;
-	bh=98jNaeX6WtI0E9SUA/uZX45wHWx4sKEZthzPgXjE5l0=;
+	s=korg; t=1771361250;
+	bh=/b7BXlaSMkbf91LHGJJuTIxOJGtIGs7a/dOrBpK9Pec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkTE0RvKKQxQaM+pgI06FkUH2HEUDDZkwvp6594FT22e+Ly6+xtYdcu2OhnLMKCqa
-	 jQ8pejYx2yRsuncozW0W9+fK32y14XW0wq8gK1U0J6aeaq9Xm1bRAKV00OrTjDGZyK
-	 Et5k5266KwnN1dJnIkxCJeW7CzERXzO4V8GaLwOE=
+	b=O5pd/T9VwaLWkOVddHg/aNRGsu7zp2+WjOD/kmvL9i196s1+1/58NEb411I4f7Pg3
+	 umvtpaRIy+JNRNyYx+lC93uj5H2k7F3eKR5J4rrU8qT1Is9XN0vSrjbTCA6uZFwA3W
+	 jxD4Q4Aa6iaSSdpAliTizlH7PMSgK/AxXXqpYyOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 01/43] scsi: qla2xxx: Fix bsg_done() causing double free
-Date: Tue, 17 Feb 2026 21:31:41 +0100
-Message-ID: <20260217200006.528683692@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 46/64] selftests: mptcp: join: fix local endp not being tracked
+Date: Tue, 17 Feb 2026 21:31:42 +0100
+Message-ID: <20260217200009.230644870@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,165 +67,97 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217097-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217050-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email]
-X-Rspamd-Queue-Id: A9F6A150625
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 7105215049B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit c2c68225b1456f4d0d393b5a8778d51bb0d5b1d0 upstream.
+commit c5d5ecf21fdd9ce91e6116feb3aa83cee73352cc upstream.
 
-Kernel panic observed on system,
+When running this mptcp_join.sh selftest on older kernel versions not
+supporting local endpoints tracking, this test fails because 3 MP_JOIN
+ACKs have been received, while only 2 were expected.
 
-[5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000
-[5353358.825194] #PF: supervisor write access in kernel mode
-[5353358.825195] #PF: error_code(0x0002) - not-present page
-[5353358.825196] PGD 100006067 P4D 0
-[5353358.825198] Oops: 0002 [#1] PREEMPT SMP NOPTI
-[5353358.825200] CPU: 5 PID: 2132085 Comm: qlafwupdate.sub Kdump: loaded Tainted: G        W    L    -------  ---  5.14.0-503.34.1.el9_5.x86_64 #1
-[5353358.825203] Hardware name: HPE ProLiant DL360 Gen11/ProLiant DL360 Gen11, BIOS 2.44 01/17/2025
-[5353358.825204] RIP: 0010:memcpy_erms+0x6/0x10
-[5353358.825211] RSP: 0018:ff591da8f4f6b710 EFLAGS: 00010246
-[5353358.825212] RAX: ff5f5e897b024000 RBX: 0000000000007090 RCX: 0000000000001000
-[5353358.825213] RDX: 0000000000001000 RSI: ff591da8f4fed090 RDI: ff5f5e897b024000
-[5353358.825214] RBP: 0000000000010000 R08: ff5f5e897b024000 R09: 0000000000000000
-[5353358.825215] R10: ff46cf8c40517000 R11: 0000000000000001 R12: 0000000000008090
-[5353358.825216] R13: ff591da8f4f6b720 R14: 0000000000001000 R15: 0000000000000000
-[5353358.825218] FS:  00007f1e88d47740(0000) GS:ff46cf935f940000(0000) knlGS:0000000000000000
-[5353358.825219] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[5353358.825220] CR2: ff5f5e897b024000 CR3: 0000000231532004 CR4: 0000000000771ef0
-[5353358.825221] PKRU: 55555554
-[5353358.825222] Call Trace:
-[5353358.825223]  <TASK>
-[5353358.825224]  ? show_trace_log_lvl+0x1c4/0x2df
-[5353358.825229]  ? show_trace_log_lvl+0x1c4/0x2df
-[5353358.825232]  ? sg_copy_buffer+0xc8/0x110
-[5353358.825236]  ? __die_body.cold+0x8/0xd
-[5353358.825238]  ? page_fault_oops+0x134/0x170
-[5353358.825242]  ? kernelmode_fixup_or_oops+0x84/0x110
-[5353358.825244]  ? exc_page_fault+0xa8/0x150
-[5353358.825247]  ? asm_exc_page_fault+0x22/0x30
-[5353358.825252]  ? memcpy_erms+0x6/0x10
-[5353358.825253]  sg_copy_buffer+0xc8/0x110
-[5353358.825259]  qla2x00_process_vendor_specific+0x652/0x1320 [qla2xxx]
-[5353358.825317]  qla24xx_bsg_request+0x1b2/0x2d0 [qla2xxx]
+It is not clear why only 2 MP_JOIN ACKs were expected on old kernel
+versions, while 3 MP_JOIN SYN and SYN+ACK were expected. When testing on
+the v5.15.197 kernel, 3 MP_JOIN ACKs are seen, which is also what is
+expected in the selftests included in this kernel version, see commit
+f4480eaad489 ("selftests: mptcp: add missing join check").
 
-Most routines in qla_bsg.c call bsg_done() only for success cases.
-However a few invoke it for failure case as well leading to a double
-free. Validate before calling bsg_done().
+Switch the expected MP_JOIN ACKs to 3. While at it, move this
+chk_join_nr helper out of the special condition for older kernel
+versions as it is now the same as with more recent ones. Also, invert
+the condition to be more logical: what's expected on newer kernel
+versions having such helper first.
 
+Fixes: d4c81bbb8600 ("selftests: mptcp: join: support local endpoint being tracked or not")
 Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-12-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-5-7f71e1bc4feb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mptcp_join.sh, because commit e571fb09c893 ("selftests:
+  mptcp: add speed env var") is not in this version, and caused
+  conflicts in the context. The same modification can still be applied
+  at the same place. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |   28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -1546,8 +1546,9 @@ qla2x00_update_optrom(struct bsg_job *bs
- 	ha->optrom_buffer = NULL;
- 	ha->optrom_state = QLA_SWAITING;
- 	mutex_unlock(&ha->optrom_mutex);
--	bsg_job_done(bsg_job, bsg_reply->result,
--		       bsg_reply->reply_payload_rcv_len);
-+	if (!rval)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 	return rval;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2181,17 +2181,16 @@ signal_address_tests()
+ 		# the peer could possibly miss some addr notification, allow retransmission
+ 		ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=1
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow
++		chk_join_nr 3 3 3
+ 
+ 		# It is not directly linked to the commit introducing this
+ 		# symbol but for the parent one which is linked anyway.
+-		if ! mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
+-			chk_join_nr 3 3 2
+-			chk_add_nr 4 4
+-		else
+-			chk_join_nr 3 3 3
++		if mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
+ 			# the server will not signal the address terminating
+ 			# the MPC subflow
+ 			chk_add_nr 3 3
++		else
++			chk_add_nr 4 4
+ 		fi
+ 	fi
  }
- 
-@@ -2612,8 +2613,9 @@ qla2x00_manage_host_stats(struct bsg_job
- 				    sizeof(struct ql_vnd_mng_host_stats_resp));
- 
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- 	return ret;
- }
-@@ -2702,8 +2704,9 @@ qla2x00_get_host_stats(struct bsg_job *b
- 							       bsg_job->reply_payload.sg_cnt,
- 							       data, response_len);
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- 	kfree(data);
- host_stat_out:
-@@ -2802,8 +2805,9 @@ reply:
- 				    bsg_job->reply_payload.sg_cnt, data,
- 				    response_len);
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- tgt_stat_out:
- 	kfree(data);
-@@ -2864,8 +2868,9 @@ qla2x00_manage_host_port(struct bsg_job
- 				    bsg_job->reply_payload.sg_cnt, &rsp_data,
- 				    sizeof(struct ql_vnd_mng_host_port_resp));
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- 	return ret;
- }
-@@ -3240,7 +3245,8 @@ int qla2x00_mailbox_passthru(struct bsg_
- 
- 	bsg_job->reply_len = sizeof(*bsg_job->reply);
- 	bsg_reply->result = DID_OK << 16;
--	bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
- 
- 	kfree(req_data);
- 
 
 
 
