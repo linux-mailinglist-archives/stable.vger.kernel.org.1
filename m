@@ -1,226 +1,286 @@
-Return-Path: <stable+bounces-216770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHytOjEllGnXAAIAu9opvQ
-	(envelope-from <stable+bounces-216770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 09:22:09 +0100
+	id qOYaM1kylGkNAgIAu9opvQ
+	(envelope-from <stable+bounces-216771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 10:18:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92676149E37
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 09:22:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF8214A4D7
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 10:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C5EFD300B5AE
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 08:22:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D79F3023A60
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 09:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C672E03F2;
-	Tue, 17 Feb 2026 08:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB86302779;
+	Tue, 17 Feb 2026 09:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="A6I8Qsq+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EgDqj/XV"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78722D6E76
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 08:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B383430274B
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 09:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771316524; cv=none; b=PbwKjRe6gjXJwbUoNoCta/CLaR5KjozHAIolWRTCW1CSiDt5KlifyGVB0rh4gPsn1+nM9U84k3kHA/Hm6RcvRM6by+/1hH83yyVOA8bs4T8FACn3y8lBjCbsea/HjZLj6XvRSgO3oGimZU8ivjQmQeZFUOuRHk3PQdb4DsUrpYk=
+	t=1771319882; cv=none; b=r4TPtXd8OygkcnJbZBl9ux8z2PyRJKaCN7LlMm75UNntyA2yJLRdJx7eixvo8zqdBBowg9iPmNnhgz4jBwSi7loj9GixEqFlpP4DWt92kzgHvJ4++e6icFqCaShQImvySIVHpzICCt/R2jrcv7Qpsp6mT50+PDcg8TDOxlIviGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771316524; c=relaxed/simple;
-	bh=bfkGzTeqMXPNb2FVxSufc857pf0CokCiO6u91ismLhc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=eO3zLjJodjer1sVP1LZo67rtD35w1YdNeeetI9BqXxKnNYWE844Ak+un2HETaBXfObVAtll7u6iwueMF8aJNXPObH6muzV/CX/SCiCHlk6goLRhfjFqlUVYNkApykD7euUKradxdF5edI36RYfFZL+b0tjgmnsMdKwNWfRQPdYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=A6I8Qsq+; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260217082155euoutp013d786e6a3630d4a670cfe8bb2ffcddc6~U_vxYyKNO0399703997euoutp01R
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 08:21:55 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260217082155euoutp013d786e6a3630d4a670cfe8bb2ffcddc6~U_vxYyKNO0399703997euoutp01R
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1771316515;
-	bh=ff9z6TTvPWiEy9lEgyawztrHtxW4KWIFJrR1ygeF3dY=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=A6I8Qsq+XJdYZRm42vZU0xJ4pvePHr0SqFDSTvRrw8c17hCatnjTeJZeCSR8nzPlv
-	 nDuOx0pBAc9o2bqfhrevuoK8bOwvBLLl3xv5A30rUutBgHUlZ6kindmncntMtlrN3r
-	 0c04vesa9kYIjSDB6uBwD0kEu07k56HA/6xglvdQ=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260217082154eucas1p2a2fc74fee77203c5ad24cc011c2efafc~U_vxFq01c1480414804eucas1p2z;
-	Tue, 17 Feb 2026 08:21:54 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260217082153eusmtip1baa04ca6f6de2cc98cc632f532719bb3~U_vwAPOHH0073900739eusmtip1X;
-	Tue, 17 Feb 2026 08:21:53 +0000 (GMT)
-Message-ID: <ce0f5d88-da59-4e0b-812f-5ae753cbabfd@samsung.com>
-Date: Tue, 17 Feb 2026 09:21:52 +0100
+	s=arc-20240116; t=1771319882; c=relaxed/simple;
+	bh=uovPVI/DUAp2MRXl1xQ7HbOjSw0yaNs43XWyTeYWhZc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NvbECWOjsPeXejknMwyA5WNTftO3MaV5vaBP6zzAZXsf8VCMMZihcjbB7vryxH0DuL+Rml3zQnTuFvUZ2+ZWWRFvzys9Ssay4SbakFBcBBaLhmXCT6Y/XXF1XyOpjSlo+9OGHyuwOaHFu/o1v/yQ0wZaOPUVHJUL8iaAx1WhhDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EgDqj/XV; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8cb3bae8d3eso414272385a.1
+        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 01:18:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771319880; x=1771924680; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iQC4QGyn7yz+oQacobtpM7v4lkiFx0ImzuBkcxsb/Rg=;
+        b=EgDqj/XVa16XXGpNlaTD7QI3SjX2e66aSFwCkV41z81etID1eEf/zIi5y2AIZIxd5I
+         lfLMKqnMzGkXTzKStbDcEjor7mBZ3oj5yEdao7Mme7y2+1PQbR8WINlFxyX1+KM4EUDD
+         gPkFAkgZ/d6w4vkIkAlMjuSmkTTp6hKjADtcD7hxbM8+U3dpqop/UdECLxqBm0vSfJH4
+         9RV/GlQDwCXC6SxJXsjsZGoGQB3g+Emvo3uxwJVNRKnq8RVil1Y8g8QnL9hjZeZN4ysj
+         dGfg+v8HVv8tkLO3svYvZUxiD2lLKSTMDcPBzygnOH9HIc0neW0VzVdMxv9Aq2QFFc8o
+         Pd5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771319880; x=1771924680;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iQC4QGyn7yz+oQacobtpM7v4lkiFx0ImzuBkcxsb/Rg=;
+        b=HVLXj4np5kUGre23PzC3Z2RiVufTCNIYYvcphuLoiV6ArtDnetuZ6SnuyP9Hv7KcVG
+         XXnNCcMFe1r1fON3ZwcZeF/4NRy91y5KAwdPDyShQ5LdlGRVgyZklPi1cEJOmbb8KarD
+         22kwnak1HZ+E7LR8fSUOBfk0Vjel5GTIxEfJ2eyRolKHA4Im2dwjv9fZ8Z9jufJvgeqC
+         /la6p8JV3lDGr9vXpSM2yS1uvpkbf7SFJXJjF2JkkUh/rO7k+aCdbOWeWhYe4mRm+t2Z
+         5oJ3ZIVUeG+IUYckt7CchbAhPl41ECpDkiabW2HmQRVf9Mv47Ee3OFfjtLn/g29mOfSR
+         WgFA==
+X-Forwarded-Encrypted: i=1; AJvYcCXc+J10sRTYOhPr/hr5ESpj2qCno74QBnfLGztualjbMx6R8E5ExScmoyND+EEe8Uk2hgRYg9E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiDcXNrX8HErnId8XfaXwieRc2ZQ1Ioj6XjTq+KZ+ksJlMdtkJ
+	wYcPvx/A3Q9LR9GgXSPs/vWvhPCavOzdbUITri7fXwKPtRZnurfvnP48
+X-Gm-Gg: AZuq6aI+uzB/kalb7+VXnt0QMRGzjKJdvvrH+r4ptOmpWxB/wG6mgNtbbezdqHuSR8b
+	HL4K8plNnBYlp3eGzL5a8395sc3w0efqtkVa06jbIhBaW9FAw7LlJyWnFuhIxpK2bUSocO8AZ8i
+	1Ka8i8kW/f7o1ytEftUCZgsIA+L0LrvijOw0QmbgTfV8xRf7ila/0BwSjEIVZPW68UmoiHUlReP
+	8UruHXlrxhinS1cXAq90q5oVxzocnElyF6F9ZYXUhRiaNUpZJLZrLoFlsGlVUAN/UPS5YoFnbqG
+	ScjEJn62KtLhFYof6Et87YThk4yS7YVbhZK3YzuNWkp66lc+rUP5FTcMY819vfS+L5QBA07mBcQ
+	aXxhYKjochY2XhmJRZg4LhjuWt/MMe9pgvEuaXYCZq6rI/nwte43Rh23pLfvNnoH+OStFuoAorm
+	6+SgUs2cqKemvDcSodVcebzuCZAt0UmL8vm9Yyzzu1KQTZLuWNRGfbPg==
+X-Received: by 2002:a05:622a:4d0:b0:506:98c9:a3e5 with SMTP id d75a77b69052e-506a6a4c880mr163726741cf.35.1771319879599;
+        Tue, 17 Feb 2026 01:17:59 -0800 (PST)
+Received: from [10.254.121.53] (mkmvpn.amd.com. [165.204.54.211])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50684bc39e6sm174448991cf.31.2026.02.17.01.17.57
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 17 Feb 2026 01:17:59 -0800 (PST)
+Message-ID: <285b8a06-9b61-4a92-8b4b-206537d10dbb@gmail.com>
+Date: Tue, 17 Feb 2026 10:17:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH] media: videobuf2: Set vma_flags in vb2_dma_sg_mmap
-To: Janne Grunau <j@jannau.net>, Tomasz Figa <tfiga@chromium.org>, Mauro
-	Carvalho Chehab <mchehab@kernel.org>, Kyungmin Park
-	<kyungmin.park@samsung.com>, Hans Verkuil <hverkuil@kernel.org>, Maarten
-	Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
-	<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
-	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amd/display: Prevent cursor bo's from being pinned to
+ VRAM address zero
+To: Mario Kleiner <mario.kleiner.de@gmail.com>, amd-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+ Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>
+References: <20260216044735.6814-1-mario.kleiner.de@gmail.com>
 Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20260215-media-vb2-dma-sg-v1-1-91b6aa6c1cec@jannau.net>
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>
+In-Reply-To: <20260216044735.6814-1-mario.kleiner.de@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260217082154eucas1p2a2fc74fee77203c5ad24cc011c2efafc
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260215174311eucas1p1fbf6fb7183edf87af9af0ae2f3a934fd
-X-EPHeader: CA
-X-CMS-RootMailID: 20260215174311eucas1p1fbf6fb7183edf87af9af0ae2f3a934fd
-References: <CGME20260215174311eucas1p1fbf6fb7183edf87af9af0ae2f3a934fd@eucas1p1.samsung.com>
-	<20260215-media-vb2-dma-sg-v1-1-91b6aa6c1cec@jannau.net>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-216771-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[jannau.net,chromium.org,kernel.org,samsung.com,linux.intel.com,suse.de,gmail.com,ffwll.ch];
+	FREEMAIL_TO(0.00)[gmail.com,lists.freedesktop.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216770-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[m.szyprowski@samsung.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[samsung.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 92676149E37
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ckoenigleichtzumerken@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4EF8214A4D7
 X-Rspamd-Action: no action
 
-On 15.02.2026 18:42, Janne Grunau wrote:
-> vb2_dma_contig sets VMA flags VM_DONTEXPAND and VM_DONTDUMP and I do not
-> see a reason why vb2_dma_sg should behave differently. This avoids
-> hitting `WARN_ON(!(vma->vm_flags & VM_DONTEXPAND));` in
-> drm_gem_mmap_obj() during mmap() of an imported dma-buf from the out of
-> tree Apple ISP camera capture driver which uses vb2_dma_sg_memops.
->
-> gst-launch-1.0 v4l2src ! gtk4paintablesink
->
-> [   38.201528] ------------[ cut here ]------------
-> [   38.202135] WARNING: CPU: 7 PID: 2362 at drivers/gpu/drm/drm_gem.c:1144 drm_gem_mmap_obj+0x1f8/0x210
-> [   38.203278] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer
-> snd_seq snd_seq_device uinput nf_conntrack_netbios_ns
-> nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
-> nft_reject_inet nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat
-> nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables qrtr bnep
-> nls_ascii i2c_dev loop fuse dm_multipath nfnetlink brcmfmac_wcc
-> hid_magicmouse hci_bcm4377 brcmfmac brcmutil bluetooth ecdh_generic
-> cfg80211 ecc btrfs xor xor_neon rfkill hid_apple raid6_pq joydev
-> aop_als apple_nvmem_spmi industrialio snd_soc_aop apple_z2
-> snd_soc_cs42l84 tps6598x snd_soc_tas2764 macsmc_reboot spi_nor
-> macsmc_hwmon rtc_macsmc gpio_macsmc macsmc_power regmap_spmi
-> macsmc_input dockchannel_hid panel_summit appledrm nvme_apple dwc3
-> snd_soc_macaudio drm_client_lib nvme_core phy_apple_atc hwmon
-> apple_sart apple_dockchannel macsmc apple_rtkit_helper
-> spmi_apple_controller aop apple_wdt mfd_core nvmem_apple_efuses
-> pinctrl_apple_gpio apple_isp apple_dcp videobuf2_dma_sg mux_core
-> spi_apple
-> [   38.203300]  videobuf2_memops i2c_pasemi_platform snd_soc_apple_mca videobuf2_v4l2 videodev clk_apple_nco videobuf2_common snd_pcm_dmaengine adpdrm asahi apple_admac adpdrm_mipi drm_dma_helper pwm_apple i2c_pasemi_core drm_display_helper mc cec apple_dart ofpart apple_soc_cpufreq leds_pwm phram
-> [   38.217677] CPU: 7 UID: 1000 PID: 2362 Comm: gst-launch-1.0 Tainted: G        W           6.17.6+ #asahi-dev PREEMPT(full)
-> [   38.219040] Tainted: [W]=WARN
-> [   38.219398] Hardware name: Apple MacBook Pro (13-inch, M2, 2022) (DT)
-> [   38.220213] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-> [   38.221088] pc : drm_gem_mmap_obj+0x1f8/0x210
-> [   38.221643] lr : drm_gem_mmap_obj+0x78/0x210
-> [   38.222178] sp : ffffc0008dc678e0
-> [   38.222579] x29: ffffc0008dc678e0 x28: 0000000000042a97 x27: ffff8000b701b480
-> [   38.223465] x26: 00000000000000fb x25: ffffc0008dc67d20 x24: ffffc0008dc67968
-> [   38.224402] x23: ffff8000e3ca5600 x22: ffff8000265b7800 x21: ffff80003000c0c0
-> [   38.225279] x20: 0000000000000000 x19: ffff8000b68c5200 x18: ffffc0008dc67968
-> [   38.226151] x17: 0000000000000000 x16: 0000000000000000 x15: ffffc000810a30a8
-> [   38.227042] x14: 00007fff637effff x13: 00005555de91ffff x12: 00007fff63293fff
-> [   38.227942] x11: 0000000000000000 x10: ffff8000184ecf08 x9 : ffffc0007a1900c8
-> [   38.228824] x8 : ffffc0008dc67968 x7 : 0000000000000012 x6 : ffffc0015cf1c000
-> [   38.229703] x5 : ffffc0008dc676a0 x4 : ffffc00081a27dc0 x3 : 0000000000000038
-> [   38.230607] x2 : 0000000000000003 x1 : 0000000000000003 x0 : 00000000100000fb
-> [   38.231488] Call trace:
-> [   38.231806]  drm_gem_mmap_obj+0x1f8/0x210 (P)
-> [   38.232342]  drm_gem_mmap+0x140/0x260
-> [   38.232813]  __mmap_region+0x488/0x9a0
-> [   38.233277]  mmap_region+0xd0/0x148
-> [   38.233703]  do_mmap+0x350/0x5c0
-> [   38.234148]  vm_mmap_pgoff+0x14c/0x200
-> [   38.234612]  ksys_mmap_pgoff+0x150/0x208
-> [   38.235107]  __arm64_sys_mmap+0x34/0x50
-> [   38.235611]  invoke_syscall+0x50/0x120
-> [   38.236075]  el0_svc_common.constprop.0+0x48/0xf0
-> [   38.236680]  do_el0_svc+0x24/0x38
-> [   38.237113]  el0_svc+0x38/0x168
-> [   38.237507]  el0t_64_sync_handler+0xa0/0xe8
-> [   38.238034]  el0t_64_sync+0x198/0x1a0
-> [   38.238491] ---[ end trace 0000000000000000 ]---
->
-> There were discussions in [1] at the end of 2023 that mmap() on imported
-> dma-bufs should not be supported but as of v6.17 drm_gem_shmem_mmap() in
-> drm_gem_shmem_helper.c still supports it.
-> This might affect all gpu or accel drivers using drm_gem_shmem_mmap() or
-> the wrapper drm_gem_shmem_object_mmap().
->
-> [1] https://lore.kernel.org/dri-devel/bc7f7844-0aa3-4802-b203-69d58e8be2fa@linux.intel.com/
->
-> Cc: stable@vger.kernel.org
-> Fixes: 5ba3f757f059 ("[media] v4l: videobuf2: add DMA scatter/gather allocator")
-> Signed-off-by: Janne Grunau <j@jannau.net>
+On 2/16/26 05:47, Mario Kleiner wrote:
+> Why?
+> 
+> On some AMD gpu's in some configurations, the start of the VRAM domain, as
+> reported by amdgpu_ttm_domain_start(adev, AMDGPU_GEM_DOMAIN_VRAM), is
+> placed at address 0 during GMC init. This is a problem if, during a cursor
+> plane update, the cursor image bo, which gets always pinned into VRAM,
+> is placed at offset zero of the VRAM domain, and thereby at the
+> absolute address afb->address 0.
+> 
+> The display hw apparently doesn't like such a zero start address for at
+> least native cursor mode, as various checks inside DC are in place, e.g.,
+> high level dc_stream_check_cursor_attributes(), and lower level DCN
+> version specific cursor hw programming checks, which do reject cursor
+> attribute updates with attributes->address.quad_part == 0.
+> 
+> User visible symptoms of this are seriously broken mouse cursors under
+> both X11 and Wayland (tested with KDE/KWin, GNOME/Mutter, GDM login
+> manager): Mouse cursor flickers, is invisible, randomly becomes invisible,
+> or fails to adapt the cursor shape to the context, e.g., when moving from
+> a text input field to other windows, or window decorations etc. This makes
+> the cursor irritating and impossible to use.
+> 
+> The drm.debug=4 log shows DRM KMS debug messages of the form
+> "DC: Cursor address is 0!", and the general syslog prints errors like
+> "[drm:amdgpu_dm_plane_handle_cursor_update [amdgpu]] *ERROR* DC failed to
+> set cursor attributes"
+> 
+> I observe this bug on my dual-gpu Apple 2017 MacBookPro since Linux 4.11,
+> where the kernels early EFI setup force-enables both the Intel iGPU and
+> AMD dGPU. This leads to the AMD VRAM start being placed at 0x0 and then
+> causes massive cursor problems. On earlier kernels, only the AMD dGPU was
+> exposed, the Intel iGPU was disabled / hidden from Linux by EFI firmware.
+> This caused the AMD gpu to place VRAM start at the non-zero
+> address 0x000000F400000000, and the mouse cursor worked fine. I confirmed
+> with umr that the mmMC_VM_FB_LOCATION register of my Polaris 11 gpu indeed
+> read back 0x0000 in the lower 16 bits in the dual-gpu case, causing
+> gmc_v8_0_vram_gtt_location() to setup start of VRAM domain at zero.
+> I don't know what causes the change, but most likely the UEFI firmware
+> somehow triggers this change before main kernel boot - calling into the
+> VBIOS, I guess.
+> 
+> There is at least one 8 months old bug report in AMD's issue tracker,
+> reporting the same symptoms on other AMD setups, cfe.:
+> https://gitlab.freedesktop.org/drm/amd/-/issues/4302
 
-This looks like an oversight from the beginning of videobuf2-dma-sg.
+Wow, impressive debugging work. That is a really good catch!
 
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> So unless there is another more clean and reliable way to prevent the
+> cursor bo from being placed at address zero, or unless the display hw
+> is actually fine with address zero and those checks in DC are overly
+> cautious, this needs to be fixed.
 
+I don't know the DCN block that well, but I'm pretty sure the assumption in the DC code that the cursor address can't be zero is simply incorrect.
+
+> Note that simply removing the "zero address -> reject cursor update"
+> checks worked on my Polaris11 with DCE 11.2 display engine, fixing the
+> cursor without causing any other obvious trouble. So maybe this is only
+> a limitation of recent DCN engine versions, or a pointless check.
+
+My educated guess is you just missed some check, explicitely checking if the addr is zero would make the HW more complex and that is usually something HW engineers try to avoid really hard.
+
+In other words you usually have a separate "valid" bit in a register somewhere instead of the HW checking for a specific value.
+
+> How?
+> 
+> Add a new AMD bo placement flag which requests bo pinning / placement at
+> non-zero VRAM address only during amdgpu_bo_pin(). Use this flag for bo's
+> on the cursor plane during amdgpu_dm_plane_helper_prepare_fb().
+> 
+> I don't know if this is the best approach. It feels hacky, but it is the
+> only approach I was able to do and it seems to work fine enough.
+> 
+> If this is a good enough fix, it should be backported, but backporting
+> to earlier than Linux 6.12 might be cumbersome due to changes to the
+> amdgpu_bo_pin() implementation.
+
+I strongly suggest to follow Alex workaround for now, but maybe add a big code comment explaining why we have that.
+
+Regards,
+Christian.
+
+> Signed-off-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+> Tested-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+> Cc: <stable@vger.kernel.org> # v6.12+
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Leo Li <sunpeng.li@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
 > ---
-> included DRM maintainers due to warning triggered from DRM code.
-> ---
->   drivers/media/common/videobuf2/videobuf2-dma-sg.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/media/common/videobuf2/videobuf2-dma-sg.c b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-> index b3bf2173c14e1b3bedb8ab0bd60c889a0b97cbe3..7c30731cb9a57bebb3cf418e627e7c9f09ba8642 100644
-> --- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-> +++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-> @@ -345,6 +345,7 @@ static int vb2_dma_sg_mmap(void *buf_priv, struct vm_area_struct *vma)
->   		return err;
->   	}
->   
-> +	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
->   	/*
->   	 * Use common vm_area operations to track buffer refcount.
->   	 */
->
-> ---
-> base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
-> change-id: 20260215-media-vb2-dma-sg-0fa33fdafdde
->
-> Best regards,
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_object.c            | 11 +++++++++++
+>  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c   |  6 ++++--
+>  include/uapi/drm/amdgpu_drm.h                         |  7 +++++++
+>  3 files changed, 22 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+> index 1fb956400696..97131fc8fbdf 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+> @@ -975,6 +975,17 @@ int amdgpu_bo_pin(struct amdgpu_bo *bo, u32 domain)
+>  		if (bo->flags & AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS &&
+>  		    bo->placements[i].mem_type == TTM_PL_VRAM)
+>  			bo->placements[i].flags |= TTM_PL_FLAG_CONTIGUOUS;
+> +
+> +		/* Ensure bo is never pinned at amdgpu_bo_gpu_offset() == 0
+> +		 * for VRAM allocations, as some of the DC code does not
+> +		 * like that, e.g., mouse cursor display image bo's.
+> +		 */
+> +		if (bo->flags & AMDGPU_GEM_CREATE_VRAM_NON_ZERO_ADDRESS &&
+> +		    bo->placements[i].mem_type == TTM_PL_VRAM &&
+> +		    !bo->placements[i].fpfn &&
+> +		    !amdgpu_ttm_domain_start(adev, TTM_PL_VRAM)) {
+> +			bo->placements[i].fpfn = 1;
+> +		}
+>  	}
+>  
+>  	r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> index 394880ec1078..cd7f53d3036c 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> @@ -959,10 +959,12 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct drm_plane *plane,
+>  		goto error_unlock;
+>  	}
+>  
+> -	if (plane->type != DRM_PLANE_TYPE_CURSOR)
+> +	if (plane->type != DRM_PLANE_TYPE_CURSOR) {
+>  		domain = amdgpu_display_supported_domains(adev, rbo->flags);
+> -	else
+> +	} else {
+>  		domain = AMDGPU_GEM_DOMAIN_VRAM;
+> +		rbo->flags |= AMDGPU_GEM_CREATE_VRAM_NON_ZERO_ADDRESS;
+> +	}
+>  
+>  	rbo->flags |= AMDGPU_GEM_CREATE_VRAM_CONTIGUOUS;
+>  	r = amdgpu_bo_pin(rbo, domain);
+> diff --git a/include/uapi/drm/amdgpu_drm.h b/include/uapi/drm/amdgpu_drm.h
+> index 1d34daa0ebcd..6dee7653c54e 100644
+> --- a/include/uapi/drm/amdgpu_drm.h
+> +++ b/include/uapi/drm/amdgpu_drm.h
+> @@ -181,6 +181,13 @@ extern "C" {
+>  #define AMDGPU_GEM_CREATE_EXT_COHERENT		(1 << 15)
+>  /* Set PTE.D and recompress during GTT->VRAM moves according to TILING flags. */
+>  #define AMDGPU_GEM_CREATE_GFX12_DCC		(1 << 16)
+> +/* Flag that BO must not be placed in VRAM domain at offset zero if the
+> + * VRAM domain itself starts at address zero.
+> + *
+> + * Used internally to prevent placement of cursor image BO at that location,
+> + * as the display hardware doesn't like that for hardware cursors.
+> + */
+> +#define AMDGPU_GEM_CREATE_VRAM_NON_ZERO_ADDRESS (1 << 17)
+>  
+>  struct drm_amdgpu_gem_create_in  {
+>  	/** the requested memory size */
 
 
