@@ -1,192 +1,140 @@
-Return-Path: <stable+bounces-216773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EO2XCxI9lGmTAwIAu9opvQ
-	(envelope-from <stable+bounces-216773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:04:02 +0100
+	id EP71KMxClGkgBwIAu9opvQ
+	(envelope-from <stable+bounces-216774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:28:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE3514AA61
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:04:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4709914ADA9
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:28:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B606F3019BA9
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 10:02:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 87A65300C0CA
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 10:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB65B320A0D;
-	Tue, 17 Feb 2026 10:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C902A320A23;
+	Tue, 17 Feb 2026 10:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="et0N0IO1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="syJaosc4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FgFEcrIK"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB893203B6;
-	Tue, 17 Feb 2026 10:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2DC320CCF
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 10:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771322577; cv=none; b=MsiuLwyIbjfgIjaL1Sgdk7nYhj8cAZbg0VFbrmBveVs0syAzKcVaiKWtKT8N1r8S8DNM8L3XCPXrigQxyfD045CrDB2N9L41ToZNQQ4mupfey/4iqTTpA5FkBTE8xHt77FcZaIWS5Qubb3Dr2yBPSBlEWH5PW+r8Jg1ST3huaug=
+	t=1771324105; cv=none; b=hsKgy1a3p61ijSv2zuQHki8+/NNbKwrIBajcIN1Twr7q6HcM0nVF4cItu6zEYF7xc7fZcP1FBL4OCbAKzhudfuIvxe8u0zZm3O6L5G1cNquoNtZsitRHfZh8Jh0ufKNuszbAy409U23Uxhz6U2gtYsvjHqp/KTaTvZBiPlOieTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771322577; c=relaxed/simple;
-	bh=MgnBL94bxY9U9GLLXWSR9DilnmY3dR23Z3dSVOtxSfk=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lP5DtV4U2Sw0HPwoS4HjTRkb8crrEGkmE4hmx2UZvEdMbNNTq+yxkzOjWKpFjYg0R2IN8rHS7ooPC6RiMQP0QTfp+SDk7QfujW3CYd+bW3eMVWNZfI6i7AH7AMo1rOlsS0DXDAXkKV5cPD984WXegMfXt0Vstep4AUArJbsVXwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=et0N0IO1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=syJaosc4; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 17 Feb 2026 10:02:52 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1771322574;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SDh1/BBH3Iu8px0I1Zge1iKEBif9YBXmGehJvtxYseM=;
-	b=et0N0IO1Flx48QgSYCU9TXioi6d7BA5vXSejaBQoZ5QnstDAfi/9/LNNofvvr1A4hCjmKN
-	iNjO1btrGzDFRs5UR9pJPRwm2MuaOqd9XGY/97VQowG0HSdP3JJLqtT9TOXZ8618WK7sL7
-	atERf+tZ0/sY53gBpHCKBzCgptkec5z7QKmAaqdvss/PDbsq7tI6vYn7ZlQ5OvM6oUoh7L
-	m73v+mE0hsBOokS5tqFQz85a/N1X8uypVVPO4mvXo7kvjyksXGxzEDdtm+VN6L2u0MqBuS
-	N3FeqYxjaWjgSz0or/NbH2K3PBm5qzjnijHQ+AoS2O+c0cDMrMGFJfMBNVmcuw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1771322574;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SDh1/BBH3Iu8px0I1Zge1iKEBif9YBXmGehJvtxYseM=;
-	b=syJaosc4vLGLZ9nlI+38iakrWzvNaIQJi9jQvkgMsDm+2lo9CAy/QmGhj3O18cKrx8tOoE
-	TKrQ4Y9ieYBN8HCQ==
-From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v3-its: Limit number of per-device MSIs
- to the range the ITS supports
-Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Zenghui Yu <zenghui.yu@linux.dev>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260206154816.3582887-1-maz@kernel.org>
-References: <20260206154816.3582887-1-maz@kernel.org>
+	s=arc-20240116; t=1771324105; c=relaxed/simple;
+	bh=Wi+6FL2HC8in9JB/8tyHaqg2qNDpCsf/gocDozzWypE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=t5mjCPWvNUrNmbu61zc2xabm88IhfZfi+6dF9CTk2fiwb5ciBlAFbOF8Lu64Ib6lsmebjslVGyMxGo+xx84t/E+voF2Ddvbc+7r5sF19OFtlTm1casg8CjcR5PGYoDjlf/BrVrucQNnock9IfjtWjlPlkcXt+W9JMVqPyzud3V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FgFEcrIK; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48374014a77so35053115e9.3
+        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 02:28:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771324103; x=1771928903; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wi+6FL2HC8in9JB/8tyHaqg2qNDpCsf/gocDozzWypE=;
+        b=FgFEcrIKVMxPDDwqKM6iojWZeDocgvGNWFeR+vvi5M9Fs6UZhP0vsK1dRORZve0ANy
+         WqQ0GYx7aYKz0Cz6fw7T90vks0YA2POu6TyzPp/kU9KCfrsrqMH+dyEedeVvOZwWqbNf
+         5b8aomv7mYH69N627LvcLb5GFrVCF8X/uvywumg/wU7jtWkm9/qnBxSZW5tFDA9BFgC3
+         TSjNsSgjOf/BA4BbVjEngCiib2UKgrWjBA2xYBreXXRdJqlJiHdQpgcXduGaAK1xkNcz
+         BkVv+nzKGJ1PnkkSyVqen0rxqaVgCSfRclyOzCZYFhqmtq+KRrHI54Y1rsHER2M+6/wS
+         tAxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771324103; x=1771928903;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wi+6FL2HC8in9JB/8tyHaqg2qNDpCsf/gocDozzWypE=;
+        b=eL5XQcQQSPLj8sfzN74ejU/rDKff6Lk0GI9hUg2KhM7qo2WKb0crlLX0v2P6W6/5F0
+         /VlzLvzCu9Y52cbRUAoMii56LdeOFH6P6k0D1YE1MQg5qEKPR8liOHnt3dcdhZmfoPwn
+         0LxXH2WUhqHRzjPtbHXSgMcQWYk0UBj3+Elhdr7EKyshTbOw6pPK08VHu1fMXgDRpQr5
+         eB9UoM8IhcmMnncJurlFLe0hde6UqI3O+fRwxSb9w3zJQuZTgJ5TvliBkffSe/6CPBYI
+         tDHbQHiG+5N/3yJefhJMlkI/+lugdDDICrLlHUeVDF6GJvviAqHNliu5t+AhYFJSI7Z/
+         KZKQ==
+X-Gm-Message-State: AOJu0Yzj07SeRpPd+eB50g8KYv0ithFBX0NxLzWGCOxaIkqyFiCwdGJg
+	BkqkGRIBWgsRxnZDqTmhSi8xNy/7EE/0NRL7AhU12f0FS8LhSDFUuGuR
+X-Gm-Gg: AZuq6aJH/MSG7eHlt7V7K7Se/3M07ktat2edy/wZbehEp+nq2m/JkxuINh8O+eqOjpH
+	VC9zAEpcV/CTLhz58WimrVqUigLotWz+4UxhQDrVq/LzRvSRZlYqdxVYcPMLTEsB3Atrcu9SYtI
+	n7bhHhdnEZfvaqqG9cZjH92KjjpQRYjJL3cXG4RHq+ce40nhBFvM1Xju/bykDqaAzYg9DHBqq4K
+	wAQjeJt5/Hn8RlnhXUe115JFkOcpeaBq1/+AziSHV6KV0VY+l5HFNuGFGSrKz0T8+qycfNDGQzi
+	Q5zaYbs22I4K1m/qhV868yEaBySuGcRl48DRk7f+cg3fIKdFPpwCMIlnbPl07g/GjgYRGblkLxF
+	5DWEI76xdKjjiinJVUhYN0ueny96SHDqqvOmjyMlfJK3K5wGlXZLVqU5TniawSFd6Kh6EFz3ZRH
+	des4m4WRbYJsRYclsOFI89eRBP8hvQ0s5JoCfVKTb8BAp81S+MWSX4zaW7
+X-Received: by 2002:a05:600c:6808:b0:483:2c98:4368 with SMTP id 5b1f17b1804b1-48373a3e755mr228402645e9.18.1771324102413;
+        Tue, 17 Feb 2026 02:28:22 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d82a4afsm904469255e9.11.2026.02.17.02.28.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Feb 2026 02:28:21 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 05E4CBE2DE0; Tue, 17 Feb 2026 11:28:21 +0100 (CET)
+Date: Tue, 17 Feb 2026 11:28:20 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: stable <stable@vger.kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Please apply commit 9990ddf47d41 ("net: tunnel: make
+ skb_vlan_inet_prepare() return drop reasons") down to 6.1.y at least
+Message-ID: <177132401902.2893171.1371685164011289024@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177132257280.542.645556472830907489.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-216774-lists,stable=lfdr.de];
+	TO_DN_ALL(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216773-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DMARC_NA(0.00)[debian.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[carnil@debian.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linutronix.de:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:replyto,linux.dev:email]
-X-Rspamd-Queue-Id: 7DE3514AA61
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4709914ADA9
 X-Rspamd-Action: no action
 
-The following commit has been merged into the irq/urgent branch of tip:
+Hi stable maintainers,
 
-Commit-ID:     ce9e40a9a5e5cff0b1b0d2fa582b3d71a8ce68e8
-Gitweb:        https://git.kernel.org/tip/ce9e40a9a5e5cff0b1b0d2fa582b3d71a8c=
-e68e8
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Fri, 06 Feb 2026 15:48:16=20
-Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Tue, 17 Feb 2026 11:00:43 +01:00
+9990ddf47d41 ("net: tunnel: make skb_vlan_inet_prepare() return drop
+reasons") was alrady backported as well to 6.12.71 to address a
+regression when backporting 81c734dae203 ("ip6_tunnel: use
+skb_vlan_inet_prepare() in __ip6_tnl_rcv()") (this one was backported
+without the prequisite commit to 6.12.67, 6.6.122, 6.1.162, 5.15.199
+and 5.10.249).
 
-irqchip/gic-v3-its: Limit number of per-device MSIs to the range the ITS supp=
-orts
+Can you pick please as well 9990ddf47d41 for the other stable series
+as needed? I can only give a confirmation that it works as exepcted
+for the 6.1.y series as per https://bugs.debian.org/1127823#36 .
 
-The ITS driver blindly assumes that EventIDs are in abundant supply, to the
-point where it never checks how many the hardware actually supports.
-
-It turns out that some pretty esoteric integrations make it so that only a
-few bits are available, all the way down to a single bit.
-
-Enforce the advertised limitation at the point of allocating the device
-structure, and hope that the endpoint driver can deal with such limitation.
-
-Fixes: 84a6a2e7fc18d ("irqchip: GICv3: ITS: device allocation and configurati=
-on")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260206154816.3582887-1-maz@kernel.org
----
- drivers/irqchip/irq-gic-v3-its.c   | 4 ++++
- include/linux/irqchip/arm-gic-v3.h | 1 +
- 2 files changed, 5 insertions(+)
-
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-it=
-s.c
-index 2988def..a51e8e6 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3475,6 +3475,7 @@ static struct its_device *its_create_device(struct its_=
-node *its, u32 dev_id,
- 	int lpi_base;
- 	int nr_lpis;
- 	int nr_ites;
-+	int id_bits;
- 	int sz;
-=20
- 	if (!its_alloc_device_table(its, dev_id))
-@@ -3486,7 +3487,10 @@ static struct its_device *its_create_device(struct its=
-_node *its, u32 dev_id,
- 	/*
- 	 * Even if the device wants a single LPI, the ITT must be
- 	 * sized as a power of two (and you need at least one bit...).
-+	 * Also honor the ITS's own EID limit.
- 	 */
-+	id_bits =3D FIELD_GET(GITS_TYPER_IDBITS, its->typer) + 1;
-+	nvecs =3D min_t(unsigned int, nvecs, BIT(id_bits));
- 	nr_ites =3D max(2, nvecs);
- 	sz =3D nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
- 	sz =3D max(sz, ITS_ITT_ALIGN);
-diff --git a/include/linux/irqchip/arm-gic-v3.h b/include/linux/irqchip/arm-g=
-ic-v3.h
-index 70c0948..0225121 100644
---- a/include/linux/irqchip/arm-gic-v3.h
-+++ b/include/linux/irqchip/arm-gic-v3.h
-@@ -394,6 +394,7 @@
- #define GITS_TYPER_VLPIS		(1UL << 1)
- #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
- #define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
-+#define GITS_TYPER_IDBITS		GENMASK_ULL(12, 8)
- #define GITS_TYPER_IDBITS_SHIFT		8
- #define GITS_TYPER_DEVBITS_SHIFT	13
- #define GITS_TYPER_DEVBITS		GENMASK_ULL(17, 13)
+Regards,
+Salvatore
 
