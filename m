@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-216996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AH8PNTHTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216996-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:33 +0100
+	id YMXYH4XTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5A71502F7
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD91E1503C2
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7073300FEE3
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8BAB330013A7
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2180378821;
-	Tue, 17 Feb 2026 20:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C8C280CC1;
+	Tue, 17 Feb 2026 20:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfOwooqB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTVNbnaA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E6937646D;
-	Tue, 17 Feb 2026 20:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C01029A1;
+	Tue, 17 Feb 2026 20:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361068; cv=none; b=t1fcSNXnKItrjGr+nJ+7OugUOisN94rJkcoBxVm4gwWO4Yuk06lc7THcbxDFwep8ZBzsT7fg2oCluHOVfv1xkiUhKUkA+oS/fa1Gc75QyqbhaxAsOxHsm9PSkevMLTbflTS6CqnN0yt48RmFLsf0/50NO4QybfoSKq0nY1rQAVw=
+	t=1771361152; cv=none; b=UxKwutNybmzZwAMpHP61aGMPL7N5eQwuW4r8+oexC3tT/iro1GdKShkAcGVzSnrl2xcgNReeNx/EHfbp9z2cGbtNLIxUwe6T1Je+E56nPnEN8OUKqyoOVJX8cl9LePHKmG7QDm3Afp7Fv3xxgsWlqL1aVosSR+3ZQBCf2jmvlcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361068; c=relaxed/simple;
-	bh=vEfyLO9oVqGEvRbYYVQMHUuepnpvURq8gkDmykyad0c=;
+	s=arc-20240116; t=1771361152; c=relaxed/simple;
+	bh=PfugbO4HszVMOc2KE0nj2jwyT9W7X9EBYDtzk/ZhAq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oworlgBU9zy4sm5ls0IV/4sqngDrgrFiIL0vaMvibAFqcbg5wNWWDusnqZGqaw02UYd8SyfKeV2jiXCL79NIOx7LF0WSvqXojhp23SNspIu7RkIDUPY/rf+HcgZ0fRcs/7iKVsiNNNReBrnA74hYxjXtw1bsoacZGB16rANfvy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfOwooqB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB247C4CEF7;
-	Tue, 17 Feb 2026 20:44:27 +0000 (UTC)
+	 MIME-Version; b=OdhiJuvNSmFMvKKkg/zTwXr0MFnQpx0YQ2iZQqrZ9k1l+1Twr1QxEMQDh6YNJTsKNFQJsf+2RGfd3IGah3KR1Ptor6Ox0JDCIF8HVwh6VZKOnjgV+vym5E0Oofw3JuOiOid4GxvkP14z7M3YqbyNe4hW7QMTpc4/uSNZ6BBZGLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTVNbnaA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1E9C4CEF7;
+	Tue, 17 Feb 2026 20:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361068;
-	bh=vEfyLO9oVqGEvRbYYVQMHUuepnpvURq8gkDmykyad0c=;
+	s=korg; t=1771361152;
+	bh=PfugbO4HszVMOc2KE0nj2jwyT9W7X9EBYDtzk/ZhAq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfOwooqBOI2CZOKvV97KHwB4dkc2X+WjucvfRu+ZqOjkeE5Ly/nkpb+5sHsod1eyU
-	 Ae/+mW4I45eMUlv9DsjUta3jwyFEwQnaw7aNBU/COf4NkO2S7YVqmOVqpNXngecHFq
-	 HQNboojiMZP+Iytt5fXV8fgmU5ohNnHXzCfr/4Dw=
+	b=ZTVNbnaAvJwuQHpw1u2wNCufryeDvwd9ZQy8IVgC+CC96lSVfJ1+aKv+5ktawOsod
+	 2sIC9H37/rHiIFzg4GtKPa3048FODQVwTdOiVNQJMFiL+tKkN3G5n0hGqpnwyHUdC3
+	 Z3tgT4q8NbtyG3JJ4yUkXFH16GUT5388yDMoFVEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7eedce5eb281acd832f0@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>
-Subject: [PATCH 5.15 04/39] nilfs2: Fix potential block overflow that cause system hang
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 17/64] scsi: qla2xxx: Fix bsg_done() causing double free
 Date: Tue, 17 Feb 2026 21:31:13 +0100
-Message-ID: <20260217200003.100149224@linuxfoundation.org>
+Message-ID: <20260217200008.160791997@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,108 +67,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,gmail.com,dubeyko.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216996-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217021-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7eedce5eb281acd832f0];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dubeyko.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,qq.com:email]
-X-Rspamd-Queue-Id: 5E5A71502F7
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email]
+X-Rspamd-Queue-Id: CD91E1503C2
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-commit ed527ef0c264e4bed6c7b2a158ddf516b17f5f66 upstream.
+[ Upstream commit c2c68225b1456f4d0d393b5a8778d51bb0d5b1d0 ]
 
-When a user executes the FITRIM command, an underflow can occur when
-calculating nblocks if end_block is too small. Since nblocks is of
-type sector_t, which is u64, a negative nblocks value will become a
-very large positive integer. This ultimately leads to the block layer
-function __blkdev_issue_discard() taking an excessively long time to
-process the bio chain, and the ns_segctor_sem lock remains held for a
-long period. This prevents other tasks from acquiring the ns_segctor_sem
-lock, resulting in the hang reported by syzbot in [1].
+Kernel panic observed on system,
 
-If the ending block is too small, typically if it is smaller than 4KiB
-range, depending on the usage of the segment 0, it may be possible to
-attempt a discard request beyond the device size causing the hang.
+[5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000
+[5353358.825194] #PF: supervisor write access in kernel mode
+[5353358.825195] #PF: error_code(0x0002) - not-present page
+[5353358.825196] PGD 100006067 P4D 0
+[5353358.825198] Oops: 0002 [#1] PREEMPT SMP NOPTI
+[5353358.825200] CPU: 5 PID: 2132085 Comm: qlafwupdate.sub Kdump: loaded Tainted: G        W    L    -------  ---  5.14.0-503.34.1.el9_5.x86_64 #1
+[5353358.825203] Hardware name: HPE ProLiant DL360 Gen11/ProLiant DL360 Gen11, BIOS 2.44 01/17/2025
+[5353358.825204] RIP: 0010:memcpy_erms+0x6/0x10
+[5353358.825211] RSP: 0018:ff591da8f4f6b710 EFLAGS: 00010246
+[5353358.825212] RAX: ff5f5e897b024000 RBX: 0000000000007090 RCX: 0000000000001000
+[5353358.825213] RDX: 0000000000001000 RSI: ff591da8f4fed090 RDI: ff5f5e897b024000
+[5353358.825214] RBP: 0000000000010000 R08: ff5f5e897b024000 R09: 0000000000000000
+[5353358.825215] R10: ff46cf8c40517000 R11: 0000000000000001 R12: 0000000000008090
+[5353358.825216] R13: ff591da8f4f6b720 R14: 0000000000001000 R15: 0000000000000000
+[5353358.825218] FS:  00007f1e88d47740(0000) GS:ff46cf935f940000(0000) knlGS:0000000000000000
+[5353358.825219] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[5353358.825220] CR2: ff5f5e897b024000 CR3: 0000000231532004 CR4: 0000000000771ef0
+[5353358.825221] PKRU: 55555554
+[5353358.825222] Call Trace:
+[5353358.825223]  <TASK>
+[5353358.825224]  ? show_trace_log_lvl+0x1c4/0x2df
+[5353358.825229]  ? show_trace_log_lvl+0x1c4/0x2df
+[5353358.825232]  ? sg_copy_buffer+0xc8/0x110
+[5353358.825236]  ? __die_body.cold+0x8/0xd
+[5353358.825238]  ? page_fault_oops+0x134/0x170
+[5353358.825242]  ? kernelmode_fixup_or_oops+0x84/0x110
+[5353358.825244]  ? exc_page_fault+0xa8/0x150
+[5353358.825247]  ? asm_exc_page_fault+0x22/0x30
+[5353358.825252]  ? memcpy_erms+0x6/0x10
+[5353358.825253]  sg_copy_buffer+0xc8/0x110
+[5353358.825259]  qla2x00_process_vendor_specific+0x652/0x1320 [qla2xxx]
+[5353358.825317]  qla24xx_bsg_request+0x1b2/0x2d0 [qla2xxx]
 
-Exiting successfully and assign the discarded size (0 in this case)
-to range->len.
+Most routines in qla_bsg.c call bsg_done() only for success cases.
+However a few invoke it for failure case as well leading to a double
+free. Validate before calling bsg_done().
 
-Although the start and len values in the user input range are too small,
-a conservative strategy is adopted here to safely ignore them, which is
-equivalent to a no-op; it will not perform any trimming and will not
-throw an error.
-
-[1]
-task:segctord state:D stack:28968 pid:6093 tgid:6093  ppid:2 task_flags:0x200040 flags:0x00080000
-Call Trace:
- rwbase_write_lock+0x3dd/0x750 kernel/locking/rwbase_rt.c:272
- nilfs_transaction_lock+0x253/0x4c0 fs/nilfs2/segment.c:357
- nilfs_segctor_thread_construct fs/nilfs2/segment.c:2569 [inline]
- nilfs_segctor_thread+0x6ec/0xe00 fs/nilfs2/segment.c:2684
-
-[ryusuke: corrected part of the commit message about the consequences]
-
-Fixes: 82e11e857be3 ("nilfs2: add nilfs_sufile_trim_fs to trim clean segs")
-Reported-by: syzbot+7eedce5eb281acd832f0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7eedce5eb281acd832f0
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-12-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/sufile.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/qla2xxx/qla_bsg.c |   28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
---- a/fs/nilfs2/sufile.c
-+++ b/fs/nilfs2/sufile.c
-@@ -1091,6 +1091,9 @@ int nilfs_sufile_trim_fs(struct inode *s
- 	else
- 		end_block = start_block + len - 1;
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -1546,8 +1546,9 @@ qla2x00_update_optrom(struct bsg_job *bs
+ 	ha->optrom_buffer = NULL;
+ 	ha->optrom_state = QLA_SWAITING;
+ 	mutex_unlock(&ha->optrom_mutex);
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		       bsg_reply->reply_payload_rcv_len);
++	if (!rval)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 	return rval;
+ }
  
-+	if (end_block < nilfs->ns_first_data_block)
-+		goto out;
-+
- 	segnum = nilfs_get_segnum_of_block(nilfs, start_block);
- 	segnum_end = nilfs_get_segnum_of_block(nilfs, end_block);
+@@ -2612,8 +2613,9 @@ qla2x00_manage_host_stats(struct bsg_job
+ 				    sizeof(struct ql_vnd_mng_host_stats_resp));
  
-@@ -1188,6 +1191,7 @@ int nilfs_sufile_trim_fs(struct inode *s
- out_sem:
- 	up_read(&NILFS_MDT(sufile)->mi_sem);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
  
-+out:
- 	range->len = ndiscarded << nilfs->ns_blocksize_bits;
  	return ret;
  }
+@@ -2702,8 +2704,9 @@ qla2x00_get_host_stats(struct bsg_job *b
+ 							       bsg_job->reply_payload.sg_cnt,
+ 							       data, response_len);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	kfree(data);
+ host_stat_out:
+@@ -2802,8 +2805,9 @@ reply:
+ 				    bsg_job->reply_payload.sg_cnt, data,
+ 				    response_len);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ tgt_stat_out:
+ 	kfree(data);
+@@ -2864,8 +2868,9 @@ qla2x00_manage_host_port(struct bsg_job
+ 				    bsg_job->reply_payload.sg_cnt, &rsp_data,
+ 				    sizeof(struct ql_vnd_mng_host_port_resp));
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	return ret;
+ }
+@@ -3240,7 +3245,8 @@ int qla2x00_mailbox_passthru(struct bsg_
+ 
+ 	bsg_job->reply_len = sizeof(*bsg_job->reply);
+ 	bsg_reply->result = DID_OK << 16;
+-	bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
+ 
+ 	kfree(req_data);
+ 
 
 
 
