@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-217137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cH/oDj7VlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:18 +0100
+	id ADgANqLVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:54:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56F615076E
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE2F15085F
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:54:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 84581304A23A
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9FF663008D1C
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C44284B3B;
-	Tue, 17 Feb 2026 20:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71372D6E76;
+	Tue, 17 Feb 2026 20:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nj/mtsf0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMqw+G/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6518129A1;
-	Tue, 17 Feb 2026 20:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AAB261B70;
+	Tue, 17 Feb 2026 20:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361549; cv=none; b=fxiyzHu2j3JMtBVhk/NC8rGm3gyKPyAlWk9yQ9b9DRjnb1FohsdQM/BGKRIpkyAFDlMINvN76ws/Uo2Ya7afBiQ8vMKSKIFkiFjg3PEpGwEIuD5FVRnh8LSzRTPBw4B3Zku/fbyT/1vd2YUIZ2x6T2MkSBgyiRHHQ1NSOzzqctI=
+	t=1771361693; cv=none; b=E9ZKxm7WOZjCgJI5liCFHFY9mLni5IrskuBJCqF1QhqVOjQd8QTUB/Mv4njlfqem1DCW+P3xbbBApehC2py3pGEsYda0jb509dgqZTYfQJaTDlFxJBjoSCeJgbsu3UmTJWeuKDkxutX2lQc5+cySTpln+Ehfj6xlIvn7ALiX9h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361549; c=relaxed/simple;
-	bh=Pkl3UqD9h1uFDwE5O61yhbzJI9m2M8LsijtEPviWwh8=;
+	s=arc-20240116; t=1771361693; c=relaxed/simple;
+	bh=NE1SvUFDpVSLkQai5I3DiJURulEZNNJ7GZ3vBD8AFhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTyB1ZXkEM9gM4uXmtNRhokcte0O/hzu9qK0VzQl5e61kLLZGUSyC9J8elLQuRIPEUiN15nZTueVjkUeHDCwzZaVOzoshE6dMqul7scXJMXcSkKmpuUumLtj1EruZkAdOyPTAO4iASudgjQ8qOqao16hzpLjcabYf4iY+FaZNMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nj/mtsf0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61FAC4CEF7;
-	Tue, 17 Feb 2026 20:52:28 +0000 (UTC)
+	 MIME-Version; b=Wbs2E4re7lNWPKAy5qJsZSWGfSKOb+bsfh4AY0M8YpAsqpiDNiWXXvnDNsJTUI0p5M1KxVOTJf+kMDTu/8+V7q5mtnfzF88b4l3TpLJmoWCgauls84TT0WbiM0pfpEHKx4CNzlBilYhtBz/kORqyARzxDlTjnT8Nvr8Jd3Oy6mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMqw+G/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB068C4CEF7;
+	Tue, 17 Feb 2026 20:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361549;
-	bh=Pkl3UqD9h1uFDwE5O61yhbzJI9m2M8LsijtEPviWwh8=;
+	s=korg; t=1771361693;
+	bh=NE1SvUFDpVSLkQai5I3DiJURulEZNNJ7GZ3vBD8AFhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nj/mtsf0QsLrmjgndC/gaapmwI1VKcfuQlXeVCrk4iG9Y6qo0SwmhzoW76OQD+Si4
-	 3qPj1wbzVc1PkHRHJ64MGI72FXyWfXkapwNRzznh3u+G8ZHM2zOM8VOYvdf8SuWdaD
-	 A75mKqIfsFNzuwaBMEQRZQhEj8oxhnnH65U4jg08=
+	b=qMqw+G/nf9zhUkYkdO+VhZam53VoivIX2V8hDULxwLqogJUXF8OM4Kes8KVBa2Xdh
+	 0Umlm8GUMbI3tBagX0iuFORnt0qEhxMcPyXHWFhEZVGSLsrslgb/S62vaLZvUFQwIc
+	 JM6MaIk2vRBJcxlQzB1+bfNRY9RQAgApa+hPn6OI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Xiaolong Guo <guoxiaolong2008@gmail.com>
-Subject: [PATCH 6.18 38/43] f2fs: fix to avoid mapping wrong physical block for swapfile
-Date: Tue, 17 Feb 2026 21:32:18 +0100
-Message-ID: <20260217200007.929266086@linuxfoundation.org>
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Uschakow, Stanislav" <suschako@amazon.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 28/42] mm/hugetlb: fix two comments related to huge_pmd_unshare()
+Date: Tue, 17 Feb 2026 21:32:19 +0100
+Message-ID: <20260217200007.074686652@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,173 +74,119 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217137-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217179-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,google.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D56F615076E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2CE2F15085F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: David Hildenbrand (Red Hat) <david@kernel.org>
 
-commit 5c145c03188bc9ba1c29e0bc4d527a5978fc47f9 upstream.
+commit 3937027caecb4f8251e82dd857ba1d749bb5a428 upstream.
 
-Xiaolong Guo reported a f2fs bug in bugzilla [1]
+Ever since we stopped using the page count to detect shared PMD page
+tables, these comments are outdated.
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=220951
+The only reason we have to flush the TLB early is because once we drop the
+i_mmap_rwsem, the previously shared page table could get freed (to then
+get reallocated and used for other purpose).  So we really have to flush
+the TLB before that could happen.
 
-Quoted:
+So let's simplify the comments a bit.
 
-"When using stress-ng's swap stress test on F2FS filesystem with kernel 6.6+,
-the system experiences data corruption leading to either:
-1 dm-verity corruption errors and device reboot
-2 F2FS node corruption errors and boot hangs
+The "If we unshared PMDs, the TLB flush was not recorded in mmu_gather."
+part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
+correctly after huge_pmd_unshare") was confusing: sure it is recorded in
+the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do anything.
+So let's drop that comment while at it as well.
 
-The issue occurs specifically when:
-1 Using F2FS filesystem (ext4 is unaffected)
-2 Swapfile size is less than F2FS section size (2MB)
-3 Swapfile has fragmented physical layout (multiple non-contiguous extents)
-4 Kernel version is 6.6+ (6.1 is unaffected)
+We'll centralize these comments in a single helper as we rework the code
+next.
 
-The root cause is in check_swap_activate() function in fs/f2fs/data.c. When the
-first extent of a small swapfile (< 2MB) is not aligned to section boundaries,
-the function incorrectly treats it as the last extent, failing to map
-subsequent extents. This results in incorrect swap_extent creation where only
-the first extent is mapped, causing subsequent swap writes to overwrite wrong
-physical locations (other files' data).
-
-Steps to Reproduce
-1 Setup a device with F2FS-formatted userdata partition
-2 Compile stress-ng from https://github.com/ColinIanKing/stress-ng
-3 Run swap stress test: (Android devices)
-adb shell "cd /data/stressng; ./stress-ng-64 --metrics-brief --timeout 60
---swap 0"
-
-Log:
-1 Ftrace shows in kernel 6.6, only first extent is mapped during second
-f2fs_map_blocks call in check_swap_activate():
-stress-ng-swap-8990: f2fs_map_blocks: ino=11002, file offset=0, start
-blkaddr=0x43143, len=0x1
-(Only 4KB mapped, not the full swapfile)
-2 in kernel 6.1, both extents are correctly mapped:
-stress-ng-swap-5966: f2fs_map_blocks: ino=28011, file offset=0, start
-blkaddr=0x13cd4, len=0x1
-stress-ng-swap-5966: f2fs_map_blocks: ino=28011, file offset=1, start
-blkaddr=0x60c84b, len=0xff
-
-The problematic code is in check_swap_activate():
-if ((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
-    nr_pblocks % blks_per_sec ||
-    !f2fs_valid_pinned_area(sbi, pblock)) {
-    bool last_extent = false;
-
-    not_aligned++;
-
-    nr_pblocks = roundup(nr_pblocks, blks_per_sec);
-    if (cur_lblock + nr_pblocks > sis->max)
-        nr_pblocks -= blks_per_sec;
-
-    /* this extent is last one */
-    if (!nr_pblocks) {
-        nr_pblocks = last_lblock - cur_lblock;
-        last_extent = true;
-    }
-
-    ret = f2fs_migrate_blocks(inode, cur_lblock, nr_pblocks);
-    if (ret) {
-        if (ret == -ENOENT)
-            ret = -EINVAL;
-        goto out;
-    }
-
-    if (!last_extent)
-        goto retry;
-}
-
-When the first extent is unaligned and roundup(nr_pblocks, blks_per_sec)
-exceeds sis->max, we subtract blks_per_sec resulting in nr_pblocks = 0. The
-code then incorrectly assumes this is the last extent, sets nr_pblocks =
-last_lblock - cur_lblock (entire swapfile), and performs migration. After
-migration, it doesn't retry mapping, so subsequent extents are never processed.
-"
-
-In order to fix this issue, we need to lookup block mapping info after
-we migrate all blocks in the tail of swapfile.
-
-Cc: stable@kernel.org
-Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
-Cc: Daeho Jeong <daehojeong@google.com>
-Reported-and-tested-by: Xiaolong Guo <guoxiaolong2008@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220951
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Link: https://lkml.kernel.org/r/20251223214037.580860-3-david@kernel.org
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ mm/hugetlb.c |   24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -3939,6 +3939,7 @@ static int check_swap_activate(struct sw
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5653,17 +5653,10 @@ void __unmap_hugepage_range(struct mmu_g
+ 	tlb_end_vma(tlb, vma);
  
- 	while (cur_lblock < last_lblock && cur_lblock < sis->max) {
- 		struct f2fs_map_blocks map;
-+		bool last_extent = false;
- retry:
+ 	/*
+-	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
+-	 * could defer the flush until now, since by holding i_mmap_rwsem we
+-	 * guaranteed that the last refernece would not be dropped. But we must
+-	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
+-	 * dropped and the last reference to the shared PMDs page might be
+-	 * dropped as well.
+-	 *
+-	 * In theory we could defer the freeing of the PMD pages as well, but
+-	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
+-	 * detect sharing, so we cannot defer the release of the page either.
+-	 * Instead, do flush now.
++	 * There is nothing protecting a previously-shared page table that we
++	 * unshared through huge_pmd_unshare() from getting freed after we
++	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
++	 * succeeded, flush the range corresponding to the pud.
+ 	 */
+ 	if (force_flush)
+ 		tlb_flush_mmu_tlbonly(tlb);
+@@ -6888,11 +6881,10 @@ long hugetlb_change_protection(struct vm
  		cond_resched();
- 
-@@ -3964,11 +3965,10 @@ retry:
- 		pblock = map.m_pblk;
- 		nr_pblocks = map.m_len;
- 
--		if ((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
--				nr_pblocks % blks_per_sec ||
--				f2fs_is_sequential_zone_area(sbi, pblock)) {
--			bool last_extent = false;
--
-+		if (!last_extent &&
-+			((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
-+			nr_pblocks % blks_per_sec ||
-+			f2fs_is_sequential_zone_area(sbi, pblock))) {
- 			not_aligned++;
- 
- 			nr_pblocks = roundup(nr_pblocks, blks_per_sec);
-@@ -3989,8 +3989,8 @@ retry:
- 				goto out;
- 			}
- 
--			if (!last_extent)
--				goto retry;
-+			/* lookup block mapping info after block migration */
-+			goto retry;
- 		}
- 
- 		if (cur_lblock + nr_pblocks >= sis->max)
+ 	}
+ 	/*
+-	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
+-	 * may have cleared our pud entry and done put_page on the page table:
+-	 * once we release i_mmap_rwsem, another task can do the final put_page
+-	 * and that page table be reused and filled with junk.  If we actually
+-	 * did unshare a page of pmds, flush the range corresponding to the pud.
++	 * There is nothing protecting a previously-shared page table that we
++	 * unshared through huge_pmd_unshare() from getting freed after we
++	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
++	 * succeeded, flush the range corresponding to the pud.
+ 	 */
+ 	if (shared_pmd)
+ 		flush_hugetlb_tlb_range(vma, range.start, range.end);
 
 
 
