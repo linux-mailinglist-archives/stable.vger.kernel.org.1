@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-217154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217085-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGZxJkzVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217154-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:32 +0100
+	id KEq/KF7UlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217085-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B121507AD
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CBED15059D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E85BB3019512
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D1EE303E398
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E90A2D6E76;
-	Tue, 17 Feb 2026 20:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF77128C009;
+	Tue, 17 Feb 2026 20:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIZzN+bB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoyLuIg0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503B828C009;
-	Tue, 17 Feb 2026 20:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73608259CBD;
+	Tue, 17 Feb 2026 20:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361608; cv=none; b=VR7XSwJtIaMF0G91S5ay5tPI5l3FiM8WvtTeUYbqK7grDdX+vPnn+b1oqYaClzNoT+uSR9ddiLQ7Tndu1i1MRISsxLJS/nxmQ1JS1MNZEMLnyQ21q7xwuIpbo0EMgwhNSdBJed1zyv7XhrmUofN1LPBeGiKSaYq6k+bXVVf9f2U=
+	t=1771361372; cv=none; b=WNwOj2BfO+GhjO7CRV+bkvgD8zyWeOKd4O7N7LpawlsefRXGR51GRXXBjnKrVgR9YPD7DDw+yCwXNbsK/ppbrts46KJRcfNiwQ2CoHcPiAYt044Xlvw1H/t+cOw62eKxxVGveqUpp7VeS638OQRl9UKMVpxN59SOHzILKv0Ffr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361608; c=relaxed/simple;
-	bh=1Zsr/MgdQjskTIvhrkstgCB97/RG9J5mH4PwrvgNcrM=;
+	s=arc-20240116; t=1771361372; c=relaxed/simple;
+	bh=LNIUevo1lw7Hd1tDYIdFie/PRUI7x2mQ6WW/ARigFbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EvBtMspam37+3c5/uvf2Nr4eHqMp4jn1kFL7EWTDH2DdYf0aF2nEdKlNLmRajh5kR0nQi9mBW9eeb3TM8AdnMT85SUqCC6uCkbvycfMuiQLv0j8RupIn2I+8RyS+sg07XHVbVwilbTpVB4oKIiT3N4OhDILkCvWmSgBt8tt4i9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIZzN+bB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E23C4CEF7;
-	Tue, 17 Feb 2026 20:53:27 +0000 (UTC)
+	 MIME-Version; b=j3wclx17IFmcXuqJv3x8Tk5MINlPDsllJOtOZDd4+IN62dyEwTPMA9bNg+TJq1gbbGp0kqcz6ae/khmNnfXZNebBtibo6PvIFeqIfnUrVtDp1R2QwQn8HbZPUemeRs0/AJuyubJI8VNnAG/agcNepFZ3zNxZ1Ct0OYJl6RVeR1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoyLuIg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69D6C4CEF7;
+	Tue, 17 Feb 2026 20:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361608;
-	bh=1Zsr/MgdQjskTIvhrkstgCB97/RG9J5mH4PwrvgNcrM=;
+	s=korg; t=1771361372;
+	bh=LNIUevo1lw7Hd1tDYIdFie/PRUI7x2mQ6WW/ARigFbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VIZzN+bB/cCS2Fgq7mXXlLilCMcJEZpDqdzgaVUjKJbrXKzPnPN4+nh0j1O5euxTx
-	 54M6R/s6gpPdhXMjEGXi1CBkdTw5sJbh/mBmhvQXb7PspkwLl/4SOgTOl+DbuQpKcf
-	 Ne/cfP4piIyXf2T6Gv15q1uP769FB1L7pIEjCmiI=
+	b=ZoyLuIg0NkrbKpv2vWoH2RAJZ/eXWro4thTZ53fATzKMznYCkqA+E8bUqa0ZlIiVx
+	 ETN2N+OQaK1T+USwPmZ4e9R0LOAj0i1oIkQzRU/nyfaqLMPtkJTtKE2HQw7FiaiqvR
+	 vg70AQAIfgsJEh+ouVr4HIHzmHLSu+OMYh9/WS9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+28cea38c382fd15e751a@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sean Anderson <sean.anderson@linux.dev>
-Subject: [PATCH 6.12 21/42] tracing/dma: Cap dma_map_sg tracepoint arrays to prevent buffer overflow
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.19 16/18] USB: serial: option: add Telit FN920C04 RNDIS compositions
 Date: Tue, 17 Feb 2026 21:32:12 +0100
-Message-ID: <20260217200006.813281092@linuxfoundation.org>
+Message-ID: <20260217200003.326437936@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
-References: <20260217200005.998240758@linuxfoundation.org>
+In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
+References: <20260217200002.683975158@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,147 +69,154 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,samsung.com,kernel.org,linux.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217154-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-217085-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,28cea38c382fd15e751a];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,syzkaller.appspot.com:url,samsung.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: 09B121507AD
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 5CBED15059D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-[ Upstream commit daafcc0ef0b358d9d622b6e3b7c43767aa3814ee ]
+commit 509f403f3ccec14188036212118651bf23599396 upstream.
 
-The dma_map_sg tracepoint can trigger a perf buffer overflow when
-tracing large scatter-gather lists. With devices like virtio-gpu
-creating large DRM buffers, nents can exceed 1000 entries, resulting
-in:
+Add the following compositions:
 
-  phys_addrs: 1000 * 8 bytes = 8,000 bytes
-  dma_addrs:  1000 * 8 bytes = 8,000 bytes
-  lengths:    1000 * 4 bytes = 4,000 bytes
-  Total: ~20,000 bytes
+0x10a1: RNDIS + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  9 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a1 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=d128dba9
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-This exceeds PERF_MAX_TRACE_SIZE (8192 bytes), causing:
+0x10a6: RNDIS + tty (AT/NMEA) + tty (AT) + tty (diag)
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 10 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10a6 Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=d128dba9
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-  WARNING: CPU: 0 PID: 5497 at kernel/trace/trace_event_perf.c:405
-  perf buffer not large enough, wanted 24620, have 8192
+0x10ab: RNDIS + tty (AT) + tty (diag) + DPL (Data Packet Logging) + adb
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 11 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=10ab Rev=05.15
+S:  Manufacturer=Telit Cinterion
+S:  Product=FN920
+S:  SerialNumber=d128dba9
+C:  #Ifs= 6 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=ef(misc ) Sub=04 Prot=01 Driver=rndis_host
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Cap all three dynamic arrays at 128 entries using min() in the array
-size calculation. This ensures arrays are only as large as needed
-(up to the cap), avoiding unnecessary memory allocation for small
-operations while preventing overflow for large ones.
-
-The tracepoint now records the full nents/ents counts and a truncated
-flag so users can see when data has been capped.
-
-Changes in v2:
-- Use min(nents, DMA_TRACE_MAX_ENTRIES) for dynamic array sizing
-  instead of fixed DMA_TRACE_MAX_ENTRIES allocation (feedback from
-  Steven Rostedt)
-- This allocates only what's needed up to the cap, avoiding waste
-  for small operations
-
-Reported-by: syzbot+28cea38c382fd15e751a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=28cea38c382fd15e751a
-Tested-by: syzbot+28cea38c382fd15e751a@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Reviwed-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260130155215.69737-1-kartikey406@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/dma.h | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
-index e5187144c91b7..705363b228a40 100644
---- a/include/trace/events/dma.h
-+++ b/include/trace/events/dma.h
-@@ -278,6 +278,8 @@ TRACE_EVENT(dma_free_sgt,
- 				sizeof(u64), sizeof(u64)))
- );
- 
-+#define DMA_TRACE_MAX_ENTRIES 128
-+
- TRACE_EVENT(dma_map_sg,
- 	TP_PROTO(struct device *dev, struct scatterlist *sgl, int nents,
- 		 int ents, enum dma_data_direction dir, unsigned long attrs),
-@@ -285,9 +287,12 @@ TRACE_EVENT(dma_map_sg,
- 
- 	TP_STRUCT__entry(
- 		__string(device, dev_name(dev))
--		__dynamic_array(u64, phys_addrs, nents)
--		__dynamic_array(u64, dma_addrs, ents)
--		__dynamic_array(unsigned int, lengths, ents)
-+		__field(int, full_nents)
-+		__field(int, full_ents)
-+		__field(bool, truncated)
-+		__dynamic_array(u64, phys_addrs,  min(nents, DMA_TRACE_MAX_ENTRIES))
-+		__dynamic_array(u64, dma_addrs, min(ents, DMA_TRACE_MAX_ENTRIES))
-+		__dynamic_array(unsigned int, lengths, min(ents, DMA_TRACE_MAX_ENTRIES))
- 		__field(enum dma_data_direction, dir)
- 		__field(unsigned long, attrs)
- 	),
-@@ -295,11 +300,16 @@ TRACE_EVENT(dma_map_sg,
- 	TP_fast_assign(
- 		struct scatterlist *sg;
- 		int i;
-+		int traced_nents = min_t(int, nents, DMA_TRACE_MAX_ENTRIES);
-+		int traced_ents = min_t(int, ents, DMA_TRACE_MAX_ENTRIES);
- 
- 		__assign_str(device);
--		for_each_sg(sgl, sg, nents, i)
-+		__entry->full_nents = nents;
-+		__entry->full_ents = ents;
-+		__entry->truncated = (nents > DMA_TRACE_MAX_ENTRIES) || (ents > DMA_TRACE_MAX_ENTRIES);
-+		for_each_sg(sgl, sg, traced_nents, i)
- 			((u64 *)__get_dynamic_array(phys_addrs))[i] = sg_phys(sg);
--		for_each_sg(sgl, sg, ents, i) {
-+		for_each_sg(sgl, sg, traced_ents, i) {
- 			((u64 *)__get_dynamic_array(dma_addrs))[i] =
- 				sg_dma_address(sg);
- 			((unsigned int *)__get_dynamic_array(lengths))[i] =
-@@ -309,9 +319,12 @@ TRACE_EVENT(dma_map_sg,
- 		__entry->attrs = attrs;
- 	),
- 
--	TP_printk("%s dir=%s dma_addrs=%s sizes=%s phys_addrs=%s attrs=%s",
-+	TP_printk("%s dir=%s nents=%d/%d ents=%d/%d%s dma_addrs=%s sizes=%s phys_addrs=%s attrs=%s",
- 		__get_str(device),
- 		decode_dma_data_direction(__entry->dir),
-+		min_t(int, __entry->full_nents, DMA_TRACE_MAX_ENTRIES), __entry->full_nents,
-+		min_t(int, __entry->full_ents, DMA_TRACE_MAX_ENTRIES), __entry->full_ents,
-+		__entry->truncated ? " [TRUNCATED]" : "",
- 		__print_array(__get_dynamic_array(dma_addrs),
- 			      __get_dynamic_array_len(dma_addrs) /
- 				sizeof(u64), sizeof(u64)),
--- 
-2.51.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1401,12 +1401,16 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(0) | RSVD(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a1, 0xff),	/* Telit FN20C04 (RNDIS) */
++	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a2, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a3, 0xff),	/* Telit FN920C04 (ECM) */
+ 	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a6, 0xff),	/* Telit FN920C04 (RNDIS) */
++	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a7, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a8, 0xff),	/* Telit FN920C04 (ECM) */
+@@ -1415,6 +1419,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
+ 	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10ab, 0xff),	/* Telit FN920C04 (RNDIS) */
++	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10b0, 0xff, 0xff, 0x30),	/* Telit FE990B (rmnet) */
+ 	  .driver_info = NCTRL(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10b0, 0xff, 0xff, 0x40) },
 
 
 
