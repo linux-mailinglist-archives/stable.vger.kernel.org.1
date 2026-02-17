@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-217063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFixFRPUlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-217063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:19 +0100
+	id iEayFe3UlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0481504F4
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F7F15069E
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3247C300CCBE
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B314C304EA44
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD56284B3B;
-	Tue, 17 Feb 2026 20:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AC4261B70;
+	Tue, 17 Feb 2026 20:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbMe8Oqc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qd5UC9XW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F1A29A1;
-	Tue, 17 Feb 2026 20:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8082773E4;
+	Tue, 17 Feb 2026 20:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361296; cv=none; b=h+5D868Va3VuJMKYRdlz9qxaEHUh70bBx+1HcH30MyhefXh+81K1MeVlFKHygnh1FzjSel69N6dwdQW5T8qgl6EqgH1ffKL6byfwnzCOenMf8zL3RYTMppBhJAh9bDkqIS5Qt0n/ThebCrxMBT8avj6Gr+Mb93WGPDdRSSA4pvs=
+	t=1771361426; cv=none; b=mYVjSsPbWe3eQPA6FRn3zFdIL3et42fDdKC/V4N8Voxe9jnBWr+6qCdRk6GHNQ4yJjAfGj9z3oJK97hIG+0nroXrGGnXoNgn3xrQSKwR4Yp/mwZdo7gbcrm8eJNlIQo/9LBOdxhdG1tbzJ1Lr4B/UkN30s0RJxkbpvHPgTZD5+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361296; c=relaxed/simple;
-	bh=YUZsNAoHy3C7dVTedfrAtBm1t6ptuD89/jTOoZHEfzs=;
+	s=arc-20240116; t=1771361426; c=relaxed/simple;
+	bh=Vdlkig/rWMhOeRQAtDxj9eLLlk88iLwtu6xS/a3q5y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f3HI/elAoYw52Qjo6PhwTUIDpI5vc6Z4WR7mRPsLlA9C2zCBzOaKgaEhserZKAAl3FYi0mM78ASnQlLCURPgHnQkD5z61j+AoB1Al2izgJGCty1YRfvb+vQ11QFUzVVglOa1EoqUqWtbJ+3UODxVWfaNlpnQvXAW1r8Ms/ay0so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbMe8Oqc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBEFC4CEF7;
-	Tue, 17 Feb 2026 20:48:15 +0000 (UTC)
+	 MIME-Version; b=YUKkLLqfaaLEmYYN0yOkO6zXj7UGpvseLYdbeVZyS7lH+omknjoZfIGZxu2mJuOQ54je/jgSjIdTUFOOEwurNpg69Szl33hRzmDsdfWskbwp7TAblKZTmIYguWhEd9ifZpIoKgnpk8XbcBVTZTfhMRUD3f2iot9d7Upk475kfzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qd5UC9XW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66838C4CEF7;
+	Tue, 17 Feb 2026 20:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361296;
-	bh=YUZsNAoHy3C7dVTedfrAtBm1t6ptuD89/jTOoZHEfzs=;
+	s=korg; t=1771361426;
+	bh=Vdlkig/rWMhOeRQAtDxj9eLLlk88iLwtu6xS/a3q5y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbMe8OqckWbA98feSPFLMHYF6hoQL6nORsZKKOom+3xMGdfNeMeIenTtnlfyTY97/
-	 YHWju35yx/+VpqexIVMdtGHBtXGS0p0+xgIl+Iz0qhKcXoH9hKDyIPELWq5nJvuG5L
-	 tYi/TtQkQOS4WjXsvXJYoc0V7O6639bUE7r7xIlQ=
+	b=qd5UC9XWbO/b+VWydSxnBAUMim9akYSIFxzS/DzVOyfJi2ibruyEQOKQuzVxPWUZM
+	 V5Ka0GABAfXM1nGnfdVc8s0qqQ0CHv0aspUNLmXBx5S/PoQjCXx/VsQSvdgPTqOTc1
+	 mCqCF7GE3G0gCi81/p+bx6YkfMJnjWEi1Q41SMVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Chen Ridong <chenridong@huawei.com>
-Subject: [PATCH 6.1 57/64] cpuset: Fix missing adaptation for cpuset_is_populated
+	Tagir Garaev <tgaraev653@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 13/43] ASoC: Intel: sof_es8336: Add DMI quirk for Huawei BOD-WXX9
 Date: Tue, 17 Feb 2026 21:31:53 +0100
-Message-ID: <20260217200009.643447935@linuxfoundation.org>
+Message-ID: <20260217200006.978887381@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217101-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217063-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: BF0481504F4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 09F7F15069E
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Tagir Garaev <tgaraev653@gmail.com>
 
-Commit b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
-was backported to the long‑term support (LTS) branches. However, because
-commit d5cf4d34a333 ("cgroup/cpuset: Don't track # of local child
-partitions") was not backported, a corresponding adaptation to the
-backported code is still required.
+[ Upstream commit 6b641122d31f9d33e7d60047ee0586d1659f3f54 ]
 
-To ensure correct behavior, replace cgroup_is_populated with
-cpuset_is_populated in the partition_is_populated function.
+Add DMI entry for Huawei Matebook D (BOD-WXX9) with HEADPHONE_GPIO
+and DMIC quirks.
 
-Cc: stable@vger.kernel.org	# 6.1+
-Fixes: b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
-Cc: Waiman Long <longman@redhat.com>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This device has ES8336 codec with:
+- GPIO 16 (headphone-enable) for headphone amplifier control
+- GPIO 17 (speakers-enable) for speaker amplifier control
+- GPIO 269 for jack detection IRQ
+- 2-channel DMIC
+
+Hardware investigation shows that both GPIO 16 and 17 are required
+for proper audio routing, as headphones and speakers share the same
+physical output (HPOL/HPOR) and are separated only via amplifier
+enable signals.
+
+RFC: Seeking advice on GPIO control issue:
+
+GPIO values change in driver (gpiod_get_value() shows logical value
+changes) but not physically (debugfs gpio shows no change). The same
+gpiod_set_value_cansleep() calls work correctly in probe context with
+msleep(), but fail when called from DAPM event callbacks.
+
+Context information from diagnostics:
+- in_atomic=0, in_interrupt=0, irqs_disabled=0
+- Process context: pipewire
+- GPIO 17 (speakers): changes in driver, no physical change
+- GPIO 16 (headphone): changes in driver, no physical change
+
+In Windows, audio switching works without visible GPIO changes,
+suggesting possible ACPI/firmware involvement.
+
+Any suggestions on how to properly control these GPIOs from DAPM
+events would be appreciated.
+
+Signed-off-by: Tagir Garaev <tgaraev653@gmail.com>
+Link: https://patch.msgid.link/20260201121728.16597-1-tgaraev653@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/boards/sof_es8336.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -509,7 +509,7 @@ static inline bool partition_is_populate
- 	    cs->attach_in_progress)
- 		return true;
- 	if (!excluded_child && !cs->nr_subparts_cpus)
--		return cgroup_is_populated(cs->css.cgroup);
-+		return cpuset_is_populated(cs);
- 
- 	rcu_read_lock();
- 	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
+diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
+index 09acd80d23e0f..cf50de5c2edd8 100644
+--- a/sound/soc/intel/boards/sof_es8336.c
++++ b/sound/soc/intel/boards/sof_es8336.c
+@@ -332,6 +332,15 @@ static int sof_es8336_quirk_cb(const struct dmi_system_id *id)
+  * if the topology file is modified as well.
+  */
+ static const struct dmi_system_id sof_es8336_quirk_table[] = {
++	{
++		.callback = sof_es8336_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HUAWEI"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "BOD-WXX9"),
++		},
++		.driver_data = (void *)(SOF_ES8336_HEADPHONE_GPIO |
++					SOF_ES8336_ENABLE_DMIC)
++	},
+ 	{
+ 		.callback = sof_es8336_quirk_cb,
+ 		.matches = {
+-- 
+2.51.0
+
 
 
 
