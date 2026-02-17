@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-216959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qClgN67SlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216959-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:22 +0100
+	id MOx3FjjTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4386315019F
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBFF15030E
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 417EE300EA82
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 79DAF3042634
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBBB378821;
-	Tue, 17 Feb 2026 20:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3688A378D65;
+	Tue, 17 Feb 2026 20:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6zmLlKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFkgsYyz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D768377563;
-	Tue, 17 Feb 2026 20:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED093378821;
+	Tue, 17 Feb 2026 20:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360939; cv=none; b=q+Qw8LD2QY4bl8/8V+WzgfOM+6+PXFaMYfTNDAlZgy4XTqJ7ihlco5V1Cllm3fFO0cp93ROvOPzzSmv968qyh8aOcaqUrXBw4FF5hCjFhrkMBnNHQexfFqatzLIXdetIRypvItV2iqNVOL+GN+Bzgsy/zVQgekvTTnteaiMTICM=
+	t=1771361045; cv=none; b=eBY3XclLpS0kq3TvT2itNgUYVbJj32bRQ7CXcoOALULtl8+hsc/EiyHKxV2rB9PLcaVoI9ay2IyyqfVWhPD6Djo7/n+T1lK51CIcKlFC/NkJJ5SHdn4ialTyNIzk25/BtGSAZfAoBrPDAgoJA4w5m3R57mq+S6fz4vrn/PBRBuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360939; c=relaxed/simple;
-	bh=JYRV2WkWvHNiub8DL2FW7wBnTcUtKHuSsFBHg1TDcOM=;
+	s=arc-20240116; t=1771361045; c=relaxed/simple;
+	bh=FnP3Jf+0GQvq1MYbk09xUozouieg3HeBVfjX2wfnwTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4XB4rlhpToWsU3wXNk7JYYGeF3FsmRj1ZoSfUzmhFfwOZD5Mc+jn1Z8JT1W37KgGfRiTt1h+yrx3L8B4/od//CzSJ/+xnluF6pXu5nH86f0kn6guwBH0Ho7hUt8rR9hTTH/ABVmAzdKS+2aq56aENbIz5ZIE7yYufxFglMtGLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6zmLlKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14CEC4CEF7;
-	Tue, 17 Feb 2026 20:42:18 +0000 (UTC)
+	 MIME-Version; b=a6ryvnsa7aagldGdsAKnyp8+POxsc61cE2xAI4gBZP1u7Uuh+fD1x7xUu5vLUK+qOUtzcs3wYcTup5/GuTUEKY4ZqCYtrpXpTFHPkuo26EH3L4kmLLXA4GYBBsSTI7nSOTVQhs+nNiJky7IYazQVO9J5ljO7xjxubTV4YlMoujw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFkgsYyz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE8AC4CEF7;
+	Tue, 17 Feb 2026 20:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360939;
-	bh=JYRV2WkWvHNiub8DL2FW7wBnTcUtKHuSsFBHg1TDcOM=;
+	s=korg; t=1771361044;
+	bh=FnP3Jf+0GQvq1MYbk09xUozouieg3HeBVfjX2wfnwTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6zmLlKt//jLOA15gw/70FtcZPt3l/dwdPngwEi70uE4zIg2c2dntQuKpLmvUWThl
-	 W9Z2SVFMPjsC25cTPCcD7wxUTaNPYw5ro/fmEwkQNjmbKzMwNWlE/dTGdNoTow8kRE
-	 KRO7CQDGfL7MRFLKSBgBtWTZN9l068tp9fkMDxGA=
+	b=IFkgsYyz5DquXitegVEw8qiSsv9F6fBsuUaY3D6rFKOEC5yRkFrs2xarGH9O96t0v
+	 kuzLcn7cWjBrvdM5DxRmUCYd2uhcAF9vAHrGl6cF41cIMhlAH6LhGo/7+UD9Li05kE
+	 vwDvKJz+XgCN7ZHy2n1FzWQJ+26XQgVqVHoWotbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 20/24] fbdev: rivafb: fix divide error in nv3_arb()
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 24/39] smb: server: fix leak of active_num_conn in ksmbd_tcp_new_connection()
 Date: Tue, 17 Feb 2026 21:31:33 +0100
-Message-ID: <20260217200001.496260195@linuxfoundation.org>
+Message-ID: <20260217200003.862311717@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
-References: <20260217200000.708219618@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +68,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216959-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216989-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qemu.org:url,gmx.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4386315019F
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,suse.com:email]
+X-Rspamd-Queue-Id: EBBFF15030E
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit 0209e21e3c372fa2da04c39214bec0b64e4eb5f4 upstream.
+[ Upstream commit 77ffbcac4e569566d0092d5f22627dfc0896b553 ]
 
-A userspace program can trigger the RIVA NV3 arbitration code by calling
-the FBIOPUT_VSCREENINFO ioctl on /dev/fb*. When doing so, the driver
-recomputes FIFO arbitration parameters in nv3_arb(), using state->mclk_khz
-(derived from the PRAMDAC MCLK PLL) as a divisor without validating it
-first.
+On kthread_run() failure in ksmbd_tcp_new_connection(), the transport is
+freed via free_transport(), which does not decrement active_num_conn,
+leaking this counter.
 
-In a normal setup, state->mclk_khz is provided by the real hardware and is
-non-zero. However, an attacker can construct a malicious or misconfigured
-device (e.g. a crafted/emulated PCI device) that exposes a bogus PLL
-configuration, causing state->mclk_khz to become zero.  Once
-nv3_get_param() calls nv3_arb(), the division by state->mclk_khz in the gns
-calculation causes a divide error and crashes the kernel.
+Replace free_transport() with ksmbd_tcp_disconnect().
 
-Fix this by checking whether state->mclk_khz is zero and bailing out before
-doing the division.
-
-The following log reveals it:
-
-rivafb: setting virtual Y resolution to 2184
-divide error: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 PID: 2187 Comm: syz-executor.0 Not tainted 5.18.0-rc1+ #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-RIP: 0010:nv3_arb drivers/video/fbdev/riva/riva_hw.c:439 [inline]
-RIP: 0010:nv3_get_param+0x3ab/0x13b0 drivers/video/fbdev/riva/riva_hw.c:546
-Call Trace:
-  nv3CalcArbitration.constprop.0+0x255/0x460 drivers/video/fbdev/riva/riva_hw.c:603
-  nv3UpdateArbitrationSettings drivers/video/fbdev/riva/riva_hw.c:637 [inline]
-  CalcStateExt+0x447/0x1b90 drivers/video/fbdev/riva/riva_hw.c:1246
-  riva_load_video_mode+0x8a9/0xea0 drivers/video/fbdev/riva/fbdev.c:779
-  rivafb_set_par+0xc0/0x5f0 drivers/video/fbdev/riva/fbdev.c:1196
-  fb_set_var+0x604/0xeb0 drivers/video/fbdev/core/fbmem.c:1033
-  do_fb_ioctl+0x234/0x670 drivers/video/fbdev/core/fbmem.c:1109
-  fb_ioctl+0xdd/0x130 drivers/video/fbdev/core/fbmem.c:1188
-  __x64_sys_ioctl+0x122/0x190 fs/ioctl.c:856
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 0d0d4680db22e ("ksmbd: add max connections parameter")
 Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/riva/riva_hw.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ksmbd/transport_tcp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/riva/riva_hw.c
-+++ b/drivers/video/fbdev/riva/riva_hw.c
-@@ -437,6 +437,9 @@ static char nv3_arb(nv3_fifo_info * res_
-     vmisses = 2;
-     eburst_size = state->memory_width * 1;
-     mburst_size = 32;
-+    if (!state->mclk_khz)
-+	return (0);
-+
-     gns = 1000000 * (gmisses*state->mem_page_miss + state->mem_latency)/state->mclk_khz;
-     ainfo->by_gfacc = gns*ainfo->gdrain_rate/1000000;
-     ainfo->wcmocc = 0;
+--- a/fs/ksmbd/transport_tcp.c
++++ b/fs/ksmbd/transport_tcp.c
+@@ -41,6 +41,7 @@ static struct ksmbd_transport_ops ksmbd_
+ 
+ static void tcp_stop_kthread(struct task_struct *kthread);
+ static struct interface *alloc_iface(char *ifname);
++static void ksmbd_tcp_disconnect(struct ksmbd_transport *t);
+ 
+ #define KSMBD_TRANS(t)	(&(t)->transport)
+ #define TCP_TRANS(t)	((struct tcp_transport *)container_of(t, \
+@@ -207,7 +208,7 @@ static int ksmbd_tcp_new_connection(stru
+ 	if (IS_ERR(handler)) {
+ 		pr_err("cannot start conn thread\n");
+ 		rc = PTR_ERR(handler);
+-		free_transport(t);
++		ksmbd_tcp_disconnect(KSMBD_TRANS(t));
+ 	}
+ 	return rc;
+ 
 
 
 
