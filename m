@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-217150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDnjAz7VlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217150-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:18 +0100
+	id 8H0bK1bUlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE3515076D
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BB8150587
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44A8A3018083
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E82F6303EE93
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81F228D8E8;
-	Tue, 17 Feb 2026 20:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7338E2773E4;
+	Tue, 17 Feb 2026 20:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqOVZiA0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvjZJAoe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4D029A1;
-	Tue, 17 Feb 2026 20:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D7929A1;
+	Tue, 17 Feb 2026 20:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361594; cv=none; b=ZV698vCJDUn/3JnG5Cfa4fL2p4lQutOVVbfz+M1vfjeQznlMkfTFHS8HzBsln48nEuWuwKyuKSVeY5R1wzX5/pKKctfdSYxaN0D1wJAUT/79g5mXyK3OpEfgGNrxNI+iBb1AMEyj42T9Hueo3EseKFJajWzSVazkZLEsZtZrpZo=
+	t=1771361362; cv=none; b=WLTqYv8XyZuQ3VmyW+Xo/1mGLCK7Q/NFs0QX3rEazWistgfOt8ttR3uP8HpTgEAxCBihwiapAdwHOMY3pUpp0ueIgxpemCFvdaSdPaoOLwRC0Wgb/oCgn7/g6Ull2/La2XNWm58sD0bXefnTLLXKizwbkiT76SxdTqZ1JGBob4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361594; c=relaxed/simple;
-	bh=NJgEb67H9q2qmjrPjkvYuqkZrqQSD6OvbRTJu5IB4R0=;
+	s=arc-20240116; t=1771361362; c=relaxed/simple;
+	bh=BUcm7vzYMqn0wuHuUq7QOB3DstmHC3nVF1B1wpjPGQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ulki8PeiPTeY2+2oY9N2IJiMp6tJTfbLE7b95iaF1tZGVPFiWwoFQwKCzxYzP/ReHQiFjzo/+q/C8eqm9ktjy7KYGg907nrNXMIwPAo4rweZJ784bQhF/bUobRXHCqRESzFBuaYYrd0GQTGI5oqG4UTNWnUH2JF3yMinJxJh99I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqOVZiA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3EFC4CEF7;
-	Tue, 17 Feb 2026 20:53:13 +0000 (UTC)
+	 MIME-Version; b=RRiLIfq056EX9caYgLort4dP8N2vUF6nSK7pEgGXeWaQX6c5VkAY8PARIhF5tXv+3FsdnBJCKjJ7MVRjfQj2o2gM6wEDi2czbmw+6R+rRmn1nWlBbkhm2eepG6jwalruo0tK61buzs3FSwXBI+QY0WcZfVl47hQ8y55kUIzW2Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvjZJAoe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0053C4CEF7;
+	Tue, 17 Feb 2026 20:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361594;
-	bh=NJgEb67H9q2qmjrPjkvYuqkZrqQSD6OvbRTJu5IB4R0=;
+	s=korg; t=1771361362;
+	bh=BUcm7vzYMqn0wuHuUq7QOB3DstmHC3nVF1B1wpjPGQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UqOVZiA0HX1LkgfuxB3994qEds9uv8qVoJsvgre4+F06VtMc+Vy9RUvBK968wYiVB
-	 jV65YDWN0nBGn9Ku4gCqF6xMIfmqYYVa6RFPTURwSFwKcAi9g2phF50IFvbHgvBWAQ
-	 S3FDyi0SM4TUHWdFNI7OdbrKryQKmZF9llz6oX5g=
+	b=rvjZJAoe84fRC0iWL9wj7HP+VdZ7ylWUTLdkk7Rt61YDgMFZnJDDhoNo+thsSIHuu
+	 Pm2Uw7LZBVOrgEDVsE34qnR5D/J7ectExQoCREqOE7FzWSIoE5qrlEOx8J+grVqetK
+	 VOCcmenr9ZArZrsZFXP6lzRzTcgwVTWrY9OgUXqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	gongqi <550230171hxy@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 18/42] platform/x86/amd/pmc: Add quirk for MECHREVO Wujie 15X Pro
+	stable@kernel.org,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Sunmin Jeong <s_min.jeong@samsung.com>,
+	Yeongjin Gil <youngjin.gil@samsung.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.19 13/18] f2fs: optimize f2fs_overwrite_io() for f2fs_iomap_begin
 Date: Tue, 17 Feb 2026 21:32:09 +0100
-Message-ID: <20260217200006.701284929@linuxfoundation.org>
+Message-ID: <20260217200003.205754105@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
-References: <20260217200005.998240758@linuxfoundation.org>
+In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
+References: <20260217200002.683975158@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +66,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217150-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217082-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8CE3515076D
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,samsung.com:email]
+X-Rspamd-Queue-Id: 20BB8150587
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gongqi <550230171hxy@gmail.com>
+From: Yeongjin Gil <youngjin.gil@samsung.com>
 
-[ Upstream commit 2b4e00d8e70ca8736fda82447be6a4e323c6d1f5 ]
+commit d860974a7e38d35e9e2c4dc8a9f4223b38b6ad99 upstream.
 
-The MECHREVO Wujie 15X Pro suffers from spurious IRQ issues related to
-the AMD PMC. Add it to the quirk list to use the spurious_8042 fix.
+When overwriting already allocated blocks, f2fs_iomap_begin() calls
+f2fs_overwrite_io() to check block mappings. However,
+f2fs_overwrite_io() iterates through all mapped blocks in the range,
+which can be inefficient for fragmented files with large I/O requests.
 
-Signed-off-by: gongqi <550230171hxy@gmail.com>
-Link: https://patch.msgid.link/20260122155501.376199-4-550230171hxy@gmail.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch optimizes f2fs_overwrite_io() by adding a 'check_first'
+parameter and introducing __f2fs_overwrite_io() helper. When called from
+f2fs_iomap_begin(), we only check the first mapping to determine if the
+range is already allocated, which is sufficient for setting
+map.m_may_create.
+
+This optimization significantly reduces the number of f2fs_map_blocks()
+calls in f2fs_overwrite_io() when called from f2fs_iomap_begin(),
+especially for fragmented files with large I/O requests.
+
+Cc: stable@kernel.org
+Fixes: 351bc761338d ("f2fs: optimize f2fs DIO overwrites")
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Sunmin Jeong <s_min.jeong@samsung.com>
+Signed-off-by: Yeongjin Gil <youngjin.gil@samsung.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/f2fs/data.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index a5031339dac8c..a6006b4ec2cc0 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -296,6 +296,13 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
- 		}
- 	},
-+	{
-+		.ident = "MECHREVO Wujie 15X Pro",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
-+		}
-+	},
- 	{}
- };
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1799,7 +1799,8 @@ out:
+ 	return err;
+ }
  
--- 
-2.51.0
-
+-bool f2fs_overwrite_io(struct inode *inode, loff_t pos, size_t len)
++static bool __f2fs_overwrite_io(struct inode *inode, loff_t pos, size_t len,
++				bool check_first)
+ {
+ 	struct f2fs_map_blocks map;
+ 	block_t last_lblk;
+@@ -1821,10 +1822,17 @@ bool f2fs_overwrite_io(struct inode *ino
+ 		if (err || map.m_len == 0)
+ 			return false;
+ 		map.m_lblk += map.m_len;
++		if (check_first)
++			break;
+ 	}
+ 	return true;
+ }
+ 
++bool f2fs_overwrite_io(struct inode *inode, loff_t pos, size_t len)
++{
++	return __f2fs_overwrite_io(inode, pos, len, false);
++}
++
+ static int f2fs_xattr_fiemap(struct inode *inode,
+ 				struct fiemap_extent_info *fieinfo)
+ {
+@@ -4187,7 +4195,7 @@ static int f2fs_iomap_begin(struct inode
+ 	 * f2fs_map_lock and f2fs_balance_fs are not necessary.
+ 	 */
+ 	if ((flags & IOMAP_WRITE) &&
+-		!f2fs_overwrite_io(inode, offset, length))
++		!__f2fs_overwrite_io(inode, offset, length, true))
+ 		map.m_may_create = true;
+ 
+ 	err = f2fs_map_blocks(inode, &map, F2FS_GET_BLOCK_DIO);
 
 
 
