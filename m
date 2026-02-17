@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-216936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMCjBnXSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:25 +0100
+	id UIpqJGrTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83348150118
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D15C515038B
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 35A75304B3A7
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:41:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 791AA300383D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7F32BD031;
-	Tue, 17 Feb 2026 20:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09297280CC1;
+	Tue, 17 Feb 2026 20:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j71YBxod"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akl/rBGb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9079A6A8D2;
-	Tue, 17 Feb 2026 20:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A1E29A1;
+	Tue, 17 Feb 2026 20:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360861; cv=none; b=cqe65iPBl2nYgm6MGa9ilzWg/ID+X9vEDvKAaDc0n8miD+ZYat4r4ybd6JYDyxTe113xfAzZVaa2zlKkPjOOabT0p09EQhwPB3irR6hR4ElEMhECYcg5ENJOSrSi08p8BPHMSXSvShqjy8+Tac6d3lrZBFqmUHMFFfi82d90OzU=
+	t=1771361125; cv=none; b=jtCGZ5CKML7bs0GgZqHViAfkavSAhqJNKRKkzG+4ohE4vq9yUvS8fqUrHYGY0A/2AeyLIdgs6Lt01p2aNhlE4qOVrRBBgGjshXNE79/qY+nUnIsOTrc5okWOyUWv4oaz6oXqvB3yY3lAxQ25bAZHh3xH50AXLpTbTh3zv5oqz84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360861; c=relaxed/simple;
-	bh=luVIYf8Bnsu+WNLjGsv86miZKvT9cphpJKcTEm+lpNA=;
+	s=arc-20240116; t=1771361125; c=relaxed/simple;
+	bh=tMjmSlsOd7/MfQGQPL5hQ9G4B65pmLwqhEXG+LtO+f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFe9e1ROVzVDiP2oOOC27WFbnt9j+RxlpSIiA5ZizFoaiMS1TL4XxrCY6/+gzOSWoK/PdBL66fYOXa/27DSAOIvGKNJliCoijj0As9O0lyqeccSCO3v8oOVjUKJthTxErRQjchdIAw3PMKqbtJmuMxVNo0yWDW7nTnl5hngBJEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j71YBxod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFFCC4CEF7;
-	Tue, 17 Feb 2026 20:41:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ml9PWS3X29T7XZanZC9Aerb7pZIpGCWeRh6rVYesA21IWB+Mhp3CTMs6y27rrageg7Tu9hBHR6yV0AYIV4lbSLYwtAj0wh0MHbvlnQn3llljNpg2ikoktBbJDHXyMsMOPZiv6+lgpEV9laKlFAIFbE4uRaYtljuzS39n9COVR+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akl/rBGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD8FC4CEF7;
+	Tue, 17 Feb 2026 20:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360861;
-	bh=luVIYf8Bnsu+WNLjGsv86miZKvT9cphpJKcTEm+lpNA=;
+	s=korg; t=1771361125;
+	bh=tMjmSlsOd7/MfQGQPL5hQ9G4B65pmLwqhEXG+LtO+f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j71YBxodVZvcwplZR1oG7PRDj/Xj1QB23KySsbjyvBr9lKZuabU7VFljPv711rs2j
-	 9uiqi6toKRGCTKMhz4cCnKTOnfWsUFtFYDchRp79wBN/oYypBgXQ2K4HuubIobMPtP
-	 axW0BICQ8ZI8bwYZxfoRxi3q6LJJEVpIMSTSl8yw=
+	b=akl/rBGb+VgXg4Q3QYPjz0UZam99YO7G2CR35nJ53uTRPJpG3wBIDlWiYWONSciN0
+	 G3pvEfDRPrs6mwJ8ixmixoYhUg5UlnOd9LMwvjJwUs+pnf3Ynt8zlkRuBSUVDgE2L2
+	 pTeS3cEL1yJOxEe0PQnF/2CV9o5I/NjZVAj0pE/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 35/39] f2fs: fix to avoid UAF in f2fs_write_end_io()
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 01/64] smb: client: split cached_fid bitfields to avoid shared-byte RMW races
 Date: Tue, 17 Feb 2026 21:30:57 +0100
-Message-ID: <20260217200005.557692741@linuxfoundation.org>
+Message-ID: <20260217200007.563451087@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200004.221651386@linuxfoundation.org>
-References: <20260217200004.221651386@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +62,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216936-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217013-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,b4444e3c972a7a124187];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: 83348150118
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D15C515038B
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-[ Upstream commit ce2739e482bce8d2c014d76c4531c877f382aa54 ]
+commit ec306600d5ba7148c9dbf8f5a8f1f5c1a044a241 upstream.
 
-As syzbot reported an use-after-free issue in f2fs_write_end_io().
+is_open, has_lease and on_list are stored in the same bitfield byte in
+struct cached_fid but are updated in different code paths that may run
+concurrently. Bitfield assignments generate byte read–modify–write
+operations (e.g. `orb $mask, addr` on x86_64), so updating one flag can
+restore stale values of the others.
 
-It is caused by below race condition:
+A possible interleaving is:
+    CPU1: load old byte (has_lease=1, on_list=1)
+    CPU2: clear both flags (store 0)
+    CPU1: RMW store (old | IS_OPEN) -> reintroduces cleared bits
 
-loop device				umount
-- worker_thread
- - loop_process_work
-  - do_req_filebacked
-   - lo_rw_aio
-    - lo_rw_aio_complete
-     - blk_mq_end_request
-      - blk_update_request
-       - f2fs_write_end_io
-        - dec_page_count
-        - folio_end_writeback
-					- kill_f2fs_super
-					 - kill_block_super
-					  - f2fs_put_super
-					 : free(sbi)
-       : get_pages(, F2FS_WB_CP_DATA)
-         accessed sbi which is freed
+To avoid this class of races, convert these flags to separate bool
+fields.
 
-In kill_f2fs_super(), we will drop all page caches of f2fs inodes before
-call free(sbi), it guarantee that all folios should end its writeback, so
-it should be safe to access sbi before last folio_end_writeback().
-
-Let's relocate ckpt thread wakeup flow before folio_end_writeback() to
-resolve this issue.
-
-Cc: stable@kernel.org
-Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint for better performance")
-Reported-by: syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b4444e3c972a7a124187
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ folio => page ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ebe98f1447bbc ("cifs: enable caching of directories for which a lease is held")
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ fs/smb/client/cached_dir.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -358,14 +358,20 @@ static void f2fs_write_end_io(struct bio
- 					page->index != nid_of_node(page));
- 
- 		dec_page_count(sbi, type);
-+
-+		/*
-+		 * we should access sbi before end_page_writeback() to
-+		 * avoid racing w/ kill_f2fs_super()
-+		 */
-+		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
-+				wq_has_sleeper(&sbi->cp_wait))
-+			wake_up(&sbi->cp_wait);
-+
- 		if (f2fs_in_warm_node_list(sbi, page))
- 			f2fs_del_fsync_node_entry(sbi, page);
- 		clear_page_private_gcing(page);
- 		end_page_writeback(page);
- 	}
--	if (!get_pages(sbi, F2FS_WB_CP_DATA) &&
--				wq_has_sleeper(&sbi->cp_wait))
--		wake_up(&sbi->cp_wait);
- 
- 	bio_put(bio);
- }
+--- a/fs/smb/client/cached_dir.h
++++ b/fs/smb/client/cached_dir.h
+@@ -34,10 +34,10 @@ struct cached_fid {
+ 	struct list_head entry;
+ 	struct cached_fids *cfids;
+ 	const char *path;
+-	bool has_lease:1;
+-	bool is_open:1;
+-	bool on_list:1;
+-	bool file_all_info_is_valid:1;
++	bool has_lease;
++	bool is_open;
++	bool on_list;
++	bool file_all_info_is_valid;
+ 	unsigned long time; /* jiffies of when lease was taken */
+ 	struct kref refcount;
+ 	struct cifs_fid fid;
 
 
 
