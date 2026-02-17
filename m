@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-216985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAARLQnTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216985-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:53 +0100
+	id AN7BLTfUlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AEA15027B
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5257F150535
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B46353015D8A
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CCF70304A897
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E403F378830;
-	Tue, 17 Feb 2026 20:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C56266581;
+	Tue, 17 Feb 2026 20:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nc6vrU3L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ef9Yy+Cy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A3E37757F;
-	Tue, 17 Feb 2026 20:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271A4259CBD;
+	Tue, 17 Feb 2026 20:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361031; cv=none; b=od2Liah+Y6OudGkNS0x291hdFaPsDDo5V0w62dSJdZ+FKR79PR3GKJW+G39mTHRNer9MsPO9I/gg67ItAy5aldAYcqHm5m5UqrbzC9IyPMwcv8Owve0QBMPE9AoJ+DYfO3lvUlMK/6obJ3Ty5cs94db8zeiSpHDLSnCgfkWvSc8=
+	t=1771361320; cv=none; b=XB3uEoIWTegiarneZBJc2LEYAY67biEeIdzKhKtZaTB9w4MJp0gijmD1YQD2040MzqjM/JDjRjTuf6aX6/poYBOfbAlJ2x9ps7vjTbEYdxlflzcl8jTBaKly2TNir9qeRMlg5UVpFX4ybBjCDgspLKoCtjQ/LAdiZnIk06P/WLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361031; c=relaxed/simple;
-	bh=KL/mH78JIBG4rpAbjA5LWkzdfyOEOOyX2vZTNeZgi28=;
+	s=arc-20240116; t=1771361320; c=relaxed/simple;
+	bh=q/0Bbkg2Gx7R8KN0Aej5tLDgKq2VALFREV9+A2WMVA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLF1vWWAbloyYB63vvF6ipthm49e72OAgmEgdzOXfempKB98LuyhrZU8b+mpRnfBGLu6+nFg/KN6T472PTwzHLUCLYht77WGxbcO1wRZBNwoctsWFReAu6dQotyKCm10CS1LL5M3ND0QjoOcs+RKKyEIE5Zevh6tU7aWX8ocf78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nc6vrU3L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABF4C19421;
-	Tue, 17 Feb 2026 20:43:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Aq0ajpAo7fFaFBh/rjplweiZ4X//7yiOGzRZhe5TYj+R6XNisnKTmfsG387X/BVSSeiUW9PGyFWL4C8weZo2psWyWVyMiQV4+eAZfU+7XcMpFLuf9zXFPJEoX3BaWFcZPSUy9YYQLmcfDeNapLfg7lRz9fHRB3VBVDYpso557lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ef9Yy+Cy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B89C4CEF7;
+	Tue, 17 Feb 2026 20:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361031;
-	bh=KL/mH78JIBG4rpAbjA5LWkzdfyOEOOyX2vZTNeZgi28=;
+	s=korg; t=1771361320;
+	bh=q/0Bbkg2Gx7R8KN0Aej5tLDgKq2VALFREV9+A2WMVA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nc6vrU3LUaLxya//6qcV3fyRNL0QCH+Mre5HDBYV7RbNGLFdosTcmIZXlfav6HXGk
-	 +BRROEmEf9xq88LrzZAx+jyny1fapqU2NPymy4+iymGtT1mOsLx+zoWU5DiCJgkgLJ
-	 mSHg+AibkpkJqKX/Z5weu7py6DK6G16ziFijwxeU=
+	b=Ef9Yy+Cycc06kJch84VH7JSiMt8kqCUvp67rJNdR7v9YJ4bzbpx7Kp0a6BW7wZIkT
+	 FqgSbgYptdRs6JOEdlL4OFcevmWjOQL17rx8QpxJfOK7IiKnPuBNmcvs8pDb1k4yPZ
+	 qfZPTQPhNIE6Y6lkVp9LpRyxveuJDfOnKdw0JMmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 5.15 20/39] net: dsa: free routing table on probe failure
-Date: Tue, 17 Feb 2026 21:31:29 +0100
-Message-ID: <20260217200003.707725522@linuxfoundation.org>
+	Brahmajit Das <listout@listout.xyz>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: =?UTF-8?q?=5BPATCH=206=2E1=2034/64=5D=20=3D=3FUTF-8=3Fq=3Fdrm/tegra=3A=3D20hdmi=3A=3D20sor=3A=3D20Fix=3D20error=3A=3D20variable=3D20=3F=3D=20=3D=3FUTF-8=3Fq=3F=3DE2=3D80=3D98j=3DE2=3D80=3D99=3D20set=3D20but=3D20not=3D20used=3F=3D?=
+Date: Tue, 17 Feb 2026 21:31:30 +0100
+Message-ID: <20260217200008.791628703@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,194 +63,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216985-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,listout.xyz:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email];
+	TAGGED_FROM(0.00)[bounces-217070-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,kernel.org,139.com];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: 57AEA15027B
+	SUBJECT_HAS_QUESTION(0.00)[]
+X-Rspamd-Queue-Id: 5257F150535
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Brahmajit Das <listout@listout.xyz>
 
-[ Upstream commit 8bf108d7161ffc6880ad13a0cc109de3cf631727 ]
+[ Upstream commit 1beee8d0c263b3e239c8d6616e4f8bb700bed658 ]
 
-If complete = true in dsa_tree_setup(), it means that we are the last
-switch of the tree which is successfully probing, and we should be
-setting up all switches from our probe path.
+The variable j is set, however never used in or outside the loop, thus
+resulting in dead code.
+Building with GCC 16 results in a build error due to
+-Werror=unused-but-set-variable= enabled by default.
+This patch clean up the dead code and fixes the build error.
 
-After "complete" becomes true, dsa_tree_setup_cpu_ports() or any
-subsequent function may fail. If that happens, the entire tree setup is
-in limbo: the first N-1 switches have successfully finished probing
-(doing nothing but having allocated persistent memory in the tree's
-dst->ports, and maybe dst->rtable), and switch N failed to probe, ending
-the tree setup process before anything is tangible from the user's PoV.
+Example build log:
+drivers/gpu/drm/tegra/sor.c:1867:19: error: variable ‘j’ set but not used [-Werror=unused-but-set-variable=]
+ 1867 |         size_t i, j;
+      |                   ^
 
-If switch N fails to probe, its memory (ports) will be freed and removed
-from dst->ports. However, the dst->rtable elements pointing to its ports,
-as created by dsa_link_touch(), will remain there, and will lead to
-use-after-free if dereferenced.
-
-If dsa_tree_setup_switches() returns -EPROBE_DEFER, which is entirely
-possible because that is where ds->ops->setup() is, we get a kasan
-report like this:
-
-==================================================================
-BUG: KASAN: slab-use-after-free in mv88e6xxx_setup_upstream_port+0x240/0x568
-Read of size 8 at addr ffff000004f56020 by task kworker/u8:3/42
-
-Call trace:
- __asan_report_load8_noabort+0x20/0x30
- mv88e6xxx_setup_upstream_port+0x240/0x568
- mv88e6xxx_setup+0xebc/0x1eb0
- dsa_register_switch+0x1af4/0x2ae0
- mv88e6xxx_register_switch+0x1b8/0x2a8
- mv88e6xxx_probe+0xc4c/0xf60
- mdio_probe+0x78/0xb8
- really_probe+0x2b8/0x5a8
- __driver_probe_device+0x164/0x298
- driver_probe_device+0x78/0x258
- __device_attach_driver+0x274/0x350
-
-Allocated by task 42:
- __kasan_kmalloc+0x84/0xa0
- __kmalloc_cache_noprof+0x298/0x490
- dsa_switch_touch_ports+0x174/0x3d8
- dsa_register_switch+0x800/0x2ae0
- mv88e6xxx_register_switch+0x1b8/0x2a8
- mv88e6xxx_probe+0xc4c/0xf60
- mdio_probe+0x78/0xb8
- really_probe+0x2b8/0x5a8
- __driver_probe_device+0x164/0x298
- driver_probe_device+0x78/0x258
- __device_attach_driver+0x274/0x350
-
-Freed by task 42:
- __kasan_slab_free+0x48/0x68
- kfree+0x138/0x418
- dsa_register_switch+0x2694/0x2ae0
- mv88e6xxx_register_switch+0x1b8/0x2a8
- mv88e6xxx_probe+0xc4c/0xf60
- mdio_probe+0x78/0xb8
- really_probe+0x2b8/0x5a8
- __driver_probe_device+0x164/0x298
- driver_probe_device+0x78/0x258
- __device_attach_driver+0x274/0x350
-
-The simplest way to fix the bug is to delete the routing table in its
-entirety. dsa_tree_setup_routing_table() has no problem in regenerating
-it even if we deleted links between ports other than those of switch N,
-because dsa_link_touch() first checks whether the port pair already
-exists in dst->rtable, allocating if not.
-
-The deletion of the routing table in its entirety already exists in
-dsa_tree_teardown(), so refactor that into a function that can also be
-called from the tree setup error path.
-
-In my analysis of the commit to blame, it is the one which added
-dsa_link elements to dst->rtable. Prior to that, each switch had its own
-ds->rtable which is freed when the switch fails to probe. But the tree
-is potentially persistent memory.
-
-Fixes: c5f51765a1f6 ("net: dsa: list DSA links in the fabric")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414213001.2957964-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Backport the fix to net/dsa/dsa2.c in v5.15.y for dsa2.c was
-renamed back into dsa.c by commit
-47d2ce03dcfb ("net: dsa: rename dsa2.c back into dsa.c and create its header")
-since v6.2. ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250901212020.3757519-1-listout@listout.xyz
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/dsa2.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/tegra/hdmi.c | 4 ++--
+ drivers/gpu/drm/tegra/sor.c  | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/dsa/dsa2.c
-+++ b/net/dsa/dsa2.c
-@@ -1079,6 +1079,16 @@ static void dsa_tree_teardown_lags(struc
- 	kfree(dst->lags);
- }
- 
-+static void dsa_tree_teardown_routing_table(struct dsa_switch_tree *dst)
-+{
-+	struct dsa_link *dl, *next;
-+
-+	list_for_each_entry_safe(dl, next, &dst->rtable, list) {
-+		list_del(&dl->list);
-+		kfree(dl);
-+	}
-+}
-+
- static int dsa_tree_setup(struct dsa_switch_tree *dst)
+diff --git a/drivers/gpu/drm/tegra/hdmi.c b/drivers/gpu/drm/tegra/hdmi.c
+index c66764c0bd250..47f794a367ba1 100644
+--- a/drivers/gpu/drm/tegra/hdmi.c
++++ b/drivers/gpu/drm/tegra/hdmi.c
+@@ -654,7 +654,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
  {
- 	bool complete;
-@@ -1096,7 +1106,7 @@ static int dsa_tree_setup(struct dsa_swi
+ 	const u8 *ptr = data;
+ 	unsigned long offset;
+-	size_t i, j;
++	size_t i;
+ 	u32 value;
  
- 	err = dsa_tree_setup_cpu_ports(dst);
- 	if (err)
--		return err;
-+		goto teardown_rtable;
+ 	switch (ptr[0]) {
+@@ -687,7 +687,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
+ 	 * - subpack_low: bytes 0 - 3
+ 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
+ 	 */
+-	for (i = 3, j = 0; i < size; i += 7, j += 8) {
++	for (i = 3; i < size; i += 7) {
+ 		size_t rem = size - i, num = min_t(size_t, rem, 4);
  
- 	err = dsa_tree_setup_switches(dst);
- 	if (err)
-@@ -1123,14 +1133,14 @@ teardown_switches:
- 	dsa_tree_teardown_switches(dst);
- teardown_cpu_ports:
- 	dsa_tree_teardown_cpu_ports(dst);
-+teardown_rtable:
-+	dsa_tree_teardown_routing_table(dst);
- 
- 	return err;
- }
- 
- static void dsa_tree_teardown(struct dsa_switch_tree *dst)
+ 		value = tegra_hdmi_subpack(&ptr[i], num);
+diff --git a/drivers/gpu/drm/tegra/sor.c b/drivers/gpu/drm/tegra/sor.c
+index 77723d5f1d3fd..ce8e299b6afb6 100644
+--- a/drivers/gpu/drm/tegra/sor.c
++++ b/drivers/gpu/drm/tegra/sor.c
+@@ -1860,7 +1860,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
  {
--	struct dsa_link *dl, *next;
--
- 	if (!dst->setup)
- 		return;
+ 	const u8 *ptr = data;
+ 	unsigned long offset;
+-	size_t i, j;
++	size_t i;
+ 	u32 value;
  
-@@ -1144,10 +1154,7 @@ static void dsa_tree_teardown(struct dsa
+ 	switch (ptr[0]) {
+@@ -1893,7 +1893,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
+ 	 * - subpack_low: bytes 0 - 3
+ 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
+ 	 */
+-	for (i = 3, j = 0; i < size; i += 7, j += 8) {
++	for (i = 3; i < size; i += 7) {
+ 		size_t rem = size - i, num = min_t(size_t, rem, 4);
  
- 	dsa_tree_teardown_cpu_ports(dst);
- 
--	list_for_each_entry_safe(dl, next, &dst->rtable, list) {
--		list_del(&dl->list);
--		kfree(dl);
--	}
-+	dsa_tree_teardown_routing_table(dst);
- 
- 	pr_info("DSA: tree %d torn down\n", dst->index);
- 
+ 		value = tegra_sor_hdmi_subpack(&ptr[i], num);
+-- 
+2.51.0
+
 
 
 
