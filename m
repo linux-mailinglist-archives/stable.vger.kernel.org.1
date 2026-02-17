@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-217070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AN7BLTfUlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-217070-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:55 +0100
+	id WLOxAaXSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5257F150535
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D97150184
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CCF70304A897
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7FAAB3016291
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C56266581;
-	Tue, 17 Feb 2026 20:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF2A3783AF;
+	Tue, 17 Feb 2026 20:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ef9Yy+Cy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENfPAOR4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271A4259CBD;
-	Tue, 17 Feb 2026 20:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6FF36F431;
+	Tue, 17 Feb 2026 20:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361320; cv=none; b=XB3uEoIWTegiarneZBJc2LEYAY67biEeIdzKhKtZaTB9w4MJp0gijmD1YQD2040MzqjM/JDjRjTuf6aX6/poYBOfbAlJ2x9ps7vjTbEYdxlflzcl8jTBaKly2TNir9qeRMlg5UVpFX4ybBjCDgspLKoCtjQ/LAdiZnIk06P/WLw=
+	t=1771360929; cv=none; b=E1mChWpqCMXqcLUmu1mjAR+9Sz5j3Nc1Ng8dAyHmsa7DHDEdW6gNO+1yBAD3PrDBXCDCcgg7ESSufDOJJ4Xu0RBVlCkofb3j+IdnhaNwkmevhu2AqQ5G4ZYkW+dbn3Eg+Xx2UZ4ZrEjyVF9XjJVYW8lGx73HR7KwT0G7WvhK6Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361320; c=relaxed/simple;
-	bh=q/0Bbkg2Gx7R8KN0Aej5tLDgKq2VALFREV9+A2WMVA4=;
+	s=arc-20240116; t=1771360929; c=relaxed/simple;
+	bh=HRo62PFVjg5YwSiNyBf19MjqEUB1CWz0okIyOFuW7KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Aq0ajpAo7fFaFBh/rjplweiZ4X//7yiOGzRZhe5TYj+R6XNisnKTmfsG387X/BVSSeiUW9PGyFWL4C8weZo2psWyWVyMiQV4+eAZfU+7XcMpFLuf9zXFPJEoX3BaWFcZPSUy9YYQLmcfDeNapLfg7lRz9fHRB3VBVDYpso557lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ef9Yy+Cy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B89C4CEF7;
-	Tue, 17 Feb 2026 20:48:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KBQqA0Yr3M43IHEbihIQDG26oGZtOTdwWxDT2EzhVg7Zg5JhErpVz10bkchcgnITw1MZ8GC3NxDOpAaQsZVq4Uh7UQOFCQfxUHyViSnB/eFT+ezghY4FLNPlp6bAta9VErInNfsK0I34yc+md0rRwtYlCA49UtSLL2oOzvyVh+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENfPAOR4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8523C4CEF7;
+	Tue, 17 Feb 2026 20:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361320;
-	bh=q/0Bbkg2Gx7R8KN0Aej5tLDgKq2VALFREV9+A2WMVA4=;
+	s=korg; t=1771360929;
+	bh=HRo62PFVjg5YwSiNyBf19MjqEUB1CWz0okIyOFuW7KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ef9Yy+Cycc06kJch84VH7JSiMt8kqCUvp67rJNdR7v9YJ4bzbpx7Kp0a6BW7wZIkT
-	 FqgSbgYptdRs6JOEdlL4OFcevmWjOQL17rx8QpxJfOK7IiKnPuBNmcvs8pDb1k4yPZ
-	 qfZPTQPhNIE6Y6lkVp9LpRyxveuJDfOnKdw0JMmM=
+	b=ENfPAOR4ud3OxKhuPPEID0iXAYtEtfSqG7yFn40YDFAUV9zYkeVPtezjBeC/+C/5d
+	 BNj21wcV5kNxGtpnusGg6tr189Xi/W/zTP070DLg0c+CZhRzrD/W/X8A2qwfsWiyWY
+	 OxMtHlgwCtFD2xLdNrEfHrXGy8afN69HBeHKkmOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <listout@listout.xyz>,
-	Thierry Reding <treding@nvidia.com>,
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: =?UTF-8?q?=5BPATCH=206=2E1=2034/64=5D=20=3D=3FUTF-8=3Fq=3Fdrm/tegra=3A=3D20hdmi=3A=3D20sor=3A=3D20Fix=3D20error=3A=3D20variable=3D20=3F=3D=20=3D=3FUTF-8=3Fq=3F=3DE2=3D80=3D98j=3DE2=3D80=3D99=3D20set=3D20but=3D20not=3D20used=3F=3D?=
+Subject: [PATCH 5.10 17/24] scsi: qla2xxx: Validate sp before freeing associated memory
 Date: Tue, 17 Feb 2026 21:31:30 +0100
-Message-ID: <20260217200008.791628703@linuxfoundation.org>
+Message-ID: <20260217200001.377194505@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
+References: <20260217200000.708219618@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +68,141 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,listout.xyz:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email];
-	TAGGED_FROM(0.00)[bounces-217070-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216956-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	SUBJECT_HAS_QUESTION(0.00)[]
-X-Rspamd-Queue-Id: 5257F150535
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email,oracle.com:email]
+X-Rspamd-Queue-Id: C4D97150184
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-[ Upstream commit 1beee8d0c263b3e239c8d6616e4f8bb700bed658 ]
+[ Upstream commit b6df15aec8c3441357d4da0eaf4339eb20f5999f ]
 
-The variable j is set, however never used in or outside the loop, thus
-resulting in dead code.
-Building with GCC 16 results in a build error due to
--Werror=unused-but-set-variable= enabled by default.
-This patch clean up the dead code and fixes the build error.
+System crash with the following signature
+[154563.214890] nvme nvme2: NVME-FC{1}: controller connect complete
+[154564.169363] qla2xxx [0000:b0:00.1]-3002:2: nvme: Sched: Set ZIO exchange threshold to 3.
+[154564.169405] qla2xxx [0000:b0:00.1]-ffffff:2: SET ZIO Activity exchange threshold to 5.
+[154565.539974] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 0080 0000.
+[154565.545744] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 00a0 0000.
+[154565.545857] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
+[154565.552760] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
+[154565.553079] BUG: kernel NULL pointer dereference, address: 00000000000000f8
+[154565.553080] #PF: supervisor read access in kernel mode
+[154565.553082] #PF: error_code(0x0000) - not-present page
+[154565.553084] PGD 80000010488ab067 P4D 80000010488ab067 PUD 104978a067 PMD 0
+[154565.553089] Oops: 0000 1 PREEMPT SMP PTI
+[154565.553092] CPU: 10 PID: 858 Comm: qla2xxx_2_dpc Kdump: loaded Tainted: G           OE     -------  ---  5.14.0-503.11.1.el9_5.x86_64 #1
+[154565.553096] Hardware name: HPE Synergy 660 Gen10/Synergy 660 Gen10 Compute Module, BIOS I43 09/30/2024
+[154565.553097] RIP: 0010:qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
+[154565.553141] Code: 00 00 e8 58 a3 ec d4 49 89 e9 ba 12 20 00 00 4c 89 e6 49 c7 c0 00 ee a8 c0 48 c7 c1 66 c0 a9 c0 bf 00 80 00 10 e8 15 69 00 00 <4c> 8b 8d f8 00 00 00 4d 85 c9 74 35 49 8b 84 24 00 19 00 00 48 8b
+[154565.553143] RSP: 0018:ffffb4dbc8aebdd0 EFLAGS: 00010286
+[154565.553145] RAX: 0000000000000000 RBX: ffff8ec2cf0908d0 RCX: 0000000000000002
+[154565.553147] RDX: 0000000000000000 RSI: ffffffffc0a9c896 RDI: ffffb4dbc8aebd47
+[154565.553148] RBP: 0000000000000000 R08: ffffb4dbc8aebd45 R09: 0000000000ffff0a
+[154565.553150] R10: 0000000000000000 R11: 000000000000000f R12: ffff8ec2cf0908d0
+[154565.553151] R13: ffff8ec2cf090900 R14: 0000000000000102 R15: ffff8ec2cf084000
+[154565.553152] FS:  0000000000000000(0000) GS:ffff8ed27f800000(0000) knlGS:0000000000000000
+[154565.553154] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[154565.553155] CR2: 00000000000000f8 CR3: 000000113ae0a005 CR4: 00000000007706f0
+[154565.553157] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[154565.553158] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[154565.553159] PKRU: 55555554
+[154565.553160] Call Trace:
+[154565.553162]  <TASK>
+[154565.553165]  ? show_trace_log_lvl+0x1c4/0x2df
+[154565.553172]  ? show_trace_log_lvl+0x1c4/0x2df
+[154565.553177]  ? qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
+[154565.553215]  ? __die_body.cold+0x8/0xd
+[154565.553218]  ? page_fault_oops+0x134/0x170
+[154565.553223]  ? snprintf+0x49/0x70
+[154565.553229]  ? exc_page_fault+0x62/0x150
+[154565.553238]  ? asm_exc_page_fault+0x22/0x30
 
-Example build log:
-drivers/gpu/drm/tegra/sor.c:1867:19: error: variable ‘j’ set but not used [-Werror=unused-but-set-variable=]
- 1867 |         size_t i, j;
-      |                   ^
+Check for sp being non NULL before freeing any associated memory
 
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250901212020.3757519-1-listout@listout.xyz
+Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-10-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ adapted kref_put() srb free mechanism to older sp->free(sp) ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/hdmi.c | 4 ++--
- drivers/gpu/drm/tegra/sor.c  | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/qla2xxx/qla_gs.c |   32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/hdmi.c b/drivers/gpu/drm/tegra/hdmi.c
-index c66764c0bd250..47f794a367ba1 100644
---- a/drivers/gpu/drm/tegra/hdmi.c
-+++ b/drivers/gpu/drm/tegra/hdmi.c
-@@ -654,7 +654,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
- {
- 	const u8 *ptr = data;
- 	unsigned long offset;
--	size_t i, j;
-+	size_t i;
- 	u32 value;
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -3901,22 +3901,24 @@ static int qla24xx_async_gnnft(scsi_qla_
+ 	return rval;
  
- 	switch (ptr[0]) {
-@@ -687,7 +687,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
- 	 * - subpack_low: bytes 0 - 3
- 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
- 	 */
--	for (i = 3, j = 0; i < size; i += 7, j += 8) {
-+	for (i = 3; i < size; i += 7) {
- 		size_t rem = size - i, num = min_t(size_t, rem, 4);
+ done_free_sp:
+-	if (sp->u.iocb_cmd.u.ctarg.req) {
+-		dma_free_coherent(&vha->hw->pdev->dev,
+-		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
+-		    sp->u.iocb_cmd.u.ctarg.req,
+-		    sp->u.iocb_cmd.u.ctarg.req_dma);
+-		sp->u.iocb_cmd.u.ctarg.req = NULL;
+-	}
+-	if (sp->u.iocb_cmd.u.ctarg.rsp) {
+-		dma_free_coherent(&vha->hw->pdev->dev,
+-		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
+-		    sp->u.iocb_cmd.u.ctarg.rsp,
+-		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
+-		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
+-	}
++	if (sp) {
++		if (sp->u.iocb_cmd.u.ctarg.req) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.req,
++			    sp->u.iocb_cmd.u.ctarg.req_dma);
++			sp->u.iocb_cmd.u.ctarg.req = NULL;
++		}
++		if (sp->u.iocb_cmd.u.ctarg.rsp) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.rsp,
++			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
++			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
++		}
  
- 		value = tegra_hdmi_subpack(&ptr[i], num);
-diff --git a/drivers/gpu/drm/tegra/sor.c b/drivers/gpu/drm/tegra/sor.c
-index 77723d5f1d3fd..ce8e299b6afb6 100644
---- a/drivers/gpu/drm/tegra/sor.c
-+++ b/drivers/gpu/drm/tegra/sor.c
-@@ -1860,7 +1860,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
- {
- 	const u8 *ptr = data;
- 	unsigned long offset;
--	size_t i, j;
-+	size_t i;
- 	u32 value;
+-	sp->free(sp);
++		sp->free(sp);
++	}
  
- 	switch (ptr[0]) {
-@@ -1893,7 +1893,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
- 	 * - subpack_low: bytes 0 - 3
- 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
- 	 */
--	for (i = 3, j = 0; i < size; i += 7, j += 8) {
-+	for (i = 3; i < size; i += 7) {
- 		size_t rem = size - i, num = min_t(size_t, rem, 4);
- 
- 		value = tegra_sor_hdmi_subpack(&ptr[i], num);
--- 
-2.51.0
-
+ 	spin_lock_irqsave(&vha->work_lock, flags);
+ 	vha->scan.scan_flags &= ~SF_SCANNING;
 
 
 
