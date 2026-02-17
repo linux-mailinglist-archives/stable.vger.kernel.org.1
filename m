@@ -1,306 +1,183 @@
-Return-Path: <stable+bounces-217002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CWdL0bTlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:54 +0100
+	id KHFuKovTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6295015033E
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEBC71503DB
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1007301325C
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25554302A072
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3360376BE1;
-	Tue, 17 Feb 2026 20:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6AC27979A;
+	Tue, 17 Feb 2026 20:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2GWXuiE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7Q1ZXNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B881B042E;
-	Tue, 17 Feb 2026 20:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40E2259CBD;
+	Tue, 17 Feb 2026 20:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361089; cv=none; b=MTO3LFWMvjTIoV0WR0yDXeM6M5xzoLZn8iIRAX6Kw+J8hqbTnkrYrgYwau2VsDwG1jxQO7kX1LMMKOmfZLvI1QQ20iOHtVDLo6YNASXdr+/DTGJOEhKGjELM+VKz4F0l2whOOT0ndW56svkKzuo0655ZWVJ9K/nHLOjDsRStLYo=
+	t=1771361139; cv=none; b=ZDFn2WtBpptYXJyW8kGjwHkNsLgTHQNrP+a7iJK7xGF9P9kQCHF08hVx00uYPzvArvykYpe5FH4D1glfp8v9GuFoiHl5+uSjQhbshoaMO7G1InzUTuP7sErAzZve8KYYerGbmTnNp2ef+PrRwY4aIjHDWAJ/s2n1Lyw+IIRUL9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361089; c=relaxed/simple;
-	bh=vdppFI8A4pqDD1sGY4FIinLgNRDIRNW8cprC+CSORO4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=McPYFUeN7rcTYuzBM0rkyCT0B+cH4aKnf+zBAouUWSU3enooACfcfsGf1vt4CiXjmNe31hhlC62DeoN476lNjbheB1CSMKAF6fqlcu+JQPLN3fizZDfXgpvBb4+qTtfSeuqRQ7LGiHumcHsp7OfRGuvNJhfAhYTHQ6BSfn6r0L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2GWXuiE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB218C4CEF7;
-	Tue, 17 Feb 2026 20:44:48 +0000 (UTC)
+	s=arc-20240116; t=1771361139; c=relaxed/simple;
+	bh=/ZmT5ry+NqjZfwO2p10AR3pbETRqNq1cOEBuCtbaFMk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=A4YQE/FcS4FY+rgMiMsJaM4DGo74ONhTL6WLH5xVjz6yg+H8c7BfSfPyU+bAHHxX9YwmuBix3J8nGyxbZ3KY8GH1Sm/GabOzUwldzv6fVg4z7Xqdpm8cHKISsRpsSmF+ivxO7NeMeSgsuAfATpFDs00busEFPbVK9gg9HFUcfuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7Q1ZXNj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA04C4CEF7;
+	Tue, 17 Feb 2026 20:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361089;
-	bh=vdppFI8A4pqDD1sGY4FIinLgNRDIRNW8cprC+CSORO4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=O2GWXuiEdMKJwOgG6x84n0/3X4j2LhFUcGu+RKwCnZCpBSX4vRLZY/NTgOFsjYV/z
-	 jFGXu2rng3DXLp2ljCiyoFRN2E444zS6CaMdbnKkjVJihpj/GoMmvg3Pob86OG8xFp
-	 ujb/4J6XrZT3hTez9r+SSPnCMILUvH8J/Neb6Zz4=
+	s=korg; t=1771361138;
+	bh=/ZmT5ry+NqjZfwO2p10AR3pbETRqNq1cOEBuCtbaFMk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=r7Q1ZXNjK5ywXj8Z9966t864L6LvMsqdC+4cCrn5bLPimd0yc33/Jj8zvrfCRKLh1
+	 OHQkt9x89JevBSyorkxxW8UgP/RgfD/xsPx0o4IgoE4UNjmm4zjM9pq+gOoHNVNH7b
+	 /t6REQhNsJzK4++kfxisWX9TG1uzsvoHD1Hej0AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: [PATCH 5.15 00/39] 5.15.201-rc1 review
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 6.1 13/64] gpio: omap: do not register driver in probe()
 Date: Tue, 17 Feb 2026 21:31:09 +0100
-Message-ID: <20260217200002.929083107@linuxfoundation.org>
+Message-ID: <20260217200008.009567641@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.201-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.15.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.15.201-rc1
-X-KernelTest-Deadline: 2026-02-19T20:00+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217002-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217017-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6295015033E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DEBC71503DB
 X-Rspamd-Action: no action
 
-This is the start of the stable review cycle for the 5.15.201 release.
-There are 39 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Thu, 19 Feb 2026 19:59:50 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.201-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-and the diffstat can be found below.
+From: Danilo Krummrich <dakr@kernel.org>
 
-thanks,
+commit 730e5ebff40c852e3ea57b71bf02a4b89c69435f upstream.
 
-greg k-h
+Commit 11a78b794496 ("ARM: OMAP: MPUIO wake updates") registers the
+omap_mpuio_driver from omap_mpuio_init(), which is called from
+omap_gpio_probe().
 
--------------
-Pseudo-Shortlog of commits:
+However, it neither makes sense to register drivers from probe()
+callbacks of other drivers, nor does the driver core allow registering
+drivers with a device lock already being held.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.15.201-rc1
+The latter was revealed by commit dc23806a7c47 ("driver core: enforce
+device_lock for driver_match_device()") leading to a potential deadlock
+condition described in [1].
 
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    USB: serial: option: add Telit FN920C04 RNDIS compositions
+Additionally, the omap_mpuio_driver is never unregistered from the
+driver core, even if the module is unloaded.
 
-Yongpeng Yang <yangyongpeng@xiaomi.com>
-    f2fs: fix out-of-bounds access in sysfs attribute read/write
+Hence, register the omap_mpuio_driver from the module initcall and
+unregister it in module_exit().
 
-Chao Yu <chao@kernel.org>
-    f2fs: fix to avoid UAF in f2fs_write_end_io()
+Link: https://lore.kernel.org/lkml/DFU7CEPUSG9A.1KKGVW4HIPMSH@kernel.org/ [1]
+Fixes: dc23806a7c47 ("driver core: enforce device_lock for driver_match_device()")
+Fixes: 11a78b794496 ("ARM: OMAP: MPUIO wake updates")
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Link: https://patch.msgid.link/20260127201725.35883-1-dakr@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/gpio/gpio-omap.c |   22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    fbdev: smscufx: properly copy ioctl memory to kernelspace
-
-Guangshuo Li <lgs201920130244@gmail.com>
-    fbdev: rivafb: fix divide error in nv3_arb()
-
-Liu Song <liu.song13@zte.com.cn>
-    PCI: endpoint: Avoid creating sub-groups asynchronously
-
-Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-    PCI: endpoint: Remove unused field in struct pci_epf_group
-
-Damien Le Moal <dlemoal@kernel.org>
-    PCI: endpoint: Automatically create a function specific attributes group
-
-Anil Gurumurthy <agurumurthy@marvell.com>
-    scsi: qla2xxx: Free sp in error path to fix system crash
-
-Quinn Tran <qutran@marvell.com>
-    scsi: qla2xxx: Reduce fabric scan duplicate code
-
-Quinn Tran <qutran@marvell.com>
-    scsi: qla2xxx: Remove dead code (GNN ID)
-
-Gleb Chesnokov <Chesnokov.G@raidix.com>
-    scsi: qla2xxx: Use named initializers for port_[d]state_str
-
-Anil Gurumurthy <agurumurthy@marvell.com>
-    scsi: qla2xxx: Fix bsg_done() causing double free
-
-Gui-Dong Han <hanguidong02@gmail.com>
-    bus: fsl-mc: fix use-after-free in driver_override_show()
-
-Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-    bus: fsl-mc: Replace snprintf and sprintf with sysfs_emit in sysfs show functions
-
-Henrique Carvalho <henrique.carvalho@suse.com>
-    smb: server: fix leak of active_num_conn in ksmbd_tcp_new_connection()
-
-Bibo Mao <maobibo@loongson.cn>
-    crypto: virtio - Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req
-
-Eric Dumazet <edumazet@google.com>
-    mptcp: fix race in mptcp_pm_nl_flush_addrs_doit()
-
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
-    selftests: mptcp: pm: ensure unknown flags are ignored
-
-Vladimir Oltean <vladimir.oltean@nxp.com>
-    net: dsa: free routing table on probe failure
-
-Paulo Alcantara <pc@manguebit.com>
-    smb: client: set correct id, uid and cruid for multiuser automounts
-
-Boris Burkov <boris@bur.io>
-    btrfs: fix racy bitfield write in btrfs_clear_space_info_full()
-
-Daniel Borkmann <daniel@iogearbox.net>
-    Revert "wireguard: device: enable threaded NAPI"
-
-Alban Bedel <alban.bedel@lht.dlh.de>
-    gpiolib: acpi: Fix gpio count with string references
-
-Ziyi Guo <n7l8m4@u.northwestern.edu>
-    ASoC: fsl_xcvr: fix missing lock in fsl_xcvr_mode_put()
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    platform/x86: panasonic-laptop: Fix sysfs group leak in error path
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    platform/x86: classmate-laptop: Add missing NULL pointer checks
-
-Brahmajit Das <listout@listout.xyz>
-    drm/tegra: hdmi: sor: Fix error: variable ‘j’ set but not used
-
-Deepanshu Kartikey <kartikey406@gmail.com>
-    romfs: check sb_set_blocksize() return value
-
-Xuewen Yan <xuewen.yan@unisoc.com>
-    gpio: sprd: Change sprd_gpio lock to raw_spin_lock
-
-Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
-    ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU
-
-Danilo Krummrich <dakr@kernel.org>
-    gpio: omap: do not register driver in probe()
-
-Anil Gurumurthy <agurumurthy@marvell.com>
-    scsi: qla2xxx: Query FW again before proceeding with login
-
-Anil Gurumurthy <agurumurthy@marvell.com>
-    scsi: qla2xxx: Delay module unload while fabric scan in progress
-
-Anil Gurumurthy <agurumurthy@marvell.com>
-    scsi: qla2xxx: Validate sp before freeing associated memory
-
-Edward Adam Davis <eadavis@qq.com>
-    nilfs2: Fix potential block overflow that cause system hang
-
-Bibo Mao <maobibo@loongson.cn>
-    crypto: virtio - Add spinlock protection with virtqueue notification
-
-Kees Cook <kees@kernel.org>
-    crypto: omap - Allocate OMAP_CRYPTO_FORCE_COPY scatterlists correctly
-
-Thorsten Blum <thorsten.blum@linux.dev>
-    crypto: octeontx - Fix length check to avoid truncation in ucode_load_store
-
-
--------------
-
-Diffstat:
-
- Documentation/PCI/endpoint/pci-ntb-howto.rst      |  11 +-
- Makefile                                          |   4 +-
- drivers/bus/fsl-mc/fsl-mc-bus.c                   |  10 +-
- drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c |   2 +-
- drivers/crypto/omap-crypto.c                      |   2 +-
- drivers/crypto/virtio/virtio_crypto_algs.c        |   2 -
- drivers/crypto/virtio/virtio_crypto_core.c        |   5 +
- drivers/gpio/gpio-omap.c                          |  22 +-
- drivers/gpio/gpio-sprd.c                          |   8 +-
- drivers/gpio/gpiolib-acpi.c                       |   1 +
- drivers/gpu/drm/tegra/hdmi.c                      |   4 +-
- drivers/gpu/drm/tegra/sor.c                       |   4 +-
- drivers/net/wireguard/device.c                    |   1 -
- drivers/pci/endpoint/pci-ep-cfs.c                 |  54 +-
- drivers/platform/x86/classmate-laptop.c           |  32 ++
- drivers/platform/x86/panasonic-laptop.c           |   4 +-
- drivers/scsi/qla2xxx/qla_bsg.c                    |  25 +-
- drivers/scsi/qla2xxx/qla_def.h                    |  50 +-
- drivers/scsi/qla2xxx/qla_gbl.h                    |   9 +-
- drivers/scsi/qla2xxx/qla_gs.c                     | 586 ++++++++--------------
- drivers/scsi/qla2xxx/qla_init.c                   |  31 +-
- drivers/scsi/qla2xxx/qla_isr.c                    |  29 +-
- drivers/scsi/qla2xxx/qla_os.c                     |  18 +-
- drivers/usb/serial/option.c                       |   6 +
- drivers/video/fbdev/riva/riva_hw.c                |   3 +
- drivers/video/fbdev/smscufx.c                     |   8 +-
- fs/btrfs/block-group.c                            |   6 +-
- fs/btrfs/space-info.c                             |  20 +-
- fs/btrfs/space-info.h                             |   6 +-
- fs/cifs/cifs_dfs_ref.c                            |  16 +
- fs/f2fs/data.c                                    |  12 +-
- fs/f2fs/sysfs.c                                   |  65 ++-
- fs/ksmbd/transport_tcp.c                          |   3 +-
- fs/nilfs2/sufile.c                                |   4 +
- fs/romfs/super.c                                  |   5 +-
- net/dsa/dsa2.c                                    |  21 +-
- net/mptcp/pm_netlink.c                            |  16 +-
- sound/pci/hda/patch_realtek.c                     |   4 +
- sound/soc/fsl/fsl_xcvr.c                          |   3 +
- tools/testing/selftests/net/mptcp/pm_netlink.sh   |   4 +
- tools/testing/selftests/net/mptcp/pm_nl_ctl.c     |  11 +
- 41 files changed, 576 insertions(+), 551 deletions(-)
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -762,10 +762,13 @@ static struct platform_device omap_mpuio
+ 
+ static inline void omap_mpuio_init(struct gpio_bank *bank)
+ {
+-	platform_set_drvdata(&omap_mpuio_device, bank);
++	static bool registered;
+ 
+-	if (platform_driver_register(&omap_mpuio_driver) == 0)
+-		(void) platform_device_register(&omap_mpuio_device);
++	platform_set_drvdata(&omap_mpuio_device, bank);
++	if (!registered) {
++		(void)platform_device_register(&omap_mpuio_device);
++		registered = true;
++	}
+ }
+ 
+ /*---------------------------------------------------------------------*/
+@@ -1572,13 +1575,24 @@ static struct platform_driver omap_gpio_
+  */
+ static int __init omap_gpio_drv_reg(void)
+ {
+-	return platform_driver_register(&omap_gpio_driver);
++	int ret;
++
++	ret = platform_driver_register(&omap_mpuio_driver);
++	if (ret)
++		return ret;
++
++	ret = platform_driver_register(&omap_gpio_driver);
++	if (ret)
++		platform_driver_unregister(&omap_mpuio_driver);
++
++	return ret;
+ }
+ postcore_initcall(omap_gpio_drv_reg);
+ 
+ static void __exit omap_gpio_exit(void)
+ {
+ 	platform_driver_unregister(&omap_gpio_driver);
++	platform_driver_unregister(&omap_mpuio_driver);
+ }
+ module_exit(omap_gpio_exit);
+ 
 
 
 
