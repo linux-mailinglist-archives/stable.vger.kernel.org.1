@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-217073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLV7FT7UlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-217073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:02 +0100
+	id kG9zMgTTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B5315054B
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9E2150258
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B755304810D
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0D5473009E23
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F69259CBD;
-	Tue, 17 Feb 2026 20:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0F2286D4D;
+	Tue, 17 Feb 2026 20:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZ5qc5KR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBRUDeQu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633692DB78B;
-	Tue, 17 Feb 2026 20:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F80F36F431;
+	Tue, 17 Feb 2026 20:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361332; cv=none; b=bj6p9UznJmfpY+fV3fAlvhg7NcnXmdO1gtmvaDlcA8afRUSLc2o/i3SKCRT81q47gn8MbancOwc6cpz6xLnJWvG6wb74S9sXYlb0oakzfz9Hyob97lP8YCBiVZvTL8F6MOd+ReSWCaJyDP9SI+eSclYWQeHamrPImLI+ISW6NRE=
+	t=1771361006; cv=none; b=LcEpKpB3S+uwiyVSO5xX2sT4NCuWirAmRbPthp54Akzmgm8bpSpiUdBRlSQiZEqiENz56xdRvLIcqOcfz+N8MpMB68Cch8p5GSocdZn0yxCvI1dF/9mor/gDctZVC2Dra9aIor2cWso09hmSQBMfOAC2rPI0LtHK7NIs0vpD1V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361332; c=relaxed/simple;
-	bh=Wels6kfcn0lPsCGjyiWC6+0ZNTheZK583zcaYVOOUwI=;
+	s=arc-20240116; t=1771361006; c=relaxed/simple;
+	bh=4pV1/wpJqEsTyEvl/8pXFk9k6C8BRWSsH5HIhSdhMxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCIri7t040lhB0TaLuk4ObS3VHaK3IfCV/pu3Ak5A5gZkYy11HTZy4IL6CELI8wdwPCwxq87R0JjjrwZiRkWG7eCb+3/J8XnME2r9v/+EubqzhVnL6NxE+gBPZfFKElnoJy9qhjoQhRQYwmFO5ZfRX3+hnnuMzeCjTg/4mIfsvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZ5qc5KR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2478C4CEF7;
-	Tue, 17 Feb 2026 20:48:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yag0fMYZ+G9smQwf+PY8gVpfQdT1NPMhJ/q+hvh8L3OEnHFuUU5JeNWrdG1pEoq6BvwhWaICU1WYTtokNKfa7YebQiJcXm7FtLpvMmixikoExI3oHhxD8JWJzDTQ+Yb/vxPFo8mrMUzAHZ0OrMvmAU0XC2jYgpLDqVbCSMSPaIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBRUDeQu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB67C4CEF7;
+	Tue, 17 Feb 2026 20:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361332;
-	bh=Wels6kfcn0lPsCGjyiWC6+0ZNTheZK583zcaYVOOUwI=;
+	s=korg; t=1771361006;
+	bh=4pV1/wpJqEsTyEvl/8pXFk9k6C8BRWSsH5HIhSdhMxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZ5qc5KRVWHyLyXj7xuN8G4eiwpO0OrTkEm7+wM1HcXSErp5MHePVu5wBUFttn7vI
-	 OvZ9pi10ah2pTguBlg7SlDH83FEag5KB4z3HxPbZN5YGci1LGTfugokq4yoDO4bBTl
-	 XeRuRXec+wEWaaC1fx0/vMmQd9UIhsGZPqhSyPAM=
+	b=eBRUDeQuctnOljL2EFVoimG6GhWsEDnkFi1X+yTylHJFh2AnO37WpdTgx+0fED75H
+	 p2zijzGjl6IivbC43oXmYqq68NMiXzzZIwoRhGZTBTtfNUdekeYj9VyIfeop7SiMXz
+	 ig41W+xoQPVBWXhDwfF4w+CCtvcx2WPwS4d2WMjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 6.1 27/64] cacheinfo: Remove of_node_put() for fw_token
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 14/39] platform/x86: panasonic-laptop: Fix sysfs group leak in error path
 Date: Tue, 17 Feb 2026 21:31:23 +0100
-Message-ID: <20260217200008.540408772@linuxfoundation.org>
+Message-ID: <20260217200003.478966544@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,113 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217073-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216978-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,samsung.com:email,linux-m68k.org:email,glider.be:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,arm.com:email]
-X-Rspamd-Queue-Id: 10B5315054B
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 1B9E2150258
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre Gondois <pierre.gondois@arm.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 2613cc29c5723881ca603b1a3b50f0107010d5d6 upstream
+[ Upstream commit 43b0b7eff4b3fb684f257d5a24376782e9663465 ]
 
-fw_token is used for DT/ACPI systems to identify CPUs sharing caches.
-For DT based systems, fw_token is set to a pointer to a DT node.
+The acpi_pcc_hotkey_add() error path leaks sysfs group pcc_attr_group
+if platform_device_register_simple() fails for the "panasonic" platform
+device.
 
-commit 3da72e18371c ("cacheinfo: Decrement refcount in
-cache_setup_of_node()")
-doesn't increment the refcount of fw_token anymore in
-cache_setup_of_node(). fw_token is indeed used as a token and not
-as a (struct device_node*), so no reference to fw_token should be
-kept.
+Address this by making it call sysfs_remove_group() in that case for
+the group in question.
 
-However, [1] is triggered when hotplugging a CPU multiple times
-since cache_shared_cpu_map_remove() decrements the refcount to
-fw_token at each CPU unplugging, eventually reaching 0.
-
-Remove of_node_put() for fw_token in cache_shared_cpu_map_remove().
-
-[1]
-------------[ cut here ]------------
-refcount_t: saturated; leaking memory.
-WARNING: CPU: 4 PID: 32 at lib/refcount.c:22 refcount_warn_saturate (lib/refcount.c:22 (discriminator 3))
-Modules linked in:
-CPU: 4 PID: 32 Comm: cpuhp/4 Tainted: G        W          6.1.0-rc1-14091-g9fdf2ca7b9c8 #76
-Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform, BIOS EDK II Oct 31 2022
-pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : refcount_warn_saturate (lib/refcount.c:22 (discriminator 3))
-lr : refcount_warn_saturate (lib/refcount.c:22 (discriminator 3))
-[...]
-Call trace:
-[...]
-of_node_release (drivers/of/dynamic.c:335)
-kobject_put (lib/kobject.c:677 lib/kobject.c:704 ./include/linux/kref.h:65 lib/kobject.c:721)
-of_node_put (drivers/of/dynamic.c:49)
-free_cache_attributes.part.0 (drivers/base/cacheinfo.c:712)
-cacheinfo_cpu_pre_down (drivers/base/cacheinfo.c:718)
-cpuhp_invoke_callback (kernel/cpu.c:247 (discriminator 4))
-cpuhp_thread_fun (kernel/cpu.c:785)
-smpboot_thread_fn (kernel/smpboot.c:164 (discriminator 3))
-kthread (kernel/kthread.c:376)
-ret_from_fork (arch/arm64/kernel/entry.S:861)
----[ end trace 0000000000000000 ]---
-
-Fixes: 3da72e18371c ("cacheinfo: Decrement refcount in cache_setup_of_node()")
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Link: https://lore.kernel.org/r/20221116094958.2141072-1-pierre.gondois@arm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/3398370.44csPzL39Z@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/cacheinfo.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/platform/x86/panasonic-laptop.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -409,8 +409,6 @@ static void cache_shared_cpu_map_remove(
- 				}
- 			}
+diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
+index e412a550f0983..418cd4d781261 100644
+--- a/drivers/platform/x86/panasonic-laptop.c
++++ b/drivers/platform/x86/panasonic-laptop.c
+@@ -1073,7 +1073,7 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
+ 			-1, NULL, 0);
+ 		if (IS_ERR(pcc->platform)) {
+ 			result = PTR_ERR(pcc->platform);
+-			goto out_backlight;
++			goto out_sysfs;
  		}
--		if (of_have_populated_dt())
--			of_node_put(this_leaf->fw_token);
- 	}
+ 		result = device_create_file(&pcc->platform->dev,
+ 			&dev_attr_cdpower);
+@@ -1089,6 +1089,8 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
  
- 	/* cpu is no longer populated in the shared map */
+ out_platform:
+ 	platform_device_unregister(pcc->platform);
++out_sysfs:
++	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
+ out_backlight:
+ 	backlight_device_unregister(pcc->backlight);
+ out_input:
+-- 
+2.51.0
+
 
 
 
