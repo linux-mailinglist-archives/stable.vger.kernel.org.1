@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-217087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8B3SJGXUlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-217087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:41 +0100
+	id oDgYKIbVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:54:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036C11505B3
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 097A815080B
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:54:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9697C3044373
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F31343035D56
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D29029A1;
-	Tue, 17 Feb 2026 20:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60E12D6E76;
+	Tue, 17 Feb 2026 20:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agugHYvS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOjLQ7pn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A85259CBD;
-	Tue, 17 Feb 2026 20:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670642DCF45;
+	Tue, 17 Feb 2026 20:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361379; cv=none; b=tcvr249ckl0yXBFnHKdefDYbHMUXR0GbFJa3Sg5X3brWb8ZRa5te76+QRVeNUkr1uzF60xzVJ3RwqKf9zKq6jqreeAeIK2sRIqQVjJ7KhatUUsy4Uz2ZlIeN9bNZhkFv8dQFaxVKGyMjNFg1rQf99Qs6dPOwo34WtfOpJgNEc3c=
+	t=1771361639; cv=none; b=A0u75DpZglT85gSlySfxIIBvW00Af/7/aHtyLhfNtRwuswVDrO6g0btcw1usns74eedEfzXIaZVpYoLkZa26VkQ1hVDhIwFgWnAWgSUbauvOr9qZSgLKoMarka9Xs7KE7BzNWr5r+sYYhAKonLq8vvyK+giUhOA5c9G+k8dZdyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361379; c=relaxed/simple;
-	bh=uqMphDbRJAeLKDVdTu80G/pwgYD6btc2UqTKdUVHw5Y=;
+	s=arc-20240116; t=1771361639; c=relaxed/simple;
+	bh=eX5ZSSYfmFdVunzjuAGN2D9UFDGFcxrQVlk/z8gn3Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4tVe9qvbQpdPqJl2UPYHs4d252I9cMvpKKHyIazPQLGDFxYnmFaQSjxcjid6IBtxzRgf51LOYR0tZlHFRBuAYM8fMmR26L05d07jnAISqFp+tTa0eTkUz0/seT3ahexrZDA9iBO0CfQHCnhNpqRaxfjRp7HW2AdiNg0EbqK0lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agugHYvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BDEC4CEF7;
-	Tue, 17 Feb 2026 20:49:38 +0000 (UTC)
+	 MIME-Version; b=kttuKoQFXkPWXhIMY5QrcnWeQQmT8NZneOKGkA1o1VahsKEXZby8t4btCFXT6jc5HU1mNAqTMOOz8Y/VRUq9bkOEVYP/rMyOSz3ZZHo5WsDWi+DNT1Ey3K56U1Uf8EGyQuUn3Gjcr1giiHlj5Jh7ACE7UWulI5V8ZxQxyZtrWIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOjLQ7pn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33C6C4CEF7;
+	Tue, 17 Feb 2026 20:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361378;
-	bh=uqMphDbRJAeLKDVdTu80G/pwgYD6btc2UqTKdUVHw5Y=;
+	s=korg; t=1771361639;
+	bh=eX5ZSSYfmFdVunzjuAGN2D9UFDGFcxrQVlk/z8gn3Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agugHYvSbXPqLJA4deIgcaPGBASyN9qRTnUzw5afPvuAD3ldZuyQnHQZjHqI9GQi7
-	 LGaI1YqtCOdNfiAsghR9Ipsj8IX1xWzD+q7eiDUAsJpE8VNYxUBSA7YVrjhXBlLNL2
-	 eyk8pkJcS4nd2OJWeFe4VMPUHlRkGRTKiuEiG2Lw=
+	b=FOjLQ7pnsZudZ8sBVwbe4QniNy0AhOfWuUecn9WynYisrroXyxpqkHF3jlGhQTKu2
+	 LHKwhbyJwB9qU8aojVaoIHW4u8IRXg0o/KdURB8eg8BVEvevu2szNwgJaHkI+V207u
+	 +dauWemuL20gd8Rihkw+45O3fS7C8yiGT8r+nwcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+803dd716c4310d16ff3a@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Melissa Wen <mwen@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 18/18] f2fs: fix to do sanity check on node footer in {read,write}_end_io
+Subject: [PATCH 6.12 23/42] drm/amd/display: remove assert around dpp_base replacement
 Date: Tue, 17 Feb 2026 21:32:14 +0100
-Message-ID: <20260217200003.402706905@linuxfoundation.org>
+Message-ID: <20260217200006.888298568@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
-References: <20260217200002.683975158@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,210 +66,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217087-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217163-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,803dd716c4310d16ff3a];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,syzkaller.appspot.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: 036C11505B3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,igalia.com:email]
+X-Rspamd-Queue-Id: 097A815080B
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Melissa Wen <mwen@igalia.com>
 
-[ Upstream commit 50ac3ecd8e05b6bcc350c71a4307d40c030ec7e4 ]
+[ Upstream commit 84962445cd8a83dc5bed4c8ad5bbb2c1cdb249a0 ]
 
------------[ cut here ]------------
-kernel BUG at fs/f2fs/data.c:358!
-Call Trace:
- <IRQ>
- blk_update_request+0x5eb/0xe70 block/blk-mq.c:987
- blk_mq_end_request+0x3e/0x70 block/blk-mq.c:1149
- blk_complete_reqs block/blk-mq.c:1224 [inline]
- blk_done_softirq+0x107/0x160 block/blk-mq.c:1229
- handle_softirqs+0x283/0x870 kernel/softirq.c:579
- __do_softirq kernel/softirq.c:613 [inline]
- invoke_softirq kernel/softirq.c:453 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1050
- </IRQ>
+There is nothing wrong if in_shaper_func type is DISTRIBUTED POINTS.
+Remove the assert placed for a TODO to avoid misinterpretations.
 
-In f2fs_write_end_io(), it detects there is inconsistency in between
-node page index (nid) and footer.nid of node page.
-
-If footer of node page is corrupted in fuzzed image, then we load corrupted
-node page w/ async method, e.g. f2fs_ra_node_pages() or f2fs_ra_node_page(),
-in where we won't do sanity check on node footer, once node page becomes
-dirty, we will encounter this bug after node page writeback.
-
-Cc: stable@kernel.org
-Reported-by: syzbot+803dd716c4310d16ff3a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=803dd716c4310d16ff3a
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ Context ]
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1714dcc4c2c53e41190896eba263ed6328bcf415)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   13 +++++++++++--
- fs/f2fs/f2fs.h |   12 ++++++++++++
- fs/f2fs/node.c |   20 +++++++++++---------
- fs/f2fs/node.h |    8 --------
- 4 files changed, 34 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -151,6 +151,12 @@ static void f2fs_finish_read_bio(struct
- 		}
- 
- 		dec_page_count(F2FS_F_SB(folio), __read_io_type(folio));
-+
-+		if (F2FS_F_SB(folio)->node_inode && is_node_folio(folio) &&
-+			f2fs_sanity_check_node_footer(F2FS_F_SB(folio),
-+				folio, folio->index, NODE_TYPE_REGULAR, true))
-+			bio->bi_status = BLK_STS_IOERR;
-+
- 		folio_end_read(folio, bio->bi_status == BLK_STS_OK);
- 	}
- 
-@@ -352,8 +358,11 @@ static void f2fs_write_end_io(struct bio
- 						STOP_CP_REASON_WRITE_FAIL);
- 		}
- 
--		f2fs_bug_on(sbi, is_node_folio(folio) &&
--				folio->index != nid_of_node(folio));
-+		if (is_node_folio(folio)) {
-+			f2fs_sanity_check_node_footer(sbi, folio,
-+				folio->index, NODE_TYPE_REGULAR, true);
-+			f2fs_bug_on(sbi, folio->index != nid_of_node(folio));
-+		}
- 
- 		dec_page_count(sbi, type);
- 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1529,6 +1529,15 @@ enum f2fs_lookup_mode {
- 	LOOKUP_AUTO,
- };
- 
-+/* For node type in __get_node_folio() */
-+enum node_type {
-+	NODE_TYPE_REGULAR,
-+	NODE_TYPE_INODE,
-+	NODE_TYPE_XATTR,
-+	NODE_TYPE_NON_INODE,
-+};
-+
-+
- static inline int f2fs_test_bit(unsigned int nr, char *addr);
- static inline void f2fs_set_bit(unsigned int nr, char *addr);
- static inline void f2fs_clear_bit(unsigned int nr, char *addr);
-@@ -3877,6 +3886,9 @@ struct folio *f2fs_new_node_folio(struct
- void f2fs_ra_node_page(struct f2fs_sb_info *sbi, nid_t nid);
- struct folio *f2fs_get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
- 						enum node_type node_type);
-+int f2fs_sanity_check_node_footer(struct f2fs_sb_info *sbi,
-+					struct folio *folio, pgoff_t nid,
-+					enum node_type ntype, bool in_irq);
- struct folio *f2fs_get_inode_folio(struct f2fs_sb_info *sbi, pgoff_t ino);
- struct folio *f2fs_get_xnode_folio(struct f2fs_sb_info *sbi, pgoff_t xnid);
- int f2fs_move_node_folio(struct folio *node_folio, int gc_type);
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1500,9 +1500,9 @@ void f2fs_ra_node_page(struct f2fs_sb_in
- 	f2fs_folio_put(afolio, err ? true : false);
- }
- 
--static int sanity_check_node_footer(struct f2fs_sb_info *sbi,
-+int f2fs_sanity_check_node_footer(struct f2fs_sb_info *sbi,
- 					struct folio *folio, pgoff_t nid,
--					enum node_type ntype)
-+					enum node_type ntype, bool in_irq)
- {
- 	if (unlikely(nid != nid_of_node(folio)))
- 		goto out_err;
-@@ -1527,12 +1527,13 @@ static int sanity_check_node_footer(stru
- 		goto out_err;
- 	return 0;
- out_err:
--	f2fs_warn(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
--		  "node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
--		  ntype, nid, nid_of_node(folio), ino_of_node(folio),
--		  ofs_of_node(folio), cpver_of_node(folio),
--		  next_blkaddr_of_node(folio));
- 	set_sbi_flag(sbi, SBI_NEED_FSCK);
-+	f2fs_warn_ratelimited(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
-+		"node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
-+		ntype, nid, nid_of_node(folio), ino_of_node(folio),
-+		ofs_of_node(folio), cpver_of_node(folio),
-+		next_blkaddr_of_node(folio));
-+
- 	f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
- 	return -EFSCORRUPTED;
- }
-@@ -1578,7 +1579,7 @@ repeat:
- 		goto out_err;
- 	}
- page_hit:
--	err = sanity_check_node_footer(sbi, folio, nid, ntype);
-+	err = f2fs_sanity_check_node_footer(sbi, folio, nid, ntype, false);
- 	if (!err)
- 		return folio;
- out_err:
-@@ -1752,7 +1753,8 @@ static bool __write_node_folio(struct fo
- 	/* get old block addr of this node page */
- 	nid = nid_of_node(folio);
- 
--	if (sanity_check_node_footer(sbi, folio, nid, NODE_TYPE_REGULAR)) {
-+	if (f2fs_sanity_check_node_footer(sbi, folio, nid,
-+					NODE_TYPE_REGULAR, false)) {
- 		f2fs_handle_critical_error(sbi, STOP_CP_REASON_CORRUPTED_NID);
- 		goto redirty_out;
- 	}
---- a/fs/f2fs/node.h
-+++ b/fs/f2fs/node.h
-@@ -52,14 +52,6 @@ enum {
- 	IS_PREALLOC,		/* nat entry is preallocated */
- };
- 
--/* For node type in __get_node_folio() */
--enum node_type {
--	NODE_TYPE_REGULAR,
--	NODE_TYPE_INODE,
--	NODE_TYPE_XATTR,
--	NODE_TYPE_NON_INODE,
--};
--
- /*
-  * For node information
-  */
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+index 17b6eebadef69..39cc924463502 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+@@ -499,7 +499,6 @@ bool dcn32_set_mcm_luts(
+ 		lut_params = &plane_state->in_shaper_func.pwl;
+ 	else if (plane_state->in_shaper_func.type == TF_TYPE_DISTRIBUTED_POINTS) {
+ 		// TODO: dpp_base replace
+-		ASSERT(false);
+ 		cm3_helper_translate_curve_to_hw_format(plane_state->ctx,
+ 							&plane_state->in_shaper_func,
+ 							&dpp_base->shaper_params, true);
+-- 
+2.51.0
+
 
 
 
