@@ -1,90 +1,70 @@
-Return-Path: <stable+bounces-216774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EP71KMxClGkgBwIAu9opvQ
-	(envelope-from <stable+bounces-216774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:28:28 +0100
+	id iEiwOMlDlGkgBwIAu9opvQ
+	(envelope-from <stable+bounces-216775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:32:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4709914ADA9
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:28:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1798814AE11
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:32:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 87A65300C0CA
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 10:28:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BD1A83004408
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 10:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C902A320A23;
-	Tue, 17 Feb 2026 10:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C9D325727;
+	Tue, 17 Feb 2026 10:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FgFEcrIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOWVnnv0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2DC320CCF
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 10:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C6123BF9F;
+	Tue, 17 Feb 2026 10:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771324105; cv=none; b=hsKgy1a3p61ijSv2zuQHki8+/NNbKwrIBajcIN1Twr7q6HcM0nVF4cItu6zEYF7xc7fZcP1FBL4OCbAKzhudfuIvxe8u0zZm3O6L5G1cNquoNtZsitRHfZh8Jh0ufKNuszbAy409U23Uxhz6U2gtYsvjHqp/KTaTvZBiPlOieTM=
+	t=1771324356; cv=none; b=nmMyqKraTpn1VT2L5DvT2wGwvzzLnQ/p038IJXSKPcGDJDi4A9iWGS9Zkm4RnJxg4XZ+VaHUbDolfwHqP3U3TdawiPWUFJ8oGD/nezAMAugUp1Zrv7ltWN8tz+snXCd2RfbwGf8i56+IoRWuWfuqchFIwLqNaELB8v7Rvn66VBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771324105; c=relaxed/simple;
-	bh=Wi+6FL2HC8in9JB/8tyHaqg2qNDpCsf/gocDozzWypE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=t5mjCPWvNUrNmbu61zc2xabm88IhfZfi+6dF9CTk2fiwb5ciBlAFbOF8Lu64Ib6lsmebjslVGyMxGo+xx84t/E+voF2Ddvbc+7r5sF19OFtlTm1casg8CjcR5PGYoDjlf/BrVrucQNnock9IfjtWjlPlkcXt+W9JMVqPyzud3V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FgFEcrIK; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48374014a77so35053115e9.3
-        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 02:28:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771324103; x=1771928903; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wi+6FL2HC8in9JB/8tyHaqg2qNDpCsf/gocDozzWypE=;
-        b=FgFEcrIKVMxPDDwqKM6iojWZeDocgvGNWFeR+vvi5M9Fs6UZhP0vsK1dRORZve0ANy
-         WqQ0GYx7aYKz0Cz6fw7T90vks0YA2POu6TyzPp/kU9KCfrsrqMH+dyEedeVvOZwWqbNf
-         5b8aomv7mYH69N627LvcLb5GFrVCF8X/uvywumg/wU7jtWkm9/qnBxSZW5tFDA9BFgC3
-         TSjNsSgjOf/BA4BbVjEngCiib2UKgrWjBA2xYBreXXRdJqlJiHdQpgcXduGaAK1xkNcz
-         BkVv+nzKGJ1PnkkSyVqen0rxqaVgCSfRclyOzCZYFhqmtq+KRrHI54Y1rsHER2M+6/wS
-         tAxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771324103; x=1771928903;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Wi+6FL2HC8in9JB/8tyHaqg2qNDpCsf/gocDozzWypE=;
-        b=eL5XQcQQSPLj8sfzN74ejU/rDKff6Lk0GI9hUg2KhM7qo2WKb0crlLX0v2P6W6/5F0
-         /VlzLvzCu9Y52cbRUAoMii56LdeOFH6P6k0D1YE1MQg5qEKPR8liOHnt3dcdhZmfoPwn
-         0LxXH2WUhqHRzjPtbHXSgMcQWYk0UBj3+Elhdr7EKyshTbOw6pPK08VHu1fMXgDRpQr5
-         eB9UoM8IhcmMnncJurlFLe0hde6UqI3O+fRwxSb9w3zJQuZTgJ5TvliBkffSe/6CPBYI
-         tDHbQHiG+5N/3yJefhJMlkI/+lugdDDICrLlHUeVDF6GJvviAqHNliu5t+AhYFJSI7Z/
-         KZKQ==
-X-Gm-Message-State: AOJu0Yzj07SeRpPd+eB50g8KYv0ithFBX0NxLzWGCOxaIkqyFiCwdGJg
-	BkqkGRIBWgsRxnZDqTmhSi8xNy/7EE/0NRL7AhU12f0FS8LhSDFUuGuR
-X-Gm-Gg: AZuq6aJH/MSG7eHlt7V7K7Se/3M07ktat2edy/wZbehEp+nq2m/JkxuINh8O+eqOjpH
-	VC9zAEpcV/CTLhz58WimrVqUigLotWz+4UxhQDrVq/LzRvSRZlYqdxVYcPMLTEsB3Atrcu9SYtI
-	n7bhHhdnEZfvaqqG9cZjH92KjjpQRYjJL3cXG4RHq+ce40nhBFvM1Xju/bykDqaAzYg9DHBqq4K
-	wAQjeJt5/Hn8RlnhXUe115JFkOcpeaBq1/+AziSHV6KV0VY+l5HFNuGFGSrKz0T8+qycfNDGQzi
-	Q5zaYbs22I4K1m/qhV868yEaBySuGcRl48DRk7f+cg3fIKdFPpwCMIlnbPl07g/GjgYRGblkLxF
-	5DWEI76xdKjjiinJVUhYN0ueny96SHDqqvOmjyMlfJK3K5wGlXZLVqU5TniawSFd6Kh6EFz3ZRH
-	des4m4WRbYJsRYclsOFI89eRBP8hvQ0s5JoCfVKTb8BAp81S+MWSX4zaW7
-X-Received: by 2002:a05:600c:6808:b0:483:2c98:4368 with SMTP id 5b1f17b1804b1-48373a3e755mr228402645e9.18.1771324102413;
-        Tue, 17 Feb 2026 02:28:22 -0800 (PST)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d82a4afsm904469255e9.11.2026.02.17.02.28.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 02:28:21 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 05E4CBE2DE0; Tue, 17 Feb 2026 11:28:21 +0100 (CET)
-Date: Tue, 17 Feb 2026 11:28:20 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: stable <stable@vger.kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Please apply commit 9990ddf47d41 ("net: tunnel: make
- skb_vlan_inet_prepare() return drop reasons") down to 6.1.y at least
-Message-ID: <177132401902.2893171.1371685164011289024@eldamar.lan>
+	s=arc-20240116; t=1771324356; c=relaxed/simple;
+	bh=EU+F3qBEfwa2qi2OJwmfpHEKvticwtw+Y9NIdZ3pMr0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IavXp4j9gr/+3RkB59iSEzoyok3LHDLyxorokHUOA4hCMqyRPleI7tvWrs9TRK+MnCSrUtkwpdd7youYcWubfechGDCn44kCbpZdcm8SFOevuhDc60CLRW059TBL81fjZ+n0cvr7zuQ5+9RNHKX/gcql8oZuE6EGRhFfZZi2Xn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOWVnnv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FC2C4CEF7;
+	Tue, 17 Feb 2026 10:32:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771324356;
+	bh=EU+F3qBEfwa2qi2OJwmfpHEKvticwtw+Y9NIdZ3pMr0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VOWVnnv0/vR1b2OMZjXz5cRXcrLIPYXZ/Fqav7h70L/eCm6VBeLMYQV5vNmHCABRY
+	 si58s7gzJHvwM8HHTMw0R5WPgONrQTXLuAe7hO6wBX8N0CZbpX1XL0hj6V7TTbGKRA
+	 9m7+XgisfGN7I3xv9q8DcyH/Eaoq9Ka/tTw4m1kc=
+Date: Tue, 17 Feb 2026 11:32:33 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Evans Jahja <evansjahja13@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	Otto =?iso-8859-1?Q?Pfl=FCger?= <otto.pflueger@abscue.de>,
+	Denis Gessert <denisgessert@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: Re: [REGRESSION] mt8183-kukui: dts: changes in dts caused display to
+ no longer initialize - Was: Re: mt8183-kukui: drm/mediatek: dts: Invalid
+ display hw pipeline when probing mediatek-drm
+Message-ID: <2026021726-decibel-bootie-39ba@gregkh>
+References: <CAFLVeg9hwH3PbKu5rPWZWqq6yz5mRRoB9oqxDkxNRdEDLGbVBw@mail.gmail.com>
+ <CAFLVeg_soeYV4tOYKMo6TMYOtuWWU4TFCjUTxUrVEyGcRwMz7A@mail.gmail.com>
+ <df6fcd73-fe0a-42fc-97ce-7e458c340553@leemhuis.info>
+ <CAFLVeg-qeWu4ntgyqotsgjogPEyhqrMGG=UDWuZe+-D3K8YPTA@mail.gmail.com>
+ <908f3c03-a8b0-4535-9cfa-294c6ade8152@collabora.com>
+ <96e7f0fc-65f4-4613-b556-3a2d869dabb4@leemhuis.info>
+ <86e2d0f9-5c25-4cce-b4a8-68fb569f987d@collabora.com>
+ <6fce0406-1515-4cf8-afdf-24217148d1c8@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,48 +73,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <6fce0406-1515-4cf8-afdf-24217148d1c8@leemhuis.info>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216774-lists,stable=lfdr.de];
-	TO_DN_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carnil@debian.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-216775-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4709914ADA9
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,lists.infradead.org,lists.linux.dev,abscue.de,collabora.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1798814AE11
 X-Rspamd-Action: no action
 
-Hi stable maintainers,
+On Tue, Feb 17, 2026 at 09:18:00AM +0100, Thorsten Leemhuis wrote:
+> On 2/16/26 11:46, AngeloGioacchino Del Regno wrote:
+> > Il 13/02/26 10:27, Thorsten Leemhuis ha scritto:
+> >> On 2/9/26 12:42, AngeloGioacchino Del Regno wrote:
+> >>> Il 06/02/26 17:58, Denis Gessert ha scritto:
+> >>>> Thanks for the quick response. I compiled 6.18.9 with this patch
+> >>>> (without reverting the previous commit) and it boots successfully.
+> >>> Happy to see further confirmation that the patch that we both
+> >>> mentioned is
+> >>> actually fixing the issue.
+> >> The big question remains: Now that this landed in mainline, should we as
+> >> the stable team to pick this up for 6.18.y and 6.19.y to get it resolved
+> >> there quickly? They might pick it up on their own due to the Fixes tag,
+> >> but that is not guaranteed.
+> > Yes, please, that'd be great.
+> 
+> Hi stable team! Could you please pick up be0b304eeb8c5f ("arm64: dts:
+> mediatek: mt8183: Add missing endpoint IDs to display graph") [merged
+> v6.19-post, committed by Angelo, who ACKed this request; see quote
+> above] for 6.18.y and 6.19.y? It fixes a regression in e72d63fa0563
+> ("arm64: dts: mediatek: mt8183: Migrate to display controller OF
+> graph"). tia! Ciao, Thorsten
 
-9990ddf47d41 ("net: tunnel: make skb_vlan_inet_prepare() return drop
-reasons") was alrady backported as well to 6.12.71 to address a
-regression when backporting 81c734dae203 ("ip6_tunnel: use
-skb_vlan_inet_prepare() in __ip6_tnl_rcv()") (this one was backported
-without the prequisite commit to 6.12.67, 6.6.122, 6.1.162, 5.15.199
-and 5.10.249).
+Now queued up, thanks.
 
-Can you pick please as well 9990ddf47d41 for the other stable series
-as needed? I can only give a confirmation that it works as exepcted
-for the 6.1.y series as per https://bugs.debian.org/1127823#36 .
-
-Regards,
-Salvatore
+greg k-h
 
