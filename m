@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-216932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFUNBWrSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216932-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:14 +0100
+	id OOuaD3fSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BEEB1500ED
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6904150120
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04CEF3047DEA
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:40:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 471833042477
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1568374178;
-	Tue, 17 Feb 2026 20:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DB2374178;
+	Tue, 17 Feb 2026 20:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMb42F03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eflc4Tzx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6544F286D4D;
-	Tue, 17 Feb 2026 20:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDBC29E0F6;
+	Tue, 17 Feb 2026 20:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360848; cv=none; b=SA7jDsRGf3+xbf7YUYx6iO5YmtBaxGl43vxILC2yE89Ub8Wzmkq2VAWba8Pj9bgoWUrHh6ymUskgmByFPcII6TLHFe6qWItZyWfJxvKHjs3mRy+VzXN3fQANBbyiApr/Y83CRKToUy51RF3McY7vqnU9L3TuEwt7HCH31lVFdvQ=
+	t=1771360864; cv=none; b=FwvbdGh6Z0dD5wxrUZpE+obIVPuG2doFtdXqHZJR8RbG6XJcaWtwMspp6MRUD+AjrQ2FJiGjIigN3NoahZditlzTOoJn/Qo821V7qSdELgDzxTUU66oZ5xax/RLixQrc+SpJU+9lhIIoqdwhGdKVY/NgHe7+yqZZFt1Y4m8A1r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360848; c=relaxed/simple;
-	bh=n+MfHyVGVvHJ83FRejoTfdLMkSfQE6PXuNZiY8LK2Hg=;
+	s=arc-20240116; t=1771360864; c=relaxed/simple;
+	bh=b9Puen0w5OUBrZ+S2T1eGwHote/1bZWBHFwIzNfRW54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VA/tmztBEYkrgAz9GpNnxRtSdTPDQIX2M6ezncLgQv8L4KZbaSc2JiWHlEVt3EEdBUZA+18u7a9dlOi2YfHN0pZuo3G407ltxtCVGd1g6sYmwQxtm/HOTWA6uTSo9bFkYmedvkVBkTLvVMBElb9YkrvjewnMXydPMyofFAPynQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMb42F03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA42C4CEF7;
-	Tue, 17 Feb 2026 20:40:47 +0000 (UTC)
+	 MIME-Version; b=SD8qAMLbaE0vd3fit6m2AMby2gyFcPp78rhcvbglpyDRCEdk+Qw7mMUyE0t4RCkb3HyOz0QvDYHDkHnkOCAc60Qt8BXTJ0YVp5pedgvkn+nz0eaXmIO3DrexY+QNMcIqSUempOPVUvewh62T3z/BwrafQt5x7TqtOYmq7sEelU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eflc4Tzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01C0C4CEF7;
+	Tue, 17 Feb 2026 20:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360848;
-	bh=n+MfHyVGVvHJ83FRejoTfdLMkSfQE6PXuNZiY8LK2Hg=;
+	s=korg; t=1771360864;
+	bh=b9Puen0w5OUBrZ+S2T1eGwHote/1bZWBHFwIzNfRW54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMb42F03IVyV28MQfHxTwNZ9Gmf3HNcxSPAgt5IbLeBxuR4cePxZX7NXUnW1ppgZh
-	 2R97d8f2Ja5IuOwZHdoIZDraR0WzhyrCg9DyxMG0FdrSz6NF5RUh1+7apnSH3ZajKP
-	 IVS6q6Xs95PDKSamTX0SCygdWGonNC9X19UEC4eU=
+	b=eflc4TzxC5II4i4YUXuM9mTpgoaMLV4vBVO36Go69E0YW2O5Zn5kouv+063/hevZ7
+	 dTg8DhHDfO/ZJqhsibHHbMQ33VOvN0h9qK6u+tYuJzTpdkfkA3SKW1Nrp7RxrfRuMy
+	 17d5AfBlZfQqgtbnoLa1g+K6bhZ3OMNAQEdxDE/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 05/39] bus: fsl-mc: fix use-after-free in driver_override_show()
-Date: Tue, 17 Feb 2026 21:30:27 +0100
-Message-ID: <20260217200004.434484449@linuxfoundation.org>
+Subject: [PATCH 6.6 06/39] ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU
+Date: Tue, 17 Feb 2026 21:30:28 +0100
+Message-ID: <20260217200004.474386818@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260217200004.221651386@linuxfoundation.org>
 References: <20260217200004.221651386@linuxfoundation.org>
@@ -76,72 +76,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216932-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216937-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 7BEEB1500ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tuxedocomputers.com:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: D6904150120
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
 
-[ Upstream commit 148891e95014b5dc5878acefa57f1940c281c431 ]
+[ Upstream commit b48fe9af1e60360baf09ca6b7a3cd6541f16e611 ]
 
-The driver_override_show() function reads the driver_override string
-without holding the device_lock. However, driver_override_store() uses
-driver_set_override(), which modifies and frees the string while holding
-the device_lock.
+Add a PCI quirk to enable microphone detection on the headphone jack of
+TongFang X6AR55xU devices.
 
-This can result in a concurrent use-after-free if the string is freed
-by the store function while being read by the show function.
-
-Fix this by holding the device_lock around the read operation.
-
-Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20251202174438.12658-1-hanguidong02@gmail.com
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260119151626.35481-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -201,8 +201,12 @@ static ssize_t driver_override_show(stru
- 				    struct device_attribute *attr, char *buf)
- {
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
-+	ssize_t len;
- 
--	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
-+	device_lock(dev);
-+	len = sysfs_emit(buf, "%s\n", mc_dev->driver_override);
-+	device_unlock(dev);
-+	return len;
- }
- static DEVICE_ATTR_RW(driver_override);
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index c60358a4a7572..95e650493dc5b 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11102,6 +11102,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
+ 		{0x12, 0x90a60140},
+ 		{0x19, 0x04a11030},
+ 		{0x21, 0x04211020}),
++	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1d05, "TongFang", ALC274_FIXUP_HP_HEADSET_MIC,
++		{0x17, 0x90170110},
++		{0x19, 0x03a11030},
++		{0x21, 0x03211020}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0282, 0x1025, "Acer", ALC282_FIXUP_ACER_DISABLE_LINEOUT,
+ 		ALC282_STANDARD_PINS,
+ 		{0x12, 0x90a609c0},
+-- 
+2.51.0
+
 
 
 
