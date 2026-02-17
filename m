@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-217176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIRzHpjVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:54:48 +0100
+	id gPBMHwvVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FCB150843
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:54:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D2B1506D8
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3C84300E278
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:54:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16F1A3016C9E
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F9E2D6E76;
-	Tue, 17 Feb 2026 20:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4898128D8E8;
+	Tue, 17 Feb 2026 20:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgLKU4L0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oitubyej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F0B280CC1;
-	Tue, 17 Feb 2026 20:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF7B29A1;
+	Tue, 17 Feb 2026 20:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361683; cv=none; b=ouGwbOGBHiI7X7cZhmFNtEto8wHb0AuNyi4AIF65gV68pj3d6QlmtkuShCyBHfW7kJWR/bnpNllqYpHLgc9cf/TlqFQjxZof8qbEnil8tTMn3rI0Xe/L7zT7Zvd/CRLdkydZNz3r+JSv8vNXI/uTZufS8Yxz/NrKbq7FOhKs2R0=
+	t=1771361542; cv=none; b=beOywegd4HXiB12zCBNEABErn5zEULIp+B1qwXhhaK6x7KBZeWZ1WDmEBkVc5x5w827fpI89OpGJQei5QPdN3u16EbNmY7uPXOXkBJyeB5M2TiYxLdcEcuOnC5Noz8PpJsMTkX/lNEMIYeqZF7OwlkzyVqMl0WZNZfq7kPSBdcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361683; c=relaxed/simple;
-	bh=c2Qm2XP2eiAY7Ijq+GbAZdjXyoKKwmtHJ+9609OkkKg=;
+	s=arc-20240116; t=1771361542; c=relaxed/simple;
+	bh=NIAM04/y7xj+dNfyBdbKRbLeiNMSkPstACSsSQ783dY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIejV1JbUpyx+GqM9BKUlfyaH6BW2CzFioHMcV0aAtNJsV20gEzZ7iLa+XrbMVabsE6wV+E5gfhpGFjUJIgQKYRzQ8zyBZ6/TzHnzajP+ASoePNHm6IeF3GRm8pY/G/6clz/dVZqJGkqXLxz0JeBZZ+hhZGvYLY5686dAHF2SGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgLKU4L0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE884C4CEF7;
-	Tue, 17 Feb 2026 20:54:42 +0000 (UTC)
+	 MIME-Version; b=MQk4eSocjXpVswn0TdjFaxATuUb8W/MnQBWqI/HyD2ORlCXpztNNQXfIXL7/QCmVZkpcK9X/v2xfo9mRhkw9N7B1rxqEqCJ1n5skXkAc8uFXzoAMzCxwrNhe0RimUJQB9TysLgHZko0VCe+cGE8m+v6ZoLzJtus2EloTcyv37DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oitubyej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A54C4CEF7;
+	Tue, 17 Feb 2026 20:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361683;
-	bh=c2Qm2XP2eiAY7Ijq+GbAZdjXyoKKwmtHJ+9609OkkKg=;
+	s=korg; t=1771361541;
+	bh=NIAM04/y7xj+dNfyBdbKRbLeiNMSkPstACSsSQ783dY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kgLKU4L05ml/JkH1rR//2UWbhX6hX2qMBm5mUqJManNQ2gbUr/C4jozywA5lQAzRE
-	 dLDPe62bk4IK62dcg2N9i5aR5aQMV2yE4E0lm9qoWkz0FK6GaYQtLFK9XMZ/fPWfa6
-	 ugXTFwbNNnb6eN6L15tfPU4oTZWneniM6i2nqQuI=
+	b=Oitubyej/2UERZApSKAkqi5hzkBJ67SVXP1JqzEgrtzne1KPgt+PUyYI4ZIdF7BgX
+	 fE/aFSYMfXGln6CduhwhuAnsq7NZY8jG0NwDbhwwnxqeRc8cRqcsDtgd2BqyYJ/0+i
+	 Us+9Km15Rez2I7nQ5vYIbtFqanwM3Oyp1NKFe7LI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alban Bedel <alban.bedel@lht.dlh.de>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 25/42] gpiolib: acpi: Fix gpio count with string references
+	stable@kernel.org,
+	syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.18 36/43] f2fs: fix to avoid UAF in f2fs_write_end_io()
 Date: Tue, 17 Feb 2026 21:32:16 +0100
-Message-ID: <20260217200006.962340251@linuxfoundation.org>
+Message-ID: <20260217200007.852060324@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
-References: <20260217200005.998240758@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +66,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217176-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217135-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,b4444e3c972a7a124187];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,dlh.de:email]
-X-Rspamd-Queue-Id: E5FCB150843
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: E0D2B1506D8
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alban Bedel <alban.bedel@lht.dlh.de>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit c62e0658d458d8f100445445c3ddb106f3824a45 ]
+commit ce2739e482bce8d2c014d76c4531c877f382aa54 upstream.
 
-Since commit 9880702d123f2 ("ACPI: property: Support using strings in
-reference properties") it is possible to use strings instead of local
-references. This work fine with single GPIO but not with arrays as
-acpi_gpio_package_count() didn't handle this case. Update it to handle
-strings like local references to cover this case as well.
+As syzbot reported an use-after-free issue in f2fs_write_end_io().
 
-Signed-off-by: Alban Bedel <alban.bedel@lht.dlh.de>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/20260129145944.3372777-1-alban.bedel@lht.dlh.de
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It is caused by below race condition:
+
+loop device				umount
+- worker_thread
+ - loop_process_work
+  - do_req_filebacked
+   - lo_rw_aio
+    - lo_rw_aio_complete
+     - blk_mq_end_request
+      - blk_update_request
+       - f2fs_write_end_io
+        - dec_page_count
+        - folio_end_writeback
+					- kill_f2fs_super
+					 - kill_block_super
+					  - f2fs_put_super
+					 : free(sbi)
+       : get_pages(, F2FS_WB_CP_DATA)
+         accessed sbi which is freed
+
+In kill_f2fs_super(), we will drop all page caches of f2fs inodes before
+call free(sbi), it guarantee that all folios should end its writeback, so
+it should be safe to access sbi before last folio_end_writeback().
+
+Let's relocate ckpt thread wakeup flow before folio_end_writeback() to
+resolve this issue.
+
+Cc: stable@kernel.org
+Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint for better performance")
+Reported-by: syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b4444e3c972a7a124187
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-acpi-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/data.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index fc2033f2cf258..f6bec9d2fd265 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -1351,6 +1351,7 @@ static int acpi_gpio_package_count(const union acpi_object *obj)
- 	while (element < end) {
- 		switch (element->type) {
- 		case ACPI_TYPE_LOCAL_REFERENCE:
-+		case ACPI_TYPE_STRING:
- 			element += 3;
- 			fallthrough;
- 		case ACPI_TYPE_INTEGER:
--- 
-2.51.0
-
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -356,14 +356,20 @@ static void f2fs_write_end_io(struct bio
+ 				folio->index != nid_of_node(folio));
+ 
+ 		dec_page_count(sbi, type);
++
++		/*
++		 * we should access sbi before folio_end_writeback() to
++		 * avoid racing w/ kill_f2fs_super()
++		 */
++		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
++				wq_has_sleeper(&sbi->cp_wait))
++			wake_up(&sbi->cp_wait);
++
+ 		if (f2fs_in_warm_node_list(sbi, folio))
+ 			f2fs_del_fsync_node_entry(sbi, folio);
+ 		folio_clear_f2fs_gcing(folio);
+ 		folio_end_writeback(folio);
+ 	}
+-	if (!get_pages(sbi, F2FS_WB_CP_DATA) &&
+-				wq_has_sleeper(&sbi->cp_wait))
+-		wake_up(&sbi->cp_wait);
+ 
+ 	bio_put(bio);
+ }
 
 
 
