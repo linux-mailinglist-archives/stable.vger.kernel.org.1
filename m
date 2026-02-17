@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-217041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216961-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NXZLtfTlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:19 +0100
+	id 4B+BH9bSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216961-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E339015046C
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CBD1501E4
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 99F483007AF0
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2D473300A5A0
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEFB261B70;
-	Tue, 17 Feb 2026 20:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514003783CF;
+	Tue, 17 Feb 2026 20:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBrpcCnf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xcRNqr/f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DED259CBD;
-	Tue, 17 Feb 2026 20:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1391B36F431;
+	Tue, 17 Feb 2026 20:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361222; cv=none; b=GFUO4G0dgMSIdy9gssCToqZQ56lzioyqt3Xhd/ZrQKTnEYY/Svr0sYcyEMuvLpt8/B1sdFBPSEJkNrP3rKMFkKe/wS1ywoEMIX/8mz8KG0PahqVZJIafGzRmoyFLr9jDjEt6fz4V2VyNEV45D4dq8Y0+Pd2KzcKs0E1qN/GICBU=
+	t=1771360946; cv=none; b=NMOj6F73nCTnIitjTu0U4yzLB2ipDtp57Eu4YOnDiVLvS9t/kkM9nQjmCylaYAYyZm77r0Vk5juVgOd7QDkccxAVTDBgXCU7bOGxf6I6LUv5z60wGlNyHp1qOIWwIyMUPx8HGBZHCmxs6ia+wPXdk9oayuM7vN33hm4QOHy2LkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361222; c=relaxed/simple;
-	bh=BmWCl+ZnKK9Qmo7RduUYre7nn7i5coOziqT6wlXcDCM=;
+	s=arc-20240116; t=1771360946; c=relaxed/simple;
+	bh=2DqAIjAlF75z7cnwy01LwAGCm8XOX19PHcCwBFAbOoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZytQrg3T3sUxVRL1L1Ag18VLNM7GNYhQSZOimbT/LsHR25ig6OzeQ6bLGqb8okB9CJtk+AxoU0OdX4wwlYl1uGWVzs56eqxQR1KwSLJwC7zsHcIeNO4fDifda4EHEYrTNSJ2xoIbCpeThWGHpxEB5+0Y1Rg0oxFwYnWUNvNCnT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBrpcCnf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321B7C19421;
-	Tue, 17 Feb 2026 20:47:01 +0000 (UTC)
+	 MIME-Version; b=KhMvSwrUz4k+F9EYb1/y+Q/V7Edk7Mq03AJi+yVdzUnr2a+B4us2dgB7H2s49/1jBPmS/d2h4SvkyejsqxgRLsImXN5TY9QpMvDRQbzFYaliyFjjyEdUvPvPFnyC21DwBnoQ0BiOW2hMsShZkx/kTuoHr9iWwLP5GUVYNcMUYZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xcRNqr/f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73562C4CEF7;
+	Tue, 17 Feb 2026 20:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361221;
-	bh=BmWCl+ZnKK9Qmo7RduUYre7nn7i5coOziqT6wlXcDCM=;
+	s=korg; t=1771360945;
+	bh=2DqAIjAlF75z7cnwy01LwAGCm8XOX19PHcCwBFAbOoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hBrpcCnfYius1C8dVDqHkDfrfkgbF01ZwM+CS6wV1r627LXaV0DnQY9J1MGGGrnka
-	 Qkueww/1mcg6Hv/B45DYh5zwxmVrKA4FzkfGh31uUsMxH6JOpPXS339AFbMK49xa2Z
-	 4hu75T+KEga7tvlSsG4QU20AdOKsvNKwZ7bgsTek=
+	b=xcRNqr/f5y9XAh0dm4trM531rBkYCx4EY3Q88UT1C2E/cLegKtCEh0ykJtO4EIW7a
+	 CbLzB7qsu8JRDEIDZL6lS1eArmfTXrtipxxay4ML0VAmCaurxkXABU2nQ6lWw9mnBF
+	 sABs8O9iwE+Exae23vEFDvsLhehJh/mIotnwTkcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 37/64] platform/x86: panasonic-laptop: Fix sysfs group leak in error path
-Date: Tue, 17 Feb 2026 21:31:33 +0100
-Message-ID: <20260217200008.899357663@linuxfoundation.org>
+	Tianchu Chen <flynnnchen@tencent.com>,
+	stable <stable@kernel.org>,
+	Steve Glendinning <steve.glendinning@shawell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 21/24] fbdev: smscufx: properly copy ioctl memory to kernelspace
+Date: Tue, 17 Feb 2026 21:31:34 +0100
+Message-ID: <20260217200001.533191163@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
+References: <20260217200000.708219618@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217041-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216961-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tencent.com,kernel.org,shawell.net,gmx.de];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: E339015046C
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,shawell.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D5CBD1501E4
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 43b0b7eff4b3fb684f257d5a24376782e9663465 ]
+commit 120adae7b42faa641179270c067864544a50ab69 upstream.
 
-The acpi_pcc_hotkey_add() error path leaks sysfs group pcc_attr_group
-if platform_device_register_simple() fails for the "panasonic" platform
-device.
+The UFX_IOCTL_REPORT_DAMAGE ioctl does not properly copy data from
+userspace to kernelspace, and instead directly references the memory,
+which can cause problems if invalid data is passed from userspace.  Fix
+this all up by correctly copying the memory before accessing it within
+the kernel.
 
-Address this by making it call sysfs_remove_group() in that case for
-the group in question.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/3398370.44csPzL39Z@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Tianchu Chen <flynnnchen@tencent.com>
+Cc: stable <stable@kernel.org>
+Cc: Steve Glendinning <steve.glendinning@shawell.net>
+Cc: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/panasonic-laptop.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/smscufx.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
-index e9bee5f6ec8d0..99cbacd0cbba4 100644
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -1077,7 +1077,7 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 			PLATFORM_DEVID_NONE, NULL, 0);
- 		if (IS_ERR(pcc->platform)) {
- 			result = PTR_ERR(pcc->platform);
--			goto out_backlight;
-+			goto out_sysfs;
- 		}
- 		result = device_create_file(&pcc->platform->dev,
- 			&dev_attr_cdpower);
-@@ -1093,6 +1093,8 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
+--- a/drivers/video/fbdev/smscufx.c
++++ b/drivers/video/fbdev/smscufx.c
+@@ -987,7 +987,6 @@ static int ufx_ops_ioctl(struct fb_info
+ 			 unsigned long arg)
+ {
+ 	struct ufx_data *dev = info->par;
+-	struct dloarea *area = NULL;
  
- out_platform:
- 	platform_device_unregister(pcc->platform);
-+out_sysfs:
-+	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
- out_backlight:
- 	backlight_device_unregister(pcc->backlight);
- out_input:
--- 
-2.51.0
-
+ 	if (!atomic_read(&dev->usb_active))
+ 		return 0;
+@@ -1002,6 +1001,10 @@ static int ufx_ops_ioctl(struct fb_info
+ 
+ 	/* TODO: Help propose a standard fb.h ioctl to report mmap damage */
+ 	if (cmd == UFX_IOCTL_REPORT_DAMAGE) {
++		struct dloarea *area __free(kfree) = kmalloc(sizeof(*area), GFP_KERNEL);
++		if (!area)
++			return -ENOMEM;
++
+ 		/* If we have a damage-aware client, turn fb_defio "off"
+ 		 * To avoid perf imact of unnecessary page fault handling.
+ 		 * Done by resetting the delay for this fb_info to a very
+@@ -1011,7 +1014,8 @@ static int ufx_ops_ioctl(struct fb_info
+ 		if (info->fbdefio)
+ 			info->fbdefio->delay = UFX_DEFIO_WRITE_DISABLE;
+ 
+-		area = (struct dloarea *)arg;
++		if (copy_from_user(area, (u8 __user *)arg, sizeof(*area)))
++			return -EFAULT;
+ 
+ 		if (area->x < 0)
+ 			area->x = 0;
 
 
 
