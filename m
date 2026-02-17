@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-217089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKF8AW/UlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:51 +0100
+	id APp8FWHVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809BA1505C1
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A7C1507E5
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C01E63044B5E
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A53ED3019F19
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C742773E4;
-	Tue, 17 Feb 2026 20:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659CE261B70;
+	Tue, 17 Feb 2026 20:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrLdjjVg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGI/ICiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA6B29A1;
-	Tue, 17 Feb 2026 20:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29619280CC1;
+	Tue, 17 Feb 2026 20:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361386; cv=none; b=qaFCVGT3YLMlADn4TXvwGWW0F/ZbAm21NJAoCMTl+lS13Hn6kSSLic5fZDezs9Sv4W3ELxRlS1FF9br34gcVZq0A/NdqB4C7HQabwTqqXmarQlh++UibkUu1J/5ysZ+CMtl6gbjIZ6rGhsriOIOSgZqXd377jRTEy8Qps2Kg078=
+	t=1771361629; cv=none; b=AnrhYJOFJcSI/hUcZS1catqoD/8kV/tTfmRPz3q+jv2U3IqSJ1+pd8ADbmGnI13KGp+bSuGfEqPr+/nB8u3/w5gE6TKkDiEYsv38hXqdNg4OerShr+EQ/GBEgs+n5K4Wd9xa+X3EZB5OAk89Tj1lZKSDucvzaETFithxiGmJnGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361386; c=relaxed/simple;
-	bh=sHpfHglLGAhbPrgGcnj1rwN9fTS+Z7+8l3IKcFofwuQ=;
+	s=arc-20240116; t=1771361629; c=relaxed/simple;
+	bh=NKnWGYWXMyKWZv7O+p2uv7yxfuYDz5Bc/EPk3r7crbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPS9XpViej7nKduh3Rjz4GoCsRJEOopfUCUdQ+aA0gE30oVC3M0Xd+Jm65qGsQXbbhHtgNXP3oe0EhA9FEKN9EHfKTGkdu1apDZHCAiWzr4WTPXwT16H1hg4sueaT0sSVnkqTts/+1Ny+7cubLMKFTVzaHKzFF9EKDs62LeaCiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrLdjjVg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD81C4CEF7;
-	Tue, 17 Feb 2026 20:49:46 +0000 (UTC)
+	 MIME-Version; b=gPpPLehTrJwrXVYQBpV+Cs+UhrbkzlyIine+Ac2d8k9wZvt1tPOB0NqQCBUC6IjUMGFHGRpr1swiLSFYdeDOJWjjbeJjPiN2YuiqKnserHwj3xuUh+38oBTKib5xhfY4o4bBzIPhl5hX/OIw/sNkeTUwmBvsBbgLBd7F5KcBtEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGI/ICiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9333CC4CEF7;
+	Tue, 17 Feb 2026 20:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361386;
-	bh=sHpfHglLGAhbPrgGcnj1rwN9fTS+Z7+8l3IKcFofwuQ=;
+	s=korg; t=1771361629;
+	bh=NKnWGYWXMyKWZv7O+p2uv7yxfuYDz5Bc/EPk3r7crbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrLdjjVgV8ByorduQA4hkN7CCmJPqmocbZqvPLuDTaNzbUVswHu64sQsIch346D2S
-	 /LE9P/TjjzzMCZLG8Goh/+foaeuiPXA6ALyl5naP+pMa/7AJknKLWTYiN6Md8t4I2/
-	 roDOhnodQtuDujIFOs57GPpD0WIlgE/07wfh5fS0=
+	b=ZGI/ICiU7MzZn1TXXDF0TJh9/M95L3evHND/oWiEWP98x5yz7e10ZrLr5pJqKhVpr
+	 i6WauOufC/rAhNSYrC2tES98YGqiaRs4MIwchCsqqHmM0rE3G761xdpa38+4Ojd3yf
+	 cXZ6Avoo5yvXTaHXfK2VSlpHq1rSgf0U3yXp6a58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.19 03/18] LoongArch: Rework KASAN initialization for PTW-enabled systems
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 08/42] gpio: sprd: Change sprd_gpio lock to raw_spin_lock
 Date: Tue, 17 Feb 2026 21:31:59 +0100
-Message-ID: <20260217200002.819494249@linuxfoundation.org>
+Message-ID: <20260217200006.327005381@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
-References: <20260217200002.683975158@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,191 +69,155 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217089-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217160-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,loongson.cn:email]
-X-Rspamd-Queue-Id: 809BA1505C1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,c6:email,qualcomm.com:email,alibaba.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,unisoc.com:email]
+X-Rspamd-Queue-Id: A6A7C1507E5
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-commit 5ec5ac4ca27e4daa234540ac32f9fc5219377d53 upstream.
+[ Upstream commit 96313fcc1f062ba239f4832c9eff685da6c51c99 ]
 
-kasan_init_generic() indicates that kasan is fully initialized, so it
-should be put at end of kasan_init().
+There was a lockdep warning in sprd_gpio:
 
-Otherwise bringing up the primary CPU failed when CONFIG_KASAN is set
-on PTW-enabled systems, here are the call chains:
+[    6.258269][T329@C6] [ BUG: Invalid wait context ]
+[    6.258270][T329@C6] 6.18.0-android17-0-g30527ad7aaae-ab00009-4k #1 Tainted: G        W  OE
+[    6.258272][T329@C6] -----------------------------
+[    6.258273][T329@C6] modprobe/329 is trying to lock:
+[    6.258275][T329@C6] ffffff8081c91690 (&sprd_gpio->lock){....}-{3:3}, at: sprd_gpio_irq_unmask+0x4c/0xa4 [gpio_sprd]
+[    6.258282][T329@C6] other info that might help us debug this:
+[    6.258283][T329@C6] context-{5:5}
+[    6.258285][T329@C6] 3 locks held by modprobe/329:
+[    6.258286][T329@C6]  #0: ffffff808baca108 (&dev->mutex){....}-{4:4}, at: __driver_attach+0xc4/0x204
+[    6.258295][T329@C6]  #1: ffffff80965e7240 (request_class#4){+.+.}-{4:4}, at: __setup_irq+0x1cc/0x82c
+[    6.258304][T329@C6]  #2: ffffff80965e70c8 (lock_class#4){....}-{2:2}, at: __setup_irq+0x21c/0x82c
+[    6.258313][T329@C6] stack backtrace:
+[    6.258314][T329@C6] CPU: 6 UID: 0 PID: 329 Comm: modprobe Tainted: G        W  OE       6.18.0-android17-0-g30527ad7aaae-ab00009-4k #1 PREEMPT  3ad5b0f45741a16e5838da790706e16ceb6717df
+[    6.258316][T329@C6] Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[    6.258317][T329@C6] Hardware name: Unisoc UMS9632-base Board (DT)
+[    6.258318][T329@C6] Call trace:
+[    6.258318][T329@C6]  show_stack+0x20/0x30 (C)
+[    6.258321][T329@C6]  __dump_stack+0x28/0x3c
+[    6.258324][T329@C6]  dump_stack_lvl+0xac/0xf0
+[    6.258326][T329@C6]  dump_stack+0x18/0x3c
+[    6.258329][T329@C6]  __lock_acquire+0x824/0x2c28
+[    6.258331][T329@C6]  lock_acquire+0x148/0x2cc
+[    6.258333][T329@C6]  _raw_spin_lock_irqsave+0x6c/0xb4
+[    6.258334][T329@C6]  sprd_gpio_irq_unmask+0x4c/0xa4 [gpio_sprd 814535e93c6d8e0853c45c02eab0fa88a9da6487]
+[    6.258337][T329@C6]  irq_startup+0x238/0x350
+[    6.258340][T329@C6]  __setup_irq+0x504/0x82c
+[    6.258342][T329@C6]  request_threaded_irq+0x118/0x184
+[    6.258344][T329@C6]  devm_request_threaded_irq+0x94/0x120
+[    6.258347][T329@C6]  sc8546_init_irq+0x114/0x170 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
+[    6.258352][T329@C6]  sc8546_charger_probe+0x53c/0x5a0 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
+[    6.258358][T329@C6]  i2c_device_probe+0x2c8/0x350
+[    6.258361][T329@C6]  really_probe+0x1a8/0x46c
+[    6.258363][T329@C6]  __driver_probe_device+0xa4/0x10c
+[    6.258366][T329@C6]  driver_probe_device+0x44/0x1b4
+[    6.258369][T329@C6]  __driver_attach+0xd0/0x204
+[    6.258371][T329@C6]  bus_for_each_dev+0x10c/0x168
+[    6.258373][T329@C6]  driver_attach+0x2c/0x3c
+[    6.258376][T329@C6]  bus_add_driver+0x154/0x29c
+[    6.258378][T329@C6]  driver_register+0x70/0x10c
+[    6.258381][T329@C6]  i2c_register_driver+0x48/0xc8
+[    6.258384][T329@C6]  init_module+0x28/0xfd8 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
+[    6.258389][T329@C6]  do_one_initcall+0x128/0x42c
+[    6.258392][T329@C6]  do_init_module+0x60/0x254
+[    6.258395][T329@C6]  load_module+0x1054/0x1220
+[    6.258397][T329@C6]  __arm64_sys_finit_module+0x240/0x35c
+[    6.258400][T329@C6]  invoke_syscall+0x60/0xec
+[    6.258402][T329@C6]  el0_svc_common+0xb0/0xe4
+[    6.258405][T329@C6]  do_el0_svc+0x24/0x30
+[    6.258407][T329@C6]  el0_svc+0x54/0x1c4
+[    6.258409][T329@C6]  el0t_64_sync_handler+0x68/0xdc
+[    6.258411][T329@C6]  el0t_64_sync+0x1c4/0x1c8
 
-    kernel_entry()
-      start_kernel()
-        setup_arch()
-          kasan_init()
-            kasan_init_generic()
+This is because the spin_lock would change to rt_mutex in PREEMPT_RT,
+however the sprd_gpio->lock would use in hard-irq, this is unsafe.
 
-The reason is PTW-enabled systems have speculative accesses which means
-memory accesses to the shadow memory after kasan_init() may be executed
-by hardware before. However, accessing shadow memory is safe only after
-kasan fully initialized because kasan_init() uses a temporary PGD table
-until we have populated all levels of shadow page tables and writen the
-PGD register. Moving kasan_init_generic() later can defer the occasion
-of kasan_enabled(), so as to avoid speculative accesses on shadow pages.
+So change the spin_lock_t to raw_spin_lock_t to use the spinlock
+in hard-irq.
 
-After moving kasan_init_generic() to the end, kasan_init() can no longer
-call kasan_mem_to_shadow() for shadow address conversion because it will
-always return kasan_early_shadow_page. On the other hand, we should keep
-the current logic of kasan_mem_to_shadow() for both the early and final
-stage because there may be instrumentation before kasan_init().
-
-To solve this, we factor out a new mem_to_shadow() function from current
-kasan_mem_to_shadow() for the shadow address conversion in kasan_init().
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20260126094209.9855-1-xuewen.yan@unisoc.com
+[Bartosz: tweaked the commit message]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/mm/kasan_init.c |   78 +++++++++++++++++++++--------------------
- 1 file changed, 40 insertions(+), 38 deletions(-)
+ drivers/gpio/gpio-sprd.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/loongarch/mm/kasan_init.c
-+++ b/arch/loongarch/mm/kasan_init.c
-@@ -40,39 +40,43 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD]
- #define __pte_none(early, pte) (early ? pte_none(pte) : \
- ((pte_val(pte) & _PFN_MASK) == (unsigned long)__pa(kasan_early_shadow_page)))
+diff --git a/drivers/gpio/gpio-sprd.c b/drivers/gpio/gpio-sprd.c
+index c117c11bfb29a..192f05a2c19c1 100644
+--- a/drivers/gpio/gpio-sprd.c
++++ b/drivers/gpio/gpio-sprd.c
+@@ -35,7 +35,7 @@
+ struct sprd_gpio {
+ 	struct gpio_chip chip;
+ 	void __iomem *base;
+-	spinlock_t lock;
++	raw_spinlock_t lock;
+ 	int irq;
+ };
  
--void *kasan_mem_to_shadow(const void *addr)
-+static void *mem_to_shadow(const void *addr)
- {
--	if (!kasan_enabled()) {
-+	unsigned long offset = 0;
-+	unsigned long maddr = (unsigned long)addr;
-+	unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
-+
-+	if (maddr >= FIXADDR_START)
- 		return (void *)(kasan_early_shadow_page);
--	} else {
--		unsigned long maddr = (unsigned long)addr;
--		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
--		unsigned long offset = 0;
--
--		if (maddr >= FIXADDR_START)
--			return (void *)(kasan_early_shadow_page);
--
--		maddr &= XRANGE_SHADOW_MASK;
--		switch (xrange) {
--		case XKPRANGE_CC_SEG:
--			offset = XKPRANGE_CC_SHADOW_OFFSET;
--			break;
--		case XKPRANGE_UC_SEG:
--			offset = XKPRANGE_UC_SHADOW_OFFSET;
--			break;
--		case XKPRANGE_WC_SEG:
--			offset = XKPRANGE_WC_SHADOW_OFFSET;
--			break;
--		case XKVRANGE_VC_SEG:
--			offset = XKVRANGE_VC_SHADOW_OFFSET;
--			break;
--		default:
--			WARN_ON(1);
--			return NULL;
--		}
+@@ -54,7 +54,7 @@ static void sprd_gpio_update(struct gpio_chip *chip, unsigned int offset,
+ 	unsigned long flags;
+ 	u32 tmp;
  
--		return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
-+	maddr &= XRANGE_SHADOW_MASK;
-+	switch (xrange) {
-+	case XKPRANGE_CC_SEG:
-+		offset = XKPRANGE_CC_SHADOW_OFFSET;
-+		break;
-+	case XKPRANGE_UC_SEG:
-+		offset = XKPRANGE_UC_SHADOW_OFFSET;
-+		break;
-+	case XKPRANGE_WC_SEG:
-+		offset = XKPRANGE_WC_SHADOW_OFFSET;
-+		break;
-+	case XKVRANGE_VC_SEG:
-+		offset = XKVRANGE_VC_SHADOW_OFFSET;
-+		break;
-+	default:
-+		WARN_ON(1);
-+		return NULL;
- 	}
-+
-+	return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
-+}
-+
-+void *kasan_mem_to_shadow(const void *addr)
-+{
-+	if (kasan_enabled())
-+		return mem_to_shadow(addr);
-+	else
-+		return (void *)(kasan_early_shadow_page);
+-	spin_lock_irqsave(&sprd_gpio->lock, flags);
++	raw_spin_lock_irqsave(&sprd_gpio->lock, flags);
+ 	tmp = readl_relaxed(base + reg);
+ 
+ 	if (val)
+@@ -63,7 +63,7 @@ static void sprd_gpio_update(struct gpio_chip *chip, unsigned int offset,
+ 		tmp &= ~BIT(SPRD_GPIO_BIT(offset));
+ 
+ 	writel_relaxed(tmp, base + reg);
+-	spin_unlock_irqrestore(&sprd_gpio->lock, flags);
++	raw_spin_unlock_irqrestore(&sprd_gpio->lock, flags);
  }
  
- const void *kasan_shadow_to_mem(const void *shadow_addr)
-@@ -293,11 +297,8 @@ void __init kasan_init(void)
- 	/* Maps everything to a single page of zeroes */
- 	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, true);
+ static int sprd_gpio_read(struct gpio_chip *chip, unsigned int offset, u16 reg)
+@@ -234,7 +234,7 @@ static int sprd_gpio_probe(struct platform_device *pdev)
+ 	if (IS_ERR(sprd_gpio->base))
+ 		return PTR_ERR(sprd_gpio->base);
  
--	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
--					kasan_mem_to_shadow((void *)KFENCE_AREA_END));
--
--	/* Enable KASAN here before kasan_mem_to_shadow(). */
--	kasan_init_generic();
-+	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
-+					mem_to_shadow((void *)KFENCE_AREA_END));
+-	spin_lock_init(&sprd_gpio->lock);
++	raw_spin_lock_init(&sprd_gpio->lock);
  
- 	/* Populate the linear mapping */
- 	for_each_mem_range(i, &pa_start, &pa_end) {
-@@ -307,13 +308,13 @@ void __init kasan_init(void)
- 		if (start >= end)
- 			break;
- 
--		kasan_map_populate((unsigned long)kasan_mem_to_shadow(start),
--			(unsigned long)kasan_mem_to_shadow(end), NUMA_NO_NODE);
-+		kasan_map_populate((unsigned long)mem_to_shadow(start),
-+			(unsigned long)mem_to_shadow(end), NUMA_NO_NODE);
- 	}
- 
- 	/* Populate modules mapping */
--	kasan_map_populate((unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR),
--		(unsigned long)kasan_mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
-+	kasan_map_populate((unsigned long)mem_to_shadow((void *)MODULES_VADDR),
-+		(unsigned long)mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
- 	/*
- 	 * KAsan may reuse the contents of kasan_early_shadow_pte directly, so we
- 	 * should make sure that it maps the zero page read-only.
-@@ -328,4 +329,5 @@ void __init kasan_init(void)
- 
- 	/* At this point kasan is fully initialized. Enable error messages */
- 	init_task.kasan_depth = 0;
-+	kasan_init_generic();
- }
+ 	sprd_gpio->chip.label = dev_name(&pdev->dev);
+ 	sprd_gpio->chip.ngpio = SPRD_GPIO_NR;
+-- 
+2.51.0
+
 
 
 
