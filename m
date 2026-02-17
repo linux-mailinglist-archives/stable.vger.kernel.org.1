@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-216997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216972-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCZfATXTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:37 +0100
+	id aMgHCQTTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216972-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A8F1502FE
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11CA150257
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80500300D971
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE9B03056B6D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5B8378821;
-	Tue, 17 Feb 2026 20:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74316320CD9;
+	Tue, 17 Feb 2026 20:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4kXykHT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUHza2yE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3D1376BFF;
-	Tue, 17 Feb 2026 20:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379C336F431;
+	Tue, 17 Feb 2026 20:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361071; cv=none; b=nNWNus1Mgtf4MzYVmpfbNkVgdfAU4A1RxvlG05em0mK4q052YMLqY5fyYHt7eZ1dn7wpM52pAGEyzmBUVKTvTK7qgYgX7pNm0w0KhmnRVbVzLDeGMjdLWcrqN5dNFxD9eiv5nOezp5U4i91qx3Xr1ClPmCGKBRmJdUnNCbQ4pIU=
+	t=1771360985; cv=none; b=YoaAOzJfpUlvKPMpn+GLopg4AgaAtupBmN53ZN4FLkEU6eLv2aLD5rCbECMhzwABjSQymms/jxynetc42kgmj3OnZXRsit7RlsuyyElbVSgUzgt1Qd0JO+KTGd9NgoH2OzBxnC/XjDM7b1cqDHin9pZaHdA44EiiCn7U4pbPK/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361071; c=relaxed/simple;
-	bh=Ensczduvp4YzcvS+xMd8hYDnHCnvdBTf8ImXP3xLxzM=;
+	s=arc-20240116; t=1771360985; c=relaxed/simple;
+	bh=4Jzo/rChetiVHGLyvxTTEg9fs63oT0lNcHEg2XJ1O4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ly00Y5Hu8QsbZ1TXpQHxTXTGtpE3gPlpWhDtQkMmpN+gTViPpR76ydsluwQiOTPs1sqdjBXNfTx9VC4vBOIC7I2jjYSXbKG8MltB+3emGiHQKbYp4E7GUummjHba0hvS097Jl30A3L92/0qvV5KI0z234TkRFcoaHM8O55JCIRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4kXykHT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC47C4CEF7;
-	Tue, 17 Feb 2026 20:44:30 +0000 (UTC)
+	 MIME-Version; b=mX0GYIit38BeQ+L/VtHtvca0+ipCr7f9GQi9etpyLwzS6hoz/9K5J2TEKt3wOh91GuIlRK5AnI4d4YqThFhZQfMa0mrnxbnxXpLUhLi41APLh48Uf/LfolvBYBMxum4kolkw6/iY9QLjIDDHr20kJNIasfiyMNqQRwWjFrgj+XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUHza2yE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F77FC4CEF7;
+	Tue, 17 Feb 2026 20:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361071;
-	bh=Ensczduvp4YzcvS+xMd8hYDnHCnvdBTf8ImXP3xLxzM=;
+	s=korg; t=1771360984;
+	bh=4Jzo/rChetiVHGLyvxTTEg9fs63oT0lNcHEg2XJ1O4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B4kXykHTkILwSlawqUkYI76ZBrnM4e+pV2kkKVCf9QxSarYJf8g5d29tvNEOw9znt
-	 5uSveyNL7I9SiyguWGfT9me4vC4yQveekKDHpgDcXyZ7vznE9YgDsqhG180FdG+9Mp
-	 u098N+b3nybGURIRx57pHDfD2qt9SEgYYyZCHQ1E=
+	b=mUHza2yEbAqdgbDxPDd7SVU99uCsnOmNu2m/DP7npac8B4G+qKT6YQhqpCxCUr/jb
+	 GlV3q182iswKr0bsbBlq6yhGqkBI8VrvFHW8VmpQe+YX0iaNMECMFPHsq5vwbUc4jw
+	 sis7GREx+zPocjtaKLfeB3ZN8LZQ+A4t/lh5X++Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 05/39] scsi: qla2xxx: Validate sp before freeing associated memory
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 01/24] crypto: octeontx - Fix length check to avoid truncation in ucode_load_store
 Date: Tue, 17 Feb 2026 21:31:14 +0100
-Message-ID: <20260217200003.137359049@linuxfoundation.org>
+Message-ID: <20260217200000.768049926@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
+References: <20260217200000.708219618@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216997-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216972-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email]
-X-Rspamd-Queue-Id: 71A8F1502FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linux.dev:email]
+X-Rspamd-Queue-Id: A11CA150257
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit b6df15aec8c3441357d4da0eaf4339eb20f5999f upstream.
+commit 5565a72b24fa7935a9f30af386e92c8c9dfb23b9 upstream.
 
-System crash with the following signature
-[154563.214890] nvme nvme2: NVME-FC{1}: controller connect complete
-[154564.169363] qla2xxx [0000:b0:00.1]-3002:2: nvme: Sched: Set ZIO exchange threshold to 3.
-[154564.169405] qla2xxx [0000:b0:00.1]-ffffff:2: SET ZIO Activity exchange threshold to 5.
-[154565.539974] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 0080 0000.
-[154565.545744] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 00a0 0000.
-[154565.545857] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
-[154565.552760] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
-[154565.553079] BUG: kernel NULL pointer dereference, address: 00000000000000f8
-[154565.553080] #PF: supervisor read access in kernel mode
-[154565.553082] #PF: error_code(0x0000) - not-present page
-[154565.553084] PGD 80000010488ab067 P4D 80000010488ab067 PUD 104978a067 PMD 0
-[154565.553089] Oops: 0000 1 PREEMPT SMP PTI
-[154565.553092] CPU: 10 PID: 858 Comm: qla2xxx_2_dpc Kdump: loaded Tainted: G           OE     -------  ---  5.14.0-503.11.1.el9_5.x86_64 #1
-[154565.553096] Hardware name: HPE Synergy 660 Gen10/Synergy 660 Gen10 Compute Module, BIOS I43 09/30/2024
-[154565.553097] RIP: 0010:qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
-[154565.553141] Code: 00 00 e8 58 a3 ec d4 49 89 e9 ba 12 20 00 00 4c 89 e6 49 c7 c0 00 ee a8 c0 48 c7 c1 66 c0 a9 c0 bf 00 80 00 10 e8 15 69 00 00 <4c> 8b 8d f8 00 00 00 4d 85 c9 74 35 49 8b 84 24 00 19 00 00 48 8b
-[154565.553143] RSP: 0018:ffffb4dbc8aebdd0 EFLAGS: 00010286
-[154565.553145] RAX: 0000000000000000 RBX: ffff8ec2cf0908d0 RCX: 0000000000000002
-[154565.553147] RDX: 0000000000000000 RSI: ffffffffc0a9c896 RDI: ffffb4dbc8aebd47
-[154565.553148] RBP: 0000000000000000 R08: ffffb4dbc8aebd45 R09: 0000000000ffff0a
-[154565.553150] R10: 0000000000000000 R11: 000000000000000f R12: ffff8ec2cf0908d0
-[154565.553151] R13: ffff8ec2cf090900 R14: 0000000000000102 R15: ffff8ec2cf084000
-[154565.553152] FS:  0000000000000000(0000) GS:ffff8ed27f800000(0000) knlGS:0000000000000000
-[154565.553154] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[154565.553155] CR2: 00000000000000f8 CR3: 000000113ae0a005 CR4: 00000000007706f0
-[154565.553157] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[154565.553158] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[154565.553159] PKRU: 55555554
-[154565.553160] Call Trace:
-[154565.553162]  <TASK>
-[154565.553165]  ? show_trace_log_lvl+0x1c4/0x2df
-[154565.553172]  ? show_trace_log_lvl+0x1c4/0x2df
-[154565.553177]  ? qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
-[154565.553215]  ? __die_body.cold+0x8/0xd
-[154565.553218]  ? page_fault_oops+0x134/0x170
-[154565.553223]  ? snprintf+0x49/0x70
-[154565.553229]  ? exc_page_fault+0x62/0x150
-[154565.553238]  ? asm_exc_page_fault+0x22/0x30
+OTX_CPT_UCODE_NAME_LENGTH limits the microcode name to 64 bytes. If a
+user writes a string of exactly 64 characters, the original code used
+'strlen(buf) > 64' to check the length, but then strscpy() copies only
+63 characters before adding a NUL terminator, silently truncating the
+copied string.
 
-Check for sp being non NULL before freeing any associated memory
+Fix this off-by-one error by using 'count' directly for the length check
+to ensure long names are rejected early and copied without truncation.
 
-Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
 Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-10-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: d9110b0b01ff ("crypto: marvell - add support for OCTEON TX CPT engine")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c |   34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -4166,23 +4166,25 @@ int qla24xx_async_gpnft(scsi_qla_host_t
- 	return rval;
+--- a/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
++++ b/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
+@@ -1337,7 +1337,7 @@ static ssize_t ucode_load_store(struct d
+ 	int del_grp_idx = -1;
+ 	int ucode_idx = 0;
  
- done_free_sp:
--	if (sp->u.iocb_cmd.u.ctarg.req) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.req,
--		    sp->u.iocb_cmd.u.ctarg.req_dma);
--		sp->u.iocb_cmd.u.ctarg.req = NULL;
--	}
--	if (sp->u.iocb_cmd.u.ctarg.rsp) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.rsp,
--		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
--		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
--	}
-+	if (sp) {
-+		if (sp->u.iocb_cmd.u.ctarg.req) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.req,
-+			    sp->u.iocb_cmd.u.ctarg.req_dma);
-+			sp->u.iocb_cmd.u.ctarg.req = NULL;
-+		}
-+		if (sp->u.iocb_cmd.u.ctarg.rsp) {
-+			dma_free_coherent(&vha->hw->pdev->dev,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
-+			    sp->u.iocb_cmd.u.ctarg.rsp,
-+			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
-+			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
-+		}
+-	if (strlen(buf) > OTX_CPT_UCODE_NAME_LENGTH)
++	if (count >= OTX_CPT_UCODE_NAME_LENGTH)
+ 		return -EINVAL;
  
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+		/* ref: INIT */
-+		kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+	}
- 
- 	spin_lock_irqsave(&vha->work_lock, flags);
- 	vha->scan.scan_flags &= ~SF_SCANNING;
+ 	eng_grps = container_of(attr, struct otx_cpt_eng_grps, ucode_load_attr);
 
 
 
