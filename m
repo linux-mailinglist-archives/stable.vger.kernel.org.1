@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-217120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oM+oMg7VlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:30 +0100
+	id mGPYCEjVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCC01506E6
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3E315079A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B7D0305CA05
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 654C0301875A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E8329BDB4;
-	Tue, 17 Feb 2026 20:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6B72C21C1;
+	Tue, 17 Feb 2026 20:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxRy1Fko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DryCeHwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985F02D594F;
-	Tue, 17 Feb 2026 20:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5452284B3B;
+	Tue, 17 Feb 2026 20:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361490; cv=none; b=JbvwK6gHcyNBrY/WblIKeSHrwc+F6Itx98YY0EmKbEWb92VWGjuoYmGpI1PKIYO36aldWs/ZiP6ZzXPZmx/FF7iJnbtdCW+xGMvsG1e4KalyE28aj/ARt6no382xtU/9sG45RmvTZ4vEOIybKBsgg61g6+CG3YF6nL/T6DeE6/4=
+	t=1771361604; cv=none; b=ubbKHrGbM4jNhGqJ509dkWozwGVfGUjs4aPA63q6SEVKkmWB4fYRhBLukbSOGYb8Eg8DiGyl0z/uSRedN8e3erAEwLq6zRu01PU3vTqsC7TgdHyCbUGGnDDGK03BS0p32XkPsADqmC9y6kZs/3Q+wrvFV6dU0243fasRTp6wzOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361490; c=relaxed/simple;
-	bh=ebHcVHv2kKy3SMQxhaPZbeLUfF7g8woylB2mmKTHb/s=;
+	s=arc-20240116; t=1771361604; c=relaxed/simple;
+	bh=hXdeKkB1Iscuk5zDDTaUPqmX0mpCTWaUE2ux551ZZto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pr3BaZq+FUH3fTTSeEtGFLM6jo00Czg41G2MhTTC7MuwIuhcFHiwn94/bwtk15htqAeeWAWpN2tZ1tyzImpCez76nxOLdGf64yONdTJ/bZOEG7fHTCvKxKQaeR1OJI0+kavbkVKlJnj0TYiQ1ILfHpLQhnKtOocJf171d//Tc4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxRy1Fko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B611C4CEF7;
-	Tue, 17 Feb 2026 20:51:29 +0000 (UTC)
+	 MIME-Version; b=IzrXvsHvqilXhd/3r3CrIa24qY3pKfgrsH/q8JWCYXJ53sqwPHAKyy0MGYnG3nq2l1gpUyCn2+/YmPjkswUzpX+KhK2XtxQWFwYR+EA0cFyeabU+WZxOfAndfcXeGGcUhuyLckd+4IMjR6axfLH+J1MhH5AIJUbq7FDzpgUHAO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DryCeHwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37963C4CEF7;
+	Tue, 17 Feb 2026 20:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361490;
-	bh=ebHcVHv2kKy3SMQxhaPZbeLUfF7g8woylB2mmKTHb/s=;
+	s=korg; t=1771361604;
+	bh=hXdeKkB1Iscuk5zDDTaUPqmX0mpCTWaUE2ux551ZZto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxRy1Fko+LrJ1zBww7aqR0Dtv/1jS+kIURV0TAw+1OHhLs419gZJtwH9VHT8E5r/X
-	 9ahNGAc1cyRIWOEGjY3aeCQrexT+5+lZD5ulYulsdeVc7vfcAk/3AvwNL1xk+oMYr3
-	 /brfNGjCPZDrjEom2yHefAgEuP2ZQ507Kk/3/sCk=
+	b=DryCeHwFPIGlTTofSBd6PZqKWy224r8rAX3aD8Sidj+70Cuk/cZ4iahTImdrNkf/o
+	 86uH0fg7KZOEgVUjUJ5nRSGNR46Y+dScWuwBLRsswOos4eyG9AX1OIV53VdP/fg70P
+	 mvNpOPu3bOcfRtXZsrY5ySMyAlPkMSa+HcdOpo3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.18 30/43] fbdev: rivafb: fix divide error in nv3_arb()
-Date: Tue, 17 Feb 2026 21:32:10 +0100
-Message-ID: <20260217200007.626194169@linuxfoundation.org>
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 20/42] ASoC: cs42l43: Correct handling of 3-pole jack load detection
+Date: Tue, 17 Feb 2026 21:32:11 +0100
+Message-ID: <20260217200006.775771458@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,95 +70,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217120-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217153-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qemu.org:url,gmx.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5BCC01506E6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email]
+X-Rspamd-Queue-Id: AA3E315079A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 0209e21e3c372fa2da04c39214bec0b64e4eb5f4 upstream.
+[ Upstream commit e77a4081d7e324dfa876a9560b2a78969446ba82 ]
 
-A userspace program can trigger the RIVA NV3 arbitration code by calling
-the FBIOPUT_VSCREENINFO ioctl on /dev/fb*. When doing so, the driver
-recomputes FIFO arbitration parameters in nv3_arb(), using state->mclk_khz
-(derived from the PRAMDAC MCLK PLL) as a divisor without validating it
-first.
+The load detection process for 3-pole jacks requires slightly
+updated reference values to ensure an accurate result. Update
+the code to apply different tunings for the 3-pole and 4-pole
+cases. This also updates the thresholds overall so update the
+relevant comments to match.
 
-In a normal setup, state->mclk_khz is provided by the real hardware and is
-non-zero. However, an attacker can construct a malicious or misconfigured
-device (e.g. a crafted/emulated PCI device) that exposes a bogus PLL
-configuration, causing state->mclk_khz to become zero.  Once
-nv3_get_param() calls nv3_arb(), the division by state->mclk_khz in the gns
-calculation causes a divide error and crashes the kernel.
-
-Fix this by checking whether state->mclk_khz is zero and bailing out before
-doing the division.
-
-The following log reveals it:
-
-rivafb: setting virtual Y resolution to 2184
-divide error: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 PID: 2187 Comm: syz-executor.0 Not tainted 5.18.0-rc1+ #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-RIP: 0010:nv3_arb drivers/video/fbdev/riva/riva_hw.c:439 [inline]
-RIP: 0010:nv3_get_param+0x3ab/0x13b0 drivers/video/fbdev/riva/riva_hw.c:546
-Call Trace:
-  nv3CalcArbitration.constprop.0+0x255/0x460 drivers/video/fbdev/riva/riva_hw.c:603
-  nv3UpdateArbitrationSettings drivers/video/fbdev/riva/riva_hw.c:637 [inline]
-  CalcStateExt+0x447/0x1b90 drivers/video/fbdev/riva/riva_hw.c:1246
-  riva_load_video_mode+0x8a9/0xea0 drivers/video/fbdev/riva/fbdev.c:779
-  rivafb_set_par+0xc0/0x5f0 drivers/video/fbdev/riva/fbdev.c:1196
-  fb_set_var+0x604/0xeb0 drivers/video/fbdev/core/fbmem.c:1033
-  do_fb_ioctl+0x234/0x670 drivers/video/fbdev/core/fbmem.c:1109
-  fb_ioctl+0xdd/0x130 drivers/video/fbdev/core/fbmem.c:1188
-  __x64_sys_ioctl+0x122/0x190 fs/ioctl.c:856
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260130150927.2964664-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/riva/riva_hw.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/cs42l43-jack.c | 37 +++++++++++++++++++++++++++------
+ 1 file changed, 31 insertions(+), 6 deletions(-)
 
---- a/drivers/video/fbdev/riva/riva_hw.c
-+++ b/drivers/video/fbdev/riva/riva_hw.c
-@@ -436,6 +436,9 @@ static char nv3_arb(nv3_fifo_info * res_
-     vmisses = 2;
-     eburst_size = state->memory_width * 1;
-     mburst_size = 32;
-+    if (!state->mclk_khz)
-+	return (0);
+diff --git a/sound/soc/codecs/cs42l43-jack.c b/sound/soc/codecs/cs42l43-jack.c
+index 984a7f470a31f..aa0062f3aa918 100644
+--- a/sound/soc/codecs/cs42l43-jack.c
++++ b/sound/soc/codecs/cs42l43-jack.c
+@@ -508,7 +508,23 @@ void cs42l43_bias_sense_timeout(struct work_struct *work)
+ 	pm_runtime_put_autosuspend(priv->dev);
+ }
+ 
+-static void cs42l43_start_load_detect(struct cs42l43_codec *priv)
++static const struct reg_sequence cs42l43_3pole_patch[] = {
++	{ 0x4000,	0x00000055 },
++	{ 0x4000,	0x000000AA },
++	{ 0x17420,	0x8500F300 },
++	{ 0x17424,	0x36003E00 },
++	{ 0x4000,	0x00000000 },
++};
 +
-     gns = 1000000 * (gmisses*state->mem_page_miss + state->mem_latency)/state->mclk_khz;
-     ainfo->by_gfacc = gns*ainfo->gdrain_rate/1000000;
-     ainfo->wcmocc = 0;
++static const struct reg_sequence cs42l43_4pole_patch[] = {
++	{ 0x4000,	0x00000055 },
++	{ 0x4000,	0x000000AA },
++	{ 0x17420,	0x7800E600 },
++	{ 0x17424,	0x36003800 },
++	{ 0x4000,	0x00000000 },
++};
++
++static void cs42l43_start_load_detect(struct cs42l43_codec *priv, bool mic)
+ {
+ 	struct cs42l43 *cs42l43 = priv->core;
+ 
+@@ -532,6 +548,15 @@ static void cs42l43_start_load_detect(struct cs42l43_codec *priv)
+ 			dev_err(priv->dev, "Load detect HP power down timed out\n");
+ 	}
+ 
++	if (mic)
++		regmap_multi_reg_write_bypassed(cs42l43->regmap,
++						cs42l43_4pole_patch,
++						ARRAY_SIZE(cs42l43_4pole_patch));
++	else
++		regmap_multi_reg_write_bypassed(cs42l43->regmap,
++						cs42l43_3pole_patch,
++						ARRAY_SIZE(cs42l43_3pole_patch));
++
+ 	regmap_update_bits(cs42l43->regmap, CS42L43_BLOCK_EN3,
+ 			   CS42L43_ADC1_EN_MASK | CS42L43_ADC2_EN_MASK, 0);
+ 	regmap_update_bits(cs42l43->regmap, CS42L43_DACCNFG2, CS42L43_HP_HPF_EN_MASK, 0);
+@@ -610,7 +635,7 @@ static int cs42l43_run_load_detect(struct cs42l43_codec *priv, bool mic)
+ 
+ 	reinit_completion(&priv->load_detect);
+ 
+-	cs42l43_start_load_detect(priv);
++	cs42l43_start_load_detect(priv, mic);
+ 	time_left = wait_for_completion_timeout(&priv->load_detect,
+ 						msecs_to_jiffies(CS42L43_LOAD_TIMEOUT_MS));
+ 	cs42l43_stop_load_detect(priv);
+@@ -634,11 +659,11 @@ static int cs42l43_run_load_detect(struct cs42l43_codec *priv, bool mic)
+ 	}
+ 
+ 	switch (val & CS42L43_AMP3_RES_DET_MASK) {
+-	case 0x0: // low impedance
+-	case 0x1: // high impedance
++	case 0x0: // < 22 Ohm impedance
++	case 0x1: // < 150 Ohm impedance
++	case 0x2: // < 1000 Ohm impedance
+ 		return CS42L43_JACK_HEADPHONE;
+-	case 0x2: // lineout
+-	case 0x3: // Open circuit
++	case 0x3: // > 1000 Ohm impedance
+ 		return CS42L43_JACK_LINEOUT;
+ 	default:
+ 		return -EINVAL;
+-- 
+2.51.0
+
 
 
 
