@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-216920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WM7GHC3SlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216920-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:40:13 +0100
+	id eBzfGErSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:40:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC94150066
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:40:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BA81500B5
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1EBF3303D649
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:40:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 27068304AA17
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A34377563;
-	Tue, 17 Feb 2026 20:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923143783AF;
+	Tue, 17 Feb 2026 20:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaBjYdfR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEeqmjSA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA29A2BD031;
-	Tue, 17 Feb 2026 20:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55916377556;
+	Tue, 17 Feb 2026 20:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360807; cv=none; b=iXiCj6NbkMNX9vxNUTO424PFEg2m2B5YmnOlpxI48OUjh6IYKPkUL9uW7nqEDETNsb2hamY7av4MxPc8BwGhvL7KAB/hez+d0V/aVzts7TGz2ys93c/W/LoTDNA/eyJT7FdHrQcleqIjSgnlW/wzlDlrSYLseFdq8acsy/3fKEM=
+	t=1771360814; cv=none; b=gkNtxRNez0OjuXdOiwAd+hrIWZgwQRO0OROsnAYr0glkmN4/JZa81K+TV1kc7SjAyHRfSr3jq24FckrMg2xfG0M61aw9LYBrvShMZ9tOSbmPvPfZrqlxGtfz5AF2QQtX3srcW0QFIE6tItCogup2Yz13fmP2frTEvJf7aSl0HYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360807; c=relaxed/simple;
-	bh=TRXotKQ40MF70rZDW96tuY3i3H7psajmGrOpTXTiYss=;
+	s=arc-20240116; t=1771360814; c=relaxed/simple;
+	bh=fRGqn4OEusz3PTkSu0iID/N4ikjhgNJcZDmwIde21LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6nBTc89GExouoDRcdfSD+w6/jxawLn6M9XYxOghYAAdeG1BwHImJrQR+BdmJPcezHTGZM5HJdoBIPENkBzXBTOuj7wXLtt4YK7QTwAeS5axxiD1Fy0XF+GPT81VGXoCxb01djxh6grt+r89tLwqT5FJnsP9bVRbPj+wiNaXGDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaBjYdfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F4AC4CEF7;
-	Tue, 17 Feb 2026 20:40:06 +0000 (UTC)
+	 MIME-Version; b=lS0XIQoWWaIljis+xWZ0SSbxchlpNb8uvyvpQJLpaJLVz5mukCk6a41ykRuzVBQ8ww0UXendUEog3Ui9bEGTTqwSW4nxhFsPJnSXJBkMl7cPYQM2/+PFM4BWVSZE99F3f4SaQW3cRLOhwZTGFygguj1JJWMXVaMEVVFsXEssEII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEeqmjSA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3BDC4CEF7;
+	Tue, 17 Feb 2026 20:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360807;
-	bh=TRXotKQ40MF70rZDW96tuY3i3H7psajmGrOpTXTiYss=;
+	s=korg; t=1771360814;
+	bh=fRGqn4OEusz3PTkSu0iID/N4ikjhgNJcZDmwIde21LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yaBjYdfR6Bw1imBI4iyjT4GoZm27H+mtaFDTYwPDxvEMcQUyf7RYA63G7A9eFGme5
-	 /h3AfTgG9baHchrzd6eFhFbJ6lr5kq9lfdIm4hxIo22Gq7XbzbnSuvDOLSLJkJ8M5a
-	 qH8IAfbXerZWzafdPAWii5v0xHFY6K9dwlV0tFWo=
+	b=kEeqmjSAmWhb19gV2B+nBcFfvn9COfeuTezp41YPtKgOnW8WQEI3BiOyTcqjUjf4V
+	 P/elf9oekTtP6gYBmwGw7W0dl/oJrvcVnYxH5NLlAgd8WvxZ6eBREShwOZF82JfV9a
+	 Taif7wsshpNn+Usxs+G0ME7S0zhozVjm6wIouGs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kanglong Wang <wangkanglong@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 21/39] LoongArch: Add WriteCombine shadow mapping in KASAN
-Date: Tue, 17 Feb 2026 21:30:43 +0100
-Message-ID: <20260217200005.032316136@linuxfoundation.org>
+Subject: [PATCH 6.6 22/39] LoongArch: Rework KASAN initialization for PTW-enabled systems
+Date: Tue, 17 Feb 2026 21:30:44 +0100
+Message-ID: <20260217200005.069232253@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260217200004.221651386@linuxfoundation.org>
 References: <20260217200004.221651386@linuxfoundation.org>
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216920-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216922-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -89,93 +89,171 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EFC94150066
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,loongson.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E9BA81500B5
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kanglong Wang <wangkanglong@loongson.cn>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 139d42ca51018c1d43ab5f35829179f060d1ab31 upstream.
+commit 5ec5ac4ca27e4daa234540ac32f9fc5219377d53 upstream.
 
-Currently, the kernel couldn't boot when ARCH_IOREMAP, ARCH_WRITECOMBINE
-and KASAN are enabled together. Because DMW2 is used by kernel now which
-is configured as 0xa000000000000000 for WriteCombine, but KASAN has no
-segment mapping for it. This patch fix this issue.
+kasan_init_generic() indicates that kasan is fully initialized, so it
+should be put at end of kasan_init().
 
-Solution: Add the relevant definitions for WriteCombine (DMW2) in KASAN.
+Otherwise bringing up the primary CPU failed when CONFIG_KASAN is set
+on PTW-enabled systems, here are the call chains:
+
+    kernel_entry()
+      start_kernel()
+        setup_arch()
+          kasan_init()
+            kasan_init_generic()
+
+The reason is PTW-enabled systems have speculative accesses which means
+memory accesses to the shadow memory after kasan_init() may be executed
+by hardware before. However, accessing shadow memory is safe only after
+kasan fully initialized because kasan_init() uses a temporary PGD table
+until we have populated all levels of shadow page tables and writen the
+PGD register. Moving kasan_init_generic() later can defer the occasion
+of kasan_enabled(), so as to avoid speculative accesses on shadow pages.
+
+After moving kasan_init_generic() to the end, kasan_init() can no longer
+call kasan_mem_to_shadow() for shadow address conversion because it will
+always return kasan_early_shadow_page. On the other hand, we should keep
+the current logic of kasan_mem_to_shadow() for both the early and final
+stage because there may be instrumentation before kasan_init().
+
+To solve this, we factor out a new mem_to_shadow() function from current
+kasan_mem_to_shadow() for the shadow address conversion in kasan_init().
 
 Cc: stable@vger.kernel.org
-Fixes: 8e02c3b782ec ("LoongArch: Add writecombine support for DMW-based ioremap()")
-Signed-off-by: Kanglong Wang <wangkanglong@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+[ Huacai: To backport from upstream to 6.6 & 6.12, kasan_enabled() is
+          replaced with kasan_arch_is_ready() and kasan_init_generic()
+          is replaced with "kasan_early_stage = false". ]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/kasan.h |   11 ++++++++++-
- arch/loongarch/mm/kasan_init.c     |    5 +++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ arch/loongarch/mm/kasan_init.c |   77 +++++++++++++++++++++--------------------
+ 1 file changed, 40 insertions(+), 37 deletions(-)
 
---- a/arch/loongarch/include/asm/kasan.h
-+++ b/arch/loongarch/include/asm/kasan.h
-@@ -25,6 +25,7 @@
- /* 64-bit segment value. */
- #define XKPRANGE_UC_SEG		(0x8000)
- #define XKPRANGE_CC_SEG		(0x9000)
-+#define XKPRANGE_WC_SEG		(0xa000)
- #define XKVRANGE_VC_SEG		(0xffff)
- 
- /* Cached */
-@@ -41,10 +42,17 @@
- #define XKPRANGE_UC_SHADOW_SIZE		(XKPRANGE_UC_SIZE >> KASAN_SHADOW_SCALE_SHIFT)
- #define XKPRANGE_UC_SHADOW_END		(XKPRANGE_UC_KASAN_OFFSET + XKPRANGE_UC_SHADOW_SIZE)
- 
-+/* WriteCombine */
-+#define XKPRANGE_WC_START		WRITECOMBINE_BASE
-+#define XKPRANGE_WC_SIZE		XRANGE_SIZE
-+#define XKPRANGE_WC_KASAN_OFFSET	XKPRANGE_UC_SHADOW_END
-+#define XKPRANGE_WC_SHADOW_SIZE		(XKPRANGE_WC_SIZE >> KASAN_SHADOW_SCALE_SHIFT)
-+#define XKPRANGE_WC_SHADOW_END		(XKPRANGE_WC_KASAN_OFFSET + XKPRANGE_WC_SHADOW_SIZE)
-+
- /* VMALLOC (Cached or UnCached)  */
- #define XKVRANGE_VC_START		MODULES_VADDR
- #define XKVRANGE_VC_SIZE		round_up(KFENCE_AREA_END - MODULES_VADDR + 1, PGDIR_SIZE)
--#define XKVRANGE_VC_KASAN_OFFSET	XKPRANGE_UC_SHADOW_END
-+#define XKVRANGE_VC_KASAN_OFFSET	XKPRANGE_WC_SHADOW_END
- #define XKVRANGE_VC_SHADOW_SIZE		(XKVRANGE_VC_SIZE >> KASAN_SHADOW_SCALE_SHIFT)
- #define XKVRANGE_VC_SHADOW_END		(XKVRANGE_VC_KASAN_OFFSET + XKVRANGE_VC_SHADOW_SIZE)
- 
-@@ -55,6 +63,7 @@
- 
- #define XKPRANGE_CC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_CC_KASAN_OFFSET)
- #define XKPRANGE_UC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_UC_KASAN_OFFSET)
-+#define XKPRANGE_WC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_WC_KASAN_OFFSET)
- #define XKVRANGE_VC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKVRANGE_VC_KASAN_OFFSET)
- 
- extern bool kasan_early_stage;
 --- a/arch/loongarch/mm/kasan_init.c
 +++ b/arch/loongarch/mm/kasan_init.c
-@@ -62,6 +62,9 @@ void *kasan_mem_to_shadow(const void *ad
- 		case XKPRANGE_UC_SEG:
- 			offset = XKPRANGE_UC_SHADOW_OFFSET;
- 			break;
-+		case XKPRANGE_WC_SEG:
-+			offset = XKPRANGE_WC_SHADOW_OFFSET;
-+			break;
- 		case XKVRANGE_VC_SEG:
- 			offset = XKVRANGE_VC_SHADOW_OFFSET;
- 			break;
-@@ -86,6 +89,8 @@ const void *kasan_shadow_to_mem(const vo
+@@ -42,39 +42,43 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD]
  
- 	if (addr >= XKVRANGE_VC_SHADOW_OFFSET)
- 		return (void *)(((addr - XKVRANGE_VC_SHADOW_OFFSET) << KASAN_SHADOW_SCALE_SHIFT) + XKVRANGE_VC_START);
-+	else if (addr >= XKPRANGE_WC_SHADOW_OFFSET)
-+		return (void *)(((addr - XKPRANGE_WC_SHADOW_OFFSET) << KASAN_SHADOW_SCALE_SHIFT) + XKPRANGE_WC_START);
- 	else if (addr >= XKPRANGE_UC_SHADOW_OFFSET)
- 		return (void *)(((addr - XKPRANGE_UC_SHADOW_OFFSET) << KASAN_SHADOW_SCALE_SHIFT) + XKPRANGE_UC_START);
- 	else if (addr >= XKPRANGE_CC_SHADOW_OFFSET)
+ bool kasan_early_stage = true;
+ 
+-void *kasan_mem_to_shadow(const void *addr)
++static void *mem_to_shadow(const void *addr)
+ {
+-	if (!kasan_arch_is_ready()) {
++	unsigned long offset = 0;
++	unsigned long maddr = (unsigned long)addr;
++	unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
++
++	if (maddr >= FIXADDR_START)
+ 		return (void *)(kasan_early_shadow_page);
+-	} else {
+-		unsigned long maddr = (unsigned long)addr;
+-		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
+-		unsigned long offset = 0;
+-
+-		if (maddr >= FIXADDR_START)
+-			return (void *)(kasan_early_shadow_page);
+-
+-		maddr &= XRANGE_SHADOW_MASK;
+-		switch (xrange) {
+-		case XKPRANGE_CC_SEG:
+-			offset = XKPRANGE_CC_SHADOW_OFFSET;
+-			break;
+-		case XKPRANGE_UC_SEG:
+-			offset = XKPRANGE_UC_SHADOW_OFFSET;
+-			break;
+-		case XKPRANGE_WC_SEG:
+-			offset = XKPRANGE_WC_SHADOW_OFFSET;
+-			break;
+-		case XKVRANGE_VC_SEG:
+-			offset = XKVRANGE_VC_SHADOW_OFFSET;
+-			break;
+-		default:
+-			WARN_ON(1);
+-			return NULL;
+-		}
+ 
+-		return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
++	maddr &= XRANGE_SHADOW_MASK;
++	switch (xrange) {
++	case XKPRANGE_CC_SEG:
++		offset = XKPRANGE_CC_SHADOW_OFFSET;
++		break;
++	case XKPRANGE_UC_SEG:
++		offset = XKPRANGE_UC_SHADOW_OFFSET;
++		break;
++	case XKPRANGE_WC_SEG:
++		offset = XKPRANGE_WC_SHADOW_OFFSET;
++		break;
++	case XKVRANGE_VC_SEG:
++		offset = XKVRANGE_VC_SHADOW_OFFSET;
++		break;
++	default:
++		WARN_ON(1);
++		return NULL;
+ 	}
++
++	return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
++}
++
++void *kasan_mem_to_shadow(const void *addr)
++{
++	if (kasan_arch_is_ready())
++		return mem_to_shadow(addr);
++	else
++		return (void *)(kasan_early_shadow_page);
+ }
+ 
+ const void *kasan_shadow_to_mem(const void *shadow_addr)
+@@ -295,10 +299,8 @@ void __init kasan_init(void)
+ 	/* Maps everything to a single page of zeroes */
+ 	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, true);
+ 
+-	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
+-					kasan_mem_to_shadow((void *)KFENCE_AREA_END));
+-
+-	kasan_early_stage = false;
++	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
++					mem_to_shadow((void *)KFENCE_AREA_END));
+ 
+ 	/* Populate the linear mapping */
+ 	for_each_mem_range(i, &pa_start, &pa_end) {
+@@ -308,13 +310,13 @@ void __init kasan_init(void)
+ 		if (start >= end)
+ 			break;
+ 
+-		kasan_map_populate((unsigned long)kasan_mem_to_shadow(start),
+-			(unsigned long)kasan_mem_to_shadow(end), NUMA_NO_NODE);
++		kasan_map_populate((unsigned long)mem_to_shadow(start),
++			(unsigned long)mem_to_shadow(end), NUMA_NO_NODE);
+ 	}
+ 
+ 	/* Populate modules mapping */
+-	kasan_map_populate((unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR),
+-		(unsigned long)kasan_mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
++	kasan_map_populate((unsigned long)mem_to_shadow((void *)MODULES_VADDR),
++		(unsigned long)mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
+ 	/*
+ 	 * KAsan may reuse the contents of kasan_early_shadow_pte directly, so we
+ 	 * should make sure that it maps the zero page read-only.
+@@ -329,5 +331,6 @@ void __init kasan_init(void)
+ 
+ 	/* At this point kasan is fully initialized. Enable error messages */
+ 	init_task.kasan_depth = 0;
++	kasan_early_stage = false;
+ 	pr_info("KernelAddressSanitizer initialized.\n");
+ }
 
 
 
