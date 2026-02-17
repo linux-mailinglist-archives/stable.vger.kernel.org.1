@@ -1,166 +1,221 @@
-Return-Path: <stable+bounces-216886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJ96N/CzlGlbGgIAu9opvQ
-	(envelope-from <stable+bounces-216886-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:31:12 +0100
+	id 6DJSM5y1lGlbGgIAu9opvQ
+	(envelope-from <stable+bounces-216887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:38:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA2514F293
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:31:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902BE14F3B1
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E5863058579
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 18:29:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 42727303C865
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 18:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95853372B48;
-	Tue, 17 Feb 2026 18:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BDA374170;
+	Tue, 17 Feb 2026 18:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTTK82Nz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EDK4YMyJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82B41C69D
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 18:29:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771352962; cv=none; b=OuXpEqtESLX3OKa5VnI0EPEhhEJPd35LX1W9TZf6mGln4AX0b6d7fa7v5ph2kWWyLeqqiDVfyjDyh8mO5DKb7r1EmkXss/upsapPOJ529RLyC/1+c7aq6cQY0nodvJlWcX+4Zmp2wRP3m9n8rrROIF94D1F/C4ecDfyCSu+3qB0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771352962; c=relaxed/simple;
-	bh=ZcHuQ7r21yTDh2VPpv6pPH76RALcIZWJNIKymPfmPFY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fbJULppjfw2FVjKwvP243UnWDrxMmVp+SyMG9bwNibXlRsFwU8KiMpV/pG2ouw1ttAiLY4c4uGbZJQ8LDobgFBIMmMmTzwvikQ2hOqyjk9vfl+mTJbc7n8Bn0vEJITpy3XJr5gppbWGznw/+urTobAnTsmwg4AYvWYGlSE222gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTTK82Nz; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2B52D8393
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 18:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771353496; cv=pass; b=NtFLIMiq+h6poJ34xhupU07T1fi5UrdMl/NqgWNnNYvo7Ltd+dZVU/K1PdI14fCj/EzDoJEfZyzO2g47rANspYOnCXEPZDlxMsTHkFFPIKQq9QYLAD+4bkAO8pJ8S+gmd+7in41nREiADCnOj0q5CIRr5OYPeVRnfg6QrApq27c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771353496; c=relaxed/simple;
+	bh=6+aIOqPXhpAr7dPhRhS5XFq9e6htkgUr0mLJ2+X2rNE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kpkOHPgJIL5XX6iE9lVWu7gw78rVaChN+p7eT5nYvszvO2uCgKxgrgt9XPaejUXEKSsu4R9WZ5JByGGfhbIDpLx+Gj1QyM2KoPlp9/Xj6yMCcZPgikV3KLjJivJka0mM7wydny8dpIT7doFB9y/DtvNURrXJ+A32etcTos5zZFs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EDK4YMyJ; arc=pass smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48373a4bca3so24335915e9.0
-        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 10:29:20 -0800 (PST)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b884d5c787bso605147366b.0
+        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 10:38:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771353493; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dtDxe+K15swFS9d9iKYAtM0uCk69eEUaIeNz1omVOBwT2sH+QznawYH9TjfzemsUnD
+         /LZqTOeJDEsm5t7Ew+PpZVfAuNLwvvXG1N9Q41p+M+rxn+7mQHbOLuaJ9G5w7v+sKMyy
+         gLNm3ZuAhuv6UnVlKOhBQre7EleM7t3RrxeDxQiV91ZViAcTjLT9lWa1yFJp83btIfzf
+         G9Vk0MVMFP4HZh61R8e1+ipQAWGBCUxIw5vxlhQpmcA3Dz9voh9K2v9vaBEeMRo541m+
+         wEmOenuO8sNTa5qVfh7C4ifCyxZC+NFm1CEir4Hwhk0XdynDhtm8bzCbVz8L/+t+OIHn
+         8ybg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=L0kfgHuKL0CgrURLYBZypVOq8WTafDbOBreYdMsaND8=;
+        fh=5HNWy0QflvO2meo8AbVaTtmEBv1ssVkGRGmMRL8cqWY=;
+        b=ep+alYPIijr4RCxkwBYQS/26axVS9d5ySj5rvVt7qoAHdIXsDPwMy6MXAZ9/+2wBnP
+         5OJNQ4b/tWkGLogRhgDIyrGE2mpddDhWONSY3vZ1C5YFtYygvGI2UatdHlOHtG/W9wvh
+         KT6sHaQj6zGPf5b699kilpt8OlsCfA/Qcp/eoF8gFKF8u/B6n0BhRhZR93KWeb5iH5Kg
+         E6/hPv3/udbC4tP93ynN59jZv5qxFJog1aEmjI3LJbDcyxpOi7olQbznInwgxg+FIhj9
+         bx+QlTIWORCJ2jQMRBcvKvNID4KVXLc3J38V2yHPPv1Lu92mSOV43geUR7SLxt+GgOxa
+         pZ+A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771352959; x=1771957759; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=A1dTGS0nUrZaB86bFJbEyPn5We33zlH4DX2moTSFdiE=;
-        b=BTTK82NzXkSF7dQVXqVj6bNJ7lDcZHp5l3lbn+Hv4gvcH1eLBpJVN6F9tBXJPrmzsa
-         Y+9hl3NI1KjFZeav8BHk22uqG13qgujh8Ghlw+TS9/udf+a+nD46m9JaUBwWyQhCEUZw
-         3PoqD6wwW8qnsNKXOuvRm6A37xrdqhwdtSuApYzaNAAo0cDh5dvMPbct/usqkqv3/WaJ
-         HUZRVEG1RlUGvkf+o5cyh80Tk9kktDWSs5CxaoZt2g8Q/pg1bkHhmh0zQ+vqk2wwz3Rl
-         +IShZosVCqmJTq6q/YOioKpn33cKSeWHJWXdm5L0p4vQkv+189l4+S5iy9+iylSchxeT
-         vWIg==
+        d=gmail.com; s=20230601; t=1771353493; x=1771958293; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L0kfgHuKL0CgrURLYBZypVOq8WTafDbOBreYdMsaND8=;
+        b=EDK4YMyJK1lz0f9Y/YK4ggQRJACRHuYi2GrbYflgNNAHQ9k/qMgXVVfWMzVZSF+y72
+         Wn6psEajRmObsSmzcr6eEfOTYhQ11kpbRbR88n4QPResS3hNXVpBMfZXW0zyY12DIJ5L
+         x20MmSWMhuZAsGoA8yDv6jIG2t8v9x+y/n3RKPxQM8FsULlGtz9u5cmy6zwkUw6jXYCg
+         1THEe+7p9qnaEEmrzUbQB4yhIgLXy2GSXN+a3KQY0c9FmYLCKiR3ji0YnpGN8ICC0JE5
+         IIugICSv0eUI6/Hgf8ZzaUE1WL62l8nZjZasa1gIHquz1m5tfT5dJrgbn1vs7QPD7dWn
+         xNpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771352959; x=1771957759;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=A1dTGS0nUrZaB86bFJbEyPn5We33zlH4DX2moTSFdiE=;
-        b=WQEmHf62RT1VRfUuyz9LBo8LRY4q2N/XtM834aGJKK0wXYIjWeRUZT4rq12iUOFzJ6
-         9Uib4dT6y8vlKogpwStwj7rMHHT5eXAUBHq9KX+6CRRJoMCylpIvLe6AsQrtstbQPL8+
-         nVtMq7q2IP9lIkfdVkgTGNRQDyiePmDzcc51U5MtarkaT/C6rqkTdrK3+RvG4S18nU9L
-         taLt7USopZW0i43BgWYzT6r6bwWLZ+PqqsNxDf01Trg1hsY5C+Fk2mTEzi0pkHIydN7z
-         GHvqGMVTcRZvP9och5ye9KccrYuZ7UUznlvJWemfv8T0XbJWoiL/Ky9bv2prKrSpYd0X
-         gs2Q==
-X-Gm-Message-State: AOJu0YzVyK8lyDTFSa28ciGPpHOlXIhy3YjFrQdFdITeeUIQZui2ZQ63
-	RKpOSzLKgbe/SJPI/EFTUhodB25OOiFwy/Wd7Zug//zJ8dwOQgtC5Qs6
-X-Gm-Gg: AZuq6aJsaOgna9c7XNigCE+tFQeng8JyZ1VN7Xe8yh7ASVt4xV+RQVYiLQVjLIW4fLq
-	K+xu70jFXKH8b2VKHzAfTlSg4nA/+j4AwRVr/Wf21IyvjzjtTwWvHkZL+VJe/COfrVgycbbTl0f
-	Y6VhiUND8YyfJj7Is6WnJM+8JjH7mLcNzeWmVDqChP+P/fmv2dBLEMhg8YFNhqM4aa4v9CEPz7t
-	J0li+02WrpM6dVp8YBnPGMRs5SeqN95yHumtMEwD53Ghxu+N90WkOjbL76qVO+wfykJ6uiXejzy
-	1rLHjgn4eyDQyJX1W41/twYAnXcZXJ1kbQyvo+qPWjY9eEM/VoN7OGFn3kkET5MNIXE2Pni5cF+
-	D56lu8DxSsf/mAt/ster4epCbQy0H7+LKC+kjFbt/zCVk3QpEmV//LSDXE0njFY4B3VUQpeaOuu
-	38xALmiFzxxTuCF8KDCKVg0VxlTUyptLzgcB5mmhB5xe9iECyvsHLLxKug
-X-Received: by 2002:a05:600c:3505:b0:483:71f7:2795 with SMTP id 5b1f17b1804b1-48379b990b2mr160828595e9.11.1771352958917;
-        Tue, 17 Feb 2026 10:29:18 -0800 (PST)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4839731e101sm1055395e9.6.2026.02.17.10.29.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 10:29:17 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 4DBDBBE2DE0; Tue, 17 Feb 2026 19:29:16 +0100 (CET)
-Date: Tue, 17 Feb 2026 19:29:16 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Hostinger NOC <noc@hostinger.com>
-Cc: stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: Please apply commit 9990ddf47d41 ("net: tunnel: make
- skb_vlan_inet_prepare() return drop reasons") down to 6.1.y at least
-Message-ID: <aZSzfA3yFQxzj-N4@eldamar.lan>
-References: <177132401902.2893171.1371685164011289024@eldamar.lan>
- <2026021740-mom-remix-8103@gregkh>
+        d=1e100.net; s=20230601; t=1771353493; x=1771958293;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=L0kfgHuKL0CgrURLYBZypVOq8WTafDbOBreYdMsaND8=;
+        b=tkCBfCtKOLWKuWkBFGbjrt+fQYXUaC/5kqP2Y3ZXr3Es5au1vPi9kn9+nFe27fts5G
+         fb+7ixkj7rBwZXuvlB7d1jkAVy9qMp8qjI9I6foyLP1ZRVNWx9wHUkLabD6K3WFHFd60
+         GH8D3jCFxCMZPtoFpiXLMADrdjNGUbExNnGj/s+ukuJXKadiXCgK0HT7R4/EI/JOA2iH
+         mbIf3vl3nqqha1Ed33T5fP9eHzjqCutNNP/hO2yMNW/xLlVEchXfd/waiQ2bV7cLmjGG
+         3yzZr2iJ3VebCVuRTs5hJEuXlI1aiCvguTwPvOmfPgnyyeZiOCOO3t8sybHVhlvVzNhR
+         QZlw==
+X-Forwarded-Encrypted: i=1; AJvYcCXcg2CJyittDSC9X7oUjtEHDkCFc0SWMcrI2K1cUuVNGEraN1FPqK1VsHRc+fbpaI8mRVhn798=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyX+qHX5nZrozAjc7NQim/JumrzIqohxlGKHB5ICJFmmXxoyD7D
+	BrH3fTVlAUeI6GF4ckWsCAVD3ijdaUGVOBcmnQXrArkymS33m7lYfWvQ+izv7ZFPz5l2t+EL/J3
+	kz5eMakwe31SRq07egQS5tr3CQJXoLfI=
+X-Gm-Gg: AZuq6aIotqkdWw4Wh0Lo53/+op70/A9NTKSsu+1xEg4hL0kK6+6nVnG/jFHe6B7jbQ9
+	vl/yvtKB5TDLq5zFriSdzxhp5/MRLCkuW/Z0dUbn+Bysm+9WQZP7Soo4n5gK1yieTP2ElG1NH11
+	ltwnXppfuq+mlrWlXIDOosAkuHZSgi1GK3iUZ5T9NToM+q7yMMpgYdlnoDPWMnWyCu53GETwa0f
+	yjcQH03OVkP9Nb+tZFKUdObBfMeRnA4vwHwmEZzazmtw9L5MfCEVu3qZtUPpwskBksDA5+sfc2w
+	3LNc9dWNBl/ieaI/EuryeCSTic4FNytFPULfhNFP
+X-Received: by 2002:a17:907:3d0b:b0:b7d:1cbb:5deb with SMTP id
+ a640c23a62f3a-b8fc3b5abf0mr768614566b.27.1771353492689; Tue, 17 Feb 2026
+ 10:38:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026021740-mom-remix-8103@gregkh>
+References: <20260216-hibernate-perf-v4-0-1ba9f0bf1ec9@tencent.com>
+ <20260216-hibernate-perf-v4-1-1ba9f0bf1ec9@tencent.com> <20260216134222.5ec936d6503e72348227c58d@linux-foundation.org>
+In-Reply-To: <20260216134222.5ec936d6503e72348227c58d@linux-foundation.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 18 Feb 2026 02:37:36 +0800
+X-Gm-Features: AaiRm51x0f9h4WRnSrAyvxbfHlB_6iU_mFxctjVNumteF3OZtK_Fw9fGifvYBbo
+Message-ID: <CAMgjq7BGAk45oYCcZymNUcRWU-T5k4AdzgAhk6mr+xPJyD3-uQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] mm, swap: speed up hibernation allocation and writeout
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>, linux-mm@kvack.org, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Carsten Grohmann <mail@carstengrohmann.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	linux-kernel@vger.kernel.org, 
+	"open list:SUSPEND TO RAM" <linux-pm@vger.kernel.org>, Carsten Grohmann <carstengrohmann@gmx.de>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216886-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216887-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,davemloft.net];
-	TO_DN_ALL(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carnil@debian.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4AA2514F293
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ryncsn@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,kvack.org,huaweicloud.com,gmail.com,redhat.com,carstengrohmann.de,vger.kernel.org,gmx.de];
+	TAGGED_RCPT(0.00)[stable,kasong.tencent.com];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,tencent.com:email]
+X-Rspamd-Queue-Id: 902BE14F3B1
 X-Rspamd-Action: no action
 
-Hi Greg,
+On Tue, Feb 17, 2026 at 5:42=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Mon, 16 Feb 2026 22:58:02 +0800 Kairui Song via B4 Relay <devnull+kaso=
+ng.tencent.com@kernel.org> wrote:
+>
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > Since commit 0ff67f990bd4 ("mm, swap: remove swap slot cache"),
+> > hibernation has been using the swap slot slow allocation path for
+> > simplification, which turns out might cause regression for some
+> > devices because the allocator now rotates clusters too often, leading t=
+o
+> > slower allocation and more random distribution of data.
+> >
+> > Fast allocation is not complex, so implement hibernation support as
+> > well.
+> >
+> > Test result with Samsung SSD 830 Series (SATA II, 3.0 Gbps) shows the
+> > performance is several times better [1]:
+> > 6.19:               324 seconds
+> > After this series:  35 seconds
+>
+> Thanks.
+>
+> I'll merge only [1/3] at this time, into mm-unstable at this time (I'll
+> move it to mm-unstable after resyncing mm.git with upstream).
+>
+> We don't want the other two patches present during testing of this
+> backportable fix because doing so partially invalidates that testing -
+> [2/3] and[3/3] might accidentally fix issues which [1/3] added.  It happe=
+ns,
+> occasionally.
 
-I'm sorry having wasted your time, I relayed the testing result, let
-me loop in the user which tested the fix:
+Sounds good to me. I'll send the cleanup separately sometime later again.
 
-On Tue, Feb 17, 2026 at 11:57:25AM +0100, Greg Kroah-Hartman wrote:
-> On Tue, Feb 17, 2026 at 11:28:20AM +0100, Salvatore Bonaccorso wrote:
-> > Hi stable maintainers,
-> > 
-> > 9990ddf47d41 ("net: tunnel: make skb_vlan_inet_prepare() return drop
-> > reasons") was alrady backported as well to 6.12.71 to address a
-> > regression when backporting 81c734dae203 ("ip6_tunnel: use
-> > skb_vlan_inet_prepare() in __ip6_tnl_rcv()") (this one was backported
-> > without the prequisite commit to 6.12.67, 6.6.122, 6.1.162, 5.15.199
-> > and 5.10.249).
-> > 
-> > Can you pick please as well 9990ddf47d41 for the other stable series
-> > as needed? I can only give a confirmation that it works as exepcted
-> > for the 6.1.y series as per https://bugs.debian.org/1127823#36 .
-> 
-> it does not apply to any of those older kernels, which is probably why
-> it didn't get added there.  I tried to do the backport myself, but the
-> changes to drivers/net/vxlan/vxlan_core.c doesn't make sense to me, so I
-> can't do it, sorry.
-> 
-> Do you have a working backport anywhere?
+>
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -1926,8 +1926,9 @@ void swap_put_entries_direct(swp_entry_t entry, i=
+nt nr)
+> >  /* Allocate a slot for hibernation */
+> >  swp_entry_t swap_alloc_hibernation_slot(int type)
+> >  {
+> > -     struct swap_info_struct *si =3D swap_type_to_info(type);
+> > -     unsigned long offset;
+> > +     struct swap_info_struct *pcp_si, *si =3D swap_type_to_info(type);
+> > +     unsigned long pcp_offset, offset =3D SWAP_ENTRY_INVALID;
+> > +     struct swap_cluster_info *ci;
+> >       swp_entry_t entry =3D {0};
+> >
+> >       if (!si)
+> > @@ -1937,11 +1938,21 @@ swp_entry_t swap_alloc_hibernation_slot(int typ=
+e)
+> >       if (get_swap_device_info(si)) {
+> >               if (si->flags & SWP_WRITEOK) {
+> >                       /*
+> > -                      * Grab the local lock to be compliant
+> > -                      * with swap table allocation.
+> > +                      * Try the local cluster first if it matches the =
+device. If
+> > +                      * not, try grab a new cluster and override local=
+ cluster.
+> >                        */
+>
+> nanonit, worrying about 80-cols is rather old fashioned but there's no
+> reason to overflow 80 in a block comment!
 
-"Hostinger NOC" team, can you followup to the above? Can you provide a
-working backport down to the 6.1.y series to Greg?
-
-Regards,
-Salvatore
+I'll be more careful about this, thanks.
 
