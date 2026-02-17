@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-217141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPpYA0TVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217141-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:24 +0100
+	id 6CXzHEfVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1206150782
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CC7150791
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 469D83056B44
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 80F133006990
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C467F28C009;
-	Tue, 17 Feb 2026 20:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B30284B3B;
+	Tue, 17 Feb 2026 20:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x97qQx9O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkrjinLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88767261B70;
-	Tue, 17 Feb 2026 20:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3464F29A1;
+	Tue, 17 Feb 2026 20:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361563; cv=none; b=jmYZvlxmm+qz10nlBTMhMcXFkkNubEHL6Ag/BSCtES0Ic3eSfIAZrEmWAWAaxZZJ0TTRwSMFNfnkSK8e1QO8pqGKVbxNmf8qMXn7QBaqywPKxKvsHO8bIXcYObIa/YWRXd5RA9X5zlNhpQx+st6emyIevOydx6GQV0gERq3JFAc=
+	t=1771361601; cv=none; b=a+RND0oLvcM31CoL3B4waWZkGrwhQLJ4ZP11fZUkVbFQuJE2AeLf5CSSFuyGWJ3v30/6DCG2Orz+iRoVhoNjsJ7AY5VGIYUE23VkiJMkW76MFlmIiG7yYyBpPcQWPUGB/RzW53Mk6jrECy7RY8wQemwMlLVE+CV16N8dYBBvSZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361563; c=relaxed/simple;
-	bh=+vCrOp4zKdx6LqhGAhbY5vRF+J02/57g5pJyDjnRuyE=;
+	s=arc-20240116; t=1771361601; c=relaxed/simple;
+	bh=ZpUvEL5TxU2tegnmm4qA6KsgzWq+E44BsRNke5liy8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZAPEkSZmAv/qeTayUbR6CKBtPi8KNKunNyX6pzlmfiGMmYtSd/9QgeCAN3saDEhgV26ztVocFCbah3jfhXFuuNLkAxbd+AeSbNDHTzA5wrEB5UV1t13UkC1umkpk73NIcbeLy/C3MnTEu6Xh2+nxLNrfen8VkBngw+u54Almaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x97qQx9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45D0C4CEF7;
-	Tue, 17 Feb 2026 20:52:42 +0000 (UTC)
+	 MIME-Version; b=u1GvBF37sAupVC4odZ98MrUX2tTgdCEFqnDDgv1C7zP+cebHI/Bqik7fRny9tjG9UUI3Nqb1efxbRuazcqQcOwwa5jCAv1ZjVRnOma+NeBxqaJgzsmeigfaYM66BZfJKhmoBzPnERq4i8GuU9zmAS2HUYOpuYSBDXWpX2H9OCY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkrjinLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C907C4CEF7;
+	Tue, 17 Feb 2026 20:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361563;
-	bh=+vCrOp4zKdx6LqhGAhbY5vRF+J02/57g5pJyDjnRuyE=;
+	s=korg; t=1771361601;
+	bh=ZpUvEL5TxU2tegnmm4qA6KsgzWq+E44BsRNke5liy8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x97qQx9OUv3T2UcvEfKI4avdJn8E9a51RkZGXGeWsgPLCtdOKOWeF0Hu1GWFaN59w
-	 qTIBR7yoRWzuYw5SO3/mZ5afmQwtXRXih13ql2PlBNVfrniQqTtXbdfhw+KZJ6ddNV
-	 FLbR1DN2+DBjBgbzpPWO7W3DSJJR8cdn5j2X2X1s=
+	b=XkrjinLDVcx315lCvD/qK9lQA+lu1fELweJp5ESmlVFapuSPFI+ZJLg0fBlOjSYYj
+	 cuUK53LoZMs+MbC70xb2BMBm/kONlqAyOgBdmHZKYszFZ/XQ7jtT7ZazDK5QLoQbiX
+	 EbylbJ15dc3hAX8LlDsco0mM65DR7D3XIp3Vgs80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 01/42] scsi: qla2xxx: Fix bsg_done() causing double free
-Date: Tue, 17 Feb 2026 21:31:52 +0100
-Message-ID: <20260217200006.058599683@linuxfoundation.org>
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 02/42] bnxt_en: Change FW message timeout warning
+Date: Tue, 17 Feb 2026 21:31:53 +0100
+Message-ID: <20260217200006.096356325@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
 References: <20260217200005.998240758@linuxfoundation.org>
@@ -71,163 +71,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217141-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217152-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,marvell.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: B1206150782
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,broadcom.com:email]
+X-Rspamd-Queue-Id: 99CC7150791
 X-Rspamd-Action: no action
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: Michael Chan <michael.chan@broadcom.com>
 
-commit c2c68225b1456f4d0d393b5a8778d51bb0d5b1d0 upstream.
+commit 0fcad44a86bdc2b5f202d91ba1eeeee6fceb7b25 upstream.
 
-Kernel panic observed on system,
+The firmware advertises a "hwrm_cmd_max_timeout" value to the driver
+for NVRAM and coredump related functions that can take tens of seconds
+to complete.  The driver polls for the operation to complete under
+mutex and may trigger hung task watchdog warning if the wait is too long.
+To warn the user about this, the driver currently prints a warning if
+this advertised value exceeds 40 seconds:
 
-[5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000
-[5353358.825194] #PF: supervisor write access in kernel mode
-[5353358.825195] #PF: error_code(0x0002) - not-present page
-[5353358.825196] PGD 100006067 P4D 0
-[5353358.825198] Oops: 0002 [#1] PREEMPT SMP NOPTI
-[5353358.825200] CPU: 5 PID: 2132085 Comm: qlafwupdate.sub Kdump: loaded Tainted: G        W    L    -------  ---  5.14.0-503.34.1.el9_5.x86_64 #1
-[5353358.825203] Hardware name: HPE ProLiant DL360 Gen11/ProLiant DL360 Gen11, BIOS 2.44 01/17/2025
-[5353358.825204] RIP: 0010:memcpy_erms+0x6/0x10
-[5353358.825211] RSP: 0018:ff591da8f4f6b710 EFLAGS: 00010246
-[5353358.825212] RAX: ff5f5e897b024000 RBX: 0000000000007090 RCX: 0000000000001000
-[5353358.825213] RDX: 0000000000001000 RSI: ff591da8f4fed090 RDI: ff5f5e897b024000
-[5353358.825214] RBP: 0000000000010000 R08: ff5f5e897b024000 R09: 0000000000000000
-[5353358.825215] R10: ff46cf8c40517000 R11: 0000000000000001 R12: 0000000000008090
-[5353358.825216] R13: ff591da8f4f6b720 R14: 0000000000001000 R15: 0000000000000000
-[5353358.825218] FS:  00007f1e88d47740(0000) GS:ff46cf935f940000(0000) knlGS:0000000000000000
-[5353358.825219] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[5353358.825220] CR2: ff5f5e897b024000 CR3: 0000000231532004 CR4: 0000000000771ef0
-[5353358.825221] PKRU: 55555554
-[5353358.825222] Call Trace:
-[5353358.825223]  <TASK>
-[5353358.825224]  ? show_trace_log_lvl+0x1c4/0x2df
-[5353358.825229]  ? show_trace_log_lvl+0x1c4/0x2df
-[5353358.825232]  ? sg_copy_buffer+0xc8/0x110
-[5353358.825236]  ? __die_body.cold+0x8/0xd
-[5353358.825238]  ? page_fault_oops+0x134/0x170
-[5353358.825242]  ? kernelmode_fixup_or_oops+0x84/0x110
-[5353358.825244]  ? exc_page_fault+0xa8/0x150
-[5353358.825247]  ? asm_exc_page_fault+0x22/0x30
-[5353358.825252]  ? memcpy_erms+0x6/0x10
-[5353358.825253]  sg_copy_buffer+0xc8/0x110
-[5353358.825259]  qla2x00_process_vendor_specific+0x652/0x1320 [qla2xxx]
-[5353358.825317]  qla24xx_bsg_request+0x1b2/0x2d0 [qla2xxx]
+Device requests max timeout of %d seconds, may trigger hung task watchdog
 
-Most routines in qla_bsg.c call bsg_done() only for success cases.
-However a few invoke it for failure case as well leading to a double
-free. Validate before calling bsg_done().
+Initially, we chose 40 seconds, well below the kernel's default
+CONFIG_DEFAULT_HUNG_TASK_TIMEOUT (120 seconds) to avoid triggering
+the hung task watchdog.  But 60 seconds is the timeout on most
+production FW and cannot be reduced further.  Change the driver's warning
+threshold to 60 seconds to avoid triggering this warning on all
+production devices.  We also print the warning if the value exceeds
+CONFIG_DEFAULT_HUNG_TASK_TIMEOUT which may be set to architecture
+specific defaults as low as 10 seconds.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-12-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250417172448.1206107-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |   28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c      |   11 +++++++----
+ drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.h |    2 +-
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -1546,8 +1546,9 @@ qla2x00_update_optrom(struct bsg_job *bs
- 	ha->optrom_buffer = NULL;
- 	ha->optrom_state = QLA_SWAITING;
- 	mutex_unlock(&ha->optrom_mutex);
--	bsg_job_done(bsg_job, bsg_reply->result,
--		       bsg_reply->reply_payload_rcv_len);
-+	if (!rval)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 	return rval;
- }
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -9770,7 +9770,7 @@ static int bnxt_hwrm_ver_get(struct bnxt
+ 	struct hwrm_ver_get_input *req;
+ 	u16 fw_maj, fw_min, fw_bld, fw_rsv;
+ 	u32 dev_caps_cfg, hwrm_ver;
+-	int rc, len;
++	int rc, len, max_tmo_secs;
  
-@@ -2612,8 +2613,9 @@ qla2x00_manage_host_stats(struct bsg_job
- 				    sizeof(struct ql_vnd_mng_host_stats_resp));
+ 	rc = hwrm_req_init(bp, req, HWRM_VER_GET);
+ 	if (rc)
+@@ -9843,9 +9843,12 @@ static int bnxt_hwrm_ver_get(struct bnxt
+ 	bp->hwrm_cmd_max_timeout = le16_to_cpu(resp->max_req_timeout) * 1000;
+ 	if (!bp->hwrm_cmd_max_timeout)
+ 		bp->hwrm_cmd_max_timeout = HWRM_CMD_MAX_TIMEOUT;
+-	else if (bp->hwrm_cmd_max_timeout > HWRM_CMD_MAX_TIMEOUT)
+-		netdev_warn(bp->dev, "Device requests max timeout of %d seconds, may trigger hung task watchdog\n",
+-			    bp->hwrm_cmd_max_timeout / 1000);
++	max_tmo_secs = bp->hwrm_cmd_max_timeout / 1000;
++	if (bp->hwrm_cmd_max_timeout > HWRM_CMD_MAX_TIMEOUT ||
++	    max_tmo_secs > CONFIG_DEFAULT_HUNG_TASK_TIMEOUT) {
++		netdev_warn(bp->dev, "Device requests max timeout of %d seconds, may trigger hung task watchdog (kernel default %ds)\n",
++			    max_tmo_secs, CONFIG_DEFAULT_HUNG_TASK_TIMEOUT);
++	}
  
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
+ 	if (resp->hwrm_intf_maj_8b >= 1) {
+ 		bp->hwrm_max_req_len = le16_to_cpu(resp->max_req_win_len);
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.h
+@@ -58,7 +58,7 @@ void hwrm_update_token(struct bnxt *bp,
  
- 	return ret;
- }
-@@ -2702,8 +2704,9 @@ qla2x00_get_host_stats(struct bsg_job *b
- 							       bsg_job->reply_payload.sg_cnt,
- 							       data, response_len);
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- 	kfree(data);
- host_stat_out:
-@@ -2802,8 +2805,9 @@ reply:
- 				    bsg_job->reply_payload.sg_cnt, data,
- 				    response_len);
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- tgt_stat_out:
- 	kfree(data);
-@@ -2864,8 +2868,9 @@ qla2x00_manage_host_port(struct bsg_job
- 				    bsg_job->reply_payload.sg_cnt, &rsp_data,
- 				    sizeof(struct ql_vnd_mng_host_port_resp));
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- 	return ret;
- }
-@@ -3240,7 +3245,8 @@ int qla2x00_mailbox_passthru(struct bsg_
- 
- 	bsg_job->reply_len = sizeof(*bsg_job->reply);
- 	bsg_reply->result = DID_OK << 16;
--	bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
- 
- 	kfree(req_data);
- 
+ #define BNXT_HWRM_MAX_REQ_LEN		(bp->hwrm_max_req_len)
+ #define BNXT_HWRM_SHORT_REQ_LEN		sizeof(struct hwrm_short_input)
+-#define HWRM_CMD_MAX_TIMEOUT		40000U
++#define HWRM_CMD_MAX_TIMEOUT		60000U
+ #define SHORT_HWRM_CMD_TIMEOUT		20
+ #define HWRM_CMD_TIMEOUT		(bp->hwrm_cmd_timeout)
+ #define HWRM_RESET_TIMEOUT		((HWRM_CMD_TIMEOUT) * 4)
 
 
 
