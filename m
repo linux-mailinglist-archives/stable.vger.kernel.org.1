@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-217116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217080-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qK4CAdDUlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:28 +0100
+	id 8LZGA1DUlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217080-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D2615065E
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E542150578
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C648B3016C87
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F1A373015B4A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2812428D8E8;
-	Tue, 17 Feb 2026 20:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5A9284B3B;
+	Tue, 17 Feb 2026 20:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeL7Ois5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aa37CqNy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2E2266581;
-	Tue, 17 Feb 2026 20:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BC5259CBD;
+	Tue, 17 Feb 2026 20:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361476; cv=none; b=tHWeZ5JILafz0S3OwU6kwcyZ1X6CN1/MjB2VZv2NsneDRPWZ64e7O7NBHTLGBeSPxOnrP8k3gYEIMj/0wMMTar80EUnwtwAfvq7N1bQypSNfrAfjnH8F1Gk0ARRAl1B28FvntG04LjD2znTSlKeolT/4TGybB9bW3CaQZlfcI2U=
+	t=1771361355; cv=none; b=OvVSgsubkXK+FFrOjNlNLBcx0N2w2vG3gKbGnzLgqnMJ9bNSM2lP0AiytOY9E7VRBIUd9ySJDvVHfY0xAPkD0rj6TUicGZbtLwHPLqFOUQ2YTCPuPE+OEPd04zfIuwfw3YIx5km5gRCP6NeNp+RjAeYW6oQu0eTCrRkj77NU/6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361476; c=relaxed/simple;
-	bh=RvWcZviHJllPI+oPsDCge40ZwD07wxYlXGXQoqVuTXk=;
+	s=arc-20240116; t=1771361355; c=relaxed/simple;
+	bh=gEMrpwo43GzhLDLKrUzmp15lP7CqDs4cHAaLEfsfRvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7KLK+VwrO6YVdPX+l63K8Xts7gqfENejH7vQd1Cg1lItBQWSJ1bD8EIx0ZVI8xtvFtreYntpzU5Ld8w5eUtNPVbU2E35r2OWXVWgfrd1cakRyRhNyix1S7TT7pJ7AEMUkVJXM5rwyZ4cweXDIhtUKaIV57szWMnBhTtyzmpejc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeL7Ois5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01298C4CEF7;
-	Tue, 17 Feb 2026 20:51:16 +0000 (UTC)
+	 MIME-Version; b=Sv6Wkn30mZg0LkJ81NYoTiLHSX+fDmMWI7x2rip4iZYRSbWYruEJ190UzZZouZ6pwcTYM5JC0epH5bVzPj4AdYQwNbK2ufqS3wGnJnwA0zYUIp2HACvyHSx1LJjnF3qS1LZSqE/G4cQTL48+rQXKRZaoVOnNNimIRq0ztCzNKxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aa37CqNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A168EC4CEF7;
+	Tue, 17 Feb 2026 20:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361476;
-	bh=RvWcZviHJllPI+oPsDCge40ZwD07wxYlXGXQoqVuTXk=;
+	s=korg; t=1771361355;
+	bh=gEMrpwo43GzhLDLKrUzmp15lP7CqDs4cHAaLEfsfRvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LeL7Ois5FhkmtDUjnRs35s1q7HRDmDLHMccanR6NN6fTadG/rEdfePnXZUoDXNqHK
-	 GjDm6HSVEfg6CIhgcA/kTPs9prVUeDOh+E9no+yaEdBku5o9nxpXU6l7c3ih3dj4yo
-	 sYtlf4XeDwKZF49OmE7jAo8tAnOnfKXlCS9xujyc=
+	b=aa37CqNyrGdqNbTcOr/IN+cKIXvIIQ3RxaTSxWeSeAWYdLysyT21H7uHliwKJXYIP
+	 ilGUlTRDG5QhTtZI3sOV+cuyUPDJUDtKZAUHW45y2QAatt/WsvIO6n5xNtjRwHx9kP
+	 jxUBRaiP9MTEt39nzLPS1cYhi9OnWcR/tTnmtDpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	"Uschakow, Stanislav" <suschako@amazon.de>,
-	Laurence Oberman <loberman@redhat.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Liu Shixin <liushixin2@huawei.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Rik van Riel <riel@surriel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 27/43] mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather
+	stable@kernel.org,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.19 11/18] f2fs: support non-4KB block size without packed_ssa feature
 Date: Tue, 17 Feb 2026 21:32:07 +0100
-Message-ID: <20260217200007.512788084@linuxfoundation.org>
+Message-ID: <20260217200003.126480624@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
+References: <20260217200002.683975158@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,791 +68,753 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217116-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217080-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 25D2615065E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 8E542150578
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand (Red Hat) <david@kernel.org>
+From: Daeho Jeong <daehojeong@google.com>
 
-commit 8ce720d5bd91e9dc16db3604aa4b1bf76770a9a1 upstream.
+commit e48e16f3e37fac76e2f0c14c58df2b0398a323b0 upstream.
 
-As reported, ever since commit 1013af4f585f ("mm/hugetlb: fix
-huge_pmd_unshare() vs GUP-fast race") we can end up in some situations
-where we perform so many IPI broadcasts when unsharing hugetlb PMD page
-tables that it severely regresses some workloads.
+Currently, F2FS requires the packed_ssa feature to be enabled when
+utilizing non-4KB block sizes (e.g., 16KB). This restriction limits
+the flexibility of filesystem formatting options.
 
-In particular, when we fork()+exit(), or when we munmap() a large
-area backed by many shared PMD tables, we perform one IPI broadcast per
-unshared PMD table.
+This patch allows F2FS to support non-4KB block sizes even when the
+packed_ssa feature is disabled. It adjusts the SSA calculation logic to
+correctly handle summary entries in larger blocks without the packed
+layout.
 
-There are two optimizations to be had:
-
-(1) When we process (unshare) multiple such PMD tables, such as during
-    exit(), it is sufficient to send a single IPI broadcast (as long as
-    we respect locking rules) instead of one per PMD table.
-
-    Locking prevents that any of these PMD tables could get reused before
-    we drop the lock.
-
-(2) When we are not the last sharer (> 2 users including us), there is
-    no need to send the IPI broadcast. The shared PMD tables cannot
-    become exclusive (fully unshared) before an IPI will be broadcasted
-    by the last sharer.
-
-    Concurrent GUP-fast could walk into a PMD table just before we
-    unshared it. It could then succeed in grabbing a page from the
-    shared page table even after munmap() etc succeeded (and supressed
-    an IPI). But there is not difference compared to GUP-fast just
-    sleeping for a while after grabbing the page and re-enabling IRQs.
-
-    Most importantly, GUP-fast will never walk into page tables that are
-    no-longer shared, because the last sharer will issue an IPI
-    broadcast.
-
-    (if ever required, checking whether the PUD changed in GUP-fast
-     after grabbing the page like we do in the PTE case could handle
-     this)
-
-So let's rework PMD sharing TLB flushing + IPI sync to use the mmu_gather
-infrastructure so we can implement these optimizations and demystify the
-code at least a bit. Extend the mmu_gather infrastructure to be able to
-deal with our special hugetlb PMD table sharing implementation.
-
-To make initialization of the mmu_gather easier when working on a single
-VMA (in particular, when dealing with hugetlb), provide
-tlb_gather_mmu_vma().
-
-We'll consolidate the handling for (full) unsharing of PMD tables in
-tlb_unshare_pmd_ptdesc() and tlb_flush_unshared_tables(), and track
-in "struct mmu_gather" whether we had (full) unsharing of PMD tables.
-
-Because locking is very special (concurrent unsharing+reuse must be
-prevented), we disallow deferring flushing to tlb_finish_mmu() and instead
-require an explicit earlier call to tlb_flush_unshared_tables().
-
->From hugetlb code, we call huge_pmd_unshare_flush() where we make sure
-that the expected lock protecting us from concurrent unsharing+reuse is
-still held.
-
-Check with a VM_WARN_ON_ONCE() in tlb_finish_mmu() that
-tlb_flush_unshared_tables() was properly called earlier.
-
-Document it all properly.
-
-Notes about tlb_remove_table_sync_one() interaction with unsharing:
-
-There are two fairly tricky things:
-
-(1) tlb_remove_table_sync_one() is a NOP on architectures without
-    CONFIG_MMU_GATHER_RCU_TABLE_FREE.
-
-    Here, the assumption is that the previous TLB flush would send an
-    IPI to all relevant CPUs. Careful: some architectures like x86 only
-    send IPIs to all relevant CPUs when tlb->freed_tables is set.
-
-    The relevant architectures should be selecting
-    MMU_GATHER_RCU_TABLE_FREE, but x86 might not do that in stable
-    kernels and it might have been problematic before this patch.
-
-    Also, the arch flushing behavior (independent of IPIs) is different
-    when tlb->freed_tables is set. Do we have to enlighten them to also
-    take care of tlb->unshared_tables? So far we didn't care, so
-    hopefully we are fine. Of course, we could be setting
-    tlb->freed_tables as well, but that might then unnecessarily flush
-    too much, because the semantics of tlb->freed_tables are a bit
-    fuzzy.
-
-    This patch changes nothing in this regard.
-
-(2) tlb_remove_table_sync_one() is not a NOP on architectures with
-    CONFIG_MMU_GATHER_RCU_TABLE_FREE that actually don't need a sync.
-
-    Take x86 as an example: in the common case (!pv, !X86_FEATURE_INVLPGB)
-    we still issue IPIs during TLB flushes and don't actually need the
-    second tlb_remove_table_sync_one().
-
-    This optimized can be implemented on top of this, by checking e.g., in
-    tlb_remove_table_sync_one() whether we really need IPIs. But as
-    described in (1), it really must honor tlb->freed_tables then to
-    send IPIs to all relevant CPUs.
-
-Notes on TLB flushing changes:
-
-(1) Flushing for non-shared PMD tables
-
-    We're converting from flush_hugetlb_tlb_range() to
-    tlb_remove_huge_tlb_entry(). Given that we properly initialize the
-    MMU gather in tlb_gather_mmu_vma() to be hugetlb aware, similar to
-    __unmap_hugepage_range(), that should be fine.
-
-(2) Flushing for shared PMD tables
-
-    We're converting from various things (flush_hugetlb_tlb_range(),
-    tlb_flush_pmd_range(), flush_tlb_range()) to tlb_flush_pmd_range().
-
-    tlb_flush_pmd_range() achieves the same that
-    tlb_remove_huge_tlb_entry() would achieve in these scenarios.
-    Note that tlb_remove_huge_tlb_entry() also calls
-    __tlb_remove_tlb_entry(), however that is only implemented on
-    powerpc, which does not support PMD table sharing.
-
-    Similar to (1), tlb_gather_mmu_vma() should make sure that TLB
-    flushing keeps on working as expected.
-
-Further, note that the ptdesc_pmd_pts_dec() in huge_pmd_share() is not a
-concern, as we are holding the i_mmap_lock the whole time, preventing
-concurrent unsharing. That ptdesc_pmd_pts_dec() usage will be removed
-separately as a cleanup later.
-
-There are plenty more cleanups to be had, but they have to wait until
-this is fixed.
-
-[david@kernel.org: fix kerneldoc]
-  Link: https://lkml.kernel.org/r/f223dd74-331c-412d-93fc-69e360a5006c@kernel.org
-Link: https://lkml.kernel.org/r/20251223214037.580860-5-david@kernel.org
-Fixes: 1013af4f585f ("mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race")
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reported-by: "Uschakow, Stanislav" <suschako@amazon.de>
-Closes: https://lore.kernel.org/all/4d3878531c76479d9f8ca9789dc6485d@amazon.de/
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Acked-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: stable@kernel.org
+Fixes: 7ee8bc3942f2 ("f2fs: revert summary entry count from 2048 to 512 in 16kb block support")
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/tlb.h |   77 ++++++++++++++++++++++++++++
- include/linux/hugetlb.h   |   15 +++--
- include/linux/mm_types.h  |    1 
- mm/hugetlb.c              |  123 ++++++++++++++++++++++++++--------------------
- mm/mmu_gather.c           |   33 ++++++++++++
- mm/rmap.c                 |   25 ++++++---
- 6 files changed, 208 insertions(+), 66 deletions(-)
+ fs/f2fs/f2fs.h          |   52 ++++++++++++++++++++---------
+ fs/f2fs/gc.c            |   23 ++++++------
+ fs/f2fs/node.c          |   12 +++---
+ fs/f2fs/recovery.c      |    6 +--
+ fs/f2fs/segment.c       |   86 +++++++++++++++++++++++++-----------------------
+ fs/f2fs/segment.h       |    9 ++---
+ fs/f2fs/super.c         |   26 ++++++--------
+ include/linux/f2fs_fs.h |   73 +++++++++++++++++++++++++---------------
+ 8 files changed, 165 insertions(+), 122 deletions(-)
 
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -46,7 +46,8 @@
-  *
-  * The mmu_gather API consists of:
-  *
-- *  - tlb_gather_mmu() / tlb_gather_mmu_fullmm() / tlb_finish_mmu()
-+ *  - tlb_gather_mmu() / tlb_gather_mmu_fullmm() / tlb_gather_mmu_vma() /
-+ *    tlb_finish_mmu()
-  *
-  *    start and finish a mmu_gather
-  *
-@@ -364,6 +365,20 @@ struct mmu_gather {
- 	unsigned int		vma_huge : 1;
- 	unsigned int		vma_pfn  : 1;
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -521,13 +521,25 @@ struct fsync_inode_entry {
+ #define nats_in_cursum(jnl)		(le16_to_cpu((jnl)->n_nats))
+ #define sits_in_cursum(jnl)		(le16_to_cpu((jnl)->n_sits))
  
-+	/*
-+	 * Did we unshare (unmap) any shared page tables? For now only
-+	 * used for hugetlb PMD table sharing.
-+	 */
-+	unsigned int		unshared_tables : 1;
+-#define nat_in_journal(jnl, i)		((jnl)->nat_j.entries[i].ne)
+-#define nid_in_journal(jnl, i)		((jnl)->nat_j.entries[i].nid)
+-#define sit_in_journal(jnl, i)		((jnl)->sit_j.entries[i].se)
+-#define segno_in_journal(jnl, i)	((jnl)->sit_j.entries[i].segno)
++#define nat_in_journal(jnl, i) \
++	(((struct nat_journal_entry *)(jnl)->nat_j.entries)[i].ne)
++#define nid_in_journal(jnl, i) \
++	(((struct nat_journal_entry *)(jnl)->nat_j.entries)[i].nid)
++#define sit_in_journal(jnl, i) \
++	(((struct sit_journal_entry *)(jnl)->sit_j.entries)[i].se)
++#define segno_in_journal(jnl, i) \
++	(((struct sit_journal_entry *)(jnl)->sit_j.entries)[i].segno)
 +
-+	/*
-+	 * Did we unshare any page tables such that they are now exclusive
-+	 * and could get reused+modified by the new owner? When setting this
-+	 * flag, "unshared_tables" will be set as well. For now only used
-+	 * for hugetlb PMD table sharing.
-+	 */
-+	unsigned int		fully_unshared_tables : 1;
-+
- 	unsigned int		batch_count;
++#define sum_entries(sum)	((struct f2fs_summary *)(sum))
++#define sum_journal(sbi, sum) \
++	((struct f2fs_journal *)((char *)(sum) + \
++	((sbi)->entries_in_sum * sizeof(struct f2fs_summary))))
++#define sum_footer(sbi, sum) \
++	((struct summary_footer *)((char *)(sum) + (sbi)->sum_blocksize - \
++	sizeof(struct summary_footer)))
  
- #ifndef CONFIG_MMU_GATHER_NO_GATHER
-@@ -400,6 +415,7 @@ static inline void __tlb_reset_range(str
- 	tlb->cleared_pmds = 0;
- 	tlb->cleared_puds = 0;
- 	tlb->cleared_p4ds = 0;
-+	tlb->unshared_tables = 0;
- 	/*
- 	 * Do not reset mmu_gather::vma_* fields here, we do not
- 	 * call into tlb_start_vma() again to set them if there is an
-@@ -484,7 +500,7 @@ static inline void tlb_flush_mmu_tlbonly
- 	 * these bits.
+-#define MAX_NAT_JENTRIES(jnl)	(NAT_JOURNAL_ENTRIES - nats_in_cursum(jnl))
+-#define MAX_SIT_JENTRIES(jnl)	(SIT_JOURNAL_ENTRIES - sits_in_cursum(jnl))
++#define MAX_NAT_JENTRIES(sbi, jnl)	((sbi)->nat_journal_entries - nats_in_cursum(jnl))
++#define MAX_SIT_JENTRIES(sbi, jnl)	((sbi)->sit_journal_entries - sits_in_cursum(jnl))
+ 
+ static inline int update_nats_in_cursum(struct f2fs_journal *journal, int i)
+ {
+@@ -545,14 +557,6 @@ static inline int update_sits_in_cursum(
+ 	return before;
+ }
+ 
+-static inline bool __has_cursum_space(struct f2fs_journal *journal,
+-							int size, int type)
+-{
+-	if (type == NAT_JOURNAL)
+-		return size <= MAX_NAT_JENTRIES(journal);
+-	return size <= MAX_SIT_JENTRIES(journal);
+-}
+-
+ /* for inline stuff */
+ #define DEF_INLINE_RESERVED_SIZE	1
+ static inline int get_extra_isize(struct inode *inode);
+@@ -1764,6 +1768,15 @@ struct f2fs_sb_info {
+ 	bool readdir_ra;			/* readahead inode in readdir */
+ 	u64 max_io_bytes;			/* max io bytes to merge IOs */
+ 
++	/* variable summary block units */
++	unsigned int sum_blocksize;		/* sum block size */
++	unsigned int sums_per_block;		/* sum block count per block */
++	unsigned int entries_in_sum;		/* entry count in sum block */
++	unsigned int sum_entry_size;		/* total entry size in sum block */
++	unsigned int sum_journal_size;		/* journal size in sum block */
++	unsigned int nat_journal_entries;	/* nat journal entry count in the journal */
++	unsigned int sit_journal_entries;	/* sit journal entry count in the journal */
++
+ 	block_t user_block_count;		/* # of user blocks */
+ 	block_t total_valid_block_count;	/* # of valid blocks */
+ 	block_t discard_blks;			/* discard command candidats */
+@@ -2813,6 +2826,14 @@ static inline block_t __start_sum_addr(s
+ 	return le32_to_cpu(F2FS_CKPT(sbi)->cp_pack_start_sum);
+ }
+ 
++static inline bool __has_cursum_space(struct f2fs_sb_info *sbi,
++			struct f2fs_journal *journal, int size, int type)
++{
++	if (type == NAT_JOURNAL)
++		return size <= MAX_NAT_JENTRIES(sbi, journal);
++	return size <= MAX_SIT_JENTRIES(sbi, journal);
++}
++
+ extern void f2fs_mark_inode_dirty_sync(struct inode *inode, bool sync);
+ static inline int inc_valid_node_count(struct f2fs_sb_info *sbi,
+ 					struct inode *inode, bool is_inode)
+@@ -3956,7 +3977,8 @@ void f2fs_wait_on_block_writeback_range(
+ 								block_t len);
+ void f2fs_write_data_summaries(struct f2fs_sb_info *sbi, block_t start_blk);
+ void f2fs_write_node_summaries(struct f2fs_sb_info *sbi, block_t start_blk);
+-int f2fs_lookup_journal_in_cursum(struct f2fs_journal *journal, int type,
++int f2fs_lookup_journal_in_cursum(struct f2fs_sb_info *sbi,
++			struct f2fs_journal *journal, int type,
+ 			unsigned int val, int alloc);
+ void f2fs_flush_sit_entries(struct f2fs_sb_info *sbi, struct cp_control *cpc);
+ int f2fs_check_and_fix_write_pointer(struct f2fs_sb_info *sbi);
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1769,8 +1769,8 @@ static int do_garbage_collect(struct f2f
+ 
+ 	sanity_check_seg_type(sbi, get_seg_entry(sbi, segno)->type);
+ 
+-	segno = rounddown(segno, SUMS_PER_BLOCK);
+-	sum_blk_cnt = DIV_ROUND_UP(end_segno - segno, SUMS_PER_BLOCK);
++	segno = rounddown(segno, sbi->sums_per_block);
++	sum_blk_cnt = DIV_ROUND_UP(end_segno - segno, sbi->sums_per_block);
+ 	/* readahead multi ssa blocks those have contiguous address */
+ 	if (__is_large_section(sbi))
+ 		f2fs_ra_meta_pages(sbi, GET_SUM_BLOCK(sbi, segno),
+@@ -1780,17 +1780,17 @@ static int do_garbage_collect(struct f2f
+ 	while (segno < end_segno) {
+ 		struct folio *sum_folio = f2fs_get_sum_folio(sbi, segno);
+ 
+-		segno += SUMS_PER_BLOCK;
++		segno += sbi->sums_per_block;
+ 		if (IS_ERR(sum_folio)) {
+ 			int err = PTR_ERR(sum_folio);
+ 
+-			end_segno = segno - SUMS_PER_BLOCK;
+-			segno = rounddown(start_segno, SUMS_PER_BLOCK);
++			end_segno = segno - sbi->sums_per_block;
++			segno = rounddown(start_segno, sbi->sums_per_block);
+ 			while (segno < end_segno) {
+ 				sum_folio = filemap_get_folio(META_MAPPING(sbi),
+ 						GET_SUM_BLOCK(sbi, segno));
+ 				folio_put_refs(sum_folio, 2);
+-				segno += SUMS_PER_BLOCK;
++				segno += sbi->sums_per_block;
+ 			}
+ 			return err;
+ 		}
+@@ -1806,8 +1806,8 @@ static int do_garbage_collect(struct f2f
+ 		/* find segment summary of victim */
+ 		struct folio *sum_folio = filemap_get_folio(META_MAPPING(sbi),
+ 					GET_SUM_BLOCK(sbi, segno));
+-		unsigned int block_end_segno = rounddown(segno, SUMS_PER_BLOCK)
+-					+ SUMS_PER_BLOCK;
++		unsigned int block_end_segno = rounddown(segno, sbi->sums_per_block)
++					+ sbi->sums_per_block;
+ 
+ 		if (block_end_segno > end_segno)
+ 			block_end_segno = end_segno;
+@@ -1833,12 +1833,13 @@ static int do_garbage_collect(struct f2f
+ 					migrated >= sbi->migration_granularity)
+ 				continue;
+ 
+-			sum = SUM_BLK_PAGE_ADDR(sum_folio, cur_segno);
+-			if (type != GET_SUM_TYPE((&sum->footer))) {
++			sum = SUM_BLK_PAGE_ADDR(sbi, sum_folio, cur_segno);
++			if (type != GET_SUM_TYPE(sum_footer(sbi, sum))) {
+ 				f2fs_err(sbi, "Inconsistent segment (%u) type "
+ 						"[%d, %d] in SSA and SIT",
+ 						cur_segno, type,
+-						GET_SUM_TYPE((&sum->footer)));
++						GET_SUM_TYPE(
++						sum_footer(sbi, sum)));
+ 				f2fs_stop_checkpoint(sbi, false,
+ 						STOP_CP_REASON_CORRUPTED_SUMMARY);
+ 				continue;
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -606,7 +606,7 @@ retry:
+ 		goto retry;
+ 	}
+ 
+-	i = f2fs_lookup_journal_in_cursum(journal, NAT_JOURNAL, nid, 0);
++	i = f2fs_lookup_journal_in_cursum(sbi, journal, NAT_JOURNAL, nid, 0);
+ 	if (i >= 0) {
+ 		ne = nat_in_journal(journal, i);
+ 		node_info_from_raw_nat(ni, &ne);
+@@ -2943,7 +2943,7 @@ int f2fs_restore_node_summary(struct f2f
+ 	/* scan the node segment */
+ 	last_offset = BLKS_PER_SEG(sbi);
+ 	addr = START_BLOCK(sbi, segno);
+-	sum_entry = &sum->entries[0];
++	sum_entry = sum_entries(sum);
+ 
+ 	for (i = 0; i < last_offset; i += nrpages, addr += nrpages) {
+ 		nrpages = bio_max_segs(last_offset - i);
+@@ -3084,7 +3084,7 @@ static int __flush_nat_entry_set(struct
+ 	 * #2, flush nat entries to nat page.
  	 */
- 	if (!(tlb->freed_tables || tlb->cleared_ptes || tlb->cleared_pmds ||
--	      tlb->cleared_puds || tlb->cleared_p4ds))
-+	      tlb->cleared_puds || tlb->cleared_p4ds || tlb->unshared_tables))
+ 	if (enabled_nat_bits(sbi, cpc) ||
+-		!__has_cursum_space(journal, set->entry_cnt, NAT_JOURNAL))
++		!__has_cursum_space(sbi, journal, set->entry_cnt, NAT_JOURNAL))
+ 		to_journal = false;
+ 
+ 	if (to_journal) {
+@@ -3107,7 +3107,7 @@ static int __flush_nat_entry_set(struct
+ 		f2fs_bug_on(sbi, nat_get_blkaddr(ne) == NEW_ADDR);
+ 
+ 		if (to_journal) {
+-			offset = f2fs_lookup_journal_in_cursum(journal,
++			offset = f2fs_lookup_journal_in_cursum(sbi, journal,
+ 							NAT_JOURNAL, nid, 1);
+ 			f2fs_bug_on(sbi, offset < 0);
+ 			raw_ne = &nat_in_journal(journal, offset);
+@@ -3178,7 +3178,7 @@ int f2fs_flush_nat_entries(struct f2fs_s
+ 	 * into nat entry set.
+ 	 */
+ 	if (enabled_nat_bits(sbi, cpc) ||
+-		!__has_cursum_space(journal,
++		!__has_cursum_space(sbi, journal,
+ 			nm_i->nat_cnt[DIRTY_NAT], NAT_JOURNAL))
+ 		remove_nats_in_journal(sbi);
+ 
+@@ -3189,7 +3189,7 @@ int f2fs_flush_nat_entries(struct f2fs_s
+ 		set_idx = setvec[found - 1]->set + 1;
+ 		for (idx = 0; idx < found; idx++)
+ 			__adjust_nat_entry_set(setvec[idx], &sets,
+-						MAX_NAT_JENTRIES(journal));
++					MAX_NAT_JENTRIES(sbi, journal));
+ 	}
+ 
+ 	/* flush dirty nats in nat entry set */
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -514,7 +514,7 @@ static int check_index_in_prev_nodes(str
+ 		struct curseg_info *curseg = CURSEG_I(sbi, i);
+ 
+ 		if (curseg->segno == segno) {
+-			sum = curseg->sum_blk->entries[blkoff];
++			sum = sum_entries(curseg->sum_blk)[blkoff];
+ 			goto got_it;
+ 		}
+ 	}
+@@ -522,8 +522,8 @@ static int check_index_in_prev_nodes(str
+ 	sum_folio = f2fs_get_sum_folio(sbi, segno);
+ 	if (IS_ERR(sum_folio))
+ 		return PTR_ERR(sum_folio);
+-	sum_node = SUM_BLK_PAGE_ADDR(sum_folio, segno);
+-	sum = sum_node->entries[blkoff];
++	sum_node = SUM_BLK_PAGE_ADDR(sbi, sum_folio, segno);
++	sum = sum_entries(sum_node)[blkoff];
+ 	f2fs_folio_put(sum_folio, true);
+ got_it:
+ 	/* Use the locked dnode page and inode */
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2685,12 +2685,12 @@ int f2fs_npages_for_summary_flush(struct
+ 			valid_sum_count += f2fs_curseg_valid_blocks(sbi, i);
+ 	}
+ 
+-	sum_in_page = (PAGE_SIZE - 2 * SUM_JOURNAL_SIZE -
++	sum_in_page = (sbi->sum_blocksize - 2 * sbi->sum_journal_size -
+ 			SUM_FOOTER_SIZE) / SUMMARY_SIZE;
+ 	if (valid_sum_count <= sum_in_page)
+ 		return 1;
+ 	else if ((valid_sum_count - sum_in_page) <=
+-		(PAGE_SIZE - SUM_FOOTER_SIZE) / SUMMARY_SIZE)
++		(sbi->sum_blocksize - SUM_FOOTER_SIZE) / SUMMARY_SIZE)
+ 		return 2;
+ 	return 3;
+ }
+@@ -2710,7 +2710,7 @@ void f2fs_update_meta_page(struct f2fs_s
+ {
+ 	struct folio *folio;
+ 
+-	if (SUMS_PER_BLOCK == 1)
++	if (!f2fs_sb_has_packed_ssa(sbi))
+ 		folio = f2fs_grab_meta_folio(sbi, blk_addr);
+ 	else
+ 		folio = f2fs_get_meta_folio_retry(sbi, blk_addr);
+@@ -2728,7 +2728,7 @@ static void write_sum_page(struct f2fs_s
+ {
+ 	struct folio *folio;
+ 
+-	if (SUMS_PER_BLOCK == 1)
++	if (!f2fs_sb_has_packed_ssa(sbi))
+ 		return f2fs_update_meta_page(sbi, (void *)sum_blk,
+ 				GET_SUM_BLOCK(sbi, segno));
+ 
+@@ -2736,7 +2736,8 @@ static void write_sum_page(struct f2fs_s
+ 	if (IS_ERR(folio))
  		return;
  
- 	tlb_flush(tlb);
-@@ -773,6 +789,63 @@ static inline bool huge_pmd_needs_flush(
+-	memcpy(SUM_BLK_PAGE_ADDR(folio, segno), sum_blk, sizeof(*sum_blk));
++	memcpy(SUM_BLK_PAGE_ADDR(sbi, folio, segno), sum_blk,
++			sbi->sum_blocksize);
+ 	folio_mark_dirty(folio);
+ 	f2fs_folio_put(folio, true);
  }
- #endif
+@@ -2755,11 +2756,11 @@ static void write_current_sum_page(struc
+ 	mutex_lock(&curseg->curseg_mutex);
  
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+static inline void tlb_unshare_pmd_ptdesc(struct mmu_gather *tlb, struct ptdesc *pt,
-+					  unsigned long addr)
-+{
-+	/*
-+	 * The caller must make sure that concurrent unsharing + exclusive
-+	 * reuse is impossible until tlb_flush_unshared_tables() was called.
-+	 */
-+	VM_WARN_ON_ONCE(!ptdesc_pmd_is_shared(pt));
-+	ptdesc_pmd_pts_dec(pt);
-+
-+	/* Clearing a PUD pointing at a PMD table with PMD leaves. */
-+	tlb_flush_pmd_range(tlb, addr & PUD_MASK, PUD_SIZE);
-+
-+	/*
-+	 * If the page table is now exclusively owned, we fully unshared
-+	 * a page table.
-+	 */
-+	if (!ptdesc_pmd_is_shared(pt))
-+		tlb->fully_unshared_tables = true;
-+	tlb->unshared_tables = true;
-+}
-+
-+static inline void tlb_flush_unshared_tables(struct mmu_gather *tlb)
-+{
-+	/*
-+	 * As soon as the caller drops locks to allow for reuse of
-+	 * previously-shared tables, these tables could get modified and
-+	 * even reused outside of hugetlb context, so we have to make sure that
-+	 * any page table walkers (incl. TLB, GUP-fast) are aware of that
-+	 * change.
-+	 *
-+	 * Even if we are not fully unsharing a PMD table, we must
-+	 * flush the TLB for the unsharer now.
-+	 */
-+	if (tlb->unshared_tables)
-+		tlb_flush_mmu_tlbonly(tlb);
-+
-+	/*
-+	 * Similarly, we must make sure that concurrent GUP-fast will not
-+	 * walk previously-shared page tables that are getting modified+reused
-+	 * elsewhere. So broadcast an IPI to wait for any concurrent GUP-fast.
-+	 *
-+	 * We only perform this when we are the last sharer of a page table,
-+	 * as the IPI will reach all CPUs: any GUP-fast.
-+	 *
-+	 * Note that on configs where tlb_remove_table_sync_one() is a NOP,
-+	 * the expectation is that the tlb_flush_mmu_tlbonly() would have issued
-+	 * required IPIs already for us.
-+	 */
-+	if (tlb->fully_unshared_tables) {
-+		tlb_remove_table_sync_one();
-+		tlb->fully_unshared_tables = false;
-+	}
-+}
-+#endif /* CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING */
-+
- #endif /* CONFIG_MMU */
+ 	down_read(&curseg->journal_rwsem);
+-	memcpy(&dst->journal, curseg->journal, SUM_JOURNAL_SIZE);
++	memcpy(sum_journal(sbi, dst), curseg->journal, sbi->sum_journal_size);
+ 	up_read(&curseg->journal_rwsem);
  
- #endif /* _ASM_GENERIC__TLB_H */
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -241,8 +241,9 @@ pte_t *huge_pte_alloc(struct mm_struct *
- pte_t *huge_pte_offset(struct mm_struct *mm,
- 		       unsigned long addr, unsigned long sz);
- unsigned long hugetlb_mask_last_page(struct hstate *h);
--int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
--				unsigned long addr, pte_t *ptep);
-+int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+		unsigned long addr, pte_t *ptep);
-+void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma);
- void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
- 				unsigned long *start, unsigned long *end);
+-	memcpy(dst->entries, src->entries, SUM_ENTRY_SIZE);
+-	memcpy(&dst->footer, &src->footer, SUM_FOOTER_SIZE);
++	memcpy(sum_entries(dst), sum_entries(src), sbi->sum_entry_size);
++	memcpy(sum_footer(sbi, dst), sum_footer(sbi, src), SUM_FOOTER_SIZE);
  
-@@ -302,13 +303,17 @@ static inline struct address_space *huge
- 	return NULL;
+ 	mutex_unlock(&curseg->curseg_mutex);
+ 
+@@ -2932,7 +2933,7 @@ static void reset_curseg(struct f2fs_sb_
+ 	curseg->next_blkoff = 0;
+ 	curseg->next_segno = NULL_SEGNO;
+ 
+-	sum_footer = &(curseg->sum_blk->footer);
++	sum_footer = sum_footer(sbi, curseg->sum_blk);
+ 	memset(sum_footer, 0, sizeof(struct summary_footer));
+ 
+ 	sanity_check_seg_type(sbi, seg_type);
+@@ -3078,11 +3079,11 @@ static int change_curseg(struct f2fs_sb_
+ 	sum_folio = f2fs_get_sum_folio(sbi, new_segno);
+ 	if (IS_ERR(sum_folio)) {
+ 		/* GC won't be able to use stale summary pages by cp_error */
+-		memset(curseg->sum_blk, 0, SUM_ENTRY_SIZE);
++		memset(curseg->sum_blk, 0, sbi->sum_entry_size);
+ 		return PTR_ERR(sum_folio);
+ 	}
+-	sum_node = SUM_BLK_PAGE_ADDR(sum_folio, new_segno);
+-	memcpy(curseg->sum_blk, sum_node, SUM_ENTRY_SIZE);
++	sum_node = SUM_BLK_PAGE_ADDR(sbi, sum_folio, new_segno);
++	memcpy(curseg->sum_blk, sum_node, sbi->sum_entry_size);
+ 	f2fs_folio_put(sum_folio, true);
+ 	return 0;
+ }
+@@ -3814,7 +3815,7 @@ int f2fs_allocate_data_block(struct f2fs
+ 
+ 	f2fs_wait_discard_bio(sbi, *new_blkaddr);
+ 
+-	curseg->sum_blk->entries[curseg->next_blkoff] = *sum;
++	sum_entries(curseg->sum_blk)[curseg->next_blkoff] = *sum;
+ 	if (curseg->alloc_type == SSR) {
+ 		curseg->next_blkoff = f2fs_find_next_ssr_block(sbi, curseg);
+ 	} else {
+@@ -4183,7 +4184,7 @@ void f2fs_do_replace_block(struct f2fs_s
+ 	}
+ 
+ 	curseg->next_blkoff = GET_BLKOFF_FROM_SEG0(sbi, new_blkaddr);
+-	curseg->sum_blk->entries[curseg->next_blkoff] = *sum;
++	sum_entries(curseg->sum_blk)[curseg->next_blkoff] = *sum;
+ 
+ 	if (!recover_curseg || recover_newaddr) {
+ 		if (!from_gc)
+@@ -4303,12 +4304,12 @@ static int read_compacted_summaries(stru
+ 
+ 	/* Step 1: restore nat cache */
+ 	seg_i = CURSEG_I(sbi, CURSEG_HOT_DATA);
+-	memcpy(seg_i->journal, kaddr, SUM_JOURNAL_SIZE);
++	memcpy(seg_i->journal, kaddr, sbi->sum_journal_size);
+ 
+ 	/* Step 2: restore sit cache */
+ 	seg_i = CURSEG_I(sbi, CURSEG_COLD_DATA);
+-	memcpy(seg_i->journal, kaddr + SUM_JOURNAL_SIZE, SUM_JOURNAL_SIZE);
+-	offset = 2 * SUM_JOURNAL_SIZE;
++	memcpy(seg_i->journal, kaddr + sbi->sum_journal_size, sbi->sum_journal_size);
++	offset = 2 * sbi->sum_journal_size;
+ 
+ 	/* Step 3: restore summary entries */
+ 	for (i = CURSEG_HOT_DATA; i <= CURSEG_COLD_DATA; i++) {
+@@ -4330,9 +4331,9 @@ static int read_compacted_summaries(stru
+ 			struct f2fs_summary *s;
+ 
+ 			s = (struct f2fs_summary *)(kaddr + offset);
+-			seg_i->sum_blk->entries[j] = *s;
++			sum_entries(seg_i->sum_blk)[j] = *s;
+ 			offset += SUMMARY_SIZE;
+-			if (offset + SUMMARY_SIZE <= PAGE_SIZE -
++			if (offset + SUMMARY_SIZE <= sbi->sum_blocksize -
+ 						SUM_FOOTER_SIZE)
+ 				continue;
+ 
+@@ -4388,7 +4389,7 @@ static int read_normal_summaries(struct
+ 
+ 	if (IS_NODESEG(type)) {
+ 		if (__exist_node_summaries(sbi)) {
+-			struct f2fs_summary *ns = &sum->entries[0];
++			struct f2fs_summary *ns = sum_entries(sum);
+ 			int i;
+ 
+ 			for (i = 0; i < BLKS_PER_SEG(sbi); i++, ns++) {
+@@ -4408,11 +4409,13 @@ static int read_normal_summaries(struct
+ 
+ 	/* update journal info */
+ 	down_write(&curseg->journal_rwsem);
+-	memcpy(curseg->journal, &sum->journal, SUM_JOURNAL_SIZE);
++	memcpy(curseg->journal, sum_journal(sbi, sum), sbi->sum_journal_size);
+ 	up_write(&curseg->journal_rwsem);
+ 
+-	memcpy(curseg->sum_blk->entries, sum->entries, SUM_ENTRY_SIZE);
+-	memcpy(&curseg->sum_blk->footer, &sum->footer, SUM_FOOTER_SIZE);
++	memcpy(sum_entries(curseg->sum_blk), sum_entries(sum),
++			sbi->sum_entry_size);
++	memcpy(sum_footer(sbi, curseg->sum_blk), sum_footer(sbi, sum),
++			SUM_FOOTER_SIZE);
+ 	curseg->next_segno = segno;
+ 	reset_curseg(sbi, type, 0);
+ 	curseg->alloc_type = ckpt->alloc_type[type];
+@@ -4456,8 +4459,8 @@ static int restore_curseg_summaries(stru
+ 	}
+ 
+ 	/* sanity check for summary blocks */
+-	if (nats_in_cursum(nat_j) > NAT_JOURNAL_ENTRIES ||
+-			sits_in_cursum(sit_j) > SIT_JOURNAL_ENTRIES) {
++	if (nats_in_cursum(nat_j) > sbi->nat_journal_entries ||
++			sits_in_cursum(sit_j) > sbi->sit_journal_entries) {
+ 		f2fs_err(sbi, "invalid journal entries nats %u sits %u",
+ 			 nats_in_cursum(nat_j), sits_in_cursum(sit_j));
+ 		return -EINVAL;
+@@ -4481,13 +4484,13 @@ static void write_compacted_summaries(st
+ 
+ 	/* Step 1: write nat cache */
+ 	seg_i = CURSEG_I(sbi, CURSEG_HOT_DATA);
+-	memcpy(kaddr, seg_i->journal, SUM_JOURNAL_SIZE);
+-	written_size += SUM_JOURNAL_SIZE;
++	memcpy(kaddr, seg_i->journal, sbi->sum_journal_size);
++	written_size += sbi->sum_journal_size;
+ 
+ 	/* Step 2: write sit cache */
+ 	seg_i = CURSEG_I(sbi, CURSEG_COLD_DATA);
+-	memcpy(kaddr + written_size, seg_i->journal, SUM_JOURNAL_SIZE);
+-	written_size += SUM_JOURNAL_SIZE;
++	memcpy(kaddr + written_size, seg_i->journal, sbi->sum_journal_size);
++	written_size += sbi->sum_journal_size;
+ 
+ 	/* Step 3: write summary entries */
+ 	for (i = CURSEG_HOT_DATA; i <= CURSEG_COLD_DATA; i++) {
+@@ -4500,7 +4503,7 @@ static void write_compacted_summaries(st
+ 				written_size = 0;
+ 			}
+ 			summary = (struct f2fs_summary *)(kaddr + written_size);
+-			*summary = seg_i->sum_blk->entries[j];
++			*summary = sum_entries(seg_i->sum_blk)[j];
+ 			written_size += SUMMARY_SIZE;
+ 
+ 			if (written_size + SUMMARY_SIZE <= PAGE_SIZE -
+@@ -4545,8 +4548,9 @@ void f2fs_write_node_summaries(struct f2
+ 	write_normal_summaries(sbi, start_blk, CURSEG_HOT_NODE);
  }
  
--static inline int huge_pmd_unshare(struct mm_struct *mm,
--					struct vm_area_struct *vma,
--					unsigned long addr, pte_t *ptep)
-+static inline int huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
+-int f2fs_lookup_journal_in_cursum(struct f2fs_journal *journal, int type,
+-					unsigned int val, int alloc)
++int f2fs_lookup_journal_in_cursum(struct f2fs_sb_info *sbi,
++			struct f2fs_journal *journal, int type,
++			unsigned int val, int alloc)
  {
+ 	int i;
+ 
+@@ -4555,13 +4559,13 @@ int f2fs_lookup_journal_in_cursum(struct
+ 			if (le32_to_cpu(nid_in_journal(journal, i)) == val)
+ 				return i;
+ 		}
+-		if (alloc && __has_cursum_space(journal, 1, NAT_JOURNAL))
++		if (alloc && __has_cursum_space(sbi, journal, 1, NAT_JOURNAL))
+ 			return update_nats_in_cursum(journal, 1);
+ 	} else if (type == SIT_JOURNAL) {
+ 		for (i = 0; i < sits_in_cursum(journal); i++)
+ 			if (le32_to_cpu(segno_in_journal(journal, i)) == val)
+ 				return i;
+-		if (alloc && __has_cursum_space(journal, 1, SIT_JOURNAL))
++		if (alloc && __has_cursum_space(sbi, journal, 1, SIT_JOURNAL))
+ 			return update_sits_in_cursum(journal, 1);
+ 	}
+ 	return -1;
+@@ -4709,8 +4713,8 @@ void f2fs_flush_sit_entries(struct f2fs_
+ 	 * entries, remove all entries from journal and add and account
+ 	 * them in sit entry set.
+ 	 */
+-	if (!__has_cursum_space(journal, sit_i->dirty_sentries, SIT_JOURNAL) ||
+-								!to_journal)
++	if (!__has_cursum_space(sbi, journal,
++			sit_i->dirty_sentries, SIT_JOURNAL) || !to_journal)
+ 		remove_sits_in_journal(sbi);
+ 
+ 	/*
+@@ -4727,7 +4731,8 @@ void f2fs_flush_sit_entries(struct f2fs_
+ 		unsigned int segno = start_segno;
+ 
+ 		if (to_journal &&
+-			!__has_cursum_space(journal, ses->entry_cnt, SIT_JOURNAL))
++			!__has_cursum_space(sbi, journal, ses->entry_cnt,
++				SIT_JOURNAL))
+ 			to_journal = false;
+ 
+ 		if (to_journal) {
+@@ -4755,7 +4760,7 @@ void f2fs_flush_sit_entries(struct f2fs_
+ 			}
+ 
+ 			if (to_journal) {
+-				offset = f2fs_lookup_journal_in_cursum(journal,
++				offset = f2fs_lookup_journal_in_cursum(sbi, journal,
+ 							SIT_JOURNAL, segno, 1);
+ 				f2fs_bug_on(sbi, offset < 0);
+ 				segno_in_journal(journal, offset) =
+@@ -4962,12 +4967,13 @@ static int build_curseg(struct f2fs_sb_i
+ 
+ 	for (i = 0; i < NO_CHECK_TYPE; i++) {
+ 		mutex_init(&array[i].curseg_mutex);
+-		array[i].sum_blk = f2fs_kzalloc(sbi, PAGE_SIZE, GFP_KERNEL);
++		array[i].sum_blk = f2fs_kzalloc(sbi, sbi->sum_blocksize,
++				GFP_KERNEL);
+ 		if (!array[i].sum_blk)
+ 			return -ENOMEM;
+ 		init_rwsem(&array[i].journal_rwsem);
+ 		array[i].journal = f2fs_kzalloc(sbi,
+-				sizeof(struct f2fs_journal), GFP_KERNEL);
++				sbi->sum_journal_size, GFP_KERNEL);
+ 		if (!array[i].journal)
+ 			return -ENOMEM;
+ 		array[i].seg_type = log_type_to_seg_type(i);
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -90,12 +90,11 @@ static inline void sanity_check_seg_type
+ #define GET_ZONE_FROM_SEG(sbi, segno)				\
+ 	GET_ZONE_FROM_SEC(sbi, GET_SEC_FROM_SEG(sbi, segno))
+ 
+-#define SUMS_PER_BLOCK (F2FS_BLKSIZE / F2FS_SUM_BLKSIZE)
+ #define GET_SUM_BLOCK(sbi, segno)	\
+-	(SM_I(sbi)->ssa_blkaddr + (segno / SUMS_PER_BLOCK))
+-#define GET_SUM_BLKOFF(segno) (segno % SUMS_PER_BLOCK)
+-#define SUM_BLK_PAGE_ADDR(folio, segno)	\
+-	(folio_address(folio) + GET_SUM_BLKOFF(segno) * F2FS_SUM_BLKSIZE)
++	(SM_I(sbi)->ssa_blkaddr + (segno / (sbi)->sums_per_block))
++#define GET_SUM_BLKOFF(sbi, segno) (segno % (sbi)->sums_per_block)
++#define SUM_BLK_PAGE_ADDR(sbi, folio, segno)	\
++	(folio_address(folio) + GET_SUM_BLKOFF(sbi, segno) * (sbi)->sum_blocksize)
+ 
+ #define GET_SUM_TYPE(footer) ((footer)->entry_type)
+ #define SET_SUM_TYPE(footer, type) ((footer)->entry_type = (type))
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4080,20 +4080,6 @@ static int sanity_check_raw_super(struct
+ 	if (sanity_check_area_boundary(sbi, folio, index))
+ 		return -EFSCORRUPTED;
+ 
+-	/*
+-	 * Check for legacy summary layout on 16KB+ block devices.
+-	 * Modern f2fs-tools packs multiple 4KB summary areas into one block,
+-	 * whereas legacy versions used one block per summary, leading
+-	 * to a much larger SSA.
+-	 */
+-	if (SUMS_PER_BLOCK > 1 &&
+-		    !(__F2FS_HAS_FEATURE(raw_super, F2FS_FEATURE_PACKED_SSA))) {
+-		f2fs_info(sbi, "Error: Device formatted with a legacy version. "
+-			"Please reformat with a tool supporting the packed ssa "
+-			"feature for block sizes larger than 4kb.");
+-		return -EOPNOTSUPP;
+-	}
+-
  	return 0;
  }
  
-+static inline void huge_pmd_unshare_flush(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma)
-+{
-+}
+@@ -4304,6 +4290,18 @@ static void init_sb_info(struct f2fs_sb_
+ 	spin_lock_init(&sbi->gc_remaining_trials_lock);
+ 	atomic64_set(&sbi->current_atomic_write, 0);
+ 
++	sbi->sum_blocksize = f2fs_sb_has_packed_ssa(sbi) ?
++		4096 : sbi->blocksize;
++	sbi->sums_per_block = sbi->blocksize / sbi->sum_blocksize;
++	sbi->entries_in_sum = sbi->sum_blocksize / 8;
++	sbi->sum_entry_size = SUMMARY_SIZE * sbi->entries_in_sum;
++	sbi->sum_journal_size = sbi->sum_blocksize - SUM_FOOTER_SIZE -
++		sbi->sum_entry_size;
++	sbi->nat_journal_entries = (sbi->sum_journal_size - 2) /
++		sizeof(struct nat_journal_entry);
++	sbi->sit_journal_entries = (sbi->sum_journal_size - 2) /
++		sizeof(struct sit_journal_entry);
 +
- static inline void adjust_range_if_pmd_sharing_possible(
- 				struct vm_area_struct *vma,
- 				unsigned long *start, unsigned long *end)
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1490,6 +1490,7 @@ static inline void mm_set_cpus_allowed(s
- struct mmu_gather;
- extern void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm);
- extern void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm);
-+void tlb_gather_mmu_vma(struct mmu_gather *tlb, struct vm_area_struct *vma);
- extern void tlb_finish_mmu(struct mmu_gather *tlb);
+ 	sbi->dir_level = DEF_DIR_LEVEL;
+ 	sbi->interval_time[CP_TIME] = DEF_CP_INTERVAL;
+ 	sbi->interval_time[REQ_TIME] = DEF_IDLE_INTERVAL;
+--- a/include/linux/f2fs_fs.h
++++ b/include/linux/f2fs_fs.h
+@@ -17,7 +17,6 @@
+ #define F2FS_LOG_SECTORS_PER_BLOCK	(PAGE_SHIFT - 9) /* log number for sector/blk */
+ #define F2FS_BLKSIZE			PAGE_SIZE /* support only block == page */
+ #define F2FS_BLKSIZE_BITS		PAGE_SHIFT /* bits for F2FS_BLKSIZE */
+-#define F2FS_SUM_BLKSIZE		4096	/* only support 4096 byte sum block */
+ #define F2FS_MAX_EXTENSION		64	/* # of extension entries */
+ #define F2FS_EXTENSION_LEN		8	/* max size of extension */
  
- struct vm_fault;
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5797,7 +5797,7 @@ int move_hugetlb_page_tables(struct vm_a
- 	unsigned long last_addr_mask;
- 	pte_t *src_pte, *dst_pte;
- 	struct mmu_notifier_range range;
--	bool shared_pmd = false;
-+	struct mmu_gather tlb;
- 
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, old_addr,
- 				old_end);
-@@ -5807,6 +5807,7 @@ int move_hugetlb_page_tables(struct vm_a
- 	 * range.
- 	 */
- 	flush_cache_range(vma, range.start, range.end);
-+	tlb_gather_mmu_vma(&tlb, vma);
- 
- 	mmu_notifier_invalidate_range_start(&range);
- 	last_addr_mask = hugetlb_mask_last_page(h);
-@@ -5823,8 +5824,7 @@ int move_hugetlb_page_tables(struct vm_a
- 		if (huge_pte_none(huge_ptep_get(mm, old_addr, src_pte)))
- 			continue;
- 
--		if (huge_pmd_unshare(mm, vma, old_addr, src_pte)) {
--			shared_pmd = true;
-+		if (huge_pmd_unshare(&tlb, vma, old_addr, src_pte)) {
- 			old_addr |= last_addr_mask;
- 			new_addr |= last_addr_mask;
- 			continue;
-@@ -5835,15 +5835,16 @@ int move_hugetlb_page_tables(struct vm_a
- 			break;
- 
- 		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
-+		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
- 	}
- 
--	if (shared_pmd)
--		flush_hugetlb_tlb_range(vma, range.start, range.end);
--	else
--		flush_hugetlb_tlb_range(vma, old_end - len, old_end);
-+	tlb_flush_mmu_tlbonly(&tlb);
-+	huge_pmd_unshare_flush(&tlb, vma);
-+
- 	mmu_notifier_invalidate_range_end(&range);
- 	i_mmap_unlock_write(mapping);
- 	hugetlb_vma_unlock_write(vma);
-+	tlb_finish_mmu(&tlb);
- 
- 	return len + old_addr - old_end;
- }
-@@ -5862,7 +5863,6 @@ void __unmap_hugepage_range(struct mmu_g
- 	unsigned long sz = huge_page_size(h);
- 	bool adjust_reservation;
- 	unsigned long last_addr_mask;
--	bool force_flush = false;
- 
- 	WARN_ON(!is_vm_hugetlb_page(vma));
- 	BUG_ON(start & ~huge_page_mask(h));
-@@ -5885,10 +5885,8 @@ void __unmap_hugepage_range(struct mmu_g
- 		}
- 
- 		ptl = huge_pte_lock(h, mm, ptep);
--		if (huge_pmd_unshare(mm, vma, address, ptep)) {
-+		if (huge_pmd_unshare(tlb, vma, address, ptep)) {
- 			spin_unlock(ptl);
--			tlb_flush_pmd_range(tlb, address & PUD_MASK, PUD_SIZE);
--			force_flush = true;
- 			address |= last_addr_mask;
- 			continue;
- 		}
-@@ -6004,14 +6002,7 @@ void __unmap_hugepage_range(struct mmu_g
- 	}
- 	tlb_end_vma(tlb, vma);
- 
--	/*
--	 * There is nothing protecting a previously-shared page table that we
--	 * unshared through huge_pmd_unshare() from getting freed after we
--	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
--	 * succeeded, flush the range corresponding to the pud.
--	 */
--	if (force_flush)
--		tlb_flush_mmu_tlbonly(tlb);
-+	huge_pmd_unshare_flush(tlb, vma);
- }
- 
- void __hugetlb_zap_begin(struct vm_area_struct *vma,
-@@ -7104,11 +7095,11 @@ long hugetlb_change_protection(struct vm
- 	pte_t pte;
- 	struct hstate *h = hstate_vma(vma);
- 	long pages = 0, psize = huge_page_size(h);
--	bool shared_pmd = false;
- 	struct mmu_notifier_range range;
- 	unsigned long last_addr_mask;
- 	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
- 	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
-+	struct mmu_gather tlb;
- 
- 	/*
- 	 * In the case of shared PMDs, the area to flush could be beyond
-@@ -7121,6 +7112,7 @@ long hugetlb_change_protection(struct vm
- 
- 	BUG_ON(address >= end);
- 	flush_cache_range(vma, range.start, range.end);
-+	tlb_gather_mmu_vma(&tlb, vma);
- 
- 	mmu_notifier_invalidate_range_start(&range);
- 	hugetlb_vma_lock_write(vma);
-@@ -7145,7 +7137,7 @@ long hugetlb_change_protection(struct vm
- 			}
- 		}
- 		ptl = huge_pte_lock(h, mm, ptep);
--		if (huge_pmd_unshare(mm, vma, address, ptep)) {
-+		if (huge_pmd_unshare(&tlb, vma, address, ptep)) {
- 			/*
- 			 * When uffd-wp is enabled on the vma, unshare
- 			 * shouldn't happen at all.  Warn about it if it
-@@ -7154,7 +7146,6 @@ long hugetlb_change_protection(struct vm
- 			WARN_ON_ONCE(uffd_wp || uffd_wp_resolve);
- 			pages++;
- 			spin_unlock(ptl);
--			shared_pmd = true;
- 			address |= last_addr_mask;
- 			continue;
- 		}
-@@ -7206,6 +7197,7 @@ long hugetlb_change_protection(struct vm
- 				pte = huge_pte_clear_uffd_wp(pte);
- 			huge_ptep_modify_prot_commit(vma, address, ptep, old_pte, pte);
- 			pages++;
-+			tlb_remove_huge_tlb_entry(h, &tlb, ptep, address);
- 		} else {
- 			/* None pte */
- 			if (unlikely(uffd_wp))
-@@ -7218,16 +7210,9 @@ long hugetlb_change_protection(struct vm
- 
- 		cond_resched();
- 	}
--	/*
--	 * There is nothing protecting a previously-shared page table that we
--	 * unshared through huge_pmd_unshare() from getting freed after we
--	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
--	 * succeeded, flush the range corresponding to the pud.
--	 */
--	if (shared_pmd)
--		flush_hugetlb_tlb_range(vma, range.start, range.end);
--	else
--		flush_hugetlb_tlb_range(vma, start, end);
-+
-+	tlb_flush_mmu_tlbonly(&tlb);
-+	huge_pmd_unshare_flush(&tlb, vma);
- 	/*
- 	 * No need to call mmu_notifier_arch_invalidate_secondary_tlbs() we are
- 	 * downgrading page table protection not changing it to point to a new
-@@ -7238,6 +7223,7 @@ long hugetlb_change_protection(struct vm
- 	i_mmap_unlock_write(vma->vm_file->f_mapping);
- 	hugetlb_vma_unlock_write(vma);
- 	mmu_notifier_invalidate_range_end(&range);
-+	tlb_finish_mmu(&tlb);
- 
- 	return pages > 0 ? (pages << h->order) : pages;
- }
-@@ -7590,18 +7576,27 @@ out:
- 	return pte;
- }
- 
--/*
-- * unmap huge page backed by shared pte.
-+/**
-+ * huge_pmd_unshare - Unmap a pmd table if it is shared by multiple users
-+ * @tlb: the current mmu_gather.
-+ * @vma: the vma covering the pmd table.
-+ * @addr: the address we are trying to unshare.
-+ * @ptep: pointer into the (pmd) page table.
-+ *
-+ * Called with the page table lock held, the i_mmap_rwsem held in write mode
-+ * and the hugetlb vma lock held in write mode.
-  *
-- * Called with page table lock held.
-+ * Note: The caller must call huge_pmd_unshare_flush() before dropping the
-+ * i_mmap_rwsem.
-  *
-- * returns: 1 successfully unmapped a shared pte page
-- *	    0 the underlying pte page is not shared, or it is the last user
-+ * Returns: 1 if it was a shared PMD table and it got unmapped, or 0 if it
-+ *	    was not a shared PMD table.
+@@ -442,10 +441,8 @@ struct f2fs_sit_block {
+  * from node's page's beginning to get a data block address.
+  * ex) data_blkaddr = (block_t)(nodepage_start_address + ofs_in_node)
   */
--int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
--					unsigned long addr, pte_t *ptep)
-+int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+		unsigned long addr, pte_t *ptep)
- {
- 	unsigned long sz = huge_page_size(hstate_vma(vma));
-+	struct mm_struct *mm = vma->vm_mm;
- 	pgd_t *pgd = pgd_offset(mm, addr);
- 	p4d_t *p4d = p4d_offset(pgd, addr);
- 	pud_t *pud = pud_offset(p4d, addr);
-@@ -7613,18 +7608,36 @@ int huge_pmd_unshare(struct mm_struct *m
- 	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
- 	hugetlb_vma_assert_locked(vma);
- 	pud_clear(pud);
--	/*
--	 * Once our caller drops the rmap lock, some other process might be
--	 * using this page table as a normal, non-hugetlb page table.
--	 * Wait for pending gup_fast() in other threads to finish before letting
--	 * that happen.
--	 */
--	tlb_remove_table_sync_one();
--	ptdesc_pmd_pts_dec(virt_to_ptdesc(ptep));
-+
-+	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
-+
- 	mm_dec_nr_pmds(mm);
- 	return 1;
- }
+-#define ENTRIES_IN_SUM		(F2FS_SUM_BLKSIZE / 8)
+ #define	SUMMARY_SIZE		(7)	/* sizeof(struct f2fs_summary) */
+ #define	SUM_FOOTER_SIZE		(5)	/* sizeof(struct summary_footer) */
+-#define SUM_ENTRY_SIZE		(SUMMARY_SIZE * ENTRIES_IN_SUM)
+ 
+ /* a summary entry for a block in a segment */
+ struct f2fs_summary {
+@@ -468,22 +465,6 @@ struct summary_footer {
+ 	__le32 check_sum;		/* summary checksum */
+ } __packed;
+ 
+-#define SUM_JOURNAL_SIZE	(F2FS_SUM_BLKSIZE - SUM_FOOTER_SIZE -\
+-				SUM_ENTRY_SIZE)
+-#define NAT_JOURNAL_ENTRIES	((SUM_JOURNAL_SIZE - 2) /\
+-				sizeof(struct nat_journal_entry))
+-#define NAT_JOURNAL_RESERVED	((SUM_JOURNAL_SIZE - 2) %\
+-				sizeof(struct nat_journal_entry))
+-#define SIT_JOURNAL_ENTRIES	((SUM_JOURNAL_SIZE - 2) /\
+-				sizeof(struct sit_journal_entry))
+-#define SIT_JOURNAL_RESERVED	((SUM_JOURNAL_SIZE - 2) %\
+-				sizeof(struct sit_journal_entry))
+-
+-/* Reserved area should make size of f2fs_extra_info equals to
+- * that of nat_journal and sit_journal.
+- */
+-#define EXTRA_INFO_RESERVED	(SUM_JOURNAL_SIZE - 2 - 8)
+-
+ /*
+  * frequently updated NAT/SIT entries can be stored in the spare area in
+  * summary blocks
+@@ -498,9 +479,16 @@ struct nat_journal_entry {
+ 	struct f2fs_nat_entry ne;
+ } __packed;
  
 +/*
-+ * huge_pmd_unshare_flush - Complete a sequence of huge_pmd_unshare() calls
-+ * @tlb: the current mmu_gather.
-+ * @vma: the vma covering the pmd table.
-+ *
-+ * Perform necessary TLB flushes or IPI broadcasts to synchronize PMD table
-+ * unsharing with concurrent page table walkers.
-+ *
-+ * This function must be called after a sequence of huge_pmd_unshare()
-+ * calls while still holding the i_mmap_rwsem.
++ * The nat_journal structure is a placeholder whose actual size varies depending
++ * on the use of packed_ssa. Therefore, it must always be accessed only through
++ * specific sets of macros and fields, and size calculations should use
++ * size-related macros instead of sizeof().
++ * Relevant macros: sbi->nat_journal_entries, nat_in_journal(),
++ * nid_in_journal(), MAX_NAT_JENTRIES().
 + */
-+void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma)
-+{
-+	/*
-+	 * We must synchronize page table unsharing such that nobody will
-+	 * try reusing a previously-shared page table while it might still
-+	 * be in use by previous sharers (TLB, GUP_fast).
-+	 */
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+
-+	tlb_flush_unshared_tables(tlb);
-+}
-+
- #else /* !CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING */
+ struct nat_journal {
+-	struct nat_journal_entry entries[NAT_JOURNAL_ENTRIES];
+-	__u8 reserved[NAT_JOURNAL_RESERVED];
++	struct nat_journal_entry entries[0];
+ } __packed;
  
- pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
-@@ -7633,12 +7646,16 @@ pte_t *huge_pmd_share(struct mm_struct *
- 	return NULL;
- }
+ struct sit_journal_entry {
+@@ -508,14 +496,21 @@ struct sit_journal_entry {
+ 	struct f2fs_sit_entry se;
+ } __packed;
  
--int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
--				unsigned long addr, pte_t *ptep)
-+int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+		unsigned long addr, pte_t *ptep)
- {
- 	return 0;
- }
++/*
++ * The sit_journal structure is a placeholder whose actual size varies depending
++ * on the use of packed_ssa. Therefore, it must always be accessed only through
++ * specific sets of macros and fields, and size calculations should use
++ * size-related macros instead of sizeof().
++ * Relevant macros: sbi->sit_journal_entries, sit_in_journal(),
++ * segno_in_journal(), MAX_SIT_JENTRIES().
++ */
+ struct sit_journal {
+-	struct sit_journal_entry entries[SIT_JOURNAL_ENTRIES];
+-	__u8 reserved[SIT_JOURNAL_RESERVED];
++	struct sit_journal_entry entries[0];
+ } __packed;
  
-+void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma)
-+{
-+}
-+
- void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
- 				unsigned long *start, unsigned long *end)
- {
-@@ -7905,6 +7922,7 @@ static void hugetlb_unshare_pmds(struct
- 	unsigned long sz = huge_page_size(h);
- 	struct mm_struct *mm = vma->vm_mm;
- 	struct mmu_notifier_range range;
-+	struct mmu_gather tlb;
- 	unsigned long address;
- 	spinlock_t *ptl;
- 	pte_t *ptep;
-@@ -7916,6 +7934,8 @@ static void hugetlb_unshare_pmds(struct
- 		return;
+ struct f2fs_extra_info {
+ 	__le64 kbytes_written;
+-	__u8 reserved[EXTRA_INFO_RESERVED];
++	__u8 reserved[];
+ } __packed;
  
- 	flush_cache_range(vma, start, end);
-+	tlb_gather_mmu_vma(&tlb, vma);
-+
- 	/*
- 	 * No need to call adjust_range_if_pmd_sharing_possible(), because
- 	 * we have already done the PUD_SIZE alignment.
-@@ -7934,10 +7954,10 @@ static void hugetlb_unshare_pmds(struct
- 		if (!ptep)
- 			continue;
- 		ptl = huge_pte_lock(h, mm, ptep);
--		huge_pmd_unshare(mm, vma, address, ptep);
-+		huge_pmd_unshare(&tlb, vma, address, ptep);
- 		spin_unlock(ptl);
- 	}
--	flush_hugetlb_tlb_range(vma, start, end);
-+	huge_pmd_unshare_flush(&tlb, vma);
- 	if (take_locks) {
- 		i_mmap_unlock_write(vma->vm_file->f_mapping);
- 		hugetlb_vma_unlock_write(vma);
-@@ -7947,6 +7967,7 @@ static void hugetlb_unshare_pmds(struct
- 	 * Documentation/mm/mmu_notifier.rst.
- 	 */
- 	mmu_notifier_invalidate_range_end(&range);
-+	tlb_finish_mmu(&tlb);
- }
+ struct f2fs_journal {
+@@ -531,11 +526,33 @@ struct f2fs_journal {
+ 	};
+ } __packed;
+ 
+-/* Block-sized summary block structure */
++/*
++ * Block-sized summary block structure
++ *
++ * The f2fs_summary_block structure is a placeholder whose actual size varies
++ * depending on the use of packed_ssa. Therefore, it must always be accessed
++ * only through specific sets of macros and fields, and size calculations should
++ * use size-related macros instead of sizeof().
++ * Relevant macros: sbi->sum_blocksize, sbi->entries_in_sum,
++ * sbi->sum_entry_size, sum_entries(), sum_journal(), sum_footer().
++ *
++ * Summary Block Layout
++ *
++ * +-----------------------+ <--- Block Start
++ * | struct f2fs_summary   |
++ * | entries[0]            |
++ * | ...                   |
++ * | entries[N-1]          |
++ * +-----------------------+
++ * | struct f2fs_journal   |
++ * +-----------------------+
++ * | struct summary_footer |
++ * +-----------------------+ <--- Block End
++ */
+ struct f2fs_summary_block {
+-	struct f2fs_summary entries[ENTRIES_IN_SUM];
+-	struct f2fs_journal journal;
+-	struct summary_footer footer;
++	struct f2fs_summary entries[0];
++	// struct f2fs_journal journal;
++	// struct summary_footer footer;
+ } __packed;
  
  /*
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -9,6 +9,7 @@
- #include <linux/smp.h>
- #include <linux/swap.h>
- #include <linux/rmap.h>
-+#include <linux/hugetlb.h>
- 
- #include <asm/pgalloc.h>
- #include <asm/tlb.h>
-@@ -426,6 +427,7 @@ static void __tlb_gather_mmu(struct mmu_
- #endif
- 	tlb->vma_pfn = 0;
- 
-+	tlb->fully_unshared_tables = 0;
- 	__tlb_reset_range(tlb);
- 	inc_tlb_flush_pending(tlb->mm);
- }
-@@ -460,6 +462,31 @@ void tlb_gather_mmu_fullmm(struct mmu_ga
- }
- 
- /**
-+ * tlb_gather_mmu_vma - initialize an mmu_gather structure for operating on a
-+ *			single VMA
-+ * @tlb: the mmu_gather structure to initialize
-+ * @vma: the vm_area_struct
-+ *
-+ * Called to initialize an (on-stack) mmu_gather structure for operating on
-+ * a single VMA. In contrast to tlb_gather_mmu(), calling this function will
-+ * not require another call to tlb_start_vma(). In contrast to tlb_start_vma(),
-+ * this function will *not* call flush_cache_range().
-+ *
-+ * For hugetlb VMAs, this function will also initialize the mmu_gather
-+ * page_size accordingly, not requiring a separate call to
-+ * tlb_change_page_size().
-+ *
-+ */
-+void tlb_gather_mmu_vma(struct mmu_gather *tlb, struct vm_area_struct *vma)
-+{
-+	tlb_gather_mmu(tlb, vma->vm_mm);
-+	tlb_update_vma_flags(tlb, vma);
-+	if (is_vm_hugetlb_page(vma))
-+		/* All entries have the same size. */
-+		tlb_change_page_size(tlb, huge_page_size(hstate_vma(vma)));
-+}
-+
-+/**
-  * tlb_finish_mmu - finish an mmu_gather structure
-  * @tlb: the mmu_gather structure to finish
-  *
-@@ -469,6 +496,12 @@ void tlb_gather_mmu_fullmm(struct mmu_ga
- void tlb_finish_mmu(struct mmu_gather *tlb)
- {
- 	/*
-+	 * We expect an earlier huge_pmd_unshare_flush() call to sort this out,
-+	 * due to complicated locking requirements with page table unsharing.
-+	 */
-+	VM_WARN_ON_ONCE(tlb->fully_unshared_tables);
-+
-+	/*
- 	 * If there are parallel threads are doing PTE changes on same range
- 	 * under non-exclusive lock (e.g., mmap_lock read-side) but defer TLB
- 	 * flush by batching, one thread may end up seeing inconsistent PTEs
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -76,7 +76,7 @@
- #include <linux/mm_inline.h>
- #include <linux/oom.h>
- 
--#include <asm/tlbflush.h>
-+#include <asm/tlb.h>
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/migrate.h>
-@@ -2019,13 +2019,17 @@ static bool try_to_unmap_one(struct foli
- 			 * if unsuccessful.
- 			 */
- 			if (!anon) {
-+				struct mmu_gather tlb;
-+
- 				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
- 				if (!hugetlb_vma_trylock_write(vma))
- 					goto walk_abort;
--				if (huge_pmd_unshare(mm, vma, address, pvmw.pte)) {
-+
-+				tlb_gather_mmu_vma(&tlb, vma);
-+				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
- 					hugetlb_vma_unlock_write(vma);
--					flush_tlb_range(vma,
--						range.start, range.end);
-+					huge_pmd_unshare_flush(&tlb, vma);
-+					tlb_finish_mmu(&tlb);
- 					/*
- 					 * The PMD table was unmapped,
- 					 * consequently unmapping the folio.
-@@ -2033,6 +2037,7 @@ static bool try_to_unmap_one(struct foli
- 					goto walk_done;
- 				}
- 				hugetlb_vma_unlock_write(vma);
-+				tlb_finish_mmu(&tlb);
- 			}
- 			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
- 			if (pte_dirty(pteval))
-@@ -2398,17 +2403,20 @@ static bool try_to_migrate_one(struct fo
- 			 * fail if unsuccessful.
- 			 */
- 			if (!anon) {
-+				struct mmu_gather tlb;
-+
- 				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
- 				if (!hugetlb_vma_trylock_write(vma)) {
- 					page_vma_mapped_walk_done(&pvmw);
- 					ret = false;
- 					break;
- 				}
--				if (huge_pmd_unshare(mm, vma, address, pvmw.pte)) {
--					hugetlb_vma_unlock_write(vma);
--					flush_tlb_range(vma,
--						range.start, range.end);
- 
-+				tlb_gather_mmu_vma(&tlb, vma);
-+				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
-+					hugetlb_vma_unlock_write(vma);
-+					huge_pmd_unshare_flush(&tlb, vma);
-+					tlb_finish_mmu(&tlb);
- 					/*
- 					 * The PMD table was unmapped,
- 					 * consequently unmapping the folio.
-@@ -2417,6 +2425,7 @@ static bool try_to_migrate_one(struct fo
- 					break;
- 				}
- 				hugetlb_vma_unlock_write(vma);
-+				tlb_finish_mmu(&tlb);
- 			}
- 			/* Nuke the hugetlb page table entry */
- 			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
 
 
 
