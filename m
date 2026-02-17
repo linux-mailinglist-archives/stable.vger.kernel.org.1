@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-217084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODu4AV3UlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217084-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:33 +0100
+	id +JgbMBvVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1903150595
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6995E150710
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 30D8A300DF43
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C808030168AE
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F07284B3B;
-	Tue, 17 Feb 2026 20:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1394028D8E8;
+	Tue, 17 Feb 2026 20:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5Ddy/VX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCjEhabl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A542129A1;
-	Tue, 17 Feb 2026 20:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7FA261B70;
+	Tue, 17 Feb 2026 20:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361368; cv=none; b=pkUUoWigmN8jz7ALnZicTCGfn3gFaCoSp8szcVBLVnE/OBenrngS287gEU/OysZZJncmb/ioHE2mcssMv5YdCu/VBEgCi1Mv4s23OK8uduZlmpllkUcyDCy9cO4UTTyJXF4iFYrgYk8HEOxpZy6A7c19iMHYJHXGwlIfbHNkj9Y=
+	t=1771361559; cv=none; b=LFEAyaiJvT1bhaTX8F7krqK8sxWnSCsvX4aXfx8tX/51B1TKdscfkTOV4rMsi/eOZFxUjLXvoJE8AwTEdR9ViwzWaCrEhj33C8ighre1DbKywgzyisTJsDZ8y3DME1vA+odExpnQwvc94d3DtJQzCj/Ll/Qc902jlNhoCRlgY7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361368; c=relaxed/simple;
-	bh=wDzh0XyHSUH9lH0oyrFYMMDm46xrEyIFsK84OorzNvE=;
+	s=arc-20240116; t=1771361559; c=relaxed/simple;
+	bh=OV5jF8nap+oTo2mWVEmhrQhz0rvikFcY/0SWWpksj2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4FKLqPGAAbMmE3z8N0GMoejqsRYCXtc5omaz55gQLO26a2tCVVYPdaQHjAKUHPlW0LnrWfLUuPQ+H65TP8BaAl27lWeQU0WDSdvYSxgg6mMSs1Gusf8rIOHnnbOYW08qzilE5hTGXIW9bKCPwsbL4ZJh68XcTZ3Xa4obkfsKrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5Ddy/VX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24918C4CEF7;
-	Tue, 17 Feb 2026 20:49:27 +0000 (UTC)
+	 MIME-Version; b=sZsP7tVbc6m14qIjTF/MAEWsi+x8ys2zpOYT5TUrnULriaks66YDVQIMe4aHXCC3/bYITy3IETg1Iw6GkJNekKuWQtYMx45vBcFyaDUNLqCi86Cl0uBcP+9b6dBo8Ukos6//aDa+/E/To2rTUIF+swecBoL87owybZ0noVW0C1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCjEhabl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9D3C4CEF7;
+	Tue, 17 Feb 2026 20:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361368;
-	bh=wDzh0XyHSUH9lH0oyrFYMMDm46xrEyIFsK84OorzNvE=;
+	s=korg; t=1771361559;
+	bh=OV5jF8nap+oTo2mWVEmhrQhz0rvikFcY/0SWWpksj2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5Ddy/VXUW9Rry1q72tATUbeb+1mn6zzYE1E/mir7YqpYlgWmoQR5fXKWD/0TFXHq
-	 mWD3QQ0ycUjiNQR0UYUe5QpXBKJJ3K+Es9jP6eQm2Xc1x4Hh8+zvsBepcTez2aDrVt
-	 GJGFB94w8ws0yJD7U2zEvU9kfl2ApFqT6ZifGgJs=
+	b=DCjEhablq+v31WzPNXqPxMGqHf6UfcxAWxLyo8gmSlniM8CHgyvhm9t6y8EdSPWp6
+	 HfdQiJ32/wsFHtsjwLAPYYtU94s/PhlRFuhzX2ynv6r5z1xM3RiJ5Svz8mHclwNFu/
+	 4NPUKnR5P8GoGc8oWo+KkbneNxx6sXl2nAsIhR44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 15/18] Revert "f2fs: block cache/dio write during f2fs_enable_checkpoint()"
+	Tianchu Chen <flynnnchen@tencent.com>,
+	stable <stable@kernel.org>,
+	Steve Glendinning <steve.glendinning@shawell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.18 31/43] fbdev: smscufx: properly copy ioctl memory to kernelspace
 Date: Tue, 17 Feb 2026 21:32:11 +0100
-Message-ID: <20260217200003.287445122@linuxfoundation.org>
+Message-ID: <20260217200007.663186155@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
-References: <20260217200002.683975158@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,186 +70,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217084-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217140-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tencent.com,kernel.org,shawell.net,gmx.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: C1903150595
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[shawell.net:email,tencent.com:email,gmx.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 6995E150710
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 3996b70209f145bfcf2afc7d05dd92c27b233b48 ]
+commit 120adae7b42faa641179270c067864544a50ab69 upstream.
 
-This reverts commit 196c81fdd438f7ac429d5639090a9816abb9760a.
+The UFX_IOCTL_REPORT_DAMAGE ioctl does not properly copy data from
+userspace to kernelspace, and instead directly references the memory,
+which can cause problems if invalid data is passed from userspace.  Fix
+this all up by correctly copying the memory before accessing it within
+the kernel.
 
-Original patch may cause below deadlock, revert it.
-
-write				remount
-- write_begin
- - lock_page  --- lock A
- - prepare_write_begin
-  - f2fs_map_lock
-				- f2fs_enable_checkpoint
-				 - down_write(cp_enable_rwsem)  --- lock B
-				 - sync_inode_sb
-				  - writepages
-				   - lock_page			--- lock A
-   - down_read(cp_enable_rwsem)  --- lock A
-
-Cc: stable@kernel.org
-Fixes: 196c81fdd438 ("f2fs: block cache/dio write during f2fs_enable_checkpoint()")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ drop tracing bits ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Tianchu Chen <flynnnchen@tencent.com>
+Cc: stable <stable@kernel.org>
+Cc: Steve Glendinning <steve.glendinning@shawell.net>
+Cc: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c  |    2 --
- fs/f2fs/f2fs.h  |    3 +--
- fs/f2fs/super.c |   38 ++++++++------------------------------
- 3 files changed, 9 insertions(+), 34 deletions(-)
+ drivers/video/fbdev/smscufx.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1424,7 +1424,6 @@ static int __allocate_data_block(struct
- 
- static void f2fs_map_lock(struct f2fs_sb_info *sbi, int flag)
+--- a/drivers/video/fbdev/smscufx.c
++++ b/drivers/video/fbdev/smscufx.c
+@@ -932,7 +932,6 @@ static int ufx_ops_ioctl(struct fb_info
+ 			 unsigned long arg)
  {
--	f2fs_down_read(&sbi->cp_enable_rwsem);
- 	if (flag == F2FS_GET_BLOCK_PRE_AIO)
- 		f2fs_down_read(&sbi->node_change);
- 	else
-@@ -1437,7 +1436,6 @@ static void f2fs_map_unlock(struct f2fs_
- 		f2fs_up_read(&sbi->node_change);
- 	else
- 		f2fs_unlock_op(sbi);
--	f2fs_up_read(&sbi->cp_enable_rwsem);
- }
+ 	struct ufx_data *dev = info->par;
+-	struct dloarea *area = NULL;
  
- int f2fs_get_block_locked(struct dnode_of_data *dn, pgoff_t index)
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -287,7 +287,7 @@ enum {
- #define DEF_CP_INTERVAL			60	/* 60 secs */
- #define DEF_IDLE_INTERVAL		5	/* 5 secs */
- #define DEF_DISABLE_INTERVAL		5	/* 5 secs */
--#define DEF_ENABLE_INTERVAL		5	/* 5 secs */
-+#define DEF_ENABLE_INTERVAL		16	/* 16 secs */
- #define DEF_DISABLE_QUICK_INTERVAL	1	/* 1 secs */
- #define DEF_UMOUNT_DISCARD_TIMEOUT	5	/* 5 secs */
+ 	if (!atomic_read(&dev->usb_active))
+ 		return 0;
+@@ -947,6 +946,10 @@ static int ufx_ops_ioctl(struct fb_info
  
-@@ -1720,7 +1720,6 @@ struct f2fs_sb_info {
- 	long interval_time[MAX_TIME];		/* to store thresholds */
- 	struct ckpt_req_control cprc_info;	/* for checkpoint request control */
- 	struct cp_stats cp_stats;		/* for time stat of checkpoint */
--	struct f2fs_rwsem cp_enable_rwsem;	/* block cache/dio write */
+ 	/* TODO: Help propose a standard fb.h ioctl to report mmap damage */
+ 	if (cmd == UFX_IOCTL_REPORT_DAMAGE) {
++		struct dloarea *area __free(kfree) = kmalloc(sizeof(*area), GFP_KERNEL);
++		if (!area)
++			return -ENOMEM;
++
+ 		/* If we have a damage-aware client, turn fb_defio "off"
+ 		 * To avoid perf imact of unnecessary page fault handling.
+ 		 * Done by resetting the delay for this fb_info to a very
+@@ -956,7 +959,8 @@ static int ufx_ops_ioctl(struct fb_info
+ 		if (info->fbdefio)
+ 			info->fbdefio->delay = UFX_DEFIO_WRITE_DISABLE;
  
- 	struct inode_management im[MAX_INO_ENTRY];	/* manage inode cache */
+-		area = (struct dloarea *)arg;
++		if (copy_from_user(area, (u8 __user *)arg, sizeof(*area)))
++			return -EFAULT;
  
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2636,11 +2636,10 @@ restore_flag:
- static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
- {
- 	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
--	long long start, writeback, lock, sync_inode, end;
-+	long long start, writeback, end;
- 	int ret;
- 
--	f2fs_info(sbi, "%s start, meta: %lld, node: %lld, data: %lld",
--					__func__,
-+	f2fs_info(sbi, "f2fs_enable_checkpoint() starts, meta: %lld, node: %lld, data: %lld",
- 					get_pages(sbi, F2FS_DIRTY_META),
- 					get_pages(sbi, F2FS_DIRTY_NODES),
- 					get_pages(sbi, F2FS_DIRTY_DATA));
-@@ -2659,18 +2658,11 @@ static int f2fs_enable_checkpoint(struct
- 	}
- 	writeback = ktime_get();
- 
--	f2fs_down_write(&sbi->cp_enable_rwsem);
--
--	lock = ktime_get();
--
--	if (get_pages(sbi, F2FS_DIRTY_DATA))
--		sync_inodes_sb(sbi->sb);
-+	sync_inodes_sb(sbi->sb);
- 
- 	if (unlikely(get_pages(sbi, F2FS_DIRTY_DATA)))
--		f2fs_warn(sbi, "%s: has some unwritten data: %lld",
--			__func__, get_pages(sbi, F2FS_DIRTY_DATA));
--
--	sync_inode = ktime_get();
-+		f2fs_warn(sbi, "checkpoint=enable has some unwritten data: %lld",
-+					get_pages(sbi, F2FS_DIRTY_DATA));
- 
- 	f2fs_down_write(&sbi->gc_lock);
- 	f2fs_dirty_to_prefree(sbi);
-@@ -2679,13 +2671,6 @@ static int f2fs_enable_checkpoint(struct
- 	set_sbi_flag(sbi, SBI_IS_DIRTY);
- 	f2fs_up_write(&sbi->gc_lock);
- 
--	f2fs_info(sbi, "%s sync_fs, meta: %lld, imeta: %lld, node: %lld, dents: %lld, qdata: %lld",
--					__func__,
--					get_pages(sbi, F2FS_DIRTY_META),
--					get_pages(sbi, F2FS_DIRTY_IMETA),
--					get_pages(sbi, F2FS_DIRTY_NODES),
--					get_pages(sbi, F2FS_DIRTY_DENTS),
--					get_pages(sbi, F2FS_DIRTY_QDATA));
- 	ret = f2fs_sync_fs(sbi->sb, 1);
- 	if (ret)
- 		f2fs_err(sbi, "%s sync_fs failed, ret: %d", __func__, ret);
-@@ -2693,17 +2678,11 @@ static int f2fs_enable_checkpoint(struct
- 	/* Let's ensure there's no pending checkpoint anymore */
- 	f2fs_flush_ckpt_thread(sbi);
- 
--	f2fs_up_write(&sbi->cp_enable_rwsem);
--
- 	end = ktime_get();
- 
--	f2fs_info(sbi, "%s end, writeback:%llu, "
--				"lock:%llu, sync_inode:%llu, sync_fs:%llu",
--				__func__,
--				ktime_ms_delta(writeback, start),
--				ktime_ms_delta(lock, writeback),
--				ktime_ms_delta(sync_inode, lock),
--				ktime_ms_delta(end, sync_inode));
-+	f2fs_info(sbi, "f2fs_enable_checkpoint() finishes, writeback:%llu, sync:%llu",
-+					ktime_ms_delta(writeback, start),
-+					ktime_ms_delta(end, writeback));
- 	return ret;
- }
- 
-@@ -4904,7 +4883,6 @@ try_onemore:
- 	init_f2fs_rwsem(&sbi->node_change);
- 	spin_lock_init(&sbi->stat_lock);
- 	init_f2fs_rwsem(&sbi->cp_rwsem);
--	init_f2fs_rwsem(&sbi->cp_enable_rwsem);
- 	init_f2fs_rwsem(&sbi->quota_sem);
- 	init_waitqueue_head(&sbi->cp_wait);
- 	spin_lock_init(&sbi->error_lock);
+ 		if (area->x < 0)
+ 			area->x = 0;
 
 
 
