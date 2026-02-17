@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-217059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BJ/OAbUlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:06 +0100
+	id 4BmrLefUlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C2F1504D8
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF21150688
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CF3A13016293
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9EA5E3075AAD
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00AB2773E4;
-	Tue, 17 Feb 2026 20:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676F429BDB4;
+	Tue, 17 Feb 2026 20:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8vQ4W5H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNij5iX4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843C47A13A;
-	Tue, 17 Feb 2026 20:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D92261B70;
+	Tue, 17 Feb 2026 20:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361282; cv=none; b=HKLYICaY8Pxf/X2yOUTjBUFD3zaXdYJMyifz8VkSarSgueq+xIQd+Dz3T+CfwvSD/YUoaI7Q3VW2N/bE9ShiUy4P0PmdusXcYcaouzjogKq14+X/SnmESGhKxhD34gTkKWmd29Q4WPQbAMXShd2GRTT3Ir5oo3GgxC2qM4w4xyc=
+	t=1771361416; cv=none; b=lKTNt6QfBsoOH0fPvit7FIJa0neI0ILIKnx8vZkgxGi5HSFyevopiNY8IDrPTdl2HENncnC6hndzgBqE9GCbciszjZq5XmTDNEYPdXqACkHaNnmkjQPmVv1LPKGn7VCHCg8TjwRlOAaMksL6NsTFBDITt+mXUg72GkOJ8T4DmlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361282; c=relaxed/simple;
-	bh=sJ97cQkn/CM6+ouWvTtQ/DwaSTKi8GE+o5HrgJpRLVU=;
+	s=arc-20240116; t=1771361416; c=relaxed/simple;
+	bh=izI7WZJX4lsv71cTPO3lD/DQZTUc8Q5l6995r1Nki7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwIahiNfsWwsQbigUnWaqHa7Eg+3XtMdkgT0NHZd7r0yzta8fev/0HVNSvWgKVIXWVt3mgNACuRa0klWJBKeAxlik5sLdfBNL45QJ0IvqfFoT19QZpq1C7Ol7WeX0VgCLPpcmd2x/iQTfOjTSG5m5ilQBnuECVBLo6ftqjXXTBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8vQ4W5H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E986DC4CEF7;
-	Tue, 17 Feb 2026 20:48:01 +0000 (UTC)
+	 MIME-Version; b=QulFRVfmXPXojF/Xgt2eiFjVwx2sIbYqLseuUrIGx4kOUUcA0zJzQ1LLNdwaxNzUHot88FbyZu1vg4DVOnXM+FPTBEGn205q+TKj44e6nKO+5G1bU/Se9IlXW0ERwMszi80KOFT4CJNwkLK9FfsBXDr1KIhV23RfccRCKSaUzEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNij5iX4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD743C4CEF7;
+	Tue, 17 Feb 2026 20:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361282;
-	bh=sJ97cQkn/CM6+ouWvTtQ/DwaSTKi8GE+o5HrgJpRLVU=;
+	s=korg; t=1771361416;
+	bh=izI7WZJX4lsv71cTPO3lD/DQZTUc8Q5l6995r1Nki7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I8vQ4W5HkH0i/sZ6Dq3jwNHd/6WMhLRFuBW2m8g/yfGiU+3jnRsQlkr5WsL1B83HJ
-	 Nj0DpVxEq2IjuFVOhb5CK6XW1MeX6+Nnlqp3gHI7GftS+blLpuIHBrqYjtDm9J5jD4
-	 x7vlP1veN3yIGBGwuM5BNNtUw4ybl+uP0B15cXLs=
+	b=nNij5iX4YTPox1m4vAarsO0noFEW1a1E7DXvJYxJux2R6VaodHUhRufgj7Dfz9W5f
+	 XCW5gqFXuGCMUPQzGyQEnBD2rbZ2fEJifR4TjXq3ZtY51BXafkUSj95cUDTkU+qrIF
+	 CnU+JpeFxbHHXtyyv40AXbGPRlv/fVKImUCkA5G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 6.1 54/64] net: dsa: free routing table on probe failure
+	syzbot+9c4e33e12283d9437c25@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 10/43] romfs: check sb_set_blocksize() return value
 Date: Tue, 17 Feb 2026 21:31:50 +0100
-Message-ID: <20260217200009.532664913@linuxfoundation.org>
+Message-ID: <20260217200006.864955419@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,192 +66,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217059-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,kernel.org,139.com];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217098-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,9c4e33e12283d9437c25];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,msgid.link:url,139.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 70C2F1504D8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,msgid.link:url]
+X-Rspamd-Queue-Id: 2CF21150688
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 8bf108d7161ffc6880ad13a0cc109de3cf631727 ]
+[ Upstream commit ab7ad7abb3660c58ffffdf07ff3bb976e7e0afa0 ]
 
-If complete = true in dsa_tree_setup(), it means that we are the last
-switch of the tree which is successfully probing, and we should be
-setting up all switches from our probe path.
+romfs_fill_super() ignores the return value of sb_set_blocksize(), which
+can fail if the requested block size is incompatible with the block
+device's configuration.
 
-After "complete" becomes true, dsa_tree_setup_cpu_ports() or any
-subsequent function may fail. If that happens, the entire tree setup is
-in limbo: the first N-1 switches have successfully finished probing
-(doing nothing but having allocated persistent memory in the tree's
-dst->ports, and maybe dst->rtable), and switch N failed to probe, ending
-the tree setup process before anything is tangible from the user's PoV.
+This can be triggered by setting a loop device's block size larger than
+PAGE_SIZE using ioctl(LOOP_SET_BLOCK_SIZE, 32768), then mounting a romfs
+filesystem on that device.
 
-If switch N fails to probe, its memory (ports) will be freed and removed
-from dst->ports. However, the dst->rtable elements pointing to its ports,
-as created by dsa_link_touch(), will remain there, and will lead to
-use-after-free if dereferenced.
+When sb_set_blocksize(sb, ROMBSIZE) is called with ROMBSIZE=4096 but the
+device has logical_block_size=32768, bdev_validate_blocksize() fails
+because the requested size is smaller than the device's logical block
+size. sb_set_blocksize() returns 0 (failure), but romfs ignores this and
+continues mounting.
 
-If dsa_tree_setup_switches() returns -EPROBE_DEFER, which is entirely
-possible because that is where ds->ops->setup() is, we get a kasan
-report like this:
+The superblock's block size remains at the device's logical block size
+(32768). Later, when sb_bread() attempts I/O with this oversized block
+size, it triggers a kernel BUG in folio_set_bh():
 
-==================================================================
-BUG: KASAN: slab-use-after-free in mv88e6xxx_setup_upstream_port+0x240/0x568
-Read of size 8 at addr ffff000004f56020 by task kworker/u8:3/42
+    kernel BUG at fs/buffer.c:1582!
+    BUG_ON(size > PAGE_SIZE);
 
-Call trace:
- __asan_report_load8_noabort+0x20/0x30
- mv88e6xxx_setup_upstream_port+0x240/0x568
- mv88e6xxx_setup+0xebc/0x1eb0
- dsa_register_switch+0x1af4/0x2ae0
- mv88e6xxx_register_switch+0x1b8/0x2a8
- mv88e6xxx_probe+0xc4c/0xf60
- mdio_probe+0x78/0xb8
- really_probe+0x2b8/0x5a8
- __driver_probe_device+0x164/0x298
- driver_probe_device+0x78/0x258
- __device_attach_driver+0x274/0x350
+Fix by checking the return value of sb_set_blocksize() and failing the
+mount with -EINVAL if it returns 0.
 
-Allocated by task 42:
- __kasan_kmalloc+0x84/0xa0
- __kmalloc_cache_noprof+0x298/0x490
- dsa_switch_touch_ports+0x174/0x3d8
- dsa_register_switch+0x800/0x2ae0
- mv88e6xxx_register_switch+0x1b8/0x2a8
- mv88e6xxx_probe+0xc4c/0xf60
- mdio_probe+0x78/0xb8
- really_probe+0x2b8/0x5a8
- __driver_probe_device+0x164/0x298
- driver_probe_device+0x78/0x258
- __device_attach_driver+0x274/0x350
-
-Freed by task 42:
- __kasan_slab_free+0x48/0x68
- kfree+0x138/0x418
- dsa_register_switch+0x2694/0x2ae0
- mv88e6xxx_register_switch+0x1b8/0x2a8
- mv88e6xxx_probe+0xc4c/0xf60
- mdio_probe+0x78/0xb8
- really_probe+0x2b8/0x5a8
- __driver_probe_device+0x164/0x298
- driver_probe_device+0x78/0x258
- __device_attach_driver+0x274/0x350
-
-The simplest way to fix the bug is to delete the routing table in its
-entirety. dsa_tree_setup_routing_table() has no problem in regenerating
-it even if we deleted links between ports other than those of switch N,
-because dsa_link_touch() first checks whether the port pair already
-exists in dst->rtable, allocating if not.
-
-The deletion of the routing table in its entirety already exists in
-dsa_tree_teardown(), so refactor that into a function that can also be
-called from the tree setup error path.
-
-In my analysis of the commit to blame, it is the one which added
-dsa_link elements to dst->rtable. Prior to that, each switch had its own
-ds->rtable which is freed when the switch fails to probe. But the tree
-is potentially persistent memory.
-
-Fixes: c5f51765a1f6 ("net: dsa: list DSA links in the fabric")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414213001.2957964-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Backport the fix to net/dsa/dsa2.c in v6.1.y for dsa2.c was
-renamed back into dsa.c by commit
-47d2ce03dcfb ("net: dsa: rename dsa2.c back into dsa.c and create its header")
-since v6.2. ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+9c4e33e12283d9437c25@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9c4e33e12283d9437c25
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260113084037.1167887-1-kartikey406@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/dsa2.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ fs/romfs/super.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/dsa/dsa2.c
-+++ b/net/dsa/dsa2.c
-@@ -1148,6 +1148,16 @@ static void dsa_tree_teardown_lags(struc
- 	kfree(dst->lags);
- }
+diff --git a/fs/romfs/super.c b/fs/romfs/super.c
+index 0addcc849ff2c..e83f9b78d7a16 100644
+--- a/fs/romfs/super.c
++++ b/fs/romfs/super.c
+@@ -458,7 +458,10 @@ static int romfs_fill_super(struct super_block *sb, struct fs_context *fc)
  
-+static void dsa_tree_teardown_routing_table(struct dsa_switch_tree *dst)
-+{
-+	struct dsa_link *dl, *next;
-+
-+	list_for_each_entry_safe(dl, next, &dst->rtable, list) {
-+		list_del(&dl->list);
-+		kfree(dl);
-+	}
-+}
-+
- static int dsa_tree_setup(struct dsa_switch_tree *dst)
- {
- 	bool complete;
-@@ -1165,7 +1175,7 @@ static int dsa_tree_setup(struct dsa_swi
- 
- 	err = dsa_tree_setup_cpu_ports(dst);
- 	if (err)
--		return err;
-+		goto teardown_rtable;
- 
- 	err = dsa_tree_setup_switches(dst);
- 	if (err)
-@@ -1197,14 +1207,14 @@ teardown_switches:
- 	dsa_tree_teardown_switches(dst);
- teardown_cpu_ports:
- 	dsa_tree_teardown_cpu_ports(dst);
-+teardown_rtable:
-+	dsa_tree_teardown_routing_table(dst);
- 
- 	return err;
- }
- 
- static void dsa_tree_teardown(struct dsa_switch_tree *dst)
- {
--	struct dsa_link *dl, *next;
--
- 	if (!dst->setup)
- 		return;
- 
-@@ -1218,10 +1228,7 @@ static void dsa_tree_teardown(struct dsa
- 
- 	dsa_tree_teardown_cpu_ports(dst);
- 
--	list_for_each_entry_safe(dl, next, &dst->rtable, list) {
--		list_del(&dl->list);
--		kfree(dl);
--	}
-+	dsa_tree_teardown_routing_table(dst);
- 
- 	pr_info("DSA: tree %d torn down\n", dst->index);
- 
+ #ifdef CONFIG_BLOCK
+ 	if (!sb->s_mtd) {
+-		sb_set_blocksize(sb, ROMBSIZE);
++		if (!sb_set_blocksize(sb, ROMBSIZE)) {
++			errorf(fc, "romfs: unable to set blocksize\n");
++			return -EINVAL;
++		}
+ 	} else {
+ 		sb->s_blocksize = ROMBSIZE;
+ 		sb->s_blocksize_bits = blksize_bits(ROMBSIZE);
+-- 
+2.51.0
+
 
 
 
