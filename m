@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-216983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFEzOxvTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:11 +0100
+	id 2Jg4KSfUlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5181502C5
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B142150519
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D773B304F225
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C02330175D7
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECF93783CF;
-	Tue, 17 Feb 2026 20:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FEF266581;
+	Tue, 17 Feb 2026 20:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MogRBIex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCEaNRl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4262C376BFF;
-	Tue, 17 Feb 2026 20:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9E0259CBD;
+	Tue, 17 Feb 2026 20:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361025; cv=none; b=CNSdij4wXVh74vjf2dBvKLHMVNGNCHlpI4sPibZM3bKVtdTbVoldNmEjhhUOu6l+AImK+CruRbnWwnp8z9sFYxTd4hNtWkAhfM2WwLFzv+TJT+j4eOy1DwRmu2T4QAybMMyfhzI8uXMv/ATK/XbKRO/ChbA3pfh2eCJEBl8KBrA=
+	t=1771361313; cv=none; b=PTwsQ5nb1R8HhRlHB97ofhEPtjPMWQrBc37C+pBvU53xID/iHFeZYDla5wKX2nqpKIoNA3jm+459FGtT2AAvWvMdPH0RlYqwtjXcB4eToFtaayz07A7aCAp8/f1FJYcmHfYp4UGZZjnAoEMwu1xZuhAGA7OeGLhtxzROy3bSR6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361025; c=relaxed/simple;
-	bh=SbNrgn0GypH+qitRaYQIDxdlyYv8Fv7Wl6D0ToXVPjE=;
+	s=arc-20240116; t=1771361313; c=relaxed/simple;
+	bh=XMk+8Z/2i3o4aoLiYOybYFmaeTKFqeo90aLjbMYdt20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1JdE+cuJxwMesxPh46pHEdSN+hUAfuHxCaP7kBUBM8ydgURW0l+VTFG+NQBFfq4vIyKEip8+1WetjOefPwsYZfC4tvsmurV4ceHiyX1loYrD5P5YvvMTbizTyyqWLRb8l8Txwkle1NV1WKX1lSf8RISxGrcU1scbkV2y1I25AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MogRBIex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66329C4CEF7;
-	Tue, 17 Feb 2026 20:43:44 +0000 (UTC)
+	 MIME-Version; b=lGmNLET6q7wHiw3TAJtcXk0OTfiiYt3oAa8YBc+NTl4QaO/BLoZ+hfchFtImEzRfyCjD6VAdCgI07AdLfiHdooa9cdleQlHjynVgO73JpTJ+uqmuAO9F6o6fE3Y+BGyxUawcqOaJwStLKlO9sb1lIufVn6cSd2S4eRP40n2RCqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCEaNRl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53CBC4CEF7;
+	Tue, 17 Feb 2026 20:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361024;
-	bh=SbNrgn0GypH+qitRaYQIDxdlyYv8Fv7Wl6D0ToXVPjE=;
+	s=korg; t=1771361313;
+	bh=XMk+8Z/2i3o4aoLiYOybYFmaeTKFqeo90aLjbMYdt20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MogRBIexhIOEtF8iMat4P9PBrt9RueBjBUEvU4+9cy0bcRqqA4ixbQt4quXh5Wtgw
-	 /F3rZzAROsE1Uzr2Y0Ql6RidRAwEnpl2Vo39EkbWpATOwXy7tfOUu0rOBXgSMKJ0I4
-	 8s83IuV92zirssBT4TD9gP1o6Zm7wyBHWeLiugJE=
+	b=pCEaNRl1v9T1+qs3IRqaRPLWNtIFp4Hv0GvMX7GFOCgA4NqORO7AMWSfrRIT7Swbw
+	 zfGbmHFwaVCW3fu5TbMPSA+DhGzVgPidxlUAuh6V045Gli+SG/6LkaY+kZ0gX2ThUV
+	 o48yRSBTi59k8qoBHSROixwev/jlU12IALIXm2Fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shane Nehring <snehring@iastate.edu>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 5.15 19/39] smb: client: set correct id, uid and cruid for multiuser automounts
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 32/64] ASoC: cs35l45: Corrects ASP_TX5 DAPM widget channel
 Date: Tue, 17 Feb 2026 21:31:28 +0100
-Message-ID: <20260217200003.669919410@linuxfoundation.org>
+Message-ID: <20260217200008.719607749@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,92 +70,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216983-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217068-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iastate.edu,manguebit.com,microsoft.com,163.com];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iastate.edu:email,manguebit.com:email]
-X-Rspamd-Queue-Id: 3B5181502C5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email]
+X-Rspamd-Queue-Id: 5B142150519
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
 
-[ Upstream commit 4508ec17357094e2075f334948393ddedbb75157 ]
+[ Upstream commit 6dd0fdc908c02318c28ec2c0979661846ee0a9f7 ]
 
-When uid, gid and cruid are not specified, we need to dynamically
-set them into the filesystem context used for automounting otherwise
-they'll end up reusing the values from the parent mount.
+ASP_TX5 was incorrectly mapped to a channel value of 3 corrects,
+the channel value of 4.
 
-Fixes: 9fd29a5bae6e ("cifs: use fs_context for automounts")
-Reported-by: Shane Nehring <snehring@iastate.edu>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2259257
-Cc: stable@vger.kernel.org # 6.2+
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ The context change is due to the commit 561f82a3a24c
-("smb: client: rename cifs_dfs_ref.c to namespace.c") and the commit
-0a049935e47e ("smb: client: get rid of dfs naming in automount code")
-in v6.6 which are irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260115192523.1335742-2-rriveram@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/cifs_dfs_ref.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ sound/soc/codecs/cs35l45.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/cifs/cifs_dfs_ref.c
-+++ b/fs/cifs/cifs_dfs_ref.c
-@@ -258,6 +258,21 @@ compose_mount_options_err:
- 	goto compose_mount_options_out;
- }
+diff --git a/sound/soc/codecs/cs35l45.c b/sound/soc/codecs/cs35l45.c
+index d15b3b77c7eb0..29aed07443866 100644
+--- a/sound/soc/codecs/cs35l45.c
++++ b/sound/soc/codecs/cs35l45.c
+@@ -131,7 +131,7 @@ static const struct snd_soc_dapm_widget cs35l45_dapm_widgets[] = {
+ 	SND_SOC_DAPM_AIF_OUT("ASP_TX2", NULL, 1, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX2_EN_SHIFT, 0),
+ 	SND_SOC_DAPM_AIF_OUT("ASP_TX3", NULL, 2, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX3_EN_SHIFT, 0),
+ 	SND_SOC_DAPM_AIF_OUT("ASP_TX4", NULL, 3, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX4_EN_SHIFT, 0),
+-	SND_SOC_DAPM_AIF_OUT("ASP_TX5", NULL, 3, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX5_EN_SHIFT, 0),
++	SND_SOC_DAPM_AIF_OUT("ASP_TX5", NULL, 4, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX5_EN_SHIFT, 0),
  
-+static void fs_context_set_ids(struct smb3_fs_context *ctx)
-+{
-+	kuid_t uid = current_fsuid();
-+	kgid_t gid = current_fsgid();
-+
-+	if (ctx->multiuser) {
-+		if (!ctx->uid_specified)
-+			ctx->linux_uid = uid;
-+		if (!ctx->gid_specified)
-+			ctx->linux_gid = gid;
-+	}
-+	if (!ctx->cruid_specified)
-+		ctx->cred_uid = uid;
-+}
-+
- /*
-  * Create a vfsmount that we can automount
-  */
-@@ -309,6 +324,7 @@ static struct vfsmount *cifs_dfs_do_auto
- 	tmp.source = full_path;
- 	tmp.UNC = tmp.prepath = NULL;
- 
-+	fs_context_set_ids(&tmp);
- 	rc = smb3_fs_context_dup(ctx, &tmp);
- 	if (rc) {
- 		mnt = ERR_PTR(rc);
+ 	SND_SOC_DAPM_MUX("ASP_TX1 Source", SND_SOC_NOPM, 0, 0, &cs35l45_asp_muxes[0]),
+ 	SND_SOC_DAPM_MUX("ASP_TX2 Source", SND_SOC_NOPM, 0, 0, &cs35l45_asp_muxes[1]),
+-- 
+2.51.0
+
 
 
 
