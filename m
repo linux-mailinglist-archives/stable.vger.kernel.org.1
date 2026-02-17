@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-217122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KKieHRPVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217122-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:35 +0100
+	id 0N4ZI/XTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB2A1506FB
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B88411504B4
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5374305D4A3
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 72BA83004D9C
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8A12D594F;
-	Tue, 17 Feb 2026 20:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E201284B3B;
+	Tue, 17 Feb 2026 20:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxgIZWFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+Kxx2e+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8DB29A1;
-	Tue, 17 Feb 2026 20:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4989261B70;
+	Tue, 17 Feb 2026 20:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361497; cv=none; b=j/+A63IzCJGNGkWrellN3zkiJxBYGJYgq3PqdyyudJ1byBZi/5WUd1EKjFLCo4kHKjgeq5QzN90Bcw2hRP4IsGTBo2NsJHf/HA3sGv7R4ZE9DPPkdEsBMiEOv2M4R+tfpmKLaUDi4lBG6GfvBcnnzrGxJ94F+/bHWp+Bb173SD0=
+	t=1771361265; cv=none; b=UZSvmQIuv4m4Gtudp0efQvJud3dWzTEe84Vhwr2dxjW4A+WVulietIKIAlNnuDh3hkmKosetgwvVhFb/XkRyQ2rSmc0eStE2zni9wTs7ngOB3zXBOk5jnF9v8cX0uAp2LObEJUsdTYYyCjo0j6LxG7HdZ+fXkjrmBL3xaPQA+yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361497; c=relaxed/simple;
-	bh=B3kx5P2O0y5rg9s+bpDic/tuo3ARgk7U2TTI3WLCMAU=;
+	s=arc-20240116; t=1771361265; c=relaxed/simple;
+	bh=uJTi23tEe4nvjygCt0m0aAzZtNW0/fncO/xRqMsT1QY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fv0HCTaJ4Ku3UbIVQjmJ4woxfV14B9/PPK3ktgFhCfiIMEwhWWaxqztlt1vGByyYriJ8ARD+DVYRkksFuHx0LhBwLBR+QzghjWJUO085ofqi9hvHTGpCfdfXA7vIFJ2BdJsyjh2mszJGZ265XvKkp5QILB2BQM9dQCVhYU5ycSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxgIZWFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B41C4CEF7;
-	Tue, 17 Feb 2026 20:51:36 +0000 (UTC)
+	 MIME-Version; b=lsJiN17an+enCgHksXU4YRCQ8+nzrndBM0OpmzUFnj2SIuhnGLOVUDrDPtBVAyzZubSvYN6kn+ooIiA/sEphxV5mLYUP/2a1WPS854gTHHQfNvhJA9yZxADNCB7ouaFqaMnLGrJJHga8+X7gFIa0GeHdFNHKqHQo8ZKvXQSNR+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+Kxx2e+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5384FC4CEF7;
+	Tue, 17 Feb 2026 20:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361496;
-	bh=B3kx5P2O0y5rg9s+bpDic/tuo3ARgk7U2TTI3WLCMAU=;
+	s=korg; t=1771361264;
+	bh=uJTi23tEe4nvjygCt0m0aAzZtNW0/fncO/xRqMsT1QY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxgIZWFeTWzZNhwRuOML8L+0fYEcBigtR6y1qIDkTiMpq/G142ec4aziSniKE44GU
-	 2pTWaVmaFaWsNU3MeoqsUForPnspJqlbbwo1JEE7qblUjR+jc6hQYJyptJKtZyEgbi
-	 DqlZJ3SM92ulzsGFMoQSCT1D1HzpnnZKdUm1LlRU=
+	b=L+Kxx2e+NYbxqqZvh/McYrssrfGzriMfR0nN7I4G6ZUTCnQSJNdG7y6VdMoJH2C7K
+	 sM+q4oXqIOoPR7ezXCRkMFsrf/zml/GpAi0SbEyvwFhEX0UPQ5jmcYG/3ar2TOjZuR
+	 0Q2Oenrfz6q7YwYhTzum3qpqYeTAHR45I8ZfjOhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anatolii Shirykalov <pipocavsobake@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 05/43] ASoC: amd: yc: Add ASUS ExpertBook PM1503CDA to quirks list
+	Bosi Zhang <u201911157@hust.edu.cn>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.1 49/64] clk: mediatek: fix of_iomap memory leak
 Date: Tue, 17 Feb 2026 21:31:45 +0100
-Message-ID: <20260217200006.676679908@linuxfoundation.org>
+Message-ID: <20260217200009.343402419@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,74 +68,85 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217122-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217054-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hust.edu.cn,kernel.org,139.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1EB2A1506FB
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,139.com:email,hust.edu.cn:email]
+X-Rspamd-Queue-Id: B88411504B4
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anatolii Shirykalov <pipocavsobake@gmail.com>
+From: Bosi Zhang <u201911157@hust.edu.cn>
 
-[ Upstream commit 018b211b1d321a52ed8d8de74ce83ce52a2e1224 ]
+[ Upstream commit 3db7285e044144fd88a356f5b641b9cd4b231a77 ]
 
-Add ASUS ExpertBook PM1503CDA to the DMI quirks table to enable
-internal DMIC support via the ACP6x machine driver.
+Smatch reports:
+drivers/clk/mediatek/clk-mtk.c:583 mtk_clk_simple_probe() warn:
+    'base' from of_iomap() not released on lines: 496.
 
-Signed-off-by: Anatolii Shirykalov <pipocavsobake@gmail.com>
-Link: https://patch.msgid.link/20260119145618.3171435-1-pipocavsobake@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This problem was also found in linux-next. In mtk_clk_simple_probe(),
+base is not released when handling errors
+if clk_data is not existed, which may cause a leak.
+So free_base should be added here to release base.
+
+Fixes: c58cd0e40ffa ("clk: mediatek: Add mtk_clk_simple_probe() to simplify clock providers")
+Signed-off-by: Bosi Zhang <u201911157@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230422084331.47198-1-u201911157@hust.edu.cn
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/clk/mediatek/clk-mtk.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index c4a4a06528b45..c18da0915baad 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -542,6 +542,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "15NBC1011"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK PM1503CDA"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
--- 
-2.51.0
-
+--- a/drivers/clk/mediatek/clk-mtk.c
++++ b/drivers/clk/mediatek/clk-mtk.c
+@@ -505,8 +505,10 @@ int mtk_clk_simple_probe(struct platform
+ 	num_clks += mcd->num_mux_clks;
+ 
+ 	clk_data = mtk_alloc_clk_data(num_clks);
+-	if (!clk_data)
+-		return -ENOMEM;
++	if (!clk_data) {
++		r = -ENOMEM;
++		goto free_base;
++	}
+ 
+ 	if (mcd->fixed_clks) {
+ 		r = mtk_clk_register_fixed_clks(mcd->fixed_clks,
+@@ -594,6 +596,7 @@ unregister_fixed_clks:
+ 					      mcd->num_fixed_clks, clk_data);
+ free_data:
+ 	mtk_free_clk_data(clk_data);
++free_base:
+ 	if (mcd->shared_io && base)
+ 		iounmap(base);
+ 
 
 
 
