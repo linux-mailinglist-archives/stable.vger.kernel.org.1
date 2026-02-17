@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-216958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDKmKqnSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:17 +0100
+	id WMTsDzbTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 956B5150192
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6293150305
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F33903013465
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D372304A23A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5FE3783B5;
-	Tue, 17 Feb 2026 20:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01517378821;
+	Tue, 17 Feb 2026 20:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxdJueRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLSDgbJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C06374178;
-	Tue, 17 Feb 2026 20:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90B937757F;
+	Tue, 17 Feb 2026 20:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360936; cv=none; b=HtVw7rJ5LaiP8/dSLTKulIbKcnMGQeOblhK0qOX/uCeedctq3EKBaXJCZNit5fpy9m7cRWDtMaI5bWrfnbNz6XBY4/s4yntRVCqjO3XnGYjAk7wE/HueyZqapQp1WUL2vakxQwTALz+DBBqsShSZ3CwEQVSKeNk67uJ3M1T+iOk=
+	t=1771361041; cv=none; b=FlVcDsKSKN+dSVbnB4JrP9wr/eXU9BtDUEMwzloCrxCQYeovGm96bFCR5naEEI7UDzcSuj8KNnU2UESU+9SrTAbd0txU2uC8S71thvRD1vp6rsrpi6vGYWGA7XPdYvGPcKZkY3a5S95zpJW46q3C1pj/aS7icHJzpNOhTJou2gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360936; c=relaxed/simple;
-	bh=d1QFskTWFS4Ibzop6XRK1QMhRTOgiPIe5MRxOf+Nnx4=;
+	s=arc-20240116; t=1771361041; c=relaxed/simple;
+	bh=Qn8E5KX2TvLdgtGkUXWgB6X+hYRU7J48mq9vnoGj1Es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXsqyzqGGatBe2wrMVac7ETxcT2JW2SXd0SRAhAceCTbwLTsoUJVDuQrAOFZ4fGtdu1bCgOq+vJtNG0nTcGvsO5sl76wKnVxPl6LUcXL9c6DnIb2vSGvJu/x0GHocJ28HzkAn4G7e/V7UBMIWypxouamAxCu2gqOBVjVX9Nf23Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxdJueRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B95EC4CEF7;
-	Tue, 17 Feb 2026 20:42:15 +0000 (UTC)
+	 MIME-Version; b=BQl9Fv76ctvsYfHEBTPKOhBM7LP3QOjmyQl3pCo69jI7UuWXHfnhnw/s6U5WL78J7xsYWqOYXsdtJQaemS7Ww9VlxnZk3Q/R9Z3I7YbghLYlHMVky7t/roPwfBQX07pdzjkyQ5bOU4i+L1+mClJ9uRiOiVp3qwTVj29/HKD8FvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLSDgbJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAEAC4CEF7;
+	Tue, 17 Feb 2026 20:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360935;
-	bh=d1QFskTWFS4Ibzop6XRK1QMhRTOgiPIe5MRxOf+Nnx4=;
+	s=korg; t=1771361041;
+	bh=Qn8E5KX2TvLdgtGkUXWgB6X+hYRU7J48mq9vnoGj1Es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oxdJueRwlacp+/ktn6H1/a0XBrmYznumohcrGDG6MY7slQMA+5ROgInKxXS+OjLcj
-	 3e1VTxqu5rQNic4C2+5jcKT9tin5Kvb6VbAqu+hY4pEIszlW+ouI2npeOmO5W9zkRq
-	 AeIaOBJLp/E53ovv0m7dyQUge7Iqx0EZOUIikqGE=
+	b=tLSDgbJO9r1dBnNgFwnfekwGuTHfHsGBdUD9RGzlN4J7YwH3DB1aQMt5xtFtpGgAD
+	 1U3BsZLeU55o+NpdqiZ+2kyaDa5YzBYcoQjhYP6fzxNrOlBiCiLj1nkBxbm13LfM5p
+	 KWJOI8BOz+wWxgf2ohWkfA1z1EjPdH6tfZuuKqOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 19/24] scsi: qla2xxx: Fix bsg_done() causing double free
+Subject: [PATCH 5.15 23/39] crypto: virtio - Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req
 Date: Tue, 17 Feb 2026 21:31:32 +0100
-Message-ID: <20260217200001.458847241@linuxfoundation.org>
+Message-ID: <20260217200003.823512382@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
-References: <20260217200000.708219618@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,104 +71,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216958-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216988-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,marvell.com:email,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 956B5150192
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,loongson.cn:email]
+X-Rspamd-Queue-Id: C6293150305
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit c2c68225b1456f4d0d393b5a8778d51bb0d5b1d0 ]
+[ Upstream commit 14f86a1155cca1176abf55987b2fce7f7fcb2455 ]
 
-Kernel panic observed on system,
+With function virtio_crypto_skcipher_crypt_req(), there is already
+virtqueue_kick() call with spinlock held in function
+__virtio_crypto_skcipher_do_req(). Remove duplicated virtqueue_kick()
+function call here.
 
-[5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000
-[5353358.825194] #PF: supervisor write access in kernel mode
-[5353358.825195] #PF: error_code(0x0002) - not-present page
-[5353358.825196] PGD 100006067 P4D 0
-[5353358.825198] Oops: 0002 [#1] PREEMPT SMP NOPTI
-[5353358.825200] CPU: 5 PID: 2132085 Comm: qlafwupdate.sub Kdump: loaded Tainted: G        W    L    -------  ---  5.14.0-503.34.1.el9_5.x86_64 #1
-[5353358.825203] Hardware name: HPE ProLiant DL360 Gen11/ProLiant DL360 Gen11, BIOS 2.44 01/17/2025
-[5353358.825204] RIP: 0010:memcpy_erms+0x6/0x10
-[5353358.825211] RSP: 0018:ff591da8f4f6b710 EFLAGS: 00010246
-[5353358.825212] RAX: ff5f5e897b024000 RBX: 0000000000007090 RCX: 0000000000001000
-[5353358.825213] RDX: 0000000000001000 RSI: ff591da8f4fed090 RDI: ff5f5e897b024000
-[5353358.825214] RBP: 0000000000010000 R08: ff5f5e897b024000 R09: 0000000000000000
-[5353358.825215] R10: ff46cf8c40517000 R11: 0000000000000001 R12: 0000000000008090
-[5353358.825216] R13: ff591da8f4f6b720 R14: 0000000000001000 R15: 0000000000000000
-[5353358.825218] FS:  00007f1e88d47740(0000) GS:ff46cf935f940000(0000) knlGS:0000000000000000
-[5353358.825219] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[5353358.825220] CR2: ff5f5e897b024000 CR3: 0000000231532004 CR4: 0000000000771ef0
-[5353358.825221] PKRU: 55555554
-[5353358.825222] Call Trace:
-[5353358.825223]  <TASK>
-[5353358.825224]  ? show_trace_log_lvl+0x1c4/0x2df
-[5353358.825229]  ? show_trace_log_lvl+0x1c4/0x2df
-[5353358.825232]  ? sg_copy_buffer+0xc8/0x110
-[5353358.825236]  ? __die_body.cold+0x8/0xd
-[5353358.825238]  ? page_fault_oops+0x134/0x170
-[5353358.825242]  ? kernelmode_fixup_or_oops+0x84/0x110
-[5353358.825244]  ? exc_page_fault+0xa8/0x150
-[5353358.825247]  ? asm_exc_page_fault+0x22/0x30
-[5353358.825252]  ? memcpy_erms+0x6/0x10
-[5353358.825253]  sg_copy_buffer+0xc8/0x110
-[5353358.825259]  qla2x00_process_vendor_specific+0x652/0x1320 [qla2xxx]
-[5353358.825317]  qla24xx_bsg_request+0x1b2/0x2d0 [qla2xxx]
-
-Most routines in qla_bsg.c call bsg_done() only for success cases.
-However a few invoke it for failure case as well leading to a double
-free. Validate before calling bsg_done().
-
+Fixes: d79b5d0bbf2e ("crypto: virtio - support crypto engine framework")
 Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-12-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ applied only to qla2x00_update_optrom() ]
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/crypto/virtio/virtio_crypto_algs.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -1523,8 +1523,9 @@ qla2x00_update_optrom(struct bsg_job *bs
- 	ha->optrom_buffer = NULL;
- 	ha->optrom_state = QLA_SWAITING;
- 	mutex_unlock(&ha->optrom_mutex);
--	bsg_job_done(bsg_job, bsg_reply->result,
--		       bsg_reply->reply_payload_rcv_len);
-+	if (!rval)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 	return rval;
+--- a/drivers/crypto/virtio/virtio_crypto_algs.c
++++ b/drivers/crypto/virtio/virtio_crypto_algs.c
+@@ -569,8 +569,6 @@ int virtio_crypto_skcipher_crypt_req(
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	virtqueue_kick(data_vq->vq);
+-
+ 	return 0;
  }
  
 
