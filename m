@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-216817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OkdDPRklGkFDgIAu9opvQ
-	(envelope-from <stable+bounces-216817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 13:54:12 +0100
+	id sNtXIVBllGkFDgIAu9opvQ
+	(envelope-from <stable+bounces-216818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 13:55:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C507714C288
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 13:54:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9D714C298
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 13:55:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2ED86300DF6F
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 12:54:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 658D9302A044
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 12:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00875355056;
-	Tue, 17 Feb 2026 12:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77A8355057;
+	Tue, 17 Feb 2026 12:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xR2cnFVA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GiIEgLNq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92FA355053
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 12:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA3E355053
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 12:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771332849; cv=none; b=dFDS07trWi87ePQivGWBwGHR/+LAGacNDRxUDiY5YR8wm5UhD+i63DM3sikBU1tr10Lpucd6UoyM7jzXtBE3mI8KFZbrXbNCB2T5DvvU1AuF/DII/4PeP9rVRLSSAAsGOgeQ4cyMeINUaAKHiNS6lL3pbGGqlA4hC3Zesniq9Fw=
+	t=1771332940; cv=none; b=Enkpjq57gAw/msWVWiCE9wp1Tlkg5o/jKNX6+lc5kLm6GGGPSgyIw++v7y+mjbgestk41kiz+8CCCzCV6FmJZ9x5Jh7FHaogqX+EQLam95QeGRchrPZ886VX+YWxgd92GpaQhC2VWrIhAJWhNoYKWHdEzpWfxEN19Bww8x81gpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771332849; c=relaxed/simple;
-	bh=C4AcQTeIIctmAJCzRDugCFPkV9uqh41UrXz4fkIzBm4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QRASm1XCdhZQNGy26AIACqjriPPMb2QZQGthtaGl+xuRtTbNezf5B28hAnHFS8OUMEYtZ9mqgeARlTicY4++MjZftmW0Ie7l2sG1JP0d1uhXwOjoclmC1NL8BqCuV6u0sNZiB4brRXUvAIClMAKsc8o/3kgi03KmRaZl+SfFIbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR2cnFVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED019C4CEF7;
-	Tue, 17 Feb 2026 12:54:08 +0000 (UTC)
+	s=arc-20240116; t=1771332940; c=relaxed/simple;
+	bh=lgaXrU0Qc5+cPN7zuTIJCw2qmcmzq1Ykcda2tUjzz88=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ueoFeECMe/ridLgnwcrTbBu2MJGJ0C8+mYqSKykK4saBoLMzRNWwWHClGsVF7JUtzdTitEk8BUrbeTBqEkWLV6TCWnsA7SBsP1mgCKjMDuVnl9DE3NaHb8HIvwh/9che7GDtQu8Y+4rRtLnFkIO4SC5NIbY0DX8tq3VH+Do9CCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GiIEgLNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C714BC4CEF7;
+	Tue, 17 Feb 2026 12:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771332849;
-	bh=C4AcQTeIIctmAJCzRDugCFPkV9uqh41UrXz4fkIzBm4=;
+	s=korg; t=1771332940;
+	bh=lgaXrU0Qc5+cPN7zuTIJCw2qmcmzq1Ykcda2tUjzz88=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xR2cnFVApE/hrnxeZ+9FKCqH1PZBd9LVvkVdFeh7gbBAVd5tqm1CvzHQzH/iX+yid
-	 TPJ8W3hECgrCjDIDzzIiN1NNBYqs5ti0AdTvr58sODP3617MVTl23hstwyfk29+wT9
-	 z7wgw5Lr1eQM/dGIR4tujl9+nRzbCTaw7PNVX3pY=
-Subject: FAILED: patch "[PATCH] f2fs: fix to do sanity check on node footer in" failed to apply to 5.10-stable tree
-To: chao@kernel.org,jaegeuk@kernel.org
+	b=GiIEgLNqSs3bEIDteqa9+xFvFWIbKJSnwEN2acQ58Il0Go5/Wx0a9dQv01km+jieG
+	 24xytRRh9W+4dU3gE2MsYdukfd2B5QxzmamjHyrlUx3Un8Ayv2Ph7YGdRkcUVLNA6C
+	 7uY8qey5wjv3tIyGXHwmwSHdfL3mMGwxACjCi1J4=
+Subject: WTF: patch "[PATCH] fbcon: Remove struct fbcon_display.inverse" was seriously submitted to be applied to the 6.19-stable tree?
+To: tzimmermann@suse.de,deller@gmx.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Feb 2026 13:53:45 +0100
-Message-ID: <2026021745-important-licorice-a81a@gregkh>
+Date: Tue, 17 Feb 2026 13:55:37 +0100
+Message-ID: <2026021737-quarry-wieldable-6c75@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,54 +55,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	SUBJECT_ENDS_QUESTION(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216817-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216818-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_TO(0.00)[suse.de,gmx.de,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,appspotmail.com:email,syzkaller.appspot.com:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C507714C288
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email]
+X-Rspamd-Queue-Id: DC9D714C298
 X-Rspamd-Action: no action
 
+The patch below was submitted to be applied to the 6.19-stable tree.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I fail to see how this patch meets the stable kernel rules as found at
+Documentation/process/stable-kernel-rules.rst.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 50ac3ecd8e05b6bcc350c71a4307d40c030ec7e4
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026021745-important-licorice-a81a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
+I could be totally wrong, and if so, please respond to 
+<stable@vger.kernel.org> and let me know why this patch should be
+applied.  Otherwise, it is now dropped from my patch queues, never to be
+seen again.
 
 thanks,
 
@@ -110,174 +103,28 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 50ac3ecd8e05b6bcc350c71a4307d40c030ec7e4 Mon Sep 17 00:00:00 2001
-From: Chao Yu <chao@kernel.org>
-Date: Mon, 12 Jan 2026 15:49:16 +0800
-Subject: [PATCH] f2fs: fix to do sanity check on node footer in
- {read,write}_end_io
+From 30baedeeeab524172abc0b58cb101e8df86b5be8 Mon Sep 17 00:00:00 2001
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Date: Mon, 9 Feb 2026 17:15:43 +0100
+Subject: [PATCH] fbcon: Remove struct fbcon_display.inverse
 
------------[ cut here ]------------
-kernel BUG at fs/f2fs/data.c:358!
-Call Trace:
- <IRQ>
- blk_update_request+0x5eb/0xe70 block/blk-mq.c:987
- blk_mq_end_request+0x3e/0x70 block/blk-mq.c:1149
- blk_complete_reqs block/blk-mq.c:1224 [inline]
- blk_done_softirq+0x107/0x160 block/blk-mq.c:1229
- handle_softirqs+0x283/0x870 kernel/softirq.c:579
- __do_softirq kernel/softirq.c:613 [inline]
- invoke_softirq kernel/softirq.c:453 [inline]
- __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1050
- </IRQ>
+The field inverse in struct fbcon_display is unused. Remove it.
 
-In f2fs_write_end_io(), it detects there is inconsistency in between
-node page index (nid) and footer.nid of node page.
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-If footer of node page is corrupted in fuzzed image, then we load corrupted
-node page w/ async method, e.g. f2fs_ra_node_pages() or f2fs_ra_node_page(),
-in where we won't do sanity check on node footer, once node page becomes
-dirty, we will encounter this bug after node page writeback.
-
-Cc: stable@kernel.org
-Reported-by: syzbot+803dd716c4310d16ff3a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=803dd716c4310d16ff3a
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index f461f1318b4c..9b70b6d33703 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -172,6 +172,11 @@ static void f2fs_finish_read_bio(struct bio *bio, bool in_task)
- 		while (nr_pages--)
- 			dec_page_count(F2FS_F_SB(folio), __read_io_type(folio));
- 
-+		if (F2FS_F_SB(folio)->node_inode && is_node_folio(folio) &&
-+			f2fs_sanity_check_node_footer(F2FS_F_SB(folio),
-+				folio, folio->index, NODE_TYPE_REGULAR, true))
-+			bio->bi_status = BLK_STS_IOERR;
-+
- 		if (finished)
- 			folio_end_read(folio, bio->bi_status == BLK_STS_OK);
- 	}
-@@ -374,8 +379,11 @@ static void f2fs_write_end_io(struct bio *bio)
- 						STOP_CP_REASON_WRITE_FAIL);
- 		}
- 
--		f2fs_bug_on(sbi, is_node_folio(folio) &&
--				folio->index != nid_of_node(folio));
-+		if (is_node_folio(folio)) {
-+			f2fs_sanity_check_node_footer(sbi, folio,
-+				folio->index, NODE_TYPE_REGULAR, true);
-+			f2fs_bug_on(sbi, folio->index != nid_of_node(folio));
-+		}
- 
- 		dec_page_count(sbi, type);
- 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index ae78b8e1ca0c..d41210a381cd 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1572,6 +1572,14 @@ enum f2fs_lookup_mode {
- 	LOOKUP_AUTO,
- };
- 
-+/* For node type in __get_node_folio() */
-+enum node_type {
-+	NODE_TYPE_REGULAR,
-+	NODE_TYPE_INODE,
-+	NODE_TYPE_XATTR,
-+	NODE_TYPE_NON_INODE,
-+};
-+
- /* a threshold of maximum elapsed time in critical region to print tracepoint */
- #define MAX_LOCK_ELAPSED_TIME		500
- 
-@@ -3915,6 +3923,9 @@ struct folio *f2fs_new_node_folio(struct dnode_of_data *dn, unsigned int ofs);
- void f2fs_ra_node_page(struct f2fs_sb_info *sbi, nid_t nid);
- struct folio *f2fs_get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
- 						enum node_type node_type);
-+int f2fs_sanity_check_node_footer(struct f2fs_sb_info *sbi,
-+					struct folio *folio, pgoff_t nid,
-+					enum node_type ntype, bool in_irq);
- struct folio *f2fs_get_inode_folio(struct f2fs_sb_info *sbi, pgoff_t ino);
- struct folio *f2fs_get_xnode_folio(struct f2fs_sb_info *sbi, pgoff_t xnid);
- int f2fs_move_node_folio(struct folio *node_folio, int gc_type);
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 30e26b878af0..efd4f176a1f4 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1511,9 +1511,9 @@ void f2fs_ra_node_page(struct f2fs_sb_info *sbi, nid_t nid)
- 	f2fs_folio_put(afolio, err ? true : false);
- }
- 
--static int sanity_check_node_footer(struct f2fs_sb_info *sbi,
-+int f2fs_sanity_check_node_footer(struct f2fs_sb_info *sbi,
- 					struct folio *folio, pgoff_t nid,
--					enum node_type ntype)
-+					enum node_type ntype, bool in_irq)
- {
- 	if (unlikely(nid != nid_of_node(folio)))
- 		goto out_err;
-@@ -1538,12 +1538,13 @@ static int sanity_check_node_footer(struct f2fs_sb_info *sbi,
- 		goto out_err;
- 	return 0;
- out_err:
--	f2fs_warn(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
--		  "node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
--		  ntype, nid, nid_of_node(folio), ino_of_node(folio),
--		  ofs_of_node(folio), cpver_of_node(folio),
--		  next_blkaddr_of_node(folio));
- 	set_sbi_flag(sbi, SBI_NEED_FSCK);
-+	f2fs_warn_ratelimited(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
-+		"node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
-+		ntype, nid, nid_of_node(folio), ino_of_node(folio),
-+		ofs_of_node(folio), cpver_of_node(folio),
-+		next_blkaddr_of_node(folio));
-+
- 	f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
- 	return -EFSCORRUPTED;
- }
-@@ -1589,7 +1590,7 @@ static struct folio *__get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
- 		goto out_err;
- 	}
- page_hit:
--	err = sanity_check_node_footer(sbi, folio, nid, ntype);
-+	err = f2fs_sanity_check_node_footer(sbi, folio, nid, ntype, false);
- 	if (!err)
- 		return folio;
- out_err:
-@@ -1764,7 +1765,8 @@ static bool __write_node_folio(struct folio *folio, bool atomic, bool *submitted
- 	/* get old block addr of this node page */
- 	nid = nid_of_node(folio);
- 
--	if (sanity_check_node_footer(sbi, folio, nid, NODE_TYPE_REGULAR)) {
-+	if (f2fs_sanity_check_node_footer(sbi, folio, nid,
-+					NODE_TYPE_REGULAR, false)) {
- 		f2fs_handle_critical_error(sbi, STOP_CP_REASON_CORRUPTED_NID);
- 		goto redirty_out;
- 	}
-diff --git a/fs/f2fs/node.h b/fs/f2fs/node.h
-index 9cb8dcf8d417..824ac9f0e6e4 100644
---- a/fs/f2fs/node.h
-+++ b/fs/f2fs/node.h
-@@ -52,14 +52,6 @@ enum {
- 	IS_PREALLOC,		/* nat entry is preallocated */
- };
- 
--/* For node type in __get_node_folio() */
--enum node_type {
--	NODE_TYPE_REGULAR,
--	NODE_TYPE_INODE,
--	NODE_TYPE_XATTR,
--	NODE_TYPE_NON_INODE,
--};
--
- /*
-  * For node information
-  */
+diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
+index 1cd10a7faab0..fca14e9b729b 100644
+--- a/drivers/video/fbdev/core/fbcon.h
++++ b/drivers/video/fbdev/core/fbcon.h
+@@ -30,7 +30,6 @@ struct fbcon_display {
+ #ifdef CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION
+     u_short scrollmode;             /* Scroll Method, use fb_scrollmode() */
+ #endif
+-    u_short inverse;                /* != 0 text black on white as default */
+     short yscroll;                  /* Hardware scrolling */
+     int vrows;                      /* number of virtual rows */
+     int cursor_shape;
 
 
