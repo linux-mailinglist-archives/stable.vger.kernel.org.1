@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-216963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNW7L+HSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:13 +0100
+	id eNiEGybTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1988A150201
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4DC1502E1
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 458843044092
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F19D33013AA2
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC7537881F;
-	Tue, 17 Feb 2026 20:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72EFF378821;
+	Tue, 17 Feb 2026 20:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sb7lWGRW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DKwFWbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E7F377563;
-	Tue, 17 Feb 2026 20:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E5537646D;
+	Tue, 17 Feb 2026 20:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360952; cv=none; b=tSaXrUoj4PyA/tZSbKrncPc4i43UUTMSe7HWTyzwJu43WUOgxM5R4fRISNCM8SMCY196bWW/omCvK5s6f6Jmx7PM6dAMgWHtmxhwJpqxR9l+OFTPl0PJLg+9NZnjaQ7DBw8gdAoJ7KQ5BpX/p/hZmEONnE8TYNRUnPu//SBo68c=
+	t=1771361055; cv=none; b=JokBjbJa3ALIf0+lVP8/8DzzRrEoJ/8nFx9ypNlWL73oIldZg1DXJR6dEIYnkIKnHfsEeZp/JY4mjz/GY9Im3vNICYcQJw/tJ/2oTgfqKzpWS3miWzbi/yy/djB1mXsT0ixHYeNxgEeGTFMcBFSkcuviOGGmtLvypC57rq6pLIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360952; c=relaxed/simple;
-	bh=QAULLIIeL6kDo1xY06WdBMC2o3WIN+xK7ZspELDQ8SM=;
+	s=arc-20240116; t=1771361055; c=relaxed/simple;
+	bh=TEgtaoqr2/eFwP8oX34IjzYijteXCb9dbY2VIBa31H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=riCuXT2lfXTFe/qwjdzRf/7+d7oW7cIz1guR5sSfqA7GdY4N0tWgEF4nso6n2mnR78twtenKvyKp2FMqzefzGO6q7B+DMi+hErUxC6XAHwYiAi3q5Z9SJQzn0KUI+7jSyiAwkYwQHaCXVhcnRozfHQhbx9oH6j/OJ9PGYPTroLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sb7lWGRW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE30C4CEF7;
-	Tue, 17 Feb 2026 20:42:32 +0000 (UTC)
+	 MIME-Version; b=K18GQTW2CFEEOydSewIUzwxwxAVPpIiMfdPTGsQ2L6Uhs0B3NXBLqtwFTZPlkQPKj3AzziuzDhNbmgmtr44846nUyyg11omV4S6tkimXuMabgvOOQInS14TymcJETHAEpGYo+R4P40m/pWqn1bAg9itllhmKOEV44xlg4k03XEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DKwFWbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C27AC4CEF7;
+	Tue, 17 Feb 2026 20:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360952;
-	bh=QAULLIIeL6kDo1xY06WdBMC2o3WIN+xK7ZspELDQ8SM=;
+	s=korg; t=1771361055;
+	bh=TEgtaoqr2/eFwP8oX34IjzYijteXCb9dbY2VIBa31H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sb7lWGRWdT6G1xW+Ux9oxwi+f3+NAteGAxC4SmPhJWIJAn7eg6+4IsGjgXzREqk7I
-	 SkCFeDTYNlOL2LnaCcVNst3EbVBGtjSdoSG/woQibH/8pOMdUyWOIzqJmx7To1uLzX
-	 +fgRAKXY7ZfQMfXJLLiWX9NbVoyNAMRnJ7MC9Bkk=
+	b=2DKwFWbZfWtoT627UpCwLuyk5h9JEkla7niT2UtV1uGxsB9e7PSd9yQ64ujPS9Ipz
+	 wwRWncnn/FyGvDvZb+kiSklpSsbceSJlByoYVv4MV1Yox1fWB50yvWbPMry6J5z9z+
+	 Wy3ruvHqXd9+zk79TKhNq9zc1xpAlp7qaXk3BkZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 23/24] f2fs: fix to avoid UAF in f2fs_write_end_io()
+Subject: [PATCH 5.15 27/39] scsi: qla2xxx: Fix bsg_done() causing double free
 Date: Tue, 17 Feb 2026 21:31:36 +0100
-Message-ID: <20260217200001.609203814@linuxfoundation.org>
+Message-ID: <20260217200003.978006268@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
-References: <20260217200000.708219618@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,8 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
@@ -78,100 +77,146 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216963-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216992-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,b4444e3c972a7a124187];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 1988A150201
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email]
+X-Rspamd-Queue-Id: EE4DC1502E1
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-[ Upstream commit ce2739e482bce8d2c014d76c4531c877f382aa54 ]
+[ Upstream commit c2c68225b1456f4d0d393b5a8778d51bb0d5b1d0 ]
 
-As syzbot reported an use-after-free issue in f2fs_write_end_io().
+Kernel panic observed on system,
 
-It is caused by below race condition:
+[5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000
+[5353358.825194] #PF: supervisor write access in kernel mode
+[5353358.825195] #PF: error_code(0x0002) - not-present page
+[5353358.825196] PGD 100006067 P4D 0
+[5353358.825198] Oops: 0002 [#1] PREEMPT SMP NOPTI
+[5353358.825200] CPU: 5 PID: 2132085 Comm: qlafwupdate.sub Kdump: loaded Tainted: G        W    L    -------  ---  5.14.0-503.34.1.el9_5.x86_64 #1
+[5353358.825203] Hardware name: HPE ProLiant DL360 Gen11/ProLiant DL360 Gen11, BIOS 2.44 01/17/2025
+[5353358.825204] RIP: 0010:memcpy_erms+0x6/0x10
+[5353358.825211] RSP: 0018:ff591da8f4f6b710 EFLAGS: 00010246
+[5353358.825212] RAX: ff5f5e897b024000 RBX: 0000000000007090 RCX: 0000000000001000
+[5353358.825213] RDX: 0000000000001000 RSI: ff591da8f4fed090 RDI: ff5f5e897b024000
+[5353358.825214] RBP: 0000000000010000 R08: ff5f5e897b024000 R09: 0000000000000000
+[5353358.825215] R10: ff46cf8c40517000 R11: 0000000000000001 R12: 0000000000008090
+[5353358.825216] R13: ff591da8f4f6b720 R14: 0000000000001000 R15: 0000000000000000
+[5353358.825218] FS:  00007f1e88d47740(0000) GS:ff46cf935f940000(0000) knlGS:0000000000000000
+[5353358.825219] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[5353358.825220] CR2: ff5f5e897b024000 CR3: 0000000231532004 CR4: 0000000000771ef0
+[5353358.825221] PKRU: 55555554
+[5353358.825222] Call Trace:
+[5353358.825223]  <TASK>
+[5353358.825224]  ? show_trace_log_lvl+0x1c4/0x2df
+[5353358.825229]  ? show_trace_log_lvl+0x1c4/0x2df
+[5353358.825232]  ? sg_copy_buffer+0xc8/0x110
+[5353358.825236]  ? __die_body.cold+0x8/0xd
+[5353358.825238]  ? page_fault_oops+0x134/0x170
+[5353358.825242]  ? kernelmode_fixup_or_oops+0x84/0x110
+[5353358.825244]  ? exc_page_fault+0xa8/0x150
+[5353358.825247]  ? asm_exc_page_fault+0x22/0x30
+[5353358.825252]  ? memcpy_erms+0x6/0x10
+[5353358.825253]  sg_copy_buffer+0xc8/0x110
+[5353358.825259]  qla2x00_process_vendor_specific+0x652/0x1320 [qla2xxx]
+[5353358.825317]  qla24xx_bsg_request+0x1b2/0x2d0 [qla2xxx]
 
-loop device				umount
-- worker_thread
- - loop_process_work
-  - do_req_filebacked
-   - lo_rw_aio
-    - lo_rw_aio_complete
-     - blk_mq_end_request
-      - blk_update_request
-       - f2fs_write_end_io
-        - dec_page_count
-        - folio_end_writeback
-					- kill_f2fs_super
-					 - kill_block_super
-					  - f2fs_put_super
-					 : free(sbi)
-       : get_pages(, F2FS_WB_CP_DATA)
-         accessed sbi which is freed
+Most routines in qla_bsg.c call bsg_done() only for success cases.
+However a few invoke it for failure case as well leading to a double
+free. Validate before calling bsg_done().
 
-In kill_f2fs_super(), we will drop all page caches of f2fs inodes before
-call free(sbi), it guarantee that all folios should end its writeback, so
-it should be safe to access sbi before last folio_end_writeback().
-
-Let's relocate ckpt thread wakeup flow before folio_end_writeback() to
-resolve this issue.
-
-Cc: stable@kernel.org
-Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint for better performance")
-Reported-by: syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b4444e3c972a7a124187
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ folio => page ]
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-12-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_bsg.c |   25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -379,14 +379,20 @@ static void f2fs_write_end_io(struct bio
- 					page->index != nid_of_node(page));
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -1546,8 +1546,9 @@ qla2x00_update_optrom(struct bsg_job *bs
+ 	ha->optrom_buffer = NULL;
+ 	ha->optrom_state = QLA_SWAITING;
+ 	mutex_unlock(&ha->optrom_mutex);
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		       bsg_reply->reply_payload_rcv_len);
++	if (!rval)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 	return rval;
+ }
  
- 		dec_page_count(sbi, type);
-+
-+		/*
-+		 * we should access sbi before end_page_writeback() to
-+		 * avoid racing w/ kill_f2fs_super()
-+		 */
-+		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
-+				wq_has_sleeper(&sbi->cp_wait))
-+			wake_up(&sbi->cp_wait);
-+
- 		if (f2fs_in_warm_node_list(sbi, page))
- 			f2fs_del_fsync_node_entry(sbi, page);
- 		clear_cold_data(page);
- 		end_page_writeback(page);
- 	}
--	if (!get_pages(sbi, F2FS_WB_CP_DATA) &&
--				wq_has_sleeper(&sbi->cp_wait))
--		wake_up(&sbi->cp_wait);
+@@ -2525,8 +2526,9 @@ qla2x00_manage_host_stats(struct bsg_job
+ 				    sizeof(struct ql_vnd_mng_host_stats_resp));
  
- 	bio_put(bio);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	return ret;
+ }
+@@ -2615,8 +2617,9 @@ qla2x00_get_host_stats(struct bsg_job *b
+ 							       bsg_job->reply_payload.sg_cnt,
+ 							       data, response_len);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	kfree(data);
+ host_stat_out:
+@@ -2715,8 +2718,9 @@ reply:
+ 				    bsg_job->reply_payload.sg_cnt, data,
+ 				    response_len);
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ tgt_stat_out:
+ 	kfree(data);
+@@ -2777,8 +2781,9 @@ qla2x00_manage_host_port(struct bsg_job
+ 				    bsg_job->reply_payload.sg_cnt, &rsp_data,
+ 				    sizeof(struct ql_vnd_mng_host_port_resp));
+ 	bsg_reply->result = DID_OK;
+-	bsg_job_done(bsg_job, bsg_reply->result,
+-		     bsg_reply->reply_payload_rcv_len);
++	if (!ret)
++		bsg_job_done(bsg_job, bsg_reply->result,
++			     bsg_reply->reply_payload_rcv_len);
+ 
+ 	return ret;
  }
 
 
