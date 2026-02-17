@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-217065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0C7oNivUlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-217065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:43 +0100
+	id 4PhrLlvVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175A4150520
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303CC1507D7
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4208F3002D0E
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C82D330498C9
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF8128C009;
-	Tue, 17 Feb 2026 20:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC0F2E973A;
+	Tue, 17 Feb 2026 20:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8OfpLdG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bppy224u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4802773E4;
-	Tue, 17 Feb 2026 20:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2F8284B3B;
+	Tue, 17 Feb 2026 20:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361303; cv=none; b=KZgC9soB9P+TgJOP7tBv6EeS/BniRS38k3YDfqeJNIxzKMxOZsmDQrZu8QgybSzmP2B/ktT3yPc71VOxut6hCSxnq2wYJ8Lj+V0Qz2oTx/SHAypJO5Cc03/t1coYR0NPyCzXMH/tLBy58krgLJQZipw1+3sY4aHcSB0eV+2LG0E=
+	t=1771361615; cv=none; b=Aw9CBgp7rZoPMfP4oQ13bR2v0pDmGbPMOiZvQTbct1LMhPfKXMitVQeAva8ve0+eLGI+bc3GOlSTmFZP+lHi/Se4WpRzP+IUwd2WnLjcPGXEaupivP+Nw6gLsB3tyNI5LCal2tpjzIs270UokO2jxiIzFUNtPwk3PwKUNbkK7Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361303; c=relaxed/simple;
-	bh=Y8P+cPFbq4Pa/ygT5gtRzRzUrSRP4Iemh0Gp1k78YA0=;
+	s=arc-20240116; t=1771361615; c=relaxed/simple;
+	bh=W1Qly+XDMYls3vM+JqAcvi8a3CTdc6hseMijT/+bhfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nh0bMLU97YS+7jzJrucTaGQoYrBCLfcK92nTCyZ4LXNYuEN4nZ7m2NTAOsbiDc/FcUkPFN4vrfMFZJ6HS1NjhS+K1Midmj/xGROxm67N0coAuppV9a/IZ24NMHWl9moyDSRlcaXAaFc1gBNGw6whtSm66g8PBCN6gAqEz6Wki+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8OfpLdG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C06FC4CEF7;
-	Tue, 17 Feb 2026 20:48:22 +0000 (UTC)
+	 MIME-Version; b=adwILUjKfNxdc6Hnc10ATMqr3WhXyoBPRXjhDCwZjtjq3ZLlaWK7z371RVMhDrTIJ8wdH7eT2gdeCa/B8Y6vs2KuUqrhp4v1DdnScegw3HquzttwSww547fwGHfnVu74FNZvETMu/jDsYyudnCsAJGVxg+++puzeh6n1+gawPjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bppy224u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41CFC4CEF7;
+	Tue, 17 Feb 2026 20:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361303;
-	bh=Y8P+cPFbq4Pa/ygT5gtRzRzUrSRP4Iemh0Gp1k78YA0=;
+	s=korg; t=1771361615;
+	bh=W1Qly+XDMYls3vM+JqAcvi8a3CTdc6hseMijT/+bhfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8OfpLdGXIXml27ItVDV0CS/ID+huuHiT1n6cX8i07lIpD9Q3kjMCKiXKi4Sr0zFc
-	 MOSSED+o3JSPz0zkzyAFviwjiSMKpvpQmfKQ/d4m+yQRTcsmBxBzAH8ifoASQGYM74
-	 RhRBOex5W2u2Yl6SJGaE4TQ7NvZ3Iw0/Hgjv4EuM=
+	b=bppy224umEakRHU948YbteQyC0CYidbjvata+SMgt3s0KIFONY20wZGXMZ9LLMP/s
+	 +3nd+j3Y+/uM7uKTOk/0ml9fvygueiVExf3TKl1bl/xoFXiMs48tUQOY4mdDpf9Ghs
+	 g+cneLbqbnULfk06ky28+ADygQXtHp12hmNqbqIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchu Chen <flynnnchen@tencent.com>,
-	stable <stable@kernel.org>,
-	Steve Glendinning <steve.glendinning@shawell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 59/64] fbdev: smscufx: properly copy ioctl memory to kernelspace
+	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 04/42] bus: fsl-mc: Replace snprintf and sprintf with sysfs_emit in sysfs show functions
 Date: Tue, 17 Feb 2026 21:31:55 +0100
-Message-ID: <20260217200009.716409153@linuxfoundation.org>
+Message-ID: <20260217200006.171512081@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,17 +70,17 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217065-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217156-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tencent.com,kernel.org,shawell.net,gmx.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,csgroup.eu,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,67 +91,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gmx.de:email,shawell.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 175A4150520
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[csgroup.eu:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,nxp.com:email]
+X-Rspamd-Queue-Id: 303CC1507D7
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
 
-commit 120adae7b42faa641179270c067864544a50ab69 upstream.
+[ Upstream commit a50522c805a6c575c80f41b04706e084d814e116 ]
 
-The UFX_IOCTL_REPORT_DAMAGE ioctl does not properly copy data from
-userspace to kernelspace, and instead directly references the memory,
-which can cause problems if invalid data is passed from userspace.  Fix
-this all up by correctly copying the memory before accessing it within
-the kernel.
+Use sysfs_emit() instead of snprintf()/sprintf()  when writing
+to sysfs buffers, as recommended by the kernel documentation.
 
-Reported-by: Tianchu Chen <flynnnchen@tencent.com>
-Cc: stable <stable@kernel.org>
-Cc: Steve Glendinning <steve.glendinning@shawell.net>
-Cc: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+Acked-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20250822124339.1739290-1-chelsyratnawat2001@gmail.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Stable-dep-of: 148891e95014 ("bus: fsl-mc: fix use-after-free in driver_override_show()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/smscufx.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/bus/fsl-mc/fsl-mc-bus.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/video/fbdev/smscufx.c
-+++ b/drivers/video/fbdev/smscufx.c
-@@ -988,7 +988,6 @@ static int ufx_ops_ioctl(struct fb_info
- 			 unsigned long arg)
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -175,8 +175,8 @@ static ssize_t modalias_show(struct devi
  {
- 	struct ufx_data *dev = info->par;
--	struct dloarea *area = NULL;
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
  
- 	if (!atomic_read(&dev->usb_active))
- 		return 0;
-@@ -1003,6 +1002,10 @@ static int ufx_ops_ioctl(struct fb_info
+-	return sprintf(buf, "fsl-mc:v%08Xd%s\n", mc_dev->obj_desc.vendor,
+-		       mc_dev->obj_desc.type);
++	return sysfs_emit(buf, "fsl-mc:v%08Xd%s\n", mc_dev->obj_desc.vendor,
++			mc_dev->obj_desc.type);
+ }
+ static DEVICE_ATTR_RO(modalias);
  
- 	/* TODO: Help propose a standard fb.h ioctl to report mmap damage */
- 	if (cmd == UFX_IOCTL_REPORT_DAMAGE) {
-+		struct dloarea *area __free(kfree) = kmalloc(sizeof(*area), GFP_KERNEL);
-+		if (!area)
-+			return -ENOMEM;
-+
- 		/* If we have a damage-aware client, turn fb_defio "off"
- 		 * To avoid perf imact of unnecessary page fault handling.
- 		 * Done by resetting the delay for this fb_info to a very
-@@ -1012,7 +1015,8 @@ static int ufx_ops_ioctl(struct fb_info
- 		if (info->fbdefio)
- 			info->fbdefio->delay = UFX_DEFIO_WRITE_DISABLE;
+@@ -202,7 +202,7 @@ static ssize_t driver_override_show(stru
+ {
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
  
--		area = (struct dloarea *)arg;
-+		if (copy_from_user(area, (u8 __user *)arg, sizeof(*area)))
-+			return -EFAULT;
+-	return snprintf(buf, PAGE_SIZE, "%s\n", mc_dev->driver_override);
++	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
+ }
+ static DEVICE_ATTR_RW(driver_override);
  
- 		if (area->x < 0)
- 			area->x = 0;
 
 
 
