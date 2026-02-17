@@ -1,160 +1,255 @@
-Return-Path: <stable+bounces-216759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GDW3FICok2nI7QEAu9opvQ
-	(envelope-from <stable+bounces-216759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 00:30:08 +0100
+	id yAFjHua9k2l78AEAu9opvQ
+	(envelope-from <stable+bounces-216760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 02:01:26 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24BD148155
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 00:30:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16762148579
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 02:01:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32823301692A
-	for <lists+stable@lfdr.de>; Mon, 16 Feb 2026 23:30:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 475713018BD9
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 01:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369642F1FFE;
-	Mon, 16 Feb 2026 23:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF581DB375;
+	Tue, 17 Feb 2026 01:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bnFEokJW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6LDH9f0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD0A2EB87D;
-	Mon, 16 Feb 2026 23:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB1A17C77;
+	Tue, 17 Feb 2026 01:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771284602; cv=none; b=SWKIJWGYweX8eiq77AowXwT++5f7j8vzUonClEYMXTcp3fTSTPB97YkZKf7YzaKHJaoxrAwMUZYEcgLCOfKXpthf4jOA49nRp8hZwr46V/5s6vDQSAxEZ8dFyA5HQgOMSGtQeezg4/qjkBSuREUVdsYM+q7vXblf/MVPdValeFU=
+	t=1771290081; cv=none; b=cyarXv8Ko/eJz3OETe1aLv2n35jWF4qDnH4fGJclTowz0/WyyFb9keqAihr/AnXHYDp+hSwkx+DYs2cnRu+KTpbrveM7m1svOxge7vzO97pp4HrhMQpDN31lYNIDCOIuhxwfQIQ0a4WKc1nzdZGEJe0g9b74THxSo/IfACfxrro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771284602; c=relaxed/simple;
-	bh=zJni9qH/aXdFgGEL8tygAGQGCbtksHU+HEbi5M5fT7Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ysh4kxIaqr54QfxUPf9WmsAK4tWsSjFNCou6KLwMns2r33BZhcvbzw9cvkM3rqiGTBzP0911XfKnTxjvWfjgSGwRDkBLyefh85FlS7r7/3jATH9ZuhXYDFK0omgxY6/FySyWwIfJCzpmCnQ3GZh5Z6xkh8l2UzaSn6EfW9X47wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bnFEokJW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2192FC116C6;
-	Mon, 16 Feb 2026 23:29:59 +0000 (UTC)
+	s=arc-20240116; t=1771290081; c=relaxed/simple;
+	bh=zu+6+bYRrKvVpVeMt3FoPRQqWS+069PP7MlrY5geJFk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FNOJNYOkHSG1yaHyy8l5YUyYtBee8SHJBjlvoiWkKu7XjeF3BG+NCq2WOiq4uaVq26EHiLXeoEL7Y75I39dCz9nHy8SmWytNvy6DXksMMvNPbZTve9c5JZTcEf+ZUCp3UxXVHdTobTrq/N/IElAYFikdjvTarMFXQ+ts2OSRHc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g6LDH9f0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B239BC116C6;
+	Tue, 17 Feb 2026 01:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771284601;
-	bh=zJni9qH/aXdFgGEL8tygAGQGCbtksHU+HEbi5M5fT7Y=;
-	h=From:Date:Subject:To:Cc:From;
-	b=bnFEokJWobDiDZXIc48kqdT7LLlAchC14mQP3yNjJx1EzCW+D9GS7jy4dSrxBqMYB
-	 sEtqQVfvWBQjBgf6uyJYTNY2kyqzEK/Bd/X8wX9G7sGpR0MMLqXp2Lo16gR219sVeQ
-	 7bGhCgznvKChlq0FMdvIsSqWC4/dZA472uIDsIAy9QymW9tEpx9FN5N+zeFgrmUe2b
-	 hZmutSxbl3vl3XmDWzKWlUlM7YaqjGzqLYho5O5TnaXYCjRGPEB8mVc9Z8iKNN5OFa
-	 7zGfbCqyx5FS3Xcw7chxHU8s13SqHNXSjGhQdVSRUm5wZA4E6BmNZglz10DJNu7JT5
-	 1DVTvKIWdN8HQ==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Mon, 16 Feb 2026 16:29:54 -0700
-Subject: [PATCH] kbuild: rpm-pkg: Disable automatic requires for manual
- debuginfo package
+	s=k20201202; t=1771290080;
+	bh=zu+6+bYRrKvVpVeMt3FoPRQqWS+069PP7MlrY5geJFk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=g6LDH9f0gvlMLgfjpDKgIi9BkVwXGtiXA6prigsBZVk/Yd6sxNxirYTbAsZSURHAU
+	 jOx4nKMZ3GmEIC4sLyXuEyWRN9xtP4aVN/inCPiP2PUkwEMtrfzGLzeoxR8B7istGu
+	 k+F6c/zeI3Ed8XYggnBNB6haOJaXbDmzD1ox5kKoSxgk0bO3/858y/I6CSikg1+7aZ
+	 xf0zaYEwpsTLdGLIy44P3ul41tGlm5h2ekcQDzTCWVYyvy0doHuN0rXD8Ck3Y4rjji
+	 S0a3DPC7+QxvEfk10LfMyabIZgQ8gsZ/h6dy/OWOlBRrXXVQ5Y+/f/3ZGSeAwrP5eF
+	 xxtZB8RAHOvCA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Brian Masney <bmasney@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Sasha Levin <sashal@kernel.org>,
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-5.10] clk: microchip: core: correct return value on *_get_parent()
+Date: Mon, 16 Feb 2026 20:01:12 -0500
+Message-ID: <20260217010118.3503621-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19.2
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260216-improve-manual-debuginfo-template-v1-1-e584b3f8d3be@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNywrCMBBA0V8ps3agjVLEXxEXmXRSR5oHeRSh9
- N+N7fJs7t0gcxLO8Og2SLxKluAbhksH5q39zChTM6hejb0aRhQXU1gZnfZVLzgx1Vm8DVjYxUU
- XRrJ0tbe7MooMtE5MbOV7PJ6v07nSh035h2Hff0Ae0ImFAAAA
-X-Change-ID: 20260216-improve-manual-debuginfo-template-bfb3f482c2bc
-To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Stefano Garzarella <sgarzare@redhat.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2467; i=nathan@kernel.org;
- h=from:subject:message-id; bh=zJni9qH/aXdFgGEL8tygAGQGCbtksHU+HEbi5M5fT7Y=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDJmTV5RXaJo+3DlFSfEl18NaTr7bxnEirB33XE9f8H3p0
- PxwlfzxjlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRpL0M/0wqXs/I7ZiXsY5f
- NSlaxCPLkvlkurGD5fMNArfTXf5/OsXIsHx+8ZSJmu3XDOplxQ4J3o2YkxWoWcpmsOL41r01PzJ
- OMAMA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216760-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-216759-lists,stable=lfdr.de];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+]
-X-Rspamd-Queue-Id: F24BD148155
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tuxon.dev:email]
+X-Rspamd-Queue-Id: 16762148579
 X-Rspamd-Action: no action
 
-Stefano reports that after commit 62089b804895 ("kbuild: rpm-pkg:
-Generate debuginfo package manually"), building with an rpm package
-using rpm 4.20.0 fails with:
+From: Brian Masney <bmasney@redhat.com>
 
-  RPM build errors:
-      Dependency tokens must begin with alpha-numeric, '_' or '/': #�) = 0x0d000002
-      Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
-      Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
-      Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-      Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
-      Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
-      Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
+[ Upstream commit 5df96d141cccb37f0c3112a22fc1112ea48e9246 ]
 
-This error comes from the automatic requirements feature of rpm. The
--debuginfo subpackage has no dependencies, so disable this feature with
-'AutoReq: 0' for this subpackage, avoiding the error. This matches the
-official %_debug_template macro that rpm provides. While automatic
-provides should be default enabled, be explicit like %_debug_template
-does.
+roclk_get_parent() and sclk_get_parent() has the possibility of
+returning -EINVAL, however the framework expects this call to always
+succeed since the return value is unsigned.
 
-Additionally, while in the area, add the manual debug information
-package to the Development/Debug group, further aligning with
-%_debug_template.
+If there is no parent map defined, then the current value programmed in
+the hardware is used. Let's use that same value in the case where
+-EINVAL is currently returned.
 
-Cc: stable@vger.kernel.org
-Fixes: 62089b804895 ("kbuild: rpm-pkg: Generate debuginfo package manually")
-Reported-by: Stefano Garzarella <sgarzare@redhat.com>
-Closes: https://lore.kernel.org/CAGxU2F7FFNgb781_A7a1oL63n9Oy8wsyWceKhUpeZ6mLk=focw@mail.gmail.com/
-Tested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+This index is only used by clk_core_get_parent_by_index(), and it
+validates that it doesn't overflow the number of available parents.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202512050233.R9hAWsJN-lkp@intel.com/
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Link: https://lore.kernel.org/r/20251205-clk-microchip-fixes-v3-2-a02190705e47@redhat.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/package/kernel.spec | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index bccf58bdd45f..b3c956205af0 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -48,6 +48,9 @@ against the %{version} kernel package.
- %if %{with_debuginfo_manual}
- %package debuginfo
- Summary: Debug information package for the Linux kernel
-+Group: Development/Debug
-+AutoReq: 0
-+AutoProv: 1
- %description debuginfo
- This package provides debug information for the kernel image and modules from the
- %{version} package.
+LLM Generated explanations, may be completely bogus:
 
----
-base-commit: afdfb71c018e9a0aa2e51fb8186d3fb1acdd3f0e
-change-id: 20260216-improve-manual-debuginfo-template-bfb3f482c2bc
+The driver was introduced in 2016, around v4.7. This is very old code
+that has been in all stable trees.
 
-Best regards,
---  
-Nathan Chancellor <nathan@kernel.org>
+## Bug Classification
+
+This is a **type mismatch bug** where a signed error code (`-EINVAL`,
+which is -22) is returned from a function with unsigned `u8` return
+type. The framework API (`struct clk_ops.get_parent`) is defined as
+returning `u8`.
+
+When `-EINVAL` is returned as `u8`:
+- It becomes 234 (0xEA) due to unsigned truncation
+- This gets passed to `clk_core_get_parent_by_index()` which checks
+  bounds (`index >= core->num_parents`)
+- Since 234 is almost certainly larger than the number of parents, it
+  returns NULL
+- This means the clock has no parent set, which could cause
+  initialization failures or wrong clock behavior
+
+The fix replaces the `-EINVAL` return with returning the raw hardware
+register value `v`, which is what the function already does when
+`parent_map` is NULL. This is a sensible fallback - if the parent map
+doesn't contain the hardware value, use it directly (as if there's no
+map).
+
+## Risk Assessment
+
+**Very low risk:**
+- The change is small and contained (two functions, same pattern)
+- The logic change is straightforward: instead of returning an invalid
+  value on the "no match found" path, return the hardware register value
+- The fix is reviewed by the subsystem maintainer (Claudiu Beznea)
+- The code only affects Microchip PIC32 clock driver - very narrow scope
+- `clk_core_get_parent_by_index()` still performs bounds validation on
+  the returned value
+
+**Benefit:**
+- Prevents incorrect clock parent resolution on Microchip PIC32
+  platforms
+- Fixes a real type mismatch bug that was caught by static analysis
+  tools
+- The bug has existed since the driver was introduced (~v4.7), so all
+  stable trees are affected
+
+## Verification
+
+- **Verified:** `struct clk_ops.get_parent` returns `u8` (confirmed in
+  `include/linux/clk-provider.h`)
+- **Verified:** `clk_core_get_parent_by_index()` bounds-checks the index
+  against `num_parents` and returns NULL for out-of-range
+- **Verified:** `__clk_init_parent()` calls `.get_parent()` and passes
+  result to `clk_core_get_parent_by_index()`
+- **Verified:** `-EINVAL` is -22, which truncated to `u8` becomes 234
+  (0xEA), which would exceed any realistic parent count
+- **Verified:** The driver was introduced in 2016 (commit
+  ce6e118846599), so the bug exists in all stable trees
+- **Verified:** Reported by kernel test robot and Dan Carpenter (well-
+  known static analysis reporters)
+- **Verified:** Reviewed-by from Claudiu Beznea (subsystem maintainer)
+- **Verified:** The fix simply uses the raw hardware value `v` as
+  fallback, which is what the function already returns when `parent_map`
+  is NULL
+
+## Conclusion
+
+This commit fixes a real bug where two clock `get_parent` callbacks
+return a signed error code from a function with unsigned return type.
+The fix is small, obvious, well-reviewed, and low-risk. It affects a
+driver that has been in the kernel since v4.7, so all stable trees
+contain the buggy code. The fix follows the existing pattern in the code
+(using the hardware register value directly) and is the correct
+approach.
+
+**YES**
+
+ drivers/clk/microchip/clk-core.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/clk/microchip/clk-core.c b/drivers/clk/microchip/clk-core.c
+index b34348d491f3e..73c05aa4e1d60 100644
+--- a/drivers/clk/microchip/clk-core.c
++++ b/drivers/clk/microchip/clk-core.c
+@@ -283,14 +283,13 @@ static u8 roclk_get_parent(struct clk_hw *hw)
+ 
+ 	v = (readl(refo->ctrl_reg) >> REFO_SEL_SHIFT) & REFO_SEL_MASK;
+ 
+-	if (!refo->parent_map)
+-		return v;
+-
+-	for (i = 0; i < clk_hw_get_num_parents(hw); i++)
+-		if (refo->parent_map[i] == v)
+-			return i;
++	if (refo->parent_map) {
++		for (i = 0; i < clk_hw_get_num_parents(hw); i++)
++			if (refo->parent_map[i] == v)
++				return i;
++	}
+ 
+-	return -EINVAL;
++	return v;
+ }
+ 
+ static unsigned long roclk_calc_rate(unsigned long parent_rate,
+@@ -826,13 +825,13 @@ static u8 sclk_get_parent(struct clk_hw *hw)
+ 
+ 	v = (readl(sclk->mux_reg) >> OSC_CUR_SHIFT) & OSC_CUR_MASK;
+ 
+-	if (!sclk->parent_map)
+-		return v;
++	if (sclk->parent_map) {
++		for (i = 0; i < clk_hw_get_num_parents(hw); i++)
++			if (sclk->parent_map[i] == v)
++				return i;
++	}
+ 
+-	for (i = 0; i < clk_hw_get_num_parents(hw); i++)
+-		if (sclk->parent_map[i] == v)
+-			return i;
+-	return -EINVAL;
++	return v;
+ }
+ 
+ static int sclk_set_parent(struct clk_hw *hw, u8 index)
+-- 
+2.51.0
 
 
