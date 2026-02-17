@@ -1,80 +1,83 @@
-Return-Path: <stable+bounces-216895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MA0tLPHGlGnCHgIAu9opvQ
-	(envelope-from <stable+bounces-216895-lists+stable=lfdr.de@vger.kernel.org>)
+	id yFKrL/HGlGnCHgIAu9opvQ
+	(envelope-from <stable+bounces-216896-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F8C14FBD8
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F7614FBD9
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB3853039F47
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:52:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C230230151C1
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102C7376BCC;
-	Tue, 17 Feb 2026 19:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1665937757D;
+	Tue, 17 Feb 2026 19:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QCmOeHtt"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MGq6IDeB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA34C374191
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 19:52:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3DF37756F
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 19:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771357932; cv=none; b=lNpbYgPMqgZf2LiRIF1TPGY70kTbxsRbVQiRZqbGLA3bfzcIpN0ADC6vj+ewqg5F1PIcPZMK444v6WuYJGm9rs13RgYbWoQOaa/hRheUDKsIJJHeA7jdPvDmU046rdQRze/lr/Eim4DWNyP+39U3CO/JM0vRDplgepxWCqu4CDc=
+	t=1771357934; cv=none; b=K+1TJOyMaBIhxlOgmGUFQi6zmJ8urP/NeDGpsQzH+oOJ2SbMjatbEy1tNRrox3PAGFQxsqfswbcmWIhkMw+9Rriqmfs+XUoRppylCEE6WuUlGGAiEz1HZlXhljvz+I/2GQaAtBcV/L0CZ8GjGmYYfMGVvAV0C+i93tNFbgqD2nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771357932; c=relaxed/simple;
-	bh=QAh9ddtq7Dz85rBD9PFL6GeJN+c6Y9Y+BdaHw45ZPqg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MdLp+AqOkQQe87Y9X6jm+DQwwaPPYTh5xdXKwaQBCTsZUgg+qjvyNAObkjW1Blt41TOTCR01iGW3l6syY+Tm41eANixojQEGlSqcv/yiYgDIW1frcrvPewvKCoEyk2bSEaAf6bWk3Zf7V56TN5CDQOeHGYJnk2F5f0IL5LmcKVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QCmOeHtt; arc=none smtp.client-ip=209.85.216.73
+	s=arc-20240116; t=1771357934; c=relaxed/simple;
+	bh=SVG8i7ehnf8Sh3CUxVbwiZ2JC04QQz27yXdjfT5/0ME=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GwdGQmdPUOOjKvJr7bxYbXbAIz3E5yUwgyIQaFbldcuZeXht1owNawVI+178x4Kn0yIP3/6dE3DgzibvuL36sQNXBN6MhZNaaOR2N1cz/s8JFN2GxuBd7oncViPauWfWZ+eaEVpP8jFjqE5ZNHzJwAM9gjfv7Dokt9r0GXIgOIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MGq6IDeB; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-353c9d644b0so3292738a91.2
-        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 11:52:11 -0800 (PST)
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6e78c4aa50so1118480a12.0
+        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 11:52:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771357931; x=1771962731; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9RgEfztwvOzv5DTDkcz7UxOxV9Y+jclgufzwpjCJLFI=;
-        b=QCmOeHttTvTYwIOWH4hHr7fcr8yz0Vc+3isLHSssmzLXZUVxldBl6AepiWIsiuLbS3
-         hPArkN+GdXPJ2724Wc+UVKboylB9PghpaJEGQzjWMJVXkynSrTMTpYCnM5yTYQy+8UMx
-         Eqngxfd91OevwxbeO+CUycGZmai6FukZvqXShEPNfeEgsWDlrHLHYOVZA8boiNlnkJPA
-         dix0GkZYhm69cfaN0+7ZQCB2t/0+TkUIn/hs/57iAnuuScVWqKvigC+9gJ7xe2yyAXKB
-         5/0jiy7Mr1z5rji5y/P/AkE5dSRCg2ctPU02UoqAWLTjr+Y+3jFs/wEWBclu244ai6+/
-         VEjA==
+        d=google.com; s=20230601; t=1771357933; x=1771962733; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gNEMtbLKXUQx9GCb6azC6KXcHMyMlEXcuSKlA/96JpY=;
+        b=MGq6IDeB3eVo17xgiCWZmss28nC6S/BJlrl7H/fa/g6E3vat7dSj7ImsvHhNw1n3su
+         5I7G8XY/UMO/K49lCZRzIE6RDP6JyKXh3t1CgI8B55o00pIcxbrfr7+SHS6IgpC0ESr5
+         B5DcCdL56Wmng4aJWfaWYKvet/q89xJkk54DMzUaRIvwtEszMSOQJkTLJ4Ab2CPLV5tK
+         Hc7Z1jFg8+/8zIc6qdqMDVGNpGrhCMaKs/aDWejJHwRV9jgrmyDj9CmqCAabHFagNYng
+         97p3s9vwcn5AB8LGYZ22TK2A7d0leLGNL+DRxmPHOYra2WhC21DRAoEjaWz8is3XqiUq
+         B0pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771357931; x=1771962731;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9RgEfztwvOzv5DTDkcz7UxOxV9Y+jclgufzwpjCJLFI=;
-        b=sVQ8XFUojK5mMLxXb35Q2TMqAFf/CPJMXlxpd7eP9lAOJdC7hR1Kt+Eev9ASZoM2Dr
-         srAF8hT+zcOzz/IlPz6dKwYa8OrPbsPHn31Xw2ay+jJVaQmaB1N/jR/jjBuoggjNHjHF
-         7e2bgKTYwA9BX9qAs4OsykzJS2sAgUgElc05WWR6dNYrcWMrmIUI3aGJfkHbeXC0J+nJ
-         p3QPNaUIPfDBEWgk/hoJhXX0d7jnBv7SZbd6RVkZWEIjI5r6tgCZSoPlFZtzjMFQrHSP
-         1ysL2Vj3fLOIJCgLOmOvOyvvS0r5sUv7GjxiH8sElZ2Uf95SqFDYyUtitXigE/WE/KJn
-         FACA==
-X-Gm-Message-State: AOJu0Yx5jusPGz3qPNtzrfv0bM18DSnmMRP3DnbdHhbtnFqfKIh7eY3b
-	PZu/q3MHqeifgNEhFCcbt5ARMUz8wDqZvM2opYZxk2AF7otm9Jr/IGD5zETMJPrp9zw4gtS/nmJ
-	hheo5hreroc1Xvp0bw8+HsJnet9phdbLHhtLlxHP0tBvgTzRgQAodPo7nOUV3v1xlVZjJthHR5O
-	dMEj7AntLZIbRroaSZoM39exnr/3AfXkuiQhmhE9WhHAl6ywg=
-X-Received: from pjqq8.prod.google.com ([2002:a17:90b:5848:b0:354:9e6b:54af])
+        d=1e100.net; s=20230601; t=1771357933; x=1771962733;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gNEMtbLKXUQx9GCb6azC6KXcHMyMlEXcuSKlA/96JpY=;
+        b=fV/2lH34MekeWYj95Mpv/by/dxex71w8gv0dRrX4xQmPMMs0puet9j7mIb3MglFUam
+         uFK+JHz8vqt4X96iqa06+3eAl2SopZqwRpBVfOkncs8ECkUBwiTU7PkDGqcD2s2Xw6D4
+         zanRk+e+eJfVhP0LbDG266qupA8RKGPAbUS0q/1YugqxabxZGUcFau4WCIUe/r2CQEQ5
+         e/PsjCkkLpBCBtaiY27TTyGwwAVVzQLO1Sz7MCJQ0f08u4AE0+Pjl7/tF4kbr/ju24Uu
+         Bf9lUE5UYdbrIO8P6vmBtc8mo+n5T7bhQCci7z1ycBzuwm0gAKlVL9GYCc3ahK5qrDUS
+         5TIg==
+X-Gm-Message-State: AOJu0Yx0NQxRTQ0Sp5fNOKP99cNwnv1uZrsoMYUEBJ1kldJHEwK/Y/RQ
+	B1FLeTrKvsxm/jLGhudNVlXj7UxGz1PLx6FeTm4D7rcflb9CU79zuGb/CSb3jyDP2OxePZ89HFO
+	QD0/fHW+n8teJddw9lDP8zTKXVmbPzEQDOJzukePzBbxC2HUbQwSRdGp/fWJ2rNa9ueDcB9PYmb
+	VBk6zBD5NILXZUHGCR10n9H8hwm6I9i1mqQ5smKj5kWDkLMOw=
+X-Received: from pfua6.prod.google.com ([2002:a05:6a00:11c6:b0:824:b4f6:5f0d])
  (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:5650:b0:34e:63c1:4a08 with SMTP id 98e67ed59e1d1-35844f85d2bmr12053801a91.20.1771357930574;
- Tue, 17 Feb 2026 11:52:10 -0800 (PST)
-Date: Tue, 17 Feb 2026 11:52:04 -0800
+ 2002:a05:6a21:4d0f:b0:35d:ce99:cc23 with SMTP id adf61e73a8af0-3946c86516amr14738046637.49.1771357932551;
+ Tue, 17 Feb 2026 11:52:12 -0800 (PST)
+Date: Tue, 17 Feb 2026 11:52:05 -0800
+In-Reply-To: <20260217195207.1449764-1-joshwash@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260217195207.1449764-1-joshwash@google.com>
 X-Mailer: git-send-email 2.53.0.310.g728cabbaf7-goog
-Message-ID: <20260217195207.1449764-1-joshwash@google.com>
-Subject: [PATCH v2 5.10.y] gve: defer interrupt enabling until NAPI registration
+Message-ID: <20260217195207.1449764-2-joshwash@google.com>
+Subject: [PATCH v2 5.15.y] gve: defer interrupt enabling until NAPI registration
 From: Joshua Washington <joshwash@google.com>
 To: stable@vger.kernel.org
 Cc: Ankit Garg <nktgrg@google.com>, Jordan Rhee <jordanrhee@google.com>, 
@@ -87,7 +90,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	MV_CASE(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -98,16 +101,16 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216895-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216896-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[joshwash@google.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[google.com:+];
 	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 13F8C14FBD8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 61F7614FBD9
 X-Rspamd-Action: no action
 
 From: Ankit Garg <nktgrg@google.com>
@@ -155,10 +158,10 @@ Signed-off-by: Joshua Washington <joshwash@google.com>
  2 files changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index 5c9a4d4362c7..eb63f315a3d7 100644
+index 822bdaff66f6..b0a371037d21 100644
 --- a/drivers/net/ethernet/google/gve/gve.h
 +++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -165,6 +165,7 @@ struct gve_notify_block {
+@@ -441,6 +441,7 @@ struct gve_notify_block {
  	struct gve_priv *priv;
  	struct gve_tx_ring *tx; /* tx rings on this block */
  	struct gve_rx_ring *rx; /* rx rings on this block */
@@ -167,29 +170,30 @@ index 5c9a4d4362c7..eb63f315a3d7 100644
 
  /* Tracks allowed and current queue settings */
 diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index c22605e69771..7621ea566bb9 100644
+index a8fb51e77fea..d8cbc9ca1700 100644
 --- a/drivers/net/ethernet/google/gve/gve_main.c
 +++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -277,8 +277,9 @@ static int gve_alloc_notify_blocks(struct gve_priv *priv)
+@@ -339,9 +339,10 @@ static int gve_alloc_notify_blocks(struct gve_priv *priv)
  		snprintf(block->name, sizeof(block->name), "%s-ntfy-block.%d",
  			 name, i);
  		block->priv = priv;
 +		block->irq = priv->msix_vectors[msix_idx].vector;
  		err = request_irq(priv->msix_vectors[msix_idx].vector,
--				  gve_intr, 0, block->name, block);
-+				  gve_intr, IRQF_NO_AUTOEN, block->name, block);
+ 				  gve_is_gqi(priv) ? gve_intr : gve_intr_dqo,
+-				  0, block->name, block);
++				  IRQF_NO_AUTOEN, block->name, block);
  		if (err) {
  			dev_err(&priv->pdev->dev,
  				"Failed to receive msix vector %d\n", i);
-@@ -413,6 +414,7 @@ static void gve_add_napi(struct gve_priv *priv, int ntfy_idx)
+@@ -502,6 +503,7 @@ static void gve_add_napi(struct gve_priv *priv, int ntfy_idx,
 
- 	netif_napi_add(priv->dev, &block->napi, gve_napi_poll,
+ 	netif_napi_add(priv->dev, &block->napi, gve_poll,
  		       NAPI_POLL_WEIGHT);
 +	enable_irq(block->irq);
  }
 
  static void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
-@@ -420,6 +422,7 @@ static void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
+@@ -509,6 +511,7 @@ static void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
  	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
 
  	netif_napi_del(&block->napi);
