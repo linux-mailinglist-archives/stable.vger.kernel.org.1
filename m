@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-216976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216969-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MCiMu3SlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:25 +0100
+	id SJfPFOjSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216969-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD00150234
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A966150218
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 792E5300D449
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 041EA30074F8
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F2C3783CF;
-	Tue, 17 Feb 2026 20:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9E137105D;
+	Tue, 17 Feb 2026 20:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmEIa70O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0a0LSb8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FF02C0F79;
-	Tue, 17 Feb 2026 20:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FC4286D4D;
+	Tue, 17 Feb 2026 20:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360998; cv=none; b=A3VNyVXfZFGhbcD2V04UWcVTTUGkZW3QnLeLdcGjDYSgR7mBslyqGjokl4q3do2riweLxFT60tZnBA00WAsJ4wPGlH92BCeSTr2BS/5wEtcB3BC8r7xWTNST3htodsryL7TtOCxC7go6ebX4Kce7HX7+Tzg9VyR85OQwyzHLX54=
+	t=1771360975; cv=none; b=DNOypXKpkGmKtx65hjvwYDWYByIYAan85+KAkf26xWsZkc2E8v/L5SSQYEmiWAD78KL/dxRLYtB2QMwnNR0So1/vdofZG4AGE6sO/213SAeu4ylXTgGva1raDErQYxE+l5/V4e99p0ksFq1MFCpm9hhstCUEAjuNerVwvECzrRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360998; c=relaxed/simple;
-	bh=B0eYiwo0tqNUKhWfqLbuKHSgJTC2j6rzo3e9XEK+W2A=;
+	s=arc-20240116; t=1771360975; c=relaxed/simple;
+	bh=82kpyOGunzgA7U77v1xUV1hrkKeWZ8KpaPhOb3BmNvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jPwatoOhQLri/McTefb7OljFZXqk1AoG7+PccEYlu5dR/txkZk4b9pjm7TLKpJYJR92tF3oUIrYcA2j6414JF+0OnuNnEhCmsIK/3rzLgrcD+fkzNLWQ9f3KlVlZpqpQVL8W2YVaSdfBmulYr4YyT1Fw+mrxwKFUFZ3WGbzpyF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmEIa70O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B6AC4CEF7;
-	Tue, 17 Feb 2026 20:43:17 +0000 (UTC)
+	 MIME-Version; b=ofWWBAcN8K3luQHweL1m5ue+yUGl9ERSa/owgTebNUqyVnAceKmTO9VuF2JD0TucfY13q+U+OS+qhvfzJNNK4B6Z2wUbKeyaa644DpL6D7x4Tg2DBv8HAobQgpseWgcKZM3Wjp2w3OOXznskIWxCfixQ7PrX2JXecbYlAwv3xWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0a0LSb8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FE8C4CEF7;
+	Tue, 17 Feb 2026 20:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360998;
-	bh=B0eYiwo0tqNUKhWfqLbuKHSgJTC2j6rzo3e9XEK+W2A=;
+	s=korg; t=1771360974;
+	bh=82kpyOGunzgA7U77v1xUV1hrkKeWZ8KpaPhOb3BmNvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xmEIa70OSQMHnDZ832TqgqETAoYUGcl1swJJlPZ4fiX72Jv7eeWJjraDb1QqTOcPr
-	 n6lo2W81bNOwjaNBi9RxMRvww9xB0Y4cS3ioRr9fxf9yDiPxsdit1uAFKHpbLv5Hzv
-	 5uvMHrHXd1p5HUTJbP9zdYznZs5YOHm2H0dS3iso=
+	b=W0a0LSb8gJ7tnWShCVizttiNMEt1euIAplBqocgX0LuzgfiPxYZ2vzwcxbX0OvWTz
+	 vwMb5PT5APJR1AEkl6ZHqCqvCv+kPa6q/8VE/vrlMm5hcgfax0vUFJa1jf1GACDJZo
+	 KICG/goBd/yaqV+cos9xqiTlXc9i2FyKzZfv/ds8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <listout@listout.xyz>,
-	Thierry Reding <treding@nvidia.com>,
+	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: =?UTF-8?q?=5BPATCH=205=2E15=2012/39=5D=20=3D=3FUTF-8=3Fq=3Fdrm/tegra=3A=3D20hdmi=3A=3D20sor=3A=3D20Fix=3D20error=3A=3D20variable=3D20=3F=3D=20=3D=3FUTF-8=3Fq=3F=3DE2=3D80=3D98j=3DE2=3D80=3D99=3D20set=3D20but=3D20not=3D20used=3F=3D?=
+Subject: [PATCH 5.10 08/24] ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU
 Date: Tue, 17 Feb 2026 21:31:21 +0100
-Message-ID: <20260217200003.401349733@linuxfoundation.org>
+Message-ID: <20260217200001.032673447@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
+References: <20260217200000.708219618@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,listout.xyz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email];
-	TAGGED_FROM(0.00)[bounces-216976-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216969-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	SUBJECT_HAS_QUESTION(0.00)[]
-X-Rspamd-Queue-Id: 2DD00150234
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,tuxedocomputers.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: 7A966150218
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
 
-[ Upstream commit 1beee8d0c263b3e239c8d6616e4f8bb700bed658 ]
+[ Upstream commit b48fe9af1e60360baf09ca6b7a3cd6541f16e611 ]
 
-The variable j is set, however never used in or outside the loop, thus
-resulting in dead code.
-Building with GCC 16 results in a build error due to
--Werror=unused-but-set-variable= enabled by default.
-This patch clean up the dead code and fixes the build error.
+Add a PCI quirk to enable microphone detection on the headphone jack of
+TongFang X6AR55xU devices.
 
-Example build log:
-drivers/gpu/drm/tegra/sor.c:1867:19: error: variable ‘j’ set but not used [-Werror=unused-but-set-variable=]
- 1867 |         size_t i, j;
-      |                   ^
-
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250901212020.3757519-1-listout@listout.xyz
+Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260119151626.35481-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/hdmi.c | 4 ++--
- drivers/gpu/drm/tegra/sor.c  | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/tegra/hdmi.c b/drivers/gpu/drm/tegra/hdmi.c
-index e5d2a40260288..fe700dfaaa4ce 100644
---- a/drivers/gpu/drm/tegra/hdmi.c
-+++ b/drivers/gpu/drm/tegra/hdmi.c
-@@ -635,7 +635,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
- {
- 	const u8 *ptr = data;
- 	unsigned long offset;
--	size_t i, j;
-+	size_t i;
- 	u32 value;
- 
- 	switch (ptr[0]) {
-@@ -668,7 +668,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
- 	 * - subpack_low: bytes 0 - 3
- 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
- 	 */
--	for (i = 3, j = 0; i < size; i += 7, j += 8) {
-+	for (i = 3; i < size; i += 7) {
- 		size_t rem = size - i, num = min_t(size_t, rem, 4);
- 
- 		value = tegra_hdmi_subpack(&ptr[i], num);
-diff --git a/drivers/gpu/drm/tegra/sor.c b/drivers/gpu/drm/tegra/sor.c
-index f2f76a0897a80..31e1f9ec9fead 100644
---- a/drivers/gpu/drm/tegra/sor.c
-+++ b/drivers/gpu/drm/tegra/sor.c
-@@ -1860,7 +1860,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
- {
- 	const u8 *ptr = data;
- 	unsigned long offset;
--	size_t i, j;
-+	size_t i;
- 	u32 value;
- 
- 	switch (ptr[0]) {
-@@ -1893,7 +1893,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
- 	 * - subpack_low: bytes 0 - 3
- 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
- 	 */
--	for (i = 3, j = 0; i < size; i += 7, j += 8) {
-+	for (i = 3; i < size; i += 7) {
- 		size_t rem = size - i, num = min_t(size_t, rem, 4);
- 
- 		value = tegra_sor_hdmi_subpack(&ptr[i], num);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index a8f530037033e..b8c7f4c8593ba 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10052,6 +10052,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
+ 		{0x12, 0x90a60140},
+ 		{0x19, 0x04a11030},
+ 		{0x21, 0x04211020}),
++	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1d05, "TongFang", ALC274_FIXUP_HP_HEADSET_MIC,
++		{0x17, 0x90170110},
++		{0x19, 0x03a11030},
++		{0x21, 0x03211020}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0282, 0x1025, "Acer", ALC282_FIXUP_ACER_DISABLE_LINEOUT,
+ 		ALC282_STANDARD_PINS,
+ 		{0x12, 0x90a609c0},
 -- 
 2.51.0
 
