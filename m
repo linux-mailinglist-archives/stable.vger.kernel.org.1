@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-217104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HxALfXUlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:05 +0100
+	id SC9KNFfVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411C51506AC
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10B61507C2
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2F7CF30514AD
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:50:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7EFB1300530C
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D8B28D8E8;
-	Tue, 17 Feb 2026 20:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA14284B3B;
+	Tue, 17 Feb 2026 20:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULpB3Ypt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnhB/DLi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1736D2773E4;
-	Tue, 17 Feb 2026 20:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F82829A1;
+	Tue, 17 Feb 2026 20:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361436; cv=none; b=qTJb/932/7ElkpuaZmluC5MNWLeAbaOxBMmWqIv3A37hX/vrMgJrkDGgBCjxLkNyGLCyTNRpSqsFbvqz41pFjptjxamxy1VkoUVR1bD8K7FgJg6vYOlcVB4y8MOZ4j78LkIGOxKGaAxaXt4/uvXrODEwx+yED1O3ZLWWY2F1Thk=
+	t=1771361619; cv=none; b=EzJR6Hu6PGD4aSQ1+FhU4sMzFYDYRk4JWg6FFd3G0UYfwxmyZoNx1Mx0eRo155gkAurPz6jACobbxvXLMnGoBi5bAcgUy9gBHLM8eArijgLpxeEddmHwlxSf4SS3C5fi5F1GXdNi/aO2FIHt8/rnyvls9RyRAPR5liiu6afN9xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361436; c=relaxed/simple;
-	bh=VCFLAjVU8ReP+O/vY570Xg8i51ypQdjhf3EvcWFolF4=;
+	s=arc-20240116; t=1771361619; c=relaxed/simple;
+	bh=S4INT/AjGpj7kNLE4QM9uxMUz68QHHMpUk5INjDPnp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dxy3EEpVRzERjHWrZr6WLWtahx6UPugyU3OiAIi5G6mu5jsqDNBjXVflkZABEXfYcAK3o1hWdTf1VtkHhBN14sRUADKxH9FOM+dxt7Sb6den3vhG20P/3uiYvds3Tsvy4hyZIbgcajy5M8LExvdzMiSKQZOgb7XOh66NKKTZl7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULpB3Ypt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D64CC4CEF7;
-	Tue, 17 Feb 2026 20:50:35 +0000 (UTC)
+	 MIME-Version; b=teSGkcUetWJRacBpr3FPfK08DZ6BLKVjU/GfdSAh4dc8q5Fiy2RXSK+B0hCyEgfuMS0H3/+ngV4rzpnmx25WE+KEGSLNwF4vOD8GPKjPyWKnbCQn7lzfOQTtyWJthvqyd77kqTR9lVeH2/sirJaPSUk5DDwM0PEmfgUDTIjn4ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnhB/DLi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB08C19421;
+	Tue, 17 Feb 2026 20:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361435;
-	bh=VCFLAjVU8ReP+O/vY570Xg8i51ypQdjhf3EvcWFolF4=;
+	s=korg; t=1771361618;
+	bh=S4INT/AjGpj7kNLE4QM9uxMUz68QHHMpUk5INjDPnp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULpB3YptIK30LhCicmGEtOvexLQ8pDnLojXMQk/rhuJb0jExHEHWVQP16TKPTAHWp
-	 dKdasuh5KAKihSrW+93+5xYnPK0JhqKmLjwDrcbb0hkmQsRIthrmuxhSb9STAxLWav
-	 tMnFzELFTs56czS3dSRDPoGnwuo1zvOa6U6ixowo=
+	b=EnhB/DLi1S68x7q1aTmrjODlB20v6ile6x7kkqmqxcrBLaNSMS+ku1TYv2VL2BM3+
+	 TxrSvR2+PpzHn1T185YB0Kn7RUjQKnkFT0Sk8K+TOzWSIYB4y0Z6NnIY4lkvGaFpds
+	 VkFmCBHmsToVVsJGwf4VQxcjQw6nof0y5SxgjOH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	gongqi <550230171hxy@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 16/43] platform/x86/amd/pmc: Add quirk for MECHREVO Wujie 15X Pro
+Subject: [PATCH 6.12 05/42] bus: fsl-mc: fix use-after-free in driver_override_show()
 Date: Tue, 17 Feb 2026 21:31:56 +0100
-Message-ID: <20260217200007.091343851@linuxfoundation.org>
+Message-ID: <20260217200006.210964332@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217104-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217157-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 411C51506AC
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,nxp.com:email]
+X-Rspamd-Queue-Id: F10B61507C2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gongqi <550230171hxy@gmail.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 2b4e00d8e70ca8736fda82447be6a4e323c6d1f5 ]
+[ Upstream commit 148891e95014b5dc5878acefa57f1940c281c431 ]
 
-The MECHREVO Wujie 15X Pro suffers from spurious IRQ issues related to
-the AMD PMC. Add it to the quirk list to use the spurious_8042 fix.
+The driver_override_show() function reads the driver_override string
+without holding the device_lock. However, driver_override_store() uses
+driver_set_override(), which modifies and frees the string while holding
+the device_lock.
 
-Signed-off-by: gongqi <550230171hxy@gmail.com>
-Link: https://patch.msgid.link/20260122155501.376199-4-550230171hxy@gmail.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This can result in a concurrent use-after-free if the string is freed
+by the store function while being read by the show function.
+
+Fix this by holding the device_lock around the read operation.
+
+Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20251202174438.12658-1-hanguidong02@gmail.com
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/bus/fsl-mc/fsl-mc-bus.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 404e62ad293a9..ed285afaf9b0d 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -302,6 +302,13 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
- 		}
- 	},
-+	{
-+		.ident = "MECHREVO Wujie 15X Pro",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
-+		}
-+	},
- 	{}
- };
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -201,8 +201,12 @@ static ssize_t driver_override_show(stru
+ 				    struct device_attribute *attr, char *buf)
+ {
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
++	ssize_t len;
  
--- 
-2.51.0
-
+-	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
++	device_lock(dev);
++	len = sysfs_emit(buf, "%s\n", mc_dev->driver_override);
++	device_unlock(dev);
++	return len;
+ }
+ static DEVICE_ATTR_RW(driver_override);
+ 
 
 
 
