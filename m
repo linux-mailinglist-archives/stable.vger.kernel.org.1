@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-217040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGqtKs/TlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:11 +0100
+	id CIVXORXTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB68150457
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 557151502AF
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD07B3019C94
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5C823014C1F
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93C72DCF45;
-	Tue, 17 Feb 2026 20:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244BB3783AF;
+	Tue, 17 Feb 2026 20:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6KmE3cT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/mHMV8e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2032D6E76;
-	Tue, 17 Feb 2026 20:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBC7286D4D;
+	Tue, 17 Feb 2026 20:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361218; cv=none; b=TtIOYJehmR8XKqN/eZQ8iiLkTIP50RaYO4K2Z1Rec9O2ZU5Teis9nMJXyTjiyik68gcdfbU4LVmHRfrm6MKMPBVLxLgodBIrufCzyDnrp7GzfQzDNXeZleISGfMnQkXqZywWyPRjFoShrhkJ3ag0WSxKqK6J0BNO8ZPay8koPRA=
+	t=1771361010; cv=none; b=tJIWa1midW14natxofLQIotDPSdMBygq38fmL1l//Atogn0hePoHuy1VLTAM/X8Tb44TuJhohw8aMn4JyQa/gJcFrOBfoVpd6/f1RbjoK0qO+FRA6uj/nwb8GNyr6ffi514S4TiGLX0gGPcgZtqeM5rXNsFvdHY5jP1IarBKS+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361218; c=relaxed/simple;
-	bh=Vfw8mKd8+NlHfx5XxMMWTU5JNGGt/hLwwrrfqOyy2Hs=;
+	s=arc-20240116; t=1771361010; c=relaxed/simple;
+	bh=0OK2YQcIB/lJiBUJ5mpJazhjYWsCNPhtGUJ3zaKGWic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqC+y/NtolXR1qeG7KerXxSvVj21ZPSxQQwoK69kyAZlTMKhXxseo9IzwdAjjJwCRd+XZDdsQ/1oLINeqJKVhjeRTePrNjgZme09uHsaglrIeXPrg66TfnT2DKJeydxPkCeJuD6miH5QDkkLqUgBRz/bcG7JYEVxo4PM/gT19vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6KmE3cT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5935C4CEF7;
-	Tue, 17 Feb 2026 20:46:57 +0000 (UTC)
+	 MIME-Version; b=fGtbICD04h8I6E4dWGvNdEhizuC6rvkf2HNuCKZZtyRTf2VOBmzw9SjLWuUkHya8uUfcICMhzKC61HlUluZbVoXPI3+o/mVyxeWuYTQxPbUR12u+Ve78ACryKNLQvt8EqqilCEdozz3DeJa3WLryIG1v1yEKxbCS5o3DNDfhfuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/mHMV8e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AC6C4CEF7;
+	Tue, 17 Feb 2026 20:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361218;
-	bh=Vfw8mKd8+NlHfx5XxMMWTU5JNGGt/hLwwrrfqOyy2Hs=;
+	s=korg; t=1771361010;
+	bh=0OK2YQcIB/lJiBUJ5mpJazhjYWsCNPhtGUJ3zaKGWic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6KmE3cTZm78q2xnILGjjSyva0tU0erXbyBQQbvU30017AGGiTsMOdNKtw/8Tkpx8
-	 CjzrEdgu+SUH9ob17rtL04J5/TfAF1PNVvDJj5Ii75RTUrWEA6jKdKd3D0J5wx7K/3
-	 4Dgv6/pgJJqM5TQUMEHFvbRhLkZ7lgTnXPybN8iQ=
+	b=v/mHMV8eFqQx8inBbh8UPS0pQDJ/SCPcT0UJjrr7G1v3+8mpOOMIy8fOwB20lKwxc
+	 CfqZt2CxSqETgA90soxCesFfJfb8J4nQphtNjZxqYRp9bTPFGug3mUZ+R5s39iyb4a
+	 ZIR9is7eTUuEid9SuhBerBm1eU9jnhTFKoBAO6OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/64] ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU
+Subject: [PATCH 5.15 15/39] ASoC: fsl_xcvr: fix missing lock in fsl_xcvr_mode_put()
 Date: Tue, 17 Feb 2026 21:31:24 +0100
-Message-ID: <20260217200008.576154666@linuxfoundation.org>
+Message-ID: <20260217200003.516889235@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +67,78 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217040-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216979-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tuxedocomputers.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 5AB68150457
+	DBL_BLOCKED_OPENRESOLVER(0.00)[northwestern.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 557151502AF
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-[ Upstream commit b48fe9af1e60360baf09ca6b7a3cd6541f16e611 ]
+[ Upstream commit f514248727606b9087bc38a284ff686e0093abf1 ]
 
-Add a PCI quirk to enable microphone detection on the headphone jack of
-TongFang X6AR55xU devices.
+fsl_xcvr_activate_ctl() has
+lockdep_assert_held(&card->snd_card->controls_rwsem),
+but fsl_xcvr_mode_put() calls it without acquiring this lock.
 
-Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260119151626.35481-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Other callers of fsl_xcvr_activate_ctl() in fsl_xcvr_startup() and
+fsl_xcvr_shutdown() properly acquire the lock with down_read()/up_read().
+
+Add the missing down_read()/up_read() calls around fsl_xcvr_activate_ctl()
+in fsl_xcvr_mode_put() to fix the lockdep assertion and prevent potential
+race conditions when multiple userspace threads access the control.
+
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Link: https://patch.msgid.link/20260202174112.2018402-1-n7l8m4@u.northwestern.edu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/fsl/fsl_xcvr.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index b45e5b268a65b..2fd52b6b4fb57 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10906,6 +10906,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
- 		{0x12, 0x90a60140},
- 		{0x19, 0x04a11030},
- 		{0x21, 0x04211020}),
-+	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1d05, "TongFang", ALC274_FIXUP_HP_HEADSET_MIC,
-+		{0x17, 0x90170110},
-+		{0x19, 0x03a11030},
-+		{0x21, 0x03211020}),
- 	SND_HDA_PIN_QUIRK(0x10ec0282, 0x1025, "Acer", ALC282_FIXUP_ACER_DISABLE_LINEOUT,
- 		ALC282_STANDARD_PINS,
- 		{0x12, 0x90a609c0},
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index ae5960b2b6a95..c4deb09c9a9bc 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -203,10 +203,13 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
+ 
+ 	xcvr->mode = snd_soc_enum_item_to_val(e, item[0]);
+ 
++	down_read(&card->snd_card->controls_rwsem);
+ 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name,
+ 			      (xcvr->mode == FSL_XCVR_MODE_ARC));
+ 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_earc_capds_kctl.name,
+ 			      (xcvr->mode == FSL_XCVR_MODE_EARC));
++	up_read(&card->snd_card->controls_rwsem);
++
+ 	/* Allow playback for SPDIF only */
+ 	rtd = snd_soc_get_pcm_runtime(card, card->dai_link);
+ 	rtd->pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream_count =
 -- 
 2.51.0
 
