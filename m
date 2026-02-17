@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-217125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eC40NPzUlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:12 +0100
+	id 0KLPMALUlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFBA1506BA
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6F41504D1
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7735E30080B5
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 622B4300A52C
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587DC2D6E76;
-	Tue, 17 Feb 2026 20:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C443928851C;
+	Tue, 17 Feb 2026 20:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWWu0o9a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TofMXs8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A44A28C009;
-	Tue, 17 Feb 2026 20:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86923261B70;
+	Tue, 17 Feb 2026 20:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361507; cv=none; b=MqauDqiXSMClJNXJ81dU1I2EyfVXxGwyKt5Jd8KviQ/bMsNyhMVaMMGIHfoVMqGbm8x39rVy3kuUbQ3kzTQhdLiq+OrLUTthTGTo8elpvvfNLqv5/a2TB39jk+oHZrammAn23Ym08D4/ai71PeVUALGyC/ZIyzuXb+jz3cDeuB0=
+	t=1771361278; cv=none; b=F5U8g0T+Lb9eoSyJ4CTXVlxts/sziWVBQ6nDtyE8nYh4a00tdXKE3VPwuF563w6ETh+IVVvZENXssTA57+Em0/Wf/Yom0sJ3g+2jR0VfpDY3hUt3P1j+pOeCEHEYCe24sgmJw5HtqQhFPtfoeiqXvPxqGAy2GZ1zrfC/52Q2MP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361507; c=relaxed/simple;
-	bh=/PdEeBCzJcS9HtN6gfLEqGwZ70Zt4RR0qLpCN88dack=;
+	s=arc-20240116; t=1771361278; c=relaxed/simple;
+	bh=P89CDAfKdMFHfEPvSYjUlA+vJKb9YQw1nEci2gI+8Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2yYG0gFCC/eUi4sSA0IPO8eR+VHamh9Dny0TXPxEZQpxNmIKA7veNNknm30KV5aWJAx326GrvFx5ENXjO8wi4df4Ykc3soPxykQAv7W0+3QGSrflzBdMYXoiaYuhObXTZvapwjje0Bu7Mgyyh7agnCpCUaopmY1l17FdHIr63Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWWu0o9a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FABFC4CEF7;
-	Tue, 17 Feb 2026 20:51:46 +0000 (UTC)
+	 MIME-Version; b=HTGdufLUmCGXUHJpH7Rrcrox6MNplQ4NhMPubH15u/KSFD00a2+5up8R30qU3GKBexsGA5+S4VcisWzp41cgm/dvRYKtUAEpXlIb59Na9kMxV70IQyn67ZK2yqNgIf3i6HeN9knRvPWUrMOcnxD9Q8+Ci+Z86VgNZ8t6iMOSSA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TofMXs8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAC4C4CEF7;
+	Tue, 17 Feb 2026 20:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361507;
-	bh=/PdEeBCzJcS9HtN6gfLEqGwZ70Zt4RR0qLpCN88dack=;
+	s=korg; t=1771361278;
+	bh=P89CDAfKdMFHfEPvSYjUlA+vJKb9YQw1nEci2gI+8Z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AWWu0o9aFCYUtyJPuIKeSUTfZ3HL63OONDfUEh++s0J6gPllZhqJyDGywsmpIMvcp
-	 TqIfZv0el66aVwTSfKCm/ETd3rWUDMVYC5i+LnQhlnX1bGw4Z1JX4RBghPthj4bKCm
-	 vkH/+RziP3rYB0cpNAo373nEv9ApR+CUnv941uXg=
+	b=TofMXs8p4EGr07QaZSKaIdRuLSrn/2p5Lp6BCzuVBZCFAmVX96nkBngXtiNBDzyeP
+	 QkIF4n5LROC6rxjtIjJl0GiMMm682LI5Ahr3zwWHBy7aakZkwcxAS69rr1jJcKY0lE
+	 9FUmcPSMj4SmXBFLgasK/zU9Y6BCWw9yQSRD+YF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 08/43] ASoC: cs35l45: Corrects ASP_TX5 DAPM widget channel
-Date: Tue, 17 Feb 2026 21:31:48 +0100
-Message-ID: <20260217200006.789721764@linuxfoundation.org>
+	Qingfang Deng <dqfext@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.1 53/64] net: stmmac: Fix accessing freed irq affinity_hint
+Date: Tue, 17 Feb 2026 21:31:49 +0100
+Message-ID: <20260217200009.495087811@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,67 +70,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217125-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217058-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org,139.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email]
-X-Rspamd-Queue-Id: 1CFBA1506BA
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,139.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6E6F41504D1
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit 6dd0fdc908c02318c28ec2c0979661846ee0a9f7 ]
+[ Upstream commit c60d101a226f18e9a8f01bb4c6ca2b47dfcb15ef ]
 
-ASP_TX5 was incorrectly mapped to a channel value of 3 corrects,
-the channel value of 4.
+The cpumask should not be a local variable, since its pointer is saved
+to irq_desc and may be accessed from procfs.
+To fix it, use the persistent mask cpumask_of(cpu#).
 
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260115192523.1335742-2-rriveram@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 8deec94c6040 ("net: stmmac: set IRQ affinity hint for multi MSI vectors")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250318032424.112067-1-dqfext@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rajani Kantha <681739313@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs35l45.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l45.c b/sound/soc/codecs/cs35l45.c
-index d4dcdf37bb709..9b1eff4e9bb71 100644
---- a/sound/soc/codecs/cs35l45.c
-+++ b/sound/soc/codecs/cs35l45.c
-@@ -455,7 +455,7 @@ static const struct snd_soc_dapm_widget cs35l45_dapm_widgets[] = {
- 	SND_SOC_DAPM_AIF_OUT("ASP_TX2", NULL, 1, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX2_EN_SHIFT, 0),
- 	SND_SOC_DAPM_AIF_OUT("ASP_TX3", NULL, 2, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX3_EN_SHIFT, 0),
- 	SND_SOC_DAPM_AIF_OUT("ASP_TX4", NULL, 3, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX4_EN_SHIFT, 0),
--	SND_SOC_DAPM_AIF_OUT("ASP_TX5", NULL, 3, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX5_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASP_TX5", NULL, 4, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX5_EN_SHIFT, 0),
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3518,7 +3518,6 @@ static int stmmac_request_irq_multi_msi(
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	enum request_irq_err irq_err;
+-	cpumask_t cpu_mask;
+ 	int irq_idx = 0;
+ 	char *int_name;
+ 	int ret;
+@@ -3630,9 +3629,8 @@ static int stmmac_request_irq_multi_msi(
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		cpumask_clear(&cpu_mask);
+-		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
+-		irq_set_affinity_hint(priv->rx_irq[i], &cpu_mask);
++		irq_set_affinity_hint(priv->rx_irq[i],
++				      cpumask_of(i % num_online_cpus()));
+ 	}
  
- 	SND_SOC_DAPM_MUX("ASP_TX1 Source", SND_SOC_NOPM, 0, 0, &cs35l45_asp_muxes[0]),
- 	SND_SOC_DAPM_MUX("ASP_TX2 Source", SND_SOC_NOPM, 0, 0, &cs35l45_asp_muxes[1]),
--- 
-2.51.0
-
+ 	/* Request Tx MSI irq */
+@@ -3655,9 +3653,8 @@ static int stmmac_request_irq_multi_msi(
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		cpumask_clear(&cpu_mask);
+-		cpumask_set_cpu(i % num_online_cpus(), &cpu_mask);
+-		irq_set_affinity_hint(priv->tx_irq[i], &cpu_mask);
++		irq_set_affinity_hint(priv->tx_irq[i],
++				      cpumask_of(i % num_online_cpus()));
+ 	}
+ 
+ 	return 0;
 
 
 
