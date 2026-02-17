@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-217044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHKUJ93TlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-217044-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:25 +0100
+	id WNW7L+HSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C20C15047C
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1988A150201
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D39F6303EFCD
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 458843044092
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16FD28C009;
-	Tue, 17 Feb 2026 20:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC7537881F;
+	Tue, 17 Feb 2026 20:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9ZVNzcB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sb7lWGRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A67261B70;
-	Tue, 17 Feb 2026 20:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E7F377563;
+	Tue, 17 Feb 2026 20:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361231; cv=none; b=LT05Ig1nRQa6HoKz7OPQnzskcF797H/dzwmpYM/jZwGS3/I2L4i2co51N+krwlDbH9kwKbg3LnxSlchZVkN23WoTGSlD88QjoZ1gyCTlhEB+dLQT3ursiw9nvSWawEOd4lAA1PHehLUCqMjIA2C8exCp7T8qX01rEf7VlqK9gAw=
+	t=1771360952; cv=none; b=tSaXrUoj4PyA/tZSbKrncPc4i43UUTMSe7HWTyzwJu43WUOgxM5R4fRISNCM8SMCY196bWW/omCvK5s6f6Jmx7PM6dAMgWHtmxhwJpqxR9l+OFTPl0PJLg+9NZnjaQ7DBw8gdAoJ7KQ5BpX/p/hZmEONnE8TYNRUnPu//SBo68c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361231; c=relaxed/simple;
-	bh=k6z7szTP6GWs2J6q6Bk36Z62Meo8fFBVo7wH7JZ3xNM=;
+	s=arc-20240116; t=1771360952; c=relaxed/simple;
+	bh=QAULLIIeL6kDo1xY06WdBMC2o3WIN+xK7ZspELDQ8SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBI8Q38SqDi0+NKnD5GN6rB30hXhmoZG6go8ZowsRBJCLsbOmM1HzoXfqPCoIjriV0cHbq/duedjWEJChy+ifqhe6ZjYs1x6yLr5Am7mR6pqkKEcoxhcJVmwHJG3uC7NTu5dOk/iUwgZ1KYMb+HFqs85D9tJYeVEEUOXcSm7Zoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9ZVNzcB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7D6C4CEF7;
-	Tue, 17 Feb 2026 20:47:11 +0000 (UTC)
+	 MIME-Version; b=riCuXT2lfXTFe/qwjdzRf/7+d7oW7cIz1guR5sSfqA7GdY4N0tWgEF4nso6n2mnR78twtenKvyKp2FMqzefzGO6q7B+DMi+hErUxC6XAHwYiAi3q5Z9SJQzn0KUI+7jSyiAwkYwQHaCXVhcnRozfHQhbx9oH6j/OJ9PGYPTroLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sb7lWGRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE30C4CEF7;
+	Tue, 17 Feb 2026 20:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361231;
-	bh=k6z7szTP6GWs2J6q6Bk36Z62Meo8fFBVo7wH7JZ3xNM=;
+	s=korg; t=1771360952;
+	bh=QAULLIIeL6kDo1xY06WdBMC2o3WIN+xK7ZspELDQ8SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9ZVNzcB1ckJLasLjJkC4qJTFdnKyhFFwwh078HHl8rlVdIC0Kp5VF6BUbX0ucBSi
-	 wFqrBf+fIiDQfcM8FB8hOSv5pzngBodnH7SFi5ZIy6ZR5Xvo/1VuVQe09GJnRWJzs+
-	 /0OpyrWxCZC/AQ/kPE93sWBLW+cekRh2lsI01uAA=
+	b=Sb7lWGRWdT6G1xW+Ux9oxwi+f3+NAteGAxC4SmPhJWIJAn7eg6+4IsGjgXzREqk7I
+	 SkCFeDTYNlOL2LnaCcVNst3EbVBGtjSdoSG/woQibH/8pOMdUyWOIzqJmx7To1uLzX
+	 +fgRAKXY7ZfQMfXJLLiWX9NbVoyNAMRnJ7MC9Bkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: [PATCH 6.1 40/64] Revert "wireguard: device: enable threaded NAPI"
+	stable@kernel.org,
+	syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 23/24] f2fs: fix to avoid UAF in f2fs_write_end_io()
 Date: Tue, 17 Feb 2026 21:31:36 +0100
-Message-ID: <20260217200009.007280650@linuxfoundation.org>
+Message-ID: <20260217200001.609203814@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
+References: <20260217200000.708219618@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,153 +67,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217044-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216963-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,b4444e3c972a7a124187];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zx2c4.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,iogearbox.net:email]
-X-Rspamd-Queue-Id: 1C20C15047C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 1988A150201
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Chao Yu <chao@kernel.org>
 
-This reverts commit fb978675ccfd4a93549e49624127d8332cc61cbf which is
-commit db9ae3b6b43c79b1ba87eea849fd65efa05b4b2e upstream.
+[ Upstream commit ce2739e482bce8d2c014d76c4531c877f382aa54 ]
 
-We have had three independent production user reports in combination
-with Cilium utilizing WireGuard as encryption underneath that k8s Pod
-E/W traffic to certain peer nodes fully stalled. The situation appears
-as follows:
+As syzbot reported an use-after-free issue in f2fs_write_end_io().
 
-  - Occurs very rarely but at random times under heavy networking load.
-  - Once the issue triggers the decryption side stops working completely
-    for that WireGuard peer, other peers keep working fine. The stall
-    happens also for newly initiated connections towards that particular
-    WireGuard peer.
-  - Only the decryption side is affected, never the encryption side.
-  - Once it triggers, it never recovers and remains in this state,
-    the CPU/mem on that node looks normal, no leak, busy loop or crash.
-  - bpftrace on the affected system shows that wg_prev_queue_enqueue
-    fails, thus the MAX_QUEUED_PACKETS (1024 skbs!) for the peer's
-    rx_queue is reached.
-  - Also, bpftrace shows that wg_packet_rx_poll for that peer is never
-    called again after reaching this state for that peer. For other
-    peers wg_packet_rx_poll does get called normally.
-  - Commit db9ae3b ("wireguard: device: enable threaded NAPI")
-    switched WireGuard to threaded NAPI by default. The default has
-    not been changed for triggering the issue, neither did CPU
-    hotplugging occur (i.e. 5bd8de2 ("wireguard: queueing: always
-    return valid online CPU in wg_cpumask_choose_online()")).
-  - The issue has been observed with stable kernels of v5.15 as well as
-    v6.1. It was reported to us that v5.10 stable is working fine, and
-    no report on v6.6 stable either (somewhat related discussion in [0]
-    though).
-  - In the WireGuard driver the only material difference between v5.10
-    stable and v5.15 stable is the switch to threaded NAPI by default.
+It is caused by below race condition:
 
-    [0] https://lore.kernel.org/netdev/CA+wXwBTT74RErDGAnj98PqS=wvdh8eM1pi4q6tTdExtjnokKqA@mail.gmail.com/
+loop device				umount
+- worker_thread
+ - loop_process_work
+  - do_req_filebacked
+   - lo_rw_aio
+    - lo_rw_aio_complete
+     - blk_mq_end_request
+      - blk_update_request
+       - f2fs_write_end_io
+        - dec_page_count
+        - folio_end_writeback
+					- kill_f2fs_super
+					 - kill_block_super
+					  - f2fs_put_super
+					 : free(sbi)
+       : get_pages(, F2FS_WB_CP_DATA)
+         accessed sbi which is freed
 
-Breakdown of the problem:
+In kill_f2fs_super(), we will drop all page caches of f2fs inodes before
+call free(sbi), it guarantee that all folios should end its writeback, so
+it should be safe to access sbi before last folio_end_writeback().
 
-  1) skbs arriving for decryption are enqueued to the peer->rx_queue in
-     wg_packet_consume_data via wg_queue_enqueue_per_device_and_peer.
-  2) The latter only moves the skb into the MPSC peer queue if it does
-     not surpass MAX_QUEUED_PACKETS (1024) which is kept track in an
-     atomic counter via wg_prev_queue_enqueue.
-  3) In case enqueueing was successful, the skb is also queued up
-     in the device queue, round-robin picks a next online CPU, and
-     schedules the decryption worker.
-  4) The wg_packet_decrypt_worker, once scheduled, picks these up
-     from the queue, decrypts the packets and once done calls into
-     wg_queue_enqueue_per_peer_rx.
-  5) The latter updates the state to PACKET_STATE_CRYPTED on success
-     and calls napi_schedule on the per peer->napi instance.
-  6) NAPI then polls via wg_packet_rx_poll. wg_prev_queue_peek checks
-     on the peer->rx_queue. It will wg_prev_queue_dequeue if the
-     queue->peeked skb was not cached yet, or just return the latter
-     otherwise. (wg_prev_queue_drop_peeked later clears the cache.)
-  7) From an ordering perspective, the peer->rx_queue has skbs in order
-     while the device queue with the per-CPU worker threads from a
-     global ordering PoV can finish the decryption and signal the skb
-     PACKET_STATE_CRYPTED out of order.
-  8) A situation can be observed that the first packet coming in will
-     be stuck waiting for the decryption worker to be scheduled for
-     a longer time when the system is under pressure.
-  9) While this is the case, the other CPUs in the meantime finish
-     decryption and call into napi_schedule.
- 10) Now in wg_packet_rx_poll it picks up the first in-order skb
-     from the peer->rx_queue and sees that its state is still
-     PACKET_STATE_UNCRYPTED. The NAPI poll routine then exits early
-     with work_done = 0 and calls napi_complete_done, signalling
-     it "finished" processing.
- 11) The assumption in wg_packet_decrypt_worker is that when the
-     decryption finished the subsequent napi_schedule will always
-     lead to a later invocation of wg_packet_rx_poll to pick up
-     the finished packet.
- 12) However, it appears that a later napi_schedule does /not/
-     schedule a later poll and thus no wg_packet_rx_poll.
- 13) If this situation happens exactly for the corner case where
-     the decryption worker of the first packet is stuck and waiting
-     to be scheduled, and the network load for WireGuard is very
-     high then the queue can build up to MAX_QUEUED_PACKETS.
- 14) If this situation occurs, then no new decryption worker will
-     be scheduled and also no new napi_schedule to make forward
-     progress.
- 15) This means the peer->rx_queue stops processing packets completely
-     and they are indefinitely stuck waiting for a new NAPI poll on
-     that peer which never happens. New packets for that peer are
-     then dropped due to full queue, as it has been observed on the
-     production machines.
+Let's relocate ckpt thread wakeup flow before folio_end_writeback() to
+resolve this issue.
 
-Technically, the backport of commit db9ae3b6b43c ("wireguard: device:
-enable threaded NAPI") to stable should not have happened since it is
-more of an optimization rather than a pure fix and addresses a NAPI
-situation with utilizing many WireGuard tunnel devices in parallel.
-Revert it from stable given the backport triggers a regression for
-mentioned kernels.
-
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: stable@kernel.org
+Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint for better performance")
+Reported-by: syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b4444e3c972a7a124187
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ folio => page ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireguard/device.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/f2fs/data.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireguard/device.c
-+++ b/drivers/net/wireguard/device.c
-@@ -368,7 +368,6 @@ static int wg_newlink(struct net *src_ne
- 	if (ret < 0)
- 		goto err_free_handshake_queue;
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -379,14 +379,20 @@ static void f2fs_write_end_io(struct bio
+ 					page->index != nid_of_node(page));
  
--	dev_set_threaded(dev, true);
- 	ret = register_netdevice(dev);
- 	if (ret < 0)
- 		goto err_uninit_ratelimiter;
+ 		dec_page_count(sbi, type);
++
++		/*
++		 * we should access sbi before end_page_writeback() to
++		 * avoid racing w/ kill_f2fs_super()
++		 */
++		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
++				wq_has_sleeper(&sbi->cp_wait))
++			wake_up(&sbi->cp_wait);
++
+ 		if (f2fs_in_warm_node_list(sbi, page))
+ 			f2fs_del_fsync_node_entry(sbi, page);
+ 		clear_cold_data(page);
+ 		end_page_writeback(page);
+ 	}
+-	if (!get_pages(sbi, F2FS_WB_CP_DATA) &&
+-				wq_has_sleeper(&sbi->cp_wait))
+-		wake_up(&sbi->cp_wait);
+ 
+ 	bio_put(bio);
+ }
 
 
 
