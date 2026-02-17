@@ -1,218 +1,166 @@
-Return-Path: <stable+bounces-216885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216886-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APWYDYGylGlbGgIAu9opvQ
-	(envelope-from <stable+bounces-216885-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:25:05 +0100
+	id GJ96N/CzlGlbGgIAu9opvQ
+	(envelope-from <stable+bounces-216886-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:31:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720DF14F147
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:25:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA2514F293
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA8943035016
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 18:24:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E5863058579
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 18:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118D4372B33;
-	Tue, 17 Feb 2026 18:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95853372B48;
+	Tue, 17 Feb 2026 18:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.com header.i=mhklkml@zohomail.com header.b="BDkZPA5e"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTTK82Nz"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-o95.zoho.com (sender4-pp-o95.zoho.com [136.143.188.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D25F36E497;
-	Tue, 17 Feb 2026 18:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.95
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771352658; cv=pass; b=HHWjvXscHPnPHgjSh20eVpLndF830AsGYdrPhNur3KylE6nuXKYtZ0N1EklghO+vkVbHtefgbKj39bQA8DLudjv4yZS833vw6M3E/E6wcNLEJHYt+VWqV3xyP45HeG+uqYjK+cJNTuac/37Tq1XnV+x35PbzOSZiNIhtzDFXrhA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771352658; c=relaxed/simple;
-	bh=pKCsoNOv/f/NOPnO2Qgo0722N1Z6pyM7pQbWeWRVcFo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tRdVfB7uuVPZ4XRfrHBHkpoDV3F800hUw7w/THOZfl8j15CIaERKQRKphq8llZST63GdtgpRS5ogh8Hs6tPN76211xH5QIGcFS5/KwQzFqlkq10wI6Addo4dpP8cVLjAyLh6CHQYD07S89FIr8s1gnKI+DxZVH7gZFOCoowky3U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=mhklkml@zohomail.com header.b=BDkZPA5e; arc=pass smtp.client-ip=136.143.188.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
-ARC-Seal: i=1; a=rsa-sha256; t=1771352626; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=elYPn0Vr4RsE0bGjcitHsOdQN16Q+v3K63PxWAitrUR9vjmro/DjYCWRX/gB4z+NPBLHHiV9jp09oPT4VyA78HsblZQi9nfEt3qmajM8F05WnSNpq2QhL8LWYZrUNE5/3JwrY4eTwXCmJ+/NWwqnki+Wh4JxJi+5ZB3o2ZUFLKI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1771352626; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Reply-To:Reply-To:References:Subject:Subject:To:To:Message-Id; 
-	bh=bCbocMqgUYFnJ+oYDgGHoTYrgPMBZlnF95h5ckvogTc=; 
-	b=Xzwl2HRyIlgivVwG9d5uR7Zln+XtbHKKYYgCthhSZ1Z4ltHiglA6acM7mP9i44yLV8vMROYf0MwESSL4KiCIg0A8L/Yqb1Wj/ewdBmq4TRcAltPZ4dCY6FxxkFm59JEtwnIuXVClKEUV7aF8wtkiB3L5vpcZfrgFkw4dUA/rPxg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=zohomail.com;
-	spf=pass  smtp.mailfrom=mhklkml@zohomail.com;
-	dmarc=pass header.from=<mhklkml@zohomail.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771352626;
-	s=zm2022; d=zohomail.com; i=mhklkml@zohomail.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:Reply-To:Reply-To:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
-	bh=bCbocMqgUYFnJ+oYDgGHoTYrgPMBZlnF95h5ckvogTc=;
-	b=BDkZPA5eqeBJQZ9hfSejXzc4Ssff0BgcpM4EteApGsJ49atosvnHoFi6HQUqDj2m
-	mN/mFVQRUzGRo7befhRhY3VzjdqiGVMwU+ZaGyUunlmbnQrQWKN81IhWPFnV/bm7MbW
-	aMVX1BhP2CepPOaizmY8Z5J19MubOg1aNy+ZwfEI=
-Received: by mx.zohomail.com with SMTPS id 1771352623819939.9981858150902;
-	Tue, 17 Feb 2026 10:23:43 -0800 (PST)
-From: Michael Kelley <mhklkml@zohomail.com>
-To: drawat.floss@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	ryasuoka@redhat.com,
-	jfalempe@redhat.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] drm/hyperv: During panic do VMBus unload after frame buffer is flushed
-Date: Tue, 17 Feb 2026 10:23:35 -0800
-Message-Id: <20260217182335.265585-2-mhklkml@zohomail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260217182335.265585-1-mhklkml@zohomail.com>
-References: <20260217182335.265585-1-mhklkml@zohomail.com>
-Reply-To: mhklinux@outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82B41C69D
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 18:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771352962; cv=none; b=OuXpEqtESLX3OKa5VnI0EPEhhEJPd35LX1W9TZf6mGln4AX0b6d7fa7v5ph2kWWyLeqqiDVfyjDyh8mO5DKb7r1EmkXss/upsapPOJ529RLyC/1+c7aq6cQY0nodvJlWcX+4Zmp2wRP3m9n8rrROIF94D1F/C4ecDfyCSu+3qB0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771352962; c=relaxed/simple;
+	bh=ZcHuQ7r21yTDh2VPpv6pPH76RALcIZWJNIKymPfmPFY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fbJULppjfw2FVjKwvP243UnWDrxMmVp+SyMG9bwNibXlRsFwU8KiMpV/pG2ouw1ttAiLY4c4uGbZJQ8LDobgFBIMmMmTzwvikQ2hOqyjk9vfl+mTJbc7n8Bn0vEJITpy3XJr5gppbWGznw/+urTobAnTsmwg4AYvWYGlSE222gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTTK82Nz; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48373a4bca3so24335915e9.0
+        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 10:29:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771352959; x=1771957759; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A1dTGS0nUrZaB86bFJbEyPn5We33zlH4DX2moTSFdiE=;
+        b=BTTK82NzXkSF7dQVXqVj6bNJ7lDcZHp5l3lbn+Hv4gvcH1eLBpJVN6F9tBXJPrmzsa
+         Y+9hl3NI1KjFZeav8BHk22uqG13qgujh8Ghlw+TS9/udf+a+nD46m9JaUBwWyQhCEUZw
+         3PoqD6wwW8qnsNKXOuvRm6A37xrdqhwdtSuApYzaNAAo0cDh5dvMPbct/usqkqv3/WaJ
+         HUZRVEG1RlUGvkf+o5cyh80Tk9kktDWSs5CxaoZt2g8Q/pg1bkHhmh0zQ+vqk2wwz3Rl
+         +IShZosVCqmJTq6q/YOioKpn33cKSeWHJWXdm5L0p4vQkv+189l4+S5iy9+iylSchxeT
+         vWIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771352959; x=1771957759;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=A1dTGS0nUrZaB86bFJbEyPn5We33zlH4DX2moTSFdiE=;
+        b=WQEmHf62RT1VRfUuyz9LBo8LRY4q2N/XtM834aGJKK0wXYIjWeRUZT4rq12iUOFzJ6
+         9Uib4dT6y8vlKogpwStwj7rMHHT5eXAUBHq9KX+6CRRJoMCylpIvLe6AsQrtstbQPL8+
+         nVtMq7q2IP9lIkfdVkgTGNRQDyiePmDzcc51U5MtarkaT/C6rqkTdrK3+RvG4S18nU9L
+         taLt7USopZW0i43BgWYzT6r6bwWLZ+PqqsNxDf01Trg1hsY5C+Fk2mTEzi0pkHIydN7z
+         GHvqGMVTcRZvP9och5ye9KccrYuZ7UUznlvJWemfv8T0XbJWoiL/Ky9bv2prKrSpYd0X
+         gs2Q==
+X-Gm-Message-State: AOJu0YzVyK8lyDTFSa28ciGPpHOlXIhy3YjFrQdFdITeeUIQZui2ZQ63
+	RKpOSzLKgbe/SJPI/EFTUhodB25OOiFwy/Wd7Zug//zJ8dwOQgtC5Qs6
+X-Gm-Gg: AZuq6aJsaOgna9c7XNigCE+tFQeng8JyZ1VN7Xe8yh7ASVt4xV+RQVYiLQVjLIW4fLq
+	K+xu70jFXKH8b2VKHzAfTlSg4nA/+j4AwRVr/Wf21IyvjzjtTwWvHkZL+VJe/COfrVgycbbTl0f
+	Y6VhiUND8YyfJj7Is6WnJM+8JjH7mLcNzeWmVDqChP+P/fmv2dBLEMhg8YFNhqM4aa4v9CEPz7t
+	J0li+02WrpM6dVp8YBnPGMRs5SeqN95yHumtMEwD53Ghxu+N90WkOjbL76qVO+wfykJ6uiXejzy
+	1rLHjgn4eyDQyJX1W41/twYAnXcZXJ1kbQyvo+qPWjY9eEM/VoN7OGFn3kkET5MNIXE2Pni5cF+
+	D56lu8DxSsf/mAt/ster4epCbQy0H7+LKC+kjFbt/zCVk3QpEmV//LSDXE0njFY4B3VUQpeaOuu
+	38xALmiFzxxTuCF8KDCKVg0VxlTUyptLzgcB5mmhB5xe9iECyvsHLLxKug
+X-Received: by 2002:a05:600c:3505:b0:483:71f7:2795 with SMTP id 5b1f17b1804b1-48379b990b2mr160828595e9.11.1771352958917;
+        Tue, 17 Feb 2026 10:29:18 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4839731e101sm1055395e9.6.2026.02.17.10.29.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Feb 2026 10:29:17 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 4DBDBBE2DE0; Tue, 17 Feb 2026 19:29:16 +0100 (CET)
+Date: Tue, 17 Feb 2026 19:29:16 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Hostinger NOC <noc@hostinger.com>
+Cc: stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
+	Menglong Dong <menglong8.dong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: Please apply commit 9990ddf47d41 ("net: tunnel: make
+ skb_vlan_inet_prepare() return drop reasons") down to 6.1.y at least
+Message-ID: <aZSzfA3yFQxzj-N4@eldamar.lan>
+References: <177132401902.2893171.1371685164011289024@eldamar.lan>
+ <2026021740-mom-remix-8103@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Feedback-ID: rr08011227b2401215a7bf2b8306f9898d000025434cf800c0383b4465d5f9756fcc758ae3994a376c0510ac:zu08011227b23318a12f7d079f4eda8acf000022701c04a2c86e6073d06bac3e2f27ba60d6a0fac42dd94141:rf08011226056746b3e97faaae845a475700004e492f8612d1d2d6af5354727a3ac0c9b7a183b60a6beecc:ZohoMail
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026021740-mom-remix-8103@gregkh>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.84 / 15.00];
-	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[zohomail.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[zohomail.com:s=zm2022];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216885-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_REPLYTO(0.00)[outlook.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com,kernel.org,suse.de,ffwll.ch,microsoft.com,redhat.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	DKIM_TRACE(0.00)[zohomail.com:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhklkml@zohomail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-216886-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	HAS_REPLYTO(0.00)[mhklinux@outlook.com];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,davemloft.net];
+	TO_DN_ALL(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[debian.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[carnil@debian.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zohomail.com:mid,zohomail.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:replyto,outlook.com:email]
-X-Rspamd-Queue-Id: 720DF14F147
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4AA2514F293
 X-Rspamd-Action: no action
 
-From: Michael Kelley <mhklinux@outlook.com>
+Hi Greg,
 
-In a VM, Linux panic information (reason for the panic, stack trace,
-etc.) may be written to a serial console and/or a virtual frame buffer
-for a graphics console. The latter may need to be flushed back to the
-host hypervisor for display.
+I'm sorry having wasted your time, I relayed the testing result, let
+me loop in the user which tested the fix:
 
-The current Hyper-V DRM driver for the frame buffer does the flushing
-*after* the VMBus connection has been unloaded, such that panic messages
-are not displayed on the graphics console. A user with a Hyper-V graphics
-console is left with just a hung empty screen after a panic. The enhanced
-control that DRM provides over the panic display in the graphics console
-is similarly non-functional.
+On Tue, Feb 17, 2026 at 11:57:25AM +0100, Greg Kroah-Hartman wrote:
+> On Tue, Feb 17, 2026 at 11:28:20AM +0100, Salvatore Bonaccorso wrote:
+> > Hi stable maintainers,
+> > 
+> > 9990ddf47d41 ("net: tunnel: make skb_vlan_inet_prepare() return drop
+> > reasons") was alrady backported as well to 6.12.71 to address a
+> > regression when backporting 81c734dae203 ("ip6_tunnel: use
+> > skb_vlan_inet_prepare() in __ip6_tnl_rcv()") (this one was backported
+> > without the prequisite commit to 6.12.67, 6.6.122, 6.1.162, 5.15.199
+> > and 5.10.249).
+> > 
+> > Can you pick please as well 9990ddf47d41 for the other stable series
+> > as needed? I can only give a confirmation that it works as exepcted
+> > for the 6.1.y series as per https://bugs.debian.org/1127823#36 .
+> 
+> it does not apply to any of those older kernels, which is probably why
+> it didn't get added there.  I tried to do the backport myself, but the
+> changes to drivers/net/vxlan/vxlan_core.c doesn't make sense to me, so I
+> can't do it, sorry.
+> 
+> Do you have a working backport anywhere?
 
-Commit 3671f3777758 ("drm/hyperv: Add support for drm_panic") added
-the Hyper-V DRM driver support to flush the virtual frame buffer. It
-provided necessary functionality but did not handle the sequencing
-problem with VMBus unload.
+"Hostinger NOC" team, can you followup to the above? Can you provide a
+working backport down to the 6.1.y series to Greg?
 
-Fix the full problem by using VMBus functions to suppress the VMBus
-unload that is normally done by the VMBus driver in the panic path. Then
-after the frame buffer has been flushed, do the VMBus unload so that a
-kdump kernel can start cleanly. As expected, CONFIG_DRM_PANIC must be
-selected for these changes to have effect. As a side benefit, the
-enhanced features of the DRM panic path are also functional.
-
-Fixes: 3671f3777758 ("drm/hyperv: Add support for drm_panic")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
----
-Changes in v2: Removed test of CONFIG_PRINTK in deciding whether
-   to have VMBus skip the unload. A separate patch by Jocelyn Falempe
-   incorporates the CONFIG_PRINTK dependency into CONFIG_DRM_PANIC.
-
- drivers/gpu/drm/hyperv/hyperv_drm_drv.c     |  5 +++++
- drivers/gpu/drm/hyperv/hyperv_drm_modeset.c | 15 ++++++++-------
- 2 files changed, 13 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-index 06b5d96e6eaf..b6bf6412ae34 100644
---- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-@@ -150,6 +150,10 @@ static int hyperv_vmbus_probe(struct hv_device *hdev,
- 		goto err_free_mmio;
- 	}
- 
-+	/* If DRM panic path is stubbed out VMBus code must do the unload */
-+	if (IS_ENABLED(CONFIG_DRM_PANIC))
-+		vmbus_set_skip_unload(true);
-+
- 	drm_client_setup(dev, NULL);
- 
- 	return 0;
-@@ -169,6 +173,7 @@ static void hyperv_vmbus_remove(struct hv_device *hdev)
- 	struct drm_device *dev = hv_get_drvdata(hdev);
- 	struct hyperv_drm_device *hv = to_hv(dev);
- 
-+	vmbus_set_skip_unload(false);
- 	drm_dev_unplug(dev);
- 	drm_atomic_helper_shutdown(dev);
- 	vmbus_close(hdev->channel);
-diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_modeset.c b/drivers/gpu/drm/hyperv/hyperv_drm_modeset.c
-index 7978f8c8108c..d48ca6c23b7c 100644
---- a/drivers/gpu/drm/hyperv/hyperv_drm_modeset.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_modeset.c
-@@ -212,15 +212,16 @@ static void hyperv_plane_panic_flush(struct drm_plane *plane)
- 	struct hyperv_drm_device *hv = to_hv(plane->dev);
- 	struct drm_rect rect;
- 
--	if (!plane->state || !plane->state->fb)
--		return;
-+	if (plane->state && plane->state->fb) {
-+		rect.x1 = 0;
-+		rect.y1 = 0;
-+		rect.x2 = plane->state->fb->width;
-+		rect.y2 = plane->state->fb->height;
- 
--	rect.x1 = 0;
--	rect.y1 = 0;
--	rect.x2 = plane->state->fb->width;
--	rect.y2 = plane->state->fb->height;
-+		hyperv_update_dirt(hv->hdev, &rect);
-+	}
- 
--	hyperv_update_dirt(hv->hdev, &rect);
-+	vmbus_initiate_unload(true);
- }
- 
- static const struct drm_plane_helper_funcs hyperv_plane_helper_funcs = {
--- 
-2.25.1
-
+Regards,
+Salvatore
 
