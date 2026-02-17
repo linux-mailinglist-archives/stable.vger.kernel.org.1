@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-217001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIbZAUXTlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:53 +0100
+	id QPoqJ+fSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8593C150337
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34CBD150217
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0FB56303EBAA
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C17953048EC9
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9EA2D2488;
-	Tue, 17 Feb 2026 20:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3ED2D46D6;
+	Tue, 17 Feb 2026 20:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCnsfFp0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ef63JIS/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4CB1B042E;
-	Tue, 17 Feb 2026 20:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F932C0F79;
+	Tue, 17 Feb 2026 20:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361086; cv=none; b=N76Ds1aSGvLocLInSwjc1bFAfDf8/KY6ns65wc6ZdtyOBkzH2Y9YI48RgCFmSTu0b7z9veRkATMdRV9I1rXXmdvmZ9CPh7jMklHY6pLoVeGwAF8NPY+u0KRildAGcNKiQqPfAfjlsaLKQxFXQyFmb+UkuM+PfLGp9QM51OqXQCI=
+	t=1771360964; cv=none; b=BeNATsGOa0VZ96kyJd4diPcZqnuE89mJRUUtGnsIsWnY/ISQEzCv4vyVQwq8Xc9IQjAjDdgbDJ3fzeZA1BTpRmXqQMk7sWTOTC8Si3vMpSTnUeHdVVfSMsE+fAUWxSBkd3XxSCIBYU2Cyc5SH2MHpRDBbOltbkjQTwn2JALH3U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361086; c=relaxed/simple;
-	bh=RCBcu65t1E2sAIquLy+16+GTd4f7uOn1bcRfIlSQP0Q=;
+	s=arc-20240116; t=1771360964; c=relaxed/simple;
+	bh=QsBuEOwYkItp4FOhoXlZtUPJbAsZMrLvXPmeNTnFxaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLxedV/jfamId2xSiofua4KvheJedsHNqElqMiBEBzVP+BYs8D4e0UwdTjKNBkjBCTSWzH25qzgcBGMHcGsrnnbgCIqeHAv7yoGlp4EnGbZGF63wg1/FlBCPjInDDIOuuJ7P1nvh4y6qUtYjRiAL3FwXeW7Y9QHnHWfENDlV4tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCnsfFp0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50179C4CEF7;
-	Tue, 17 Feb 2026 20:44:45 +0000 (UTC)
+	 MIME-Version; b=rMZH+V9J9gq+E1rb4XF+c3ZJyWmhFlXl33ZM2nkkyFxNv7MSIjgsVom5JpzWfr1YfMTi+ok2f9BLPWN2tx4sVj0e5H36WK+Zz8Q5tTBOodlj76rX0gYayuux5xRuUe+gmrT7rBXvncbTqmWfrB4Qf+nCjRoWrNSz8otifTgs1fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ef63JIS/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456ACC4CEF7;
+	Tue, 17 Feb 2026 20:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361086;
-	bh=RCBcu65t1E2sAIquLy+16+GTd4f7uOn1bcRfIlSQP0Q=;
+	s=korg; t=1771360964;
+	bh=QsBuEOwYkItp4FOhoXlZtUPJbAsZMrLvXPmeNTnFxaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCnsfFp0kXO1u4KgLfnQ1aP4JfwPJjtvSj1tQC6kdI7AEmasQOzB9hlleBZ/NngnA
-	 o9VVU6y0nSvlvbMnn521Z5Llwnaz0zXwRiwnnNF1StXkmh91s9Lpz/1x4PjNSnvd4O
-	 pjzuNfZSij+fHxVfICL/m+Ea5roNRyShtdK2ZPVc=
+	b=ef63JIS/ijq+232m1UTBbISIkYldihnOleB6uYPN6nwnjUOSEXTAwFEo30u/0xBTb
+	 zyaV6MFXMmUgwbx9uAp6pENatrZkiQsNw9mhorQXVTmywQOmB6R2OnRBiqPz1Gsz6C
+	 UcoAZ8yIpX/kFLw8nP9YYWlsEFfNhdizjPfX0lOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/39] ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 05/24] scsi: qla2xxx: Delay module unload while fabric scan in progress
 Date: Tue, 17 Feb 2026 21:31:18 +0100
-Message-ID: <20260217200003.288021978@linuxfoundation.org>
+Message-ID: <20260217200000.915511465@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
+References: <20260217200000.708219618@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,69 +72,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217001-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216966-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,linaro.org,marvell.com,gmail.com,oracle.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tuxedocomputers.com:email,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 8593C150337
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email]
+X-Rspamd-Queue-Id: 34CBD150217
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-[ Upstream commit b48fe9af1e60360baf09ca6b7a3cd6541f16e611 ]
+commit 8890bf450e0b6b283f48ac619fca5ac2f14ddd62 upstream.
 
-Add a PCI quirk to enable microphone detection on the headphone jack of
-TongFang X6AR55xU devices.
+System crash seen during load/unload test in a loop.
 
-Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260119151626.35481-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[105954.384919] RBP: ffff914589838dc0 R08: 0000000000000000 R09: 0000000000000086
+[105954.384920] R10: 000000000000000f R11: ffffa31240904be5 R12: ffff914605f868e0
+[105954.384921] R13: ffff914605f86910 R14: 0000000000008010 R15: 00000000ddb7c000
+[105954.384923] FS:  0000000000000000(0000) GS:ffff9163fec40000(0000) knlGS:0000000000000000
+[105954.384925] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[105954.384926] CR2: 000055d31ce1d6a0 CR3: 0000000119f5e001 CR4: 0000000000770ee0
+[105954.384928] PKRU: 55555554
+[105954.384929] Call Trace:
+[105954.384931]  <IRQ>
+[105954.384934]  qla24xx_sp_unmap+0x1f3/0x2a0 [qla2xxx]
+[105954.384962]  ? qla_async_scan_sp_done+0x114/0x1f0 [qla2xxx]
+[105954.384980]  ? qla24xx_els_ct_entry+0x4de/0x760 [qla2xxx]
+[105954.384999]  ? __wake_up_common+0x80/0x190
+[105954.385004]  ? qla24xx_process_response_queue+0xc2/0xaa0 [qla2xxx]
+[105954.385023]  ? qla24xx_msix_rsp_q+0x44/0xb0 [qla2xxx]
+[105954.385040]  ? __handle_irq_event_percpu+0x3d/0x190
+[105954.385044]  ? handle_irq_event+0x58/0xb0
+[105954.385046]  ? handle_edge_irq+0x93/0x240
+[105954.385050]  ? __common_interrupt+0x41/0xa0
+[105954.385055]  ? common_interrupt+0x3e/0xa0
+[105954.385060]  ? asm_common_interrupt+0x22/0x40
+
+The root cause of this was that there was a free (dma_free_attrs) in the
+interrupt context.  There was a device discovery/fabric scan in
+progress.  A module unload was issued which set the UNLOADING flag.  As
+part of the discovery, after receiving an interrupt a work queue was
+scheduled (which involved a work to be queued).  Since the UNLOADING
+flag is set, the work item was not allocated and the mapped memory had
+to be freed.  The free occurred in interrupt context leading to system
+crash.  Delay the driver unload until the fabric scan is complete to
+avoid the crash.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/202512090414.07Waorz0-lkp@intel.com/
+Fixes: 783e0dc4f66a ("qla2xxx: Check for device state before unloading the driver.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-8-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/qla2xxx/qla_os.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 839a7e957d42a..72d9ea5171bbd 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10133,6 +10133,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
- 		{0x12, 0x90a60140},
- 		{0x19, 0x04a11030},
- 		{0x21, 0x04211020}),
-+	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1d05, "TongFang", ALC274_FIXUP_HP_HEADSET_MIC,
-+		{0x17, 0x90170110},
-+		{0x19, 0x03a11030},
-+		{0x21, 0x03211020}),
- 	SND_HDA_PIN_QUIRK(0x10ec0282, 0x1025, "Acer", ALC282_FIXUP_ACER_DISABLE_LINEOUT,
- 		ALC282_STANDARD_PINS,
- 		{0x12, 0x90a609c0},
--- 
-2.51.0
-
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -1162,7 +1162,8 @@ qla2x00_wait_for_hba_ready(scsi_qla_host
+ 	while ((qla2x00_reset_active(vha) || ha->dpc_active ||
+ 		ha->flags.mbox_busy) ||
+ 	       test_bit(FX00_RESET_RECOVERY, &vha->dpc_flags) ||
+-	       test_bit(FX00_TARGET_SCAN, &vha->dpc_flags)) {
++	       test_bit(FX00_TARGET_SCAN, &vha->dpc_flags) ||
++	       (vha->scan.scan_flags & SF_SCANNING)) {
+ 		if (test_bit(UNLOADING, &base_vha->dpc_flags))
+ 			break;
+ 		msleep(1000);
 
 
 
