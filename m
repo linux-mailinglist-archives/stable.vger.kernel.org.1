@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-216960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APISGbLSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:26 +0100
+	id aJg5AjzTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AEAD1501B1
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8030A150322
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2EF07301344B
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 191C2300C016
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582103783AB;
-	Tue, 17 Feb 2026 20:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D75A3783AF;
+	Tue, 17 Feb 2026 20:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7FmSkYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZyGal7z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE2E2C0F79;
-	Tue, 17 Feb 2026 20:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D492437646D;
+	Tue, 17 Feb 2026 20:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360943; cv=none; b=JZf9xqpEGUiFfpLxAVa/U5mPb4Nm7n8DP4SK4dfW1l+CCrkWnwNa6El8hRzxj/V+pMJpvw588Fq+vF3bemQmkt+npcv0Vot6Lztr/iB+w0lC1OXIwUfBnuwt3QGnm79F6Q1aR03scZJGUKgSnljCZrFXP34evLwZjy4Ua5Pqh6c=
+	t=1771361078; cv=none; b=XgB5W6T7dXZjApK+ZZuBkGVoD3dJftbDVmQ75LRdZalVWqFdVcn03x/7IC3J1H1/WYLFMtPK4UymK16Uzss8w9e8bIvi+KEgbeLSpY4IU1K2A2lzEfc9Ia7fouPYPvAlpbOSBDnpHbSga08dSHK6WgGA0wbNIIr0Uwiu9uPULyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360943; c=relaxed/simple;
-	bh=jsKk63vwje27+aaV/neTE7hlqnHRe2+v9st5ojzAjBI=;
+	s=arc-20240116; t=1771361078; c=relaxed/simple;
+	bh=RR4wqqmGzK1og2VFhHtscpj4dBxthIkxDv99W3OuVjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItZPFiD3rZbbPwx6ufUK2MAy45OqY4rxMR/j3NpgM7AkVgn0TpEu7nw2ip2UQCJV/ZRaX9MOmqxJgGSxruVVtxNEzUqhiMibyLZoovpZFGE0hBRNq3V6VhYQQ8uJA5LvSdT30QTQpZ5E46aaptBWQNWmN+rKP8BiiN6jpGQl2sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7FmSkYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C0FC4CEF7;
-	Tue, 17 Feb 2026 20:42:22 +0000 (UTC)
+	 MIME-Version; b=HN0MfCsMBr3fCx0pIG+hOyGYnNklakRKu5CQKv0TGyoucWSt73SvB45yXQjlmKvmU+YWzjVG0rn2081CxbRiABhylQgjc8AGYQ4+oI+Ww9XDBx7FlFv6e3sBSbvO16mATgwF8WRBAHw09zkGGUIdh6xXxXU4JXxIIR09z6L9d5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZyGal7z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B32C4CEF7;
+	Tue, 17 Feb 2026 20:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360942;
-	bh=jsKk63vwje27+aaV/neTE7hlqnHRe2+v9st5ojzAjBI=;
+	s=korg; t=1771361078;
+	bh=RR4wqqmGzK1og2VFhHtscpj4dBxthIkxDv99W3OuVjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s7FmSkYBFcjBjdAtNQsLXEWzk1rA16Mp9Z56FNe/QRktt9x48tfrCMbaseJj6bnI0
-	 78BKvkoXLX42qe54bcdsN1uYEcyf7nsoc8zUzEHU3SvMbLuC7Xsysp4RwCRmSSkzOr
-	 0fZcNUJE4y8ZZkJ8Bnbs63nO1LI9g+kNrPDSniPg=
+	b=XZyGal7zKlMaDonXRVZNXqcF8vKZNqgJZSSgOtt0isKC87MGxWKmuMocKtLCibeV4
+	 5dpTljG7VOWRCimzjM40QjxBoSMabvMVENwdpDysIkuObuuJt9gOnXis7ZTBWOvxbf
+	 gc0WpxGfAREzPsDCgLgGWR9l+2c6B8y3j8ZTlGCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.10 03/24] crypto: virtio - Add spinlock protection with virtqueue notification
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 07/39] scsi: qla2xxx: Query FW again before proceeding with login
 Date: Tue, 17 Feb 2026 21:31:16 +0100
-Message-ID: <20260217200000.842308027@linuxfoundation.org>
+Message-ID: <20260217200003.212955892@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
-References: <20260217200000.708219618@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +70,123 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216960-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216999-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,loongson.cn:email]
-X-Rspamd-Queue-Id: 0AEAD1501B1
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email]
+X-Rspamd-Queue-Id: 8030A150322
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-commit b505047ffc8057555900d2d3a005d033e6967382 upstream.
+commit 42b2dab4340d39b71334151e10c6d7d9b0040ffa upstream.
 
-When VM boots with one virtio-crypto PCI device and builtin backend,
-run openssl benchmark command with multiple processes, such as
-  openssl speed -evp aes-128-cbc -engine afalg  -seconds 10 -multi 32
+Issue occurred during a continuous reboot test of several thousand
+iterations specific to a fabric topo with dual mode target where it
+sends a PLOGI/PRLI and then sends a LOGO. The initiator was also in the
+process of discovery and sent a PLOGI to the switch. It then queried a
+list of ports logged in via mbx 75h and the GPDB response indicated that
+the target was logged in. This caused a mismatch in the states between
+the driver and FW.  Requery the FW for the state and proceed with the
+rest of discovery process.
 
-openssl processes will hangup and there is error reported like this:
- virtio_crypto virtio0: dataq.0:id 3 is not a head!
-
-It seems that the data virtqueue need protection when it is handled
-for virtio done notification. If the spinlock protection is added
-in virtcrypto_done_task(), openssl benchmark with multiple processes
-works well.
-
-Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-11-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/virtio/virtio_crypto_core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/qla2xxx/qla_init.c |   19 +++++++++++++++++--
+ drivers/scsi/qla2xxx/qla_isr.c  |   19 +++++++++++++++++--
+ 2 files changed, 34 insertions(+), 4 deletions(-)
 
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -77,15 +77,20 @@ static void virtcrypto_done_task(unsigne
- 	struct data_queue *data_vq = (struct data_queue *)data;
- 	struct virtqueue *vq = data_vq->vq;
- 	struct virtio_crypto_request *vc_req;
-+	unsigned long flags;
- 	unsigned int len;
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -2473,8 +2473,23 @@ qla24xx_handle_plogi_done_event(struct s
+ 	    ea->sp->gen1, fcport->rscn_gen,
+ 	    ea->data[0], ea->data[1], ea->iop[0], ea->iop[1]);
  
-+	spin_lock_irqsave(&data_vq->lock, flags);
- 	do {
- 		virtqueue_disable_cb(vq);
- 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
-+			spin_unlock_irqrestore(&data_vq->lock, flags);
- 			if (vc_req->alg_cb)
- 				vc_req->alg_cb(vc_req, len);
-+			spin_lock_irqsave(&data_vq->lock, flags);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
-+	spin_unlock_irqrestore(&data_vq->lock, flags);
- }
+-	if ((fcport->fw_login_state == DSC_LS_PLOGI_PEND) ||
+-	    (fcport->fw_login_state == DSC_LS_PRLI_PEND)) {
++	if (fcport->fw_login_state == DSC_LS_PLOGI_PEND) {
++		ql_dbg(ql_dbg_disc, vha, 0x20ea,
++		    "%s %d %8phC Remote is trying to login\n",
++		    __func__, __LINE__, fcport->port_name);
++		/*
++		 * If we get here, there is port thats already logged in,
++		 * but it's state has not moved ahead. Recheck with FW on
++		 * what state it is in and proceed ahead
++		 */
++		if (!N2N_TOPO(vha->hw)) {
++			fcport->fw_login_state = DSC_LS_PRLI_COMP;
++			qla24xx_post_gpdb_work(vha, fcport, 0);
++		}
++		return;
++	}
++
++	if (fcport->fw_login_state == DSC_LS_PRLI_PEND) {
+ 		ql_dbg(ql_dbg_disc, vha, 0x20ea,
+ 		    "%s %d %8phC Remote is trying to login\n",
+ 		    __func__, __LINE__, fcport->port_name);
+--- a/drivers/scsi/qla2xxx/qla_isr.c
++++ b/drivers/scsi/qla2xxx/qla_isr.c
+@@ -1524,13 +1524,28 @@ skip_rio:
  
- static void virtcrypto_dataq_callback(struct virtqueue *vq)
+ 			/* Port logout */
+ 			fcport = qla2x00_find_fcport_by_loopid(vha, mb[1]);
+-			if (!fcport)
++			if (!fcport) {
++				ql_dbg(ql_dbg_async, vha, 0x5011,
++					"Could not find fcport:%04x %04x %04x\n",
++					mb[1], mb[2], mb[3]);
+ 				break;
+-			if (atomic_read(&fcport->state) != FCS_ONLINE)
++			}
++
++			if (atomic_read(&fcport->state) != FCS_ONLINE) {
++				ql_dbg(ql_dbg_async, vha, 0x5012,
++					"Port state is not online State:0x%x \n",
++					atomic_read(&fcport->state));
++				ql_dbg(ql_dbg_async, vha, 0x5012,
++					"Scheduling session for deletion \n");
++				fcport->logout_on_delete = 0;
++				qlt_schedule_sess_for_deletion(fcport);
+ 				break;
++			}
++
+ 			ql_dbg(ql_dbg_async, vha, 0x508a,
+ 			    "Marking port lost loopid=%04x portid=%06x.\n",
+ 			    fcport->loop_id, fcport->d_id.b24);
++
+ 			if (qla_ini_mode_enabled(vha)) {
+ 				fcport->logout_on_delete = 0;
+ 				qlt_schedule_sess_for_deletion(fcport);
 
 
 
