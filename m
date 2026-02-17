@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-216941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NCmOnHSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:21 +0100
+	id QD2tDITSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC2A150109
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4D5150144
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 33DBA3013244
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:41:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F5EC303E3A7
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDD92BD031;
-	Tue, 17 Feb 2026 20:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB1937755D;
+	Tue, 17 Feb 2026 20:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPQE2IYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QN06LlOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55776A8D2;
-	Tue, 17 Feb 2026 20:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C896A8D2;
+	Tue, 17 Feb 2026 20:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360877; cv=none; b=HGxbCiI1VkFQZ3A8Cc5ZnsYOWBVe39phUw+3sGoNadpvfd8o0bY1+/F0eh6fkPO5Cl7nbVbNFeujcpgXI5Twpz5kum8Qj8/3fU3CQNfeG7eBDLy/lvg2p730giiIkxEQtn4sZ68dbqE1CSXO8lyl872QZNPTSs5MSemObm9dIdI=
+	t=1771360881; cv=none; b=eVRXzwLZtx3eMqOkRNADroljhKPQqprbK4WU5ykUJkmvxB9+1QzXiZP6KipJAAOhjtxq4zX1iH3AkKxhZ+xgKIdO3D8/2BmOMC/nLWflML5SAYkolxP4lJhoPa2+TnCDuqkOFtbfJiVRLhKmfHXzUhn5F1KV9vLmVT79ZRRbUAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360877; c=relaxed/simple;
-	bh=4zrNGeKI0y4Jk/YZB2Ye9D0NKOKjI5+8dU9DVgFjTaU=;
+	s=arc-20240116; t=1771360881; c=relaxed/simple;
+	bh=+01dTYHepQh1aYaeBzbuHiCiFDIfRHTVovEXwgadCNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIH9eFY+0+NUqBETeDET/HEAplz3YFk+QAlVL5umAZHiDEy4fRbxRSvLIqA8XjljvX36vg3UzjZfJr4moRmswPd6Zm4EIVjLPL4FCVvo+iMQihhzwLfP3/oYSiyMqGuzVVnd54Rsm7BCFi0Cc0tbId4uWHKNq85w/ve8PCc2tO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPQE2IYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8B1C4CEF7;
-	Tue, 17 Feb 2026 20:41:16 +0000 (UTC)
+	 MIME-Version; b=qjZ4nYCD3q9U9TkwBJ4LYM+7BZ0+8/IN47b+Cpazgkm87a1c8TADlEgt6JzPW6zpIsBpZJAvWyi9PJyvDqCACIQKLbltjP98lPFiIgFIYlhnqBxMOD+QKJqi0oRc3tr8488QCD1ieLb/azdDQdWSome32vNzo9pv00naCAKrXkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QN06LlOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D627C19425;
+	Tue, 17 Feb 2026 20:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360877;
-	bh=4zrNGeKI0y4Jk/YZB2Ye9D0NKOKjI5+8dU9DVgFjTaU=;
+	s=korg; t=1771360881;
+	bh=+01dTYHepQh1aYaeBzbuHiCiFDIfRHTVovEXwgadCNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aPQE2IYYnG0LghQYEFlGSYxJCWA+AOu+vC9wUxn7BblmcZ9Om9ZO5wUO2iYsBfcoh
-	 ChA/4aF7pqiezLZwFES629gnmZSxsnQG85pzGYwUNBknW90BHMIMwIGUfOLjwCUcSX
-	 /movaT3f/b581YJMm9BZgQHpo1umtpKzsGAM4Aoc=
+	b=QN06LlOCKqCBciQofcF0WSQoJAjCsQu4rxHHUoWiBBH7joLYthrtjZozqXbth1UfA
+	 /GrLyHtUsGWnTqdov2i4Ul2OZ4nuYJ/nmxnhNlRnzFTnSzJwHCjXVhKtnCvlV9Pqu+
+	 FEbS+dzvw1l6M2k5+KYcfg9GwsphpviZkXnnTwkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+9c4e33e12283d9437c25@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 10/39] ASoC: cs35l45: Corrects ASP_TX5 DAPM widget channel
-Date: Tue, 17 Feb 2026 21:30:32 +0100
-Message-ID: <20260217200004.623112369@linuxfoundation.org>
+Subject: [PATCH 6.6 11/39] romfs: check sb_set_blocksize() return value
+Date: Tue, 17 Feb 2026 21:30:33 +0100
+Message-ID: <20260217200004.660356555@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260217200004.221651386@linuxfoundation.org>
 References: <20260217200004.221651386@linuxfoundation.org>
@@ -66,68 +66,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216941-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216942-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,9c4e33e12283d9437c25];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BBC2A150109
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: BE4D5150144
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 6dd0fdc908c02318c28ec2c0979661846ee0a9f7 ]
+[ Upstream commit ab7ad7abb3660c58ffffdf07ff3bb976e7e0afa0 ]
 
-ASP_TX5 was incorrectly mapped to a channel value of 3 corrects,
-the channel value of 4.
+romfs_fill_super() ignores the return value of sb_set_blocksize(), which
+can fail if the requested block size is incompatible with the block
+device's configuration.
 
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260115192523.1335742-2-rriveram@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This can be triggered by setting a loop device's block size larger than
+PAGE_SIZE using ioctl(LOOP_SET_BLOCK_SIZE, 32768), then mounting a romfs
+filesystem on that device.
+
+When sb_set_blocksize(sb, ROMBSIZE) is called with ROMBSIZE=4096 but the
+device has logical_block_size=32768, bdev_validate_blocksize() fails
+because the requested size is smaller than the device's logical block
+size. sb_set_blocksize() returns 0 (failure), but romfs ignores this and
+continues mounting.
+
+The superblock's block size remains at the device's logical block size
+(32768). Later, when sb_bread() attempts I/O with this oversized block
+size, it triggers a kernel BUG in folio_set_bh():
+
+    kernel BUG at fs/buffer.c:1582!
+    BUG_ON(size > PAGE_SIZE);
+
+Fix by checking the return value of sb_set_blocksize() and failing the
+mount with -EINVAL if it returns 0.
+
+Reported-by: syzbot+9c4e33e12283d9437c25@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9c4e33e12283d9437c25
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260113084037.1167887-1-kartikey406@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l45.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/romfs/super.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs35l45.c b/sound/soc/codecs/cs35l45.c
-index 7e439c778c6b4..11e28c340a709 100644
---- a/sound/soc/codecs/cs35l45.c
-+++ b/sound/soc/codecs/cs35l45.c
-@@ -316,7 +316,7 @@ static const struct snd_soc_dapm_widget cs35l45_dapm_widgets[] = {
- 	SND_SOC_DAPM_AIF_OUT("ASP_TX2", NULL, 1, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX2_EN_SHIFT, 0),
- 	SND_SOC_DAPM_AIF_OUT("ASP_TX3", NULL, 2, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX3_EN_SHIFT, 0),
- 	SND_SOC_DAPM_AIF_OUT("ASP_TX4", NULL, 3, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX4_EN_SHIFT, 0),
--	SND_SOC_DAPM_AIF_OUT("ASP_TX5", NULL, 3, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX5_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASP_TX5", NULL, 4, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX5_EN_SHIFT, 0),
+diff --git a/fs/romfs/super.c b/fs/romfs/super.c
+index b1bdfbc211c3c..82975173dcb04 100644
+--- a/fs/romfs/super.c
++++ b/fs/romfs/super.c
+@@ -467,7 +467,10 @@ static int romfs_fill_super(struct super_block *sb, struct fs_context *fc)
  
- 	SND_SOC_DAPM_MUX("ASP_TX1 Source", SND_SOC_NOPM, 0, 0, &cs35l45_asp_muxes[0]),
- 	SND_SOC_DAPM_MUX("ASP_TX2 Source", SND_SOC_NOPM, 0, 0, &cs35l45_asp_muxes[1]),
+ #ifdef CONFIG_BLOCK
+ 	if (!sb->s_mtd) {
+-		sb_set_blocksize(sb, ROMBSIZE);
++		if (!sb_set_blocksize(sb, ROMBSIZE)) {
++			errorf(fc, "romfs: unable to set blocksize\n");
++			return -EINVAL;
++		}
+ 	} else {
+ 		sb->s_blocksize = ROMBSIZE;
+ 		sb->s_blocksize_bits = blksize_bits(ROMBSIZE);
 -- 
 2.51.0
 
