@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-216947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CSeN4bSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:42 +0100
+	id 0K1/ApHTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D5815014C
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3526B1503E2
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9070A300A63C
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:41:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C1FC43004CB4
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06776377556;
-	Tue, 17 Feb 2026 20:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062952773E4;
+	Tue, 17 Feb 2026 20:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDDpblkr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egTFIwKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9C637755D;
-	Tue, 17 Feb 2026 20:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF6C259CBD;
+	Tue, 17 Feb 2026 20:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360898; cv=none; b=U6hTKjLaXbsvAg2Avx8YHjgPA9GaUA37x7TQrlP9ZV1tj6DAq9twrwHFs58rL911G/NO5D39VsyyekbRc3kvo47J8hLpqmUmUopxmdhyfRA3n7qIQely1k7QAK8aMxEBwv/K71T/fyN/TuIG6da1ZBvQSGD7pAqBbz+1VNuaxtY=
+	t=1771361162; cv=none; b=kNcevK3JpSnfaf98faDKKONMSib0mLf0u2EQhHB7+a5xFgX8PgGV4ziXsLjgcEb3+5+8FtJtDOGS9vviZxSGgM1th8vstn3KMEipIzOFCJadIDDhl1WKG9UTrRfbblmgYC8H+OeCihmbr/ih7VxV183+M8rglwwC3znnvs49p+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360898; c=relaxed/simple;
-	bh=uo5MBWpdrCxZGr655BaD2iylD+a/uwsIa5UBXDILV7U=;
+	s=arc-20240116; t=1771361162; c=relaxed/simple;
+	bh=SfhPR4osnYMqu7u6MHDRdc9/FGPV6g0e/N6Dp+Dt7wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVbX+1DbQFb319AcB9/zY7ZXzo3OwzXi446YPvfVfcuf4nMTXRBh5CiVVN07laDVgGc7XYZFTRLRlK6gTXcRHhmGT/kduvZSu7gVtUCSiBb2kt8dV1TzrvcmaAY9HwQ+f4bZPd5qDAk+eL8x+EPumtr7J8JpLY8oYMnbx5iLkhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDDpblkr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA66AC4CEF7;
-	Tue, 17 Feb 2026 20:41:37 +0000 (UTC)
+	 MIME-Version; b=nzKvLiWH6keGo1hyZzLRS2YskZUsMr8w1hVtoiGGX8qQW31TgBRfxllmzmiMAp/kWo/6sQ9rQ5zllYfbLJ9C08sAeywX+njoK0yv6XEWdNC+y4rdqAD7WWbdTpBaJAblYnH66OGiqDhuykWcZGsEexOPQEN+eo26KgGmOtI4rF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egTFIwKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2A3C4CEF7;
+	Tue, 17 Feb 2026 20:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360898;
-	bh=uo5MBWpdrCxZGr655BaD2iylD+a/uwsIa5UBXDILV7U=;
+	s=korg; t=1771361162;
+	bh=SfhPR4osnYMqu7u6MHDRdc9/FGPV6g0e/N6Dp+Dt7wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDDpblkrnV9VhAQ6QQUEMDcBO/wpqN88PIL/6r7r6tvl4s4E+EtFAoTcH6j4pN0vw
-	 /srBhkoY8tzSLia6sl1uL9oiAi3nC3iCzWYlm+udzmD//njvI9t5ADGSWBIwSAr+3f
-	 OmMDlbCHifj6l74bJCwSLZ+8A51vkN+q+9mNjqtM=
+	b=egTFIwKNvYNvzL0h0QjABcnnHx9CpT2Pj/sbEG5avGh72UrC/l7QD89L7SN6KJA4r
+	 CLbMbnKGOKHw7otYgLGde3nRp9LKZU1JJJxIj9DYbKUiLev6v/C9wNmdZuTD6lI7IT
+	 T9dnSoWvZ9k7Mx8ZPnNqBfNk0XuPhgU2P6m5pBgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjie Qi <qwjhust@gmail.com>,
-	Chao Yu <chao@kernel.org>,
-	Daeho Jeong <daehojeong@google.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 36/39] f2fs: fix zoned block device information initialization
+	tianshuo han <hantianshuo233@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 02/64] ksmbd: fix infinite loop caused by next_smb2_rcv_hdr_off reset in error paths
 Date: Tue, 17 Feb 2026 21:30:58 +0100
-Message-ID: <20260217200005.595875080@linuxfoundation.org>
+Message-ID: <20260217200007.600812401@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200004.221651386@linuxfoundation.org>
-References: <20260217200004.221651386@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +67,95 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216947-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,google.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217024-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 70D5815014C
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 3526B1503E2
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjie Qi <qwjhust@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 0f9b12142be1af8555cfe53c6fbecb8e60a40dac ]
+commit 010eb01ce23b34b50531448b0da391c7f05a72af upstream.
 
-If the max open zones of zoned devices are less than
-the active logs of F2FS, the device may error due to
-insufficient zone resources when multiple active logs
-are being written at the same time.
+The problem occurs when a signed request fails smb2 signature verification
+check. In __process_request(), if check_sign_req() returns an error,
+set_smb2_rsp_status(work, STATUS_ACCESS_DENIED) is called.
+set_smb2_rsp_status() set work->next_smb2_rcv_hdr_off as zero. By resetting
+next_smb2_rcv_hdr_off to zero, the pointer to the next command in the chain
+is lost. Consequently, is_chained_smb2_message() continues to point to
+the same request header instead of advancing. If the header's NextCommand
+field is non-zero, the function returns true, causing __handle_ksmbd_work()
+to repeatedly process the same failed request in an infinite loop.
+This results in the kernel log being flooded with "bad smb2 signature"
+messages and high CPU usage.
 
-Signed-off-by: Wenjie Qi <qwjhust@gmail.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 5c145c03188b ("f2fs: fix to avoid mapping wrong physical block for swapfile")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes the issue by changing the return value from
+SERVER_HANDLER_CONTINUE to SERVER_HANDLER_ABORT. This ensures that
+the processing loop terminates immediately rather than attempting to
+continue from an invalidated offset.
+
+Reported-by: tianshuo han <hantianshuo233@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h  |    1 +
- fs/f2fs/super.c |   27 +++++++++++++++++++++++++++
- 2 files changed, 28 insertions(+)
+ fs/smb/server/server.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1567,6 +1567,7 @@ struct f2fs_sb_info {
+--- a/fs/smb/server/server.c
++++ b/fs/smb/server/server.c
+@@ -126,21 +126,21 @@ static int __process_request(struct ksmb
+ andx_again:
+ 	if (command >= conn->max_cmds) {
+ 		conn->ops->set_rsp_status(work, STATUS_INVALID_PARAMETER);
+-		return SERVER_HANDLER_CONTINUE;
++		return SERVER_HANDLER_ABORT;
+ 	}
  
- #ifdef CONFIG_BLK_DEV_ZONED
- 	unsigned int blocks_per_blkz;		/* F2FS blocks per zone */
-+	unsigned int max_open_zones;		/* max open zone resources of the zoned device */
- #endif
+ 	cmds = &conn->cmds[command];
+ 	if (!cmds->proc) {
+ 		ksmbd_debug(SMB, "*** not implemented yet cmd = %x\n", command);
+ 		conn->ops->set_rsp_status(work, STATUS_NOT_IMPLEMENTED);
+-		return SERVER_HANDLER_CONTINUE;
++		return SERVER_HANDLER_ABORT;
+ 	}
  
- 	/* for node-related operations */
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2359,6 +2359,17 @@ static int f2fs_remount(struct super_blo
- 	if (err)
- 		goto restore_opts;
+ 	if (work->sess && conn->ops->is_sign_req(work, command)) {
+ 		ret = conn->ops->check_sign_req(work);
+ 		if (!ret) {
+ 			conn->ops->set_rsp_status(work, STATUS_ACCESS_DENIED);
+-			return SERVER_HANDLER_CONTINUE;
++			return SERVER_HANDLER_ABORT;
+ 		}
+ 	}
  
-+#ifdef CONFIG_BLK_DEV_ZONED
-+	if (f2fs_sb_has_blkzoned(sbi) &&
-+		sbi->max_open_zones < F2FS_OPTION(sbi).active_logs) {
-+		f2fs_err(sbi,
-+			"zoned: max open zones %u is too small, need at least %u open zones",
-+				 sbi->max_open_zones, F2FS_OPTION(sbi).active_logs);
-+		err = -EINVAL;
-+		goto restore_opts;
-+	}
-+#endif
-+
- 	/* flush outstanding errors before changing fs state */
- 	flush_work(&sbi->s_error_work);
- 
-@@ -3902,11 +3913,24 @@ static int init_blkz_info(struct f2fs_sb
- 	sector_t nr_sectors = bdev_nr_sectors(bdev);
- 	struct f2fs_report_zones_args rep_zone_arg;
- 	u64 zone_sectors;
-+	unsigned int max_open_zones;
- 	int ret;
- 
- 	if (!f2fs_sb_has_blkzoned(sbi))
- 		return 0;
- 
-+	if (bdev_is_zoned(FDEV(devi).bdev)) {
-+		max_open_zones = bdev_max_open_zones(bdev);
-+		if (max_open_zones && (max_open_zones < sbi->max_open_zones))
-+			sbi->max_open_zones = max_open_zones;
-+		if (sbi->max_open_zones < F2FS_OPTION(sbi).active_logs) {
-+			f2fs_err(sbi,
-+				"zoned: max open zones %u is too small, need at least %u open zones",
-+				sbi->max_open_zones, F2FS_OPTION(sbi).active_logs);
-+			return -EINVAL;
-+		}
-+	}
-+
- 	zone_sectors = bdev_zone_sectors(bdev);
- 	if (sbi->blocks_per_blkz && sbi->blocks_per_blkz !=
- 				SECTOR_TO_BLOCK(zone_sectors))
-@@ -4188,6 +4212,9 @@ static int f2fs_scan_devices(struct f2fs
- 
- 	logical_blksize = bdev_logical_block_size(sbi->sb->s_bdev);
- 	sbi->aligned_blksize = true;
-+#ifdef CONFIG_BLK_DEV_ZONED
-+	sbi->max_open_zones = UINT_MAX;
-+#endif
- 
- 	for (i = 0; i < max_devices; i++) {
- 		if (i == 0)
 
 
 
