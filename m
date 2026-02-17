@@ -1,87 +1,81 @@
-Return-Path: <stable+bounces-216878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INe0NYiylGlbGgIAu9opvQ
-	(envelope-from <stable+bounces-216878-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:25:12 +0100
+	id SKLcFUizlGlbGgIAu9opvQ
+	(envelope-from <stable+bounces-216884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:28:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8462414F15E
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:25:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DCA14F211
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3F213069006
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 18:23:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75855304C96A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 18:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DD9372B5C;
-	Tue, 17 Feb 2026 18:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F8737107F;
+	Tue, 17 Feb 2026 18:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jvq9ClEV"
+	dkim=pass (1024-bit key) header.d=zohomail.com header.i=mhklkml@zohomail.com header.b="a96ICpz4"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from sender4-pp-o95.zoho.com (sender4-pp-o95.zoho.com [136.143.188.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DA6372B23;
-	Tue, 17 Feb 2026 18:23:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771352597; cv=none; b=tLKdUtfCpZYXzda0jXJnSFSJZ/zJOHOcW4uW5oxj23bPmkT2d4RUcF5jPc0zoF22IuzHxcYDjWf4fcUmSF0j1LoeHVOK6NZ+w/wVJflt7fJWx2N7ds1H4H0H+i6n79k8wiEiD/oABYKGwXGClK5CV9YXacf8XrhbDGFpBXdK5hA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771352597; c=relaxed/simple;
-	bh=vUSjiRKvY4OVOj/9fIcMmeYEbXnOx3B16e4BBw5l+X8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPdxgsOqWaYW9sbyEMkPmZwpf30IO9MSNL3yMgMmwEbCVtrISa5YvuyDfPeSv8QMOJ9dlTYc6igL/BlHvqfzN1B0qywQ+iFdxPAhtgObTJRFu7Q3WUdy58h7bXUAK6PIUgC9Ov0xUxgRKcIE5RjgjzY4e7ecV61jIuF9sSGx8Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jvq9ClEV; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61HBsaEC1709464;
-	Tue, 17 Feb 2026 18:23:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=32qzeBwBp60B5Zdoo
-	BDnmRwBnUNanTEpFsv5LfZQ91Q=; b=jvq9ClEVBonKk2KFHjf7FJxkTXEStSP8P
-	3CZEQuC0kUIs4fuaRJV2M3KwpKhISLlKwQp3krRXPsfdOEAfX6e/DRvx+Qj2aYgr
-	huXLi95/KDQLWdTEzB7t9GwdDuKK+F6sWJ2QJM1v4aoz3R3a374sMbr32iOChndk
-	LByuyQm0RTtdsPH93AFWBbZ/N/8LD2UiCNeSyFN00QgsQyIpadkgCnHA+cV1ZsST
-	XhATn+HsMFkqqYIB16qZizAW8Q8czXl8h4Q+TLp/Ime7DUtdy0gFf5AsE6vAnrXc
-	ixFwjfzP0jNg1RkFN92wfgnp8Sia2QUU2uwYRmV/1i+jffvlg/ZUg==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cajcjcqk8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 18:23:10 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61HFwb9r030711;
-	Tue, 17 Feb 2026 18:23:09 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb4543cj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 18:23:09 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61HIN7jh28050072
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Feb 2026 18:23:07 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8FC8258065;
-	Tue, 17 Feb 2026 18:23:07 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AF52058052;
-	Tue, 17 Feb 2026 18:23:06 +0000 (GMT)
-Received: from IBM-D32RQW3.ibm.com (unknown [9.61.242.249])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Feb 2026 18:23:06 +0000 (GMT)
-From: Farhan Ali <alifm@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
-        stable@vger.kernel.org, alifm@linux.ibm.com, schnelle@linux.ibm.com,
-        mjrosato@linux.ibm.com, Julian Ruess <julianr@linux.ibm.com>
-Subject: [PATCH v9 9/9] vfio: Remove the pcie check for VFIO_PCI_ERR_IRQ_INDEX
-Date: Tue, 17 Feb 2026 10:22:57 -0800
-Message-ID: <20260217182257.1582-10-alifm@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260217182257.1582-1-alifm@linux.ibm.com>
-References: <20260217182257.1582-1-alifm@linux.ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E64832E12D;
+	Tue, 17 Feb 2026 18:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771352643; cv=pass; b=Gao85ACooj9C6BB8Rezrxcp6F3wnkrDm7Mqhb3PSV/pVkd0GlSy8xwtZlaQI8ldGfVrPE6JR7v8jpOGEEKtzeIQiwi8RXU+kHhZPz5AHfdQQ3SHNJ/6CnTnuuiHRziow1/wTq0finyFaAgs0WnS+ufdezTPR3hyk3j7siW16bPA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771352643; c=relaxed/simple;
+	bh=X78ccbi4OmwcUVGngpHLQ/zK0ELOvNhj7644sNblSUM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ossn3ue2G6iFkZZjOjjYvEetxb6l0EOag6VFT+2uDmoFFOrQCW+oQQQcYR7OAtkIi6eyxQ1WPYNIBZra7C7paVl7Fr/cPgdVTVLNamX4CrbIN9Jsj7FNnPnxTTSbStvwaIfZM9IRgUUQlLV5ul1l0V8aCZXDO5QvypEMK5DWj3M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=mhklkml@zohomail.com header.b=a96ICpz4; arc=pass smtp.client-ip=136.143.188.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
+ARC-Seal: i=1; a=rsa-sha256; t=1771352624; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=WjuzFw+PXrNUmSxsL2pcyWyyYuQrFGTIENy2fxTeW++Z2yc+TPwweU0M3TvECGqYW97ql7GiMSR0xclAuY7V6447jYJY9MytUooYZ4KUAu5IUOz9yR1BqcEUIXnrScoT+01L84taEm++deKzsLeG2Sm31TfyLG+XjuonbqFmkUY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1771352624; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Reply-To:Reply-To:Subject:Subject:To:To:Message-Id; 
+	bh=secGQ8gJ+A/aEZorjaD129GrmUJMAQLRoILQUsk1s34=; 
+	b=bKnf2gemc3jdXyQ+ot/MrmQ/fKBFrejkBsIUgEv7z44UTZ5AVVd/Nt7UHEKTZckFw1lReKiD8ms99tXK30a2P8WP1SyDu8kY6jgaWsjLOODh0gemgPhYerxyY6brreK3FUFxsO21+e2JABsgKLAMqorIuu2ERwBCvnNuYibka/o=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=zohomail.com;
+	spf=pass  smtp.mailfrom=mhklkml@zohomail.com;
+	dmarc=pass header.from=<mhklkml@zohomail.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771352624;
+	s=zm2022; d=zohomail.com; i=mhklkml@zohomail.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:Reply-To:Reply-To:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
+	bh=secGQ8gJ+A/aEZorjaD129GrmUJMAQLRoILQUsk1s34=;
+	b=a96ICpz45/EPLzCwtsjQJGSQeywaIvJs1+vm5euokPV0k+5IBJ8i0Y41w1nxozwj
+	2o+NEcwhTZgCHoQUlaFTIF48qy23jTYSMt6k6PAG6REcR+T1bR+n3zf9aPtXvNYZ2Yl
+	IvP23iG6xsXXZJtiNsHlpKZKOaEKRPGjwpof53WM=
+Received: by mx.zohomail.com with SMTPS id 1771352621999530.8202478046807;
+	Tue, 17 Feb 2026 10:23:41 -0800 (PST)
+From: Michael Kelley <mhklkml@zohomail.com>
+To: drawat.floss@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	ryasuoka@redhat.com,
+	jfalempe@redhat.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] Drivers: hv: vmbus: Provide option to skip VMBus unload on panic
+Date: Tue, 17 Feb 2026 10:23:34 -0800
+Message-Id: <20260217182335.265585-1-mhklkml@zohomail.com>
+X-Mailer: git-send-email 2.25.1
+Reply-To: mhklinux@outlook.com
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,116 +83,163 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 7ZWLNPZV_vxYgceCvqT73peepzvdQ17R
-X-Authority-Analysis: v=2.4 cv=Md9hep/f c=1 sm=1 tr=0 ts=6994b20e cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8 a=9wliL4UQvNVLrYCoNVcA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDE0OCBTYWx0ZWRfXx8vcatq6Dyzt
- rMcx1P7NqOV7SpS1wO/+d0z+qkEWFFdfX1LU4f5U4LZvYxzHHOS5Uvq3uRV4DMyeux//qkSTeJ/
- Ry13Vfh2fWMd9rQCcht7KEqo3TsE5X3QIpT2Xf6rADTbq75+Ty+3CFzI0LCsYDEqhKj+uwtqXfV
- U7MFzbU8o2IM3AYFT8LVVElUD/6CMP4VdphYVGrOnVh3ZBeaRDG648Ye2v0Hh+PJ/TslwGBsxWA
- GEjH/L0gZPSRt7Fyd9i/CCn2wkuugfNDFw3rRMPJ1zR1ImHdkmvl1pYFvOAyioFxoC6D2ri2/LM
- 7yU5/jsTb3zkIdY6pnmdIAPvzH5Wn416o6AE/cFMsA3MqEJd5Zrg8lMV5TpwDc71s43tUm6L8In
- Y6zX2pXtDG1dJ0xAL+A+GqQLt5pwh9cJHpDd0Qe9P0VRwpNGIPo8Wo4rFAg3lJjWaA2Ty+NIXZE
- /XjdbqLCU0MRjeTzoGg==
-X-Proofpoint-GUID: 7ZWLNPZV_vxYgceCvqT73peepzvdQ17R
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-17_03,2026-02-16_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 spamscore=0 adultscore=0
- priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602170148
+Feedback-ID: rr08011227ccb303be702fc9b91d3953f30000e29f6a2f9b0bf7f5bad0ef5b2e8081a2669eea31ad3ebd845e:zu08011227eb7b9ae6314e7f1f0b2a639800000b19db97a9b3666c59faac2d54943373ed5f06961ee1a3990b:rf0801122679a09cfd55e7bbdf618a9a6a00002ace3421f4f745b2d350401f57001777dd36ccb57310860b:ZohoMail
+X-ZohoMailClient: External
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [2.84 / 15.00];
+	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[zohomail.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[zohomail.com:s=zm2022];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216878-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-216884-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_REPLYTO(0.00)[outlook.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com,kernel.org,suse.de,ffwll.ch,microsoft.com,redhat.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	DKIM_TRACE(0.00)[zohomail.com:+];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhklkml@zohomail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	HAS_REPLYTO(0.00)[mhklinux@outlook.com];
+	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 8462414F15E
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zohomail.com:mid,zohomail.com:dkim,outlook.com:replyto,outlook.com:email]
+X-Rspamd-Queue-Id: E8DCA14F211
 X-Rspamd-Action: no action
 
-We are configuring the error signaling on the vast majority of devices and
-it's extremely rare that it fires anyway. This allows userspace to be
-notified on errors for legacy PCI devices. The Internal Shared Memory (ISM)
-device on s390 is one such device. For PCI devices on IBM s390 error
-recovery involves platform firmware and notification to operating system
-is done by architecture specific way. So the ISM device can still be
-recovered when notified of an error.
+From: Michael Kelley <mhklinux@outlook.com>
 
-Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+Currently, VMBus code initiates a VMBus unload in the panic path so
+that if a kdump kernel is loaded, it can start fresh in setting up its
+own VMBus connection. However, a driver for the VMBus virtual frame
+buffer may need to flush dirty portions of the frame buffer back to
+the Hyper-V host so that panic information is visible in the graphics
+console. To support such flushing, provide exported functions for the
+frame buffer driver to specify that the VMBus unload should not be
+done by the VMBus driver, and to initiate the VMBus unload itself.
+Together these allow a frame buffer driver to delay the VMBus unload
+until after it has completed the flush.
+
+Ideally, the VMBus driver could use its own panic-path callback to do
+the unload after all frame buffer drivers have finished. But DRM frame
+buffer drivers use the kmsg dump callback, and there are no callbacks
+after that in the panic path. Hence this somewhat messy approach to
+properly sequencing the frame buffer flush and the VMBus unload.
+
+Fixes: 3671f3777758 ("drm/hyperv: Add support for drm_panic")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
 ---
- drivers/vfio/pci/vfio_pci_core.c  | 8 ++------
- drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
- 2 files changed, 3 insertions(+), 8 deletions(-)
+Changes in v2: None
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 8f7eb3636075..dac0725499ba 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -787,8 +787,7 @@ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_typ
- 			return (flags & PCI_MSIX_FLAGS_QSIZE) + 1;
- 		}
- 	} else if (irq_type == VFIO_PCI_ERR_IRQ_INDEX) {
--		if (pci_is_pcie(vdev->pdev))
--			return 1;
-+		return 1;
- 	} else if (irq_type == VFIO_PCI_REQ_IRQ_INDEX) {
- 		return 1;
- 	}
-@@ -1164,11 +1163,8 @@ static int vfio_pci_ioctl_get_irq_info(struct vfio_pci_core_device *vdev,
- 	switch (info.index) {
- 	case VFIO_PCI_INTX_IRQ_INDEX ... VFIO_PCI_MSIX_IRQ_INDEX:
- 	case VFIO_PCI_REQ_IRQ_INDEX:
--		break;
- 	case VFIO_PCI_ERR_IRQ_INDEX:
--		if (pci_is_pcie(vdev->pdev))
--			break;
--		fallthrough;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index c76e753b3cec..b6cedaf0bcca 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -859,8 +859,7 @@ int vfio_pci_set_irqs_ioctl(struct vfio_pci_core_device *vdev, uint32_t flags,
- 	case VFIO_PCI_ERR_IRQ_INDEX:
- 		switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
- 		case VFIO_IRQ_SET_ACTION_TRIGGER:
--			if (pci_is_pcie(vdev->pdev))
--				func = vfio_pci_set_err_trigger;
-+			func = vfio_pci_set_err_trigger;
- 			break;
- 		}
- 		break;
+ drivers/hv/channel_mgmt.c |  1 +
+ drivers/hv/hyperv_vmbus.h |  1 -
+ drivers/hv/vmbus_drv.c    | 25 ++++++++++++++++++-------
+ include/linux/hyperv.h    |  3 +++
+ 4 files changed, 22 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+index 74fed2c073d4..5de83676dbad 100644
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -944,6 +944,7 @@ void vmbus_initiate_unload(bool crash)
+ 	else
+ 		vmbus_wait_for_unload();
+ }
++EXPORT_SYMBOL_GPL(vmbus_initiate_unload);
+ 
+ static void vmbus_setup_channel_state(struct vmbus_channel *channel,
+ 				      struct vmbus_channel_offer_channel *offer)
+diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
+index cdbc5f5c3215..5d3944fc93ae 100644
+--- a/drivers/hv/hyperv_vmbus.h
++++ b/drivers/hv/hyperv_vmbus.h
+@@ -440,7 +440,6 @@ void hv_vss_deinit(void);
+ int hv_vss_pre_suspend(void);
+ int hv_vss_pre_resume(void);
+ void hv_vss_onchannelcallback(void *context);
+-void vmbus_initiate_unload(bool crash);
+ 
+ static inline void hv_poll_channel(struct vmbus_channel *channel,
+ 				   void (*cb)(void *))
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 6785ad63a9cb..97dfa529d250 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -69,19 +69,29 @@ bool vmbus_is_confidential(void)
+ }
+ EXPORT_SYMBOL_GPL(vmbus_is_confidential);
+ 
++static bool skip_vmbus_unload;
++
++/*
++ * Allow a VMBus framebuffer driver to specify that in the case of a panic,
++ * it will do the VMbus unload operation once it has flushed any dirty
++ * portions of the framebuffer to the Hyper-V host.
++ */
++void vmbus_set_skip_unload(bool skip)
++{
++	skip_vmbus_unload = skip;
++}
++EXPORT_SYMBOL_GPL(vmbus_set_skip_unload);
++
+ /*
+  * The panic notifier below is responsible solely for unloading the
+  * vmbus connection, which is necessary in a panic event.
+- *
+- * Notice an intrincate relation of this notifier with Hyper-V
+- * framebuffer panic notifier exists - we need vmbus connection alive
+- * there in order to succeed, so we need to order both with each other
+- * [see hvfb_on_panic()] - this is done using notifiers' priorities.
+  */
+ static int hv_panic_vmbus_unload(struct notifier_block *nb, unsigned long val,
+ 			      void *args)
+ {
+-	vmbus_initiate_unload(true);
++	if (!skip_vmbus_unload)
++		vmbus_initiate_unload(true);
++
+ 	return NOTIFY_DONE;
+ }
+ static struct notifier_block hyperv_panic_vmbus_unload_block = {
+@@ -2848,7 +2858,8 @@ static void hv_crash_handler(struct pt_regs *regs)
+ {
+ 	int cpu;
+ 
+-	vmbus_initiate_unload(true);
++	if (!skip_vmbus_unload)
++		vmbus_initiate_unload(true);
+ 	/*
+ 	 * In crash handler we can't schedule synic cleanup for all CPUs,
+ 	 * doing the cleanup for current CPU only. This should be sufficient
+diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+index dfc516c1c719..b0502a336eb3 100644
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -1334,6 +1334,9 @@ int vmbus_allocate_mmio(struct resource **new, struct hv_device *device_obj,
+ 			bool fb_overlap_ok);
+ void vmbus_free_mmio(resource_size_t start, resource_size_t size);
+ 
++void vmbus_initiate_unload(bool crash);
++void vmbus_set_skip_unload(bool skip);
++
+ /*
+  * GUID definitions of various offer types - services offered to the guest.
+  */
 -- 
-2.43.0
+2.25.1
 
 
