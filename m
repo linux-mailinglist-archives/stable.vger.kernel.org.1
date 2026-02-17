@@ -1,180 +1,134 @@
-Return-Path: <stable+bounces-216863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJLHN5mZlGkoFwIAu9opvQ
-	(envelope-from <stable+bounces-216863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 17:38:49 +0100
+	id QOCBNWuZlGkoFwIAu9opvQ
+	(envelope-from <stable+bounces-216864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 17:38:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBE614E4FD
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 17:38:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0681A14E4E7
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 17:38:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B302C3043D77
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 16:35:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CAA90300D769
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 16:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F47436EA9B;
-	Tue, 17 Feb 2026 16:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5096D36F41D;
+	Tue, 17 Feb 2026 16:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UT5w6tf0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ryOTnV6d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2579036B059
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 16:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771346148; cv=pass; b=WgaTOL4vMoiLZ4JtfBPvS8M7AAUfCLXLVroOVD6Cl+eexmjorlFK+r1ypcOuDzpV/3mQoE+sLnFC9yC9cJAUfi6m8D4GilMOFYEIpamrSoXS7ChNhGt/l3Oivzqk7oqUQ1afpkkvQ/7z9bYbSl9mO/5Q1LajUe+H948XOzZgS5U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771346148; c=relaxed/simple;
-	bh=EfoWbO1N2K5lxt2kPsEb/kyin+BYy7b1ZYySAlSqij8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ph5b8QZk5YzzSLl6T1iUwD/XwfJcsT0DbMz/vCFKdO2EFw+SxhJ8yNpgrJcRGA2AlqBbSKrySXsVuqRAkHF2s/m5NdAz1fsRH5BMfTot9i4okRtVRHv5pZawkBAriB2V7QMbbQKOpcAMh16cR2zY9B2C/cvwWYsg5SiQ6l9dS3c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UT5w6tf0; arc=pass smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-652fe3bf65aso22682a12.1
-        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 08:35:47 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771346146; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fUUL/DKADmnjw7piLqvED/bm/oc03tWGouSVaENjmbR0j/yNc0BjbVMeYBOWVnLmYB
-         VkzpuBOpqUSQXC215P9AkmtEw3ntm84GC1is6GwoiXF0fBW+cbn+4dZzNJjEc6GWL51/
-         v1jbnV/DsKkVS9PQmBMliXcPbjqy8kRAP6uj1DuefuGfP1exXwbpIhPkKRxjeB9IdXmg
-         0k2t2osn2wHyuwePjjumFLHNz9Gt/oiycWV4KMRxhJ2uhrCBI/YcEHbNs5i9PzEVilKi
-         14Cst1WDgn7cA3RzClp8xj15GXcVu2CWbGCAZHrYTx+2lWPQqkB9ZhJOqnwfVa07RukH
-         JQtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EfoWbO1N2K5lxt2kPsEb/kyin+BYy7b1ZYySAlSqij8=;
-        fh=n5gTxaa2gaA9ewR9I5nMyoLcst/M0dpYIAlVw2G21rY=;
-        b=Z3fLoJ4NyaYr1vp4U0QRCauAS+5WylJsf4ol8Taqkp8MvRLJEK1g0s3FI6ZIfX9FGy
-         nt++Hq/52aQcpqvJwSnNY9roGQu8AlfjjFObu0oPoDKNwfOAFDXBnKz2Vw9o3lJ9ORLf
-         rcFP+/VJ17EMLh+dX8pO//yyYRhCZ4iz/unrRCq0BHQMTsU7514jR9dMV4Fi7oVtXPG9
-         d85+tFC/Pg1ZAPj1GnCX6uBgLY+XLflkSTqtZcKziVdE3XetTgzrcYiKQ/oIEC/jIJUe
-         FzgZvxPfsn669+Of9AXhEH3auXV6vCC2ZKr2lWKWeEXu/8Z1E/Ew87DzH64haUrX3KsH
-         ZUzw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771346146; x=1771950946; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EfoWbO1N2K5lxt2kPsEb/kyin+BYy7b1ZYySAlSqij8=;
-        b=UT5w6tf0XqVgQ063XdoJtuFKUig8HRqurY6rkopHmPAJKgUt+QM+IodzK4cZnUgHVc
-         yc8ffFuGV4H31IFp4s8SsHY2TRBv5ghpSqngxR87Z+80tqF9lmhJ2DTMtG1FTjFmKNJ9
-         HCNOCth6XQPpqlpJzNGXOd/b4OvdwC5is2qtYj53VkaLIlcBLNHePqDK4dmC2GbH7IYo
-         Zhz/XT0AgEEcle7n+WVY4J6saIarAs/XT2osuZ75iD0d46reqnM6EU5tgIa5Sfp9k0+G
-         ZAbPeJB4/l6O1nIFEm0c8mr1dLw0oxnHL0PV3XhCGAr+zNFl7mQeh/wv5MmmNiAortv+
-         685A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771346146; x=1771950946;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EfoWbO1N2K5lxt2kPsEb/kyin+BYy7b1ZYySAlSqij8=;
-        b=DsxpHC/xkBTOXBosM2LIzEsAjYeMbOe1K8vVDQKeBT3U7GZZEv9tkRTR5nrIGzrP8T
-         dFViXLSGp5RjQw5UgNpt1wusbXN0J5i7IsFOLwojRAAijqdUzK6fYY9SusGMR0U/Ud0S
-         aU7M8QTiybSMVOAP9vAZ5gH5nULQFp94CARMl3ro63sAp8bwv9sqBiBDJ9NXxDYXYrBM
-         uOJB87l5D+MmKLC7DnIAw6jHABF9S6T83G0XCp9jMjgGhl0rUs8ylewj3ekKOVNNOCD0
-         agV9EwURCkGocUCQ86Imtv4mDoDVaMFCJyXKACcrIz3cu4h3eqwHt4Wp7AZjhV45Qln+
-         cAuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0qEp4+sF6XGn1CrkXFyXx4kleZ27wDqv37jgNH9983SV9vm1TSnEX85CtoadmqOHI+L24XH4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6yqKpixGpJXNQkM94PMfg5V6b8lX38a68Y2ZnFIZQl2AKQIG4
-	BZ2ETbUWNY68awdVtFOA8yjZVBXp1K3AhWdIavB/G+R7s0VE/2YEHfEPa4L8bTzO4Y+S0zn0FIn
-	LMiDA7BwnxwgUhVy77+S1pT93I4QnlkHWJTSqY+Vi
-X-Gm-Gg: AZuq6aI/IwdQxov8GBS99PbJiMxTcdAhmJ9raRGST6D7BN2VAyh/dwj2ixGN0zhgbbZ
-	3oK6gkNdVvWoWhJ6Ftg52kZFcvALua6WOhETtl55Eb25S0ekxv3SKxkjtMHKVpPq8JZxj+oxxWp
-	6lk8vFTkhNnFl8WP/lPuFd/5z9ZLo3I74A68ilrpJdiLHlXZSrrUCo+SrOAjX/5FKuKtxOn7oh+
-	r8prkMKo5ZVLdBLsUBUwcWAVU2QnOHHW+u4dNCCbglNqqG7cbqz6zVMBdIyDwX7oHHMrAZQ0Aa/
-	NFoiMVyzP6GZGc73MrAuFl068dgBSKQd2xG3jffZyPhaAwdd
-X-Received: by 2002:aa7:d454:0:b0:658:eee:f21a with SMTP id
- 4fb4d7f45d1cf-65c149a703dmr56554a12.10.1771346145107; Tue, 17 Feb 2026
- 08:35:45 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D8336F411;
+	Tue, 17 Feb 2026 16:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771346150; cv=none; b=qT/dWopWVnJUfEHwU6iIRTvYstIjzcmupeHqnXfO7KIKS/4rB2TYcx4upIg9Yol5Hnj6Q4Tes7sa4KNaVyt2kvF7pcjncYS1GAEBoeYUbV5VLgNkDoow+74JsAuy4WDeHULGxkFBBWS7/gJRZTVYLyZgAxlksY0CDKdJST1E0N0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771346150; c=relaxed/simple;
+	bh=ecVx3g7x2p1shiCF2ISWvvUcCXEBjZVSsOCRXIKuBkw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M4RZn+t2SZBuHuYE5SULwnAlxR+cI3N8Asqaemy36yft7Gqzds5OtrF0imfUuyJTDgz0Z6Ug7cNMncjTC3eAJH0tSMuQSGi8WRjeSoJR+Wqa658uDa7AhmuVU8nPMmtWs8lXHgjoVxuiXh84gC35GREcTaa0HXxZnljy/y1tqPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ryOTnV6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67B1C19425;
+	Tue, 17 Feb 2026 16:35:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771346149;
+	bh=ecVx3g7x2p1shiCF2ISWvvUcCXEBjZVSsOCRXIKuBkw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ryOTnV6dtaTPJFKS6oy+jRC9bg1G/XjWoSllzNmeRivYW5DtSCOkmU9Hg/sUG/Gw0
+	 9FcOXwHOTQsFd6pF8AJZdsgf4UQXr3RnomX4un4r31/y+peUkRH+GhBjI0CNKeeDlu
+	 jwtZs54wzLlvrCfo1UWrvwTSIxr0SbBNHfvoqHFcalTjsp1Q4p5Ntu1vFN2Z3yp12g
+	 1uYta0+JSy+vMTsCOhA1KO6IrdCXL1aqloSUEhRt1p1+Jpy6YVr8yazCtpyokDrQyG
+	 4lRsHhrPknQ/WxsKB4fBnr0uvNZrpY9y/J+GEiDSPY67bQlHcaQf0OCBO+0P6jSI08
+	 +QtOmGh+AiFsA==
+From: Ard Biesheuvel <ardb@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-efi@vger.kernel.org,
+	x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	stable@vger.kernel.org,
+	Dave Young <dyoung@redhat.com>
+Subject: [PATCH] x86/kexec: Copy ACPI root pointer address from config table
+Date: Tue, 17 Feb 2026 17:35:32 +0100
+Message-ID: <20260217163532.5166-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com> <20260217-binder-vma-check-v1-2-1a2b37f7b762@google.com>
-In-Reply-To: <20260217-binder-vma-check-v1-2-1a2b37f7b762@google.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 17 Feb 2026 17:35:08 +0100
-X-Gm-Features: AaiRm52oKTHP34zclQj7ezY1ha5t7IvLtrRKqEuUAhNd2ttiDd3hEDLvSQutZtc
-Message-ID: <CAG48ez2O=_Hd7EjjLSAh36xtOMyX5MZ47xodWkU3FyEar63TnQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust_binder: avoid reading the written value in
- offsets array
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216863-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216864-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,google.com,kernel.org,garyguo.net,protonmail.com,umich.edu,oracle.com,vger.kernel.org,kvack.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jannh@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
+	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 7FBE614E4FD
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0681A14E4E7
 X-Rspamd-Action: no action
 
-On Tue, Feb 17, 2026 at 3:22=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
-> When sending a transaction, its offsets array is first copied into the
-> target proc's vma, and then the values are read back from there. This is
-> normally fine because the vma is a read-only mapping, so the target
-> process cannot change the value under us.
->
-> However, if the target process somehow gains the ability to write to its
-> own vma, it could change the offset before it's read back, causing the
-> kernel to misinterpret what the sender meant. If the sender happens to
-> send a payload with a specific shape, this could in the worst case lead
-> to the receiver being able to privilege escalate into the sender.
->
-> The intent is that gaining the ability to change the read-only vma of
-> your own process should not be exploitable, so remove this TOCTOU read
-> even though it's unexploitable without another Binder bug.
+Dave reports that kexec may fail when the first kernel boots via the EFI
+stub but without EFI runtime services, as in that case, the RSDP address
+field in struct bootparams is never assigned. Kexec copies this value
+into the version of struct bootparams that it provides to the incoming
+kernel, which may have no other means to locate the ACPI root pointer.
 
-With this, the only remaining read from the ShrinkablePageRange is in
-AllocationView::cleanup_object(), correct? If I understand correctly,
-that is fine because it can only drop references on handles (which
-userspace could equivalently do via BC_RELEASE/BC_DECREFS) and on
-binders (which would probably also have its influence limited to the
-process)?
+So take the value from the EFI config tables if no root pointer has been
+set in the first kernel's struct bootparams.
 
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Reported-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
+Cc: <stable@vger.kernel.org> # v6.1
+Reported-by: Dave Young <dyoung@redhat.com>
+Tested-by: Dave Young <dyoung@redhat.com>
+Link: https://lore.kernel.org/linux-efi/aZQg_tRQmdKNadCg@darkstar.users.ipa.redhat.com/
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+Unless anyone minds, I intend to take this via the EFI tree as a fix.
 
-Reviewed-by: Jann Horn <jannh@google.com>
+ arch/x86/kernel/kexec-bzimage64.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/x86/kernel/kexec-bzimage64.c b/arch/x86/kernel/kexec-bzimage64.c
+index 7508d0ccc740..24aec7c1153f 100644
+--- a/arch/x86/kernel/kexec-bzimage64.c
++++ b/arch/x86/kernel/kexec-bzimage64.c
+@@ -313,6 +313,12 @@ setup_boot_parameters(struct kimage *image, struct boot_params *params,
+ 
+ 	/* Always fill in RSDP: it is either 0 or a valid value */
+ 	params->acpi_rsdp_addr = boot_params.acpi_rsdp_addr;
++	if (IS_ENABLED(CONFIG_EFI) && !params->acpi_rsdp_addr) {
++		if (efi.acpi20 != EFI_INVALID_TABLE_ADDR)
++			params->acpi_rsdp_addr = efi.acpi20;
++		else if (efi.acpi != EFI_INVALID_TABLE_ADDR)
++			params->acpi_rsdp_addr = efi.acpi;
++	}
+ 
+ 	/* Default APM info */
+ 	memset(&params->apm_bios_info, 0, sizeof(params->apm_bios_info));
+-- 
+2.53.0.273.g2a3d683680-goog
+
 
