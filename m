@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-216978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG9zMgTTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:48 +0100
+	id KPOxN/XSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9E2150258
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B98A150249
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0D5473009E23
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 64BB930091CC
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0F2286D4D;
-	Tue, 17 Feb 2026 20:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370D0378D64;
+	Tue, 17 Feb 2026 20:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBRUDeQu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aApOhIkG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F80F36F431;
-	Tue, 17 Feb 2026 20:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0D0372B2D;
+	Tue, 17 Feb 2026 20:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361006; cv=none; b=LcEpKpB3S+uwiyVSO5xX2sT4NCuWirAmRbPthp54Akzmgm8bpSpiUdBRlSQiZEqiENz56xdRvLIcqOcfz+N8MpMB68Cch8p5GSocdZn0yxCvI1dF/9mor/gDctZVC2Dra9aIor2cWso09hmSQBMfOAC2rPI0LtHK7NIs0vpD1V4=
+	t=1771360982; cv=none; b=qOVz5Yul3+GnoB883cJ3OVNZJ3/cFC9sbmUtP/G/GXnPBbFWRdYfzlqifQjjRqA6xH5Phv5JZsvwzUgHuCKZGeMzmgTTNZXiDWEJf8bw01W55kbL0gQdx3+bqVtkWFSH+ZRMKLlJ784oyk2JY2UHc9n7c2rHt8dUY5UKCpsspdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361006; c=relaxed/simple;
-	bh=4pV1/wpJqEsTyEvl/8pXFk9k6C8BRWSsH5HIhSdhMxk=;
+	s=arc-20240116; t=1771360982; c=relaxed/simple;
+	bh=1yksmOzifTZR0R/j76XJABuSiRSQJmGJU5hgJP22FRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yag0fMYZ+G9smQwf+PY8gVpfQdT1NPMhJ/q+hvh8L3OEnHFuUU5JeNWrdG1pEoq6BvwhWaICU1WYTtokNKfa7YebQiJcXm7FtLpvMmixikoExI3oHhxD8JWJzDTQ+Yb/vxPFo8mrMUzAHZ0OrMvmAU0XC2jYgpLDqVbCSMSPaIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBRUDeQu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB67C4CEF7;
-	Tue, 17 Feb 2026 20:43:25 +0000 (UTC)
+	 MIME-Version; b=tyWDvHsM0wnvyMXfwUfpHYQija5/UCmiC3QPpZfsC3BaXxD2qm+giJNYkkgxSswxusyv8h+GDEP30ZfN3yMxtN+el7T6hBM6t+W2TABjhV3WjmRpQzDsoFeEo5NY+qy7pX902feCrtskHE8vxB3dYDKXrCDib0W3QatfmCM0weY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aApOhIkG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0D4C4CEF7;
+	Tue, 17 Feb 2026 20:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361006;
-	bh=4pV1/wpJqEsTyEvl/8pXFk9k6C8BRWSsH5HIhSdhMxk=;
+	s=korg; t=1771360981;
+	bh=1yksmOzifTZR0R/j76XJABuSiRSQJmGJU5hgJP22FRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eBRUDeQuctnOljL2EFVoimG6GhWsEDnkFi1X+yTylHJFh2AnO37WpdTgx+0fED75H
-	 p2zijzGjl6IivbC43oXmYqq68NMiXzzZIwoRhGZTBTtfNUdekeYj9VyIfeop7SiMXz
-	 ig41W+xoQPVBWXhDwfF4w+CCtvcx2WPwS4d2WMjc=
+	b=aApOhIkGPFUOq4QJhoS5fKcz+PIMyIdsSY/gvf4U3ldwU1dTJ4Uy5F8W9S1WTUnK7
+	 0EyORnuUd5ZWfiUCBiIjZ9Aseh7L64rfqWSHSEbO/HRgygX9mpqU/geHx88m64uTl3
+	 744tLfTdnLAqwlNaLRnrvrUq3KhW0tRp4AhEb6PU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	syzbot+9c4e33e12283d9437c25@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 14/39] platform/x86: panasonic-laptop: Fix sysfs group leak in error path
+Subject: [PATCH 5.10 10/24] romfs: check sb_set_blocksize() return value
 Date: Tue, 17 Feb 2026 21:31:23 +0100
-Message-ID: <20260217200003.478966544@linuxfoundation.org>
+Message-ID: <20260217200001.108454219@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
+References: <20260217200000.708219618@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216978-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216971-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,9c4e33e12283d9437c25];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 1B9E2150258
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email]
+X-Rspamd-Queue-Id: 2B98A150249
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 43b0b7eff4b3fb684f257d5a24376782e9663465 ]
+[ Upstream commit ab7ad7abb3660c58ffffdf07ff3bb976e7e0afa0 ]
 
-The acpi_pcc_hotkey_add() error path leaks sysfs group pcc_attr_group
-if platform_device_register_simple() fails for the "panasonic" platform
-device.
+romfs_fill_super() ignores the return value of sb_set_blocksize(), which
+can fail if the requested block size is incompatible with the block
+device's configuration.
 
-Address this by making it call sysfs_remove_group() in that case for
-the group in question.
+This can be triggered by setting a loop device's block size larger than
+PAGE_SIZE using ioctl(LOOP_SET_BLOCK_SIZE, 32768), then mounting a romfs
+filesystem on that device.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/3398370.44csPzL39Z@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+When sb_set_blocksize(sb, ROMBSIZE) is called with ROMBSIZE=4096 but the
+device has logical_block_size=32768, bdev_validate_blocksize() fails
+because the requested size is smaller than the device's logical block
+size. sb_set_blocksize() returns 0 (failure), but romfs ignores this and
+continues mounting.
+
+The superblock's block size remains at the device's logical block size
+(32768). Later, when sb_bread() attempts I/O with this oversized block
+size, it triggers a kernel BUG in folio_set_bh():
+
+    kernel BUG at fs/buffer.c:1582!
+    BUG_ON(size > PAGE_SIZE);
+
+Fix by checking the return value of sb_set_blocksize() and failing the
+mount with -EINVAL if it returns 0.
+
+Reported-by: syzbot+9c4e33e12283d9437c25@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9c4e33e12283d9437c25
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260113084037.1167887-1-kartikey406@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/panasonic-laptop.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/romfs/super.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
-index e412a550f0983..418cd4d781261 100644
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -1073,7 +1073,7 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 			-1, NULL, 0);
- 		if (IS_ERR(pcc->platform)) {
- 			result = PTR_ERR(pcc->platform);
--			goto out_backlight;
-+			goto out_sysfs;
- 		}
- 		result = device_create_file(&pcc->platform->dev,
- 			&dev_attr_cdpower);
-@@ -1089,6 +1089,8 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
+diff --git a/fs/romfs/super.c b/fs/romfs/super.c
+index 259f684d9236e..6f31e720c9561 100644
+--- a/fs/romfs/super.c
++++ b/fs/romfs/super.c
+@@ -467,7 +467,10 @@ static int romfs_fill_super(struct super_block *sb, struct fs_context *fc)
  
- out_platform:
- 	platform_device_unregister(pcc->platform);
-+out_sysfs:
-+	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
- out_backlight:
- 	backlight_device_unregister(pcc->backlight);
- out_input:
+ #ifdef CONFIG_BLOCK
+ 	if (!sb->s_mtd) {
+-		sb_set_blocksize(sb, ROMBSIZE);
++		if (!sb_set_blocksize(sb, ROMBSIZE)) {
++			errorf(fc, "romfs: unable to set blocksize\n");
++			return -EINVAL;
++		}
+ 	} else {
+ 		sb->s_blocksize = ROMBSIZE;
+ 		sb->s_blocksize_bits = blksize_bits(ROMBSIZE);
 -- 
 2.51.0
 
