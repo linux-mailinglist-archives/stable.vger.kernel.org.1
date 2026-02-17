@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-217009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iK4XJVzTlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:16 +0100
+	id CM0uKRjVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1055F150361
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2291D150703
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04B3B3007664
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:45:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 61856305EEBB
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF67280CC1;
-	Tue, 17 Feb 2026 20:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0527E2D6E76;
+	Tue, 17 Feb 2026 20:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8PuHw+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6P4Bxzp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BAF2DB78B;
-	Tue, 17 Feb 2026 20:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE4029A1;
+	Tue, 17 Feb 2026 20:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361112; cv=none; b=Wx/4x2tgHHbvO/6P0U5N5olfF4+DTzYL8f4Wu/LfzmijJTarm1kShatfap4kg0oW4HiNMY9KqMQFXzmAZxoiFjtrxhDAyN6IugfDVLrcPgs9dRmkocex3vJ6pMfMHkYLn0UcOt4tOCJxDy/Fp1eWXEJWibbWHAvH05Bh0Z4gYPQ=
+	t=1771361503; cv=none; b=RHdvoT/maXJ3H32xS+RxKpPUE/V3Spi4ZNRoOlDUxssX9R0EhBduPhrlyK2Q0vc5UahOMq275PS7QmEuSEJCicn+DKk6HK14ifcyWUQe2kYPCKJGU6hs4ZAOY0V6dCMBn12bBlxLNKKl1tnxwnlXimtJwchpQ1UTGcv04VY5xLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361112; c=relaxed/simple;
-	bh=ILNq79+7/x2DW7zghzy7nmFXRa96fp2DdJa7ftNvv40=;
+	s=arc-20240116; t=1771361503; c=relaxed/simple;
+	bh=jiVLG+SN0+wwOhw9F6VXNUKPTplRMWx6w8bjzU4oWi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxiGuWWtQ5o7sxwrn1V1eb6ko2aVA8YOQPxlnpAHVGYGK0Tt/2HwQPaFIiQ+gWIBS2Y4hiDw1r9e/j14qT0m0/ZPdZklcYb+oRv4PLl/uAoOsjCgXVMBSPgux+OMuQ/dTvwqeNjuMaNeY09Ds2AXR2Z9XPhEF+jN/cxDaiDQkKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8PuHw+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11018C4CEF7;
-	Tue, 17 Feb 2026 20:45:11 +0000 (UTC)
+	 MIME-Version; b=hRJWRk21lQnvgG/B2g45oOVu2U+w3aEeFTLdOIttUVoy9t0v515FxNNFf/n8A0r9St+6AjnoA4hIyWMeQbsg6NUHeQw17t4uycoXg6/11SsLJ1JfKo5c+UR2YyC3DK0HRS46EvR7nsFt5dHMnBobJTyXXnnT7/fbkzCVlZZzFeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6P4Bxzp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23590C4CEF7;
+	Tue, 17 Feb 2026 20:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361112;
-	bh=ILNq79+7/x2DW7zghzy7nmFXRa96fp2DdJa7ftNvv40=;
+	s=korg; t=1771361503;
+	bh=jiVLG+SN0+wwOhw9F6VXNUKPTplRMWx6w8bjzU4oWi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8PuHw+nSgDr9MGzP+01icO8ghuATjGimATlttYj+qGtJN4SRP5NsBDVHpxdujBUN
-	 10A1Wa609Q2W7QAGl5hUw26cfYNTyA7aBF14jn+K87Ovhvoxf5ga5y6ltU1rpc6BD1
-	 pqXLQDweIbo3uLnK7fCBHxr/bCr5pERLSjPh2Ox0=
+	b=H6P4Bxzpt5kLCBCv6e3WBgSEfej60XEXFa397POS2GmCVXKfOZhPW7TMnB8soC78L
+	 sBBEDEvqbl1ZVybPsCXIIg9q2D1ShY8hQtX5/6kfsCatdCTJoX80rJ2vuzJElZlIPc
+	 gmW0dvXYr4k62ge8IrjOzv/SRe/ALZVcbeJFH0NE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/39] f2fs: fix to avoid UAF in f2fs_write_end_io()
-Date: Tue, 17 Feb 2026 21:31:46 +0100
-Message-ID: <20260217200004.373009831@linuxfoundation.org>
+Subject: [PATCH 6.18 07/43] ALSA: hda/realtek: Add quirk for Inspur S14-G1
+Date: Tue, 17 Feb 2026 21:31:47 +0100
+Message-ID: <20260217200006.751257337@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,112 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217009-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217124-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,b4444e3c972a7a124187];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1055F150361
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2291D150703
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-[ Upstream commit ce2739e482bce8d2c014d76c4531c877f382aa54 ]
+[ Upstream commit 9e18920e783d0bcd4c127a7adc66565243ab9655 ]
 
-As syzbot reported an use-after-free issue in f2fs_write_end_io().
+Inspur S14-G1 is equipped with ALC256.
+Enable "power saving mode" and Enable "headset jack mode".
 
-It is caused by below race condition:
-
-loop device				umount
-- worker_thread
- - loop_process_work
-  - do_req_filebacked
-   - lo_rw_aio
-    - lo_rw_aio_complete
-     - blk_mq_end_request
-      - blk_update_request
-       - f2fs_write_end_io
-        - dec_page_count
-        - folio_end_writeback
-					- kill_f2fs_super
-					 - kill_block_super
-					  - f2fs_put_super
-					 : free(sbi)
-       : get_pages(, F2FS_WB_CP_DATA)
-         accessed sbi which is freed
-
-In kill_f2fs_super(), we will drop all page caches of f2fs inodes before
-call free(sbi), it guarantee that all folios should end its writeback, so
-it should be safe to access sbi before last folio_end_writeback().
-
-Let's relocate ckpt thread wakeup flow before folio_end_writeback() to
-resolve this issue.
-
-Cc: stable@kernel.org
-Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint for better performance")
-Reported-by: syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b4444e3c972a7a124187
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ folio => page ]
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260126073508.3897461-2-zhangheng@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -341,14 +341,20 @@ static void f2fs_write_end_io(struct bio
- 					page->index != nid_of_node(page));
- 
- 		dec_page_count(sbi, type);
-+
-+		/*
-+		 * we should access sbi before end_page_writeback() to
-+		 * avoid racing w/ kill_f2fs_super()
-+		 */
-+		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
-+				wq_has_sleeper(&sbi->cp_wait))
-+			wake_up(&sbi->cp_wait);
-+
- 		if (f2fs_in_warm_node_list(sbi, page))
- 			f2fs_del_fsync_node_entry(sbi, page);
- 		clear_page_private_gcing(page);
- 		end_page_writeback(page);
- 	}
--	if (!get_pages(sbi, F2FS_WB_CP_DATA) &&
--				wq_has_sleeper(&sbi->cp_wait))
--		wake_up(&sbi->cp_wait);
- 
- 	bio_put(bio);
- }
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 2e9efafa732fe..a77f16abc6df0 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7243,6 +7243,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1ee7, 0x2078, "HONOR BRB-X M1010", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
++	SND_PCI_QUIRK(0x2039, 0x0001, "Inspur S14-G1", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+-- 
+2.51.0
+
 
 
 
