@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-217152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CXzHEfVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:27 +0100
+	id QFixFRPUlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CC7150791
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0481504F4
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:48:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 80F133006990
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3247C300CCBE
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B30284B3B;
-	Tue, 17 Feb 2026 20:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD56284B3B;
+	Tue, 17 Feb 2026 20:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkrjinLD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbMe8Oqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3464F29A1;
-	Tue, 17 Feb 2026 20:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F1A29A1;
+	Tue, 17 Feb 2026 20:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361601; cv=none; b=a+RND0oLvcM31CoL3B4waWZkGrwhQLJ4ZP11fZUkVbFQuJE2AeLf5CSSFuyGWJ3v30/6DCG2Orz+iRoVhoNjsJ7AY5VGIYUE23VkiJMkW76MFlmIiG7yYyBpPcQWPUGB/RzW53Mk6jrECy7RY8wQemwMlLVE+CV16N8dYBBvSZ8=
+	t=1771361296; cv=none; b=h+5D868Va3VuJMKYRdlz9qxaEHUh70bBx+1HcH30MyhefXh+81K1MeVlFKHygnh1FzjSel69N6dwdQW5T8qgl6EqgH1ffKL6byfwnzCOenMf8zL3RYTMppBhJAh9bDkqIS5Qt0n/ThebCrxMBT8avj6Gr+Mb93WGPDdRSSA4pvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361601; c=relaxed/simple;
-	bh=ZpUvEL5TxU2tegnmm4qA6KsgzWq+E44BsRNke5liy8Y=;
+	s=arc-20240116; t=1771361296; c=relaxed/simple;
+	bh=YUZsNAoHy3C7dVTedfrAtBm1t6ptuD89/jTOoZHEfzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1GvBF37sAupVC4odZ98MrUX2tTgdCEFqnDDgv1C7zP+cebHI/Bqik7fRny9tjG9UUI3Nqb1efxbRuazcqQcOwwa5jCAv1ZjVRnOma+NeBxqaJgzsmeigfaYM66BZfJKhmoBzPnERq4i8GuU9zmAS2HUYOpuYSBDXWpX2H9OCY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkrjinLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C907C4CEF7;
-	Tue, 17 Feb 2026 20:53:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f3HI/elAoYw52Qjo6PhwTUIDpI5vc6Z4WR7mRPsLlA9C2zCBzOaKgaEhserZKAAl3FYi0mM78ASnQlLCURPgHnQkD5z61j+AoB1Al2izgJGCty1YRfvb+vQ11QFUzVVglOa1EoqUqWtbJ+3UODxVWfaNlpnQvXAW1r8Ms/ay0so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbMe8Oqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBEFC4CEF7;
+	Tue, 17 Feb 2026 20:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361601;
-	bh=ZpUvEL5TxU2tegnmm4qA6KsgzWq+E44BsRNke5liy8Y=;
+	s=korg; t=1771361296;
+	bh=YUZsNAoHy3C7dVTedfrAtBm1t6ptuD89/jTOoZHEfzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkrjinLDVcx315lCvD/qK9lQA+lu1fELweJp5ESmlVFapuSPFI+ZJLg0fBlOjSYYj
-	 cuUK53LoZMs+MbC70xb2BMBm/kONlqAyOgBdmHZKYszFZ/XQ7jtT7ZazDK5QLoQbiX
-	 EbylbJ15dc3hAX8LlDsco0mM65DR7D3XIp3Vgs80=
+	b=jbMe8OqckWbA98feSPFLMHYF6hoQL6nORsZKKOom+3xMGdfNeMeIenTtnlfyTY97/
+	 YHWju35yx/+VpqexIVMdtGHBtXGS0p0+xgIl+Iz0qhKcXoH9hKDyIPELWq5nJvuG5L
+	 tYi/TtQkQOS4WjXsvXJYoc0V7O6639bUE7r7xIlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 02/42] bnxt_en: Change FW message timeout warning
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Chen Ridong <chenridong@huawei.com>
+Subject: [PATCH 6.1 57/64] cpuset: Fix missing adaptation for cpuset_is_populated
 Date: Tue, 17 Feb 2026 21:31:53 +0100
-Message-ID: <20260217200006.096356325@linuxfoundation.org>
+Message-ID: <20260217200009.643447935@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
-References: <20260217200005.998240758@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,113 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217152-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-217063-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,broadcom.com:email]
-X-Rspamd-Queue-Id: 99CC7150791
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: BF0481504F4
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 0fcad44a86bdc2b5f202d91ba1eeeee6fceb7b25 upstream.
+Commit b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
+was backported to the long‑term support (LTS) branches. However, because
+commit d5cf4d34a333 ("cgroup/cpuset: Don't track # of local child
+partitions") was not backported, a corresponding adaptation to the
+backported code is still required.
 
-The firmware advertises a "hwrm_cmd_max_timeout" value to the driver
-for NVRAM and coredump related functions that can take tens of seconds
-to complete.  The driver polls for the operation to complete under
-mutex and may trigger hung task watchdog warning if the wait is too long.
-To warn the user about this, the driver currently prints a warning if
-this advertised value exceeds 40 seconds:
+To ensure correct behavior, replace cgroup_is_populated with
+cpuset_is_populated in the partition_is_populated function.
 
-Device requests max timeout of %d seconds, may trigger hung task watchdog
-
-Initially, we chose 40 seconds, well below the kernel's default
-CONFIG_DEFAULT_HUNG_TASK_TIMEOUT (120 seconds) to avoid triggering
-the hung task watchdog.  But 60 seconds is the timeout on most
-production FW and cannot be reduced further.  Change the driver's warning
-threshold to 60 seconds to avoid triggering this warning on all
-production devices.  We also print the warning if the value exceeds
-CONFIG_DEFAULT_HUNG_TASK_TIMEOUT which may be set to architecture
-specific defaults as low as 10 seconds.
-
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250417172448.1206107-2-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org	# 6.1+
+Fixes: b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
+Cc: Waiman Long <longman@redhat.com>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c      |   11 +++++++----
- drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.h |    2 +-
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ kernel/cgroup/cpuset.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -9770,7 +9770,7 @@ static int bnxt_hwrm_ver_get(struct bnxt
- 	struct hwrm_ver_get_input *req;
- 	u16 fw_maj, fw_min, fw_bld, fw_rsv;
- 	u32 dev_caps_cfg, hwrm_ver;
--	int rc, len;
-+	int rc, len, max_tmo_secs;
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -509,7 +509,7 @@ static inline bool partition_is_populate
+ 	    cs->attach_in_progress)
+ 		return true;
+ 	if (!excluded_child && !cs->nr_subparts_cpus)
+-		return cgroup_is_populated(cs->css.cgroup);
++		return cpuset_is_populated(cs);
  
- 	rc = hwrm_req_init(bp, req, HWRM_VER_GET);
- 	if (rc)
-@@ -9843,9 +9843,12 @@ static int bnxt_hwrm_ver_get(struct bnxt
- 	bp->hwrm_cmd_max_timeout = le16_to_cpu(resp->max_req_timeout) * 1000;
- 	if (!bp->hwrm_cmd_max_timeout)
- 		bp->hwrm_cmd_max_timeout = HWRM_CMD_MAX_TIMEOUT;
--	else if (bp->hwrm_cmd_max_timeout > HWRM_CMD_MAX_TIMEOUT)
--		netdev_warn(bp->dev, "Device requests max timeout of %d seconds, may trigger hung task watchdog\n",
--			    bp->hwrm_cmd_max_timeout / 1000);
-+	max_tmo_secs = bp->hwrm_cmd_max_timeout / 1000;
-+	if (bp->hwrm_cmd_max_timeout > HWRM_CMD_MAX_TIMEOUT ||
-+	    max_tmo_secs > CONFIG_DEFAULT_HUNG_TASK_TIMEOUT) {
-+		netdev_warn(bp->dev, "Device requests max timeout of %d seconds, may trigger hung task watchdog (kernel default %ds)\n",
-+			    max_tmo_secs, CONFIG_DEFAULT_HUNG_TASK_TIMEOUT);
-+	}
- 
- 	if (resp->hwrm_intf_maj_8b >= 1) {
- 		bp->hwrm_max_req_len = le16_to_cpu(resp->max_req_win_len);
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.h
-@@ -58,7 +58,7 @@ void hwrm_update_token(struct bnxt *bp,
- 
- #define BNXT_HWRM_MAX_REQ_LEN		(bp->hwrm_max_req_len)
- #define BNXT_HWRM_SHORT_REQ_LEN		sizeof(struct hwrm_short_input)
--#define HWRM_CMD_MAX_TIMEOUT		40000U
-+#define HWRM_CMD_MAX_TIMEOUT		60000U
- #define SHORT_HWRM_CMD_TIMEOUT		20
- #define HWRM_CMD_TIMEOUT		(bp->hwrm_cmd_timeout)
- #define HWRM_RESET_TIMEOUT		((HWRM_CMD_TIMEOUT) * 4)
+ 	rcu_read_lock();
+ 	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
 
 
 
