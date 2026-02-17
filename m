@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-217114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217147-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aO5mBsvUlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217114-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:23 +0100
+	id 8KwACFPVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217147-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD6F150649
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B295E1507BB
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76060301DAFD
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 139AD305BB8F
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF85284B3B;
-	Tue, 17 Feb 2026 20:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A911A2D6E76;
+	Tue, 17 Feb 2026 20:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdeyNZUS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2O3VyyDk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12854266581;
-	Tue, 17 Feb 2026 20:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF69280CC1;
+	Tue, 17 Feb 2026 20:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361470; cv=none; b=tbqBIOIxmBN3l47Vu9vHuFOA0PQiPnWmv5UmjjVjbniZc/o+BO0RUkaGTkbM5Dq1/xNwb+39h505epe/QVjwSTb4WQ/2yTeCztAIPxSde/e6GVyOuH3fmLC1WOiEDKcIMDe8JWN8lwOqZCnz50zJ+PmdGheEYjsACCst32BIHPQ=
+	t=1771361584; cv=none; b=kuvO69lX+29cxqsQCF/9ygGAZfA29BFz9FKeunwW68r9IHeHu9WW0LKO+E0peLERPEX6yAtaSf+pJ8ircl+xGIIfyfYrAPzjDIjUrYyeeX4awHuDRMYzUxSnKUyr14vxF0QbkMrE65n7QLQryPVkNOUHwfUdaBlMJWRlYcydGzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361470; c=relaxed/simple;
-	bh=UQnrLsPEr+z9FUCFVbyxw6AK/3S94EQwMfh9B0VeH5Y=;
+	s=arc-20240116; t=1771361584; c=relaxed/simple;
+	bh=0N+UBL8UbKujG/5Q6FGzg/RzxpMnKgUiHb3yHTtxCck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V3KEOvTJEPpej6zyc5RHrtULGQa89dmYdzqC6UCkCEs9uR3bU2GHCsT9Vb0+/RJEyZkx0QOKuCGD+h00r5yL//7DLyWzpw81vlsZA/A1oKg411UfckoFDEKEdbAb/5cjbBPk154U+tLND1Ep4NSzVMVZEvls1M8v3XlZsBSxjO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdeyNZUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A38EC4CEF7;
-	Tue, 17 Feb 2026 20:51:08 +0000 (UTC)
+	 MIME-Version; b=V1XsQh1CgPVJ0hMALSY7I0Sp6cHgd5ryfEt8xcO08kWrit66Xn3wzafVsZl/MRPDsMqG9ikNeng8I4I+kHYiiL2aI29ubk+E5aEOFvnp8eCSgm0sjDzxFskkmaOydr3/MuPyf0kL198XbDzSvTnMQNI3AwJqBrvik5jkqnqmA78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2O3VyyDk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFB6C4CEF7;
+	Tue, 17 Feb 2026 20:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361469;
-	bh=UQnrLsPEr+z9FUCFVbyxw6AK/3S94EQwMfh9B0VeH5Y=;
+	s=korg; t=1771361584;
+	bh=0N+UBL8UbKujG/5Q6FGzg/RzxpMnKgUiHb3yHTtxCck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GdeyNZUSt2pSY3CQLz2qXgYYmj0EF6xBegQIGrb+WsGFuQJ1GDvK04Q8bqDW14K8s
-	 rsxxXbdeuyVKNvzZdFVNjJ3uG/26QqwrzyS1RK32FxH/Mbp4hcuiJQfNRjdUGR4ZLc
-	 R8rj3lYhraCtyrFbhHBjQTYyVwe8hEEDDobE+xeg=
+	b=2O3VyyDkXv3nWlSwLU9qx7tUdgioz71+CNbFUVu3Nk9xYj3DqR8lA3K4rYZK/SEcy
+	 gJjjoOCOWRVncD0l2rxQ/bgJhkHfRCYtsXVP9HH7VPhYeUEzRs2Fium88tvx/UZ7y2
+	 lGE+C/TkyKknnv0Hsfu3kBsg8M9wn+Wkarbho5Hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alban Bedel <alban.bedel@lht.dlh.de>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Tagir Garaev <tgaraev653@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 25/43] gpiolib: acpi: Fix gpio count with string references
-Date: Tue, 17 Feb 2026 21:32:05 +0100
-Message-ID: <20260217200007.437628788@linuxfoundation.org>
+Subject: [PATCH 6.12 15/42] ASoC: Intel: sof_es8336: Add DMI quirk for Huawei BOD-WXX9
+Date: Tue, 17 Feb 2026 21:32:06 +0100
+Message-ID: <20260217200006.589963972@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +67,103 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217114-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217147-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dlh.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 4FD6F150649
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B295E1507BB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alban Bedel <alban.bedel@lht.dlh.de>
+From: Tagir Garaev <tgaraev653@gmail.com>
 
-[ Upstream commit c62e0658d458d8f100445445c3ddb106f3824a45 ]
+[ Upstream commit 6b641122d31f9d33e7d60047ee0586d1659f3f54 ]
 
-Since commit 9880702d123f2 ("ACPI: property: Support using strings in
-reference properties") it is possible to use strings instead of local
-references. This work fine with single GPIO but not with arrays as
-acpi_gpio_package_count() didn't handle this case. Update it to handle
-strings like local references to cover this case as well.
+Add DMI entry for Huawei Matebook D (BOD-WXX9) with HEADPHONE_GPIO
+and DMIC quirks.
 
-Signed-off-by: Alban Bedel <alban.bedel@lht.dlh.de>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/20260129145944.3372777-1-alban.bedel@lht.dlh.de
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+This device has ES8336 codec with:
+- GPIO 16 (headphone-enable) for headphone amplifier control
+- GPIO 17 (speakers-enable) for speaker amplifier control
+- GPIO 269 for jack detection IRQ
+- 2-channel DMIC
+
+Hardware investigation shows that both GPIO 16 and 17 are required
+for proper audio routing, as headphones and speakers share the same
+physical output (HPOL/HPOR) and are separated only via amplifier
+enable signals.
+
+RFC: Seeking advice on GPIO control issue:
+
+GPIO values change in driver (gpiod_get_value() shows logical value
+changes) but not physically (debugfs gpio shows no change). The same
+gpiod_set_value_cansleep() calls work correctly in probe context with
+msleep(), but fail when called from DAPM event callbacks.
+
+Context information from diagnostics:
+- in_atomic=0, in_interrupt=0, irqs_disabled=0
+- Process context: pipewire
+- GPIO 17 (speakers): changes in driver, no physical change
+- GPIO 16 (headphone): changes in driver, no physical change
+
+In Windows, audio switching works without visible GPIO changes,
+suggesting possible ACPI/firmware involvement.
+
+Any suggestions on how to properly control these GPIOs from DAPM
+events would be appreciated.
+
+Signed-off-by: Tagir Garaev <tgaraev653@gmail.com>
+Link: https://patch.msgid.link/20260201121728.16597-1-tgaraev653@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/intel/boards/sof_es8336.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index e64e21fd6bbaa..8110690ea69d0 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -1359,6 +1359,7 @@ static int acpi_gpio_package_count(const union acpi_object *obj)
- 	while (element < end) {
- 		switch (element->type) {
- 		case ACPI_TYPE_LOCAL_REFERENCE:
-+		case ACPI_TYPE_STRING:
- 			element += 3;
- 			fallthrough;
- 		case ACPI_TYPE_INTEGER:
+diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
+index bc27229be7c24..7c3784112ca0f 100644
+--- a/sound/soc/intel/boards/sof_es8336.c
++++ b/sound/soc/intel/boards/sof_es8336.c
+@@ -332,6 +332,15 @@ static int sof_es8336_quirk_cb(const struct dmi_system_id *id)
+  * if the topology file is modified as well.
+  */
+ static const struct dmi_system_id sof_es8336_quirk_table[] = {
++	{
++		.callback = sof_es8336_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HUAWEI"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "BOD-WXX9"),
++		},
++		.driver_data = (void *)(SOF_ES8336_HEADPHONE_GPIO |
++					SOF_ES8336_ENABLE_DMIC)
++	},
+ 	{
+ 		.callback = sof_es8336_quirk_cb,
+ 		.matches = {
 -- 
 2.51.0
 
