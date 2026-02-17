@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-217133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217174-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDT1BjzVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:16 +0100
+	id oGIXJ5DVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217174-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:54:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB247150766
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7E7150827
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:54:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE78A3040324
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0529C300D16A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5270D2E8DEA;
-	Tue, 17 Feb 2026 20:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7122028C009;
+	Tue, 17 Feb 2026 20:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLoP/iVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTjoicGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1404A29BDB4;
-	Tue, 17 Feb 2026 20:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356A329A1;
+	Tue, 17 Feb 2026 20:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361535; cv=none; b=piql4qy84BSDTFLDCu0Wa5hKCk+5/0WLwOORzRlE9utMHDQL0Pt//qEcs4WKg8d1eXY0srtc+/fSIuwFAczptzvljaqDcjmfNDT4LfSbuZVez87S+hPPecqMQRpAc/LY3wpaz7GXqAkiFJZgJXxm3alDFU5BhNdwJfg+bAp4e10=
+	t=1771361677; cv=none; b=ivS135pAaTMSwh8pdd0kNqzisCOdGUQRKG3gYDFG/nredB/R0iHbATX/SipnSr/W3nB6oRKuyho2pxgkKsFxrgsTFkZZUkUTlEIlM/BCmJWRlkT1YY3XPwp3PKqMVmWMLcK5AItPocbUrrP/LZBX3Q11OgPfyqczfncwu7+IztE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361535; c=relaxed/simple;
-	bh=D2KbaAoYO4I3c74C9oOT7MXvdUFfvChdzeecTNVz+VQ=;
+	s=arc-20240116; t=1771361677; c=relaxed/simple;
+	bh=6Au7pyQnzcxwiqIeeuMv2pNFMGDWiBjbMx9F8L/B0gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebDsHwfn6iZiTR8I2TlGspv+MQV+MsU78aincU4W6Strp2wNA0aVcU3C9oZin0s1HxbnM3mUmScjN/VLWNeaKKqIwUFALvXaKYud5HtZzbM/KlkccAEvWX33Y7tQqjgliC1nHHxX3PeoP+ONysQUPlvNKzfi7C1Hqv6HzmyJxPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLoP/iVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773D4C4CEF7;
-	Tue, 17 Feb 2026 20:52:14 +0000 (UTC)
+	 MIME-Version; b=s90OLCQDwouSpdUIv7S0D/N4e3PAFDs+o2OXe5gA0xCuhTwcbflGUR47cU5FTjI0/tOvfhCAoz2ajgwnFQLxXgqAhmZruj7tiRJSGNtb9pyELoYDq5F9JfEdiYqZ47BWw0AXzrWW6QIw1+Xy1QksBs5IxshyEki85mkeJYRCM68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTjoicGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82078C4CEF7;
+	Tue, 17 Feb 2026 20:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361535;
-	bh=D2KbaAoYO4I3c74C9oOT7MXvdUFfvChdzeecTNVz+VQ=;
+	s=korg; t=1771361677;
+	bh=6Au7pyQnzcxwiqIeeuMv2pNFMGDWiBjbMx9F8L/B0gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dLoP/iVQiw3hEzkpXcZiEIr3M3DYM/LmByoxIX2zHl82qePhvCGRjX+ELHZOUdmvf
-	 4Ls333UdsRUU8G32esG0JFxkNfSV7fku8mHgShVWBJzNP2vVRJ8soOGulEH1vauXne
-	 r6kfImXNp5JsqrASjNEgF08XFk1lRGwDIVbZREhE=
+	b=BTjoicGT/O+2VKro2sntuuslh8wtczUZ4iVQBlLMCnHhQ9EcZhItHwMYRZfS2HfFX
+	 u0Pf46+shjk/uITiQMehuDhZT0RW7QDS3fitLTOXTy+Zy90rdaepgALthTo7opX1V2
+	 KHZZ/P41wg7DI9447KJnf6U0h9u43/2tmPN0BbwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Jinbao Liu <liujinbao1@xiaomi.com>,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.18 34/43] f2fs: fix IS_CHECKPOINTED flag inconsistency issue caused by concurrent atomic commit and checkpoint writes
-Date: Tue, 17 Feb 2026 21:32:14 +0100
-Message-ID: <20260217200007.779045524@linuxfoundation.org>
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 24/42] ASoC: fsl_xcvr: fix missing lock in fsl_xcvr_mode_put()
+Date: Tue, 17 Feb 2026 21:32:15 +0100
+Message-ID: <20260217200006.925124816@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,130 +67,81 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217133-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217174-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CB247150766
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,northwestern.edu:email]
+X-Rspamd-Queue-Id: 0B7E7150827
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-commit 7633a7387eb4d0259d6bea945e1d3469cd135bbc upstream.
+[ Upstream commit f514248727606b9087bc38a284ff686e0093abf1 ]
 
-During SPO tests, when mounting F2FS, an -EINVAL error was returned from
-f2fs_recover_inode_page. The issue occurred under the following scenario
+fsl_xcvr_activate_ctl() has
+lockdep_assert_held(&card->snd_card->controls_rwsem),
+but fsl_xcvr_mode_put() calls it without acquiring this lock.
 
-Thread A                                     Thread B
-f2fs_ioc_commit_atomic_write
- - f2fs_do_sync_file // atomic = true
-  - f2fs_fsync_node_pages
-    : last_folio = inode folio
-    : schedule before folio_lock(last_folio) f2fs_write_checkpoint
-                                              - block_operations// writeback last_folio
-                                              - schedule before f2fs_flush_nat_entries
-    : set_fsync_mark(last_folio, 1)
-    : set_dentry_mark(last_folio, 1)
-    : folio_mark_dirty(last_folio)
-    - __write_node_folio(last_folio)
-      : f2fs_down_read(&sbi->node_write)//block
-                                              - f2fs_flush_nat_entries
-                                                : {struct nat_entry}->flag |= BIT(IS_CHECKPOINTED)
-                                              - unblock_operations
-                                                : f2fs_up_write(&sbi->node_write)
-                                             f2fs_write_checkpoint//return
-      : f2fs_do_write_node_page()
-f2fs_ioc_commit_atomic_write//return
-                                             SPO
+Other callers of fsl_xcvr_activate_ctl() in fsl_xcvr_startup() and
+fsl_xcvr_shutdown() properly acquire the lock with down_read()/up_read().
 
-Thread A calls f2fs_need_dentry_mark(sbi, ino), and the last_folio has
-already been written once. However, the {struct nat_entry}->flag did not
-have the IS_CHECKPOINTED set, causing set_dentry_mark(last_folio, 1) and
-write last_folio again after Thread B finishes f2fs_write_checkpoint.
+Add the missing down_read()/up_read() calls around fsl_xcvr_activate_ctl()
+in fsl_xcvr_mode_put() to fix the lockdep assertion and prevent potential
+race conditions when multiple userspace threads access the control.
 
-After SPO and reboot, it was detected that {struct node_info}->blk_addr
-was not NULL_ADDR because Thread B successfully write the checkpoint.
-
-This issue only occurs in atomic write scenarios. For regular file
-fsync operations, the folio must be dirty. If
-block_operations->f2fs_sync_node_pages successfully submit the folio
-write, this path will not be executed. Otherwise, the
-f2fs_write_checkpoint will need to wait for the folio write submission
-to complete, as sbi->nr_pages[F2FS_DIRTY_NODES] > 0. Therefore, the
-situation where f2fs_need_dentry_mark checks that the {struct
-nat_entry}->flag /wo the IS_CHECKPOINTED flag, but the folio write has
-already been submitted, will not occur.
-
-Therefore, for atomic file fsync, sbi->node_write should be acquired
-through __write_node_folio to ensure that the IS_CHECKPOINTED flag
-correctly indicates that the checkpoint write has been completed.
-
-Fixes: 608514deba38 ("f2fs: set fsync mark only for the last dnode")
-Cc: stable@kernel.org
-Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
-Signed-off-by: Jinbao Liu <liujinbao1@xiaomi.com>
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Link: https://patch.msgid.link/20260202174112.2018402-1-n7l8m4@u.northwestern.edu
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ sound/soc/fsl/fsl_xcvr.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1774,8 +1774,13 @@ static bool __write_node_folio(struct fo
- 		goto redirty_out;
- 	}
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index 656a4d619cdf1..d6f00920391d1 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -216,10 +216,13 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
  
--	if (atomic && !test_opt(sbi, NOBARRIER))
--		fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
-+	if (atomic) {
-+		if (!test_opt(sbi, NOBARRIER))
-+			fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
-+		if (IS_INODE(folio))
-+			set_dentry_mark(folio,
-+				f2fs_need_dentry_mark(sbi, ino_of_node(folio)));
-+	}
+ 	xcvr->mode = snd_soc_enum_item_to_val(e, item[0]);
  
- 	/* should add to global list before clearing PAGECACHE status */
- 	if (f2fs_in_warm_node_list(sbi, folio)) {
-@@ -1916,8 +1921,9 @@ continue_unlock:
- 					if (is_inode_flag_set(inode,
- 								FI_DIRTY_INODE))
- 						f2fs_update_inode(inode, folio);
--					set_dentry_mark(folio,
--						f2fs_need_dentry_mark(sbi, ino));
-+					if (!atomic)
-+						set_dentry_mark(folio,
-+							f2fs_need_dentry_mark(sbi, ino));
- 				}
- 				/* may be written by other thread */
- 				if (!folio_test_dirty(folio))
++	down_read(&card->snd_card->controls_rwsem);
+ 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name,
+ 			      (xcvr->mode == FSL_XCVR_MODE_ARC));
+ 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_earc_capds_kctl.name,
+ 			      (xcvr->mode == FSL_XCVR_MODE_EARC));
++	up_read(&card->snd_card->controls_rwsem);
++
+ 	/* Allow playback for SPDIF only */
+ 	rtd = snd_soc_get_pcm_runtime(card, card->dai_link);
+ 	rtd->pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream_count =
+-- 
+2.51.0
+
 
 
 
