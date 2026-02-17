@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-217054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0N4ZI/XTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-217054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:49 +0100
+	id cJUqNFnTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88411504B4
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B3E15035A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 72BA83004D9C
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B75F53006924
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E201284B3B;
-	Tue, 17 Feb 2026 20:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D7B378D97;
+	Tue, 17 Feb 2026 20:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+Kxx2e+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMEL5JGL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4989261B70;
-	Tue, 17 Feb 2026 20:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED8F2DC76B;
+	Tue, 17 Feb 2026 20:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361265; cv=none; b=UZSvmQIuv4m4Gtudp0efQvJud3dWzTEe84Vhwr2dxjW4A+WVulietIKIAlNnuDh3hkmKosetgwvVhFb/XkRyQ2rSmc0eStE2zni9wTs7ngOB3zXBOk5jnF9v8cX0uAp2LObEJUsdTYYyCjo0j6LxG7HdZ+fXkjrmBL3xaPQA+yM=
+	t=1771361109; cv=none; b=oNrgQyatlQWETBBazZAMh1ExzS1GIFMn/KUW32T0z1Lye3fYTAaZOi7Q/Bq9NOyJU7tnH1bqYxhrKRbWvJqks6Yknrvs1WCAjqeRu1KYQpJF2hrGdQ06F1XUwkd75xhloPiAlDv6oc42rhZ7ryF6nd4hvOezCCk8nDR+1nMRaxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361265; c=relaxed/simple;
-	bh=uJTi23tEe4nvjygCt0m0aAzZtNW0/fncO/xRqMsT1QY=;
+	s=arc-20240116; t=1771361109; c=relaxed/simple;
+	bh=dsVbNXzHudBTSCrhUCbc40ooaBS6jFsdZtMSJkIz128=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsJiN17an+enCgHksXU4YRCQ8+nzrndBM0OpmzUFnj2SIuhnGLOVUDrDPtBVAyzZubSvYN6kn+ooIiA/sEphxV5mLYUP/2a1WPS854gTHHQfNvhJA9yZxADNCB7ouaFqaMnLGrJJHga8+X7gFIa0GeHdFNHKqHQo8ZKvXQSNR+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+Kxx2e+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5384FC4CEF7;
-	Tue, 17 Feb 2026 20:47:44 +0000 (UTC)
+	 MIME-Version; b=tjTD4SU7oRP7y9JWwhZrIS3QcfGjin5JUz6ha72XfxPMgMgCam5A+udI43THKDsAUq9mLSaxnE3wgQFghQAEWkC6JQM88YV5Y2uVt1uuKVA754p1CBBX2P4ndqFknnf0j0Gqlz+qfavQhkFBZtaL+F7oJeejX4bFjDqYJ7A7ito=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMEL5JGL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC93C4CEF7;
+	Tue, 17 Feb 2026 20:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361264;
-	bh=uJTi23tEe4nvjygCt0m0aAzZtNW0/fncO/xRqMsT1QY=;
+	s=korg; t=1771361109;
+	bh=dsVbNXzHudBTSCrhUCbc40ooaBS6jFsdZtMSJkIz128=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+Kxx2e+NYbxqqZvh/McYrssrfGzriMfR0nN7I4G6ZUTCnQSJNdG7y6VdMoJH2C7K
-	 sM+q4oXqIOoPR7ezXCRkMFsrf/zml/GpAi0SbEyvwFhEX0UPQ5jmcYG/3ar2TOjZuR
-	 0Q2Oenrfz6q7YwYhTzum3qpqYeTAHR45I8ZfjOhc=
+	b=eMEL5JGL7Zwi7R8yiGZDkF9uZJYb9CzSnN46qbrvBV19sIFodXrMqUEgBQ1+6uymh
+	 VrDXVfjvpvIgaWzdS0Ef+BPjy7P23/eLNZDRMPpojT/moOI9CXHnm98iIDvc0HtfDF
+	 7orBkKLD8fRwuxcSS+joxWcQffRWXXNqmMHrZ+pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bosi Zhang <u201911157@hust.edu.cn>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.1 49/64] clk: mediatek: fix of_iomap memory leak
+	Tianchu Chen <flynnnchen@tencent.com>,
+	stable <stable@kernel.org>,
+	Steve Glendinning <steve.glendinning@shawell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 36/39] fbdev: smscufx: properly copy ioctl memory to kernelspace
 Date: Tue, 17 Feb 2026 21:31:45 +0100
-Message-ID: <20260217200009.343402419@linuxfoundation.org>
+Message-ID: <20260217200004.333406960@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,11 +76,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217054-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217008-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hust.edu.cn,kernel.org,139.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tencent.com,kernel.org,shawell.net,gmx.de];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,61 +92,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,139.com:email,hust.edu.cn:email]
-X-Rspamd-Queue-Id: B88411504B4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,shawell.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 43B3E15035A
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bosi Zhang <u201911157@hust.edu.cn>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 3db7285e044144fd88a356f5b641b9cd4b231a77 ]
+commit 120adae7b42faa641179270c067864544a50ab69 upstream.
 
-Smatch reports:
-drivers/clk/mediatek/clk-mtk.c:583 mtk_clk_simple_probe() warn:
-    'base' from of_iomap() not released on lines: 496.
+The UFX_IOCTL_REPORT_DAMAGE ioctl does not properly copy data from
+userspace to kernelspace, and instead directly references the memory,
+which can cause problems if invalid data is passed from userspace.  Fix
+this all up by correctly copying the memory before accessing it within
+the kernel.
 
-This problem was also found in linux-next. In mtk_clk_simple_probe(),
-base is not released when handling errors
-if clk_data is not existed, which may cause a leak.
-So free_base should be added here to release base.
-
-Fixes: c58cd0e40ffa ("clk: mediatek: Add mtk_clk_simple_probe() to simplify clock providers")
-Signed-off-by: Bosi Zhang <u201911157@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230422084331.47198-1-u201911157@hust.edu.cn
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Reported-by: Tianchu Chen <flynnnchen@tencent.com>
+Cc: stable <stable@kernel.org>
+Cc: Steve Glendinning <steve.glendinning@shawell.net>
+Cc: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mediatek/clk-mtk.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/smscufx.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/mediatek/clk-mtk.c
-+++ b/drivers/clk/mediatek/clk-mtk.c
-@@ -505,8 +505,10 @@ int mtk_clk_simple_probe(struct platform
- 	num_clks += mcd->num_mux_clks;
+--- a/drivers/video/fbdev/smscufx.c
++++ b/drivers/video/fbdev/smscufx.c
+@@ -986,7 +986,6 @@ static int ufx_ops_ioctl(struct fb_info
+ 			 unsigned long arg)
+ {
+ 	struct ufx_data *dev = info->par;
+-	struct dloarea *area = NULL;
  
- 	clk_data = mtk_alloc_clk_data(num_clks);
--	if (!clk_data)
--		return -ENOMEM;
-+	if (!clk_data) {
-+		r = -ENOMEM;
-+		goto free_base;
-+	}
+ 	if (!atomic_read(&dev->usb_active))
+ 		return 0;
+@@ -1001,6 +1000,10 @@ static int ufx_ops_ioctl(struct fb_info
  
- 	if (mcd->fixed_clks) {
- 		r = mtk_clk_register_fixed_clks(mcd->fixed_clks,
-@@ -594,6 +596,7 @@ unregister_fixed_clks:
- 					      mcd->num_fixed_clks, clk_data);
- free_data:
- 	mtk_free_clk_data(clk_data);
-+free_base:
- 	if (mcd->shared_io && base)
- 		iounmap(base);
+ 	/* TODO: Help propose a standard fb.h ioctl to report mmap damage */
+ 	if (cmd == UFX_IOCTL_REPORT_DAMAGE) {
++		struct dloarea *area __free(kfree) = kmalloc(sizeof(*area), GFP_KERNEL);
++		if (!area)
++			return -ENOMEM;
++
+ 		/* If we have a damage-aware client, turn fb_defio "off"
+ 		 * To avoid perf imact of unnecessary page fault handling.
+ 		 * Done by resetting the delay for this fb_info to a very
+@@ -1010,7 +1013,8 @@ static int ufx_ops_ioctl(struct fb_info
+ 		if (info->fbdefio)
+ 			info->fbdefio->delay = UFX_DEFIO_WRITE_DISABLE;
  
+-		area = (struct dloarea *)arg;
++		if (copy_from_user(area, (u8 __user *)arg, sizeof(*area)))
++			return -EFAULT;
+ 
+ 		if (area->x < 0)
+ 			area->x = 0;
 
 
 
