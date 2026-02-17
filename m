@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-217153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217084-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGPYCEjVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217153-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:28 +0100
+	id ODu4AV3UlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217084-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3E315079A
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1903150595
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 654C0301875A
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 30D8A300DF43
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6B72C21C1;
-	Tue, 17 Feb 2026 20:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F07284B3B;
+	Tue, 17 Feb 2026 20:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DryCeHwF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5Ddy/VX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5452284B3B;
-	Tue, 17 Feb 2026 20:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A542129A1;
+	Tue, 17 Feb 2026 20:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361604; cv=none; b=ubbKHrGbM4jNhGqJ509dkWozwGVfGUjs4aPA63q6SEVKkmWB4fYRhBLukbSOGYb8Eg8DiGyl0z/uSRedN8e3erAEwLq6zRu01PU3vTqsC7TgdHyCbUGGnDDGK03BS0p32XkPsADqmC9y6kZs/3Q+wrvFV6dU0243fasRTp6wzOI=
+	t=1771361368; cv=none; b=pkUUoWigmN8jz7ALnZicTCGfn3gFaCoSp8szcVBLVnE/OBenrngS287gEU/OysZZJncmb/ioHE2mcssMv5YdCu/VBEgCi1Mv4s23OK8uduZlmpllkUcyDCy9cO4UTTyJXF4iFYrgYk8HEOxpZy6A7c19iMHYJHXGwlIfbHNkj9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361604; c=relaxed/simple;
-	bh=hXdeKkB1Iscuk5zDDTaUPqmX0mpCTWaUE2ux551ZZto=;
+	s=arc-20240116; t=1771361368; c=relaxed/simple;
+	bh=wDzh0XyHSUH9lH0oyrFYMMDm46xrEyIFsK84OorzNvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IzrXvsHvqilXhd/3r3CrIa24qY3pKfgrsH/q8JWCYXJ53sqwPHAKyy0MGYnG3nq2l1gpUyCn2+/YmPjkswUzpX+KhK2XtxQWFwYR+EA0cFyeabU+WZxOfAndfcXeGGcUhuyLckd+4IMjR6axfLH+J1MhH5AIJUbq7FDzpgUHAO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DryCeHwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37963C4CEF7;
-	Tue, 17 Feb 2026 20:53:24 +0000 (UTC)
+	 MIME-Version; b=N4FKLqPGAAbMmE3z8N0GMoejqsRYCXtc5omaz55gQLO26a2tCVVYPdaQHjAKUHPlW0LnrWfLUuPQ+H65TP8BaAl27lWeQU0WDSdvYSxgg6mMSs1Gusf8rIOHnnbOYW08qzilE5hTGXIW9bKCPwsbL4ZJh68XcTZ3Xa4obkfsKrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5Ddy/VX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24918C4CEF7;
+	Tue, 17 Feb 2026 20:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361604;
-	bh=hXdeKkB1Iscuk5zDDTaUPqmX0mpCTWaUE2ux551ZZto=;
+	s=korg; t=1771361368;
+	bh=wDzh0XyHSUH9lH0oyrFYMMDm46xrEyIFsK84OorzNvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DryCeHwFPIGlTTofSBd6PZqKWy224r8rAX3aD8Sidj+70Cuk/cZ4iahTImdrNkf/o
-	 86uH0fg7KZOEgVUjUJ5nRSGNR46Y+dScWuwBLRsswOos4eyG9AX1OIV53VdP/fg70P
-	 mvNpOPu3bOcfRtXZsrY5ySMyAlPkMSa+HcdOpo3w=
+	b=r5Ddy/VXUW9Rry1q72tATUbeb+1mn6zzYE1E/mir7YqpYlgWmoQR5fXKWD/0TFXHq
+	 mWD3QQ0ycUjiNQR0UYUe5QpXBKJJ3K+Es9jP6eQm2Xc1x4Hh8+zvsBepcTez2aDrVt
+	 GJGFB94w8ws0yJD7U2zEvU9kfl2ApFqT6ZifGgJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 20/42] ASoC: cs42l43: Correct handling of 3-pole jack load detection
+Subject: [PATCH 6.19 15/18] Revert "f2fs: block cache/dio write during f2fs_enable_checkpoint()"
 Date: Tue, 17 Feb 2026 21:32:11 +0100
-Message-ID: <20260217200006.775771458@linuxfoundation.org>
+Message-ID: <20260217200003.287445122@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
-References: <20260217200005.998240758@linuxfoundation.org>
+In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
+References: <20260217200002.683975158@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,128 +68,188 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217153-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217084-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email]
-X-Rspamd-Queue-Id: AA3E315079A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: C1903150595
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit e77a4081d7e324dfa876a9560b2a78969446ba82 ]
+[ Upstream commit 3996b70209f145bfcf2afc7d05dd92c27b233b48 ]
 
-The load detection process for 3-pole jacks requires slightly
-updated reference values to ensure an accurate result. Update
-the code to apply different tunings for the 3-pole and 4-pole
-cases. This also updates the thresholds overall so update the
-relevant comments to match.
+This reverts commit 196c81fdd438f7ac429d5639090a9816abb9760a.
 
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260130150927.2964664-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Original patch may cause below deadlock, revert it.
+
+write				remount
+- write_begin
+ - lock_page  --- lock A
+ - prepare_write_begin
+  - f2fs_map_lock
+				- f2fs_enable_checkpoint
+				 - down_write(cp_enable_rwsem)  --- lock B
+				 - sync_inode_sb
+				  - writepages
+				   - lock_page			--- lock A
+   - down_read(cp_enable_rwsem)  --- lock A
+
+Cc: stable@kernel.org
+Fixes: 196c81fdd438 ("f2fs: block cache/dio write during f2fs_enable_checkpoint()")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ drop tracing bits ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs42l43-jack.c | 37 +++++++++++++++++++++++++++------
- 1 file changed, 31 insertions(+), 6 deletions(-)
+ fs/f2fs/data.c  |    2 --
+ fs/f2fs/f2fs.h  |    3 +--
+ fs/f2fs/super.c |   38 ++++++++------------------------------
+ 3 files changed, 9 insertions(+), 34 deletions(-)
 
-diff --git a/sound/soc/codecs/cs42l43-jack.c b/sound/soc/codecs/cs42l43-jack.c
-index 984a7f470a31f..aa0062f3aa918 100644
---- a/sound/soc/codecs/cs42l43-jack.c
-+++ b/sound/soc/codecs/cs42l43-jack.c
-@@ -508,7 +508,23 @@ void cs42l43_bias_sense_timeout(struct work_struct *work)
- 	pm_runtime_put_autosuspend(priv->dev);
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1424,7 +1424,6 @@ static int __allocate_data_block(struct
+ 
+ static void f2fs_map_lock(struct f2fs_sb_info *sbi, int flag)
+ {
+-	f2fs_down_read(&sbi->cp_enable_rwsem);
+ 	if (flag == F2FS_GET_BLOCK_PRE_AIO)
+ 		f2fs_down_read(&sbi->node_change);
+ 	else
+@@ -1437,7 +1436,6 @@ static void f2fs_map_unlock(struct f2fs_
+ 		f2fs_up_read(&sbi->node_change);
+ 	else
+ 		f2fs_unlock_op(sbi);
+-	f2fs_up_read(&sbi->cp_enable_rwsem);
  }
  
--static void cs42l43_start_load_detect(struct cs42l43_codec *priv)
-+static const struct reg_sequence cs42l43_3pole_patch[] = {
-+	{ 0x4000,	0x00000055 },
-+	{ 0x4000,	0x000000AA },
-+	{ 0x17420,	0x8500F300 },
-+	{ 0x17424,	0x36003E00 },
-+	{ 0x4000,	0x00000000 },
-+};
-+
-+static const struct reg_sequence cs42l43_4pole_patch[] = {
-+	{ 0x4000,	0x00000055 },
-+	{ 0x4000,	0x000000AA },
-+	{ 0x17420,	0x7800E600 },
-+	{ 0x17424,	0x36003800 },
-+	{ 0x4000,	0x00000000 },
-+};
-+
-+static void cs42l43_start_load_detect(struct cs42l43_codec *priv, bool mic)
+ int f2fs_get_block_locked(struct dnode_of_data *dn, pgoff_t index)
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -287,7 +287,7 @@ enum {
+ #define DEF_CP_INTERVAL			60	/* 60 secs */
+ #define DEF_IDLE_INTERVAL		5	/* 5 secs */
+ #define DEF_DISABLE_INTERVAL		5	/* 5 secs */
+-#define DEF_ENABLE_INTERVAL		5	/* 5 secs */
++#define DEF_ENABLE_INTERVAL		16	/* 16 secs */
+ #define DEF_DISABLE_QUICK_INTERVAL	1	/* 1 secs */
+ #define DEF_UMOUNT_DISCARD_TIMEOUT	5	/* 5 secs */
+ 
+@@ -1720,7 +1720,6 @@ struct f2fs_sb_info {
+ 	long interval_time[MAX_TIME];		/* to store thresholds */
+ 	struct ckpt_req_control cprc_info;	/* for checkpoint request control */
+ 	struct cp_stats cp_stats;		/* for time stat of checkpoint */
+-	struct f2fs_rwsem cp_enable_rwsem;	/* block cache/dio write */
+ 
+ 	struct inode_management im[MAX_INO_ENTRY];	/* manage inode cache */
+ 
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2636,11 +2636,10 @@ restore_flag:
+ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
  {
- 	struct cs42l43 *cs42l43 = priv->core;
+ 	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
+-	long long start, writeback, lock, sync_inode, end;
++	long long start, writeback, end;
+ 	int ret;
  
-@@ -532,6 +548,15 @@ static void cs42l43_start_load_detect(struct cs42l43_codec *priv)
- 			dev_err(priv->dev, "Load detect HP power down timed out\n");
+-	f2fs_info(sbi, "%s start, meta: %lld, node: %lld, data: %lld",
+-					__func__,
++	f2fs_info(sbi, "f2fs_enable_checkpoint() starts, meta: %lld, node: %lld, data: %lld",
+ 					get_pages(sbi, F2FS_DIRTY_META),
+ 					get_pages(sbi, F2FS_DIRTY_NODES),
+ 					get_pages(sbi, F2FS_DIRTY_DATA));
+@@ -2659,18 +2658,11 @@ static int f2fs_enable_checkpoint(struct
  	}
+ 	writeback = ktime_get();
  
-+	if (mic)
-+		regmap_multi_reg_write_bypassed(cs42l43->regmap,
-+						cs42l43_4pole_patch,
-+						ARRAY_SIZE(cs42l43_4pole_patch));
-+	else
-+		regmap_multi_reg_write_bypassed(cs42l43->regmap,
-+						cs42l43_3pole_patch,
-+						ARRAY_SIZE(cs42l43_3pole_patch));
-+
- 	regmap_update_bits(cs42l43->regmap, CS42L43_BLOCK_EN3,
- 			   CS42L43_ADC1_EN_MASK | CS42L43_ADC2_EN_MASK, 0);
- 	regmap_update_bits(cs42l43->regmap, CS42L43_DACCNFG2, CS42L43_HP_HPF_EN_MASK, 0);
-@@ -610,7 +635,7 @@ static int cs42l43_run_load_detect(struct cs42l43_codec *priv, bool mic)
+-	f2fs_down_write(&sbi->cp_enable_rwsem);
+-
+-	lock = ktime_get();
+-
+-	if (get_pages(sbi, F2FS_DIRTY_DATA))
+-		sync_inodes_sb(sbi->sb);
++	sync_inodes_sb(sbi->sb);
  
- 	reinit_completion(&priv->load_detect);
+ 	if (unlikely(get_pages(sbi, F2FS_DIRTY_DATA)))
+-		f2fs_warn(sbi, "%s: has some unwritten data: %lld",
+-			__func__, get_pages(sbi, F2FS_DIRTY_DATA));
+-
+-	sync_inode = ktime_get();
++		f2fs_warn(sbi, "checkpoint=enable has some unwritten data: %lld",
++					get_pages(sbi, F2FS_DIRTY_DATA));
  
--	cs42l43_start_load_detect(priv);
-+	cs42l43_start_load_detect(priv, mic);
- 	time_left = wait_for_completion_timeout(&priv->load_detect,
- 						msecs_to_jiffies(CS42L43_LOAD_TIMEOUT_MS));
- 	cs42l43_stop_load_detect(priv);
-@@ -634,11 +659,11 @@ static int cs42l43_run_load_detect(struct cs42l43_codec *priv, bool mic)
- 	}
+ 	f2fs_down_write(&sbi->gc_lock);
+ 	f2fs_dirty_to_prefree(sbi);
+@@ -2679,13 +2671,6 @@ static int f2fs_enable_checkpoint(struct
+ 	set_sbi_flag(sbi, SBI_IS_DIRTY);
+ 	f2fs_up_write(&sbi->gc_lock);
  
- 	switch (val & CS42L43_AMP3_RES_DET_MASK) {
--	case 0x0: // low impedance
--	case 0x1: // high impedance
-+	case 0x0: // < 22 Ohm impedance
-+	case 0x1: // < 150 Ohm impedance
-+	case 0x2: // < 1000 Ohm impedance
- 		return CS42L43_JACK_HEADPHONE;
--	case 0x2: // lineout
--	case 0x3: // Open circuit
-+	case 0x3: // > 1000 Ohm impedance
- 		return CS42L43_JACK_LINEOUT;
- 	default:
- 		return -EINVAL;
--- 
-2.51.0
-
+-	f2fs_info(sbi, "%s sync_fs, meta: %lld, imeta: %lld, node: %lld, dents: %lld, qdata: %lld",
+-					__func__,
+-					get_pages(sbi, F2FS_DIRTY_META),
+-					get_pages(sbi, F2FS_DIRTY_IMETA),
+-					get_pages(sbi, F2FS_DIRTY_NODES),
+-					get_pages(sbi, F2FS_DIRTY_DENTS),
+-					get_pages(sbi, F2FS_DIRTY_QDATA));
+ 	ret = f2fs_sync_fs(sbi->sb, 1);
+ 	if (ret)
+ 		f2fs_err(sbi, "%s sync_fs failed, ret: %d", __func__, ret);
+@@ -2693,17 +2678,11 @@ static int f2fs_enable_checkpoint(struct
+ 	/* Let's ensure there's no pending checkpoint anymore */
+ 	f2fs_flush_ckpt_thread(sbi);
+ 
+-	f2fs_up_write(&sbi->cp_enable_rwsem);
+-
+ 	end = ktime_get();
+ 
+-	f2fs_info(sbi, "%s end, writeback:%llu, "
+-				"lock:%llu, sync_inode:%llu, sync_fs:%llu",
+-				__func__,
+-				ktime_ms_delta(writeback, start),
+-				ktime_ms_delta(lock, writeback),
+-				ktime_ms_delta(sync_inode, lock),
+-				ktime_ms_delta(end, sync_inode));
++	f2fs_info(sbi, "f2fs_enable_checkpoint() finishes, writeback:%llu, sync:%llu",
++					ktime_ms_delta(writeback, start),
++					ktime_ms_delta(end, writeback));
+ 	return ret;
+ }
+ 
+@@ -4904,7 +4883,6 @@ try_onemore:
+ 	init_f2fs_rwsem(&sbi->node_change);
+ 	spin_lock_init(&sbi->stat_lock);
+ 	init_f2fs_rwsem(&sbi->cp_rwsem);
+-	init_f2fs_rwsem(&sbi->cp_enable_rwsem);
+ 	init_f2fs_rwsem(&sbi->quota_sem);
+ 	init_waitqueue_head(&sbi->cp_wait);
+ 	spin_lock_init(&sbi->error_lock);
 
 
 
