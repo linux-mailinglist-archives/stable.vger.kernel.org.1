@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-217093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFaHFZ3UlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217093-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:50:37 +0100
+	id cGiEB03VlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C97A150600
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:50:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D181507AE
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 042033053CFC
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:50:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 17B7D305A496
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4523B377560;
-	Tue, 17 Feb 2026 20:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F35284B3B;
+	Tue, 17 Feb 2026 20:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGh9rsrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ll9Zizdo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AA92E973F;
-	Tue, 17 Feb 2026 20:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727F3280CC1;
+	Tue, 17 Feb 2026 20:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361400; cv=none; b=rjdYYb/12JQxqrRMvRqz0zV5nGblN/UKbWT0fzoxb2Dpi6P7JtqQlwA+TvJ2hrYQj1LmVqeRLDys/mndRhNQnsQLQtH9h/pLerepFiiia1oJ6sPwgJT1CQd1JxRJVG04Fl6UgwbLeuomGHhupOTA1zGqW5gaBcHznpx2i5SKnlA=
+	t=1771361577; cv=none; b=LHYGR3uOK2XEOAHNhpt0IZ7lcq7CU70uJqK07KRwIDTgsa/DHIyN8kjOQdlWj9iv25k1BUljvqD9A4fNW1bedgNcBeFfYpSx4jazr7rXYmRaNyJCAtgkzf5TMTDe9/Mz5AmyugNby+M+R5KyC6FPZa7wv3mZbVbBwkk6QDVNNx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361400; c=relaxed/simple;
-	bh=J08MPTXFFcmIt1CUh27u/ORZSpirRQQrdtdWmgaWRVg=;
+	s=arc-20240116; t=1771361577; c=relaxed/simple;
+	bh=F/1NJ1/HBgNpi3KJo94n2lEb/Dis9gk6tvIdBV8rNHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CcKq+VvgcT0RGhx0seL1TkmBGtkmH2dtQ8VBQGoJRAOzTKpPO9MMgrqwBHVnwsBRPv0a8QGU8R7aI5tDmijer8HbgbhGFw+m7xHQd5BdG+HT+o/XCQU9J8hLIqLJrtsPFv767DSQEjHUR2/LNniEgtvuZHENTU1rz45Cipd87t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGh9rsrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACCBC19421;
-	Tue, 17 Feb 2026 20:49:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KDd4a7/+wYuTv+bzvz1dx2eMZ/2HI+CAf/RNXnJobe47hpjcMTSomAtkCQmXiXot2BWrjlQpTTjEZDJ27FNOEVUk4PnpnCYFhGC3eCeam1+gZj69y1k4Vy5dlEwg5QKMCHs6xmoHUU+WdUFvDQGWpcz9h010PTrwEqa5bqtVMac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ll9Zizdo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E6EC4CEF7;
+	Tue, 17 Feb 2026 20:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361399;
-	bh=J08MPTXFFcmIt1CUh27u/ORZSpirRQQrdtdWmgaWRVg=;
+	s=korg; t=1771361577;
+	bh=F/1NJ1/HBgNpi3KJo94n2lEb/Dis9gk6tvIdBV8rNHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rGh9rsrNR5lXzKRLCYC5mN3iJWg01IULmL1Ht0q+EHzFFQv6fxrbwKW57RcL6pc7n
-	 RsIIgCbwx2YuDC+KAR1taPWNLjA0cWeVnbD1aldZxRoiL9ZeGOi5UlfDMETC7YFDr3
-	 8SqIzMjDtlpDkrRo0r00wdaAwjj4TSOwdCAxzO7Y=
+	b=ll9ZizdoxcdjamToWzFAUumggf1kX6rbavHxrI1cnOpBITSObpxtvDOjuPJAqkSIX
+	 K5H32yXRkww3RJC9s0gAa5/bdNnCPKpizvtSl+OsM8k1A7QGVKsn0AUiupm4oSzpcM
+	 CPrw6x0VtlFes9z7g10s9tUD0frtbXP1QeWBd7/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.19 07/18] f2fs: fix to check sysfs filename w/ gc_pin_file_thresh correctly
-Date: Tue, 17 Feb 2026 21:32:03 +0100
-Message-ID: <20260217200002.973285440@linuxfoundation.org>
+	Brahmajit Das <listout@listout.xyz>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: =?UTF-8?q?=5BPATCH=206=2E12=2013/42=5D=20=3D=3FUTF-8=3Fq=3Fdrm/tegra=3A=3D20hdmi=3A=3D20sor=3A=3D20Fix=3D20error=3A=3D20variable=3D20=3F=3D=20=3D=3FUTF-8=3Fq=3F=3DE2=3D80=3D98j=3DE2=3D80=3D99=3D20set=3D20but=3D20not=3D20used=3F=3D?=
+Date: Tue, 17 Feb 2026 21:32:04 +0100
+Message-ID: <20260217200006.513716862@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
-References: <20260217200002.683975158@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,25 +63,27 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,listout.xyz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	TAGGED_FROM(0.00)[bounces-217145-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217093-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,41 +92,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 0C97A150600
+	SUBJECT_HAS_QUESTION(0.00)[]
+X-Rspamd-Queue-Id: 86D181507AE
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Brahmajit Das <listout@listout.xyz>
 
-commit 0eda086de85e140f53c6123a4c00662f4e614ee4 upstream.
+[ Upstream commit 1beee8d0c263b3e239c8d6616e4f8bb700bed658 ]
 
-Sysfs entry name is gc_pin_file_thresh instead of gc_pin_file_threshold,
-fix it.
+The variable j is set, however never used in or outside the loop, thus
+resulting in dead code.
+Building with GCC 16 results in a build error due to
+-Werror=unused-but-set-variable= enabled by default.
+This patch clean up the dead code and fixes the build error.
 
-Cc: stable@kernel.org
-Fixes: c521a6ab4ad7 ("f2fs: fix to limit gc_pin_file_threshold")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Example build log:
+drivers/gpu/drm/tegra/sor.c:1867:19: error: variable ‘j’ set but not used [-Werror=unused-but-set-variable=]
+ 1867 |         size_t i, j;
+      |                   ^
+
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250901212020.3757519-1-listout@listout.xyz
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/sysfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tegra/hdmi.c | 4 ++--
+ drivers/gpu/drm/tegra/sor.c  | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -749,7 +749,7 @@ out:
- 		return count;
- 	}
+diff --git a/drivers/gpu/drm/tegra/hdmi.c b/drivers/gpu/drm/tegra/hdmi.c
+index 09987e372e3ef..02b260cbbf0c8 100644
+--- a/drivers/gpu/drm/tegra/hdmi.c
++++ b/drivers/gpu/drm/tegra/hdmi.c
+@@ -658,7 +658,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
+ {
+ 	const u8 *ptr = data;
+ 	unsigned long offset;
+-	size_t i, j;
++	size_t i;
+ 	u32 value;
  
--	if (!strcmp(a->attr.name, "gc_pin_file_threshold")) {
-+	if (!strcmp(a->attr.name, "gc_pin_file_thresh")) {
- 		if (t > MAX_GC_FAILED_PINNED_FILES)
- 			return -EINVAL;
- 		sbi->gc_pin_file_threshold = t;
+ 	switch (ptr[0]) {
+@@ -691,7 +691,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
+ 	 * - subpack_low: bytes 0 - 3
+ 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
+ 	 */
+-	for (i = 3, j = 0; i < size; i += 7, j += 8) {
++	for (i = 3; i < size; i += 7) {
+ 		size_t rem = size - i, num = min_t(size_t, rem, 4);
+ 
+ 		value = tegra_hdmi_subpack(&ptr[i], num);
+diff --git a/drivers/gpu/drm/tegra/sor.c b/drivers/gpu/drm/tegra/sor.c
+index bad3b8fcc7269..c2a57f85051ae 100644
+--- a/drivers/gpu/drm/tegra/sor.c
++++ b/drivers/gpu/drm/tegra/sor.c
+@@ -1864,7 +1864,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
+ {
+ 	const u8 *ptr = data;
+ 	unsigned long offset;
+-	size_t i, j;
++	size_t i;
+ 	u32 value;
+ 
+ 	switch (ptr[0]) {
+@@ -1897,7 +1897,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
+ 	 * - subpack_low: bytes 0 - 3
+ 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
+ 	 */
+-	for (i = 3, j = 0; i < size; i += 7, j += 8) {
++	for (i = 3; i < size; i += 7) {
+ 		size_t rem = size - i, num = min_t(size_t, rem, 4);
+ 
+ 		value = tegra_sor_hdmi_subpack(&ptr[i], num);
+-- 
+2.51.0
+
 
 
 
