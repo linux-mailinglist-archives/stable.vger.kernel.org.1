@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-217003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMmiGmTTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-217003-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:24 +0100
+	id 2FLHId/TlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D0015036E
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BFF150486
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FF28303FDE7
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAA2F300A633
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD351B042E;
-	Tue, 17 Feb 2026 20:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8609528C009;
+	Tue, 17 Feb 2026 20:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uiB5pP4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMRBI3Op"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21F034D4F8;
-	Tue, 17 Feb 2026 20:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AD92773E4;
+	Tue, 17 Feb 2026 20:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361092; cv=none; b=irX9XiXAY68jDeQ8qgbClhKUyVsz6Qd3qzWfDq0Y26htasQkxpxXyHW5imOH7pWICrZd24j4tFUJ5RYxRaAu1s/Ud/n08WTquNocQZQ02jrD16VzYwNz0NLarn2MSyhWjOMN0Jdbxd4Fjsn177v35pZgr9d4CAHVUx5r0+xYMaM=
+	t=1771361244; cv=none; b=ldIyMOe72uFGEyjGZogBGwDmIHenr8gGeyOGkMoyxMR5jhBzaX3LWjF5CaXiToUu0wCP1mAfH2aMuU8QvOrHT5NBTs7ImEJv/xAqbwYPLa/wj+F3dEexFKDvVVme6YdXG00qa8Qa8DlusqJZ1TQXnTj2m8RWHSJFKusKDIrpBbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361092; c=relaxed/simple;
-	bh=fZV84MiBnfH9grSEMO/O7CZVslV6B5oY9ItYGTMm75I=;
+	s=arc-20240116; t=1771361244; c=relaxed/simple;
+	bh=INXj2/1weNW6ctqsDJLgp41IbiLhoPiQiJKt4mM4fiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzDdWlEOnOABbTGX4TtSoCr/7zQR4NC1yoFO1HQEf+sxEUCM0UAap4Aazl/rloBxaWUB2DoCGjW7q0fD65HH+bfJyDYlObjcIb83wAzxVcLJobtk5eYTmoQlWmoUyuaJCyvRMU0jadw688bgtKC9ckfuZ9tPqMv19TRDdZj08Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uiB5pP4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE37C4CEF7;
-	Tue, 17 Feb 2026 20:44:52 +0000 (UTC)
+	 MIME-Version; b=G9YugnJeKiwNS8MIT1WFdeoq5d+SBOXavsRH7aFECBHhQHGkfuYTpaQCmIxhxXTLA/XH7JL+D1XVzVOOMmqii1aSIvRs2VM5aBO8bRGhhrSTq9CZh840R7zwJkfx4yX74QDatpXoaEMfdu0InOCArFmyBO1t1ofqKVNr6v791bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMRBI3Op; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CA3C4CEF7;
+	Tue, 17 Feb 2026 20:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361092;
-	bh=fZV84MiBnfH9grSEMO/O7CZVslV6B5oY9ItYGTMm75I=;
+	s=korg; t=1771361244;
+	bh=INXj2/1weNW6ctqsDJLgp41IbiLhoPiQiJKt4mM4fiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uiB5pP4SkidiEqWUxMgZW6ACOdQNLULlG1LbqX/1mBXsTUjd/RKgE9jAYHPK8C9v
-	 HjU9197doyxtYkaZesgLnlKv0/A9LFqsOFxsPL2aCS0kNJH9VCgX2548T8OPTO7e3O
-	 B415DyeRnhEpy7EkjDGdl0WkvMHn5bnkDKYgFO0c=
+	b=pMRBI3Opt97bLR9+fpue0aULh3Kkk2PzzW6WlpcROXXoq8TbMT3W49RuWLWsdTmej
+	 RpnYcAw+kdRZxZufvlns6zvvsc11H9ysuuOWbPMrnv9rb9yvpUcqd9+r16zWcsKRNM
+	 7tm0pMz7mSvKLdJ6873njjKAWjk5NpSKyoNg0UAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/39] scsi: qla2xxx: Free sp in error path to fix system crash
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 44/64] selftests: mptcp: check no dup close events after error
 Date: Tue, 17 Feb 2026 21:31:40 +0100
-Message-ID: <20260217200004.140156558@linuxfoundation.org>
+Message-ID: <20260217200009.156427718@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,117 +67,185 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217003-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217048-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,marvell.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,oracle.com:email]
-X-Rspamd-Queue-Id: B2D0015036E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 17BFF150486
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 7adbd2b7809066c75f0433e5e2a8e114b429f30f ]
+commit 8467458dfa61b37e259e3485a5d3e415d08193c1 upstream.
 
-System crash seen during load/unload test in a loop,
+This validates the previous commit: subflow closed events are re-sent
+with less info when the initial subflow is disconnected after an error
+and each time a subflow is closed after that.
 
-[61110.449331] qla2xxx [0000:27:00.0]-0042:0: Disabled MSI-X.
-[61110.467494] =============================================================================
-[61110.467498] BUG qla2xxx_srbs (Tainted: G           OE    --------  --- ): Objects remaining in qla2xxx_srbs on __kmem_cache_shutdown()
-[61110.467501] -----------------------------------------------------------------------------
+In this new test, the userspace PM is involved because that's how it was
+discovered, but it is not specific to it. The initial subflow is
+terminated with a RESET, and that will cause the subflow disconnect.
+Then, a new subflow is initiated, but also got rejected, which cause a
+second subflow closed event, but not a third one.
 
-[61110.467502] Slab 0x000000000ffc8162 objects=51 used=1 fp=0x00000000e25d3d85 flags=0x57ffffc0010200(slab|head|node=1|zone=2|lastcpupid=0x1fffff)
-[61110.467509] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G           OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
-[61110.467513] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
-[61110.467515] Call Trace:
-[61110.467516]  <TASK>
-[61110.467519]  dump_stack_lvl+0x34/0x48
-[61110.467526]  slab_err.cold+0x53/0x67
-[61110.467534]  __kmem_cache_shutdown+0x16e/0x320
-[61110.467540]  kmem_cache_destroy+0x51/0x160
-[61110.467544]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
-[61110.467607]  ? __do_sys_delete_module.constprop.0+0x178/0x280
-[61110.467613]  ? syscall_trace_enter.constprop.0+0x145/0x1d0
-[61110.467616]  ? do_syscall_64+0x5c/0x90
-[61110.467619]  ? exc_page_fault+0x62/0x150
-[61110.467622]  ? entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[61110.467626]  </TASK>
-[61110.467627] Disabling lock debugging due to kernel taint
-[61110.467635] Object 0x0000000026f7e6e6 @offset=16000
-[61110.467639] ------------[ cut here ]------------
-[61110.467639] kmem_cache_destroy qla2xxx_srbs: Slab cache still has objects when called from qla2x00_module_exit+0x93/0x99 [qla2xxx]
-[61110.467659] WARNING: CPU: 53 PID: 455206 at mm/slab_common.c:520 kmem_cache_destroy+0x14d/0x160
-[61110.467718] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G    B      OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
-[61110.467720] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
-[61110.467721] RIP: 0010:kmem_cache_destroy+0x14d/0x160
-[61110.467724] Code: 99 7d 07 00 48 89 ef e8 e1 6a 07 00 eb b3 48 8b 55 60 48 8b 4c 24 20 48 c7 c6 70 fc 66 90 48 c7 c7 f8 ef a1 90 e8 e1 ed 7c 00 <0f> 0b eb 93 c3 cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 55 48 89
-[61110.467725] RSP: 0018:ffffa304e489fe80 EFLAGS: 00010282
-[61110.467727] RAX: 0000000000000000 RBX: ffffffffc0d9a860 RCX: 0000000000000027
-[61110.467729] RDX: ffff8fd5ff9598a8 RSI: 0000000000000001 RDI: ffff8fd5ff9598a0
-[61110.467730] RBP: ffff8fb6aaf78700 R08: 0000000000000000 R09: 0000000100d863b7
-[61110.467731] R10: ffffa304e489fd20 R11: ffffffff913bef48 R12: 0000000040002000
-[61110.467731] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-[61110.467733] FS:  00007f64c89fb740(0000) GS:ffff8fd5ff940000(0000) knlGS:0000000000000000
-[61110.467734] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[61110.467735] CR2: 00007f0f02bfe000 CR3: 00000020ad6dc005 CR4: 0000000000770ee0
-[61110.467736] PKRU: 55555554
-[61110.467737] Call Trace:
-[61110.467738]  <TASK>
-[61110.467739]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
-[61110.467755]  ? __do_sys_delete_module.constprop.0+0x178/0x280
+While at it, in case of failure to get the expected amount of events,
+the events are printed.
 
-Free sp in the error path to fix the crash.
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
-Fixes: f352eeb75419 ("scsi: qla2xxx: Add ability to use GPNFT/GNNFT for RSCN handling")
+Fixes: d82809b6c5f2 ("mptcp: avoid duplicated SUB_CLOSED events")
 Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-9-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260127-net-mptcp-dup-nl-events-v1-2-7f71e1bc4feb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mptcp_join.sh, because in this version, commit
+  20ccc7c5f7a3 ("selftests: mptcp: join: validate event numbers") has
+  been backported with adaptations to display results correctly, see
+  commit 5dc9170eee96 ("selftests: mptcp: join: validate event numbers")
+  for more details. The same type of adaptations had to be made here as
+  well, plus importing a few additional helpers: userspace_pm_add_sf,
+  evts_get_info and get_info_value. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   79 ++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3921,8 +3921,8 @@ int qla_fab_async_scan(scsi_qla_host_t *
- 	if (vha->scan.scan_flags & SF_SCANNING) {
- 		spin_unlock_irqrestore(&vha->work_lock, flags);
- 		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x2012,
--		    "%s: scan active\n", __func__);
--		return rval;
-+		    "%s: scan active for sp:%p\n", __func__, sp);
-+		goto done_free_sp;
- 	}
- 	vha->scan.scan_flags |= SF_SCANNING;
- 	if (!sp)
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3183,6 +3183,35 @@ fail_tests()
+ 	fi
+ }
+ 
++# get the value of keyword $1 in the line marked by keyword $2
++get_info_value() {
++	grep "${2}" 2>/dev/null |
++		sed -n 's/.*\('"${1}"':\)\([0-9a-f:.]*\).*$/\2/p;q'
++		# the ';q' at the end limits to the first matched entry.
++}
++
++# $1: info name ; $2: evts_ns ; [$3: event type; [$4: addr]]
++evts_get_info() {
++	grep "${4:-}" "${2}" 2>/dev/null |
++		get_info_value "${1}" "^type:${3:-1},"
++}
++
++# $1: ns ; $2: addr ; $3: id
++userspace_pm_add_sf()
++{
++	local evts=$evts_ns1
++	local tk da dp
++
++	[ "$1" == "$ns2" ] && evts=$evts_ns2
++	tk=$(evts_get_info token "$evts")
++	da=$(evts_get_info daddr4 "$evts")
++	dp=$(evts_get_info dport "$evts")
++
++	ip netns exec $1 ./pm_nl_ctl csf lip $2 lid $3 \
++				rip $da rport $dp token $tk
++	sleep 1
++}
++
+ # $1: ns ; $2: event type ; $3: count
+ chk_evt_nr()
+ {
+@@ -3204,11 +3233,32 @@ chk_evt_nr()
+ 		echo "[fail] got $count events, expected $exp"
+ 		fail_test
+ 		dump_stats
++		cat "${evts}"
+ 	else
+ 		echo "[ ok ]"
+ 	fi
+ }
+ 
++# $1: ns ; $2: event type ; $3: expected count
++wait_event()
++{
++	local ns="${1}"
++	local evt_name="${2}"
++	local exp="${3}"
++
++	local evt="${!evt_name}"
++	local evts="${evts_ns1}"
++	local count
++
++	[ "${ns}" == "ns2" ] && evts="${evts_ns2}"
++
++	for _ in $(seq 100); do
++		count=$(grep -cw "type:${evt}" "${evts}")
++		[ "${count}" -ge "${exp}" ] && break
++		sleep 0.1
++	done
++}
++
+ userspace_tests()
+ {
+ 	# userspace pm type prevents add_addr
+@@ -3302,6 +3352,35 @@ userspace_tests()
+ 		chk_join_nr 1 1 1
+ 		chk_rm_nr 0 1
+ 	fi
++
++	# userspace pm no duplicated spurious close events after an error
++	if reset_with_events "userspace pm no dup close events after error" &&
++	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
++		set_userspace_pm $ns2
++		pm_nl_set_limits $ns1 0 2
++		run_tests $ns1 $ns2 10.0.1.1 128 0 0 slow 2>/dev/null &
++		local tests_pid=$!
++		wait_event ns2 MPTCP_LIB_EVENT_ESTABLISHED 1
++		userspace_pm_add_sf $ns2 10.0.3.2 20
++		chk_subflow_nr needtitle "new subflow" 2
++
++		# force quick loss
++		ip netns exec $ns2 sysctl -q net.ipv4.tcp_syn_retries=1
++		if ip netns exec "${ns1}" ${iptables} -A INPUT -s "10.0.1.2" \
++		      -p tcp --tcp-option 30 -j REJECT --reject-with tcp-reset &&
++		   ip netns exec "${ns2}" ${iptables} -A INPUT -d "10.0.1.2" \
++		      -p tcp --tcp-option 30 -j REJECT --reject-with tcp-reset; then
++			wait_event ns2 MPTCP_LIB_EVENT_SUB_CLOSED 1
++			wait_event ns1 MPTCP_LIB_EVENT_SUB_CLOSED 1
++			chk_subflow_nr "" "after reject" 1
++			userspace_pm_add_sf $ns2 10.0.1.2 0
++			wait_event ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
++			chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
++		fi
++		kill_wait "${tests_pid}"
++		kill_events_pids
++		kill_tests_wait
++	fi
+ }
+ 
+ endpoint_tests()
 
 
 
