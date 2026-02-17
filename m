@@ -1,236 +1,200 @@
-Return-Path: <stable+bounces-216766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216767-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCL6IfPHk2kf8gEAu9opvQ
-	(envelope-from <stable+bounces-216766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 02:44:19 +0100
+	id YE/fL8rSk2nb8wEAu9opvQ
+	(envelope-from <stable+bounces-216767-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 03:30:34 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0CF51486CB
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 02:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7341487C6
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 03:30:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3CCB430028F8
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 01:44:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AFD483002D02
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 02:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1792356D9;
-	Tue, 17 Feb 2026 01:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D8F199FB0;
+	Tue, 17 Feb 2026 02:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lVP+WNez"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="YvpJJ0bE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A2D38FA3
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 01:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CB13EBF02
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 02:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771292648; cv=none; b=EEjs8lwzENOmKkuaVNHd+khCr4urSb4DKX5ZCmcbMA8KWs+9H0t2DUQrSujj4AEfhxsEnt/a0BdcH4nYVFxqB9P5KNQt0Zy2Nlk5pARSyuqLrWgcgQzdDlP4tTaZdH+c9M735cgVXH4h1I/g9TUnmlyVuzOlPgX8Rga16DGLuRw=
+	t=1771295429; cv=none; b=O/dM/qG/tWP8Oe90QqMAGL/A2a+N6RrcNQJEL00xlI/ij/dN2ZZhIkxY2xZGnwc0/U46RoyXKconzv8YyZlmC+dQudBBDHoPG2fp4ZDqG6tja0pnnlfQJXyAeZMIX0Et8AvL0EjCG1ANXH9sB8s3F8UefzwAK36AB6dgufi4q08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771292648; c=relaxed/simple;
-	bh=9gALOijIBxBkf1lU8Wm58TBO8TUbib6/9i83EJ9Bnvo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Zr05DK34Ktm30YhWLwXhvYEGyFlR4Az/9mM9vxDT95TRmzh7Iykpbjhz3ygifLFND0TXVELRABw+md4KXIXoI8uZ95BhrmnfSztCXmaBguH7du+wITEEMFoJ/Z3g83WUcvHxXguUTc85nqW/dB8b+M9gxG2C2/hrFj8aOlx1oW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lVP+WNez; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a944e6336eso217846815ad.0
-        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 17:44:06 -0800 (PST)
+	s=arc-20240116; t=1771295429; c=relaxed/simple;
+	bh=LfT1qw3Q77fW0eUP/mkuGu4lPv6gDEQu5DqBGOI3iNk=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=AvQCYxYX4Z2O1QhVbne0hKeDUZkhTMuTDy5VVSmluykliVBg4fTxTVp9tj6fQcztgfL/uRQaDjVRziEjEkRPtq0OCOGWMfBHkvZEzJ/+u0adRTQtR0WoVxKAb8wbug3BUUChpUHInJmY92fu4sH4mTxSqObrXioR0a+or4Hmtso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=YvpJJ0bE; arc=none smtp.client-ip=74.125.82.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-1273349c56bso4753475c88.0
+        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 18:30:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771292646; x=1771897446; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y0+U5Pc41BVwnFvqdSoAa/2Rz/ZDywih7O6BgvsAgYk=;
-        b=lVP+WNezuprj2Wl3Oloa6H09VGoHR+xKBXtLWjdizrSnRto7PlYjviwRot733oWtNr
-         0otXc6WLYykTfr/oGVPRYtvnENHJOf6hSUQREX5EnT8w1KC9u8cYzmsY4cgzBjxg3VE6
-         WkaV3X4XDVoh7K4v2Y3xhmxvcqpW3Gl45b/iHPcOwX46hmjFOylgdJkzfdW5ogPw8wK7
-         0IWKhMBoVBUj41nAF8SeiYMQsd7KU2sW6O5kL+qZF7Vghgg4IrHf23fazanXYDiaDJYg
-         iHSWjQJnFokGNcSJC3oysrO81SAKmR2iRofrUfywpY16/WdplNfh3q0Kdf7VZ+Sw5nTB
-         W9Cg==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1771295427; x=1771900227; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2m+O4zJkQnpiAAqcPOdVhFvkegNVzH3yv7asbzL1XeM=;
+        b=YvpJJ0bEx+8jbaby/O8L3TFt0x1Wz67hllpyBmpz4Jzy4kU/OB7WNS4UvDxsWn4iVM
+         wY1KVTUqltJcoQ2ghefmAmBBvNGVM5hcth+r7Y8VnlMvFChqDhjhKI5Mzbdl/sdI9Fy3
+         LyXRowfWp7bTtjsjqlnNU1KIMNAMr5u9fta8Flb6RFNdaJxBZ3odgKMFgSfA2RFoaPVH
+         p4m4OQCO23IoyIG0J+r68HbpteozsjJofW5GZI6wHj8t67qpJLmQakq330lu64VD1LKn
+         K00JUsIwDBnyeGTZGjupVLkforIiKjs3eJApw7/MEZL/9K+hIqvCSk0AhrQp07LmcFcq
+         QSyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771292646; x=1771897446;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y0+U5Pc41BVwnFvqdSoAa/2Rz/ZDywih7O6BgvsAgYk=;
-        b=JzCs1zDCRrIKdJnPOr1BYtZeQw71kf30CTYPwH1N8bB3HLco/9wNRVAbVGr/7E8v2t
-         ahEEYg/usjsn26mtIcr9ZCvZ40O2UDNvFW1T3QI5lMTB3QYKNwPnrD0jI5H8t3jpjwGX
-         Rrz4mbEx9+G9d/1dqwHwtuNyS1EdmMJlU3dUi0pmWtOyt8dUOmy/qcUXR4hfDMCtrjJU
-         1Nz15313S4r9fGdrddN6y+YBhUqrF2/8AtVXgVItKSnt85mL/Hx7EnMRoymheLh6HeqA
-         wwwfvCY8ZPQPIGs8I4v4KmXbJ3LDUC7gTrzkONeq9olY6vXuOLad6/cufGRUyya0GR34
-         ud1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWdmPSrt9PUTHo0MbRFmury2kEhDuNgb1JFErRS9fdPstCUi2BtTeZ1UjEDPcpC2371XzO/Coc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4FWd4ImhU0oJDu2a65bS60ZvrX3JtMlGlHdOAkmobo4yG43yd
-	m06W39wjQg4EcYMXz5O4eCwFvW98z7vNMnfJj3pWa75NU1VwhFpTVUYLbO3GCQn8lCmKoqGDsiZ
-	0M5r3eC47awLOK7kBTZOeJeAiPA==
-X-Received: from plqu18.prod.google.com ([2002:a17:902:a612:b0:2a7:8c71:aa97])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:e943:b0:2ab:2311:e4fc with SMTP id d9443c01a7336-2ab50603a4amr130385745ad.56.1771292645552;
- Mon, 16 Feb 2026 17:44:05 -0800 (PST)
-Date: Tue, 17 Feb 2026 01:44:02 +0000
-In-Reply-To: <20260214001535.435626-1-kartikey406@gmail.com>
+        d=1e100.net; s=20230601; t=1771295427; x=1771900227;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2m+O4zJkQnpiAAqcPOdVhFvkegNVzH3yv7asbzL1XeM=;
+        b=tgLBw2JrDe7IOI1Zdrv30xBEl0SxNS13xG3szj671UiumdZRe8xaCdpqsYgsJRMZDR
+         eXlm2PM1p5zOABY6+ahPJUEHSFtbGhd8hHhmQCjLUJs2i+WPL1QHn8p8VcpbUGPtBH+5
+         GhuhWgSJa2tOo1LO2A7ulQFX8Rgp2BgTAGOP9n/mr+Fuz8U0091G3jzACP1vA/ff5I7Z
+         xGg0dme5aSslF3l3HUemqTs3C48PJxJLtJkNffHUjxqrvschpH4bEIWA05V4hW0jTAoQ
+         HU3GGIF7fib5TKCTMc/wWWAY9l+HGzdnF05M0zERh5OBDuPRvrBVE1/sBpAewfMBwjZt
+         Wxrg==
+X-Gm-Message-State: AOJu0YxVXPDezIV2flqAks3JWqGxAMjbZB2N1tQOk159PRy6WRpusNgo
+	1tSunLqk+X7gyLw3HwaCRoah8Trk7UCcVHDC9pdsr+QNJ5WYipoYI6FR2vlmr5V47qt+/kDCFsr
+	HEKK+sB4=
+X-Gm-Gg: AZuq6aK956iper7gped3IQAXlYeY0sDox/8xoA9hfEslo1BcOstl2BZQXTN+sGD5RQa
+	XHKoWJhCEqzFo8C3+OCzrgmf5Ta/YY37OAXoZghqmbWRO3ahyZbNbp/jvS/HDB7/C5qcGDJW03l
+	wa9EbsPK4IGUO9bwZ1YfNrSVU1PtmC/G6w2jVnX5fA9jNPBcRcruOw8thihdtREGHAr89SLXTl5
+	Y+kBO943IKYboL8pa6jXHrP3xupxVZwy6lIZ2HoaZ7z1s2FCzmzetzzlgOmgA7WIujj5E/gvHEQ
+	QCH0+QfjYrCi8h73Uvhj3xogMCZuZBWX3fHgQsZQdXcIVWIeiGy4dHJoSax/1sS5Zkp3aTksulx
+	eWJ+uWZRaKS0tu9k2IAKoO9KWbpLbpDtDUvwVjfMDq9NmYM0lsUNPQFqVwgNtnJvr8CPbfay0ec
+	6orNROsiOcmdNNucGB
+X-Received: by 2002:a05:7022:662c:b0:122:415:25ed with SMTP id a92af1059eb24-12741c04457mr4620999c88.49.1771295427075;
+        Mon, 16 Feb 2026 18:30:27 -0800 (PST)
+Received: from f55b40a4666e ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742aff32asm14128501c88.0.2026.02.16.18.30.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Feb 2026 18:30:26 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260214001535.435626-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.53.0.273.g2a3d683680-goog
-Message-ID: <20260217014402.2554832-1-ackerleytng@google.com>
-Subject: [PATCH] KVM: selftests: Test MADV_COLLAPSE on GUEST_MEMFD
-From: Ackerley Tng <ackerleytng@google.com>
-To: kartikey406@gmail.com, seanjc@google.com, pbonzini@redhat.com, 
-	shuah@kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: vannapurve@google.com, Liam.Howlett@oracle.com, ackerleytng@google.com, 
-	akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	david@kernel.org, dev.jain@arm.com, i@maskray.me, lance.yang@linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	npache@redhat.com, ryan.roberts@arm.com, shy828301@gmail.com, 
-	stable@vger.kernel.org, syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, 
-	ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: [STATUS] stable/linux-6.12.y -
+ 5fb0303f6cb6a89bcfb19bd7a68cb793c86e78b2
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Tue, 17 Feb 2026 02:30:26 -0000
+Message-ID: <177129542607.2933.6182068394303328725@f55b40a4666e>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216766-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,google.com,redhat.com,kernel.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-216767-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ackerleytng@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[google.com,oracle.com,linux-foundation.org,kernel.org,linux.alibaba.com,arm.com,maskray.me,linux.dev,vger.kernel.org,kvack.org,redhat.com,gmail.com,syzkaller.appspotmail.com,nvidia.com];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
+	RCPT_COUNT_TWO(0.00)[2];
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kernelci.org];
+	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F0CF51486CB
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.linux.dev:replyto,linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kernelci.org:url]
+X-Rspamd-Queue-Id: DF7341487C6
 X-Rspamd-Action: no action
 
-guest_memfd only supports PAGE_SIZE pages, and khugepaged or MADV_COLLAPSE
-collapsing pages may result in private memory regions being mapped into
-host page tables.
 
-Add test to verify that MADV_COLLAPSE fails on guest_memfd folios, and any
-subsequent usage of guest_memfd memory faults in PAGE_SIZE folios. Running
-this test should not result in any memory failure logs or kernel WARNings.
 
-This selftest was added as a result of a syzbot-reported issue where
-khugepaged operating on guest_memfd memory with MADV_HUGEPAGE caused the
-collapse of folios, which then subsequently resulted in a WARNing.
 
-Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
-Suggested-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- .../testing/selftests/kvm/guest_memfd_test.c  | 72 +++++++++++++++++++
- 1 file changed, 72 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 618c937f3c90f..d16341a4a315d 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -171,6 +171,77 @@ static void test_numa_allocation(int fd, size_t total_size)
- 	kvm_munmap(mem, total_size);
- }
- 
-+static size_t getpmdsize(void)
-+{
-+	const char *path = "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size";
-+	static size_t pmd_size = -1;
-+	FILE *fp;
-+
-+	if (pmd_size != -1)
-+		return pmd_size;
-+
-+	fp = fopen(path, "r");
-+	TEST_ASSERT(fp, "Couldn't open %s to read PMD size.", path);
-+
-+	TEST_ASSERT_EQ(fscanf(fp, "%lu", &pmd_size), 1);
-+
-+	TEST_ASSERT_EQ(fclose(fp), 0);
-+
-+	return pmd_size;
-+}
-+
-+static void test_collapse(struct kvm_vm *vm, uint64_t flags)
-+{
-+	const size_t pmd_size = getpmdsize();
-+	char *mem;
-+	off_t i;
-+	int fd;
-+
-+	fd = vm_create_guest_memfd(vm, pmd_size * 2,
-+				   GUEST_MEMFD_FLAG_MMAP |
-+				   GUEST_MEMFD_FLAG_INIT_SHARED);
-+
-+	/*
-+	 * Use aligned address so that MADV_COLLAPSE will not be
-+	 * filtered out early in the collapsing routine.
-+	 */
-+#define ALIGNED_ADDRESS ((void *)0x4000000000UL)
-+	mem = mmap(ALIGNED_ADDRESS, pmd_size, PROT_READ | PROT_WRITE,
-+		   MAP_FIXED | MAP_SHARED, fd, 0);
-+	TEST_ASSERT_EQ(mem, ALIGNED_ADDRESS);
-+
-+	/*
-+	 * Use reads to populate page table to avoid setting dirty
-+	 * flag on page.
-+	 */
-+	for (i = 0; i < pmd_size; i += getpagesize())
-+		READ_ONCE(mem[i]);
-+
-+	/*
-+	 * Advising the use of huge pages in guest_memfd should be
-+	 * fine...
-+	 */
-+	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_HUGEPAGE), 0);
-+
-+	/*
-+	 * ... but collapsing folios must not be supported to avoid
-+	 * mapping beyond shared ranges into host userspace page
-+	 * tables.
-+	 */
-+	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_COLLAPSE), -1);
-+	TEST_ASSERT_EQ(errno, EINVAL);
-+
-+	/*
-+	 * Removing from host page tables and re-faulting should be
-+	 * fine; should not end up faulting in a collapsed/huge folio.
-+	 */
-+	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_DONTNEED), 0);
-+	READ_ONCE(mem[0]);
-+
-+	kvm_munmap(mem, pmd_size);
-+	kvm_close(fd);
-+}
-+
- static void test_fault_sigbus(int fd, size_t accessible_size, size_t map_size)
- {
- 	const char val = 0xaa;
-@@ -370,6 +441,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
- 			gmem_test(mmap_supported, vm, flags);
- 			gmem_test(fault_overflow, vm, flags);
- 			gmem_test(numa_allocation, vm, flags);
-+			test_collapse(vm, flags);
- 		} else {
- 			gmem_test(fault_private, vm, flags);
- 		}
--- 
-2.53.0.273.g2a3d683680-goog
+Hello,
 
+Status summary for stable/linux-6.12.y
+
+Dashboard:
+https://d.kernelci.org/c/stable/linux-6.12.y/5fb0303f6cb6a89bcfb19bd7a68cb793c86e78b2/
+
+giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+branch: linux-6.12.y
+commit hash: 5fb0303f6cb6a89bcfb19bd7a68cb793c86e78b2
+origin: maestro
+test start time: 2026-02-16 17:09:18.707000+00:00
+
+Builds:	   40 ✅    0 ❌    0 ⚠️
+Boots: 	  197 ✅    0 ❌    0 ⚠️
+Tests: 	 9121 ✅  474 ❌ 1524 ⚠️
+
+### POSSIBLE REGRESSIONS
+    
+Hardware: acer-chromebox-cxi4-puff
+  > Config: x86_64_defconfig+lab-setup+x86-board+kselftest
+    - Architecture/compiler: x86_64/gcc-14
+      - kernelci_sleep
+      last run: https://d.kernelci.org/test/maestro:69937da9a1ae387ffbdd9570
+      history:  > ✅  > ❌  
+            
+Hardware: dell-latitude-5400-4305U-sarien
+  > Config: x86_64_defconfig+lab-setup+x86-board+kselftest
+    - Architecture/compiler: x86_64/gcc-14
+      - kselftest.cpufreq.hibernate
+      last run: https://d.kernelci.org/test/maestro:69937b7ca1ae387ffbdd82c5
+      history:  > ✅  > ❌  
+            
+      - kselftest.cpufreq.hibernate.cpufreq_main_sh
+      last run: https://d.kernelci.org/test/maestro:69937dbca1ae387ffbdd973b
+      history:  > ✅  > ❌  
+            
+
+
+### FIXED REGRESSIONS
+    
+Hardware: mt8195-cherry-tomato-r2
+  > Config: defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
+    - Architecture/compiler: arm64/gcc-14
+      - kernelci_wifi_basic
+      last run: https://d.kernelci.org/test/maestro:6993807ba1ae387ffbdda318
+      history:  > ❌  > ✅  > ✅  
+            
+
+
+### UNSTABLE TESTS
+    
+Hardware: mt8183-kukui-jacuzzi-juniper-sku16
+  > Config: defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
+    - Architecture/compiler: arm64/gcc-14
+      - kernelci_wifi_basic
+      last run: https://d.kernelci.org/test/maestro:69938077a1ae387ffbdda30f
+      history:  > ✅  > ❌  > ✅  
+            
+
+
+Sent every day if there were changes in the past 24 hours.
+Legend: ✅ PASS   ❌ FAIL  ⚠️ INCONCLUSIVE
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
