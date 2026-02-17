@@ -1,155 +1,115 @@
-Return-Path: <stable+bounces-216891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CND2EpG5lGlmHQIAu9opvQ
-	(envelope-from <stable+bounces-216891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:55:13 +0100
+	id 2IwGCGu9lGnHHQIAu9opvQ
+	(envelope-from <stable+bounces-216892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:11:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED1314F650
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:55:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D513914F885
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:11:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0C92301BF6A
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 18:54:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E76C3303F56F
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315D1374190;
-	Tue, 17 Feb 2026 18:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A401376481;
+	Tue, 17 Feb 2026 19:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wQTThFC6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgyUiOyd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB8F33CE80;
-	Tue, 17 Feb 2026 18:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07B837474F;
+	Tue, 17 Feb 2026 19:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771354496; cv=none; b=hvQoDmxjqIxrWxi0boYB3uGDhUexstkPa+OzT8a3+4uD6V+q8VOUqI91pL6n7FaSFStt/fff+VYYHF7I/u5foHva9Ihq2CwXuXvz1JFOXFt+n1oIuCVaBQqAi1vmKVSkkDdXdE5qdERSmrSCU/cKLrmZvBFAZnmqLkLEIMJOPhI=
+	t=1771355489; cv=none; b=cYnsw67ZieRnH5H5xHTKQcmaACU0QvlXACDQF5bkhBfUcIDO26+c8RH4newelrYwZ5KlBr/hYSNUHoZHS1qRIMdc9XkdY4bgFv9Hq4QvYmdKQnMdoGs4rHP+I1IrePcEL6mkEfmalXDvlo52y2np1iTK+9mF3+Yz8tCvcrg7ffs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771354496; c=relaxed/simple;
-	bh=JJE0Hx6jzZgjhwlkZO/l08SngRVGoAnjVveZaJvLr0o=;
-	h=Date:To:From:Subject:Message-Id; b=XIFX4WeomU9VadkpSm55yQfSag95BhIkcNsBW2Rci+zjH7CPCLP3QQ97P3otKB3K125wIlxsXOVnNG0CYFxsTKKAHt2lbL5vtITr7OSGQ2D5jyWbctUWlPbmizCLNxNXHNVA3sHbfxdAgMZKtq5CaWU9+pJrrfNDEg7PfU/aJuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wQTThFC6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A3FC4CEF7;
-	Tue, 17 Feb 2026 18:54:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1771354495;
-	bh=JJE0Hx6jzZgjhwlkZO/l08SngRVGoAnjVveZaJvLr0o=;
-	h=Date:To:From:Subject:From;
-	b=wQTThFC6t5mjbSe5Qz8jgxFEcU47Gh5J4QWQg72jmRKHbT09R7cP+NhSMyyjodqM5
-	 ur7qycNBpJxc8ciavijnbS2nc474dhAOrRLLzSg/Ew4vFdgkoV055jaXssCshIEuZD
-	 AM3SPiUC1WhY+i4iakqdWxpKkviqJGJuyqjINv3Y=
-Date: Tue, 17 Feb 2026 10:54:54 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,brauner@kernel.org,phillip@squashfs.org.uk,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + squashfs-check-metadata-block-offset-is-within-range.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260217185455.80A3FC4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1771355489; c=relaxed/simple;
+	bh=zqC/qwgJG8RYHRP2WndZeH/vSnyshZAupGGIjnFrL/k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JBPnkjL46u1xiqATcjctUaza/JjtfBE+FB5XfoVy1Oe1SNabnWv55c6xD93Cua/FBUIc7fN9CmjnSGd+lMrwRSikgLOetTrEWKZfZn1/lwK4EAXV6D3GvdfdN3H93dWhsQK4ITtcvAROGrqDJSrz6IWTGAbxjnvWW71cewoQJ34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgyUiOyd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4363C4CEF7;
+	Tue, 17 Feb 2026 19:11:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771355489;
+	bh=zqC/qwgJG8RYHRP2WndZeH/vSnyshZAupGGIjnFrL/k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cgyUiOydhHH5iZKZUjdpTpxOoqtylAKCnbEv7PCfr3vVxKd2O6yGvumIIgvQVa2LN
+	 7xBcmaSQl1fOD00Ny1A6Q+FJx+2ENdSWk32swoqKRvck75Kcp4OiQmDh/qVhutl8FY
+	 +uUWNVymuPxGkH1kWrUo6QR6nUBhRgf7UJFBnjD0+M8ZfFjffcyuoXtywWSG0TaWk2
+	 XfAO/MSPai77of6FqV5OZxcdihIq+3txgCO0vXm+cy/S07CvKer7ixIenxkaw1U9rq
+	 QnQ2ZEunOZq3nVH/Vq//J8HpxTaJwS5KPwybK0zwM4TOR0UoRnK92BOSf/aePlnO38
+	 +zs5yx4wcUMoA==
+Date: Tue, 17 Feb 2026 12:11:27 -0700
+From: Keith Busch <kbusch@kernel.org>
+To: Farhan Ali <alifm@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, helgaas@kernel.org, lukas@wunner.de,
+	alex@shazbot.org, clg@redhat.com, stable@vger.kernel.org,
+	schnelle@linux.ibm.com, mjrosato@linux.ibm.com,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v9 3/9] PCI: Avoid saving config space state in reset path
+Message-ID: <aZS9X_CQBuo7gQpC@kbusch-mbp>
+References: <20260217182257.1582-1-alifm@linux.ibm.com>
+ <20260217182257.1582-4-alifm@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260217182257.1582-4-alifm@linux.ibm.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-216891-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216892-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kbusch@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,linux-foundation.org:dkim,squashfs.org.uk:email,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: 9ED1314F650
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D513914F885
 X-Rspamd-Action: no action
 
+On Tue, Feb 17, 2026 at 10:22:51AM -0800, Farhan Ali wrote:
+> The current reset process saves the device's config space state before
+> reset and restores it afterward. However errors may occur unexpectedly and
+> it may then be impossible to save config space because the device may be
+> inaccessible (e.g. DPC) or config space may be corrupted. This results in
+> saving corrupted values that get written back to the device during state
+> restoration.
+> 
+> Since commit a2f1e22390ac ("PCI/ERR: Ensure error recoverability at all times"),
+> we now save the state of device at enumeration. On every restore we should
+> either use the enumeration saved state or driver's intentional saved state,
+> never a state saved at the unpredictable time of an error recovery reset.
 
-The patch titled
-     Subject: Squashfs: check metadata block offset is within range
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     squashfs-check-metadata-block-offset-is-within-range.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/squashfs-check-metadata-block-offset-is-within-range.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Phillip Lougher <phillip@squashfs.org.uk>
-Subject: Squashfs: check metadata block offset is within range
-Date: Tue, 17 Feb 2026 05:09:55 +0000
-
-Syzkaller reports a "general protection fault in squashfs_copy_data"
-
-This is ultimately caused by a corrupted index look-up table, which
-produces a negative metadata block offset.
-
-This is subsequently passed to squashfs_copy_data (via
-squashfs_read_metadata) where the negative offset causes an out of bounds
-access.
-
-The fix is to check that the offset is within range in
-squashfs_read_metadata.  This will trap this and other cases.
-
-Link: https://lkml.kernel.org/r/20260217050955.138351-1-phillip@squashfs.org.uk
-Fixes: f400e12656ab ("Squashfs: cache operations")
-Reported-by: syzbot+a9747fe1c35a5b115d3f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/699234e2.a70a0220.2c38d7.00e2.GAE@google.com/
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/squashfs/cache.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/fs/squashfs/cache.c~squashfs-check-metadata-block-offset-is-within-range
-+++ a/fs/squashfs/cache.c
-@@ -344,6 +344,9 @@ int squashfs_read_metadata(struct super_
- 	if (unlikely(length < 0))
- 		return -EIO;
- 
-+	if (unlikely(*offset < 0 || *offset >= SQUASHFS_METADATA_SIZE))
-+		return -EIO;
-+
- 	while (length) {
- 		entry = squashfs_cache_get(sb, msblk->block_cache, *block, 0);
- 		if (entry->error) {
-_
-
-Patches currently in -mm which might be from phillip@squashfs.org.uk are
-
-squashfs-check-metadata-block-offset-is-within-range.patch
-
+The vfio driver calls pci_try_reset_function after pci_enable_device,
+but before calling pci_store_saved_state. Won't this change, then, mean
+that the PCI Command register will get restored to the wrong state with
+the resources disabled?
 
