@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-216977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0B3YDPzSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:40 +0100
+	id OKDfEOvSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D99E150250
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C51150225
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 859833026C09
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F39513008D25
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43A5378D72;
-	Tue, 17 Feb 2026 20:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618533783CF;
+	Tue, 17 Feb 2026 20:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsOT1YGP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIjxTWZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B2C378830;
-	Tue, 17 Feb 2026 20:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A8E29B8D3;
+	Tue, 17 Feb 2026 20:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361002; cv=none; b=hRzm/B3cf8W23eBDcB4e6GGMgmX9iECN0Z2VFsHNtQbhEyEhv4QIdDBgHXVIrtfxlnZ6sut+yrI6xc6lA3+lrS7RVKm/vc7cMnDF9ZZX5He4PAZMfR1oalUs6AIGmGYrecEx3UrhTGd43oCFLFGa7kRoKjFq/ge1s/u/E6xFP5A=
+	t=1771360979; cv=none; b=bvzXYT5OfGxfYM0gRsKQnwR8966pxiaKvcn3DrH20gl+TaJ7lT2WFNjMrGaWwDY4Azsil7mcoy98Y1KYBGurPA86DMvKEh4z6y47g1HJJ1d451spcZNApeu2jUhhAqbaX5NnNtL47mGk6H3VkqSvO8qAvkgRU84s+dKi0LejHLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361002; c=relaxed/simple;
-	bh=17EtB7EPOVaA/MC84feh20E8ATwpXPt6XKF/m6+THvE=;
+	s=arc-20240116; t=1771360979; c=relaxed/simple;
+	bh=kh40t+yTFCPhxCffEFC04TrLTxNuXEqSQX3tgFrrwTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ahh5FTTWQm4GJEGSPDA/VBd84RV9JKdsSsoSDQPpH8o26yatfuEvXiI3Q8w7QM6K6IX7ecc7preD5GHvAlab3VGJ1F9sbH0xImnTm03UpRa9Z2seQlROfluJEvnqouAdMTGNIEYMJ6m6f9ZryTPUafvr/qMYikrmQ9uC1R+h/Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsOT1YGP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8C9C4CEF7;
-	Tue, 17 Feb 2026 20:43:21 +0000 (UTC)
+	 MIME-Version; b=Yk05VUUfaMiqpEHgiQ31Qpvo08/rRR93DxVmM+mHlq4O0bbQ2nElSuY5WLb8vzJ70UCq1Bq/Lpm0QF8ND4un9saT5icTD+P6fMSF7x6YSZXb/F7ARCb1aLrWutzgEwrcCZ8OWGi1BAxowbBPuCmigxX6x7aLrvxsMjQO4SIOLJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIjxTWZg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECF3C4CEF7;
+	Tue, 17 Feb 2026 20:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361002;
-	bh=17EtB7EPOVaA/MC84feh20E8ATwpXPt6XKF/m6+THvE=;
+	s=korg; t=1771360978;
+	bh=kh40t+yTFCPhxCffEFC04TrLTxNuXEqSQX3tgFrrwTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsOT1YGPkBZbImf05Q687rWEzjEg7grLYU8HQ+Hqs7mjm177BKUhfgMouY+I2DuBJ
-	 W8JCi+gnuOWTsXASr112MDiQv0F/8MsnVF+W0DtxtkKd+FW+RUrsOiz6n/vfQmtgJI
-	 e0NCAy1aHdNL4TNqdcHnGi6mV7GyZT2GdZcz4K/c=
+	b=iIjxTWZgI+IEPXW05ira8g2StiTcCLchrFr3H7T4LLuVxe7to22KYCif0wtPIAvGD
+	 mcutAdGwcOvNffhJ842OJrpOFBz43KKT264hQxtjwWWf4FKWlVJY0OfGjm6H/owisr
+	 M9ft8hJCAQfdcmaGTyolWQUicpqJRZruBiG7cLuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/39] platform/x86: classmate-laptop: Add missing NULL pointer checks
+Subject: [PATCH 5.10 09/24] gpio: sprd: Change sprd_gpio lock to raw_spin_lock
 Date: Tue, 17 Feb 2026 21:31:22 +0100
-Message-ID: <20260217200003.440946034@linuxfoundation.org>
+Message-ID: <20260217200001.071240674@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
+References: <20260217200000.708219618@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,168 +65,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216977-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216970-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7D99E150250
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,c6:email,linutronix.de:email,alibaba.com:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,unisoc.com:email]
+X-Rspamd-Queue-Id: 82C51150225
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-[ Upstream commit fe747d7112283f47169e9c16e751179a9b38611e ]
+[ Upstream commit 96313fcc1f062ba239f4832c9eff685da6c51c99 ]
 
-In a few places in the Classmate laptop driver, code using the accel
-object may run before that object's address is stored in the driver
-data of the input device using it.
+There was a lockdep warning in sprd_gpio:
 
-For example, cmpc_accel_sensitivity_store_v4() is the "show" method
-of cmpc_accel_sensitivity_attr_v4 which is added in cmpc_accel_add_v4(),
-before calling dev_set_drvdata() for inputdev->dev.  If the sysfs
-attribute is accessed prematurely, the dev_get_drvdata(&inputdev->dev)
-call in in cmpc_accel_sensitivity_store_v4() returns NULL which
-leads to a NULL pointer dereference going forward.
+[    6.258269][T329@C6] [ BUG: Invalid wait context ]
+[    6.258270][T329@C6] 6.18.0-android17-0-g30527ad7aaae-ab00009-4k #1 Tainted: G        W  OE
+[    6.258272][T329@C6] -----------------------------
+[    6.258273][T329@C6] modprobe/329 is trying to lock:
+[    6.258275][T329@C6] ffffff8081c91690 (&sprd_gpio->lock){....}-{3:3}, at: sprd_gpio_irq_unmask+0x4c/0xa4 [gpio_sprd]
+[    6.258282][T329@C6] other info that might help us debug this:
+[    6.258283][T329@C6] context-{5:5}
+[    6.258285][T329@C6] 3 locks held by modprobe/329:
+[    6.258286][T329@C6]  #0: ffffff808baca108 (&dev->mutex){....}-{4:4}, at: __driver_attach+0xc4/0x204
+[    6.258295][T329@C6]  #1: ffffff80965e7240 (request_class#4){+.+.}-{4:4}, at: __setup_irq+0x1cc/0x82c
+[    6.258304][T329@C6]  #2: ffffff80965e70c8 (lock_class#4){....}-{2:2}, at: __setup_irq+0x21c/0x82c
+[    6.258313][T329@C6] stack backtrace:
+[    6.258314][T329@C6] CPU: 6 UID: 0 PID: 329 Comm: modprobe Tainted: G        W  OE       6.18.0-android17-0-g30527ad7aaae-ab00009-4k #1 PREEMPT  3ad5b0f45741a16e5838da790706e16ceb6717df
+[    6.258316][T329@C6] Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[    6.258317][T329@C6] Hardware name: Unisoc UMS9632-base Board (DT)
+[    6.258318][T329@C6] Call trace:
+[    6.258318][T329@C6]  show_stack+0x20/0x30 (C)
+[    6.258321][T329@C6]  __dump_stack+0x28/0x3c
+[    6.258324][T329@C6]  dump_stack_lvl+0xac/0xf0
+[    6.258326][T329@C6]  dump_stack+0x18/0x3c
+[    6.258329][T329@C6]  __lock_acquire+0x824/0x2c28
+[    6.258331][T329@C6]  lock_acquire+0x148/0x2cc
+[    6.258333][T329@C6]  _raw_spin_lock_irqsave+0x6c/0xb4
+[    6.258334][T329@C6]  sprd_gpio_irq_unmask+0x4c/0xa4 [gpio_sprd 814535e93c6d8e0853c45c02eab0fa88a9da6487]
+[    6.258337][T329@C6]  irq_startup+0x238/0x350
+[    6.258340][T329@C6]  __setup_irq+0x504/0x82c
+[    6.258342][T329@C6]  request_threaded_irq+0x118/0x184
+[    6.258344][T329@C6]  devm_request_threaded_irq+0x94/0x120
+[    6.258347][T329@C6]  sc8546_init_irq+0x114/0x170 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
+[    6.258352][T329@C6]  sc8546_charger_probe+0x53c/0x5a0 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
+[    6.258358][T329@C6]  i2c_device_probe+0x2c8/0x350
+[    6.258361][T329@C6]  really_probe+0x1a8/0x46c
+[    6.258363][T329@C6]  __driver_probe_device+0xa4/0x10c
+[    6.258366][T329@C6]  driver_probe_device+0x44/0x1b4
+[    6.258369][T329@C6]  __driver_attach+0xd0/0x204
+[    6.258371][T329@C6]  bus_for_each_dev+0x10c/0x168
+[    6.258373][T329@C6]  driver_attach+0x2c/0x3c
+[    6.258376][T329@C6]  bus_add_driver+0x154/0x29c
+[    6.258378][T329@C6]  driver_register+0x70/0x10c
+[    6.258381][T329@C6]  i2c_register_driver+0x48/0xc8
+[    6.258384][T329@C6]  init_module+0x28/0xfd8 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
+[    6.258389][T329@C6]  do_one_initcall+0x128/0x42c
+[    6.258392][T329@C6]  do_init_module+0x60/0x254
+[    6.258395][T329@C6]  load_module+0x1054/0x1220
+[    6.258397][T329@C6]  __arm64_sys_finit_module+0x240/0x35c
+[    6.258400][T329@C6]  invoke_syscall+0x60/0xec
+[    6.258402][T329@C6]  el0_svc_common+0xb0/0xe4
+[    6.258405][T329@C6]  do_el0_svc+0x24/0x30
+[    6.258407][T329@C6]  el0_svc+0x54/0x1c4
+[    6.258409][T329@C6]  el0t_64_sync_handler+0x68/0xdc
+[    6.258411][T329@C6]  el0t_64_sync+0x1c4/0x1c8
 
-Moreover, sysfs attributes using the input device are added before
-initializing that device by cmpc_add_acpi_notify_device() and if one
-of them is accessed before running that function, a NULL pointer
-dereference will occur.
+This is because the spin_lock would change to rt_mutex in PREEMPT_RT,
+however the sprd_gpio->lock would use in hard-irq, this is unsafe.
 
-For example, cmpc_accel_sensitivity_attr_v4 is added before calling
-cmpc_add_acpi_notify_device() and if it is read prematurely, the
-dev_get_drvdata(&acpi->dev) call in cmpc_accel_sensitivity_show_v4()
-returns NULL which leads to a NULL pointer dereference going forward.
+So change the spin_lock_t to raw_spin_lock_t to use the spinlock
+in hard-irq.
 
-Fix this by adding NULL pointer checks in all of the relevant places.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/12825381.O9o76ZdvQC@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20260126094209.9855-1-xuewen.yan@unisoc.com
+[Bartosz: tweaked the commit message]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/classmate-laptop.c | 32 +++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ drivers/gpio/gpio-sprd.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/classmate-laptop.c b/drivers/platform/x86/classmate-laptop.c
-index 9309ab5792cbc..ac02b22154d62 100644
---- a/drivers/platform/x86/classmate-laptop.c
-+++ b/drivers/platform/x86/classmate-laptop.c
-@@ -208,7 +208,12 @@ static ssize_t cmpc_accel_sensitivity_show_v4(struct device *dev,
+diff --git a/drivers/gpio/gpio-sprd.c b/drivers/gpio/gpio-sprd.c
+index 36ea8a3bd4510..49b8e148328a0 100644
+--- a/drivers/gpio/gpio-sprd.c
++++ b/drivers/gpio/gpio-sprd.c
+@@ -35,7 +35,7 @@
+ struct sprd_gpio {
+ 	struct gpio_chip chip;
+ 	void __iomem *base;
+-	spinlock_t lock;
++	raw_spinlock_t lock;
+ 	int irq;
+ };
  
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
+@@ -54,7 +54,7 @@ static void sprd_gpio_update(struct gpio_chip *chip, unsigned int offset,
+ 	unsigned long flags;
+ 	u32 tmp;
  
- 	return sprintf(buf, "%d\n", accel->sensitivity);
+-	spin_lock_irqsave(&sprd_gpio->lock, flags);
++	raw_spin_lock_irqsave(&sprd_gpio->lock, flags);
+ 	tmp = readl_relaxed(base + reg);
+ 
+ 	if (val)
+@@ -63,7 +63,7 @@ static void sprd_gpio_update(struct gpio_chip *chip, unsigned int offset,
+ 		tmp &= ~BIT(SPRD_GPIO_BIT(offset));
+ 
+ 	writel_relaxed(tmp, base + reg);
+-	spin_unlock_irqrestore(&sprd_gpio->lock, flags);
++	raw_spin_unlock_irqrestore(&sprd_gpio->lock, flags);
  }
-@@ -225,7 +230,12 @@ static ssize_t cmpc_accel_sensitivity_store_v4(struct device *dev,
  
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
+ static int sprd_gpio_read(struct gpio_chip *chip, unsigned int offset, u16 reg)
+@@ -236,7 +236,7 @@ static int sprd_gpio_probe(struct platform_device *pdev)
+ 	if (IS_ERR(sprd_gpio->base))
+ 		return PTR_ERR(sprd_gpio->base);
  
- 	r = kstrtoul(buf, 0, &sensitivity);
- 	if (r)
-@@ -257,7 +267,12 @@ static ssize_t cmpc_accel_g_select_show_v4(struct device *dev,
+-	spin_lock_init(&sprd_gpio->lock);
++	raw_spin_lock_init(&sprd_gpio->lock);
  
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	return sprintf(buf, "%d\n", accel->g_select);
- }
-@@ -274,7 +289,12 @@ static ssize_t cmpc_accel_g_select_store_v4(struct device *dev,
- 
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	r = kstrtoul(buf, 0, &g_select);
- 	if (r)
-@@ -303,6 +323,8 @@ static int cmpc_accel_open_v4(struct input_dev *input)
- 
- 	acpi = to_acpi_device(input->dev.parent);
- 	accel = dev_get_drvdata(&input->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	cmpc_accel_set_sensitivity_v4(acpi->handle, accel->sensitivity);
- 	cmpc_accel_set_g_select_v4(acpi->handle, accel->g_select);
-@@ -551,7 +573,12 @@ static ssize_t cmpc_accel_sensitivity_show(struct device *dev,
- 
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	return sprintf(buf, "%d\n", accel->sensitivity);
- }
-@@ -568,7 +595,12 @@ static ssize_t cmpc_accel_sensitivity_store(struct device *dev,
- 
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	r = kstrtoul(buf, 0, &sensitivity);
- 	if (r)
+ 	sprd_gpio->chip.label = dev_name(&pdev->dev);
+ 	sprd_gpio->chip.ngpio = SPRD_GPIO_NR;
 -- 
 2.51.0
 
