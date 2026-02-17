@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-217147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217079-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KwACFPVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:39 +0100
+	id ED99KU3UlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217079-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B295E1507BB
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 255D9150571
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 139AD305BB8F
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7FCE330451E2
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A911A2D6E76;
-	Tue, 17 Feb 2026 20:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0397628D8E8;
+	Tue, 17 Feb 2026 20:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2O3VyyDk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orilhQ6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF69280CC1;
-	Tue, 17 Feb 2026 20:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC502773E4;
+	Tue, 17 Feb 2026 20:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361584; cv=none; b=kuvO69lX+29cxqsQCF/9ygGAZfA29BFz9FKeunwW68r9IHeHu9WW0LKO+E0peLERPEX6yAtaSf+pJ8ircl+xGIIfyfYrAPzjDIjUrYyeeX4awHuDRMYzUxSnKUyr14vxF0QbkMrE65n7QLQryPVkNOUHwfUdaBlMJWRlYcydGzk=
+	t=1771361351; cv=none; b=pCCbsuQ59Av2TNnbwlLQsDZEfFe7rx8TTA98gwvFqi8u9O2StUqdAgdg5X7sDd5boF3M2CsucrAZiBSn18Y0IHyc5lWufLWbCiZBLwzyiFuuXlsq9fGM+k/95aAamkde1qT4m6YiDJ5pppbjdbHogGpIy/gLGkVer1g6tzYf19M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361584; c=relaxed/simple;
-	bh=0N+UBL8UbKujG/5Q6FGzg/RzxpMnKgUiHb3yHTtxCck=;
+	s=arc-20240116; t=1771361351; c=relaxed/simple;
+	bh=e51fEvyXuNpZmy/a1qJH07lUDLFViMeggR57ywjXqcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1XsQh1CgPVJ0hMALSY7I0Sp6cHgd5ryfEt8xcO08kWrit66Xn3wzafVsZl/MRPDsMqG9ikNeng8I4I+kHYiiL2aI29ubk+E5aEOFvnp8eCSgm0sjDzxFskkmaOydr3/MuPyf0kL198XbDzSvTnMQNI3AwJqBrvik5jkqnqmA78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2O3VyyDk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFB6C4CEF7;
-	Tue, 17 Feb 2026 20:53:03 +0000 (UTC)
+	 MIME-Version; b=nQD+daeGdXzT8GqgIJRGJrseZDKQzfFW0wner9SL8+Xll1ND74lkwpfVAVjmLg96/bU1GsX36mn55vKtbhB7xoHK0hC38lPiCMtT3+1VaCsNhbTrE1PvUulHdpIijOOfzG7kpPkaD6hep4X083fjzQAvdSur2t6AJRDYT6LzJZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orilhQ6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F749C4CEF7;
+	Tue, 17 Feb 2026 20:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361584;
-	bh=0N+UBL8UbKujG/5Q6FGzg/RzxpMnKgUiHb3yHTtxCck=;
+	s=korg; t=1771361351;
+	bh=e51fEvyXuNpZmy/a1qJH07lUDLFViMeggR57ywjXqcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2O3VyyDkXv3nWlSwLU9qx7tUdgioz71+CNbFUVu3Nk9xYj3DqR8lA3K4rYZK/SEcy
-	 gJjjoOCOWRVncD0l2rxQ/bgJhkHfRCYtsXVP9HH7VPhYeUEzRs2Fium88tvx/UZ7y2
-	 lGE+C/TkyKknnv0Hsfu3kBsg8M9wn+Wkarbho5Hw=
+	b=orilhQ6NiS6bM1bECt67vf5TkrLKRttZ/7rAGvb/nLch6//LIDHhf8jn+L1nQUFOq
+	 egOul4b1xXqIk0jGNZjQe9EBakyL0SOkDO7VUVdT+IVL7fKeupN72LdZE1XyrsOT/H
+	 kN0DtIB4PaSqQgq6o05jqS1iS2Jr1PuFxCDlqA6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tagir Garaev <tgaraev653@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 15/42] ASoC: Intel: sof_es8336: Add DMI quirk for Huawei BOD-WXX9
+	stable@kernel.org,
+	syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.19 10/18] f2fs: fix to avoid UAF in f2fs_write_end_io()
 Date: Tue, 17 Feb 2026 21:32:06 +0100
-Message-ID: <20260217200006.589963972@linuxfoundation.org>
+Message-ID: <20260217200003.087485020@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
-References: <20260217200005.998240758@linuxfoundation.org>
+In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
+References: <20260217200002.683975158@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +66,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217147-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217079-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,b4444e3c972a7a124187];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B295E1507BB
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 255D9150571
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tagir Garaev <tgaraev653@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 6b641122d31f9d33e7d60047ee0586d1659f3f54 ]
+commit ce2739e482bce8d2c014d76c4531c877f382aa54 upstream.
 
-Add DMI entry for Huawei Matebook D (BOD-WXX9) with HEADPHONE_GPIO
-and DMIC quirks.
+As syzbot reported an use-after-free issue in f2fs_write_end_io().
 
-This device has ES8336 codec with:
-- GPIO 16 (headphone-enable) for headphone amplifier control
-- GPIO 17 (speakers-enable) for speaker amplifier control
-- GPIO 269 for jack detection IRQ
-- 2-channel DMIC
+It is caused by below race condition:
 
-Hardware investigation shows that both GPIO 16 and 17 are required
-for proper audio routing, as headphones and speakers share the same
-physical output (HPOL/HPOR) and are separated only via amplifier
-enable signals.
+loop device				umount
+- worker_thread
+ - loop_process_work
+  - do_req_filebacked
+   - lo_rw_aio
+    - lo_rw_aio_complete
+     - blk_mq_end_request
+      - blk_update_request
+       - f2fs_write_end_io
+        - dec_page_count
+        - folio_end_writeback
+					- kill_f2fs_super
+					 - kill_block_super
+					  - f2fs_put_super
+					 : free(sbi)
+       : get_pages(, F2FS_WB_CP_DATA)
+         accessed sbi which is freed
 
-RFC: Seeking advice on GPIO control issue:
+In kill_f2fs_super(), we will drop all page caches of f2fs inodes before
+call free(sbi), it guarantee that all folios should end its writeback, so
+it should be safe to access sbi before last folio_end_writeback().
 
-GPIO values change in driver (gpiod_get_value() shows logical value
-changes) but not physically (debugfs gpio shows no change). The same
-gpiod_set_value_cansleep() calls work correctly in probe context with
-msleep(), but fail when called from DAPM event callbacks.
+Let's relocate ckpt thread wakeup flow before folio_end_writeback() to
+resolve this issue.
 
-Context information from diagnostics:
-- in_atomic=0, in_interrupt=0, irqs_disabled=0
-- Process context: pipewire
-- GPIO 17 (speakers): changes in driver, no physical change
-- GPIO 16 (headphone): changes in driver, no physical change
-
-In Windows, audio switching works without visible GPIO changes,
-suggesting possible ACPI/firmware involvement.
-
-Any suggestions on how to properly control these GPIOs from DAPM
-events would be appreciated.
-
-Signed-off-by: Tagir Garaev <tgaraev653@gmail.com>
-Link: https://patch.msgid.link/20260201121728.16597-1-tgaraev653@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint for better performance")
+Reported-by: syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b4444e3c972a7a124187
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_es8336.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/f2fs/data.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
-index bc27229be7c24..7c3784112ca0f 100644
---- a/sound/soc/intel/boards/sof_es8336.c
-+++ b/sound/soc/intel/boards/sof_es8336.c
-@@ -332,6 +332,15 @@ static int sof_es8336_quirk_cb(const struct dmi_system_id *id)
-  * if the topology file is modified as well.
-  */
- static const struct dmi_system_id sof_es8336_quirk_table[] = {
-+	{
-+		.callback = sof_es8336_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HUAWEI"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "BOD-WXX9"),
-+		},
-+		.driver_data = (void *)(SOF_ES8336_HEADPHONE_GPIO |
-+					SOF_ES8336_ENABLE_DMIC)
-+	},
- 	{
- 		.callback = sof_es8336_quirk_cb,
- 		.matches = {
--- 
-2.51.0
-
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -356,14 +356,20 @@ static void f2fs_write_end_io(struct bio
+ 				folio->index != nid_of_node(folio));
+ 
+ 		dec_page_count(sbi, type);
++
++		/*
++		 * we should access sbi before folio_end_writeback() to
++		 * avoid racing w/ kill_f2fs_super()
++		 */
++		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
++				wq_has_sleeper(&sbi->cp_wait))
++			wake_up(&sbi->cp_wait);
++
+ 		if (f2fs_in_warm_node_list(sbi, folio))
+ 			f2fs_del_fsync_node_entry(sbi, folio);
+ 		folio_clear_f2fs_gcing(folio);
+ 		folio_end_writeback(folio);
+ 	}
+-	if (!get_pages(sbi, F2FS_WB_CP_DATA) &&
+-				wq_has_sleeper(&sbi->cp_wait))
+-		wake_up(&sbi->cp_wait);
+ 
+ 	bio_put(bio);
+ }
 
 
 
