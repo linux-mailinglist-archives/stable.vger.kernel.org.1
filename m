@@ -1,84 +1,84 @@
-Return-Path: <stable+bounces-216874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJI6IhaylGlbGgIAu9opvQ
-	(envelope-from <stable+bounces-216874-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:23:18 +0100
+	id UAb4EBmylGlbGgIAu9opvQ
+	(envelope-from <stable+bounces-216876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:23:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3287014F0A0
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:23:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC0714F0AE
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:23:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A698E303A5D8
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 18:23:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C054300C9A8
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 18:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C42372B31;
-	Tue, 17 Feb 2026 18:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0225B36F42D;
+	Tue, 17 Feb 2026 18:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FBPY5GL9"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bU6tfL68"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D545236E497;
-	Tue, 17 Feb 2026 18:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B71372B48;
+	Tue, 17 Feb 2026 18:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771352589; cv=none; b=nP0nDgZy6Q71H2sc3aBkRBA99eqVronN8xARTQrFJhhLySFFnUQmkNF6c8A0+4D3KvRyg9b1angCF/MfJaHnqmEPMRE2QBLAOShVYPg9fj7FXsY1qEnjVNBFN9vWPaWDrNuJ+ECM2bIj53OrCUBAMbfeLFY20uNEWNl4BxHXKTM=
+	t=1771352590; cv=none; b=Vr2dNkkGXcfcKi+EP9rQIesiDZjX9UZtSixidpFD/1BrsmBlngaO+lgKdArpwX9Q+B5KaS4ZCO/VYe+929yJsQ8U81WNIMj/Hedsuj7U2bSTccLUFvVpE6beEbu5ra6WvJysuiCUvuuAL1ilkKRW/yIRRvEXRj/HbaZ0Taf+Mzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771352589; c=relaxed/simple;
-	bh=OMenyl2shprXZ1KZp0pp5nevMGrtDA6idAvbhwf4lD8=;
+	s=arc-20240116; t=1771352590; c=relaxed/simple;
+	bh=1nAqrP/iDuFfCt/DsFargvAxTrtpaK4f+CH0eHGCYtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d04Zz41aW96NT6ly6NCPFCT5SNgnOFoq5s8QYAWkngGLbHYMUIxk1ZJSD/Zi/oyqIZc+MsKHQI+0vBkuwjS9Hf7JPZ9zcY9w5tz6G0XV60q8U3dDJ+E1G0yTQaQWQwKtX/umlSTcl/K8sM53H6Hf6lgcDv0bdjgvLYCGohc5KuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FBPY5GL9; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=XUo/TPQMA2xLdMxOjkH6n05f5EPkseZoo5nySeO7/jl078Gt9ZZ0wuF0tSyZQS2pw8zw5GnJfoCzQ7PLzyeJ+9jAR80aOcKyaTodm2iIjgMIwEOwbjry+GQMx+GBcP6XkIlvtsa65Fx6SLYKs5/mjcHMkFbl/pNtYJdCHp23BkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bU6tfL68; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61H8ukwD3353778;
-	Tue, 17 Feb 2026 18:23:01 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61HARjwL3633726;
+	Tue, 17 Feb 2026 18:23:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Y9dIYD3p1KrhhEB7Z
-	Jvf13N19iuQOY65AOMMOz8Qerg=; b=FBPY5GL9CLSduhsJHEEreG/qAvtF72K2i
-	wcwDn/uU0qxaJ9+8Lkju9gAFPwppHU5HDiuPATtcUVGzwnbT/fnK29xCFdH300Oc
-	mc04Gtz8xnBknUrx1YIAce0vDpjWcxh/7zMVjqH8mSJ+KPshRgDPiMkD4Bc1iq5C
-	fY5pRw8bsu5iKCuFK/p+uemfHtrgLlY/5LaVA2zppQTqlQFd/JFLBNBu8t9hP5Pl
-	zsv39kod0y2oY/lDahhGQ75u5Y2yYN9eI7bQAFqiny4viB81BFBuSkYO4pbAzcZ4
-	rf62x4SiBK9KvSwI5w8YSFp5IhI/jQ3gez9U/CjDo+E3gTtHCPRNw==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj644qdx-1
+	:mime-version:references:subject:to; s=pp1; bh=yESl+cPjSQP58Z1G4
+	GMJ+9WIdrKLxEfC+dls7mn7rvw=; b=bU6tfL68fS1syWZsYEz6dXNCcs9qB2J6V
+	LbSXQeQ/GbFuSgFZbOp3TfZedqsU3qxNYe9rD9OXOH80IMQXoYzTKubea54clWiD
+	3ZKzeQzSRSc1nyTZCUx9IakzTfkHeKsWC91Odwht9XV30uo/kCb1ssdT9ZE+5+Z7
+	krY/8rPBYspJ6pMh9qIQ4dUqjd0ynFgYZXrIuAKqaxorQpUn+sAsIbEKhx82KbMv
+	ZhSSbSGKXzg/Uiy4Q+IKxMOaaWqvFYlBER3PJ9omiZUPSXLaZ7GtoQ3tqvKw4Om7
+	kiQkz15S/YeJMDMIKPDz1mxFfRMxEULpwIVfIgTI4H1eqEAYPye9w==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj644qe1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 18:23:01 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61HG1VUk023899;
-	Tue, 17 Feb 2026 18:23:00 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb45441n-1
+	Tue, 17 Feb 2026 18:23:02 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61HFmVe1017804;
+	Tue, 17 Feb 2026 18:23:02 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ccb28c3x6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 18:23:00 +0000
+	Tue, 17 Feb 2026 18:23:02 +0000
 Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61HIMx0Y24052340
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61HIN0ev57410012
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Feb 2026 18:23:00 GMT
+	Tue, 17 Feb 2026 18:23:01 GMT
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D600D58056;
-	Tue, 17 Feb 2026 18:22:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C546E58056;
+	Tue, 17 Feb 2026 18:23:00 +0000 (GMT)
 Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0EDB258052;
-	Tue, 17 Feb 2026 18:22:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 008B958052;
+	Tue, 17 Feb 2026 18:23:00 +0000 (GMT)
 Received: from IBM-D32RQW3.ibm.com (unknown [9.61.242.249])
 	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Feb 2026 18:22:58 +0000 (GMT)
+	Tue, 17 Feb 2026 18:22:59 +0000 (GMT)
 From: Farhan Ali <alifm@linux.ibm.com>
 To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-pci@vger.kernel.org
 Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
         stable@vger.kernel.org, alifm@linux.ibm.com, schnelle@linux.ibm.com,
         mjrosato@linux.ibm.com
-Subject: [PATCH v9 1/9] PCI: Allow per function PCI slots
-Date: Tue, 17 Feb 2026 10:22:49 -0800
-Message-ID: <20260217182257.1582-2-alifm@linux.ibm.com>
+Subject: [PATCH v9 2/9] s390/pci: Add architecture specific resource/bus address translation
+Date: Tue, 17 Feb 2026 10:22:50 -0800
+Message-ID: <20260217182257.1582-3-alifm@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260217182257.1582-1-alifm@linux.ibm.com>
 References: <20260217182257.1582-1-alifm@linux.ibm.com>
@@ -90,21 +90,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: DHJy_A6Y6TSmS__m9WagagZi-Nfs07Tm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDE0OCBTYWx0ZWRfX/Zid/cwejnmR
- gWFT2WieJOzB0NI8gd3cnA56g+IS5D5BpU2hF7eHr/s8k6oI0lk5GJMZYnYTVlGO7J149mB3DJw
- yHAfX4T521qgnhIzBEeu/kZDCzQvjqIAA4VmukiJajiJ+rWag0JETZbKcXr7G7fj4C64XHrFQko
- DqIOtQtrhEJfY1XTIgRh++ig0mlc6ob8jmN5oxlnIDBNKzZP6Pxi1r2F7sk98y+qHOj0OyNCfaC
- NwoJjrmTouhC265P4huCPLMwbudO2MSO48I0ik/q1+J8KnGAiOvVZ/3LpFDp3VzfeCCCo0E5VkH
- OMfwGfH0GNnD1b/JoVhz4Mu1qOGu489DETWGI+dVj/DI5q7ZxzuxB4D3Jft3p9Rs+VreLvr4JmQ
- uBKvm+D13p/ccIeD2OkN5jecJoCqhZGsmo4WLzheMLGzChnlT9kONRL8ySRRZ+MaDcpwltIpU3W
- 607HrDivcxtPBTaiaSg==
-X-Proofpoint-GUID: DHJy_A6Y6TSmS__m9WagagZi-Nfs07Tm
-X-Authority-Analysis: v=2.4 cv=U+mfzOru c=1 sm=1 tr=0 ts=6994b205 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-ORIG-GUID: 7393WSHYSQTT1ru-I0RaXuBGYNsD8cK8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDE0OCBTYWx0ZWRfX7crJStpTIw1j
+ wSMCy1vYUCZpTrquT4v3neN0PdNSrNJetyNZ4ldJ9AEUeBD2lFZolDYp6X8F6RUD9ualHLtWBdj
+ 2uFWwNEOUoz75Q958m3IhLNWx01N+kLrtPZL2ZsUK/jCj3pOmqiNBoJdmYglOSkv36dHrsS8WCF
+ soGQdbkUOXArRkokH3DHg+V2gUt6v9+/7tehyIWEkcIwXN87qMSTOIXnWAiRo+5P2EcUGSugcbl
+ cM4kQ4tFG40++1F/n+rcxpXR0aZ0oilLJH3hx1VZrKi0qBGgLZyLvtA/fSf5prN8iNwf0MSMN/R
+ R1IVYD3cU5ZYkteYOsm0Dg8cSUDSpripCv4j5GmJjIyGQXqqy6098+aQM1wSf9P6oywRMM1u5Ee
+ X18Fjswzzu+0gtz+xWch/Dhv5qfrcmOZV+C1iHF5voxmQZ5lPDo4Xu7LzhF4If4297DH4A1DIx4
+ Vn4MWVGpSF8ZPF1BbXA==
+X-Proofpoint-GUID: 7393WSHYSQTT1ru-I0RaXuBGYNsD8cK8
+X-Authority-Analysis: v=2.4 cv=U+mfzOru c=1 sm=1 tr=0 ts=6994b206 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=Oaqo05sdQjFGKWlA34QA:9
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8 a=WI2LcE4NPZyv2LzpnzYA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-17_03,2026-02-16_04,2025-10-01_01
@@ -120,154 +119,161 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216874-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216876-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 3287014F0A0
+X-Rspamd-Queue-Id: EBC0714F0AE
 X-Rspamd-Action: no action
 
-On s390 systems, which use a machine level hypervisor, PCI devices are
-always accessed through a form of PCI pass-through which fundamentally
-operates on a per PCI function granularity. This is also reflected in the
-s390 PCI hotplug driver which creates hotplug slots for individual PCI
-functions. Its reset_slot() function, which is a wrapper for
-zpci_hot_reset_device(), thus also resets individual functions.
+On s390 today we overwrite the PCI BAR resource address to either an
+artificial cookie address or MIO address. However this address is different
+from the bus address of the BARs programmed by firmware. The artificial
+cookie address was created to index into an array of function handles
+(zpci_iomap_start). The MIO (mapped I/O) addresses are provided by firmware
+but maybe different from the bus addresses. This creates an issue when
+trying to convert the BAR resource address to bus address using the generic
+pcibios_resource_to_bus().
 
-Currently, the kernel's PCI_SLOT() macro assigns the same pci_slot object
-to multifunction devices. This approach worked fine on s390 systems that
-only exposed virtual functions as individual PCI domains to the operating
-system.  Since commit 44510d6fa0c0 ("s390/pci: Handling multifunctions")
-s390 supports exposing the topology of multifunction PCI devices by
-grouping them in a shared PCI domain. When attempting to reset a function
-through the hotplug driver, the shared slot assignment causes the wrong
-function to be reset instead of the intended one. It also leaks memory as
-we do create a pci_slot object for the function, but don't correctly free
-it in pci_slot_release().
+Implement an architecture specific pcibios_resource_to_bus() function to
+correctly translate PCI BAR resource addresses to bus addresses for s390.
+Similarly add architecture specific pcibios_bus_to_resource function to do
+the reverse translation.
 
-Add a flag for struct pci_slot to allow per function PCI slots for
-functions managed through a hypervisor, which exposes individual PCI
-functions while retaining the topology.
-
-Fixes: 44510d6fa0c0 ("s390/pci: Handling multifunctions")
-Cc: stable@vger.kernel.org
-Suggested-by: Niklas Schnelle <schnelle@linux.ibm.com>
 Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
 Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 ---
- drivers/pci/pci.c   |  5 +++--
- drivers/pci/slot.c  | 25 ++++++++++++++++++++++---
- include/linux/pci.h |  1 +
- 3 files changed, 26 insertions(+), 5 deletions(-)
+ arch/s390/pci/pci.c       | 74 +++++++++++++++++++++++++++++++++++++++
+ drivers/pci/host-bridge.c |  8 ++---
+ 2 files changed, 78 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index f3244630bfd0..3090c727b76f 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4869,8 +4869,9 @@ static int pci_reset_hotplug_slot(struct hotplug_slot *hotplug, bool probe)
- 
- static int pci_dev_reset_slot_function(struct pci_dev *dev, bool probe)
- {
--	if (dev->multifunction || dev->subordinate || !dev->slot ||
--	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
-+	if (dev->subordinate || !dev->slot ||
-+	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
-+	    (dev->multifunction && !dev->slot->per_func_slot))
- 		return -ENOTTY;
- 
- 	return pci_reset_hotplug_slot(dev->slot->hotplug, probe);
-diff --git a/drivers/pci/slot.c b/drivers/pci/slot.c
-index 50fb3eb595fe..ed10fa3ae727 100644
---- a/drivers/pci/slot.c
-+++ b/drivers/pci/slot.c
-@@ -63,6 +63,22 @@ static ssize_t cur_speed_read_file(struct pci_slot *slot, char *buf)
- 	return bus_speed_read(slot->bus->cur_bus_speed, buf);
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 97bab20bc163..b2e6b53ea8e6 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -272,6 +272,80 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
+ 	return 0;
  }
  
-+static bool pci_dev_matches_slot(struct pci_dev *dev, struct pci_slot *slot)
++void pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
++			     struct resource *res)
 +{
-+	if (slot->per_func_slot)
-+		return dev->devfn == slot->number;
++	struct zpci_bus *zbus = bus->sysdata;
++	struct zpci_bar_struct *zbar;
++	struct zpci_dev *zdev;
 +
-+	return PCI_SLOT(dev->devfn) == slot->number;
++	region->start = res->start;
++	region->end = res->end;
++
++	for (int i = 0; i < ZPCI_FUNCTIONS_PER_BUS; i++) {
++		int j = 0;
++
++		zbar = NULL;
++		zdev = zbus->function[i];
++		if (!zdev)
++			continue;
++
++		for (j = 0; j < PCI_STD_NUM_BARS; j++) {
++			if (zdev->bars[j].res->start == res->start &&
++			    zdev->bars[j].res->end == res->end &&
++			    res->flags & IORESOURCE_MEM) {
++				zbar = &zdev->bars[j];
++				break;
++			}
++		}
++
++		if (zbar) {
++			/* only MMIO is supported */
++			region->start = zbar->val & PCI_BASE_ADDRESS_MEM_MASK;
++			if (zbar->val & PCI_BASE_ADDRESS_MEM_TYPE_64)
++				region->start |= (u64)zdev->bars[j + 1].val << 32;
++
++			region->end = region->start + (1UL << zbar->size) - 1;
++			return;
++		}
++	}
 +}
 +
-+static bool pci_slot_enabled_per_func(void)
++void pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
++			     struct pci_bus_region *region)
 +{
-+	if (IS_ENABLED(CONFIG_S390))
-+		return true;
++	struct zpci_bus *zbus = bus->sysdata;
++	struct zpci_dev *zdev;
++	resource_size_t start, end;
 +
-+	return false;
++	res->start = region->start;
++	res->end = region->end;
++
++	for (int i = 0; i < ZPCI_FUNCTIONS_PER_BUS; i++) {
++		zdev = zbus->function[i];
++		if (!zdev || !zdev->has_resources)
++			continue;
++
++		for (int j = 0; j < PCI_STD_NUM_BARS; j++) {
++			if (!zdev->bars[j].size)
++				continue;
++
++			/* only MMIO is supported */
++			start = zdev->bars[j].val & PCI_BASE_ADDRESS_MEM_MASK;
++			if (zdev->bars[j].val & PCI_BASE_ADDRESS_MEM_TYPE_64)
++				start |= (u64)zdev->bars[j + 1].val << 32;
++
++			end = start + (1UL << zdev->bars[j].size) - 1;
++
++			if (start == region->start && end == region->end) {
++				res->start = zdev->bars[j].res->start;
++				res->end = zdev->bars[j].res->end;
++				return;
++			}
++		}
++	}
 +}
 +
- static void pci_slot_release(struct kobject *kobj)
+ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+ 			   pgprot_t prot)
  {
- 	struct pci_dev *dev;
-@@ -73,7 +89,7 @@ static void pci_slot_release(struct kobject *kobj)
- 
- 	down_read(&pci_bus_sem);
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list)
--		if (PCI_SLOT(dev->devfn) == slot->number)
-+		if (pci_dev_matches_slot(dev, slot))
- 			dev->slot = NULL;
- 	up_read(&pci_bus_sem);
- 
-@@ -166,7 +182,7 @@ void pci_dev_assign_slot(struct pci_dev *dev)
- 
- 	mutex_lock(&pci_slot_mutex);
- 	list_for_each_entry(slot, &dev->bus->slots, list)
--		if (PCI_SLOT(dev->devfn) == slot->number)
-+		if (pci_dev_matches_slot(dev, slot))
- 			dev->slot = slot;
- 	mutex_unlock(&pci_slot_mutex);
+diff --git a/drivers/pci/host-bridge.c b/drivers/pci/host-bridge.c
+index be5ef6516cff..aed031b8a9f3 100644
+--- a/drivers/pci/host-bridge.c
++++ b/drivers/pci/host-bridge.c
+@@ -49,8 +49,8 @@ void pci_set_host_bridge_release(struct pci_host_bridge *bridge,
  }
-@@ -265,6 +281,9 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
- 	slot->bus = pci_bus_get(parent);
- 	slot->number = slot_nr;
+ EXPORT_SYMBOL_GPL(pci_set_host_bridge_release);
  
-+	if (pci_slot_enabled_per_func())
-+		slot->per_func_slot = 1;
-+
- 	slot->kobj.kset = pci_slots_kset;
+-void pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
+-			     struct resource *res)
++void __weak pcibios_resource_to_bus(struct pci_bus *bus, struct pci_bus_region *region,
++				    struct resource *res)
+ {
+ 	struct pci_host_bridge *bridge = pci_find_host_bridge(bus);
+ 	struct resource_entry *window;
+@@ -74,8 +74,8 @@ static bool region_contains(struct pci_bus_region *region1,
+ 	return region1->start <= region2->start && region1->end >= region2->end;
+ }
  
- 	slot_name = make_slot_name(name);
-@@ -285,7 +304,7 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
- 
- 	down_read(&pci_bus_sem);
- 	list_for_each_entry(dev, &parent->devices, bus_list)
--		if (PCI_SLOT(dev->devfn) == slot_nr)
-+		if (pci_dev_matches_slot(dev, slot))
- 			dev->slot = slot;
- 	up_read(&pci_bus_sem);
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 1c270f1d5123..a9975d0e104f 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -78,6 +78,7 @@ struct pci_slot {
- 	struct list_head	list;		/* Node in list of slots */
- 	struct hotplug_slot	*hotplug;	/* Hotplug info (move here) */
- 	unsigned char		number;		/* PCI_SLOT(pci_dev->devfn) */
-+	unsigned int		per_func_slot:1; /* Allow per function slot */
- 	struct kobject		kobj;
- };
- 
+-void pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
+-			     struct pci_bus_region *region)
++void __weak pcibios_bus_to_resource(struct pci_bus *bus, struct resource *res,
++				    struct pci_bus_region *region)
+ {
+ 	struct pci_host_bridge *bridge = pci_find_host_bridge(bus);
+ 	struct resource_entry *window;
 -- 
 2.43.0
 
