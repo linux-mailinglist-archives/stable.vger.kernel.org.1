@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-216989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOx3FjjTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:40 +0100
+	id 4NXZLtfTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBFF15030E
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E339015046C
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 79DAF3042634
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 99F483007AF0
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3688A378D65;
-	Tue, 17 Feb 2026 20:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEFB261B70;
+	Tue, 17 Feb 2026 20:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFkgsYyz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBrpcCnf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED093378821;
-	Tue, 17 Feb 2026 20:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DED259CBD;
+	Tue, 17 Feb 2026 20:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361045; cv=none; b=eBY3XclLpS0kq3TvT2itNgUYVbJj32bRQ7CXcoOALULtl8+hsc/EiyHKxV2rB9PLcaVoI9ay2IyyqfVWhPD6Djo7/n+T1lK51CIcKlFC/NkJJ5SHdn4ialTyNIzk25/BtGSAZfAoBrPDAgoJA4w5m3R57mq+S6fz4vrn/PBRBuQ=
+	t=1771361222; cv=none; b=GFUO4G0dgMSIdy9gssCToqZQ56lzioyqt3Xhd/ZrQKTnEYY/Svr0sYcyEMuvLpt8/B1sdFBPSEJkNrP3rKMFkKe/wS1ywoEMIX/8mz8KG0PahqVZJIafGzRmoyFLr9jDjEt6fz4V2VyNEV45D4dq8Y0+Pd2KzcKs0E1qN/GICBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361045; c=relaxed/simple;
-	bh=FnP3Jf+0GQvq1MYbk09xUozouieg3HeBVfjX2wfnwTs=;
+	s=arc-20240116; t=1771361222; c=relaxed/simple;
+	bh=BmWCl+ZnKK9Qmo7RduUYre7nn7i5coOziqT6wlXcDCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6ryvnsa7aagldGdsAKnyp8+POxsc61cE2xAI4gBZP1u7Uuh+fD1x7xUu5vLUK+qOUtzcs3wYcTup5/GuTUEKY4ZqCYtrpXpTFHPkuo26EH3L4kmLLXA4GYBBsSTI7nSOTVQhs+nNiJky7IYazQVO9J5ljO7xjxubTV4YlMoujw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFkgsYyz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE8AC4CEF7;
-	Tue, 17 Feb 2026 20:44:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZytQrg3T3sUxVRL1L1Ag18VLNM7GNYhQSZOimbT/LsHR25ig6OzeQ6bLGqb8okB9CJtk+AxoU0OdX4wwlYl1uGWVzs56eqxQR1KwSLJwC7zsHcIeNO4fDifda4EHEYrTNSJ2xoIbCpeThWGHpxEB5+0Y1Rg0oxFwYnWUNvNCnT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBrpcCnf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321B7C19421;
+	Tue, 17 Feb 2026 20:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361044;
-	bh=FnP3Jf+0GQvq1MYbk09xUozouieg3HeBVfjX2wfnwTs=;
+	s=korg; t=1771361221;
+	bh=BmWCl+ZnKK9Qmo7RduUYre7nn7i5coOziqT6wlXcDCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFkgsYyz5DquXitegVEw8qiSsv9F6fBsuUaY3D6rFKOEC5yRkFrs2xarGH9O96t0v
-	 kuzLcn7cWjBrvdM5DxRmUCYd2uhcAF9vAHrGl6cF41cIMhlAH6LhGo/7+UD9Li05kE
-	 vwDvKJz+XgCN7ZHy2n1FzWQJ+26XQgVqVHoWotbY=
+	b=hBrpcCnfYius1C8dVDqHkDfrfkgbF01ZwM+CS6wV1r627LXaV0DnQY9J1MGGGrnka
+	 Qkueww/1mcg6Hv/B45DYh5zwxmVrKA4FzkfGh31uUsMxH6JOpPXS339AFbMK49xa2Z
+	 4hu75T+KEga7tvlSsG4QU20AdOKsvNKwZ7bgsTek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 24/39] smb: server: fix leak of active_num_conn in ksmbd_tcp_new_connection()
+Subject: [PATCH 6.1 37/64] platform/x86: panasonic-laptop: Fix sysfs group leak in error path
 Date: Tue, 17 Feb 2026 21:31:33 +0100
-Message-ID: <20260217200003.862311717@linuxfoundation.org>
+Message-ID: <20260217200008.899357663@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216989-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-217041-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,suse.com:email]
-X-Rspamd-Queue-Id: EBBFF15030E
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: E339015046C
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 77ffbcac4e569566d0092d5f22627dfc0896b553 ]
+[ Upstream commit 43b0b7eff4b3fb684f257d5a24376782e9663465 ]
 
-On kthread_run() failure in ksmbd_tcp_new_connection(), the transport is
-freed via free_transport(), which does not decrement active_num_conn,
-leaking this counter.
+The acpi_pcc_hotkey_add() error path leaks sysfs group pcc_attr_group
+if platform_device_register_simple() fails for the "panasonic" platform
+device.
 
-Replace free_transport() with ksmbd_tcp_disconnect().
+Address this by making it call sysfs_remove_group() in that case for
+the group in question.
 
-Fixes: 0d0d4680db22e ("ksmbd: add max connections parameter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/3398370.44csPzL39Z@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/transport_tcp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/panasonic-laptop.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/ksmbd/transport_tcp.c
-+++ b/fs/ksmbd/transport_tcp.c
-@@ -41,6 +41,7 @@ static struct ksmbd_transport_ops ksmbd_
+diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
+index e9bee5f6ec8d0..99cbacd0cbba4 100644
+--- a/drivers/platform/x86/panasonic-laptop.c
++++ b/drivers/platform/x86/panasonic-laptop.c
+@@ -1077,7 +1077,7 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
+ 			PLATFORM_DEVID_NONE, NULL, 0);
+ 		if (IS_ERR(pcc->platform)) {
+ 			result = PTR_ERR(pcc->platform);
+-			goto out_backlight;
++			goto out_sysfs;
+ 		}
+ 		result = device_create_file(&pcc->platform->dev,
+ 			&dev_attr_cdpower);
+@@ -1093,6 +1093,8 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
  
- static void tcp_stop_kthread(struct task_struct *kthread);
- static struct interface *alloc_iface(char *ifname);
-+static void ksmbd_tcp_disconnect(struct ksmbd_transport *t);
- 
- #define KSMBD_TRANS(t)	(&(t)->transport)
- #define TCP_TRANS(t)	((struct tcp_transport *)container_of(t, \
-@@ -207,7 +208,7 @@ static int ksmbd_tcp_new_connection(stru
- 	if (IS_ERR(handler)) {
- 		pr_err("cannot start conn thread\n");
- 		rc = PTR_ERR(handler);
--		free_transport(t);
-+		ksmbd_tcp_disconnect(KSMBD_TRANS(t));
- 	}
- 	return rc;
- 
+ out_platform:
+ 	platform_device_unregister(pcc->platform);
++out_sysfs:
++	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
+ out_backlight:
+ 	backlight_device_unregister(pcc->backlight);
+ out_input:
+-- 
+2.51.0
+
 
 
 
