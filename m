@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-217160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APp8FWHVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:53 +0100
+	id yKMMKETUlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-217076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A7C1507E5
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:53:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C671F15055B
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A53ED3019F19
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:53:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7E3053006D71
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659CE261B70;
-	Tue, 17 Feb 2026 20:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68BA4284B3B;
+	Tue, 17 Feb 2026 20:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGI/ICiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO/Xd6Hp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29619280CC1;
-	Tue, 17 Feb 2026 20:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B82B261B70;
+	Tue, 17 Feb 2026 20:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361629; cv=none; b=AnrhYJOFJcSI/hUcZS1catqoD/8kV/tTfmRPz3q+jv2U3IqSJ1+pd8ADbmGnI13KGp+bSuGfEqPr+/nB8u3/w5gE6TKkDiEYsv38hXqdNg4OerShr+EQ/GBEgs+n5K4Wd9xa+X3EZB5OAk89Tj1lZKSDucvzaETFithxiGmJnGc=
+	t=1771361342; cv=none; b=coVr4zmTGY+RKCTzyyjahd0KuFYL21lt+9adepShGgV6aagajAMP3H15m00hjl/txgghtYqZKV9wBMD26B6u0ACPZAKGiB6+A2M5XT4wwmoAITVzdynDMEW5yEWhcPddN7Xu5ffoK834Yn+1cH0TXVk7mXz3J89ak9b4mslMe94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361629; c=relaxed/simple;
-	bh=NKnWGYWXMyKWZv7O+p2uv7yxfuYDz5Bc/EPk3r7crbQ=;
+	s=arc-20240116; t=1771361342; c=relaxed/simple;
+	bh=kjVv+WoadetU2TlEortb11yin+cG9YvI5nBCug+ql6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPpPLehTrJwrXVYQBpV+Cs+UhrbkzlyIine+Ac2d8k9wZvt1tPOB0NqQCBUC6IjUMGFHGRpr1swiLSFYdeDOJWjjbeJjPiN2YuiqKnserHwj3xuUh+38oBTKib5xhfY4o4bBzIPhl5hX/OIw/sNkeTUwmBvsBbgLBd7F5KcBtEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGI/ICiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9333CC4CEF7;
-	Tue, 17 Feb 2026 20:53:48 +0000 (UTC)
+	 MIME-Version; b=Wy06MXosl3OaMosuh76NbOLdsBlcWk/dih8L0LvKs/nDUSyuWs1t1HcbAG3ByI7hRlf+rwgA5P9DXFSrihfHcf6JivY81g8+mvnADdZegWQSW62KjkQJkza8KrVdvy6Suj58sVCB1m8CA5c/58wj36LgQ8wF8JaXDk6bu77jfmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO/Xd6Hp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879FAC4CEF7;
+	Tue, 17 Feb 2026 20:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361629;
-	bh=NKnWGYWXMyKWZv7O+p2uv7yxfuYDz5Bc/EPk3r7crbQ=;
+	s=korg; t=1771361342;
+	bh=kjVv+WoadetU2TlEortb11yin+cG9YvI5nBCug+ql6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGI/ICiU7MzZn1TXXDF0TJh9/M95L3evHND/oWiEWP98x5yz7e10ZrLr5pJqKhVpr
-	 i6WauOufC/rAhNSYrC2tES98YGqiaRs4MIwchCsqqHmM0rE3G761xdpa38+4Ojd3yf
-	 cXZ6Avoo5yvXTaHXfK2VSlpHq1rSgf0U3yXp6a58=
+	b=BO/Xd6HpFvSxTDJ3dapua+Fzm5ZMa8UixSCRV7ywjdZiHupbP0JfLDptEBahkt+3P
+	 QIXD8U+XTzB4zhSL5BMTAdjRpw1SJJoxLuZSoIrJ+iy2YCyX0TqaaPz4RXDgfQo7h4
+	 AywXSKaiYvtkOHB5GIz15GF2TBYRKPz6tHrF1ggs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuewen Yan <xuewen.yan@unisoc.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 08/42] gpio: sprd: Change sprd_gpio lock to raw_spin_lock
-Date: Tue, 17 Feb 2026 21:31:59 +0100
-Message-ID: <20260217200006.327005381@linuxfoundation.org>
+Subject: [PATCH 6.1 64/64] net: tunnel: make skb_vlan_inet_prepare() return drop reasons
+Date: Tue, 17 Feb 2026 21:32:00 +0100
+Message-ID: <20260217200009.901776152@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
-References: <20260217200005.998240758@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,150 +70,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217160-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217076-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,c6:email,qualcomm.com:email,alibaba.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,unisoc.com:email]
-X-Rspamd-Queue-Id: A6A7C1507E5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chinatelecom.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C671F15055B
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuewen Yan <xuewen.yan@unisoc.com>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-[ Upstream commit 96313fcc1f062ba239f4832c9eff685da6c51c99 ]
+[ Upstream commit 9990ddf47d4168088e2246c3d418bf526e40830d ]
 
-There was a lockdep warning in sprd_gpio:
+Make skb_vlan_inet_prepare return the skb drop reasons, which is just
+what pskb_may_pull_reason() returns. Meanwhile, adjust all the call of
+it.
 
-[    6.258269][T329@C6] [ BUG: Invalid wait context ]
-[    6.258270][T329@C6] 6.18.0-android17-0-g30527ad7aaae-ab00009-4k #1 Tainted: G        W  OE
-[    6.258272][T329@C6] -----------------------------
-[    6.258273][T329@C6] modprobe/329 is trying to lock:
-[    6.258275][T329@C6] ffffff8081c91690 (&sprd_gpio->lock){....}-{3:3}, at: sprd_gpio_irq_unmask+0x4c/0xa4 [gpio_sprd]
-[    6.258282][T329@C6] other info that might help us debug this:
-[    6.258283][T329@C6] context-{5:5}
-[    6.258285][T329@C6] 3 locks held by modprobe/329:
-[    6.258286][T329@C6]  #0: ffffff808baca108 (&dev->mutex){....}-{4:4}, at: __driver_attach+0xc4/0x204
-[    6.258295][T329@C6]  #1: ffffff80965e7240 (request_class#4){+.+.}-{4:4}, at: __setup_irq+0x1cc/0x82c
-[    6.258304][T329@C6]  #2: ffffff80965e70c8 (lock_class#4){....}-{2:2}, at: __setup_irq+0x21c/0x82c
-[    6.258313][T329@C6] stack backtrace:
-[    6.258314][T329@C6] CPU: 6 UID: 0 PID: 329 Comm: modprobe Tainted: G        W  OE       6.18.0-android17-0-g30527ad7aaae-ab00009-4k #1 PREEMPT  3ad5b0f45741a16e5838da790706e16ceb6717df
-[    6.258316][T329@C6] Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-[    6.258317][T329@C6] Hardware name: Unisoc UMS9632-base Board (DT)
-[    6.258318][T329@C6] Call trace:
-[    6.258318][T329@C6]  show_stack+0x20/0x30 (C)
-[    6.258321][T329@C6]  __dump_stack+0x28/0x3c
-[    6.258324][T329@C6]  dump_stack_lvl+0xac/0xf0
-[    6.258326][T329@C6]  dump_stack+0x18/0x3c
-[    6.258329][T329@C6]  __lock_acquire+0x824/0x2c28
-[    6.258331][T329@C6]  lock_acquire+0x148/0x2cc
-[    6.258333][T329@C6]  _raw_spin_lock_irqsave+0x6c/0xb4
-[    6.258334][T329@C6]  sprd_gpio_irq_unmask+0x4c/0xa4 [gpio_sprd 814535e93c6d8e0853c45c02eab0fa88a9da6487]
-[    6.258337][T329@C6]  irq_startup+0x238/0x350
-[    6.258340][T329@C6]  __setup_irq+0x504/0x82c
-[    6.258342][T329@C6]  request_threaded_irq+0x118/0x184
-[    6.258344][T329@C6]  devm_request_threaded_irq+0x94/0x120
-[    6.258347][T329@C6]  sc8546_init_irq+0x114/0x170 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
-[    6.258352][T329@C6]  sc8546_charger_probe+0x53c/0x5a0 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
-[    6.258358][T329@C6]  i2c_device_probe+0x2c8/0x350
-[    6.258361][T329@C6]  really_probe+0x1a8/0x46c
-[    6.258363][T329@C6]  __driver_probe_device+0xa4/0x10c
-[    6.258366][T329@C6]  driver_probe_device+0x44/0x1b4
-[    6.258369][T329@C6]  __driver_attach+0xd0/0x204
-[    6.258371][T329@C6]  bus_for_each_dev+0x10c/0x168
-[    6.258373][T329@C6]  driver_attach+0x2c/0x3c
-[    6.258376][T329@C6]  bus_add_driver+0x154/0x29c
-[    6.258378][T329@C6]  driver_register+0x70/0x10c
-[    6.258381][T329@C6]  i2c_register_driver+0x48/0xc8
-[    6.258384][T329@C6]  init_module+0x28/0xfd8 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
-[    6.258389][T329@C6]  do_one_initcall+0x128/0x42c
-[    6.258392][T329@C6]  do_init_module+0x60/0x254
-[    6.258395][T329@C6]  load_module+0x1054/0x1220
-[    6.258397][T329@C6]  __arm64_sys_finit_module+0x240/0x35c
-[    6.258400][T329@C6]  invoke_syscall+0x60/0xec
-[    6.258402][T329@C6]  el0_svc_common+0xb0/0xe4
-[    6.258405][T329@C6]  do_el0_svc+0x24/0x30
-[    6.258407][T329@C6]  el0_svc+0x54/0x1c4
-[    6.258409][T329@C6]  el0t_64_sync_handler+0x68/0xdc
-[    6.258411][T329@C6]  el0t_64_sync+0x1c4/0x1c8
-
-This is because the spin_lock would change to rt_mutex in PREEMPT_RT,
-however the sprd_gpio->lock would use in hard-irq, this is unsafe.
-
-So change the spin_lock_t to raw_spin_lock_t to use the spinlock
-in hard-irq.
-
-Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20260126094209.9855-1-xuewen.yan@unisoc.com
-[Bartosz: tweaked the commit message]
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-sprd.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/bareudp.c    |  4 ++--
+ drivers/net/geneve.c     |  4 ++--
+ include/net/ip_tunnels.h | 13 ++++++++-----
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpio/gpio-sprd.c b/drivers/gpio/gpio-sprd.c
-index c117c11bfb29a..192f05a2c19c1 100644
---- a/drivers/gpio/gpio-sprd.c
-+++ b/drivers/gpio/gpio-sprd.c
-@@ -35,7 +35,7 @@
- struct sprd_gpio {
- 	struct gpio_chip chip;
- 	void __iomem *base;
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	int irq;
- };
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 54767154de265..cfbc0240126ef 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -319,7 +319,7 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	__be32 saddr;
+ 	int err;
  
-@@ -54,7 +54,7 @@ static void sprd_gpio_update(struct gpio_chip *chip, unsigned int offset,
- 	unsigned long flags;
- 	u32 tmp;
+-	if (!skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
++	if (skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
+ 		return -EINVAL;
  
--	spin_lock_irqsave(&sprd_gpio->lock, flags);
-+	raw_spin_lock_irqsave(&sprd_gpio->lock, flags);
- 	tmp = readl_relaxed(base + reg);
+ 	if (!sock)
+@@ -385,7 +385,7 @@ static int bareudp6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	__be16 sport;
+ 	int err;
  
- 	if (val)
-@@ -63,7 +63,7 @@ static void sprd_gpio_update(struct gpio_chip *chip, unsigned int offset,
- 		tmp &= ~BIT(SPRD_GPIO_BIT(offset));
+-	if (!skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
++	if (skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
+ 		return -EINVAL;
  
- 	writel_relaxed(tmp, base + reg);
--	spin_unlock_irqrestore(&sprd_gpio->lock, flags);
-+	raw_spin_unlock_irqrestore(&sprd_gpio->lock, flags);
+ 	if (!sock)
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index b31441fc99fc4..6234a3c711c53 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -932,7 +932,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	__be16 sport;
+ 	int err;
+ 
+-	if (!skb_vlan_inet_prepare(skb, inner_proto_inherit))
++	if (skb_vlan_inet_prepare(skb, inner_proto_inherit))
+ 		return -EINVAL;
+ 
+ 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
+@@ -1031,7 +1031,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	__be16 sport;
+ 	int err;
+ 
+-	if (!skb_vlan_inet_prepare(skb, inner_proto_inherit))
++	if (skb_vlan_inet_prepare(skb, inner_proto_inherit))
+ 		return -EINVAL;
+ 
+ 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index e93db837412b2..c649192ddbacf 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -354,11 +354,12 @@ static inline bool pskb_inet_may_pull(struct sk_buff *skb)
+ 
+ /* Variant of pskb_inet_may_pull().
+  */
+-static inline bool skb_vlan_inet_prepare(struct sk_buff *skb,
+-					 bool inner_proto_inherit)
++static inline enum skb_drop_reason
++skb_vlan_inet_prepare(struct sk_buff *skb, bool inner_proto_inherit)
+ {
+ 	int nhlen = 0, maclen = inner_proto_inherit ? 0 : ETH_HLEN;
+ 	__be16 type = skb->protocol;
++	enum skb_drop_reason reason;
+ 
+ 	/* Essentially this is skb_protocol(skb, true)
+ 	 * And we get MAC len.
+@@ -379,11 +380,13 @@ static inline bool skb_vlan_inet_prepare(struct sk_buff *skb,
+ 	/* For ETH_P_IPV6/ETH_P_IP we make sure to pull
+ 	 * a base network header in skb->head.
+ 	 */
+-	if (!pskb_may_pull(skb, maclen + nhlen))
+-		return false;
++	reason = pskb_may_pull_reason(skb, maclen + nhlen);
++	if (reason)
++		return reason;
+ 
+ 	skb_set_network_header(skb, maclen);
+-	return true;
++
++	return SKB_NOT_DROPPED_YET;
  }
  
- static int sprd_gpio_read(struct gpio_chip *chip, unsigned int offset, u16 reg)
-@@ -234,7 +234,7 @@ static int sprd_gpio_probe(struct platform_device *pdev)
- 	if (IS_ERR(sprd_gpio->base))
- 		return PTR_ERR(sprd_gpio->base);
- 
--	spin_lock_init(&sprd_gpio->lock);
-+	raw_spin_lock_init(&sprd_gpio->lock);
- 
- 	sprd_gpio->chip.label = dev_name(&pdev->dev);
- 	sprd_gpio->chip.ngpio = SPRD_GPIO_NR;
+ static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
 -- 
 2.51.0
 
