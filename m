@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-216946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MtlA57SlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216946-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:06 +0100
+	id wBdLLbHTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F92150176
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326DF150426
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D1BF3045249
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:41:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 14668300CCAF
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F79376BFF;
-	Tue, 17 Feb 2026 20:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A14F2773E4;
+	Tue, 17 Feb 2026 20:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQ0wM4UB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JA1vvDI4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4BE37755D;
-	Tue, 17 Feb 2026 20:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E946259CBD;
+	Tue, 17 Feb 2026 20:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360894; cv=none; b=HNruWFhTbWJMnpoZp9rCiUvTh+Wihn4TaqFbDlcDPTGVKnpuOHDMh/2N2o31aou1NctIlTBXa9RCWFDJbqsM2s3WUapQmkWvqo19nJK0Q4RLZkHZY+roNqKm6MvbPUMGVFjUnUgNDOuOGI+jVCul7hDx3sfnk9SDNEmOR23p2C0=
+	t=1771361197; cv=none; b=Cl9Acr8/VAB/GlcVpgMiPe3pTE9v/SMfkg+8tG8ulXRtV886oJ9XTfI/Pp21VHZMtYGNNkr+IN6VjpNngUau0hCo3YBDNPKd1pDIsdIb+A0YnpDTHk053YCpg6pk3QTUuO1qBBCfXsfJhvf/Jo0ieGDUosSXJwh+z6G3fCHF3ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360894; c=relaxed/simple;
-	bh=Vm8yBriRfyLbwLD7o+/3dHW/PD8B04MT4VLebiMC1Hg=;
+	s=arc-20240116; t=1771361197; c=relaxed/simple;
+	bh=0qOIRA2CYx/bx8H5MFq6e26SoXg9vRQlvf7QipVPXLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJZOJvMv+M+N0Rmq9+1qfBu3WdDvMQOxOtwqESZ02iGt6anqi/ikU1VNcM5ei4WhXKOsTe0t3kI58kYlBRKMQaQzraPEC1uVnyiNNbmalR4dyfOsSKullSygtXcsAHhoV1Cci0tjq6PM1M4upGrieZbZzGFIzkFa9ZxCwxBKywk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQ0wM4UB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40BEC4CEF7;
-	Tue, 17 Feb 2026 20:41:33 +0000 (UTC)
+	 MIME-Version; b=eniiHE3gBkssUm4SaWfJfHswbA6OXtb0BnaB8SwJPGRq8asgfAJfEkLhs352ZDY/oM/39ppOXi0oUaDdT6d0bdcQnOLSx5NVu7pWNeaXr2bO2BXmpf2AfayE19LFLk158TYIJ34D3rBxRuX9HQW8na90DeYcmp98eKr8D5OqCkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JA1vvDI4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C940C4CEF7;
+	Tue, 17 Feb 2026 20:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360894;
-	bh=Vm8yBriRfyLbwLD7o+/3dHW/PD8B04MT4VLebiMC1Hg=;
+	s=korg; t=1771361196;
+	bh=0qOIRA2CYx/bx8H5MFq6e26SoXg9vRQlvf7QipVPXLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQ0wM4UBdPvJCRZyyQhtS3iumezxbgEwSuDcsRJb9OppzJ3FZ9Xz+0Z9GSVvhoNID
-	 VWQZ1ml7rcdH4I4lE28e1J1URt2u2eDqossexdboCQn2uk8lapKEVL7l0fIVH+5Vfi
-	 Ym3o+sTW+fpzF0qyieeVTWj+2YpWbsC20wp/5Bi0=
+	b=JA1vvDI4hAXoOMk93ajfeCbdxEWj1YIq7HjZMwes3ATQ36vcCl12ro1jbKtplelPa
+	 3c2uHdXpZBibRM4bNLnRe6QX/KhCfQO51RiUnn3VMtngR6gHeksPFdjafkVzdUgjbm
+	 MWzg3hxGKWFrZK5xrcjnlN67OuH7zodW/m5Ypc/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 39/39] net: tunnel: make skb_vlan_inet_prepare() return drop reasons
+	Kees Cook <kees@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 05/64] crypto: omap - Allocate OMAP_CRYPTO_FORCE_COPY scatterlists correctly
 Date: Tue, 17 Feb 2026 21:31:01 +0100
-Message-ID: <20260217200005.711817490@linuxfoundation.org>
+Message-ID: <20260217200007.711939800@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200004.221651386@linuxfoundation.org>
-References: <20260217200004.221651386@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,138 +67,67 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216946-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217034-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,chinatelecom.cn:email]
-X-Rspamd-Queue-Id: 83F92150176
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linux-foundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 326DF150426
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 9990ddf47d4168088e2246c3d418bf526e40830d ]
+commit 1562b1fb7e17c1b3addb15e125c718b2be7f5512 upstream.
 
-Make skb_vlan_inet_prepare return the skb drop reasons, which is just
-what pskb_may_pull_reason() returns. Meanwhile, adjust all the call of
-it.
+The existing allocation of scatterlists in omap_crypto_copy_sg_lists()
+was allocating an array of scatterlist pointers, not scatterlist objects,
+resulting in a 4x too small allocation.
 
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use sizeof(*new_sg) to get the correct object size.
+
+Fixes: 74ed87e7e7f7 ("crypto: omap - add base support library for common routines")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bareudp.c    |  4 ++--
- drivers/net/geneve.c     |  4 ++--
- include/net/ip_tunnels.h | 13 ++++++++-----
- 3 files changed, 12 insertions(+), 9 deletions(-)
+ drivers/crypto/omap-crypto.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 54767154de265..cfbc0240126ef 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -319,7 +319,7 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be32 saddr;
- 	int err;
+--- a/drivers/crypto/omap-crypto.c
++++ b/drivers/crypto/omap-crypto.c
+@@ -21,7 +21,7 @@ static int omap_crypto_copy_sg_lists(int
+ 	struct scatterlist *tmp;
  
--	if (!skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
-+	if (skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
- 		return -EINVAL;
+ 	if (!(flags & OMAP_CRYPTO_FORCE_SINGLE_ENTRY)) {
+-		new_sg = kmalloc_array(n, sizeof(*sg), GFP_KERNEL);
++		new_sg = kmalloc_array(n, sizeof(*new_sg), GFP_KERNEL);
+ 		if (!new_sg)
+ 			return -ENOMEM;
  
- 	if (!sock)
-@@ -385,7 +385,7 @@ static int bareudp6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
- 
--	if (!skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
-+	if (skb_vlan_inet_prepare(skb, skb->protocol != htons(ETH_P_TEB)))
- 		return -EINVAL;
- 
- 	if (!sock)
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 27761334e1bff..33dae09f7fb22 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -927,7 +927,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
- 
--	if (!skb_vlan_inet_prepare(skb, inner_proto_inherit))
-+	if (skb_vlan_inet_prepare(skb, inner_proto_inherit))
- 		return -EINVAL;
- 
- 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-@@ -1026,7 +1026,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
- 
--	if (!skb_vlan_inet_prepare(skb, inner_proto_inherit))
-+	if (skb_vlan_inet_prepare(skb, inner_proto_inherit))
- 		return -EINVAL;
- 
- 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 3d36794cb1899..1051af74285c5 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -362,11 +362,12 @@ static inline bool pskb_inet_may_pull(struct sk_buff *skb)
- 
- /* Variant of pskb_inet_may_pull().
-  */
--static inline bool skb_vlan_inet_prepare(struct sk_buff *skb,
--					 bool inner_proto_inherit)
-+static inline enum skb_drop_reason
-+skb_vlan_inet_prepare(struct sk_buff *skb, bool inner_proto_inherit)
- {
- 	int nhlen = 0, maclen = inner_proto_inherit ? 0 : ETH_HLEN;
- 	__be16 type = skb->protocol;
-+	enum skb_drop_reason reason;
- 
- 	/* Essentially this is skb_protocol(skb, true)
- 	 * And we get MAC len.
-@@ -387,11 +388,13 @@ static inline bool skb_vlan_inet_prepare(struct sk_buff *skb,
- 	/* For ETH_P_IPV6/ETH_P_IP we make sure to pull
- 	 * a base network header in skb->head.
- 	 */
--	if (!pskb_may_pull(skb, maclen + nhlen))
--		return false;
-+	reason = pskb_may_pull_reason(skb, maclen + nhlen);
-+	if (reason)
-+		return reason;
- 
- 	skb_set_network_header(skb, maclen);
--	return true;
-+
-+	return SKB_NOT_DROPPED_YET;
- }
- 
- static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
--- 
-2.51.0
-
 
 
 
