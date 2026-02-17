@@ -1,154 +1,247 @@
-Return-Path: <stable+bounces-216995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEdUHy/TlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:31 +0100
+	id OA55LI/SlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B3A1502F0
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F124D15015A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C113A300D971
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 420253008446
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975093783AF;
-	Tue, 17 Feb 2026 20:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4563783D0;
+	Tue, 17 Feb 2026 20:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K55Uo5rI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuXQmj+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB1D37646D;
-	Tue, 17 Feb 2026 20:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59B5374178;
+	Tue, 17 Feb 2026 20:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361065; cv=none; b=W/4Rp96cNQwIboCwiCa6bHIBa8IOYUaPqc6LigfyDHITctl3DlwrqNCzk9h0S2BGz2efu97z552nrX6KytJOq0ZAmskR5arm6N1EyKhwfRgjZfQaJx6PJJx6ile2IcMXA/r+h+0UR4StBcVMkmJltmysIGhYwH+ZbCbJIOWPs2o=
+	t=1771360901; cv=none; b=gSvGtPVw/4sfFtT63N+2FANqluOZ+7gsHy3d6tHK1XOxTfNrx9igftW2LzlBOnj+pjzPaMjLPGzmWGIaS8tl2Cswifm0v3e4S3uQMI9a5VAXRVAS1MFqsPia+W3ttwMUD6IUZ9yfjxNRkp2EkoRJVL7HxPtVQhyEO1pw1FHCn6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361065; c=relaxed/simple;
-	bh=QEf0xssPl6WIPilAc03XghxvEHqumnVMeaRUc6/Q6ZE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5wQg8PfLP7a3QWpQICu7x1oICea52uy9NKIyNLT4YZCuDQQ2RhYgz1cIQyZ5Rrhy2JeoKpuFXIUFVmn1ZRSQJqYV3DCf7BuiiRCg40gBAEBEqNTRMi2T56dN3EJGnHt36L+Sq/rj1tPGA4e5pxrUiO8rcubEoqiiYleo1q/WSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K55Uo5rI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F11C4CEF7;
-	Tue, 17 Feb 2026 20:44:24 +0000 (UTC)
+	s=arc-20240116; t=1771360901; c=relaxed/simple;
+	bh=i0QEWX8411cYRurUfHkw3rmJ8KW8JILg1hYzr0qv7ls=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mCaKEodxmrllYCvLbwtMr+cRZ1PPmWhpYncy0Q2r7rq/97cIDQha0PhnsUK9EYcN+mWa8/iSPjObgHD7IdmCA4mO4zhePCC2hHprV8AVknHri4H7soUbidqTw6NPawSH9M2Nb1XPfQoOX1EVn+1g08jSpmLp4bIP/ffCYY2d1vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuXQmj+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243A2C4CEF7;
+	Tue, 17 Feb 2026 20:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361065;
-	bh=QEf0xssPl6WIPilAc03XghxvEHqumnVMeaRUc6/Q6ZE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K55Uo5rIvUnTmEtO5dO3QPmIUk38MzVlS0G1Zu6pP9XSkQVe1ZjEIpUAU+2bZKUBe
-	 9PueuPloFRrmouhnxFMaz/VIzfaHz9RvdQpEdsKcLMAZ9DKRyKIj2EjZcckt7rs93A
-	 kHIB7altwY8FYjr3BROCmgkbpe5bsWBjH+8RWxY8=
+	s=korg; t=1771360901;
+	bh=i0QEWX8411cYRurUfHkw3rmJ8KW8JILg1hYzr0qv7ls=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JuXQmj+K39Xp9rSIeuwuzZYaZqIbPSwW0laZrKQ530Os9lHdLnrsq0UBhwT1VnlGa
+	 RWhuN5R5+qEX5LeS4hv9kR0dMrV96Ui1aJKprEoniVi/fm6Ggg7lGA70aO639BFGOa
+	 f0JSuEkTLAY9/7Er+BAjSq4/r/cK/sJrQCfps6J4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 03/39] crypto: virtio - Add spinlock protection with virtqueue notification
-Date: Tue, 17 Feb 2026 21:31:12 +0100
-Message-ID: <20260217200003.061572396@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@nabladev.com,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com
+Subject: [PATCH 5.10 00/24] 5.10.251-rc1 review
+Date: Tue, 17 Feb 2026 21:31:13 +0100
+Message-ID: <20260217200000.708219618@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.251-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.10.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.10.251-rc1
+X-KernelTest-Deadline: 2026-02-19T20:00+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216995-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216948-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,loongson.cn:email]
-X-Rspamd-Queue-Id: D6B3A1502F0
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F124D15015A
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 5.10.251 release.
+There are 24 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Thu, 19 Feb 2026 19:59:50 +0000.
+Anything received after that time might be too late.
 
-From: Bibo Mao <maobibo@loongson.cn>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.251-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+and the diffstat can be found below.
 
-commit b505047ffc8057555900d2d3a005d033e6967382 upstream.
+thanks,
 
-When VM boots with one virtio-crypto PCI device and builtin backend,
-run openssl benchmark command with multiple processes, such as
-  openssl speed -evp aes-128-cbc -engine afalg  -seconds 10 -multi 32
+greg k-h
 
-openssl processes will hangup and there is error reported like this:
- virtio_crypto virtio0: dataq.0:id 3 is not a head!
+-------------
+Pseudo-Shortlog of commits:
 
-It seems that the data virtqueue need protection when it is handled
-for virtio done notification. If the spinlock protection is added
-in virtcrypto_done_task(), openssl benchmark with multiple processes
-works well.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.10.251-rc1
 
-Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/crypto/virtio/virtio_crypto_core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+Fabio Porcedda <fabio.porcedda@gmail.com>
+    USB: serial: option: add Telit FN920C04 RNDIS compositions
 
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -27,15 +27,20 @@ static void virtcrypto_done_task(unsigne
- 	struct data_queue *data_vq = (struct data_queue *)data;
- 	struct virtqueue *vq = data_vq->vq;
- 	struct virtio_crypto_request *vc_req;
-+	unsigned long flags;
- 	unsigned int len;
- 
-+	spin_lock_irqsave(&data_vq->lock, flags);
- 	do {
- 		virtqueue_disable_cb(vq);
- 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
-+			spin_unlock_irqrestore(&data_vq->lock, flags);
- 			if (vc_req->alg_cb)
- 				vc_req->alg_cb(vc_req, len);
-+			spin_lock_irqsave(&data_vq->lock, flags);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
-+	spin_unlock_irqrestore(&data_vq->lock, flags);
- }
- 
- static void virtcrypto_dataq_callback(struct virtqueue *vq)
+Chao Yu <chao@kernel.org>
+    f2fs: fix to avoid UAF in f2fs_write_end_io()
+
+Yongpeng Yang <yangyongpeng@xiaomi.com>
+    f2fs: fix out-of-bounds access in sysfs attribute read/write
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    fbdev: smscufx: properly copy ioctl memory to kernelspace
+
+Guangshuo Li <lgs201920130244@gmail.com>
+    fbdev: rivafb: fix divide error in nv3_arb()
+
+Anil Gurumurthy <agurumurthy@marvell.com>
+    scsi: qla2xxx: Fix bsg_done() causing double free
+
+Anil Gurumurthy <agurumurthy@marvell.com>
+    scsi: qla2xxx: Free sp in error path to fix system crash
+
+Anil Gurumurthy <agurumurthy@marvell.com>
+    scsi: qla2xxx: Validate sp before freeing associated memory
+
+Bibo Mao <maobibo@loongson.cn>
+    crypto: virtio - Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req
+
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+    selftests: mptcp: pm: ensure unknown flags are ignored
+
+Alexander Aring <aahringo@redhat.com>
+    fs: dlm: fix invalid derefence of sb_lvbptr
+
+Alban Bedel <alban.bedel@lht.dlh.de>
+    gpiolib: acpi: Fix gpio count with string references
+
+Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+    platform/x86: classmate-laptop: Add missing NULL pointer checks
+
+Brahmajit Das <listout@listout.xyz>
+    drm/tegra: hdmi: sor: Fix error: variable ‘j’ set but not used
+
+Deepanshu Kartikey <kartikey406@gmail.com>
+    romfs: check sb_set_blocksize() return value
+
+Xuewen Yan <xuewen.yan@unisoc.com>
+    gpio: sprd: Change sprd_gpio lock to raw_spin_lock
+
+Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+    ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU
+
+Danilo Krummrich <dakr@kernel.org>
+    gpio: omap: do not register driver in probe()
+
+Anil Gurumurthy <agurumurthy@marvell.com>
+    scsi: qla2xxx: Query FW again before proceeding with login
+
+Anil Gurumurthy <agurumurthy@marvell.com>
+    scsi: qla2xxx: Delay module unload while fabric scan in progress
+
+Edward Adam Davis <eadavis@qq.com>
+    nilfs2: Fix potential block overflow that cause system hang
+
+Bibo Mao <maobibo@loongson.cn>
+    crypto: virtio - Add spinlock protection with virtqueue notification
+
+Kees Cook <kees@kernel.org>
+    crypto: omap - Allocate OMAP_CRYPTO_FORCE_COPY scatterlists correctly
+
+Thorsten Blum <thorsten.blum@linux.dev>
+    crypto: octeontx - Fix length check to avoid truncation in ucode_load_store
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                          |  4 +-
+ drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c |  2 +-
+ drivers/crypto/omap-crypto.c                      |  2 +-
+ drivers/crypto/virtio/virtio_crypto_algs.c        |  2 -
+ drivers/crypto/virtio/virtio_crypto_core.c        |  5 ++
+ drivers/gpio/gpio-omap.c                          | 22 +++++++--
+ drivers/gpio/gpio-sprd.c                          |  8 ++--
+ drivers/gpio/gpiolib-acpi.c                       |  1 +
+ drivers/gpu/drm/tegra/hdmi.c                      |  4 +-
+ drivers/gpu/drm/tegra/sor.c                       |  4 +-
+ drivers/platform/x86/classmate-laptop.c           | 32 +++++++++++++
+ drivers/scsi/qla2xxx/qla_bsg.c                    |  5 +-
+ drivers/scsi/qla2xxx/qla_gs.c                     | 36 +++++++-------
+ drivers/scsi/qla2xxx/qla_init.c                   | 19 +++++++-
+ drivers/scsi/qla2xxx/qla_isr.c                    | 19 +++++++-
+ drivers/scsi/qla2xxx/qla_os.c                     |  3 +-
+ drivers/usb/serial/option.c                       |  6 +++
+ drivers/video/fbdev/riva/riva_hw.c                |  3 ++
+ drivers/video/fbdev/smscufx.c                     |  8 +++-
+ fs/dlm/lock.c                                     |  2 +-
+ fs/f2fs/data.c                                    | 12 +++--
+ fs/f2fs/sysfs.c                                   | 58 ++++++++++++++++++++---
+ fs/nilfs2/sufile.c                                |  4 ++
+ fs/romfs/super.c                                  |  5 +-
+ sound/pci/hda/patch_realtek.c                     |  4 ++
+ tools/testing/selftests/net/mptcp/pm_netlink.sh   |  2 +-
+ tools/testing/selftests/net/mptcp/pm_nl_ctl.c     | 11 +++++
+ 27 files changed, 226 insertions(+), 57 deletions(-)
 
 
 
