@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-217052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJPBN+3TlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:41 +0100
+	id sOJHIBHVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C67B1504A3
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE0C1506F4
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23C52300C920
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01B5A305CE34
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2BB266581;
-	Tue, 17 Feb 2026 20:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9D028D8E8;
+	Tue, 17 Feb 2026 20:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L41uZaed"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bllCpPTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0113629A1;
-	Tue, 17 Feb 2026 20:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C466929A1;
+	Tue, 17 Feb 2026 20:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361258; cv=none; b=OCkrRw/kIcm25p6o8aPmFK/K8dEXxsxiuGxZJROLqXCdUghV2VZNxR3O3Q4wyYzQiK16NeOmnHKdZo7xl5r7jGHt+K1RNcP0h9HWKi6+zgDlV9ohrULz4625/jUtJLCMec7nZnZJvY1vNZjVgZty278pWXoJQmMu0qD9tQAgLDs=
+	t=1771361493; cv=none; b=k7e8y/2CENif//8u1zJS0jl2fGAmvFjvFDgTy8atLJaaWwxdcYZjrdeboMkr0P6jBcMDa/DgZ5/RJ//rYA5dvBcsCR9dxt8LXEnua9eJOg5v6KKXUw/4uXdoxs7v8cEZdJvXOLuENvMOxTXinApnT88py2/rbKjnWBRV0DBBREM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361258; c=relaxed/simple;
-	bh=JHecaesbVyZ0f2l+n8wDqZaan6josGrFbz2yDtElXpg=;
+	s=arc-20240116; t=1771361493; c=relaxed/simple;
+	bh=KUoF+ByEwtCSyEpOp5csEQUQlqY7znbosPuc5NUxajc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tAEPAMOfGfHZggBy5aebxokUfMoz2E4kYOsr6Vmduo+CmDIcUR6GTp8FjOQgXMgL7XHcR5PUqc9DyZMIPuI5NvZCmn9cKURKuc8qFvz+x2IVDaOaQkTybgqP4lXbRiOX2lqEYWk8xRCWdUd94LUes7kAbeu1E/HlPNfZhpe7zFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L41uZaed; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BEC0C4CEF7;
-	Tue, 17 Feb 2026 20:47:36 +0000 (UTC)
+	 MIME-Version; b=YcooU3Xqiz/hygk3XlGNIwEJ3oylE9k0BnG6EUa2LWXheC6DeYm/Ec8dkVvJqnt82cwP6EMFON5FX6khJFoOMhfJpTf3tJZK6prxv8bxayFO2hgOdDPtJs78GfshXetbkBnFp0vOR2gUgLFDfPLuD3lnKQm79s+e0kM+rFjAezA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bllCpPTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C8EC4CEF7;
+	Tue, 17 Feb 2026 20:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361257;
-	bh=JHecaesbVyZ0f2l+n8wDqZaan6josGrFbz2yDtElXpg=;
+	s=korg; t=1771361493;
+	bh=KUoF+ByEwtCSyEpOp5csEQUQlqY7znbosPuc5NUxajc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L41uZaed9H6Irad7aN8npFU35z1f67j2mr6GdEhB4NcWyO2wCZVk26XmIM3vIJPvC
-	 zip5VxqoGFSAdnQaV2CQBt8GJqPFFslYTaK5A0xfBGhfKM1qp3s+ci9/1qdNmzULG7
-	 AFkwrFHmVZzmW5lcJtxrFNYHJ7+ytwoMSL5Du+g8=
+	b=bllCpPTA4ZWIDsdYF6dy5K87/GrTEV8PKlICbQJNWs/anMBROaM59bcBnvBCXwZWp
+	 S+hFc9VADXo6Ou+0SEpXyMPl/Fb0OK2q8W1IyLiPbHAWTaLapA9vMy9Hcm89orFvju
+	 30VQwVo+khmIODT8TCy7V/75/sJvZoRiM1ZFVQvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eryk Kubanski <e.kubanski@partner.samsung.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jianqiang kang <jianqkang@sina.cn>
-Subject: [PATCH 6.1 47/64] xsk: Fix race condition in AF_XDP generic RX path
-Date: Tue, 17 Feb 2026 21:31:43 +0100
-Message-ID: <20260217200009.268913758@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.18 04/43] rust: driver: fix broken intra-doc links to example driver types
+Date: Tue, 17 Feb 2026 21:31:44 +0100
+Message-ID: <20260217200006.639674811@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,147 +65,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217052-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,partner.samsung.com,intel.com,kernel.org,sina.cn];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-217121-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3C67B1504A3
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0CE0C1506F4
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "e.kubanski" <e.kubanski@partner.samsung.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit a1356ac7749cafc4e27aa62c0c4604b5dca4983e ]
+commit 4c9f6a782f6078dc94450fcb22e65d520bfa0775 upstream.
 
-Move rx_lock from xsk_socket to xsk_buff_pool.
-Fix synchronization for shared umem mode in
-generic RX path where multiple sockets share
-single xsk_buff_pool.
+The `auxiliary` and `pci` modules are conditional on
+`CONFIG_AUXILIARY_BUS` and `CONFIG_PCI` respectively. When these are
+disabled, the intra-doc links to `auxiliary::Driver` and `pci::Driver`
+break, causing rustdoc warnings (or errors with `-D warnings`).
 
-RX queue is exclusive to xsk_socket, while FILL
-queue can be shared between multiple sockets.
-This could result in race condition where two
-CPU cores access RX path of two different sockets
-sharing the same umem.
+error: unresolved link to `kernel::auxiliary::Driver`
+  --> rust/kernel/driver.rs:82:28
+   |
+82 | //! [`auxiliary::Driver`]: kernel::auxiliary::Driver
+   |                            ^^^^^^^^^^^^^^^^^^^^^^^^^ no item named `auxiliary` in module `kernel`
 
-Protect both queues by acquiring spinlock in shared
-xsk_buff_pool.
+Fix this by making the documentation for these examples conditional on
+the corresponding configuration options.
 
-Lock contention may be minimized in the future by some
-per-thread FQ buffering.
-
-It's safe and necessary to move spin_lock_bh(rx_lock)
-after xsk_rcv_check():
-* xs->pool and spinlock_init is synchronized by
-  xsk_bind() -> xsk_is_bound() memory barriers.
-* xsk_rcv_check() may return true at the moment
-  of xsk_release() or xsk_unbind_dev(),
-  however this will not cause any data races or
-  race conditions. xsk_unbind_dev() removes xdp
-  socket from all maps and waits for completion
-  of all outstanding rx operations. Packets in
-  RX path will either complete safely or drop.
-
-Signed-off-by: Eryk Kubanski <e.kubanski@partner.samsung.com>
-Fixes: bf0bdd1343efb ("xdp: fix race on generic receive path")
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Link: https://patch.msgid.link/20250416101908.10919-1-e.kubanski@partner.samsung.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflict is resolved when backporting this fix. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Fixes: 970a7c68788e ("driver: rust: expand documentation for driver infrastructure")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Closes: https://lore.kernel.org/rust-for-linux/20251209.151817.744108529426448097.fujita.tomonori@gmail.com/
+Link: https://patch.msgid.link/20251227-driver-types-v1-1-1916154fbe5e@google.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xdp_sock.h      |    2 --
- include/net/xsk_buff_pool.h |    2 ++
- net/xdp/xsk.c               |    6 +++---
- net/xdp/xsk_buff_pool.c     |    1 +
- 4 files changed, 6 insertions(+), 5 deletions(-)
+ rust/kernel/driver.rs |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/include/net/xdp_sock.h
-+++ b/include/net/xdp_sock.h
-@@ -59,8 +59,6 @@ struct xdp_sock {
+--- a/rust/kernel/driver.rs
++++ b/rust/kernel/driver.rs
+@@ -33,7 +33,14 @@
+ //! }
+ //! ```
+ //!
+-//! For specific examples see [`auxiliary::Driver`], [`pci::Driver`] and [`platform::Driver`].
++//! For specific examples see:
++//!
++//! * [`platform::Driver`](kernel::platform::Driver)
++#![cfg_attr(
++    CONFIG_AUXILIARY_BUS,
++    doc = "* [`auxiliary::Driver`](kernel::auxiliary::Driver)"
++)]
++#![cfg_attr(CONFIG_PCI, doc = "* [`pci::Driver`](kernel::pci::Driver)")]
+ //!
+ //! The `probe()` callback should return a `Result<Pin<KBox<Self>>>`, i.e. the driver's private
+ //! data. The bus abstraction should store the pointer in the corresponding bus device. The generic
+@@ -79,7 +86,6 @@
+ //!
+ //! For this purpose the generic infrastructure in [`device_id`] should be used.
+ //!
+-//! [`auxiliary::Driver`]: kernel::auxiliary::Driver
+ //! [`Core`]: device::Core
+ //! [`Device`]: device::Device
+ //! [`Device<Core>`]: device::Device<device::Core>
+@@ -87,8 +93,6 @@
+ //! [`DeviceContext`]: device::DeviceContext
+ //! [`device_id`]: kernel::device_id
+ //! [`module_driver`]: kernel::module_driver
+-//! [`pci::Driver`]: kernel::pci::Driver
+-//! [`platform::Driver`]: kernel::platform::Driver
  
- 	struct xsk_queue *tx ____cacheline_aligned_in_smp;
- 	struct list_head tx_list;
--	/* Protects generic receive. */
--	spinlock_t rx_lock;
- 
- 	/* Statistics */
- 	u64 rx_dropped;
---- a/include/net/xsk_buff_pool.h
-+++ b/include/net/xsk_buff_pool.h
-@@ -48,6 +48,8 @@ struct xsk_buff_pool {
- 	refcount_t users;
- 	struct xdp_umem *umem;
- 	struct work_struct work;
-+	/* Protects generic receive in shared and non-shared umem mode. */
-+	spinlock_t rx_lock;
- 	struct list_head free_list;
- 	u32 heads_cnt;
- 	u16 queue_id;
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -237,13 +237,14 @@ int xsk_generic_rcv(struct xdp_sock *xs,
- {
- 	int err;
- 
--	spin_lock_bh(&xs->rx_lock);
- 	err = xsk_rcv_check(xs, xdp);
- 	if (!err) {
-+		spin_lock_bh(&xs->pool->rx_lock);
- 		err = __xsk_rcv(xs, xdp);
- 		xsk_flush(xs);
-+		spin_unlock_bh(&xs->pool->rx_lock);
- 	}
--	spin_unlock_bh(&xs->rx_lock);
-+
- 	return err;
- }
- 
-@@ -1448,7 +1449,6 @@ static int xsk_create(struct net *net, s
- 	xs = xdp_sk(sk);
- 	xs->state = XSK_READY;
- 	mutex_init(&xs->mutex);
--	spin_lock_init(&xs->rx_lock);
- 
- 	INIT_LIST_HEAD(&xs->map_list);
- 	spin_lock_init(&xs->map_list_lock);
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -85,6 +85,7 @@ struct xsk_buff_pool *xp_create_and_assi
- 		XDP_PACKET_HEADROOM;
- 	pool->umem = umem;
- 	pool->addrs = umem->addrs;
-+	spin_lock_init(&pool->rx_lock);
- 	INIT_LIST_HEAD(&pool->free_list);
- 	INIT_LIST_HEAD(&pool->xsk_tx_list);
- 	spin_lock_init(&pool->xsk_tx_list_lock);
+ use crate::error::{Error, Result};
+ use crate::{acpi, device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
 
 
 
