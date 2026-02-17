@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-216967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oG9sFevSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:23 +0100
+	id 0GTDEQfTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A75D150226
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D626B15026D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BBB06304AC19
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8EB213041D6F
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A6A3783CF;
-	Tue, 17 Feb 2026 20:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2507B372B2D;
+	Tue, 17 Feb 2026 20:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfmHx+hr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrxtQLbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE52337105D;
-	Tue, 17 Feb 2026 20:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCFA13DDAA;
+	Tue, 17 Feb 2026 20:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360967; cv=none; b=m/wYUawAFMkYQs2H97ypzjsS/mMB6ADHPpXCFsLs0PzjiXFVDGtxnBXLlZyCcnoNRoxhmo/FgNba780vaRoqRNcbxEveyTlzouTOw1xNL2eCluqcUr4LKC9h6CqOBBD5MpiwRiq4aF3eW1iw4GQ4tgzrlxr/hOKluFKOWxnC1Dc=
+	t=1771360991; cv=none; b=NnuvqL9nutVgnOhNIPGEg0FaekKYv+t5riLHe9ruPW0YHr2DZyUWh041HcFuCdA6bwmSpAV9lLRfZJECKlpsNOKYu3ZQ9kkYc5wFB65LmtT8yhdUqsjaz76xBAatK2eqnciiUzxoDWkviEAQWYLa63iJx23a8ipN3IaXW22KJ20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360967; c=relaxed/simple;
-	bh=8kqI9tvYtO0qLBuh8IC4pynEPiu0G8MlK/YggUq7dlk=;
+	s=arc-20240116; t=1771360991; c=relaxed/simple;
+	bh=w/ORb7x36/StQtnrn4fx6TsCERPaqLk45hpVnBK2r3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/7d7pCNvFLnvzj2e5ECBYWXgZOmdyxc5XGX7kZTO/Cn9YOHOLUhyDFzTgzGek00SSBJ8go8WULCrJCkCiAU19b4QbPp3cWyPMPUtQwv7WApixuD4vmL3s8LGXg4aoqZfmBltHWteZW8pGDSlEKUC6Mj17lo6lOawCdzmIltVGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfmHx+hr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17C7C4CEF7;
-	Tue, 17 Feb 2026 20:42:46 +0000 (UTC)
+	 MIME-Version; b=s285KpQT/xJUgd/5Oe3Jc7Q3zFNlxta9Qkr8jaNjckSfV4G48WkwTxEp1uDdfUylUxmwF6yYPCNt9LzM8uSsJwAs57TzOWT1ZieEl5UUWGdEBiKGm5NxtHVdXfiN5jIWfA1j15niVeZs029Plui10BbrX2CKPOau78wtTC7gnjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrxtQLbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245D6C4CEF7;
+	Tue, 17 Feb 2026 20:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360967;
-	bh=8kqI9tvYtO0qLBuh8IC4pynEPiu0G8MlK/YggUq7dlk=;
+	s=korg; t=1771360991;
+	bh=w/ORb7x36/StQtnrn4fx6TsCERPaqLk45hpVnBK2r3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HfmHx+hr72/QoJxiJ0tCRT3KzxE3fWl1SP2dTxLnuXYnMGVYGUEfeJeioz2/UE+Gh
-	 IvB83jEZvVlQNGTelcZHivark+6xCL/2ddLSPBcCRGymWzXBeHM5RN28foF+STJQnT
-	 P5NwGwEB0vl6LKHtOGc1bUe1dHPOfsadSllhiNCY=
+	b=jrxtQLbT2oAxnZGjbcP/k8IeijbUQlncMBfVaHVlCz6y4/YElWLt2fjHQ9U0zWALs
+	 7ZjmAj4n/jb5f4G4p4R3kEqJ2L8m1NZH2feVFBy82EvopkIGAiX9lZo2GCVp3z7cSu
+	 olwSnhd00dWZIaPo0AuKuY7oqoGVWSdwjkF6+gM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 06/24] scsi: qla2xxx: Query FW again before proceeding with login
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 10/39] gpio: sprd: Change sprd_gpio lock to raw_spin_lock
 Date: Tue, 17 Feb 2026 21:31:19 +0100
-Message-ID: <20260217200000.953894543@linuxfoundation.org>
+Message-ID: <20260217200003.324920845@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
-References: <20260217200000.708219618@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,117 +77,147 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216967-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216974-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,marvell.com:email]
-X-Rspamd-Queue-Id: 0A75D150226
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,linutronix.de:email,c6:email,alibaba.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,unisoc.com:email]
+X-Rspamd-Queue-Id: D626B15026D
 X-Rspamd-Action: no action
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-commit 42b2dab4340d39b71334151e10c6d7d9b0040ffa upstream.
+[ Upstream commit 96313fcc1f062ba239f4832c9eff685da6c51c99 ]
 
-Issue occurred during a continuous reboot test of several thousand
-iterations specific to a fabric topo with dual mode target where it
-sends a PLOGI/PRLI and then sends a LOGO. The initiator was also in the
-process of discovery and sent a PLOGI to the switch. It then queried a
-list of ports logged in via mbx 75h and the GPDB response indicated that
-the target was logged in. This caused a mismatch in the states between
-the driver and FW.  Requery the FW for the state and proceed with the
-rest of discovery process.
+There was a lockdep warning in sprd_gpio:
 
-Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20251210101604.431868-11-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[    6.258269][T329@C6] [ BUG: Invalid wait context ]
+[    6.258270][T329@C6] 6.18.0-android17-0-g30527ad7aaae-ab00009-4k #1 Tainted: G        W  OE
+[    6.258272][T329@C6] -----------------------------
+[    6.258273][T329@C6] modprobe/329 is trying to lock:
+[    6.258275][T329@C6] ffffff8081c91690 (&sprd_gpio->lock){....}-{3:3}, at: sprd_gpio_irq_unmask+0x4c/0xa4 [gpio_sprd]
+[    6.258282][T329@C6] other info that might help us debug this:
+[    6.258283][T329@C6] context-{5:5}
+[    6.258285][T329@C6] 3 locks held by modprobe/329:
+[    6.258286][T329@C6]  #0: ffffff808baca108 (&dev->mutex){....}-{4:4}, at: __driver_attach+0xc4/0x204
+[    6.258295][T329@C6]  #1: ffffff80965e7240 (request_class#4){+.+.}-{4:4}, at: __setup_irq+0x1cc/0x82c
+[    6.258304][T329@C6]  #2: ffffff80965e70c8 (lock_class#4){....}-{2:2}, at: __setup_irq+0x21c/0x82c
+[    6.258313][T329@C6] stack backtrace:
+[    6.258314][T329@C6] CPU: 6 UID: 0 PID: 329 Comm: modprobe Tainted: G        W  OE       6.18.0-android17-0-g30527ad7aaae-ab00009-4k #1 PREEMPT  3ad5b0f45741a16e5838da790706e16ceb6717df
+[    6.258316][T329@C6] Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[    6.258317][T329@C6] Hardware name: Unisoc UMS9632-base Board (DT)
+[    6.258318][T329@C6] Call trace:
+[    6.258318][T329@C6]  show_stack+0x20/0x30 (C)
+[    6.258321][T329@C6]  __dump_stack+0x28/0x3c
+[    6.258324][T329@C6]  dump_stack_lvl+0xac/0xf0
+[    6.258326][T329@C6]  dump_stack+0x18/0x3c
+[    6.258329][T329@C6]  __lock_acquire+0x824/0x2c28
+[    6.258331][T329@C6]  lock_acquire+0x148/0x2cc
+[    6.258333][T329@C6]  _raw_spin_lock_irqsave+0x6c/0xb4
+[    6.258334][T329@C6]  sprd_gpio_irq_unmask+0x4c/0xa4 [gpio_sprd 814535e93c6d8e0853c45c02eab0fa88a9da6487]
+[    6.258337][T329@C6]  irq_startup+0x238/0x350
+[    6.258340][T329@C6]  __setup_irq+0x504/0x82c
+[    6.258342][T329@C6]  request_threaded_irq+0x118/0x184
+[    6.258344][T329@C6]  devm_request_threaded_irq+0x94/0x120
+[    6.258347][T329@C6]  sc8546_init_irq+0x114/0x170 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
+[    6.258352][T329@C6]  sc8546_charger_probe+0x53c/0x5a0 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
+[    6.258358][T329@C6]  i2c_device_probe+0x2c8/0x350
+[    6.258361][T329@C6]  really_probe+0x1a8/0x46c
+[    6.258363][T329@C6]  __driver_probe_device+0xa4/0x10c
+[    6.258366][T329@C6]  driver_probe_device+0x44/0x1b4
+[    6.258369][T329@C6]  __driver_attach+0xd0/0x204
+[    6.258371][T329@C6]  bus_for_each_dev+0x10c/0x168
+[    6.258373][T329@C6]  driver_attach+0x2c/0x3c
+[    6.258376][T329@C6]  bus_add_driver+0x154/0x29c
+[    6.258378][T329@C6]  driver_register+0x70/0x10c
+[    6.258381][T329@C6]  i2c_register_driver+0x48/0xc8
+[    6.258384][T329@C6]  init_module+0x28/0xfd8 [sc8546_charger 223586ccafc27439f7db4f95b0c8e6e882349a99]
+[    6.258389][T329@C6]  do_one_initcall+0x128/0x42c
+[    6.258392][T329@C6]  do_init_module+0x60/0x254
+[    6.258395][T329@C6]  load_module+0x1054/0x1220
+[    6.258397][T329@C6]  __arm64_sys_finit_module+0x240/0x35c
+[    6.258400][T329@C6]  invoke_syscall+0x60/0xec
+[    6.258402][T329@C6]  el0_svc_common+0xb0/0xe4
+[    6.258405][T329@C6]  do_el0_svc+0x24/0x30
+[    6.258407][T329@C6]  el0_svc+0x54/0x1c4
+[    6.258409][T329@C6]  el0t_64_sync_handler+0x68/0xdc
+[    6.258411][T329@C6]  el0t_64_sync+0x1c4/0x1c8
+
+This is because the spin_lock would change to rt_mutex in PREEMPT_RT,
+however the sprd_gpio->lock would use in hard-irq, this is unsafe.
+
+So change the spin_lock_t to raw_spin_lock_t to use the spinlock
+in hard-irq.
+
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20260126094209.9855-1-xuewen.yan@unisoc.com
+[Bartosz: tweaked the commit message]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |   19 +++++++++++++++++--
- drivers/scsi/qla2xxx/qla_isr.c  |   19 +++++++++++++++++--
- 2 files changed, 34 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-sprd.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -2082,8 +2082,23 @@ qla24xx_handle_plogi_done_event(struct s
- 	    ea->sp->gen1, fcport->rscn_gen,
- 	    ea->data[0], ea->data[1], ea->iop[0], ea->iop[1]);
+diff --git a/drivers/gpio/gpio-sprd.c b/drivers/gpio/gpio-sprd.c
+index 9dd9dabb579e2..b2b28c6877f2f 100644
+--- a/drivers/gpio/gpio-sprd.c
++++ b/drivers/gpio/gpio-sprd.c
+@@ -35,7 +35,7 @@
+ struct sprd_gpio {
+ 	struct gpio_chip chip;
+ 	void __iomem *base;
+-	spinlock_t lock;
++	raw_spinlock_t lock;
+ 	int irq;
+ };
  
--	if ((fcport->fw_login_state == DSC_LS_PLOGI_PEND) ||
--	    (fcport->fw_login_state == DSC_LS_PRLI_PEND)) {
-+	if (fcport->fw_login_state == DSC_LS_PLOGI_PEND) {
-+		ql_dbg(ql_dbg_disc, vha, 0x20ea,
-+		    "%s %d %8phC Remote is trying to login\n",
-+		    __func__, __LINE__, fcport->port_name);
-+		/*
-+		 * If we get here, there is port thats already logged in,
-+		 * but it's state has not moved ahead. Recheck with FW on
-+		 * what state it is in and proceed ahead
-+		 */
-+		if (!N2N_TOPO(vha->hw)) {
-+			fcport->fw_login_state = DSC_LS_PRLI_COMP;
-+			qla24xx_post_gpdb_work(vha, fcport, 0);
-+		}
-+		return;
-+	}
-+
-+	if (fcport->fw_login_state == DSC_LS_PRLI_PEND) {
- 		ql_dbg(ql_dbg_disc, vha, 0x20ea,
- 		    "%s %d %8phC Remote is trying to login\n",
- 		    __func__, __LINE__, fcport->port_name);
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -1367,13 +1367,28 @@ skip_rio:
+@@ -54,7 +54,7 @@ static void sprd_gpio_update(struct gpio_chip *chip, unsigned int offset,
+ 	unsigned long flags;
+ 	u32 tmp;
  
- 			/* Port logout */
- 			fcport = qla2x00_find_fcport_by_loopid(vha, mb[1]);
--			if (!fcport)
-+			if (!fcport) {
-+				ql_dbg(ql_dbg_async, vha, 0x5011,
-+					"Could not find fcport:%04x %04x %04x\n",
-+					mb[1], mb[2], mb[3]);
- 				break;
--			if (atomic_read(&fcport->state) != FCS_ONLINE)
-+			}
-+
-+			if (atomic_read(&fcport->state) != FCS_ONLINE) {
-+				ql_dbg(ql_dbg_async, vha, 0x5012,
-+					"Port state is not online State:0x%x \n",
-+					atomic_read(&fcport->state));
-+				ql_dbg(ql_dbg_async, vha, 0x5012,
-+					"Scheduling session for deletion \n");
-+				fcport->logout_on_delete = 0;
-+				qlt_schedule_sess_for_deletion(fcport);
- 				break;
-+			}
-+
- 			ql_dbg(ql_dbg_async, vha, 0x508a,
- 			    "Marking port lost loopid=%04x portid=%06x.\n",
- 			    fcport->loop_id, fcport->d_id.b24);
-+
- 			if (qla_ini_mode_enabled(vha)) {
- 				fcport->logout_on_delete = 0;
- 				qlt_schedule_sess_for_deletion(fcport);
+-	spin_lock_irqsave(&sprd_gpio->lock, flags);
++	raw_spin_lock_irqsave(&sprd_gpio->lock, flags);
+ 	tmp = readl_relaxed(base + reg);
+ 
+ 	if (val)
+@@ -63,7 +63,7 @@ static void sprd_gpio_update(struct gpio_chip *chip, unsigned int offset,
+ 		tmp &= ~BIT(SPRD_GPIO_BIT(offset));
+ 
+ 	writel_relaxed(tmp, base + reg);
+-	spin_unlock_irqrestore(&sprd_gpio->lock, flags);
++	raw_spin_unlock_irqrestore(&sprd_gpio->lock, flags);
+ }
+ 
+ static int sprd_gpio_read(struct gpio_chip *chip, unsigned int offset, u16 reg)
+@@ -231,7 +231,7 @@ static int sprd_gpio_probe(struct platform_device *pdev)
+ 	if (IS_ERR(sprd_gpio->base))
+ 		return PTR_ERR(sprd_gpio->base);
+ 
+-	spin_lock_init(&sprd_gpio->lock);
++	raw_spin_lock_init(&sprd_gpio->lock);
+ 
+ 	sprd_gpio->chip.label = dev_name(&pdev->dev);
+ 	sprd_gpio->chip.ngpio = SPRD_GPIO_NR;
+-- 
+2.51.0
+
 
 
 
