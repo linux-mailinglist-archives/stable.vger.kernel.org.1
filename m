@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-217029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCWrDZ7TlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-217029-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:22 +0100
+	id qJ/tOAjTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BA51503FA
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AC3150274
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6FF1300C252
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:46:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 824B73044371
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7008E28D8E8;
-	Tue, 17 Feb 2026 20:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E62D3783B5;
+	Tue, 17 Feb 2026 20:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8wGL3o9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDAT2BnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320F729BDB4;
-	Tue, 17 Feb 2026 20:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351CE378D65;
+	Tue, 17 Feb 2026 20:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361179; cv=none; b=JtzaPJhFcDhfEOK8pkNYOUJxGolA+y0r8eLgBmFT0zuI0zAVNOzb+v+fIyBH9MwqFcVf55QTfWIGnrAFjXafn1LYGuhxuBdsH/yvzzOnYUcNnI7xFdyT4PSxcnFJKn98wn9ekxiysPS++wFvNN4H5AXl9Cm7bO+NZEK3VEwN6z0=
+	t=1771360995; cv=none; b=nmQMT+Jzg+jb5BgOxmihhwIEbZGijoGI/comncEJ2UF1St7uTJo9sNOwYph92b9cXcRYLZiHJFGKO4wMe7Gh9TAPFIi9dBycJ0R+F7sL3Nxr8ny1njjd3wtwEYIKRfcSweKNIvURI/5lqsm3u+r3van02wHaTC6X5SmpsBAsA4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361179; c=relaxed/simple;
-	bh=en3tVgHOsDRJGSNBXTdceFpkiRZqBcEhC/2NkH2ERjs=;
+	s=arc-20240116; t=1771360995; c=relaxed/simple;
+	bh=8L4+cXi2wxzwEnsnB8xdvcpqdQzCWMjoHvccpReRtts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVeUyDr36deB+OXg+gC4OhzPmaaq/XRXPt9kCws86iPWeYPuZ4hnijk+vnZIGxsiANpyE+5paHv02BhmqUeEpWABchmYuU1rTpNHKXsbgh0KjCyzStz5fuWLheSd96KEeV9K98F43xTRR/DEAjkWdu2y2C5OTAzfB06kXKZyP7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8wGL3o9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34CAC4CEF7;
-	Tue, 17 Feb 2026 20:46:18 +0000 (UTC)
+	 MIME-Version; b=TtXIXXhHVNiufUNsK4WBIV3PKA8SMMw/NLRKyOUzfvbeC2C9d909dAK2aum2pO9xE3w3OPZjPBolor+XdxH7/BFqtRS9teBmWw2uuYGdwysyfWDYpYhjKu5EA3JA3PB/W8mbjWvH7//VVYI0eNY7e9AFV+wFAyUOtAa9TEuVVEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDAT2BnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BB5C4CEF7;
+	Tue, 17 Feb 2026 20:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361179;
-	bh=en3tVgHOsDRJGSNBXTdceFpkiRZqBcEhC/2NkH2ERjs=;
+	s=korg; t=1771360995;
+	bh=8L4+cXi2wxzwEnsnB8xdvcpqdQzCWMjoHvccpReRtts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8wGL3o9n73xuLWm3AaAqIFWdHM8Zly/+v8nh6toxcEvjPBHdAM2mNSKtKny5h8nk
-	 bAQOPPWZPv9ZiXW4MS8jv0sW5ouTu/+uKyKQGy7COlycRr/dYPBy/9Dvs0cQeaZf8p
-	 IUugrUvJFHFWOP6YYnIRtJpf1x8VWDQrjXGDqP/M=
+	b=WDAT2BnNyLsGm7JyIKwHzEv7blrFgVkUenZnWSTQSMizcP+7b5Ndj5Mi3i7duno8b
+	 ycAEgWk9zLk2vUjG1FiBCkypEjO5DvbE4WpsFmsbu0i1vzx5yciEcusP+Lgy1TGl0U
+	 ZlIWABA2NG/R7rEbElqYnxUt9uEnVPn/QMNpq3Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+9c4e33e12283d9437c25@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 24/64] scsi: qla2xxx: Reduce fabric scan duplicate code
+Subject: [PATCH 5.15 11/39] romfs: check sb_set_blocksize() return value
 Date: Tue, 17 Feb 2026 21:31:20 +0100
-Message-ID: <20260217200008.430433486@linuxfoundation.org>
+Message-ID: <20260217200003.363251973@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,747 +66,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217029-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216975-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,9c4e33e12283d9437c25];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,marvell.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C3BA51503FA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email]
+X-Rspamd-Queue-Id: A7AC3150274
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit beafd692461443e0fb1d61aa56886bf85ef6f5e4 ]
+[ Upstream commit ab7ad7abb3660c58ffffdf07ff3bb976e7e0afa0 ]
 
-For fabric scan, current code uses switch scan opcode and flags as the
-method to iterate through different commands to carry out the process.
-This makes it hard to read. This patch convert those opcode and flags into
-steps. In addition, this help reduce some duplicate code.
+romfs_fill_super() ignores the return value of sb_set_blocksize(), which
+can fail if the requested block size is incompatible with the block
+device's configuration.
 
-Consolidate routines that handle GPNFT & GNNFT.
+This can be triggered by setting a loop device's block size larger than
+PAGE_SIZE using ioctl(LOOP_SET_BLOCK_SIZE, 32768), then mounting a romfs
+filesystem on that device.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-10-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 7adbd2b78090 ("scsi: qla2xxx: Free sp in error path to fix system crash")
+When sb_set_blocksize(sb, ROMBSIZE) is called with ROMBSIZE=4096 but the
+device has logical_block_size=32768, bdev_validate_blocksize() fails
+because the requested size is smaller than the device's logical block
+size. sb_set_blocksize() returns 0 (failure), but romfs ignores this and
+continues mounting.
+
+The superblock's block size remains at the device's logical block size
+(32768). Later, when sb_bread() attempts I/O with this oversized block
+size, it triggers a kernel BUG in folio_set_bh():
+
+    kernel BUG at fs/buffer.c:1582!
+    BUG_ON(size > PAGE_SIZE);
+
+Fix by checking the return value of sb_set_blocksize() and failing the
+mount with -EINVAL if it returns 0.
+
+Reported-by: syzbot+9c4e33e12283d9437c25@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9c4e33e12283d9437c25
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260113084037.1167887-1-kartikey406@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h  |   14 +
- drivers/scsi/qla2xxx/qla_gbl.h  |    6 
- drivers/scsi/qla2xxx/qla_gs.c   |  432 ++++++++++++++++------------------------
- drivers/scsi/qla2xxx/qla_init.c |    5 
- drivers/scsi/qla2xxx/qla_os.c   |   12 -
- 5 files changed, 200 insertions(+), 269 deletions(-)
+ fs/romfs/super.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -3273,11 +3273,20 @@ struct fab_scan_rp {
- 	u8 node_name[8];
- };
+diff --git a/fs/romfs/super.c b/fs/romfs/super.c
+index 259f684d9236e..6f31e720c9561 100644
+--- a/fs/romfs/super.c
++++ b/fs/romfs/super.c
+@@ -467,7 +467,10 @@ static int romfs_fill_super(struct super_block *sb, struct fs_context *fc)
  
-+enum scan_step {
-+	FAB_SCAN_START,
-+	FAB_SCAN_GPNFT_FCP,
-+	FAB_SCAN_GNNFT_FCP,
-+	FAB_SCAN_GPNFT_NVME,
-+	FAB_SCAN_GNNFT_NVME,
-+};
-+
- struct fab_scan {
- 	struct fab_scan_rp *l;
- 	u32 size;
- 	u32 rscn_gen_start;
- 	u32 rscn_gen_end;
-+	enum scan_step step;
- 	u16 scan_retry;
- #define MAX_SCAN_RETRIES 5
- 	enum scan_flags_t scan_flags;
-@@ -3503,9 +3512,8 @@ enum qla_work_type {
- 	QLA_EVT_RELOGIN,
- 	QLA_EVT_ASYNC_PRLO,
- 	QLA_EVT_ASYNC_PRLO_DONE,
--	QLA_EVT_GPNFT,
--	QLA_EVT_GPNFT_DONE,
--	QLA_EVT_GNNFT_DONE,
-+	QLA_EVT_SCAN_CMD,
-+	QLA_EVT_SCAN_FINISH,
- 	QLA_EVT_GFPNID,
- 	QLA_EVT_SP_RETRY,
- 	QLA_EVT_IIDMA,
---- a/drivers/scsi/qla2xxx/qla_gbl.h
-+++ b/drivers/scsi/qla2xxx/qla_gbl.h
-@@ -736,9 +736,9 @@ void qla24xx_handle_gpsc_event(scsi_qla_
- int qla2x00_mgmt_svr_login(scsi_qla_host_t *);
- void qla24xx_handle_gffid_event(scsi_qla_host_t *vha, struct event_arg *ea);
- int qla24xx_async_gffid(scsi_qla_host_t *vha, fc_port_t *fcport, bool);
--int qla24xx_async_gpnft(scsi_qla_host_t *, u8, srb_t *);
--void qla24xx_async_gpnft_done(scsi_qla_host_t *, srb_t *);
--void qla24xx_async_gnnft_done(scsi_qla_host_t *, srb_t *);
-+int qla_fab_async_scan(scsi_qla_host_t *, srb_t *);
-+void qla_fab_scan_start(struct scsi_qla_host *);
-+void qla_fab_scan_finish(scsi_qla_host_t *, srb_t *);
- int qla24xx_post_gfpnid_work(struct scsi_qla_host *, fc_port_t *);
- int qla24xx_async_gfpnid(scsi_qla_host_t *, fc_port_t *);
- void qla24xx_handle_gfpnid_event(scsi_qla_host_t *, struct event_arg *);
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -3488,7 +3488,7 @@ static bool qla_ok_to_clear_rscn(scsi_ql
- 	return true;
- }
- 
--void qla24xx_async_gnnft_done(scsi_qla_host_t *vha, srb_t *sp)
-+void qla_fab_scan_finish(scsi_qla_host_t *vha, srb_t *sp)
- {
- 	fc_port_t *fcport;
- 	u32 i, rc;
-@@ -3700,14 +3700,11 @@ out:
- 	}
- }
- 
--static int qla2x00_post_gnnft_gpnft_done_work(struct scsi_qla_host *vha,
-+static int qla2x00_post_next_scan_work(struct scsi_qla_host *vha,
-     srb_t *sp, int cmd)
- {
- 	struct qla_work_evt *e;
- 
--	if (cmd != QLA_EVT_GPNFT_DONE && cmd != QLA_EVT_GNNFT_DONE)
--		return QLA_PARAMETER_ERROR;
--
- 	e = qla2x00_alloc_work(vha, cmd);
- 	if (!e)
- 		return QLA_FUNCTION_FAILED;
-@@ -3717,37 +3714,15 @@ static int qla2x00_post_gnnft_gpnft_done
- 	return qla2x00_post_work(vha, e);
- }
- 
--static int qla2x00_post_nvme_gpnft_work(struct scsi_qla_host *vha,
--    srb_t *sp, int cmd)
--{
--	struct qla_work_evt *e;
--
--	if (cmd != QLA_EVT_GPNFT)
--		return QLA_PARAMETER_ERROR;
--
--	e = qla2x00_alloc_work(vha, cmd);
--	if (!e)
--		return QLA_FUNCTION_FAILED;
--
--	e->u.gpnft.fc4_type = FC4_TYPE_NVME;
--	e->u.gpnft.sp = sp;
--
--	return qla2x00_post_work(vha, e);
--}
--
- static void qla2x00_find_free_fcp_nvme_slot(struct scsi_qla_host *vha,
- 	struct srb *sp)
- {
- 	struct qla_hw_data *ha = vha->hw;
- 	int num_fibre_dev = ha->max_fibre_devices;
--	struct ct_sns_req *ct_req =
--		(struct ct_sns_req *)sp->u.iocb_cmd.u.ctarg.req;
- 	struct ct_sns_gpnft_rsp *ct_rsp =
- 		(struct ct_sns_gpnft_rsp *)sp->u.iocb_cmd.u.ctarg.rsp;
- 	struct ct_sns_gpn_ft_data *d;
- 	struct fab_scan_rp *rp;
--	u16 cmd = be16_to_cpu(ct_req->command);
--	u8 fc4_type = sp->gen2;
- 	int i, j, k;
- 	port_id_t id;
- 	u8 found;
-@@ -3766,85 +3741,83 @@ static void qla2x00_find_free_fcp_nvme_s
- 		if (id.b24 == 0 || wwn == 0)
- 			continue;
- 
--		if (fc4_type == FC4_TYPE_FCP_SCSI) {
--			if (cmd == GPN_FT_CMD) {
--				rp = &vha->scan.l[j];
--				rp->id = id;
--				memcpy(rp->port_name, d->port_name, 8);
--				j++;
--				rp->fc4type = FS_FC4TYPE_FCP;
--			} else {
--				for (k = 0; k < num_fibre_dev; k++) {
--					rp = &vha->scan.l[k];
--					if (id.b24 == rp->id.b24) {
--						memcpy(rp->node_name,
--						    d->port_name, 8);
--						break;
--					}
-+		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x2025,
-+		       "%s %06x %8ph \n",
-+		       __func__, id.b24, d->port_name);
-+
-+		switch (vha->scan.step) {
-+		case FAB_SCAN_GPNFT_FCP:
-+			rp = &vha->scan.l[j];
-+			rp->id = id;
-+			memcpy(rp->port_name, d->port_name, 8);
-+			j++;
-+			rp->fc4type = FS_FC4TYPE_FCP;
-+			break;
-+		case FAB_SCAN_GNNFT_FCP:
-+			for (k = 0; k < num_fibre_dev; k++) {
-+				rp = &vha->scan.l[k];
-+				if (id.b24 == rp->id.b24) {
-+					memcpy(rp->node_name,
-+					    d->port_name, 8);
-+					break;
- 				}
- 			}
--		} else {
--			/* Search if the fibre device supports FC4_TYPE_NVME */
--			if (cmd == GPN_FT_CMD) {
--				found = 0;
-+			break;
-+		case FAB_SCAN_GPNFT_NVME:
-+			found = 0;
- 
--				for (k = 0; k < num_fibre_dev; k++) {
--					rp = &vha->scan.l[k];
--					if (!memcmp(rp->port_name,
--					    d->port_name, 8)) {
--						/*
--						 * Supports FC-NVMe & FCP
--						 */
--						rp->fc4type |= FS_FC4TYPE_NVME;
--						found = 1;
--						break;
--					}
-+			for (k = 0; k < num_fibre_dev; k++) {
-+				rp = &vha->scan.l[k];
-+				if (!memcmp(rp->port_name, d->port_name, 8)) {
-+					/*
-+					 * Supports FC-NVMe & FCP
-+					 */
-+					rp->fc4type |= FS_FC4TYPE_NVME;
-+					found = 1;
-+					break;
- 				}
-+			}
- 
--				/* We found new FC-NVMe only port */
--				if (!found) {
--					for (k = 0; k < num_fibre_dev; k++) {
--						rp = &vha->scan.l[k];
--						if (wwn_to_u64(rp->port_name)) {
--							continue;
--						} else {
--							rp->id = id;
--							memcpy(rp->port_name,
--							    d->port_name, 8);
--							rp->fc4type =
--							    FS_FC4TYPE_NVME;
--							break;
--						}
--					}
--				}
--			} else {
-+			/* We found new FC-NVMe only port */
-+			if (!found) {
- 				for (k = 0; k < num_fibre_dev; k++) {
- 					rp = &vha->scan.l[k];
--					if (id.b24 == rp->id.b24) {
--						memcpy(rp->node_name,
--						    d->port_name, 8);
-+					if (wwn_to_u64(rp->port_name)) {
-+						continue;
-+					} else {
-+						rp->id = id;
-+						memcpy(rp->port_name, d->port_name, 8);
-+						rp->fc4type = FS_FC4TYPE_NVME;
- 						break;
- 					}
- 				}
- 			}
-+			break;
-+		case FAB_SCAN_GNNFT_NVME:
-+			for (k = 0; k < num_fibre_dev; k++) {
-+				rp = &vha->scan.l[k];
-+				if (id.b24 == rp->id.b24) {
-+					memcpy(rp->node_name, d->port_name, 8);
-+					break;
-+				}
-+			}
-+			break;
-+		default:
-+			break;
- 		}
- 	}
- }
- 
--static void qla2x00_async_gpnft_gnnft_sp_done(srb_t *sp, int res)
-+static void qla_async_scan_sp_done(srb_t *sp, int res)
- {
- 	struct scsi_qla_host *vha = sp->vha;
--	struct ct_sns_req *ct_req =
--		(struct ct_sns_req *)sp->u.iocb_cmd.u.ctarg.req;
--	u16 cmd = be16_to_cpu(ct_req->command);
--	u8 fc4_type = sp->gen2;
- 	unsigned long flags;
- 	int rc;
- 
- 	/* gen2 field is holding the fc4type */
--	ql_dbg(ql_dbg_disc, vha, 0xffff,
--	    "Async done-%s res %x FC4Type %x\n",
--	    sp->name, res, sp->gen2);
-+	ql_dbg(ql_dbg_disc, vha, 0x2026,
-+	    "Async done-%s res %x step %x\n",
-+	    sp->name, res, vha->scan.step);
- 
- 	sp->rc = res;
- 	if (res) {
-@@ -3868,8 +3841,7 @@ static void qla2x00_async_gpnft_gnnft_sp
- 		 * sp for GNNFT_DONE work. This will allow all
- 		 * the resource to get freed up.
- 		 */
--		rc = qla2x00_post_gnnft_gpnft_done_work(vha, sp,
--		    QLA_EVT_GNNFT_DONE);
-+		rc = qla2x00_post_next_scan_work(vha, sp, QLA_EVT_SCAN_FINISH);
- 		if (rc) {
- 			/* Cleanup here to prevent memory leak */
- 			qla24xx_sp_unmap(vha, sp);
-@@ -3894,28 +3866,30 @@ static void qla2x00_async_gpnft_gnnft_sp
- 
- 	qla2x00_find_free_fcp_nvme_slot(vha, sp);
- 
--	if ((fc4_type == FC4_TYPE_FCP_SCSI) && vha->flags.nvme_enabled &&
--	    cmd == GNN_FT_CMD) {
--		spin_lock_irqsave(&vha->work_lock, flags);
--		vha->scan.scan_flags &= ~SF_SCANNING;
--		spin_unlock_irqrestore(&vha->work_lock, flags);
--
--		sp->rc = res;
--		rc = qla2x00_post_nvme_gpnft_work(vha, sp, QLA_EVT_GPNFT);
--		if (rc) {
--			qla24xx_sp_unmap(vha, sp);
--			set_bit(LOCAL_LOOP_UPDATE, &vha->dpc_flags);
--			set_bit(LOOP_RESYNC_NEEDED, &vha->dpc_flags);
--		}
--		return;
--	}
-+	spin_lock_irqsave(&vha->work_lock, flags);
-+	vha->scan.scan_flags &= ~SF_SCANNING;
-+	spin_unlock_irqrestore(&vha->work_lock, flags);
- 
--	if (cmd == GPN_FT_CMD) {
--		rc = qla2x00_post_gnnft_gpnft_done_work(vha, sp,
--		    QLA_EVT_GPNFT_DONE);
--	} else {
--		rc = qla2x00_post_gnnft_gpnft_done_work(vha, sp,
--		    QLA_EVT_GNNFT_DONE);
-+	switch (vha->scan.step) {
-+	case FAB_SCAN_GPNFT_FCP:
-+	case FAB_SCAN_GPNFT_NVME:
-+		rc = qla2x00_post_next_scan_work(vha, sp, QLA_EVT_SCAN_CMD);
-+		break;
-+	case  FAB_SCAN_GNNFT_FCP:
-+		if (vha->flags.nvme_enabled)
-+			rc = qla2x00_post_next_scan_work(vha, sp, QLA_EVT_SCAN_CMD);
-+		else
-+			rc = qla2x00_post_next_scan_work(vha, sp, QLA_EVT_SCAN_FINISH);
-+
-+		break;
-+	case  FAB_SCAN_GNNFT_NVME:
-+		rc = qla2x00_post_next_scan_work(vha, sp, QLA_EVT_SCAN_FINISH);
-+		break;
-+	default:
-+		/* should not be here */
-+		WARN_ON(1);
-+		rc = QLA_FUNCTION_FAILED;
-+		break;
- 	}
- 
- 	if (rc) {
-@@ -3926,127 +3900,16 @@ static void qla2x00_async_gpnft_gnnft_sp
- 	}
- }
- 
--/*
-- * Get WWNN list for fc4_type
-- *
-- * It is assumed the same SRB is re-used from GPNFT to avoid
-- * mem free & re-alloc
-- */
--static int qla24xx_async_gnnft(scsi_qla_host_t *vha, struct srb *sp,
--    u8 fc4_type)
--{
--	int rval = QLA_FUNCTION_FAILED;
--	struct ct_sns_req *ct_req;
--	struct ct_sns_pkt *ct_sns;
--	unsigned long flags;
--
--	if (!vha->flags.online) {
--		spin_lock_irqsave(&vha->work_lock, flags);
--		vha->scan.scan_flags &= ~SF_SCANNING;
--		spin_unlock_irqrestore(&vha->work_lock, flags);
--		goto done_free_sp;
--	}
--
--	if (!sp->u.iocb_cmd.u.ctarg.req || !sp->u.iocb_cmd.u.ctarg.rsp) {
--		ql_log(ql_log_warn, vha, 0xffff,
--		    "%s: req %p rsp %p are not setup\n",
--		    __func__, sp->u.iocb_cmd.u.ctarg.req,
--		    sp->u.iocb_cmd.u.ctarg.rsp);
--		spin_lock_irqsave(&vha->work_lock, flags);
--		vha->scan.scan_flags &= ~SF_SCANNING;
--		spin_unlock_irqrestore(&vha->work_lock, flags);
--		WARN_ON(1);
--		set_bit(LOCAL_LOOP_UPDATE, &vha->dpc_flags);
--		set_bit(LOOP_RESYNC_NEEDED, &vha->dpc_flags);
--		goto done_free_sp;
--	}
--
--	ql_dbg(ql_dbg_disc, vha, 0xfffff,
--	    "%s: FC4Type %x, CT-PASSTHRU %s command ctarg rsp size %d, ctarg req size %d\n",
--	    __func__, fc4_type, sp->name, sp->u.iocb_cmd.u.ctarg.rsp_size,
--	     sp->u.iocb_cmd.u.ctarg.req_size);
--
--	sp->type = SRB_CT_PTHRU_CMD;
--	sp->name = "gnnft";
--	sp->gen1 = vha->hw->base_qpair->chip_reset;
--	sp->gen2 = fc4_type;
--	qla2x00_init_async_sp(sp, qla2x00_get_async_timeout(vha) + 2,
--			      qla2x00_async_gpnft_gnnft_sp_done);
--
--	memset(sp->u.iocb_cmd.u.ctarg.rsp, 0, sp->u.iocb_cmd.u.ctarg.rsp_size);
--	memset(sp->u.iocb_cmd.u.ctarg.req, 0, sp->u.iocb_cmd.u.ctarg.req_size);
--
--	ct_sns = (struct ct_sns_pkt *)sp->u.iocb_cmd.u.ctarg.req;
--	/* CT_IU preamble  */
--	ct_req = qla2x00_prep_ct_req(ct_sns, GNN_FT_CMD,
--	    sp->u.iocb_cmd.u.ctarg.rsp_size);
--
--	/* GPN_FT req */
--	ct_req->req.gpn_ft.port_type = fc4_type;
--
--	sp->u.iocb_cmd.u.ctarg.req_size = GNN_FT_REQ_SIZE;
--	sp->u.iocb_cmd.u.ctarg.nport_handle = NPH_SNS;
--
--	ql_dbg(ql_dbg_disc, vha, 0xffff,
--	    "Async-%s hdl=%x FC4Type %x.\n", sp->name,
--	    sp->handle, ct_req->req.gpn_ft.port_type);
--
--	rval = qla2x00_start_sp(sp);
--	if (rval != QLA_SUCCESS) {
--		goto done_free_sp;
--	}
--
--	return rval;
--
--done_free_sp:
--	if (sp->u.iocb_cmd.u.ctarg.req) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.req,
--		    sp->u.iocb_cmd.u.ctarg.req_dma);
--		sp->u.iocb_cmd.u.ctarg.req = NULL;
--	}
--	if (sp->u.iocb_cmd.u.ctarg.rsp) {
--		dma_free_coherent(&vha->hw->pdev->dev,
--		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
--		    sp->u.iocb_cmd.u.ctarg.rsp,
--		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
--		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
--	}
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
--
--	spin_lock_irqsave(&vha->work_lock, flags);
--	vha->scan.scan_flags &= ~SF_SCANNING;
--	if (vha->scan.scan_flags == 0) {
--		ql_dbg(ql_dbg_disc, vha, 0xffff,
--		    "%s: schedule\n", __func__);
--		vha->scan.scan_flags |= SF_QUEUED;
--		schedule_delayed_work(&vha->scan.scan_work, 5);
--	}
--	spin_unlock_irqrestore(&vha->work_lock, flags);
--
--
--	return rval;
--} /* GNNFT */
--
--void qla24xx_async_gpnft_done(scsi_qla_host_t *vha, srb_t *sp)
--{
--	ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0xffff,
--	    "%s enter\n", __func__);
--	qla24xx_async_gnnft(vha, sp, sp->gen2);
--}
--
- /* Get WWPN list for certain fc4_type */
--int qla24xx_async_gpnft(scsi_qla_host_t *vha, u8 fc4_type, srb_t *sp)
-+int qla_fab_async_scan(scsi_qla_host_t *vha, srb_t *sp)
- {
- 	int rval = QLA_FUNCTION_FAILED;
- 	struct ct_sns_req       *ct_req;
- 	struct ct_sns_pkt *ct_sns;
--	u32 rspsz;
-+	u32 rspsz = 0;
- 	unsigned long flags;
- 
--	ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0xffff,
-+	ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x200c,
- 	    "%s enter\n", __func__);
- 
- 	if (!vha->flags.online)
-@@ -4055,22 +3918,21 @@ int qla24xx_async_gpnft(scsi_qla_host_t
- 	spin_lock_irqsave(&vha->work_lock, flags);
- 	if (vha->scan.scan_flags & SF_SCANNING) {
- 		spin_unlock_irqrestore(&vha->work_lock, flags);
--		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0xffff,
-+		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x2012,
- 		    "%s: scan active\n", __func__);
- 		return rval;
- 	}
- 	vha->scan.scan_flags |= SF_SCANNING;
-+	if (!sp)
-+		vha->scan.step = FAB_SCAN_START;
-+
- 	spin_unlock_irqrestore(&vha->work_lock, flags);
- 
--	if (fc4_type == FC4_TYPE_FCP_SCSI) {
--		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0xffff,
-+	switch (vha->scan.step) {
-+	case FAB_SCAN_START:
-+		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x2018,
- 		    "%s: Performing FCP Scan\n", __func__);
- 
--		if (sp) {
--			/* ref: INIT */
--			kref_put(&sp->cmd_kref, qla2x00_sp_release);
--		}
--
- 		/* ref: INIT */
- 		sp = qla2x00_get_sp(vha, NULL, GFP_KERNEL);
- 		if (!sp) {
-@@ -4086,7 +3948,7 @@ int qla24xx_async_gpnft(scsi_qla_host_t
- 								GFP_KERNEL);
- 		sp->u.iocb_cmd.u.ctarg.req_allocated_size = sizeof(struct ct_sns_pkt);
- 		if (!sp->u.iocb_cmd.u.ctarg.req) {
--			ql_log(ql_log_warn, vha, 0xffff,
-+			ql_log(ql_log_warn, vha, 0x201a,
- 			    "Failed to allocate ct_sns request.\n");
- 			spin_lock_irqsave(&vha->work_lock, flags);
- 			vha->scan.scan_flags &= ~SF_SCANNING;
-@@ -4094,7 +3956,6 @@ int qla24xx_async_gpnft(scsi_qla_host_t
- 			qla2x00_rel_sp(sp);
- 			return rval;
- 		}
--		sp->u.iocb_cmd.u.ctarg.req_size = GPN_FT_REQ_SIZE;
- 
- 		rspsz = sizeof(struct ct_sns_gpnft_rsp) +
- 			((vha->hw->max_fibre_devices - 1) *
-@@ -4106,7 +3967,7 @@ int qla24xx_async_gpnft(scsi_qla_host_t
- 								GFP_KERNEL);
- 		sp->u.iocb_cmd.u.ctarg.rsp_allocated_size = rspsz;
- 		if (!sp->u.iocb_cmd.u.ctarg.rsp) {
--			ql_log(ql_log_warn, vha, 0xffff,
-+			ql_log(ql_log_warn, vha, 0x201b,
- 			    "Failed to allocate ct_sns request.\n");
- 			spin_lock_irqsave(&vha->work_lock, flags);
- 			vha->scan.scan_flags &= ~SF_SCANNING;
-@@ -4126,35 +3987,95 @@ int qla24xx_async_gpnft(scsi_qla_host_t
- 		    "%s scan list size %d\n", __func__, vha->scan.size);
- 
- 		memset(vha->scan.l, 0, vha->scan.size);
--	} else if (!sp) {
--		ql_dbg(ql_dbg_disc, vha, 0xffff,
--		    "NVME scan did not provide SP\n");
-+
-+		vha->scan.step = FAB_SCAN_GPNFT_FCP;
-+		break;
-+	case FAB_SCAN_GPNFT_FCP:
-+		vha->scan.step = FAB_SCAN_GNNFT_FCP;
-+		break;
-+	case FAB_SCAN_GNNFT_FCP:
-+		vha->scan.step = FAB_SCAN_GPNFT_NVME;
-+		break;
-+	case FAB_SCAN_GPNFT_NVME:
-+		vha->scan.step = FAB_SCAN_GNNFT_NVME;
-+		break;
-+	case FAB_SCAN_GNNFT_NVME:
-+	default:
-+		/* should not be here */
-+		WARN_ON(1);
-+		goto done_free_sp;
-+	}
-+
-+	if (!sp) {
-+		ql_dbg(ql_dbg_disc, vha, 0x201c,
-+		    "scan did not provide SP\n");
- 		return rval;
- 	}
-+	if (!sp->u.iocb_cmd.u.ctarg.req || !sp->u.iocb_cmd.u.ctarg.rsp) {
-+		ql_log(ql_log_warn, vha, 0x201d,
-+		    "%s: req %p rsp %p are not setup\n",
-+		    __func__, sp->u.iocb_cmd.u.ctarg.req,
-+		    sp->u.iocb_cmd.u.ctarg.rsp);
-+		spin_lock_irqsave(&vha->work_lock, flags);
-+		vha->scan.scan_flags &= ~SF_SCANNING;
-+		spin_unlock_irqrestore(&vha->work_lock, flags);
-+		WARN_ON(1);
-+		set_bit(LOCAL_LOOP_UPDATE, &vha->dpc_flags);
-+		set_bit(LOOP_RESYNC_NEEDED, &vha->dpc_flags);
-+		goto done_free_sp;
-+	}
-+
-+	rspsz = sp->u.iocb_cmd.u.ctarg.rsp_size;
-+	memset(sp->u.iocb_cmd.u.ctarg.req, 0, sp->u.iocb_cmd.u.ctarg.req_size);
-+	memset(sp->u.iocb_cmd.u.ctarg.rsp, 0, sp->u.iocb_cmd.u.ctarg.rsp_size);
-+
- 
- 	sp->type = SRB_CT_PTHRU_CMD;
--	sp->name = "gpnft";
- 	sp->gen1 = vha->hw->base_qpair->chip_reset;
--	sp->gen2 = fc4_type;
- 	qla2x00_init_async_sp(sp, qla2x00_get_async_timeout(vha) + 2,
--			      qla2x00_async_gpnft_gnnft_sp_done);
--
--	rspsz = sp->u.iocb_cmd.u.ctarg.rsp_size;
--	memset(sp->u.iocb_cmd.u.ctarg.rsp, 0, sp->u.iocb_cmd.u.ctarg.rsp_size);
--	memset(sp->u.iocb_cmd.u.ctarg.req, 0, sp->u.iocb_cmd.u.ctarg.req_size);
-+			      qla_async_scan_sp_done);
- 
- 	ct_sns = (struct ct_sns_pkt *)sp->u.iocb_cmd.u.ctarg.req;
--	/* CT_IU preamble  */
--	ct_req = qla2x00_prep_ct_req(ct_sns, GPN_FT_CMD, rspsz);
- 
--	/* GPN_FT req */
--	ct_req->req.gpn_ft.port_type = fc4_type;
-+	/* CT_IU preamble  */
-+	switch (vha->scan.step) {
-+	case FAB_SCAN_GPNFT_FCP:
-+		sp->name = "gpnft";
-+		ct_req = qla2x00_prep_ct_req(ct_sns, GPN_FT_CMD, rspsz);
-+		ct_req->req.gpn_ft.port_type = FC4_TYPE_FCP_SCSI;
-+		sp->u.iocb_cmd.u.ctarg.req_size = GPN_FT_REQ_SIZE;
-+		break;
-+	case FAB_SCAN_GNNFT_FCP:
-+		sp->name = "gnnft";
-+		ct_req = qla2x00_prep_ct_req(ct_sns, GNN_FT_CMD, rspsz);
-+		ct_req->req.gpn_ft.port_type = FC4_TYPE_FCP_SCSI;
-+		sp->u.iocb_cmd.u.ctarg.req_size = GNN_FT_REQ_SIZE;
-+		break;
-+	case FAB_SCAN_GPNFT_NVME:
-+		sp->name = "gpnft";
-+		ct_req = qla2x00_prep_ct_req(ct_sns, GPN_FT_CMD, rspsz);
-+		ct_req->req.gpn_ft.port_type = FC4_TYPE_NVME;
-+		sp->u.iocb_cmd.u.ctarg.req_size = GPN_FT_REQ_SIZE;
-+		break;
-+	case FAB_SCAN_GNNFT_NVME:
-+		sp->name = "gnnft";
-+		ct_req = qla2x00_prep_ct_req(ct_sns, GNN_FT_CMD, rspsz);
-+		ct_req->req.gpn_ft.port_type = FC4_TYPE_NVME;
-+		sp->u.iocb_cmd.u.ctarg.req_size = GNN_FT_REQ_SIZE;
-+		break;
-+	default:
-+		/* should not be here */
-+		WARN_ON(1);
-+		goto done_free_sp;
-+	}
- 
- 	sp->u.iocb_cmd.u.ctarg.nport_handle = NPH_SNS;
- 
--	ql_dbg(ql_dbg_disc, vha, 0xffff,
--	    "Async-%s hdl=%x FC4Type %x.\n", sp->name,
--	    sp->handle, ct_req->req.gpn_ft.port_type);
-+	ql_dbg(ql_dbg_disc, vha, 0x2003,
-+	       "%s: step %d, rsp size %d, req size %d hdl %x %s FC4TYPE %x \n",
-+	       __func__, vha->scan.step, sp->u.iocb_cmd.u.ctarg.rsp_size,
-+	       sp->u.iocb_cmd.u.ctarg.req_size, sp->handle, sp->name,
-+	       ct_req->req.gpn_ft.port_type);
- 
- 	rval = qla2x00_start_sp(sp);
- 	if (rval != QLA_SUCCESS) {
-@@ -4187,7 +4108,7 @@ done_free_sp:
- 	spin_lock_irqsave(&vha->work_lock, flags);
- 	vha->scan.scan_flags &= ~SF_SCANNING;
- 	if (vha->scan.scan_flags == 0) {
--		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0xffff,
-+		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0x2007,
- 		    "%s: Scan scheduled.\n", __func__);
- 		vha->scan.scan_flags |= SF_QUEUED;
- 		schedule_delayed_work(&vha->scan.scan_work, 5);
-@@ -4198,6 +4119,15 @@ done_free_sp:
- 	return rval;
- }
- 
-+void qla_fab_scan_start(struct scsi_qla_host *vha)
-+{
-+	int rval;
-+
-+	rval = qla_fab_async_scan(vha, NULL);
-+	if (rval)
-+		set_bit(LOOP_RESYNC_NEEDED, &vha->dpc_flags);
-+}
-+
- void qla_scan_work_fn(struct work_struct *work)
- {
- 	struct fab_scan *s = container_of(to_delayed_work(work),
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -6444,10 +6444,7 @@ qla2x00_configure_fabric(scsi_qla_host_t
- 		if (USE_ASYNC_SCAN(ha)) {
- 			/* start of scan begins here */
- 			vha->scan.rscn_gen_end = atomic_read(&vha->rscn_gen);
--			rval = qla24xx_async_gpnft(vha, FC4_TYPE_FCP_SCSI,
--			    NULL);
--			if (rval)
--				set_bit(LOOP_RESYNC_NEEDED, &vha->dpc_flags);
-+			qla_fab_scan_start(vha);
- 		} else  {
- 			list_for_each_entry(fcport, &vha->vp_fcports, list)
- 				fcport->scan_state = QLA_FCPORT_SCAN;
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -5522,15 +5522,11 @@ qla2x00_do_work(struct scsi_qla_host *vh
- 			qla2x00_async_prlo_done(vha, e->u.logio.fcport,
- 			    e->u.logio.data);
- 			break;
--		case QLA_EVT_GPNFT:
--			qla24xx_async_gpnft(vha, e->u.gpnft.fc4_type,
--			    e->u.gpnft.sp);
-+		case QLA_EVT_SCAN_CMD:
-+			qla_fab_async_scan(vha, e->u.iosb.sp);
- 			break;
--		case QLA_EVT_GPNFT_DONE:
--			qla24xx_async_gpnft_done(vha, e->u.iosb.sp);
--			break;
--		case QLA_EVT_GNNFT_DONE:
--			qla24xx_async_gnnft_done(vha, e->u.iosb.sp);
-+		case QLA_EVT_SCAN_FINISH:
-+			qla_fab_scan_finish(vha, e->u.iosb.sp);
- 			break;
- 		case QLA_EVT_GFPNID:
- 			qla24xx_async_gfpnid(vha, e->u.fcport.fcport);
+ #ifdef CONFIG_BLOCK
+ 	if (!sb->s_mtd) {
+-		sb_set_blocksize(sb, ROMBSIZE);
++		if (!sb_set_blocksize(sb, ROMBSIZE)) {
++			errorf(fc, "romfs: unable to set blocksize\n");
++			return -EINVAL;
++		}
+ 	} else {
+ 		sb->s_blocksize = ROMBSIZE;
+ 		sb->s_blocksize_bits = blksize_bits(ROMBSIZE);
+-- 
+2.51.0
+
 
 
 
