@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-217022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216997-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGmEJonTlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:01 +0100
+	id iCZfATXTlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216997-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39581503CD
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A8F1502FE
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 975223004CB4
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:45:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80500300D971
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E605229A1;
-	Tue, 17 Feb 2026 20:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5B8378821;
+	Tue, 17 Feb 2026 20:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1nUEIan"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4kXykHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8158259CBD;
-	Tue, 17 Feb 2026 20:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3D1376BFF;
+	Tue, 17 Feb 2026 20:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361155; cv=none; b=KQiJW4kh4QbnpUqO4okDObK+v8lGRXpC+mNnj4xIS+an9HRlQhSGimUe4GzcSmNRriqolpSau1sRCANwI7XGHR9DJsmLhe6wU1/tnYlAY15AHbtrm3x0Wa6vNjWK9SH5FkVXfRMgzDSAUebhtjiSPlDszrTnEYX20LKYOiMEUhI=
+	t=1771361071; cv=none; b=nNWNus1Mgtf4MzYVmpfbNkVgdfAU4A1RxvlG05em0mK4q052YMLqY5fyYHt7eZ1dn7wpM52pAGEyzmBUVKTvTK7qgYgX7pNm0w0KhmnRVbVzLDeGMjdLWcrqN5dNFxD9eiv5nOezp5U4i91qx3Xr1ClPmCGKBRmJdUnNCbQ4pIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361155; c=relaxed/simple;
-	bh=Cf0CvEbOZGWbSp61z+3aEAsJ+itmH45+AHfXORft10A=;
+	s=arc-20240116; t=1771361071; c=relaxed/simple;
+	bh=Ensczduvp4YzcvS+xMd8hYDnHCnvdBTf8ImXP3xLxzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i2ocO2vtIKYJaHwH6nBaO8edu0Gi4xvbxTugRZSc3SbcxXnN3ZuoxsWiNixtfLgxlJOXRYftnyk/Hmqql/FYUpSgyXhuLPatx5GHlymuDet31fQWnvJXwBGQ8P3fHK06MHypFFp5Ra0MNm4507ozDcRECTirgaWxKC8pX2ylhMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1nUEIan; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1589BC4CEF7;
-	Tue, 17 Feb 2026 20:45:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ly00Y5Hu8QsbZ1TXpQHxTXTGtpE3gPlpWhDtQkMmpN+gTViPpR76ydsluwQiOTPs1sqdjBXNfTx9VC4vBOIC7I2jjYSXbKG8MltB+3emGiHQKbYp4E7GUummjHba0hvS097Jl30A3L92/0qvV5KI0z234TkRFcoaHM8O55JCIRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4kXykHT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC47C4CEF7;
+	Tue, 17 Feb 2026 20:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361155;
-	bh=Cf0CvEbOZGWbSp61z+3aEAsJ+itmH45+AHfXORft10A=;
+	s=korg; t=1771361071;
+	bh=Ensczduvp4YzcvS+xMd8hYDnHCnvdBTf8ImXP3xLxzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1nUEIanMzbkJL0C5frf9pYoTvifyIdpXw0XQf5c3r9ZbpV4HifRLC64fhI4Ulufq
-	 b7ThZNDu0X699Em8Sjx31vKhoMGLvlrq8QaQup5kCGf/gPbZnhgqQxwT5gmvCgR8YH
-	 WdUcNeg01Zr8NHq3uAjkXTTyLl4JoXmeus9eBn5s=
+	b=B4kXykHTkILwSlawqUkYI76ZBrnM4e+pV2kkKVCf9QxSarYJf8g5d29tvNEOw9znt
+	 5uSveyNL7I9SiyguWGfT9me4vC4yQveekKDHpgDcXyZ7vznE9YgDsqhG180FdG+9Mp
+	 u098N+b3nybGURIRx57pHDfD2qt9SEgYYyZCHQ1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/64] PCI: endpoint: Automatically create a function specific attributes group
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 05/39] scsi: qla2xxx: Validate sp before freeing associated memory
 Date: Tue, 17 Feb 2026 21:31:14 +0100
-Message-ID: <20260217200008.198444159@linuxfoundation.org>
+Message-ID: <20260217200003.137359049@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,298 +64,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217022-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216997-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: F39581503CD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,marvell.com:email]
+X-Rspamd-Queue-Id: 71A8F1502FE
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-[ Upstream commit 70b3740f2c1941e2006d61539131b70d20cba9a6 ]
+commit b6df15aec8c3441357d4da0eaf4339eb20f5999f upstream.
 
-A PCI endpoint function driver can define function specific attributes
-under its function configfs directory using the add_cfs() endpoint driver
-operation. This is done by tying up the mkdir operation for the function
-configfs directory to a call to the add_cfs() operation.  However, there
-are no checks preventing the user from repeatedly creating function
-specific attribute directories with different names, resulting in the same
-endpoint specific attributes group being added multiple times, which also
-result in an invalid reference counting for the attribute groups. E.g.,
-using the pci-epf-ntb function driver as an example, the user creates the
-function as follows:
+System crash with the following signature
+[154563.214890] nvme nvme2: NVME-FC{1}: controller connect complete
+[154564.169363] qla2xxx [0000:b0:00.1]-3002:2: nvme: Sched: Set ZIO exchange threshold to 3.
+[154564.169405] qla2xxx [0000:b0:00.1]-ffffff:2: SET ZIO Activity exchange threshold to 5.
+[154565.539974] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 0080 0000.
+[154565.545744] qla2xxx [0000:b0:00.1]-5013:2: RSCN database changed – 0078 00a0 0000.
+[154565.545857] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
+[154565.552760] qla2xxx [0000:b0:00.1]-11a2:2: FEC=enabled (data rate).
+[154565.553079] BUG: kernel NULL pointer dereference, address: 00000000000000f8
+[154565.553080] #PF: supervisor read access in kernel mode
+[154565.553082] #PF: error_code(0x0000) - not-present page
+[154565.553084] PGD 80000010488ab067 P4D 80000010488ab067 PUD 104978a067 PMD 0
+[154565.553089] Oops: 0000 1 PREEMPT SMP PTI
+[154565.553092] CPU: 10 PID: 858 Comm: qla2xxx_2_dpc Kdump: loaded Tainted: G           OE     -------  ---  5.14.0-503.11.1.el9_5.x86_64 #1
+[154565.553096] Hardware name: HPE Synergy 660 Gen10/Synergy 660 Gen10 Compute Module, BIOS I43 09/30/2024
+[154565.553097] RIP: 0010:qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
+[154565.553141] Code: 00 00 e8 58 a3 ec d4 49 89 e9 ba 12 20 00 00 4c 89 e6 49 c7 c0 00 ee a8 c0 48 c7 c1 66 c0 a9 c0 bf 00 80 00 10 e8 15 69 00 00 <4c> 8b 8d f8 00 00 00 4d 85 c9 74 35 49 8b 84 24 00 19 00 00 48 8b
+[154565.553143] RSP: 0018:ffffb4dbc8aebdd0 EFLAGS: 00010286
+[154565.553145] RAX: 0000000000000000 RBX: ffff8ec2cf0908d0 RCX: 0000000000000002
+[154565.553147] RDX: 0000000000000000 RSI: ffffffffc0a9c896 RDI: ffffb4dbc8aebd47
+[154565.553148] RBP: 0000000000000000 R08: ffffb4dbc8aebd45 R09: 0000000000ffff0a
+[154565.553150] R10: 0000000000000000 R11: 000000000000000f R12: ffff8ec2cf0908d0
+[154565.553151] R13: ffff8ec2cf090900 R14: 0000000000000102 R15: ffff8ec2cf084000
+[154565.553152] FS:  0000000000000000(0000) GS:ffff8ed27f800000(0000) knlGS:0000000000000000
+[154565.553154] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[154565.553155] CR2: 00000000000000f8 CR3: 000000113ae0a005 CR4: 00000000007706f0
+[154565.553157] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[154565.553158] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[154565.553159] PKRU: 55555554
+[154565.553160] Call Trace:
+[154565.553162]  <TASK>
+[154565.553165]  ? show_trace_log_lvl+0x1c4/0x2df
+[154565.553172]  ? show_trace_log_lvl+0x1c4/0x2df
+[154565.553177]  ? qla_fab_async_scan.part.0+0x40b/0x870 [qla2xxx]
+[154565.553215]  ? __die_body.cold+0x8/0xd
+[154565.553218]  ? page_fault_oops+0x134/0x170
+[154565.553223]  ? snprintf+0x49/0x70
+[154565.553229]  ? exc_page_fault+0x62/0x150
+[154565.553238]  ? asm_exc_page_fault+0x22/0x30
 
-  $ modprobe pci-epf-ntb
-  $ cd /sys/kernel/config/pci_ep/functions/pci_epf_ntb
-  $ mkdir func0
-  $ tree func0
-  func0/
-  |-- baseclass_code
-  |-- cache_line_size
-  |-- ...
-  `-- vendorid
+Check for sp being non NULL before freeing any associated memory
 
-  $ mkdir func0/attrs
-  $ tree func0
-  func0/
-  |-- attrs
-  |   |-- db_count
-  |   |-- mw1
-  |   |-- mw2
-  |   |-- mw3
-  |   |-- mw4
-  |   |-- num_mws
-  |   `-- spad_count
-  |-- baseclass_code
-  |-- cache_line_size
-  |-- ...
-  `-- vendorid
-
-At this point, the function can be started by linking the EP controller.
-However, if the user mistakenly creates again a directory:
-
-  $ mkdir func0/attrs2
-  $ tree func0
-  func0/
-  |-- attrs
-  |   |-- db_count
-  |   |-- mw1
-  |   |-- mw2
-  |   |-- mw3
-  |   |-- mw4
-  |   |-- num_mws
-  |   `-- spad_count
-  |-- attrs2
-  |   |-- db_count
-  |   |-- mw1
-  |   |-- mw2
-  |   |-- mw3
-  |   |-- mw4
-  |   |-- num_mws
-  |   `-- spad_count
-  |-- baseclass_code
-  |-- cache_line_size
-  |-- ...
-  `-- vendorid
-
-The endpoint function specific attributes are duplicated and cause a crash
-when the endpoint function device is torn down:
-
-  refcount_t: addition on 0; use-after-free.
-  WARNING: CPU: 2 PID: 834 at lib/refcount.c:25 refcount_warn_saturate+0xc8/0x144
-  CPU: 2 PID: 834 Comm: rmdir Not tainted 6.3.0-rc1 #1
-  Hardware name: Pine64 RockPro64 v2.1 (DT)
-  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  ...
-  Call trace:
-  refcount_warn_saturate+0xc8/0x144
-  config_item_get+0x7c/0x80
-  configfs_rmdir+0x17c/0x30c
-  vfs_rmdir+0x8c/0x204
-  do_rmdir+0x158/0x184
-  __arm64_sys_unlinkat+0x64/0x80
-  invoke_syscall+0x48/0x114
-  ...
-
-Fix this by modifying pci_epf_cfs_work() to execute the new function
-pci_ep_cfs_add_type_group() which itself calls pci_epf_type_add_cfs() to
-obtain the function specific attribute group and the group name (directory
-name) from the endpoint function driver. If the function driver defines an
-attribute group, pci_ep_cfs_add_type_group() then proceeds to register this
-group using configfs_register_group(), thus automatically exposing the
-function type specific configfs attributes to the user. E.g.:
-
-  $ modprobe pci-epf-ntb
-  $ cd /sys/kernel/config/pci_ep/functions/pci_epf_ntb
-  $ mkdir func0
-  $ tree func0
-  func0/
-  |-- baseclass_code
-  |-- cache_line_size
-  |-- ...
-  |-- pci_epf_ntb.0
-  |   |-- db_count
-  |   |-- mw1
-  |   |-- mw2
-  |   |-- mw3
-  |   |-- mw4
-  |   |-- num_mws
-  |   `-- spad_count
-  |-- primary
-  |-- ...
-  `-- vendorid
-
-With this change, there is no need for the user to create or delete
-directories in the endpoint function attributes directory. The
-pci_epf_type_group_ops group operations are thus removed.
-
-Also update the documentation for the pci-epf-ntb and pci-epf-vntb function
-drivers to reflect this change, removing the explanations showing the need
-to manually create the sub-directory for the function specific attributes.
-
-Link: https://lore.kernel.org/r/20230415023542.77601-2-dlemoal@kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Stable-dep-of: 7c5c7d06bd1f ("PCI: endpoint: Avoid creating sub-groups asynchronously")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a4239945b8ad ("scsi: qla2xxx: Add switch command to simplify fabric discovery")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-10-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/PCI/endpoint/pci-ntb-howto.rst  |   11 ++----
- Documentation/PCI/endpoint/pci-vntb-howto.rst |   13 +++-----
- drivers/pci/endpoint/pci-ep-cfs.c             |   42 ++++++++++++--------------
- 3 files changed, 29 insertions(+), 37 deletions(-)
+ drivers/scsi/qla2xxx/qla_gs.c |   34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
---- a/Documentation/PCI/endpoint/pci-ntb-howto.rst
-+++ b/Documentation/PCI/endpoint/pci-ntb-howto.rst
-@@ -88,13 +88,10 @@ commands can be used::
- 	# echo 0x104c > functions/pci_epf_ntb/func1/vendorid
- 	# echo 0xb00d > functions/pci_epf_ntb/func1/deviceid
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -4166,23 +4166,25 @@ int qla24xx_async_gpnft(scsi_qla_host_t
+ 	return rval;
  
--In order to configure NTB specific attributes, a new sub-directory to func1
--should be created::
--
--	# mkdir functions/pci_epf_ntb/func1/pci_epf_ntb.0/
--
--The NTB function driver will populate this directory with various attributes
--that can be configured by the user::
-+The PCI endpoint framework also automatically creates a sub-directory in the
-+function attribute directory. This sub-directory has the same name as the name
-+of the function device and is populated with the following NTB specific
-+attributes that can be configured by the user::
+ done_free_sp:
+-	if (sp->u.iocb_cmd.u.ctarg.req) {
+-		dma_free_coherent(&vha->hw->pdev->dev,
+-		    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
+-		    sp->u.iocb_cmd.u.ctarg.req,
+-		    sp->u.iocb_cmd.u.ctarg.req_dma);
+-		sp->u.iocb_cmd.u.ctarg.req = NULL;
+-	}
+-	if (sp->u.iocb_cmd.u.ctarg.rsp) {
+-		dma_free_coherent(&vha->hw->pdev->dev,
+-		    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
+-		    sp->u.iocb_cmd.u.ctarg.rsp,
+-		    sp->u.iocb_cmd.u.ctarg.rsp_dma);
+-		sp->u.iocb_cmd.u.ctarg.rsp = NULL;
+-	}
++	if (sp) {
++		if (sp->u.iocb_cmd.u.ctarg.req) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.req_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.req,
++			    sp->u.iocb_cmd.u.ctarg.req_dma);
++			sp->u.iocb_cmd.u.ctarg.req = NULL;
++		}
++		if (sp->u.iocb_cmd.u.ctarg.rsp) {
++			dma_free_coherent(&vha->hw->pdev->dev,
++			    sp->u.iocb_cmd.u.ctarg.rsp_allocated_size,
++			    sp->u.iocb_cmd.u.ctarg.rsp,
++			    sp->u.iocb_cmd.u.ctarg.rsp_dma);
++			sp->u.iocb_cmd.u.ctarg.rsp = NULL;
++		}
  
- 	# ls functions/pci_epf_ntb/func1/pci_epf_ntb.0/
- 	db_count    mw1         mw2         mw3         mw4         num_mws
---- a/Documentation/PCI/endpoint/pci-vntb-howto.rst
-+++ b/Documentation/PCI/endpoint/pci-vntb-howto.rst
-@@ -84,13 +84,10 @@ commands can be used::
- 	# echo 0x1957 > functions/pci_epf_vntb/func1/vendorid
- 	# echo 0x0809 > functions/pci_epf_vntb/func1/deviceid
- 
--In order to configure NTB specific attributes, a new sub-directory to func1
--should be created::
--
--	# mkdir functions/pci_epf_vntb/func1/pci_epf_vntb.0/
--
--The NTB function driver will populate this directory with various attributes
--that can be configured by the user::
-+The PCI endpoint framework also automatically creates a sub-directory in the
-+function attribute directory. This sub-directory has the same name as the name
-+of the function device and is populated with the following NTB specific
-+attributes that can be configured by the user::
- 
- 	# ls functions/pci_epf_vntb/func1/pci_epf_vntb.0/
- 	db_count    mw1         mw2         mw3         mw4         num_mws
-@@ -103,7 +100,7 @@ A sample configuration for NTB function
- 	# echo 1 > functions/pci_epf_vntb/func1/pci_epf_vntb.0/num_mws
- 	# echo 0x100000 > functions/pci_epf_vntb/func1/pci_epf_vntb.0/mw1
- 
--A sample configuration for virtual NTB driver for virutal PCI bus::
-+A sample configuration for virtual NTB driver for virtual PCI bus::
- 
- 	# echo 0x1957 > functions/pci_epf_vntb/func1/pci_epf_vntb.0/vntb_vid
- 	# echo 0x080A > functions/pci_epf_vntb/func1/pci_epf_vntb.0/vntb_pid
---- a/drivers/pci/endpoint/pci-ep-cfs.c
-+++ b/drivers/pci/endpoint/pci-ep-cfs.c
-@@ -23,6 +23,7 @@ struct pci_epf_group {
- 	struct config_group group;
- 	struct config_group primary_epc_group;
- 	struct config_group secondary_epc_group;
-+	struct config_group *type_group;
- 	struct delayed_work cfs_work;
- 	struct pci_epf *epf;
- 	int index;
-@@ -502,34 +503,29 @@ static struct configfs_item_operations p
- 	.release		= pci_epf_release,
- };
- 
--static struct config_group *pci_epf_type_make(struct config_group *group,
--					      const char *name)
--{
--	struct pci_epf_group *epf_group = to_pci_epf_group(&group->cg_item);
--	struct config_group *epf_type_group;
--
--	epf_type_group = pci_epf_type_add_cfs(epf_group->epf, group);
--	return epf_type_group;
--}
--
--static void pci_epf_type_drop(struct config_group *group,
--			      struct config_item *item)
--{
--	config_item_put(item);
--}
--
--static struct configfs_group_operations pci_epf_type_group_ops = {
--	.make_group     = &pci_epf_type_make,
--	.drop_item      = &pci_epf_type_drop,
--};
--
- static const struct config_item_type pci_epf_type = {
--	.ct_group_ops	= &pci_epf_type_group_ops,
- 	.ct_item_ops	= &pci_epf_ops,
- 	.ct_attrs	= pci_epf_attrs,
- 	.ct_owner	= THIS_MODULE,
- };
- 
-+static void pci_ep_cfs_add_type_group(struct pci_epf_group *epf_group)
-+{
-+	struct config_group *group;
-+
-+	group = pci_epf_type_add_cfs(epf_group->epf, &epf_group->group);
-+	if (!group)
-+		return;
-+
-+	if (IS_ERR(group)) {
-+		dev_err(&epf_group->epf->dev,
-+			"failed to create epf type specific attributes\n");
-+		return;
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
++		/* ref: INIT */
++		kref_put(&sp->cmd_kref, qla2x00_sp_release);
 +	}
-+
-+	configfs_register_group(&epf_group->group, group);
-+}
-+
- static void pci_epf_cfs_work(struct work_struct *work)
- {
- 	struct pci_epf_group *epf_group;
-@@ -547,6 +543,8 @@ static void pci_epf_cfs_work(struct work
- 		pr_err("failed to create 'secondary' EPC interface\n");
- 		return;
- 	}
-+
-+	pci_ep_cfs_add_type_group(epf_group);
- }
  
- static struct config_group *pci_epf_make(struct config_group *group,
+ 	spin_lock_irqsave(&vha->work_lock, flags);
+ 	vha->scan.scan_flags &= ~SF_SCANNING;
 
 
 
