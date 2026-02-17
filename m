@@ -1,234 +1,207 @@
-Return-Path: <stable+bounces-216844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OENtMAaElGlBFQIAu9opvQ
-	(envelope-from <stable+bounces-216844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 16:06:46 +0100
+	id yG0WE5GFlGlBFQIAu9opvQ
+	(envelope-from <stable+bounces-216845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 16:13:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8FB14D65F
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 16:06:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF4B14D7AF
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 16:13:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 46D90302AF20
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 15:05:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7FF4B30247E8
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 15:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D7B36BCEE;
-	Tue, 17 Feb 2026 15:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0506136CDEF;
+	Tue, 17 Feb 2026 15:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="J/6mUaKo";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7QjNi51n";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="J/6mUaKo";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7QjNi51n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VnqbbF+9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CE936B047
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 15:05:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC64336C0CF;
+	Tue, 17 Feb 2026 15:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771340747; cv=none; b=WSx74VHk6xIT4nm+7WJBOsMSpUAk+aONCYBIes+KECfPPE08yWBH4oD8DCUwwI+E1txGX2KD4KOdIbDhnNx8STxsfgsaEbxbDrht4cWaKPMqEXLB66ANUa2rEY0M+KqnDsDX0IXC0P4oCC8R3bsycEvr7TpyNng2BMeppcC3fMA=
+	t=1771341194; cv=none; b=ag8ekIWSVcQw6zEOnmg4QC2+uVkaYfUdfihsG7WTbCc/lKgTGe9AmxHVOl0ROKtC3d9sE5Mfjb2fgBURxpTSEcVnLpOHvYMnr7RbEDHkyjgo/aK1F4B+K1tHW35N+9qaRB7OkLmdWSTQSJp4Bl8GmEG4hBkA5dBR9c6eYbRM+m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771340747; c=relaxed/simple;
-	bh=tkpBUrf1yaEPgew9Z2YWr5VcNGOYKcw0RDnp7nsjb04=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=swregh77TYS2w7calllPGjq7/qhNiMn3vr90+BS6K2Z/+dRw6Qtsud1sovddusAxBNAcoFFEkcnb+K7QGKodaNaPpGUAOgljkiMLcI6d8g7o38F+B8KskVG/dTmjHRfm8wq5+ROjIoNaTDUWV+yAt7HIL1unLbEwu66014m+vVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=J/6mUaKo; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7QjNi51n; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=J/6mUaKo; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7QjNi51n; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C18AE3E6F0;
-	Tue, 17 Feb 2026 15:05:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771340737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0a5QgKrPsYbt60SbyVxiqxH8fETr4Fl9YLE29T4uFAE=;
-	b=J/6mUaKovJKQpCE2FRf7ofomfxNE4TfvW4c3AhyTHfkqER5jb1M6GQSNELOMdDdGocdlYn
-	kj+Au7n+6A3RqIuNMHUV7lAlKhDj9MgYz84E5e1R2kPoV4uxRbB3C9ABJdCugw6ae/zzKU
-	GCLC6v0sRyn9TaGGUWOU2nyBqRSN0qc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771340737;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0a5QgKrPsYbt60SbyVxiqxH8fETr4Fl9YLE29T4uFAE=;
-	b=7QjNi51n+xrXxPfAKxS8Yq87y3pdI3mvkl55IYVvai+FqJdyuO3ehIRbxBcr3ZzMWGSiTc
-	ifv7mH6XgPcHLwDQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="J/6mUaKo";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7QjNi51n
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771340737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0a5QgKrPsYbt60SbyVxiqxH8fETr4Fl9YLE29T4uFAE=;
-	b=J/6mUaKovJKQpCE2FRf7ofomfxNE4TfvW4c3AhyTHfkqER5jb1M6GQSNELOMdDdGocdlYn
-	kj+Au7n+6A3RqIuNMHUV7lAlKhDj9MgYz84E5e1R2kPoV4uxRbB3C9ABJdCugw6ae/zzKU
-	GCLC6v0sRyn9TaGGUWOU2nyBqRSN0qc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771340737;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0a5QgKrPsYbt60SbyVxiqxH8fETr4Fl9YLE29T4uFAE=;
-	b=7QjNi51n+xrXxPfAKxS8Yq87y3pdI3mvkl55IYVvai+FqJdyuO3ehIRbxBcr3ZzMWGSiTc
-	ifv7mH6XgPcHLwDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 96F4F3EA65;
-	Tue, 17 Feb 2026 15:05:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WmpaI8GDlGnoBwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 17 Feb 2026 15:05:37 +0000
-Message-ID: <d4aeb7b2-f141-4113-a207-d27eaa303686@suse.de>
-Date: Tue, 17 Feb 2026 16:05:37 +0100
+	s=arc-20240116; t=1771341194; c=relaxed/simple;
+	bh=q4lpe0QHbE4GGbcGYoiqsGdbAX3UVPzDsH/s+Fwz5I4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=a294EuQ870CC4KctUAFin2CMGQbfhOHovIWDWCVJ//6XiMsKoa02+OAUkc3LFCH41k9OydhYECe+i2SsmqGNfyE713ikhPhtpIpB6e0yf0fzSu3JSGgIh3sgYQ++iaD1HfilbEtA/YySFvS8z1vIUtnM4AzLFb1H1+8MvuGJnfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VnqbbF+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28159C4CEF7;
+	Tue, 17 Feb 2026 15:13:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771341194;
+	bh=q4lpe0QHbE4GGbcGYoiqsGdbAX3UVPzDsH/s+Fwz5I4=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=VnqbbF+9M1KozvnJynWTRyiwnmd/bz3qGOF+wNTRpsj/o6hVklSmzdEwa+L5Gq0SL
+	 VMauwQDNwgydoo5TUdMDL+5/ENQvyE6lwgJKcQrW3Tpr7PpBQaYrc8NAPdh+Uw8Sxq
+	 quzTc9Z83wPZVS0BQSCIOiYX0vdT2vaEO88/9weIzA3Qm70l6OcVE3BtI+HldcrbHm
+	 qAxZUU8xowd9rWZe4oaaJ3RDzctOWV1r8QNXafUrW9yNSKOULwgLs3RQRNJf4kZwwN
+	 7RqvjVOXbBuYrSgjDyNsT89aig5ykpzYwPyx/DTj/G/4FRHgl4ftx0NdZRBxwX58ow
+	 7xd2KJRVaaYyQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: WTF: patch "[PATCH] fbcon: Remove struct fbcon_display.inverse"
- was seriously submitted to be applied to the 6.1-stable tree?
-To: gregkh@linuxfoundation.org, deller@gmx.de, stable@vger.kernel.org
-References: <2026021751-prefix-delivery-06f4@gregkh>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <2026021751-prefix-delivery-06f4@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Feb 2026 16:13:09 +0100
+Message-Id: <DGHC1OLDIXC7.Q4IAOOSMHIY@kernel.org>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Carlos Llamas"
+ <cmllamas@google.com>, "Jann Horn" <jannh@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>,
+ <stable@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 1/2] rust_binder: check ownership before using vma
+References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
+ <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
+In-Reply-To: <20260217-binder-vma-check-v1-1-1a2b37f7b762@google.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	SUBJECT_ENDS_QUESTION(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216844-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmx.de,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216845-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,google.com,kernel.org,garyguo.net,protonmail.com,umich.edu,oracle.com,vger.kernel.org,kvack.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:mid,suse.de:dkim,suse.de:email,linuxfoundation.org:email,gmx.de:email]
-X-Rspamd-Queue-Id: 3A8FB14D65F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8CF4B14D7AF
 X-Rspamd-Action: no action
 
-Hi
+On Tue Feb 17, 2026 at 3:22 PM CET, Alice Ryhl wrote:
+> When installing missing pages (or zapping them), Rust Binder will look
+> up the vma in the mm by address, and then call vm_insert_page (or
+> zap_page_range_single). However, if the vma is closed and replaced with
+> a different vma at the same address, this can lead to Rust Binder
+> installing pages into the wrong vma.
+>
+> By installing the page into a writable vma, it becomes possible to write
+> to your own binder pages, which are normally read-only. Although you're
+> not supposed to be able to write to those pages, the intent behind the
+> design of Rust Binder is that even if you get that ability, it should not
+> lead to anything bad. Unfortunately, due to another bug, that is not the
+> case.
+>
+> To fix this, I will store a pointer in vm_private_data and check that
+> the vma returned by vma_lookup() has the right vm_ops and
+> vm_private_data before trying to use the vma. This should ensure that
+> Rust Binder will refuse to interact with any other VMA. I will follow up
+> this patch with more vma abstractions to avoid this unsafe access to
+> vm_ops and vm_private_data, but for now I'd like to start with the
+> simplest possible fix.
 
-Am 17.02.26 um 13:55 schrieb gregkh@linuxfoundation.org:
-> The patch below was submitted to be applied to the 6.1-stable tree.
->
-> I fail to see how this patch meets the stable kernel rules as found at
-> Documentation/process/stable-kernel-rules.rst.
->
-> I could be totally wrong, and if so, please respond to
-> <stable@vger.kernel.org> and let me know why this patch should be
-> applied.  Otherwise, it is now dropped from my patch queues, never to be
-> seen again.
+I suggest to use imperative mood instead.
 
-This patch originally had a Fixes tag, so it also got a CC: stable. The 
-Fixes didn't belong there, but the CC was erroneously kept. Please 
-ignore the patch in all stable branches.
+> C Binder performs the same check in a slightly different way: it
+> provides a vm_ops->close that sets a boolean to true, then checks that
+> boolean after calling vma_lookup(), but I think this is more fragile
+> than the solution in this patch. (We probably still want to do both, but
+> I'll add the vm_ops->close callback with the follow-up vma API changes.)
+>
+> Cc: stable@vger.kernel.org
+> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+> Reported-by: Jann Horn <jannh@google.com>
 
-Apologies for this mistake.
+If you have a link, please add Closes: after Reported-by:.
 
-Best regards
-Thomas
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  drivers/android/binder/page_range.rs | 78 +++++++++++++++++++++++++++---=
+------
+>  1 file changed, 58 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binde=
+r/page_range.rs
+> index fdd97112ef5c8b2341e498dc3567b659f05e3fd7..90bab18961443c6e59699cb73=
+45e41e0db80f0dd 100644
+> --- a/drivers/android/binder/page_range.rs
+> +++ b/drivers/android/binder/page_range.rs
+> @@ -142,6 +142,27 @@ pub(crate) struct ShrinkablePageRange {
+>      _pin: PhantomPinned,
+>  }
+> =20
+> +// We do not define any ops. For now, used only to check identity of vma=
+s.
+> +static BINDER_VM_OPS: bindings::vm_operations_struct =3D pin_init::zeroe=
+d();
+> +
+> +// To ensure that we do not accidentally install pages into or zap pages=
+ from the wrong vma, we
+> +// check its vm_ops and private data before using it.
+> +fn check_vma(vma: &virt::VmaRef, owner: *const ShrinkablePageRange) -> O=
+ption<&virt::VmaMixedMap> {
+> +    // SAFETY: Just reading the vm_ops pointer of any active vma is safe=
+.
 
->
-> thanks,
->
-> greg k-h
->
-> ------------------ original commit in Linus's tree ------------------
->
->  From 30baedeeeab524172abc0b58cb101e8df86b5be8 Mon Sep 17 00:00:00 2001
-> From: Thomas Zimmermann <tzimmermann@suse.de>
-> Date: Mon, 9 Feb 2026 17:15:43 +0100
-> Subject: [PATCH] fbcon: Remove struct fbcon_display.inverse
->
-> The field inverse in struct fbcon_display is unused. Remove it.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: <stable@vger.kernel.org> # v6.0+
-> Signed-off-by: Helge Deller <deller@gmx.de>
->
-> diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
-> index 1cd10a7faab0..fca14e9b729b 100644
-> --- a/drivers/video/fbdev/core/fbcon.h
-> +++ b/drivers/video/fbdev/core/fbcon.h
-> @@ -30,7 +30,6 @@ struct fbcon_display {
->   #ifdef CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION
->       u_short scrollmode;             /* Scroll Method, use fb_scrollmode() */
->   #endif
-> -    u_short inverse;                /* != 0 text black on white as default */
->       short yscroll;                  /* Hardware scrolling */
->       int vrows;                      /* number of virtual rows */
->       int cursor_shape;
->
+Here and in a few other places, missing markdown.
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+> +    let vm_ops =3D unsafe { (*vma.as_ptr()).vm_ops };
+> +    if !ptr::eq(vm_ops, &BINDER_VM_OPS) {
+> +        return None;
+> +    }
+> +
+> +    // SAFETY: Reading the vm_private_data pointer of a binder-owned vma=
+ is safe.
+> +    let vm_private_data =3D unsafe { (*vma.as_ptr()).vm_private_data };
+> +    if !ptr::eq(vm_private_data, owner.cast()) {
+> +        return None;
+> +    }
+> +
+> +    vma.as_mixedmap_vma()
+> +}
+> +
+>  struct Inner {
+>      /// Array of pages.
+>      ///
+> @@ -308,6 +329,16 @@ pub(crate) fn register_with_vma(&self, vma: &virt::V=
+maNew) -> Result<usize> {
+>          inner.size =3D num_pages;
+>          inner.vma_addr =3D vma.start();
+> =20
+> +        // This pointer is only used for comparison - it's not dereferen=
+ced.
+> +        //
+> +        // SAFETY: We own the vma, and we don't use any methods on VmaNe=
+w that rely on
+> +        // `vm_private_data`.
+> +        unsafe { (*vma.as_ptr()).vm_private_data =3D self as *const Self=
+ as *mut c_void };
 
+Maybe use from_ref(self).cast_mut().cast::<c_void>() instead?
 
+Please don't consider any of those NITs a blocker. :)
 
