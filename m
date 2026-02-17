@@ -1,198 +1,268 @@
-Return-Path: <stable+bounces-216781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJzfHqZKlGn0BwIAu9opvQ
-	(envelope-from <stable+bounces-216781-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 12:01:58 +0100
+	id cKgxGqJLlGnfCAIAu9opvQ
+	(envelope-from <stable+bounces-216783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 12:06:10 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00D414B1C7
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 12:01:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C408614B274
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 12:06:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FA703023DFA
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:01:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E29B30209CF
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B5B32BF46;
-	Tue, 17 Feb 2026 11:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0101E32ED2B;
+	Tue, 17 Feb 2026 11:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="flsdjPtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMAiHrEy"
 X-Original-To: stable@vger.kernel.org
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE88263C8C;
-	Tue, 17 Feb 2026 11:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CFC324B3A;
+	Tue, 17 Feb 2026 11:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771326083; cv=none; b=KFuVw+r0xDb504csvuoyzZ+zIr3549cjiEwRuS2FfwTuHr3GsQlRRUG79QQ7fqXdG3RwdClm05uCno2ons1PFnJsJzlQAGDdvX2GZeJSSGjNjA9db/bALPNAztGK+EY2Gf2g1Bmn+JMsIKHuZxBqAFNwdZam4KEAPEalWi8lV2Q=
+	t=1771326364; cv=none; b=C1vWJ10/lwnOtHxu6mZG7uAyi38+1KH78/ST2TGvPWT25ncMqhmTs/Sle6efUo5jLqYx4wAftQlrdzOq2NjJMrDaC4kEOjEhz4TBaErrmD5D0vI5GwkdVMSJRVdzJ+HE4Q/pGU54BQqtyCmvzarJDUy71nA2Uv3icGXvyWiq5zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771326083; c=relaxed/simple;
-	bh=VxGl9z+uxIMYDk3nPnK22O7QLpg45gS/RqqCl9+dlY8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=olEqTTKPXrM+LaQFXMNAqP90f+/hyAXwJJPVc2u1D1WySr4JXQ7XxMTiOy31aXJoFuJab1s56wnCDEaHq2/LN3KbLCWCxqj/zRYapzuV+BMcUxLK+qlEHYBagtLNIu61ms2aZ7LRaz17UTtAVWLfs4ezB0dfl5sODMaYUKH7bno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=flsdjPtf; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=UH36pejiCMvxLP8VHcap4NrdPodNndZt8dGU6zRJNE8=; b=flsdjPtfZGH1AAANhG/jBahY0U
-	vu8nUJSB+akczAw6DBqgRZaqE9/liYAoD5eCwO1VrouRU4aBQISN8gVlNd8Ds5Iv8RMy2RbHdIc46
-	l0+CxuXa4slcBZe6SQbN6plw3rXvEXCTOMM09pBv81SEc63Yj1sxGDdVeuuWt1fONwTTBaehq+7Fy
-	kv9/Kq0mDgmd1ll7JK0+nijFepv36NFAfyyhcy4nt6DW8UXKvNhG4nfVauXv8GUlynseZ1V8GiNgA
-	CxkuRNMp7HRYXEqB/M8JjiSDi/Q8bW5I/uWugw4xQjE7iM/yB2AEYWY/a8SItH48w7l81cV6niKpU
-	0holIxLQ==;
-Received: from sslproxy08.your-server.de ([78.47.166.52])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1vsIpR-000Ith-14;
-	Tue, 17 Feb 2026 12:01:16 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1vsIpP-000ALd-36;
-	Tue, 17 Feb 2026 12:01:16 +0100
-Message-ID: <cf804cbc-a8d3-4b11-9a46-679f4d10fd38@iogearbox.net>
-Date: Tue, 17 Feb 2026 12:01:15 +0100
+	s=arc-20240116; t=1771326364; c=relaxed/simple;
+	bh=wc8NJ0oxE2FxeIyeicW60XgU9/Gu9bnFS0pijP9y5gs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kbpyM1G5ZAp26lh/xb5tMZjI6qJuCgwFXvxxWfhA3/9pIxQ6ubQfkKVIAjMlit2PpJYcqCm+CjxirB6SBON3zpLHbriOvN+Fmsr8pXf1Bt1hgUNcGESGIvpAXSa73xIO50II6DKCAJyVN1AwbuC82IgxAynjT4OfXdIWGVMgucA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMAiHrEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE31C4CEF7;
+	Tue, 17 Feb 2026 11:06:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771326364;
+	bh=wc8NJ0oxE2FxeIyeicW60XgU9/Gu9bnFS0pijP9y5gs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bMAiHrEyq5BPuZRUGpbKuIUEU/N+2XkxUx6+DZ/ZE4I6AE7z5YKNCr21jXKIA92u9
+	 awoiOHyEpwxaIW9jXnMeIOh89dDM9P1VPt9/GofZFosgmsTG2/HLVBP4XnJnd6ssCq
+	 8fBOdqSLNidbsAW81MHxj/zqdJU7WT19GTfPbLeU=
+Date: Tue, 17 Feb 2026 12:06:01 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Sasha Levin <sashal@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+	Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: Re: [PATCH V2 for 6.6 & 6.12] LoongArch: Rework KASAN initialization
+ for PTW-enabled systems
+Message-ID: <2026021735-scorebook-cheese-25d3@gregkh>
+References: <20260216142550.1479337-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH stable v5.15,v6.1] Revert "wireguard: device: enable
- threaded NAPI"
-To: Greg KH <gregkh@linuxfoundation.org>, "Jason A. Donenfeld"
- <Jason@zx2c4.com>
-Cc: stable@vger.kernel.org, netdev@vger.kernel.org, kuba@kernel.org,
- Daniel Dao <dqminh@cloudflare.com>, Ignat Korchagin <ignat@cloudflare.com>,
- Jakub Sitnicki <jakub@cloudflare.com>
-References: <c05f3968fa63b630ce22d65aa03e6dcef4bf4e83.1771277247.git.daniel@iogearbox.net>
- <CAHmME9rsvaargjbZO8SkswOToUATuWpkQDVykEUty-kWPyu7gA@mail.gmail.com>
- <2026021715-confetti-endanger-21eb@gregkh>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <2026021715-confetti-endanger-21eb@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27915/Tue Feb 17 08:24:54 2026)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260216142550.1479337-1-chenhuacai@loongson.cn>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[iogearbox.net,reject];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[iogearbox.net:s=default2302];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-216781-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[iogearbox.net:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216783-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[daniel@iogearbox.net,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zx2c4.com:email,iogearbox.net:mid,iogearbox.net:dkim,iogearbox.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F00D414B1C7
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,loongson.cn:email]
+X-Rspamd-Queue-Id: C408614B274
 X-Rspamd-Action: no action
 
-On 2/17/26 11:33 AM, Greg KH wrote:
-> On Mon, Feb 16, 2026 at 10:33:53PM +0100, Jason A. Donenfeld wrote:
->> On Mon, Feb 16, 2026 at 10:31 PM Daniel Borkmann <daniel@iogearbox.net> wrote:
->>> Technically, the backport of commit db9ae3b6b43c ("wireguard: device:
->>> enable threaded NAPI") to stable should not have happened since it is
->>> more of an optimization rather than a pure fix and addresses a NAPI
->>> situation with utilizing many WireGuard tunnel devices in parallel.
->>
->> Indeed.
->>
->>> Revert it from stable given the backport triggers a regression for
->>> mentioned kernels.
->>
->> Thanks.
->>
->> Acked-by: Jason A. Donenfeld <Jason@zx2c4.com>
->>
->> If that helps with Greg queueing this up.
+On Mon, Feb 16, 2026 at 10:25:50PM +0800, Huacai Chen wrote:
+> From: Tiezhu Yang <yangtiezhu@loongson.cn>
 > 
-> I'll go queue it up now, thanks for the revert.  But it's ok being in
-> the 6.6.y and 6.12.y and newer kernels, right?
-Great question; from a stable kernel PoV that commit to enable threaded
-NAPI for wireguard by default went in natively (aka not via backports) in
-linux-6.18.y branch.
+> commit 5ec5ac4ca27e4daa234540ac32f9fc5219377d53 upstream.
+> 
+> kasan_init_generic() indicates that kasan is fully initialized, so it
+> should be put at end of kasan_init().
+> 
+> Otherwise bringing up the primary CPU failed when CONFIG_KASAN is set
+> on PTW-enabled systems, here are the call chains:
+> 
+>     kernel_entry()
+>       start_kernel()
+>         setup_arch()
+>           kasan_init()
+>             kasan_init_generic()
+> 
+> The reason is PTW-enabled systems have speculative accesses which means
+> memory accesses to the shadow memory after kasan_init() may be executed
+> by hardware before. However, accessing shadow memory is safe only after
+> kasan fully initialized because kasan_init() uses a temporary PGD table
+> until we have populated all levels of shadow page tables and writen the
+> PGD register. Moving kasan_init_generic() later can defer the occasion
+> of kasan_enabled(), so as to avoid speculative accesses on shadow pages.
+> 
+> After moving kasan_init_generic() to the end, kasan_init() can no longer
+> call kasan_mem_to_shadow() for shadow address conversion because it will
+> always return kasan_early_shadow_page. On the other hand, we should keep
+> the current logic of kasan_mem_to_shadow() for both the early and final
+> stage because there may be instrumentation before kasan_init().
+> 
+> To solve this, we factor out a new mem_to_shadow() function from current
+> kasan_mem_to_shadow() for the shadow address conversion in kasan_init().
+> 
+> [ Huacai: To backport from upstream to 6.6 & 6.12, kasan_enabled() is
+>           replaced with kasan_arch_is_ready() and kasan_init_generic()
+>           is replaced with "kasan_early_stage = false". ]
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>  arch/loongarch/mm/kasan_init.c | 77 ++++++++++++++++++----------------
+>  1 file changed, 40 insertions(+), 37 deletions(-)
+> 
+> diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
+> index d2681272d8f0..9337380a70eb 100644
+> --- a/arch/loongarch/mm/kasan_init.c
+> +++ b/arch/loongarch/mm/kasan_init.c
+> @@ -42,39 +42,43 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
+>  
+>  bool kasan_early_stage = true;
+>  
+> -void *kasan_mem_to_shadow(const void *addr)
+> +static void *mem_to_shadow(const void *addr)
+>  {
+> -	if (!kasan_arch_is_ready()) {
+> +	unsigned long offset = 0;
+> +	unsigned long maddr = (unsigned long)addr;
+> +	unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
+> +
+> +	if (maddr >= FIXADDR_START)
+>  		return (void *)(kasan_early_shadow_page);
+> -	} else {
+> -		unsigned long maddr = (unsigned long)addr;
+> -		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
+> -		unsigned long offset = 0;
+> -
+> -		if (maddr >= FIXADDR_START)
+> -			return (void *)(kasan_early_shadow_page);
+> -
+> -		maddr &= XRANGE_SHADOW_MASK;
+> -		switch (xrange) {
+> -		case XKPRANGE_CC_SEG:
+> -			offset = XKPRANGE_CC_SHADOW_OFFSET;
+> -			break;
+> -		case XKPRANGE_UC_SEG:
+> -			offset = XKPRANGE_UC_SHADOW_OFFSET;
+> -			break;
+> -		case XKPRANGE_WC_SEG:
+> -			offset = XKPRANGE_WC_SHADOW_OFFSET;
+> -			break;
+> -		case XKVRANGE_VC_SEG:
+> -			offset = XKVRANGE_VC_SHADOW_OFFSET;
+> -			break;
+> -		default:
+> -			WARN_ON(1);
+> -			return NULL;
+> -		}
+>  
+> -		return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
+> +	maddr &= XRANGE_SHADOW_MASK;
+> +	switch (xrange) {
+> +	case XKPRANGE_CC_SEG:
+> +		offset = XKPRANGE_CC_SHADOW_OFFSET;
+> +		break;
+> +	case XKPRANGE_UC_SEG:
+> +		offset = XKPRANGE_UC_SHADOW_OFFSET;
+> +		break;
+> +	case XKPRANGE_WC_SEG:
+> +		offset = XKPRANGE_WC_SHADOW_OFFSET;
+> +		break;
+> +	case XKVRANGE_VC_SEG:
+> +		offset = XKVRANGE_VC_SHADOW_OFFSET;
+> +		break;
+> +	default:
+> +		WARN_ON(1);
+> +		return NULL;
+>  	}
+> +
+> +	return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
+> +}
+> +
+> +void *kasan_mem_to_shadow(const void *addr)
+> +{
+> +	if (kasan_arch_is_ready())
+> +		return mem_to_shadow(addr);
+> +	else
+> +		return (void *)(kasan_early_shadow_page);
+>  }
+>  
+>  const void *kasan_shadow_to_mem(const void *shadow_addr)
+> @@ -295,10 +299,8 @@ void __init kasan_init(void)
+>  	/* Maps everything to a single page of zeroes */
+>  	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, true);
+>  
+> -	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
+> -					kasan_mem_to_shadow((void *)KFENCE_AREA_END));
+> -
+> -	kasan_early_stage = false;
+> +	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
+> +					mem_to_shadow((void *)KFENCE_AREA_END));
+>  
+>  	/* Populate the linear mapping */
+>  	for_each_mem_range(i, &pa_start, &pa_end) {
+> @@ -308,13 +310,13 @@ void __init kasan_init(void)
+>  		if (start >= end)
+>  			break;
+>  
+> -		kasan_map_populate((unsigned long)kasan_mem_to_shadow(start),
+> -			(unsigned long)kasan_mem_to_shadow(end), NUMA_NO_NODE);
+> +		kasan_map_populate((unsigned long)mem_to_shadow(start),
+> +			(unsigned long)mem_to_shadow(end), NUMA_NO_NODE);
+>  	}
+>  
+>  	/* Populate modules mapping */
+> -	kasan_map_populate((unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR),
+> -		(unsigned long)kasan_mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
+> +	kasan_map_populate((unsigned long)mem_to_shadow((void *)MODULES_VADDR),
+> +		(unsigned long)mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
+>  	/*
+>  	 * KAsan may reuse the contents of kasan_early_shadow_pte directly, so we
+>  	 * should make sure that it maps the zero page read-only.
+> @@ -329,5 +331,6 @@ void __init kasan_init(void)
+>  
+>  	/* At this point kasan is fully initialized. Enable error messages */
+>  	init_task.kasan_depth = 0;
+> +	kasan_early_stage = false;
+>  	pr_info("KernelAddressSanitizer initialized.\n");
+>  }
+> -- 
+> 2.52.0
+> 
+> 
 
-Given there have been backports around threaded NAPI and then reverts again
-e.g. [0-2] I think it would be best to also queue this revert here for 6.6.y
-and 6.12.y stable kernels. The same applies that it's more of an optimization
-rather than a pure fix.
+Does not apply to 6.6.y, I get the following error:
 
-I've added CF folks to Cc given they have been testing v6.6 with [2] but
-then it later got reverted again in [1] upon request. Feel free to holler
-if you think otherwise.
-
-Thanks,
-Daniel
-
-   [0] https://lore.kernel.org/netdev/CA+wXwBTT74RErDGAnj98PqS=wvdh8eM1pi4q6tTdExtjnokKqA@mail.gmail.com/
-   [1] https://lore.kernel.org/stable/20260204143848.216983148@linuxfoundation.org/
-   [2] https://lore.kernel.org/all/20260120103833.4kssDD1Y@linutronix.de/
+checking file arch/loongarch/mm/kasan_init.c
+Hunk #1 FAILED at 42.
+Hunk #2 succeeded at 290 (offset -5 lines).
+Hunk #3 succeeded at 301 (offset -5 lines).
+Hunk #4 succeeded at 322 (offset -5 lines).
+1 out of 4 hunks FAILED
 
