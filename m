@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-217094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLPLIp7UlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:50:38 +0100
+	id 8CLgJb7UlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F01150607
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:50:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AAA2150633
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 63F5C300BE9A
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:50:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1F0B300DF4B
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E10378D8B;
-	Tue, 17 Feb 2026 20:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B93828C009;
+	Tue, 17 Feb 2026 20:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3N02QSP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qj5AA60j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791952773E4;
-	Tue, 17 Feb 2026 20:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE51266581;
+	Tue, 17 Feb 2026 20:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361403; cv=none; b=hht+p5TB8LRp1mTN0t+sDciQyuiUUWQkMcAY40qgTnvJ5cbA5tPZs/gd/RBLPfK3JX8GbkD4V1DF3hkaWeoBTh/mtltmOkocv9DmbkG9oZY99TlLAKvl7/mVuy1LcVsQP+hA6CMLn961JTKE7JVpqxXKq0gjuCZsaUQQZbEp0zM=
+	t=1771361466; cv=none; b=ie0VdGlpaBm3qnbMR2DEQC60oPtjiJcCT08U3+h2TtD6oUfAgp11p6RltOOh8rJ2lt5SPVhyJP7AvG5HtW9yla7LMo0Awms4wbD2lHl5OPHjRoknkAqErXdyisJ9M0jFABg7UaOgUNLQ4jhh4MtiUS1uldHc8f8aeqaOF+P9dp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361403; c=relaxed/simple;
-	bh=hG+Xk8DSJ0HvpEZV6tAcapqqG7MI5+YzJgtDa2m+CmI=;
+	s=arc-20240116; t=1771361466; c=relaxed/simple;
+	bh=3VRnEKB1+HccQBADqT5nwXQerc7jF7QvrkOv3yG2Xq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RByx2ptI2lXllzHyS4trLd/w5N+U2A3R9s2vvWXduBjy5lPjS772lai1CdJO3+MWSnHUgby9tXeApuD96dCpVzJyATqxnDs9n/OjPCqfF/gsQlv7BfbohJ3gd5FWFAFZ9HhB20yUfshNs8kiqAIcSmo46pDWanJ6bAP6v0Dzhek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3N02QSP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF54C2BC86;
-	Tue, 17 Feb 2026 20:50:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uzwAIwnmfhx4vt4qg2J71G9ithClhoS9K+jmEyk6KAvhRa4wlOeXLofTQUEuXB2SHC87dOm77UGZ+4UD00KTSWqQ2tcib2NzcguJR8kEHJGcJJ4ZR/n5LuuIYRq7Rwgdrqcr2QjSMTgZp8TeQrufUkzL5z/GD6TVww0i/7VsmLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qj5AA60j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C213AC4CEF7;
+	Tue, 17 Feb 2026 20:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361403;
-	bh=hG+Xk8DSJ0HvpEZV6tAcapqqG7MI5+YzJgtDa2m+CmI=;
+	s=korg; t=1771361466;
+	bh=3VRnEKB1+HccQBADqT5nwXQerc7jF7QvrkOv3yG2Xq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3N02QSP+OboLWXCyfPFXUJcUojVqVKpCsgQIIFciQV/C5+J2/3MsZmKlG5ehVPvD
-	 J1jvo/VBM3m7vAL3M2RTrupnRrO/v0TSKX2z3fuDnpB6tGksjh0M9c32KVCU3QO0gh
-	 1BnYv72aj29S/OUlSXcipziRWYO96r+2NL66k0SQ=
+	b=qj5AA60jM11HG8j4sb97HcwTa0GdAZ/npt0D8mhlE63s9+cO8vd7F1Y/lspsWyXkQ
+	 Qf4dojyTe+NjQx2/V9C/vvXgqghAD4mVHXi7thtEQISdEVF830g0c15rwDa5A5/gtJ
+	 ujWH2vUNV5mXuyt4D7cGaudDihlqttDVNDe4GYMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Jinbao Liu <liujinbao1@xiaomi.com>,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.19 08/18] f2fs: fix IS_CHECKPOINTED flag inconsistency issue caused by concurrent atomic commit and checkpoint writes
+	=?UTF-8?q?=E6=98=AF=E5=8F=82=E5=B7=AE?= <shicenci@gmail.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 24/43] io_uring/fdinfo: be a bit nicer when looping a lot of SQEs/CQEs
 Date: Tue, 17 Feb 2026 21:32:04 +0100
-Message-ID: <20260217200003.010195257@linuxfoundation.org>
+Message-ID: <20260217200007.393704783@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
-References: <20260217200002.683975158@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,134 +64,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217094-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217113-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,kernel.dk];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,xiaomi.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: D3F01150607
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email]
+X-Rspamd-Queue-Id: 0AAA2150633
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 7633a7387eb4d0259d6bea945e1d3469cd135bbc upstream.
+[ Upstream commit 38cfdd9dd279473a73814df9fd7e6e716951d361 ]
 
-During SPO tests, when mounting F2FS, an -EINVAL error was returned from
-f2fs_recover_inode_page. The issue occurred under the following scenario
+Add cond_resched() in those dump loops, just in case a lot of entries
+are being dumped. And detect invalid CQ ring head/tail entries, to avoid
+iterating more than what is necessary. Generally not an issue, but can be
+if things like KASAN or other debugging metrics are enabled.
 
-Thread A                                     Thread B
-f2fs_ioc_commit_atomic_write
- - f2fs_do_sync_file // atomic = true
-  - f2fs_fsync_node_pages
-    : last_folio = inode folio
-    : schedule before folio_lock(last_folio) f2fs_write_checkpoint
-                                              - block_operations// writeback last_folio
-                                              - schedule before f2fs_flush_nat_entries
-    : set_fsync_mark(last_folio, 1)
-    : set_dentry_mark(last_folio, 1)
-    : folio_mark_dirty(last_folio)
-    - __write_node_folio(last_folio)
-      : f2fs_down_read(&sbi->node_write)//block
-                                              - f2fs_flush_nat_entries
-                                                : {struct nat_entry}->flag |= BIT(IS_CHECKPOINTED)
-                                              - unblock_operations
-                                                : f2fs_up_write(&sbi->node_write)
-                                             f2fs_write_checkpoint//return
-      : f2fs_do_write_node_page()
-f2fs_ioc_commit_atomic_write//return
-                                             SPO
-
-Thread A calls f2fs_need_dentry_mark(sbi, ino), and the last_folio has
-already been written once. However, the {struct nat_entry}->flag did not
-have the IS_CHECKPOINTED set, causing set_dentry_mark(last_folio, 1) and
-write last_folio again after Thread B finishes f2fs_write_checkpoint.
-
-After SPO and reboot, it was detected that {struct node_info}->blk_addr
-was not NULL_ADDR because Thread B successfully write the checkpoint.
-
-This issue only occurs in atomic write scenarios. For regular file
-fsync operations, the folio must be dirty. If
-block_operations->f2fs_sync_node_pages successfully submit the folio
-write, this path will not be executed. Otherwise, the
-f2fs_write_checkpoint will need to wait for the folio write submission
-to complete, as sbi->nr_pages[F2FS_DIRTY_NODES] > 0. Therefore, the
-situation where f2fs_need_dentry_mark checks that the {struct
-nat_entry}->flag /wo the IS_CHECKPOINTED flag, but the folio write has
-already been submitted, will not occur.
-
-Therefore, for atomic file fsync, sbi->node_write should be acquired
-through __write_node_folio to ensure that the IS_CHECKPOINTED flag
-correctly indicates that the checkpoint write has been completed.
-
-Fixes: 608514deba38 ("f2fs: set fsync mark only for the last dnode")
-Cc: stable@kernel.org
-Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
-Signed-off-by: Jinbao Liu <liujinbao1@xiaomi.com>
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: 是参差 <shicenci@gmail.com>
+Link: https://lore.kernel.org/all/PS1PPF7E1D7501FE5631002D242DD89403FAB9BA@PS1PPF7E1D7501F.apcprd02.prod.outlook.com/
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ io_uring/fdinfo.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1774,8 +1774,13 @@ static bool __write_node_folio(struct fo
- 		goto redirty_out;
+diff --git a/io_uring/fdinfo.c b/io_uring/fdinfo.c
+index 294c75a8a3bdb..3585ad8308504 100644
+--- a/io_uring/fdinfo.c
++++ b/io_uring/fdinfo.c
+@@ -65,7 +65,7 @@ static void __io_uring_show_fdinfo(struct io_ring_ctx *ctx, struct seq_file *m)
+ 	unsigned int cq_head = READ_ONCE(r->cq.head);
+ 	unsigned int cq_tail = READ_ONCE(r->cq.tail);
+ 	unsigned int sq_shift = 0;
+-	unsigned int sq_entries;
++	unsigned int cq_entries, sq_entries;
+ 	int sq_pid = -1, sq_cpu = -1;
+ 	u64 sq_total_time = 0, sq_work_time = 0;
+ 	unsigned int i;
+@@ -119,9 +119,11 @@ static void __io_uring_show_fdinfo(struct io_ring_ctx *ctx, struct seq_file *m)
+ 			}
+ 		}
+ 		seq_printf(m, "\n");
++		cond_resched();
+ 	}
+ 	seq_printf(m, "CQEs:\t%u\n", cq_tail - cq_head);
+-	while (cq_head < cq_tail) {
++	cq_entries = min(cq_tail - cq_head, ctx->cq_entries);
++	for (i = 0; i < cq_entries; i++) {
+ 		struct io_uring_cqe *cqe;
+ 		bool cqe32 = false;
+ 
+@@ -136,8 +138,11 @@ static void __io_uring_show_fdinfo(struct io_ring_ctx *ctx, struct seq_file *m)
+ 					cqe->big_cqe[0], cqe->big_cqe[1]);
+ 		seq_printf(m, "\n");
+ 		cq_head++;
+-		if (cqe32)
++		if (cqe32) {
+ 			cq_head++;
++			i++;
++		}
++		cond_resched();
  	}
  
--	if (atomic && !test_opt(sbi, NOBARRIER))
--		fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
-+	if (atomic) {
-+		if (!test_opt(sbi, NOBARRIER))
-+			fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
-+		if (IS_INODE(folio))
-+			set_dentry_mark(folio,
-+				f2fs_need_dentry_mark(sbi, ino_of_node(folio)));
-+	}
- 
- 	/* should add to global list before clearing PAGECACHE status */
- 	if (f2fs_in_warm_node_list(sbi, folio)) {
-@@ -1916,8 +1921,9 @@ continue_unlock:
- 					if (is_inode_flag_set(inode,
- 								FI_DIRTY_INODE))
- 						f2fs_update_inode(inode, folio);
--					set_dentry_mark(folio,
--						f2fs_need_dentry_mark(sbi, ino));
-+					if (!atomic)
-+						set_dentry_mark(folio,
-+							f2fs_need_dentry_mark(sbi, ino));
- 				}
- 				/* may be written by other thread */
- 				if (!folio_test_dirty(folio))
+ 	if (ctx->flags & IORING_SETUP_SQPOLL) {
+-- 
+2.51.0
+
 
 
 
