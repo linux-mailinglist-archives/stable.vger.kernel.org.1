@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-216944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217033-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGx8N5nSlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:01 +0100
+	id qP/8HqvTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217033-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881D4150168
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CC1150418
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 19BE7304EA60
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:41:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D2BDF300E62B
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D40A374178;
-	Tue, 17 Feb 2026 20:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB51266581;
+	Tue, 17 Feb 2026 20:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYf4Xlzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZlrguF1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40AD6A8D2;
-	Tue, 17 Feb 2026 20:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC9129A1;
+	Tue, 17 Feb 2026 20:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360888; cv=none; b=BOg5mxD4aED5YreKDvEOde0dPn2REergTDr58ATrE/SegU9dgn2U0JCGfzM6PdPAVqtbjCE3Oq5lF92AaC4LXp19NVU1/N9+x/tf59P+65E5LWcS3miBtCGq7iwhVgPyY/lMvoZdsZWY/zIzPeKipA33wd6pynPc44tUM9zcaQY=
+	t=1771361193; cv=none; b=GqLsY61SWj+5J+CcslmG4QL0xGdf9DhD6vbI8hV0G3pH4nRxg6QLMTO/tFsg98rhieDQFYfwhez4IdMqy5XxfL0MEFGHxu0rFwcMAlFkKZMcW3KhhPovXn/0njPoB9vftxBQ0bt14wOgR7U/IBJAdI3XPh/xdyMB6KhuJlmYv7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360888; c=relaxed/simple;
-	bh=4PpaPVM/Nv5m39ac+Ws6EQnDRFkMcv0HtU3ecAKlX2A=;
+	s=arc-20240116; t=1771361193; c=relaxed/simple;
+	bh=MmUrVW4O9PNYsaDu3si3+uxqzfkzrTDyYeVOEQyMgW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LMWWuINqsF5Rp4V4JnuRcMy91jeox0KeOjF8oZ5rI5s4qu/Np0r10NCeEYtmQhMiSfQxxA4Ed90Glb0Jql1DlC2Pyc0vv5YFSZVXcd3fjaJawYONqj0prLi7pPPrbRBhtoF6N9l/lv1VkcbcaD2t/0h9IyJSrR5QYBpW//ar1yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYf4Xlzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC04C4CEF7;
-	Tue, 17 Feb 2026 20:41:27 +0000 (UTC)
+	 MIME-Version; b=fI/2trHiRXMhDabBfdIOLJ+K04pQGn8xdiSHcbFhhNOkpacFSKuZ63RuA1zvzuQNL9fSzeFq0wCLBF3KrcLblJeYOyLdP8E7W+JagZ6IB5MSJm/ugB3fzPF6K7Fn2ARWNUu6bwgoGhuWXKC8qHvwhQsoQZPPEovQwsC+h2Qdkb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZlrguF1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68D8C4CEF7;
+	Tue, 17 Feb 2026 20:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771360887;
-	bh=4PpaPVM/Nv5m39ac+Ws6EQnDRFkMcv0HtU3ecAKlX2A=;
+	s=korg; t=1771361193;
+	bh=MmUrVW4O9PNYsaDu3si3+uxqzfkzrTDyYeVOEQyMgW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DYf4XlzmfK6s72m2Dnf+kVVLGDqZvRGx4YXIWq9HBSAzIA6PRZd3uN4kvcu2ogmkR
-	 JvLSZoZsAnX6fpqrmnSXCWqFtrFP0Su+wztkluOZnztlgOMGLCUgD7ToMn9CVw7+lL
-	 90ygiMphZSOPP0tfrDHkGLHY2YLDQ9HnWEezhEmU=
+	b=TZlrguF1TkOCQkGcz+SXCiGsFR9fC0/GWRujhjmclPezSmG9hsYUvCp/Ojuum0Do2
+	 z+vWUe7SOFN+IWWJ7L7BYisMUodk/NmNDBXyan8Z7+dqot0Jzor3/IKtrAYkuRFrsC
+	 lIocWNsS7yxm1z1AajNqXGMmAkRSxCbAOuB6IDNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Xiaolong Guo <guoxiaolong2008@gmail.com>
-Subject: [PATCH 6.6 37/39] f2fs: fix to avoid mapping wrong physical block for swapfile
-Date: Tue, 17 Feb 2026 21:30:59 +0100
-Message-ID: <20260217200005.636235817@linuxfoundation.org>
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 04/64] crypto: octeontx - Fix length check to avoid truncation in ucode_load_store
+Date: Tue, 17 Feb 2026 21:31:00 +0100
+Message-ID: <20260217200007.674285368@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200004.221651386@linuxfoundation.org>
-References: <20260217200004.221651386@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,175 +66,70 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216944-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217033-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,google.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 881D4150168
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E1CC1150418
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 5c145c03188bc9ba1c29e0bc4d527a5978fc47f9 ]
+commit 5565a72b24fa7935a9f30af386e92c8c9dfb23b9 upstream.
 
-Xiaolong Guo reported a f2fs bug in bugzilla [1]
+OTX_CPT_UCODE_NAME_LENGTH limits the microcode name to 64 bytes. If a
+user writes a string of exactly 64 characters, the original code used
+'strlen(buf) > 64' to check the length, but then strscpy() copies only
+63 characters before adding a NUL terminator, silently truncating the
+copied string.
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=220951
+Fix this off-by-one error by using 'count' directly for the length check
+to ensure long names are rejected early and copied without truncation.
 
-Quoted:
-
-"When using stress-ng's swap stress test on F2FS filesystem with kernel 6.6+,
-the system experiences data corruption leading to either:
-1 dm-verity corruption errors and device reboot
-2 F2FS node corruption errors and boot hangs
-
-The issue occurs specifically when:
-1 Using F2FS filesystem (ext4 is unaffected)
-2 Swapfile size is less than F2FS section size (2MB)
-3 Swapfile has fragmented physical layout (multiple non-contiguous extents)
-4 Kernel version is 6.6+ (6.1 is unaffected)
-
-The root cause is in check_swap_activate() function in fs/f2fs/data.c. When the
-first extent of a small swapfile (< 2MB) is not aligned to section boundaries,
-the function incorrectly treats it as the last extent, failing to map
-subsequent extents. This results in incorrect swap_extent creation where only
-the first extent is mapped, causing subsequent swap writes to overwrite wrong
-physical locations (other files' data).
-
-Steps to Reproduce
-1 Setup a device with F2FS-formatted userdata partition
-2 Compile stress-ng from https://github.com/ColinIanKing/stress-ng
-3 Run swap stress test: (Android devices)
-adb shell "cd /data/stressng; ./stress-ng-64 --metrics-brief --timeout 60
---swap 0"
-
-Log:
-1 Ftrace shows in kernel 6.6, only first extent is mapped during second
-f2fs_map_blocks call in check_swap_activate():
-stress-ng-swap-8990: f2fs_map_blocks: ino=11002, file offset=0, start
-blkaddr=0x43143, len=0x1
-(Only 4KB mapped, not the full swapfile)
-2 in kernel 6.1, both extents are correctly mapped:
-stress-ng-swap-5966: f2fs_map_blocks: ino=28011, file offset=0, start
-blkaddr=0x13cd4, len=0x1
-stress-ng-swap-5966: f2fs_map_blocks: ino=28011, file offset=1, start
-blkaddr=0x60c84b, len=0xff
-
-The problematic code is in check_swap_activate():
-if ((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
-    nr_pblocks % blks_per_sec ||
-    !f2fs_valid_pinned_area(sbi, pblock)) {
-    bool last_extent = false;
-
-    not_aligned++;
-
-    nr_pblocks = roundup(nr_pblocks, blks_per_sec);
-    if (cur_lblock + nr_pblocks > sis->max)
-        nr_pblocks -= blks_per_sec;
-
-    /* this extent is last one */
-    if (!nr_pblocks) {
-        nr_pblocks = last_lblock - cur_lblock;
-        last_extent = true;
-    }
-
-    ret = f2fs_migrate_blocks(inode, cur_lblock, nr_pblocks);
-    if (ret) {
-        if (ret == -ENOENT)
-            ret = -EINVAL;
-        goto out;
-    }
-
-    if (!last_extent)
-        goto retry;
-}
-
-When the first extent is unaligned and roundup(nr_pblocks, blks_per_sec)
-exceeds sis->max, we subtract blks_per_sec resulting in nr_pblocks = 0. The
-code then incorrectly assumes this is the last extent, sets nr_pblocks =
-last_lblock - cur_lblock (entire swapfile), and performs migration. After
-migration, it doesn't retry mapping, so subsequent extents are never processed.
-"
-
-In order to fix this issue, we need to lookup block mapping info after
-we migrate all blocks in the tail of swapfile.
-
-Cc: stable@kernel.org
-Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
-Cc: Daeho Jeong <daehojeong@google.com>
-Reported-and-tested-by: Xiaolong Guo <guoxiaolong2008@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220951
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ f2fs_is_sequential_zone_area() => !f2fs_valid_pinned_area() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d9110b0b01ff ("crypto: marvell - add support for OCTEON TX CPT engine")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -3940,6 +3940,7 @@ static int check_swap_activate(struct sw
+--- a/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
++++ b/drivers/crypto/marvell/octeontx/otx_cptpf_ucode.c
+@@ -1337,7 +1337,7 @@ static ssize_t ucode_load_store(struct d
+ 	int del_grp_idx = -1;
+ 	int ucode_idx = 0;
  
- 	while (cur_lblock < last_lblock && cur_lblock < sis->max) {
- 		struct f2fs_map_blocks map;
-+		bool last_extent = false;
- retry:
- 		cond_resched();
+-	if (strlen(buf) > OTX_CPT_UCODE_NAME_LENGTH)
++	if (count >= OTX_CPT_UCODE_NAME_LENGTH)
+ 		return -EINVAL;
  
-@@ -3965,11 +3966,10 @@ retry:
- 		pblock = map.m_pblk;
- 		nr_pblocks = map.m_len;
- 
--		if ((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
--				nr_pblocks % blks_per_sec ||
--				!f2fs_valid_pinned_area(sbi, pblock)) {
--			bool last_extent = false;
--
-+		if (!last_extent &&
-+			((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
-+			nr_pblocks % blks_per_sec ||
-+			!f2fs_valid_pinned_area(sbi, pblock))) {
- 			not_aligned++;
- 
- 			nr_pblocks = roundup(nr_pblocks, blks_per_sec);
-@@ -3990,8 +3990,8 @@ retry:
- 				goto out;
- 			}
- 
--			if (!last_extent)
--				goto retry;
-+			/* lookup block mapping info after block migration */
-+			goto retry;
- 		}
- 
- 		if (cur_lblock + nr_pblocks >= sis->max)
+ 	eng_grps = container_of(attr, struct otx_cpt_eng_grps, ucode_load_attr);
 
 
 
