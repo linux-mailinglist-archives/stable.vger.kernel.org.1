@@ -1,179 +1,182 @@
-Return-Path: <stable+bounces-216899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIr3E9fHlGnCHgIAu9opvQ
-	(envelope-from <stable+bounces-216899-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:56:07 +0100
+	id jSv2AaLJlGluHwIAu9opvQ
+	(envelope-from <stable+bounces-216900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:03:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73DD14FC99
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:56:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D64B14FCCA
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:03:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEEAB303AA92
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 19:56:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AF9903015139
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E683783C8;
-	Tue, 17 Feb 2026 19:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA99B377578;
+	Tue, 17 Feb 2026 20:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rQwFnpJt"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SRxb4j0j"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF63925D1E9;
-	Tue, 17 Feb 2026 19:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771358160; cv=none; b=JVhklWVEnpf+RAzbc10jxK0mV9Kj3ZnDNQbRoHhUYsH8niBGoZVW4W4iw50aMcBGP3bmCofpMGoW1b/e/zUS4pzYUUDgJD3nFzrsj1I5EQdqp0UiRy6nngwE92qwlphf9QBGn4M4DebE0scOw8kDQck1zlrBpMlrbm9EaIfOCQU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771358160; c=relaxed/simple;
-	bh=giOWjCQH6wS7nPGAjIXXxjZXzDGkoQy3N64lkyRWLIU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AoTS1/PTuSZqWVEJrAmPYTtY2pkBd/MZQZa+r58i9KZtgw0NYa/7AaO0SqVsEjZKUU2MSB6LnrLeJqWQ/4jaDaIoR9ut1tmBrSFp1XwBitEy0JqCUbBA0YAqKbhJzwmowdHxCexsFaoJ7LZ4d71w3YKCbwBFAmyUnQO92aUUOq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rQwFnpJt; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61HIrcqT3309338;
-	Tue, 17 Feb 2026 19:55:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=e857/+
-	XeurNCek9z3d0m6OAoBNZWbSgBh2bjyUUuag0=; b=rQwFnpJtsfcYzwPDbQcIKu
-	ekmHddiYKtxEeHXMKXNEpvVuOqXLlRr9nGpiTRULQzHhxB2awY3iPqz5bS8Z2B+B
-	Pj3LM4xdWI5T//EvRUDJu3j8XOWDMl1X/4R9NwRaKMO2vsQ/rfp4Xq5SaJgx0wMC
-	YBHFsp7xNXTgScI/NLZeU4tlaISi6qjH4myFVLlCaYbqqmwsr4vFUfOn49H+rB+o
-	rmp1khhp0o+bjZGEJYJMwryWd44paL58QgrzmiREN83FalcciY473QnMZNgUMNDi
-	47iCQ4FyF2tIP5Si4KjXbyzCcIlXQmoIiLsumzYRE8D1uZ3dIpvZeKEYqGhD4vBw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj4kdcje-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 19:55:47 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61HJ2Ek4023889;
-	Tue, 17 Feb 2026 19:55:46 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb454u1x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 19:55:46 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61HJtia315205048
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Feb 2026 19:55:44 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 535B55805E;
-	Tue, 17 Feb 2026 19:55:44 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 746505806D;
-	Tue, 17 Feb 2026 19:55:43 +0000 (GMT)
-Received: from [9.61.242.249] (unknown [9.61.242.249])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Feb 2026 19:55:43 +0000 (GMT)
-Message-ID: <2818bf62-54c0-4416-82fe-b47f5ae2fcd0@linux.ibm.com>
-Date: Tue, 17 Feb 2026 11:55:43 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AE12C21C7
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 20:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771358620; cv=pass; b=eQJmaoymUaKx8/0RjhgUC26ipFRn1ii2Hb2dBOwyxqvUsssKUJGU2Mtlr56aJbYQrjmZ2/I5sMxKxEnCs5U+QUd3ux1mEcwsEuU85EtVjKbpCLM7VdhOIu1wCJnwbNtye11p6xqPB+eus+Q4hC3sX1b6hF2Kx+4h1JPgAUniImw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771358620; c=relaxed/simple;
+	bh=8IGzT1pKK0tMKZWS/9RzMNxACO8Kd0m/tndhws/hoUQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=go0LdM4cEPQBqyTG6avD28RuirhCo7jc9gdb7mMDfgHQNMasRc1DHI7+egns2BHW1f04KaKIAMiWtU0SXBMKFSoZM9m9FjaYiw2Ljh8lwsYAOhQBYHiHS0Os8rMwVszXqLcJkDoqIPOlVfjOsy35bnYQx5mkSOEwP/ZeLaU4j5I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SRxb4j0j; arc=pass smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-483770e0b25so41012555e9.0
+        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 12:03:39 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771358618; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hlTBHjOwg8y6bJm8MJjxDAnihJXEtylKY0wQGbdUTCCOTD5XsR3VQ1m2/LVctFnqih
+         KODe2XrJiNbVMj0PxIW9Q8ciPzhENrtE3gDbi98Kw6UUkdDeufOGfDr2g/eYDZmlaPD8
+         jtAPcMuvdUBoU4JpCt2HzbiTVEmLdeXljUcxZe1G9FUqEQFYUFukXyTsJ3GOf5NiEef1
+         meHvVi+fglJGjk1J3GtpZs2H8taLGqZi2CHOqMyD/nPdIECtV+3rM1r4ukOOeRQgpxJH
+         rIRvzxldE58DMPx7cfhYAxaHCHNVdG1kePsYTWsmDADg+vOe2Xv+hgys6OfekWI/5ghL
+         hbgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8IGzT1pKK0tMKZWS/9RzMNxACO8Kd0m/tndhws/hoUQ=;
+        fh=yRIpXm4ayXJxCaD5K3lJuqtePk2J1QFAHCJmW9A/a/0=;
+        b=VOK2BsFZcSY3LQGjppI21IX3Z3guA1yQAOyip6t5+jhWUDu4FA1XFwQwW0MQ9gGuev
+         GLpkST2Ji2GKxjJDVwqAsZCJJE4nRAnx4wu0RjT4WQxLz7EI4yZVLyFViS2BShBoJpaU
+         PkPjFJzIu1TQ3kxukhqTA4amBBquyqnZeqVSfaYYyiN3dRq1srFNrJvkCOT0RYT96n3D
+         NOmULRVutFMImdWB3qhCsjgS/0g2qLN2qj1bPJIMM+M5j4GmCOMdakqlkk021z3y0mK7
+         z1MuL9Qc0shLUAON7m+3KbNa0prfXD15BBvsr2WQJZKcu+Jb/pwcvljhfa4q8NJ6PzSm
+         hSiw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771358618; x=1771963418; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8IGzT1pKK0tMKZWS/9RzMNxACO8Kd0m/tndhws/hoUQ=;
+        b=SRxb4j0j9WoZPeeUqH8rtRqzQurkubEpeCASblUZFLiqfqNCCzkMtdJQpklyaWF+ys
+         49V/uxHw8eO6RCQJOQcAB/AZ3JSk9d1tSs44Qt69PXK8+6tsvgHqokfbDYz22SrCMFWv
+         X4bA1HmHZ07xEY+xIOV+icifmwi/6Oe1a0FLy58WRQ99YVP4pU815QB87wPd09B4eaXJ
+         qhB1MA5JRFEUhJXvFcf5et2tcL9J5njeU8SsXX43VG/VZ0PGBKv/SkZzIHXhsEO6fNC5
+         P5MyydFDGIYnPFnGdCOXZAOm6x5cKw7ssHdfBlA17RnuIDdPp6BHomCn02HP4Oof8uYb
+         PAWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771358618; x=1771963418;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8IGzT1pKK0tMKZWS/9RzMNxACO8Kd0m/tndhws/hoUQ=;
+        b=mLrvwsACpJrj/xyMsMIzq7Yc4sPaTt6DhomF3T4yS+ZjDD+8N/4NDih5/2xwuras8X
+         VsCPJ3oekgUWVJByv60FtNrlt5JvG45iBA3BgFP+zkRyfmVXu7qmnhPZylZlY0LzgIb+
+         gdLqWOu4PtTSyzgdNwxmvY54Z/hnvpi4bhgeguvMbFf0BqBytm0PDg5wpqagpx3+6GK7
+         NjE9wR4U3U6n/Cu4bp9miey/KbLAfn5SixC/FcKEffWwy2xdOC8vJ5ePC5Pj690ZwVB7
+         9nNO6qv4pGQ1vgwwijDQqG4unEICvXvOXGBCSIGEsG6YouUAScfxXJiBj48JHrImSd9a
+         aEuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsGi6WOD6Bl+JNRFLGzNpQrtJ7QxQronMR8+pqg0ZnO60wlMs7JMEsxtj84O2Ns7fGYh1U3Ns=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYDlNGk+8CsDB9tKWNY6VpQAHMMAttu97Yo8SusZiN8GauUEtq
+	L4sywQkhLCKTo03Ra+CbMLPep4QYhVTA2X70kJskq4Uy1JMhbb/Br+koSothWPYO5RfQ+NKee+B
+	VKfiUVJfynKgMV7+vQOgBBRCBMwdyp15+T6YR2uZM
+X-Gm-Gg: AZuq6aKY05RD+jOlA35UmJ7g2GgXf8bR+ux+eLrvWjoJZYv9smQmUevNXsGXTMUXsBa
+	eXQQqpD+7alU6FBjA4Ak5ASYdlsVsI58d2A8iH9RvE81vzJt0yzp1zCfR7c3dZ/MQoDhV3jul2R
+	UkYezz8tqSebMJKHPwA50F25pBMdsncnzC7Pj47rmS/AFc6ltADBHquW6yoPLj+ZpkkhPFWQlxs
+	FK/mcKolFpyfyOTjrZd4VOqi4wU0w1TjDU7gKo+l2Cl/kkt9UqUbLlLKzhq7jSv24qFbfEAsQi7
+	DVz0i4w5Z4JXieGS2foDgg6ldMmbpod+ifrsFQ==
+X-Received: by 2002:a05:600c:4fcf:b0:483:6f82:9723 with SMTP id
+ 5b1f17b1804b1-48371043085mr263576225e9.4.1771358617090; Tue, 17 Feb 2026
+ 12:03:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/9] PCI: Avoid saving config space state in reset path
-To: Keith Busch <kbusch@kernel.org>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, helgaas@kernel.org, lukas@wunner.de,
-        alex@shazbot.org, clg@redhat.com, stable@vger.kernel.org,
-        schnelle@linux.ibm.com, mjrosato@linux.ibm.com,
-        Bjorn Helgaas <bhelgaas@google.com>
-References: <20260217182257.1582-1-alifm@linux.ibm.com>
- <20260217182257.1582-4-alifm@linux.ibm.com> <aZS9X_CQBuo7gQpC@kbusch-mbp>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <aZS9X_CQBuo7gQpC@kbusch-mbp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDE2MSBTYWx0ZWRfX2IajmBNvZO4m
- xz49fdcSeGPQCx0IV0Yg7M1K5w/9IEEfEBKxWEulgeRiRR8tHisoPFVV55AUfxTSaCKulminPve
- YdQu4M5zeYQ0WJJIOu23o06cjxhH6PdE0tKURyBSFnw6Hl5pF9hf22HXv0ubu1iAdNsdoqT3OS5
- hZokVyLkBpdg5yxWldf7vkZecg77k6WCRsaa89Sylyj6RZe10eiKBPKVGokXC1nvQLdc97lgLCp
- kjtUenJd6GK3mBUDjjjImNRbNecRAJacHuVqJIE5fDQrRlHFoUY0Zj1h/aVgOlqVu9vd3Djl9sL
- wU5ABf/j+MtiD7yEueQbbEvU6i7J4TqJNMIsEphVNo5XBWhgWQcbuWF90JgNhNCfTU+acvj6RHn
- BE7SJ3JR6K33yYxUT4SZRWPiXLqCklm6YQvzx3Ca3kOu4XvWZCKcVSGokT9XRWiRW67C+PsuMhr
- Z9gWGqWVWGfqaOg1uRg==
-X-Proofpoint-ORIG-GUID: wnIxsI2QEjug02k4k4EMN77zuRDJq61H
-X-Proofpoint-GUID: kq08CJRypp2_CBkq94u-gkvRos6n1SBo
-X-Authority-Analysis: v=2.4 cv=M7hA6iws c=1 sm=1 tr=0 ts=6994c7c3 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=Q7f48Jf6utwjRvlCK7UA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-17_03,2026-02-16_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1011 phishscore=0
- impostorscore=0 suspectscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602170161
+References: <20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com>
+ <20260217-binder-vma-check-v1-2-1a2b37f7b762@google.com> <CAG48ez2O=_Hd7EjjLSAh36xtOMyX5MZ47xodWkU3FyEar63TnQ@mail.gmail.com>
+In-Reply-To: <CAG48ez2O=_Hd7EjjLSAh36xtOMyX5MZ47xodWkU3FyEar63TnQ@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 17 Feb 2026 21:03:25 +0100
+X-Gm-Features: AaiRm53OywEZ-9snmQAwJUPw_yVph9JnQVbkwj0vQh6FVln0Kgy98BO_f8V9K3Q
+Message-ID: <CAH5fLgiM3+2URibfBNQr5X80bKvZnwA_tBjHpE-d_FHye7w1ug@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust_binder: avoid reading the written value in
+ offsets array
+To: Jann Horn <jannh@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216899-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ibm.com:+]
-X-Rspamd-Queue-Id: E73DD14FC99
+	TAGGED_FROM(0.00)[bounces-216900-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,google.com,kernel.org,garyguo.net,protonmail.com,umich.edu,oracle.com,vger.kernel.org,kvack.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 8D64B14FCCA
 X-Rspamd-Action: no action
 
+On Tue, Feb 17, 2026 at 5:35=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+>
+> On Tue, Feb 17, 2026 at 3:22=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> > When sending a transaction, its offsets array is first copied into the
+> > target proc's vma, and then the values are read back from there. This i=
+s
+> > normally fine because the vma is a read-only mapping, so the target
+> > process cannot change the value under us.
+> >
+> > However, if the target process somehow gains the ability to write to it=
+s
+> > own vma, it could change the offset before it's read back, causing the
+> > kernel to misinterpret what the sender meant. If the sender happens to
+> > send a payload with a specific shape, this could in the worst case lead
+> > to the receiver being able to privilege escalate into the sender.
+> >
+> > The intent is that gaining the ability to change the read-only vma of
+> > your own process should not be exploitable, so remove this TOCTOU read
+> > even though it's unexploitable without another Binder bug.
+>
+> With this, the only remaining read from the ShrinkablePageRange is in
+> AllocationView::cleanup_object(), correct? If I understand correctly,
+> that is fine because it can only drop references on handles (which
+> userspace could equivalently do via BC_RELEASE/BC_DECREFS) and on
+> binders (which would probably also have its influence limited to the
+> process)?
 
-On 2/17/2026 11:11 AM, Keith Busch wrote:
-> On Tue, Feb 17, 2026 at 10:22:51AM -0800, Farhan Ali wrote:
->> The current reset process saves the device's config space state before
->> reset and restores it afterward. However errors may occur unexpectedly and
->> it may then be impossible to save config space because the device may be
->> inaccessible (e.g. DPC) or config space may be corrupted. This results in
->> saving corrupted values that get written back to the device during state
->> restoration.
->>
->> Since commit a2f1e22390ac ("PCI/ERR: Ensure error recoverability at all times"),
->> we now save the state of device at enumeration. On every restore we should
->> either use the enumeration saved state or driver's intentional saved state,
->> never a state saved at the unpredictable time of an error recovery reset.
-> The vfio driver calls pci_try_reset_function after pci_enable_device,
-> but before calling pci_store_saved_state. Won't this change, then, mean
-> that the PCI Command register will get restored to the wrong state with
-> the resources disabled?
+Yeah, that's the idea.
 
-Yes I think you are right, with this change the PCI Command register 
-gets restored to state at enumeration. So we will lose the updated state 
-after pci_clear_master() and pci_enable_device(). I think we can update 
-the vfio driver to call pci_save_state() after pci_enable_device()?
-
-Thanks
-
-Farhan
-
-
+Alice
 
