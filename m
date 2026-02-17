@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-216810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKy5JMdklGkFDgIAu9opvQ
-	(envelope-from <stable+bounces-216810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 13:53:27 +0100
+	id oJ8RDttklGkFDgIAu9opvQ
+	(envelope-from <stable+bounces-216811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 13:53:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F95F14C257
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 13:53:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E39914C25E
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 13:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F292130233C2
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 12:53:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45D1D302978A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 12:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEC1355057;
-	Tue, 17 Feb 2026 12:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEBA355056;
+	Tue, 17 Feb 2026 12:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4fzQmCx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hc+whEDU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30D6355056
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 12:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E3A355053
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 12:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771332804; cv=none; b=TMygXMVfn1I8cWZ71Vqh9HFKdjsd2LJXA605LODm8TcMWG7IocnMo594FfCb95iu5wi3HX6SPLi+6U/MErLIytt9ohls8boQop49JJ1NY4IfzFibwWYFqU1jkNFZbgAeDZZg3sPuj7DkJoe/ZT//6U3lxE2FWddIPulqxQyjTlE=
+	t=1771332824; cv=none; b=i/FeoY8zLSpuASGgt8VXLRvtyVI96PuDqYKrzbycv2Ncsz5jp2cxT6celqKRtF/5MbRyVKqOPeNo95pHfUn6W9itheylIX8HgUb5waaAISDlUsMUpUdFA3VvnzrCQYHZwgzoL28uguNcDcy7XVmq1IjGMTsZT1dpu6AUxvwTy5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771332804; c=relaxed/simple;
-	bh=T3tbd0RVjUF8+oCpX9D1VIufmfoSJCqG6r3/yKNHOSg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sKyqRks+PxKlz6/POrrFgEcDc3gkjO7sWoxDG6Ga1lLM5HyDsriiy6HCEGazVslA+aP1ELmta634VJ4HqHIJ/FujTJbXoqae2nnYYpEXP7riAZNeq1cB220t8x6MeYaZxzsT9NG/T3d2rx49ULypz+ueNghENVcPGhXKNxJf+GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4fzQmCx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31F8C4CEF7;
-	Tue, 17 Feb 2026 12:53:23 +0000 (UTC)
+	s=arc-20240116; t=1771332824; c=relaxed/simple;
+	bh=qgUc6HOE1pBBXoJXBwpDb7ioNOoYV9dj6EDcCWG9+sg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DNnKiFhS59eZPRwqtX26UafWtAX3bvSGW8uAM+YN84OzP5VLhKDhT6bVXbbdbzTg/+LG6KhVz5YXsw24q7iHwaVd/Z9CPkz0J/qf8kCZ+p6JPuuC5k6go/Prhg/ycbdXGwDcDxs0ILrXl1GWrUo+k5gxgddey7n1bbqdGeslD1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hc+whEDU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CC7C4CEF7;
+	Tue, 17 Feb 2026 12:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771332804;
-	bh=T3tbd0RVjUF8+oCpX9D1VIufmfoSJCqG6r3/yKNHOSg=;
+	s=korg; t=1771332824;
+	bh=qgUc6HOE1pBBXoJXBwpDb7ioNOoYV9dj6EDcCWG9+sg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=M4fzQmCxONByu13TOBafWVF9jOHho0rp0D+TJq6ROYPsQEcomlSnK4OWhbaXqzpTL
-	 LEw46G8LmJNFDHvtjtU25hVAQmrLCvxl9tfqkfxqIHM5/mBjILTsbjgNlMTJswCHqe
-	 z5GYuhic5jT+D5rMirWJo9am/I3wXnArTmBGXTxk=
-Subject: FAILED: patch "[PATCH] Revert "f2fs: block cache/dio write during" failed to apply to 6.19-stable tree
+	b=Hc+whEDUIpZEg37znwyO6GUZW/hMprSrXm13LvClM/bijnOMcTOk2HxPGvafXfBJE
+	 TQbwx2ELIdGCZfqVNmQQHSaUrUFRzsUQjcPhi80dEEfrMfPSF+BOA+t8LalGuJlpEQ
+	 MHPzrsj6GKMErdnFFPLp0uPreS7TsVkdBWTzmKnU=
+Subject: FAILED: patch "[PATCH] f2fs: fix to do sanity check on node footer in" failed to apply to 6.19-stable tree
 To: chao@kernel.org,jaegeuk@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Feb 2026 13:53:21 +0100
-Message-ID: <2026021721-glare-regular-e385@gregkh>
+Date: Tue, 17 Feb 2026 13:53:41 +0100
+Message-ID: <2026021741-extradite-expert-29ab@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,11 +61,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216810-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216811-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -78,11 +78,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0F95F14C257
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 8E39914C25E
 X-Rspamd-Action: no action
 
 
@@ -95,10 +95,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3996b70209f145bfcf2afc7d05dd92c27b233b48
+git cherry-pick -x 50ac3ecd8e05b6bcc350c71a4307d40c030ec7e4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026021721-glare-regular-e385@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026021741-extradite-expert-29ab@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -110,157 +110,174 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3996b70209f145bfcf2afc7d05dd92c27b233b48 Mon Sep 17 00:00:00 2001
+From 50ac3ecd8e05b6bcc350c71a4307d40c030ec7e4 Mon Sep 17 00:00:00 2001
 From: Chao Yu <chao@kernel.org>
-Date: Fri, 16 Jan 2026 11:38:16 +0800
-Subject: [PATCH] Revert "f2fs: block cache/dio write during
- f2fs_enable_checkpoint()"
+Date: Mon, 12 Jan 2026 15:49:16 +0800
+Subject: [PATCH] f2fs: fix to do sanity check on node footer in
+ {read,write}_end_io
 
-This reverts commit 196c81fdd438f7ac429d5639090a9816abb9760a.
+-----------[ cut here ]------------
+kernel BUG at fs/f2fs/data.c:358!
+Call Trace:
+ <IRQ>
+ blk_update_request+0x5eb/0xe70 block/blk-mq.c:987
+ blk_mq_end_request+0x3e/0x70 block/blk-mq.c:1149
+ blk_complete_reqs block/blk-mq.c:1224 [inline]
+ blk_done_softirq+0x107/0x160 block/blk-mq.c:1229
+ handle_softirqs+0x283/0x870 kernel/softirq.c:579
+ __do_softirq kernel/softirq.c:613 [inline]
+ invoke_softirq kernel/softirq.c:453 [inline]
+ __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1050
+ </IRQ>
 
-Original patch may cause below deadlock, revert it.
+In f2fs_write_end_io(), it detects there is inconsistency in between
+node page index (nid) and footer.nid of node page.
 
-write				remount
-- write_begin
- - lock_page  --- lock A
- - prepare_write_begin
-  - f2fs_map_lock
-				- f2fs_enable_checkpoint
-				 - down_write(cp_enable_rwsem)  --- lock B
-				 - sync_inode_sb
-				  - writepages
-				   - lock_page			--- lock A
-   - down_read(cp_enable_rwsem)  --- lock A
+If footer of node page is corrupted in fuzzed image, then we load corrupted
+node page w/ async method, e.g. f2fs_ra_node_pages() or f2fs_ra_node_page(),
+in where we won't do sanity check on node footer, once node page becomes
+dirty, we will encounter this bug after node page writeback.
 
 Cc: stable@kernel.org
-Fixes: 196c81fdd438 ("f2fs: block cache/dio write during f2fs_enable_checkpoint()")
+Reported-by: syzbot+803dd716c4310d16ff3a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=803dd716c4310d16ff3a
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 
 diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index f32eb51ccee4..2e133a723b99 100644
+index f461f1318b4c..9b70b6d33703 100644
 --- a/fs/f2fs/data.c
 +++ b/fs/f2fs/data.c
-@@ -1474,7 +1474,6 @@ static void f2fs_map_lock(struct f2fs_sb_info *sbi,
- 				struct f2fs_lock_context *lc,
- 				int flag)
- {
--	f2fs_down_read(&sbi->cp_enable_rwsem);
- 	if (flag == F2FS_GET_BLOCK_PRE_AIO)
- 		f2fs_down_read_trace(&sbi->node_change, lc);
- 	else
-@@ -1489,7 +1488,6 @@ static void f2fs_map_unlock(struct f2fs_sb_info *sbi,
- 		f2fs_up_read_trace(&sbi->node_change, lc);
- 	else
- 		f2fs_unlock_op(sbi, lc);
--	f2fs_up_read(&sbi->cp_enable_rwsem);
- }
+@@ -172,6 +172,11 @@ static void f2fs_finish_read_bio(struct bio *bio, bool in_task)
+ 		while (nr_pages--)
+ 			dec_page_count(F2FS_F_SB(folio), __read_io_type(folio));
  
- int f2fs_get_block_locked(struct dnode_of_data *dn, pgoff_t index)
++		if (F2FS_F_SB(folio)->node_inode && is_node_folio(folio) &&
++			f2fs_sanity_check_node_footer(F2FS_F_SB(folio),
++				folio, folio->index, NODE_TYPE_REGULAR, true))
++			bio->bi_status = BLK_STS_IOERR;
++
+ 		if (finished)
+ 			folio_end_read(folio, bio->bi_status == BLK_STS_OK);
+ 	}
+@@ -374,8 +379,11 @@ static void f2fs_write_end_io(struct bio *bio)
+ 						STOP_CP_REASON_WRITE_FAIL);
+ 		}
+ 
+-		f2fs_bug_on(sbi, is_node_folio(folio) &&
+-				folio->index != nid_of_node(folio));
++		if (is_node_folio(folio)) {
++			f2fs_sanity_check_node_footer(sbi, folio,
++				folio->index, NODE_TYPE_REGULAR, true);
++			f2fs_bug_on(sbi, folio->index != nid_of_node(folio));
++		}
+ 
+ 		dec_page_count(sbi, type);
+ 
 diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index ded41b416ed7..90aa1d53722a 100644
+index ae78b8e1ca0c..d41210a381cd 100644
 --- a/fs/f2fs/f2fs.h
 +++ b/fs/f2fs/f2fs.h
-@@ -311,7 +311,7 @@ enum {
- #define DEF_CP_INTERVAL			60	/* 60 secs */
- #define DEF_IDLE_INTERVAL		5	/* 5 secs */
- #define DEF_DISABLE_INTERVAL		5	/* 5 secs */
--#define DEF_ENABLE_INTERVAL		5	/* 5 secs */
-+#define DEF_ENABLE_INTERVAL		16	/* 16 secs */
- #define DEF_DISABLE_QUICK_INTERVAL	1	/* 1 secs */
- #define DEF_UMOUNT_DISCARD_TIMEOUT	5	/* 5 secs */
+@@ -1572,6 +1572,14 @@ enum f2fs_lookup_mode {
+ 	LOOKUP_AUTO,
+ };
  
-@@ -1762,7 +1762,6 @@ struct f2fs_sb_info {
- 	long interval_time[MAX_TIME];		/* to store thresholds */
- 	struct ckpt_req_control cprc_info;	/* for checkpoint request control */
- 	struct cp_stats cp_stats;		/* for time stat of checkpoint */
--	struct f2fs_rwsem cp_enable_rwsem;	/* block cache/dio write */
++/* For node type in __get_node_folio() */
++enum node_type {
++	NODE_TYPE_REGULAR,
++	NODE_TYPE_INODE,
++	NODE_TYPE_XATTR,
++	NODE_TYPE_NON_INODE,
++};
++
+ /* a threshold of maximum elapsed time in critical region to print tracepoint */
+ #define MAX_LOCK_ELAPSED_TIME		500
  
- 	struct inode_management im[MAX_INO_ENTRY];	/* manage inode cache */
- 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 4573bac94793..25f796232ad9 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2687,12 +2687,11 @@ static int f2fs_disable_checkpoint(struct f2fs_sb_info *sbi)
- static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
- {
- 	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
--	long long start, writeback, lock, sync_inode, end;
-+	long long start, writeback, end;
- 	int ret;
- 	struct f2fs_lock_context lc;
- 
--	f2fs_info(sbi, "%s start, meta: %lld, node: %lld, data: %lld",
--					__func__,
-+	f2fs_info(sbi, "f2fs_enable_checkpoint() starts, meta: %lld, node: %lld, data: %lld",
- 					get_pages(sbi, F2FS_DIRTY_META),
- 					get_pages(sbi, F2FS_DIRTY_NODES),
- 					get_pages(sbi, F2FS_DIRTY_DATA));
-@@ -2711,18 +2710,11 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
- 	}
- 	writeback = ktime_get();
- 
--	f2fs_down_write(&sbi->cp_enable_rwsem);
--
--	lock = ktime_get();
--
--	if (get_pages(sbi, F2FS_DIRTY_DATA))
--		sync_inodes_sb(sbi->sb);
-+	sync_inodes_sb(sbi->sb);
- 
- 	if (unlikely(get_pages(sbi, F2FS_DIRTY_DATA)))
--		f2fs_warn(sbi, "%s: has some unwritten data: %lld",
--			__func__, get_pages(sbi, F2FS_DIRTY_DATA));
--
--	sync_inode = ktime_get();
-+		f2fs_warn(sbi, "checkpoint=enable has some unwritten data: %lld",
-+					get_pages(sbi, F2FS_DIRTY_DATA));
- 
- 	f2fs_down_write_trace(&sbi->gc_lock, &lc);
- 	f2fs_dirty_to_prefree(sbi);
-@@ -2731,13 +2723,6 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
- 	set_sbi_flag(sbi, SBI_IS_DIRTY);
- 	f2fs_up_write_trace(&sbi->gc_lock, &lc);
- 
--	f2fs_info(sbi, "%s sync_fs, meta: %lld, imeta: %lld, node: %lld, dents: %lld, qdata: %lld",
--					__func__,
--					get_pages(sbi, F2FS_DIRTY_META),
--					get_pages(sbi, F2FS_DIRTY_IMETA),
--					get_pages(sbi, F2FS_DIRTY_NODES),
--					get_pages(sbi, F2FS_DIRTY_DENTS),
--					get_pages(sbi, F2FS_DIRTY_QDATA));
- 	ret = f2fs_sync_fs(sbi->sb, 1);
- 	if (ret)
- 		f2fs_err(sbi, "%s sync_fs failed, ret: %d", __func__, ret);
-@@ -2745,17 +2730,11 @@ static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
- 	/* Let's ensure there's no pending checkpoint anymore */
- 	f2fs_flush_ckpt_thread(sbi);
- 
--	f2fs_up_write(&sbi->cp_enable_rwsem);
--
- 	end = ktime_get();
- 
--	f2fs_info(sbi, "%s end, writeback:%llu, "
--				"lock:%llu, sync_inode:%llu, sync_fs:%llu",
--				__func__,
--				ktime_ms_delta(writeback, start),
--				ktime_ms_delta(lock, writeback),
--				ktime_ms_delta(sync_inode, lock),
--				ktime_ms_delta(end, sync_inode));
-+	f2fs_info(sbi, "f2fs_enable_checkpoint() finishes, writeback:%llu, sync:%llu",
-+					ktime_ms_delta(writeback, start),
-+					ktime_ms_delta(end, writeback));
- 	return ret;
+@@ -3915,6 +3923,9 @@ struct folio *f2fs_new_node_folio(struct dnode_of_data *dn, unsigned int ofs);
+ void f2fs_ra_node_page(struct f2fs_sb_info *sbi, nid_t nid);
+ struct folio *f2fs_get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
+ 						enum node_type node_type);
++int f2fs_sanity_check_node_footer(struct f2fs_sb_info *sbi,
++					struct folio *folio, pgoff_t nid,
++					enum node_type ntype, bool in_irq);
+ struct folio *f2fs_get_inode_folio(struct f2fs_sb_info *sbi, pgoff_t ino);
+ struct folio *f2fs_get_xnode_folio(struct f2fs_sb_info *sbi, pgoff_t xnid);
+ int f2fs_move_node_folio(struct folio *node_folio, int gc_type);
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 30e26b878af0..efd4f176a1f4 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1511,9 +1511,9 @@ void f2fs_ra_node_page(struct f2fs_sb_info *sbi, nid_t nid)
+ 	f2fs_folio_put(afolio, err ? true : false);
  }
  
-@@ -4952,7 +4931,6 @@ static int f2fs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	init_f2fs_rwsem_trace(&sbi->node_change, sbi, LOCK_NAME_NODE_CHANGE);
- 	spin_lock_init(&sbi->stat_lock);
- 	init_f2fs_rwsem_trace(&sbi->cp_rwsem, sbi, LOCK_NAME_CP_RWSEM);
--	init_f2fs_rwsem(&sbi->cp_enable_rwsem);
- 	init_f2fs_rwsem(&sbi->quota_sem);
- 	init_waitqueue_head(&sbi->cp_wait);
- 	spin_lock_init(&sbi->error_lock);
+-static int sanity_check_node_footer(struct f2fs_sb_info *sbi,
++int f2fs_sanity_check_node_footer(struct f2fs_sb_info *sbi,
+ 					struct folio *folio, pgoff_t nid,
+-					enum node_type ntype)
++					enum node_type ntype, bool in_irq)
+ {
+ 	if (unlikely(nid != nid_of_node(folio)))
+ 		goto out_err;
+@@ -1538,12 +1538,13 @@ static int sanity_check_node_footer(struct f2fs_sb_info *sbi,
+ 		goto out_err;
+ 	return 0;
+ out_err:
+-	f2fs_warn(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
+-		  "node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
+-		  ntype, nid, nid_of_node(folio), ino_of_node(folio),
+-		  ofs_of_node(folio), cpver_of_node(folio),
+-		  next_blkaddr_of_node(folio));
+ 	set_sbi_flag(sbi, SBI_NEED_FSCK);
++	f2fs_warn_ratelimited(sbi, "inconsistent node block, node_type:%d, nid:%lu, "
++		"node_footer[nid:%u,ino:%u,ofs:%u,cpver:%llu,blkaddr:%u]",
++		ntype, nid, nid_of_node(folio), ino_of_node(folio),
++		ofs_of_node(folio), cpver_of_node(folio),
++		next_blkaddr_of_node(folio));
++
+ 	f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
+ 	return -EFSCORRUPTED;
+ }
+@@ -1589,7 +1590,7 @@ static struct folio *__get_node_folio(struct f2fs_sb_info *sbi, pgoff_t nid,
+ 		goto out_err;
+ 	}
+ page_hit:
+-	err = sanity_check_node_footer(sbi, folio, nid, ntype);
++	err = f2fs_sanity_check_node_footer(sbi, folio, nid, ntype, false);
+ 	if (!err)
+ 		return folio;
+ out_err:
+@@ -1764,7 +1765,8 @@ static bool __write_node_folio(struct folio *folio, bool atomic, bool *submitted
+ 	/* get old block addr of this node page */
+ 	nid = nid_of_node(folio);
+ 
+-	if (sanity_check_node_footer(sbi, folio, nid, NODE_TYPE_REGULAR)) {
++	if (f2fs_sanity_check_node_footer(sbi, folio, nid,
++					NODE_TYPE_REGULAR, false)) {
+ 		f2fs_handle_critical_error(sbi, STOP_CP_REASON_CORRUPTED_NID);
+ 		goto redirty_out;
+ 	}
+diff --git a/fs/f2fs/node.h b/fs/f2fs/node.h
+index 9cb8dcf8d417..824ac9f0e6e4 100644
+--- a/fs/f2fs/node.h
++++ b/fs/f2fs/node.h
+@@ -52,14 +52,6 @@ enum {
+ 	IS_PREALLOC,		/* nat entry is preallocated */
+ };
+ 
+-/* For node type in __get_node_folio() */
+-enum node_type {
+-	NODE_TYPE_REGULAR,
+-	NODE_TYPE_INODE,
+-	NODE_TYPE_XATTR,
+-	NODE_TYPE_NON_INODE,
+-};
+-
+ /*
+  * For node information
+  */
 
 
