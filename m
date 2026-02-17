@@ -1,78 +1,84 @@
-Return-Path: <stable+bounces-217191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217192-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NSkGg7rlGnUIwIAu9opvQ
-	(envelope-from <stable+bounces-217191-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 23:26:22 +0100
+	id gJ/ZKU/slGnUIwIAu9opvQ
+	(envelope-from <stable+bounces-217192-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 23:31:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCCC151715
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 23:26:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 164AB1517DE
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 23:31:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E8F483009F1F
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 22:26:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71CDF301A3AF
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 22:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A85318BBF;
-	Tue, 17 Feb 2026 22:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E468A5B21A;
+	Tue, 17 Feb 2026 22:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TA5BMCcb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mPRl2kSi"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4D43168F6;
-	Tue, 17 Feb 2026 22:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18E71EB5B
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 22:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771367176; cv=none; b=L1sZy1t7W9xpXJl/dNq5OpeHl9xIknbUg2VN3/1qmD6nICC0/fzA+YFXW6xK0dp5mmfRe//l+RDjeFeS4Bi0keZCC+4lAUiS7DfsyczrTFfTDn8YQ5cMK410To88m5djrbZzldD8jq4TltYOFd6LUz/pOdS7t+wifiVXJ8CLf9E=
+	t=1771367480; cv=none; b=XwhI9dMirWyrHIY3YLF/rJZntUh+Sio4DK0h8y/cyfW7rHN16BRyzaBTyeN5h+YuEbs4f9b2IIo5sCHLuYXirp1+280soLhrF18SKn4eFel1kSbZqTMJVJwiCjYHmHmSsAUE8C6t5aUrbwmeR2/DmM4pv6EbVVHPHXb5Iy8Xei4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771367176; c=relaxed/simple;
-	bh=CauXCMMScNpDHMis5FXdfmpRKk7l7qV/1VODtjPxiy0=;
+	s=arc-20240116; t=1771367480; c=relaxed/simple;
+	bh=/hcfgfnNsUh12ni1Y2Sk4wBfr48WfmgnZhgYQyw2Gts=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H+gHZdMUGlO6pwT4vFzwjEnW3kz90jbrdgYmvXmEPOrwy2JwJM0fsUvdOOMYd0iZKIrRA7ZPGG9yeAIPmCOJY4es+jjUgQKLH4/vb4Xu8mSJ9W2YYk/4lZMXJ4hcI+ShViA4NtVePU8TRUj0axA8AblukV6vrpPFhpjnTKvxEkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TA5BMCcb; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61HFNtfu3162998;
-	Tue, 17 Feb 2026 22:26:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=QwjtRP
-	wA/PezjxlQV3WevGyD2tRCq3nS5TSoVTM0NJw=; b=TA5BMCcbD958MjA6IeR/0s
-	agtrYOJtMy3f1zuSgBfJhsi9/+dOid5DfNJ+bZgybrJ//8xp94VCBirmTwcMIesq
-	5JaRJrqD5iKVyOPpqIM3OCf9UMYBmJOoXe5ASM1drbRt4/tMOYs4YYQA/DpABlho
-	1dUDxAYqpGFDDUp83YEc6HdUY0UB0M/d9/cLLfwMWZvJPHPz9fulWCScvehuQI3l
-	fcTBL/dOaUQLrZQul6dx81Xer3sI/bgCTL6dcquSxKPQM1G2+8GVlaCd+xiloOCi
-	hX2AeesTWvoI/V/KvJHodft3YAAnKzz9njLFepmCsvNYpG61D8AUvpgmYq09q4Dg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj6rxsju-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 22:26:08 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61HLReJn015721;
-	Tue, 17 Feb 2026 22:26:07 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ccb455fgr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Feb 2026 22:26:07 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61HMQ6DD28967664
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Feb 2026 22:26:06 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 294FB5805D;
-	Tue, 17 Feb 2026 22:26:06 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5129458043;
-	Tue, 17 Feb 2026 22:26:05 +0000 (GMT)
-Received: from [9.61.242.249] (unknown [9.61.242.249])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Feb 2026 22:26:05 +0000 (GMT)
-Message-ID: <54301c56-1add-4029-b6ed-b441e4fda8dc@linux.ibm.com>
-Date: Tue, 17 Feb 2026 14:26:05 -0800
+	 In-Reply-To:Content-Type; b=JHwkyJqbQqLzyB675cuMz44NDEmnQRQ2jKSupUOoF6wM7kdrapr947K83ZX4O+0GJi7NeyLHkQjTAZ/HIfjc4G5WQDX9rMypzW6xiaZLHI9c+wuAWw5Xq9/jPSHd6gTbdUXV2HO+LUfcuJvvaopGTj7Rf/9uNtB2pRNQC3jhg4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mPRl2kSi; arc=none smtp.client-ip=74.125.82.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12732e6a123so693507c88.1
+        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 14:31:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771367479; x=1771972279; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MX1GlaEzkiiHgH7rrnveVU7hjk2Hhd6hxXYdLPwdnSQ=;
+        b=mPRl2kSi+cx3rZRcqT7wfeBmewdjsOnUP+6aTIbGyGSML4BTecehMO7GHi2iPHImEC
+         RMNQrEjp+KUmlHWpQjqZtY7Bx9dBAUNRncVVa3wLs+WguGodoorACsjLZ/V1aSi8dg2N
+         xgyGATzHQbag0VjuCkUrTe7J6Js0ZXIcnT+O0DluWXOqhvyjwAEsjg40upvZtubNy3bv
+         mEkOCU5CuiwD2HrYwVlHGUjmAK6NEph7O4sAWxZstqQCl1Mu8XTpAYC6q6M+iZ8mTrc/
+         h0Vj9YkUgPLi/nvO4whB++rj39cVbo79izA8ESMRsNKBtTytnGHJrbTPayG//dD67Y3f
+         NOMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771367479; x=1771972279;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MX1GlaEzkiiHgH7rrnveVU7hjk2Hhd6hxXYdLPwdnSQ=;
+        b=hIlZRUO+pSPcoFPmWXqzF7trd5uPvkaVljd6pntdkK6TNmWsvA/b30IqT+bjgjUi2h
+         aO3MvegrLTmpN7xD4vYpc4KGMCCY18xYdXR6G0TplyPpT0wvdB/aJaIkvfUmi72x/36L
+         8PyzpRwqSQLbeOM7A+GeMcGgmO/X3qiiZUtdqj/rR7IsTMVFQv5IaTRbbmOSY41KOfAv
+         3sJDaeMRXay/rp0Uro49mAf8XrSU7XorWAfMoYiVAMHzA4OhgShGorL8j42Xl6JQgO84
+         0A0GUTQRFERRUXVyWudeunbhRG29DEpKT6KLT8CdHWBegSGD+J4CpnijZPDzZFu11K70
+         fBYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWzvJdYI1JoNN8AZIQm7YUdRg/4xeh8ZO3eseaGGaV/uBuXY/VN8fI+C2duMDK/3ITTFpAA4pQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRyt6ubYtsY0kdOCLHdbpbM/4URMUOM1ihm4Tm8gXqehu6/CHU
+	PFz3olne2hXTpSgbMSaInBWN2780OHlfQB7hPxydEzBvSuS7oMkX7zsT
+X-Gm-Gg: AZuq6aKVSrDSaFx5JjFWAJZnCSShYxzD93EsbCNF0w5eYwzbQolFxNJ3s5zVkv0ag79
+	WQnKmxCbqVACDjbt6ozR/yYrHQsuOI9eCK7dM4Hg/9S+bSW/tcIgwPKsTNYQtabmo2Lht5BoQjC
+	N5oKFdZ6CgCIMQKZKdez/p84/z/56gq+NFpKc9QE/f2ez3h7D/8aj/ovPymEDM/2Ksr3WGvO6no
+	h2usTvPd1uUgtOabhdV4FQ2576Hjy37W9Jv+v2xBv4TnHUhzU5hH5VpUcsg4Y3HwcKqCQtXwPfB
+	HidUwlR0N3GCEuT1pnwNrA5WGY7tWrOqT/mkCAmWoD+zUHFQFs3/R/9PWOYzpSJWaiYsnaUoZ8u
+	CYAHTZCo2eDp9m+Z9uz9WMj9C5BBYrGowuT72ff+0Jyish8IWzMV+F5U6C4/bJ+PkfbMOuCe69u
+	HIZUXYfGJywS6hpwl+xJID+WqvJ2vy7Z7lKqMukmxpQN8+CXWVZw==
+X-Received: by 2002:a05:7022:926:b0:11b:9386:a3cf with SMTP id a92af1059eb24-1273ae8f205mr8215143c88.48.1771367478665;
+        Tue, 17 Feb 2026 14:31:18 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742c63feesm19433128c88.4.2026.02.17.14.31.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Feb 2026 14:31:18 -0800 (PST)
+Message-ID: <cd0e8049-36d0-4ab3-89a2-eeb01459bc6f@gmail.com>
+Date: Tue, 17 Feb 2026 14:31:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,106 +86,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/9] PCI: Allow per function PCI slots
-To: Keith Busch <kbusch@kernel.org>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, helgaas@kernel.org, lukas@wunner.de,
-        alex@shazbot.org, clg@redhat.com, stable@vger.kernel.org,
-        schnelle@linux.ibm.com, mjrosato@linux.ibm.com
-References: <20260217182257.1582-1-alifm@linux.ibm.com>
- <20260217182257.1582-2-alifm@linux.ibm.com> <aZTaPH85j5R81Vna@kbusch-mbp>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <aZTaPH85j5R81Vna@kbusch-mbp>
+Subject: Re: [PATCH 6.1 00/64] 6.1.164-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260217200007.505931165@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=dvvWylg4 c=1 sm=1 tr=0 ts=6994eb01 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=VabnemYjAAAA:8 a=4BKzHjxeoT3xkgTLmf0A:9 a=QEXdDO2ut3YA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: abp-wa7Y40mvobzzDtxKv440EMz939mo
-X-Proofpoint-ORIG-GUID: abp-wa7Y40mvobzzDtxKv440EMz939mo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE3MDE4MiBTYWx0ZWRfX5LkuWb2sNnek
- i0/xoZdRkZ6BbxhdyyXUv3KcwtSaiSOtGsBd/g7zHR0uVP1vgg6y2s+asomtA59XDA0ZLELk0dV
- 1X8xE8mm3/mb1fy2zvgNtU84zeYnAjppaMJGq+kJ0Zt1sh0uidMvih8Wtu4ojeMxhjp01izA5S7
- Vhi/DInsNfk50I7tW2VRTrdiQ+nIGqcvcijoMpZzkPyJSvp5xoODgFoBIrLr6VL1DUmOmh/4elE
- geZuxTm+4yQJKmx51e4dCHjqOsSp+R0aI4/3XQ3GfaMasWGeVH2Vw0qXc02N7XU7UH8jSUhsXZy
- D/J6lp8sDR+qZPZen9Vm7X3oKlKky+yKtua9qt7TxITKUyzzS6rLnn1JgozHw0l6GasMkMRNUzG
- VBYnRdcG5cuZFXTWxQBLHmhiF6LrQsZRW2ZGp19uwRzcnXAL5oe6QD6ooinPSoYlymtJI0vZQoI
- Vefe/wuTVIYu0be2X3w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-17_03,2026-02-16_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 clxscore=1015 malwarescore=0 phishscore=0 suspectscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602170182
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217191-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid];
+	TAGGED_FROM(0.00)[bounces-217192-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+]
-X-Rspamd-Queue-Id: 8BCCC151715
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 164AB1517DE
 X-Rspamd-Action: no action
 
+On 2/17/26 12:30, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.164 release.
+> There are 64 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 19 Feb 2026 19:59:50 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.164-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-On 2/17/2026 1:14 PM, Keith Busch wrote:
-> On Tue, Feb 17, 2026 at 10:22:49AM -0800, Farhan Ali wrote:
->> Currently, the kernel's PCI_SLOT() macro assigns the same pci_slot object
->> to multifunction devices. This approach worked fine on s390 systems that
->> only exposed virtual functions as individual PCI domains to the operating
->> system.  Since commit 44510d6fa0c0 ("s390/pci: Handling multifunctions")
->> s390 supports exposing the topology of multifunction PCI devices by
->> grouping them in a shared PCI domain. When attempting to reset a function
->> through the hotplug driver, the shared slot assignment causes the wrong
->> function to be reset instead of the intended one. It also leaks memory as
->> we do create a pci_slot object for the function, but don't correctly free
->> it in pci_slot_release().
-> I think leakage is because s390 is passing in devfn when pci_create_slot
-> is expecting devnr, so things are not getting matched and assigned as
-> expected.
->
-> If you're able to make this change, it will clash with one existing
-> thing, and another proposal I've got at v5 now(*). Specifically, this
-> would allow all 8 bits to be used for the pci_slot 'number' when it's
-> currently expected to be limited to 5 bits. 0xff is special, and I'm
-> proposing another special value. If we are going to allow the slot
-> numbers to use all 8 bits, I think we need to change the type from u8 to
-> u16 so that there is space to encode such special values.
->
->   * https://lore.kernel.org/linux-pci/20260217160836.2709885-3-kbusch@meta.com/
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-I am open to suggestions on how we can better model a pci_slot per 
-function. And yeah, I think it makes sense to update the pci_slot 
-'number' to u16.
-
-Thanks
-
-Farhan
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
