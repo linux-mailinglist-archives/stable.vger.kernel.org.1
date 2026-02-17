@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-217124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CM0uKRjVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:40 +0100
+	id WHd+IPzTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2291D150703
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF631504C2
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 61856305EEBB
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E029C300A4FB
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0527E2D6E76;
-	Tue, 17 Feb 2026 20:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097CF2773E4;
+	Tue, 17 Feb 2026 20:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6P4Bxzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bY3ZuDr1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE4029A1;
-	Tue, 17 Feb 2026 20:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08AF7A13A;
+	Tue, 17 Feb 2026 20:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361503; cv=none; b=RHdvoT/maXJ3H32xS+RxKpPUE/V3Spi4ZNRoOlDUxssX9R0EhBduPhrlyK2Q0vc5UahOMq275PS7QmEuSEJCicn+DKk6HK14ifcyWUQe2kYPCKJGU6hs4ZAOY0V6dCMBn12bBlxLNKKl1tnxwnlXimtJwchpQ1UTGcv04VY5xLk=
+	t=1771361271; cv=none; b=ZMWh2shG8ZsWz9vjf7NNzT1qwynT3XgdKbeXqzWyt/8YoI72Qc+hLOipgih7uC+dTT5eFAA6Y7yuBT5K+y50uogAstcU7sPsZKNTPMFnwuOqVO2NFo+3IU6MPEM/SPeuOf7aD5ChMC/ciSTS7m5Ji20ceCrDNwJ5pWSoAEzxSkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361503; c=relaxed/simple;
-	bh=jiVLG+SN0+wwOhw9F6VXNUKPTplRMWx6w8bjzU4oWi8=;
+	s=arc-20240116; t=1771361271; c=relaxed/simple;
+	bh=CMlJTUOMHSnsUa4eEc+2gmR5i313TSrLZXYySsc67L4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRJWRk21lQnvgG/B2g45oOVu2U+w3aEeFTLdOIttUVoy9t0v515FxNNFf/n8A0r9St+6AjnoA4hIyWMeQbsg6NUHeQw17t4uycoXg6/11SsLJ1JfKo5c+UR2YyC3DK0HRS46EvR7nsFt5dHMnBobJTyXXnnT7/fbkzCVlZZzFeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6P4Bxzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23590C4CEF7;
-	Tue, 17 Feb 2026 20:51:42 +0000 (UTC)
+	 MIME-Version; b=QQf9WiiUkkkt2+nOz6EWyFvELko+V5SwuD+FLspTeCBCVW+4IH9VHbtUPXtU0pwiTHFus3M8wMpYVpQwikDv4YHH/wJ4GzwDOHNIQ8+uQJ8EtLt3Jl8bCuX/7enXRBK/V/4ukK2sEB6n7ynzBgGToiPKT6+W5pydjvey/yZRoK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bY3ZuDr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A44C4CEF7;
+	Tue, 17 Feb 2026 20:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361503;
-	bh=jiVLG+SN0+wwOhw9F6VXNUKPTplRMWx6w8bjzU4oWi8=;
+	s=korg; t=1771361271;
+	bh=CMlJTUOMHSnsUa4eEc+2gmR5i313TSrLZXYySsc67L4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H6P4Bxzpt5kLCBCv6e3WBgSEfej60XEXFa397POS2GmCVXKfOZhPW7TMnB8soC78L
-	 sBBEDEvqbl1ZVybPsCXIIg9q2D1ShY8hQtX5/6kfsCatdCTJoX80rJ2vuzJElZlIPc
-	 gmW0dvXYr4k62ge8IrjOzv/SRe/ALZVcbeJFH0NE=
+	b=bY3ZuDr1aaJhB7Ex6yWjedZvYRptLXmcexCC+HVaA1FN0Ar8MrHNey8uZntPzNeIl
+	 hrgS7dDm87HHqBAZgmxoT2Erl2uxOQ6w5JM3/0wApLBNgLygmgrGqTl9hGzOzVpGEL
+	 w4DxFrGEhy0jzzfUjJOFK/NqdfiHc771mKqjULqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 07/43] ALSA: hda/realtek: Add quirk for Inspur S14-G1
+	David Disseldorp <ddiss@suse.de>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.1 51/64] ksmbd: set ATTR_CTIME flags when setting mtime
 Date: Tue, 17 Feb 2026 21:31:47 +0100
-Message-ID: <20260217200006.751257337@linuxfoundation.org>
+Message-ID: <20260217200009.420080764@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,67 +68,135 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217124-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217056-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,kernel.org,microsoft.com,139.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2291D150703
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,139.com:email,suse.de:email,opensuse.org:url]
+X-Rspamd-Queue-Id: EAF631504C2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 9e18920e783d0bcd4c127a7adc66565243ab9655 ]
+[ Upstream commit 21e46a79bbe6c4e1aa73b3ed998130f2ff07b128 ]
 
-Inspur S14-G1 is equipped with ALC256.
-Enable "power saving mode" and Enable "headset jack mode".
+David reported that the new warning from setattr_copy_mgtime is coming
+like the following.
 
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260126073508.3897461-2-zhangheng@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  113.215316] ------------[ cut here ]------------
+[  113.215974] WARNING: CPU: 1 PID: 31 at fs/attr.c:300 setattr_copy+0x1ee/0x200
+[  113.219192] CPU: 1 UID: 0 PID: 31 Comm: kworker/1:1 Not tainted 6.13.0-rc1+ #234
+[  113.220127] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+[  113.221530] Workqueue: ksmbd-io handle_ksmbd_work [ksmbd]
+[  113.222220] RIP: 0010:setattr_copy+0x1ee/0x200
+[  113.222833] Code: 24 28 49 8b 44 24 30 48 89 53 58 89 43 6c 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 48 89 df e8 77 d6 ff ff e9 cd fe ff ff <0f> 0b e9 be fe ff ff 66 0
+[  113.225110] RSP: 0018:ffffaf218010fb68 EFLAGS: 00010202
+[  113.225765] RAX: 0000000000000120 RBX: ffffa446815f8568 RCX: 0000000000000003
+[  113.226667] RDX: ffffaf218010fd38 RSI: ffffa446815f8568 RDI: ffffffff94eb03a0
+[  113.227531] RBP: ffffaf218010fb90 R08: 0000001a251e217d R09: 00000000675259fa
+[  113.228426] R10: 0000000002ba8a6d R11: ffffa4468196c7a8 R12: ffffaf218010fd38
+[  113.229304] R13: 0000000000000120 R14: ffffffff94eb03a0 R15: 0000000000000000
+[  113.230210] FS:  0000000000000000(0000) GS:ffffa44739d00000(0000) knlGS:0000000000000000
+[  113.231215] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  113.232055] CR2: 00007efe0053d27e CR3: 000000000331a000 CR4: 00000000000006b0
+[  113.232926] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  113.233812] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  113.234797] Call Trace:
+[  113.235116]  <TASK>
+[  113.235393]  ? __warn+0x73/0xd0
+[  113.235802]  ? setattr_copy+0x1ee/0x200
+[  113.236299]  ? report_bug+0xf3/0x1e0
+[  113.236757]  ? handle_bug+0x4d/0x90
+[  113.237202]  ? exc_invalid_op+0x13/0x60
+[  113.237689]  ? asm_exc_invalid_op+0x16/0x20
+[  113.238185]  ? setattr_copy+0x1ee/0x200
+[  113.238692]  btrfs_setattr+0x80/0x820 [btrfs]
+[  113.239285]  ? get_stack_info_noinstr+0x12/0xf0
+[  113.239857]  ? __module_address+0x22/0xa0
+[  113.240368]  ? handle_ksmbd_work+0x6e/0x460 [ksmbd]
+[  113.240993]  ? __module_text_address+0x9/0x50
+[  113.241545]  ? __module_address+0x22/0xa0
+[  113.242033]  ? unwind_next_frame+0x10e/0x920
+[  113.242600]  ? __pfx_stack_trace_consume_entry+0x10/0x10
+[  113.243268]  notify_change+0x2c2/0x4e0
+[  113.243746]  ? stack_depot_save_flags+0x27/0x730
+[  113.244339]  ? set_file_basic_info+0x130/0x2b0 [ksmbd]
+[  113.244993]  set_file_basic_info+0x130/0x2b0 [ksmbd]
+[  113.245613]  ? process_scheduled_works+0xbe/0x310
+[  113.246181]  ? worker_thread+0x100/0x240
+[  113.246696]  ? kthread+0xc8/0x100
+[  113.247126]  ? ret_from_fork+0x2b/0x40
+[  113.247606]  ? ret_from_fork_asm+0x1a/0x30
+[  113.248132]  smb2_set_info+0x63f/0xa70 [ksmbd]
+
+ksmbd is trying to set the atime and mtime via notify_change without also
+setting the ctime. so This patch add ATTR_CTIME flags when setting mtime
+to avoid a warning.
+
+Reported-by: David Disseldorp <ddiss@suse.de>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/smb2pdu.c |   10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 2e9efafa732fe..a77f16abc6df0 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7243,6 +7243,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1ee7, 0x2078, "HONOR BRB-X M1010", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x2039, 0x0001, "Inspur S14-G1", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
--- 
-2.51.0
-
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -5739,15 +5739,13 @@ static int set_file_basic_info(struct ks
+ 		attrs.ia_valid |= (ATTR_ATIME | ATTR_ATIME_SET);
+ 	}
+ 
+-	attrs.ia_valid |= ATTR_CTIME;
+ 	if (file_info->ChangeTime)
+-		attrs.ia_ctime = ksmbd_NTtimeToUnix(file_info->ChangeTime);
+-	else
+-		attrs.ia_ctime = inode->i_ctime;
++		inode_set_ctime_to_ts(inode,
++				ksmbd_NTtimeToUnix(file_info->ChangeTime));
+ 
+ 	if (file_info->LastWriteTime) {
+ 		attrs.ia_mtime = ksmbd_NTtimeToUnix(file_info->LastWriteTime);
+-		attrs.ia_valid |= (ATTR_MTIME | ATTR_MTIME_SET);
++		attrs.ia_valid |= (ATTR_MTIME | ATTR_MTIME_SET | ATTR_CTIME);
+ 	}
+ 
+ 	if (file_info->Attributes) {
+@@ -5789,8 +5787,6 @@ static int set_file_basic_info(struct ks
+ 			return -EACCES;
+ 
+ 		inode_lock(inode);
+-		inode->i_ctime = attrs.ia_ctime;
+-		attrs.ia_valid &= ~ATTR_CTIME;
+ 		rc = notify_change(user_ns, dentry, &attrs, NULL);
+ 		inode_unlock(inode);
+ 	}
 
 
 
