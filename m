@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-217079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ED99KU3UlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:17 +0100
+	id wH5tIc3UlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255D9150571
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:49:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8DF150657
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7FCE330451E2
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A889830136A2
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0397628D8E8;
-	Tue, 17 Feb 2026 20:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E70929BDB4;
+	Tue, 17 Feb 2026 20:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orilhQ6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGP1bIAU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC502773E4;
-	Tue, 17 Feb 2026 20:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F2D284B3B;
+	Tue, 17 Feb 2026 20:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361351; cv=none; b=pCCbsuQ59Av2TNnbwlLQsDZEfFe7rx8TTA98gwvFqi8u9O2StUqdAgdg5X7sDd5boF3M2CsucrAZiBSn18Y0IHyc5lWufLWbCiZBLwzyiFuuXlsq9fGM+k/95aAamkde1qT4m6YiDJ5pppbjdbHogGpIy/gLGkVer1g6tzYf19M=
+	t=1771361473; cv=none; b=rX9/zBNUM5t1pyc6K/HTVV/FN/lT4QK1xR41OgArCc3BP+yMIyBttuSi9iitecbfYUMzOPCJP3rR+4ivLThqYBLTTACBaly5umM1DDZJGFNgB9UkIzuNGKMjL7b8wWtgCdyjmfDCOr578AFCgzYOqgqeYyeXK2xQ3tiTNUCHCuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361351; c=relaxed/simple;
-	bh=e51fEvyXuNpZmy/a1qJH07lUDLFViMeggR57ywjXqcA=;
+	s=arc-20240116; t=1771361473; c=relaxed/simple;
+	bh=X5nB7p5eVdYT+ylSop4RE2EUDcuQ9oLOYFGIkzoSK0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQD+daeGdXzT8GqgIJRGJrseZDKQzfFW0wner9SL8+Xll1ND74lkwpfVAVjmLg96/bU1GsX36mn55vKtbhB7xoHK0hC38lPiCMtT3+1VaCsNhbTrE1PvUulHdpIijOOfzG7kpPkaD6hep4X083fjzQAvdSur2t6AJRDYT6LzJZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orilhQ6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F749C4CEF7;
-	Tue, 17 Feb 2026 20:49:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AOzOFxefz7qz1Z6oiwpELhwBReDoce4CbU0b5kb0AXqbHiA0VAgG3mDEGSP6anqeTrXm/Q9XPj8B109kzJIyRKjHT7+paLR8SgVSLi/GrEccfrKtG9IqSPPy6yLZELgrIjClmq0cpDgZJ2ZJW/Ojy8VGY/YNQ5zNyvz/wH3rtkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGP1bIAU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DDFC4CEF7;
+	Tue, 17 Feb 2026 20:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361351;
-	bh=e51fEvyXuNpZmy/a1qJH07lUDLFViMeggR57ywjXqcA=;
+	s=korg; t=1771361472;
+	bh=X5nB7p5eVdYT+ylSop4RE2EUDcuQ9oLOYFGIkzoSK0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orilhQ6NiS6bM1bECt67vf5TkrLKRttZ/7rAGvb/nLch6//LIDHhf8jn+L1nQUFOq
-	 egOul4b1xXqIk0jGNZjQe9EBakyL0SOkDO7VUVdT+IVL7fKeupN72LdZE1XyrsOT/H
-	 kN0DtIB4PaSqQgq6o05jqS1iS2Jr1PuFxCDlqA6s=
+	b=qGP1bIAUNHIKDrsVjNFru8BQyl4No4E7Q7JyIxM6PrQ+IVpq+yo4VR3C60bBhCDLd
+	 voOxOA1mf2QkwiY4oONvE8EBdEv6bIsHM7Y5O1i7SMtd/m3X18PgLyojobbgQQ2Cl6
+	 z7Sr0fsOe78Iyp+8YRMZxaWGf0CgabWchp5RGmSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.19 10/18] f2fs: fix to avoid UAF in f2fs_write_end_io()
+	Evans Jahja <evansjahja13@gmail.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	=?UTF-8?q?Otto=20Pfl=C3=BCger?= <otto.pflueger@abscue.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: [PATCH 6.18 26/43] arm64: dts: mediatek: mt8183: Add missing endpoint IDs to display graph
 Date: Tue, 17 Feb 2026 21:32:06 +0100
-Message-ID: <20260217200003.087485020@linuxfoundation.org>
+Message-ID: <20260217200007.474729104@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
-References: <20260217200002.683975158@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +65,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217079-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217115-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,chromium.org,abscue.de,collabora.com,leemhuis.info];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,b4444e3c972a7a124187];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 255D9150571
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,chromium.org:email,collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,leemhuis.info:email]
+X-Rspamd-Queue-Id: DD8DF150657
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Otto Pflüger <otto.pflueger@abscue.de>
 
-commit ce2739e482bce8d2c014d76c4531c877f382aa54 upstream.
+commit be0b304eeb8c5f77e4f98f64e58729d879195f2f upstream.
 
-As syzbot reported an use-after-free issue in f2fs_write_end_io().
+The endpoint IDs in the display graph are expected to match the
+associated display path number, i.e. all endpoints connected to
+mmsys_ep_main must have reg = <0> and all endpoints connected to
+mmsys_ep_ext must have reg = <1>.
 
-It is caused by below race condition:
+Add the missing ID to all endpoints in the display graph, based on
+mt8365.dtsi as an existing example that does this correctly.
 
-loop device				umount
-- worker_thread
- - loop_process_work
-  - do_req_filebacked
-   - lo_rw_aio
-    - lo_rw_aio_complete
-     - blk_mq_end_request
-      - blk_update_request
-       - f2fs_write_end_io
-        - dec_page_count
-        - folio_end_writeback
-					- kill_f2fs_super
-					 - kill_block_super
-					  - f2fs_put_super
-					 : free(sbi)
-       : get_pages(, F2FS_WB_CP_DATA)
-         accessed sbi which is freed
-
-In kill_f2fs_super(), we will drop all page caches of f2fs inodes before
-call free(sbi), it guarantee that all folios should end its writeback, so
-it should be safe to access sbi before last folio_end_writeback().
-
-Let's relocate ckpt thread wakeup flow before folio_end_writeback() to
-resolve this issue.
-
-Cc: stable@kernel.org
-Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint for better performance")
-Reported-by: syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b4444e3c972a7a124187
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: e72d63fa0563 ("arm64: dts: mediatek: mt8183: Migrate to display controller OF graph")
+Reported-by: Evans Jahja <evansjahja13@gmail.com>
+Closes: https://lore.kernel.org/linux-mediatek/CAAq5pW9o3itC0G16LnJO7KMAQ_XoqXUpB=cuJ_7e3-H11zKd5Q@mail.gmail.com/
+Tested-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Otto Pflüger <otto.pflueger@abscue.de>
+[Angelo: Fixed dtbs_check issues]
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi |   37 +++++++++++++++++++++++++------
+ 1 file changed, 31 insertions(+), 6 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -356,14 +356,20 @@ static void f2fs_write_end_io(struct bio
- 				folio->index != nid_of_node(folio));
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1812,15 +1812,23 @@
+ 				#size-cells = <0>;
  
- 		dec_page_count(sbi, type);
+ 				port@0 {
++					#address-cells = <1>;
++					#size-cells = <0>;
+ 					reg = <0>;
+-					ovl_2l1_in: endpoint {
 +
-+		/*
-+		 * we should access sbi before folio_end_writeback() to
-+		 * avoid racing w/ kill_f2fs_super()
-+		 */
-+		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
-+				wq_has_sleeper(&sbi->cp_wait))
-+			wake_up(&sbi->cp_wait);
-+
- 		if (f2fs_in_warm_node_list(sbi, folio))
- 			f2fs_del_fsync_node_entry(sbi, folio);
- 		folio_clear_f2fs_gcing(folio);
- 		folio_end_writeback(folio);
- 	}
--	if (!get_pages(sbi, F2FS_WB_CP_DATA) &&
--				wq_has_sleeper(&sbi->cp_wait))
--		wake_up(&sbi->cp_wait);
++					ovl_2l1_in: endpoint@1 {
++						reg = <1>;
+ 						remote-endpoint = <&mmsys_ep_ext>;
+ 					};
+ 				};
  
- 	bio_put(bio);
- }
+ 				port@1 {
++					#address-cells = <1>;
++					#size-cells = <0>;
+ 					reg = <1>;
+-					ovl_2l1_out: endpoint {
++
++					ovl_2l1_out: endpoint@1 {
++						reg = <1>;
+ 						remote-endpoint = <&rdma1_in>;
+ 					};
+ 				};
+@@ -1872,15 +1880,23 @@
+ 				#size-cells = <0>;
+ 
+ 				port@0 {
++					#address-cells = <1>;
++					#size-cells = <0>;
+ 					reg = <0>;
+-					rdma1_in: endpoint {
++
++					rdma1_in: endpoint@1 {
++						reg = <1>;
+ 						remote-endpoint = <&ovl_2l1_out>;
+ 					};
+ 				};
+ 
+ 				port@1 {
++					#address-cells = <1>;
++					#size-cells = <0>;
+ 					reg = <1>;
+-					rdma1_out: endpoint {
++
++					rdma1_out: endpoint@1 {
++						reg = <1>;
+ 						remote-endpoint = <&dpi_in>;
+ 					};
+ 				};
+@@ -2076,15 +2092,24 @@
+ 				#size-cells = <0>;
+ 
+ 				port@0 {
++					#address-cells = <1>;
++					#size-cells = <0>;
+ 					reg = <0>;
+-					dpi_in: endpoint {
++
++					dpi_in: endpoint@1 {
++						reg = <1>;
+ 						remote-endpoint = <&rdma1_out>;
+ 					};
+ 				};
+ 
+ 				port@1 {
++					#address-cells = <1>;
++					#size-cells = <0>;
+ 					reg = <1>;
+-					dpi_out: endpoint { };
++
++					dpi_out: endpoint@1  {
++						reg = <1>;
++					};
+ 				};
+ 			};
+ 		};
 
 
 
