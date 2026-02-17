@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-216987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FobDxLTlGmfIAIAu9opvQ
-	(envelope-from <stable+bounces-216987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:02 +0100
+	id wJJkG6jSlGmfIAIAu9opvQ
+	(envelope-from <stable+bounces-216957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:16 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10931502A7
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E9D115018B
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 507BA3005591
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9BD3230059A2
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583E7378830;
-	Tue, 17 Feb 2026 20:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DCB377556;
+	Tue, 17 Feb 2026 20:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1tmR58s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2oaYxWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0E43783CF;
-	Tue, 17 Feb 2026 20:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F87286D4D;
+	Tue, 17 Feb 2026 20:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361038; cv=none; b=U3KMypXUyhazws6wxl/PFmXvhJFB3NuN+yRsB4328TUCZmawXjViyAJWYsITH7a0IOZ2XFzYAoxRK01SgzwtyeBnw4g2GYFZ1ix/Ng9ilV0lDzuV30IjHgowFO7uhcg/Svv64dLjsSKp2nm8WT+qja1ORekTxsyncdldPhbzsRU=
+	t=1771360932; cv=none; b=GUzDOumNKkXQBObWdBKoxDz6JkMpQGHhOqTFSc/DKS+zllmzluu8L+TrU7C1UoCh+n+ZQy+HcGcNDlVg1uMbyFNjygM8PsRhIUW4dNHjdyo75Koxu7L3stpFVHe6NC7s+csG+Y/Rjv72IIT5+2lTLYN8u08NWT7d63bw5FW//44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361038; c=relaxed/simple;
-	bh=2SQMWTfzJck1d9ZeXXc6I//KDaqGCU5XFhEe5drB+eU=;
+	s=arc-20240116; t=1771360932; c=relaxed/simple;
+	bh=+zAANQrDBIyCg1nuGLjZPCx1pqasypSMnOrei7uz3Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwmfg3auLhuOPI1CmP49gCMbENcMV0wFhCAdVA4Jforu7OyVxGsOxWYCGANyB4C3SqWZB3OOZRFR3BqcBc8S3v9Mv4uHLdqI7Ce7ykc62azviCtFyJhBkaR7wBQH2uLEiGrJxx7EoVo3uh+tD+GHaB8aQ3ox8dNUvVkinscHAgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1tmR58s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81ED2C4CEF7;
-	Tue, 17 Feb 2026 20:43:57 +0000 (UTC)
+	 MIME-Version; b=RyrOAQfDHErj8P2XodwK0hOSuJTLVbjeS0hBzNu1ObZktd5fiUK1D+ZCx2n0RaoTg+7WRWO8pMTT6G+HRjNlRxwNh27QhT2KAWTSQXjeMz8DfyTCxDYFdKZkT04wYDvC5JQKC9hed2S16JC7qBv71RGNPz9MkFqhVXd4Cjzn4WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2oaYxWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F4DC4CEF7;
+	Tue, 17 Feb 2026 20:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361038;
-	bh=2SQMWTfzJck1d9ZeXXc6I//KDaqGCU5XFhEe5drB+eU=;
+	s=korg; t=1771360932;
+	bh=+zAANQrDBIyCg1nuGLjZPCx1pqasypSMnOrei7uz3Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1tmR58sKhYCt0gpadfB2dqTpPp5+/vmif5ArhXjUzTrSEgJC0xyEA8sbOjiuFEno
-	 G3ZaGdoshH3zF6PX2b+3JstF5Z5RZ4ZLWQB92ftU/k06mtXeX6STnjLVqwoz+8vWOH
-	 /KpIVZzyazSsQqBReRXeEmbO/il0HDZhu3bHo1Rc=
+	b=q2oaYxWML5aNTWk91XkcVEJai8uvupiFf8YP4EwJtwq14C0lji7M+fCYcFEqJG9EN
+	 bmgFXjSD4b2JBdkQjR5p9SBwVq6zXl6595I/vtAJ9K7mYSmeBAG9wmEi66FPrn8oQJ
+	 2rAtG8DtV/EdDgd7d1aQSkZMkw3mywKmwOfkPdvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot+5498a510ff9de39d37da@syzkaller.appspotmail.com,
-	Eulgyu Kim <eulgyukim@snu.ac.kr>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 22/39] mptcp: fix race in mptcp_pm_nl_flush_addrs_doit()
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 18/24] scsi: qla2xxx: Free sp in error path to fix system crash
 Date: Tue, 17 Feb 2026 21:31:31 +0100
-Message-ID: <20260217200003.785026394@linuxfoundation.org>
+Message-ID: <20260217200001.417269443@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
+References: <20260217200000.708219618@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,8 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
@@ -79,103 +77,110 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216987-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216957-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,marvell.com,gmail.com,oracle.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,5498a510ff9de39d37da];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,free_list.next:url]
-X-Rspamd-Queue-Id: E10931502A7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,marvell.com:email,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 3E9D115018B
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-commit e2a9eeb69f7d4ca4cf4c70463af77664fdb6ab1d upstream.
+[ Upstream commit 7adbd2b7809066c75f0433e5e2a8e114b429f30f ]
 
-syzbot and Eulgyu Kim reported crashes in mptcp_pm_nl_get_local_id()
-and/or mptcp_pm_nl_is_backup()
+System crash seen during load/unload test in a loop,
 
-Root cause is list_splice_init() in mptcp_pm_nl_flush_addrs_doit()
-which is not RCU ready.
+[61110.449331] qla2xxx [0000:27:00.0]-0042:0: Disabled MSI-X.
+[61110.467494] =============================================================================
+[61110.467498] BUG qla2xxx_srbs (Tainted: G           OE    --------  --- ): Objects remaining in qla2xxx_srbs on __kmem_cache_shutdown()
+[61110.467501] -----------------------------------------------------------------------------
 
-list_splice_init_rcu() can not be called here while holding pernet->lock
-spinlock.
+[61110.467502] Slab 0x000000000ffc8162 objects=51 used=1 fp=0x00000000e25d3d85 flags=0x57ffffc0010200(slab|head|node=1|zone=2|lastcpupid=0x1fffff)
+[61110.467509] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G           OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
+[61110.467513] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
+[61110.467515] Call Trace:
+[61110.467516]  <TASK>
+[61110.467519]  dump_stack_lvl+0x34/0x48
+[61110.467526]  slab_err.cold+0x53/0x67
+[61110.467534]  __kmem_cache_shutdown+0x16e/0x320
+[61110.467540]  kmem_cache_destroy+0x51/0x160
+[61110.467544]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467607]  ? __do_sys_delete_module.constprop.0+0x178/0x280
+[61110.467613]  ? syscall_trace_enter.constprop.0+0x145/0x1d0
+[61110.467616]  ? do_syscall_64+0x5c/0x90
+[61110.467619]  ? exc_page_fault+0x62/0x150
+[61110.467622]  ? entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[61110.467626]  </TASK>
+[61110.467627] Disabling lock debugging due to kernel taint
+[61110.467635] Object 0x0000000026f7e6e6 @offset=16000
+[61110.467639] ------------[ cut here ]------------
+[61110.467639] kmem_cache_destroy qla2xxx_srbs: Slab cache still has objects when called from qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467659] WARNING: CPU: 53 PID: 455206 at mm/slab_common.c:520 kmem_cache_destroy+0x14d/0x160
+[61110.467718] CPU: 53 PID: 455206 Comm: rmmod Kdump: loaded Tainted: G    B      OE    --------  ---  5.14.0-284.11.1.el9_2.x86_64 #1
+[61110.467720] Hardware name: HPE ProLiant DL385 Gen10 Plus v2/ProLiant DL385 Gen10 Plus v2, BIOS A42 08/17/2023
+[61110.467721] RIP: 0010:kmem_cache_destroy+0x14d/0x160
+[61110.467724] Code: 99 7d 07 00 48 89 ef e8 e1 6a 07 00 eb b3 48 8b 55 60 48 8b 4c 24 20 48 c7 c6 70 fc 66 90 48 c7 c7 f8 ef a1 90 e8 e1 ed 7c 00 <0f> 0b eb 93 c3 cc cc cc cc 66 2e 0f 1f 84 00 00 00 00 00 55 48 89
+[61110.467725] RSP: 0018:ffffa304e489fe80 EFLAGS: 00010282
+[61110.467727] RAX: 0000000000000000 RBX: ffffffffc0d9a860 RCX: 0000000000000027
+[61110.467729] RDX: ffff8fd5ff9598a8 RSI: 0000000000000001 RDI: ffff8fd5ff9598a0
+[61110.467730] RBP: ffff8fb6aaf78700 R08: 0000000000000000 R09: 0000000100d863b7
+[61110.467731] R10: ffffa304e489fd20 R11: ffffffff913bef48 R12: 0000000040002000
+[61110.467731] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[61110.467733] FS:  00007f64c89fb740(0000) GS:ffff8fd5ff940000(0000) knlGS:0000000000000000
+[61110.467734] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[61110.467735] CR2: 00007f0f02bfe000 CR3: 00000020ad6dc005 CR4: 0000000000770ee0
+[61110.467736] PKRU: 55555554
+[61110.467737] Call Trace:
+[61110.467738]  <TASK>
+[61110.467739]  qla2x00_module_exit+0x93/0x99 [qla2xxx]
+[61110.467755]  ? __do_sys_delete_module.constprop.0+0x178/0x280
 
-Many thanks to Eulgyu Kim for providing a repro and testing our patches.
+Free sp in the error path to fix the crash.
 
-Fixes: 141694df6573 ("mptcp: remove address when netlink flushes addrs")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot+5498a510ff9de39d37da@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6970a46d.a00a0220.3ad28e.5cf0.GAE@google.com/T/
-Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/611
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260124-net-mptcp-race_nl_flush_addrs-v3-1-b2dc1b613e9d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts because the code has been moved from pm_netlink.c to
-  pm_kernel.c later on in commit 8617e85e04bd ("mptcp: pm: split
-  in-kernel PM specific code"). The same modifications can be applied
-  in pm_netlink.c with one exception, because 'pernet->local_addr_list'
-  has been renamed to 'pernet->endp_list' in commit 35e71e43a56d
-  ("mptcp: pm: in-kernel: rename 'local_addr_list' to 'endp_list'"). The
-  previous name is then still being used in this version.
-  Also, another conflict is caused by commit 7bcf4d8022f9 ("mptcp: pm:
-  rename helpers linked to 'flush'") which is not in this version:
-  mptcp_nl_remove_addrs_list() has been renamed to
-  mptcp_nl_flush_addrs_list(). The previous name has then been kept. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: f352eeb75419 ("scsi: qla2xxx: Add ability to use GPNFT/GNNFT for RSCN handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251210101604.431868-9-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ Context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_gs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1656,16 +1656,26 @@ static void __reset_counters(struct pm_n
- static int mptcp_nl_cmd_flush_addrs(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct pm_nl_pernet *pernet = genl_info_pm_nl(info);
--	LIST_HEAD(free_list);
-+	struct list_head free_list;
- 
- 	spin_lock_bh(&pernet->lock);
--	list_splice_init(&pernet->local_addr_list, &free_list);
-+	free_list = pernet->local_addr_list;
-+	INIT_LIST_HEAD_RCU(&pernet->local_addr_list);
- 	__reset_counters(pernet);
- 	pernet->next_id = 1;
- 	bitmap_zero(pernet->id_bitmap, MAX_ADDR_ID + 1);
- 	spin_unlock_bh(&pernet->lock);
--	mptcp_nl_remove_addrs_list(sock_net(skb->sk), &free_list);
-+
-+	if (free_list.next == &pernet->local_addr_list)
-+		return 0;
-+
- 	synchronize_rcu();
-+
-+	/* Adjust the pointers to free_list instead of pernet->local_addr_list */
-+	free_list.prev->next = &free_list;
-+	free_list.next->prev = &free_list;
-+
-+	mptcp_nl_remove_addrs_list(sock_net(skb->sk), &free_list);
- 	__flush_addrs(&free_list);
- 	return 0;
- }
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -3960,8 +3960,8 @@ int qla24xx_async_gpnft(scsi_qla_host_t
+ 	if (vha->scan.scan_flags & SF_SCANNING) {
+ 		spin_unlock_irqrestore(&vha->work_lock, flags);
+ 		ql_dbg(ql_dbg_disc + ql_dbg_verbose, vha, 0xffff,
+-		    "%s: scan active\n", __func__);
+-		return rval;
++		    "%s: scan active for sp:%p\n", __func__, sp);
++		goto done_free_sp;
+ 	}
+ 	vha->scan.scan_flags |= SF_SCANNING;
+ 	spin_unlock_irqrestore(&vha->work_lock, flags);
 
 
 
