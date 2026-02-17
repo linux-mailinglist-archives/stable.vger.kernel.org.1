@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-217135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPBMHwvVlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:27 +0100
+	id uDsxNZnVlGnnIAIAu9opvQ
+	(envelope-from <stable+bounces-217177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:54:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D2B1506D8
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:52:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AFF15084A
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16F1A3016C9E
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:52:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B4F3D303EFF1
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4898128D8E8;
-	Tue, 17 Feb 2026 20:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD6D29A1;
+	Tue, 17 Feb 2026 20:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oitubyej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjvuaF+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF7B29A1;
-	Tue, 17 Feb 2026 20:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B84261B70;
+	Tue, 17 Feb 2026 20:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361542; cv=none; b=beOywegd4HXiB12zCBNEABErn5zEULIp+B1qwXhhaK6x7KBZeWZ1WDmEBkVc5x5w827fpI89OpGJQei5QPdN3u16EbNmY7uPXOXkBJyeB5M2TiYxLdcEcuOnC5Noz8PpJsMTkX/lNEMIYeqZF7OwlkzyVqMl0WZNZfq7kPSBdcQ=
+	t=1771361687; cv=none; b=ZcVNNWFSd2djxqO9l08P/hNLVA9aEPCSfhco/Ni0ov/p7/6Jq6F9RQtlWuecVjTpM/8QWigjMNpXZzLOtcEcaD9p48b+Dg3FmL/SlQO+UZyCLpHb9iNQUo6sOz8JWFzySB2d+qBZNVk9ZdMZ3YS4ccCNIxoZkma7+L8y0bK4ZQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361542; c=relaxed/simple;
-	bh=NIAM04/y7xj+dNfyBdbKRbLeiNMSkPstACSsSQ783dY=;
+	s=arc-20240116; t=1771361687; c=relaxed/simple;
+	bh=jamRYiENhsiSj+NPjiVDWuY3UajRzBh9tjUR9yvd/KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQk4eSocjXpVswn0TdjFaxATuUb8W/MnQBWqI/HyD2ORlCXpztNNQXfIXL7/QCmVZkpcK9X/v2xfo9mRhkw9N7B1rxqEqCJ1n5skXkAc8uFXzoAMzCxwrNhe0RimUJQB9TysLgHZko0VCe+cGE8m+v6ZoLzJtus2EloTcyv37DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oitubyej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A54C4CEF7;
-	Tue, 17 Feb 2026 20:52:21 +0000 (UTC)
+	 MIME-Version; b=qEK52o1swiloN931icCn0/0Fqp+J4Q+1gQ7AVrq2di5yzbJ9VPNQSYTq2nh7N0VJdm7bfCEDRDrTk31vnHxQq6zdj/v7mfUpvp+ObnnYEL0UmDQd/R58BheXO5cjcDwh3p3l2tyUq19A0poUGpZfSRtSTRIcnVZrUPsHWiyv7H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjvuaF+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898F9C4CEF7;
+	Tue, 17 Feb 2026 20:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361541;
-	bh=NIAM04/y7xj+dNfyBdbKRbLeiNMSkPstACSsSQ783dY=;
+	s=korg; t=1771361687;
+	bh=jamRYiENhsiSj+NPjiVDWuY3UajRzBh9tjUR9yvd/KY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oitubyej/2UERZApSKAkqi5hzkBJ67SVXP1JqzEgrtzne1KPgt+PUyYI4ZIdF7BgX
-	 fE/aFSYMfXGln6CduhwhuAnsq7NZY8jG0NwDbhwwnxqeRc8cRqcsDtgd2BqyYJ/0+i
-	 Us+9Km15Rez2I7nQ5vYIbtFqanwM3Oyp1NKFe7LI=
+	b=mjvuaF+OQoFxOPw1WryVd7Kfk7L5MbwdM8pI7wHPFlSc6UgMUcLaOjAlIDWylz5xz
+	 q1Em5GDXZWB4fgWaYtq2+BcYWZsAe4RXWrKt/NpCZ1NqxN46mLHTIxW1fGJQretmZS
+	 6ifBNScV+Vc/70Hj54fJWScqO4xGgXJjPbgDARzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.18 36/43] f2fs: fix to avoid UAF in f2fs_write_end_io()
-Date: Tue, 17 Feb 2026 21:32:16 +0100
-Message-ID: <20260217200007.852060324@linuxfoundation.org>
+	Jane Chu <jane.chu@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 6.12 26/42] mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
+Date: Tue, 17 Feb 2026 21:32:17 +0100
+Message-ID: <20260217200006.999572486@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200005.998240758@linuxfoundation.org>
+References: <20260217200005.998240758@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,110 +71,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217135-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217177-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,b4444e3c972a7a124187];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: E0D2B1506D8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,linux-foundation.org:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,oracle.com:email]
+X-Rspamd-Queue-Id: 55AFF15084A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Jane Chu <jane.chu@oracle.com>
 
-commit ce2739e482bce8d2c014d76c4531c877f382aa54 upstream.
+commit 14967a9c7d247841b0312c48dcf8cd29e55a4cc8 upstream.
 
-As syzbot reported an use-after-free issue in f2fs_write_end_io().
+commit 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared
+count") introduced ->pt_share_count dedicated to hugetlb PMD share count
+tracking, but omitted fixing copy_hugetlb_page_range(), leaving the
+function relying on page_count() for tracking that no longer works.
 
-It is caused by below race condition:
+When lazy page table copy for hugetlb is disabled, that is, revert commit
+bcd51a3c679d ("hugetlb: lazy page table copies in fork()") fork()'ing with
+hugetlb PMD sharing quickly lockup -
 
-loop device				umount
-- worker_thread
- - loop_process_work
-  - do_req_filebacked
-   - lo_rw_aio
-    - lo_rw_aio_complete
-     - blk_mq_end_request
-      - blk_update_request
-       - f2fs_write_end_io
-        - dec_page_count
-        - folio_end_writeback
-					- kill_f2fs_super
-					 - kill_block_super
-					  - f2fs_put_super
-					 : free(sbi)
-       : get_pages(, F2FS_WB_CP_DATA)
-         accessed sbi which is freed
+[  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
+[  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
+[  239.446631] Call Trace:
+[  239.446633]  <TASK>
+[  239.446636]  _raw_spin_lock+0x3f/0x60
+[  239.446639]  copy_hugetlb_page_range+0x258/0xb50
+[  239.446645]  copy_page_range+0x22b/0x2c0
+[  239.446651]  dup_mmap+0x3e2/0x770
+[  239.446654]  dup_mm.constprop.0+0x5e/0x230
+[  239.446657]  copy_process+0xd17/0x1760
+[  239.446660]  kernel_clone+0xc0/0x3e0
+[  239.446661]  __do_sys_clone+0x65/0xa0
+[  239.446664]  do_syscall_64+0x82/0x930
+[  239.446668]  ? count_memcg_events+0xd2/0x190
+[  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
+[  239.446676]  ? syscall_exit_work+0x118/0x150
+[  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
+[  239.446681]  ? clear_bhb_loop+0x30/0x80
+[  239.446684]  ? clear_bhb_loop+0x30/0x80
+[  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-In kill_f2fs_super(), we will drop all page caches of f2fs inodes before
-call free(sbi), it guarantee that all folios should end its writeback, so
-it should be safe to access sbi before last folio_end_writeback().
+There are two options to resolve the potential latent issue:
+  1. warn against PMD sharing in copy_hugetlb_page_range(),
+  2. fix it.
+This patch opts for the second option.
+While at it, simplify the comment, the details are not actually relevant
+anymore.
 
-Let's relocate ckpt thread wakeup flow before folio_end_writeback() to
-resolve this issue.
-
-Cc: stable@kernel.org
-Fixes: e234088758fc ("f2fs: avoid wait if IO end up when do_checkpoint for better performance")
-Reported-by: syzbot+b4444e3c972a7a124187@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b4444e3c972a7a124187
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Link: https://lkml.kernel.org/r/20250916004520.1604530-1-jane.chu@oracle.com
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ include/linux/mm_types.h |    5 +++++
+ mm/hugetlb.c             |   15 +++++----------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -356,14 +356,20 @@ static void f2fs_write_end_io(struct bio
- 				folio->index != nid_of_node(folio));
- 
- 		dec_page_count(sbi, type);
-+
-+		/*
-+		 * we should access sbi before folio_end_writeback() to
-+		 * avoid racing w/ kill_f2fs_super()
-+		 */
-+		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
-+				wq_has_sleeper(&sbi->cp_wait))
-+			wake_up(&sbi->cp_wait);
-+
- 		if (f2fs_in_warm_node_list(sbi, folio))
- 			f2fs_del_fsync_node_entry(sbi, folio);
- 		folio_clear_f2fs_gcing(folio);
- 		folio_end_writeback(folio);
- 	}
--	if (!get_pages(sbi, F2FS_WB_CP_DATA) &&
--				wq_has_sleeper(&sbi->cp_wait))
--		wake_up(&sbi->cp_wait);
- 
- 	bio_put(bio);
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -540,6 +540,11 @@ static inline int ptdesc_pmd_pts_count(s
+ {
+ 	return atomic_read(&ptdesc->pt_share_count);
  }
++
++static inline bool ptdesc_pmd_is_shared(struct ptdesc *ptdesc)
++{
++	return !!ptdesc_pmd_pts_count(ptdesc);
++}
+ #else
+ static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
+ {
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5258,18 +5258,13 @@ int copy_hugetlb_page_range(struct mm_st
+ 			break;
+ 		}
+ 
+-		/*
+-		 * If the pagetables are shared don't copy or take references.
+-		 *
+-		 * dst_pte == src_pte is the common case of src/dest sharing.
+-		 * However, src could have 'unshared' and dst shares with
+-		 * another vma. So page_count of ptep page is checked instead
+-		 * to reliably determine whether pte is shared.
+-		 */
+-		if (page_count(virt_to_page(dst_pte)) > 1) {
++#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
++		/* If the pagetables are shared, there is nothing to do */
++		if (ptdesc_pmd_is_shared(virt_to_ptdesc(dst_pte))) {
+ 			addr |= last_addr_mask;
+ 			continue;
+ 		}
++#endif
+ 
+ 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
+ 		src_ptl = huge_pte_lockptr(h, src, src_pte);
+@@ -7270,7 +7265,7 @@ int huge_pmd_unshare(struct mm_struct *m
+ 	hugetlb_vma_assert_locked(vma);
+ 	if (sz != PMD_SIZE)
+ 		return 0;
+-	if (!ptdesc_pmd_pts_count(virt_to_ptdesc(ptep)))
++	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
+ 		return 0;
+ 
+ 	pud_clear(pud);
 
 
 
