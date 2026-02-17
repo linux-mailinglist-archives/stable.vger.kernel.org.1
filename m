@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-217092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217112-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2N4JIYPUlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:50:11 +0100
+	id cEaKALvUlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217112-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40301505DD
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:50:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D4415062C
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AAEE43048117
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BBC1300F5C1
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC906284B3B;
-	Tue, 17 Feb 2026 20:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51712284B3B;
+	Tue, 17 Feb 2026 20:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOizBOOG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZxqvWiM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A019E29A1;
-	Tue, 17 Feb 2026 20:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DDB29A1;
+	Tue, 17 Feb 2026 20:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361396; cv=none; b=lmv6k4k+gu8FqkAwBQUO9SPmRu+/S+LotQ0KCpERG53ppHyqIu0vqSj0Iki2NLAebCe6sh31NLWkGOInafieig/38WjUuizxEQwonC/Ur3o6Wb17QItdLOt3xr//+3IrUO201LpPldJ2Dmvpcq7iBdfUmgHPWrNhMayYE4Qmdnc=
+	t=1771361463; cv=none; b=U9S1pdfAkQuY55ZPKAGtSzqSgonpuUKkQUOTXSpdW9htmHqB8N1a3Yi4VYU0KrlrGRIrn7L7BCjIsCipz0WqJX3mdOAj9EDgQZGlJhKAMXaF5oC2b09eOWRAEpFGkIx4mjxcStlppSnHj/S4nvdgbdkRm2o397xJEzup2CcqzoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361396; c=relaxed/simple;
-	bh=QXWkYTUT0jfuX6dFXZzPedvWeALMI7vFwXa3Cg0KVe4=;
+	s=arc-20240116; t=1771361463; c=relaxed/simple;
+	bh=xPTGw1Mv7A+buWiU3hmTe3EMigVKybumodTuzBGPGg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAInoFBsqa1bcm3z+y0tsAOlsBkvtl1kjjNHgjpw8FfCH/BlDGSNorxA31+xt72M/1FjlA1ElM2dNFhQ6QLH4L/Or15eI/bxXDuBikBMvAgaTzKB6mdoDRdtanGryRqBx3OZpU2nl61dyZ+iAI/lKTrnQVYMVX78Cwl8w7ulIik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOizBOOG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99A4C4CEF7;
-	Tue, 17 Feb 2026 20:49:55 +0000 (UTC)
+	 MIME-Version; b=OVrd0h9ey3XVZT0NDW7E47vHpGkxRpfhL2O8MUEFV/0nxbn2kOA/76VYC5wx3eSWOBrnoc0eS8lDEjzQrfpG6K50O1mXH0gwoQQmskZg7lT/uebG9whgFYiCw3Zv6gkXu+1fB22zdRuGTcnet198vol6AwHRGp2GSBaGRh1EG2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZxqvWiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7808AC4CEF7;
+	Tue, 17 Feb 2026 20:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361396;
-	bh=QXWkYTUT0jfuX6dFXZzPedvWeALMI7vFwXa3Cg0KVe4=;
+	s=korg; t=1771361463;
+	bh=xPTGw1Mv7A+buWiU3hmTe3EMigVKybumodTuzBGPGg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOizBOOGEtuknJcKr2+0CbaDG+51plaTBwkHCjlROwk+mgWmiROQ35ZZnwuvEZmzP
-	 gri7Kca5wi1G1h/okfHuXrlL2BIy9yWJfj7FkJ5uFOBhre4qRvJO/admDSnp7IpSO4
-	 tMcnTkQAqUSewl4Yg1XXWi0ITdEFqsFp1vDOdGF8=
+	b=bZxqvWiMRwfH2Lfs6mtLFKs3k5O1z+ICsQJPIuXYuxMpUxYZo+D2fizvv70uWNKbR
+	 MlHPMXIhtARqL7+N4NwKd/IHuNkcS4XXvQihxfIAWaQmYoOWqMwTrgtlzNLrYxg7pO
+	 FlYiZ0eJpg1oBEg5OX1cjyB+5LslV0fcpZ3WlYMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.19 06/18] f2fs: fix to add gc count stat in f2fs_gc_range
-Date: Tue, 17 Feb 2026 21:32:02 +0100
-Message-ID: <20260217200002.936285214@linuxfoundation.org>
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 23/43] ASoC: fsl_xcvr: fix missing lock in fsl_xcvr_mode_put()
+Date: Tue, 17 Feb 2026 21:32:03 +0100
+Message-ID: <20260217200007.355268296@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
-References: <20260217200002.683975158@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,63 +67,81 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217092-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217112-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[unisoc.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: E40301505DD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,northwestern.edu:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 61D4415062C
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-commit 761dac9073cd67d4705a94cd1af674945a117f4c upstream.
+[ Upstream commit f514248727606b9087bc38a284ff686e0093abf1 ]
 
-It missed the stat count in f2fs_gc_range.
+fsl_xcvr_activate_ctl() has
+lockdep_assert_held(&card->snd_card->controls_rwsem),
+but fsl_xcvr_mode_put() calls it without acquiring this lock.
 
-Cc: stable@kernel.org
-Fixes: 9bf1dcbdfdc8 ("f2fs: fix to account gc stats correctly")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Other callers of fsl_xcvr_activate_ctl() in fsl_xcvr_startup() and
+fsl_xcvr_shutdown() properly acquire the lock with down_read()/up_read().
+
+Add the missing down_read()/up_read() calls around fsl_xcvr_activate_ctl()
+in fsl_xcvr_mode_put() to fix the lockdep assertion and prevent potential
+race conditions when multiple userspace threads access the control.
+
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Link: https://patch.msgid.link/20260202174112.2018402-1-n7l8m4@u.northwestern.edu
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/fsl/fsl_xcvr.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -2096,6 +2096,7 @@ int f2fs_gc_range(struct f2fs_sb_info *s
- 	if (unlikely(f2fs_cp_error(sbi)))
- 		return -EIO;
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index 58db4906a01d5..51669e5fe8888 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -223,10 +223,13 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
  
-+	stat_inc_gc_call_count(sbi, FOREGROUND);
- 	for (segno = start_seg; segno <= end_seg; segno += SEGS_PER_SEC(sbi)) {
- 		struct gc_inode_list gc_list = {
- 			.ilist = LIST_HEAD_INIT(gc_list.ilist),
+ 	xcvr->mode = snd_soc_enum_item_to_val(e, item[0]);
+ 
++	down_read(&card->snd_card->controls_rwsem);
+ 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name,
+ 			      (xcvr->mode == FSL_XCVR_MODE_ARC));
+ 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_earc_capds_kctl.name,
+ 			      (xcvr->mode == FSL_XCVR_MODE_EARC));
++	up_read(&card->snd_card->controls_rwsem);
++
+ 	/* Allow playback for SPDIF only */
+ 	rtd = snd_soc_get_pcm_runtime(card, card->dai_link);
+ 	rtd->pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream_count =
+-- 
+2.51.0
+
 
 
 
