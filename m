@@ -1,238 +1,176 @@
-Return-Path: <stable+bounces-216777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJSWA3dElGl3BwIAu9opvQ
-	(envelope-from <stable+bounces-216777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:35:35 +0100
+	id qCv8FuZGlGn0BwIAu9opvQ
+	(envelope-from <stable+bounces-216778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:45:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E1B14AE55
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:35:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD00E14AF8D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 11:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5ABB5301F164
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 10:35:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DB5D30214EC
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 10:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833BC32573D;
-	Tue, 17 Feb 2026 10:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBF5328B64;
+	Tue, 17 Feb 2026 10:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EgBlfZ44"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTGHQMvZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE4B325720
-	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 10:35:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771324532; cv=pass; b=VLSyRkSZ03jUcNsvyf1AH5FYEGJRWAl4XjivGqjwGGFxJ7K1d7e2z7QK88UlG9dElYGXG5aCxJsmwiwxzlG3uyl+tnZ07A6Ds6NRPikZRz0QeW+GSbdPpLSiqXZ1rxkxAygVWereworS8ha2u6rePtu/y23lpz7JDSCfJl2po6k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771324532; c=relaxed/simple;
-	bh=hQ/FqnZ9bKw+6nwRHG3ZTJKdNXpanN5b0OW3+szbKJ4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DcDdA04dyBaF1KNr83w6YU2etPp7JDkilt6jJ8R3HFXnMCfntKmFbNjz0meBcbzxQg8FqhCV8PFlQ+qVuMxF2gTNfS4xKsRHoKGjq2jRW44MPkfzoFaAf269JeFf2qRQx56glC7MTNmsSeVDlwDeAJi596Rlbgpf5JXFAH4TzPA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EgBlfZ44; arc=pass smtp.client-ip=74.125.224.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64c28495b3dso200897d50.1
-        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 02:35:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771324530; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RrBmwMhspgpNSLFKjTpmdVbuRebw6GYQZpFyRfCkyVY4SjutjNGtgiPytVQNw0eLJi
-         bqynNRgaOWcRotD/fWNvDHWYEzaRLhYJc0TYH2rrWASEzXOCI61wvUItnwJB1I1B8N3F
-         zRRANXZmeOKbFikTa5ZutLUqHLsvfHQGm3HVarXkkpgcEuKV7hiJYKt+5n9yMWHLCWSX
-         QibV8wsLaFsXJYjTUFg5a69QWej7pdd5A/mXyg75DUrnZaveKEmT6Jlmv2B0acxHx9S2
-         yjjUFs8ywC6qaBAujztzNeuYQirzYcB0fb0dg2FOdsYOLK+7320qtnI0INdMcz0ZAKPm
-         rWKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Uo6JCEeQIxQJPR/F/WxTJBoUZKo4YM7XMzFICKJsqXE=;
-        fh=VGWxgfZKx6Q/EjzXYOZdWDgwMXIouoLhPBLDYRHnRo4=;
-        b=IgVbNe/bZtumbS+a8DRekKzI1Qq2w0IJjEsfk66bOiMr7jA9YsTMu8ovtVZhB1Dm8a
-         iFQcRrnPQFFoqv2zURoFaheelfJzGdhsD3EceOmrlEZbHwbXhDB5dfJppdQbr5WY6Xr4
-         WGYtEhvhrRVkk8oM8NAgiF5/+EuK9mvV0goW0yY+B02+lF7+2xsPYf5pqjV3Dyh+dD8h
-         32BQj2TMGZ6j1g3RTOZXeZMuFDa4sKzy2HQAKCU1a2/qSeCfMFH3G3waNF9Rk78aJuu5
-         M/lY3paZrNbigVfTEQ6NP2SZ4/0BIfKTW/EMwPL8Z16ulko+Zo30Bg96TYR9ZKB0hjhc
-         SCSg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771324530; x=1771929330; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Uo6JCEeQIxQJPR/F/WxTJBoUZKo4YM7XMzFICKJsqXE=;
-        b=EgBlfZ44TKAVsRNIWRXtLTs4YKdfVcek7m4w4lc6E2M22Q0r5g4qWAG5nZIs4mSa56
-         5ugKCZBzu5v+/FHoWrxvMkCvhkxFu0ZgpPXQETMlNPSBpnmhYJPi4XdS60mDljF8veJD
-         J6OMMTOtiVT9K2sIwgGcrR4gTEFntxQ+aO7+zVfhGJ1JDWnEwV4Ce7Uz15pG6Ut2Pujq
-         /RRajVbYgUz29qYaN0LRJN+xczInUlb+qiSJEfwOpNwssUu6zOCLV6APta73BueT/PzF
-         H46yVyTFElIbLXklgR0RMcNXe6/pKqggHgg4wfjQHWgHPa3wZw5/rLr48xeKzxnNvpKi
-         SLTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771324530; x=1771929330;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Uo6JCEeQIxQJPR/F/WxTJBoUZKo4YM7XMzFICKJsqXE=;
-        b=WCtcUyh+FFULvuSRatBYHBCEona4faBdhD8nCdxr1r5OgqD/ai6VeWshOmzC5D789t
-         FtTFevspMttDaRoPIQlbJ7ZRI3Nsyzq3ooAGozTJ98KFymwWVpaZurIXxwfQriU+VmQp
-         /PqxxrejC/NtaVGA0jBrODJqdR7V0a5UuWxq7GAjft3zSUEtVURZq/99hWM00SbgGUEa
-         Pjbq0i363hKh4T0vVvpGuY87HUQg6XQ2KlsV8k1WolCmUgVegA+491amYISTiMzb4VLb
-         Mif8McLd0G9YPlJ8ACJGBDpvWAp+HazmlC6hM43snHWPvrUElkaRq9gkw1TVS19qR8Zs
-         zYGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWhbNxQUFUAkaHS9Z0RCwmPQwzGjlSVOCqZFatdjS4KfbFSdKG2STyKsq9+enErLiazKvuTt8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysK3mWsSNn0WtjGQYvJeDVJEznVxI69hL5iAjIn5BqPJxA5AGV
-	HMZwz8UlGl7BMfKUKXDHDR3eR+khQXF5iSaGV51dc2guTu5BaYQmZXwolz9nabMzU181e1WXqNY
-	WncaCD5xgKWUWZ1S6pTk0cohskPX9t0fUuRiC
-X-Gm-Gg: AZuq6aKGfA/e3dBnFI4lyGDq3kNTDvIA+bp8CMN+3Ayrrysui/Hfu2gR0bmA4HSZ6I/
-	N5DWKEWbBGg6IFSIAuaMgPHnKXkwQ0hbqwOlQI57gRKFdA4bBysqgP/bBBtqTV2V17D21Ah2US8
-	Hvnu/izDK5FytjEXamPCuiLZIc9mKAarRfKcGNhq8Wwh+yGVVdeHDjBaDwQqC8KU4JnMX94KHZD
-	LIMwdoBplB+Inaygzn6Cm7VybaDbZT5A8D2aZ8l/9FoUfk27x+xaloGcVONUjvddMmdzfjUrmn2
-	Y2pqEGVDXbdS11U=
-X-Received: by 2002:a05:690e:1c1c:b0:649:f09d:a6cc with SMTP id
- 956f58d0204a3-64c14b29c19mr10556977d50.1.1771324530052; Tue, 17 Feb 2026
- 02:35:30 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B525286A8;
+	Tue, 17 Feb 2026 10:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771325152; cv=none; b=i/iwzTrT+MiOQVpZ9MnJxp7/Tpyd9rI6W5iFxaeo9aZ3mFLdKAD89npQnuPMm4G3pGSK6h9n4frWehePpS/7yk+0HLsCCvGNQDs0kHgKZV1c4NVhKn7N0Og/r2RuWMpsISMB7frNyn3U5n/a+yCtsAJIPPHWLJXlljndfgFoHH8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771325152; c=relaxed/simple;
+	bh=D/18vX0U8oV3WxSdcGUB2Uskwm50raJDQSM08umXfcc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KEF7WvixslTPFd5kNOzCY6yFGrX0I7OVyNWdEJCV/aOMyjiXZxC5nNzDzH5CBr3+apvEdAuraC9/FG9WXf16WypLGBGYSFzuGFHdIMqeXrpCrdNHDphkgEcJRQu0j3ubJomfSOiLc8HbN8nE36y/0CUXxD1luaZ3Ptn0B7EFf8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTGHQMvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B876EC4CEF7;
+	Tue, 17 Feb 2026 10:45:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771325151;
+	bh=D/18vX0U8oV3WxSdcGUB2Uskwm50raJDQSM08umXfcc=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=kTGHQMvZ7nYjmjJ9xtni2hWG9bHYvDJcZqhsn2H9et9gxCEEn3mABvL/d1sot1ysu
+	 04ReAiud45YPRaFXlkkxTVktKhBOy80H0syjFckPHX5tVLuvC5ZbHjSfJDxXTgxU2u
+	 mfasbrPlTqmwOxuVd/2glE1Cz8JrAko7v+HwxNDKj3WGgdy43lWHHC3bCHI9v33OBK
+	 WK9mOecq+bg/bOzEKnEQhnLGOClNWWQg8aoV+cONd81XOqS4dRUQoILaNwoP7NHDr3
+	 1XAqk14j2td51tKOhT0YeQMsdUxk/navNrRF9hvQnPYkzkk1KAhHtPkkkX/FVugl+R
+	 qoo1fgH2KSokw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA5DCE68165;
+	Tue, 17 Feb 2026 10:45:51 +0000 (UTC)
+From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Date: Tue, 17 Feb 2026 11:44:50 +0100
+Subject: [PATCH v2] iio: imu: inv_icm45600: fix regulator put warning when
+ probe fails
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260216074552.656814-1-thorsten.blum@linux.dev>
-In-Reply-To: <20260216074552.656814-1-thorsten.blum@linux.dev>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Tue, 17 Feb 2026 11:34:54 +0100
-X-Gm-Features: AZwV_QiWJubl1SYRemd2GYIh64zSBa8SJWZKFL5Plf5tVXdnNSQH30MoF3bKYeE
-Message-ID: <CAFXKEHbveJdNM9gEiJ5P4kExvFii=V7KtP4TnQLVve5_3FheMw@mail.gmail.com>
-Subject: Hi Thorsten,
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	stable@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260217-inv-icm45600-fix-regulator-put-warning-v2-1-08ad62b1dcdb@tdk.com>
+X-B4-Tracking: v=1; b=H4sIAKFGlGkC/5WNQQ6CMBBFr0Jm7Zi2tBhdcQ/Dog4VJkohLVQN4
+ e5WbuDy/fz/3wrRBXYRLsUKwSWOPPoM6lAA9dZ3DrnNDEqoSihhkH1CpkGbSgi88xuD65annce
+ A0zLjywbPvsMTaWP1mTSZEvLZFFwu76Jrk7nnmCef3ZvkL/1bkSRKLKV2JJWRim713D6ONA7Qb
+ Nv2BZ3MCovaAAAA
+X-Change-ID: 20260205-inv-icm45600-fix-regulator-put-warning-7c45a49c4c53
+To: Remi Buisson <remi.buisson@tdk.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771325150; l=2123;
+ i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
+ bh=CVZas5UhEJ94/d80MVK7gJ+dz5aI1EgQ40KA9i4M2V8=;
+ b=jeJId2zELziyOy/YQSRZ+4mocOQ+U8XsHa9/QQwCipkKVAo67/efHuJPv0/cEdqfJzU/9c9bD
+ s4heHxlhsPhDLqK7qzeGG+sibDhVKPk9JSIM1UgLxTnJR3Bc7ZcOgAw
+X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
+ pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
+X-Endpoint-Received: by B4 Relay for
+ jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
+X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reply-To: jean-baptiste.maneyrol@tdk.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_RHS_MATCH_TO(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-216777-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216778-lists,stable=lfdr.de,jean-baptiste.maneyrol.tdk.com];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lrubusch@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 73E1B14AE55
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[jean-baptiste.maneyrol@tdk.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BD00E14AF8D
 X-Rspamd-Action: no action
 
-On Mon, Feb 16, 2026 at 8:46=E2=80=AFAM Thorsten Blum <thorsten.blum@linux.=
-dev> wrote:
->
-> Fix otp_show() to read and print all 64 bytes of the OTP zone.
-> Previously, the loop only printed half of the OTP (32 bytes), and
-> partial output was returned on read errors.
->
-> Propagate the actual error from atmel_sha204a_otp_read() instead of
-> producing partial output.
->
-> Replace sprintf() with sysfs_emit_at(), which is preferred for
-> formatting sysfs output because it provides safer bounds checking.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 13909a0c8897 ("crypto: atmel-sha204a - provide the otp content")
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
-> Compile-tested only.
->
-> Changes in v2:
-> - Return the total number of bytes written by sysfs_emit_at() after
->   feedback from Lothar (thanks!)
-> - Link to v1: https://lore.kernel.org/lkml/20260215124125.465162-2-thorst=
-en.blum@linux.dev/
-> ---
->  drivers/crypto/atmel-sha204a.c | 20 +++++++++++---------
->  1 file changed, 11 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204=
-a.c
-> index 0fcf4a39de27..8af767f903ea 100644
-> --- a/drivers/crypto/atmel-sha204a.c
-> +++ b/drivers/crypto/atmel-sha204a.c
-> @@ -15,6 +15,7 @@
->  #include <linux/module.h>
->  #include <linux/scatterlist.h>
->  #include <linux/slab.h>
-> +#include <linux/sysfs.h>
->  #include <linux/workqueue.h>
->  #include "atmel-i2c.h"
->
-> @@ -119,21 +120,22 @@ static ssize_t otp_show(struct device *dev,
->  {
->         u16 addr;
->         u8 otp[OTP_ZONE_SIZE];
-> -       char *str =3D buf;
->         struct i2c_client *client =3D to_i2c_client(dev);
-> -       int i;
-> +       ssize_t len =3D 0;
-> +       int i, ret;
->
-> -       for (addr =3D 0; addr < OTP_ZONE_SIZE/4; addr++) {
-> -               if (atmel_sha204a_otp_read(client, addr, otp + addr * 4) =
-< 0) {
-> +       for (addr =3D 0; addr < OTP_ZONE_SIZE / 4; addr++) {
-> +               ret =3D atmel_sha204a_otp_read(client, addr, otp + addr *=
- 4);
-> +               if (ret < 0) {
->                         dev_err(dev, "failed to read otp zone\n");
-> -                       break;
-> +                       return ret;
->                 }
->         }
->
-> -       for (i =3D 0; i < addr*2; i++)
-> -               str +=3D sprintf(str, "%02X", otp[i]);
-> -       str +=3D sprintf(str, "\n");
-> -       return str - buf;
-> +       for (i =3D 0; i < OTP_ZONE_SIZE; i++)
-> +               len +=3D sysfs_emit_at(buf, len, "%02X", otp[i]);
-> +       len +=3D sysfs_emit_at(buf, len, "\n");
-> +       return len;
->  }
->  static DEVICE_ATTR_RO(otp);
->
-> --
-> Thorsten Blum <thorsten.blum@linux.dev>
-> GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
->
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-I took the patch as of link below. I verified on the before described setup=
-.
-https://lore.kernel.org/lkml/20260216074552.656814-1-thorsten.blum@linux.de=
-v/
+When the driver probe fails we encounter a regulator put warning
+because vddio regulator is not stopped before release. The issue
+comes from pm_runtime not already setup when core probe fails and
+the vddio regulator disable callback is called.
 
-worked, LGTM
+Fix the issue by setting pm_runtime active early before vddio
+regulator resource cleanup. This requires to cut pm_runtime
+set_active and enable in 2 function calls.
 
-Reviewed-by: Lothar Rubusch <l.rubusch@gmail.com>
+Fixes: 7ff021a3faca ("iio: imu: inv_icm45600: add new inv_icm45600 driver")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: stable@vger.kernel.org
+---
+Changes in v2:
+- Rework patch to move pm_runtime set active early.
+- Requires to cut pm_runtime set active and enable in 2 functions.
+- Link to v1: https://lore.kernel.org/r/20260205-inv-icm45600-fix-regulator-put-warning-v1-1-314ec12512cb@tdk.com
+---
+ drivers/iio/imu/inv_icm45600/inv_icm45600_core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Best,
-L
+diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+index ab1cb7b9dba435a3280e50ab77cd16e903c7816c..811ff80a2e626b4c2bb7b718899abe77488c7745 100644
+--- a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
++++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+@@ -744,6 +744,11 @@ int inv_icm45600_core_probe(struct regmap *regmap, const struct inv_icm45600_chi
+ 	 */
+ 	fsleep(5 * USEC_PER_MSEC);
+ 
++	/* set pm_runtime active early for disable vddio resource cleanup */
++	ret = pm_runtime_set_active(dev);
++	if (ret)
++		return ret;
++
+ 	ret = inv_icm45600_enable_regulator_vddio(st);
+ 	if (ret)
+ 		return ret;
+@@ -776,7 +781,7 @@ int inv_icm45600_core_probe(struct regmap *regmap, const struct inv_icm45600_chi
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = devm_pm_runtime_set_active_enabled(dev);
++	ret = devm_pm_runtime_enable(dev);
+ 	if (ret)
+ 		return ret;
+ 
+
+---
+base-commit: d820183f371d9aa8517a1cd21fe6edacf0f94b7f
+change-id: 20260205-inv-icm45600-fix-regulator-put-warning-7c45a49c4c53
+
+Best regards,
+-- 
+Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+
+
 
