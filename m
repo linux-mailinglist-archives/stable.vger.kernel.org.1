@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-217109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217090-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OYRMtDUlGnnIAIAu9opvQ
-	(envelope-from <stable+bounces-217109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:28 +0100
+	id 8F84J3rUlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217090-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:50:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D686815065F
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:51:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A21C21505C8
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:50:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AFDEB300A670
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:50:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DF021300AC0F
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D3129A1;
-	Tue, 17 Feb 2026 20:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0662773E4;
+	Tue, 17 Feb 2026 20:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpaVV+AZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5UxGX57"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2A5284B3B;
-	Tue, 17 Feb 2026 20:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D298D29A1;
+	Tue, 17 Feb 2026 20:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361453; cv=none; b=PTyTKB+sZBPv6VV0dLlEsDKwrzdsDq4kBp1nhd/7vfxoIRmnLRE2AqZXD08E/bMG90crKR5tgh73bU91neo2cd0hkJ/+x7ZZ5JfE7GkcIAT9NwxEu38H/8imLdquM5BdZIivufks15wXpLDvGljgJ2+ZsOuZHd5/AU8+zrBmoT0=
+	t=1771361389; cv=none; b=peV9bmH+cAq8apPEwtlmEgbHwLEVDgvyvjNBpyHlBSWgwEAl3QdkuE9FbJWq4ouEuJJposjaGMr3OWX3IhWe2s03w3iAodacSMBUkCaEB2L7Z9Il7+pADzvtVEDgVvvaeuK01s7ozQnPywVZLvhixFUbOTXDP6U9FzGzHZ8Vy/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361453; c=relaxed/simple;
-	bh=WWu7XfT3uS/kw3siQNIs8Xy5GR4+B739GNlaeSn93m0=;
+	s=arc-20240116; t=1771361389; c=relaxed/simple;
+	bh=jNVWH41cPno6l9l7XjJbhqf1DSa8fiVb7moXynABoro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUb7ONKvcSX/tjfyvXzT+KsHuJy44NO86QacyRf+HJUjyyJ/qnNGBe6XwOBw5W0/hbOBsxFhevlBbU4nHAlK+gAjwquvq2jhisKw1ymlGzzL6n/C8Kfuy5VHpNxtl5LVl5wLUCbHaP2IpIFmYu/r6Kq/IrnRukSIky4s0rwwspA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpaVV+AZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5933EC4CEF7;
-	Tue, 17 Feb 2026 20:50:52 +0000 (UTC)
+	 MIME-Version; b=gOkcN20ZuMPYUsV5hmkoGK3tUUtJ8XMbPP/CmUOkTwtm4O8cRn4rvW/dVY0uyxznQQDDE0m2D3Stg+SXT6LB9xnCY2V0N17rFywRxwhyHW1KtFGPzb/ZrOKjTHM5FwNul+g8QTOSTqMdmCrLG6hKSWud1Hp4Dpb4+fl5OCJY0t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5UxGX57; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5504AC4CEF7;
+	Tue, 17 Feb 2026 20:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361452;
-	bh=WWu7XfT3uS/kw3siQNIs8Xy5GR4+B739GNlaeSn93m0=;
+	s=korg; t=1771361389;
+	bh=jNVWH41cPno6l9l7XjJbhqf1DSa8fiVb7moXynABoro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XpaVV+AZN67otrSxQMH0vJ3rtyekopYpzT84MGf6gmnfvyinDpqfc7PrkCxHg8IFE
-	 8FJWWPi/AN7HsQ7fwJHqEzeQ+mJ1VuX4mz9l78dc17X2g6QklNP5NdXIkx/70wxJXM
-	 /b4B5hCYycbJoH76TwWmkF5ZD3PPN7HUjtAisdqc=
+	b=x5UxGX57kLhOyZvn3/oJSUZ7FGwKu22UC9QGocdOd2AkfYrvltw3GV9vyayZO4Lxb
+	 ToLsBlPZn0GShaWnRuNV7zAo79KRyUZIwSvhAV3Dyz3aUp2PskaJU0YmhOpFdSGcTc
+	 ybNaAHV4ijMzmZB4r/rqspx7mCh/vewhUXeHQpVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+28cea38c382fd15e751a@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sean Anderson <sean.anderson@linux.dev>
-Subject: [PATCH 6.18 20/43] tracing/dma: Cap dma_map_sg tracepoint arrays to prevent buffer overflow
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.19 04/18] fbdev: rivafb: fix divide error in nv3_arb()
 Date: Tue, 17 Feb 2026 21:32:00 +0100
-Message-ID: <20260217200007.241754782@linuxfoundation.org>
+Message-ID: <20260217200002.856473136@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
+References: <20260217200002.683975158@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,152 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,samsung.com,kernel.org,linux.dev];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217109-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217090-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,28cea38c382fd15e751a];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: D686815065F
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qemu.org:url]
+X-Rspamd-Queue-Id: A21C21505C8
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit daafcc0ef0b358d9d622b6e3b7c43767aa3814ee ]
+commit 0209e21e3c372fa2da04c39214bec0b64e4eb5f4 upstream.
 
-The dma_map_sg tracepoint can trigger a perf buffer overflow when
-tracing large scatter-gather lists. With devices like virtio-gpu
-creating large DRM buffers, nents can exceed 1000 entries, resulting
-in:
+A userspace program can trigger the RIVA NV3 arbitration code by calling
+the FBIOPUT_VSCREENINFO ioctl on /dev/fb*. When doing so, the driver
+recomputes FIFO arbitration parameters in nv3_arb(), using state->mclk_khz
+(derived from the PRAMDAC MCLK PLL) as a divisor without validating it
+first.
 
-  phys_addrs: 1000 * 8 bytes = 8,000 bytes
-  dma_addrs:  1000 * 8 bytes = 8,000 bytes
-  lengths:    1000 * 4 bytes = 4,000 bytes
-  Total: ~20,000 bytes
+In a normal setup, state->mclk_khz is provided by the real hardware and is
+non-zero. However, an attacker can construct a malicious or misconfigured
+device (e.g. a crafted/emulated PCI device) that exposes a bogus PLL
+configuration, causing state->mclk_khz to become zero.  Once
+nv3_get_param() calls nv3_arb(), the division by state->mclk_khz in the gns
+calculation causes a divide error and crashes the kernel.
 
-This exceeds PERF_MAX_TRACE_SIZE (8192 bytes), causing:
+Fix this by checking whether state->mclk_khz is zero and bailing out before
+doing the division.
 
-  WARNING: CPU: 0 PID: 5497 at kernel/trace/trace_event_perf.c:405
-  perf buffer not large enough, wanted 24620, have 8192
+The following log reveals it:
 
-Cap all three dynamic arrays at 128 entries using min() in the array
-size calculation. This ensures arrays are only as large as needed
-(up to the cap), avoiding unnecessary memory allocation for small
-operations while preventing overflow for large ones.
+rivafb: setting virtual Y resolution to 2184
+divide error: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 PID: 2187 Comm: syz-executor.0 Not tainted 5.18.0-rc1+ #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+RIP: 0010:nv3_arb drivers/video/fbdev/riva/riva_hw.c:439 [inline]
+RIP: 0010:nv3_get_param+0x3ab/0x13b0 drivers/video/fbdev/riva/riva_hw.c:546
+Call Trace:
+  nv3CalcArbitration.constprop.0+0x255/0x460 drivers/video/fbdev/riva/riva_hw.c:603
+  nv3UpdateArbitrationSettings drivers/video/fbdev/riva/riva_hw.c:637 [inline]
+  CalcStateExt+0x447/0x1b90 drivers/video/fbdev/riva/riva_hw.c:1246
+  riva_load_video_mode+0x8a9/0xea0 drivers/video/fbdev/riva/fbdev.c:779
+  rivafb_set_par+0xc0/0x5f0 drivers/video/fbdev/riva/fbdev.c:1196
+  fb_set_var+0x604/0xeb0 drivers/video/fbdev/core/fbmem.c:1033
+  do_fb_ioctl+0x234/0x670 drivers/video/fbdev/core/fbmem.c:1109
+  fb_ioctl+0xdd/0x130 drivers/video/fbdev/core/fbmem.c:1188
+  __x64_sys_ioctl+0x122/0x190 fs/ioctl.c:856
 
-The tracepoint now records the full nents/ents counts and a truncated
-flag so users can see when data has been capped.
-
-Changes in v2:
-- Use min(nents, DMA_TRACE_MAX_ENTRIES) for dynamic array sizing
-  instead of fixed DMA_TRACE_MAX_ENTRIES allocation (feedback from
-  Steven Rostedt)
-- This allocates only what's needed up to the cap, avoiding waste
-  for small operations
-
-Reported-by: syzbot+28cea38c382fd15e751a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=28cea38c382fd15e751a
-Tested-by: syzbot+28cea38c382fd15e751a@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Reviwed-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260130155215.69737-1-kartikey406@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/dma.h | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ drivers/video/fbdev/riva/riva_hw.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
-index b3fef140ae155..33e99e792f1aa 100644
---- a/include/trace/events/dma.h
-+++ b/include/trace/events/dma.h
-@@ -275,6 +275,8 @@ TRACE_EVENT(dma_free_sgt,
- 				sizeof(u64), sizeof(u64)))
- );
- 
-+#define DMA_TRACE_MAX_ENTRIES 128
+--- a/drivers/video/fbdev/riva/riva_hw.c
++++ b/drivers/video/fbdev/riva/riva_hw.c
+@@ -436,6 +436,9 @@ static char nv3_arb(nv3_fifo_info * res_
+     vmisses = 2;
+     eburst_size = state->memory_width * 1;
+     mburst_size = 32;
++    if (!state->mclk_khz)
++	return (0);
 +
- TRACE_EVENT(dma_map_sg,
- 	TP_PROTO(struct device *dev, struct scatterlist *sgl, int nents,
- 		 int ents, enum dma_data_direction dir, unsigned long attrs),
-@@ -282,9 +284,12 @@ TRACE_EVENT(dma_map_sg,
- 
- 	TP_STRUCT__entry(
- 		__string(device, dev_name(dev))
--		__dynamic_array(u64, phys_addrs, nents)
--		__dynamic_array(u64, dma_addrs, ents)
--		__dynamic_array(unsigned int, lengths, ents)
-+		__field(int, full_nents)
-+		__field(int, full_ents)
-+		__field(bool, truncated)
-+		__dynamic_array(u64, phys_addrs,  min(nents, DMA_TRACE_MAX_ENTRIES))
-+		__dynamic_array(u64, dma_addrs, min(ents, DMA_TRACE_MAX_ENTRIES))
-+		__dynamic_array(unsigned int, lengths, min(ents, DMA_TRACE_MAX_ENTRIES))
- 		__field(enum dma_data_direction, dir)
- 		__field(unsigned long, attrs)
- 	),
-@@ -292,11 +297,16 @@ TRACE_EVENT(dma_map_sg,
- 	TP_fast_assign(
- 		struct scatterlist *sg;
- 		int i;
-+		int traced_nents = min_t(int, nents, DMA_TRACE_MAX_ENTRIES);
-+		int traced_ents = min_t(int, ents, DMA_TRACE_MAX_ENTRIES);
- 
- 		__assign_str(device);
--		for_each_sg(sgl, sg, nents, i)
-+		__entry->full_nents = nents;
-+		__entry->full_ents = ents;
-+		__entry->truncated = (nents > DMA_TRACE_MAX_ENTRIES) || (ents > DMA_TRACE_MAX_ENTRIES);
-+		for_each_sg(sgl, sg, traced_nents, i)
- 			((u64 *)__get_dynamic_array(phys_addrs))[i] = sg_phys(sg);
--		for_each_sg(sgl, sg, ents, i) {
-+		for_each_sg(sgl, sg, traced_ents, i) {
- 			((u64 *)__get_dynamic_array(dma_addrs))[i] =
- 				sg_dma_address(sg);
- 			((unsigned int *)__get_dynamic_array(lengths))[i] =
-@@ -306,9 +316,12 @@ TRACE_EVENT(dma_map_sg,
- 		__entry->attrs = attrs;
- 	),
- 
--	TP_printk("%s dir=%s dma_addrs=%s sizes=%s phys_addrs=%s attrs=%s",
-+	TP_printk("%s dir=%s nents=%d/%d ents=%d/%d%s dma_addrs=%s sizes=%s phys_addrs=%s attrs=%s",
- 		__get_str(device),
- 		decode_dma_data_direction(__entry->dir),
-+		min_t(int, __entry->full_nents, DMA_TRACE_MAX_ENTRIES), __entry->full_nents,
-+		min_t(int, __entry->full_ents, DMA_TRACE_MAX_ENTRIES), __entry->full_ents,
-+		__entry->truncated ? " [TRUNCATED]" : "",
- 		__print_array(__get_dynamic_array(dma_addrs),
- 			      __get_dynamic_array_len(dma_addrs) /
- 				sizeof(u64), sizeof(u64)),
--- 
-2.51.0
-
+     gns = 1000000 * (gmisses*state->mem_page_miss + state->mem_latency)/state->mclk_khz;
+     ainfo->by_gfacc = gns*ainfo->gdrain_rate/1000000;
+     ainfo->wcmocc = 0;
 
 
 
