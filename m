@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-217053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217007-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIv8AfLTlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:46 +0100
+	id oMMWIVjTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217007-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491921504AC
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103AC150353
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E9AE300C93D
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DBE75300D165
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB4A266581;
-	Tue, 17 Feb 2026 20:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A87378D8B;
+	Tue, 17 Feb 2026 20:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiX4o8ks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IH2aV9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81C829A1;
-	Tue, 17 Feb 2026 20:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C012378D88;
+	Tue, 17 Feb 2026 20:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361261; cv=none; b=GvFoSOEVFjsSr4hAumR7RmH5eiife3MP24sJ+JW1TNHtwKQJ6OFTSrqL62/f1odTq+qLYB/mPo9tihMBLzc0A2l1QPe+4lahQtGIswaXgfe2OyoC13Dl8CWVUbGKV9psZpVuiKCnOsxJrlErZbs8/6Zrmk5yA+h7Lu/cj4y6IL8=
+	t=1771361106; cv=none; b=oJL9/1oyoOTBX2iDSkHWuSiWtVJ0ppRvbOVFgmI/0UnBMTUNDxVYtgGl+4MVy546gu0Kn1u8edod0L5GG+CEVBpHthvlD7n0vFmsB4ReCQ0p6Olt9pGGc3KgdwFIbKWHMtB/MJI0+SIajg6YPgWBznLBNF9OpabKrMSkt+dTCAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361261; c=relaxed/simple;
-	bh=hntm5bmJkAKQx0vsAvtkmyPs/RIfIj3X8KQqKh0cKQs=;
+	s=arc-20240116; t=1771361106; c=relaxed/simple;
+	bh=y5L+muY3PiHj0QLDHF/cpUTcxJKTYy1dhZ9AWtBbGA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukBLPulfSHkSe4RfStlJ1vY+pc+VnBlgaMZ9Z7HApBfqlxbRTiDsK0f98xz0o3RzoQ5WR9peZF0xqSAlodWjYhtswMB4fr+YmYCJ0r3e9Zzn22kBDNqatS1cmAb7eVUzusdHa0jYPm2BuBseCo7LonfonU4WqRvbe0RC5S+DYHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiX4o8ks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD7AC4CEF7;
-	Tue, 17 Feb 2026 20:47:40 +0000 (UTC)
+	 MIME-Version; b=qH3kafrDLjTibnVzkSMkDwniy2rFH6nVlF71xpkaSqMLKQca//bQ52Zim/UXSogs2HeAfSy1W9I7lo8AshsFJnmllDm9+sJZib0EYD+fchmUC5CgVCSIMoRd3X9t25HMtwDYnmheERbg4vMaNOtr/2eoVY+R2kphaz4Iup7wmSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IH2aV9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA65C4CEF7;
+	Tue, 17 Feb 2026 20:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361261;
-	bh=hntm5bmJkAKQx0vsAvtkmyPs/RIfIj3X8KQqKh0cKQs=;
+	s=korg; t=1771361106;
+	bh=y5L+muY3PiHj0QLDHF/cpUTcxJKTYy1dhZ9AWtBbGA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RiX4o8ks1HtnZ5womVHOjYSl8ed4HzU4R2WwQuOkYVhzG+wuOPPqaut39gT5+gD+6
-	 ZNV7qBKewd3tGYxCiG7Dy7EPmQjWq6afDrcrFSwXylcpmYNtnqxNxV2JOpM8XiaCMR
-	 +UNKXL6XDrCmHnCLkYXpa6hLno/Ez66qY91jzLAI=
+	b=0IH2aV9/Ff3ME4Ff59moNVOApLoIulyQp5qgtDkicv2DvMJ/z+miryQF6K1hBqcJd
+	 /yCbh2T2fa5CMYjwJbJ9vcAwWQycQpw3wnaFcgEH0GZQRcC4C7LKI9BOc+GV1J6m7M
+	 rfaePgFQBhBaN+/mah227UPBJjAvJO2yorI//pI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.1 48/64] devlink: rate: Unset parent pointer in devl_rate_nodes_destroy
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 35/39] fbdev: rivafb: fix divide error in nv3_arb()
 Date: Tue, 17 Feb 2026 21:31:44 +0100
-Message-ID: <20260217200009.306235272@linuxfoundation.org>
+Message-ID: <20260217200004.294375676@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,159 +66,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217053-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,kernel.org,139.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217007-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,qemu.org:url,139.com:email]
-X-Rspamd-Queue-Id: 491921504AC
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qemu.org:url,gmx.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 103AC150353
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit f94c1a114ac209977bdf5ca841b98424295ab1f0 ]
+commit 0209e21e3c372fa2da04c39214bec0b64e4eb5f4 upstream.
 
-The function devl_rate_nodes_destroy is documented to "Unset parent for
-all rate objects". However, it was only calling the driver-specific
-`rate_leaf_parent_set` or `rate_node_parent_set` ops and decrementing
-the parent's refcount, without actually setting the
-`devlink_rate->parent` pointer to NULL.
+A userspace program can trigger the RIVA NV3 arbitration code by calling
+the FBIOPUT_VSCREENINFO ioctl on /dev/fb*. When doing so, the driver
+recomputes FIFO arbitration parameters in nv3_arb(), using state->mclk_khz
+(derived from the PRAMDAC MCLK PLL) as a divisor without validating it
+first.
 
-This leaves a dangling pointer in the `devlink_rate` struct, which cause
-refcount error in netdevsim[1] and mlx5[2]. In addition, this is
-inconsistent with the behavior of `devlink_nl_rate_parent_node_set`,
-where the parent pointer is correctly cleared.
+In a normal setup, state->mclk_khz is provided by the real hardware and is
+non-zero. However, an attacker can construct a malicious or misconfigured
+device (e.g. a crafted/emulated PCI device) that exposes a bogus PLL
+configuration, causing state->mclk_khz to become zero.  Once
+nv3_get_param() calls nv3_arb(), the division by state->mclk_khz in the gns
+calculation causes a divide error and crashes the kernel.
 
-This patch fixes the issue by explicitly setting `devlink_rate->parent`
-to NULL after notifying the driver, thus fulfilling the function's
-documented behavior for all rate objects.
+Fix this by checking whether state->mclk_khz is zero and bailing out before
+doing the division.
 
-[1]
-repro steps:
-echo 1 > /sys/bus/netdevsim/new_device
-devlink dev eswitch set netdevsim/netdevsim1 mode switchdev
-echo 1 > /sys/bus/netdevsim/devices/netdevsim1/sriov_numvfs
-devlink port function rate add netdevsim/netdevsim1/test_node
-devlink port function rate set netdevsim/netdevsim1/128 parent test_node
-echo 1 > /sys/bus/netdevsim/del_device
+The following log reveals it:
 
-dmesg:
-refcount_t: decrement hit 0; leaking memory.
-WARNING: CPU: 8 PID: 1530 at lib/refcount.c:31 refcount_warn_saturate+0x42/0xe0
-CPU: 8 UID: 0 PID: 1530 Comm: bash Not tainted 6.18.0-rc4+ #1 NONE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x42/0xe0
+rivafb: setting virtual Y resolution to 2184
+divide error: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 PID: 2187 Comm: syz-executor.0 Not tainted 5.18.0-rc1+ #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+RIP: 0010:nv3_arb drivers/video/fbdev/riva/riva_hw.c:439 [inline]
+RIP: 0010:nv3_get_param+0x3ab/0x13b0 drivers/video/fbdev/riva/riva_hw.c:546
 Call Trace:
- <TASK>
- devl_rate_leaf_destroy+0x8d/0x90
- __nsim_dev_port_del+0x6c/0x70 [netdevsim]
- nsim_dev_reload_destroy+0x11c/0x140 [netdevsim]
- nsim_drv_remove+0x2b/0xb0 [netdevsim]
- device_release_driver_internal+0x194/0x1f0
- bus_remove_device+0xc6/0x130
- device_del+0x159/0x3c0
- device_unregister+0x1a/0x60
- del_device_store+0x111/0x170 [netdevsim]
- kernfs_fop_write_iter+0x12e/0x1e0
- vfs_write+0x215/0x3d0
- ksys_write+0x5f/0xd0
- do_syscall_64+0x55/0x10f0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  nv3CalcArbitration.constprop.0+0x255/0x460 drivers/video/fbdev/riva/riva_hw.c:603
+  nv3UpdateArbitrationSettings drivers/video/fbdev/riva/riva_hw.c:637 [inline]
+  CalcStateExt+0x447/0x1b90 drivers/video/fbdev/riva/riva_hw.c:1246
+  riva_load_video_mode+0x8a9/0xea0 drivers/video/fbdev/riva/fbdev.c:779
+  rivafb_set_par+0xc0/0x5f0 drivers/video/fbdev/riva/fbdev.c:1196
+  fb_set_var+0x604/0xeb0 drivers/video/fbdev/core/fbmem.c:1033
+  do_fb_ioctl+0x234/0x670 drivers/video/fbdev/core/fbmem.c:1109
+  fb_ioctl+0xdd/0x130 drivers/video/fbdev/core/fbmem.c:1188
+  __x64_sys_ioctl+0x122/0x190 fs/ioctl.c:856
 
-[2]
-devlink dev eswitch set pci/0000:08:00.0 mode switchdev
-devlink port add pci/0000:08:00.0 flavour pcisf pfnum 0 sfnum 1000
-devlink port function rate add pci/0000:08:00.0/group1
-devlink port function rate set pci/0000:08:00.0/32768 parent group1
-modprobe -r mlx5_ib mlx5_fwctl mlx5_core
-
-dmesg:
-refcount_t: decrement hit 0; leaking memory.
-WARNING: CPU: 7 PID: 16151 at lib/refcount.c:31 refcount_warn_saturate+0x42/0xe0
-CPU: 7 UID: 0 PID: 16151 Comm: bash Not tainted 6.17.0-rc7_for_upstream_min_debug_2025_10_02_12_44 #1 NONE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x42/0xe0
-Call Trace:
- <TASK>
- devl_rate_leaf_destroy+0x8d/0x90
- mlx5_esw_offloads_devlink_port_unregister+0x33/0x60 [mlx5_core]
- mlx5_esw_offloads_unload_rep+0x3f/0x50 [mlx5_core]
- mlx5_eswitch_unload_sf_vport+0x40/0x90 [mlx5_core]
- mlx5_sf_esw_event+0xc4/0x120 [mlx5_core]
- notifier_call_chain+0x33/0xa0
- blocking_notifier_call_chain+0x3b/0x50
- mlx5_eswitch_disable_locked+0x50/0x110 [mlx5_core]
- mlx5_eswitch_disable+0x63/0x90 [mlx5_core]
- mlx5_unload+0x1d/0x170 [mlx5_core]
- mlx5_uninit_one+0xa2/0x130 [mlx5_core]
- remove_one+0x78/0xd0 [mlx5_core]
- pci_device_remove+0x39/0xa0
- device_release_driver_internal+0x194/0x1f0
- unbind_store+0x99/0xa0
- kernfs_fop_write_iter+0x12e/0x1e0
- vfs_write+0x215/0x3d0
- ksys_write+0x5f/0xd0
- do_syscall_64+0x53/0x1f0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: d75559845078 ("devlink: Allow setting parent node of rate objects")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1763381149-1234377-1-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Routine devl_rate_nodes_destroy is moved to net/devlink/rate.c by commit
- 7cc7194e85ca ("devlink: push rate related code into separate file") after linux-6.6.
- This fix applies the same update to its original location in net/devlink/leftover.c. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/devlink/leftover.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/riva/riva_hw.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/devlink/leftover.c
-+++ b/net/devlink/leftover.c
-@@ -10274,13 +10274,15 @@ void devl_rate_nodes_destroy(struct devl
- 		if (!devlink_rate->parent)
- 			continue;
- 
--		refcount_dec(&devlink_rate->parent->refcnt);
- 		if (devlink_rate_is_leaf(devlink_rate))
- 			ops->rate_leaf_parent_set(devlink_rate, NULL, devlink_rate->priv,
- 						  NULL, NULL);
- 		else if (devlink_rate_is_node(devlink_rate))
- 			ops->rate_node_parent_set(devlink_rate, NULL, devlink_rate->priv,
- 						  NULL, NULL);
+--- a/drivers/video/fbdev/riva/riva_hw.c
++++ b/drivers/video/fbdev/riva/riva_hw.c
+@@ -436,6 +436,9 @@ static char nv3_arb(nv3_fifo_info * res_
+     vmisses = 2;
+     eburst_size = state->memory_width * 1;
+     mburst_size = 32;
++    if (!state->mclk_khz)
++	return (0);
 +
-+		refcount_dec(&devlink_rate->parent->refcnt);
-+		devlink_rate->parent = NULL;
- 	}
- 	list_for_each_entry_safe(devlink_rate, tmp, &devlink->rate_list, list) {
- 		if (devlink_rate_is_node(devlink_rate)) {
+     gns = 1000000 * (gmisses*state->mem_page_miss + state->mem_latency)/state->mclk_khz;
+     ainfo->by_gfacc = gns*ainfo->gdrain_rate/1000000;
+     ainfo->wcmocc = 0;
 
 
 
