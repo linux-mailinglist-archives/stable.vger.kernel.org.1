@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-217046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MA+TFODTlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:28 +0100
+	id uIz4HDzTlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-216994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC13215048D
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A70150329
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:44:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B61F230333A2
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D121D304069D
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7B729BDB4;
-	Tue, 17 Feb 2026 20:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674B5378821;
+	Tue, 17 Feb 2026 20:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdYWGzA3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/ryXazB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F8D266581;
-	Tue, 17 Feb 2026 20:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F0C376BFF;
+	Tue, 17 Feb 2026 20:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361237; cv=none; b=Cm50pk+SzRoM2FutTCT9h/vPfnP56yZt/BBdI5wfvowp7GEaMdN6yemMjlnLRgC9PVxkZb7BfiXJUQKtiQnPq121Ghq/aokPHqaux+5crEtxO9tiUy8MnNE+EI/hkq2TKWUtzTMTC54XODkjrNDJcTE3nXd8gnUXDG4+yS/RR7c=
+	t=1771361062; cv=none; b=uzCKDPYSUITvn4QbYJRGi2+KS6CJjURZiZm9AF6v9xp+SQfmgNVHk6rkj6NIQa2H6qgp4Tr6qGEihPbacP6OLy5PmS/fFQjbb9VEEr8cQv66G994XIKx9VuGbFeYj0m7eoYCMvKMyd3CL3qdmbVmM3hoGLSlx/4904eQ5HQIPcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361237; c=relaxed/simple;
-	bh=ZhcE3WBzT6oOl+Yzl9dqfY62cZ/J8zKoZF4nsaTWfZQ=;
+	s=arc-20240116; t=1771361062; c=relaxed/simple;
+	bh=V/HfEcIV1hr++BXIVZKytHlREyiKKxEeRHs4WAhOS5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0+XD/lQs8IjM1gB1eK3QWbQwUJS7+O7rKtk+rvu+jgIUdxwVyFzApTpCesiitXS28N6PtL06XM/EcWwLEkBUr0sZh4GUdJFY8BNDlCmMMRfOonzGRPBD1cgswaE+etLYh8WD37VDx+XS/8+Jb0Nflvbm8Rh/KG/Q1itMZGN2Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdYWGzA3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A90C4CEF7;
-	Tue, 17 Feb 2026 20:47:16 +0000 (UTC)
+	 MIME-Version; b=YVRCpsAZaWjzw6Jrm7j2p7No+5ZAYR6r5mhViQbJvhvQOseLI4/Cr113lYtdA4EkoM2E+q2Tp6Sfiqovr8ToBaOnmDSSax94rfsBTzRe/qNSkTyDdzpYOTjPX0JSM4vHAj5288qMn2AGdE6mugcV5mB04XV4WGUsAMRFbGhS9n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/ryXazB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70414C4CEF7;
+	Tue, 17 Feb 2026 20:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361237;
-	bh=ZhcE3WBzT6oOl+Yzl9dqfY62cZ/J8zKoZF4nsaTWfZQ=;
+	s=korg; t=1771361061;
+	bh=V/HfEcIV1hr++BXIVZKytHlREyiKKxEeRHs4WAhOS5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdYWGzA3cNpuzxmHt7RHfxFBAAl7zxpUc0uU5XmMKb9QapPnb+VPi5jw9gqXVDxfj
-	 skFAgdyoJBNJtOK5jPBmXSBLTb+mkkV3DMgyr+GsqK7fZdRImApsQqdGUoAB4RCrbc
-	 fjxK6MPKrAK8MplfEth/rrr1n6FI+gfuRU59hMt0=
+	b=a/ryXazBp5i8PJBfW4jUzjE+TTUvOFX2onSKE3GnA4ZIERSN/hfvZKRwcHCNJ4Ijj
+	 cYhQ8hThz/Qh9HhYoHg+Eck++WW9VjWEAdUPGd8wzL0gCziMfR4FPYYBYFC13p/YzX
+	 2BHnssd/pPuIQCXiZpBRprPwlMib+MsdXLX6lMgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 42/64] mptcp: schedule rtx timer only after pushing data
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 29/39] scsi: qla2xxx: Remove dead code (GNN ID)
 Date: Tue, 17 Feb 2026 21:31:38 +0100
-Message-ID: <20260217200009.081605431@linuxfoundation.org>
+Message-ID: <20260217200004.061933531@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
-References: <20260217200007.505931165@linuxfoundation.org>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+References: <20260217200002.929083107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,107 +69,243 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217046-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-216994-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CC13215048D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,marvell.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 33A70150329
 X-Rspamd-Action: no action
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 2ea6190f42d0416a4310e60a7fcb0b49fcbbd4fb upstream.
+[ Upstream commit 87f6dafd50fb6d7214c32596a11b983138b09123 ]
 
-The MPTCP protocol usually schedule the retransmission timer only
-when there is some chances for such retransmissions to happen.
+Remove stale/unused code (GNN ID).
 
-With a notable exception: __mptcp_push_pending() currently schedule
-such timer unconditionally, potentially leading to unnecessary rtx
-timer expiration.
-
-The issue is present since the blamed commit below but become easily
-reproducible after commit 27b0e701d387 ("mptcp: drop bogus optimization
-in __mptcp_check_push()")
-
-Fixes: 33d41c9cd74c ("mptcp: more accurate timeout")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-3-9e4781a6c1b8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in protocol.c, because commit 0fa1b3783a17 ("mptcp: use
-  get_send wrapper") is not in this version, and is changing the
-  context. The same modification can still be applied. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 7adbd2b78090 ("scsi: qla2xxx: Free sp in error path to fix system crash")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/scsi/qla2xxx/qla_def.h  |    3 -
+ drivers/scsi/qla2xxx/qla_gbl.h  |    3 -
+ drivers/scsi/qla2xxx/qla_gs.c   |  110 ----------------------------------------
+ drivers/scsi/qla2xxx/qla_init.c |    7 --
+ drivers/scsi/qla2xxx/qla_os.c   |    3 -
+ 5 files changed, 1 insertion(+), 125 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1666,7 +1666,7 @@ void __mptcp_push_pending(struct sock *s
- 	struct mptcp_sendmsg_info info = {
- 				.flags = flags,
- 	};
--	bool do_check_data_fin = false;
-+	bool copied = false;
- 	struct mptcp_data_frag *dfrag;
- 	int len;
+--- a/drivers/scsi/qla2xxx/qla_def.h
++++ b/drivers/scsi/qla2xxx/qla_def.h
+@@ -2488,7 +2488,6 @@ struct ct_sns_desc {
  
-@@ -1703,7 +1703,7 @@ void __mptcp_push_pending(struct sock *s
- 				goto out;
- 			}
+ enum discovery_state {
+ 	DSC_DELETED,
+-	DSC_GNN_ID,
+ 	DSC_GNL,
+ 	DSC_LOGIN_PEND,
+ 	DSC_LOGIN_FAILED,
+@@ -2701,7 +2700,6 @@ extern const char *const port_state_str[
  
--			do_check_data_fin = true;
-+			copied = true;
- 			info.sent += ret;
- 			len -= ret;
- 
-@@ -1717,11 +1717,14 @@ void __mptcp_push_pending(struct sock *s
- 		mptcp_push_release(ssk, &info);
- 
- out:
--	/* ensure the rtx timer is running */
--	if (!mptcp_rtx_timer_pending(sk))
--		mptcp_reset_rtx_timer(sk);
--	if (do_check_data_fin)
-+	/* Avoid scheduling the rtx timer if no data has been pushed; the timer
-+	 * will be updated on positive acks by __mptcp_cleanup_una().
-+	 */
-+	if (copied) {
-+		if (!mptcp_rtx_timer_pending(sk))
-+			mptcp_reset_rtx_timer(sk);
- 		mptcp_check_send_data_fin(sk);
-+	}
+ static const char *const port_dstate_str[] = {
+ 	[DSC_DELETED]		= "DELETED",
+-	[DSC_GNN_ID]		= "GNN_ID",
+ 	[DSC_GNL]		= "GNL",
+ 	[DSC_LOGIN_PEND]	= "LOGIN_PEND",
+ 	[DSC_LOGIN_FAILED]	= "LOGIN_FAILED",
+@@ -3497,7 +3495,6 @@ enum qla_work_type {
+ 	QLA_EVT_GPNFT,
+ 	QLA_EVT_GPNFT_DONE,
+ 	QLA_EVT_GNNFT_DONE,
+-	QLA_EVT_GNNID,
+ 	QLA_EVT_GFPNID,
+ 	QLA_EVT_SP_RETRY,
+ 	QLA_EVT_IIDMA,
+--- a/drivers/scsi/qla2xxx/qla_gbl.h
++++ b/drivers/scsi/qla2xxx/qla_gbl.h
+@@ -730,9 +730,6 @@ int qla24xx_async_gffid(scsi_qla_host_t
+ int qla24xx_async_gpnft(scsi_qla_host_t *, u8, srb_t *);
+ void qla24xx_async_gpnft_done(scsi_qla_host_t *, srb_t *);
+ void qla24xx_async_gnnft_done(scsi_qla_host_t *, srb_t *);
+-int qla24xx_async_gnnid(scsi_qla_host_t *, fc_port_t *);
+-void qla24xx_handle_gnnid_event(scsi_qla_host_t *, struct event_arg *);
+-int qla24xx_post_gnnid_work(struct scsi_qla_host *, fc_port_t *);
+ int qla24xx_post_gfpnid_work(struct scsi_qla_host *, fc_port_t *);
+ int qla24xx_async_gfpnid(scsi_qla_host_t *, fc_port_t *);
+ void qla24xx_handle_gfpnid_event(scsi_qla_host_t *, struct event_arg *);
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -4218,116 +4218,6 @@ void qla_scan_work_fn(struct work_struct
+ 	spin_unlock_irqrestore(&vha->work_lock, flags);
  }
  
- static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool first)
+-/* GNN_ID */
+-void qla24xx_handle_gnnid_event(scsi_qla_host_t *vha, struct event_arg *ea)
+-{
+-	qla24xx_post_gnl_work(vha, ea->fcport);
+-}
+-
+-static void qla2x00_async_gnnid_sp_done(srb_t *sp, int res)
+-{
+-	struct scsi_qla_host *vha = sp->vha;
+-	fc_port_t *fcport = sp->fcport;
+-	u8 *node_name = fcport->ct_desc.ct_sns->p.rsp.rsp.gnn_id.node_name;
+-	struct event_arg ea;
+-	u64 wwnn;
+-
+-	fcport->flags &= ~FCF_ASYNC_SENT;
+-	wwnn = wwn_to_u64(node_name);
+-	if (wwnn)
+-		memcpy(fcport->node_name, node_name, WWN_SIZE);
+-
+-	memset(&ea, 0, sizeof(ea));
+-	ea.fcport = fcport;
+-	ea.sp = sp;
+-	ea.rc = res;
+-
+-	ql_dbg(ql_dbg_disc, vha, 0x204f,
+-	    "Async done-%s res %x, WWPN %8phC %8phC\n",
+-	    sp->name, res, fcport->port_name, fcport->node_name);
+-
+-	qla24xx_handle_gnnid_event(vha, &ea);
+-
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+-}
+-
+-int qla24xx_async_gnnid(scsi_qla_host_t *vha, fc_port_t *fcport)
+-{
+-	int rval = QLA_FUNCTION_FAILED;
+-	struct ct_sns_req       *ct_req;
+-	srb_t *sp;
+-
+-	if (!vha->flags.online || (fcport->flags & FCF_ASYNC_SENT))
+-		return rval;
+-
+-	qla2x00_set_fcport_disc_state(fcport, DSC_GNN_ID);
+-	/* ref: INIT */
+-	sp = qla2x00_get_sp(vha, fcport, GFP_ATOMIC);
+-	if (!sp)
+-		goto done;
+-
+-	fcport->flags |= FCF_ASYNC_SENT;
+-	sp->type = SRB_CT_PTHRU_CMD;
+-	sp->name = "gnnid";
+-	sp->gen1 = fcport->rscn_gen;
+-	sp->gen2 = fcport->login_gen;
+-	qla2x00_init_async_sp(sp, qla2x00_get_async_timeout(vha) + 2,
+-			      qla2x00_async_gnnid_sp_done);
+-
+-	/* CT_IU preamble  */
+-	ct_req = qla2x00_prep_ct_req(fcport->ct_desc.ct_sns, GNN_ID_CMD,
+-	    GNN_ID_RSP_SIZE);
+-
+-	/* GNN_ID req */
+-	ct_req->req.port_id.port_id = port_id_to_be_id(fcport->d_id);
+-
+-
+-	/* req & rsp use the same buffer */
+-	sp->u.iocb_cmd.u.ctarg.req = fcport->ct_desc.ct_sns;
+-	sp->u.iocb_cmd.u.ctarg.req_dma = fcport->ct_desc.ct_sns_dma;
+-	sp->u.iocb_cmd.u.ctarg.rsp = fcport->ct_desc.ct_sns;
+-	sp->u.iocb_cmd.u.ctarg.rsp_dma = fcport->ct_desc.ct_sns_dma;
+-	sp->u.iocb_cmd.u.ctarg.req_size = GNN_ID_REQ_SIZE;
+-	sp->u.iocb_cmd.u.ctarg.rsp_size = GNN_ID_RSP_SIZE;
+-	sp->u.iocb_cmd.u.ctarg.nport_handle = NPH_SNS;
+-
+-	ql_dbg(ql_dbg_disc, vha, 0xffff,
+-	    "Async-%s - %8phC hdl=%x loopid=%x portid %06x.\n",
+-	    sp->name, fcport->port_name,
+-	    sp->handle, fcport->loop_id, fcport->d_id.b24);
+-
+-	rval = qla2x00_start_sp(sp);
+-	if (rval != QLA_SUCCESS)
+-		goto done_free_sp;
+-	return rval;
+-
+-done_free_sp:
+-	/* ref: INIT */
+-	kref_put(&sp->cmd_kref, qla2x00_sp_release);
+-	fcport->flags &= ~FCF_ASYNC_SENT;
+-done:
+-	return rval;
+-}
+-
+-int qla24xx_post_gnnid_work(struct scsi_qla_host *vha, fc_port_t *fcport)
+-{
+-	struct qla_work_evt *e;
+-	int ls;
+-
+-	ls = atomic_read(&vha->loop_state);
+-	if (((ls != LOOP_READY) && (ls != LOOP_UP)) ||
+-		test_bit(UNLOADING, &vha->dpc_flags))
+-		return 0;
+-
+-	e = qla2x00_alloc_work(vha, QLA_EVT_GNNID);
+-	if (!e)
+-		return QLA_FUNCTION_FAILED;
+-
+-	e->u.fcport.fcport = fcport;
+-	return qla2x00_post_work(vha, e);
+-}
+-
+ /* GPFN_ID */
+ void qla24xx_handle_gfpnid_event(scsi_qla_host_t *vha, struct event_arg *ea)
+ {
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -1725,12 +1725,7 @@ int qla24xx_fcport_handle_login(struct s
+ 			}
+ 			break;
+ 		default:
+-			if (wwn == 0)    {
+-				ql_dbg(ql_dbg_disc, vha, 0xffff,
+-				    "%s %d %8phC post GNNID\n",
+-				    __func__, __LINE__, fcport->port_name);
+-				qla24xx_post_gnnid_work(vha, fcport);
+-			} else if (fcport->loop_id == FC_NO_LOOP_ID) {
++			if (fcport->loop_id == FC_NO_LOOP_ID) {
+ 				ql_dbg(ql_dbg_disc, vha, 0x20bd,
+ 				    "%s %d %8phC post gnl\n",
+ 				    __func__, __LINE__, fcport->port_name);
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -5500,9 +5500,6 @@ qla2x00_do_work(struct scsi_qla_host *vh
+ 		case QLA_EVT_GNNFT_DONE:
+ 			qla24xx_async_gnnft_done(vha, e->u.iosb.sp);
+ 			break;
+-		case QLA_EVT_GNNID:
+-			qla24xx_async_gnnid(vha, e->u.fcport.fcport);
+-			break;
+ 		case QLA_EVT_GFPNID:
+ 			qla24xx_async_gfpnid(vha, e->u.fcport.fcport);
+ 			break;
 
 
 
