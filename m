@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-217010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHU9GGTTlGnHIAIAu9opvQ
-	(envelope-from <stable+bounces-217010-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:24 +0100
+	id ECgmC/7TlGnHIAIAu9opvQ
+	(envelope-from <stable+bounces-217057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DC215036F
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:45:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A7321504CA
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 21:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 377C3300517D
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:45:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AEBF9303E771
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 20:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D74D29BDB4;
-	Tue, 17 Feb 2026 20:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1759B28851C;
+	Tue, 17 Feb 2026 20:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXPO/MVl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="129XdUiu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EDD29A1;
-	Tue, 17 Feb 2026 20:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3707A13A;
+	Tue, 17 Feb 2026 20:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361116; cv=none; b=L1pihPyDuR1/F3xSwuSjKKrWsK1CGK49qxMqZEW8hcVm4qsARv5cVXw7Q1v780tboOIktNv53BISlS8mGPbUkPO9oPpk81k2JKFRxUy9NCoEYNe7s6ejw/CoPAfNmuA6iSyEXArsBWoVBRgZSw9jRJArbArXDy58OItWC3hPnkU=
+	t=1771361274; cv=none; b=hrd0r4rfXaSryHa2hN5hSmf1fI2ENvkyIWYjFazHwlSFbTQckhhSfPdyHRCF02Yf/sJyXJELlCgvKZrsI6czXjyiel1kXpUPrqCwb+ZyzJ1fAx+0dD6sDr11cwbwtOhsN6bLFNkYt50ggdyrdFcFAAA9v39acgG9xzcW/twdiY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361116; c=relaxed/simple;
-	bh=hOKB7+jDzhbWzql8IcUfHBc5XYz3mGIrB/zj5PZFDOE=;
+	s=arc-20240116; t=1771361274; c=relaxed/simple;
+	bh=Zo/zLj+c02HE5GrO0s+GPZFkODCbmt3FJKDNyXj8kh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u7QQcUBQfULt2CmCqvfzdtKvLnefEFnUsHETtIvZh3VbQtNm6MD7FLEdldEwS4eyPXJzljsj/D8AbBYtSzWzIrXvH07Au9AYRMigAM+haWWNOCrKNllx475WyZlz/eimFmg0AN3419esKGZ7BtNRbsue22ipJWmryuBnL6EOd0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXPO/MVl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B63C4CEF7;
-	Tue, 17 Feb 2026 20:45:15 +0000 (UTC)
+	 MIME-Version; b=dww3tsjiNq/llv8hGyhsOuwO4AJy6ljU/r488O4j0e7nrFGfCf8TNiX9qJTnupOm6BzBNYOo0QkUXrHJReOwWH7uvCpvwQHduCPGipehxhPft8C3mg0YG1mCqPjzzkIFeUESA2Epv0Z7SloUi7e1J9sZu/P51BU1B2CBZ2KjgpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=129XdUiu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9F6C4CEF7;
+	Tue, 17 Feb 2026 20:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771361115;
-	bh=hOKB7+jDzhbWzql8IcUfHBc5XYz3mGIrB/zj5PZFDOE=;
+	s=korg; t=1771361274;
+	bh=Zo/zLj+c02HE5GrO0s+GPZFkODCbmt3FJKDNyXj8kh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXPO/MVl3xAMqRD2d3xNMf/5mf+CWNWB2OB0y1gNXNvY35w3yS2nCGuwF1Mc/0CDt
-	 tdyeDBgaXHbqq5hwem1iGEzoazJ9CuMsyR7XMb0kiNZ6IttzBCfOm1JmKs0BZBbbX7
-	 eu3rVKcu1QNyCQ0X4s9CY1VKYQyyy7/wCXxXy8Qs=
+	b=129XdUiudHpQCKvRl3o1VJHMdSRkSdJoIC3rF6uFKOL7+8gxo6gN71vshOhOBDMFQ
+	 7QG9dlLFmHyaBAlGAMqnUv115zB/BpwZ/3CtAa9wIrryLRk4FfhDMUCzLD1RJ4rN3x
+	 x2YR88SrNd9WCgdsfICIvQUDXYiTPPVRe7nZaKzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jinbao Liu <liujinbao1@xiaomi.com>,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 38/39] f2fs: fix out-of-bounds access in sysfs attribute read/write
-Date: Tue, 17 Feb 2026 21:31:47 +0100
-Message-ID: <20260217200004.411057081@linuxfoundation.org>
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.1 52/64] ACPI: APEI: send SIGBUS to current task if synchronous memory error not recovered
+Date: Tue, 17 Feb 2026 21:31:48 +0100
+Message-ID: <20260217200009.457100841@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-References: <20260217200002.929083107@linuxfoundation.org>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+References: <20260217200007.505931165@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,210 +74,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217010-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217057-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.alibaba.com,kernel.org,huawei.com,amd.com,oracle.com,intel.com,139.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B8DC215036F
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,alibaba.com:email,amd.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,139.com:email]
+X-Rspamd-Queue-Id: 6A7321504CA
 X-Rspamd-Action: no action
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit 98ea0039dbfdd00e5cc1b9a8afa40434476c0955 ]
+[ Upstream commit 79a5ae3c4c5eb7e38e0ebe4d6bf602d296080060 ]
 
-Some f2fs sysfs attributes suffer from out-of-bounds memory access and
-incorrect handling of integer values whose size is not 4 bytes.
+If a synchronous error is detected as a result of user-space process
+triggering a 2-bit uncorrected error, the CPU will take a synchronous
+error exception such as Synchronous External Abort (SEA) on Arm64. The
+kernel will queue a memory_failure() work which poisons the related
+page, unmaps the page, and then sends a SIGBUS to the process, so that
+a system wide panic can be avoided.
 
-For example:
-vm:~# echo 65537 > /sys/fs/f2fs/vde/carve_out
-vm:~# cat /sys/fs/f2fs/vde/carve_out
-65537
-vm:~# echo 4294967297 > /sys/fs/f2fs/vde/atgc_age_threshold
-vm:~# cat /sys/fs/f2fs/vde/atgc_age_threshold
-1
+However, no memory_failure() work will be queued when abnormal
+synchronous errors occur. These errors can include situations like
+invalid PA, unexpected severity, no memory failure config support,
+invalid GUID section, etc. In such a case, the user-space process will
+trigger SEA again.  This loop can potentially exceed the platform
+firmware threshold or even trigger a kernel hard lockup, leading to a
+system reboot.
 
-carve_out maps to {struct f2fs_sb_info}->carve_out, which is a 8-bit
-integer. However, the sysfs interface allows setting it to a value
-larger than 255, resulting in an out-of-range update.
+Fix it by performing a force kill if no memory_failure() work is queued
+for synchronous errors.
 
-atgc_age_threshold maps to {struct atgc_management}->age_threshold,
-which is a 64-bit integer, but its sysfs interface cannot correctly set
-values larger than UINT_MAX.
-
-The root causes are:
-1. __sbi_store() treats all default values as unsigned int, which
-prevents updating integers larger than 4 bytes and causes out-of-bounds
-writes for integers smaller than 4 bytes.
-
-2. f2fs_sbi_show() also assumes all default values are unsigned int,
-leading to out-of-bounds reads and incorrect access to integers larger
-than 4 bytes.
-
-This patch introduces {struct f2fs_attr}->size to record the actual size
-of the integer associated with each sysfs attribute. With this
-information, sysfs read and write operations can correctly access and
-update values according to their real data size, avoiding memory
-corruption and truncation.
-
-Fixes: b59d0bae6ca3 ("f2fs: add sysfs support for controlling the gc_thread")
-Cc: stable@kernel.org
-Signed-off-by: Jinbao Liu <liujinbao1@xiaomi.com>
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ adapted F2FS_STAT_ATTR macro to include .size field ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://patch.msgid.link/20250714114212.31660-2-xueshuai@linux.alibaba.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ Using pr_err instead of dev_err due to ghes doesn't have member "dev"]
+Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/sysfs.c |   65 +++++++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 58 insertions(+), 7 deletions(-)
+ drivers/acpi/apei/ghes.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -48,6 +48,7 @@ struct f2fs_attr {
- 			 const char *, size_t);
- 	int struct_type;
- 	int offset;
-+	int size;
- 	int id;
- };
- 
-@@ -249,11 +250,30 @@ static ssize_t main_blkaddr_show(struct
- 			(unsigned long long)MAIN_BLKADDR(sbi));
- }
- 
-+static ssize_t __sbi_show_value(struct f2fs_attr *a,
-+		struct f2fs_sb_info *sbi, char *buf,
-+		unsigned char *value)
-+{
-+	switch (a->size) {
-+	case 1:
-+		return sysfs_emit(buf, "%u\n", *(u8 *)value);
-+	case 2:
-+		return sysfs_emit(buf, "%u\n", *(u16 *)value);
-+	case 4:
-+		return sysfs_emit(buf, "%u\n", *(u32 *)value);
-+	case 8:
-+		return sysfs_emit(buf, "%llu\n", *(u64 *)value);
-+	default:
-+		f2fs_bug_on(sbi, 1);
-+		return sysfs_emit(buf,
-+				"show sysfs node value with wrong type\n");
-+	}
-+}
-+
- static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
- 			struct f2fs_sb_info *sbi, char *buf)
- {
- 	unsigned char *ptr = NULL;
--	unsigned int *ui;
- 
- 	ptr = __struct_ptr(sbi, a->struct_type);
- 	if (!ptr)
-@@ -316,9 +336,30 @@ static ssize_t f2fs_sbi_show(struct f2fs
- 			sbi->gc_reclaimed_segs[sbi->gc_segment_mode]);
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -684,6 +684,16 @@ static bool ghes_do_proc(struct ghes *gh
+ 		}
  	}
  
--	ui = (unsigned int *)(ptr + a->offset);
-+	return __sbi_show_value(a, sbi, buf, ptr + a->offset);
-+}
- 
--	return sprintf(buf, "%u\n", *ui);
-+static void __sbi_store_value(struct f2fs_attr *a,
-+			struct f2fs_sb_info *sbi,
-+			unsigned char *ui, unsigned long value)
-+{
-+	switch (a->size) {
-+	case 1:
-+		*(u8 *)ui = value;
-+		break;
-+	case 2:
-+		*(u16 *)ui = value;
-+		break;
-+	case 4:
-+		*(u32 *)ui = value;
-+		break;
-+	case 8:
-+		*(u64 *)ui = value;
-+		break;
-+	default:
-+		f2fs_bug_on(sbi, 1);
-+		f2fs_err(sbi, "store sysfs node value with wrong type");
++	/*
++	 * If no memory failure work is queued for abnormal synchronous
++	 * errors, do a force kill.
++	 */
++	if (sync && !queued) {
++		pr_err(GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
++			current->comm, task_pid_nr(current));
++		force_sig(SIGBUS);
 +	}
- }
- 
- static ssize_t __sbi_store(struct f2fs_attr *a,
-@@ -559,7 +600,7 @@ out:
- 		return count;
- 	}
- 
--	*ui = (unsigned int)t;
-+	__sbi_store_value(a, sbi, ptr + a->offset, t);
- 
- 	return count;
- }
-@@ -655,19 +696,28 @@ static struct f2fs_attr f2fs_attr_sb_##_
- 	.id	= F2FS_FEATURE_##_feat,				\
- }
- 
--#define F2FS_ATTR_OFFSET(_struct_type, _name, _mode, _show, _store, _offset) \
-+#define F2FS_ATTR_OFFSET(_struct_type, _name, _mode, _show, _store, _offset, _size) \
- static struct f2fs_attr f2fs_attr_##_name = {			\
- 	.attr = {.name = __stringify(_name), .mode = _mode },	\
- 	.show	= _show,					\
- 	.store	= _store,					\
- 	.struct_type = _struct_type,				\
--	.offset = _offset					\
-+	.offset = _offset,					\
-+	.size = _size						\
- }
- 
-+#define F2FS_RO_ATTR(struct_type, struct_name, name, elname)	\
-+	F2FS_ATTR_OFFSET(struct_type, name, 0444,		\
-+		f2fs_sbi_show, NULL,				\
-+		offsetof(struct struct_name, elname),		\
-+		sizeof_field(struct struct_name, elname))
 +
-+
- #define F2FS_RW_ATTR(struct_type, struct_name, name, elname)	\
- 	F2FS_ATTR_OFFSET(struct_type, name, 0644,		\
- 		f2fs_sbi_show, f2fs_sbi_store,			\
--		offsetof(struct struct_name, elname))
-+		offsetof(struct struct_name, elname),		\
-+		sizeof_field(struct struct_name, elname))
- 
- #define F2FS_GENERAL_RO_ATTR(name) \
- static struct f2fs_attr f2fs_attr_##name = __ATTR(name, 0444, name##_show, NULL)
-@@ -678,6 +728,7 @@ static struct f2fs_attr f2fs_attr_##_nam
- 	.show = f2fs_sbi_show,					\
- 	.struct_type = _struct_type,				\
- 	.offset = offsetof(struct _struct_name, _elname),       \
-+	.size = sizeof_field(struct _struct_name, _elname),	\
+ 	return queued;
  }
  
- F2FS_RW_ATTR(GC_THREAD, f2fs_gc_kthread, gc_urgent_sleep_time,
 
 
 
