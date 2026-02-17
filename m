@@ -1,251 +1,236 @@
-Return-Path: <stable+bounces-216765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-216766-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBHsHHW+k2l78AEAu9opvQ
-	(envelope-from <stable+bounces-216765-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 02:03:49 +0100
+	id qCL6IfPHk2kf8gEAu9opvQ
+	(envelope-from <stable+bounces-216766-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 02:44:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79E41485E8
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 02:03:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CF51486CB
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 02:44:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A432630474E4
-	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 01:01:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3CCB430028F8
+	for <lists+stable@lfdr.de>; Tue, 17 Feb 2026 01:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A01280A29;
-	Tue, 17 Feb 2026 01:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1792356D9;
+	Tue, 17 Feb 2026 01:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B46nS4CD"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lVP+WNez"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AD8274B4A;
-	Tue, 17 Feb 2026 01:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A2D38FA3
+	for <stable@vger.kernel.org>; Tue, 17 Feb 2026 01:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771290088; cv=none; b=RMcD/qBA167mSnqiSfJrHaSk87qXRAGiE/kfIEFmDzsQDwb6hcLD/bAQ91rTR4ft4ZjZHZ0rKlHf8bx4TCfRK/W510OIaDk1zWA2dn0RLdQ2p/tJA6iYmwZC/IrSY6fKC5loLKtgy5XPjYg2SYIICG4FG/BfjDQfw0qQ+duoEJM=
+	t=1771292648; cv=none; b=EEjs8lwzENOmKkuaVNHd+khCr4urSb4DKX5ZCmcbMA8KWs+9H0t2DUQrSujj4AEfhxsEnt/a0BdcH4nYVFxqB9P5KNQt0Zy2Nlk5pARSyuqLrWgcgQzdDlP4tTaZdH+c9M735cgVXH4h1I/g9TUnmlyVuzOlPgX8Rga16DGLuRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771290088; c=relaxed/simple;
-	bh=5A/TcNE2nbiBSpB6QpU3prs9NlE3Ibbyi7+LGPCUg+g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DDmb8moDu+9FCONblLzH3aOWwiL9KBAVpB76FhPs8BcQOCqPzc8go4h7iFsT6/QFTp6Ivkqb5OgqvpYjbaqSWujFL3i5hoxJ971gzNXGFnVyVpoCROe5VOVwyNvaicN9dE2pLvjPRvY1bzDJRkdF9p6lsbwO2Xj9SkcoyMh39Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B46nS4CD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E954DC4AF09;
-	Tue, 17 Feb 2026 01:01:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771290087;
-	bh=5A/TcNE2nbiBSpB6QpU3prs9NlE3Ibbyi7+LGPCUg+g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B46nS4CDDJRuI6yRjYBn4NJL6H8JKxCbrsj5Ww/+SDqQpUweYfje3cP9OokolvuIE
-	 6PGPZ4NCfgpH87VNnAcvOBWZgX3as11o7SRcM2MdqvMhMLcIhMqOl6CT7qrT2bO5WX
-	 nmYeymkp/bRXHbyODYGerRvic2em9gOISyAz1X6fOAiNOPa0WJ8z4BA5cXQ62qM1HJ
-	 7N/83SAUIMDNVFPvVs11cvXG3rgwHSyMWF2tC45ikxKaeel/Bv7Bss0A3Ihmr0C3fD
-	 toOZBuvgcLiBw4vs8aMaZIv51tDrTU0DwLcATzqPtv9O5SPTr8JbxXaXXTnR/GuOKE
-	 1De8wWSxzx2jw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Daniel Palmer <daniel@thingy.jp>,
-	Greg Ungerer <gerg@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	geert@linux-m68k.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] m68k: nommu: fix memmove() with differently aligned src and dest for 68000
-Date: Mon, 16 Feb 2026 20:01:17 -0500
-Message-ID: <20260217010118.3503621-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260217010118.3503621-1-sashal@kernel.org>
-References: <20260217010118.3503621-1-sashal@kernel.org>
+	s=arc-20240116; t=1771292648; c=relaxed/simple;
+	bh=9gALOijIBxBkf1lU8Wm58TBO8TUbib6/9i83EJ9Bnvo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Zr05DK34Ktm30YhWLwXhvYEGyFlR4Az/9mM9vxDT95TRmzh7Iykpbjhz3ygifLFND0TXVELRABw+md4KXIXoI8uZ95BhrmnfSztCXmaBguH7du+wITEEMFoJ/Z3g83WUcvHxXguUTc85nqW/dB8b+M9gxG2C2/hrFj8aOlx1oW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lVP+WNez; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a944e6336eso217846815ad.0
+        for <stable@vger.kernel.org>; Mon, 16 Feb 2026 17:44:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771292646; x=1771897446; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y0+U5Pc41BVwnFvqdSoAa/2Rz/ZDywih7O6BgvsAgYk=;
+        b=lVP+WNezuprj2Wl3Oloa6H09VGoHR+xKBXtLWjdizrSnRto7PlYjviwRot733oWtNr
+         0otXc6WLYykTfr/oGVPRYtvnENHJOf6hSUQREX5EnT8w1KC9u8cYzmsY4cgzBjxg3VE6
+         WkaV3X4XDVoh7K4v2Y3xhmxvcqpW3Gl45b/iHPcOwX46hmjFOylgdJkzfdW5ogPw8wK7
+         0IWKhMBoVBUj41nAF8SeiYMQsd7KU2sW6O5kL+qZF7Vghgg4IrHf23fazanXYDiaDJYg
+         iHSWjQJnFokGNcSJC3oysrO81SAKmR2iRofrUfywpY16/WdplNfh3q0Kdf7VZ+Sw5nTB
+         W9Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771292646; x=1771897446;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y0+U5Pc41BVwnFvqdSoAa/2Rz/ZDywih7O6BgvsAgYk=;
+        b=JzCs1zDCRrIKdJnPOr1BYtZeQw71kf30CTYPwH1N8bB3HLco/9wNRVAbVGr/7E8v2t
+         ahEEYg/usjsn26mtIcr9ZCvZ40O2UDNvFW1T3QI5lMTB3QYKNwPnrD0jI5H8t3jpjwGX
+         Rrz4mbEx9+G9d/1dqwHwtuNyS1EdmMJlU3dUi0pmWtOyt8dUOmy/qcUXR4hfDMCtrjJU
+         1Nz15313S4r9fGdrddN6y+YBhUqrF2/8AtVXgVItKSnt85mL/Hx7EnMRoymheLh6HeqA
+         wwwfvCY8ZPQPIGs8I4v4KmXbJ3LDUC7gTrzkONeq9olY6vXuOLad6/cufGRUyya0GR34
+         ud1w==
+X-Forwarded-Encrypted: i=1; AJvYcCWdmPSrt9PUTHo0MbRFmury2kEhDuNgb1JFErRS9fdPstCUi2BtTeZ1UjEDPcpC2371XzO/Coc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4FWd4ImhU0oJDu2a65bS60ZvrX3JtMlGlHdOAkmobo4yG43yd
+	m06W39wjQg4EcYMXz5O4eCwFvW98z7vNMnfJj3pWa75NU1VwhFpTVUYLbO3GCQn8lCmKoqGDsiZ
+	0M5r3eC47awLOK7kBTZOeJeAiPA==
+X-Received: from plqu18.prod.google.com ([2002:a17:902:a612:b0:2a7:8c71:aa97])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:e943:b0:2ab:2311:e4fc with SMTP id d9443c01a7336-2ab50603a4amr130385745ad.56.1771292645552;
+ Mon, 16 Feb 2026 17:44:05 -0800 (PST)
+Date: Tue, 17 Feb 2026 01:44:02 +0000
+In-Reply-To: <20260214001535.435626-1-kartikey406@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260214001535.435626-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.53.0.273.g2a3d683680-goog
+Message-ID: <20260217014402.2554832-1-ackerleytng@google.com>
+Subject: [PATCH] KVM: selftests: Test MADV_COLLAPSE on GUEST_MEMFD
+From: Ackerley Tng <ackerleytng@google.com>
+To: kartikey406@gmail.com, seanjc@google.com, pbonzini@redhat.com, 
+	shuah@kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: vannapurve@google.com, Liam.Howlett@oracle.com, ackerleytng@google.com, 
+	akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	david@kernel.org, dev.jain@arm.com, i@maskray.me, lance.yang@linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	npache@redhat.com, ryan.roberts@arm.com, shy828301@gmail.com, 
+	stable@vger.kernel.org, syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, 
+	ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-216765-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-216766-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,google.com,redhat.com,kernel.org,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_TWELVE(0.00)[25];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,thingy.jp:email]
-X-Rspamd-Queue-Id: C79E41485E8
+	FROM_NEQ_ENVFROM(0.00)[ackerleytng@google.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[google.com,oracle.com,linux-foundation.org,kernel.org,linux.alibaba.com,arm.com,maskray.me,linux.dev,vger.kernel.org,kvack.org,redhat.com,gmail.com,syzkaller.appspotmail.com,nvidia.com];
+	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F0CF51486CB
 X-Rspamd-Action: no action
 
-From: Daniel Palmer <daniel@thingy.jp>
+guest_memfd only supports PAGE_SIZE pages, and khugepaged or MADV_COLLAPSE
+collapsing pages may result in private memory regions being mapped into
+host page tables.
 
-[ Upstream commit 590fe2f46c8698bb758f9002cb247ca10ce95569 ]
+Add test to verify that MADV_COLLAPSE fails on guest_memfd folios, and any
+subsequent usage of guest_memfd memory faults in PAGE_SIZE folios. Running
+this test should not result in any memory failure logs or kernel WARNings.
 
-68000 has different alignment needs to 68020+.
-memcpy() checks if the destination is aligned and does a smaller copy
-to fix the alignment and then critically for 68000 it checks if the
-source is still unaligned and if it is reverts to smaller copies.
+This selftest was added as a result of a syzbot-reported issue where
+khugepaged operating on guest_memfd memory with MADV_HUGEPAGE caused the
+collapse of folios, which then subsequently resulted in a WARNing.
 
-memmove() does not currently do the second part and malfunctions if
-one of the pointers is aligned and the other isn't.
-
-This is apparently getting triggered by printk. If I put breakpoints
-into the new checks added by this commit the first hit looks like this:
-
-memmove (n=205, src=0x2f3971 <printk_shared_pbufs+205>, dest=0x2f3980 <printk_shared_pbufs+220>) at arch/m68k/lib/memmove.c:82
-
-Signed-off-by: Daniel Palmer <daniel@thingy.jp>
-Signed-off-by: Greg Ungerer <gerg@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
+Suggested-by: David Hildenbrand <david@kernel.org>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
+ .../testing/selftests/kvm/guest_memfd_test.c  | 72 +++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
-LLM Generated explanations, may be completely bogus:
-
-This file has existed since 2011, so it's in all current stable trees.
-Let me also verify the CONFIG_M68000 check in memcpy to confirm the
-pattern.
-
-## Summary of Analysis
-
-### Problem Being Fixed
-On 68000 CPUs (CONFIG_M68000), `memmove()` performs word and long-word
-memory accesses through a source pointer that may be at an odd address.
-The 68000 CPU (unlike 68020+) generates an **address error exception**
-(essentially a bus error/crash) on unaligned word or long-word accesses.
-
-The existing `memcpy()` implementation already handles this correctly:
-after aligning the destination pointer, it checks if the source is still
-misaligned and falls back to byte-by-byte copy. The `memmove()`
-implementation was missing this identical check.
-
-### Real-World Impact
-The commit message explicitly states this is triggered by `printk` — one
-of the most fundamental kernel functions. This means:
-- **Any kernel message output** on a 68000 system can crash the kernel
-- The bug is easily triggered in normal operation
-- It affects basic kernel boot and operation
-
-### Code Change Assessment
-- **Size**: +18 lines (two identical 9-line blocks for forward and
-  backward copy paths)
-- **Scope**: Single file, single function, architecture-specific
-  (`CONFIG_M68000` only)
-- **Pattern**: Exactly mirrors existing, tested `memcpy()` code
-- **Risk**: Very low — the added code is conditionally compiled only for
-  CONFIG_M68000, and follows an established pattern already used in
-  `memcpy.c`
-- **No new features**: This is purely a bug fix bringing `memmove()` to
-  parity with `memcpy()`
-
-### Stable Kernel Rules Compliance
-1. **Obviously correct and tested**: Yes — mirrors `memcpy()` and author
-   shows concrete triggering example
-2. **Fixes a real bug**: Yes — unaligned access causes CPU
-   exception/crash on 68000
-3. **Fixes an important issue**: Yes — crashes on basic `printk`
-   operations
-4. **Small and contained**: Yes — 18 lines, single file, single
-   function, only affects CONFIG_M68000
-5. **No new features**: Correct — this is a bug fix only
-6. **Clean application**: The file has minimal history, so this should
-   apply cleanly to any stable tree
-
-### Verification
-
-- **Verified** that `memcpy.c` (lines 25-32) already has the identical
-  `CONFIG_M68000` alignment fallback pattern that this patch adds to
-  `memmove.c`
-- **Verified** that `memmove.c` (the unpatched version read above) is
-  missing this check — after aligning `dest`, it proceeds directly to
-  word/long copies without checking `src` alignment
-- **Verified** that the file `arch/m68k/lib/memmove.c` was originally
-  added in commit 982cd252ca0b6 (2011), meaning it exists in all current
-  stable kernel trees
-- **Verified** the patch adds two `#if defined(CONFIG_M68000)` blocks,
-  one for each copy direction (forward and backward), matching the
-  structure of the existing `memcpy()` fix
-- **Verified** via `git log` that this file has had very few changes
-  since creation (only 2 commits in history: original creation and a
-  dedup cleanup), meaning it should apply cleanly
-- **Unverified**: Exact stable tree versions affected — but since the
-  file dates to 2011 and the bug has existed since then, all current
-  stable trees are affected
-
-### Risk vs. Benefit
-- **Risk**: Extremely low. The change is guarded by `#if
-  defined(CONFIG_M68000)`, affects only 68000 CPUs, and mirrors proven
-  code from `memcpy()`
-- **Benefit**: Prevents crashes on a fundamental kernel operation
-  (`printk` → `memmove`) on all 68000 systems
-
-This is a clear, well-understood bug fix for a crash that affects basic
-kernel operation on 68000 platforms. It's small, surgical, follows an
-established pattern, and has zero risk to non-68000 systems.
-
-**YES**
-
- arch/m68k/lib/memmove.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/arch/m68k/lib/memmove.c b/arch/m68k/lib/memmove.c
-index 6519f7f349f66..e33f00b02e4c0 100644
---- a/arch/m68k/lib/memmove.c
-+++ b/arch/m68k/lib/memmove.c
-@@ -24,6 +24,15 @@ void *memmove(void *dest, const void *src, size_t n)
- 			src = csrc;
- 			n--;
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 618c937f3c90f..d16341a4a315d 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -171,6 +171,77 @@ static void test_numa_allocation(int fd, size_t total_size)
+ 	kvm_munmap(mem, total_size);
+ }
+ 
++static size_t getpmdsize(void)
++{
++	const char *path = "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size";
++	static size_t pmd_size = -1;
++	FILE *fp;
++
++	if (pmd_size != -1)
++		return pmd_size;
++
++	fp = fopen(path, "r");
++	TEST_ASSERT(fp, "Couldn't open %s to read PMD size.", path);
++
++	TEST_ASSERT_EQ(fscanf(fp, "%lu", &pmd_size), 1);
++
++	TEST_ASSERT_EQ(fclose(fp), 0);
++
++	return pmd_size;
++}
++
++static void test_collapse(struct kvm_vm *vm, uint64_t flags)
++{
++	const size_t pmd_size = getpmdsize();
++	char *mem;
++	off_t i;
++	int fd;
++
++	fd = vm_create_guest_memfd(vm, pmd_size * 2,
++				   GUEST_MEMFD_FLAG_MMAP |
++				   GUEST_MEMFD_FLAG_INIT_SHARED);
++
++	/*
++	 * Use aligned address so that MADV_COLLAPSE will not be
++	 * filtered out early in the collapsing routine.
++	 */
++#define ALIGNED_ADDRESS ((void *)0x4000000000UL)
++	mem = mmap(ALIGNED_ADDRESS, pmd_size, PROT_READ | PROT_WRITE,
++		   MAP_FIXED | MAP_SHARED, fd, 0);
++	TEST_ASSERT_EQ(mem, ALIGNED_ADDRESS);
++
++	/*
++	 * Use reads to populate page table to avoid setting dirty
++	 * flag on page.
++	 */
++	for (i = 0; i < pmd_size; i += getpagesize())
++		READ_ONCE(mem[i]);
++
++	/*
++	 * Advising the use of huge pages in guest_memfd should be
++	 * fine...
++	 */
++	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_HUGEPAGE), 0);
++
++	/*
++	 * ... but collapsing folios must not be supported to avoid
++	 * mapping beyond shared ranges into host userspace page
++	 * tables.
++	 */
++	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_COLLAPSE), -1);
++	TEST_ASSERT_EQ(errno, EINVAL);
++
++	/*
++	 * Removing from host page tables and re-faulting should be
++	 * fine; should not end up faulting in a collapsed/huge folio.
++	 */
++	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_DONTNEED), 0);
++	READ_ONCE(mem[0]);
++
++	kvm_munmap(mem, pmd_size);
++	kvm_close(fd);
++}
++
+ static void test_fault_sigbus(int fd, size_t accessible_size, size_t map_size)
+ {
+ 	const char val = 0xaa;
+@@ -370,6 +441,7 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
+ 			gmem_test(mmap_supported, vm, flags);
+ 			gmem_test(fault_overflow, vm, flags);
+ 			gmem_test(numa_allocation, vm, flags);
++			test_collapse(vm, flags);
+ 		} else {
+ 			gmem_test(fault_private, vm, flags);
  		}
-+#if defined(CONFIG_M68000)
-+		if ((long)src & 1) {
-+			char *cdest = dest;
-+			const char *csrc = src;
-+			for (; n; n--)
-+				*cdest++ = *csrc++;
-+			return xdest;
-+		}
-+#endif
- 		if (n > 2 && (long)dest & 2) {
- 			short *sdest = dest;
- 			const short *ssrc = src;
-@@ -66,6 +75,15 @@ void *memmove(void *dest, const void *src, size_t n)
- 			src = csrc;
- 			n--;
- 		}
-+#if defined(CONFIG_M68000)
-+		if ((long)src & 1) {
-+			char *cdest = dest;
-+			const char *csrc = src;
-+			for (; n; n--)
-+				*--cdest = *--csrc;
-+			return xdest;
-+		}
-+#endif
- 		if (n > 2 && (long)dest & 2) {
- 			short *sdest = dest;
- 			const short *ssrc = src;
 -- 
-2.51.0
+2.53.0.273.g2a3d683680-goog
 
 
