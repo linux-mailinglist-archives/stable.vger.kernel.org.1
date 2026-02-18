@@ -1,186 +1,214 @@
-Return-Path: <stable+bounces-217280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBx1DqGxlWkHUAIAu9opvQ
-	(envelope-from <stable+bounces-217280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:33:37 +0100
+	id oOtLHr6xlWkHUAIAu9opvQ
+	(envelope-from <stable+bounces-217281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:34:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 986761565D5
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:33:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 387821565EC
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:34:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE5013011C4D
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:33:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36AF7304F202
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56B83168F6;
-	Wed, 18 Feb 2026 12:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B588831A051;
+	Wed, 18 Feb 2026 12:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9dM+KVn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WvxHpD9F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D3E30F7FA;
-	Wed, 18 Feb 2026 12:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7819D3191CF
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 12:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771418002; cv=none; b=jAWNeRZJO1QdZAjHHEhszSUKJLESJSO123+m40dpC5WbmhmwYSBT8goZHalJV6VMo9eMYFpxINR86EO2qovFlAZP+T4oxOgOxC0WOccFpQhR5SEx0YERKlqWfL2a+ID/3UcPDzpIhYo+Gn3+0kmKy57lNloNv5SxqvghvSSO6Zw=
+	t=1771418030; cv=none; b=Q6kFdIAOW+58W6fYfXQvLTl8/oBwojegwpwcg/jRa/iAvCu5pyI0G/cuKjoJFsaNx33aVZ+IY6Q0Ig9kuVbPw9CwuXdTr6KbBntGl2vHr19Sz4IG0N39Vj/HO5li1F1MhOCtqFOmYdh8F3ncZmrZDkHOM+1JF54OzKks49c2v2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771418002; c=relaxed/simple;
-	bh=onXJKG7ABpWysLLjHoB0FgkcOtPQuvl7ThpLtjN1wno=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CFGkP5/aBSPhBxdU9/iVDCR04iTk6vt/VG5MFvW8HRzPw9rNYHuiGA2NlRfXgdP7YnDfBBYnYZ9brslmVFwj9pgGBfOfhPX9DdJy4pRydCZ3g8/73t72JvraVRYls+vZP40jWMjHCgblvaxFEZIswskavjqpBSAoU6y3Z/dedIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9dM+KVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19B8C19424;
-	Wed, 18 Feb 2026 12:33:17 +0000 (UTC)
+	s=arc-20240116; t=1771418030; c=relaxed/simple;
+	bh=PcdZIrVKr/Pd1Zn/N/Z35F9qghKTj/esGt6SKwLxzS4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jtf+j14gENGDA+A/0w6XKI63Go3x25heJjaIImZktpw3elfQaf4I9NmXLnWPMvM1TFa+GwV8dhmJwXyDyqFWkK5EcHbt/3oCPQUbOJqSN5ZUmTUsPnCt58UtEXczQdcA+cgrSR85eYw524HTim0dR2LBlTAeRRUa6ysvSeQ1iNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WvxHpD9F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4560BC19424
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 12:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771418002;
-	bh=onXJKG7ABpWysLLjHoB0FgkcOtPQuvl7ThpLtjN1wno=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D9dM+KVnFofAmcGqIps4U3wTWoSnPT8rf5sNM9imouD8LmX0ZYz0s5ivZjJP++vuZ
-	 Oppn+ckqo6ODDrfaT0gzbg/w0mV2vS6YuqM09iu2KoRpY6MiK2rK/aEhmKVUpDeI40
-	 RLrR0bmvc+h45jzRqchndMO9+AdnpuPwtVakvSaQTkIRS9JU3EdChxHEzqcIG/VSot
-	 rIJEnGlvLD2MqsLiEu2ALuKZI1mQDopC914AIBq15v/rqy/AHn69+9wCCfsGgLqT3w
-	 +CFVAJUOSlDgcCxUb4RbCrCqbllyMjhCOc29u7qH7TF//mk4Yjjm9KDqImq+F9S/Ep
-	 ldmd/hUWBobbA==
-Date: Wed, 18 Feb 2026 18:03:07 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Stanimir Varbanov <svarbanov@mm-sol.com>, linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: qcom: Prevent GDSC power down on suspend
-Message-ID: <6osboej6luxekrw4okhlbf3irednx7gduhmqbzqkkgd3ldm2cn@esalet4ruwcb>
-References: <20260128-genpd_fix-v1-1-cd45a249d12f@oss.qualcomm.com>
- <zfs6krk2whthgdjl2s2w4o5pjwimzw37afoiyrqllykrk6jugt@4ijk5iqplohr>
+	s=k20201202; t=1771418030;
+	bh=PcdZIrVKr/Pd1Zn/N/Z35F9qghKTj/esGt6SKwLxzS4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WvxHpD9FwSWpsrs6FKcLEMn3HuFKNyIKS0XxxxZFyVahyWEQhyi2dKjsB4W7Zuykm
+	 JZDio9KPtRbeWiUSyu/ISvTmF+wQpY4qUD5CVQWjKqkC6gkHX8UR4pPg+yUOn+0QlD
+	 EnG81OqeJKvn8chTH7I9Sifb2AosVlLCPMWyuMqvZpCPSH9JIOVp3t8HROOpCdbkns
+	 jAfT+bT9vACxPANRAt0BwOTQx/ezNTzf17B5f/eOK2PsKrOEqCxOrPfB2LDfgVFIN8
+	 HjvbH+ag1lKzTSwICd0lYRX/9xKTtfTj+HvQDD33winl1sPVZx0YF43WF2l7JIJT7G
+	 OfiWmhj2gVCpw==
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-649e97f1e1eso4308540d50.1
+        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 04:33:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUj4GVQjRbdiO+8kSIawACvfkRzYUIbODStZfDjKOMiFRZi4krVu4fXQrniNh5LyLjc9nRPeHk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yytw1tKLFMl7w3MkuQT+lpksbfFQmNfAKmvl/c+KUsM1nChURRc
+	8Cw/5cYVkKeEsuyAIKTZOaAs3O/CcLF3OWOTMwDQCEATvEaMmDvtYuwLt2a+s/2EFxx7D8zlDcz
+	RHCT5wzqw0B9cqP80HgmJggtoZH5Jd7A=
+X-Received: by 2002:a05:690e:20c3:b0:649:f002:582b with SMTP id
+ 956f58d0204a3-64c14ac48e4mr10700712d50.7.1771418029646; Wed, 18 Feb 2026
+ 04:33:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <zfs6krk2whthgdjl2s2w4o5pjwimzw37afoiyrqllykrk6jugt@4ijk5iqplohr>
+References: <20251024-sdhci-bb-regression-v1-1-b57a3d4dbc9f@linaro.org>
+In-Reply-To: <20251024-sdhci-bb-regression-v1-1-b57a3d4dbc9f@linaro.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 18 Feb 2026 13:33:38 +0100
+X-Gmail-Original-Message-ID: <CAD++jLkWut=YDiv0uEffmYNTjrHhwY3=O3+ffDtMVU80wczXBQ@mail.gmail.com>
+X-Gm-Features: AaiRm50ISFJ2laD-LdXSm0tILGGW0eWjtaB7cSVwFtj6rrKYccvTvDDUG284NZs
+Message-ID: <CAD++jLkWut=YDiv0uEffmYNTjrHhwY3=O3+ffDtMVU80wczXBQ@mail.gmail.com>
+Subject: Re: [PATCH] mmc: sdhci: Disable bounce buffer on SDIO
+To: Michael Garofalo <officialtechflashyt@gmail.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	linux-mmc@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217281-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217280-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 986761565D5
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,linaro.org:email]
+X-Rspamd-Queue-Id: 387821565EC
 X-Rspamd-Action: no action
 
-On Wed, Jan 28, 2026 at 08:13:48AM -0600, Bjorn Andersson wrote:
-> On Wed, Jan 28, 2026 at 05:52:42PM +0530, Krishna Chaitanya Chundru wrote:
-> > Currently, the driver expects the devices to remain in D0 across system
-> > suspend, but the genpd framework may still power down the associated
-> > GDSC during suspend. When that happens, the PCIe link goes down and
-> > cannot be recovered on resume.
-> > 
-> 
-> The GDSC is a child of CX, so by keeping it always-on, you effectively
-> put an always-on vote on CX, forever preventing CXPC.
-> 
-> In fact, this is one of the reasons why the PCIe GDSCs on most targets
-> is marked PWRSTS_RET_ON (in the clock driver) so that the "off state"
-> doesn't actually turn off the GDSC, but it relinquishes the inherited
-> vote on CX.
-> 
+Michael,
 
-So this means, you favor the patch that marks the PCIe GDSCs as PWRSTS_RET_ON?
+1. Did you verify that you were using in-tree drivers with B43?
 
-> > Prevent genpd from turning off the PCIe GDSC by using
-> > dev_pm_genpd_rpm_always_on() so that the power domain stays on while
-> > the controller is suspended. This preserves the link state across
-> > suspend/resume and avoids unrecoverable link failures.
-> > 
-> 
-> We are able to suspend/resume a whole bunch of platforms today, which
-> one are you on?
-> 
-> That said, while we can suspend/resume, we're not allowing CXPC today.
-> On many systems the main culprit is the icc_set_bw() vote in
-> qcom_pcie_suspend_noirq().
-> 
+2. Did you get a chance to test this?
 
-Yeah, I still need to look deeply into this part. The stray vote keeps the PCIe
-link active as irq core tries to masks the MSIs at the very end of suspend. This
-design works fine for firmware controlled suspends, but not for kernel
-controlled ones.
+Yours,
+Linus Walleij
 
-- Mani
-
-> Regards,
-> Bjorn
-> 
-> > Fixes: 82a823833f4e ("PCI: qcom: Add Qualcomm PCIe controller driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-> > ---
-> >  drivers/pci/controller/dwc/pcie-qcom.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-> > index 5a318487b2b3f6c61d8f5b1fd5cdf2738a1f1dcd..314cf334a313dff35efaf0c023597e6eef483925 100644
-> > --- a/drivers/pci/controller/dwc/pcie-qcom.c
-> > +++ b/drivers/pci/controller/dwc/pcie-qcom.c
-> > @@ -25,6 +25,7 @@
-> >  #include <linux/pci.h>
-> >  #include <linux/pci-ecam.h>
-> >  #include <linux/pm_opp.h>
-> > +#include <linux/pm_domain.h>
-> >  #include <linux/pm_runtime.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/phy/pcie.h>
-> > @@ -2052,6 +2053,11 @@ static int qcom_pcie_suspend_noirq(struct device *dev)
-> >  		pcie->suspended = true;
-> >  	}
-> >  
-> > +	if (pcie->suspended)
-> > +		dev_pm_genpd_rpm_always_on(dev, false);
-> > +	else
-> > +		dev_pm_genpd_rpm_always_on(dev, true);
-> > +
-> >  	/*
-> >  	 * Only disable CPU-PCIe interconnect path if the suspend is non-S2RAM.
-> >  	 * Because on some platforms, DBI access can happen very late during the
-> > 
-> > ---
-> > base-commit: 1f97d9dcf53649c41c33227b345a36902cbb08ad
-> > change-id: 20260128-genpd_fix-3aa413d9a383
-> > 
-> > Best regards,
-> > -- 
-> > Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-> > 
-> > 
-
--- 
-மணிவண்ணன் சதாசிவம்
+On Fri, Oct 24, 2025 at 10:40=E2=80=AFAM Linus Walleij <linus.walleij@linar=
+o.org> wrote:
+>
+> As reported by Michael Garofalo, the b43 WLAN driver request
+> a strict 64 byte block size because of FIFO limitations.
+>
+> When the bounce buffer is active, all requests will be coalesced
+> into bigger (up to 64KB) chunks, which breaks SDIO.
+>
+> Fix this by checking if we are using an SDIO card, and in that
+> case do not use the bounce buffer.
+>
+> Link: https://lore.kernel.org/linux-mmc/20251006013700.2272166-1-official=
+TechflashYT@gmail.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  drivers/mmc/host/sdhci.c | 23 +++++++++++++++++++----
+>  1 file changed, 19 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index ac7e11f37af71fa5a70eb579fd812227b9347f83..c349e5b507b63a5ee9a9dcb08=
+ac95cae6b3d7075 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -650,6 +650,21 @@ static void sdhci_transfer_pio(struct sdhci_host *ho=
+st)
+>         DBG("PIO transfer complete.\n");
+>  }
+>
+> +static bool sdhci_use_bounce_buffer(struct sdhci_host *host)
+> +{
+> +       /*
+> +        * Don't bounce SDIO messages: these need the block size
+> +        * to be strictly respected (FIFOs in the device).
+> +        */
+> +       if (mmc_card_sdio(host->mmc->card))
+> +               return false;
+> +
+> +       if (host->bounce_buffer)
+> +               return true;
+> +
+> +       return false;
+> +}
+> +
+>  static int sdhci_pre_dma_transfer(struct sdhci_host *host,
+>                                   struct mmc_data *data, int cookie)
+>  {
+> @@ -663,7 +678,7 @@ static int sdhci_pre_dma_transfer(struct sdhci_host *=
+host,
+>                 return data->sg_count;
+>
+>         /* Bounce write requests to the bounce buffer */
+> -       if (host->bounce_buffer) {
+> +       if (sdhci_use_bounce_buffer(host)) {
+>                 unsigned int length =3D data->blksz * data->blocks;
+>
+>                 if (length > host->bounce_buffer_size) {
+> @@ -890,7 +905,7 @@ static void sdhci_set_adma_addr(struct sdhci_host *ho=
+st, dma_addr_t addr)
+>
+>  static dma_addr_t sdhci_sdma_address(struct sdhci_host *host)
+>  {
+> -       if (host->bounce_buffer)
+> +       if (sdhci_use_bounce_buffer(host))
+>                 return host->bounce_addr;
+>         else
+>                 return sg_dma_address(host->data->sg);
+> @@ -3030,7 +3045,7 @@ static void sdhci_pre_req(struct mmc_host *mmc, str=
+uct mmc_request *mrq)
+>          * for that we would need two bounce buffers since one buffer is
+>          * in flight when this is getting called.
+>          */
+> -       if (host->flags & SDHCI_REQ_USE_DMA && !host->bounce_buffer)
+> +       if (host->flags & SDHCI_REQ_USE_DMA && !sdhci_use_bounce_buffer(h=
+ost))
+>                 sdhci_pre_dma_transfer(host, mrq->data, COOKIE_PRE_MAPPED=
+);
+>  }
+>
+> @@ -3104,7 +3119,7 @@ void sdhci_request_done_dma(struct sdhci_host *host=
+, struct mmc_request *mrq)
+>         struct mmc_data *data =3D mrq->data;
+>
+>         if (data && data->host_cookie =3D=3D COOKIE_MAPPED) {
+> -               if (host->bounce_buffer) {
+> +               if (sdhci_use_bounce_buffer(host)) {
+>                         /*
+>                          * On reads, copy the bounced data into the
+>                          * sglist
+>
+> ---
+> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+> change-id: 20251024-sdhci-bb-regression-a26822c56951
+>
+> Best regards,
+> --
+> Linus Walleij <linus.walleij@linaro.org>
+>
+>
 
