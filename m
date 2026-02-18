@@ -1,189 +1,127 @@
-Return-Path: <stable+bounces-217321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEYNE5UjlmkXbAIAu9opvQ
-	(envelope-from <stable+bounces-217321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:39:49 +0100
+	id oDqnHtkllmmIbQIAu9opvQ
+	(envelope-from <stable+bounces-217322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:49:29 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E917E1597CB
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:39:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C961598FF
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:49:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CFD3302AD08
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 20:39:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F38CD3041A5C
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 20:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B152C34889C;
-	Wed, 18 Feb 2026 20:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4722349AF2;
+	Wed, 18 Feb 2026 20:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b="N4az98+k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AB55RHTv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1B0309F1F
-	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 20:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52DC33EB0A;
+	Wed, 18 Feb 2026 20:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771447182; cv=none; b=uR5l3acE2fFAN/MLqE9KRtYPhdxySjMoL6JEXHyEgsX/wnfAabDFKO7WcWC/DGY0XIyWdFrAHnZDx9cJX2jLeSBaCxrhaRAYrus4dUvZj/NpngQgXl248hZDBEGPYUaIznAGO5MVP3Xozw/mTKwzxeK0EqXIlgxpr5x1Z4ssoGM=
+	t=1771447743; cv=none; b=DB9ZJ8AfKISFbkWRln3xAP7RUZidxwHwKcIoV1bZgfjPWLIad8FXG3o9Y/Gn1FmLd/2W9jaUIZiGSreN6GworAMQlECt+fOQ7CkZAxQeTZwl0SG8NgvdQYq5ximo+Yxlk4C9KyzfWBkMbm5gR3hcWeKod/79KpaCdjU7ElSXwIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771447182; c=relaxed/simple;
-	bh=IZOe9Agq5alFuZFtw7BiAeMypRr0qgvFrTQVAA2QJGg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YJhtLimDtgwg1ragUyQ4Uy3zqWEWCXGxy6Hcud0Hq/X/7yw8Ym7NdAwl51/GDpAOgxs3LVJiyvgkOQ0U0+0GB93hRlC6MLbrhlDwSeNF2ixMbdC9cfx7ttOCWDWb/BTzyIGiIwrbUUXZj8FnU+Bkd4et4pEr4T1ngO+qZaxy26U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr; spf=pass smtp.mailfrom=smile.fr; dkim=pass (1024-bit key) header.d=smile.fr header.i=@smile.fr header.b=N4az98+k; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smile.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smile.fr
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4376c0bffc1so195351f8f.0
-        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 12:39:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1771447179; x=1772051979; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hLWHawfUnZuiQ3TDhSdC1bL32uOxcaH5z4XCL/rXWbU=;
-        b=N4az98+kxrdCsihwFNEkhNcyK9Y2wCxB9Egd5mGJxyF5jkeLVx4ih4+WCjHGCQdtq7
-         ElKWEZUJvbpTujjhESL3kmKryiWsFUGLv/4WUvWyF/gQlTfPsbanaJMttOMfXGNQIXTa
-         85t4Z5uov6C3XeiLhkWADcMOwUdrFKkDXmAIc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771447179; x=1772051979;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hLWHawfUnZuiQ3TDhSdC1bL32uOxcaH5z4XCL/rXWbU=;
-        b=AK3jTgKkRwmDDu3VMcQig4+JZ1/M2abWVsJv6we0gTdsGkJGb6h3XL2lorVfNvoZ45
-         Z2Folx7GDuMEjHB6yd7K919VKG30ylRmzqwYHlnmxTx1HjFPtZ7UwUJnEgtRBVUUSj5c
-         6oz+85RKsj6xPw/CH35NMltS76ijUFq5WGotNjJ/S97GD4ayrROAuwNmPWU6j/4hFLoA
-         IcMZipj+CRwf2pKl3gDxRkXixnoNvXiSwmWFbVWQLkVq5z4IeP5HZJw1KEfx0kxvcpx1
-         AvCMyl3znZTGi116TVduEgsb8RRFwxDjW3t2M7Fy97SJ3qfsNu+hqFUyudyniPns6VjT
-         FzDA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFjr1MVcFnHfnIxf6iAMZVTCSiMBq2RDGMLLosxasj05eDmX/OwOycPotw8fXy6BHcI8WOoBQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/pOXLnJB0Tkh1ppxVSthEkpkvOWsUZYTYGIYjqf3K7FKLQ8Yb
-	j0nItxmBF97eLnSzsqcvOTNuPpYiqsxq/MDCnx4N3XtRgX204bAZ1rK1t5F1rBxl/kM=
-X-Gm-Gg: AZuq6aKRHKMqvJGR5Mw9r4WPk/+GvxIEpotGnj6yI9net5bNb6sTq34RXxFzM8fkcP3
-	V/FKD90mK7dFH/dOTpvM5JcbhqSyrM3Z4LNi3FjkaiwU1yKFadx+aQBsTyKMFWXkrRhVHWvDNBH
-	KE6ZbslCIByZmtfspAaXz2IltPezBCCA6J2kc65F3Xio7Ups2ONcvkhxC9wQM8TgQ6TSbv6KVcK
-	dmz/Hsnr9VqW1ky2V/4qfAa9lRsewo49MKpuJKxm8salWNJ2lWxAXld8D+WcgHS+/kwovVlttk5
-	wxlqxKn5jzVGyVZl7sZtPneIbzx57cl8Vbvlegb0ldP/tQFRG86cImmT3iqeXXU+L6pNwQFB4IT
-	B4hyZkq5Hkt47d8AYnoSxAJQwOic1thJP+UqHEcL0xXbLtmMqDyUNcGAuD9gNlGGX26ZeuXcCFO
-	SN24UjcoZlN9O2vW6MLqPR9ap9MzzVLwLc9x9nEz9rCEo0ncsf0EjOmdqwjmj/7rVJ1UyDmVwKI
-	XcI40vXZTK5DEpH9gIJWV6is+zjd8Y1zGqT
-X-Received: by 2002:a05:600c:6091:b0:477:df7:b020 with SMTP id 5b1f17b1804b1-4839e661d1bmr6597615e9.18.1771447179348;
-        Wed, 18 Feb 2026 12:39:39 -0800 (PST)
-Received: from P-NTS-Evian.home (2a01cb0594a2a2002ad9827a59cb148a.ipv6.abo.wanadoo.fr. [2a01:cb05:94a2:a200:2ad9:827a:59cb:148a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4835dd0e327sm620432895e9.14.2026.02.18.12.39.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Feb 2026 12:39:38 -0800 (PST)
-From: Romain Naour <romain.naour@smile.fr>
-To: devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org
-Cc: conor+dt@kernel.org,
-	krzk+dt@kernel.org,
-	robh@kernel.org,
-	kristo@kernel.org,
-	vigneshr@ti.com,
-	nm@ti.com,
-	Romain Naour <romain.naour@smile.fr>,
-	stable@vger.kernel.org
-Subject: [PATCH] arm64: dts: ti: k3-j721e-main: Update delay select values for MMC1/2 subsystems
-Date: Wed, 18 Feb 2026 21:38:23 +0100
-Message-ID: <20260218203823.1825554-1-romain.naour@smile.fr>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1771447743; c=relaxed/simple;
+	bh=xPKarhfYNVUmKwtqpzWKYWhVmCSVV61ACu+zC5FJb7o=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TBhMDhglH/WVXmuywrb02IL3Lz2VybVzefy7Dh/iujtAQ62ZtfdOu3sLFIDx+oupxAQgIlmUb4hH0xsLiHS/4G0VjNhcxQZB4kn2lFUOrDt+z+DmzZiAaJej6IGHSU09Hv5rHdOX2AZIX3wdEzYSRDB3ybVsRJhYbzPOw7r/IM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AB55RHTv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9903DC19422;
+	Wed, 18 Feb 2026 20:49:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771447743;
+	bh=xPKarhfYNVUmKwtqpzWKYWhVmCSVV61ACu+zC5FJb7o=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=AB55RHTvyh3+GzyD7XUxy1WRlKdmYrZnrM+R7wh73xWo2yLDQbTzMcWrszF7yk2uM
+	 4bqenGLDf+j31DCxgTorpNoBB21EorspxQ4k1PDx7WQj9FHRUjGukI/a9klDtEbJWL
+	 evvllJ0RVH0TNq2Dlce4SgtFah2dcScCAR035diarEoYxhIJ8OGEO/okj3IrwyFezh
+	 332xmPlM/RNv31JWCTH9oOJ2M2k6TLfaj9Mp2zVhHVhrujIJU4ILt397PKmNI/p6wf
+	 evkZKx3Q4kDp5zMIb6q5Oj6LrEyx9yQWtxhau9cAwXmbQVycaUcCEl3g7G8+prcelQ
+	 FNW6dmCCkD2dA==
+From: Nathan Chancellor <nathan@kernel.org>
+To: linux-kbuild@vger.kernel.org, 
+ =?utf-8?q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+Cc: linux-kernel@vger.kernel.org, kernel-team@cloudflare.com, 
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ stable@vger.kernel.org
+In-Reply-To: <20260212133544.1331437-1-mic@digikod.net>
+References: <20260212133544.1331437-1-mic@digikod.net>
+Subject: Re: [PATCH v1] kbuild: Fix CC_CAN_LINK detection
+Message-Id: <177144774134.1769768.8484959623764754517.b4-ty@kernel.org>
+Date: Wed, 18 Feb 2026 13:49:01 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[smile.fr,reject];
-	R_DKIM_ALLOW(-0.20)[smile.fr:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217322-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[smile.fr:+];
-	TAGGED_FROM(0.00)[bounces-217321-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[romain.naour@smile.fr,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,dt];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[4f98000:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,4fb0000:email,smile.fr:mid,smile.fr:dkim,smile.fr:email]
-X-Rspamd-Queue-Id: E917E1597CB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cc-can-link.sh:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C7C961598FF
 X-Rspamd-Action: no action
 
-The previous SPRSP36J datasheet recommends to set ti,otap-del-sel-sd-hs
-value to 0 for MMC1 and MMC2 interfaces. These values were updated in
-kernel 6.5. As a result we have some occasional regression with ultra
-high speed DDR50 SDXC cards while mounting the rootfs:
+On Thu, 12 Feb 2026 14:35:43 +0100, Mickaël Salaün wrote:
+> Most samples cannot be build on some environments because they depend
+> on CC_CAN_LINK, which is set according to the result of
+> scripts/cc-can-link.sh called by cc_can_link_user.
+> 
+> Because cc-can-link.sh must now build without warning, it may fail
+> because it is calling printf() with an empty string:
+> 
+> [...]
 
-  mmc1: error -110 whilst initialising SD card
+Applied to
 
-A similar issue may occur with u-boot after a reboot while
-initialising the SD card:
+  https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git kbuild-fixes
 
-  mmc_init: -110, time 67
+Thanks!
 
-Update the delay values for legacy and high speed modes, based on
-the latest revised datasheet SPRSP36K released in April 2024 [1].
+[1/1] kbuild: Fix CC_CAN_LINK detection
+      https://git.kernel.org/kbuild/c/be55899b71630
 
-  (MMC1/2 - SD/SDIO Interface): Updated/Changed the
-  "OTAPDLYENA, DELAY ENABLE" and "OTAPDLYSEL, DELAY VALUE" for the
-  Default Speed and High Speed modes from "0x0" to "0x1"
+Please look out for regression or issue reports or other follow up
+comments, as they may result in the patch/series getting dropped or
+reverted. Patches applied to an "unstable" branch are accepted pending
+wider testing in -next and any post-commit review; they will generally
+be moved to the main branch in a week if no issues are found.
 
-[1] Table 6-86. MMC1/2 DLL Delay Mapping for All Timing Modes, in
-https://www.ti.com/lit/ds/symlink/tda4vm.pdf,
-(SPRSP36K – SEPTEMBER 2021 – REVISED APRIL 2024)
-
-Cc: stable@vger.kernel.org # 6.5+
-Fixes: af398252d68e ("arm64: dts: ti: k3-j721e-main: Update delay select values for MMC subsystems")
-Signed-off-by: Romain Naour <romain.naour@smile.fr>
----
- arch/arm64/boot/dts/ti/k3-j721e-main.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
-index d5fd30a01032..418e6010ef1f 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-main.dtsi
-@@ -1643,8 +1643,8 @@ main_sdhci1: mmc@4fb0000 {
- 		clocks = <&k3_clks 92 5>, <&k3_clks 92 0>;
- 		assigned-clocks = <&k3_clks 92 0>;
- 		assigned-clock-parents = <&k3_clks 92 1>;
--		ti,otap-del-sel-legacy = <0x0>;
--		ti,otap-del-sel-sd-hs = <0x0>;
-+		ti,otap-del-sel-legacy = <0x1>;
-+		ti,otap-del-sel-sd-hs = <0x1>;
- 		ti,otap-del-sel-sdr12 = <0xf>;
- 		ti,otap-del-sel-sdr25 = <0xf>;
- 		ti,otap-del-sel-sdr50 = <0xc>;
-@@ -1671,8 +1671,8 @@ main_sdhci2: mmc@4f98000 {
- 		clocks = <&k3_clks 93 5>, <&k3_clks 93 0>;
- 		assigned-clocks = <&k3_clks 93 0>;
- 		assigned-clock-parents = <&k3_clks 93 1>;
--		ti,otap-del-sel-legacy = <0x0>;
--		ti,otap-del-sel-sd-hs = <0x0>;
-+		ti,otap-del-sel-legacy = <0x1>;
-+		ti,otap-del-sel-sd-hs = <0x1>;
- 		ti,otap-del-sel-sdr12 = <0xf>;
- 		ti,otap-del-sel-sdr25 = <0xf>;
- 		ti,otap-del-sel-sdr50 = <0xc>;
+Best regards,
 -- 
-2.52.0
+Nathan Chancellor <nathan@kernel.org>
 
 
