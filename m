@@ -1,65 +1,66 @@
-Return-Path: <stable+bounces-217218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217219-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBtQE7RolWk/QgIAu9opvQ
-	(envelope-from <stable+bounces-217218-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:22:28 +0100
+	id pqDZGrlolWm2QgIAu9opvQ
+	(envelope-from <stable+bounces-217219-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:22:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0595153A14
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:22:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B6B153A2D
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23AEF3014C1C
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 07:22:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 39F443006D76
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 07:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326B1309DC5;
-	Wed, 18 Feb 2026 07:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36111309DC5;
+	Wed, 18 Feb 2026 07:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S39igLAW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aybvzdrJ"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088E229994B
-	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 07:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF22829994B
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 07:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771399345; cv=none; b=oC57UqR6TzWte2vxlUQNpabLqq8CCBsuTCqOLVjSKZEE6SPuJKO8StaMmOS++ZNlPSPr5aMVP9GwhrnrYR9ypkrp7IA4h3iC6WR/35FApI4eujZuqmXLRRX9FmyLp6LNRN/7/SZk7ntkxtt8Na0Rgz1ww9nD5oGx9mOFEbDlfwE=
+	t=1771399348; cv=none; b=n4tcHj+2Onmq2vslA4k15IMecj8t6IXq3zAcm+nAgkZMhJetacf7MlIxA89/V3tZ+C55YF1C+SJiNpVn8wgFfo9W6ksngxvtbFdXQKFe58vapeMY16aXCi6rovID5oisuNjBdIbUh2pIsw6ycUV6KaWGoYp16ItAmXX4yRL+UgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771399345; c=relaxed/simple;
-	bh=gjnKdCZ4v6NKS1Ua9hQ4cf8K7q4wGogSui2GXqQG478=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=fqa/IdzlsLIVscXYr4g/Tz5bVjYItzfbB+GjOMwwXP9QdVLJUQtHD+hYCBVmVy5J1xmLsMvsAzEuF3soZLKUhLIZqwG6bXWHFuC/dYZ2gFNIDlqsR/13RcvhoooK5Egv78aICDTkmFDHCW4YcAQ1lpAoosAEUsFpSC3SUw7VTCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S39igLAW; arc=none smtp.client-ip=198.175.65.18
+	s=arc-20240116; t=1771399348; c=relaxed/simple;
+	bh=S2fo0Xdvl8AoJRIa6sGYzPFDBwSqzeEMvC1EzeI1hkE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=J7Z6ZfNwUvo5fUilAgGZuhrNweHmIrtEqyGco7iEUaWtMOh5QPbyoFA33Vz2YejTHrRn8VRl47Kk12ySOWnk6L6/ySvlteVXWhhtED6wKDmO74UFMjBKrllLAniowMDB1oR4ro6Moyrphc8mSb5/ZN3fWEWVkO6eblA6R7aMMvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aybvzdrJ; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771399344; x=1802935344;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gjnKdCZ4v6NKS1Ua9hQ4cf8K7q4wGogSui2GXqQG478=;
-  b=S39igLAWoj+s6Z7RPsNb3E/n2TQnG3U3SBmyyYXETqJb6ljmaqgU038V
-   36zRVzM1exzfl2P8EIQB8zpmBZMlpuo/tMaI8zkZ4op+q/enb0Ueuwh95
-   1Drb0XVsJNccgIk2GSszPGW88xGz6BoRtLHivqxRE1z26lQrON1da/RBk
-   4BGgYCVsgvav2T7b/0VotmpkCO9V7qC4qiwC3E1N3hc1PmVjHBMIFyoHV
-   eDu6l74gFL2KLG7zAxb/VYj5ttH94Jnv3fsIF6C448VgVun/Gupmd1UQw
-   9US8n1K0kBrw6agc1DccRxpnIIDoJY2cxCPMa4F2rulZT8F6bxWXqViVR
+  t=1771399348; x=1802935348;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=S2fo0Xdvl8AoJRIa6sGYzPFDBwSqzeEMvC1EzeI1hkE=;
+  b=aybvzdrJ6kPIJLoi9dCKjiHkhW9CLDAW6DOiBmY2ABVozk4qh/TYPQaa
+   sZR8V4cJMKmhpZw7oHP4mecP9FukpU4a7oz830tbTKoV0eaw9io0IbxdV
+   jDUu8ibk4xr1a50NM1BmZtYkMJM8cRsLkpUNDCsuOUThBglDKJUQgnm1r
+   ukTB42cw2RSKB1VOybEMwSLdnwMCm+wWsT2jFmzHNz6NNMcuKuwmN0QwN
+   tnjYTcP3iFsR29ZzxrqudS94ftFV8ph0dZEZ8L2QPqw5qWBPAvMVMDZnD
+   ENlcNyKx4f61N+kUOoixsEXth+1GtodGiuGtCb8BsqrkFETRasw2vqLzB
    Q==;
-X-CSE-ConnectionGUID: BjcW26n3RoWTHORA3yFRgg==
-X-CSE-MsgGUID: WfolcQzQQMOCk7oAclCPdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="72519031"
+X-CSE-ConnectionGUID: H/7nEFvkQLOP+N/5QWerSA==
+X-CSE-MsgGUID: YtrekC67Q/iQIaGMY4czbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="72519039"
 X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
-   d="scan'208";a="72519031"
+   d="scan'208";a="72519039"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 23:22:23 -0800
-X-CSE-ConnectionGUID: mMRvToXyRey7KPCa7bk7NQ==
-X-CSE-MsgGUID: MpeeHAJhTk67uOgFJ9r8mg==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 23:22:27 -0800
+X-CSE-ConnectionGUID: qwrYAf25Qk6NQkA7+Umg3A==
+X-CSE-MsgGUID: S7KM8cbHTMqGGA1X3RMQ6w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
-   d="scan'208";a="213208222"
+   d="scan'208";a="213208226"
 Received: from dut-2a59.iind.intel.com ([10.190.239.113])
-  by orviesa006.jf.intel.com with ESMTP; 17 Feb 2026 23:22:18 -0800
+  by orviesa006.jf.intel.com with ESMTP; 17 Feb 2026 23:22:23 -0800
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: dri-devel@lists.freedesktop.org,
 	intel-gfx@lists.freedesktop.org,
@@ -77,136 +78,81 @@ Cc: contact@emersion.fr,
 	louis.chauvet@bootlin.com,
 	stable@vger.kernel.org,
 	chaitanya.kumar.borah@intel.com
-Subject: [PATCH 0/2] drm/colorop: Keep colorop state consistent across atomic commits
-Date: Wed, 18 Feb 2026 12:27:11 +0530
-Message-Id: <20260218065713.326417-1-chaitanya.kumar.borah@intel.com>
+Subject: [PATCH 1/2] drm/colorop: Preserve bypass value in duplicate_state()
+Date: Wed, 18 Feb 2026 12:27:12 +0530
+Message-Id: <20260218065713.326417-2-chaitanya.kumar.borah@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260218065713.326417-1-chaitanya.kumar.borah@intel.com>
+References: <20260218065713.326417-1-chaitanya.kumar.borah@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chaitanya.kumar.borah@intel.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-217218-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,emersion.fr:email,01.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TAGGED_FROM(0.00)[bounces-217219-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chaitanya.kumar.borah@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+]
-X-Rspamd-Queue-Id: A0595153A14
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 91B6B153A2D
 X-Rspamd-Action: no action
 
-This series aims to keep colorop state consistent across atomic
-transactions by ensuring it accurately reflects committed hardware
-state and remains part of the atomic update whenever its associated
-plane is involved.
+__drm_atomic_helper_colorop_duplicate_state() unconditionally
+sets state->bypass = true after copying the existing state.
 
-It contains two changes:
-- Preserves the bypass value in duplicated colorop state.
+This override causes the new atomic state to no longer reflect
+the currently committed hardware state. Since the bypass property
+directly controls whether the colorop is active in hardware,
+resetting it to true can inadvertently disable an active colorop
+during a subsequent commit, particularly for internal driver commits
+where userspace does not touch the property.
 
-_drm_atomic_helper_colorop_duplicate_state() unconditionally reset
-bypass to true, which means the duplicated state no longer reflects the
-committed hardware state. Since bypass directly controls whether the
-colorop is active in hardware, this can lead to an unintended disable
-during subsequent commits.
+Drop the unconditional assignment and preserve the duplicated
+bypass value.
 
-This could potentially be a problem also for colorops where bypass value
-is immutably false.
-
-Conceptually, I consider 'bypass' to behave similar to 'visible' in plane 
-state - it represents current HW state and should therefore be preserved
-across duplication.
-
-- Add affected colorops with affected plane
-
-Colorops are unique in the DRM model. While they are DRM objects with their
-own states, they are logically attached to a plane and exposed through
-a plane property. In some sense, they share the same hierarchy as CRTC and
-planes while following a different 'ownership' model.
-
-Given that enabling a CRTC pulls in all its affected planes into the atomic
-state, it follows that when a plane is added, its associated colorops are
-also included. Otherwise, during modesets or internal commits, colorop state
-may be missing from the transaction, resulting in inconsistent or incomplete
-state updates.
-
-That said, I do have a concern about potentially inflating the atomic
-state by automatically pulling in colorops from the core. It is not
-entirely clear to me whether inclusion of affected colorops should be
-handled in core, or left to individual drivers.
-
-My understanding of the atomic framework is still evolving, so
-I would appreciate feedback from those more familiar with the intended
-design direction.
-
-==
-Chaitanya
-
-P.S/Background/TL;DR:
-
-I discovered inconsistency with the colorop state while analysing CRC mismatches
-in kms_color_pipeline test cases[1]. Visual inspection reveals that while CRC is
-being collected degamma block has been reset. This was traced back to the internal
-commit that the driver does to disable PSR2 and selective fetch for CRC collection.
-
-crtc_crc_open
-    -> intel_crtc_set_crc_source
-        -> intel_crtc_crc_setup_workarounds
-            -> drm_atomic_commit
-
-During this flow colorop states are never added to the atomic state which in turn
-makes intel_plane_color_copy_uapi_to_hw_state() disable the colorops.
-
-If we add the colorops, to the atomic state, the problem still persisted because
-while duplicating the colorop state, 'bypass' was getting reset to true.
-
-The two changes made in this series fixes the issue.
-
-[1] https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18001/shard-mtlp-6/igt@kms_color_pipeline@plane-lut1d.html
-
-Cc: Simon Ser <contact@emersion.fr>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Daniel Stone <daniels@collabora.com>
-Cc: Melissa Wen <mwen@igalia.com>
-Cc: Sebastian Wick <sebastian.wick@redhat.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Uma Shankar <uma.shankar@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>
+Fixes: 8c5ea1745f4c ("drm/colorop: Add BYPASS property")
 Cc: <stable@vger.kernel.org> #v6.19+
-
-Chaitanya Kumar Borah (2):
-  drm/colorop: Preserve bypass value in duplicate_state()
-  drm/atomic: Add affected colorops with affected planes
-
- drivers/gpu/drm/drm_atomic.c  | 5 +++++
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+---
  drivers/gpu/drm/drm_colorop.c | 2 --
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ 1 file changed, 2 deletions(-)
 
+diff --git a/drivers/gpu/drm/drm_colorop.c b/drivers/gpu/drm/drm_colorop.c
+index aa19de769eb2..5037efcc3497 100644
+--- a/drivers/gpu/drm/drm_colorop.c
++++ b/drivers/gpu/drm/drm_colorop.c
+@@ -466,8 +466,6 @@ static void __drm_atomic_helper_colorop_duplicate_state(struct drm_colorop *colo
+ 
+ 	if (state->data)
+ 		drm_property_blob_get(state->data);
+-
+-	state->bypass = true;
+ }
+ 
+ struct drm_colorop_state *
 -- 
 2.25.1
 
