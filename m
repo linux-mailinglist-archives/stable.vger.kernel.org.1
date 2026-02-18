@@ -1,188 +1,132 @@
-Return-Path: <stable+bounces-217329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0L8+NplNlmmbdgIAu9opvQ
-	(envelope-from <stable+bounces-217329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 00:39:05 +0100
+	id sMXdLl9OlmmbdgIAu9opvQ
+	(envelope-from <stable+bounces-217330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 00:42:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533EA15AF63
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 00:39:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0BF15AFB7
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 00:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 15B0830233CD
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 23:38:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3BCC8300CA31
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 23:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991D633B6DA;
-	Wed, 18 Feb 2026 23:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D4633B6E6;
+	Wed, 18 Feb 2026 23:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mYomzGD3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DU/wl53u"
 X-Original-To: stable@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F772F49EB
-	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 23:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC99B33507C;
+	Wed, 18 Feb 2026 23:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771457931; cv=none; b=WJYTwvIZYHxyGUUZ7W6gjeVqCG4k2mgUI+tcR62+lSfPlP0saj68D1MhSPmz44vX6QsCQv6xaX8ZwkkdDp+Zvkwulex8eFNDRbernKkPH66n0pLldiv5Wn+JMCoORX9k3iQBgm1t14lgDAmQnkbLGQphzZ8dvPcv6ZePmQjVxZg=
+	t=1771458139; cv=none; b=IJSqbFzrzS508BVJ1QXCsZpPVqHm8o4Ow1DaTNm8nFaOeLeV201tLhhYXpGWd3HdI+abKFjT9f1TGUbNjbZhPKv0mP3aGxZnrW86zFGLfB9VZrlE1t2U3WwgenqnDf5DHWLAOmVC9FknmyDwXLJU8Z9TJH8JpXlbIZm44yWb8f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771457931; c=relaxed/simple;
-	bh=50SceVm2r/nfcZPtOR22YkTlSRdJH8JKgH5+ZzYLT+U=;
+	s=arc-20240116; t=1771458139; c=relaxed/simple;
+	bh=i9jKs2aAeKSMFBfW1T6QujLPx5Y6UqJmQV+ejEgbujY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EZWNddjTOVumWPq9Wu0TBJRid8A3i+6049HdP79bELHJwxQhCi9Ti3aLn6IoplOxGMIdJM+eIvWPqlkuHnWKqeMFzbHYb7h0KnqesnbzjcWSj+AVNHqaAEb125XwWZLrIlkIiXnAOhTTpcF8myoLnfX/PfTNzZYM7YbUXYM+o9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mYomzGD3; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 18 Feb 2026 23:38:29 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771457918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aB47qdJUfFz/bYwqiLHfc4rPx+GXTiXFB0r1/9GB7Sg=;
-	b=mYomzGD3eHlZDeN5Di2dFnlW1WReHySungLIsE8r6RfeN9DmDvEV5DZqfGZEqRh8m0r68d
-	Qj3qSHqy9DIZ5shxRxPD7OhIIUc8MvMD+78YqvCcyeH2/xeudfnKjWu6zNFWDekFYTs4C0
-	WO8E4260H5o7wzqG4nUaWI2VknDH9Jo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [RFC PATCH 1/5] KVM: nSVM: Do not use L2's RIP for vmcb02's
- NextRIP after first L2 VMRUN
-Message-ID: <4dtoocl34c3fxpg6k2bouv7epj2pb6bbuhogyha6evbxgu3gpy@zhdyzj2ordj2>
-References: <20260212230751.1871720-1-yosry.ahmed@linux.dev>
- <20260212230751.1871720-2-yosry.ahmed@linux.dev>
- <aZZJxDVK4ekHxaLb@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=eRAzYx1QFeSebhkytdutvR1JDeIgYbHG0UZ0XlBOsqSCCUhtl/Zx7lCeRubUGUEnjLARugsGtBmPkKtu/k6uoK44HNjQDCMiVT953YyrDBCmAVHk4D8wh+0O5pi61LvuExHAJgf4ko93JzFixey9RczUcXrp2crDIljRrgAPXbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DU/wl53u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D2BC19421;
+	Wed, 18 Feb 2026 23:42:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771458139;
+	bh=i9jKs2aAeKSMFBfW1T6QujLPx5Y6UqJmQV+ejEgbujY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DU/wl53u7IyIxDll41yZbrcxGu7A+eAMxR0I3L348MWEGRoSWrluJWWlrIJ4nMhVK
+	 XBDUiXwXFH0PMtSShZ6Dw45fGExTGmmAt44baU5OEOV1NCXDyqf7ZkzXt0W7GIUb5g
+	 84/L8z1c11aBIk5bTHyXm/bYgW6wA5aS2839J54oshGsO4ZEz9WSoST/8kvJThHys2
+	 cbmx5uaIwCsSD65yPQPLTcejILHEeJ2rDG1p9YtR6QJAL6DICQUyZpKsnNV7QbBjQX
+	 4ywErnPUAjgEe0pWYQSmFbEaziDL9w7dXlkUP8qa6exfDORG0UBRIQhQsDMJfEOff/
+	 25Guyxp72bSVQ==
+Date: Wed, 18 Feb 2026 23:42:13 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.18 00/43] 6.18.13-rc1 review
+Message-ID: <14708717-74ab-45cb-b5fa-421ddc26272b@sirena.org.uk>
+References: <20260217200006.470920131@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="/3AZewUcWLgPmCfh"
 Content-Disposition: inline
-In-Reply-To: <aZZJxDVK4ekHxaLb@google.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
+X-Cookie: Avoid contact with eyes.
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217330-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217329-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry.ahmed@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 533EA15AF63
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 6C0BF15AFB7
 X-Rspamd-Action: no action
 
-On Wed, Feb 18, 2026 at 03:22:44PM -0800, Sean Christopherson wrote:
-> On Thu, Feb 12, 2026, Yosry Ahmed wrote:
-> > For guests with NRIPS disabled, L1 does not provide NextRIP when running
-> > an L2 with an injected soft interrupt, instead it advances L2's RIP
-> > before running it. KVM uses L2's RIP as the NextRIP in vmcb02 to emulate
-> 
-> Should "L2's RIP" be "vmcb12's RIP"?  The "L2's RIP" terminology gets really
-> confusing in the next paragraph, as NextRIP _is_ L2's (Next)RIP.  Hmm, or maybe
-> "current RIP"?  I.e. "current RIP" vs. "NextRIP"?
 
-I intentionally avoided mentioning vmcb12, because after save/restore
-the RIP value we pass into nested_vmcb02_prepare_control() is no longer
-what's in vmcb12. I can go with "current RIP".
+--/3AZewUcWLgPmCfh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> 
-> > a CPU without NRIPS.
-> > 
-> > However, after L2 runs the first time, NextRIP will be updated by the
-> > CPU and/or KVM, and L2's RIP is no longer the correct value to use in
-> > vmcb02. Hence, after save/restore, do not use L2's RIP if a nested run
-> > is not pending (i.e. L2 has run at least once), use the NextRIP value.
-> 
-> Too many negatives in this last sentence, it can just be (I think):
-> 
->   Hence, after save/restore, use the current RIP if and only if a nested
->   run is pending, otherwise use NextRIP.
+On Tue, Feb 17, 2026 at 09:31:40PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.13 release.
+> There are 43 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Looks good.
+Tested-by: Mark Brown <broonie@kernel.org>
 
-> 
-> > Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
-> > CC: stable@vger.kernel.org
-> > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > ---
-> >  arch/x86/kvm/svm/nested.c | 16 ++++++++++------
-> >  1 file changed, 10 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > index de90b104a0dd..eebbe00714e3 100644
-> > --- a/arch/x86/kvm/svm/nested.c
-> > +++ b/arch/x86/kvm/svm/nested.c
-> > @@ -844,14 +844,18 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
-> >  	vmcb02->control.event_inj_err       = svm->nested.ctl.event_inj_err;
-> >  
-> >  	/*
-> > -	 * next_rip is consumed on VMRUN as the return address pushed on the
-> > +	 * NextRIP is consumed on VMRUN as the return address pushed on the
-> >  	 * stack for injected soft exceptions/interrupts.  If nrips is exposed
-> > -	 * to L1, take it verbatim from vmcb12.  If nrips is supported in
-> > -	 * hardware but not exposed to L1, stuff the actual L2 RIP to emulate
-> > -	 * what a nrips=0 CPU would do (L1 is responsible for advancing RIP
-> > -	 * prior to injecting the event).
-> > +	 * to L1, take it verbatim from vmcb12.
-> > +	 *
-> > +	 * If nrips is supported in hardware but not exposed to L1, stuff the
-> > +	 * actual L2 RIP to emulate what a nrips=0 CPU would do (L1 is
-> > +	 * responsible for advancing RIP prior to injecting the event). This is
-> > +	 * only the case for the first L2 run after VMRUN. After that (e.g.
-> > +	 * during save/restore), NextRIP is updated by the CPU and/or KVM, and
-> > +	 * the value of the L2 RIP from vmcb12 should not be used.
-> >  	 */
-> > -	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-> > +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) || !svm->nested.nested_run_pending)
-> 
-> This is technically wrong since KVM doesn't require NRIPS.  Maybe this?
+--/3AZewUcWLgPmCfh
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I hallucinated that making nested depend on nrips was merge, i.e. this
-patch: https://lore.kernel.org/kvm/f0302382cf45d7a9527b4aebbfe694bbcfa7aff5.1651440202.git.maciej.szmigiero@oracle.com/.
+-----BEGIN PGP SIGNATURE-----
 
-> 
-> 	if (boot_cpu_has(X86_FEATURE_NRIPS)) {
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmWTlQACgkQJNaLcl1U
+h9BsLwf/UGOBg+6fgkNs0Pc7oC32GkyjrBFf+5pk56E/vlo6HTjAC7pY8X4rkUuf
+t/NRtWdCLFJtDbzHtD4LA/IJa4tpMt6v3IrWUUdbohYOHnd4otw9Qx8x2nN/+0xu
+DBuoYHtUlpdRymG6rRkWOQwV+cG1QT05T4qf1v7cCGGTZX0x27BOe+9C9Gg3rgwS
+rWChUgqBZlfJQtqaJdAH0oIlz2qTf8TOGZNF7/e/7iNqgKgBD02eUdk1WedaIVuX
+FdVjKOOTysHFZrbWRm9fLnAofjwf7TgOreBBoj1LveN6lgiab2CXQ/mbiQC5euTM
+TbX47QT+s3sCTsfzGQRYSC6fqhRtcQ==
+=HsVB
+-----END PGP SIGNATURE-----
 
-I wonder if that's necessary, but I cannot find anything in the APM
-about whether the CPU ignores NextRIP if it's not supported. It doesn't
-even mention how to use it when injecting soft IRQs, only that it is
-needed to properly inject then. Sigh.
-
-> 		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
-> 		    !svm->nested.nested_run_pending)
-> 			vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
-> 		else
-> 			vmcb02->control.next_rip    = vmcb12_rip;
-> 	}
-> 	
-> 
-> >  		vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
-> >  	else if (boot_cpu_has(X86_FEATURE_NRIPS))
-> >  		vmcb02->control.next_rip    = vmcb12_rip;
-> > -- 
-> > 2.53.0.273.g2a3d683680-goog
-> > 
+--/3AZewUcWLgPmCfh--
 
