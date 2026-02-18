@@ -1,160 +1,150 @@
-Return-Path: <stable+bounces-217211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBhvGMk1lWnfNAIAu9opvQ
-	(envelope-from <stable+bounces-217211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 04:45:13 +0100
+	id YOWcNhA2lWnfNAIAu9opvQ
+	(envelope-from <stable+bounces-217212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 04:46:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78895152E31
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 04:45:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F3E152E4F
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 04:46:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DE6E53009E3C
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 03:45:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F06E6305D6F3
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 03:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AEAF2F0C7E;
-	Wed, 18 Feb 2026 03:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF9E2F1FFA;
+	Wed, 18 Feb 2026 03:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="ClV0Adsa"
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.b="ilHGQfyK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D550827381E
-	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 03:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8EB238C23
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 03:45:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771386308; cv=none; b=TB49fBWG9CcYGfoOCnLkEotCzgoG4hL0oeaGTXgiRPUrlcQqcBnZcUEBr7bzOgIkUA2CzZTwibY3SzFvKcVyaQBd666Eannyp5yKg7PUckyN34fhWFytDbOITPHuADbV66k0fCzoRthZpKfOTz12fqePSPoCfz5899gELkrWIQE=
+	t=1771386325; cv=none; b=GHCzb1DItLD8MznDPhij2FDQxoamfjD6Grvq4kPwXCPC4bmkJZOlkS1JRsR+nunKzdVwnZNVGOKQvM/ccSHK1cOqhNi3d5XOsOwvPO5OIrQhJ+D+6wp1UezG1A/8m1L5VGXpQggxSG53Oy/hRJkdDQce6mdHWMUvmKKoqzhRq/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771386308; c=relaxed/simple;
-	bh=dMA4ZOIcC9gE71pxUT3mhKMQM9zq13MqU8rVY3q0k6U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CjDfnsR1TAfestS9qRVFuT49f9aJ6lMoI4QZ1qkdyNXCfXejH1plGXQa1pJxOn5VlAq7nQKpdIUwRO/dJTWS1mgMb1fLmF3EHDva3kccknhmNOaFhT/cf/xC7luRwUs65UFawGDtBuasiP+UQS6luG8HckCHbuTwg0uAd+8HiL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=ClV0Adsa; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4836e3288cdso2424225e9.0
-        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 19:45:06 -0800 (PST)
+	s=arc-20240116; t=1771386325; c=relaxed/simple;
+	bh=OO+NigkBMF0SIS55og3IgmJ9tMZiAHxJ8+r91x7X/T8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=LZgX9AP9Fvgr6XwdOY/1b4sJd/DzN/t0kWVEJYNAbxIJP1npl/sytlA9EUZITCdKDKoKA9DPqWToOlUAZ6+v4QF9YYMNDRmNXtZOPRkkH4K9K0B+vHQdZ5tTe4LuyRCalKAgBqs1fVyVKoCIYI/jaDonKhP9HGPka1MBEzMrYL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chrisdown.name; spf=pass smtp.mailfrom=chrisdown.name; dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.b=ilHGQfyK; arc=none smtp.client-ip=209.85.214.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chrisdown.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chrisdown.name
+Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-2a7bced39cfso50291685ad.1
+        for <stable@vger.kernel.org>; Tue, 17 Feb 2026 19:45:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1771386305; x=1771991105; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cUIuMgMYT34LDNMJkmYdB/Yzp4mCe6KCutQrOT8Nnsk=;
-        b=ClV0Adsaq8L/2o6OW6dj8I0GO9gWH5ShwlrfoV65PKlnfx4xQtv1U43AXMdvoXd+3O
-         p2QKHRJvDZOQL6qFdxBMidkaAPgMD5cGoCiNu6wFbpEQxXRyD0YBi1OzzHX0tT0aZid8
-         XqfY/GUo6Uy2bcX9fqIXiYtY961nRR0XAFKPX1owlpKA76UtKvexwpJAGgnj6vD2TRFY
-         etOKc5bH6+BkMwRSTbqHCnN5Xi5yvMR9nzULh0wdP6hPjfw9fKIayRGXFeJdyx1GLIsi
-         23IRfCQVsiTJLvuOkIgE4sRNXhPrHqXGxjCrnZc2cMArn2hiRSB/WEbEwmqKQDy0n9pm
-         pHQw==
+        d=chrisdown.name; s=google; t=1771386322; x=1771991122; darn=vger.kernel.org;
+        h=user-agent:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LrPqeRMVexCnZ04Cs9L6s3qrPGGSz8yolplFHjrk3wU=;
+        b=ilHGQfyK+y03AcOihhMZVFnzmsc3wH0Lju3VYANLul6ICCdVp6z62iwzX8eo+434ma
+         OPUWVlu7jJRtDn0XCNwgOI06ByeUImw4Wf/IpQ/3tHwbOHEvp3KI7XlmKdRDSg9Zr7F6
+         bBJSXY2Mqb0FcqWbxSXlBliCtQB0xDxf09+kU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771386305; x=1771991105;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cUIuMgMYT34LDNMJkmYdB/Yzp4mCe6KCutQrOT8Nnsk=;
-        b=i0w33xUtkgo66+KeYhrmZ5U+qP3mjnewdJr4GTx6q5OEqoxeDnURBTf+fipX2Og3JO
-         +VLQQiY+ou24DGZ6mav4O/lrmZSIvuohaERpwEmGaOd0zs5nupkmVplMHfKcR5H36jsc
-         JqE2aayu2l4eXhM5GCGqfAgvPfrYzN9esOrb8H9JZtZOIfKLTg6PQKdaU4NFy4aw8lya
-         PxgnVYQ3E+GdPLhRw0k40AiQ2rY0SeSfOIn3VdeFyfqVJV7qfsxFeAxmOY/xl+9p1/rP
-         l9HoL4Fs++UVTTyXEeZYkQrWN4JMNZVN307Bry6vgmkg3waKDXS6jV0ya0cMrMAWLmMC
-         o5qw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSMgHlOyLHHe6Axe4awkqx8n0FF+ay3mONn0SQo7JVgvecoOkCpxrQYzU08kuVm2qxjS97dOA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5/kA4gQhiJpHYcJ5YIfWbW75jsJkLppXs28ut4Yvoc4jYCUEs
-	oC41z5/o1wPHdRSvpLiDdp16j/l6EUgQax188GangZZDRMy5dFYj7Ks=
-X-Gm-Gg: AZuq6aImXWwntNkPE//wJSsUQsrLGj0GINpH45gpK7hwHIUToPOyTYA9Wtq8Sb/Ninc
-	Kwn3bykRrz+DaGdEGqVR6cTwunNNfpz5Ev3FwAMQkJBf2XoFcKozWND8ZXxYPyEhW807GEgvYGg
-	lGx2VtWFI6XHEvAhEOmcWpAjSdFEURMxgTa8p3yOdK6Vj8qsIIY/lLM8feMkDvWy+WOu5kKupBj
-	HB/5I03IGMVs6eTkWVaOTUaV/6L8K4nr7IG9rIiPd4ERCRg0eoAsPNKUB9wJfbtNlOBjpI5oElB
-	zTAvgO2JWEMeoEk9KPIWaaWUta9ICSF4/PrR2uQxJ6KNGVDsdYtkZz/S3owXrBiYfF2ekbEHADV
-	y+k1ghAZYlqRKISJwOxJz+6Z8b7XcHJlgY1FYHZeNwBGLANK6EqQrDShHTueEfm/oDQhOys2lD+
-	FBEhnbwZD8/utiiW59iNDbYwqAGQ63jW6Ur2bTWoAx7SYQ5dUOL2oJqBWBs79uh0Msheq464wlw
-	f0=
-X-Received: by 2002:a05:600c:3e15:b0:480:1c1c:47d6 with SMTP id 5b1f17b1804b1-48398c6b10cmr8806155e9.6.1771386304960;
-        Tue, 17 Feb 2026 19:45:04 -0800 (PST)
-Received: from [192.168.1.3] (p5b0574ca.dip0.t-ipconnect.de. [91.5.116.202])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d5ebd1bsm616334795e9.6.2026.02.17.19.45.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Feb 2026 19:45:04 -0800 (PST)
-Message-ID: <1d506537-48cb-4440-8042-f65f78cf597c@googlemail.com>
-Date: Wed, 18 Feb 2026 04:45:04 +0100
+        d=1e100.net; s=20230601; t=1771386322; x=1771991122;
+        h=user-agent:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LrPqeRMVexCnZ04Cs9L6s3qrPGGSz8yolplFHjrk3wU=;
+        b=tfr7a9eKuPRCo+b0PiFl5fnVdBfODWry5qHYppyx8MaSZFq5IQQDAiWdihnofhe+Pl
+         aNQW8G/9aSw9J8ZndrgHVrQ3Dwv7hvh6v+m6dIaOlbbubfDmqq9W/dv4WKW3kZ3dxGZK
+         VrdsJWHEYMDc72YptrrSvsn3oVOXSjNzWtTapMuCokq5y/sQrJJGGfi9A41g1OFR82bS
+         SZ6kyPDqwt6bLzlbighfXD+oQ0XD3gbagJnvhnEGxQ/8tpB4Vao589Vyp5ZmkKBDUzwp
+         qkAiRJd1YSlcp5IhkvBd32XD1PMNDveO9Qa7ElKaRB6bq7lRj7SxJc5Klgv0scBvXaM5
+         0rQg==
+X-Forwarded-Encrypted: i=1; AJvYcCWfVOD5DuBj88WeXl19Sq5vQpnnWDGDljypimcspb3L/wsuDyR9a21cufzfL+dm/WgWvbMI2Kk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynarJPltICKY3jtwQwJXpPFtQsssoOz4L/rZ9g3vWvbdjMqImV
+	7oN74Q4VgCrLbvIq9UFvytlL+TyakLzbDlT1sLj0wrilY9TUmQENzNBPHk4+PuYgEKA=
+X-Gm-Gg: AZuq6aJ0WEebR9Cva/RCMbvxijseMaMZEQzgX39NxN9syhW3vY5a9n2sG3mTcy2yUt9
+	h00jKx2bV/oU+sVJRczTn5L7gCSD1VzZf9SgStd+LtoG7jj3WPi+K43WD7sDvDp5uvLdV0xYNh3
+	srpc20kbJYx7rGklLt874FgdQcC90a7I2sINnpWtJ/5NyIN9mtWpFuq/1ycjo2qDwe7wDaLGKVC
+	OfARW/f4jJ4DfmkGv6+R4KzFHaDhuZDVet37MyEK2uW8yPlDgRPoPXfQebyEr0XuG8/8jLgKzTA
+	vmUemLl+wbmsyvMN1qcTZlexhGWJCDRLV7VEpi7vyqFuys4nSmovpeFJ0ZiSvp2xHqyOKfodAk0
+	2mk1JtARjzARgo5zGSCStVUnOt58LbIc/FReaDvcWe2OUcKi0B2b3cXSdISJUE53ScOBUKkc/11
+	SPhVgLBEeMGIQEutGnQSux
+X-Received: by 2002:a17:903:1c9:b0:2aa:d6d5:773c with SMTP id d9443c01a7336-2ad50ec36f5mr6655225ad.25.1771386322192;
+        Tue, 17 Feb 2026 19:45:22 -0800 (PST)
+Received: from localhost ([175.139.248.66])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3567e3f54fasm19644387a91.0.2026.02.17.19.45.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Feb 2026 19:45:21 -0800 (PST)
+Date: Wed, 18 Feb 2026 11:45:21 +0800
+From: Chris Down <chris@chrisdown.name>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 2/2] mm/huge_memory: Mark moved huge zero page PMD as special
+Message-ID: <aZU10aBZxCHfmjeB@chrisdown.name>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.18 00/43] 6.18.13-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260217200006.470920131@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/2.2.15 (2b349c5e) (2025-10-02)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[chrisdown.name,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[chrisdown.name:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	TAGGED_FROM(0.00)[bounces-217211-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217212-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[chrisdown.name:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[googlemail.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[chris@chrisdown.name,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 78895152E31
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chrisdown.name:mid,chrisdown.name:dkim,chrisdown.name:email]
+X-Rspamd-Queue-Id: 57F3E152E4F
 X-Rspamd-Action: no action
 
-Am 17.02.2026 um 21:31 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.18.13 release.
-> There are 43 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Without pmd_mkspecial(), vm_normal_page_pmd() on architectures with
+CONFIG_ARCH_HAS_PTE_SPECIAL does not recognise the moved huge zero page
+as special, incorrectly treating it as a normal page and corrupting its
+refcount.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+Fixes: d82d09e48219 ("mm/huge_memory: mark PMD mappings of the huge zero folio special")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chris Down <chris@chrisdown.name>
+---
+ mm/huge_memory.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-
-
-Beste Grüße,
-Peter Schneider
-
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index fed57951a7cd..5f908cdb11f1 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2795,6 +2795,7 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
+ 	} else {
+ 		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
+ 		_dst_pmd = folio_mk_pmd(page_folio(src_page), dst_vma->vm_page_prot);
++		_dst_pmd = pmd_mkspecial(_dst_pmd);
+ 	}
+ 	set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
+ 
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.51.2
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
