@@ -1,146 +1,188 @@
-Return-Path: <stable+bounces-217326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEYeF0YxlmktcAIAu9opvQ
-	(envelope-from <stable+bounces-217326-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 22:38:14 +0100
+	id iIi+JtwzlmktcAIAu9opvQ
+	(envelope-from <stable+bounces-217327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 22:49:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88AE15A3F5
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 22:38:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171D815A672
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 22:49:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E7103053BBD
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:36:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A6B42301A510
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FCD329E60;
-	Wed, 18 Feb 2026 21:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED90730B524;
+	Wed, 18 Feb 2026 21:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ROUaJ6P8"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZNrcvXlK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23ED314A76;
-	Wed, 18 Feb 2026 21:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD864330322;
+	Wed, 18 Feb 2026 21:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771450611; cv=none; b=P/5o7hyBeHBA0As4ctVjIvNBv9pH/csJJw6ReMi3nWFBco57oXnPH9QEiZ8m+bH+S7HfcAX99CAyPYBkg0ia4LOKmF03NiESybtCUP/b9UzwdQesmmVitnNt8gvbHvjgjq40G6X67WYxJRWjjfKKN8W1VMFqaFJI+0daSnrvKsc=
+	t=1771451350; cv=none; b=s+O6/NhSa49gSqhLG4eZgdqEoBZErtmTVZZTh6e0zXpQLH0vPFeQZZ1RfYZSBvTbS9AO3n+U6ZrlDuxXw0zIXkp3rsY26ZnGZ15JWeTcfOAjeDnUimrlmjJCRLXRePu/x/5IYFHQndmFt10mJmTBx0JyGlktW3CheNNRi4WE9Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771450611; c=relaxed/simple;
-	bh=FLhIcGYigj/cYDh5+twKKz5F+F3mi/gUG7aJ/XLLfTA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=esQhbKfweICcKC9mY7K9t0lrpnSKw0UjvntadSkvPjA6ZeL4clyKOUtgU1b3hZmYn4o+CdsXY8j/JJyhpSO/lMHpEHB70e4AqF9SsnQZL4zLTogGIFTKWPtw2Keexjwz4t/M6QIUE8JxvFSuYglzCtTrAsZAiJRSI0XaQxofFro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ROUaJ6P8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3932CC2BC9E;
-	Wed, 18 Feb 2026 21:36:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771450611;
-	bh=FLhIcGYigj/cYDh5+twKKz5F+F3mi/gUG7aJ/XLLfTA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROUaJ6P8UlCMN4JmpFGGTRSlivUcHoJGRc+eVoE6kP/DW5Y7YMNqs+roqftoa/gnV
-	 ZwDlrMQ693KOcLjlRIMUfS1y7sKUTH1zO1nkVWuEMZY2k2/91AidpDrJw9bPtC3dmR
-	 5Udw//bK+DsZUsShJM42cHcB/ciYFKBaq2P+7hNLQSW+D7AVPNldf1i7qhy3dpdD7f
-	 gLSPjy1VBwRBR4kssZcgjCV6zH7OxxUqehvbY1cjcC50JWrcPh/ob9W6VyJ0qM73EB
-	 cdLoS5E4mBCqNz6ShijoHyLhAfTFL7bE0hPtEeWfjDZw/Kdnkwl8XU9BjxHr6DAXvp
-	 iH+hy7FYJaUYg==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 03/15] crypto: arm64/aes - Fix 32-bit aes_mac_update() arg treated as 64-bit
-Date: Wed, 18 Feb 2026 13:34:49 -0800
-Message-ID: <20260218213501.136844-4-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260218213501.136844-1-ebiggers@kernel.org>
-References: <20260218213501.136844-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1771451350; c=relaxed/simple;
+	bh=LOT2uMNbe+G0E9WMNmNAIOAcfdqlXjepfLJUkmlxMFg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RhxOjtQdMQGLv1EHMDYnGZWwVhAqzHOvMZPwgu33tSwPZ3V3RhNX0COMIjXIKpLz85c64Iyo7OvCN7Ud0ENaUhiBpNrJBaS9HhHSDD6A27tPoZLO6wvwYiylM28Q2TFLgliI0ZK7tvyx8avOoS3a/fXx26nHijn93LnRBWZmmxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZNrcvXlK; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61ICwVgV3800571;
+	Wed, 18 Feb 2026 21:49:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=siJwqB
+	Xn/1P22W5m+XiexAChhUOcCKcNpKUBEhACIYw=; b=ZNrcvXlK+R2ssdcVi2RFGX
+	3bbbN7OrDUhNLBJps+PIoNuE+HLgi4jE9XNX+6retKYuDCXoQa50M0ZuGWlfuygg
+	DYTUoN4FGoevFMdZN3ZlK3WRmFF9T9MIg99KPBG2LjaiSDK2mTSRkZypcMDO8isg
+	sYzRhMGOlxpbQkKsD9TPP0oVS/qJbHVbhuXWvZqn5jZVh8lXEANsU6x1kqzSdLkK
+	fR/HyelSoPqHxvslCx06pf3LlcD1GWoFeG1fE5XA9UpsvlGbhGqjv8rllKwTw4gE
+	8fNrJzqCGCXKsnrAbNKSSHuk5kmWoSVtg423c8u3qOfjZ83G7fnX5rRi3XlKoPFw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cajcjj7f4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Feb 2026 21:49:01 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61IHRoha015846;
+	Wed, 18 Feb 2026 21:49:01 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ccb459nbj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Feb 2026 21:49:00 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61ILmxG445547922
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Feb 2026 21:48:59 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7692658045;
+	Wed, 18 Feb 2026 21:48:59 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 240B15805E;
+	Wed, 18 Feb 2026 21:48:58 +0000 (GMT)
+Received: from [9.61.252.35] (unknown [9.61.252.35])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Feb 2026 21:48:58 +0000 (GMT)
+Message-ID: <7259dc94-b8b1-42f6-852d-76519f1eb262@linux.ibm.com>
+Date: Wed, 18 Feb 2026 13:48:57 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 3/9] PCI: Avoid saving config space state in reset path
+To: Bjorn Helgaas <helgaas@kernel.org>, Keith Busch <kbusch@kernel.org>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, lukas@wunner.de, alex@shazbot.org,
+        clg@redhat.com, stable@vger.kernel.org, schnelle@linux.ibm.com,
+        mjrosato@linux.ibm.com, Bjorn Helgaas <bhelgaas@google.com>
+References: <20260218193503.GA3439585@bhelgaas>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <20260218193503.GA3439585@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: R-zAZZGlyn7ijtJNZX30CLw5PIxQHy8p
+X-Authority-Analysis: v=2.4 cv=Md9hep/f c=1 sm=1 tr=0 ts=699633cd cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=8CvCqfvxvhR63hKVNt4A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE4MDE4NiBTYWx0ZWRfXykNUAzxw6R8O
+ ssKLo31bsSoI2+PF1APPrvtWQtYaYtZrwx3+ktbX797mxSGpK1RMuyGjaRPbRm54O9iSpYe9ncl
+ kmgHqKI9AE2Av0KX/ayw7J1LITROdim8WL7hVfXWjIVdnkTK0LBFB2XqEalk9lf7FeKltrZZhQY
+ rb0t6oU9Ngg/LBXGkpEZMtfewit5QabtDkCMjguSt3+uTCcQ2GtRNi5sbfxqcn+XN2YePCpCyI3
+ RQcv1zvSITh+qPYPW4uKE1h0RG+TbSO3G5T7/Ylq+h7pJgc6/cA1DV+tNuU2DIBgF5YplmyQ637
+ IsvQP4PPGcK8NHtt6xS3cfTF1ykgbYEIv8mxvWQZMFD4EhiY3tj1FJ/bYMPf0FktY9BBhU/dijY
+ GjzUJld8m6xiDGASu5pnAlMhAcWtB8jf+ZKQ43tLKY9LCCFQNkeTh3xQqZaJr2nSfmFS3XX9GyY
+ YpVafnidQP1eKHNI9jg==
+X-Proofpoint-GUID: zCdq0--Qjjlk7zGsubnFWkl3nsci3r7V
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-18_04,2026-02-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 lowpriorityscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602180186
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217326-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[11];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E88AE15A3F5
+	NEURAL_HAM(-0.00)[-0.999];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217327-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ibm.com:+]
+X-Rspamd-Queue-Id: 171D815A672
 X-Rspamd-Action: no action
 
-Since the 'enc_after' argument to neon_aes_mac_update() and
-ce_aes_mac_update() has type 'int', it needs to be accessed using the
-corresponding 32-bit register, not the 64-bit register.  The upper half
-of the corresponding 64-bit register may contain garbage.
 
-Fixes: 4860620da7e5 ("crypto: arm64/aes - add NEON/Crypto Extensions CBCMAC/CMAC/XCBC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
- arch/arm64/crypto/aes-modes.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On 2/18/2026 11:35 AM, Bjorn Helgaas wrote:
+> On Wed, Feb 18, 2026 at 12:02:01PM -0700, Keith Busch wrote:
+>> On Tue, Feb 17, 2026 at 11:55:43AM -0800, Farhan Ali wrote:
+>>> Yes I think you are right, with this change the PCI Command
+>>> register gets restored to state at enumeration. So we will lose
+>>> the updated state after pci_clear_master() and
+>>> pci_enable_device(). I think we can update the vfio driver to call
+>>> pci_save_state() after pci_enable_device()?
+>> Either that, or move the pci_enable_device() call to after the
+>> function reset.
+> I kind of like the latter idea because it seems a little simpler for
+> the rule of thumb to be that a reset done by the PCI core returns the
+> device to the same state as when the driver first probed the device.
+> Drivers would generally not use pci_save_state() at all, and they
+> could share some initialization logic between probe and post-reset
+> recovery.
 
-diff --git a/arch/arm64/crypto/aes-modes.S b/arch/arm64/crypto/aes-modes.S
-index 0e834a2c062c..e793478f37c1 100644
---- a/arch/arm64/crypto/aes-modes.S
-+++ b/arch/arm64/crypto/aes-modes.S
-@@ -836,11 +836,11 @@ AES_FUNC_START(aes_mac_update)
- 	encrypt_block	v0, w2, x1, x7, w8
- 	eor		v0.16b, v0.16b, v3.16b
- 	encrypt_block	v0, w2, x1, x7, w8
- 	eor		v0.16b, v0.16b, v4.16b
- 	cmp		w3, wzr
--	csinv		x5, x6, xzr, eq
-+	csinv		w5, w6, wzr, eq
- 	cbz		w5, .Lmacout
- 	encrypt_block	v0, w2, x1, x7, w8
- 	st1		{v0.16b}, [x4]			/* return dg */
- 	cond_yield	.Lmacout, x7, x8
- 	b		.Lmacloop4x
-@@ -850,11 +850,11 @@ AES_FUNC_START(aes_mac_update)
- 	cbz		w3, .Lmacout
- 	ld1		{v1.16b}, [x0], #16		/* get next pt block */
- 	eor		v0.16b, v0.16b, v1.16b		/* ..and xor with dg */
- 
- 	subs		w3, w3, #1
--	csinv		x5, x6, xzr, eq
-+	csinv		w5, w6, wzr, eq
- 	cbz		w5, .Lmacout
- 
- .Lmacenc:
- 	encrypt_block	v0, w2, x1, x7, w8
- 	b		.Lmacloop
--- 
-2.53.0
+I think the vfio-pci driver was intentionally doing the 
+pci_enable_device() before doing the reset. As per commit 9a92c5091a42 
+("vfio-pci: Enable device before attempting reset") it was done to 
+handle devices using PM reset, that were getting incorrectly identified 
+not supporting PM reset due to current state of the device not being D0. 
+It looks like pci_pm_reset() still returns -EINVAL if current power 
+state is not D0. So I think we can't move pci_enable_device() after 
+reset. Unless we want to update pci_pm_reset() to not use cached value 
+of current_state and read it directly from register?
 
+Thanks
+
+Farhan
+
+
+>
+> But I would really like to have Lukas's take on this.  Clearly some
+> drivers would have to be adapted if we stop saving config space in the
+> PCI core reset path.  We can take care of that for upstream drivers,
+> but it seems risky for out-of-tree drivers.
+>
+> Bjorn
 
