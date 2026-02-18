@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-217244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uI5vF+mBlWlWSAIAu9opvQ
-	(envelope-from <stable+bounces-217244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 10:10:01 +0100
+	id wLBsBF2ClWlrSAIAu9opvQ
+	(envelope-from <stable+bounces-217245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 10:11:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E976D154821
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 10:10:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED26154935
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 10:11:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF896305D49A
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 09:09:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AD7E301BCE6
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 09:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C924335BD5;
-	Wed, 18 Feb 2026 09:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84195334C2F;
+	Wed, 18 Feb 2026 09:09:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FE4336EDE;
-	Wed, 18 Feb 2026 09:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F0933439F;
+	Wed, 18 Feb 2026 09:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771405773; cv=none; b=aHZlUWYgXkXFbtHLV13IzdcB5/ue0KKUjPiHTlK9wR7MPmMjBKNNoZbI8lPdwp0Bwj0QMs21ylNyu23dlphMb/Q4qaf9H95RbiVk5Pr7CKgA/vE4O6hDRMyENtQz5SVDJ5m2+oXmZUyr2EALNt+gi7j47VC2Q7rCi4TGFd8Ygg0=
+	t=1771405779; cv=none; b=gLmKoFsxurUG98CqSzZzUe+dY+V1AGWBrzaOtAefzUWbYiJgVmx33D8eK8eesfP8PJJH2Ie5f3w6PP1/ECg5xCyesabRVRRyas5/ZxbQYJhUtarYu3OjVeVE9og8WOkgGxrwzw7dIdiIDnH30zhepxKMZ/uQtD4m3rQQb1PAJNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771405773; c=relaxed/simple;
-	bh=bwm5/eH0hdx6nLok6SDDWGnV0F1fZqzDjUXtB15tyxU=;
+	s=arc-20240116; t=1771405779; c=relaxed/simple;
+	bh=eWi6TQ9pu3U2zX9/b9tx8LMVQBtgg50i2/+OeMM8Fg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/wQugB/vUVM/T6V1BX+a/5H/5OdB/18Va/aJuYmIx9eSi2CU25031+YN8lg90AgVJUTpGIDnW0/KgWpPhwMOtwNuomFEj9zSA28OY4mEXqoQC4u/9eXqb0kJuc1bxbRnPB9xHTuIrJZYUIA1xjw/iiNuK62yPSBwenMzvEP0LU=
+	 MIME-Version; b=Xrq2guj/Ep0uvtQgg86DqFhmMT56bsew6nu7ir3U7i5F3ezgLpDMNgteXREaH4lcEvK4Dwe1leA76CYqE+iNLmpX6kpXRu39GrSCBuAPXWO87h92T/tW64oapqUeI4nnAed1MU/+7lgYSuEIbHrnIiCCG0e7JLBzCWW4EjiJ5jE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
@@ -54,12 +54,12 @@ Cc: stable@vger.kernel.org,
 	achill@achill.org,
 	sr@sladewatkins.com,
 	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.19 00/18] 6.19.3-rc1 review
-Date: Wed, 18 Feb 2026 09:09:23 +0000
-Message-ID: <20260218090926.9759-1-bacs@librecast.net>
+Subject: Re: [PATCH 6.6 00/39] 6.6.127-rc1 review
+Date: Wed, 18 Feb 2026 09:09:27 +0000
+Message-ID: <20260218090930.9798-1-bacs@librecast.net>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
-References: <20260217200002.683975158@linuxfoundation.org>
+In-Reply-To: <20260217200004.221651386@linuxfoundation.org>
+References: <20260217200004.221651386@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,12 +73,12 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DMARC_NA(0.00)[librecast.net];
-	TAGGED_FROM(0.00)[bounces-217244-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217245-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -92,9 +92,9 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E976D154821
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[librecast.net:mid,librecast.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7ED26154935
 X-Rspamd-Action: no action
 
 # Librecast Test Results
@@ -103,7 +103,7 @@ X-Rspamd-Action: no action
 010/010 [ OK ] libmld
 120/120 [ OK ] liblibrecast
 
-CPU/kernel: Linux auntie 6.19.3-rc1-g40e4767c6df5 #3 SMP PREEMPT_DYNAMIC Wed Feb 18 08:36:31 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+CPU/kernel: Linux auntie 6.6.127-rc1-g27a952792232 #1 SMP PREEMPT_DYNAMIC Wed Feb 18 09:02:27 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
 
 Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
