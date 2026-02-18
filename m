@@ -1,113 +1,113 @@
-Return-Path: <stable+bounces-217278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wM2BGNatlWnbTgIAu9opvQ
-	(envelope-from <stable+bounces-217278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:17:26 +0100
+	id aHg+CfOtlWl1TgIAu9opvQ
+	(envelope-from <stable+bounces-217279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:17:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6A71564A8
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:17:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07CAA1564B6
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:17:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 77786300D54C
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:17:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 676083009805
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159BC311952;
-	Wed, 18 Feb 2026 12:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5932A3115A1;
+	Wed, 18 Feb 2026 12:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NoPtVf8u"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jtHXFFuq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722743101D3
-	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 12:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AD430FC32
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 12:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771417024; cv=pass; b=DiYgUwH8Fk1JmUbnzol8666ZMTcaNoS0a43KUz0oiH3Nb/HWkm89JcnessbApcCmt+o8u6nYHdm+7Eh7b0OaRJ1WZOHI9JZSlswjw7xrBEp9fR0QKQGryQ6128Cpr86s6NW9Ec0vS7R7fpAq+DLGUsiDpTEGTSvOU39BOYO/RH0=
+	t=1771417068; cv=pass; b=RpuHi131j5ipkinmhHxZRGo1GWNl5OC67otb+suQPSpMrXJQQjmiokqmXLl75dQUSK62Aay7ExhHlJeKNIiew+3IuarWytXJdM3b0omagKhTTtC4Bc1KTEBUvaGOG8sywYOHGKsaD/XEvu9F9PJZuZKMiSOlq0R71RVwt9BiKQw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771417024; c=relaxed/simple;
-	bh=Q52a4UJfvIsleI0KiLJqmKoW253Zn7XVEUEx+gL2Nbg=;
+	s=arc-20240116; t=1771417068; c=relaxed/simple;
+	bh=hDMNd74Pxc2U5r6cQ0S83TyLQHXk1qYR0EipkoSEDh0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RKl5B9Bp2eTkjZON5NzT/t8bSmcTmrTphMDRO8LV6g8ebAQ4LBgpgMHGEjMCI4uSYMt3P4LOTDTsrrC7tsvcI4Um712Yr5rXDQOd6zw2ZfhUP6C1t9dkyKAf4xOQ9iCW5ucaolOZ2nJRwnOpqxhjGlN6Qw6vfY8zA9jCSGwslAM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NoPtVf8u; arc=pass smtp.client-ip=74.125.82.181
+	 To:Cc:Content-Type; b=YaUZ5pXEnk6a6j5boG9EYxxrABi0OjxxhCrh17Pjl9OrgBsGhqCIjwYdDLGyyeHRJnxtSKjJ0bGn33xv7bjNGfRySudEJxwBn0kjrC/tLlS8VElKfL/2OG7KJX6/s2gcpPk3OIkwx3FKzS3H6V4nVUktAFKUoH/g3b3xdiuw3dE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jtHXFFuq; arc=pass smtp.client-ip=74.125.82.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2ba68df3687so9059951eec.1
-        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 04:17:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771417022; cv=none;
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b6b0500e06so6135103eec.1
+        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 04:17:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771417066; cv=none;
         d=google.com; s=arc-20240605;
-        b=jygzS23Mf3U59nmtvokJESeiBYb8pb5mcIpiEms7siRTjxre617GKTCumxWiL6ScYm
-         RqmPQSOT2US+FQXvJcxf7MxpqP2IprPh1NMWWrtRU24aM7tzbON5iwYbNFPiwAZRdjol
-         k31/R9eaCDf6zk/Mr0Lq9sKC2do6t30Z0pfd67WSKluQx+g36gT23wknqy+Y6o5rM1V3
-         bftVQFIg6UDR6B2HrcipHh59h9goakZ0dv43kS062TAfm8nbPPFlOWQ28ApsNQBQLNRl
-         9YR80rrUrYbRmb2g1YGh/3trLjkELPgpoz5SND86ZMaHWbIbQkWmNaWqGfvOhgLb4ucK
-         tVUQ==
+        b=AaS1fygCMEwKGndm4eihi3qJG7pN7YJaZrZgDTJ3OetOex1nSXdOA/MxOCY6k6dyNF
+         jhK7wpZaUHCZC1GjipZQzI6u+0DoP49ZlBFBDqtLZaeUwbJ50BXodewhnRhCUlo6uGDT
+         t350RFi4golkGKkUnsiVLprZ6AS3JffrLuMrtL4Vuo2ZUv7WyfSuL7T9OWkR1XRMxRtp
+         yuBDUUdw5gc7BjgmyIfC+hYkij+GncLLMfFuQZVyC5UKBkDwwpE7mfigbInfJCUE2LO5
+         HHN9FnORqwJtSEIbUWwaUoJ9jrRM6g0oHGNNXCRxMcWoZWVSiAN8rJwrf8cn4eJQ1Bdw
+         Z8eA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ozglTU0/5jdL+iGl35JF4KdKCYTgtwfXNxsYuR40g5k=;
-        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
-        b=IK+BquxaxZY8yGJZc6069noZ3DoX5VfMgQi4flqiUtoDg5/DMB90QQrg+WgyvxmZ5D
-         YdBQB3cecRa2tVhSinpJLBbn5sh1KJKS8tOgVWb97B3JQ84VvBiR5caW0VUppx/bn667
-         /ivC9l8JN9ebu+cOX1n/iip7XWHZUSBfmZYcpPIBNmKJvr8AYWNzdvMYsdNZrXyXmMV0
-         dsozDw5rOYjvSWHqioLOZuUgAbsRWb5EpcUy9IoE3Y+2uVbY+PF0fplYL8DYPXmlbY/r
-         V4iJ/doo8Ox1WP7qhPScTzeNvN/WINDa6CzHcaNPG9gUmHM1C86eAODA6PUcleQJkTah
-         7qnw==;
+        bh=hlcD4mBl619MgaHciYViGbfD9oWOmC4uxOrCB3gT72Q=;
+        fh=Wos2RGThg8Von/2fEFifEOCJu1nAqJBSvQGYkzXvMlc=;
+        b=VFeU/RHTxRYcloixjhTMHpPSm4bf8hJA/N+KerIi6uR5iFS9ZX3Jl2fLYbrBgt8S5z
+         6p8z/+NXH+VYXIg54sQxhZTjvP/hp/UYkPhMSebnLWK4XIptSZRMCXWSx0v20rC5LFjp
+         uqpIrpwgUAoDI7kZlZ+AxfXip0VO0pr3pmOEbcSUmhYU2sQAErPAdkjfA742LP+DNfNU
+         TnMt7XjAsuv2L728vD80rR2OqMl2xgF94w2nY2pzOKtO+MzxQSd/T1MbgBsjI7e3ujUN
+         YYLoSfOlpotsLes3z4aYqSbLlRMUq7krEeGsE4qH3HeFLgXkMbeW4Wa8TSd9Ew8ZHmif
+         PbZg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771417022; x=1772021822; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771417066; x=1772021866; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ozglTU0/5jdL+iGl35JF4KdKCYTgtwfXNxsYuR40g5k=;
-        b=NoPtVf8uJlYpLGykReRIzDfCS0WGZ8ENZ3cDmZ8gHywnC5q8pDvVS2jYZ87Fg4CYTr
-         DISERzZXJIZbM4KB0NSFXr7YteAh6lkO/EMusezoGI5ebSHYEzVlEhbpgA62bY2dGHtg
-         10XsuM5YUmRGi+OLj85Ar7xOB4i/YAxdEPCbVUB0FUCGySvkZvXLN8/KTMe0De7G6VGd
-         P1tlFDyW41NByv3tgHhe3TpYYom3kBnw3mIl8ft7jsYCa8KkNtNA2OjEwiq3Hq/+5jOw
-         LAjlGXIDg5cxxBw9/L7sr3wF+eJuL6U5uBAVbpr4PsXNFMmTg853eRTLz+qOIoEt4Lru
-         wqug==
+        bh=hlcD4mBl619MgaHciYViGbfD9oWOmC4uxOrCB3gT72Q=;
+        b=jtHXFFuq9oIBJW8btJyurQEyAF2WydkaXlgQR6f4iJPoq5elbIryYxtRVpW26wcsVz
+         GtvCaFPzDk+h5la8qeolFcdBHvxD1lEhRd+CRcZ4SW0PoK13CSnVVUdI5hJGIvO8VIzr
+         BWp2uleAjTUGrCXUOjBQaV+9+Do+xHU6hh59Z2O7g1MmzB3xY9pGu1S8wmvWmsJfxQH8
+         yTOOKMatjB4yDuFc+8LBFrQEAImdHOch63/R1faCNLs8CXxQAqRRUemgerIu5tn6QPXZ
+         C455NisL22lk8NTSokEcjpXOOW5A4altW8T4tHf67VBy4rf285/v0RhjZnGY/ucw60lP
+         +TAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771417022; x=1772021822;
+        d=1e100.net; s=20230601; t=1771417066; x=1772021866;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ozglTU0/5jdL+iGl35JF4KdKCYTgtwfXNxsYuR40g5k=;
-        b=P1tU5zG/t2ll2zyQX/kIqdVFhlqDxNqGqAPcjLD2+3IDkfkDGKXEdRJnSpGJ6zIS9T
-         I1zZBEgGfYat7pB0yFKboC9m3lG+N7tVLdnNcjQOjVVrU0rYjnA217HXCETd1EJb6i+t
-         2neUVE/wl2RZ3CH30cxHfzxxlk2tgPn9Yw8pJ3zB7nBTj3ye6FqSuwEq4L0s6+1BOW9i
-         CUyAEVjgn58QEBO0Nc7Lbg0y+mWZ3+Q0en2J9wE9kN1vak16Bv2H3F8l0qYegm3Ksw7r
-         rGqhC4vfUxe0ofEa07i8bmbJKKVwhiYf6bbGsNOUbD9Og6D+ddEE7xjyOgNcxzSrix1k
-         7Zeg==
-X-Gm-Message-State: AOJu0YyVzdCllG1c5HYQAhO2DoBl8HzdLY6LSdpuV4g5mhK0/YsPDocW
-	nDsf8H8Z2xoYrc9TPrV0RcYBP5Hw410U42aMRfktksThVHGedbmCoNh0pD5pWIcsNM/EElK7O6U
-	vdKlxwuktMKaSCGndRZWZ3yL+7Y2QYqE=
-X-Gm-Gg: AZuq6aIjcGm9AWDPpJb1nnVgEb+HRDbPDDeou/Z1TmfGIH74k34uvBtKtXqqV2kUHl7
-	ukILyOSY1KgUygnRoZmYX7WdvQl1B3pjtx0HkJ7h2HWitZ1/qNLihBvQbMfs8dFEhYX9viAjgh7
-	WMtpDo69EmJoSuVMvCQ8K1oB9j9vT4mJg8o081JPTqyQEKgE7Y8xAkXIPyGG3+sLdE4Ab/p6suu
-	PT/WAWJ2JuJMfhuxKRtaIqZB1BkXgv0yOVs+TZ6ChRgSlEO1idOlnqL0z2cwGDKzSrmf/mYLeUU
-	zPgLUJTfzktXhzA5x3EIiBeSZceu6CepkG2BBNvZeXHIcjg6QvP9mSfN0Mv9qsWlZh4+cyMRP9W
-	w7CLn9PopvNqguxXWpNoLVOvQdcrklnuJ1HgF9TXH8NuwPWA6l+sVytWtMRwrMUQwP3g7iuVYoR
-	eUfdEualIAteOkNJxFWVxlTEHZuLQKrxPAOAkmow==
-X-Received: by 2002:a05:7301:1e8c:b0:2ba:7404:f587 with SMTP id
- 5a478bee46e88-2bac9795cfamr6303886eec.21.1771417022413; Wed, 18 Feb 2026
- 04:17:02 -0800 (PST)
+        bh=hlcD4mBl619MgaHciYViGbfD9oWOmC4uxOrCB3gT72Q=;
+        b=k53ANsrren+kYA6NoboOR0itzD/Yvq9U7QUQU1x5MzEUbwQJ3FGlwawdDyVV9VDcwY
+         I/+bRn0ldPtDVBJTFyo/WdXC6MpR18pBCo7BqscYMr5cL+sLwbdfUdvocMonLMg/OXIM
+         9p5bduUmMlOGKz2Jj4NeanJMX/ozhfCSvIMr4P1JHVMs9sJgj+auyxJhK1imSnvLWIAg
+         SXpfp1q3St20cuWxbWYsqUylwT3iN01hCafN0VCDc5NG25uir7IXkjzOZGP6WpIW+AyP
+         Xgge3UmHBREjfFy2wI2uJa6i/jr1O28sjBFUZqg7WO9olWYWkIB5qh3zEdSl/TujFpbY
+         NElg==
+X-Gm-Message-State: AOJu0Yzm3hhJY38B3HuzcL/fyl+xnzffD+VWbe9Si3mzqKMQTDORkYKq
+	4Cyns69noTBMAt6EN/mURR6s662ld/1bY8yExBrFZiXTh7Vch05zxrviXvwnmyW2+w7h/0KzPgj
+	2Xq6wSPHtVTtq3YU6R1raGLy2BaXwBaM=
+X-Gm-Gg: AZuq6aKuG8xvL0S/7Y6v8NU1NVQdhlVtua97kU3GSBMw2pWjhQSFjjQ4ArBbJ90Kgq5
+	yp1rU8oLtpAhtNpb51U86jJy3BKtpeYRevLIFxwVRefnkhY0ZCPlr3vJQQ6SH/UFdw9ZqnSP+J2
+	Znbr/n1mF4SX576nkQILdqClXvT7wkb9tCgGlxg5MdzouLEHjWNEzQJvM2089I6FHEjlbrEq9Pa
+	PbbB7tJVMwNgMc7CPvecWz7JMrMO6k+uJtU7gp4mBWewFH/P7IScH/06FoP0IBsHkE20LZrGt7/
+	8psE6uYZIaVTJGUetqcdXw21c31Ni7WISQoYUA2HlPDkOYH2tcidTlOyucIYiz8JzaZT9U3QHay
+	IwpHuJxdyVhbY0aMeS7OkncgNNgRgzH4oa6rem7zDGUyV9BKGvMvaOhBX93iqLoZ89aDvO/XuEM
+	DJXR+jFFOs8KJuGyE12SY/XH+oGPotZxyD1wsmUg==
+X-Received: by 2002:a05:7300:23cc:b0:2ba:769b:813e with SMTP id
+ 5a478bee46e88-2baba13689dmr6737357eec.38.1771417057499; Wed, 18 Feb 2026
+ 04:17:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260217200002.683975158@linuxfoundation.org>
-In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
+References: <20260217200006.470920131@linuxfoundation.org>
+In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
 From: Luna Jernberg <droidbittin@gmail.com>
-Date: Wed, 18 Feb 2026 13:16:49 +0100
-X-Gm-Features: AaiRm53lbHi9bNe7QArcmodc7DyAzejdocLDCI6dCZ7KtSzzGkFgRK0hE6V-8Dg
-Message-ID: <CADo9pHjy5ZhNJb2i00GmunPWb3HpYmbqDWiKu+tKJ5AWkYbjNQ@mail.gmail.com>
-Subject: Re: [PATCH 6.19 00/18] 6.19.3-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date: Wed, 18 Feb 2026 13:17:24 +0100
+X-Gm-Features: AaiRm50U6OECfKkNegrsfdYjbIrz9JKTIu4dsD8NtGlz0cAT1gG99TY7AZgdDj0
+Message-ID: <CADo9pHiSp3BrQs15Dc-E4TZTx9aHWpsnT1ZQseh222ZH0XdAzQ@mail.gmail.com>
+Subject: Re: [PATCH 6.18 00/43] 6.18.13-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Luna Jernberg <droidbittin@gmail.com>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
 	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
@@ -122,18 +122,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217278-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-217279-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
@@ -146,26 +147,21 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4D6A71564A8
+X-Rspamd-Queue-Id: 07CAA1564B6
 X-Rspamd-Action: no action
+
+Tested on: Arch Linux Machine a Dell Micro 3050 with a
+model name    : Intel(R) Core(TM) i5-6500T CPU @ 2.50GHz
+and works as it should
+
 
 Tested-by: Luna Jernberg <droidbittin@gmail.com>
 
-AMD Ryzen 5 5600 6-Core Processor:
-https://www.inet.se/produkt/5304697/amd-ryzen-5-5600-3-5-ghz-35mb on a
-https://www.gigabyte.com/Motherboard/B550-AORUS-ELITE-V2-rev-12
-https://www.inet.se/produkt/1903406/gigabyte-b550-aorus-elite-v2
-motherboard :)
-
-running Arch Linux with the testing repos enabled:
-https://archlinux.org/ https://archboot.com/
-https://wiki.archlinux.org/title/Arch_Testing_Team
-
-Den tis 17 feb. 2026 kl 21:51 skrev Greg Kroah-Hartman
+Den tis 17 feb. 2026 kl 21:52 skrev Greg Kroah-Hartman
 <gregkh@linuxfoundation.org>:
 >
-> This is the start of the stable review cycle for the 6.19.3 release.
-> There are 18 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.18.13 release.
+> There are 43 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -174,10 +170,10 @@ Den tis 17 feb. 2026 kl 21:51 skrev Greg Kroah-Hartman
 >
 > The whole patch series can be found in one patch at:
 >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.19.3-rc1.gz
+6.18.13-rc1.gz
 > or in the git tree and branch at:
 >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.19.y
+-rc.git linux-6.18.y
 > and the diffstat can be found below.
 >
 > thanks,
@@ -188,7 +184,7 @@ Den tis 17 feb. 2026 kl 21:51 skrev Greg Kroah-Hartman
 > Pseudo-Shortlog of commits:
 >
 > Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     Linux 6.19.3-rc1
+>     Linux 6.18.13-rc1
 >
 > Chao Yu <chao@kernel.org>
 >     f2fs: fix to do sanity check on node footer in {read,write}_end_io
@@ -198,9 +194,6 @@ Den tis 17 feb. 2026 kl 21:51 skrev Greg Kroah-Hartman
 >
 > Fabio Porcedda <fabio.porcedda@gmail.com>
 >     USB: serial: option: add Telit FN920C04 RNDIS compositions
->
-> Chao Yu <chao@kernel.org>
->     Revert "f2fs: block cache/dio write during f2fs_enable_checkpoint()"
 >
 > Danilo Krummrich <dakr@kernel.org>
 >     iommu/arm-smmu-qcom: do not register driver in probe()
@@ -236,12 +229,94 @@ nt atomic commit and checkpoint writes
 > Guangshuo Li <lgs201920130244@gmail.com>
 >     fbdev: rivafb: fix divide error in nv3_arb()
 >
+> Chen Ridong <chenridong@huawei.com>
+>     cpuset: Fix missing adaptation for cpuset_is_populated
+>
 > Tiezhu Yang <yangtiezhu@loongson.cn>
 >     LoongArch: Rework KASAN initialization for PTW-enabled systems
+>
+> David Hildenbrand (Red Hat) <david@kernel.org>
+>     mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables us=
+ing mmu_gather
 >
 > Otto Pfl=C3=BCger <otto.pflueger@abscue.de>
 >     arm64: dts: mediatek: mt8183: Add missing endpoint IDs to display gra=
 ph
+>
+> Alban Bedel <alban.bedel@lht.dlh.de>
+>     gpiolib: acpi: Fix gpio count with string references
+>
+> Jens Axboe <axboe@kernel.dk>
+>     io_uring/fdinfo: be a bit nicer when looping a lot of SQEs/CQEs
+>
+> Ziyi Guo <n7l8m4@u.northwestern.edu>
+>     ASoC: fsl_xcvr: fix missing lock in fsl_xcvr_mode_put()
+>
+> Melissa Wen <mwen@igalia.com>
+>     drm/amd/display: remove assert around dpp_base replacement
+>
+> Melissa Wen <mwen@igalia.com>
+>     drm/amd/display: extend delta clamping logic to CM3 LUT helper
+>
+> Deepanshu Kartikey <kartikey406@gmail.com>
+>     tracing/dma: Cap dma_map_sg tracepoint arrays to prevent buffer overf=
+low
+>
+> Charles Keepax <ckeepax@opensource.cirrus.com>
+>     ASoC: cs42l43: Correct handling of 3-pole jack load detection
+>
+> Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>     platform/x86: panasonic-laptop: Fix sysfs group leak in error path
+>
+> Maciej Strozek <mstrozek@opensource.cirrus.com>
+>     ASoC: sof_sdw: Add a quirk for Lenovo laptop using sidecar amps with =
+cs42l43
+>
+> gongqi <550230171hxy@gmail.com>
+>     platform/x86/amd/pmc: Add quirk for MECHREVO Wujie 15X Pro
+>
+> Breno Baptista <brenomb07@gmail.com>
+>     ALSA: hda/realtek: Enable headset mic for Acer Nitro 5
+>
+> Dirk Su <dirk.su@canonical.com>
+>     ASoC: amd: yc: Add quirk for HP 200 G2a 16
+>
+> Tagir Garaev <tgaraev653@gmail.com>
+>     ASoC: Intel: sof_es8336: Add DMI quirk for Huawei BOD-WXX9
+>
+> Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>     platform/x86: classmate-laptop: Add missing NULL pointer checks
+>
+> Brahmajit Das <listout@listout.xyz>
+>     drm/tegra: hdmi: sor: Fix error: variable =E2=80=98j=E2=80=99 set but=
+ not used
+>
+> Deepanshu Kartikey <kartikey406@gmail.com>
+>     romfs: check sb_set_blocksize() return value
+>
+> Kailang Yang <kailang@realtek.com>
+>     ALSA: hda/realtek - fixed speaker no sound
+>
+> Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
+>     ASoC: cs35l45: Corrects ASP_TX5 DAPM widget channel
+>
+> Zhang Heng <zhangheng@kylinos.cn>
+>     ALSA: hda/realtek: Add quirk for Inspur S14-G1
+>
+> Xuewen Yan <xuewen.yan@unisoc.com>
+>     gpio: sprd: Change sprd_gpio lock to raw_spin_lock
+>
+> Anatolii Shirykalov <pipocavsobake@gmail.com>
+>     ASoC: amd: yc: Add ASUS ExpertBook PM1503CDA to quirks list
+>
+> Alice Ryhl <aliceryhl@google.com>
+>     rust: driver: fix broken intra-doc links to example driver types
+>
+> FUJITA Tomonori <fujita.tomonori@gmail.com>
+>     rust: dma: fix broken intra-doc links
+>
+> FUJITA Tomonori <fujita.tomonori@gmail.com>
+>     rust: device: fix broken intra-doc links
 >
 > Anil Gurumurthy <agurumurthy@marvell.com>
 >     scsi: qla2xxx: Fix bsg_done() causing double free
@@ -251,32 +326,62 @@ ph
 >
 > Diffstat:
 >
->  Makefile                                   |  4 +-
->  arch/arm64/boot/dts/mediatek/mt8183.dtsi   | 37 ++++++++++---
->  arch/loongarch/mm/kasan_init.c             | 80 +++++++++++++-----------=
----
->  drivers/iommu/arm/arm-smmu/arm-smmu-impl.c | 14 +++++
->  drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 14 +++--
->  drivers/iommu/arm/arm-smmu/arm-smmu.c      | 24 ++++++++-
->  drivers/iommu/arm/arm-smmu/arm-smmu.h      |  5 ++
->  drivers/scsi/qla2xxx/qla_bsg.c             | 28 ++++++----
->  drivers/usb/serial/option.c                |  6 +++
->  drivers/video/fbdev/riva/riva_hw.c         |  3 ++
->  drivers/video/fbdev/smscufx.c              |  8 ++-
->  fs/f2fs/data.c                             | 53 ++++++++++++------
->  fs/f2fs/f2fs.h                             | 67 +++++++++++++++++------
->  fs/f2fs/gc.c                               | 24 +++++----
->  fs/f2fs/node.c                             | 50 ++++++++++-------
->  fs/f2fs/node.h                             |  8 ---
->  fs/f2fs/recovery.c                         |  6 +--
->  fs/f2fs/segment.c                          | 86 ++++++++++++++++--------=
+>  Makefile                                           |   4 +-
+>  arch/arm64/boot/dts/mediatek/mt8183.dtsi           |  37 ++++++-
+>  arch/loongarch/mm/kasan_init.c                     |  80 +++++++-------
+>  drivers/gpio/gpio-sprd.c                           |   8 +-
+>  drivers/gpio/gpiolib-acpi-core.c                   |   1 +
+>  .../gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c |  30 ++++-
+>  .../drm/amd/display/dc/dwb/dcn30/dcn30_cm_common.h |   2 +-
+>  .../drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c    |   9 +-
+>  .../drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c    |  18 +--
+>  .../drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c  |  16 +--
+>  drivers/gpu/drm/tegra/hdmi.c                       |   4 +-
+>  drivers/gpu/drm/tegra/sor.c                        |   4 +-
+>  drivers/iommu/arm/arm-smmu/arm-smmu-impl.c         |  14 +++
+>  drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c         |  14 ++-
+>  drivers/iommu/arm/arm-smmu/arm-smmu.c              |  24 +++-
+>  drivers/iommu/arm/arm-smmu/arm-smmu.h              |   5 +
+>  drivers/platform/x86/amd/pmc/pmc-quirks.c          |   7 ++
+>  drivers/platform/x86/classmate-laptop.c            |  32 ++++++
+>  drivers/platform/x86/panasonic-laptop.c            |   4 +-
+>  drivers/scsi/qla2xxx/qla_bsg.c                     |  28 +++--
+>  drivers/usb/serial/option.c                        |   6 +
+>  drivers/video/fbdev/riva/riva_hw.c                 |   3 +
+>  drivers/video/fbdev/smscufx.c                      |   8 +-
+>  fs/f2fs/data.c                                     |  51 ++++++---
+>  fs/f2fs/f2fs.h                                     |  64 ++++++++---
+>  fs/f2fs/gc.c                                       |  24 ++--
+>  fs/f2fs/node.c                                     |  50 +++++----
+>  fs/f2fs/node.h                                     |   8 --
+>  fs/f2fs/recovery.c                                 |   6 +-
+>  fs/f2fs/segment.c                                  |  86 +++++++-------
+>  fs/f2fs/segment.h                                  |   9 +-
+>  fs/f2fs/super.c                                    |  26 ++---
+>  fs/f2fs/sysfs.c                                    |  62 +++++++++--
+>  fs/romfs/super.c                                   |   5 +-
+>  include/asm-generic/tlb.h                          |  77 ++++++++++++-
+>  include/linux/f2fs_fs.h                            |  73 +++++++-----
+>  include/linux/hugetlb.h                            |  15 ++-
+>  include/linux/mm_types.h                           |   1 +
+>  include/trace/events/dma.h                         |  25 ++++-
+>  io_uring/fdinfo.c                                  |  11 +-
+>  kernel/cgroup/cpuset.c                             |   2 +-
+>  mm/hugetlb.c                                       | 123 ++++++++++++---=
 ------
->  fs/f2fs/segment.h                          |  9 ++--
->  fs/f2fs/super.c                            | 64 +++++++---------------
->  fs/f2fs/sysfs.c                            | 62 +++++++++++++++++----
->  include/linux/f2fs_fs.h                    | 73 +++++++++++++++---------=
--
->  22 files changed, 460 insertions(+), 265 deletions(-)
+>  mm/mmu_gather.c                                    |  33 ++++++
+>  mm/rmap.c                                          |  25 +++--
+>  rust/kernel/device.rs                              |   6 +-
+>  rust/kernel/dma.rs                                 |   5 +-
+>  rust/kernel/driver.rs                              |  12 +-
+>  sound/hda/codecs/realtek/alc269.c                  |  13 +++
+>  sound/soc/amd/yc/acp6x-mach.c                      |  14 +++
+>  sound/soc/codecs/cs35l45.c                         |   2 +-
+>  sound/soc/codecs/cs42l43-jack.c                    |  37 ++++++-
+>  sound/soc/fsl/fsl_xcvr.c                           |   3 +
+>  sound/soc/intel/boards/sof_es8336.c                |   9 ++
+>  sound/soc/intel/boards/sof_sdw.c                   |   1 +
+>  54 files changed, 877 insertions(+), 359 deletions(-)
 >
 >
 >
