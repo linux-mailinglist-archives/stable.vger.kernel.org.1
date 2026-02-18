@@ -1,188 +1,188 @@
-Return-Path: <stable+bounces-217327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217328-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIi+JtwzlmktcAIAu9opvQ
-	(envelope-from <stable+bounces-217327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 22:49:16 +0100
+	id OAeWFtlJlmngdQIAu9opvQ
+	(envelope-from <stable+bounces-217328-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 00:23:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171D815A672
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 22:49:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E231515AE91
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 00:23:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A6B42301A510
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:49:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 102073015476
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 23:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED90730B524;
-	Wed, 18 Feb 2026 21:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E2033ADA4;
+	Wed, 18 Feb 2026 23:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZNrcvXlK"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OmEFCEVr"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD864330322;
-	Wed, 18 Feb 2026 21:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAC833ADA2
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 23:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771451350; cv=none; b=s+O6/NhSa49gSqhLG4eZgdqEoBZErtmTVZZTh6e0zXpQLH0vPFeQZZ1RfYZSBvTbS9AO3n+U6ZrlDuxXw0zIXkp3rsY26ZnGZ15JWeTcfOAjeDnUimrlmjJCRLXRePu/x/5IYFHQndmFt10mJmTBx0JyGlktW3CheNNRi4WE9Js=
+	t=1771456968; cv=none; b=o8wqV4ElUQauuxtt0LxzFkF5Ta1krETq1dsY3wD7206WBLXS4kd+K57MLRNyR0E+ucR4ShtnFJEoDtwCoB7/aba5vVb1iKQ/wstbEz1yEqNhB4k0Gj/JxE4g/3jD17A4DWdq6ND+RRRc7cCDNyOoL98h7sPJt6UOxN333vvBezo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771451350; c=relaxed/simple;
-	bh=LOT2uMNbe+G0E9WMNmNAIOAcfdqlXjepfLJUkmlxMFg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RhxOjtQdMQGLv1EHMDYnGZWwVhAqzHOvMZPwgu33tSwPZ3V3RhNX0COMIjXIKpLz85c64Iyo7OvCN7Ud0ENaUhiBpNrJBaS9HhHSDD6A27tPoZLO6wvwYiylM28Q2TFLgliI0ZK7tvyx8avOoS3a/fXx26nHijn93LnRBWZmmxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZNrcvXlK; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61ICwVgV3800571;
-	Wed, 18 Feb 2026 21:49:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=siJwqB
-	Xn/1P22W5m+XiexAChhUOcCKcNpKUBEhACIYw=; b=ZNrcvXlK+R2ssdcVi2RFGX
-	3bbbN7OrDUhNLBJps+PIoNuE+HLgi4jE9XNX+6retKYuDCXoQa50M0ZuGWlfuygg
-	DYTUoN4FGoevFMdZN3ZlK3WRmFF9T9MIg99KPBG2LjaiSDK2mTSRkZypcMDO8isg
-	sYzRhMGOlxpbQkKsD9TPP0oVS/qJbHVbhuXWvZqn5jZVh8lXEANsU6x1kqzSdLkK
-	fR/HyelSoPqHxvslCx06pf3LlcD1GWoFeG1fE5XA9UpsvlGbhGqjv8rllKwTw4gE
-	8fNrJzqCGCXKsnrAbNKSSHuk5kmWoSVtg423c8u3qOfjZ83G7fnX5rRi3XlKoPFw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cajcjj7f4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Feb 2026 21:49:01 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61IHRoha015846;
-	Wed, 18 Feb 2026 21:49:01 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ccb459nbj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Feb 2026 21:49:00 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61ILmxG445547922
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Feb 2026 21:48:59 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7692658045;
-	Wed, 18 Feb 2026 21:48:59 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 240B15805E;
-	Wed, 18 Feb 2026 21:48:58 +0000 (GMT)
-Received: from [9.61.252.35] (unknown [9.61.252.35])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 18 Feb 2026 21:48:58 +0000 (GMT)
-Message-ID: <7259dc94-b8b1-42f6-852d-76519f1eb262@linux.ibm.com>
-Date: Wed, 18 Feb 2026 13:48:57 -0800
+	s=arc-20240116; t=1771456968; c=relaxed/simple;
+	bh=ak+Fjrc8c6aDkTgBoI7fd+2k7yh8dnyTxfOcRaoQ/ok=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UhEPpbhvGi/c7NFQm0jb5bW4l1Gf3yVvowOrq4hWvXMl5XKyZCfbAF65IKzlTZT5f4glzPRfkxkx150p3D/KYLOOXJ3aFlxSB0EEcHIkVqwKkHmU+407RjE21nDWvNYv82DPgmNaTvSRYw1FsSeXcePZSc50KYQGJSSllPMIp8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OmEFCEVr; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c6de1ee12a3so174004a12.2
+        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 15:22:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771456965; x=1772061765; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3oBGE3p/lhKaQkwFweneW6rHkdciCRGmOksHejZJMmw=;
+        b=OmEFCEVrDaO/oYez2gF5z+P+oStD3Owr3qDvDMp16rkyf7MKJ9dZH9yqzfow86Hek7
+         kLu5bVHuEwrXvzV82LNSipzMdOMyHsc3VUI0jWXA5l/JHoKBK9ze6+uFCtE5sbhKp/3Q
+         myxjzVNH+vPNEyD9YaC5VlLq15fLBKiLTtGcuxfWAHlWzewJSxpRNQvr1HQzqr0TmisU
+         M6SiGz3sIyehWOp4cACokHswIlEm7hCZTvBmI5UddkMduxGYQhalQovS1QlYqgacaeKq
+         X6qQKXfMbQMv0GUtmIl6h91PBwDFXBJADgn7JS7yZqkHXwVZsNRbMallFNk4EybddGGQ
+         5tCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771456965; x=1772061765;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3oBGE3p/lhKaQkwFweneW6rHkdciCRGmOksHejZJMmw=;
+        b=oQ0DLAHcA4yvtv+riLa8Ba6lU10/kNb+MBEUoGK5kMU8xepMNOyHQveQULqlJdtlvp
+         e4lklQghAh044u8qNXs9kyJkRbLtAYIksld3yajLs4pLCALb2W3a5dyzBzAZxdR0XBiE
+         wL4AN06GOI1IXsabg8itysWvVM9B83eaT566m7LONUM8ITUovyq2uuv/QF/TltWqptFf
+         iHXxYpF7SvZu+6F7QtgrjKUjICyS1Ocf+Ght1hWpoeqKGwEV816KJH3ir26zK6Bc7lMX
+         zvxSJmqxC1WbiK6y5Tqf2PqlGOTGlropSezk4txtGYZ744HQplcyN5GeDXGCt7laD+6l
+         tWNw==
+X-Forwarded-Encrypted: i=1; AJvYcCVdO79ABc3ZH0g8dtHLpOKYe2i2WkIpmnr18u1MyIP6cEgmm9p9YlWLZQXgGLDsVF+aOlY4Yeo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsVqDcxjphevVuZAzdPmj3HXHKQ8ncS/VVFcr55kaaK1oFy2Lq
+	rcNaWAcXLHQp2wtfJ7365Em54hCY0s5liHSbip2K//JahyWMtxsGqRwO0qnzdCTvxzwozRZoE9Z
+	lLU0ylQ==
+X-Received: from pgc10.prod.google.com ([2002:a05:6a02:2f8a:b0:b98:d6e8:a405])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6b0d:b0:394:594c:1ab6
+ with SMTP id adf61e73a8af0-39512210c2dmr614317637.59.1771456965343; Wed, 18
+ Feb 2026 15:22:45 -0800 (PST)
+Date: Wed, 18 Feb 2026 15:22:44 -0800
+In-Reply-To: <20260212230751.1871720-2-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/9] PCI: Avoid saving config space state in reset path
-To: Bjorn Helgaas <helgaas@kernel.org>, Keith Busch <kbusch@kernel.org>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, lukas@wunner.de, alex@shazbot.org,
-        clg@redhat.com, stable@vger.kernel.org, schnelle@linux.ibm.com,
-        mjrosato@linux.ibm.com, Bjorn Helgaas <bhelgaas@google.com>
-References: <20260218193503.GA3439585@bhelgaas>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <20260218193503.GA3439585@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: R-zAZZGlyn7ijtJNZX30CLw5PIxQHy8p
-X-Authority-Analysis: v=2.4 cv=Md9hep/f c=1 sm=1 tr=0 ts=699633cd cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=8CvCqfvxvhR63hKVNt4A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE4MDE4NiBTYWx0ZWRfXykNUAzxw6R8O
- ssKLo31bsSoI2+PF1APPrvtWQtYaYtZrwx3+ktbX797mxSGpK1RMuyGjaRPbRm54O9iSpYe9ncl
- kmgHqKI9AE2Av0KX/ayw7J1LITROdim8WL7hVfXWjIVdnkTK0LBFB2XqEalk9lf7FeKltrZZhQY
- rb0t6oU9Ngg/LBXGkpEZMtfewit5QabtDkCMjguSt3+uTCcQ2GtRNi5sbfxqcn+XN2YePCpCyI3
- RQcv1zvSITh+qPYPW4uKE1h0RG+TbSO3G5T7/Ylq+h7pJgc6/cA1DV+tNuU2DIBgF5YplmyQ637
- IsvQP4PPGcK8NHtt6xS3cfTF1ykgbYEIv8mxvWQZMFD4EhiY3tj1FJ/bYMPf0FktY9BBhU/dijY
- GjzUJld8m6xiDGASu5pnAlMhAcWtB8jf+ZKQ43tLKY9LCCFQNkeTh3xQqZaJr2nSfmFS3XX9GyY
- YpVafnidQP1eKHNI9jg==
-X-Proofpoint-GUID: zCdq0--Qjjlk7zGsubnFWkl3nsci3r7V
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-18_04,2026-02-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 spamscore=0 adultscore=0
- priorityscore=1501 suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602180186
+Mime-Version: 1.0
+References: <20260212230751.1871720-1-yosry.ahmed@linux.dev> <20260212230751.1871720-2-yosry.ahmed@linux.dev>
+Message-ID: <aZZJxDVK4ekHxaLb@google.com>
+Subject: Re: [RFC PATCH 1/5] KVM: nSVM: Do not use L2's RIP for vmcb02's
+ NextRIP after first L2 VMRUN
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-217328-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217327-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ibm.com:+]
-X-Rspamd-Queue-Id: 171D815A672
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: E231515AE91
 X-Rspamd-Action: no action
 
+On Thu, Feb 12, 2026, Yosry Ahmed wrote:
+> For guests with NRIPS disabled, L1 does not provide NextRIP when running
+> an L2 with an injected soft interrupt, instead it advances L2's RIP
+> before running it. KVM uses L2's RIP as the NextRIP in vmcb02 to emulate
 
-On 2/18/2026 11:35 AM, Bjorn Helgaas wrote:
-> On Wed, Feb 18, 2026 at 12:02:01PM -0700, Keith Busch wrote:
->> On Tue, Feb 17, 2026 at 11:55:43AM -0800, Farhan Ali wrote:
->>> Yes I think you are right, with this change the PCI Command
->>> register gets restored to state at enumeration. So we will lose
->>> the updated state after pci_clear_master() and
->>> pci_enable_device(). I think we can update the vfio driver to call
->>> pci_save_state() after pci_enable_device()?
->> Either that, or move the pci_enable_device() call to after the
->> function reset.
-> I kind of like the latter idea because it seems a little simpler for
-> the rule of thumb to be that a reset done by the PCI core returns the
-> device to the same state as when the driver first probed the device.
-> Drivers would generally not use pci_save_state() at all, and they
-> could share some initialization logic between probe and post-reset
-> recovery.
+Should "L2's RIP" be "vmcb12's RIP"?  The "L2's RIP" terminology gets really
+confusing in the next paragraph, as NextRIP _is_ L2's (Next)RIP.  Hmm, or maybe
+"current RIP"?  I.e. "current RIP" vs. "NextRIP"?
 
-I think the vfio-pci driver was intentionally doing the 
-pci_enable_device() before doing the reset. As per commit 9a92c5091a42 
-("vfio-pci: Enable device before attempting reset") it was done to 
-handle devices using PM reset, that were getting incorrectly identified 
-not supporting PM reset due to current state of the device not being D0. 
-It looks like pci_pm_reset() still returns -EINVAL if current power 
-state is not D0. So I think we can't move pci_enable_device() after 
-reset. Unless we want to update pci_pm_reset() to not use cached value 
-of current_state and read it directly from register?
+> a CPU without NRIPS.
+> 
+> However, after L2 runs the first time, NextRIP will be updated by the
+> CPU and/or KVM, and L2's RIP is no longer the correct value to use in
+> vmcb02. Hence, after save/restore, do not use L2's RIP if a nested run
+> is not pending (i.e. L2 has run at least once), use the NextRIP value.
 
-Thanks
+Too many negatives in this last sentence, it can just be (I think):
 
-Farhan
+  Hence, after save/restore, use the current RIP if and only if a nested
+  run is pending, otherwise use NextRIP.
 
+> Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> ---
+>  arch/x86/kvm/svm/nested.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index de90b104a0dd..eebbe00714e3 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -844,14 +844,18 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+>  	vmcb02->control.event_inj_err       = svm->nested.ctl.event_inj_err;
+>  
+>  	/*
+> -	 * next_rip is consumed on VMRUN as the return address pushed on the
+> +	 * NextRIP is consumed on VMRUN as the return address pushed on the
+>  	 * stack for injected soft exceptions/interrupts.  If nrips is exposed
+> -	 * to L1, take it verbatim from vmcb12.  If nrips is supported in
+> -	 * hardware but not exposed to L1, stuff the actual L2 RIP to emulate
+> -	 * what a nrips=0 CPU would do (L1 is responsible for advancing RIP
+> -	 * prior to injecting the event).
+> +	 * to L1, take it verbatim from vmcb12.
+> +	 *
+> +	 * If nrips is supported in hardware but not exposed to L1, stuff the
+> +	 * actual L2 RIP to emulate what a nrips=0 CPU would do (L1 is
+> +	 * responsible for advancing RIP prior to injecting the event). This is
+> +	 * only the case for the first L2 run after VMRUN. After that (e.g.
+> +	 * during save/restore), NextRIP is updated by the CPU and/or KVM, and
+> +	 * the value of the L2 RIP from vmcb12 should not be used.
+>  	 */
+> -	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) || !svm->nested.nested_run_pending)
 
->
-> But I would really like to have Lukas's take on this.  Clearly some
-> drivers would have to be adapted if we stop saving config space in the
-> PCI core reset path.  We can take care of that for upstream drivers,
-> but it seems risky for out-of-tree drivers.
->
-> Bjorn
+This is technically wrong since KVM doesn't require NRIPS.  Maybe this?
+
+	if (boot_cpu_has(X86_FEATURE_NRIPS)) {
+		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
+		    !svm->nested.nested_run_pending)
+			vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
+		else
+			vmcb02->control.next_rip    = vmcb12_rip;
+	}
+	
+
+>  		vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
+>  	else if (boot_cpu_has(X86_FEATURE_NRIPS))
+>  		vmcb02->control.next_rip    = vmcb12_rip;
+> -- 
+> 2.53.0.273.g2a3d683680-goog
+> 
 
