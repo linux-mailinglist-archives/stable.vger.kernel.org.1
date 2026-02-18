@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-217258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DgzEymclWnxSgIAu9opvQ
-	(envelope-from <stable+bounces-217258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:02:01 +0100
+	id eOocFySclWmsSgIAu9opvQ
+	(envelope-from <stable+bounces-217259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:01:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E560155C2E
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:02:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDEE155C20
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:01:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D27713047BF3
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 11:01:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8749830117E9
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 11:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549B73093B2;
-	Wed, 18 Feb 2026 11:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787A52FE560;
+	Wed, 18 Feb 2026 11:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAioAEop"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GDknwJ8H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187232989B7
-	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 11:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2642989B7
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 11:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771412500; cv=none; b=mVaiN7uUBnWLfhlrhyJXc5jWI248oMTaxafOPw+8tJBqApdxT6Es/37dX16FwG0l5X8/XXoPGq+R6dzRJ1+erfcIzjqvlD8ccPcTxKhy7LvDJxThoAw3itcjFC7asnrr4W8Cbhyitj4BA4U90apBPPNirboZskxd05jlKpUcCUw=
+	t=1771412503; cv=none; b=ejGcxtC48Y/C4kA7Zw0HJDlCIslQL4U06XQyYx/7h5XgtCUAt5+Gga6lFtMMM5aMShSVQ9IpPccbL32i/qs001RcZ2a2Xhxc3WckiB/pjLaVkqAFirt5ccteGKVHPZJsVk5H4JYlSDKWmsvKmwT2BpfLyMoMA8drA6H88yFtu48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771412500; c=relaxed/simple;
-	bh=8tgzchpV8d+z0g8pxmYh3QpOKC5UJ4tOe/CguvbW/eI=;
+	s=arc-20240116; t=1771412503; c=relaxed/simple;
+	bh=At1F7reDT+xPZZHxkhFsCwDp5yvuWAQ6KFfw4mUuytU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5EB1EdK00rW+DP7kbedBkNhwCTsZ3216uazy22TleBQFX7w7d01jJM0/8018HcezU/Wl6KiaGGoNLqQ3cvEPEd2Nuj4xDoCRXXwC2KB7oIEKTAKNlYiaxVTspAz/pt+Z46wIu8BFFpdM+jVqrbcAua71ql89KkT0pmpEXwzWwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAioAEop; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2054C19425;
-	Wed, 18 Feb 2026 11:01:37 +0000 (UTC)
+	 MIME-Version; b=nDZsx00HxZPRghEDLMfLFISCmQ4CeeH4O7lGWdGNeimBNJ9VguaxF7mzDpfsEBI5frFeB7+1gf/bc5o7wlIZirgufB82yNZ7msDjYAE+1gxAHRcnA0JPChn/wUBxab1b/fEoH+A2xtqFpIrgqce6pgTVDMqEK5Pa9C0P4hk14/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GDknwJ8H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367C3C19423;
+	Wed, 18 Feb 2026 11:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771412499;
-	bh=8tgzchpV8d+z0g8pxmYh3QpOKC5UJ4tOe/CguvbW/eI=;
+	s=k20201202; t=1771412502;
+	bh=At1F7reDT+xPZZHxkhFsCwDp5yvuWAQ6KFfw4mUuytU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAioAEop8PvlX0aN+H42ku2aA/91uZ2+X+OFiD+gYB5KrXphyNuGFEql8U2CwZOOB
-	 xuDvlffJvNe2ESHvIOx+y3/rQYcUgowkbQAKb5MZR0zrsQ0xLx+RJ0uYtc7YM33sU3
-	 Nmg8/DJkF4EeJrXBxBnnF1eStxDnlRMdeFAYzOhKdjFAZN6jVGcy6pWnGBpj2GDZPf
-	 w5mvZH55aMxuuVUqqjTycLCq6VPgMy3KFl06H8ebVxprQCYtZgBTILT+We6sXy0O6J
-	 /wot86el/wnhkbKFYJl2P90TKpXscqWgpJ8tZzlGKaNjTX73ODe094Q+C1ww80GmPO
-	 u077j2bqbpK5Q==
+	b=GDknwJ8HcRhOqT37R1NBcIhBpefZ/P+to6KKEA0paxo4VkGwimSYx6qTHkolCsohC
+	 WfJ4LYZ3vXPe9GWTBsMwzhjT1cRS50S1uKI0v5yAh50szYhQjQktb8rdVW7ytpKW5t
+	 2VVpNkWG0xC0V/O9n/B5DeAoFVBI5tc+0mbQ/QBjp3AIpVSWC/emdHV1BxkFVa++O5
+	 TF13GzxzY0n+C7FtMsmHNNmVxhUW/dMiSYVxmyvhMM+sEbLvKYY8/M7kKk79WmUQe+
+	 S7NMZKVQwTzeLHeLng7U8TdG8rd6gxsaVhRL8sMhWErrQrfIVgd3zXKGX2AivGUook
+	 QBWCnRTHIy8Wg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: stable@vger.kernel.org
 Cc: linux-mm@kvack.org,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <songmuchun@bytedance.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
-Subject: [PATCH 5.15.y 1/6] mm/hugetlb: make detecting shared pte more reliable
-Date: Wed, 18 Feb 2026 12:01:24 +0100
-Message-ID: <20260218110129.41578-2-david@kernel.org>
+Subject: [PATCH 5.15.y 2/6] mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
+Date: Wed, 18 Feb 2026 12:01:25 +0100
+Message-ID: <20260218110129.41578-3-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260218110129.41578-1-david@kernel.org>
 References: <2026012608-tulip-moisten-c6f6@gregkh>
@@ -68,117 +71,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kvack.org,huawei.com,gmail.com,oracle.com,bytedance.com,linux-foundation.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217258-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217259-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8E560155C2E
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:email,suse.de:email,huawei.com:email]
+X-Rspamd-Queue-Id: 9EDEE155C20
 X-Rspamd-Action: no action
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Jane Chu <jane.chu@oracle.com>
 
-If the pagetables are shared, we shouldn't copy or take references.  Since
-src could have unshared and dst shares with another vma, huge_pte_none()
-is thus used to determine whether dst_pte is shared.  But this check isn't
-reliable.  A shared pte could have pte none in pagetable in fact.  The
-page count of ptep page should be checked here in order to reliably
-determine whether pte is shared.
+commit 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared
+count") introduced ->pt_share_count dedicated to hugetlb PMD share count
+tracking, but omitted fixing copy_hugetlb_page_range(), leaving the
+function relying on page_count() for tracking that no longer works.
 
-[lukas.bulwahn@gmail.com: remove unused local variable dst_entry in copy_hugetlb_page_range()]
-  Link: https://lkml.kernel.org/r/20220822082525.26071-1-lukas.bulwahn@gmail.com
-Link: https://lkml.kernel.org/r/20220816130553.31406-7-linmiaohe@huawei.com
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
+When lazy page table copy for hugetlb is disabled, that is, revert commit
+bcd51a3c679d ("hugetlb: lazy page table copies in fork()") fork()'ing with
+hugetlb PMD sharing quickly lockup -
+
+[  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
+[  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
+[  239.446631] Call Trace:
+[  239.446633]  <TASK>
+[  239.446636]  _raw_spin_lock+0x3f/0x60
+[  239.446639]  copy_hugetlb_page_range+0x258/0xb50
+[  239.446645]  copy_page_range+0x22b/0x2c0
+[  239.446651]  dup_mmap+0x3e2/0x770
+[  239.446654]  dup_mm.constprop.0+0x5e/0x230
+[  239.446657]  copy_process+0xd17/0x1760
+[  239.446660]  kernel_clone+0xc0/0x3e0
+[  239.446661]  __do_sys_clone+0x65/0xa0
+[  239.446664]  do_syscall_64+0x82/0x930
+[  239.446668]  ? count_memcg_events+0xd2/0x190
+[  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
+[  239.446676]  ? syscall_exit_work+0x118/0x150
+[  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
+[  239.446681]  ? clear_bhb_loop+0x30/0x80
+[  239.446684]  ? clear_bhb_loop+0x30/0x80
+[  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+There are two options to resolve the potential latent issue:
+  1. warn against PMD sharing in copy_hugetlb_page_range(),
+  2. fix it.
+This patch opts for the second option.
+While at it, simplify the comment, the details are not actually relevant
+anymore.
+
+Link: https://lkml.kernel.org/r/20250916004520.1604530-1-jane.chu@oracle.com
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 3aa4ed8040e1535d95c03cef8b52cf11bf0d8546)
+(cherry picked from commit 14967a9c7d247841b0312c48dcf8cd29e55a4cc8)
+[ David: We don't have ptdesc and the wrappers, so work directly on the
+  page->pt_share_count. CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING is still
+  called CONFIG_ARCH_WANT_HUGE_PMD_SHARE. ]
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/hugetlb.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ mm/hugetlb.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 70ceac102a8d..c0719ece2b7f 100644
+index c0719ece2b7f..8268943e05eb 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -4304,7 +4304,7 @@ hugetlb_install_page(struct vm_area_struct *vma, pte_t *ptep, unsigned long addr
- int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 			    struct vm_area_struct *vma)
- {
--	pte_t *src_pte, *dst_pte, entry, dst_entry;
-+	pte_t *src_pte, *dst_pte, entry;
- 	struct page *ptepage;
- 	unsigned long addr;
- 	bool cow = is_cow_mapping(vma->vm_flags);
-@@ -4343,28 +4343,23 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+@@ -4341,16 +4341,11 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 			break;
+ 		}
  
- 		/*
- 		 * If the pagetables are shared don't copy or take references.
+-		/*
+-		 * If the pagetables are shared don't copy or take references.
+-		 *
 -		 * dst_pte == src_pte is the common case of src/dest sharing.
- 		 *
-+		 * dst_pte == src_pte is the common case of src/dest sharing.
- 		 * However, src could have 'unshared' and dst shares with
--		 * another vma.  If dst_pte !none, this implies sharing.
--		 * Check here before taking page table lock, and once again
--		 * after taking the lock below.
-+		 * another vma. So page_count of ptep page is checked instead
-+		 * to reliably determine whether pte is shared.
- 		 */
--		dst_entry = huge_ptep_get(dst_pte);
--		if ((dst_pte == src_pte) || !huge_pte_none(dst_entry))
-+		if (page_count(virt_to_page(dst_pte)) > 1)
+-		 * However, src could have 'unshared' and dst shares with
+-		 * another vma. So page_count of ptep page is checked instead
+-		 * to reliably determine whether pte is shared.
+-		 */
+-		if (page_count(virt_to_page(dst_pte)) > 1)
++#ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
++		/* If the pagetables are shared, there is nothing to do */
++		if (atomic_read(&virt_to_page(dst_pte)->pt_share_count))
  			continue;
++#endif
  
  		dst_ptl = huge_pte_lock(h, dst, dst_pte);
  		src_ptl = huge_pte_lockptr(h, src, src_pte);
- 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
- 		entry = huge_ptep_get(src_pte);
--		dst_entry = huge_ptep_get(dst_pte);
- again:
--		if (huge_pte_none(entry) || !huge_pte_none(dst_entry)) {
-+		if (huge_pte_none(entry)) {
- 			/*
--			 * Skip if src entry none.  Also, skip in the
--			 * unlikely case dst entry !none as this implies
--			 * sharing with another vma.
-+			 * Skip if src entry none.
- 			 */
- 			;
- 		} else if (unlikely(is_hugetlb_entry_migration(entry) ||
-@@ -4423,7 +4418,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 					restore_reserve_on_error(h, vma, addr,
- 								new);
- 					put_page(new);
--					/* dst_entry won't change as in child */
-+					/* huge_ptep of dst_pte won't change as in child */
- 					goto again;
- 				}
- 				hugetlb_install_page(vma, dst_pte, addr, new);
 -- 
 2.43.0
 
