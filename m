@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-217219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id pqDZGrlolWm2QgIAu9opvQ
-	(envelope-from <stable+bounces-217219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:22:33 +0100
+	id iLEzAbxolWm2QgIAu9opvQ
+	(envelope-from <stable+bounces-217220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:22:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B6B153A2D
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:22:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94ACA153A42
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 39F443006D76
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 07:22:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DE5D3015C83
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 07:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36111309DC5;
-	Wed, 18 Feb 2026 07:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38BE309DC5;
+	Wed, 18 Feb 2026 07:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aybvzdrJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T0spdZjC"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF22829994B
-	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 07:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773F33093BF
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 07:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771399348; cv=none; b=n4tcHj+2Onmq2vslA4k15IMecj8t6IXq3zAcm+nAgkZMhJetacf7MlIxA89/V3tZ+C55YF1C+SJiNpVn8wgFfo9W6ksngxvtbFdXQKFe58vapeMY16aXCi6rovID5oisuNjBdIbUh2pIsw6ycUV6KaWGoYp16ItAmXX4yRL+UgA=
+	t=1771399352; cv=none; b=SucopZLUfgPWU5E1CURNg+wXB+/58cyFeRbGNOgGlYewx5dOKtNrKTP5oT3fMlnwu9th3P4DGh7N24R328sDLUynKrOetHxLVTHM7VHUoCUcYkOdQkcRwWRi9JofXVfYq/W3diFgezPjR+EIHqYoIhi0oT2u6Zmd2qSMhYuKJEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771399348; c=relaxed/simple;
-	bh=S2fo0Xdvl8AoJRIa6sGYzPFDBwSqzeEMvC1EzeI1hkE=;
+	s=arc-20240116; t=1771399352; c=relaxed/simple;
+	bh=MLq4MrXZFepM8181YTs+GRl6oXIi+u2CPpRSLMbsieI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J7Z6ZfNwUvo5fUilAgGZuhrNweHmIrtEqyGco7iEUaWtMOh5QPbyoFA33Vz2YejTHrRn8VRl47Kk12ySOWnk6L6/ySvlteVXWhhtED6wKDmO74UFMjBKrllLAniowMDB1oR4ro6Moyrphc8mSb5/ZN3fWEWVkO6eblA6R7aMMvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aybvzdrJ; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=rXKi+Q8FNUbO2w8uApyL4DWrl+/Y2iWoo2LoM3AF3b8OHyJnQIByXFZtylgMYWfjN/3hSLiy4SquqD+OKiGBaKW8KChEsxFVYjCsDe3IDO0whHu5HbvH3q3997MyERxCM9ATWIDWyLPTvK+PhhUi6DrdXT8Tnrrum/ERSuwMGEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T0spdZjC; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771399348; x=1802935348;
+  t=1771399352; x=1802935352;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=S2fo0Xdvl8AoJRIa6sGYzPFDBwSqzeEMvC1EzeI1hkE=;
-  b=aybvzdrJ6kPIJLoi9dCKjiHkhW9CLDAW6DOiBmY2ABVozk4qh/TYPQaa
-   sZR8V4cJMKmhpZw7oHP4mecP9FukpU4a7oz830tbTKoV0eaw9io0IbxdV
-   jDUu8ibk4xr1a50NM1BmZtYkMJM8cRsLkpUNDCsuOUThBglDKJUQgnm1r
-   ukTB42cw2RSKB1VOybEMwSLdnwMCm+wWsT2jFmzHNz6NNMcuKuwmN0QwN
-   tnjYTcP3iFsR29ZzxrqudS94ftFV8ph0dZEZ8L2QPqw5qWBPAvMVMDZnD
-   ENlcNyKx4f61N+kUOoixsEXth+1GtodGiuGtCb8BsqrkFETRasw2vqLzB
-   Q==;
-X-CSE-ConnectionGUID: H/7nEFvkQLOP+N/5QWerSA==
-X-CSE-MsgGUID: YtrekC67Q/iQIaGMY4czbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="72519039"
+  bh=MLq4MrXZFepM8181YTs+GRl6oXIi+u2CPpRSLMbsieI=;
+  b=T0spdZjCqEQm/QY/0EZgvtduz2aojaYOFZ9kghwKYXD0Dmd2yN6wP+9I
+   VYrXJIkmeoAuHNKu60Sl2EUasQOOP8zwrMhCOT0Rg+IH0h3fJ/P/ASmMN
+   ZpvdQqQEh5wUcfiuy47EhOKwf4LhWYdDXYNdwHZN9xWJt0qeLGxdZsnZA
+   9Pa1dwCjSS2fN6yR5vrkdMB93bU1ubUGY0X/BxHBwAzo/MF9Ss2C1upuu
+   vgu82LfDNwc7mXM9MXr5XR+b8o486XMQyU7wPEfXsckd+FiOnCYTzG+r5
+   n96Kgi50pFTZPbL74YKLbQHxqFVr4knPIhM0eyW2bTmRqdFsmp8edSox1
+   g==;
+X-CSE-ConnectionGUID: wDbfX7VOR+O1UcfRskB+Ug==
+X-CSE-MsgGUID: 7u/EwaYzT9qxAB2ZjOlShQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="72519047"
 X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
-   d="scan'208";a="72519039"
+   d="scan'208";a="72519047"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 23:22:27 -0800
-X-CSE-ConnectionGUID: qwrYAf25Qk6NQkA7+Umg3A==
-X-CSE-MsgGUID: S7KM8cbHTMqGGA1X3RMQ6w==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 23:22:32 -0800
+X-CSE-ConnectionGUID: AEUHbYIqR5GLUL6Tk7xDmw==
+X-CSE-MsgGUID: 7qfj6d3GTdmoetzxLYy4+A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
-   d="scan'208";a="213208226"
+   d="scan'208";a="213208229"
 Received: from dut-2a59.iind.intel.com ([10.190.239.113])
-  by orviesa006.jf.intel.com with ESMTP; 17 Feb 2026 23:22:23 -0800
+  by orviesa006.jf.intel.com with ESMTP; 17 Feb 2026 23:22:27 -0800
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: dri-devel@lists.freedesktop.org,
 	intel-gfx@lists.freedesktop.org,
@@ -78,9 +78,9 @@ Cc: contact@emersion.fr,
 	louis.chauvet@bootlin.com,
 	stable@vger.kernel.org,
 	chaitanya.kumar.borah@intel.com
-Subject: [PATCH 1/2] drm/colorop: Preserve bypass value in duplicate_state()
-Date: Wed, 18 Feb 2026 12:27:12 +0530
-Message-Id: <20260218065713.326417-2-chaitanya.kumar.borah@intel.com>
+Subject: [PATCH 2/2] drm/atomic: Add affected colorops with affected planes
+Date: Wed, 18 Feb 2026 12:27:13 +0530
+Message-Id: <20260218065713.326417-3-chaitanya.kumar.borah@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260218065713.326417-1-chaitanya.kumar.borah@intel.com>
 References: <20260218065713.326417-1-chaitanya.kumar.borah@intel.com>
@@ -98,11 +98,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217219-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217220-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -114,45 +114,51 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_NONE(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_TWELVE(0.00)[16];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 91B6B153A2D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 94ACA153A42
 X-Rspamd-Action: no action
 
-__drm_atomic_helper_colorop_duplicate_state() unconditionally
-sets state->bypass = true after copying the existing state.
+When drm_atomic_add_affected_planes() adds a plane to the atomic
+state, the associated colorops are not guaranteed to be included.
+This can leave colorop state out of the transaction when planes
+are pulled in implicitly (eg. during modeset or internal commits).
 
-This override causes the new atomic state to no longer reflect
-the currently committed hardware state. Since the bypass property
-directly controls whether the colorop is active in hardware,
-resetting it to true can inadvertently disable an active colorop
-during a subsequent commit, particularly for internal driver commits
-where userspace does not touch the property.
+Also add affected colorops when adding affected planes to keep
+plane and color pipeline state consistent within the atomic
+transaction.
 
-Drop the unconditional assignment and preserve the duplicated
-bypass value.
-
-Fixes: 8c5ea1745f4c ("drm/colorop: Add BYPASS property")
+Fixes: 2afc3184f3b3 ("drm/plane: Add COLOR PIPELINE property")
 Cc: <stable@vger.kernel.org> #v6.19+
 Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 ---
- drivers/gpu/drm/drm_colorop.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/drm_atomic.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_colorop.c b/drivers/gpu/drm/drm_colorop.c
-index aa19de769eb2..5037efcc3497 100644
---- a/drivers/gpu/drm/drm_colorop.c
-+++ b/drivers/gpu/drm/drm_colorop.c
-@@ -466,8 +466,6 @@ static void __drm_atomic_helper_colorop_duplicate_state(struct drm_colorop *colo
+diff --git a/drivers/gpu/drm/drm_atomic.c b/drivers/gpu/drm/drm_atomic.c
+index e3029c8f02e5..8bcd76aaeb6a 100644
+--- a/drivers/gpu/drm/drm_atomic.c
++++ b/drivers/gpu/drm/drm_atomic.c
+@@ -1588,6 +1588,7 @@ drm_atomic_add_affected_planes(struct drm_atomic_state *state,
+ 	const struct drm_crtc_state *old_crtc_state =
+ 		drm_atomic_get_old_crtc_state(state, crtc);
+ 	struct drm_plane *plane;
++	int ret;
  
- 	if (state->data)
- 		drm_property_blob_get(state->data);
--
--	state->bypass = true;
+ 	WARN_ON(!drm_atomic_get_new_crtc_state(state, crtc));
+ 
+@@ -1601,6 +1602,10 @@ drm_atomic_add_affected_planes(struct drm_atomic_state *state,
+ 
+ 		if (IS_ERR(plane_state))
+ 			return PTR_ERR(plane_state);
++
++		ret = drm_atomic_add_affected_colorops(state, plane);
++		if (ret)
++			return ret;
+ 	}
+ 	return 0;
  }
- 
- struct drm_colorop_state *
 -- 
 2.25.1
 
