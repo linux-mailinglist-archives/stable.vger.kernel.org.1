@@ -1,131 +1,168 @@
-Return-Path: <stable+bounces-217264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPTiNCellWn4SwIAu9opvQ
-	(envelope-from <stable+bounces-217264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:40:23 +0100
+	id aDoMGmaolWnXTAIAu9opvQ
+	(envelope-from <stable+bounces-217265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:54:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51107155F2A
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:40:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DAC15621D
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE1C03009B0C
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 11:40:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0182B3058309
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 11:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACFD30DD13;
-	Wed, 18 Feb 2026 11:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8074730F95B;
+	Wed, 18 Feb 2026 11:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WZXmMOnh"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XLEDPgHH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEF52DCC1F;
-	Wed, 18 Feb 2026 11:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C5330F553
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 11:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771414821; cv=none; b=u3fWptq4SuteP8cbj2IZOKefF8XhZG7h2Vj8+jXp8R8b6MzCe9Xy06dQ1cgo7O1FZJcAvwoh4Xmpsl8pNhW0psIuzTABJ2qwLELvj0FUOayhdQ2BKgIdeFR4neloQIjv2CzYupOf7BXMeMI4aSvVGr1tMICF71y4MTgIs1+vjvg=
+	t=1771415627; cv=none; b=aP7puyz99tmejDYNzV3KrYmDC9DhSOjL2/40Uqa1vCvB5xCQs1hpE4pa3woWzoKwtiIH5ZPHn3yKQGGNGT6hfi54CunmUNYZrvSEUzx+5b0yRwttxeloTIx6SNnSNrBvLMAgaYXbdeBTE3QmcEvFWZ8igrZohQwpIxjGDSeK6C0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771414821; c=relaxed/simple;
-	bh=BQgQ5qLcYRi5LRHIlERVsxvN/FlZDTYpWB9Pj5yLa4g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EDP35ZVcn0kpT7km2THM/oUuO3XvzVCzGKya1+JdunCnZmQp7fPJ3HjqPm7LXXuiB7FxcGTw294+w6FBqnXtLrksm8HhMIR9Xtx+fav0rXQriqObgJdQto6CEGM1wxngUIvxy/ppCh0Iy6wmYDrJNSlTKAXyvsYL75U0rIjLgxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WZXmMOnh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546E8C19421;
-	Wed, 18 Feb 2026 11:40:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771414820;
-	bh=BQgQ5qLcYRi5LRHIlERVsxvN/FlZDTYpWB9Pj5yLa4g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WZXmMOnhGmQY3yxEabwFwAx/y3CLnodIIK6t+RhjndlM0qulzYz8rLa/ZCV4S+GRT
-	 7/E8suac3OysjGAaFSV/g4JcBqai4rD9OCL78E7BnozONmWR2owdso7ToEaJ5uGhXY
-	 zgKVWN+bYLOKjKqEpCm8K9kc5QwxgmLercgCjQ9S49ZbNCOAAvRxbZH4Q/4TZyjkiH
-	 S+w0Eo+8MdFvwtbw/AQkZmwKfm0wK8YVeWaGnj2l+duC+GDwf1X3U+Nb8zJSSkTQK9
-	 mfotRNaf5lqxDrAvzQfaeT5QnbxIbtsFrU4MpFDb5l7SCeHsMHSzeVv1v5BCjJtqxo
-	 fkwyGNTsbQ5Qg==
-Date: Wed, 18 Feb 2026 11:40:14 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.19 00/18] 6.19.3-rc1 review
-Message-ID: <c63f4882-1853-4e10-9f9f-129d60d61421@sirena.org.uk>
-References: <20260217200002.683975158@linuxfoundation.org>
+	s=arc-20240116; t=1771415627; c=relaxed/simple;
+	bh=midTfKHBQR4+V9ov+ZGnHBfc/KST2dfDvfMiMRqYAuY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sypwRKvYZ/rLs0lO0WpEa9CJhKnorjGPXKuidRkZFovwQ1naOMJDDdYcfA7JDUs4DJ//o4h0U/UpkbnJ59LFM/QaCDNP2fJRHnDMb9vmYS7B+VOus6RZkTQZmw2ZSi9ZSYzwA1kHGu7CaLEVmdIESLkYOew3e1jMzn3dzBsHYyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XLEDPgHH; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4803e8b6007so44452105e9.0
+        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 03:53:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771415623; x=1772020423; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jabDmLqCWECXnNK4LiTet3HnR07/Mdte6Ju6ZynhZhU=;
+        b=XLEDPgHHR4eZi/hsSkV9udE5avXFpwjiARuHKwAMYa0OzCJzWfeq8E/CImQhxqc1KH
+         0acImqppaKJj0I2KCze91Ocos47KAw8gEjN4jKY9CgoqhHxflK7Ot2XlVdS33KgJnphG
+         lp+jHwgkAgl/uxut1Lq4M6uQ25nydO3Pn5pusm88uwD0j6ZLbYbcPzLtRytthi7huot9
+         qvPYhNcVFFux1GmUJtkgELMxzz1aNCLVzyjRNN/pOo4zpUAddLa30TY0DgXRjneJI2Jv
+         nb27Enveag3EN+wbuTiESszPwqAKTGEdPzkxwv/2rkxN7LpP2wvRg3lD3IydmCdZZ06k
+         g7Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771415623; x=1772020423;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jabDmLqCWECXnNK4LiTet3HnR07/Mdte6Ju6ZynhZhU=;
+        b=OD1T33um3mDS6v9l+BbvXZV9RuMjcvWhyZ5oRVUZ5L0o1dO1o/cISAuTKGWDJmvo6y
+         SfCVYoUfO21taiWd6RdzdomKo/Ax8uE/cBc5zrth+KKwh8LwgWwF+JUqUB+UVY3SonWW
+         +o61ucOx293gtPObK/zcgdAevNz9sIAlCUrn2RCsr5mpT5Hk31l2Q3m77Xzzj3h02Mt0
+         iP+7qJV/WlykA2GX1xwQC+IlhMYlPshogcjOzlO8dPFN93mjyphG0WTUtifiBqQ0XACM
+         2oQEE7brrvYHKleP/1ftM2dxIFvVrT9YoT26/axWKsTQ+TdF9vcz1SS55yeLBru7H5Zl
+         /21w==
+X-Forwarded-Encrypted: i=1; AJvYcCX/h1kx9FSgx1sTlli+LmSal5j0r1UoBuczuuXAYOJtJKXBI+jPdAv2M42nUwWiseK+bjol5js=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAVgmLeIw3he6SJI8SYOftLVpDD2pcvwd/G+2KMKKRCgT7tjzf
+	SfPwX/omwwzJq9Hd8BEgt9jcsQymGvsBZn7/xtUAx5wNWYj/4vM1MbBnR49DZcziI84DXFlYW7R
+	oUbm8uB0HC/INgWkYGg==
+X-Received: from wmkz14.prod.google.com ([2002:a7b:c7ce:0:b0:480:46d7:9c4e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8b77:b0:483:6d4e:9811 with SMTP id 5b1f17b1804b1-48398ae6736mr34831615e9.31.1771415623348;
+ Wed, 18 Feb 2026 03:53:43 -0800 (PST)
+Date: Wed, 18 Feb 2026 11:53:25 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ZrLDxUzRS/7FZ8MR"
-Content-Disposition: inline
-In-Reply-To: <20260217200002.683975158@linuxfoundation.org>
-X-Cookie: They just buzzed and buzzed...buzzed.
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIADaolWkC/32NQQrCMBBFr1Jm7UgzSqKuvId0kaTTdtA2kkhQS
+ u5u7AFcvgf//RUSR+EEl2aFyFmShKUC7Rrwk11GRukrA7WkW1IGnSw9R8yzRT+xv6PTg7dH4vN Je6izZ+RB3lvy1lWeJL1C/GwPWf3sn1hW2KKy5A5mMM5ouo4hjA/e+zBDV0r5AqSRwEOxAAAA
+X-Change-Id: 20260217-binder-vma-check-b6fca42e986c
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1043; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=midTfKHBQR4+V9ov+ZGnHBfc/KST2dfDvfMiMRqYAuY=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplag6e4SnfP5Lm6TFw/Rn7c9jU60pUWbZGgoRG
+ eiJ3ogJMByJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZWoOgAKCRAEWL7uWMY5
+ RgX1D/sFWg5zD0sy5I1A49njTIky+VabjigVV7dwODVE083PmcgpYC+86lQTWYCw1ykaZU1ThIk
+ dwSruKbdJw1CGF0UrsBboCdupwT4qNJreAWqwk+/yYLRwRssqxokhI55Wl5gI+0NoxbnL0NMJVC
+ BhKOwHD+9lCaLdqHhf0gIEW5PBbdsktewAAbejBGEYth19DdAl5goD8ACw/LzFuU62gkQPXif5/
+ d2xpP3IHAJuMRAfzx6G77lPnZ718g+yW5WHHy80/rI5wRivDvCnua5ChxAORQPeruSxvuacEBVB
+ +dQxy47+EE46hsaX+kihSkcJSA1wcAcJzNqsKnCv219waPh4bzxsGRmKwpG1jZQneWu1relVtyQ
+ 7nzzJY8DF1absFKxu55m4eu5FtByKoBPIoYk91GIS9CgK5LlRnDg5+Nd7MOteEBR6aLU6wkEJbS
+ iU6meSuXAaf5Ei/EaPYG/xuMa/QzCBiFMrxpUJO5PRw3R62iFOq/tsRLbgu219aYet4Wwr1AUvk
+ tf2lcu6DJQH5CHD797OAbrXMWRaE5w0manWX+ivKpL+fzdAB/kc+fZEhLuRIkrCmqdnqeNyDAtU
+ dsUnKt2LDGqqAoMsAevJlgIqH+8DXwKxXRdeHAqNRz9A3h6u82aFNmHJZjxVTcZalbhczkLpdsf E5l0/YzkV8YDchA==
+X-Mailer: b4 0.14.2
+Message-ID: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
+Subject: [PATCH v2 0/2] Fix VMA confusion in Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Jann Horn <jannh@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
+	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217265-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217264-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,umich.edu,oracle.com,vger.kernel.org,kvack.org,google.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 51107155F2A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 20DAC15621D
 X-Rspamd-Action: no action
 
+This series contains two bugfixes for Rust Binder. I'd like to follow
+them up with better solutions by changing the VMA api, but as an
+immediate fix this should work.
 
---ZrLDxUzRS/7FZ8MR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+See the first commit for an explanation of the actual bug.
 
-On Tue, Feb 17, 2026 at 09:31:56PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.19.3 release.
-> There are 18 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Use imperative mood.
+- Add some comments about why reuse of ShrinkablePageRange is not a
+  problem.
+- Use ptr::from_ref()
+- Rustfmt
+- Link to v1: https://lore.kernel.org/r/20260217-binder-vma-check-v1-0-1a2b37f7b762@google.com
 
-Tested-by: Mark Brown <broonie@kernel.org>
+---
+Alice Ryhl (2):
+      rust_binder: check ownership before using vma
+      rust_binder: avoid reading the written value in offsets array
 
---ZrLDxUzRS/7FZ8MR
-Content-Type: application/pgp-signature; name="signature.asc"
+ drivers/android/binder/page_range.rs | 83 +++++++++++++++++++++++++++---------
+ drivers/android/binder/thread.rs     | 17 +++-----
+ 2 files changed, 69 insertions(+), 31 deletions(-)
+---
+base-commit: 0f2acd3148e0ef42bdacbd477f90e8533f96b2ac
+change-id: 20260217-binder-vma-check-b6fca42e986c
 
------BEGIN PGP SIGNATURE-----
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmVpR0ACgkQJNaLcl1U
-h9C/bgf9Em/GAa+esLQ7xI7YQ+7ntKkq0zwaFARFLiUFtMqIZ6x6jApe2P74U5Ib
-3KCnydfZSPyTzO/yw4bxZomaIms2S+cfFQ8TnMaOCfmD7JdxIsS+siiIt8Jow8HV
-RzQ6kdpdDT7cGZoOBiDSiyxo9GpKerjpp54xMl0M2vm0TNE9JDxqextMD2EWdYnk
-CHoy6jhRXrSXkHld3XWzSwpzCekDUXtPZ4eibmqeM96ZJjXGatNcG59L58KrilQG
-bWyIDpzBUjbZCU5nwshy/fBaal+e+P5zFfa092Mj6q8+3IJqJUUK1My0iYMVVRVj
-gSwcGtIVfpBK2A6gLoZlln/Pq1wWpQ==
-=qtDy
------END PGP SIGNATURE-----
-
---ZrLDxUzRS/7FZ8MR--
 
