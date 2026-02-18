@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-217222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGBHGB9wlWmgRAIAu9opvQ
-	(envelope-from <stable+bounces-217222-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:54:07 +0100
+	id oPi8MeZxlWn8RQIAu9opvQ
+	(envelope-from <stable+bounces-217223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 09:01:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2B7153CBE
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:54:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 705A2153D3A
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 09:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF6F53016C93
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 07:53:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BDE733008D4E
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 08:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F23231062D;
-	Wed, 18 Feb 2026 07:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F9F309DA1;
+	Wed, 18 Feb 2026 08:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5VgBRLS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mak/MiUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BC630EF6A;
-	Wed, 18 Feb 2026 07:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342BF2857F0;
+	Wed, 18 Feb 2026 08:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771401199; cv=none; b=jj/kEVxjD7ogTvZ6bKNh6hgS/u0EE555k6T2RsP6NaYX818tMUjV+e2hhRcklZ0RDzpzB7TFtkLwtNwwEt9ZPQsonDEekYVmX55GwUNVmILYSl0eixTBU2J6z0/z2v6D0xkgB5A1NEKe+Fe6nMnGbGabowoXzB/bqYYBrLCgfgI=
+	t=1771401700; cv=none; b=pffANpq259vIjXLgac4NadV6ZHye/u/DTBYXmR6gN/h/9aRK/WgM3izYZG3QE0jP8x2wPeXNDY7AASlhUoMpmgwnQiAiH+DDtTWZQWVY2pWviY6ZctVWHXoUvmVyVaCN83c0AYTgKzXM7nrH40msJmBY55n1GfH3DeXZKj+xbTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771401199; c=relaxed/simple;
-	bh=x/iXEo4UiJ1skVbbS30nZ9Rxy3wTN5EfpMSD8FTyZm4=;
+	s=arc-20240116; t=1771401700; c=relaxed/simple;
+	bh=8adjUiJs+jIyBTxznrgbvF6vxedp6JPQT1xLEZRiOgg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E1WzXMcsGFBjpLn22sSoHjwxPHmV/lMBiQTxyW6i0P/OfTJ6RGeV24ctlqNoN24qiyP5dAP/URy9KB0yI+C1gNYMWPZTxytsjxfGHCNy6FEJPMUb0BpNUFHApsAE4fOiGP6+DeLM0HW75y9U0dOrPHzqkv6g6qmtvmYt8nXRXj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5VgBRLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F13C19421;
-	Wed, 18 Feb 2026 07:53:16 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=DKFZ3hU94JW8GTp/Ydkrrcuj7t2qy4ACst71pgBu1ROSaS0xaS72FxXg9Rt3pU85s+EPC6rOBHYDHkIXcndVXDI5deYqY1852VLQt2FZT9FzvDhCuagDDV7GkVvP3nybDZmUreQNU3kd2xDMvmFfWcD5PjttLgmzQdMqc/gVvJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mak/MiUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D7EC19421;
+	Wed, 18 Feb 2026 08:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771401198;
-	bh=x/iXEo4UiJ1skVbbS30nZ9Rxy3wTN5EfpMSD8FTyZm4=;
+	s=k20201202; t=1771401699;
+	bh=8adjUiJs+jIyBTxznrgbvF6vxedp6JPQT1xLEZRiOgg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=A5VgBRLS7qUh1f6Qaraszl8V6QgyyoxDbei3NIueJsMmBz4zIqzr2NbtjILNVXAcK
-	 op55rvHk1zDId3WrK/OycvLnQd4xMvqXRslpvTvUclOSAkugt+CXGm3ESoujjSQlUQ
-	 PbPcGKMrVOwHjg/5yTzLCV8Z0ync3NlrprhQb9e6vpDjGAP3pBgBSufSk3MSJzgdys
-	 3kxyQ81UJSyoBlzt5FhMnK8GYmyZ0hGghII6KB8Spi2Yg+jdk3MRCC70MWCCy/GLfK
-	 w+f7A/BUF9bdbNLTjjniFeNJjgWhiBx1cplt338VkESX8FyhmAyCkQxbbySxx2ZN3m
-	 pfK1j9MTbuB5A==
-Message-ID: <b389647e-67e5-4948-9c59-35bf3f936eee@kernel.org>
-Date: Wed, 18 Feb 2026 08:53:14 +0100
+	b=Mak/MiUkd+UeBgThN5oJMu2tRhUeTEbSkzhtbgGuJ2abeIXAAhw/WSRG9RVeEr5Jy
+	 kectQVA4ZvBcEu5IfC1xcl2LwP70llm2OY6xx5vz6Xh+UlGb2Xnbt1IPCg8wtdV0eI
+	 OTXlP7aryLb2yWcL9zFI4WO/BinKkUOtJSWZ/B3OIxZLi1TjEOL1JpMvq6p42u9/EX
+	 CwE2XevGvDSUf/bj92fb58e8ppKJuHM2y36R4AVnu97jCsOLCMNT/qtwSAQIRXnJD4
+	 /H1DH/dxGW9Xjzc3PYEpnU8f3hbg6XAdMj47rurWmWWOLfcQRax1QJ3RHZVHR5xIuP
+	 5piDRYPkhSgIw==
+Message-ID: <f791fed9-5d90-4d17-bffd-985dc83ec0cd@kernel.org>
+Date: Wed, 18 Feb 2026 09:01:35 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,13 +53,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/huge_memory: Mark moved huge zero page PMD as
- special
+Subject: Re: [PATCH 0/2] mm/huge_memory: fix move_pages_huge_pmd() for huge
+ zero pages
 To: Chris Down <chris@chrisdown.name>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <aZU10aBZxCHfmjeB@chrisdown.name>
+References: <aZU1kTOLcrr-Z371@chrisdown.name>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -106,7 +106,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aZU10aBZxCHfmjeB@chrisdown.name>
+In-Reply-To: <aZU1kTOLcrr-Z371@chrisdown.name>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
@@ -114,11 +114,11 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
@@ -130,41 +130,39 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217222-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217223-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+]
-X-Rspamd-Queue-Id: BD2B7153CBE
+X-Rspamd-Queue-Id: 705A2153D3A
 X-Rspamd-Action: no action
 
-On 2/18/26 04:45, Chris Down wrote:
-> Without pmd_mkspecial(), vm_normal_page_pmd() on architectures with
-> CONFIG_ARCH_HAS_PTE_SPECIAL does not recognise the moved huge zero page
-> as special, incorrectly treating it as a normal page and corrupting its
-> refcount.
+On 2/18/26 04:44, Chris Down wrote:
+> Two fixes for the huge zero page path in move_pages_huge_pmd()
+> (UFFDIO_MOVE).
 > 
-> Fixes: d82d09e48219 ("mm/huge_memory: mark PMD mappings of the huge zero folio special")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chris Down <chris@chrisdown.name>
-> ---
->   mm/huge_memory.c | 1 +
->   1 file changed, 1 insertion(+)
+> Patch 1 fixes a use of NULL folio introduced by the folio_mk_pmd()
+> conversion in commit e3981db444a0 ("mm: add folio_mk_pmd()").
+> mk_huge_pmd(src_page, ...) with folio_mk_pmd(src_folio, ...) in the huge
+> zero page branch where src_folio is explicitly NULL. With
+> SPARSEMEM_VMEMMAP this silently produces a PMD with a bogus PFN, on
+> other memory models it is a NULL deref.
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index fed57951a7cd..5f908cdb11f1 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2795,6 +2795,7 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
->   	} else {
->   		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
->   		_dst_pmd = folio_mk_pmd(page_folio(src_page), dst_vma->vm_page_prot);
-> +		_dst_pmd = pmd_mkspecial(_dst_pmd);
->   	}
->   	set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
->   
+> Patch 2 adds the missing pmd_mkspecial() call that was omitted when
+> commit d82d09e48219 ("mm/huge_memory: mark PMD mappings of the huge zero
+> folio special") marked huge zero folio PMD mappings as special. Without
+> it, vm_normal_page_pmd() on CONFIG_ARCH_HAS_PTE_SPECIAL architectures
+> does not recognise the moved huge zero page as special, incorrectly
+> treating it as a normal page and corrupting its refcount.
 
-In theory that's correct, but we should look into just moving the PMD 
-instead of reconstructing things. See my reply to patch #1.
+Thanks for the report and fixes. This sounds like something selftests 
+should have detected.
+
+Can we teach  tools/testing/selftests/mm/uffd-unit-tests.c to trigger 
+that behavior on the huge zero folio?
+
+We have uffd_move_pmd_test(), but it seems to focus on moving non-zero 
+folios I suppose.
 
 -- 
 Cheers,
