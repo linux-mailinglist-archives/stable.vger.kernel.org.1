@@ -1,131 +1,146 @@
-Return-Path: <stable+bounces-217325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDKkAUImlmmIbQIAu9opvQ
-	(envelope-from <stable+bounces-217325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:51:14 +0100
+	id IEYeF0YxlmktcAIAu9opvQ
+	(envelope-from <stable+bounces-217326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 22:38:14 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94401159946
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:51:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E88AE15A3F5
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 22:38:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D41030692F7
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 20:49:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E7103053BBD
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954C2349B05;
-	Wed, 18 Feb 2026 20:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FCD329E60;
+	Wed, 18 Feb 2026 21:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ELTZSZaj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ROUaJ6P8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571F5349B18;
-	Wed, 18 Feb 2026 20:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23ED314A76;
+	Wed, 18 Feb 2026 21:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771447750; cv=none; b=DOOb2+twGp9gjlfGkdOFhx17+5nZ6QawE496weAUvJdzwaoAvRsiozw3RB1xmv3XleN9MgbEUd2hxeFLzkHtzQUEwd8cviumMPBtEA7pwMa7cI4Wb44pb+kMDxYukVM0H1eVZdXQp0dmNTEL6+93Eg82N36jkzQEfLYMn6bnPwA=
+	t=1771450611; cv=none; b=P/5o7hyBeHBA0As4ctVjIvNBv9pH/csJJw6ReMi3nWFBco57oXnPH9QEiZ8m+bH+S7HfcAX99CAyPYBkg0ia4LOKmF03NiESybtCUP/b9UzwdQesmmVitnNt8gvbHvjgjq40G6X67WYxJRWjjfKKN8W1VMFqaFJI+0daSnrvKsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771447750; c=relaxed/simple;
-	bh=Zk+Mj77zgq90Fdfha41BmQS8WpUD/2Y7LKA9LjfdPmM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=fkWf+wn+GOtQtyZfOzfILX/etw1iNfXtDbCvXJiiwTE6yrJvgOxlXxUv/HQ7J3Q9ZBw5eKlizIAnpSKpir15RqiRVOgZprgOBHGQhwK8FXl2kn/1JajdWfYG8C0vn471UhngNlAZxCzLY+GEjrLN0XjmYRE+KxPFBr3fT4a7+XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ELTZSZaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2E6C19423;
-	Wed, 18 Feb 2026 20:49:08 +0000 (UTC)
+	s=arc-20240116; t=1771450611; c=relaxed/simple;
+	bh=FLhIcGYigj/cYDh5+twKKz5F+F3mi/gUG7aJ/XLLfTA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=esQhbKfweICcKC9mY7K9t0lrpnSKw0UjvntadSkvPjA6ZeL4clyKOUtgU1b3hZmYn4o+CdsXY8j/JJyhpSO/lMHpEHB70e4AqF9SsnQZL4zLTogGIFTKWPtw2Keexjwz4t/M6QIUE8JxvFSuYglzCtTrAsZAiJRSI0XaQxofFro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ROUaJ6P8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3932CC2BC9E;
+	Wed, 18 Feb 2026 21:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771447750;
-	bh=Zk+Mj77zgq90Fdfha41BmQS8WpUD/2Y7LKA9LjfdPmM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ELTZSZajK1rDCpvDXeR8Q8i5lo8sfp6UHfFVSyiyWLum38Lk9BMFvDysslc6bqIIv
-	 12F5Rw3yfLb9m68yrxxcSLX74twAhdOsiCBhlNwgm0FIIlUzWJGukzkzMWRnz9Y0y6
-	 NYV67EBQvypNnXDCXq49KviV9vLOH7WpSKWloh5w5X0mVc83nIiJSnru/kWUQvQAH1
-	 xD3OLyRUscP0xKoCOLtqJ8fpVZrWGX82bdi+2T6p7S3kR5RauyDqfBQOoYTu2RSjIs
-	 vBtKGW2NUGQ+5xpmTXBGP1uonxu1YG9bCAqcCZkfMlC8G3Cn7AyWHH9C/+iSr27WXX
-	 yigMVBum1zy6g==
-From: Nathan Chancellor <nathan@kernel.org>
-To: Nicolas Schier <nsc@kernel.org>, Nathan Chancellor <nathan@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Stefano Garzarella <sgarzare@redhat.com>
-In-Reply-To: <20260216-improve-manual-debuginfo-template-v1-1-e584b3f8d3be@kernel.org>
-References: <20260216-improve-manual-debuginfo-template-v1-1-e584b3f8d3be@kernel.org>
-Subject: Re: [PATCH] kbuild: rpm-pkg: Disable automatic requires for manual
- debuginfo package
-Message-Id: <177144774869.1769768.14474054555144797723.b4-ty@kernel.org>
-Date: Wed, 18 Feb 2026 13:49:08 -0700
+	s=k20201202; t=1771450611;
+	bh=FLhIcGYigj/cYDh5+twKKz5F+F3mi/gUG7aJ/XLLfTA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ROUaJ6P8UlCMN4JmpFGGTRSlivUcHoJGRc+eVoE6kP/DW5Y7YMNqs+roqftoa/gnV
+	 ZwDlrMQ693KOcLjlRIMUfS1y7sKUTH1zO1nkVWuEMZY2k2/91AidpDrJw9bPtC3dmR
+	 5Udw//bK+DsZUsShJM42cHcB/ciYFKBaq2P+7hNLQSW+D7AVPNldf1i7qhy3dpdD7f
+	 gLSPjy1VBwRBR4kssZcgjCV6zH7OxxUqehvbY1cjcC50JWrcPh/ob9W6VyJ0qM73EB
+	 cdLoS5E4mBCqNz6ShijoHyLhAfTFL7bE0hPtEeWfjDZw/Kdnkwl8XU9BjxHr6DAXvp
+	 iH+hy7FYJaUYg==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 03/15] crypto: arm64/aes - Fix 32-bit aes_mac_update() arg treated as 64-bit
+Date: Wed, 18 Feb 2026 13:34:49 -0800
+Message-ID: <20260218213501.136844-4-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260218213501.136844-1-ebiggers@kernel.org>
+References: <20260218213501.136844-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217325-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217326-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 94401159946
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E88AE15A3F5
 X-Rspamd-Action: no action
 
-On Mon, 16 Feb 2026 16:29:54 -0700, Nathan Chancellor wrote:
-> Stefano reports that after commit 62089b804895 ("kbuild: rpm-pkg:
-> Generate debuginfo package manually"), building with an rpm package
-> using rpm 4.20.0 fails with:
-> 
->   RPM build errors:
->       Dependency tokens must begin with alpha-numeric, '_' or '/': #�) = 0x0d000002
->       Dependency tokens must begin with alpha-numeric, '_' or '/': �) = 0x0d000000
->       Dependency tokens must begin with alpha-numeric, '_' or '/': ) = 0x7c0e000000
->       Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->       Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
->       Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x3130363230322000
->       Unknown rich dependency op 'Hat': (Red Hat 15.2.1-7)) = 0x4728203a43434800
-> 
-> [...]
+Since the 'enc_after' argument to neon_aes_mac_update() and
+ce_aes_mac_update() has type 'int', it needs to be accessed using the
+corresponding 32-bit register, not the 64-bit register.  The upper half
+of the corresponding 64-bit register may contain garbage.
 
-Applied to
+Fixes: 4860620da7e5 ("crypto: arm64/aes - add NEON/Crypto Extensions CBCMAC/CMAC/XCBC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+ arch/arm64/crypto/aes-modes.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git kbuild-fixes
-
-Thanks!
-
-[1/1] kbuild: rpm-pkg: Disable automatic requires for manual debuginfo package
-      https://git.kernel.org/kbuild/c/f94711255a73d
-
-Please look out for regression or issue reports or other follow up
-comments, as they may result in the patch/series getting dropped or
-reverted. Patches applied to an "unstable" branch are accepted pending
-wider testing in -next and any post-commit review; they will generally
-be moved to the main branch in a week if no issues are found.
-
-Best regards,
+diff --git a/arch/arm64/crypto/aes-modes.S b/arch/arm64/crypto/aes-modes.S
+index 0e834a2c062c..e793478f37c1 100644
+--- a/arch/arm64/crypto/aes-modes.S
++++ b/arch/arm64/crypto/aes-modes.S
+@@ -836,11 +836,11 @@ AES_FUNC_START(aes_mac_update)
+ 	encrypt_block	v0, w2, x1, x7, w8
+ 	eor		v0.16b, v0.16b, v3.16b
+ 	encrypt_block	v0, w2, x1, x7, w8
+ 	eor		v0.16b, v0.16b, v4.16b
+ 	cmp		w3, wzr
+-	csinv		x5, x6, xzr, eq
++	csinv		w5, w6, wzr, eq
+ 	cbz		w5, .Lmacout
+ 	encrypt_block	v0, w2, x1, x7, w8
+ 	st1		{v0.16b}, [x4]			/* return dg */
+ 	cond_yield	.Lmacout, x7, x8
+ 	b		.Lmacloop4x
+@@ -850,11 +850,11 @@ AES_FUNC_START(aes_mac_update)
+ 	cbz		w3, .Lmacout
+ 	ld1		{v1.16b}, [x0], #16		/* get next pt block */
+ 	eor		v0.16b, v0.16b, v1.16b		/* ..and xor with dg */
+ 
+ 	subs		w3, w3, #1
+-	csinv		x5, x6, xzr, eq
++	csinv		w5, w6, wzr, eq
+ 	cbz		w5, .Lmacout
+ 
+ .Lmacenc:
+ 	encrypt_block	v0, w2, x1, x7, w8
+ 	b		.Lmacloop
 -- 
-Nathan Chancellor <nathan@kernel.org>
+2.53.0
 
 
