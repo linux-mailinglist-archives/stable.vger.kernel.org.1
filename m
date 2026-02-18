@@ -1,200 +1,132 @@
-Return-Path: <stable+bounces-217267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217268-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBXmAY6olWlVTAIAu9opvQ
-	(envelope-from <stable+bounces-217267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:54:54 +0100
+	id 4Ka1HSqplWlVTAIAu9opvQ
+	(envelope-from <stable+bounces-217268-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:57:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 938F015623E
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:54:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5C1156292
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 60E14304F484
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 11:54:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AB996301A7C1
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 11:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E813530F931;
-	Wed, 18 Feb 2026 11:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9740C30F551;
+	Wed, 18 Feb 2026 11:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IKsVbLsP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ds5xTEk3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14C730DEAD
-	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 11:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A11930F52D;
+	Wed, 18 Feb 2026 11:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771415629; cv=none; b=X+j0eZ6bGNV9l8qA/f6q9sCJdO+3KHtt3HDZxqU7Rxq0CwhGgItpPAPUfjAxSPU9+ujapz71EVPe7Dwfr9Px7X+r9wGS5Y+aNLOxKh4a9US0WnNV89phXq2YELt34hBapG/zJuEglY8Iy8t0j4XsQ3Nw1GJrhbczrG473nNwZ+g=
+	t=1771415834; cv=none; b=HRCEVVufz7AnCaoK29Y8pGXTcytlAeGlridY1YnRzUYzt9hykl50Dad8gQuNS2+0P5ovSnt26ZGJXLW948QCwnMD1DGdVuYXTvnhkFiaRQ0deVL/CzxLGFWGgHb3Jp8MxwefDALzAxDJ0I0zrsRzcWYBWwr0VCvxMsKgqEMQXNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771415629; c=relaxed/simple;
-	bh=dxslJAb5KIt29+Pmlra1MsYzJUsqBlgsseUHaKRC00Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pIdNH5Rm/jb/uLpBtcu52dKAAgC2mht20eirHr1Iv9OpTuaRE/9jmV48troVwDSd0aC03JOEBh3fLlvWWXvstUro17yUjavIlqGPe9Xg6cXU+G9rjryjxv6+7acU5A3sx+nni/vymeAuxoii/MWQ2t9CngqwuUdv3Oi/eF2HmLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IKsVbLsP; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso29298265e9.1
-        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 03:53:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771415626; x=1772020426; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2nREefhNbsS6m+NzCv8p/u3MUoT+tS1ddYgBqAgzIBg=;
-        b=IKsVbLsP2kRnSGVyZ7gFXiqkELJYXkM4Y9t/+2Z83IeHfKMt8akYguBhpAgWP9z31C
-         984VJZaCffFLZL5SvUWqH8nDeJxnRrb2+CKYfIrfHgkxx1E9Nd45yOlmDcWdGJhUMMzV
-         caVi8lE//nApGsh6oAmSuE9RoettuU9SibY3qX+lDc3LmtF/Y9kEbAFJnIAj2QppTMBp
-         lFQlVSbDCnMjTgqynDEIj5l7f0Ta5eg7yXFYQ7YpsUlmFAd0Zl2O4s7cm+9NatfuZBNE
-         6XcqFG1Pc+lqNNNG3XfZs5zALj12Jdc2SHDS08scgRMDAmDbKK22jhsMkRJmw5cag4uK
-         lK6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771415626; x=1772020426;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2nREefhNbsS6m+NzCv8p/u3MUoT+tS1ddYgBqAgzIBg=;
-        b=ahQawZPPLDQ9NYCmW0KYaXDzg2UVudJPgv6P8l8VrV3dTiEq8SHYGwrQNfo2m88aGW
-         HtmY3oZiZl66K9aGKg/zRPN2skGhDnZYWBjdsUrRAWC/UuLTaVzJrjCL0GgwBRluy7TZ
-         68MYsROwjDvbcwByJY7IFP+dqW8FEsbz63Sj/p7rsEmCsDhLrlsqVQcZzyk68MCdiikP
-         Xib2qyIzcOcXTMmvYMY0yE1HOMDfasd4ZBkQ7vohNai/EvD3OwYBapZaqAbr4u7zd3l7
-         6iO3EaNALldRtbs0cP4vfpLFXpqHNW+fw3NIebbChrSUAgpsUABlJMsvYhNBbvGvxybu
-         tgtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXoTVBQ6pA/mxSwl0stHaf25hgs5jxrIyriFbuj0JTve4oACWDru7QWv7E5p3vVkziz23TDba4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU8PNvndr/HLR8Nl3pLJzdOUWxYKU9GjA9Qzpj1ijlsbdWLmBY
-	R3jSiJv1mo2fP4ymjIuzq67sQ4YH+NYKZ7rHhjV/UeO9ESjNxr9P0piT5+MLWccR5LgCHHtKK51
-	FzIxKaJSENyZuz0s7fQ==
-X-Received: from wmof9.prod.google.com ([2002:a05:600c:44c9:b0:477:988a:7675])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c25:b0:47d:3ead:7440 with SMTP id 5b1f17b1804b1-48379c14606mr212400745e9.32.1771415625987;
- Wed, 18 Feb 2026 03:53:45 -0800 (PST)
-Date: Wed, 18 Feb 2026 11:53:27 +0000
-In-Reply-To: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
+	s=arc-20240116; t=1771415834; c=relaxed/simple;
+	bh=To9+3wToIJ/dVVBoGIl9t0tfODL2F/1jDWPdFXSs0mg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p1x0I/PlURBW8cHMdQ0H3b9jBeE671q6ILq6W1s1VjCLEbv0Nt6M4m3ZSm2MkfpHqW4OaIvjzhhItvLjeedJ100H4I64MkQVHhe7zaSbqTGMzGoMqJsAMLhQuS3dFpvTFLY7nmnFfr9LxC1JnynYMzPcjyfNeTOb29kRNg41Wi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ds5xTEk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919DFC19421;
+	Wed, 18 Feb 2026 11:57:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771415834;
+	bh=To9+3wToIJ/dVVBoGIl9t0tfODL2F/1jDWPdFXSs0mg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ds5xTEk3OEGlv3OL2u1KTLhgPAzZnZAlUjA62rRBS0IWo0O7IjrMqRN4Lp5xAOkAe
+	 VfLpXVBdAo3uw/Q0a6Aji/wk9Xr7REN/LuLLSgVJKKIfRnuwwe4zhuWoOX12GxMjGe
+	 tkNYJRLmOCO4cameVwo++Ncvx4LYuoPrp/83cw2mrWunRzIB9b0+UF6EnO9RuvHmsb
+	 gttepBwhZuPXn/rukAamva5zVq212w0+MiFDp51/HQJ/zvTnwPTjN8LMp8XungTHMl
+	 0Q16Ea+NGKQ82VcOjbCUay+vwDwHe1Mo+EChsL2EI3RVy0mlogahkqHqMsgadfXs0L
+	 SjMsc/8E6EBdA==
+Date: Wed, 18 Feb 2026 11:57:07 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.6 00/39] 6.6.127-rc1 review
+Message-ID: <103c1411-a70b-4469-a5ee-1822c7356bb0@sirena.org.uk>
+References: <20260217200004.221651386@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2898; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=dxslJAb5KIt29+Pmlra1MsYzJUsqBlgsseUHaKRC00Q=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBplahFqqe27pmaRIiimlvXAoI7c4Aaeb8gzBCoW
- 7sqLygMmP2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZWoRQAKCRAEWL7uWMY5
- RiinD/93Hu+5kQo1qJcL+IetJ2vxyhhemT1hfThuvAADi5VceWTgLmJNepFXO7G77pW/2GeTBB3
- hglYyOoUtJStG2fdTUp+EutcYerAtSgpAnbhEpOIaMKO2Yes5W+M92MyD+6fyb2jpTNX29pujW0
- uca1oss6kBre/m26qiICetpHoL1NS1gN7YdP9JmrVujhz3kE+tFIJlMb+hNWp6ai7tdcn4gTSB9
- J9OLQvOEIMk/kiA0xLkm+5Gl/u+m5OBPNotZfvsSwjCFDHFAi76dii3zfnn0ogXbsk8Cng5gEkS
- CK49G2PrS5MB/lyNm8FVpbgDxUbHE4/HJ7qOJv7iBgDtBwkxpeW+4sWHaflHwSkyBMB0o06XkSy
- CcTe+B3ydUvhCe1jg0tUlmuCqtsRcBwEX4XonP13fIL3aJPniOO4Ofg5aT1emcncDjlovMuwzj6
- ChcMKSLOqtG2QV6h2HY6a7qu7ih04BkCqiTbRiQ3zKOKqB29seNh/1VwxImeQ3abXclaS/J87Xd
- uEk0oq0T080GYz/oSMJjJ9jLLpuinmaE6Y6d5KtexouBUr1Z2YA40lB77+roEZf/5v/XL+n/rVc
- Yc/ENTdwPvpAqKsnqxruyi+lhem8Kr5FlqNy93Krvh7d4uqyPNFvWixXuiZrM0Rb+RVZDF1DJ1I F2yQblZRdRGtoHQ==
-X-Mailer: b4 0.14.2
-Message-ID: <20260218-binder-vma-check-v2-2-60f9d695a990@google.com>
-Subject: [PATCH v2 2/2] rust_binder: avoid reading the written value in
- offsets array
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Jann Horn <jannh@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
-	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="9kB0vO/1IVdMOqaI"
+Content-Disposition: inline
+In-Reply-To: <20260217200004.221651386@linuxfoundation.org>
+X-Cookie: They just buzzed and buzzed...buzzed.
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217267-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217268-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,umich.edu,oracle.com,vger.kernel.org,kvack.org,google.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 938F015623E
+X-Rspamd-Queue-Id: EE5C1156292
 X-Rspamd-Action: no action
 
-When sending a transaction, its offsets array is first copied into the
-target proc's vma, and then the values are read back from there. This is
-normally fine because the vma is a read-only mapping, so the target
-process cannot change the value under us.
 
-However, if the target process somehow gains the ability to write to its
-own vma, it could change the offset before it's read back, causing the
-kernel to misinterpret what the sender meant. If the sender happens to
-send a payload with a specific shape, this could in the worst case lead
-to the receiver being able to privilege escalate into the sender.
+--9kB0vO/1IVdMOqaI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The intent is that gaining the ability to change the read-only vma of
-your own process should not be exploitable, so remove this TOCTOU read
-even though it's unexploitable without another Binder bug.
+On Tue, Feb 17, 2026 at 09:30:22PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.127 release.
+> There are 39 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Cc: stable@vger.kernel.org
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Reported-by: Jann Horn <jannh@google.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/thread.rs | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+Tested-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 1f1709a6a77abc1c865cc9387e7ba7493448c71d..a81910f4cedf9bf485bf1cf954b95aee6c122cfd 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1016,12 +1016,9 @@ pub(crate) fn copy_transaction_data(
- 
-         // Copy offsets if there are any.
-         if offsets_size > 0 {
--            {
--                let mut reader =
--                    UserSlice::new(UserPtr::from_addr(trd_data_ptr.offsets as _), offsets_size)
--                        .reader();
--                alloc.copy_into(&mut reader, aligned_data_size, offsets_size)?;
--            }
-+            let mut offsets_reader =
-+                UserSlice::new(UserPtr::from_addr(trd_data_ptr.offsets as _), offsets_size)
-+                    .reader();
- 
-             let offsets_start = aligned_data_size;
-             let offsets_end = aligned_data_size + offsets_size;
-@@ -1042,11 +1039,9 @@ pub(crate) fn copy_transaction_data(
-                 .step_by(size_of::<u64>())
-                 .enumerate()
-             {
--                let offset: usize = view
--                    .alloc
--                    .read::<u64>(index_offset)?
--                    .try_into()
--                    .map_err(|_| EINVAL)?;
-+                let offset = offsets_reader.read::<u64>()?;
-+                view.alloc.write(index_offset, &offset)?;
-+                let offset: usize = offset.try_into().map_err(|_| EINVAL)?;
- 
-                 if offset < end_of_previous_object || !is_aligned(offset, size_of::<u32>()) {
-                     pr_warn!("Got transaction with invalid offset.");
+--9kB0vO/1IVdMOqaI
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-2.53.0.310.g728cabbaf7-goog
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmVqRMACgkQJNaLcl1U
+h9A3MAgAgwZq8JTfKKQN6fnbqXqiOYtT7TkgtyoCASBbVrjsbgacQELSCBmA9aDI
+Je+HDwyefklwlGGr4G7Y9Q2RPs1ApDTt0/wKwl9SEUqv5G/izNqHIP5kJcNW6USy
+qaQ2Agicxcjiyav6iHOovmroTg5jgx0qGJyqMi+T4l36pIOdezwwgab2V1QDrgg8
+D+KAeRqP40RmgU9ONOZyZFzjGbFUJhRqhH/7Aj3VHYm4m/NXQsSPMSsjaI+1Ri1z
+HxiVo4ZPEG3jMuQ7rFUXSkOorI+sKKdhgAPmW9dQC4+qwKb7JNSg+J4Umbmdkdo5
+zm1i4lLMdZgU+nokVVoYPbVAJAZb5g==
+=361a
+-----END PGP SIGNATURE-----
+
+--9kB0vO/1IVdMOqaI--
 
