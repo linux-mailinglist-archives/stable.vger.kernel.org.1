@@ -1,177 +1,166 @@
-Return-Path: <stable+bounces-217254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217255-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id regVMGSHlWnqSAIAu9opvQ
-	(envelope-from <stable+bounces-217254-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 10:33:24 +0100
+	id kKytOCWXlWk1SgIAu9opvQ
+	(envelope-from <stable+bounces-217255-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 11:40:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E431154BC8
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 10:33:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324881558EE
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 11:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7EC23009CDF
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 09:33:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BFA86302CE1E
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 10:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6C9331A4A;
-	Wed, 18 Feb 2026 09:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430E12F549F;
+	Wed, 18 Feb 2026 10:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sv+fghfg"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8782225B1CB;
-	Wed, 18 Feb 2026 09:33:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9CA2C0298
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 10:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771407199; cv=none; b=ZFTiRgnYO2Lou2tsjfJNp09JTIX36qSYQTKTKnMUxueh8dXcc71yMC023CkPY8RodWOHOl2FEQY8CaoAi/izI5Jj5Cr3PPoUe8PEKopReAnCABDbD3l+V0NkybYYOEH8zOEM0wqTzLZ/605EM86u/TJbj1zo6gGFQ12XSOjSako=
+	t=1771410333; cv=none; b=d3UToGO17SX10j+H+dDl4c52tGcLPC6dtu3e/WgTU2eWBm5boIWCiPduMdHnCnmgtik17jlE2W//aUop4pKW80tBYUxQnT6tw8tZKV5cc6a4QY8IBV48RF3DlTr5mY4kHB8dhGNLNZoNVxa+VUVuPH1hZMewejetEudT/ayeqNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771407199; c=relaxed/simple;
-	bh=wcEMXbKiNhnJK2jtdP1o2fxrBt6Qe2aee6ayozsX44k=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ANiAj+bzJN3Cj3P8FuPIhO3DvJgaapO57F8RxRXWJZzHILO8P5gM8TQdpJvsbzpRIdJn8Pe+9yuka/WsMgl7IhbOF9dn9H/7bCkeGeFtnPFKyaiJXkNU8pTW+MreSyR/A/2rtACbYxfS3HWOpUl7Qg52B2ITo+nSZdkE/HjgTxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AF2021477;
-	Wed, 18 Feb 2026 01:33:11 -0800 (PST)
-Received: from [10.57.81.199] (unknown [10.57.81.199])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 281A43F7F5;
-	Wed, 18 Feb 2026 01:33:15 -0800 (PST)
-Message-ID: <b56d5ba7-46ba-4a4c-9266-70d7e63530cc@arm.com>
-Date: Wed, 18 Feb 2026 09:33:14 +0000
+	s=arc-20240116; t=1771410333; c=relaxed/simple;
+	bh=k7H17ODo1qIu2wLMBILMgN4iOzh7MfTww2lLpZnSr+M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dERXVADFMIxamamoHRtYPLofmBov2ldlebQ1419lvFYQ8BdWdbERgh9zpg1jvEJNUGo5obSs7hrHKz8y6/Nh00gmrm/KO69CXYYtS/b7nQcnafEdQ4fy68nyYbAyqsF0tsdRsD8vP8wNm2WXcZs8dlbQzG3KXp1KCNNLLqorGJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sv+fghfg; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4359228b7c6so3932664f8f.2
+        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 02:25:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771410330; x=1772015130; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q7NQZxcZg1dcvkijLdNdTKqEfWFpZRniREp+8Wrj2iY=;
+        b=Sv+fghfgU0UPJvJ5WUGlNXSgBg6U5bulEgJfdUCWP1DcI9bJHiLUOHsX7ZVKl+5iJq
+         WH7m/fLcv1LmswUDxdrvHpRXdN/Vo4a74BmSJAlDD33bc6gUGIfPFThc2hW1zmJT5zcq
+         Ty4SpeWN6Gjnrq/2PiIqPSVnEBzgVoFU12pPaJGNFBH1uBvkcTYo9PGGTyuOTfBP+3OF
+         YsxF12mjFQB64rLIZBqbYAgRsPZPtELdvhnhBKouzTlAUgagJKxcCxHsldBuZv/bAiTB
+         LlwcyOcY12TI3qC4eonHy/ECDHFwdwEVyCAP82oU5H0fFyKWKVSAK72DeosOgdSRVm2J
+         pmaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771410330; x=1772015130;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=q7NQZxcZg1dcvkijLdNdTKqEfWFpZRniREp+8Wrj2iY=;
+        b=wFSN5T25T3QJlGQZXTQItVluDaQqbAkVbIQSEr1fBXeRarWqOlN6HJy1uHc48XVVt0
+         9nzBw2HxLFPd6EtiCEqGwXQvtgHofq5mf+jGULWeEC9WcV+Po9YidxFDdaAIOlSe9C0f
+         Tqm/CTOxnb9UImosAsb8dfPXZFB4kisjQO7hThFlGsNLRUS16IpvTB/JMv3UFbg62aHm
+         MiaNl59w/kB1eIVGVVN26sjkIKuno8kCJMaA09oQ4ll6OKizDMi/SqFGA39xq/m6t+6c
+         JPjZO9BphADuEC8+UKlqyju0bLQ5s/WDsNMu198d1zldvK5Kup/UtZNb8kkg9ehHkbtA
+         v2QQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVAfRboc0quZ3a3at4ChsRkTC5ckABr8rb2fN2cXo4LuiKqmpJ/MWMqdsoRwp7ou/xefezq+1A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdKden3JRf8Xc0i1QQwnfKnGBNEMXxtnj4x41/yegJKwFfnUuC
+	hkhPYYuHxZVi7GGiJGeMx+EURZxHa+PGmJhsBqWtUqXczesvawOlzphE
+X-Gm-Gg: AZuq6aJFhbwcPF9AlfRFSFvwsWkQsWzQkRTFjznA+Se4WxR0YAb58eoUavjxas0QNvU
+	P8ecvYF1L99/SAFDKcckriHj3YdH5b6zLVAg3gDlXYDagYlb5g3kxt43OWC7WwVlpY4EKoZriQV
+	tHuEkntwxErsZprajXbJlS2OQmHpAVqVo0VsfcGZQ7SCgqplJYC0YH/OJ7QhI8ym+hRk2XMNGDj
+	stMNITDHKsIHPaPGYebpv5byTPoqIJqmD1V6p/fOSP/1/H9wfv28gYfBWK48bsxJCwFoYVQr9CL
+	BSP+5plRHGcf0rjTz8UjYOhbVaJSnxdPrKlGOhptqJkGdroviY50gxFxw3CUcck8M5FcnPGgo54
+	Z1Gss1oGVu/dBPdd6fr/ipfjH+xoF2HnCbx7qX6G6Gir5bUyRvvIBfQg04tbfGE5dkOLcuie301
+	YtD8bMPo6HGrYNoMhQVvIazt/68jr5/WhFzQuifYpWJiitf5kgX12fyMHLQe2mLF3pvfeYhmq70
+	nNHLMeDTFZU6QAV/uZPrKtZVPTkCdht9k86FR5RSxPfPO14BMxImT5cGyDoBXX8jhDH+tCzU7zw
+	8nulwmXwd+AydbtFSRSqEFCuGiuU7pY=
+X-Received: by 2002:a5d:5d83:0:b0:437:6b6e:d114 with SMTP id ffacd0b85a97d-4379db9800dmr22987142f8f.30.1771410330122;
+        Wed, 18 Feb 2026 02:25:30 -0800 (PST)
+Received: from franzs-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796abcda5sm45039616f8f.19.2026.02.18.02.25.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Feb 2026 02:25:29 -0800 (PST)
+From: Franz Schnyder <fra.schnyder@gmail.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: Franz Schnyder <franz.schnyder@toradex.com>,
+	linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco@dolcini.it>,
+	stable@vger.kernel.org
+Subject: [PATCH v1 1/2] regulator: pf9453: Respect IRQ trigger settings from firmware
+Date: Wed, 18 Feb 2026 11:25:14 +0100
+Message-ID: <20260218102518.238943-2-fra.schnyder@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260218102518.238943-1-fra.schnyder@gmail.com>
+References: <20260218102518.238943-1-fra.schnyder@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 0/3] arm64: Speed up boot with faster linear map
- creation
-Content-Language: en-GB
-From: Ryan Roberts <ryan.roberts@arm.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, catalin.marinas@arm.com, will@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Jack Aboutboul <jaboutboul@microsoft.com>,
- Sharath George John <sgeorgejohn@microsoft.com>,
- Noah Meyerhans <nmeyerhans@microsoft.com>,
- Jim Perrin <Jim.Perrin@microsoft.com>
-References: <20260217133411.2881311-1-ryan.roberts@arm.com>
- <2026021700-chafe-jurist-cb24@gregkh>
- <17c9efaf-6c33-4485-bde2-345cc15ac000@arm.com>
- <2026021718-citrus-parakeet-dc60@gregkh>
- <7f30a8e4-49c3-421d-be05-08afb544aa41@arm.com>
- <2026021758-subsidy-tinfoil-ee2c@gregkh>
- <20e320d2-749a-4379-a236-5dbe3d52b07f@arm.com>
-In-Reply-To: <20e320d2-749a-4379-a236-5dbe3d52b07f@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217254-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 0E431154BC8
+	TAGGED_FROM(0.00)[bounces-217255-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fraschnyder@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,toradex.com:email]
+X-Rspamd-Queue-Id: 324881558EE
 X-Rspamd-Action: no action
 
-On 17/02/2026 14:43, Ryan Roberts wrote:
-> On 17/02/2026 14:26, Greg KH wrote:
->> On Tue, Feb 17, 2026 at 02:21:30PM +0000, Ryan Roberts wrote:
->>> On 17/02/2026 14:10, Greg KH wrote:
->>>> On Tue, Feb 17, 2026 at 01:58:36PM +0000, Ryan Roberts wrote:
->>>>> On 17/02/2026 13:50, Greg KH wrote:
->>>>>> On Tue, Feb 17, 2026 at 01:34:05PM +0000, Ryan Roberts wrote:
->>>>>>> Hi All,
->>>>>>>
->>>>>>> This series is a backport that applies to stable kernel 6.6 (base v6.6.126), for
->>>>>>> some speed ups to enable significantly faster booting on systems with a lot of
->>>>>>> memory. The patches were originally posted at:
->>>>>>>
->>>>>>>   https://lore.kernel.org/linux-arm-kernel/20240412131908.433043-1-ryan.roberts@arm.com/
->>>>>>>
->>>>>>> ... and were originally merged upstream in v6.10-rc1.
->>>>>>>
->>>>>>> I'm requesting this be merged to stable on behalf of a partner who wants to get
->>>>>>> the benefit of this series in Debian 12.
->>>>>>
->>>>>> Why can't they just use a newer kernel version (i.e. 6.12)?  Surely they
->>>>>> would be able to justify moving to a newer kernel for performance
->>>>>> reasons, why enable them to stay on an older one, just delaying the
->>>>>> inevitable upgrade they will have to do anyway in a year or so?
->>>>>
->>>>> I can't answer this presicely, but I did ask and push for that approach. As I
->>>>> understand it, they are stuck with Debian 12, which is stuck with kernel 6.1.
->>>>> The Debian maintainer apparently requested that these go through stable in order
->>>>> to get them into Debian 12.
->>>>
->>>> I understand the position of Debian not wanting to take patches for new
->>>> features that are not already upstream, but really, Debian offers a
->>>> newer kernel for hardware that wants to use it for things like this,
->>>> right?  Why not just use that instead?
->>>
->>> Let me go push a bit harder. But I expect we are in the grey zone between bug
->>> and feature here; this is a performance bug fix, not a new feature. By
->>> selectively backporting I'm guessing they are avoiding the risk of new features
->>> that a new kernel brings introducing new bugs? I'm guessing there is a higher
->>> qualification bar for that.
->>
->> That's a broken "qualification system" if that is the case, given that
->> the patches that flow back into stable kernel releases should be
->> triggering "full qualification" if anyone actually paid attention to
->> what goes into there :)
->>
->> Anyway, good luck!  And same for 6.1.y, if they are ok with 6.6.y, why
->> would they even care about 6.1.y?
-> 
-> The request was only for 6.1. I did 6.6 as well for continuity; I didn't want it
-> to get slow again if they moved from 6.1 to 6.6. It's already fixed in 6.12.
+From: Franz Schnyder <franz.schnyder@toradex.com>
 
-Hi Greg,
+The datasheet specifies, that the IRQ_B pin is pulled low when any
+unmasked interrupt bit status is changed, and it is released high once
+the application processor reads the INT1 register. As it specifies a
+level-low behavior, it should not force a falling-edge interrupt.
 
-I thought a bit more about this overnight, and decided I wanted to have one more
-go at convincing you...
+Remove the IRQF_TRIGGER_FALLING to not force the falling-edge interrupt
+and instead rely on the flag from the device tree.
 
-In case you didn't read the commit logs, this series fixes a pretty nasty
-performace bug; for a machine with 512G of RAM, it previously took 17.5 seconds
-to create the linear map, and with the changes, it's down to 1.2 seconds. That's
-quite a big quality-of-life improvement if you are booting VMs regularly.
-(personally I hit this quite a bit).
+Fixes: 0959b6706325 ("regulator: pf9453: add PMIC PF9453 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
+---
+ drivers/regulator/pf9453-regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It's a low risk change - it's been in since v6.10 and is part of arm64's core
-boot path - and no issues have ever been raised.
-
-Are you sure this isn't the sort of change that should be considered for stable?
-
-Thanks,
-Ryan
-
-
-> 
-> 
->>
->> thanks,
->>
->> greg k-h
-> 
+diff --git a/drivers/regulator/pf9453-regulator.c b/drivers/regulator/pf9453-regulator.c
+index 779a6fdb0574..eed3055d1c1c 100644
+--- a/drivers/regulator/pf9453-regulator.c
++++ b/drivers/regulator/pf9453-regulator.c
+@@ -809,7 +809,7 @@ static int pf9453_i2c_probe(struct i2c_client *i2c)
+ 	}
+ 
+ 	ret = devm_request_threaded_irq(pf9453->dev, pf9453->irq, NULL, pf9453_irq_handler,
+-					(IRQF_TRIGGER_FALLING | IRQF_ONESHOT),
++					IRQF_ONESHOT,
+ 					"pf9453-irq", pf9453);
+ 	if (ret)
+ 		return dev_err_probe(pf9453->dev, ret, "Failed to request IRQ: %d\n", pf9453->irq);
+-- 
+2.43.0
 
 
