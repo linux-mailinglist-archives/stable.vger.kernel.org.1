@@ -1,157 +1,196 @@
-Return-Path: <stable+bounces-217311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DAfN3ntlWn7WgIAu9opvQ
-	(envelope-from <stable+bounces-217311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 17:48:57 +0100
+	id EH8lKFD0lWlTWwIAu9opvQ
+	(envelope-from <stable+bounces-217312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 18:18:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 531DC157DE7
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 17:48:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49AE515832E
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 18:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1A0CB300B848
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 16:48:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 436F93012E84
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 17:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CA730497C;
-	Wed, 18 Feb 2026 16:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8BC33D4FE;
+	Wed, 18 Feb 2026 17:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="H7cFUeeU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A4g8Qx9R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF69199230
-	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 16:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771433334; cv=pass; b=FLA3nPAavL95QqqmKoj5Uk69HRroCeyopJ8UhySFT9MHOopqNSwHvpc4bru/wn7slx0On3wyshZhLEF9b3Z6xlHOUQVQUePvyLrjwf8XA/WPBlZYrnJ4IK/yIQkEi/2MoUlgorwK0ZQhyJCC3WvlIq1zrP59a5SIPdefVUTkKNE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771433334; c=relaxed/simple;
-	bh=NDZWkf75fuSFgGmuPbAdFFylXmr6cKJW+FgcMv3BRp4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ec+xZ3jnU0NMkJwW5yK0UtCGjIam5AYX5sGMZei5qesOC3cZQSCnRdwdenJ0cTIw4pUnPpTsBliXbxwMAO0b7j3S6YJOsQZHSKH5J4GOtOGhvdrWbz8kuXZHh4Pp7QlTesZl3qlVauYX22adkmdutNpOwrRqZ2Nzy4DbCyGcoWE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=H7cFUeeU; arc=pass smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b8fbe5719ceso15965466b.1
-        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 08:48:53 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771433332; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Awp/2RryBJHJMjtjH/jW66CLcR9Zp15ksDPeIuc8FcCJ+8ge0MKYkDZfoJN6K5xNih
-         m6FU+uztXun42QgT1HP+EAGyYC98XlF7UbACFPJ9fno9yF4q6xtOJbHtq7QTJruIPn0a
-         xjPL60IAcLON8SJgGdxJ0ZBMunZ9qyTOQnBvcW2CGTn0JznOfEdS+S+9YI9uLzzbiyNd
-         Mg0TiVA4mf36U0PJAlNS6WzftR7XHR+bJObQuQBrU2ckubLXRGK91VSJJv1HXgZJyZ9n
-         QGsR2YW8L7wfKwlE+fBgswZwK7G/fH3o5p2ZQAInFr43K1UWUUgbeRQEVVgyQbZEOanH
-         +pqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Sl0EJrX9qWQgs7Bb3+x2webBMo2tPrGnE9i1r6t3N7I=;
-        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
-        b=JN7ZgDTqEyWh0IeVu9GuzPfPL6vG4Jv2446WVfliCRjqi0juIZOY7Dlhea9LQQZzj7
-         Ayy8Ephl/CPrv9AA8fBHoI/TT1MxPfOib8jEz4Fx+tRtVE9hcT1vnQdnG0HIlR8AW6b6
-         Ybhv5nw0MjCbhBKppppwAWzDZh1SPGjg3LXEzcC0dTOJ+11IBc1QFcAaL1eFe0nMDUo1
-         3SleY91Bk6wJC5ZSo/dICAIdW/j8rQ5S27FUpWj3qd7OgjmzoD1kQ9en9nCxzkXqbD8I
-         0jMJvtUHAEpBrr0kZPpHpTdEzXhg05dd4T/H2w0WFmxEMHfNl8Slm62nw5kslz9h3fuM
-         scaw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181CA23909C
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 17:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771434935; cv=none; b=u00hNasYr99mnQ2tHbxKBdXjmde0/FR00B4N5/xwLpAbPtTySlfAijAUuonsv4/U2Tlv24dPn+EZ6MtSDBEOn1bL53qGLnqpZma/DOte9cEszLCli9vJNUGZRGNw9O0kwcxGiyQQsTjqbQZM7EAq88FMLPHM7kiXVXwO+fyM4IU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771434935; c=relaxed/simple;
+	bh=Q9ooPQVTGTcVJezfW6R+eFguPYeeOCmuofwhzMEcloE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jjsGkvObX8U/GQG3xqknamc0o3+58TsDf0VopoTC79vaXEZ546hlCC5IU6+0TYLgrmn0OiUA+8mx7oc0lY698eIMPscc3LorcjfcgqPq948r2/m/stofk0LKFmRpNhM4g48pe3YVHdBPNGGdlzt8e8s+iZWDrs2X3owGT0PiHm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A4g8Qx9R; arc=none smtp.client-ip=74.125.82.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-126ea4b77adso6906608c88.1
+        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 09:15:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1771433332; x=1772038132; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sl0EJrX9qWQgs7Bb3+x2webBMo2tPrGnE9i1r6t3N7I=;
-        b=H7cFUeeUHXbjuqcSgEzUgefwueDlY/BufE2mtLPrBwq1EMdY2JYM/IWhIvL3r8dxst
-         oRjEQ4N32gW9CI9jtFr/OT+EqO7xt7tYZY9uO9h208TB5v9JsN3c6luDmC2dS8iuzfq1
-         ylu4atmNErYT+DtU9Lhfl9FDHGGso3ZQBhY/ahzLKmSNhVXsGbKTU/sDDBiSDF/7GDzG
-         vL9wroICguC8I3nm+S1xtUAwcpH7LNUOFg2KKtQ+2drlh6DdzDy4j+vJPYj/9dd8n3+A
-         pQowyx7IPgJiDWe9/fgLNusGG1/LUz5+swTdlOHx5KBVcghqaoV3wFDTrWNhKpOEwGPn
-         dqpw==
+        d=gmail.com; s=20230601; t=1771434933; x=1772039733; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=wIZQJcadFJwIiNdmilqedpFYEso+tQwK1rGzbwDAdbY=;
+        b=A4g8Qx9RHBdDCRZPnmspn153wPXv/iwgGb9oWxb/dbrKzEZrt5NcSBFKWtOrdSSX9b
+         3xefLpNJfZW37VIhvrnwJ19AoDRRnIBwAhLW0jUz3liS2CPTw0p3wMHaSW+plpbENmxT
+         bmImBV0NkWBfV9wSEhXE05Phq9e++/x9AoAbYKIhGXXNcaV/cwjLe5MjKPs0f+3hxDzs
+         lwUccqVlwjAkjlxjyVKU0lGDtiu21K9OlUmU5CD4Z6p0V4IO+xYB8wnuD6w1gSqlAg3h
+         wAqGRtxrmez6c7AG1dbIhG5xnddg3XfYstdc8B2eMlx52Yzl70p5/f9ggkDFz1PTlR8k
+         0b8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771433332; x=1772038132;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sl0EJrX9qWQgs7Bb3+x2webBMo2tPrGnE9i1r6t3N7I=;
-        b=KpF6eYfzLdufa1cQt9bTsN5w2fpCgGYhoVs+Fd3ZXDYl4SHwQ/vbEk2FXjmOmgs3fv
-         cNGo5eS7sXEcHGMl0zCJ4UJm6/yKQLrxkgixsZ5zNqK9BtEKf1+y0289r/LQyJa69Tuh
-         4zKtIqXEDcjsUH8gYIdntVG6UYwI6howm068rpfSA+v0FEo+t0bFQqdmAZ8VixJtmuQx
-         ReDEhUNHcdFZiKgsGdFHcyCZk0DE4Hjk/OgU5ky+vXS9/ogM5LhsPWvmbPP7aLxlqWnV
-         ARqwtLBI6Jg7q+lnkI6nTm3dHHBb8SB6cd7mdvt8lqK+F9y4+P6Ds88KqQWNy3U0rkCC
-         WhTw==
-X-Gm-Message-State: AOJu0YzX/h3H5BQMORMOArZH1qBV8ZbDGs1KW5CDDqCsb43VGjOIfDKu
-	o1KF5Z7C3XcIOPQcnT8pIr/jdnyYv2pUU4Tp4iNae+dzM13D1kJYx/SNgcP5AmcKnVoFsxWiErf
-	EnqaRCOv1vb6ipNTLhOg1CWhKSM6L4L32y500lw/lEA==
-X-Gm-Gg: AZuq6aIQ6RcSzqyo8XF1c3k9rKt9U+RzYStafWXj5DrOGnxzVkhWAjj1oZGBHK6mmte
-	iMNv6HnU+psMXtCnaqQnoFsWvSXR773Kcf15fz2aYd8KZ4yznk4JVu9J74OMaA1RbQPRveCfCEl
-	pDh/L4nRx/ldzlvJZBK3Vdtwif6fhmMI8tvzrrwAZKQYELvHeE7vAZ6vYY5JywfGPUMx6JMfCcs
-	Am/HQ6VvHZFLBE3R2g8U8DBvNoddgFUe9i71muG/NiXbpfdbTy7E/KznPNKZHlVrF4TEtJgLtLG
-	ulcpSRK8IQbblqYJcDD761YOCdOMoT9a6N4gV66L3FyY6G9y60aAG/Pzyz4APB9jvkiZig==
-X-Received: by 2002:a17:907:982:b0:b87:718:5da2 with SMTP id
- a640c23a62f3a-b904d615300mr1530766b.1.1771433331917; Wed, 18 Feb 2026
- 08:48:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1771434933; x=1772039733;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wIZQJcadFJwIiNdmilqedpFYEso+tQwK1rGzbwDAdbY=;
+        b=Lws5PJADBPFrklWF6Xhe09BwKPfGBwx5eziZwFhDAd0y20Lmab4kFSfZYdCvARTBZl
+         MarorZnfCyYOl+P0Iz6xDQOr5ZSUiIz4y4qBoEDzVswZ9ZXGw1YbirSa/AkeTCmTUcZ8
+         PUnD+lPQwzqL/+dhDZDrrxXYe8r789r3A8oSxv2EImJGX25KRxocJAScj5YJMjleW4KG
+         +/N2KgMZsZmRnBKkhHiObhwP5yGKckUcx+sefmocrG8bvRGyvPRdkUHjGoNIK72hEgyI
+         S6i7SY9By0v/gMVPqVip5xwLvAO3gFEZvTo5GA65eOIiBKszTlFAPZ6e7q04sDHCFs8n
+         QBXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJY7iez4Cnl8bxrQzG9Nwu/1Oz1tBlT6qx3uW7oBB/4PO3jHXA2GWKl/0Kh80ty/AVB1GTrAI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyohPvRgnvEj85P1GUyFyJxhtnus0H8CuLKXegN6PZBBcB3OU5/
+	kjoDTwuHeKiiVGANh/N3UdVzADEaRVAMp35d+cGWtWa70NzgDnyB8Xc9
+X-Gm-Gg: AZuq6aIVSr4dyD9OT0a0Te8W/mc6kynrT9vA8W9ljND0b+EnxMKY2IBjPunwgVrVagv
+	SuESW7ASTJoX9xdOI9Q9IZMhve1nycrq9YIKarVuctb/nJuaWeHPlbNNuPqsIDRev83ujEKKtzI
+	PV0RAiO5fdFDADvy2znEztlKLfWzVyQbhlynFlGWaVKI8l5aTgzzdbWPFJrURIg2hJMy/SvR3aa
+	3H4wBV4w5bFoMN9LQiacdhzat9zx6pCEqx1ggmxUk6Ug6zEpGqDlTiGXgOKkVA5hr4+QDUuIao1
+	H+P/RiutFzmts19PwmyP09n9Fa5KFV58eQ9piwRcT1ha33CX/Uy6IzYAlYbSKgdmoUqGQdUsXPM
+	qfuo+RtL9wa4VfMMu8X49Oy8cpHAVVABfz31o8mzK7HByq1hFc42ghkHklIy2DQHyLmWUeSSb22
+	kdvqFFKUooRiiC7fvS8PcjGRY7x/01Zn44LFuuOW6ZYT+jVJh/EzJQlOgs0DianQqk
+X-Received: by 2002:a05:7022:60b:b0:11b:9386:a37d with SMTP id a92af1059eb24-127398466d9mr5205084c88.44.1771434932895;
+        Wed, 18 Feb 2026 09:15:32 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:265b:f5ad:9e03:677e])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bacb5622f2sm22285550eec.10.2026.02.18.09.15.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Feb 2026 09:15:32 -0800 (PST)
+Date: Wed, 18 Feb 2026 09:15:29 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Linus Walleij <linusw@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@kernel.org>, 
+	Hans de Goede <hansg@kernel.org>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] gpio: swnode: restore the
+ swnode-name-against-chip-label matching
+Message-ID: <aZXyPjIjIDKCBLvs@google.com>
+References: <20260211085313.16792-1-bartosz.golaszewski@oss.qualcomm.com>
+ <aZUIFiOYt6GOlDQx@google.com>
+ <CAMRc=Md_x+DxmW742HRUW-jeg9_AW-stKkHUP9z13+M+POd4Tw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260217200006.470920131@linuxfoundation.org>
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Wed, 18 Feb 2026 22:18:15 +0530
-X-Gm-Features: AaiRm50okWH3DSk3tmbkRt2VF_bXv0FImyY0cJg-Wxj8CuzWNmO5ZoVpgJfzAPM
-Message-ID: <CAG=yYwn4ve1f9ydGK=azDkPFnnKiak5Wk391U3JhSgf1+Ukf1w@mail.gmail.com>
-Subject: Re: [PATCH 6.18 00/43] 6.18.13-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=Md_x+DxmW742HRUW-jeg9_AW-stKkHUP9z13+M+POd4Tw@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-217312-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[rajagiritech.edu.in];
-	TAGGED_FROM(0.00)[bounces-217311-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 531DC157DE7
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,intel.com:email]
+X-Rspamd-Queue-Id: 49AE515832E
 X-Rspamd-Action: no action
 
- hello,
+On Wed, Feb 18, 2026 at 09:42:28AM +0100, Bartosz Golaszewski wrote:
+> On Wed, Feb 18, 2026 at 1:31 AM Dmitry Torokhov
+> <dmitry.torokhov@gmail.com> wrote:
+> >
+> > On Wed, Feb 11, 2026 at 09:53:13AM +0100, Bartosz Golaszewski wrote:
+> > > Using the remote firmware node for software node lookup is the right
+> > > thing to do. The GPIO controller we want to resolve should have the
+> > > software node we scooped out of the reference attached to it. However,
+> > > there are existing users who abuse the software node API by creating
+> > > dummy swnodes whose name is set to the expected label string of the GPIO
+> > > controller whose pins they want to control and use them in their local
+> > > swnode references as GPIO properties.
+> > >
+> > > This used to work when we compared the software node's name to the
+> > > chip's label. When we switched to using a real fwnode lookup, these
+> > > users broke down because the firmware nodes in question were never
+> > > attached to the controllers they were looking for.
+> > >
+> > > Restore the label matching as a fallback to fix the broken users but add
+> > > a big FIXME urging for a better solution.
+> > >
+> > > Cc: stable@vger.kernel.org # v6.18, v6.19
+> > > Fixes: 216c12047571 ("gpio: swnode: allow referencing GPIO chips by firmware nodes")
+> > > Link: https://lore.kernel.org/all/aYkdKfP5fg6iywgr@jekhomev/
+> > > Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> > > ---
+> > > Changes in v2:
+> > > - check if gdev_node and gdev_node->name are not NULL before trying to
+> > >   match the label (Hans & Dan)
+> > > - use the right link
+> > > - collect tags
+> > >
+> > >  drivers/gpio/gpiolib-swnode.c | 19 +++++++++++++++++++
+> > >  1 file changed, 19 insertions(+)
+> > >
+> > > diff --git a/drivers/gpio/gpiolib-swnode.c b/drivers/gpio/gpiolib-swnode.c
+> > > index 21478b45c127d..0d7f3f09a0b4b 100644
+> > > --- a/drivers/gpio/gpiolib-swnode.c
+> > > +++ b/drivers/gpio/gpiolib-swnode.c
+> > > @@ -42,6 +42,25 @@ static struct gpio_device *swnode_get_gpio_device(struct fwnode_handle *fwnode)
+> > >
+> > >  fwnode_lookup:
+> > >       gdev = gpio_device_find_by_fwnode(fwnode);
+> >
+> > By the way, should we extend gpio_device_find_by_fwnode() to use both
+> > primary and secondary nodes?
+> >
+> 
+> That's already done on a higher lever for all fwnodes in gpiod_fwnode_lookup().
 
-Compiled and booted  6.18.13-rc1+
-No typical dmesg regressions.
+How exactly? I am not talking about checking secondary node for the
+fwnode that is used in the reference, I am talking about secondary
+fwnode that might be assigned to the gpio chip and you need to check
+both primary and secondary if they match with the fwnode that you call
+gpio_device_find_by_fwnode() with.
 
-Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+Thanks.
 
-
---
-software engineer
-rajagiri school of engineering and technology-
+-- 
+Dmitry
 
