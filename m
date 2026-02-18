@@ -1,165 +1,180 @@
-Return-Path: <stable+bounces-217319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QOLCOO8XlmkSaAIAu9opvQ
-	(envelope-from <stable+bounces-217319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 20:50:07 +0100
+	id MMuuLVYflmldagIAu9opvQ
+	(envelope-from <stable+bounces-217320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:21:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48379159366
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 20:50:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 242AE159669
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 21:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E13E13046EB1
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 19:49:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 573DE302EE8E
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 20:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274FD348896;
-	Wed, 18 Feb 2026 19:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B13348477;
+	Wed, 18 Feb 2026 20:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="lLY65xXz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ATEfDOCQ"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AEC21FF2E;
-	Wed, 18 Feb 2026 19:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD332DF6F6
+	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 20:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771444157; cv=none; b=pg3DNoVcjjL3q8Vq+ZZLFb+PVkBkYLemlULZV77G+xJbgCPmBU+HOc0zzxa8wAIXpxiiVKX8UJMIMDNmoGZFu1o1uZ0XktBeQ6qD4QdiBk1ZTG7k8L/ZnvgSwoWoePgyD/soenL72vn8Ig3imSYWeSH0uXKDHbYZlYdsG0Nn2TI=
+	t=1771446083; cv=none; b=GVVPQvbgiL01h5aBQuHRI9tojXsnPQYXelrfBG4Idbr8SiwP4rrlOfdrj0uZic+GWRdmSvqBenUmSRd41A5CuCqrxRK28T0D2Y0bFoIoEZJFhlYatGZLdIsfQzDFEPjh/X4FTP6hL6sONtusIUh+yfPbuuAT0hIFJ9/uFIjs478=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771444157; c=relaxed/simple;
-	bh=eMRFdp9hs01023AFurRh2OWyQBNKj3qoYIOSVy87tAc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F/v5i17Y4i7p996Z66D2DjfIrM1y6Px2mfHik5FO36q4hQul1bju9+a5Mvx/qUmeXEc9YXpE760f/9m/kBE+y9NBOCx4ieD5tEeQ0EXIi3t//dkCPFAzO0WBP9pfHBoZWaiZR3Y63ckuyuVxO7J5wt2Z0Vm7jNWciSdaAKLSirI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=lLY65xXz; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1224)
-	id 8ACE220B6F00; Wed, 18 Feb 2026 11:49:16 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8ACE220B6F00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1771444156;
-	bh=yCczxXvs8QVrwjiAXfOUtxxkudkas2eVt5KXtsgLhPw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lLY65xXznW8Ri//2YhbS/0767eIWD4MA9PzgkubCtYa59cPkg3KIl1OFgLLgge4Qs
-	 JWqyvdYedAZDBSaeJlvpozsz6zkzkwPsup/iqW9+Dhz8lt97pZyBbJH/w+7KLJPanV
-	 a12bOr4TWqiGvPJ8ZGAvq0i/Pf1jX8aL5EJFo2m0=
-Date: Wed, 18 Feb 2026 11:49:16 -0800
-From: Noah Meyerhans <nmeyerhans@linux.microsoft.com>
-To: Chen-Yu Tsai <wens@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	catalin.marinas@arm.com, will@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Jack Aboutboul <jaboutboul@microsoft.com>,
-	Sharath George John <sgeorgejohn@microsoft.com>,
-	Noah Meyerhans <nmeyerhans@microsoft.com>,
-	Jim Perrin <Jim.Perrin@microsoft.com>
-Subject: Re: [PATCH 6.6 0/3] arm64: Speed up boot with faster linear map
- creation
-Message-ID: <aZYXvMvGZfk0muht@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260217133411.2881311-1-ryan.roberts@arm.com>
- <2026021700-chafe-jurist-cb24@gregkh>
- <17c9efaf-6c33-4485-bde2-345cc15ac000@arm.com>
- <2026021718-citrus-parakeet-dc60@gregkh>
- <7f30a8e4-49c3-421d-be05-08afb544aa41@arm.com>
- <CAGb2v67_UQ9rAFPQ5mqTFdNdPxyAJj0WZ6PwOLbHxU_0XQM6CA@mail.gmail.com>
+	s=arc-20240116; t=1771446083; c=relaxed/simple;
+	bh=stUEdsfxtc4bnSAii8le9q2fiTOR/peX46/VHKirbPU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pqar4ipq54jamGqTzy+ozswUvkpslxKjii/RzCrNW/3ag1PY1W7KEuTL8dB/1WVBJRN14fG748tvdojBvC4BSDkVrcvRYNzyiX3nA/1VGUeh6Bko+RCsOZNgrln4AzrfY9oYRWBCnwFO72wkjpmdIILsMDpwub+AD7LOUZd9CrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ATEfDOCQ; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48374014a77so2300195e9.3
+        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 12:21:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771446080; x=1772050880; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WkBH3Pq8yF91vpQwDAd3nKXebRuZ5X1TEOAqkn6IWvw=;
+        b=ATEfDOCQKyHY2Ckd+ikF6BFAXA7476mJOXiwv+Xgb4fDW0AU0eBSoJEWgxT+dci7+f
+         oMAPj8Blosr4c06Ez9SIr7SloAVHnUe3ilxWYs5NFP9wZbnvAlrZDIlBq2jVAOci9zp5
+         Cvknbu5rZs7C58YAMwD+hs7dEgbU7lkQgP1QsDkrqPv7abbIChiEMvH+tD7HcOt1hh17
+         cXGV0Q8PmphfHoN1POLOiL/9+d8VXxDiwTcSR0kYH8S82vrq1gnJ3EcWQperbYc7KJKp
+         g7GeKRgbFhWsSRwB6SBXB4cMQVmCZOHZsUVQHcAWRXK5YO+caSnzZN0jBi0gXMHY9Mdp
+         ZaOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771446080; x=1772050880;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WkBH3Pq8yF91vpQwDAd3nKXebRuZ5X1TEOAqkn6IWvw=;
+        b=nUHOBDqbRv0qS6PzhxenU1yPoIvFU1JOU3YhdaWdwlOOEFm/Y130aHX75QFYlABRNy
+         GHd9MIgf7Uk9cq48AQrdrj7u89Axd5Cc8A+zI1cb3L2uWL4IPkrX5YXxKri8uT9JuMss
+         d6PjYU0tgy+Qm1yAOl9FOTXk02a3P3cf9aSrF9AxYXaS8CjCk/4ReI0ZKjt5LSq3M7tv
+         0Ld8L63DjJWxR+W4ruM8m9Sz1F5meoh8Eu0I2SmDRiJ4evqRXj9XsCrb7uuIGGtjOjsz
+         jMRW7TFrLtLsNTm/xr7CLkyQNBpnqTp7rRh5JmQEYFasGwlIRZdOmpaU/XzCLLQjIArP
+         ANdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW6fzB4LhcG8T5kBW8nBeohg8bI4dfP0tr2KOpbH1rq6Bh4I8fr7TBsMB95OyLQ4553DXSuNx4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4Egli6bTkTDiI8Z+l2KH+ayDonBcZKd9CX0MT6TpH3R4Kt/Pf
+	/Ti6nW4VelcSuGuruWldjYef4gHCqWQuL0EM1AkiFGDbdgl+c4ldGX7pxmmlGg==
+X-Gm-Gg: AZuq6aIHk59Bt99idNqqNT+Q4rMhxjYwRC8pbHaEFtkoKd18oAuGUtBFelAYhO55jfO
+	CPnAsl3UtVrI//lth14f0x4Lw+Ykbd/VZOBLElTL48iLOSGW1ZQoEInrA4rIwpHooOfeyR9f6cp
+	qnF3mnOXQ4NQ6sA/3PaWnWOqKcbHVGPKGcdSVaFQX1ttbJys78aRUzVunbrSn6moawBz93+h9eB
+	0VcV7ckw7iHFYgcj1+N5gqXfiXCS17qWGyKF7AjJ0+1fRbZpHuypRw+RDV1z5zeZqyw01XwFvQl
+	5B7RtLSQQrVvQydWWNn7+a6R2ubOPY8ZVIbF04gjFI+cYtbqbboWjhJi/b8MeF4GqYMNu/5Xsf2
+	F4mPkgxyq5c9PU4SW7Fb07NdbppQ13q5LvCtZFYK/jpVg8pwE4awJ2LUZKmjlQalfn+Ygq+Zxm3
+	+YWzrZytQ1zonMwa8ChU7aUz3WtE0jqbWe3Jji9v6IVlp1219jngLH
+X-Received: by 2002:a05:600c:1986:b0:483:71f9:37ef with SMTP id 5b1f17b1804b1-483739ff8f5mr330227005e9.8.1771446079805;
+        Wed, 18 Feb 2026 12:21:19 -0800 (PST)
+Received: from [192.168.0.253] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-439567aad3csm9911973f8f.36.2026.02.18.12.21.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Feb 2026 12:21:19 -0800 (PST)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Date: Wed, 18 Feb 2026 21:21:07 +0100
+Subject: [PATCH] usb: core: don't power off roothub PHYs if phy_set_mode()
+ fails
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGb2v67_UQ9rAFPQ5mqTFdNdPxyAJj0WZ6PwOLbHxU_0XQM6CA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260218-usb-phy-poweroff-fix-v1-1-66e6831e860e@gmail.com>
+X-B4-Tracking: v=1; b=H4sIADIflmkC/x2MywqAIBAAfyX23EJaSfQr0UFtzb2kKL2I/j3pO
+ AMzD2RKTBnG6oFEB2cOWwFRV2C93lZCXgqDbKRqpBhwzwajvzGGk1JwDh1faNu+M8po0UkLJY2
+ Jiv630/y+H+tA0KBmAAAA
+X-Change-ID: 20260218-usb-phy-poweroff-fix-c354b6ba142c
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Gabor Juhos <j4g8y7@gmail.com>
+X-Mailer: b4 0.14.2
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217319-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-217320-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nmeyerhans@linux.microsoft.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net:mid,arm.com:email,linux.microsoft.com:dkim]
-X-Rspamd-Queue-Id: 48379159366
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[j4g8y7@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 242AE159669
 X-Rspamd-Action: no action
 
-On Tue, Feb 17, 2026 at 10:27:53PM +0800, Chen-Yu Tsai wrote:
-> 
-> On Tue, Feb 17, 2026 at 10:21 PM Ryan Roberts <ryan.roberts@arm.com> wrote:
-> >
-> > On 17/02/2026 14:10, Greg KH wrote:
-> > > On Tue, Feb 17, 2026 at 01:58:36PM +0000, Ryan Roberts wrote:
-> > >> On 17/02/2026 13:50, Greg KH wrote:
-> > >>> On Tue, Feb 17, 2026 at 01:34:05PM +0000, Ryan Roberts wrote:
-> > >>>> Hi All,
-> > >>>>
-> > >>>> This series is a backport that applies to stable kernel 6.6 (base v6.6.126), for
-> > >>>> some speed ups to enable significantly faster booting on systems with a lot of
-> > >>>> memory. The patches were originally posted at:
-> > >>>>
-> > >>>>   https://lore.kernel.org/linux-arm-kernel/20240412131908.433043-1-ryan.roberts@arm.com/
-> > >>>>
-> > >>>> ... and were originally merged upstream in v6.10-rc1.
-> > >>>>
-> > >>>> I'm requesting this be merged to stable on behalf of a partner who wants to get
-> > >>>> the benefit of this series in Debian 12.
-> > >>>
-> > >>> Why can't they just use a newer kernel version (i.e. 6.12)?  Surely they
-> > >>> would be able to justify moving to a newer kernel for performance
-> > >>> reasons, why enable them to stay on an older one, just delaying the
-> > >>> inevitable upgrade they will have to do anyway in a year or so?
-> > >>
-> > >> I can't answer this presicely, but I did ask and push for that approach. As I
-> > >> understand it, they are stuck with Debian 12, which is stuck with kernel 6.1.
-> > >> The Debian maintainer apparently requested that these go through stable in order
-> > >> to get them into Debian 12.
-> > >
-> > > I understand the position of Debian not wanting to take patches for new
-> > > features that are not already upstream, but really, Debian offers a
-> > > newer kernel for hardware that wants to use it for things like this,
-> > > right?  Why not just use that instead?
-> >
-> > Let me go push a bit harder. But I expect we are in the grey zone between bug
-> > and feature here; this is a performance bug fix, not a new feature. By
-> > selectively backporting I'm guessing they are avoiding the risk of new features
-> > that a new kernel brings introducing new bugs? I'm guessing there is a higher
-> > qualification bar for that.
-> 
-> Why can't they use the kernel from bookworm-backports, which is 6.12?
+Remove the error path from the usb_phy_roothub_set_mode() function.
+The code is clearly wrong, because phy_set_mode() calls can't be
+balanced with phy_power_off() calls.
 
-Bookworm-backports will likely be our recommendation should this
-patchset ultimately be rejected.  Debian 12 uses 6.1.y by default.
-While 6.12.y is available for that release via the bookworm-backports
-repository, bookworm-backports content is not generally recommended for
-production usage. It's not necessarily updated on the same cadence as
-the 6.1.y packages, and Debian does not publish security advisories for
-it.
+Additionally, the usb_phy_roothub_set_mode() function is called only
+from usb_add_hcd() before it powers on the PHYs, so powering off those
+makes no sense anyway.
 
-Debian does not want to maintain this change as a downstream patch, 
-which is fair.  Microsoft would like to make this boot optimization
-available by default to Debian 12 users (of which there are still many)
-which is why we're pursuing this path.  Naturally, we'll manage if we
-can't get the change applied to 6.1.y, but hopefully this explains where
-we're coming from.
+Presumably, the code is copy-pasted from the phy_power_on() function
+without adjusting the error handling.
 
-noah
+Cc: stable@vger.kernel.org # v5.1+
+Fixes: b97a31348379 ("usb: core: comply to PHY framework")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+---
+ drivers/usb/core/phy.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/drivers/usb/core/phy.c b/drivers/usb/core/phy.c
+index faa20054ad5a1c3f704cb9f70b5049cefdab804e..4bba1c2757406a35bf19eb7984a2807212374d18 100644
+--- a/drivers/usb/core/phy.c
++++ b/drivers/usb/core/phy.c
+@@ -200,16 +200,10 @@ int usb_phy_roothub_set_mode(struct usb_phy_roothub *phy_roothub,
+ 	list_for_each_entry(roothub_entry, head, list) {
+ 		err = phy_set_mode(roothub_entry->phy, mode);
+ 		if (err)
+-			goto err_out;
++			return err;
+ 	}
+ 
+ 	return 0;
+-
+-err_out:
+-	list_for_each_entry_continue_reverse(roothub_entry, head, list)
+-		phy_power_off(roothub_entry->phy);
+-
+-	return err;
+ }
+ EXPORT_SYMBOL_GPL(usb_phy_roothub_set_mode);
+ 
+
+---
+base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
+change-id: 20260218-usb-phy-poweroff-fix-c354b6ba142c
+
+Best regards,
+-- 
+Gabor Juhos <j4g8y7@gmail.com>
 
 
