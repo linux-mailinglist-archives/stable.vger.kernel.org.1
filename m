@@ -1,388 +1,186 @@
-Return-Path: <stable+bounces-217279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHg+CfOtlWl1TgIAu9opvQ
-	(envelope-from <stable+bounces-217279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:17:55 +0100
+	id YBx1DqGxlWkHUAIAu9opvQ
+	(envelope-from <stable+bounces-217280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:33:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07CAA1564B6
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:17:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 986761565D5
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 13:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 676083009805
-	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:17:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE5013011C4D
+	for <lists+stable@lfdr.de>; Wed, 18 Feb 2026 12:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5932A3115A1;
-	Wed, 18 Feb 2026 12:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56B83168F6;
+	Wed, 18 Feb 2026 12:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jtHXFFuq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9dM+KVn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AD430FC32
-	for <stable@vger.kernel.org>; Wed, 18 Feb 2026 12:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771417068; cv=pass; b=RpuHi131j5ipkinmhHxZRGo1GWNl5OC67otb+suQPSpMrXJQQjmiokqmXLl75dQUSK62Aay7ExhHlJeKNIiew+3IuarWytXJdM3b0omagKhTTtC4Bc1KTEBUvaGOG8sywYOHGKsaD/XEvu9F9PJZuZKMiSOlq0R71RVwt9BiKQw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771417068; c=relaxed/simple;
-	bh=hDMNd74Pxc2U5r6cQ0S83TyLQHXk1qYR0EipkoSEDh0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YaUZ5pXEnk6a6j5boG9EYxxrABi0OjxxhCrh17Pjl9OrgBsGhqCIjwYdDLGyyeHRJnxtSKjJ0bGn33xv7bjNGfRySudEJxwBn0kjrC/tLlS8VElKfL/2OG7KJX6/s2gcpPk3OIkwx3FKzS3H6V4nVUktAFKUoH/g3b3xdiuw3dE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jtHXFFuq; arc=pass smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b6b0500e06so6135103eec.1
-        for <stable@vger.kernel.org>; Wed, 18 Feb 2026 04:17:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771417066; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AaS1fygCMEwKGndm4eihi3qJG7pN7YJaZrZgDTJ3OetOex1nSXdOA/MxOCY6k6dyNF
-         jhK7wpZaUHCZC1GjipZQzI6u+0DoP49ZlBFBDqtLZaeUwbJ50BXodewhnRhCUlo6uGDT
-         t350RFi4golkGKkUnsiVLprZ6AS3JffrLuMrtL4Vuo2ZUv7WyfSuL7T9OWkR1XRMxRtp
-         yuBDUUdw5gc7BjgmyIfC+hYkij+GncLLMfFuQZVyC5UKBkDwwpE7mfigbInfJCUE2LO5
-         HHN9FnORqwJtSEIbUWwaUoJ9jrRM6g0oHGNNXCRxMcWoZWVSiAN8rJwrf8cn4eJQ1Bdw
-         Z8eA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hlcD4mBl619MgaHciYViGbfD9oWOmC4uxOrCB3gT72Q=;
-        fh=Wos2RGThg8Von/2fEFifEOCJu1nAqJBSvQGYkzXvMlc=;
-        b=VFeU/RHTxRYcloixjhTMHpPSm4bf8hJA/N+KerIi6uR5iFS9ZX3Jl2fLYbrBgt8S5z
-         6p8z/+NXH+VYXIg54sQxhZTjvP/hp/UYkPhMSebnLWK4XIptSZRMCXWSx0v20rC5LFjp
-         uqpIrpwgUAoDI7kZlZ+AxfXip0VO0pr3pmOEbcSUmhYU2sQAErPAdkjfA742LP+DNfNU
-         TnMt7XjAsuv2L728vD80rR2OqMl2xgF94w2nY2pzOKtO+MzxQSd/T1MbgBsjI7e3ujUN
-         YYLoSfOlpotsLes3z4aYqSbLlRMUq7krEeGsE4qH3HeFLgXkMbeW4Wa8TSd9Ew8ZHmif
-         PbZg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771417066; x=1772021866; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hlcD4mBl619MgaHciYViGbfD9oWOmC4uxOrCB3gT72Q=;
-        b=jtHXFFuq9oIBJW8btJyurQEyAF2WydkaXlgQR6f4iJPoq5elbIryYxtRVpW26wcsVz
-         GtvCaFPzDk+h5la8qeolFcdBHvxD1lEhRd+CRcZ4SW0PoK13CSnVVUdI5hJGIvO8VIzr
-         BWp2uleAjTUGrCXUOjBQaV+9+Do+xHU6hh59Z2O7g1MmzB3xY9pGu1S8wmvWmsJfxQH8
-         yTOOKMatjB4yDuFc+8LBFrQEAImdHOch63/R1faCNLs8CXxQAqRRUemgerIu5tn6QPXZ
-         C455NisL22lk8NTSokEcjpXOOW5A4altW8T4tHf67VBy4rf285/v0RhjZnGY/ucw60lP
-         +TAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771417066; x=1772021866;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hlcD4mBl619MgaHciYViGbfD9oWOmC4uxOrCB3gT72Q=;
-        b=k53ANsrren+kYA6NoboOR0itzD/Yvq9U7QUQU1x5MzEUbwQJ3FGlwawdDyVV9VDcwY
-         I/+bRn0ldPtDVBJTFyo/WdXC6MpR18pBCo7BqscYMr5cL+sLwbdfUdvocMonLMg/OXIM
-         9p5bduUmMlOGKz2Jj4NeanJMX/ozhfCSvIMr4P1JHVMs9sJgj+auyxJhK1imSnvLWIAg
-         SXpfp1q3St20cuWxbWYsqUylwT3iN01hCafN0VCDc5NG25uir7IXkjzOZGP6WpIW+AyP
-         Xgge3UmHBREjfFy2wI2uJa6i/jr1O28sjBFUZqg7WO9olWYWkIB5qh3zEdSl/TujFpbY
-         NElg==
-X-Gm-Message-State: AOJu0Yzm3hhJY38B3HuzcL/fyl+xnzffD+VWbe9Si3mzqKMQTDORkYKq
-	4Cyns69noTBMAt6EN/mURR6s662ld/1bY8yExBrFZiXTh7Vch05zxrviXvwnmyW2+w7h/0KzPgj
-	2Xq6wSPHtVTtq3YU6R1raGLy2BaXwBaM=
-X-Gm-Gg: AZuq6aKuG8xvL0S/7Y6v8NU1NVQdhlVtua97kU3GSBMw2pWjhQSFjjQ4ArBbJ90Kgq5
-	yp1rU8oLtpAhtNpb51U86jJy3BKtpeYRevLIFxwVRefnkhY0ZCPlr3vJQQ6SH/UFdw9ZqnSP+J2
-	Znbr/n1mF4SX576nkQILdqClXvT7wkb9tCgGlxg5MdzouLEHjWNEzQJvM2089I6FHEjlbrEq9Pa
-	PbbB7tJVMwNgMc7CPvecWz7JMrMO6k+uJtU7gp4mBWewFH/P7IScH/06FoP0IBsHkE20LZrGt7/
-	8psE6uYZIaVTJGUetqcdXw21c31Ni7WISQoYUA2HlPDkOYH2tcidTlOyucIYiz8JzaZT9U3QHay
-	IwpHuJxdyVhbY0aMeS7OkncgNNgRgzH4oa6rem7zDGUyV9BKGvMvaOhBX93iqLoZ89aDvO/XuEM
-	DJXR+jFFOs8KJuGyE12SY/XH+oGPotZxyD1wsmUg==
-X-Received: by 2002:a05:7300:23cc:b0:2ba:769b:813e with SMTP id
- 5a478bee46e88-2baba13689dmr6737357eec.38.1771417057499; Wed, 18 Feb 2026
- 04:17:37 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D3E30F7FA;
+	Wed, 18 Feb 2026 12:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771418002; cv=none; b=jAWNeRZJO1QdZAjHHEhszSUKJLESJSO123+m40dpC5WbmhmwYSBT8goZHalJV6VMo9eMYFpxINR86EO2qovFlAZP+T4oxOgOxC0WOccFpQhR5SEx0YERKlqWfL2a+ID/3UcPDzpIhYo+Gn3+0kmKy57lNloNv5SxqvghvSSO6Zw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771418002; c=relaxed/simple;
+	bh=onXJKG7ABpWysLLjHoB0FgkcOtPQuvl7ThpLtjN1wno=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CFGkP5/aBSPhBxdU9/iVDCR04iTk6vt/VG5MFvW8HRzPw9rNYHuiGA2NlRfXgdP7YnDfBBYnYZ9brslmVFwj9pgGBfOfhPX9DdJy4pRydCZ3g8/73t72JvraVRYls+vZP40jWMjHCgblvaxFEZIswskavjqpBSAoU6y3Z/dedIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9dM+KVn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19B8C19424;
+	Wed, 18 Feb 2026 12:33:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771418002;
+	bh=onXJKG7ABpWysLLjHoB0FgkcOtPQuvl7ThpLtjN1wno=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D9dM+KVnFofAmcGqIps4U3wTWoSnPT8rf5sNM9imouD8LmX0ZYz0s5ivZjJP++vuZ
+	 Oppn+ckqo6ODDrfaT0gzbg/w0mV2vS6YuqM09iu2KoRpY6MiK2rK/aEhmKVUpDeI40
+	 RLrR0bmvc+h45jzRqchndMO9+AdnpuPwtVakvSaQTkIRS9JU3EdChxHEzqcIG/VSot
+	 rIJEnGlvLD2MqsLiEu2ALuKZI1mQDopC914AIBq15v/rqy/AHn69+9wCCfsGgLqT3w
+	 +CFVAJUOSlDgcCxUb4RbCrCqbllyMjhCOc29u7qH7TF//mk4Yjjm9KDqImq+F9S/Ep
+	 ldmd/hUWBobbA==
+Date: Wed, 18 Feb 2026 18:03:07 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Stanimir Varbanov <svarbanov@mm-sol.com>, linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] PCI: qcom: Prevent GDSC power down on suspend
+Message-ID: <6osboej6luxekrw4okhlbf3irednx7gduhmqbzqkkgd3ldm2cn@esalet4ruwcb>
+References: <20260128-genpd_fix-v1-1-cd45a249d12f@oss.qualcomm.com>
+ <zfs6krk2whthgdjl2s2w4o5pjwimzw37afoiyrqllykrk6jugt@4ijk5iqplohr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260217200006.470920131@linuxfoundation.org>
-In-Reply-To: <20260217200006.470920131@linuxfoundation.org>
-From: Luna Jernberg <droidbittin@gmail.com>
-Date: Wed, 18 Feb 2026 13:17:24 +0100
-X-Gm-Features: AaiRm50U6OECfKkNegrsfdYjbIrz9JKTIu4dsD8NtGlz0cAT1gG99TY7AZgdDj0
-Message-ID: <CADo9pHiSp3BrQs15Dc-E4TZTx9aHWpsnT1ZQseh222ZH0XdAzQ@mail.gmail.com>
-Subject: Re: [PATCH 6.18 00/43] 6.18.13-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Luna Jernberg <droidbittin@gmail.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <zfs6krk2whthgdjl2s2w4o5pjwimzw37afoiyrqllykrk6jugt@4ijk5iqplohr>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217279-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217280-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[droidbittin@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 07CAA1564B6
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 986761565D5
 X-Rspamd-Action: no action
 
-Tested on: Arch Linux Machine a Dell Micro 3050 with a
-model name    : Intel(R) Core(TM) i5-6500T CPU @ 2.50GHz
-and works as it should
+On Wed, Jan 28, 2026 at 08:13:48AM -0600, Bjorn Andersson wrote:
+> On Wed, Jan 28, 2026 at 05:52:42PM +0530, Krishna Chaitanya Chundru wrote:
+> > Currently, the driver expects the devices to remain in D0 across system
+> > suspend, but the genpd framework may still power down the associated
+> > GDSC during suspend. When that happens, the PCIe link goes down and
+> > cannot be recovered on resume.
+> > 
+> 
+> The GDSC is a child of CX, so by keeping it always-on, you effectively
+> put an always-on vote on CX, forever preventing CXPC.
+> 
+> In fact, this is one of the reasons why the PCIe GDSCs on most targets
+> is marked PWRSTS_RET_ON (in the clock driver) so that the "off state"
+> doesn't actually turn off the GDSC, but it relinquishes the inherited
+> vote on CX.
+> 
 
+So this means, you favor the patch that marks the PCIe GDSCs as PWRSTS_RET_ON?
 
-Tested-by: Luna Jernberg <droidbittin@gmail.com>
+> > Prevent genpd from turning off the PCIe GDSC by using
+> > dev_pm_genpd_rpm_always_on() so that the power domain stays on while
+> > the controller is suspended. This preserves the link state across
+> > suspend/resume and avoids unrecoverable link failures.
+> > 
+> 
+> We are able to suspend/resume a whole bunch of platforms today, which
+> one are you on?
+> 
+> That said, while we can suspend/resume, we're not allowing CXPC today.
+> On many systems the main culprit is the icc_set_bw() vote in
+> qcom_pcie_suspend_noirq().
+> 
 
-Den tis 17 feb. 2026 kl 21:52 skrev Greg Kroah-Hartman
-<gregkh@linuxfoundation.org>:
->
-> This is the start of the stable review cycle for the 6.18.13 release.
-> There are 43 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 19 Feb 2026 19:59:50 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.18.13-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.18.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
-> -------------
-> Pseudo-Shortlog of commits:
->
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     Linux 6.18.13-rc1
->
-> Chao Yu <chao@kernel.org>
->     f2fs: fix to do sanity check on node footer in {read,write}_end_io
->
-> Chao Yu <chao@kernel.org>
->     f2fs: fix to do sanity check on node footer in __write_node_folio()
->
-> Fabio Porcedda <fabio.porcedda@gmail.com>
->     USB: serial: option: add Telit FN920C04 RNDIS compositions
->
-> Danilo Krummrich <dakr@kernel.org>
->     iommu/arm-smmu-qcom: do not register driver in probe()
->
-> Yeongjin Gil <youngjin.gil@samsung.com>
->     f2fs: optimize f2fs_overwrite_io() for f2fs_iomap_begin
->
-> Chao Yu <chao@kernel.org>
->     f2fs: fix to avoid mapping wrong physical block for swapfile
->
-> Daeho Jeong <daehojeong@google.com>
->     f2fs: support non-4KB block size without packed_ssa feature
->
-> Chao Yu <chao@kernel.org>
->     f2fs: fix to avoid UAF in f2fs_write_end_io()
->
-> Yongpeng Yang <yangyongpeng@xiaomi.com>
->     f2fs: fix out-of-bounds access in sysfs attribute read/write
->
-> Yongpeng Yang <yangyongpeng@xiaomi.com>
->     f2fs: fix IS_CHECKPOINTED flag inconsistency issue caused by concurre=
-nt atomic commit and checkpoint writes
->
-> Chao Yu <chao@kernel.org>
->     f2fs: fix to check sysfs filename w/ gc_pin_file_thresh correctly
->
-> Zhiguo Niu <zhiguo.niu@unisoc.com>
->     f2fs: fix to add gc count stat in f2fs_gc_range
->
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     fbdev: smscufx: properly copy ioctl memory to kernelspace
->
-> Guangshuo Li <lgs201920130244@gmail.com>
->     fbdev: rivafb: fix divide error in nv3_arb()
->
-> Chen Ridong <chenridong@huawei.com>
->     cpuset: Fix missing adaptation for cpuset_is_populated
->
-> Tiezhu Yang <yangtiezhu@loongson.cn>
->     LoongArch: Rework KASAN initialization for PTW-enabled systems
->
-> David Hildenbrand (Red Hat) <david@kernel.org>
->     mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables us=
-ing mmu_gather
->
-> Otto Pfl=C3=BCger <otto.pflueger@abscue.de>
->     arm64: dts: mediatek: mt8183: Add missing endpoint IDs to display gra=
-ph
->
-> Alban Bedel <alban.bedel@lht.dlh.de>
->     gpiolib: acpi: Fix gpio count with string references
->
-> Jens Axboe <axboe@kernel.dk>
->     io_uring/fdinfo: be a bit nicer when looping a lot of SQEs/CQEs
->
-> Ziyi Guo <n7l8m4@u.northwestern.edu>
->     ASoC: fsl_xcvr: fix missing lock in fsl_xcvr_mode_put()
->
-> Melissa Wen <mwen@igalia.com>
->     drm/amd/display: remove assert around dpp_base replacement
->
-> Melissa Wen <mwen@igalia.com>
->     drm/amd/display: extend delta clamping logic to CM3 LUT helper
->
-> Deepanshu Kartikey <kartikey406@gmail.com>
->     tracing/dma: Cap dma_map_sg tracepoint arrays to prevent buffer overf=
-low
->
-> Charles Keepax <ckeepax@opensource.cirrus.com>
->     ASoC: cs42l43: Correct handling of 3-pole jack load detection
->
-> Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->     platform/x86: panasonic-laptop: Fix sysfs group leak in error path
->
-> Maciej Strozek <mstrozek@opensource.cirrus.com>
->     ASoC: sof_sdw: Add a quirk for Lenovo laptop using sidecar amps with =
-cs42l43
->
-> gongqi <550230171hxy@gmail.com>
->     platform/x86/amd/pmc: Add quirk for MECHREVO Wujie 15X Pro
->
-> Breno Baptista <brenomb07@gmail.com>
->     ALSA: hda/realtek: Enable headset mic for Acer Nitro 5
->
-> Dirk Su <dirk.su@canonical.com>
->     ASoC: amd: yc: Add quirk for HP 200 G2a 16
->
-> Tagir Garaev <tgaraev653@gmail.com>
->     ASoC: Intel: sof_es8336: Add DMI quirk for Huawei BOD-WXX9
->
-> Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->     platform/x86: classmate-laptop: Add missing NULL pointer checks
->
-> Brahmajit Das <listout@listout.xyz>
->     drm/tegra: hdmi: sor: Fix error: variable =E2=80=98j=E2=80=99 set but=
- not used
->
-> Deepanshu Kartikey <kartikey406@gmail.com>
->     romfs: check sb_set_blocksize() return value
->
-> Kailang Yang <kailang@realtek.com>
->     ALSA: hda/realtek - fixed speaker no sound
->
-> Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
->     ASoC: cs35l45: Corrects ASP_TX5 DAPM widget channel
->
-> Zhang Heng <zhangheng@kylinos.cn>
->     ALSA: hda/realtek: Add quirk for Inspur S14-G1
->
-> Xuewen Yan <xuewen.yan@unisoc.com>
->     gpio: sprd: Change sprd_gpio lock to raw_spin_lock
->
-> Anatolii Shirykalov <pipocavsobake@gmail.com>
->     ASoC: amd: yc: Add ASUS ExpertBook PM1503CDA to quirks list
->
-> Alice Ryhl <aliceryhl@google.com>
->     rust: driver: fix broken intra-doc links to example driver types
->
-> FUJITA Tomonori <fujita.tomonori@gmail.com>
->     rust: dma: fix broken intra-doc links
->
-> FUJITA Tomonori <fujita.tomonori@gmail.com>
->     rust: device: fix broken intra-doc links
->
-> Anil Gurumurthy <agurumurthy@marvell.com>
->     scsi: qla2xxx: Fix bsg_done() causing double free
->
->
-> -------------
->
-> Diffstat:
->
->  Makefile                                           |   4 +-
->  arch/arm64/boot/dts/mediatek/mt8183.dtsi           |  37 ++++++-
->  arch/loongarch/mm/kasan_init.c                     |  80 +++++++-------
->  drivers/gpio/gpio-sprd.c                           |   8 +-
->  drivers/gpio/gpiolib-acpi-core.c                   |   1 +
->  .../gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c |  30 ++++-
->  .../drm/amd/display/dc/dwb/dcn30/dcn30_cm_common.h |   2 +-
->  .../drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c    |   9 +-
->  .../drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c    |  18 +--
->  .../drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c  |  16 +--
->  drivers/gpu/drm/tegra/hdmi.c                       |   4 +-
->  drivers/gpu/drm/tegra/sor.c                        |   4 +-
->  drivers/iommu/arm/arm-smmu/arm-smmu-impl.c         |  14 +++
->  drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c         |  14 ++-
->  drivers/iommu/arm/arm-smmu/arm-smmu.c              |  24 +++-
->  drivers/iommu/arm/arm-smmu/arm-smmu.h              |   5 +
->  drivers/platform/x86/amd/pmc/pmc-quirks.c          |   7 ++
->  drivers/platform/x86/classmate-laptop.c            |  32 ++++++
->  drivers/platform/x86/panasonic-laptop.c            |   4 +-
->  drivers/scsi/qla2xxx/qla_bsg.c                     |  28 +++--
->  drivers/usb/serial/option.c                        |   6 +
->  drivers/video/fbdev/riva/riva_hw.c                 |   3 +
->  drivers/video/fbdev/smscufx.c                      |   8 +-
->  fs/f2fs/data.c                                     |  51 ++++++---
->  fs/f2fs/f2fs.h                                     |  64 ++++++++---
->  fs/f2fs/gc.c                                       |  24 ++--
->  fs/f2fs/node.c                                     |  50 +++++----
->  fs/f2fs/node.h                                     |   8 --
->  fs/f2fs/recovery.c                                 |   6 +-
->  fs/f2fs/segment.c                                  |  86 +++++++-------
->  fs/f2fs/segment.h                                  |   9 +-
->  fs/f2fs/super.c                                    |  26 ++---
->  fs/f2fs/sysfs.c                                    |  62 +++++++++--
->  fs/romfs/super.c                                   |   5 +-
->  include/asm-generic/tlb.h                          |  77 ++++++++++++-
->  include/linux/f2fs_fs.h                            |  73 +++++++-----
->  include/linux/hugetlb.h                            |  15 ++-
->  include/linux/mm_types.h                           |   1 +
->  include/trace/events/dma.h                         |  25 ++++-
->  io_uring/fdinfo.c                                  |  11 +-
->  kernel/cgroup/cpuset.c                             |   2 +-
->  mm/hugetlb.c                                       | 123 ++++++++++++---=
-------
->  mm/mmu_gather.c                                    |  33 ++++++
->  mm/rmap.c                                          |  25 +++--
->  rust/kernel/device.rs                              |   6 +-
->  rust/kernel/dma.rs                                 |   5 +-
->  rust/kernel/driver.rs                              |  12 +-
->  sound/hda/codecs/realtek/alc269.c                  |  13 +++
->  sound/soc/amd/yc/acp6x-mach.c                      |  14 +++
->  sound/soc/codecs/cs35l45.c                         |   2 +-
->  sound/soc/codecs/cs42l43-jack.c                    |  37 ++++++-
->  sound/soc/fsl/fsl_xcvr.c                           |   3 +
->  sound/soc/intel/boards/sof_es8336.c                |   9 ++
->  sound/soc/intel/boards/sof_sdw.c                   |   1 +
->  54 files changed, 877 insertions(+), 359 deletions(-)
->
->
->
+Yeah, I still need to look deeply into this part. The stray vote keeps the PCIe
+link active as irq core tries to masks the MSIs at the very end of suspend. This
+design works fine for firmware controlled suspends, but not for kernel
+controlled ones.
+
+- Mani
+
+> Regards,
+> Bjorn
+> 
+> > Fixes: 82a823833f4e ("PCI: qcom: Add Qualcomm PCIe controller driver")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+> > ---
+> >  drivers/pci/controller/dwc/pcie-qcom.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+> > index 5a318487b2b3f6c61d8f5b1fd5cdf2738a1f1dcd..314cf334a313dff35efaf0c023597e6eef483925 100644
+> > --- a/drivers/pci/controller/dwc/pcie-qcom.c
+> > +++ b/drivers/pci/controller/dwc/pcie-qcom.c
+> > @@ -25,6 +25,7 @@
+> >  #include <linux/pci.h>
+> >  #include <linux/pci-ecam.h>
+> >  #include <linux/pm_opp.h>
+> > +#include <linux/pm_domain.h>
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/phy/pcie.h>
+> > @@ -2052,6 +2053,11 @@ static int qcom_pcie_suspend_noirq(struct device *dev)
+> >  		pcie->suspended = true;
+> >  	}
+> >  
+> > +	if (pcie->suspended)
+> > +		dev_pm_genpd_rpm_always_on(dev, false);
+> > +	else
+> > +		dev_pm_genpd_rpm_always_on(dev, true);
+> > +
+> >  	/*
+> >  	 * Only disable CPU-PCIe interconnect path if the suspend is non-S2RAM.
+> >  	 * Because on some platforms, DBI access can happen very late during the
+> > 
+> > ---
+> > base-commit: 1f97d9dcf53649c41c33227b345a36902cbb08ad
+> > change-id: 20260128-genpd_fix-3aa413d9a383
+> > 
+> > Best regards,
+> > -- 
+> > Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+> > 
+> > 
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
