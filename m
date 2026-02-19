@@ -1,130 +1,123 @@
-Return-Path: <stable+bounces-217485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DqYAhBLl2m2wQIAu9opvQ
-	(envelope-from <stable+bounces-217485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:40:32 +0100
+	id 4F7BHcBMl2m2wQIAu9opvQ
+	(envelope-from <stable+bounces-217486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:47:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904D316151C
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:40:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E466C161638
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:47:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AD1DD3010784
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:40:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3DDC3013EF8
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0B8342C8F;
-	Thu, 19 Feb 2026 17:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A698B34FF73;
+	Thu, 19 Feb 2026 17:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xe/rAFv0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nOFI+HPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D29E34DB7B;
-	Thu, 19 Feb 2026 17:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A12533A6FB
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 17:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771522826; cv=none; b=Ys6M5L6UKduEItTsCl/xHCOOeFjT+I1KgfPN79apVlbzef5+Fbq3DRxe5ZGGWpa6VLmojd1VzAi03yFlxCJRjcRyq2sHUAEmGS7yOpsGZXsAr5fUPsWaz5q43YCVHT2S5jf3wvjqmily2tEZg2ZRCei1Ejf8uom0uCsL776B/DM=
+	t=1771523261; cv=none; b=VsaFYtD3xkWsq3MkBMBHJbPXhFueu7BsSxaqHFZ3KWjiLLOxnbsxfkxzxJ76Sp+4sJZYaR+Z06KcDcign9BPYOihpKxXdtmMqDk7Sdv2PWXPgSLXKOi0WXEIHY6VWrSpGM5zmPFArpVjZEXlpCuGg2IhooEbiscfbtB4Myyfz8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771522826; c=relaxed/simple;
-	bh=K52d2zJMFf3z16p2U8f9apBmP5al2DYkLQOxG/9VQtk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=W3/q+lJYuh+pjuyR1a4KEANkqDzVro5B46WDGv5GOyUCezRVOTT32ynUDGho2d7OOn2qH0PTtuuPiL2WHJAQAZ3+eVdQ/LIDEvy+cc1gEC9VaLWhCI6ndeaKDPtRVNSWIJ306w2NQWZXc+nSWMl03VAUgBkB/+ublDirXOt2+r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xe/rAFv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFEFAC4CEF7;
-	Thu, 19 Feb 2026 17:40:25 +0000 (UTC)
+	s=arc-20240116; t=1771523261; c=relaxed/simple;
+	bh=UVs7gOidbmt6oOnZ4Xr9TP0l/QbXtRBOYq/AhMjUzI0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aLyILcXcG1TZ+jMssC+vZwlTOEG6l9SwUDfDfVHInh1lNV0ZGPOI91awMCBGc+M+/BSMNHEUeVJiGIbdlu3SYzC4NG8AoOniRx5YskWkV7klpkTywM6ZnVA3W1Lyt8t5gLx/q9La1z5ORRopwIzWGNwPNQyOBkRwiTp9EuDa3rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nOFI+HPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F04AC4CEF7
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 17:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771522826;
-	bh=K52d2zJMFf3z16p2U8f9apBmP5al2DYkLQOxG/9VQtk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Xe/rAFv0SJoQMrAaJzDyUvhaCGLHJkrOibK2vzUsuBhk2S8phvhGV+Fnuyfyzc293
-	 vAnteCrDUGbVZxDHf8hSjaJBwVfIPo01NEpJjdueBTnJ1EdJ4crjr+kjhwSGh73EhD
-	 pkJxnVz8U7+rAIe0uL+9KDbUbbXxwQgLnPqgDtB0nbyxamiJlroBnlospyI0Q0GhvR
-	 C7o/RRdGDmxmL8u3bayHVRXJ5LQg6S3Pd+2TcrCjF8J0ln3i5udyYYvBfRcyh8xNvd
-	 bxdFup6yk0AzjGDtTFw0lJ0aUAPwHa7/x1cZz5efXhz57D95+PvBwNMczO96NoWoeY
-	 VDBjGFLdZeBRw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B2A5380CEF3;
-	Thu, 19 Feb 2026 17:40:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1771523261;
+	bh=UVs7gOidbmt6oOnZ4Xr9TP0l/QbXtRBOYq/AhMjUzI0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nOFI+HPyVHc81f3DhMYJF6XA9Nhb3ljERp0lZB/9OYWiW5aFVDw8u1lpO0zWIIzoz
+	 qEOzCsDP3gfIGzVl59zK3W+H/T4OQXaCoD+uz9NCcth0sIkZZC5kECWqNyfN9JbmU0
+	 9xcTqDuO5yNMplido0hAAD5yT1a+x7d667Aw/jEpEg8ABa0hv0cL7Z7QrgQ5jaT7x8
+	 xglxWJIxonagMZG8aQ0r+VSmCCJ6Le54pQJckq0DJwY1z71W3++3ghS5gPuE/OcAvF
+	 7I+hFOI+7FTSVHSf1909hGaTaqYtk4RmHKWUdqrgDng7aB1TiRS7+Mx5Z32Ts7iZ0U
+	 1xImcrHVAkiPQ==
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7950881727cso8439587b3.3
+        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 09:47:41 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXIUN3pzZjbNju0nZnNmRBL2CtbTykAkp06jQz32v8UmvCx/RdMmzF+9J4z2MSWR2MIn29NUQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBWNXoJcd5wUPupW5bpXlmbVvGMe3vCQHA6scmJDXgVENXohsA
+	MeNhRg41IspN4vK4+mX6C+C8+BGgQCvBp8QF/GPdTTfFBkl1u1usy/BujamAwcC3U+OmEbuqVgF
+	kN0ezinWN6whGpl5rN3aZ9iEfolgoUOw=
+X-Received: by 2002:a05:690c:e361:b0:797:ffb6:fd5d with SMTP id
+ 00721157ae682-797ffb70279mr38827607b3.19.1771523260625; Thu, 19 Feb 2026
+ 09:47:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v6] net: nfc: nci: Fix parameter validation for packet
- data
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177152281658.2317554.15811337395929240239.git-patchwork-notify@kernel.org>
-Date: Thu, 19 Feb 2026 17:40:16 +0000
-References: <20260218083000.301354-1-michael.thalmeier@hale.at>
-In-Reply-To: <20260218083000.301354-1-michael.thalmeier@hale.at>
-To: Michael Thalmeier <michael.thalmeier@hale.at>
-Cc: deepak.sharma.472935@gmail.com, krzk@kernel.org,
- vadim.fedorenko@linux.dev, horms@kernel.org, pabeni@redhat.com,
- kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- kernel@0x83.eu, michael@thalmeier.at, stable@vger.kernel.org
+References: <20260214044531.43539-1-ethantidmore06@gmail.com>
+In-Reply-To: <20260214044531.43539-1-ethantidmore06@gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 19 Feb 2026 18:47:29 +0100
+X-Gmail-Original-Message-ID: <CAD++jLn2HLjzN8MAGYFes=ehExVn8aaCEBspkJv8XE9JeXT-8g@mail.gmail.com>
+X-Gm-Features: AaiRm53b71tl-VbDTTw6kFslGZNdEUnkn7Bdin4zAynyZzamGnID2MPN8OzNQeA
+Message-ID: <CAD++jLn2HLjzN8MAGYFes=ehExVn8aaCEBspkJv8XE9JeXT-8g@mail.gmail.com>
+Subject: Re: [PATCH] gpio: nomadik: Add missing IS_ERR() check
+To: Ethan Tidmore <ethantidmore06@gmail.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217485-lists,stable=lfdr.de,netdevbpf];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.dev,redhat.com,vger.kernel.org,0x83.eu,thalmeier.at];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217486-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 904D316151C
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: E466C161638
 X-Rspamd-Action: no action
 
-Hello:
+On Sat, Feb 14, 2026 at 5:45=E2=80=AFAM Ethan Tidmore <ethantidmore06@gmail=
+.com> wrote:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+> The function gpio_device_get_desc() can return an error pointer and is
+> not checked for one. Add check for error pointer.
+>
+> Fixes: ddeb66d2cb10f ("gpio: nomadik: don't print out global GPIO numbers=
+ in debugfs callbacks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
 
-On Wed, 18 Feb 2026 09:30:00 +0100 you wrote:
-> Since commit 9c328f54741b ("net: nfc: nci: Add parameter validation for
-> packet data") communication with nci nfc chips is not working any more.
-> 
-> The mentioned commit tries to fix access of uninitialized data, but
-> failed to understand that in some cases the data packet is of variable
-> length and can therefore not be compared to the maximum packet length
-> given by the sizeof(struct).
-> 
-> [...]
+Great catch!
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-Here is the summary with links:
-  - [net,v6] net: nfc: nci: Fix parameter validation for packet data
-    https://git.kernel.org/netdev/net/c/571dcbeb8e63
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Yours,
+Linus Walleij
 
