@@ -1,310 +1,246 @@
-Return-Path: <stable+bounces-217426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHSoL0HmlmkuqwIAu9opvQ
-	(envelope-from <stable+bounces-217426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 11:30:25 +0100
+	id yO5/MgTwlmngrAIAu9opvQ
+	(envelope-from <stable+bounces-217427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 12:12:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536B615DC9A
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 11:30:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4230515E31A
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 12:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F23683018AF4
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 10:30:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3929E301F4A7
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 11:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD493329E61;
-	Thu, 19 Feb 2026 10:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BF333D6F9;
+	Thu, 19 Feb 2026 11:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uhaIsDPm"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Aqpv5oaU";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NOZBjilY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFC02F12CE
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 10:30:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771497019; cv=pass; b=ra/oXn5JF9szzVrzqhf0MlErlZFLla0RCW5aX0tkTcJBs2UC7x7RgnNOXRDmH94xSe7ZD6VkHwvfSZrsgoIpGZgUZ8uMoAVMm+E2c84EnS9pZ/d4rLKnGw4vGzF6VtB/NpkSTiF1XltausnuMxfPI/2u4pMPX0dS3bdToPM2b7Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771497019; c=relaxed/simple;
-	bh=eWjMi9oPdjlnFDLhC1g6CgpEWpUV5f5UQwqPs/wjrlM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cTfvbfbj2SouBpfEYhy7IUfIU3+g+CFs3YQ7gd5doBj916QINhI9BZna94CUeoyC5rlz061MUhFvkAPeCaaXL1E2JjPBkrmQOieaAqYfoHo3zg+7DFhempFhhQnf6NWxHb+wga2El6gGqs5I4nhsxpHR15ke5kg0yrnSd+uCZbU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uhaIsDPm; arc=pass smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59e61e94e1bso1054911e87.0
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 02:30:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771497016; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Lo07LOzIPmo0NthCIEytHZF3YDoBPgj7o3xeqIxBHRSY7B5qwvx0h0CFjfn7el8K9R
-         16dk/WbaktvqGsO5pnY/hb9Pa8/aQx5eoU0ds/WJUP+2s83c69zdg87VCRalqivc80/A
-         +fRKMi2kawe/8sFD/RcjxwhBM2Ht3Ee7kjlX/sYv318b/OtI3vLmJftM/E6VMBmgxNET
-         l4P7S5tsUWSHJq7zGE3AJwYSQ69NnuRzp9ubNqY8yd6F3nEeaIrN3aBiOFM8iHIw4IOe
-         ZOqLwYekGJ5GYFR5Js1L6EirYWH+KlP9tmlpZllQ2CWLZt+LqWOuQ4CRVLnq7E9TemCh
-         Y4SQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=X4t0aQn668iou6qj2IRqi89HzqoDCvFcIKaw6c4juHE=;
-        fh=/tZGRFjDeYJjgBCWMSdv8WiDRXEAjhJm2GFByh/RBG0=;
-        b=LAiufbk6HtGHDRg+OWG6MxXUJrk24JtnmezYLCwbqNhcqm3vQ0+Kg8Qzd722tqm5Do
-         /w0SvwT10+7w5wzV2Lv5qrAyaXO3SWdvICoEBPqIM/l0oTHqvhBEDu05kHb40sJbhYoc
-         U/fwbY+5IIVwGzD3RdoM31k01MGlsYW5BlC+zMp3eq+UeEHkBQ25cSyBDUXOYFADQBu/
-         sYjWtwuBpW0HGjvUr6dmf2PnRoafH4uPiqti0O107nSbqeM3iUFKPf4M5FSdnhqqVeDP
-         DrHz3BF/7wHAA9kCElXC0yOf5xJjGVd/dxDex9MlKLPj/FZR7tj889yqxxGhiqr7KOjz
-         a67A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AEE239E63
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 11:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771499521; cv=none; b=WMHY+CVSw9J/Ljv7E0aBIQBee2g4UlLkV0/SHVWq7XW83UFIVy3wnMqMVil4m+xZiFtDaF76wJRI2dhyaHoZAgAX54pRLQAcpMLTrx/xnyTYtlPnXCFIcDvBQtiRlk74hP+XU1Q+cosB3bjPWEH+I2UobifR04tH+uUZEpNt9ow=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771499521; c=relaxed/simple;
+	bh=zbxY9b0ZlCq0UrOIJd6sjF+e77WKY8qgVD84bS+Ct8g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EUpikfeh+1qFXO51p9au/5DRp4Ysv3ul3oJ54Z47oHc+luA45uLia1Igghq3lnLbfCZ2RPuQTnPiUXZ1UXjjWgKjEQ2hnBQNy28+hGtSK1T+10KCJ0ae9I8l7H+x2IN4nO01MRyGgtqcJEyF0FMETd4gS5rMFvJup+fEflHKNXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Aqpv5oaU; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NOZBjilY; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61INleJE1924861
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 11:11:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=vOvNdYCVSmVkwGXEsNxSmL
+	jxoujgZy923FLHo8wDNN8=; b=Aqpv5oaUyjdHA8YT96METkbU8yj35aopI7zRw6
+	jBkftnIdd1qZnD2+IlgvxoDfcA1BPPcuyCHVfIz/WIRaXP+s0uECHK380CWhy0Z9
+	Rx542b8z54/9SbbNEqO1pQqegi0owcFVoUXfB7W+a2nFwWqNP0HtYs4DF+02FdUB
+	J3DDy99883M9ebjyJ76dEgjTVcep+rG+y6fFaqYlsELBn//ztKHH2mM6TP2clCrq
+	DBNAKB94Y9WxcFmllRnZUrgcRH3vbId7u9EAiSwF0L0oizA4NR4NL3MOAjurxzSs
+	8Q+nm35AFNS5DDlOUkIeibl3wezeD/r6a3ZvIvncrZjzUiYA==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cdqdg9dj0-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 11:11:59 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-506549eb4b7so91690331cf.3
+        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 03:11:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1771497016; x=1772101816; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=X4t0aQn668iou6qj2IRqi89HzqoDCvFcIKaw6c4juHE=;
-        b=uhaIsDPmTTTKsIRyUDl482p9uAakDLmLNAvPbNU5bqKy8HdV9hwFVSGblhhHBh8kD1
-         wE4vbW8ZAHMdM9fuH1zhyk6LHh6SNM4sHqSXaNKmEyVVxkniHoyUtVhWQxhGKzJlOqBo
-         G4In/a1HkhnfAXrrVVQ1eLP4qQQq6flLHBiYr5HuQKIIK6To8XlcljIJezt1EaFry3Ai
-         YbHxwPztJU9PeRZKslu7MWRXi1UZSZdSB1kiqfU04kAnC8uPINravVh106vqyLIKAykD
-         Hd3WxA3B2urCSygi4WR79Df4TrwPovndAcHtM4py69RH5/SY+hOlB0Tr+ET9eHQb0Ygh
-         hQYg==
+        d=oss.qualcomm.com; s=google; t=1771499519; x=1772104319; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vOvNdYCVSmVkwGXEsNxSmLjxoujgZy923FLHo8wDNN8=;
+        b=NOZBjilYX87nyoEA4XTcscDaNuGrsRNqtof71r+4JLwOD3DvTOsIQmSKL/R5qpItSJ
+         BMenyfDp1QZCfEoPP9Himy8OjtH0DT6Q3lS1JFU4Vg4hCODSaF+q3uqijqHXoIaEPVdD
+         uofFwk4AdVb6XJfE7U4mjoJGictPMpNVtyoFPpFu90jkGQShMdatYyAat4lW7WzVACoR
+         zSS2/bvQOkZQ8i7yj8JV/ZvssK7/b0a7gZFCjJH6oO3LvIpmARYqujz6FhKV4D62A/OX
+         DdDBUk+YjZi8HdUwdzFASuWoc7dMVEPSy8NEAu/2EbdtiT+M/+2cJbfhBzMbGhbfiqwr
+         pP5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771497016; x=1772101816;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1771499519; x=1772104319;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=X4t0aQn668iou6qj2IRqi89HzqoDCvFcIKaw6c4juHE=;
-        b=v7exuKFbwexrEMAm7/omiVIBBwIRFuSiiAjNtP/Sr7eZg7ugJ4dS2PFoE4TFFCg2FK
-         mRQqtiJoy8I19maQqJtSKWo4CLkARGYl7fRzOQrDHcdTZtAaqb4u874UHlI56Sy5Ucnc
-         X82VPPKSvT2eJJfAcAd2idY2/1PQFNhkdDO8PuxM0o5Es3xC2Ho2zrxmqUBs6dQQlKRb
-         pdeF/p3WwqMdligz436cMcXnrIwFomX4zuBLZTKva2q/YMrKyHweQz4Q3Wn5i78zHgeS
-         JwZSCRhCzozLa9qaG/R+pKTFfuazCd6cSlq7mtQzLkri43EphbLvJ9meQ/FEaXGHS1xo
-         ZdPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUUoU6NnyL5QhQM6+6HoTuAeJOrOuSQohbwxP/WOrg6rS36O4QTxTgdw+SjBIqgnAHXyxBk5xs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyYdGeV5vXxA6VpJK7GjcXNyKVOKL8P9Be8Jh+XA0qVN9mLeaK
-	48GyAZrXZRYaSE2Inou9UmiS2V4C0WgSBDtevt4zGVv43yhXjEqzzd7PBuxdEcuZ2aZhC6nlOPm
-	Qi6DHAO/gMlF02kfjTTQlxq6KGa44+U30sb6V53mppw==
-X-Gm-Gg: AZuq6aLiQ05aLnmPWjFsFCFmM2H5LoexLGiB+mhgvMta9dfpswfwEA3C80VCd/0y/Ak
-	FfoR2ms+DQvPTj4K4Mm3fFkw1wvmnOdXA9JttF9PbnfU/xW6xrpyyzOalMIuLCINmd2zGKDgAz5
-	4nX9KZzgeNIihEAz0d/rZAp7IuKuGa+Z1D1IFc1SYKo7WVGPE4F7YP8o3sLWyOmz/Ehy6MgLdp4
-	ni9rcoFfj/0ucMRda9595gQ2XrZCz0XYyhIYOATKxqCbZrt96jHBbgeOa34FRGDnqFB5K3HweRT
-	3oTWDZM4
-X-Received: by 2002:a05:6512:3b8e:b0:59e:5a13:f66f with SMTP id
- 2adb3069b0e04-59ef97f1918mr6303112e87.15.1771497015566; Thu, 19 Feb 2026
- 02:30:15 -0800 (PST)
+        bh=vOvNdYCVSmVkwGXEsNxSmLjxoujgZy923FLHo8wDNN8=;
+        b=vxzN/YQrdnxoBIE26ds2rNAIAnnkGlteDwDN7nEcu5ZAWkM8Rc5ZPKcRisGLOfRbfo
+         /dFCzpTT934y6DfiEZqigZi0DBuq+NJ/dcGQKBxdt0rm1uCZOVgxPQ6Gc61YEY4iYzEO
+         vTMavht7l7Y1rmwtWh5L2/pRmktS3jM5Cqv7dvM1wEYu6a8ne60C29SmZWXrrKjul7qC
+         6y9efSQBfuDLe0Yavp17O8ABiynyR6CXQeiW/SgeqyaiJd7uzgQSPOMMIh1+7jBbWS0Q
+         gjlS8UHfiXIuETgT3x8JbfGL1REcYj8DsuwQ1fd9nw7ktzhwQsfJfuKzk6EoVrA0CEuD
+         NLWw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8bo0irrkw+bzq0VpMHS0Lwa6WCSCyr2/Q1/beWAOb3y5WcKF+SIw19bvRqMCuScJQPBAsHC4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDxZJ/+Aq3vfsa63hJnKy2hob8zwpd7mBIpIuEVxHPXQdh6AK/
+	5SpfEy1R+96Hu/CioRNE0cx2HaR6rEV7h/UtP0cTT+E0XT4hz4LwYZI/O42YffOGuih8PuEOnsS
+	ZkoyZt8UwRNOCFHSusAklh5k6ATWO7AiZi457t7P0xETYVibItNy0j0rxfOY=
+X-Gm-Gg: AZuq6aKehyoARihFdsWc/GNYP7Y3P+NqTluxyPt42K7vsIvu48lUa73lWS7bNaUEXu3
+	4VzX1wZguv90TUJe8mbaWr8FRIwwEnGV33/UgshJzti7fuBzpHME0htqr8vUxqoEMTiRivWeasH
+	O56UmVbVZSqxyN6Nw95Gl5rltbpk/Mw0f7X5yL50hQFDWRHnDw/sWdlU2akedXO/AIn+Rtj0rys
+	ixwFT39syYpL62x5SYPIM1F4kkDSURSMUDI4+5oUmW8Vz9azWCaZ5sVvMPT5LBC9zO1kAMb0fXE
+	2x6AM1CHQ8A0Zs2Qx8HcKXnf0Q+EvpF51hBPzXzAK8s4rFPcL6S/KZ7H4z7Ml9QZpi50Rdoh8rl
+	OgCuZw/DxJeo55Y8XVUp6doAXG3+GEQ==
+X-Received: by 2002:a05:620a:8bc1:b0:8cb:47b4:165f with SMTP id af79cd13be357-8cb47b4235amr1650124985a.14.1771499518408;
+        Thu, 19 Feb 2026 03:11:58 -0800 (PST)
+X-Received: by 2002:a05:620a:8bc1:b0:8cb:47b4:165f with SMTP id af79cd13be357-8cb47b4235amr1650122485a.14.1771499517898;
+        Thu, 19 Feb 2026 03:11:57 -0800 (PST)
+Received: from hackbox.lan ([86.121.162.109])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4835d92267bsm1003935615e9.0.2026.02.19.03.11.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Feb 2026 03:11:57 -0800 (PST)
+From: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Date: Thu, 19 Feb 2026 13:11:48 +0200
+Subject: [PATCH] phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260219020422.1539798-1-sashal@kernel.org> <20260219020422.1539798-7-sashal@kernel.org>
-In-Reply-To: <20260219020422.1539798-7-sashal@kernel.org>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 19 Feb 2026 11:29:38 +0100
-X-Gm-Features: AaiRm52jeG2Yu2stc47ELqgLlKg0TMPFDoFFFEOyy4G5WPX8KGX8zE9V0OcybSA
-Message-ID: <CAPDyKFpnyh0csWRZN5yNZ7+941bGRXF4=yONbQygdDEF3URE6A@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.19-5.15] mmc: rtsx_pci: add quirk to disable
- MMC_CAP_AGGRESSIVE_PM for RTS525A
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org, 
-	Matthew Schwartz <matthew.schwartz@linux.dev>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
-	linux-mmc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-v1-1-f136505b57f6@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAPPvlmkC/yXNywqDMBCF4VeRWXcgCVW0r1K6yGWiKY3GjBZFf
+ Pem7fKDw38OYMqBGG7VAZnegcM0FshLBXbQY08YXDEooRqhZIdp2HG2U8Q5Jlw9ow8bcmybWmC
+ yjP0VF21ehJ2T2nlZi9YbKLmUqUx/V/fH37yaJ9nl24fz/AAhDg4CjAAAAA==
+X-Change-ID: 20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-9d1adf1508fb
+To: Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Nitin Rawat <nitin.rawat@oss.qualcomm.com>,
+        Abel Vesa <abel.vesa@oss.qualcomm.com>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2491;
+ i=abel.vesa@oss.qualcomm.com; h=from:subject:message-id;
+ bh=zbxY9b0ZlCq0UrOIJd6sjF+e77WKY8qgVD84bS+Ct8g=;
+ b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBplu/2nLEANE/+RGxkee6qF82zBRu6o+t4/dBv9
+ RHpgPiujVWJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCaZbv9gAKCRAbX0TJAJUV
+ VikkD/9vK/KxNfCrXsqpjHZTVapOxrnG7w0vh7H64jya46zwEV8JS2fwNSqFZf8Xr4ulsRCeHcU
+ 7Ij8VIKnDJmf22Pggu+h2avvL56D6hm1c5r1IJl9Hqy33Qq+uMORKJKMTJbyBb18gfrGmz+7oTh
+ IAt/IQfK7TfVERp1KX92Q1vt0C58d0+icEYiQyYA1qsXuodRTY5zlwzUUmhAtvehLGdAkq8Ydo1
+ zGQ0bfxLTQ5A13k3+ahnMmOtpZdCXGnzRBaBVULQnoILyXz/1jFYOMyneBviuSN9HHgjllKR2ek
+ yZ+Kej6CvnU4hnLohsgpDp5ujsinjsnZlnPHi3/lbYXrqFUDmaTDKb543ktDEM5dyNNdbQVDR/+
+ GCbWDc+/eITAkGO4nm74mhjl6NZcCNJRjOZjCQ2Dak9KazU6+mGjbfj25XAzdnrtZSE91w1w676
+ FGq5a03pDVnaGQ5IzyovPVn7h8uU2g2iKRvYvMBuY3gz7mVxGH0oMbkxdZi9Ebrqry5LYnVYaF2
+ DDnUM2cXdT1aCehliJJJvlygkAbEKXOYiT1pchk1XYI6qN36lc03vYNf5cpMM5CqnKZPO1aKyaP
+ YUZZiML8f4ct+7ci6nkvQs5Kr/4oxILREuGC+U/J4q3wl6s/UZeflPzX8H0UK2IwNkfeymPDpw9
+ D91A7D4UkxxAS/A==
+X-Developer-Key: i=abel.vesa@oss.qualcomm.com; a=openpgp;
+ fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+X-Proofpoint-ORIG-GUID: WaT-m9yoO5jIFibgKY2l3nl_3VEcxNXQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE5MDEwMiBTYWx0ZWRfX9uWmWLfZHTLF
+ jsuA6NabLKlKdSsJkf1FS9Yr3+ochOIusQTKbbkY26VaS0uXSUGuE0v3OybbGCn3xq6tSukgSlu
+ p+jYhFfQndG+dKz54Av4vWHvW1S+qyx0UYxBylypg2C3M+DtDW5CUKLfyToYDmSQQTP6Wt/aHWr
+ pdstTJNVbr39UiJ+/D0wyCmLx72EW41vYnN1tmN6E0D6gyDUJuusRToZPsYxsf8zO3CLvxB3090
+ lEmHU3SzEoPdGlRXoPRF3BdlPxF3vco9c/4zczufq6dMilAXXYetlKbS8ry/rfFCPHPu5aSgqpO
+ NC6rPx3Qc6gdNfuQ8U++E1O7hssM18al1yCPYZMCCyS99cPIPA4bhg9EA/NUxNprJXsnXTJHoK5
+ RjoIVF4kI4jo6Zw0EtFcIfR5IDTndvical/Xuj9z2Rn+MLQZARLzOC1h7w5xZg2FYF5DbV0ZeEZ
+ GEXyAA9Nn1/iwvi9mYw==
+X-Proofpoint-GUID: WaT-m9yoO5jIFibgKY2l3nl_3VEcxNXQ
+X-Authority-Analysis: v=2.4 cv=W/M1lBWk c=1 sm=1 tr=0 ts=6996efff cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=oauzzCmhM186DRC0Y2yWPg==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=iZjorvmLyqBVRiOuJXwA:9 a=QEXdDO2ut3YA:10
+ a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-19_03,2026-02-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 adultscore=0 malwarescore=0 clxscore=1015
+ suspectscore=0 impostorscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602190102
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217426-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217427-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[abel.vesa@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,msgid.link:url,mail.gmail.com:mid,linux.dev:email,linaro.org:dkim]
-X-Rspamd-Queue-Id: 536B615DC9A
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 4230515E31A
 X-Rspamd-Action: no action
 
-On Thu, 19 Feb 2026 at 03:04, Sasha Levin <sashal@kernel.org> wrote:
->
-> From: Matthew Schwartz <matthew.schwartz@linux.dev>
->
-> [ Upstream commit 5f0bf80cc5e04d31eeb201683e0b477c24bd18e7 ]
->
-> Using MMC_CAP_AGGRESSIVE_PM on RTS525A card readers causes game
-> performance issues when the card reader comes back from idle into active
-> use. This can be observed in Hades II when loading new sections of the
-> game or menu after the card reader puts itself into idle, and presents
-> as a 1-2 second hang.
->
-> Add EXTRA_CAPS_NO_AGGRESSIVE_PM quirk to allow cardreader drivers to
-> opt-out of aggressive PM, and set it for RTS525A.
->
-> Closes: https://lore.kernel.org/linux-mmc/ff9a7c20-f465-4afa-bf29-708d4a52974a@linux.dev/
-> Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-> Link: https://patch.msgid.link/20260103204226.71752-1-matthew.schwartz@linux.dev
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+According to internal documentation, on SM8650, when the PHY is configured
+in Gear 4, the QPHY_V6_PCS_UFS_PLL_CNTL register needs to have the same
+value as for Gear 5.
 
-NAK.
+At the moment, there is no board that comes with a UFS 3.x device, so
+this issue doesn't show up, but with the new Eliza SoC, which uses the
+same init sequence as SM8650, on the MTP board, the link startup fails
+with the current Gear 4 PCS table.
 
-This patch is reverted in mainline, as it's not the proper fix.
+So fix that by moving the entry into the PCS generic table instead,
+while keeping the value from Gear 5 configuration.
 
-See commit eb89b17f283b233ba721fce358fa0d15223ae69d
+Cc: stable@vger.kernel.org # v6.10
+Fixes: b9251e64a96f ("phy: qcom: qmp-ufs: update SM8650 tables for Gear 4 & 5")
+Suggested-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+---
+ drivers/phy/qualcomm/phy-qcom-qmp-ufs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Kind regards
-Uffe
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
+index df138a5442eb..771bc7c2ab50 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
+@@ -990,6 +990,7 @@ static const struct qmp_phy_init_tbl sm8650_ufsphy_pcs[] = {
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PCS_CTRL1, 0xc1),
++	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_POST_EMP_LVL_S4, 0x0e),
+@@ -999,13 +1000,11 @@ static const struct qmp_phy_init_tbl sm8650_ufsphy_pcs[] = {
+ };
+ 
+ static const struct qmp_phy_init_tbl sm8650_ufsphy_g4_pcs[] = {
+-	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x13),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x04),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x04),
+ };
+ 
+ static const struct qmp_phy_init_tbl sm8650_ufsphy_g5_pcs[] = {
+-	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x05),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x05),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HS_G5_SYNC_LENGTH_CAPABILITY, 0x4d),
 
+---
+base-commit: 50f68cc7be0a2cbf54d8f6aaf17df32fb01acc3f
+change-id: 20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-9d1adf1508fb
 
+Best regards,
+--  
+Abel Vesa <abel.vesa@oss.qualcomm.com>
 
-
-> ---
->
-> LLM Generated explanations, may be completely bogus:
->
-> ### Summary Analysis
->
-> **What the commit does:**
-> This commit adds a device-specific quirk for the Realtek RTS525A card
-> reader to disable `MMC_CAP_AGGRESSIVE_PM`. When aggressive PM is enabled
-> on this device, it powers down the card reader after 10 seconds of idle,
-> and re-tuning when waking up causes 1-2 second hangs that are user-
-> visible and impact performance.
->
-> **Does it fix a real bug?**
-> Yes. The aggressive PM behavior on RTS525A causes real, user-observable
-> 1-2 second hangs during normal use. This was reported by a real user
-> with concrete reproduction steps (playing a game that loads data from a
-> micro SD card). The "Closes:" tag links to a real mailing list report.
->
-> **Stable kernel criteria assessment:**
->
-> 1. **Obviously correct and tested**: The change follows an existing
->    pattern (`EXTRA_CAPS_NO_MMC` is the exact same kind of quirk flag).
->    The author tested it on affected hardware.
->
-> 2. **Fixes a real bug**: Yes - user-visible performance degradation (1-2
->    second hangs) on specific hardware.
->
-> 3. **Important issue**: It's a usability issue rather than a
->    crash/security issue. However, hardware quirks for broken behavior
->    are explicitly allowed in stable.
->
-> 4. **Small and contained**: The change is minimal - 3 new lines of code
->    plus a new flag definition. It only affects RTS525A devices and
->    doesn't change behavior for any other hardware.
->
-> 5. **No new features**: This is a hardware quirk/workaround, which is an
->    explicitly allowed exception to the "no new features" rule.
->
-> 6. **Clean application**: The change builds on existing infrastructure
->    (`extra_caps` flags) that exists in all stable trees since v5.11.
->
-> **Risk assessment:**
-> - **Very low risk**: The quirk only affects RTS525A devices
->   (`PID_525A`). All other devices are completely unaffected.
-> - The code pattern is identical to existing quirks
->   (`EXTRA_CAPS_NO_MMC`).
-> - The worst case if the quirk is wrong is slightly higher power
->   consumption on RTS525A (no aggressive PM = card reader stays powered).
->
-> **Dependencies:**
-> None. The change uses existing infrastructure (`extra_caps`,
-> `CHK_PCI_PID`, `PID_525A`) that has been present since before v5.11.
->
-> ### Verification
->
-> - **git log** showed `rtd3_en` / `MMC_CAP_AGGRESSIVE_PM` was introduced
->   in commit `5b4258f6721f4` (v5.11), confirming all current stable trees
->   have the affected code.
-> - **git tag --contains** confirmed the runtime PM commit is in stable
->   trees (p-5.15, p-6.1, p-6.12).
-> - **Grep for EXTRA_CAPS_** confirmed the existing quirk flag pattern
->   (NO_MMC at bit 7, SD_EXPRESS at bit 8, new flag at bit 9 - clean
->   progression).
-> - **lore.kernel.org fetch** confirmed the bug report describes real
->   user-reported 1-2 second hangs on RTS525A with concrete reproduction
->   steps.
-> - **Code review** verified the change only adds a condition check and
->   flag - no behavioral change for non-RTS525A devices.
-> - The commit was signed off by Greg Kroah-Hartman, the stable tree
->   maintainer, indicating it went through proper review.
-> - Could NOT verify whether any stable tree has already picked this up
->   (unverified, but not relevant to the YES/NO decision).
->
-> ### Conclusion
->
-> This is a textbook hardware quirk for a specific device with a real,
-> user-reported issue. It follows existing patterns in the codebase, is
-> minimal in scope, and has zero risk to other devices. Hardware quirks
-> are explicitly listed as appropriate for stable backporting. The
-> affected code exists in all current stable trees (5.15+).
->
-> **YES**
->
->  drivers/misc/cardreader/rts5249.c | 3 +++
->  drivers/mmc/host/rtsx_pci_sdmmc.c | 4 ++--
->  include/linux/rtsx_pci.h          | 1 +
->  3 files changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/misc/cardreader/rts5249.c b/drivers/misc/cardreader/rts5249.c
-> index 38aefd8db452a..87d576a03e68e 100644
-> --- a/drivers/misc/cardreader/rts5249.c
-> +++ b/drivers/misc/cardreader/rts5249.c
-> @@ -78,6 +78,9 @@ static void rtsx_base_fetch_vendor_settings(struct rtsx_pcr *pcr)
->         if (CHK_PCI_PID(pcr, PID_524A) || CHK_PCI_PID(pcr, PID_525A))
->                 pcr->rtd3_en = rtsx_reg_to_rtd3_uhsii(reg);
->
-> +       if (CHK_PCI_PID(pcr, PID_525A))
-> +               pcr->extra_caps |= EXTRA_CAPS_NO_AGGRESSIVE_PM;
-> +
->         if (rtsx_check_mmc_support(reg))
->                 pcr->extra_caps |= EXTRA_CAPS_NO_MMC;
->         pcr->sd30_drive_sel_3v3 = rtsx_reg_to_sd30_drive_sel_3v3(reg);
-> diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> index 4db3328f46dfb..8df60000b5b41 100644
-> --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-> +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> @@ -1497,8 +1497,8 @@ static void realtek_init_host(struct realtek_pci_sdmmc *host)
->         mmc->caps = MMC_CAP_4_BIT_DATA | MMC_CAP_SD_HIGHSPEED |
->                 MMC_CAP_MMC_HIGHSPEED | MMC_CAP_BUS_WIDTH_TEST |
->                 MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25;
-> -       if (pcr->rtd3_en)
-> -               mmc->caps = mmc->caps | MMC_CAP_AGGRESSIVE_PM;
-> +       if (pcr->rtd3_en && !(pcr->extra_caps & EXTRA_CAPS_NO_AGGRESSIVE_PM))
-> +               mmc->caps |= MMC_CAP_AGGRESSIVE_PM;
->         mmc->caps2 = MMC_CAP2_NO_PRESCAN_POWERUP | MMC_CAP2_FULL_PWR_CYCLE |
->                 MMC_CAP2_NO_SDIO;
->         mmc->max_current_330 = 400;
-> diff --git a/include/linux/rtsx_pci.h b/include/linux/rtsx_pci.h
-> index 3c5689356004e..f6122349c00ec 100644
-> --- a/include/linux/rtsx_pci.h
-> +++ b/include/linux/rtsx_pci.h
-> @@ -1230,6 +1230,7 @@ struct rtsx_pcr {
->  #define EXTRA_CAPS_MMC_8BIT            (1 << 5)
->  #define EXTRA_CAPS_NO_MMC              (1 << 7)
->  #define EXTRA_CAPS_SD_EXPRESS          (1 << 8)
-> +#define EXTRA_CAPS_NO_AGGRESSIVE_PM    (1 << 9)
->         u32                             extra_caps;
->
->  #define IC_VER_A                       0
-> --
-> 2.51.0
->
 
