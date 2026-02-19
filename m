@@ -1,183 +1,159 @@
-Return-Path: <stable+bounces-217402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217403-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOkuA6DQlmkZoQIAu9opvQ
-	(envelope-from <stable+bounces-217402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 09:58:08 +0100
+	id sL1LD+zRlmlnogIAu9opvQ
+	(envelope-from <stable+bounces-217403-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 10:03:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4565915D27A
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 09:58:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD7615D32B
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 10:03:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0ECEB301B171
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 08:58:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 06EC73006224
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 09:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5483382E2;
-	Thu, 19 Feb 2026 08:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86974336EE3;
+	Thu, 19 Feb 2026 09:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nI9sL68S"
+	dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b="nbIuT/vJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994FF3382D6
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 08:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7D5333733
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 09:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771491482; cv=none; b=lorcvECIia2LG557B5CfptWWmrzLvwVDcYC0IT60UjWbf9xtDBkBzAsQLKxHLJgaOP/K6MHemhI2QvVqA8TY3HHPcSff3DMdDeI5gX4IKgnB1Ii50gz1RRZk52DxUyL43vPhdWwkoPvSxg8yMGlcyuxWJ32S/Rcxb5m+dyEv3xI=
+	t=1771491814; cv=none; b=RluVeignT5aKSAbb1tbIL4wRSrAn3WoExX4xMvQNX/c4r3DiBmUdDM4opp+2dwL/mUGyardKZyWCkz/F6PIldYeT4NzRxDVrOrv22bEdqXjCtY6pPEPWfM5kBb31cnuu4gJrs5Rmdapd9DhyjrKrQiAl4K40wFOtoRgPPVULd7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771491482; c=relaxed/simple;
-	bh=RaU7x6gSN3yYDniJgRhFDMbiZ8LZTpqr9r4GDly3Xhk=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=hlNDG3iEzQV/rfV43hDfoBvWsS8r3+G6wnzDmUcJzfmjuoknOaRZie1ehOp2Su5i4OrzdNjEQefZurN3+ZWOigNbcDi3VgLsN2Ez643dNCsNpVRQvC+vggCp73XkoeZhj70ZTDUrWv+kbdKnW5K7LMWqvOKyLHF+Y4IESAiZFs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nI9sL68S; arc=none smtp.client-ip=74.125.82.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-127423bea4bso1566864c88.0
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 00:58:00 -0800 (PST)
+	s=arc-20240116; t=1771491814; c=relaxed/simple;
+	bh=928OAOahZdG4Xfvx2DerQUpFBhMcEhz7CAZj5Aci8zc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SaUl4qKonLBUOvc6EEQ/17WO3Hd36TZBI6/u8XaWuQN+tY1O9OqozfwpDoOoYYiyzYJorVJjcmUTOGKLoPFN+6GPzbn6ymAlBhLYB+JdfmWJR25nnZfSDm4LMveduZY6RKsg4kWNUGqizVPy2znSq7tucbKxCUQ1uoTZW4vhQSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in; spf=pass smtp.mailfrom=cse.iitm.ac.in; dkim=pass (2048-bit key) header.d=cse-iitm-ac-in.20230601.gappssmtp.com header.i=@cse-iitm-ac-in.20230601.gappssmtp.com header.b=nbIuT/vJ; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cse.iitm.ac.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cse.iitm.ac.in
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-823075fed75so346730b3a.1
+        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 01:03:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771491480; x=1772096280; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=w9QckPjYVpC7XREf2SsBK4wtYoxkxE+nJ3fOgUmSovk=;
-        b=nI9sL68Su4BXNPdhkPvW+mUNhSF1mcbv/sx4CSzy7QsV57YxPoLosvbVAhEFgVWpRS
-         zX5OTSfyE2TkStm4EaLaFs1vmC+2UMUdd8jHCQmDv2ovwOuKjVzZr8VlbOBy3Lf8Rc14
-         Q17NqjH/1SW42GxFLcQNq5zGC0NGYbUaWV5otEv2YUmT71EhlRnv7QiY3Vn00MD0rCgQ
-         kgjkkxaRkflvsDAKnpmvu7ef1ATQFeASjbzeGwi1ex5e8Mq/AgGBTkNrGLwF3jwIimq7
-         ka4l2/xEgvCgreGIEi8fP5p6V3oTHCZvmVEqqdZkEpBG9CKmiQNWqkQRP2/3jFAkwxDo
-         7OKw==
+        d=cse-iitm-ac-in.20230601.gappssmtp.com; s=20230601; t=1771491810; x=1772096610; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=woTan9VVYvyV1yh7C/L083Hx/xNDYsj+r3LiM0PqHJ0=;
+        b=nbIuT/vJLyA/crDZWYVFRKLI3FTPEXAHc8Mf2hbGWljvGArPteYGEoZ93nrZ7pC5VT
+         xYl4QaTr0HdNuFfEOrwYQ/zpnCOQ/ek7K2LkkQvHLdcz85HtbQxuJFNs1DQxOwkSycRe
+         7TmBOfCMu9fThGRPrLZoSeanu0F0DaOdov2mPFIwj7Vlero/NgscxD998oBVOXncyAbX
+         RvAyH16SKdsPbD6BdJfckVjXnwzoHOtj8krJDVV65vWnvsCEdcq/KPA5GsbAVAxWzaTG
+         Kewb1qboIpzT1vubRfa+xihM8o5ax/Mc6uLL+/S5RV2fv9oiL1joMpQvANPVJ/g4HnDt
+         K6AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771491480; x=1772096280;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w9QckPjYVpC7XREf2SsBK4wtYoxkxE+nJ3fOgUmSovk=;
-        b=wZmd3V/BC6VjCpVPjkywflCgeVffRfdp2n4F0VwvG2SzYhiCgGy+InLh46SHVjm0UL
-         6WFmO9aU209I4No4mvAmIqoZBd0U/qHMp+w/zdCQR8hW2Baj/qrEUhC1TmeC6YaBG3w6
-         h6oJyprQaJZSA/MckA4PEw+AH4aoyxDDMKLbtS+vDP6P5AQ4KEEUnrm0whvukCjQ+9An
-         2dlSaZScG64hQsWNuVYCSQP/W7v3MSYPExe3EV8uNip+Hlo1G19ghuYLiwHZy9eQWFrI
-         BWUdd3Pd0sRiiu3b+a/mfzpi0tryJ3sXT6k4Mg0LnRIifZDMBGxF1Vp4QcAvFBQ7usA7
-         RImw==
-X-Forwarded-Encrypted: i=1; AJvYcCWIkKMZEf4u90142lEYCNcG5lbiY2+5gDUXjGey40p8dNQMGwQIpXfuAv3F0RXtqUYAcyDjy2M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2l1v6SF5l8gRmmnrpCDVWF/VW2ytWS5dJQc2N+WGgo8rRsWeE
-	ljCuZuosHtWsiZxvmx6fKdLAjkglCrHupVbGY+hvJQ9+NEFt2y+NanVK
-X-Gm-Gg: AZuq6aJ7AmNWLHXEGu2hBX6f6BBF5jkMP+p+3iyS/yeLKQqxj+OMhiQuZFVylDndoR/
-	YCaBOFhXfjRM0K6K0q02h7C5R9alCFa8dHShl4HHjbaE3IGVDq3Wfh/T6XIvPLzq5Iqf5XOlBlz
-	MYtBYhDpaFr+cBgqMBJqr0MQ4nBUWvZSyQORzZObU2r5Pmz0CJE4Vnho8Rh7qi4CJMboo2Aiq2N
-	uN4N7ZdA37qTqEsQUOF63id3dfR0CzJrsSPBq5EX9gdqA3Q/48J8IjNjHGqA4oyYfE2SZDqB2eY
-	qeFtiWQ7/GDosJFDNd/V1gENSS9ePSdZU7PT6LYtONGsWqkpaxEPDXLtkKhyA3COZ637vc1dG87
-	rRFw/BZnRmXgYuXQUgIeVgFf5cQu8P08SvqFp9JGxDihlZda3WJjwS1c05HRAJqFlGeOGab1lXt
-	08l1VnLvVUsrRH3jATVI7aIgk0/Z8pZ3nx9nNRfosr4Zo=
-X-Received: by 2002:a05:7022:f9d:b0:121:a01a:8e2f with SMTP id a92af1059eb24-1273ae688f2mr9613531c88.42.1771491479596;
-        Thu, 19 Feb 2026 00:57:59 -0800 (PST)
-Received: from ehlo.thunderbird.net ([2601:647:5e00:4acd:97bd:bbcc:96e6:7f02])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742b62455sm25648107c88.1.2026.02.19.00.57.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Feb 2026 00:57:58 -0800 (PST)
-Date: Thu, 19 Feb 2026 00:57:58 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>
-CC: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_gpiolib=3A_normalize_the_return_v?=
- =?US-ASCII?Q?alue_of_gc-=3Eset=28=29_on_behalf_of_buggy_drivers?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20260219-gpiolib-set-normalize-v1-1-f0d53a009db4@oss.qualcomm.com>
-References: <20260219-gpiolib-set-normalize-v1-1-f0d53a009db4@oss.qualcomm.com>
-Message-ID: <48629460-701F-438F-8E1A-6F428C49FF6E@gmail.com>
+        d=1e100.net; s=20230601; t=1771491810; x=1772096610;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=woTan9VVYvyV1yh7C/L083Hx/xNDYsj+r3LiM0PqHJ0=;
+        b=stfkPyC/65xK/UlFtmIZK5Af38+KwyOvcCC3HEbCb6l7YjIx0gOkxDJ80ocPWHKQ+J
+         cQNlBIKIe3Z0/QnGYf3TXrq89tsyB6NGB8FViIPEkb0IIoI5l7B0QlbWZpJ+F7GvDNwX
+         mJQXml1MAvh1dNmf4Tz4SnrdL6dADmIEkCq7fldmDV6hYg98H4KMawZ5cGdFvVykXEc9
+         CUyC+N8P/OUqwmaWB6oSAX+ilv+Rz8bK/uenh+laTtpoJOQUWGe8M+cMoALxo/5CCEMH
+         mGAFuZH2OSO7yk3Ho0wMAxMkk3gKvDCktnlWkfo1BZ5QXDqZjfoXw1i1POkjP2yaqksm
+         lgoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX2m7OQZeh9ltHJ+XIGeFTLAB52DVmQFXynkagb8DxrKYA2JZK1aO/PcFdBy1RlViUxT1rIxwE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzAtFpvCpRvuDZh9/QetX4pvf9yHO+gs+QI5wnX5+i9h3VoWHP
+	f5R7F/7h0fc06xIF081sD77OlY37l7oiHypChTq+/sP3s+0YQRUQoo44uRi3Xm9BW6o=
+X-Gm-Gg: AZuq6aJ1XtkFsUscffQw2o3dTt+47G9kqWtQJwsqeunoDCqpS3b75RRjk+VLQnJIpAJ
+	GHKPsc6rQvfcZbrgEJZHhbbkCeGXBxl0njJXmmXEsIhohwXvbBqrUzVP1t+aL3aQ2ce9JGv2ypd
+	aQZJpRhU5Opv9IWfYztEMILmLstxYNM2PziD9U35NX8umkNAN7numxSvD66VCj/L6iWJra6FcyH
+	+1k4KcMF8CPK9OgioW75oQC9rXAWom5NBzgRDirF4/PrCgQrYwGRCvoxXLst4vSYwzc57lEo+xZ
+	Ve/ZUouVbDHrYmTe81mXNXrRG9H5GB8ltXisLV8zbsMb5kpafWwTG6E4DTbzYt0JkyMiqSV+FA8
+	FnB4lkE2lphqCY77zaxLA9SxUyakTkSY+Tp4k1JaxkdOtT8OOE6Bg76/ipU6lFLDZFozm2LWFg3
+	lx7CoIgGQ8El5rUzQdB0TJJz0Uvn03AIU18AKhRD+Gstm/ZdK+s0fBbGE9cmDeo5rEc228/BrBF
+	WmBuRgJbkd3ADfmuRsvPOWyverxQhjOKcuYslfXlrEiJlsS33i3AnK17w==
+X-Received: by 2002:a05:6a00:1d83:b0:81e:b93a:ab09 with SMTP id d2e1a72fcca58-826bab56b60mr1002475b3a.1.1771491810251;
+        Thu, 19 Feb 2026 01:03:30 -0800 (PST)
+Received: from localhost.localdomain ([103.158.43.38])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-824c6bb3549sm19985248b3a.59.2026.02.19.01.03.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Feb 2026 01:03:29 -0800 (PST)
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+To: ram.vegesna@broadcom.com
+Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	James.Bottomley@HansenPartnership.com,
+	martin.petersen@oracle.com,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jsmart2021@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: efct: Fix potential memory leak in efct_io_pool_free()
+Date: Thu, 19 Feb 2026 14:31:31 +0530
+Message-ID: <20260219090136.108938-1-nihaal@cse.iitm.ac.in>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [-0.06 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[cse-iitm-ac-in.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[iitm.ac.in : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217402-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[cse.iitm.ac.in,HansenPartnership.com,oracle.com,vger.kernel.org,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-217403-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[cse-iitm-ac-in.20230601.gappssmtp.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[nihaal@cse.iitm.ac.in,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4565915D27A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iitm.ac.in:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5CD7615D32B
 X-Rspamd-Action: no action
 
-On February 19, 2026 12:52:37 AM PST, Bartosz Golaszewski <bartosz=2Egolasz=
-ewski@oss=2Equalcomm=2Ecom> wrote:
->Commit 86ef402d805d ("gpiolib: sanitize the return value of
->gpio_chip::get()") started checking the return value of the =2Eset()
->callback in struct gpio_chip=2E Now - almost a year later - it turns out
->that there are quite a few drivers in tree that can break with this
->change=2E Partially revert it: normalize the return value in GPIO core bu=
-t
->also emit a warning=2E
->
->Cc: stable@vger=2Ekernel=2Eorg
->Fixes: 86ef402d805d ("gpiolib: sanitize the return value of gpio_chip::ge=
-t()")
->Reported-by: Dmitry Torokhov <dmitry=2Etorokhov@gmail=2Ecom>
->Closes: https://lore=2Ekernel=2Eorg/all/aZSkqGTqMp_57qC7@google=2Ecom/
->Signed-off-by: Bartosz Golaszewski <bartosz=2Egolaszewski@oss=2Equalcomm=
-=2Ecom>
->---
-> drivers/gpio/gpiolib=2Ec | 8 ++++++--
-> 1 file changed, 6 insertions(+), 2 deletions(-)
->
->diff --git a/drivers/gpio/gpiolib=2Ec b/drivers/gpio/gpiolib=2Ec
->index c52200eaaaff82b12f22dd1ee8459bdd8ec10d81=2E=2E9f7a1a1ebd8365fe933c9=
-89caf9e8c544fd9ba0f 100644
->--- a/drivers/gpio/gpiolib=2Ec
->+++ b/drivers/gpio/gpiolib=2Ec
->@@ -2914,8 +2914,12 @@ static int gpiochip_set(struct gpio_chip *gc, unsi=
-gned int offset, int value)
-> 		return -EOPNOTSUPP;
->=20
-> 	ret =3D gc->set(gc, offset, value);
->-	if (ret > 0)
->-		ret =3D -EBADE;
->+	if (ret > 0) {
->+		gpiochip_warn(gc,
->+			"invalid return value from gc->set(): %d, consider fixing the driver\=
-n",
->+			ret);
->+		ret =3D !!ret;
->+	}
->=20
-> 	return ret;
-> }
+The memory allocated for struct efct_io in efct_io_pool_create(), is
+not freed by it's corresponding free function efct_io_pool_free().
+Fix that by adding a kfree().
 
-You want to patch gpiochip_get()=2E It could be that set() is similarly tr=
-oublesome, but the report is about get() not working=2E
+Fixes: e2cf422ba833 ("scsi: elx: efct: Hardware queues processing")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+---
+Compile tested only. Found using static analysis.
 
-Thanks=2E=20
-Hi Bartosz,=20
---=20
-Dmitry
+ drivers/scsi/elx/efct/efct_io.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/scsi/elx/efct/efct_io.c b/drivers/scsi/elx/efct/efct_io.c
+index c612f0a48839..bdafecca7573 100644
+--- a/drivers/scsi/elx/efct/efct_io.c
++++ b/drivers/scsi/elx/efct/efct_io.c
+@@ -92,6 +92,7 @@ efct_io_pool_free(struct efct_io_pool *io_pool)
+ 					  io->rspbuf.size, io->rspbuf.virt,
+ 					  io->rspbuf.phys);
+ 			memset(&io->rspbuf, 0, sizeof(struct efc_dma));
++			kfree(io);
+ 		}
+ 
+ 		kfree(io_pool);
+-- 
+2.43.0
+
 
