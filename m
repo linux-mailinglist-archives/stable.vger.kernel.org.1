@@ -1,234 +1,167 @@
-Return-Path: <stable+bounces-217396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHjgHCGylmmRjwIAu9opvQ
-	(envelope-from <stable+bounces-217396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:48:01 +0100
+	id 8DVMEOGylmmRjwIAu9opvQ
+	(envelope-from <stable+bounces-217397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:51:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9B815C76E
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:48:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B911015C7EC
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 16C713003704
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 06:47:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1DEC1301469B
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 06:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418E7320A22;
-	Thu, 19 Feb 2026 06:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82ED931AF3D;
+	Thu, 19 Feb 2026 06:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rEOLcARJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="HiOes7gZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770453203BE;
-	Thu, 19 Feb 2026 06:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BD73054EF
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 06:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771483674; cv=none; b=uUFS0wdn90thU82G/swNN2ztWcYylekTWpr/65mYad/BJMuzW76Yhczv+JnA6aMeVmf+AZvWVYHsjV2HvqYxXzaUEn06icdrgyTMm+ycUjaT6h7DRuYZWtPN8BqIJC3XqqcsfQzFAGl5N0bWIrKgqj+fyUP4VGy+9QYVsovRXdk=
+	t=1771483866; cv=none; b=tImTD7isShEb/60bSE6uVT3go02YbT6UCOPO0eb2v3+R4sPB92UaguIRXZ9sO0x/rpQ1So9qOoJQDckuPlAH4s95xGIvUFD+5A+44OgzeXc/c/8XoFmcXddgHE2V874Ia/inQjyUwbphnfHXEAPsyjVO9MMnq7vwuU922AROdU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771483674; c=relaxed/simple;
-	bh=lzaTHTVPxydKuuWqA5G/SizcM0Ihx6zmnhMas62IGWg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MnO0TatjYX/RQdt8HVJ7sE6juA0Z/odSmYnKWnoXmeQdQ2s0LZMxVu9GdfHC+FGHAckYnfUsmPVX1JCc6GyT8FtP7DpIFETbFgLfPbW8w8bPH0qnNrxsVDh3zQ2i0cBj8u7SO+dapVsL3r76/ozXMPlQ7QSnuy2bAW5NwuRwblo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rEOLcARJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10614C4CEF7;
-	Thu, 19 Feb 2026 06:47:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771483674;
-	bh=lzaTHTVPxydKuuWqA5G/SizcM0Ihx6zmnhMas62IGWg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rEOLcARJlH00LTFXLTZy6ADBI0nizmQX31TwJgOmL19myx1suH5p3fL1UBok32WdQ
-	 lXU/y5JzFXyuyCyV9E2CDQXBAP48vZxtn1WEJYRcyyDgnQpUfDgc0sNFyV2OUdLDB1
-	 b4XyrxXlk4IONthflKZHscRo9JiXJjQPCN2ERM0Dux8b7T8QQ3uYIm5JqPhHwp7m0D
-	 bT9/IBhOslm1NB6dXtjWQCOa1YLmaz+IU4dUqkLONAgctFOdxQGHrern/IsmpRIfQp
-	 s+Q+XIKMq38mUJPAHzQ+0SiCoBs37oWlMjjR48ptATGyHJ0eMCRA8T3A6E0PzC5IKf
-	 NkbsY99bxt3Sw==
-Date: Thu, 19 Feb 2026 12:17:40 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Neeraj Soni <neeraj.soni@oss.qualcomm.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
-	andersson@kernel.org, konradybcio@kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Abel Vesa <abel.vesa@oss.qualcomm.com>, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: Re: [PATCH] soc: qcom: ice: Remove platform_driver support and
- expose as a pure library
-Message-ID: <i55xjnbuortawc32flfxa6lihk3l2oqdccdmctngvyq4iw62wt@s4kuycrczgyx>
-References: <20260203080712.15480-1-manivannan.sadhasivam@oss.qualcomm.com>
- <spejairpdsb5sa3jwuogkl3edkglqoxa4eqz6zriq5w53ic4a6@4gyymeidqy5d>
- <14de409a-d6b4-7c17-d04c-7d26f16469e5@oss.qualcomm.com>
- <dinx3z2aumwfoipcijxsequulmb7sxaeti5eo5wjug4fjssxbz@v3azphuen74m>
- <ae80421d-2a45-bce9-d05f-b135c26216b2@oss.qualcomm.com>
+	s=arc-20240116; t=1771483866; c=relaxed/simple;
+	bh=Tc6IKilvxVWEgLeD/kY2yKy0uRFz/4bkhPiGqS126Y0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F8Nd2wjioiXQ7PsBsabvEBHmhgmq7Yi4IA4JgBwGyWgwdRXGzkumTHQGYOIytmZTbQMYuuLDrxVAUQWGEE/ST+8c1sbjjXb0sJNuJzbEN28fa1DFHYlhOSD3tzGOihagTYjgs06Tg5yGCw9FF1aJVwl2Ujj9Wy8V3BflT1/JfvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=HiOes7gZ; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
+	by cmsmtp with ESMTPS
+	id svCtvA2TXSkcfsxsOvJdkD; Thu, 19 Feb 2026 06:51:04 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id sxsNvjLLJh8QWsxsNvYt3R; Thu, 19 Feb 2026 06:51:03 +0000
+X-Authority-Analysis: v=2.4 cv=Mcdsu4/f c=1 sm=1 tr=0 ts=6996b2d7
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=x6Ducos6UYMGwXt6jLcA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ebBsodXuHOD7VCHm0Tbnrmw1Sh1+viWnoLTHXpiYaAo=; b=HiOes7gZHHX7TbJf21zZpwHUwt
+	hQRny9Luoz73cM4Bpy9k2oUjhIjCbkWAGaoL3SQeTYjPGnV0uGxeL0LowL2IXYSothk5/l/cR5OWc
+	SYfblWVCem8NyMtY5cbj5JGDHQcXzkA1ojLdf/PVboUx/2VCFOmiXmBi7FipE8S4cqyHwOJEcBktd
+	ZvJ3x7M76as4p2kzujp7RKkvKNqV9t1WgQokSAdQYd1C/MMuy+D7+ac+YVwJeRFYI32NcLOxdPbxf
+	quRUVur3hAWWvJZSryA3ZphnCc/GDjFjViVBg1ZwqnUJ5DynGgps9RGeYX4l1LY3HuZGRc+SSd4Po
+	Ae+RO1LQ==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:40598 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vsxsN-00000002I8V-0Kq4;
+	Wed, 18 Feb 2026 23:51:03 -0700
+Message-ID: <a8a18a72-e935-407d-b2af-c95382534bda@w6rz.net>
+Date: Wed, 18 Feb 2026 22:51:01 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ae80421d-2a45-bce9-d05f-b135c26216b2@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 00/39] 5.15.201-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260217200002.929083107@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1vsxsN-00000002I8V-0Kq4
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:40598
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 119
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfPvU5Qa5EcoJOnfQxu8ZYLn6q4nhpGPr/AI0Lk149J/AVK9oiYhosGzqWuScr4tGd125pMNJGjcTESunM2PNcMFYdw5tGCA7Sc6Z2ntJYWYrbOJ8JLV8
+ HOSpBHisoesrKoP4xxTmEjeobrREXh7YK8V9lRSi1yROcNglY+VI4/cbhtRSqiZ6HaNIiP8caNepXQ==
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217396-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217397-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[w6rz.net];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_X_SOURCE(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 9E9B815C76E
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[w6rz.net:mid,w6rz.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B911015C7EC
 X-Rspamd-Action: no action
 
-On Thu, Feb 19, 2026 at 11:27:07AM +0530, Neeraj Soni wrote:
-> 
-> 
-> On 2/18/2026 7:11 PM, Manivannan Sadhasivam wrote:
-> > On Tue, Feb 17, 2026 at 10:03:27AM +0530, Neeraj Soni wrote:
-> >>
-> >>
-> >> On 2/3/2026 1:40 PM, Manivannan Sadhasivam wrote:
-> >>> On Tue, Feb 03, 2026 at 01:37:12PM +0530, Manivannan Sadhasivam wrote:
-> >>>> The current platform driver design causes probe ordering races with clients
-> >>>> (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE probe
-> >>>> fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops with
-> >>>> -EPROBE_DEFER, leaving clients non-functional even when ICE should be
-> >>>> gracefully disabled. devm_of_qcom_ice_get() cannot know if the ICE driver
-> >>>> probe has failed due to above reasons or it is waiting for the SCM driver.
-> >>>>
-> >>>> Moreover, there is no devlink dependency between ICE and client drivers
-> >>>> as 'qcom,ice' is not considered as a DT 'supplier'. So the client drivers
-> >>>> have no idea of when the ICE driver is going to probe.
-> >>>>
-> >>>> To avoid all this hassle, remove the platform driver support altogether and
-> >>>> just expose the ICE driver as a pure library to client drivers. With this
-> >>>> design, when devm_of_qcom_ice_get() is called, it will check if the ICE
-> >>>> instance is available or not. If not, it will create one based on the ICE
-> >>>> DT node, increase the refcount and return the handle. When the next client
-> >>>> calls the API again, the ICE instance would be available. So this function
-> >>>> will just increment the refcount and return the instance.
-> >>>>
-> >>>> Finally, when the client devices get destroyed, refcount will be
-> >>>> decremented and finally the cleanup will happen once all clients are
-> >>>> destroyed.
-> >>>>
-> >>>> For the clients using the old DT binding of providing the separate 'ice'
-> >>>> register range in their node, this change has no impact.
-> >>>>
-> >>>> Cc: stable@vger.kernel.org
-> >>>> Cc: Abel Vesa <abel.vesa@oss.qualcomm.com>
-> >>>> Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> >>>> Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
-> >>>> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> >>>> ---
-> >>>>  drivers/soc/qcom/ice.c | 100 ++++++++++++++++-------------------------
-> >>>>  1 file changed, 39 insertions(+), 61 deletions(-)
-> >>>>
-> >>>> diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
-> >>>> index b203bc685cad..b5a9cf8de6e4 100644
-> >>>> --- a/drivers/soc/qcom/ice.c
-> >>>> +++ b/drivers/soc/qcom/ice.c
-> >>>> @@ -107,12 +107,16 @@ struct qcom_ice {
-> >>>>  	struct device *dev;
-> >>>>  	void __iomem *base;
-> >>>>  
-> >>>> +	struct kref refcount;
-> >>>>  	struct clk *core_clk;
-> >>>>  	bool use_hwkm;
-> >>>>  	bool hwkm_init_complete;
-> >>>>  	u8 hwkm_version;
-> >>>>  };
-> >>>>  
-> >>>> +static DEFINE_MUTEX(ice_mutex);
-> >>>> +struct qcom_ice *ice_handle;
-> >>>> +
-> >>>>  static bool qcom_ice_check_supported(struct qcom_ice *ice)
-> >>>>  {
-> >>>>  	u32 regval = qcom_ice_readl(ice, QCOM_ICE_REG_VERSION);
-> >>>> @@ -599,8 +603,8 @@ static struct qcom_ice *qcom_ice_create(struct device *dev,
-> >>>>   * This function will provide an ICE instance either by creating one for the
-> >>>>   * consumer device if its DT node provides the 'ice' reg range and the 'ice'
-> >>>>   * clock (for legacy DT style). On the other hand, if consumer provides a
-> >>>> - * phandle via 'qcom,ice' property to an ICE DT, the ICE instance will already
-> >>>> - * be created and so this function will return that instead.
-> >>>> + * phandle via 'qcom,ice' property to an ICE DT node, then the ICE instance will
-> >>>> + * be created if not already done and will be returned.
-> >>>>   *
-> >>>>   * Return: ICE pointer on success, NULL if there is no ICE data provided by the
-> >>>>   * consumer or ERR_PTR() on error.
-> >>>> @@ -611,11 +615,12 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
-> >>>>  	struct qcom_ice *ice;
-> >>>>  	struct resource *res;
-> >>>>  	void __iomem *base;
-> >>>> -	struct device_link *link;
-> >>>>  
-> >>>>  	if (!dev || !dev->of_node)
-> >>>>  		return ERR_PTR(-ENODEV);
-> >>>>  
-> >>>> +	guard(mutex)(&ice_mutex);
-> >>>> +
-> >>>>  	/*
-> >>>>  	 * In order to support legacy style devicetree bindings, we need
-> >>>>  	 * to create the ICE instance using the consumer device and the reg
-> >>>> @@ -631,6 +636,16 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
-> >>>>  		return qcom_ice_create(&pdev->dev, base);
-> >>>>  	}
-> >>>>  
-> >>>> +	/*
-> >>>> +	 * If the ICE node has been initialized already, just increase the
-> >>>> +	 * refcount and return the handle.
-> >>>> +	 */
-> >>>> +	if (ice_handle) {
-> >>>> +		kref_get(&ice_handle->refcount);
-> >>>> +
-> >>>> +		return ice_handle;
-> >>
-> >> How will this work for a device using both UFS and eMMC storage (one being primary storage
-> >> and other being secondary)? UFS and eMMC will have seperate ICE DT node so returning same
-> >> handle to both clients will not be correct.
-> >>
-> > 
-> > I'm not aware of any platforms using separate ICE nodes. All are using shared
-> > node only. Which platform are you referring to?
-> 
-> Example talos uses both UFS and eMMC:
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/arch/arm64/boot/dts/qcom/talos.dtsi#n699
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/arch/arm64/boot/dts/qcom/talos.dtsi#n1398
-> 
+On 2/17/26 12:31, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.201 release.
+> There are 39 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 19 Feb 2026 19:59:50 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.201-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-These are not using *separate* ICE DT nodes, but just have their own ICE MMIO
-regions. This is already handled in this patch which parses the ICE region first
-if available.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-> For few more targets where eMMC is used along with UFS, the patches to add ICE handle for eMMC is in flight with this patch:
-> https://lore.kernel.org/all/20260217052526.2335759-1-neeraj.soni@oss.qualcomm.com/
-> 
+Tested-by: Ron Economos <re@w6rz.net>
 
-So this adds a new ICE node, but just for eMMC. Are you saying that there will
-be ufs_crypto node as well?
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
 
