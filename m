@@ -1,110 +1,111 @@
-Return-Path: <stable+bounces-217425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNlCJdHllmkuqwIAu9opvQ
-	(envelope-from <stable+bounces-217425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 11:28:33 +0100
+	id aHSoL0HmlmkuqwIAu9opvQ
+	(envelope-from <stable+bounces-217426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 11:30:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDC815DC5D
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 11:28:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536B615DC9A
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 11:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4CAB6302B524
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 10:28:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F23683018AF4
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 10:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6E232F753;
-	Thu, 19 Feb 2026 10:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD493329E61;
+	Thu, 19 Feb 2026 10:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kxvYAyOW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uhaIsDPm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AFC32E744
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 10:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFC02F12CE
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 10:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771496895; cv=pass; b=C+S3d2TP6uILn//tyqx0MtEnGykvr8l/zCwNXwho5/PFuXVfrZk/toLk8fNrRFon/vJuSk0wRmo0unDuM+cQRYEDM5bknazhurUg0NfCzl4YNyChcwNy15eS2FGLLbcbiuSeHHsOQTpTCQonZIkI1AjgXs0OPfc9eQN3n+2BEvo=
+	t=1771497019; cv=pass; b=ra/oXn5JF9szzVrzqhf0MlErlZFLla0RCW5aX0tkTcJBs2UC7x7RgnNOXRDmH94xSe7ZD6VkHwvfSZrsgoIpGZgUZ8uMoAVMm+E2c84EnS9pZ/d4rLKnGw4vGzF6VtB/NpkSTiF1XltausnuMxfPI/2u4pMPX0dS3bdToPM2b7Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771496895; c=relaxed/simple;
-	bh=yeb/Dd5E4D0X31B91iyaLgNPgCIVv+7nFwkHl27wCJw=;
+	s=arc-20240116; t=1771497019; c=relaxed/simple;
+	bh=eWjMi9oPdjlnFDLhC1g6CgpEWpUV5f5UQwqPs/wjrlM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rmOgU3AY8ezEyb8kokWQPTPOxkMyZ+JYuO7qD+3tTuH1w7XfHAT9hfDfplYaUbbidpJfykL5s6MFr/hS8NnBAAidzbPaLK6Mnd+EbFjOUsI1GVpfmM2A6PCTcndWYVFmqoHEJMpOi6F1A4INHZ5xjkVoNWxQPAVBoQQJ8a/pD40=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kxvYAyOW; arc=pass smtp.client-ip=209.85.167.44
+	 To:Cc:Content-Type; b=cTfvbfbj2SouBpfEYhy7IUfIU3+g+CFs3YQ7gd5doBj916QINhI9BZna94CUeoyC5rlz061MUhFvkAPeCaaXL1E2JjPBkrmQOieaAqYfoHo3zg+7DFhempFhhQnf6NWxHb+wga2El6gGqs5I4nhsxpHR15ke5kg0yrnSd+uCZbU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uhaIsDPm; arc=pass smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-59e699310a8so1748545e87.1
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 02:28:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771496892; cv=none;
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59e61e94e1bso1054911e87.0
+        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 02:30:17 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771497016; cv=none;
         d=google.com; s=arc-20240605;
-        b=E9cf9ilyRtoHCTNCfNx5IBTTQ/ohXvU/lmohdYHEzWGoqiFFdfB0DtUeBS6B2B6Dsz
-         8gT55MWiZ7nCwbYEJM2ZozpS4z2PFwnkBOWblSWR1sUlYIj+K8B/rguEBNa9ZyRRPpen
-         RJFENyeThQPCv8inEh/yjUfLd2P09DYYVvHi9Q29hjfg8nQAKNDxQxuhNhll0/a3Aa5o
-         TVESO0wlbitankn/+x+AFZ6HoOxdtdEqeyQOUR8Q11nUesmwaVVqs6r9+aISzEmPU8C+
-         WWkztWiUngKFpbmMAqdGxOS4kKV1zXUxySQmng7gejYwylVQIUaqDczeVYgCGmrLROkY
-         oe6w==
+        b=Lo07LOzIPmo0NthCIEytHZF3YDoBPgj7o3xeqIxBHRSY7B5qwvx0h0CFjfn7el8K9R
+         16dk/WbaktvqGsO5pnY/hb9Pa8/aQx5eoU0ds/WJUP+2s83c69zdg87VCRalqivc80/A
+         +fRKMi2kawe/8sFD/RcjxwhBM2Ht3Ee7kjlX/sYv318b/OtI3vLmJftM/E6VMBmgxNET
+         l4P7S5tsUWSHJq7zGE3AJwYSQ69NnuRzp9ubNqY8yd6F3nEeaIrN3aBiOFM8iHIw4IOe
+         ZOqLwYekGJ5GYFR5Js1L6EirYWH+KlP9tmlpZllQ2CWLZt+LqWOuQ4CRVLnq7E9TemCh
+         Y4SQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=+iidJu0huUqKKe3pZdrr+tUIy4vm9ssv3UJXtJdVIbU=;
-        fh=ga+pAt28EkMkpCwOh6WeO7Ir63NYZcYMPZnCEv2RAiY=;
-        b=BIyBty5lvLsSvwouU63QWODO+5Z32bAleWP1EP87+w9qXFBE85mhaKLkwfD0Im+17r
-         byOL/RrlNf5yYa0519KBwoehiTaGK7rX2wibVIlnT4sI7uXoMB6vBb/mgaeqehQ16f3e
-         ItBJQ6ZhIz2t0OlEhiFfOfHQZr2cIbPFJQcOUFrSEiMdYtJIEDpXMJSGKpXHf6YFH8+U
-         wnlh/COPcCnrdzuQYh53lzOsL5w0DTwlFB2tr5t53eY9b5eIKU8uePLbxO0tjFWQV3Tp
-         4wDrW8bmlwYqZlNKtdwMCpb41SWTCFcS8Fqg02lTYUM3RT1jMKNl0vPsO3oSH2UUMpAI
-         Lgcw==;
+        bh=X4t0aQn668iou6qj2IRqi89HzqoDCvFcIKaw6c4juHE=;
+        fh=/tZGRFjDeYJjgBCWMSdv8WiDRXEAjhJm2GFByh/RBG0=;
+        b=LAiufbk6HtGHDRg+OWG6MxXUJrk24JtnmezYLCwbqNhcqm3vQ0+Kg8Qzd722tqm5Do
+         /w0SvwT10+7w5wzV2Lv5qrAyaXO3SWdvICoEBPqIM/l0oTHqvhBEDu05kHb40sJbhYoc
+         U/fwbY+5IIVwGzD3RdoM31k01MGlsYW5BlC+zMp3eq+UeEHkBQ25cSyBDUXOYFADQBu/
+         sYjWtwuBpW0HGjvUr6dmf2PnRoafH4uPiqti0O107nSbqeM3iUFKPf4M5FSdnhqqVeDP
+         DrHz3BF/7wHAA9kCElXC0yOf5xJjGVd/dxDex9MlKLPj/FZR7tj889yqxxGhiqr7KOjz
+         a67A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1771496892; x=1772101692; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1771497016; x=1772101816; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+iidJu0huUqKKe3pZdrr+tUIy4vm9ssv3UJXtJdVIbU=;
-        b=kxvYAyOW4F1yVwnZI7gRL1LAJL5lvjJFcXvt63g3vn6YQONjek8CluIgi5sJ6DKDV6
-         kva5RWzmvr2EqclKS2De1r/96SHXH/UX+tTXOeAGy2jAKJ+aLodN42zjz3jjzUGEhA+Z
-         9ykBZpmeS0hBHG+S+ChbPNuMFITVFcWbe3cxSTvvp2xAIWtopG0CehiRwkYxvnAeW0SW
-         hJOtJ6haEUNIuFQgt6iejDgDp46KA7RF/+bJaPTf+9DrbKJz+qDToP0ocPV3vp5swYT2
-         VQ5F7H6jWw4uSGPMzO+pGh04R23bLLgR24ue/7vzFCDU8DE85o1idsjrCTWHTnDOx+8u
-         9ebg==
+        bh=X4t0aQn668iou6qj2IRqi89HzqoDCvFcIKaw6c4juHE=;
+        b=uhaIsDPmTTTKsIRyUDl482p9uAakDLmLNAvPbNU5bqKy8HdV9hwFVSGblhhHBh8kD1
+         wE4vbW8ZAHMdM9fuH1zhyk6LHh6SNM4sHqSXaNKmEyVVxkniHoyUtVhWQxhGKzJlOqBo
+         G4In/a1HkhnfAXrrVVQ1eLP4qQQq6flLHBiYr5HuQKIIK6To8XlcljIJezt1EaFry3Ai
+         YbHxwPztJU9PeRZKslu7MWRXi1UZSZdSB1kiqfU04kAnC8uPINravVh106vqyLIKAykD
+         Hd3WxA3B2urCSygi4WR79Df4TrwPovndAcHtM4py69RH5/SY+hOlB0Tr+ET9eHQb0Ygh
+         hQYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771496892; x=1772101692;
+        d=1e100.net; s=20230601; t=1771497016; x=1772101816;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+iidJu0huUqKKe3pZdrr+tUIy4vm9ssv3UJXtJdVIbU=;
-        b=HEB2BmMrCqoPSly8l0WFuP0EXgBNo+Lk++UEwj/U+A137PNME1CoMGv/hE2T+IcqrJ
-         un3u4uZEQEjYNpKGHr96iAiR8PUC5Fh3QKLpATofPyrpg6epgs4bgkol1G4qzpsg2Eok
-         5llMcEbUBCKnZQl5tUcOyTCbC2TZfFv39g2FwhzEQDxhmJqrR89MkIar8Gx9rGEOaa/P
-         m1f7+t1pXYAEY+eeEimSF/GiXWBQX0DzKXCxHHClhlxmfz1YrcZx9W8GX6Qzdk2VqJGX
-         kCMdkJjhZ+FmmTnULFSHHhP0HE4QqbMFtW8sNDJhlVDLC1eZj45Ef9UkpIxTjMiGqT8s
-         gsrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfOD8oLZQHTvytu6FBW5BFRJzlp53YChkyPJuzYAfwXw6th5oNL76E4pZd/6yE2fOk8jGJ9oM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBmIB1QN3emct7FrWLF9hZE+QfTocmrKx8BMBcTUVSHTnoo2p+
-	SfFVW1ZDFYm63glXp3g11oBa0oLPBCh+kqxCQ1s/ABl0yR0rM9s6XFFrHcJkw1BW7yrf0UI8xgy
-	6XOoil+PjeQ4G3RmowkBwZJ8+5rFPZOJ3yJYRL956zFrV+fdKCVYcZ1rubQ==
-X-Gm-Gg: AZuq6aI5BK8c4x3SY5TTuYbgIYho25FYJMHL3f9somNlu9AUNXMyDMjxxQP0tewPVOC
-	PQhzj16fMiMTy61PUGUe8uFr1rJ18HsJnCoEuJaVOPoh4u8NzOb7mHv0YUJmmCX3CeVAf4rKrEA
-	J0n3OwkSbSueV3wpJdFIKOQnoCRGpbWKniDCTtMgsiLWYxkQJnoWKSQHSigc95qUaTmYAgBnoX/
-	a2BI67kvr3ZGRzNHpnnUscwWmUc08O4IimRkItIQkf1mR5Mx/kWv+e3Uc+kke2ouCeAgdbuiHoL
-	idpMpiVf
-X-Received: by 2002:ac2:4bc8:0:b0:59e:6bbd:1ab7 with SMTP id
- 2adb3069b0e04-59f8b41f3aamr479369e87.2.1771496891642; Thu, 19 Feb 2026
- 02:28:11 -0800 (PST)
+        bh=X4t0aQn668iou6qj2IRqi89HzqoDCvFcIKaw6c4juHE=;
+        b=v7exuKFbwexrEMAm7/omiVIBBwIRFuSiiAjNtP/Sr7eZg7ugJ4dS2PFoE4TFFCg2FK
+         mRQqtiJoy8I19maQqJtSKWo4CLkARGYl7fRzOQrDHcdTZtAaqb4u874UHlI56Sy5Ucnc
+         X82VPPKSvT2eJJfAcAd2idY2/1PQFNhkdDO8PuxM0o5Es3xC2Ho2zrxmqUBs6dQQlKRb
+         pdeF/p3WwqMdligz436cMcXnrIwFomX4zuBLZTKva2q/YMrKyHweQz4Q3Wn5i78zHgeS
+         JwZSCRhCzozLa9qaG/R+pKTFfuazCd6cSlq7mtQzLkri43EphbLvJ9meQ/FEaXGHS1xo
+         ZdPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUoU6NnyL5QhQM6+6HoTuAeJOrOuSQohbwxP/WOrg6rS36O4QTxTgdw+SjBIqgnAHXyxBk5xs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyYdGeV5vXxA6VpJK7GjcXNyKVOKL8P9Be8Jh+XA0qVN9mLeaK
+	48GyAZrXZRYaSE2Inou9UmiS2V4C0WgSBDtevt4zGVv43yhXjEqzzd7PBuxdEcuZ2aZhC6nlOPm
+	Qi6DHAO/gMlF02kfjTTQlxq6KGa44+U30sb6V53mppw==
+X-Gm-Gg: AZuq6aLiQ05aLnmPWjFsFCFmM2H5LoexLGiB+mhgvMta9dfpswfwEA3C80VCd/0y/Ak
+	FfoR2ms+DQvPTj4K4Mm3fFkw1wvmnOdXA9JttF9PbnfU/xW6xrpyyzOalMIuLCINmd2zGKDgAz5
+	4nX9KZzgeNIihEAz0d/rZAp7IuKuGa+Z1D1IFc1SYKo7WVGPE4F7YP8o3sLWyOmz/Ehy6MgLdp4
+	ni9rcoFfj/0ucMRda9595gQ2XrZCz0XYyhIYOATKxqCbZrt96jHBbgeOa34FRGDnqFB5K3HweRT
+	3oTWDZM4
+X-Received: by 2002:a05:6512:3b8e:b0:59e:5a13:f66f with SMTP id
+ 2adb3069b0e04-59ef97f1918mr6303112e87.15.1771497015566; Thu, 19 Feb 2026
+ 02:30:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260219020422.1539798-1-sashal@kernel.org> <20260219020422.1539798-17-sashal@kernel.org>
-In-Reply-To: <20260219020422.1539798-17-sashal@kernel.org>
+References: <20260219020422.1539798-1-sashal@kernel.org> <20260219020422.1539798-7-sashal@kernel.org>
+In-Reply-To: <20260219020422.1539798-7-sashal@kernel.org>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 19 Feb 2026 11:27:35 +0100
-X-Gm-Features: AaiRm525_UCzJlSuHNcErGCp6LRaRr1GEnHg4lhcONksOk-A7hoEj7ZvFLCDJx4
-Message-ID: <CAPDyKFoPehkeOD1-U2CGd_1Owt2Ai6+28Epabz6wGnYVq6k=YA@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.19-6.1] mmc: rtsx: reset power state on suspend
+Date: Thu, 19 Feb 2026 11:29:38 +0100
+X-Gm-Features: AaiRm52jeG2Yu2stc47ELqgLlKg0TMPFDoFFFEOyy4G5WPX8KGX8zE9V0OcybSA
+Message-ID: <CAPDyKFpnyh0csWRZN5yNZ7+941bGRXF4=yONbQygdDEF3URE6A@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.19-5.15] mmc: rtsx_pci: add quirk to disable
+ MMC_CAP_AGGRESSIVE_PM for RTS525A
 To: Sasha Levin <sashal@kernel.org>
 Cc: patches@lists.linux.dev, stable@vger.kernel.org, 
 	Matthew Schwartz <matthew.schwartz@linux.dev>, 
@@ -115,19 +116,19 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217425-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217426-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linaro.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
@@ -136,27 +137,28 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:dkim,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linux.dev:email,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 0DDC815DC5D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,msgid.link:url,mail.gmail.com:mid,linux.dev:email,linaro.org:dkim]
+X-Rspamd-Queue-Id: 536B615DC9A
 X-Rspamd-Action: no action
 
 On Thu, 19 Feb 2026 at 03:04, Sasha Levin <sashal@kernel.org> wrote:
 >
 > From: Matthew Schwartz <matthew.schwartz@linux.dev>
 >
-> [ Upstream commit eac85fbd0867c25ac517f58fae401d65c627edff ]
+> [ Upstream commit 5f0bf80cc5e04d31eeb201683e0b477c24bd18e7 ]
 >
-> When rtsx_pci suspends, the card reader hardware powers off but the sdmmc
-> driver's prev_power_state remains as MMC_POWER_ON. This causes sd_power_on
-> to skip reinitialization on the next I/O request, leading to DMA transfer
-> timeouts and errors on resume 20% of the time.
+> Using MMC_CAP_AGGRESSIVE_PM on RTS525A card readers causes game
+> performance issues when the card reader comes back from idle into active
+> use. This can be observed in Hades II when loading new sections of the
+> game or menu after the card reader puts itself into idle, and presents
+> as a 1-2 second hang.
 >
-> Add a power_off slot callback so the PCR can notify the sdmmc driver
-> during suspend. The sdmmc driver resets prev_power_state, and sd_request
-> checks this to reinitialize the card before the next I/O.
+> Add EXTRA_CAPS_NO_AGGRESSIVE_PM quirk to allow cardreader drivers to
+> opt-out of aggressive PM, and set it for RTS525A.
 >
+> Closes: https://lore.kernel.org/linux-mmc/ff9a7c20-f465-4afa-bf29-708d4a52974a@linux.dev/
 > Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-> Link: https://patch.msgid.link/20260105060236.400366-2-matthew.schwartz@linux.dev
+> Link: https://patch.msgid.link/20260103204226.71752-1-matthew.schwartz@linux.dev
 > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 
@@ -164,225 +166,144 @@ NAK.
 
 This patch is reverted in mainline, as it's not the proper fix.
 
-See commit c23f0550c05d40762b141808709667759291c938
+See commit eb89b17f283b233ba721fce358fa0d15223ae69d
 
 Kind regards
 Uffe
+
+
+
 
 > ---
 >
 > LLM Generated explanations, may be completely bogus:
 >
-> Good - `sd_power_on` has been part of this file since initial creation.
-> The forward declaration added in the patch is just to allow the function
-> (defined later in the file) to be called from `sd_request` (defined
-> earlier).
+> ### Summary Analysis
 >
-> ### Analysis Summary
+> **What the commit does:**
+> This commit adds a device-specific quirk for the Realtek RTS525A card
+> reader to disable `MMC_CAP_AGGRESSIVE_PM`. When aggressive PM is enabled
+> on this device, it powers down the card reader after 10 seconds of idle,
+> and re-tuning when waking up causes 1-2 second hangs that are user-
+> visible and impact performance.
 >
-> **What problem the commit solves:**
->
-> This commit fixes a suspend/resume regression in Realtek PCI-E SD card
-> readers where, after suspend, 20% of resume attempts fail with DMA
-> transfer timeouts because:
->
-> 1. During suspend, `rtsx_pci_power_off()` powers down the card reader
->    hardware
-> 2. But the sdmmc driver's `prev_power_state` remains `MMC_POWER_ON`
-> 3. On resume, when `sd_power_on()` is called, it sees `prev_power_state
->    == MMC_POWER_ON` at line 912 and returns immediately without
->    reinitializing the hardware
-> 4. The first I/O attempt then fails with DMA timeout because the
->    hardware was never re-powered
->
-> **The fix has three parts:**
-> 1. Adds a `power_off` callback to `struct rtsx_slot` (1 line in header)
-> 2. In the PCR suspend paths (both system and runtime), calls
->    `slot->power_off()` to notify the sdmmc driver before powering off
->    hardware
-> 3. In the sdmmc driver: implements `rtsx_pci_sdmmc_power_off()` to reset
->    `prev_power_state = MMC_POWER_OFF`, and adds a check in
->    `sd_request()` to call `sd_power_on()` if `prev_power_state ==
->    MMC_POWER_OFF`
+> **Does it fix a real bug?**
+> Yes. The aggressive PM behavior on RTS525A causes real, user-observable
+> 1-2 second hangs during normal use. This was reported by a real user
+> with concrete reproduction steps (playing a game that loads data from a
+> micro SD card). The "Closes:" tag links to a real mailing list report.
 >
 > **Stable kernel criteria assessment:**
-> - **Fixes a real bug:** Yes - 20% failure rate on resume with SD card
->   operations
-> - **Obviously correct:** Yes - the logic is straightforward: notify the
->   driver that hardware was powered off so it reinitializes properly
-> - **Small and contained:** Yes - 32 lines of insertion across 3 files,
->   all within the rtsx subsystem
-> - **No new features:** Correct - this adds only internal plumbing to fix
->   power state tracking
-> - **Tested:** Author tested 300+ s2idle cycles
-> - **Impact:** Users with Realtek card readers experience I/O errors,
->   filesystem journal failures, and card detection loss after
->   suspend/resume
+>
+> 1. **Obviously correct and tested**: The change follows an existing
+>    pattern (`EXTRA_CAPS_NO_MMC` is the exact same kind of quirk flag).
+>    The author tested it on affected hardware.
+>
+> 2. **Fixes a real bug**: Yes - user-visible performance degradation (1-2
+>    second hangs) on specific hardware.
+>
+> 3. **Important issue**: It's a usability issue rather than a
+>    crash/security issue. However, hardware quirks for broken behavior
+>    are explicitly allowed in stable.
+>
+> 4. **Small and contained**: The change is minimal - 3 new lines of code
+>    plus a new flag definition. It only affects RTS525A devices and
+>    doesn't change behavior for any other hardware.
+>
+> 5. **No new features**: This is a hardware quirk/workaround, which is an
+>    explicitly allowed exception to the "no new features" rule.
+>
+> 6. **Clean application**: The change builds on existing infrastructure
+>    (`extra_caps` flags) that exists in all stable trees since v5.11.
 >
 > **Risk assessment:**
-> - Low risk - the changes are confined to the rtsx card reader subsystem
-> - The `power_off` callback is properly guarded with NULL checks (`if
->   (slot->p_dev && slot->power_off)`)
-> - The `sd_request` power-on check has proper error handling
-> - The drv_remove function properly clears the callback
-> - No impact on other subsystems
+> - **Very low risk**: The quirk only affects RTS525A devices
+>   (`PID_525A`). All other devices are completely unaffected.
+> - The code pattern is identical to existing quirks
+>   (`EXTRA_CAPS_NO_MMC`).
+> - The worst case if the quirk is wrong is slightly higher power
+>   consumption on RTS525A (no aggressive PM = card reader stays powered).
 >
 > **Dependencies:**
-> - Self-contained - no dependencies on other commits
-> - The companion delay patch (aced969e9bf37) has already been selected
->   for stable and is independent
-> - The code being modified (`rtsx_slot`, `rtsx_pci_suspend`,
->   `sd_request`) exists in all recent stable trees
+> None. The change uses existing infrastructure (`extra_caps`,
+> `CHK_PCI_PID`, `PID_525A`) that has been present since before v5.11.
 >
 > ### Verification
 >
-> - **Verified** that `sd_power_on()` at line 912 returns early when
->   `prev_power_state == MMC_POWER_ON`, confirming the bug mechanism
-> - **Verified** via `git show aced969e9bf37` that the companion patch
->   (delay increase) has a Fixes: tag and was independently picked for
->   stable
-> - **Verified** via `git show ed0d7f8559dbd` (stable branch version) that
->   the delay patch was already applied to stable with `[Upstream commit
->   ...]` marker
-> - **Verified** via lore.kernel.org that this is a 2-patch series (0/2
->   cover letter), both fixing suspend/resume failures, with testing
->   showing patch 1 reduces failures from 20% to 4%
-> - **Verified** that `struct rtsx_slot` currently only has `p_dev` and
->   `card_event` fields by reading `include/linux/rtsx_common.h`
-> - **Verified** that the suspend paths properly hold `pcr->pcr_mutex`
->   when calling the callback
-> - **Verified** the NULL check guards (`slot->p_dev && slot->power_off`)
->   in both suspend functions
-> - **Verified** that `sd_power_on()` has existed since the driver was
->   created (`ff984e57d36e8`) - the forward declaration is just for
->   compilation order
-> - **Verified** that `rtsx_pci_sdmmc_drv_remove` properly clears
->   `power_off = NULL` to prevent stale callbacks
+> - **git log** showed `rtd3_en` / `MMC_CAP_AGGRESSIVE_PM` was introduced
+>   in commit `5b4258f6721f4` (v5.11), confirming all current stable trees
+>   have the affected code.
+> - **git tag --contains** confirmed the runtime PM commit is in stable
+>   trees (p-5.15, p-6.1, p-6.12).
+> - **Grep for EXTRA_CAPS_** confirmed the existing quirk flag pattern
+>   (NO_MMC at bit 7, SD_EXPRESS at bit 8, new flag at bit 9 - clean
+>   progression).
+> - **lore.kernel.org fetch** confirmed the bug report describes real
+>   user-reported 1-2 second hangs on RTS525A with concrete reproduction
+>   steps.
+> - **Code review** verified the change only adds a condition check and
+>   flag - no behavioral change for non-RTS525A devices.
+> - The commit was signed off by Greg Kroah-Hartman, the stable tree
+>   maintainer, indicating it went through proper review.
+> - Could NOT verify whether any stable tree has already picked this up
+>   (unverified, but not relevant to the YES/NO decision).
 >
-> This is a clear, well-tested bug fix for a user-impactful suspend/resume
-> issue. It's small, contained, properly guarded, and fixes a 20% failure
-> rate. It meets all stable kernel criteria.
+> ### Conclusion
+>
+> This is a textbook hardware quirk for a specific device with a real,
+> user-reported issue. It follows existing patterns in the codebase, is
+> minimal in scope, and has zero risk to other devices. Hardware quirks
+> are explicitly listed as appropriate for stable backporting. The
+> affected code exists in all current stable trees (5.15+).
 >
 > **YES**
 >
->  drivers/misc/cardreader/rtsx_pcr.c |  9 +++++++++
->  drivers/mmc/host/rtsx_pci_sdmmc.c  | 22 ++++++++++++++++++++++
->  include/linux/rtsx_common.h        |  1 +
->  3 files changed, 32 insertions(+)
+>  drivers/misc/cardreader/rts5249.c | 3 +++
+>  drivers/mmc/host/rtsx_pci_sdmmc.c | 4 ++--
+>  include/linux/rtsx_pci.h          | 1 +
+>  3 files changed, 6 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/misc/cardreader/rtsx_pcr.c b/drivers/misc/cardreader/rtsx_pcr.c
-> index f9952d76d6ed7..f1f4d8ed544d6 100644
-> --- a/drivers/misc/cardreader/rtsx_pcr.c
-> +++ b/drivers/misc/cardreader/rtsx_pcr.c
-> @@ -1654,6 +1654,7 @@ static int __maybe_unused rtsx_pci_suspend(struct device *dev_d)
->         struct pci_dev *pcidev = to_pci_dev(dev_d);
->         struct pcr_handle *handle = pci_get_drvdata(pcidev);
->         struct rtsx_pcr *pcr = handle->pcr;
-> +       struct rtsx_slot *slot = &pcr->slots[RTSX_SD_CARD];
+> diff --git a/drivers/misc/cardreader/rts5249.c b/drivers/misc/cardreader/rts5249.c
+> index 38aefd8db452a..87d576a03e68e 100644
+> --- a/drivers/misc/cardreader/rts5249.c
+> +++ b/drivers/misc/cardreader/rts5249.c
+> @@ -78,6 +78,9 @@ static void rtsx_base_fetch_vendor_settings(struct rtsx_pcr *pcr)
+>         if (CHK_PCI_PID(pcr, PID_524A) || CHK_PCI_PID(pcr, PID_525A))
+>                 pcr->rtd3_en = rtsx_reg_to_rtd3_uhsii(reg);
 >
->         dev_dbg(&(pcidev->dev), "--> %s\n", __func__);
->
-> @@ -1661,6 +1662,9 @@ static int __maybe_unused rtsx_pci_suspend(struct device *dev_d)
->
->         mutex_lock(&pcr->pcr_mutex);
->
-> +       if (slot->p_dev && slot->power_off)
-> +               slot->power_off(slot->p_dev);
+> +       if (CHK_PCI_PID(pcr, PID_525A))
+> +               pcr->extra_caps |= EXTRA_CAPS_NO_AGGRESSIVE_PM;
 > +
->         rtsx_pci_power_off(pcr, HOST_ENTER_S3, false);
->
->         mutex_unlock(&pcr->pcr_mutex);
-> @@ -1772,12 +1776,17 @@ static int rtsx_pci_runtime_suspend(struct device *device)
->         struct pci_dev *pcidev = to_pci_dev(device);
->         struct pcr_handle *handle = pci_get_drvdata(pcidev);
->         struct rtsx_pcr *pcr = handle->pcr;
-> +       struct rtsx_slot *slot = &pcr->slots[RTSX_SD_CARD];
->
->         dev_dbg(device, "--> %s\n", __func__);
->
->         cancel_delayed_work_sync(&pcr->carddet_work);
->
->         mutex_lock(&pcr->pcr_mutex);
-> +
-> +       if (slot->p_dev && slot->power_off)
-> +               slot->power_off(slot->p_dev);
-> +
->         rtsx_pci_power_off(pcr, HOST_ENTER_S3, true);
->
->         mutex_unlock(&pcr->pcr_mutex);
+>         if (rtsx_check_mmc_support(reg))
+>                 pcr->extra_caps |= EXTRA_CAPS_NO_MMC;
+>         pcr->sd30_drive_sel_3v3 = rtsx_reg_to_sd30_drive_sel_3v3(reg);
 > diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> index 8df60000b5b41..34343b5d5823d 100644
+> index 4db3328f46dfb..8df60000b5b41 100644
 > --- a/drivers/mmc/host/rtsx_pci_sdmmc.c
 > +++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-> @@ -47,6 +47,7 @@ struct realtek_pci_sdmmc {
->  };
+> @@ -1497,8 +1497,8 @@ static void realtek_init_host(struct realtek_pci_sdmmc *host)
+>         mmc->caps = MMC_CAP_4_BIT_DATA | MMC_CAP_SD_HIGHSPEED |
+>                 MMC_CAP_MMC_HIGHSPEED | MMC_CAP_BUS_WIDTH_TEST |
+>                 MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25;
+> -       if (pcr->rtd3_en)
+> -               mmc->caps = mmc->caps | MMC_CAP_AGGRESSIVE_PM;
+> +       if (pcr->rtd3_en && !(pcr->extra_caps & EXTRA_CAPS_NO_AGGRESSIVE_PM))
+> +               mmc->caps |= MMC_CAP_AGGRESSIVE_PM;
+>         mmc->caps2 = MMC_CAP2_NO_PRESCAN_POWERUP | MMC_CAP2_FULL_PWR_CYCLE |
+>                 MMC_CAP2_NO_SDIO;
+>         mmc->max_current_330 = 400;
+> diff --git a/include/linux/rtsx_pci.h b/include/linux/rtsx_pci.h
+> index 3c5689356004e..f6122349c00ec 100644
+> --- a/include/linux/rtsx_pci.h
+> +++ b/include/linux/rtsx_pci.h
+> @@ -1230,6 +1230,7 @@ struct rtsx_pcr {
+>  #define EXTRA_CAPS_MMC_8BIT            (1 << 5)
+>  #define EXTRA_CAPS_NO_MMC              (1 << 7)
+>  #define EXTRA_CAPS_SD_EXPRESS          (1 << 8)
+> +#define EXTRA_CAPS_NO_AGGRESSIVE_PM    (1 << 9)
+>         u32                             extra_caps;
 >
->  static int sdmmc_init_sd_express(struct mmc_host *mmc, struct mmc_ios *ios);
-> +static int sd_power_on(struct realtek_pci_sdmmc *host, unsigned char power_mode);
->
->  static inline struct device *sdmmc_dev(struct realtek_pci_sdmmc *host)
->  {
-> @@ -821,6 +822,15 @@ static void sd_request(struct work_struct *work)
->
->         rtsx_pci_start_run(pcr);
->
-> +       if (host->prev_power_state == MMC_POWER_OFF) {
-> +               err = sd_power_on(host, MMC_POWER_ON);
-> +               if (err) {
-> +                       cmd->error = err;
-> +                       mutex_unlock(&pcr->pcr_mutex);
-> +                       goto finish;
-> +               }
-> +       }
-> +
->         rtsx_pci_switch_clock(pcr, host->clock, host->ssc_depth,
->                         host->initial_mode, host->double_clk, host->vpclk);
->         rtsx_pci_write_register(pcr, CARD_SELECT, 0x07, SD_MOD_SEL);
-> @@ -1522,6 +1532,16 @@ static void rtsx_pci_sdmmc_card_event(struct platform_device *pdev)
->         mmc_detect_change(host->mmc, 0);
->  }
->
-> +static void rtsx_pci_sdmmc_power_off(struct platform_device *pdev)
-> +{
-> +       struct realtek_pci_sdmmc *host = platform_get_drvdata(pdev);
-> +
-> +       if (!host)
-> +               return;
-> +
-> +       host->prev_power_state = MMC_POWER_OFF;
-> +}
-> +
->  static int rtsx_pci_sdmmc_drv_probe(struct platform_device *pdev)
->  {
->         struct mmc_host *mmc;
-> @@ -1554,6 +1574,7 @@ static int rtsx_pci_sdmmc_drv_probe(struct platform_device *pdev)
->         platform_set_drvdata(pdev, host);
->         pcr->slots[RTSX_SD_CARD].p_dev = pdev;
->         pcr->slots[RTSX_SD_CARD].card_event = rtsx_pci_sdmmc_card_event;
-> +       pcr->slots[RTSX_SD_CARD].power_off = rtsx_pci_sdmmc_power_off;
->
->         mutex_init(&host->host_mutex);
->
-> @@ -1585,6 +1606,7 @@ static void rtsx_pci_sdmmc_drv_remove(struct platform_device *pdev)
->         pcr = host->pcr;
->         pcr->slots[RTSX_SD_CARD].p_dev = NULL;
->         pcr->slots[RTSX_SD_CARD].card_event = NULL;
-> +       pcr->slots[RTSX_SD_CARD].power_off = NULL;
->         mmc = host->mmc;
->
->         cancel_work_sync(&host->work);
-> diff --git a/include/linux/rtsx_common.h b/include/linux/rtsx_common.h
-> index da9c8c6b5d50f..f294f478f0c0e 100644
-> --- a/include/linux/rtsx_common.h
-> +++ b/include/linux/rtsx_common.h
-> @@ -32,6 +32,7 @@ struct platform_device;
->  struct rtsx_slot {
->         struct platform_device  *p_dev;
->         void                    (*card_event)(struct platform_device *p_dev);
-> +       void                    (*power_off)(struct platform_device *p_dev);
->  };
->
->  #endif
+>  #define IC_VER_A                       0
 > --
 > 2.51.0
 >
