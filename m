@@ -1,112 +1,167 @@
-Return-Path: <stable+bounces-217394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217395-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MF9VKs+wlmmejgIAu9opvQ
-	(envelope-from <stable+bounces-217394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:42:23 +0100
+	id UK5NE4uxlmmRjwIAu9opvQ
+	(envelope-from <stable+bounces-217395-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:45:31 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE2815C6C7
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:42:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A464515C70E
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:45:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83DAF3025297
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 06:42:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CCD13025288
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 06:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6683A303C8A;
-	Thu, 19 Feb 2026 06:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50107304BDF;
+	Thu, 19 Feb 2026 06:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="3GZjS264"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="a9ikz/tR"
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AC323EA87;
-	Thu, 19 Feb 2026 06:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87343033F6
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 06:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771483336; cv=none; b=MRiyTo/QxAt9IKvKT9Ug/OBg1idn4aQItywvR6G0LkcFt8KpIqtY3LccxQzT6/Lw10/RfXg4t09Q0lApsSQxOhjPHtRCjf9Pe0JNHn4SjgcZWuQtjA5QGlzR9CangqKFmG4b63IzMI+j6UNUEAD0l7wiLO2jtG4j3hY15vHHYKQ=
+	t=1771483494; cv=none; b=ZCBx47WMu4L7jAenAdVOEybnTB9Zg7sZZukGvMJ8h9KqvivsKhoQoiRasbRayshD/fs1rVidJRnPVTjxT6i+G5R6ZuS+D9PFQHvlKzQruVhi3le7g6eLWYwH+Q0+F3gFbcD1QbOG+VPY0LrWOPMQiYV9Sje00CBjHh7kzr3dizU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771483336; c=relaxed/simple;
-	bh=wqV64pKVJBsnLZr6sSNRl45vRIDIASqMB0d2Wm7yOvY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DVOTmF+hIvJGmtYP4D5tjJIH71gjJSwNdzSmQ/jtgJuJEe7s6uNsTS0bXeDv662C+j3d2+98yrqXIcE1WqYCOso47tSoaMTg/rUJdM/TFlpAF7FlVPha+h+JQe7HC7BLIR3ALVr50IuoVyl8qRWs978X054aPXpbG78lfZ41H48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=3GZjS264; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=tNEyZbhtjMGOQlCquDyDe1KKIEC0Fae5kKcwjq2xFQ8=; b=3GZjS264ua1wURKRsSkR/1ApA6
-	6gY41Ruf9VKxof9DSwmLnGZH1Iap92ASuapIYsI5I8J4o9c97hCnzVw8pvASAVEEvSmh2haobkeq2
-	0pYv9jOoF584YNKJLNGdxgbchI+Vkp85rryT1jLiqh0llDPVoY9/z/xA5VFWzITqzp20DYYyD0Z39
-	1yX6ARmQlNmoLiQLHejH27+zHXq5MNW8wZrGwz24Md1ySA8VdXWEsIHB06+YYatb4mRkyu7++X2Tl
-	rTn7i/MwpYkbkWhsy1lYguA7xMY8xsemWVtMBd/E7Nx/ySTv65qVzXr4RRp+T9FPSRHmJihNWwt0x
-	1Wm07cpQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsxjq-0000000Ayqy-3Y5X;
-	Thu, 19 Feb 2026 06:42:14 +0000
-Date: Wed, 18 Feb 2026 22:42:14 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: cem@kernel.org, stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH 3/6] xfs: fix xfs_group release bug in
- xfs_verify_report_losses
-Message-ID: <aZawxiX5D769M5EX@infradead.org>
-References: <177145925377.401799.10773940743454980308.stgit@frogsfrogsfrogs>
- <177145925473.401799.4192737708449778278.stgit@frogsfrogsfrogs>
+	s=arc-20240116; t=1771483494; c=relaxed/simple;
+	bh=rBl8K+ekStZdKDWhZjboEE9ZTxIXLFEuiqxo9S0mB/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FS473/9RzAogVb8yn56AXFtRFV2bAYxz4FF0tyoymEbUBo6mUEuufbIi1I98FXimcZ+ENQf9tpCmPSyt+hu/vkI/w65KIbLaOP/v9kDcDd/BucfoaizM4R8597ug4j++olQBNoMzfxSv0n1bEScpAl8Knvddabxz4QtoR9/mzH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=a9ikz/tR; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6003b.ext.cloudfilter.net ([10.0.30.175])
+	by cmsmtp with ESMTPS
+	id srShv4M6daPqLsxmOv4cg5; Thu, 19 Feb 2026 06:44:52 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id sxmNvQeqqhoT4sxmNv18Ol; Thu, 19 Feb 2026 06:44:51 +0000
+X-Authority-Analysis: v=2.4 cv=XZyJzJ55 c=1 sm=1 tr=0 ts=6996b164
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=x6Ducos6UYMGwXt6jLcA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=vXEmJhYLIb160IgNGB3veP9r4naxQgnRScjCQNm2pi4=; b=a9ikz/tRtU0d7/LW236r28mn2c
+	4KDvndArSungpa/7WinWKImCGtLROPmRmgQO2wlpI/5B/FTNmmQWAh7IH41UNZFE6lbvgN5UeBrSx
+	ggWuLZ8VZ/x8JJBAVjvFe5FO/ZFc/ZaN3B9Wy6ooZrGIrk5H/8ZU3uOvTACCs45AUEBO9YsWoHwri
+	EIiOQ7lZgrwAH2ixN3magMJ0WH3/lth5bFmpqlsAJwTeDJiuUgOwLPuCqguvW+SW2hhw4EQvC6sHK
+	og/1XiFm32+/b1G4YUIA1CKEcHbOR2d76nKdqbq4tfTkGCjRKvvN1iivs9Eyc2we6HWwUyegw7+Tw
+	EnXY9fJw==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:34878 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vsxmN-00000002Ef1-0olR;
+	Wed, 18 Feb 2026 23:44:51 -0700
+Message-ID: <38125eae-5bb8-4829-8daa-6f39d63cd3ee@w6rz.net>
+Date: Wed, 18 Feb 2026 22:44:49 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <177145925473.401799.4192737708449778278.stgit@frogsfrogsfrogs>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 00/64] 6.1.164-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260217200007.505931165@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260217200007.505931165@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1vsxmN-00000002Ef1-0olR
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:34878
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 99
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfA09Vb+PTitfAnptvccK69OPiR03BMtIa0fcB/mj7+qj2141efWrKNKUwD7HupA1wTI62qOhs8exkQwlw8lrtarLYHgWK0ww3riUL8rveicmEOznIpEd
+ lSmYrXn/I874gvb45scwpQWqeynXRde8cQzLyA61Z+OJYtGeVmijLYDguanr3yrtZwhwfNN54jzQEQ==
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=bombadil.20210309];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	TAGGED_FROM(0.00)[bounces-217394-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217395-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[w6rz.net];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
+	HAS_X_SOURCE(0.00)[];
+	HAS_X_ANTIABUSE(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hch@infradead.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email,infradead.org:mid,infradead.org:dkim]
-X-Rspamd-Queue-Id: 1BE2815C6C7
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[w6rz.net:mid,w6rz.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A464515C70E
 X-Rspamd-Action: no action
 
-On Wed, Feb 18, 2026 at 10:01:30PM -0800, Darrick J. Wong wrote:
-> From: Darrick J. Wong <djwong@kernel.org>
-> 
-> Chris Mason reports that his AI tools noticed that we were using
-> xfs_perag_put and xfs_group_put to release the group reference returned
-> by xfs_group_next_range.  However, the iterator function returns an
-> object with an active refcount, which means that we must use the correct
-> function to release the active refcount, which is _rele.
+On 2/17/26 12:30, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.164 release.
+> There are 64 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 19 Feb 2026 19:59:50 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.164-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Looks good:
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Tested-by: Ron Economos <re@w6rz.net>
 
 
