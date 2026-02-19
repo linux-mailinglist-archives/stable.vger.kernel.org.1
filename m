@@ -1,153 +1,213 @@
-Return-Path: <stable+bounces-217444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCwRMbYql2nmvQIAu9opvQ
-	(envelope-from <stable+bounces-217444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:22:30 +0100
+	id mFATGOMtl2kcvgIAu9opvQ
+	(envelope-from <stable+bounces-217445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:36:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2B6160116
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:22:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A74160374
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCE513014416
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 15:22:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78BDA305E30F
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 15:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42D53446B6;
-	Thu, 19 Feb 2026 15:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C9E346FAE;
+	Thu, 19 Feb 2026 15:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Ia5HaE6s"
+	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="DhQsuyLs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30CB3033FD
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 15:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEA0345758;
+	Thu, 19 Feb 2026 15:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771514543; cv=none; b=OFGNUiLvSqXT/vjmdW+lFH6ZyaeG+XqatyJFAk70Ppb08wkz7QtjEd3m9fG9/SPwiEC9JlE2sUbPsIRJO0l+u4DB29b2LwHVrB0AZWZs+CP1T29in5GtsTgA99YVlGs+7thveiS3xLbXlIdV8zGLsEBUxEluR4LZPgqNpiRBtaE=
+	t=1771515241; cv=none; b=atT1WZUHkaVuYo92cvoN8NM/n+/VmyEPPrzsAJrxfGdso5Q0gfUBzmel3eumDf0aBck2QRAon8XX/RSwaSyB7O6DTdbHjE8IETELBtr3FsStuhKeI/jegCSxZVH49cLeBU3//OktL+/svDXltjhCLS9sl/NfTo/NXriJ/H3/5H4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771514543; c=relaxed/simple;
-	bh=YGmS0R4t4IPHMntYddopsqMYngP/3/s1j3SRdFIkReI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=H5qW61dh0wUI3CC5w6HOr17G6esGnSrvGW6jOI7PRo6j9sVopbhpjKxRnDnbjwwDMIGVjsd2Twwscf/cXuGo0juCBW+8XkyOtD/iwlqKQyXxI91/XB5Dq4ST5DwDlHwPESAN0BAwPwgfqRrtGyCRPqrhkIKWuWmU1WSmXca8ADE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Ia5HaE6s; arc=none smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7d18f80b5c2so989835a34.3
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 07:22:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1771514540; x=1772119340; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NEw6ziLtIMYeEr1+4vym/6HQDO9fW9fuHMCrppee5HU=;
-        b=Ia5HaE6s4goo6to9cMFONc779dxVxMQ6QWSRpGXi62ZlW8BIg73+UbKHspJdOITkZu
-         0DejH7MQK6ysKhxYC2JzNobkV+7S5iGlj1rnUCf0khscJpGau8efO72K5Ve9jFfxKcQX
-         TbetjZqHMyjF7MC0sNIvIS6/nUoP0ip1dSL5qeSmQ83GeeO3ikyx6VrotzDA/AU/WmL8
-         CZ+fDQqMuLS+a3Fu++MLvIrJaX3su1jZ0Y9TSseXoNh/XDRQZwqr2AvTt0DgV/lJ8ynm
-         2kDyQyVdH4xtdGeIZy2GfiO7PXMskVIM+5sYgImAzhJduO48IRffxdZ670hKBA1XLkjU
-         rkxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771514540; x=1772119340;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NEw6ziLtIMYeEr1+4vym/6HQDO9fW9fuHMCrppee5HU=;
-        b=OoVYg809D4yWAxf+DSupAtMldsIQ5AgSS5nFNWhnjXQeQmhDCm3MdDF40Nk8mMViKO
-         OxEdhgPhBn90fbWdvaktEATL9yUP+EOpeh/0N6cs0IidsgyLDmnyMtPN2qQBqDKAzg0T
-         S7NxvNjCOk/8ppM01luzdV2r3gZBs+56dihR1egOE7r46W/9e6wY+WT51jhsCtHIH9BR
-         n8tMaNmqsTh9xRMgUqrID13Y8cjYtJy7zwpoRbPLMdclXytiTVvIhOouGDLQHMNfGxHc
-         cR9r8MAUXvIVbvPDN0QI7bCDPoHn3L/1WTIaCyKEG3ZYsnsJ7Y0ebV03BMGjYMH0Bsnl
-         /YWw==
-X-Forwarded-Encrypted: i=1; AJvYcCV2T2uV0gEIdwhXshAg/pYPcHiOeaK/OEJMMDInCznaWJ1GlEbtwvk1yeSnpZJaNetWE3LJm7A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ8NPWSS6Z7iNb6jKrkDxxq3mZqHG2PMBK6kK+Te3RO2gAfwY5
-	p0Ptsg2g/wZ/ejEhYwlxQDyWENWQ06bCEaFSqMkyC3UnUKLLpc7Lr1gHN/glQdwnfj0=
-X-Gm-Gg: AZuq6aKxYct4s6+YGL9N3/oOuzMnVoV3Z3rDUR2vqJiJaITyZMsT4HC9iprgSqFEfl3
-	yOv5HWxtgz0KM5dgNKIaZSfRjdQKiJWwcZ6vDWxatgZWH1OUNvlDBEFK1e6RZYsui+Azh3mhSdM
-	7l7b08ZnKgEc44w9an4w8e+EZ5KBJGorjLvKYw9WZS31telsjcbGGnC5sGXzvzZ63pWvNNL3jr9
-	nhj5iX2GVvmVZ31aPSWoTF9ddjBsgIHOtDG2eWCQ6IjcYG+Q3MWVsjTmhvPPz5i/R9AK6qxpFca
-	tFuWbC/OezuikgRuTYpRlFv4cSL+S5wrkKB78/NamPg1DYS06ghut6pR0jyUpH9mvhrMEMPxosQ
-	+qqPx8QRiHfVuj2BbxkgeXKpAKMkTbiP4aLEMI1qKafoemM9psWkjckGeGcr8Zpgk3NWDzwDaCH
-	tJxBgNT9Vsx8e1Hs7iAu08b7YZqV0uoxL/e7NLlkCRvK2jmvJP4b5iZVu0+gM1PYxOTTfcrtXhA
-	KF2eg==
-X-Received: by 2002:a05:6820:151b:b0:679:a6d0:e99b with SMTP id 006d021491bc7-679aef36b53mr1781676eaf.70.1771514540481;
-        Thu, 19 Feb 2026 07:22:20 -0800 (PST)
-Received: from [127.0.0.1] ([187.199.77.89])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-679aebf54f1sm1954014eaf.5.2026.02.19.07.22.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Feb 2026 07:22:19 -0800 (PST)
-From: Jens Axboe <axboe@kernel.dk>
-To: =?utf-8?q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-Cc: Philipp Reisner <philipp.reisner@linbit.com>, 
- Lars Ellenberg <lars@linbit.com>, drbd-dev@lists.linbit.com, 
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Lars Ellenberg <lars.ellenberg@linbit.com>, stable@vger.kernel.org
-In-Reply-To: <20260219142012.97756-1-christoph.boehmwalder@linbit.com>
-References: <20260219142012.97756-1-christoph.boehmwalder@linbit.com>
-Subject: Re: [PATCH] drbd: fix "LOGIC BUG" in drbd_al_begin_io_nonblock()
-Message-Id: <177151453921.556009.15485390943324050309.b4-ty@kernel.dk>
-Date: Thu, 19 Feb 2026 08:22:19 -0700
+	s=arc-20240116; t=1771515241; c=relaxed/simple;
+	bh=N0xwsE2WWVW2aVE+WMgG16V1nog7gqbaReNhJq9bJw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O0IyN/q+ammegGJ3rZ/MQJAuUf0BIGKf4tkAELO+XeClpVywzqZw+v1cb2Fbc5FZV3kmUpQdZHZjm848cGOU2Csmd+LFTXufSiq6IUZkYmAcw+OUxEcED6A57cDelcerJJ0dxsN3UobyOLvfo5VfEg2Gjtz49oG8wVMxl/cnkxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=DhQsuyLs; arc=none smtp.client-ip=217.92.40.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 746A1148323C;
+	Thu, 19 Feb 2026 16:33:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
+	t=1771515235; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=EhwThLiF49uWSR0GR+2RK0Tqx4pT8auqAlmLMUG4e/w=;
+	b=DhQsuyLsmk+S3PIAygzUV7EOyLmszbB2pOJF8gVJynIuscf7tpzj9MGt1jtkZvcUvP+pgV
+	NtchHnIqUPzeBtJZxncc8kyA7irRUQxwQM0XaCbfcsbhZ3NV3BKpru6OgM6I3lcXyh8Esr
+	LibNS2tHflQc3FGjxNDiTkPGasNz1Wcxggs5RwxHef61BL53Ds4OyndEimizGvTJnzwDVc
+	0NmRRFG+8PfJpV4d88Ormev3dot7Zq7WEq1xCz6TF+X3bA/FFxaIm8WXHdoY/5/87H7es1
+	pQprgFGel2sps8VMwLWymY7DaFTx2CorhRc7RmqvazeixUhCWGp3AfcRz78hsQ==
+Date: Thu, 19 Feb 2026 16:33:50 +0100
+From: Alexander Dahl <ada@thorsis.com>
+To: Kevin Hao <haokexin@gmail.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>
+Subject: Re: [PATCH net] net: macb: Fix tx/rx malfunction after phy link down
+ and up
+Message-ID: <20260219-raffle-unvisited-891b68df5aef@thorsis.com>
+Mail-Followup-To: Kevin Hao <haokexin@gmail.com>, netdev@vger.kernel.org,
+	stable@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>
+References: <20260208-macb-init-ring-v1-1-939a32c14635@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260208-macb-init-ring-v1-1-939a32c14635@gmail.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[thorsis.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[thorsis.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-217444-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217445-lists,stable=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[ada@thorsis.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[thorsis.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel-dk.20230601.gappssmtp.com:dkim,kernel.dk:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3D2B6160116
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:url,tuxon.dev:email,lunn.ch:email,thorsis.com:mid,thorsis.com:dkim,thorsis.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,windriver.com:email]
+X-Rspamd-Queue-Id: 05A74160374
 X-Rspamd-Action: no action
 
+Hello Kevin,
 
-On Thu, 19 Feb 2026 15:20:12 +0100, Christoph Böhmwalder wrote:
-> Even though we check that we "should" be able to do lc_get_cumulative()
-> while holding the device->al_lock spinlock, it may still fail,
-> if some other code path decided to do lc_try_lock() with bad timing.
+Am Sun, Feb 08, 2026 at 04:45:52PM +0800 schrieb Kevin Hao:
+> In commit 99537d5c476c ("net: macb: Relocate mog_init_rings() callback
+> from macb_mac_link_up() to macb_open()"), the mog_init_rings() callback
+> was moved from macb_mac_link_up() to macb_open() to resolve a deadlock
+> issue. However, this change introduced a tx/rx malfunction following
+> phy link down and up events. The issue arises from a mismatch between
+> the software queue->tx_head, queue->tx_tail, queue->rx_prepared_head,
+> and queue->rx_tail values and the hardware's internal tx/rx queue
+> pointers.
 > 
-> If that happened, we logged "LOGIC BUG for enr=...",
-> but still did not return an error.
+> According to the Zynq UltraScale TRM [1], when tx/rx is disabled, the
+> internal tx queue pointer resets to the value in the tx queue base
+> address register, while the internal rx queue pointer remains unchanged.
+> The following is quoted from the Zynq UltraScale TRM:
+>   When transmit is disabled, with bit [3] of the network control register
+>   set low, the transmit-buffer queue pointer resets to point to the address
+>   indicated by the transmit-buffer queue base address register. Disabling
+>   receive does not have the same effect on the receive-buffer queue
+>   pointer.
 > 
-> [...]
+> Additionally, there is no need to reset the RBQP and TBQP registers in a
+> phy event callback. Therefore, move macb_init_buffers() to macb_open().
+> In a phy link up event, the only required action is to reset the tx
+> software head and tail pointers to align with the hardware's behavior.
+> 
+> [1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm
+> 
+> Fixes: 99537d5c476c ("net: macb: Relocate mog_init_rings() callback from macb_mac_link_up() to macb_open()")
+> Signed-off-by: Kevin Hao <haokexin@gmail.com>
+> Cc: stable@vger.kernel.org
 
-Applied, thanks!
+After backporting this to my 6.12.66-rt15 based tree I can confirm
+this solved our system lockup issue we had on at91 sam9x60, and which
+was caused by the above mentioned commit 99537d5c476c (which made it
+to the v6.12.64 release as f5c055c284156).
 
-[1/1] drbd: fix "LOGIC BUG" in drbd_al_begin_io_nonblock()
-      commit: ab140365fb62c0bdab22b2f516aff563b2559e3b
+So for the stable tree:
 
-Best regards,
--- 
-Jens Axboe
+Tested-by: Alexander Dahl <ada@thorsis.com>
 
+Thanks and greetings
+Alex
 
-
+> ---
+> Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+> Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Xiaolei Wang <xiaolei.wang@windriver.com>
+> ---
+>  drivers/net/ethernet/cadence/macb_main.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index effef67d80731e5cc795fcef5adc280ad931eda9..43cd013bb70e6bd08a31a0826364e4f34c0e0b89 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -705,14 +705,12 @@ static void macb_mac_link_up(struct phylink_config *config,
+>  		if (rx_pause)
+>  			ctrl |= MACB_BIT(PAE);
+>  
+> -		/* Initialize rings & buffers as clearing MACB_BIT(TE) in link down
+> -		 * cleared the pipeline and control registers.
+> -		 */
+> -		macb_init_buffers(bp);
+> -
+> -		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
+> +		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+> +			queue->tx_head = 0;
+> +			queue->tx_tail = 0;
+>  			queue_writel(queue, IER,
+>  				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
+> +		}
+>  	}
+>  
+>  	macb_or_gem_writel(bp, NCFGR, ctrl);
+> @@ -2954,6 +2952,7 @@ static int macb_open(struct net_device *dev)
+>  	}
+>  
+>  	bp->macbgem_ops.mog_init_rings(bp);
+> +	macb_init_buffers(bp);
+>  
+>  	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+>  		napi_enable(&queue->napi_rx);
+> 
+> ---
+> base-commit: 9845cf73f7db6094c0d8419d6adb848028f4a921
+> change-id: 20260207-macb-init-ring-b0e37b3a3755
+> 
+> Best regards,
+> -- 
+> Kevin Hao <haokexin@gmail.com>
+> 
+> 
 
