@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-217335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFn9J0ZXlmkzeAIAu9opvQ
-	(envelope-from <stable+bounces-217335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 01:20:22 +0100
+	id uGKTLsxYlmmKeAIAu9opvQ
+	(envelope-from <stable+bounces-217336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 01:26:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4496D15B1B8
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 01:20:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3874515B235
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 01:26:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0602A303FF2D
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 00:20:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5573A3020FD4
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 00:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2CF1DF25F;
-	Thu, 19 Feb 2026 00:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796791E8342;
+	Thu, 19 Feb 2026 00:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dblDJYyh"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UmCLgb5b"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C87E4C6C;
-	Thu, 19 Feb 2026 00:20:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157EC3EBF2E
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 00:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771460413; cv=none; b=WxfoiRxK3k+wkAsOrhL9uBZRmcMT1eBla0hvSjg5aHiREUdhdx4RZzNJhewltuaTZoJz6GKv3gnCMwPW7CMb1hulz4ysWcukQdsPk2acAzGopG7MGjtyThMuNVbcf47hk0imwp/dat/7StveN61VLQxrdTeVGscT00EHsixpHow=
+	t=1771460788; cv=none; b=NU5xepktChi+Ng6Yz/YcWdVqWbcNpAPSauKNdLdKbEQ7R0hEM+WscxyL3A+n3NeUiWD/IkRNB6S8bRDlCWwcpt6l78EPyrEdcDHf903Zm3+9C2/hkwdbyubOeQiwnVUm+wR1AEmG+/I6+9zaLw4BwQ2bD9SuefUHW9iw3y1jkjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771460413; c=relaxed/simple;
-	bh=j4+CdOq089kq8ors8bfwZelUDW7nhSN3xs5Ct6WNwpg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=dfpRbR71iGvnFxDBkLssrvUfCBFAhQfTURKnm/Go+aiWaIXyhSO5ffwqerqi/3figoZzdjgdkE77BzUjQW/k7DPNi4L83pce4TS74nsHvtxcIQNMhhgnoJts1w/6WwzjsQWEROo0+uX2hClMpEjb7zwMz5vT19afZ7ybDYlwPkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dblDJYyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F8BC116D0;
-	Thu, 19 Feb 2026 00:20:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771460412;
-	bh=j4+CdOq089kq8ors8bfwZelUDW7nhSN3xs5Ct6WNwpg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=dblDJYyhpOnRvCnseeP7c61wCNYMNxWfDwiywOncI8L8j4jwlHlfJB+MVRdXrKOf/
-	 BosnuMkGJFxbADxAdhUe2MUYgJ75FGDiwj2LhNxl20XLfIj5XzLvYWLJTxhUmD1a7E
-	 7LBqkqx3t+r6DEL25obQAZzxL4hPBeGFu9JhIDJLS6buHyMmFMv5qZ7kgjmlfGjDlC
-	 tl7rLzbkquJEXWDX7PdI6ZoGEH4J/30NadeI16PWfmPUFC3eJa6vWTie97j4C4kJ9b
-	 STA2ZsHjdY3FrRhMTuK+Dpevm161qZfr/SLFVgx5MyuvgpG9gyYXtbcAsnySTJMTd+
-	 EQgK/gsYuxZGg==
-Date: Wed, 18 Feb 2026 18:20:10 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: Keith Busch <kbusch@kernel.org>, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	lukas@wunner.de, Alex Williamson <alex@shazbot.org>, clg@redhat.com,
-	stable@vger.kernel.org, schnelle@linux.ibm.com,
-	mjrosato@linux.ibm.com, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v9 3/9] PCI: Avoid saving config space state in reset path
-Message-ID: <20260219002010.GA3445930@bhelgaas>
+	s=arc-20240116; t=1771460788; c=relaxed/simple;
+	bh=bUMqcMuV4FFwt7twaqJRy3yJSdGH4AQSWhrv74zSNME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KV6BKYQ+mHPZ+qoKO2OUZ7WV2XwaqhrN5IPPpkLpk92D74Bs+c919ybpfwEfEULCIvRTLd3tsHjoYkGh8t+clJu9oHoave/nUd6v8YH/WuiYU99HPAQFoPGbdF02c2Yg3ajzddPzhV86ylcKjL/TU+XRCEyVKtnq1IYVuua1/AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UmCLgb5b; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Thu, 19 Feb 2026 00:26:16 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771460783;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d8Q1JBs3IWao6IxKh5o3BW5Nrr3jIp3VDv0XASfYtbk=;
+	b=UmCLgb5bpijcdRNxgX+p7Rt9O2xb0zXRWd7X0xqNQb/dE8lhGdanQwXYkIe3/1vVHUL1O8
+	1AM7MPvN4AAYQXrqZnPzAdz4UsDsnxCzB3Ty+4jrbMpmf83v2THmgmsU/7nWXVNLCAELFy
+	IJHk8uHV6t0fj4KtHVCj76O/hBWVQjU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [RFC PATCH 4/5] KVM: SVM: Recalculate nested RIPs after
+ restoring REGS/SREGS
+Message-ID: <wwa2h5gcb7gfxgmsh3jdwa4d4xurkmgd26dnkwupgzcln3khfu@v3w2w6nf4tq7>
+References: <20260212230751.1871720-1-yosry.ahmed@linux.dev>
+ <20260212230751.1871720-5-yosry.ahmed@linux.dev>
+ <aZZVqQrQ1iCNJhJJ@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,87 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7259dc94-b8b1-42f6-852d-76519f1eb262@linux.ibm.com>
+In-Reply-To: <aZZVqQrQ1iCNJhJJ@google.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217335-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-217336-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[yosry.ahmed@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4496D15B1B8
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3874515B235
 X-Rspamd-Action: no action
 
-On Wed, Feb 18, 2026 at 01:48:57PM -0800, Farhan Ali wrote:
-> On 2/18/2026 11:35 AM, Bjorn Helgaas wrote:
-> > On Wed, Feb 18, 2026 at 12:02:01PM -0700, Keith Busch wrote:
-> > > On Tue, Feb 17, 2026 at 11:55:43AM -0800, Farhan Ali wrote:
-> > > > Yes I think you are right, with this change the PCI Command
-> > > > register gets restored to state at enumeration. So we will
-> > > > lose the updated state after pci_clear_master() and
-> > > > pci_enable_device(). I think we can update the vfio driver to
-> > > > call pci_save_state() after pci_enable_device()?
-> > >
-> > > Either that, or move the pci_enable_device() call to after the
-> > > function reset.
-> >
-> > I kind of like the latter idea because it seems a little simpler
-> > for the rule of thumb to be that a reset done by the PCI core
-> > returns the device to the same state as when the driver first
-> > probed the device.  Drivers would generally not use
-> > pci_save_state() at all, and they could share some initialization
-> > logic between probe and post-reset recovery.
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index db3f393192d9..35fe1d337273 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> > @@ -12112,6 +12112,8 @@ static void __set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+> >  	kvm_rip_write(vcpu, regs->rip);
+> >  	kvm_set_rflags(vcpu, regs->rflags | X86_EFLAGS_FIXED);
+> >  
+> > +	kvm_x86_call(post_user_set_regs)(vcpu);
 > 
-> I think the vfio-pci driver was intentionally doing the
-> pci_enable_device() before doing the reset. As per commit
-> 9a92c5091a42 ("vfio-pci: Enable device before attempting reset") it
-> was done to handle devices using PM reset, that were getting
-> incorrectly identified not supporting PM reset due to current state
-> of the device not being D0. It looks like pci_pm_reset() still
-> returns -EINVAL if current power state is not D0. So I think we
-> can't move pci_enable_device() after reset. Unless we want to update
-> pci_pm_reset() to not use cached value of current_state and read it
-> directly from register?
+> I especially don't love this callback.  Aside from adding a new kvm_x86_ops hook,
+> I don't like that _any_ CS change triggers a fixup, whereas only userspace writes
+> to RIP trigger a fixup.  That _should_ be a moot point, because neither CS nor RIP
+> should change while nested_run_pending is true, but I dislike the asymmetry.
+> 
+> I was going to suggest we instead react to RIP being dirty, but what if we take
+> it a step further?  Somewhat of a crazy idea, but what happens if we simply wait
+> until just before VMRUN to set soft_int_csbase, soft_int_old_rip, and
+> soft_int_next_rip (when the guest doesn't have NRIPS)?
 
-Devices are generally disabled at .probe() time, so that will be the
-default saved state.  But every driver will expect the device to be
-enabled after the reset.  Skipping the save state at reset time seems
-like it would need a lot of work first and maybe it wouldn't ever be
-practical.  It wasn't really thought out; I was just hoping we could
-simplify the save-state model and maybe unify driver reset and error
-recovery paths.  I think we need to drop this patch at least for now.
+I generally like this idea. I thought about it for a moment but was
+worried about how much of a behavioral change this introduces, but that
+was probably before I convinced myself the problem only exists with
+nested_run_pending.
 
-9a92c5091a42 ("vfio-pci: Enable device before attempting reset") was
-mostly done to make pci_pm_reset() work, which requires the device to
-be in D0.  The main purpose of pci_enable_device() is to make device
-BARs accessible; it *does* also put the device in D0 because BARs are
-only accessible in D0, but pci_pm_reset() itself doesn't need the
-BARs.
+That being said..
 
-Other reset methods, e.g., FLR, don't seem to require the device to be
-in D0, so I'm not sure why pci_pm_reset() requires that.  I think the
-critical piece is the D3->D0 transition, and maybe we could arrange
-for that to happen even if the device is already in D1/D2/D3hot or
-even D3cold.
+> 
+> E.g. after patch 2, completely untested...
+> 
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index aec17c80ed73..6fc1b2e212d2 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -863,12 +863,9 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+
+Above the context lines we have:
+
+        /*
+         * next_rip is consumed on VMRUN as the return address pushed on the
+         * stack for injected soft exceptions/interrupts.  If nrips is exposed
+         * to L1, take it verbatim from vmcb12.  If nrips is supported in
+         * hardware but not exposed to L1, stuff the actual L2 RIP to emulate
+         * what a nrips=0 CPU would do (L1 is responsible for advancing RIP
+         * prior to injecting the event).
+         */
+        if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+                vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
+        else if (boot_cpu_has(X86_FEATURE_NRIPS))
+                vmcb02->control.next_rip    = vmcb12_rip;
+
+The same bug affects vmcb02->control.next_rip when the guest doesn't
+have NRIPS. I think we don't want to move part of the vmcb02
+initialization before VMRUN too. We can keep the initialization here and
+overwrite it before VMRUN if needed, but that's just also ugh..
+
+>         svm->nmi_l1_to_l2 = is_evtinj_nmi(vmcb02->control.event_inj);
+>         if (is_evtinj_soft(vmcb02->control.event_inj)) {
+>                 svm->soft_int_injected = true;
+> -               svm->soft_int_csbase = vmcb12_csbase;
+> -               svm->soft_int_old_rip = vmcb12_rip;
+> +
+>                 if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+>                         svm->soft_int_next_rip = svm->nested.ctl.next_rip;
+
+Why not move this too?
+
+> -               else
+> -                       svm->soft_int_next_rip = vmcb12_rip;
+>         }
+>  
+>         /* LBR_CTL_ENABLE_MASK is controlled by svm_update_lbrv() */
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 8f8bc863e214..358ec940ffc9 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -4322,6 +4322,14 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+>                 return EXIT_FASTPATH_EXIT_USERSPACE;
+>         }
+>  
+> +       if (is_guest_mode(vcpu) && svm->nested.nested_run_pending &&
+> +           svm->soft_int_injected) {
+> +               svm->soft_int_csbase = svm->vmcb->save.cs.base;
+> +               svm->soft_int_old_rip = kvm_rip_read(vcpu);
+> +               if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+> +                       svm->soft_int_next_rip = kvm_rip_read(vcpu);
+> +       }
+> +
+
+I generally dislike adding more is_guest_mode() stuff in svm_vcpu_run(),
+maybe we can refactor them later to pre-run and post-run nested
+callbacks? Anyway, not a big deal, definitely an improvement over the
+current patch assuming we can figure out how to fix next_rip.
+
+>         sync_lapic_to_cr8(vcpu);
+>  
+>         if (unlikely(svm->asid != svm->vmcb->control.asid)) {
 
