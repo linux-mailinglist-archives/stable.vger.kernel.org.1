@@ -1,195 +1,178 @@
-Return-Path: <stable+bounces-217336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGKTLsxYlmmKeAIAu9opvQ
-	(envelope-from <stable+bounces-217336-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 01:26:52 +0100
+	id wFCHF0VdlmlVeQIAu9opvQ
+	(envelope-from <stable+bounces-217337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 01:45:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3874515B235
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 01:26:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC1515B3CA
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 01:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5573A3020FD4
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 00:26:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96272304A31C
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 00:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796791E8342;
-	Thu, 19 Feb 2026 00:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB4F227BA4;
+	Thu, 19 Feb 2026 00:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UmCLgb5b"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="UvT69xTL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DmTwHuPd"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157EC3EBF2E
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 00:26:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B356226CF6;
+	Thu, 19 Feb 2026 00:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771460788; cv=none; b=NU5xepktChi+Ng6Yz/YcWdVqWbcNpAPSauKNdLdKbEQ7R0hEM+WscxyL3A+n3NeUiWD/IkRNB6S8bRDlCWwcpt6l78EPyrEdcDHf903Zm3+9C2/hkwdbyubOeQiwnVUm+wR1AEmG+/I6+9zaLw4BwQ2bD9SuefUHW9iw3y1jkjc=
+	t=1771461905; cv=none; b=QDV3oe8pK9q0X6gepSIXg2Cn2MO4spO3FU2ub3w2uXZF2ytkhYtOL9dAyd7vYOhHlkZ4tzf43llbkiV727TRi7sUJsrAYTsTnhsvkXugyjTgoIm4YRHptcQjk0V691itD51+bDNpfNt3fA1x5rT31weTnSPQjO1UJh9FWqEDu7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771460788; c=relaxed/simple;
-	bh=bUMqcMuV4FFwt7twaqJRy3yJSdGH4AQSWhrv74zSNME=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KV6BKYQ+mHPZ+qoKO2OUZ7WV2XwaqhrN5IPPpkLpk92D74Bs+c919ybpfwEfEULCIvRTLd3tsHjoYkGh8t+clJu9oHoave/nUd6v8YH/WuiYU99HPAQFoPGbdF02c2Yg3ajzddPzhV86ylcKjL/TU+XRCEyVKtnq1IYVuua1/AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UmCLgb5b; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 19 Feb 2026 00:26:16 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771460783;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d8Q1JBs3IWao6IxKh5o3BW5Nrr3jIp3VDv0XASfYtbk=;
-	b=UmCLgb5bpijcdRNxgX+p7Rt9O2xb0zXRWd7X0xqNQb/dE8lhGdanQwXYkIe3/1vVHUL1O8
-	1AM7MPvN4AAYQXrqZnPzAdz4UsDsnxCzB3Ty+4jrbMpmf83v2THmgmsU/7nWXVNLCAELFy
-	IJHk8uHV6t0fj4KtHVCj76O/hBWVQjU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [RFC PATCH 4/5] KVM: SVM: Recalculate nested RIPs after
- restoring REGS/SREGS
-Message-ID: <wwa2h5gcb7gfxgmsh3jdwa4d4xurkmgd26dnkwupgzcln3khfu@v3w2w6nf4tq7>
-References: <20260212230751.1871720-1-yosry.ahmed@linux.dev>
- <20260212230751.1871720-5-yosry.ahmed@linux.dev>
- <aZZVqQrQ1iCNJhJJ@google.com>
+	s=arc-20240116; t=1771461905; c=relaxed/simple;
+	bh=4F6D5q5t0eR3f8e4daoJkgpNxNBVvsbdzPN/y3yODPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bGeMzwkijtuypY0AjeTYWw3qdtgS4b+EZsVCudGqx2aoupm3tr6KH5Mm0TFzLLhQ3PEK4HOGv/KhJePaFh2tpCi68ymQf68OVMIlJxyp5ChkKrEjzQ28F7K3w4sXKHgRJ+bqHyDKlBsTNClq1t9zonYXj2+8B8JuPpUL3i8vDDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=UvT69xTL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DmTwHuPd; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id A913E1400112;
+	Wed, 18 Feb 2026 19:45:03 -0500 (EST)
+Received: from phl-frontend-02 ([10.202.2.161])
+  by phl-compute-03.internal (MEProxy); Wed, 18 Feb 2026 19:45:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1771461903;
+	 x=1771548303; bh=Cg+oRaPUxxZvl5EfVfOgfi4D6uVgnNwvOgcl/pvhzC0=; b=
+	UvT69xTLK15w8ewcolbGRDg9yr/zJF3F2+XhdHBRlhfGe7rXL+TM3z6nNBnmrwEk
+	6OvpsUEg40Uyf4pmPyAAMw3jDKVhf3J5TCsz+MTITad+zZ4rfn9TtUE1h/aAIY2i
+	ZVId3RSbG4EbciHYXEF2liFOfTP80KuC6r91lMZ9pfBJx4CUHS0qi3PLCCQEabM7
+	eA73gixjkfDIeFxYW9vkZyKhtYcsRbhuR9X348eSvLS3c99s/cxRhv7SpoYIzshr
+	A1Ljrvwju09yoJzNEL9B0r9O8LgSZblt/gR7904hiAZwnYRJqaGZANnFNcDwbfQC
+	8K4Y2FaH7C4y3y2F8DOfvw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771461903; x=
+	1771548303; bh=Cg+oRaPUxxZvl5EfVfOgfi4D6uVgnNwvOgcl/pvhzC0=; b=D
+	mTwHuPdBHih36Jt9Zdkq9iWePVhvBfyulVlVwJyoJm2GKoAN6ELfv+uILJSfoEKV
+	yfQrY7OUjeFIpvk2WWjLybgCeqYu1STg3+g1bljOL9xl3lYP6g8Y5L+30rGIbTUK
+	SgTYQ1K5Gcy+PtEvq/yp/UfWRKN9WXhQPKUwoGoayy2Xg6vCmWMxzT3zxKCC8NK6
+	0efFdPu4GGf4gfM3MnWbnyRpcGr/wH3E6YqluwZLj1kWyWnO4OF6QnczrzfdLabU
+	AlrP1kegs6v75CvXFrs40L3dYyccSbISd9Ub3fLcZbdpAq2quAvCWEpZGNCiWE35
+	6oXyIxUCgBUMP0DkT1dJA==
+X-ME-Sender: <xms:Dl2WaRTiIH1yMgNQwqKHqY6CeMj_HmvvrkboWkX--2lx-Lof0l9SOQ>
+    <xme:Dl2WaYchop1MzQQ6IGdUyqfZiCMU7nbwKn2A4qzmDcm5P0-dDoVubJ8yQSajkkWD_
+    j8UELSBVVTfi3Jd0nD2yj0MBh9pqkz61Hn3w4zwO9dotJ_w-8sdBA>
+X-ME-Received: <xmr:Dl2WaYl6DhZwwe_CVge6NhUT4Ru5cIAfd9vfofF4Ia5K0-Frk05WjNOpgypnlk2n_d_RMyQoI2RzQsUr51Ws_TiggRd8NQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvdegudduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
+    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
+    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
+    ohhmpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohep
+    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrthgthh
+    gvsheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtohhrvhgrlhgush
+    eslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghkphhmsehl
+    ihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigsehroh
+    gvtghkqdhushdrnhgvthdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehprghttghhvghssehkvghrnhgvlhgtihdrohhrgh
+X-ME-Proxy: <xmx:Dl2WaVj7-KWoey9OYoP_ql60vBG5KTnhU_lA81F5HEG7CxHp19FwNA>
+    <xmx:Dl2WaRGrTyIwZWRVOYjT9Twwgowavei5q5jmKWCsVZ8smm985uRDlw>
+    <xmx:Dl2Wacw9E6upn9uE3Eqh3dXVj-OZYl8QnPPolYx-eSGzmqlgfWeP7g>
+    <xmx:Dl2WaQpM1cpYIg6uWrAUTvbS788qbhuZEvnPKUuUoJ6VebfBw3O5fw>
+    <xmx:D12WacZZ-e3s_lUArt-f7zKj5Gg4ob18UlK-OsMXEqwxDK1QhsFH_ANH>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Feb 2026 19:45:00 -0500 (EST)
+Message-ID: <2cc3ccee-6934-4aee-b48b-79f9594b33bc@pobox.com>
+Date: Wed, 18 Feb 2026 16:44:58 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZZVqQrQ1iCNJhJJ@google.com>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 00/24] 5.10.251-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260217200000.708219618@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260217200000.708219618@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm2,messagingengine.com:s=fm3];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217336-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-217337-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry.ahmed@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3874515B235
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: AFC1515B3CA
 X-Rspamd-Action: no action
 
-> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > index db3f393192d9..35fe1d337273 100644
-> > --- a/arch/x86/kvm/x86.c
-> > +++ b/arch/x86/kvm/x86.c
-> > @@ -12112,6 +12112,8 @@ static void __set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-> >  	kvm_rip_write(vcpu, regs->rip);
-> >  	kvm_set_rflags(vcpu, regs->rflags | X86_EFLAGS_FIXED);
-> >  
-> > +	kvm_x86_call(post_user_set_regs)(vcpu);
+On 2/17/26 12:31, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.251 release.
+> There are 24 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> I especially don't love this callback.  Aside from adding a new kvm_x86_ops hook,
-> I don't like that _any_ CS change triggers a fixup, whereas only userspace writes
-> to RIP trigger a fixup.  That _should_ be a moot point, because neither CS nor RIP
-> should change while nested_run_pending is true, but I dislike the asymmetry.
+> Responses should be made by Thu, 19 Feb 2026 19:59:50 +0000.
+> Anything received after that time might be too late.
 > 
-> I was going to suggest we instead react to RIP being dirty, but what if we take
-> it a step further?  Somewhat of a crazy idea, but what happens if we simply wait
-> until just before VMRUN to set soft_int_csbase, soft_int_old_rip, and
-> soft_int_next_rip (when the guest doesn't have NRIPS)?
-
-I generally like this idea. I thought about it for a moment but was
-worried about how much of a behavioral change this introduces, but that
-was probably before I convinced myself the problem only exists with
-nested_run_pending.
-
-That being said..
-
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.251-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 > 
-> E.g. after patch 2, completely untested...
+> thanks,
 > 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index aec17c80ed73..6fc1b2e212d2 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -863,12 +863,9 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+> greg k-h
 
-Above the context lines we have:
+Tested on an amd64 laptop (Lenovo ThinkPad T14 Gen 1). Working well, no 
+regressions observed.
 
-        /*
-         * next_rip is consumed on VMRUN as the return address pushed on the
-         * stack for injected soft exceptions/interrupts.  If nrips is exposed
-         * to L1, take it verbatim from vmcb12.  If nrips is supported in
-         * hardware but not exposed to L1, stuff the actual L2 RIP to emulate
-         * what a nrips=0 CPU would do (L1 is responsible for advancing RIP
-         * prior to injecting the event).
-         */
-        if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-                vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
-        else if (boot_cpu_has(X86_FEATURE_NRIPS))
-                vmcb02->control.next_rip    = vmcb12_rip;
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-The same bug affects vmcb02->control.next_rip when the guest doesn't
-have NRIPS. I think we don't want to move part of the vmcb02
-initialization before VMRUN too. We can keep the initialization here and
-overwrite it before VMRUN if needed, but that's just also ugh..
-
->         svm->nmi_l1_to_l2 = is_evtinj_nmi(vmcb02->control.event_inj);
->         if (is_evtinj_soft(vmcb02->control.event_inj)) {
->                 svm->soft_int_injected = true;
-> -               svm->soft_int_csbase = vmcb12_csbase;
-> -               svm->soft_int_old_rip = vmcb12_rip;
-> +
->                 if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
->                         svm->soft_int_next_rip = svm->nested.ctl.next_rip;
-
-Why not move this too?
-
-> -               else
-> -                       svm->soft_int_next_rip = vmcb12_rip;
->         }
->  
->         /* LBR_CTL_ENABLE_MASK is controlled by svm_update_lbrv() */
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 8f8bc863e214..358ec940ffc9 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -4322,6 +4322,14 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
->                 return EXIT_FASTPATH_EXIT_USERSPACE;
->         }
->  
-> +       if (is_guest_mode(vcpu) && svm->nested.nested_run_pending &&
-> +           svm->soft_int_injected) {
-> +               svm->soft_int_csbase = svm->vmcb->save.cs.base;
-> +               svm->soft_int_old_rip = kvm_rip_read(vcpu);
-> +               if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-> +                       svm->soft_int_next_rip = kvm_rip_read(vcpu);
-> +       }
-> +
-
-I generally dislike adding more is_guest_mode() stuff in svm_vcpu_run(),
-maybe we can refactor them later to pre-run and post-run nested
-callbacks? Anyway, not a big deal, definitely an improvement over the
-current patch assuming we can figure out how to fix next_rip.
-
->         sync_lapic_to_cr8(vcpu);
->  
->         if (unlikely(svm->asid != svm->vmcb->control.asid)) {
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
