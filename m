@@ -1,202 +1,179 @@
-Return-Path: <stable+bounces-217462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJ9dHSM5l2l2vwIAu9opvQ
-	(envelope-from <stable+bounces-217462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:24:03 +0100
+	id 2JqMFF9Bl2lXwAIAu9opvQ
+	(envelope-from <stable+bounces-217463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:59:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDABC160A19
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:24:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B29160DCD
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:59:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8EEC93025F55
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:24:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32F593028364
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F7B34B1AC;
-	Thu, 19 Feb 2026 16:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA02F34CFB9;
+	Thu, 19 Feb 2026 16:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mrZJT7J4"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="1hQYIBZ4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BEF345CD9
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 16:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771518240; cv=pass; b=l/ENIjuZOIBikw4BxHBKGswPfeW5o76sMXVWdhNhPFs5rfjhi+5Inky5iY8+L8p7EvALi1kXgBgnK1u3Kc3yMFoWSvaK05z8eb4MS/mpdhu3r53semXPV1Cvjzb3RHiONA/yE0IzJvb9ZX5/TwSsHYUxcXJ73Hkg405x/cPcKS0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771518240; c=relaxed/simple;
-	bh=Pet/c2OGnY1gfQmFiC8Mebb/GP6QRqCrlNN3wTZ2f2c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=USr3wMp9Aohfs6fB5/+Uiu8//hL1sBxatVvg0l2HrqKhgLb5EGH50wOBLeC75kgWMj2U1+ne4J3DsmLzw1J8ZiAJkcOGa9dRKcEDo17+HvJxTM4tJY1z03/Yb50FEt8v175ZprRM1IoPG4UnKt05e4uTKt5BY6bb0omdoy2HQX4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mrZJT7J4; arc=pass smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-896f8feee14so15868916d6.0
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 08:23:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771518238; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lh88FxdAQjrze0jHyIA3se+dEfQX9uXW4MTdKhujqUBojq5uGgtpQTk27wrY0jYtdz
-         3ms1iatEw/WcgiA0VgZFF4WWC3tu+zMPtBbEHVfBzIt7A2wlObf/g0SXnfKdcT2n2NHc
-         8T8k2PUsKDzlr0v6uvrpuzIhWftXC78noABRe5qJywUmWT230AmgA7dHaCvKNHfErann
-         iOKGcxAxTXUXTaQBsuPqWvn6ZcWa9c43VFwGSxG8rOrHoogkOEwn1hRM/g7nKoiBiq4D
-         szCW2VVXrW8p+YjToolDs+mPHtavp6W47n64Rf6Uem060+U6HSifOEcg1XP9wVz0KkIC
-         kA/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=f4yeHhzpJN+4nhHpP7a5dAzytay7Sndg0H7YbB+nOFY=;
-        fh=EEwhLiTo6it25qz2Li4JiiPQNXES+V53AHdAzlA7F7M=;
-        b=jN9ZGRw8pFXlLb9Cxhwb2uuofqTnKqnJnTP2ZEeocuxTC1wg3Z6ecDuka/o7HakYRZ
-         iXqz9m/SmieebTKNjnMrWOZGCJjnmN/QiDwO9g/n0GrZpDAIYjKNgTnM3mzoF0E/wD1i
-         8xjU2MnF/pCBxCNPOJlKeGMo5MNKQ2J6tjy9lICb7dg/G8t9vXcEVmxrkEdVzl8fj3pS
-         RxBXxEhCN+kYjsERCxrxddH1OCYL228xa89J2d0Ep2ZFFtj9P5VqvC8GJT1rPDhgKA3K
-         gqAqbHOBGFdEetFvUG7hQhFADbEWaR7R2FrLn5q3wOpjs/9rPRsdsNOdVviapmY+Nsys
-         HNKw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4D8F507
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 16:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771520347; cv=none; b=dy7Xd9c6MQM0fW053jeJp9JjqQq/ETaekvrN1yDX/D3XAYEbtxBW99BWGvclmXOfVcNx11rk3SAPP0CbbGs9m7YdwXFG0XNar4I2t26XUVH+wW0mHiDsUGBW3Q5zsAo1HTl0ugH/FpfeQ7Ne0WKThLfSLwqRpx+ea55k8AiElGM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771520347; c=relaxed/simple;
+	bh=uc6//qM7RSyua4jVbI4TS+aO1l5SshYzUrKKYL/ihb4=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=EbargajHjp9UMGEPV1U7JKQnLSdC4/j45JgG+3wG8HkgPl14RvXNGtAVL+zkuP9IQTgF+HZwOE6JGmN8BnbQoC9UqnJzP/O4tI+ah0z4XUhxvbjXV2wf0I3ktUJsfFnF7g4rOXzOT/tg+WtP+4pBmTgMLGi1coTdf2RYbUyAweE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=1hQYIBZ4; arc=none smtp.client-ip=74.125.82.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-127423bea4bso95162c88.0
+        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 08:59:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771518238; x=1772123038; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1771520345; x=1772125145; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f4yeHhzpJN+4nhHpP7a5dAzytay7Sndg0H7YbB+nOFY=;
-        b=mrZJT7J454lOVT2fHTGATGc4l8IO2bPDStIQnggw0HMTtL4ogP7jQP4B2SVnvHEQHS
-         6ZjV+PkQp59VtiFOYqr3o+cnTcAY47usUPIjkj/eqhojDO2zR+sZ2F0Dbh3l9A158lyj
-         TBKPq4T/kYOtPMAWoIzERcvj/Fh7M1BhLFce2yp4Pj8XKzYFk+P1iTiuKiV7Cuu+GOdg
-         jUJ7fC3/+mWXSx6eaGBfQQ8zk4Pz69t7RsnlphkJp2Jfe1hn0zC9SJpdyfkYwefRKutl
-         qL5ot5zxVg5oehijT0c5ji5vo5TLK+qkShxz1jsjx2CQE8ApboRDYcC7J/3VWlJZYCaB
-         FIDg==
+        bh=TazV2Mfx4AWxoMb7Ln2DbhJ2thA70KIsj1RNl3kuPfs=;
+        b=1hQYIBZ4FsujkZXVFvmsa8/VxjGq3xWdknVXHoPCMr1RQFrEsmGGoImHZ0nJg2IUu/
+         pSbEyZ1or42S/zCm9HgFd+c15wI0Gba8tgG7L74YebaaXedIe/W6fn+TAQTslGrpt175
+         fZieRjfazEDO28tuf5yYWJoSq7KZ8Zzv4HQXm/+8m9W1CwQ8K/sM1OOxqVCEVVgAyCdX
+         VqeyIZE2OXpQMd85Mkb+ytDdpXEr38HyxUnbfelGq35SQpU1v+m2IFs3otX1F/VB0ipC
+         sEgnYCA45uwkyh9xlBHmcm7Xibh2I6+rBLXXoGUBjKCmt+cB2kGSc8FuQaMR21yzrvv/
+         bj7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771518238; x=1772123038;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=f4yeHhzpJN+4nhHpP7a5dAzytay7Sndg0H7YbB+nOFY=;
-        b=AgN6eoRSn7J4NmZO5F7/SLUJViJ7FoEilnc2cEyfQbGKfcFNoK4+h7o6kYh8Tzl3JN
-         gBCIUIyJCrpFfTKtuehmnFkt6yznQC/IdDUhg0xNms+MVSsRhB3czp3Lr1yMJQDBsLD1
-         Bu7/yfG0uI22+utXqqRdXMual2vUvPavVwxeiWu57FY1PLkPmlqEgCsBGvLLo3IVXQWF
-         2r2m9cuDOd82LwL6grbdeUyaOTiq/fjyhMrAHyTATNLa6NVPDbeN45WI+dzsFXs1e/Zb
-         6umwvoqxe94ecO4veygWfNraANGAZZZGxdCSQCHlZcS42Ea97wnuCOVYrWt5Owt3zJ8/
-         6jlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQnXamM4T1/bT9n5pIE+pnYsTWj9SgzdjS778DQluRwDNx4MaGh58rv0ebPqpHXBqxapYn3RI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzExX/msTkmdv5rdHuJKjvNP4YiR7DITPAAvGUJ91gehe594sCb
-	Bv3SmABeuoXGCPtPAtsiNQsJYpWsWkEudkkfa8PoL7SpF5lqK9HHRMrKX2NTlJrEXgKinB8e8ph
-	7BkJ7fgFADfPM0PGsS9fyUZPb4kawF7UEzv+c
-X-Gm-Gg: AZuq6aIl0Ioh8zY+NxTLAkvK9j2xyLBZcDkcc7RbhK/UPzKDsrGFnh/1/4pYfGXYhFV
-	6cmbkIAPmOGUleM5th19A96L8vZ9wLaEYCsyWoPOMtLIDJqlykqpUcIpqxX1iwZZ8t9mITantHJ
-	EYRFBg8G6W6KXCDhuQP98EhFtAz9HwsgPuQjx8vekpJIYLDrER2QNVATKWVu6adw9iNwnFlY8TV
-	ug4Abn1Uq149DaO6PEX/s3IkMpBQnrUbSFmEPqp0Qd/pDj1lNrE7qgPx1jsNe/ZKbzvw1l/cf05
-	z3/XMqmOAYwB7O6wpmgowRsjhDnnmdC/jBZVbDATkGTTK4cCVBmt6+rhg/wd+KxPOtBBQqZGKpW
-	W0on/BT5g5R9TApMLNS6TiEZR
-X-Received: by 2002:ad4:4ea6:0:b0:896:fb02:e3fc with SMTP id
- 6a1803df08f44-897361aba19mr295664726d6.38.1771518237674; Thu, 19 Feb 2026
- 08:23:57 -0800 (PST)
+        d=1e100.net; s=20230601; t=1771520345; x=1772125145;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TazV2Mfx4AWxoMb7Ln2DbhJ2thA70KIsj1RNl3kuPfs=;
+        b=gUkldtEtePoef7t4vBWGx6vSnHLki5qrCJnFPg68hHOBbQs3giAAU2WTymeaxtLXB+
+         qnTG5ZqiQXNvhR4U1YVBdbwV4VwrdpLSECg8DYEqUfynLkkSBDrEYfeOpr9wqmUhjmSa
+         JQPyTuLll29ZYfmySoG9IgFVTdNOYdniNBRN9ycEYvgaknfUVWhES+szq3L6/DhM0QNG
+         fIYCCB6zcCoNF82qZRphqRk3yWFcARoCw6GCM4fTho68gEMHmMwZO0oQ/fpP5M3Khr83
+         yP3EdDZOUhW9hLbrWs3kE3chK5MQbcDDLh52BgFeCGLIMe+dsVzrmSonKJyfQZM6hOHL
+         oBPA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmdW2TNI/XP72mR/doi2EcQ+oj/cdZC2cFn3Rk291puxRErUW0Dnb9py2cMFchQXSc9VZ33Q8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMB4aSxrbXi03BPQsOIwXR2xolEiAHce/fvwffEshGMxGcwp6U
+	AoRbkx/aROVQHYrrtPrv+vFDw8MyoDXH4KKp4GTJKuD7SQ6q24FgD9KfF4jG6maoAlUPVTUhrRc
+	1fpCvm2g=
+X-Gm-Gg: AZuq6aIxMGxsQ6bpQeGGzXp4FYFrGC//QDMiMeINbjLUA00xU4hTkAIFvq97fsqQfac
+	jt0Hcwi40isISaAFnxwXvOTQF25PRF46sUN/sNRNg1+9XQ85C1FJi8l7nuIbvlj841jHUZq9gvA
+	tttLn1jEfmdcMa+g46ydtQinxmK+TjwQPqVE6M9pyGpJyA51Ud/GzM0qsTkgw5KzHgAS2uF32jn
+	prMTYO7JvuD7IPWpnsS8+EtxNEwxjLlfl6KMdt8pZ5oroHZz7gsK0RwBeG4QPLwm23zBEea3HgC
+	XLGcLS4RFmVqEWuP05VP99ggHavSHcCGLuf9KOyHD08bCziLUaUyQ89CZ5S7jVLbMbsZqcT0aQi
+	VuaaXMAOlSz0dJ01Rtbc7rHIp4agycgsj9iZp1fOAjxHh/FSdehVYLG3FX34EGWjfxd4mzqK4PC
+	Qx7SjgkA/V1WRZ62Iy
+X-Received: by 2002:a05:7022:4584:b0:11b:9386:8262 with SMTP id a92af1059eb24-1273ae8d7dbmr8460631c88.47.1771520345087;
+        Thu, 19 Feb 2026 08:59:05 -0800 (PST)
+Received: from d14e337afe00 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742cc9376sm25612344c88.16.2026.02.19.08.59.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Feb 2026 08:59:04 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADbaWgHykWB_EBiqp15W1C+v0OUMG2RXWv7zG_gocp2kgmkcew@mail.gmail.com>
- <CABBYNZKPyi=qz-XfiNex2oS3DaJUQq-JN7uOxip90jaaHC2cHg@mail.gmail.com>
-In-Reply-To: <CABBYNZKPyi=qz-XfiNex2oS3DaJUQq-JN7uOxip90jaaHC2cHg@mail.gmail.com>
-From: Daniel Matsumoto <insidetf2@gmail.com>
-Date: Thu, 19 Feb 2026 13:23:46 -0300
-X-Gm-Features: AaiRm50d6W_5fE_7G4yZsWAY8m58LxN519vozyjLw2jc2sNJvuLhnez0JhwrDVQ
-Message-ID: <CADbaWgEfX87oPoiO3vdn_s4=Q4TVRVzh=qDgewEC-t2Xa9gU7Q@mail.gmail.com>
-Subject: Re: Bluetooth: mgmt: Fix heap overflow in mgmt_mesh_add
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: luiz.von.dentz@intel.com, maiquelpaiva@gmail.com, 
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable-rc/linux-6.1.y: (build) stack frame size (2456)
+ exceeds
+ limit (2048) in 'dml31_ModeSupport...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Thu, 19 Feb 2026 16:59:04 -0000
+Message-ID: <177152034349.119.6431923116518979346@d14e337afe00>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-clang-21-x86-kselftest-69973d5a7b34c3305539ab72/.config];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217462-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-217463-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[insidetf2@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kernelci.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,celes.in:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: CDABC160A19
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,lists.linux.dev:replyto]
+X-Rspamd-Queue-Id: 92B29160DCD
 X-Rspamd-Action: no action
 
-Hi Luiz,
-
-Makes perfect sense regarding EXPORT_SYMBOL. Thanks for taking a look
-and dropping it.
-
-Regards,
-Daniel
 
 
-On Thu, Feb 19, 2026 at 1:16=E2=80=AFPM Luiz Augusto von Dentz
-<luiz.dentz@gmail.com> wrote:
->
-> Hi Daniel,
->
-> On Tue, Feb 17, 2026 at 1:09=E2=80=AFPM Daniel Matsumoto <me@celes.in> wr=
-ote:
-> >
-> > Regarding commit ac0c6f1b6a58 ("Bluetooth: mgmt: Fix heap overflow in
-> > mgmt_mesh_add"):
-> >
-> > I reviewed the call path for this patch and the overflow condition
-> > appears to be unreachable in the current tree.
-> > The only caller of mgmt_mesh_add() is mesh_send() in
-> > net/bluetooth/mgmt_util.c. The length parameter is explicitly
-> > sanitized before the call:
-> >
-> > if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED) ||
-> >    len <=3D MGMT_MESH_SEND_SIZE ||
-> >    len > (MGMT_MESH_SEND_SIZE + 31))
-> > return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
-> >       MGMT_STATUS_REJECTED);
-> >
-> > Given that mgmt_mesh_add() allocates sizeof(*mesh_tx), which includes
-> > the param buffer sized for this maximum length, the bounds check
-> > introduced in the commit is redundant.
-> > While defensive programming is valid, tagging this as a fix for a heap
-> > overflow is misleading for backporters and security scanners, as the
-> > overflow cannot be triggered.
->
-> Yeah, well I would say it would only be valid to apply defensive
-> programming if that function would be marked with EXPORT_SYMBOL so it
-> could be used outside of net/bluetooth context.
->
-> > Please consider dropping this from the stable queue to avoid
-> > unnecessary code churn.
->
-> +1, will drop it entirely, it seems I will need to ask for more
-> evidence as apparently people are relying too much on LLVM nowadays.
->
-> --
-> Luiz Augusto von Dentz
->
+
+
+Hello,
+
+New build issue found on stable-rc/linux-6.1.y:
+
+---
+ stack frame size (2456) exceeds limit (2048) in 'dml31_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than] in drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.o (drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.c) [logspec:kbuild,kbuild.compiler.error]
+---
+
+- dashboard: https://d.kernelci.org/i/maestro:8142d3efa880b8ebb062bcaa4e5b10da200f4575
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  779f9571ac3e3b2c969690d09e5353f56b7ed4ef
+- tags: v6.1.164
+
+Please include the KernelCI tag when submitting a fix:
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+
+Log excerpt:
+=====================================================
+drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.c:3795:6: error: stack frame size (2456) exceeds limit (2048) in 'dml31_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
+ 3795 | void dml31_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
+      |      ^
+  CC      drivers/i2c/busses/i2c-i801.o
+1 error generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## x86_64_defconfig+kselftest+x86-board on (x86_64):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-x86-kselftest-69973d5a7b34c3305539ab72/.config
+- dashboard: https://d.kernelci.org/build/maestro:69973d5a7b34c3305539ab72
+
+
+#kernelci issue maestro:8142d3efa880b8ebb062bcaa4e5b10da200f4575
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
