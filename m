@@ -1,161 +1,160 @@
-Return-Path: <stable+bounces-217517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217518-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGH+Nw+Dl2nozQIAu9opvQ
-	(envelope-from <stable+bounces-217517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 22:39:27 +0100
+	id QKGbKGqFl2mwzgIAu9opvQ
+	(envelope-from <stable+bounces-217518-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 22:49:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103C7162E67
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 22:39:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA6C162F31
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 22:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 95E9330055DA
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 21:39:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 751993018757
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 21:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C371F306480;
-	Thu, 19 Feb 2026 21:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44E02D9ECA;
+	Thu, 19 Feb 2026 21:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TxqgpX1x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZe75CNf"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4328C2C1589
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 21:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9633415539A;
+	Thu, 19 Feb 2026 21:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771537162; cv=none; b=Fck/FrWilNL8mKL7jKWvg/EDZuCCOcsKqMMe7M7ZSlSkp5N/RkqwGqrkekJbOyLgvablkW1oy+H1Nko17QUSEtOUzpXG+fa+OWNugAnXOKky0CBkZCMCvU0WAJAonevl1+qItpa9naB1j9+M9keWBJohYebPb6JVY68jzklvhSo=
+	t=1771537710; cv=none; b=jBE2QWfwgyMTR8iTydHZC+1a3fkiw1aD8QIxYPzOu2h7JZcRTCAZUGE+iCtqwhL2XHSTmhFXS2/n3Be6ZUpcLUyc3Tm+taO1lcTLqACrep3XbT2Seq33juy1p7J17XauZz659iMMzx+tZ/jrZx3nK3c2dLbxe0nb9Rr1lZrG9Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771537162; c=relaxed/simple;
-	bh=J3wqUnhxgRS2rtgAzsaqWlWzoEIPlmSwGBjU5lxnwAM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YzvPRGp7hoQVzPOQaj7RIyPoA5YYzozAaNdU5N+8Rj+9Xd8llQm5sZBiWY+5YWFZOV2hlW3ILzqUMRtseFmIaV4YH0LWKl4kSYcG2/qL2QCnD84AqZnhfn88CgKUxSYm+U9LsDBsJcNaEZMiIwfbJQXOqV4GWCPfCDCZrzCvxx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TxqgpX1x; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771537162; x=1803073162;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=J3wqUnhxgRS2rtgAzsaqWlWzoEIPlmSwGBjU5lxnwAM=;
-  b=TxqgpX1x6+hhs58teHA8+mXELAPuUk0ASITRxNSSTLQJ9/wwq1rvmaHe
-   JHeymez3SvLDz9/ScwdNOrfOahaAquo2cTNlnWQ7xYAwalOxWbJwzNdKk
-   BiCTCLEoV/ZkovBokYF2YHFXPU5RSRIjSSu1g2iA6f0ouP4lQSsbS/FNi
-   deUml3psUEILrhNcCd/9KGYHTgWLmsA8E9mTo7nC4T/kFIZa2SxXhvPa4
-   E8xQVPx+hifVTN3P2/stzi1Yqd0G/eC8aAOyfUlrdJAn5ab4v4NnCkOYt
-   KfFYe6IGWkJ4RbnzKBCEYM6wzKl2dkoPZhemlfFbke+NaU9nAhR0WWhPn
-   w==;
-X-CSE-ConnectionGUID: bZpfCvNbSjWQvM7u5gBqUA==
-X-CSE-MsgGUID: UNNLKQHMRfqCJDCAMQ/ccQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11706"; a="90044700"
-X-IronPort-AV: E=Sophos;i="6.21,300,1763452800"; 
-   d="scan'208";a="90044700"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 13:39:21 -0800
-X-CSE-ConnectionGUID: vCfZLI4WTnWu+VhONT8EXQ==
-X-CSE-MsgGUID: hrt+txn6SmurklkFGMKqig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,300,1763452800"; 
-   d="scan'208";a="212526348"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO kkoning-desktop.intel.com) ([10.245.244.197])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 13:39:13 -0800
-From: Koen Koning <koen.koning@linux.intel.com>
-To: dri-devel@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Koen Koning <koen.koning@linux.intel.com>,
-	Chunming Zhou <david1.zhou@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/3] drm/sched: fix module_init() usage
-Date: Thu, 19 Feb 2026 22:38:57 +0100
-Message-ID: <20260219213858.370675-3-koen.koning@linux.intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260219213858.370675-1-koen.koning@linux.intel.com>
-References: <20260216111902.110286-1-koen.koning@linux.intel.com>
- <20260219213858.370675-1-koen.koning@linux.intel.com>
+	s=arc-20240116; t=1771537710; c=relaxed/simple;
+	bh=8IzYi1GTKamw1JxtWcrzryVfp90QSU2vSBowbZev+OI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oGPyAjIqU9QQRsEPEi7BcvsEHQfWoCwm9UBo0GLKpQotl40KgSpDQFqMkUPIUT5ALWv+3eRXHVMN20W/LwRmy3xhR/fvChVO/7hKhuo3NWQfat5tI16wDYJC554bBFepaE9DbWcSsJlj0f8jeERVat5cVQAvo43PYn/pkp9+/XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZe75CNf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD0EC4CEF7;
+	Thu, 19 Feb 2026 21:48:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771537710;
+	bh=8IzYi1GTKamw1JxtWcrzryVfp90QSU2vSBowbZev+OI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gZe75CNfoeGRnLX7D8Q2EDdhYYvoW4ynIGekmYmbg4GeJG+g8FCmxY8ySocSl/2hv
+	 wlDtJeWIbiYEn/nYmgsI5q4xEs9El9bK23z78Pk7k8jD0SKIZ6eee/L+B9rdHBP1A7
+	 QkjyH8MPmRNvVpGDG55Oup9Z9oxvxplPGgEtOyxWKCQ4R4sg+xRq6FU3SocZDPdTfS
+	 kPM7M59tFBtZZlVbPCsb7fNHYxUmhew3ZhCJ1PVXvuUreuGIRCGuqq39i3NQjL5LUe
+	 hOxR30TaJ2YhMkR3FFE9RSGwhGVfDGTICAG4huWHsL0F3wGHthykPwtyMy5ZMFAxz6
+	 P5E3KUAwmqcgQ==
+Date: Thu, 19 Feb 2026 13:48:29 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Carlos Maiolino <cem@kernel.org>
+Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 3/6] xfs: fix xfs_group release bug in
+ xfs_verify_report_losses
+Message-ID: <20260219214829.GQ6490@frogsfrogsfrogs>
+References: <177145925377.401799.10773940743454980308.stgit@frogsfrogsfrogs>
+ <177145925473.401799.4192737708449778278.stgit@frogsfrogsfrogs>
+ <aZcJEu9PjdfXPwIG@nidhogg.toxiclabs.cc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZcJEu9PjdfXPwIG@nidhogg.toxiclabs.cc>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,nvidia.com,intel.com,kernel.org,linux.intel.com,amd.com,pengutronix.de,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-217517-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217518-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[koen.koning@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,linux.intel.com:mid,pengutronix.de:email,amd.com:email]
-X-Rspamd-Queue-Id: 103C7162E67
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3EA6C162F31
 X-Rspamd-Action: no action
 
-Use subsys_initcall() instead of module_init() (which compiles to
-device_initcall() for built-ins) for sched_fence, so its initialization
-code always runs before any (built-in) drivers.
-This happened to work correctly so far due to the order of linking in
-the Makefiles, but this should not be relied upon.
+On Thu, Feb 19, 2026 at 02:02:06PM +0100, Carlos Maiolino wrote:
+> On Wed, Feb 18, 2026 at 10:01:30PM -0800, Darrick J. Wong wrote:
+> > From: Darrick J. Wong <djwong@kernel.org>
+> > 
+> > Chris Mason reports that his AI tools noticed that we were using
+> > xfs_perag_put and xfs_group_put to release the group reference returned
+> > by xfs_group_next_range.  However, the iterator function returns an
+> > object with an active refcount, which means that we must use the correct
+> > function to release the active refcount, which is _rele.
+> 
+> The subject looks a copy/paste from the previous one, ditto for the
+> description.
+> 
+> The description matches the patch, but the subject doesn't.
 
-Fixes: 4983e48c85392 ("drm/sched: move fence slab handling to module init/exit")
-Cc: Chunming Zhou <david1.zhou@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Lucas Stach <l.stach@pengutronix.de>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Philipp Stanner <phasta@kernel.org>
-Cc: "Christian König" <ckoenig.leichtzumerken@gmail.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Koen Koning <koen.koning@linux.intel.com>
----
- drivers/gpu/drm/scheduler/sched_fence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sorry about that.  Yes, the subject should have referenced
+xfs_dax_notify_dev_failure.
 
-diff --git a/drivers/gpu/drm/scheduler/sched_fence.c b/drivers/gpu/drm/scheduler/sched_fence.c
-index 9391d6f0dc01..d10c1163719f 100644
---- a/drivers/gpu/drm/scheduler/sched_fence.c
-+++ b/drivers/gpu/drm/scheduler/sched_fence.c
-@@ -235,7 +235,7 @@ void drm_sched_fence_init(struct drm_sched_fence *fence,
- 		       &fence->lock, entity->fence_context + 1, seq);
- }
+> If you're going to send me a PR with this series, please fix it. If I'm
+> pulling this series straight from the list, I'll fix it here.
+> 
+> Other than the description problems, the patch looks fine:
+> 
+> Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
 
--module_init(drm_sched_fence_slab_init);
-+subsys_initcall(drm_sched_fence_slab_init);
- module_exit(drm_sched_fence_slab_fini);
+I'll fix it before I send you a PR.
 
- MODULE_DESCRIPTION("DRM GPU scheduler");
---
-2.48.1
+--D
 
+> > 
+> > Cc: <stable@vger.kernel.org> # v6.0
+> > Fixes: 6f643c57d57c56 ("xfs: implement ->notify_failure() for XFS")
+> > Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+> > ---
+> >  fs/xfs/xfs_notify_failure.c |    4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > 
+> > diff --git a/fs/xfs/xfs_notify_failure.c b/fs/xfs/xfs_notify_failure.c
+> > index 6be19fa1ebe262..64c8afb935c261 100644
+> > --- a/fs/xfs/xfs_notify_failure.c
+> > +++ b/fs/xfs/xfs_notify_failure.c
+> > @@ -304,7 +304,7 @@ xfs_dax_notify_dev_failure(
+> >  
+> >  			error = xfs_alloc_read_agf(pag, tp, 0, &agf_bp);
+> >  			if (error) {
+> > -				xfs_perag_put(pag);
+> > +				xfs_perag_rele(pag);
+> >  				break;
+> >  			}
+> >  
+> > @@ -340,7 +340,7 @@ xfs_dax_notify_dev_failure(
+> >  		if (rtg)
+> >  			xfs_rtgroup_unlock(rtg, XFS_RTGLOCK_RMAP);
+> >  		if (error) {
+> > -			xfs_group_put(xg);
+> > +			xfs_group_rele(xg);
+> >  			break;
+> >  		}
+> >  	}
+> > 
+> > 
+> 
 
