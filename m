@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-217456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KH8YMfsvl2kcvgIAu9opvQ
-	(envelope-from <stable+bounces-217456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:44:59 +0100
+	id AGFFGEIvl2kcvgIAu9opvQ
+	(envelope-from <stable+bounces-217457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:41:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C83F160532
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:44:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB859160476
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96A9930B6B0E
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 15:41:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 42EE03015852
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 15:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AF134846C;
-	Thu, 19 Feb 2026 15:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB25C29A1;
+	Thu, 19 Feb 2026 15:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcmFUWM4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QugEEboc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C8313957E;
-	Thu, 19 Feb 2026 15:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995D9347BC9;
+	Thu, 19 Feb 2026 15:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771515681; cv=none; b=oXa940ZXb7S7FwzhJLCrFTtUAT1hsphq9JOVj73btp0BZm9kR5nQmbK0PUiW1et6ItcKLFhdOF0fqnP9c16QUkCwor/hOzocEkWA7pVdEYYybf3sAyeIahgfHdgWCLcTg2ku/jHRBlLGEX/IKkUN0Qzg3L9mISlVVR8x3pFnmeQ=
+	t=1771515684; cv=none; b=IkCxxHJ/FBzBh6gvEr7IKlSVAjRmMl5PIDXsRY15E6f9iC1+XENdZUH+N6NsN/TjNfsKbHqC+wg511B5x/FqEamJivEdEu0FHvZTHARBk71pROuEzXd+JhiGSsJJSkEdiBjCjPLixUNiYIyLKT0jqLtcDk5Dv3Tih157KYfaM9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771515681; c=relaxed/simple;
-	bh=iubO7ZCkicpzcwsXS6+9wEojInYafJiEf/NXFE6lJMQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z81efxfKuZvf7RUngQqQhf0opAtGcbyRT31bU1HxWnV2ZQkblRbRUfL3HWAdQHaw06I2hTyWuPaZOuljjgQUWnvPlN3AZdizRMZ/Gsn5FaZ4asWiVTOkiR1fNzoR3vKaPRPmdonpVdmqjiuDJWvfrm4dt3tcVIcn7Z90ohqGF4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcmFUWM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A8AC4CEF7;
-	Thu, 19 Feb 2026 15:41:19 +0000 (UTC)
+	s=arc-20240116; t=1771515684; c=relaxed/simple;
+	bh=jaP2csTEdapq1Uk5ZiVnS9+xDrO0ucXG65Q4GqScVtk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P8FdXnNVkdVgaEtVevhk8SOcOCRfghCnFTK8u2xolE+2WrsYPvnhkjxM2XdtP+YASdBr3hduGk/vF+R52VLHiQ9y9BL2plnG/sEMHkEnqgv7nyKJzuaRprGUylbb1aSlU3QwRvG6+O3tdwUiaG5cugot/489VeiSbA7uKwrQ9NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QugEEboc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F51C116C6;
+	Thu, 19 Feb 2026 15:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771515680;
-	bh=iubO7ZCkicpzcwsXS6+9wEojInYafJiEf/NXFE6lJMQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcmFUWM42LZjoYSsrRyN+BR+DplmZ6clvUaH1l0ulcR3qKgGSmvuNEZi/LX1GsSxq
-	 k+42m3Uju5E/ymGgLOZ5sZIH8fnwBarZxmcC1dpnk91eJRySQnqGQCVxW8DOp8wJ6H
-	 yYchIz2jb0bVwjKzcSuoP35ue3xQI9hvfPKg3yhM=
+	s=korg; t=1771515684;
+	bh=jaP2csTEdapq1Uk5ZiVnS9+xDrO0ucXG65Q4GqScVtk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QugEEbocSTkNp3OYrPDS7E9SIHxlusFlmXj/6OlLNX33D2/Bse9RsIZbzCkxeKSHO
+	 qFgBxYaXuwEJ1babehT4ZxytExsY/aAhoa2hJvOlzYN+Zsy3EBhLzyvZWQlw5Hlxku
+	 wLNGf6O0X+MTlwHDV6oMnhOOh3uR7McJJRBIYmd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -49,2142 +48,231 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.12.74
-Date: Thu, 19 Feb 2026 16:41:08 +0100
-Message-ID: <2026021908-synopsis-surpass-ab7f@gregkh>
+Subject: Linux 6.18.13
+Date: Thu, 19 Feb 2026 16:41:15 +0100
+Message-ID: <2026021916-angles-obsessive-0ffe@gregkh>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026021908-turtle-reverence-60d7@gregkh>
-References: <2026021908-turtle-reverence-60d7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217457-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217456-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1C83F160532
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CB859160476
 X-Rspamd-Action: no action
 
-diff --git a/Makefile b/Makefile
-index 39a05470fbce..94c1c8c7f899 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 12
--SUBLEVEL = 73
-+SUBLEVEL = 74
- EXTRAVERSION =
- NAME = Baby Opossum Posse
- 
-diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
-index d2681272d8f0..9337380a70eb 100644
---- a/arch/loongarch/mm/kasan_init.c
-+++ b/arch/loongarch/mm/kasan_init.c
-@@ -42,39 +42,43 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
- 
- bool kasan_early_stage = true;
- 
--void *kasan_mem_to_shadow(const void *addr)
-+static void *mem_to_shadow(const void *addr)
- {
--	if (!kasan_arch_is_ready()) {
-+	unsigned long offset = 0;
-+	unsigned long maddr = (unsigned long)addr;
-+	unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
-+
-+	if (maddr >= FIXADDR_START)
- 		return (void *)(kasan_early_shadow_page);
--	} else {
--		unsigned long maddr = (unsigned long)addr;
--		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
--		unsigned long offset = 0;
--
--		if (maddr >= FIXADDR_START)
--			return (void *)(kasan_early_shadow_page);
--
--		maddr &= XRANGE_SHADOW_MASK;
--		switch (xrange) {
--		case XKPRANGE_CC_SEG:
--			offset = XKPRANGE_CC_SHADOW_OFFSET;
--			break;
--		case XKPRANGE_UC_SEG:
--			offset = XKPRANGE_UC_SHADOW_OFFSET;
--			break;
--		case XKPRANGE_WC_SEG:
--			offset = XKPRANGE_WC_SHADOW_OFFSET;
--			break;
--		case XKVRANGE_VC_SEG:
--			offset = XKVRANGE_VC_SHADOW_OFFSET;
--			break;
--		default:
--			WARN_ON(1);
--			return NULL;
--		}
- 
--		return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
-+	maddr &= XRANGE_SHADOW_MASK;
-+	switch (xrange) {
-+	case XKPRANGE_CC_SEG:
-+		offset = XKPRANGE_CC_SHADOW_OFFSET;
-+		break;
-+	case XKPRANGE_UC_SEG:
-+		offset = XKPRANGE_UC_SHADOW_OFFSET;
-+		break;
-+	case XKPRANGE_WC_SEG:
-+		offset = XKPRANGE_WC_SHADOW_OFFSET;
-+		break;
-+	case XKVRANGE_VC_SEG:
-+		offset = XKVRANGE_VC_SHADOW_OFFSET;
-+		break;
-+	default:
-+		WARN_ON(1);
-+		return NULL;
- 	}
-+
-+	return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
-+}
-+
-+void *kasan_mem_to_shadow(const void *addr)
-+{
-+	if (kasan_arch_is_ready())
-+		return mem_to_shadow(addr);
-+	else
-+		return (void *)(kasan_early_shadow_page);
- }
- 
- const void *kasan_shadow_to_mem(const void *shadow_addr)
-@@ -295,10 +299,8 @@ void __init kasan_init(void)
- 	/* Maps everything to a single page of zeroes */
- 	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, true);
- 
--	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
--					kasan_mem_to_shadow((void *)KFENCE_AREA_END));
--
--	kasan_early_stage = false;
-+	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
-+					mem_to_shadow((void *)KFENCE_AREA_END));
- 
- 	/* Populate the linear mapping */
- 	for_each_mem_range(i, &pa_start, &pa_end) {
-@@ -308,13 +310,13 @@ void __init kasan_init(void)
- 		if (start >= end)
- 			break;
- 
--		kasan_map_populate((unsigned long)kasan_mem_to_shadow(start),
--			(unsigned long)kasan_mem_to_shadow(end), NUMA_NO_NODE);
-+		kasan_map_populate((unsigned long)mem_to_shadow(start),
-+			(unsigned long)mem_to_shadow(end), NUMA_NO_NODE);
- 	}
- 
- 	/* Populate modules mapping */
--	kasan_map_populate((unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR),
--		(unsigned long)kasan_mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
-+	kasan_map_populate((unsigned long)mem_to_shadow((void *)MODULES_VADDR),
-+		(unsigned long)mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
- 	/*
- 	 * KAsan may reuse the contents of kasan_early_shadow_pte directly, so we
- 	 * should make sure that it maps the zero page read-only.
-@@ -329,5 +331,6 @@ void __init kasan_init(void)
- 
- 	/* At this point kasan is fully initialized. Enable error messages */
- 	init_task.kasan_depth = 0;
-+	kasan_early_stage = false;
- 	pr_info("KernelAddressSanitizer initialized.\n");
- }
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index dbc8d8f14ce7..bdf78260929d 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -175,8 +175,8 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
- 
--	return sprintf(buf, "fsl-mc:v%08Xd%s\n", mc_dev->obj_desc.vendor,
--		       mc_dev->obj_desc.type);
-+	return sysfs_emit(buf, "fsl-mc:v%08Xd%s\n", mc_dev->obj_desc.vendor,
-+			mc_dev->obj_desc.type);
- }
- static DEVICE_ATTR_RO(modalias);
- 
-@@ -201,8 +201,12 @@ static ssize_t driver_override_show(struct device *dev,
- 				    struct device_attribute *attr, char *buf)
- {
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
-+	ssize_t len;
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n", mc_dev->driver_override);
-+	device_lock(dev);
-+	len = sysfs_emit(buf, "%s\n", mc_dev->driver_override);
-+	device_unlock(dev);
-+	return len;
- }
- static DEVICE_ATTR_RW(driver_override);
- 
-diff --git a/drivers/gpio/gpio-sprd.c b/drivers/gpio/gpio-sprd.c
-index c117c11bfb29..192f05a2c19c 100644
---- a/drivers/gpio/gpio-sprd.c
-+++ b/drivers/gpio/gpio-sprd.c
-@@ -35,7 +35,7 @@
- struct sprd_gpio {
- 	struct gpio_chip chip;
- 	void __iomem *base;
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	int irq;
- };
- 
-@@ -54,7 +54,7 @@ static void sprd_gpio_update(struct gpio_chip *chip, unsigned int offset,
- 	unsigned long flags;
- 	u32 tmp;
- 
--	spin_lock_irqsave(&sprd_gpio->lock, flags);
-+	raw_spin_lock_irqsave(&sprd_gpio->lock, flags);
- 	tmp = readl_relaxed(base + reg);
- 
- 	if (val)
-@@ -63,7 +63,7 @@ static void sprd_gpio_update(struct gpio_chip *chip, unsigned int offset,
- 		tmp &= ~BIT(SPRD_GPIO_BIT(offset));
- 
- 	writel_relaxed(tmp, base + reg);
--	spin_unlock_irqrestore(&sprd_gpio->lock, flags);
-+	raw_spin_unlock_irqrestore(&sprd_gpio->lock, flags);
- }
- 
- static int sprd_gpio_read(struct gpio_chip *chip, unsigned int offset, u16 reg)
-@@ -234,7 +234,7 @@ static int sprd_gpio_probe(struct platform_device *pdev)
- 	if (IS_ERR(sprd_gpio->base))
- 		return PTR_ERR(sprd_gpio->base);
- 
--	spin_lock_init(&sprd_gpio->lock);
-+	raw_spin_lock_init(&sprd_gpio->lock);
- 
- 	sprd_gpio->chip.label = dev_name(&pdev->dev);
- 	sprd_gpio->chip.ngpio = SPRD_GPIO_NR;
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index fc2033f2cf25..f6bec9d2fd26 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -1351,6 +1351,7 @@ static int acpi_gpio_package_count(const union acpi_object *obj)
- 	while (element < end) {
- 		switch (element->type) {
- 		case ACPI_TYPE_LOCAL_REFERENCE:
-+		case ACPI_TYPE_STRING:
- 			element += 3;
- 			fallthrough;
- 		case ACPI_TYPE_INTEGER:
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-index f299d9455f51..4d53b17300d0 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-@@ -105,9 +105,12 @@ void cm_helper_program_gamcor_xfer_func(
- #define NUMBER_REGIONS     32
- #define NUMBER_SW_SEGMENTS 16
- 
--bool cm3_helper_translate_curve_to_hw_format(
--				const struct dc_transfer_func *output_tf,
--				struct pwl_params *lut_params, bool fixpoint)
-+#define DC_LOGGER \
-+		ctx->logger
-+
-+bool cm3_helper_translate_curve_to_hw_format(struct dc_context *ctx,
-+					     const struct dc_transfer_func *output_tf,
-+					     struct pwl_params *lut_params, bool fixpoint)
- {
- 	struct curve_points3 *corner_points;
- 	struct pwl_result_data *rgb_resulted;
-@@ -256,6 +259,10 @@ bool cm3_helper_translate_curve_to_hw_format(
- 	if (fixpoint == true) {
- 		i = 1;
- 		while (i != hw_points + 2) {
-+			uint32_t red_clamp;
-+			uint32_t green_clamp;
-+			uint32_t blue_clamp;
-+
- 			if (i >= hw_points) {
- 				if (dc_fixpt_lt(rgb_plus_1->red, rgb->red))
- 					rgb_plus_1->red = dc_fixpt_add(rgb->red,
-@@ -268,9 +275,20 @@ bool cm3_helper_translate_curve_to_hw_format(
- 							rgb_minus_1->delta_blue);
- 			}
- 
--			rgb->delta_red_reg   = dc_fixpt_clamp_u0d10(rgb->delta_red);
--			rgb->delta_green_reg = dc_fixpt_clamp_u0d10(rgb->delta_green);
--			rgb->delta_blue_reg  = dc_fixpt_clamp_u0d10(rgb->delta_blue);
-+			rgb->delta_red   = dc_fixpt_sub(rgb_plus_1->red,   rgb->red);
-+			rgb->delta_green = dc_fixpt_sub(rgb_plus_1->green, rgb->green);
-+			rgb->delta_blue  = dc_fixpt_sub(rgb_plus_1->blue,  rgb->blue);
-+
-+			red_clamp = dc_fixpt_clamp_u0d14(rgb->delta_red);
-+			green_clamp = dc_fixpt_clamp_u0d14(rgb->delta_green);
-+			blue_clamp = dc_fixpt_clamp_u0d14(rgb->delta_blue);
-+
-+			if (red_clamp >> 10 || green_clamp >> 10 || blue_clamp >> 10)
-+				DC_LOG_ERROR("Losing delta precision while programming shaper LUT.");
-+
-+			rgb->delta_red_reg   = red_clamp & 0x3ff;
-+			rgb->delta_green_reg = green_clamp & 0x3ff;
-+			rgb->delta_blue_reg  = blue_clamp & 0x3ff;
- 			rgb->red_reg         = dc_fixpt_clamp_u0d14(rgb->red);
- 			rgb->green_reg       = dc_fixpt_clamp_u0d14(rgb->green);
- 			rgb->blue_reg        = dc_fixpt_clamp_u0d14(rgb->blue);
-diff --git a/drivers/gpu/drm/amd/display/dc/dwb/dcn30/dcn30_cm_common.h b/drivers/gpu/drm/amd/display/dc/dwb/dcn30/dcn30_cm_common.h
-index bd98b327a6c7..c23dc1bb29bf 100644
---- a/drivers/gpu/drm/amd/display/dc/dwb/dcn30/dcn30_cm_common.h
-+++ b/drivers/gpu/drm/amd/display/dc/dwb/dcn30/dcn30_cm_common.h
-@@ -59,7 +59,7 @@ void cm_helper_program_gamcor_xfer_func(
- 	const struct pwl_params *params,
- 	const struct dcn3_xfer_func_reg *reg);
- 
--bool cm3_helper_translate_curve_to_hw_format(
-+bool cm3_helper_translate_curve_to_hw_format(struct dc_context *ctx,
- 	const struct dc_transfer_func *output_tf,
- 	struct pwl_params *lut_params, bool fixpoint);
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-index bded33575493..de4282a98626 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-@@ -228,7 +228,7 @@ bool dcn30_set_blend_lut(
- 	if (plane_state->blend_tf.type == TF_TYPE_HWPWL)
- 		blend_lut = &plane_state->blend_tf.pwl;
- 	else if (plane_state->blend_tf.type == TF_TYPE_DISTRIBUTED_POINTS) {
--		result = cm3_helper_translate_curve_to_hw_format(
-+		result = cm3_helper_translate_curve_to_hw_format(plane_state->ctx,
- 				&plane_state->blend_tf, &dpp_base->regamma_params, false);
- 		if (!result)
- 			return result;
-@@ -316,8 +316,9 @@ bool dcn30_set_input_transfer_func(struct dc *dc,
- 	if (plane_state->in_transfer_func.type == TF_TYPE_HWPWL)
- 		params = &plane_state->in_transfer_func.pwl;
- 	else if (plane_state->in_transfer_func.type == TF_TYPE_DISTRIBUTED_POINTS &&
--		cm3_helper_translate_curve_to_hw_format(&plane_state->in_transfer_func,
--				&dpp_base->degamma_params, false))
-+		cm3_helper_translate_curve_to_hw_format(plane_state->ctx,
-+							&plane_state->in_transfer_func,
-+							&dpp_base->degamma_params, false))
- 		params = &dpp_base->degamma_params;
- 
- 	result = dpp_base->funcs->dpp_program_gamcor_lut(dpp_base, params);
-@@ -388,7 +389,7 @@ bool dcn30_set_output_transfer_func(struct dc *dc,
- 				params = &stream->out_transfer_func.pwl;
- 			else if (pipe_ctx->stream->out_transfer_func.type ==
- 					TF_TYPE_DISTRIBUTED_POINTS &&
--					cm3_helper_translate_curve_to_hw_format(
-+					cm3_helper_translate_curve_to_hw_format(stream->ctx,
- 					&stream->out_transfer_func,
- 					&mpc->blender_params, false))
- 				params = &mpc->blender_params;
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-index 2e8c9f738259..39cc92446350 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-@@ -483,8 +483,9 @@ bool dcn32_set_mcm_luts(
- 	if (plane_state->blend_tf.type == TF_TYPE_HWPWL)
- 		lut_params = &plane_state->blend_tf.pwl;
- 	else if (plane_state->blend_tf.type == TF_TYPE_DISTRIBUTED_POINTS) {
--		result = cm3_helper_translate_curve_to_hw_format(&plane_state->blend_tf,
--				&dpp_base->regamma_params, false);
-+		result = cm3_helper_translate_curve_to_hw_format(plane_state->ctx,
-+								 &plane_state->blend_tf,
-+								 &dpp_base->regamma_params, false);
- 		if (!result)
- 			return result;
- 
-@@ -498,9 +499,9 @@ bool dcn32_set_mcm_luts(
- 		lut_params = &plane_state->in_shaper_func.pwl;
- 	else if (plane_state->in_shaper_func.type == TF_TYPE_DISTRIBUTED_POINTS) {
- 		// TODO: dpp_base replace
--		ASSERT(false);
--		cm3_helper_translate_curve_to_hw_format(&plane_state->in_shaper_func,
--				&dpp_base->shaper_params, true);
-+		cm3_helper_translate_curve_to_hw_format(plane_state->ctx,
-+							&plane_state->in_shaper_func,
-+							&dpp_base->shaper_params, true);
- 		lut_params = &dpp_base->shaper_params;
- 	}
- 
-@@ -540,8 +541,9 @@ bool dcn32_set_input_transfer_func(struct dc *dc,
- 	if (plane_state->in_transfer_func.type == TF_TYPE_HWPWL)
- 		params = &plane_state->in_transfer_func.pwl;
- 	else if (plane_state->in_transfer_func.type == TF_TYPE_DISTRIBUTED_POINTS &&
--		cm3_helper_translate_curve_to_hw_format(&plane_state->in_transfer_func,
--				&dpp_base->degamma_params, false))
-+		cm3_helper_translate_curve_to_hw_format(plane_state->ctx,
-+							&plane_state->in_transfer_func,
-+							&dpp_base->degamma_params, false))
- 		params = &dpp_base->degamma_params;
- 
- 	dpp_base->funcs->dpp_program_gamcor_lut(dpp_base, params);
-@@ -572,7 +574,7 @@ bool dcn32_set_output_transfer_func(struct dc *dc,
- 				params = &stream->out_transfer_func.pwl;
- 			else if (pipe_ctx->stream->out_transfer_func.type ==
- 					TF_TYPE_DISTRIBUTED_POINTS &&
--					cm3_helper_translate_curve_to_hw_format(
-+					cm3_helper_translate_curve_to_hw_format(stream->ctx,
- 					&stream->out_transfer_func,
- 					&mpc->blender_params, false))
- 				params = &mpc->blender_params;
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-index bcb296a954f2..f805803be55e 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-@@ -514,7 +514,7 @@ void dcn401_populate_mcm_luts(struct dc *dc,
- 		if (mcm_luts.lut1d_func->type == TF_TYPE_HWPWL)
- 			m_lut_params.pwl = &mcm_luts.lut1d_func->pwl;
- 		else if (mcm_luts.lut1d_func->type == TF_TYPE_DISTRIBUTED_POINTS) {
--			rval = cm3_helper_translate_curve_to_hw_format(
-+			rval = cm3_helper_translate_curve_to_hw_format(mpc->ctx,
- 					mcm_luts.lut1d_func,
- 					&dpp_base->regamma_params, false);
- 			m_lut_params.pwl = rval ? &dpp_base->regamma_params : NULL;
-@@ -534,7 +534,7 @@ void dcn401_populate_mcm_luts(struct dc *dc,
- 			m_lut_params.pwl = &mcm_luts.shaper->pwl;
- 		else if (mcm_luts.shaper->type == TF_TYPE_DISTRIBUTED_POINTS) {
- 			ASSERT(false);
--			rval = cm3_helper_translate_curve_to_hw_format(
-+			rval = cm3_helper_translate_curve_to_hw_format(mpc->ctx,
- 					mcm_luts.shaper,
- 					&dpp_base->regamma_params, true);
- 			m_lut_params.pwl = rval ? &dpp_base->regamma_params : NULL;
-@@ -683,8 +683,9 @@ bool dcn401_set_mcm_luts(struct pipe_ctx *pipe_ctx,
- 	if (plane_state->blend_tf.type == TF_TYPE_HWPWL)
- 		lut_params = &plane_state->blend_tf.pwl;
- 	else if (plane_state->blend_tf.type == TF_TYPE_DISTRIBUTED_POINTS) {
--		rval = cm3_helper_translate_curve_to_hw_format(&plane_state->blend_tf,
--				&dpp_base->regamma_params, false);
-+		rval = cm3_helper_translate_curve_to_hw_format(plane_state->ctx,
-+							       &plane_state->blend_tf,
-+							       &dpp_base->regamma_params, false);
- 		lut_params = rval ? &dpp_base->regamma_params : NULL;
- 	}
- 	result = mpc->funcs->program_1dlut(mpc, lut_params, mpcc_id);
-@@ -695,8 +696,9 @@ bool dcn401_set_mcm_luts(struct pipe_ctx *pipe_ctx,
- 		lut_params = &plane_state->in_shaper_func.pwl;
- 	else if (plane_state->in_shaper_func.type == TF_TYPE_DISTRIBUTED_POINTS) {
- 		// TODO: dpp_base replace
--		rval = cm3_helper_translate_curve_to_hw_format(&plane_state->in_shaper_func,
--				&dpp_base->shaper_params, true);
-+		rval = cm3_helper_translate_curve_to_hw_format(plane_state->ctx,
-+							       &plane_state->in_shaper_func,
-+							       &dpp_base->shaper_params, true);
- 		lut_params = rval ? &dpp_base->shaper_params : NULL;
- 	}
- 	result &= mpc->funcs->program_shaper(mpc, lut_params, mpcc_id);
-@@ -730,7 +732,7 @@ bool dcn401_set_output_transfer_func(struct dc *dc,
- 				params = &stream->out_transfer_func.pwl;
- 			else if (pipe_ctx->stream->out_transfer_func.type ==
- 					TF_TYPE_DISTRIBUTED_POINTS &&
--					cm3_helper_translate_curve_to_hw_format(
-+					cm3_helper_translate_curve_to_hw_format(stream->ctx,
- 					&stream->out_transfer_func,
- 					&mpc->blender_params, false))
- 				params = &mpc->blender_params;
-diff --git a/drivers/gpu/drm/tegra/hdmi.c b/drivers/gpu/drm/tegra/hdmi.c
-index 09987e372e3e..02b260cbbf0c 100644
---- a/drivers/gpu/drm/tegra/hdmi.c
-+++ b/drivers/gpu/drm/tegra/hdmi.c
-@@ -658,7 +658,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
- {
- 	const u8 *ptr = data;
- 	unsigned long offset;
--	size_t i, j;
-+	size_t i;
- 	u32 value;
- 
- 	switch (ptr[0]) {
-@@ -691,7 +691,7 @@ static void tegra_hdmi_write_infopack(struct tegra_hdmi *hdmi, const void *data,
- 	 * - subpack_low: bytes 0 - 3
- 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
- 	 */
--	for (i = 3, j = 0; i < size; i += 7, j += 8) {
-+	for (i = 3; i < size; i += 7) {
- 		size_t rem = size - i, num = min_t(size_t, rem, 4);
- 
- 		value = tegra_hdmi_subpack(&ptr[i], num);
-diff --git a/drivers/gpu/drm/tegra/sor.c b/drivers/gpu/drm/tegra/sor.c
-index bad3b8fcc726..c2a57f85051a 100644
---- a/drivers/gpu/drm/tegra/sor.c
-+++ b/drivers/gpu/drm/tegra/sor.c
-@@ -1864,7 +1864,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
- {
- 	const u8 *ptr = data;
- 	unsigned long offset;
--	size_t i, j;
-+	size_t i;
- 	u32 value;
- 
- 	switch (ptr[0]) {
-@@ -1897,7 +1897,7 @@ static void tegra_sor_hdmi_write_infopack(struct tegra_sor *sor,
- 	 * - subpack_low: bytes 0 - 3
- 	 * - subpack_high: bytes 4 - 6 (with byte 7 padded to 0x00)
- 	 */
--	for (i = 3, j = 0; i < size; i += 7, j += 8) {
-+	for (i = 3; i < size; i += 7) {
- 		size_t rem = size - i, num = min_t(size_t, rem, 4);
- 
- 		value = tegra_sor_hdmi_subpack(&ptr[i], num);
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-index 99030e6b16e7..1c673935ef61 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-@@ -227,3 +227,17 @@ struct arm_smmu_device *arm_smmu_impl_init(struct arm_smmu_device *smmu)
- 
- 	return smmu;
- }
-+
-+int __init arm_smmu_impl_module_init(void)
-+{
-+	if (IS_ENABLED(CONFIG_ARM_SMMU_QCOM))
-+		return qcom_smmu_module_init();
-+
-+	return 0;
-+}
-+
-+void __exit arm_smmu_impl_module_exit(void)
-+{
-+	if (IS_ENABLED(CONFIG_ARM_SMMU_QCOM))
-+		qcom_smmu_module_exit();
-+}
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index 1a72d067e584..a5378c594999 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -638,10 +638,6 @@ struct arm_smmu_device *qcom_smmu_impl_init(struct arm_smmu_device *smmu)
- {
- 	const struct device_node *np = smmu->dev->of_node;
- 	const struct of_device_id *match;
--	static u8 tbu_registered;
--
--	if (!tbu_registered++)
--		platform_driver_register(&qcom_smmu_tbu_driver);
- 
- #ifdef CONFIG_ACPI
- 	if (np == NULL) {
-@@ -666,3 +662,13 @@ struct arm_smmu_device *qcom_smmu_impl_init(struct arm_smmu_device *smmu)
- 
- 	return smmu;
- }
-+
-+int __init qcom_smmu_module_init(void)
-+{
-+	return platform_driver_register(&qcom_smmu_tbu_driver);
-+}
-+
-+void __exit qcom_smmu_module_exit(void)
-+{
-+	platform_driver_unregister(&qcom_smmu_tbu_driver);
-+}
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-index 14618772a3d6..9990909a7118 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-@@ -2386,7 +2386,29 @@ static struct platform_driver arm_smmu_driver = {
- 	.remove_new = arm_smmu_device_remove,
- 	.shutdown = arm_smmu_device_shutdown,
- };
--module_platform_driver(arm_smmu_driver);
-+
-+static int __init arm_smmu_init(void)
-+{
-+	int ret;
-+
-+	ret = platform_driver_register(&arm_smmu_driver);
-+	if (ret)
-+		return ret;
-+
-+	ret = arm_smmu_impl_module_init();
-+	if (ret)
-+		platform_driver_unregister(&arm_smmu_driver);
-+
-+	return ret;
-+}
-+module_init(arm_smmu_init);
-+
-+static void __exit arm_smmu_exit(void)
-+{
-+	arm_smmu_impl_module_exit();
-+	platform_driver_unregister(&arm_smmu_driver);
-+}
-+module_exit(arm_smmu_exit);
- 
- MODULE_DESCRIPTION("IOMMU API for ARM architected SMMU implementations");
- MODULE_AUTHOR("Will Deacon <will@kernel.org>");
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.h b/drivers/iommu/arm/arm-smmu/arm-smmu.h
-index e2aeb511ae90..1a776f133746 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu.h
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu.h
-@@ -538,6 +538,11 @@ struct arm_smmu_device *arm_smmu_impl_init(struct arm_smmu_device *smmu);
- struct arm_smmu_device *nvidia_smmu_impl_init(struct arm_smmu_device *smmu);
- struct arm_smmu_device *qcom_smmu_impl_init(struct arm_smmu_device *smmu);
- 
-+int __init arm_smmu_impl_module_init(void);
-+void __exit arm_smmu_impl_module_exit(void);
-+int __init qcom_smmu_module_init(void);
-+void __exit qcom_smmu_module_exit(void);
-+
- void arm_smmu_write_context_bank(struct arm_smmu_device *smmu, int idx);
- int arm_mmu500_reset(struct arm_smmu_device *smmu);
- 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 1f5149d45b08..8799db6f3c86 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -9770,7 +9770,7 @@ static int bnxt_hwrm_ver_get(struct bnxt *bp)
- 	struct hwrm_ver_get_input *req;
- 	u16 fw_maj, fw_min, fw_bld, fw_rsv;
- 	u32 dev_caps_cfg, hwrm_ver;
--	int rc, len;
-+	int rc, len, max_tmo_secs;
- 
- 	rc = hwrm_req_init(bp, req, HWRM_VER_GET);
- 	if (rc)
-@@ -9843,9 +9843,14 @@ static int bnxt_hwrm_ver_get(struct bnxt *bp)
- 	bp->hwrm_cmd_max_timeout = le16_to_cpu(resp->max_req_timeout) * 1000;
- 	if (!bp->hwrm_cmd_max_timeout)
- 		bp->hwrm_cmd_max_timeout = HWRM_CMD_MAX_TIMEOUT;
--	else if (bp->hwrm_cmd_max_timeout > HWRM_CMD_MAX_TIMEOUT)
--		netdev_warn(bp->dev, "Device requests max timeout of %d seconds, may trigger hung task watchdog\n",
--			    bp->hwrm_cmd_max_timeout / 1000);
-+	max_tmo_secs = bp->hwrm_cmd_max_timeout / 1000;
-+#ifdef CONFIG_DETECT_HUNG_TASK
-+	if (bp->hwrm_cmd_max_timeout > HWRM_CMD_MAX_TIMEOUT ||
-+	    max_tmo_secs > CONFIG_DEFAULT_HUNG_TASK_TIMEOUT) {
-+		netdev_warn(bp->dev, "Device requests max timeout of %d seconds, may trigger hung task watchdog (kernel default %ds)\n",
-+			    max_tmo_secs, CONFIG_DEFAULT_HUNG_TASK_TIMEOUT);
-+	}
-+#endif
- 
- 	if (resp->hwrm_intf_maj_8b >= 1) {
- 		bp->hwrm_max_req_len = le16_to_cpu(resp->max_req_win_len);
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.h
-index 15ca51b5d204..fb5f5b063c3d 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.h
-@@ -58,7 +58,7 @@ void hwrm_update_token(struct bnxt *bp, u16 seq, enum bnxt_hwrm_wait_state s);
- 
- #define BNXT_HWRM_MAX_REQ_LEN		(bp->hwrm_max_req_len)
- #define BNXT_HWRM_SHORT_REQ_LEN		sizeof(struct hwrm_short_input)
--#define HWRM_CMD_MAX_TIMEOUT		40000U
-+#define HWRM_CMD_MAX_TIMEOUT		60000U
- #define SHORT_HWRM_CMD_TIMEOUT		20
- #define HWRM_CMD_TIMEOUT		(bp->hwrm_cmd_timeout)
- #define HWRM_RESET_TIMEOUT		((HWRM_CMD_TIMEOUT) * 4)
-diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
-index acb9ce7a626a..45e9b908dbfb 100644
---- a/drivers/net/wireguard/device.c
-+++ b/drivers/net/wireguard/device.c
-@@ -364,7 +364,6 @@ static int wg_newlink(struct net *src_net, struct net_device *dev,
- 	if (ret < 0)
- 		goto err_free_handshake_queue;
- 
--	dev_set_threaded(dev, true);
- 	ret = register_netdevice(dev);
- 	if (ret < 0)
- 		goto err_uninit_ratelimiter;
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index a5031339dac8..a6006b4ec2cc 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -296,6 +296,13 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
- 		}
- 	},
-+	{
-+		.ident = "MECHREVO Wujie 15X Pro",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
-+		}
-+	},
- 	{}
- };
- 
-diff --git a/drivers/platform/x86/classmate-laptop.c b/drivers/platform/x86/classmate-laptop.c
-index cb6fce655e35..452cdec11e3d 100644
---- a/drivers/platform/x86/classmate-laptop.c
-+++ b/drivers/platform/x86/classmate-laptop.c
-@@ -206,7 +206,12 @@ static ssize_t cmpc_accel_sensitivity_show_v4(struct device *dev,
- 
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	return sprintf(buf, "%d\n", accel->sensitivity);
- }
-@@ -223,7 +228,12 @@ static ssize_t cmpc_accel_sensitivity_store_v4(struct device *dev,
- 
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	r = kstrtoul(buf, 0, &sensitivity);
- 	if (r)
-@@ -255,7 +265,12 @@ static ssize_t cmpc_accel_g_select_show_v4(struct device *dev,
- 
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	return sprintf(buf, "%d\n", accel->g_select);
- }
-@@ -272,7 +287,12 @@ static ssize_t cmpc_accel_g_select_store_v4(struct device *dev,
- 
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	r = kstrtoul(buf, 0, &g_select);
- 	if (r)
-@@ -301,6 +321,8 @@ static int cmpc_accel_open_v4(struct input_dev *input)
- 
- 	acpi = to_acpi_device(input->dev.parent);
- 	accel = dev_get_drvdata(&input->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	cmpc_accel_set_sensitivity_v4(acpi->handle, accel->sensitivity);
- 	cmpc_accel_set_g_select_v4(acpi->handle, accel->g_select);
-@@ -548,7 +570,12 @@ static ssize_t cmpc_accel_sensitivity_show(struct device *dev,
- 
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	return sprintf(buf, "%d\n", accel->sensitivity);
- }
-@@ -565,7 +592,12 @@ static ssize_t cmpc_accel_sensitivity_store(struct device *dev,
- 
- 	acpi = to_acpi_device(dev);
- 	inputdev = dev_get_drvdata(&acpi->dev);
-+	if (!inputdev)
-+		return -ENXIO;
-+
- 	accel = dev_get_drvdata(&inputdev->dev);
-+	if (!accel)
-+		return -ENXIO;
- 
- 	r = kstrtoul(buf, 0, &sensitivity);
- 	if (r)
-diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
-index 22ca70eb8227..851f0f92219d 100644
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -1089,7 +1089,7 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 			PLATFORM_DEVID_NONE, NULL, 0);
- 		if (IS_ERR(pcc->platform)) {
- 			result = PTR_ERR(pcc->platform);
--			goto out_backlight;
-+			goto out_sysfs;
- 		}
- 		result = device_create_file(&pcc->platform->dev,
- 			&dev_attr_cdpower);
-@@ -1105,6 +1105,8 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 
- out_platform:
- 	platform_device_unregister(pcc->platform);
-+out_sysfs:
-+	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
- out_backlight:
- 	backlight_device_unregister(pcc->backlight);
- out_input:
-diff --git a/drivers/scsi/qla2xxx/qla_bsg.c b/drivers/scsi/qla2xxx/qla_bsg.c
-index 10431a67d202..f43969ed87bf 100644
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -1546,8 +1546,9 @@ qla2x00_update_optrom(struct bsg_job *bsg_job)
- 	ha->optrom_buffer = NULL;
- 	ha->optrom_state = QLA_SWAITING;
- 	mutex_unlock(&ha->optrom_mutex);
--	bsg_job_done(bsg_job, bsg_reply->result,
--		       bsg_reply->reply_payload_rcv_len);
-+	if (!rval)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 	return rval;
- }
- 
-@@ -2612,8 +2613,9 @@ qla2x00_manage_host_stats(struct bsg_job *bsg_job)
- 				    sizeof(struct ql_vnd_mng_host_stats_resp));
- 
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- 	return ret;
- }
-@@ -2702,8 +2704,9 @@ qla2x00_get_host_stats(struct bsg_job *bsg_job)
- 							       bsg_job->reply_payload.sg_cnt,
- 							       data, response_len);
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- 	kfree(data);
- host_stat_out:
-@@ -2802,8 +2805,9 @@ qla2x00_get_tgt_stats(struct bsg_job *bsg_job)
- 				    bsg_job->reply_payload.sg_cnt, data,
- 				    response_len);
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- tgt_stat_out:
- 	kfree(data);
-@@ -2864,8 +2868,9 @@ qla2x00_manage_host_port(struct bsg_job *bsg_job)
- 				    bsg_job->reply_payload.sg_cnt, &rsp_data,
- 				    sizeof(struct ql_vnd_mng_host_port_resp));
- 	bsg_reply->result = DID_OK;
--	bsg_job_done(bsg_job, bsg_reply->result,
--		     bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result,
-+			     bsg_reply->reply_payload_rcv_len);
- 
- 	return ret;
- }
-@@ -3240,7 +3245,8 @@ int qla2x00_mailbox_passthru(struct bsg_job *bsg_job)
- 
- 	bsg_job->reply_len = sizeof(*bsg_job->reply);
- 	bsg_reply->result = DID_OK << 16;
--	bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
-+	if (!ret)
-+		bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
- 
- 	kfree(req_data);
- 
-diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-index 9f2cc5fb9f45..d4505a426446 100644
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1401,12 +1401,16 @@ static const struct usb_device_id option_ids[] = {
- 	  .driver_info = NCTRL(0) | RSVD(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a0, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a1, 0xff),	/* Telit FN20C04 (RNDIS) */
-+	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a2, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a3, 0xff),	/* Telit FN920C04 (ECM) */
- 	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a4, 0xff),	/* Telit FN20C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a6, 0xff),	/* Telit FN920C04 (RNDIS) */
-+	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a7, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10a8, 0xff),	/* Telit FN920C04 (ECM) */
-@@ -1415,6 +1419,8 @@ static const struct usb_device_id option_ids[] = {
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10ab, 0xff),	/* Telit FN920C04 (RNDIS) */
-+	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10b0, 0xff, 0xff, 0x30),	/* Telit FE990B (rmnet) */
- 	  .driver_info = NCTRL(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10b0, 0xff, 0xff, 0x40) },
-diff --git a/drivers/video/fbdev/riva/riva_hw.c b/drivers/video/fbdev/riva/riva_hw.c
-index 8b829b720064..f292079566cf 100644
---- a/drivers/video/fbdev/riva/riva_hw.c
-+++ b/drivers/video/fbdev/riva/riva_hw.c
-@@ -436,6 +436,9 @@ static char nv3_arb(nv3_fifo_info * res_info, nv3_sim_state * state,  nv3_arb_in
-     vmisses = 2;
-     eburst_size = state->memory_width * 1;
-     mburst_size = 32;
-+    if (!state->mclk_khz)
-+	return (0);
-+
-     gns = 1000000 * (gmisses*state->mem_page_miss + state->mem_latency)/state->mclk_khz;
-     ainfo->by_gfacc = gns*ainfo->gdrain_rate/1000000;
-     ainfo->wcmocc = 0;
-diff --git a/drivers/video/fbdev/smscufx.c b/drivers/video/fbdev/smscufx.c
-index 5f0dd01fd834..891ce7b76d63 100644
---- a/drivers/video/fbdev/smscufx.c
-+++ b/drivers/video/fbdev/smscufx.c
-@@ -932,7 +932,6 @@ static int ufx_ops_ioctl(struct fb_info *info, unsigned int cmd,
- 			 unsigned long arg)
- {
- 	struct ufx_data *dev = info->par;
--	struct dloarea *area = NULL;
- 
- 	if (!atomic_read(&dev->usb_active))
- 		return 0;
-@@ -947,6 +946,10 @@ static int ufx_ops_ioctl(struct fb_info *info, unsigned int cmd,
- 
- 	/* TODO: Help propose a standard fb.h ioctl to report mmap damage */
- 	if (cmd == UFX_IOCTL_REPORT_DAMAGE) {
-+		struct dloarea *area __free(kfree) = kmalloc(sizeof(*area), GFP_KERNEL);
-+		if (!area)
-+			return -ENOMEM;
-+
- 		/* If we have a damage-aware client, turn fb_defio "off"
- 		 * To avoid perf imact of unnecessary page fault handling.
- 		 * Done by resetting the delay for this fb_info to a very
-@@ -956,7 +959,8 @@ static int ufx_ops_ioctl(struct fb_info *info, unsigned int cmd,
- 		if (info->fbdefio)
- 			info->fbdefio->delay = UFX_DEFIO_WRITE_DISABLE;
- 
--		area = (struct dloarea *)arg;
-+		if (copy_from_user(area, (u8 __user *)arg, sizeof(*area)))
-+			return -EFAULT;
- 
- 		if (area->x < 0)
- 			area->x = 0;
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index ea831671e3ad..7bd6f9f108ec 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -357,14 +357,20 @@ static void f2fs_write_end_io(struct bio *bio)
- 				page_folio(page)->index != nid_of_node(page));
- 
- 		dec_page_count(sbi, type);
-+
-+		/*
-+		 * we should access sbi before end_page_writeback() to
-+		 * avoid racing w/ kill_f2fs_super()
-+		 */
-+		if (type == F2FS_WB_CP_DATA && !get_pages(sbi, type) &&
-+				wq_has_sleeper(&sbi->cp_wait))
-+			wake_up(&sbi->cp_wait);
-+
- 		if (f2fs_in_warm_node_list(sbi, page))
- 			f2fs_del_fsync_node_entry(sbi, page);
- 		clear_page_private_gcing(page);
- 		end_page_writeback(page);
- 	}
--	if (!get_pages(sbi, F2FS_WB_CP_DATA) &&
--				wq_has_sleeper(&sbi->cp_wait))
--		wake_up(&sbi->cp_wait);
- 
- 	bio_put(bio);
- }
-@@ -3980,6 +3986,7 @@ static int check_swap_activate(struct swap_info_struct *sis,
- 
- 	while (cur_lblock < last_lblock && cur_lblock < sis->max) {
- 		struct f2fs_map_blocks map;
-+		bool last_extent = false;
- retry:
- 		cond_resched();
- 
-@@ -4005,11 +4012,10 @@ static int check_swap_activate(struct swap_info_struct *sis,
- 		pblock = map.m_pblk;
- 		nr_pblocks = map.m_len;
- 
--		if ((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
--				nr_pblocks % blks_per_sec ||
--				f2fs_is_sequential_zone_area(sbi, pblock)) {
--			bool last_extent = false;
--
-+		if (!last_extent &&
-+			((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
-+			nr_pblocks % blks_per_sec ||
-+			f2fs_is_sequential_zone_area(sbi, pblock))) {
- 			not_aligned++;
- 
- 			nr_pblocks = roundup(nr_pblocks, blks_per_sec);
-@@ -4030,8 +4036,8 @@ static int check_swap_activate(struct swap_info_struct *sis,
- 				goto out;
- 			}
- 
--			if (!last_extent)
--				goto retry;
-+			/* lookup block mapping info after block migration */
-+			goto retry;
- 		}
- 
- 		if (cur_lblock + nr_pblocks >= sis->max)
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index dfd1e44086a6..67a93d45ad3a 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -2072,6 +2072,7 @@ int f2fs_gc_range(struct f2fs_sb_info *sbi,
- 	if (unlikely(f2fs_cp_error(sbi)))
- 		return -EIO;
- 
-+	stat_inc_gc_call_count(sbi, FOREGROUND);
- 	for (segno = start_seg; segno <= end_seg; segno += SEGS_PER_SEC(sbi)) {
- 		struct gc_inode_list gc_list = {
- 			.ilist = LIST_HEAD_INIT(gc_list.ilist),
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 720768d574ae..1f4f68e56d43 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1713,8 +1713,13 @@ static int __write_node_page(struct page *page, bool atomic, bool *submitted,
- 		goto redirty_out;
- 	}
- 
--	if (atomic && !test_opt(sbi, NOBARRIER))
--		fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
-+	if (atomic) {
-+		if (!test_opt(sbi, NOBARRIER))
-+			fio.op_flags |= REQ_PREFLUSH | REQ_FUA;
-+		if (IS_INODE(page))
-+			set_dentry_mark(page,
-+				f2fs_need_dentry_mark(sbi, ino_of_node(page)));
-+	}
- 
- 	/* should add to global list before clearing PAGECACHE status */
- 	if (f2fs_in_warm_node_list(sbi, page)) {
-@@ -1869,8 +1874,9 @@ int f2fs_fsync_node_pages(struct f2fs_sb_info *sbi, struct inode *inode,
- 					if (is_inode_flag_set(inode,
- 								FI_DIRTY_INODE))
- 						f2fs_update_inode(inode, page);
--					set_dentry_mark(page,
--						f2fs_need_dentry_mark(sbi, ino));
-+					if (!atomic)
-+						set_dentry_mark(page,
-+							f2fs_need_dentry_mark(sbi, ino));
- 				}
- 				/* may be written by other thread */
- 				if (!PageDirty(page))
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 0c1e9683316e..1309ecf20386 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -58,6 +58,7 @@ struct f2fs_attr {
- 			 const char *buf, size_t len);
- 	int struct_type;
- 	int offset;
-+	int size;
- 	int id;
- };
- 
-@@ -325,11 +326,30 @@ static ssize_t main_blkaddr_show(struct f2fs_attr *a,
- 			(unsigned long long)MAIN_BLKADDR(sbi));
- }
- 
-+static ssize_t __sbi_show_value(struct f2fs_attr *a,
-+		struct f2fs_sb_info *sbi, char *buf,
-+		unsigned char *value)
-+{
-+	switch (a->size) {
-+	case 1:
-+		return sysfs_emit(buf, "%u\n", *(u8 *)value);
-+	case 2:
-+		return sysfs_emit(buf, "%u\n", *(u16 *)value);
-+	case 4:
-+		return sysfs_emit(buf, "%u\n", *(u32 *)value);
-+	case 8:
-+		return sysfs_emit(buf, "%llu\n", *(u64 *)value);
-+	default:
-+		f2fs_bug_on(sbi, 1);
-+		return sysfs_emit(buf,
-+				"show sysfs node value with wrong type\n");
-+	}
-+}
-+
- static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
- 			struct f2fs_sb_info *sbi, char *buf)
- {
- 	unsigned char *ptr = NULL;
--	unsigned int *ui;
- 
- 	ptr = __struct_ptr(sbi, a->struct_type);
- 	if (!ptr)
-@@ -409,9 +429,30 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
- 				atomic_read(&sbi->cp_call_count[BACKGROUND]));
- #endif
- 
--	ui = (unsigned int *)(ptr + a->offset);
-+	return __sbi_show_value(a, sbi, buf, ptr + a->offset);
-+}
- 
--	return sysfs_emit(buf, "%u\n", *ui);
-+static void __sbi_store_value(struct f2fs_attr *a,
-+			struct f2fs_sb_info *sbi,
-+			unsigned char *ui, unsigned long value)
-+{
-+	switch (a->size) {
-+	case 1:
-+		*(u8 *)ui = value;
-+		break;
-+	case 2:
-+		*(u16 *)ui = value;
-+		break;
-+	case 4:
-+		*(u32 *)ui = value;
-+		break;
-+	case 8:
-+		*(u64 *)ui = value;
-+		break;
-+	default:
-+		f2fs_bug_on(sbi, 1);
-+		f2fs_err(sbi, "store sysfs node value with wrong type");
-+	}
- }
- 
- static ssize_t __sbi_store(struct f2fs_attr *a,
-@@ -732,7 +773,7 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
- 		return count;
- 	}
- 
--	if (!strcmp(a->attr.name, "gc_pin_file_threshold")) {
-+	if (!strcmp(a->attr.name, "gc_pin_file_thresh")) {
- 		if (t > MAX_GC_FAILED_PINNED_FILES)
- 			return -EINVAL;
- 		sbi->gc_pin_file_threshold = t;
-@@ -868,7 +909,7 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
- 		return count;
- 	}
- 
--	*ui = (unsigned int)t;
-+	__sbi_store_value(a, sbi, ptr + a->offset, t);
- 
- 	return count;
- }
-@@ -1015,24 +1056,27 @@ static struct f2fs_attr f2fs_attr_sb_##_name = {		\
- 	.id	= F2FS_FEATURE_##_feat,				\
- }
- 
--#define F2FS_ATTR_OFFSET(_struct_type, _name, _mode, _show, _store, _offset) \
-+#define F2FS_ATTR_OFFSET(_struct_type, _name, _mode, _show, _store, _offset, _size) \
- static struct f2fs_attr f2fs_attr_##_name = {			\
- 	.attr = {.name = __stringify(_name), .mode = _mode },	\
- 	.show	= _show,					\
- 	.store	= _store,					\
- 	.struct_type = _struct_type,				\
--	.offset = _offset					\
-+	.offset = _offset,					\
-+	.size = _size						\
- }
- 
- #define F2FS_RO_ATTR(struct_type, struct_name, name, elname)	\
- 	F2FS_ATTR_OFFSET(struct_type, name, 0444,		\
- 		f2fs_sbi_show, NULL,				\
--		offsetof(struct struct_name, elname))
-+		offsetof(struct struct_name, elname),		\
-+		sizeof_field(struct struct_name, elname))
- 
- #define F2FS_RW_ATTR(struct_type, struct_name, name, elname)	\
- 	F2FS_ATTR_OFFSET(struct_type, name, 0644,		\
- 		f2fs_sbi_show, f2fs_sbi_store,			\
--		offsetof(struct struct_name, elname))
-+		offsetof(struct struct_name, elname),		\
-+		sizeof_field(struct struct_name, elname))
- 
- #define F2FS_GENERAL_RO_ATTR(name) \
- static struct f2fs_attr f2fs_attr_##name = __ATTR(name, 0444, name##_show, NULL)
-diff --git a/fs/romfs/super.c b/fs/romfs/super.c
-index 0addcc849ff2..e83f9b78d7a1 100644
---- a/fs/romfs/super.c
-+++ b/fs/romfs/super.c
-@@ -458,7 +458,10 @@ static int romfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 
- #ifdef CONFIG_BLOCK
- 	if (!sb->s_mtd) {
--		sb_set_blocksize(sb, ROMBSIZE);
-+		if (!sb_set_blocksize(sb, ROMBSIZE)) {
-+			errorf(fc, "romfs: unable to set blocksize\n");
-+			return -EINVAL;
-+		}
- 	} else {
- 		sb->s_blocksize = ROMBSIZE;
- 		sb->s_blocksize_bits = blksize_bits(ROMBSIZE);
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index 709830274b75..253dee8077b1 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -46,7 +46,8 @@
-  *
-  * The mmu_gather API consists of:
-  *
-- *  - tlb_gather_mmu() / tlb_gather_mmu_fullmm() / tlb_finish_mmu()
-+ *  - tlb_gather_mmu() / tlb_gather_mmu_fullmm() / tlb_gather_mmu_vma() /
-+ *    tlb_finish_mmu()
-  *
-  *    start and finish a mmu_gather
-  *
-@@ -344,6 +345,20 @@ struct mmu_gather {
- 	unsigned int		vma_huge : 1;
- 	unsigned int		vma_pfn  : 1;
- 
-+	/*
-+	 * Did we unshare (unmap) any shared page tables? For now only
-+	 * used for hugetlb PMD table sharing.
-+	 */
-+	unsigned int		unshared_tables : 1;
-+
-+	/*
-+	 * Did we unshare any page tables such that they are now exclusive
-+	 * and could get reused+modified by the new owner? When setting this
-+	 * flag, "unshared_tables" will be set as well. For now only used
-+	 * for hugetlb PMD table sharing.
-+	 */
-+	unsigned int		fully_unshared_tables : 1;
-+
- 	unsigned int		batch_count;
- 
- #ifndef CONFIG_MMU_GATHER_NO_GATHER
-@@ -380,6 +395,7 @@ static inline void __tlb_reset_range(struct mmu_gather *tlb)
- 	tlb->cleared_pmds = 0;
- 	tlb->cleared_puds = 0;
- 	tlb->cleared_p4ds = 0;
-+	tlb->unshared_tables = 0;
- 	/*
- 	 * Do not reset mmu_gather::vma_* fields here, we do not
- 	 * call into tlb_start_vma() again to set them if there is an
-@@ -459,7 +475,7 @@ static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
- 	 * these bits.
- 	 */
- 	if (!(tlb->freed_tables || tlb->cleared_ptes || tlb->cleared_pmds ||
--	      tlb->cleared_puds || tlb->cleared_p4ds))
-+	      tlb->cleared_puds || tlb->cleared_p4ds || tlb->unshared_tables))
- 		return;
- 
- 	tlb_flush(tlb);
-@@ -748,6 +764,63 @@ static inline bool huge_pmd_needs_flush(pmd_t oldpmd, pmd_t newpmd)
- }
- #endif
- 
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+static inline void tlb_unshare_pmd_ptdesc(struct mmu_gather *tlb, struct ptdesc *pt,
-+					  unsigned long addr)
-+{
-+	/*
-+	 * The caller must make sure that concurrent unsharing + exclusive
-+	 * reuse is impossible until tlb_flush_unshared_tables() was called.
-+	 */
-+	VM_WARN_ON_ONCE(!ptdesc_pmd_is_shared(pt));
-+	ptdesc_pmd_pts_dec(pt);
-+
-+	/* Clearing a PUD pointing at a PMD table with PMD leaves. */
-+	tlb_flush_pmd_range(tlb, addr & PUD_MASK, PUD_SIZE);
-+
-+	/*
-+	 * If the page table is now exclusively owned, we fully unshared
-+	 * a page table.
-+	 */
-+	if (!ptdesc_pmd_is_shared(pt))
-+		tlb->fully_unshared_tables = true;
-+	tlb->unshared_tables = true;
-+}
-+
-+static inline void tlb_flush_unshared_tables(struct mmu_gather *tlb)
-+{
-+	/*
-+	 * As soon as the caller drops locks to allow for reuse of
-+	 * previously-shared tables, these tables could get modified and
-+	 * even reused outside of hugetlb context, so we have to make sure that
-+	 * any page table walkers (incl. TLB, GUP-fast) are aware of that
-+	 * change.
-+	 *
-+	 * Even if we are not fully unsharing a PMD table, we must
-+	 * flush the TLB for the unsharer now.
-+	 */
-+	if (tlb->unshared_tables)
-+		tlb_flush_mmu_tlbonly(tlb);
-+
-+	/*
-+	 * Similarly, we must make sure that concurrent GUP-fast will not
-+	 * walk previously-shared page tables that are getting modified+reused
-+	 * elsewhere. So broadcast an IPI to wait for any concurrent GUP-fast.
-+	 *
-+	 * We only perform this when we are the last sharer of a page table,
-+	 * as the IPI will reach all CPUs: any GUP-fast.
-+	 *
-+	 * Note that on configs where tlb_remove_table_sync_one() is a NOP,
-+	 * the expectation is that the tlb_flush_mmu_tlbonly() would have issued
-+	 * required IPIs already for us.
-+	 */
-+	if (tlb->fully_unshared_tables) {
-+		tlb_remove_table_sync_one();
-+		tlb->fully_unshared_tables = false;
-+	}
-+}
-+#endif /* CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING */
-+
- #endif /* CONFIG_MMU */
- 
- #endif /* _ASM_GENERIC__TLB_H */
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 3897f4492e1f..81b69287ab3b 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -235,8 +235,9 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
- pte_t *huge_pte_offset(struct mm_struct *mm,
- 		       unsigned long addr, unsigned long sz);
- unsigned long hugetlb_mask_last_page(struct hstate *h);
--int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
--				unsigned long addr, pte_t *ptep);
-+int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+		unsigned long addr, pte_t *ptep);
-+void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma);
- void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
- 				unsigned long *start, unsigned long *end);
- 
-@@ -295,13 +296,17 @@ static inline struct address_space *hugetlb_folio_mapping_lock_write(
- 	return NULL;
- }
- 
--static inline int huge_pmd_unshare(struct mm_struct *mm,
--					struct vm_area_struct *vma,
--					unsigned long addr, pte_t *ptep)
-+static inline int huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
- {
- 	return 0;
- }
- 
-+static inline void huge_pmd_unshare_flush(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma)
-+{
-+}
-+
- static inline void adjust_range_if_pmd_sharing_possible(
- 				struct vm_area_struct *vma,
- 				unsigned long *start, unsigned long *end)
-@@ -1272,7 +1277,7 @@ static inline __init void hugetlb_cma_reserve(int order)
- #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
- static inline bool hugetlb_pmd_shared(pte_t *pte)
- {
--	return page_count(virt_to_page(pte)) > 1;
-+	return ptdesc_pmd_is_shared(virt_to_ptdesc(pte));
- }
- #else
- static inline bool hugetlb_pmd_shared(pte_t *pte)
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 6894de506b36..2c834cbf3ff5 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -540,6 +540,11 @@ static inline int ptdesc_pmd_pts_count(struct ptdesc *ptdesc)
- {
- 	return atomic_read(&ptdesc->pt_share_count);
- }
-+
-+static inline bool ptdesc_pmd_is_shared(struct ptdesc *ptdesc)
-+{
-+	return !!ptdesc_pmd_pts_count(ptdesc);
-+}
- #else
- static inline void ptdesc_pmd_pts_init(struct ptdesc *ptdesc)
- {
-@@ -1257,6 +1262,7 @@ static inline unsigned int mm_cid_size(void)
- struct mmu_gather;
- extern void tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm);
- extern void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm);
-+void tlb_gather_mmu_vma(struct mmu_gather *tlb, struct vm_area_struct *vma);
- extern void tlb_finish_mmu(struct mmu_gather *tlb);
- 
- struct vm_fault;
-diff --git a/include/trace/events/dma.h b/include/trace/events/dma.h
-index e5187144c91b..705363b228a4 100644
---- a/include/trace/events/dma.h
-+++ b/include/trace/events/dma.h
-@@ -278,6 +278,8 @@ TRACE_EVENT(dma_free_sgt,
- 				sizeof(u64), sizeof(u64)))
- );
- 
-+#define DMA_TRACE_MAX_ENTRIES 128
-+
- TRACE_EVENT(dma_map_sg,
- 	TP_PROTO(struct device *dev, struct scatterlist *sgl, int nents,
- 		 int ents, enum dma_data_direction dir, unsigned long attrs),
-@@ -285,9 +287,12 @@ TRACE_EVENT(dma_map_sg,
- 
- 	TP_STRUCT__entry(
- 		__string(device, dev_name(dev))
--		__dynamic_array(u64, phys_addrs, nents)
--		__dynamic_array(u64, dma_addrs, ents)
--		__dynamic_array(unsigned int, lengths, ents)
-+		__field(int, full_nents)
-+		__field(int, full_ents)
-+		__field(bool, truncated)
-+		__dynamic_array(u64, phys_addrs,  min(nents, DMA_TRACE_MAX_ENTRIES))
-+		__dynamic_array(u64, dma_addrs, min(ents, DMA_TRACE_MAX_ENTRIES))
-+		__dynamic_array(unsigned int, lengths, min(ents, DMA_TRACE_MAX_ENTRIES))
- 		__field(enum dma_data_direction, dir)
- 		__field(unsigned long, attrs)
- 	),
-@@ -295,11 +300,16 @@ TRACE_EVENT(dma_map_sg,
- 	TP_fast_assign(
- 		struct scatterlist *sg;
- 		int i;
-+		int traced_nents = min_t(int, nents, DMA_TRACE_MAX_ENTRIES);
-+		int traced_ents = min_t(int, ents, DMA_TRACE_MAX_ENTRIES);
- 
- 		__assign_str(device);
--		for_each_sg(sgl, sg, nents, i)
-+		__entry->full_nents = nents;
-+		__entry->full_ents = ents;
-+		__entry->truncated = (nents > DMA_TRACE_MAX_ENTRIES) || (ents > DMA_TRACE_MAX_ENTRIES);
-+		for_each_sg(sgl, sg, traced_nents, i)
- 			((u64 *)__get_dynamic_array(phys_addrs))[i] = sg_phys(sg);
--		for_each_sg(sgl, sg, ents, i) {
-+		for_each_sg(sgl, sg, traced_ents, i) {
- 			((u64 *)__get_dynamic_array(dma_addrs))[i] =
- 				sg_dma_address(sg);
- 			((unsigned int *)__get_dynamic_array(lengths))[i] =
-@@ -309,9 +319,12 @@ TRACE_EVENT(dma_map_sg,
- 		__entry->attrs = attrs;
- 	),
- 
--	TP_printk("%s dir=%s dma_addrs=%s sizes=%s phys_addrs=%s attrs=%s",
-+	TP_printk("%s dir=%s nents=%d/%d ents=%d/%d%s dma_addrs=%s sizes=%s phys_addrs=%s attrs=%s",
- 		__get_str(device),
- 		decode_dma_data_direction(__entry->dir),
-+		min_t(int, __entry->full_nents, DMA_TRACE_MAX_ENTRIES), __entry->full_nents,
-+		min_t(int, __entry->full_ents, DMA_TRACE_MAX_ENTRIES), __entry->full_ents,
-+		__entry->truncated ? " [TRUNCATED]" : "",
- 		__print_array(__get_dynamic_array(dma_addrs),
- 			      __get_dynamic_array_len(dma_addrs) /
- 				sizeof(u64), sizeof(u64)),
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 4bb7ad4479e4..1b93eb7b29c5 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -347,7 +347,7 @@ static inline bool partition_is_populated(struct cpuset *cs,
- 	    cs->attach_in_progress)
- 		return true;
- 	if (!excluded_child && !cs->nr_subparts)
--		return cgroup_is_populated(cs->css.cgroup);
-+		return cpuset_is_populated(cs);
- 
- 	rcu_read_lock();
- 	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index d404532ae41e..9577922c976c 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5258,18 +5258,13 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 			break;
- 		}
- 
--		/*
--		 * If the pagetables are shared don't copy or take references.
--		 *
--		 * dst_pte == src_pte is the common case of src/dest sharing.
--		 * However, src could have 'unshared' and dst shares with
--		 * another vma. So page_count of ptep page is checked instead
--		 * to reliably determine whether pte is shared.
--		 */
--		if (page_count(virt_to_page(dst_pte)) > 1) {
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+		/* If the pagetables are shared, there is nothing to do */
-+		if (ptdesc_pmd_is_shared(virt_to_ptdesc(dst_pte))) {
- 			addr |= last_addr_mask;
- 			continue;
- 		}
-+#endif
- 
- 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
- 		src_ptl = huge_pte_lockptr(h, src, src_pte);
-@@ -5452,7 +5447,7 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
- 	unsigned long last_addr_mask;
- 	pte_t *src_pte, *dst_pte;
- 	struct mmu_notifier_range range;
--	bool shared_pmd = false;
-+	struct mmu_gather tlb;
- 
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, old_addr,
- 				old_end);
-@@ -5462,6 +5457,7 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
- 	 * range.
- 	 */
- 	flush_cache_range(vma, range.start, range.end);
-+	tlb_gather_mmu_vma(&tlb, vma);
- 
- 	mmu_notifier_invalidate_range_start(&range);
- 	last_addr_mask = hugetlb_mask_last_page(h);
-@@ -5478,8 +5474,7 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
- 		if (huge_pte_none(huge_ptep_get(mm, old_addr, src_pte)))
- 			continue;
- 
--		if (huge_pmd_unshare(mm, vma, old_addr, src_pte)) {
--			shared_pmd = true;
-+		if (huge_pmd_unshare(&tlb, vma, old_addr, src_pte)) {
- 			old_addr |= last_addr_mask;
- 			new_addr |= last_addr_mask;
- 			continue;
-@@ -5490,15 +5485,16 @@ int move_hugetlb_page_tables(struct vm_area_struct *vma,
- 			break;
- 
- 		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
-+		tlb_remove_huge_tlb_entry(h, &tlb, src_pte, old_addr);
- 	}
- 
--	if (shared_pmd)
--		flush_hugetlb_tlb_range(vma, range.start, range.end);
--	else
--		flush_hugetlb_tlb_range(vma, old_end - len, old_end);
-+	tlb_flush_mmu_tlbonly(&tlb);
-+	huge_pmd_unshare_flush(&tlb, vma);
-+
- 	mmu_notifier_invalidate_range_end(&range);
- 	i_mmap_unlock_write(mapping);
- 	hugetlb_vma_unlock_write(vma);
-+	tlb_finish_mmu(&tlb);
- 
- 	return len + old_addr - old_end;
- }
-@@ -5517,7 +5513,6 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	unsigned long sz = huge_page_size(h);
- 	bool adjust_reservation;
- 	unsigned long last_addr_mask;
--	bool force_flush = false;
- 
- 	WARN_ON(!is_vm_hugetlb_page(vma));
- 	BUG_ON(start & ~huge_page_mask(h));
-@@ -5540,10 +5535,8 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		}
- 
- 		ptl = huge_pte_lock(h, mm, ptep);
--		if (huge_pmd_unshare(mm, vma, address, ptep)) {
-+		if (huge_pmd_unshare(tlb, vma, address, ptep)) {
- 			spin_unlock(ptl);
--			tlb_flush_pmd_range(tlb, address & PUD_MASK, PUD_SIZE);
--			force_flush = true;
- 			address |= last_addr_mask;
- 			continue;
- 		}
-@@ -5657,21 +5650,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	}
- 	tlb_end_vma(tlb, vma);
- 
--	/*
--	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
--	 * could defer the flush until now, since by holding i_mmap_rwsem we
--	 * guaranteed that the last refernece would not be dropped. But we must
--	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
--	 * dropped and the last reference to the shared PMDs page might be
--	 * dropped as well.
--	 *
--	 * In theory we could defer the freeing of the PMD pages as well, but
--	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
--	 * detect sharing, so we cannot defer the release of the page either.
--	 * Instead, do flush now.
--	 */
--	if (force_flush)
--		tlb_flush_mmu_tlbonly(tlb);
-+	huge_pmd_unshare_flush(tlb, vma);
- }
- 
- void __hugetlb_zap_begin(struct vm_area_struct *vma,
-@@ -6778,11 +6757,11 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 	pte_t pte;
- 	struct hstate *h = hstate_vma(vma);
- 	long pages = 0, psize = huge_page_size(h);
--	bool shared_pmd = false;
- 	struct mmu_notifier_range range;
- 	unsigned long last_addr_mask;
- 	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
- 	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
-+	struct mmu_gather tlb;
- 
- 	/*
- 	 * In the case of shared PMDs, the area to flush could be beyond
-@@ -6795,6 +6774,7 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 
- 	BUG_ON(address >= end);
- 	flush_cache_range(vma, range.start, range.end);
-+	tlb_gather_mmu_vma(&tlb, vma);
- 
- 	mmu_notifier_invalidate_range_start(&range);
- 	hugetlb_vma_lock_write(vma);
-@@ -6819,7 +6799,7 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 			}
- 		}
- 		ptl = huge_pte_lock(h, mm, ptep);
--		if (huge_pmd_unshare(mm, vma, address, ptep)) {
-+		if (huge_pmd_unshare(&tlb, vma, address, ptep)) {
- 			/*
- 			 * When uffd-wp is enabled on the vma, unshare
- 			 * shouldn't happen at all.  Warn about it if it
-@@ -6828,7 +6808,6 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 			WARN_ON_ONCE(uffd_wp || uffd_wp_resolve);
- 			pages++;
- 			spin_unlock(ptl);
--			shared_pmd = true;
- 			address |= last_addr_mask;
- 			continue;
- 		}
-@@ -6880,6 +6859,7 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 				pte = huge_pte_clear_uffd_wp(pte);
- 			huge_ptep_modify_prot_commit(vma, address, ptep, old_pte, pte);
- 			pages++;
-+			tlb_remove_huge_tlb_entry(h, &tlb, ptep, address);
- 		} else {
- 			/* None pte */
- 			if (unlikely(uffd_wp))
-@@ -6892,17 +6872,9 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 
- 		cond_resched();
- 	}
--	/*
--	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
--	 * may have cleared our pud entry and done put_page on the page table:
--	 * once we release i_mmap_rwsem, another task can do the final put_page
--	 * and that page table be reused and filled with junk.  If we actually
--	 * did unshare a page of pmds, flush the range corresponding to the pud.
--	 */
--	if (shared_pmd)
--		flush_hugetlb_tlb_range(vma, range.start, range.end);
--	else
--		flush_hugetlb_tlb_range(vma, start, end);
-+
-+	tlb_flush_mmu_tlbonly(&tlb);
-+	huge_pmd_unshare_flush(&tlb, vma);
- 	/*
- 	 * No need to call mmu_notifier_arch_invalidate_secondary_tlbs() we are
- 	 * downgrading page table protection not changing it to point to a new
-@@ -6913,6 +6885,7 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 	i_mmap_unlock_write(vma->vm_file->f_mapping);
- 	hugetlb_vma_unlock_write(vma);
- 	mmu_notifier_invalidate_range_end(&range);
-+	tlb_finish_mmu(&tlb);
- 
- 	return pages > 0 ? (pages << h->order) : pages;
- }
-@@ -7250,18 +7223,27 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 	return pte;
- }
- 
--/*
-- * unmap huge page backed by shared pte.
-+/**
-+ * huge_pmd_unshare - Unmap a pmd table if it is shared by multiple users
-+ * @tlb: the current mmu_gather.
-+ * @vma: the vma covering the pmd table.
-+ * @addr: the address we are trying to unshare.
-+ * @ptep: pointer into the (pmd) page table.
-  *
-- * Called with page table lock held.
-+ * Called with the page table lock held, the i_mmap_rwsem held in write mode
-+ * and the hugetlb vma lock held in write mode.
-  *
-- * returns: 1 successfully unmapped a shared pte page
-- *	    0 the underlying pte page is not shared, or it is the last user
-+ * Note: The caller must call huge_pmd_unshare_flush() before dropping the
-+ * i_mmap_rwsem.
-+ *
-+ * Returns: 1 if it was a shared PMD table and it got unmapped, or 0 if it
-+ *	    was not a shared PMD table.
-  */
--int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
--					unsigned long addr, pte_t *ptep)
-+int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+		unsigned long addr, pte_t *ptep)
- {
- 	unsigned long sz = huge_page_size(hstate_vma(vma));
-+	struct mm_struct *mm = vma->vm_mm;
- 	pgd_t *pgd = pgd_offset(mm, addr);
- 	p4d_t *p4d = p4d_offset(pgd, addr);
- 	pud_t *pud = pud_offset(p4d, addr);
-@@ -7270,22 +7252,40 @@ int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
- 	hugetlb_vma_assert_locked(vma);
- 	if (sz != PMD_SIZE)
- 		return 0;
--	if (!ptdesc_pmd_pts_count(virt_to_ptdesc(ptep)))
-+	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
- 		return 0;
- 
- 	pud_clear(pud);
--	/*
--	 * Once our caller drops the rmap lock, some other process might be
--	 * using this page table as a normal, non-hugetlb page table.
--	 * Wait for pending gup_fast() in other threads to finish before letting
--	 * that happen.
--	 */
--	tlb_remove_table_sync_one();
--	ptdesc_pmd_pts_dec(virt_to_ptdesc(ptep));
-+
-+	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
-+
- 	mm_dec_nr_pmds(mm);
- 	return 1;
- }
- 
-+/*
-+ * huge_pmd_unshare_flush - Complete a sequence of huge_pmd_unshare() calls
-+ * @tlb: the current mmu_gather.
-+ * @vma: the vma covering the pmd table.
-+ *
-+ * Perform necessary TLB flushes or IPI broadcasts to synchronize PMD table
-+ * unsharing with concurrent page table walkers.
-+ *
-+ * This function must be called after a sequence of huge_pmd_unshare()
-+ * calls while still holding the i_mmap_rwsem.
-+ */
-+void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma)
-+{
-+	/*
-+	 * We must synchronize page table unsharing such that nobody will
-+	 * try reusing a previously-shared page table while it might still
-+	 * be in use by previous sharers (TLB, GUP_fast).
-+	 */
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+
-+	tlb_flush_unshared_tables(tlb);
-+}
-+
- #else /* !CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING */
- 
- pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
-@@ -7294,12 +7294,16 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 	return NULL;
- }
- 
--int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
--				unsigned long addr, pte_t *ptep)
-+int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+		unsigned long addr, pte_t *ptep)
- {
- 	return 0;
- }
- 
-+void huge_pmd_unshare_flush(struct mmu_gather *tlb, struct vm_area_struct *vma)
-+{
-+}
-+
- void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
- 				unsigned long *start, unsigned long *end)
- {
-@@ -7528,6 +7532,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 	unsigned long sz = huge_page_size(h);
- 	struct mm_struct *mm = vma->vm_mm;
- 	struct mmu_notifier_range range;
-+	struct mmu_gather tlb;
- 	unsigned long address;
- 	spinlock_t *ptl;
- 	pte_t *ptep;
-@@ -7539,6 +7544,8 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		return;
- 
- 	flush_cache_range(vma, start, end);
-+	tlb_gather_mmu_vma(&tlb, vma);
-+
- 	/*
- 	 * No need to call adjust_range_if_pmd_sharing_possible(), because
- 	 * we have already done the PUD_SIZE alignment.
-@@ -7557,10 +7564,10 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		if (!ptep)
- 			continue;
- 		ptl = huge_pte_lock(h, mm, ptep);
--		huge_pmd_unshare(mm, vma, address, ptep);
-+		huge_pmd_unshare(&tlb, vma, address, ptep);
- 		spin_unlock(ptl);
- 	}
--	flush_hugetlb_tlb_range(vma, start, end);
-+	huge_pmd_unshare_flush(&tlb, vma);
- 	if (take_locks) {
- 		i_mmap_unlock_write(vma->vm_file->f_mapping);
- 		hugetlb_vma_unlock_write(vma);
-@@ -7570,6 +7577,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 	 * Documentation/mm/mmu_notifier.rst.
- 	 */
- 	mmu_notifier_invalidate_range_end(&range);
-+	tlb_finish_mmu(&tlb);
- }
- 
- /*
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 99b3e9408aa0..04469b481b93 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -9,6 +9,7 @@
- #include <linux/smp.h>
- #include <linux/swap.h>
- #include <linux/rmap.h>
-+#include <linux/hugetlb.h>
- 
- #include <asm/pgalloc.h>
- #include <asm/tlb.h>
-@@ -394,6 +395,7 @@ static void __tlb_gather_mmu(struct mmu_gather *tlb, struct mm_struct *mm,
- 	tlb->page_size = 0;
- #endif
- 
-+	tlb->fully_unshared_tables = 0;
- 	__tlb_reset_range(tlb);
- 	inc_tlb_flush_pending(tlb->mm);
- }
-@@ -427,6 +429,31 @@ void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm)
- 	__tlb_gather_mmu(tlb, mm, true);
- }
- 
-+/**
-+ * tlb_gather_mmu_vma - initialize an mmu_gather structure for operating on a
-+ *			single VMA
-+ * @tlb: the mmu_gather structure to initialize
-+ * @vma: the vm_area_struct
-+ *
-+ * Called to initialize an (on-stack) mmu_gather structure for operating on
-+ * a single VMA. In contrast to tlb_gather_mmu(), calling this function will
-+ * not require another call to tlb_start_vma(). In contrast to tlb_start_vma(),
-+ * this function will *not* call flush_cache_range().
-+ *
-+ * For hugetlb VMAs, this function will also initialize the mmu_gather
-+ * page_size accordingly, not requiring a separate call to
-+ * tlb_change_page_size().
-+ *
-+ */
-+void tlb_gather_mmu_vma(struct mmu_gather *tlb, struct vm_area_struct *vma)
-+{
-+	tlb_gather_mmu(tlb, vma->vm_mm);
-+	tlb_update_vma_flags(tlb, vma);
-+	if (is_vm_hugetlb_page(vma))
-+		/* All entries have the same size. */
-+		tlb_change_page_size(tlb, huge_page_size(hstate_vma(vma)));
-+}
-+
- /**
-  * tlb_finish_mmu - finish an mmu_gather structure
-  * @tlb: the mmu_gather structure to finish
-@@ -436,6 +463,12 @@ void tlb_gather_mmu_fullmm(struct mmu_gather *tlb, struct mm_struct *mm)
-  */
- void tlb_finish_mmu(struct mmu_gather *tlb)
- {
-+	/*
-+	 * We expect an earlier huge_pmd_unshare_flush() call to sort this out,
-+	 * due to complicated locking requirements with page table unsharing.
-+	 */
-+	VM_WARN_ON_ONCE(tlb->fully_unshared_tables);
-+
- 	/*
- 	 * If there are parallel threads are doing PTE changes on same range
- 	 * under non-exclusive lock (e.g., mmap_lock read-side) but defer TLB
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 905d67722546..ea9c6d540d49 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -77,7 +77,7 @@
- #include <linux/mm_inline.h>
- #include <linux/oom.h>
- 
--#include <asm/tlbflush.h>
-+#include <asm/tlb.h>
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/tlb.h>
-@@ -1745,13 +1745,17 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 * if unsuccessful.
- 			 */
- 			if (!anon) {
-+				struct mmu_gather tlb;
-+
- 				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
- 				if (!hugetlb_vma_trylock_write(vma))
- 					goto walk_abort;
--				if (huge_pmd_unshare(mm, vma, address, pvmw.pte)) {
-+
-+				tlb_gather_mmu_vma(&tlb, vma);
-+				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
- 					hugetlb_vma_unlock_write(vma);
--					flush_tlb_range(vma,
--						range.start, range.end);
-+					huge_pmd_unshare_flush(&tlb, vma);
-+					tlb_finish_mmu(&tlb);
- 					/*
- 					 * The PMD table was unmapped,
- 					 * consequently unmapping the folio.
-@@ -1759,6 +1763,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 					goto walk_done;
- 				}
- 				hugetlb_vma_unlock_write(vma);
-+				tlb_finish_mmu(&tlb);
- 			}
- 			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
- 		} else {
-@@ -2110,17 +2115,20 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			 * fail if unsuccessful.
- 			 */
- 			if (!anon) {
-+				struct mmu_gather tlb;
-+
- 				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
- 				if (!hugetlb_vma_trylock_write(vma)) {
- 					page_vma_mapped_walk_done(&pvmw);
- 					ret = false;
- 					break;
- 				}
--				if (huge_pmd_unshare(mm, vma, address, pvmw.pte)) {
--					hugetlb_vma_unlock_write(vma);
--					flush_tlb_range(vma,
--						range.start, range.end);
- 
-+				tlb_gather_mmu_vma(&tlb, vma);
-+				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
-+					hugetlb_vma_unlock_write(vma);
-+					huge_pmd_unshare_flush(&tlb, vma);
-+					tlb_finish_mmu(&tlb);
- 					/*
- 					 * The PMD table was unmapped,
- 					 * consequently unmapping the folio.
-@@ -2129,6 +2137,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 					break;
- 				}
- 				hugetlb_vma_unlock_write(vma);
-+				tlb_finish_mmu(&tlb);
- 			}
- 			/* Nuke the hugetlb page table entry */
- 			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 7bb2647af654..5c2f442fca79 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7650,11 +7650,22 @@ static void alc287_alc1318_playback_pcm_hook(struct hda_pcm_stream *hinfo,
- 				   struct snd_pcm_substream *substream,
- 				   int action)
- {
-+	static const struct coef_fw dis_coefs[] = {
-+		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
-+		WRITE_COEF(0x28, 0x0004), WRITE_COEF(0x29, 0xb023),
-+	}; /* Disable AMP silence detection */
-+	static const struct coef_fw en_coefs[] = {
-+		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
-+		WRITE_COEF(0x28, 0x0084), WRITE_COEF(0x29, 0xb023),
-+	}; /* Enable AMP silence detection */
-+
- 	switch (action) {
- 	case HDA_GEN_PCM_ACT_OPEN:
-+		alc_process_coef_fw(codec, dis_coefs);
- 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x954f); /* write gpio3 to high */
- 		break;
- 	case HDA_GEN_PCM_ACT_CLOSE:
-+		alc_process_coef_fw(codec, en_coefs);
- 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x554f); /* write gpio3 as default value */
- 		break;
- 	}
-@@ -10439,6 +10450,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1025, 0x1430, "Acer TravelMate B311R-31", ALC256_FIXUP_ACER_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x1466, "Acer Aspire A515-56", ALC255_FIXUP_ACER_HEADPHONE_AND_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x1534, "Acer Predator PH315-54", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1025, 0x1539, "Acer Nitro 5 AN515-57", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x159c, "Acer Nitro 5 AN515-58", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x1597, "Acer Nitro 5 AN517-55", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x169a, "Acer Swift SFG16", ALC256_FIXUP_ACER_SFG16_MICMUTE_LED),
-@@ -11379,6 +11391,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1ee7, 0x2078, "HONOR BRB-X M1010", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x2039, 0x0001, "Inspur S14-G1", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
-@@ -11835,6 +11848,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
- 		{0x12, 0x90a60140},
- 		{0x19, 0x04a11030},
- 		{0x21, 0x04211020}),
-+	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1d05, "TongFang", ALC274_FIXUP_HP_HEADSET_MIC,
-+		{0x17, 0x90170110},
-+		{0x19, 0x03a11030},
-+		{0x21, 0x03211020}),
- 	SND_HDA_PIN_QUIRK(0x10ec0282, 0x1025, "Acer", ALC282_FIXUP_ACER_DISABLE_LINEOUT,
- 		ALC282_STANDARD_PINS,
- 		{0x12, 0x90a609c0},
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 346e20061303..6d073ecad6f0 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -535,6 +535,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "15NBC1011"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK PM1503CDA"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-@@ -626,6 +633,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "8BD6"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
-+			DMI_MATCH(DMI_BOARD_NAME, "8EE4"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-diff --git a/sound/soc/codecs/cs35l45.c b/sound/soc/codecs/cs35l45.c
-index fa1d9d9151f9..7f295c6432b2 100644
---- a/sound/soc/codecs/cs35l45.c
-+++ b/sound/soc/codecs/cs35l45.c
-@@ -455,7 +455,7 @@ static const struct snd_soc_dapm_widget cs35l45_dapm_widgets[] = {
- 	SND_SOC_DAPM_AIF_OUT("ASP_TX2", NULL, 1, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX2_EN_SHIFT, 0),
- 	SND_SOC_DAPM_AIF_OUT("ASP_TX3", NULL, 2, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX3_EN_SHIFT, 0),
- 	SND_SOC_DAPM_AIF_OUT("ASP_TX4", NULL, 3, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX4_EN_SHIFT, 0),
--	SND_SOC_DAPM_AIF_OUT("ASP_TX5", NULL, 3, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX5_EN_SHIFT, 0),
-+	SND_SOC_DAPM_AIF_OUT("ASP_TX5", NULL, 4, CS35L45_ASP_ENABLES1, CS35L45_ASP_TX5_EN_SHIFT, 0),
- 
- 	SND_SOC_DAPM_MUX("ASP_TX1 Source", SND_SOC_NOPM, 0, 0, &cs35l45_asp_muxes[0]),
- 	SND_SOC_DAPM_MUX("ASP_TX2 Source", SND_SOC_NOPM, 0, 0, &cs35l45_asp_muxes[1]),
-diff --git a/sound/soc/codecs/cs42l43-jack.c b/sound/soc/codecs/cs42l43-jack.c
-index 984a7f470a31..aa0062f3aa91 100644
---- a/sound/soc/codecs/cs42l43-jack.c
-+++ b/sound/soc/codecs/cs42l43-jack.c
-@@ -508,7 +508,23 @@ void cs42l43_bias_sense_timeout(struct work_struct *work)
- 	pm_runtime_put_autosuspend(priv->dev);
- }
- 
--static void cs42l43_start_load_detect(struct cs42l43_codec *priv)
-+static const struct reg_sequence cs42l43_3pole_patch[] = {
-+	{ 0x4000,	0x00000055 },
-+	{ 0x4000,	0x000000AA },
-+	{ 0x17420,	0x8500F300 },
-+	{ 0x17424,	0x36003E00 },
-+	{ 0x4000,	0x00000000 },
-+};
-+
-+static const struct reg_sequence cs42l43_4pole_patch[] = {
-+	{ 0x4000,	0x00000055 },
-+	{ 0x4000,	0x000000AA },
-+	{ 0x17420,	0x7800E600 },
-+	{ 0x17424,	0x36003800 },
-+	{ 0x4000,	0x00000000 },
-+};
-+
-+static void cs42l43_start_load_detect(struct cs42l43_codec *priv, bool mic)
- {
- 	struct cs42l43 *cs42l43 = priv->core;
- 
-@@ -532,6 +548,15 @@ static void cs42l43_start_load_detect(struct cs42l43_codec *priv)
- 			dev_err(priv->dev, "Load detect HP power down timed out\n");
- 	}
- 
-+	if (mic)
-+		regmap_multi_reg_write_bypassed(cs42l43->regmap,
-+						cs42l43_4pole_patch,
-+						ARRAY_SIZE(cs42l43_4pole_patch));
-+	else
-+		regmap_multi_reg_write_bypassed(cs42l43->regmap,
-+						cs42l43_3pole_patch,
-+						ARRAY_SIZE(cs42l43_3pole_patch));
-+
- 	regmap_update_bits(cs42l43->regmap, CS42L43_BLOCK_EN3,
- 			   CS42L43_ADC1_EN_MASK | CS42L43_ADC2_EN_MASK, 0);
- 	regmap_update_bits(cs42l43->regmap, CS42L43_DACCNFG2, CS42L43_HP_HPF_EN_MASK, 0);
-@@ -610,7 +635,7 @@ static int cs42l43_run_load_detect(struct cs42l43_codec *priv, bool mic)
- 
- 	reinit_completion(&priv->load_detect);
- 
--	cs42l43_start_load_detect(priv);
-+	cs42l43_start_load_detect(priv, mic);
- 	time_left = wait_for_completion_timeout(&priv->load_detect,
- 						msecs_to_jiffies(CS42L43_LOAD_TIMEOUT_MS));
- 	cs42l43_stop_load_detect(priv);
-@@ -634,11 +659,11 @@ static int cs42l43_run_load_detect(struct cs42l43_codec *priv, bool mic)
- 	}
- 
- 	switch (val & CS42L43_AMP3_RES_DET_MASK) {
--	case 0x0: // low impedance
--	case 0x1: // high impedance
-+	case 0x0: // < 22 Ohm impedance
-+	case 0x1: // < 150 Ohm impedance
-+	case 0x2: // < 1000 Ohm impedance
- 		return CS42L43_JACK_HEADPHONE;
--	case 0x2: // lineout
--	case 0x3: // Open circuit
-+	case 0x3: // > 1000 Ohm impedance
- 		return CS42L43_JACK_LINEOUT;
- 	default:
- 		return -EINVAL;
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index 656a4d619cdf..d6f00920391d 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -216,10 +216,13 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
- 
- 	xcvr->mode = snd_soc_enum_item_to_val(e, item[0]);
- 
-+	down_read(&card->snd_card->controls_rwsem);
- 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name,
- 			      (xcvr->mode == FSL_XCVR_MODE_ARC));
- 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_earc_capds_kctl.name,
- 			      (xcvr->mode == FSL_XCVR_MODE_EARC));
-+	up_read(&card->snd_card->controls_rwsem);
-+
- 	/* Allow playback for SPDIF only */
- 	rtd = snd_soc_get_pcm_runtime(card, card->dai_link);
- 	rtd->pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream_count =
-diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
-index bc27229be7c2..7c3784112ca0 100644
---- a/sound/soc/intel/boards/sof_es8336.c
-+++ b/sound/soc/intel/boards/sof_es8336.c
-@@ -332,6 +332,15 @@ static int sof_es8336_quirk_cb(const struct dmi_system_id *id)
-  * if the topology file is modified as well.
-  */
- static const struct dmi_system_id sof_es8336_quirk_table[] = {
-+	{
-+		.callback = sof_es8336_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HUAWEI"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "BOD-WXX9"),
-+		},
-+		.driver_data = (void *)(SOF_ES8336_HEADPHONE_GPIO |
-+					SOF_ES8336_ENABLE_DMIC)
-+	},
- 	{
- 		.callback = sof_es8336_quirk_cb,
- 		.matches = {
+I'm announcing the release of the 6.18.13 kernel.
+
+All users of the 6.18 kernel series must upgrade.
+
+The updated 6.18.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.18.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile                                                   |    2 
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi                   |   37 +++
+ arch/loongarch/mm/kasan_init.c                             |   78 ++++----
+ drivers/gpio/gpio-sprd.c                                   |    8 
+ drivers/gpio/gpiolib-acpi-core.c                           |    1 
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c     |   30 ++-
+ drivers/gpu/drm/amd/display/dc/dwb/dcn30/dcn30_cm_common.h |    2 
+ drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c    |    9 
+ drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c    |   18 +
+ drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c  |   16 -
+ drivers/gpu/drm/tegra/hdmi.c                               |    4 
+ drivers/gpu/drm/tegra/sor.c                                |    4 
+ drivers/iommu/arm/arm-smmu/arm-smmu-impl.c                 |   14 +
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c                 |   14 +
+ drivers/iommu/arm/arm-smmu/arm-smmu.c                      |   24 ++
+ drivers/iommu/arm/arm-smmu/arm-smmu.h                      |    5 
+ drivers/platform/x86/amd/pmc/pmc-quirks.c                  |    7 
+ drivers/platform/x86/classmate-laptop.c                    |   32 +++
+ drivers/platform/x86/panasonic-laptop.c                    |    4 
+ drivers/scsi/qla2xxx/qla_bsg.c                             |   28 +-
+ drivers/usb/serial/option.c                                |    6 
+ drivers/video/fbdev/riva/riva_hw.c                         |    3 
+ drivers/video/fbdev/smscufx.c                              |    8 
+ fs/f2fs/data.c                                             |   51 +++--
+ fs/f2fs/f2fs.h                                             |   66 +++++-
+ fs/f2fs/gc.c                                               |   24 +-
+ fs/f2fs/node.c                                             |   50 +++--
+ fs/f2fs/node.h                                             |    8 
+ fs/f2fs/recovery.c                                         |    6 
+ fs/f2fs/segment.c                                          |   88 ++++-----
+ fs/f2fs/segment.h                                          |    9 
+ fs/f2fs/super.c                                            |   26 +-
+ fs/f2fs/sysfs.c                                            |   62 +++++-
+ fs/romfs/super.c                                           |    5 
+ include/asm-generic/tlb.h                                  |   77 +++++++-
+ include/linux/f2fs_fs.h                                    |   73 ++++---
+ include/linux/hugetlb.h                                    |   15 +
+ include/linux/mm_types.h                                   |    1 
+ include/trace/events/dma.h                                 |   25 ++
+ io_uring/fdinfo.c                                          |   11 -
+ kernel/cgroup/cpuset.c                                     |    2 
+ mm/hugetlb.c                                               |  123 +++++++------
+ mm/mmu_gather.c                                            |   33 +++
+ mm/rmap.c                                                  |   25 +-
+ rust/kernel/device.rs                                      |    6 
+ rust/kernel/dma.rs                                         |    5 
+ rust/kernel/driver.rs                                      |   12 -
+ sound/hda/codecs/realtek/alc269.c                          |   13 +
+ sound/soc/amd/yc/acp6x-mach.c                              |   14 +
+ sound/soc/codecs/cs35l45.c                                 |    2 
+ sound/soc/codecs/cs42l43-jack.c                            |   37 +++
+ sound/soc/fsl/fsl_xcvr.c                                   |    3 
+ sound/soc/intel/boards/sof_es8336.c                        |    9 
+ sound/soc/intel/boards/sof_sdw.c                           |    1 
+ 54 files changed, 877 insertions(+), 359 deletions(-)
+
+Alban Bedel (1):
+      gpiolib: acpi: Fix gpio count with string references
+
+Alice Ryhl (1):
+      rust: driver: fix broken intra-doc links to example driver types
+
+Anatolii Shirykalov (1):
+      ASoC: amd: yc: Add ASUS ExpertBook PM1503CDA to quirks list
+
+Anil Gurumurthy (1):
+      scsi: qla2xxx: Fix bsg_done() causing double free
+
+Brahmajit Das (1):
+      drm/tegra: hdmi: sor: Fix error: variable ‘j’ set but not used
+
+Breno Baptista (1):
+      ALSA: hda/realtek: Enable headset mic for Acer Nitro 5
+
+Chao Yu (5):
+      f2fs: fix to check sysfs filename w/ gc_pin_file_thresh correctly
+      f2fs: fix to avoid UAF in f2fs_write_end_io()
+      f2fs: fix to avoid mapping wrong physical block for swapfile
+      f2fs: fix to do sanity check on node footer in __write_node_folio()
+      f2fs: fix to do sanity check on node footer in {read,write}_end_io
+
+Charles Keepax (1):
+      ASoC: cs42l43: Correct handling of 3-pole jack load detection
+
+Chen Ridong (1):
+      cpuset: Fix missing adaptation for cpuset_is_populated
+
+Daeho Jeong (2):
+      f2fs: support non-4KB block size without packed_ssa feature
+      f2fs: fix incomplete block usage in compact SSA summaries
+
+Danilo Krummrich (1):
+      iommu/arm-smmu-qcom: do not register driver in probe()
+
+David Hildenbrand (Red Hat) (1):
+      mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather
+
+Deepanshu Kartikey (2):
+      romfs: check sb_set_blocksize() return value
+      tracing/dma: Cap dma_map_sg tracepoint arrays to prevent buffer overflow
+
+Dirk Su (1):
+      ASoC: amd: yc: Add quirk for HP 200 G2a 16
+
+FUJITA Tomonori (2):
+      rust: device: fix broken intra-doc links
+      rust: dma: fix broken intra-doc links
+
+Fabio Porcedda (1):
+      USB: serial: option: add Telit FN920C04 RNDIS compositions
+
+Greg Kroah-Hartman (2):
+      fbdev: smscufx: properly copy ioctl memory to kernelspace
+      Linux 6.18.13
+
+Guangshuo Li (1):
+      fbdev: rivafb: fix divide error in nv3_arb()
+
+Jens Axboe (1):
+      io_uring/fdinfo: be a bit nicer when looping a lot of SQEs/CQEs
+
+Kailang Yang (1):
+      ALSA: hda/realtek - fixed speaker no sound
+
+Maciej Strozek (1):
+      ASoC: sof_sdw: Add a quirk for Lenovo laptop using sidecar amps with cs42l43
+
+Melissa Wen (2):
+      drm/amd/display: extend delta clamping logic to CM3 LUT helper
+      drm/amd/display: remove assert around dpp_base replacement
+
+Otto Pflüger (1):
+      arm64: dts: mediatek: mt8183: Add missing endpoint IDs to display graph
+
+Rafael J. Wysocki (2):
+      platform/x86: classmate-laptop: Add missing NULL pointer checks
+      platform/x86: panasonic-laptop: Fix sysfs group leak in error path
+
+Ricardo Rivera-Matos (1):
+      ASoC: cs35l45: Corrects ASP_TX5 DAPM widget channel
+
+Tagir Garaev (1):
+      ASoC: Intel: sof_es8336: Add DMI quirk for Huawei BOD-WXX9
+
+Tiezhu Yang (1):
+      LoongArch: Rework KASAN initialization for PTW-enabled systems
+
+Xuewen Yan (1):
+      gpio: sprd: Change sprd_gpio lock to raw_spin_lock
+
+Yeongjin Gil (1):
+      f2fs: optimize f2fs_overwrite_io() for f2fs_iomap_begin
+
+Yongpeng Yang (2):
+      f2fs: fix IS_CHECKPOINTED flag inconsistency issue caused by concurrent atomic commit and checkpoint writes
+      f2fs: fix out-of-bounds access in sysfs attribute read/write
+
+Zhang Heng (1):
+      ALSA: hda/realtek: Add quirk for Inspur S14-G1
+
+Zhiguo Niu (1):
+      f2fs: fix to add gc count stat in f2fs_gc_range
+
+Ziyi Guo (1):
+      ASoC: fsl_xcvr: fix missing lock in fsl_xcvr_mode_put()
+
+gongqi (1):
+      platform/x86/amd/pmc: Add quirk for MECHREVO Wujie 15X Pro
+
 
