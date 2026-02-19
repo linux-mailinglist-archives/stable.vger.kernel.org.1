@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-217468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217469-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aIl4LElFl2lMwQIAu9opvQ
-	(envelope-from <stable+bounces-217468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:15:53 +0100
+	id uNuCKmZFl2lMwQIAu9opvQ
+	(envelope-from <stable+bounces-217469-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:16:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1831516109D
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:15:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3171610B2
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:16:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F239308A8A1
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:13:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D63B30977E6
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A6734DCD1;
-	Thu, 19 Feb 2026 17:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF63834D4C2;
+	Thu, 19 Feb 2026 17:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BH7VRoc1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jR00ZLgb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD7434D922
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 17:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652C4266EE9
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 17:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771521205; cv=none; b=NVbUR/9tVrrwC5Q1Nc29CouAAajN+tZHMoPXkH69i8yZDoRnLe+Nv6OFxIIRrSiHe3DbIqm0oRkpl+aDcN/TciZjUl8KLTnud7JRS3RyshqYapEwOQEfsVaiJHpdpoRGG1KFAWc3Zj9HydzJ2jDsxhHD0bOXBz/Z4UR+39J6gnI=
+	t=1771521210; cv=none; b=WpfgySFIff4neWyz3diUPCMTVz7HiGkQA/qOOJ5nikUU3E/33UiS5p8I4E/DcItC6C6tk95zVR/zugIy3kPE2mlBHQ+YDcR/ikHyK495kJ/dPuDUo4BfrU5Maqr5yL2nGdDTCh9A4IXzqjVbkNBacYrY9U/l1XjHfxkX9ScP5pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771521205; c=relaxed/simple;
-	bh=FgQfbLiyDT66S+sNI1wE/oslfO+pvzybNJFnYppNieM=;
+	s=arc-20240116; t=1771521210; c=relaxed/simple;
+	bh=YY7i+ekw8WEClpFqVZfbZbIPcOFXG9mqoVtYSHhdgrE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PSEJo/gbYG4xX2iZye8SA+wkmlGbql6o/PSl7AKLRNNZatGIuiDgdZFmXdm54Af460rUNuLsiYrgSJ9uWdrSz1R+Hg70ltmbgbDMP9sBNeUpgujm3zvPfysDproBQhE3IY8nEIstp3I9ry3QXo2oPStpyFuE4AQ73iu9uRMpgmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BH7VRoc1; arc=none smtp.client-ip=209.85.210.170
+	 MIME-Version; b=e7UvwuErHr6vDkVSArLCuU5r+ELc0IEYFYQOctY9gsniIqA1NameGt5iTZcSx2H5BdoYq1A0q0TV4S8yi3c+3pGeRHDiwKZ60jSI0khycHVmk0pJMl/DAIMQXb+7l8Zx7cmyQ5Nc15uVLoxsf8rA3n3T0/nDcovS5F//G1YnbyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jR00ZLgb; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-82418b0178cso700779b3a.1
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 09:13:24 -0800 (PST)
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-823081bb15fso661536b3a.3
+        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 09:13:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771521204; x=1772126004; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771521208; x=1772126008; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=89KuTptWUmkm9h+FhspeGpsBdyDf36NNXIP8b7hhqek=;
-        b=BH7VRoc1sc/CwuoO/dLbXTiwZb06cO+UinnRhpzQQzplqMSCxnzOaboHEfeop65UOv
-         gnQq0L/DyPWVNYaIhlhQVQHYOtm5c0+THmf+fGS5kuWN3FDN+aBSVVp8mjRGBsZdvgNQ
-         crFOQUGvnb7oW1aWIFOvtiHaK1/+y9tPXDM2Jp2TU5lFPW6MpfP2uX3DyH9bHKCR8P/8
-         1rRElxM4+lpNEhFGPIUHnwH5uGPKbvasBRXchUGCj7NKeFNmK7E0tzbdY5znZ924KDIJ
-         52eigSOJlS6C6njPOfINNVvBMl4St+KFab7fqraAHwRDDj7AaktvyRLhmD1BiEsaZJjS
-         OW8Q==
+        bh=Lru4V+cwKFfxLK/nzfZUd/f7wkQ+5dEE9KWoaatQVPo=;
+        b=jR00ZLgbANM9QQcV6D1qJrZXE56WthEzEZ/6cBIiXYM3oppVe7F9M6qiq0g1aTyy2U
+         9RU3gzgybGUrlFOclauBaMFM8Pjri1YBXFs6zeIUMulSYXvkaxlRxVNUEqXz84QS1hlh
+         ei43FJYHkEf/s/LyLMUYeAJT6UXdpxzPc0EFg273eS9dm2LNlyQzFehc+3Di0C8MLDdc
+         LAdN6Nw14anWlSnNvDX90x23v4ntd2aZIhv/nj09v35hLvtXYDEGcTHweSxR+OIcqXy+
+         IUKj2uUNw0lwKvRbXY+z3/nqZEX+4oBXsmBsZmSSfwASZV5ZqWS++Oaj+JPn6iOUE0y4
+         uN5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771521204; x=1772126004;
+        d=1e100.net; s=20230601; t=1771521208; x=1772126008;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=89KuTptWUmkm9h+FhspeGpsBdyDf36NNXIP8b7hhqek=;
-        b=FF32HhSkxT23AHWqffO51tMdtjSse6Oh0Pg1ls9D4WwDZzPe/B9zSWTQV+2EgY9Y3t
-         rM5g+6vZ0MUNrhLXNMgFj3FVoeMZMP3sy7zXfjoEicfhHI9pGswE8vP0XuCk2+xSP4bL
-         0D6jbkEW/hYObQnn+G+GXLLLRNB+344v+ooKFWJDDmGSiOpGcX6+t+iquaEHlSk1Nxsg
-         Wsc5Bs7SbMDWp1bFRJ3zpzItO5QjqD+lp8rrkdKhJQJ4Xpj3+eOxeDf3PQBVdz10mHZ/
-         3h6oE7Czv5wguPhWV2U+qmIFG7Xk8L3PdapzTIOCqJ7aqM6Fykkb/LMGp3BLDYCVoz7t
-         zvSA==
-X-Gm-Message-State: AOJu0Yy2V2QYlmjC6O4+E9SB3SC2Ks1QCDS8kL9UAxvGQcspHuva2o18
-	tiZviIZ+YwwgssopF7xEmEizoyOHwefz49yaXGyEpFla+HWnrNtAB+LL34a+tBP/
-X-Gm-Gg: AZuq6aLOJmJX8pWuhKSfX44Hjif/dG6igLgF1k2Wuvu0wA8yPB2Y16Z6oc043jRevI0
-	XpjxTOQYn7KOjf+VJM3moQRL5iVsvcaKg34wz0R+zRtZpRjSNktkE423CDCJbwOlm8qC77NIdym
-	ruwoBcfuPodkprem1Gc+rwmaPuBvKF27kTbgGBFmq07pzXcAnInUz00AjU3uQObstexZaGz8TD0
-	JtcGv09Tv604I4zKGLFSjEuPLlkWG/jWQJ2d3NBwkL4xk5zCOl+C1iHgipDQNinFmRHmgBs1oXq
-	DrPbokc/AZc/xOnZS7VmFajmFjKTZpcsWCf3VY9xax6Z5ehBdgvToG2s05w8C6UXphD+qygfKxk
-	cGnvDxe/0wDGEetN4cyVUSFs9SzfuRBZMmdKv8RRKFtlcX83pgQPoyjNydPFPHSsplICcCsBTaq
-	98BlcM2+PBPsC3omNNoHascjy/MxUhqLKMZI1TY28mWep0u+e8OQ==
-X-Received: by 2002:a05:6a21:62c8:b0:366:5332:466 with SMTP id adf61e73a8af0-394fc2fd726mr5605743637.53.1771521203784;
-        Thu, 19 Feb 2026 09:13:23 -0800 (PST)
+        bh=Lru4V+cwKFfxLK/nzfZUd/f7wkQ+5dEE9KWoaatQVPo=;
+        b=Jnd6d9DwfralPUGRhJYRfXN0JGgOXxfxeu4/VwIJ5DDbzJxK4I7lL/dRlGLCerBH8f
+         raRHGUIkZXVveHf/YI09xt7csIjXw/3XnMixzAIpcdWmovRJXWgywtBaMs+NRpppAbd0
+         QSAceh8Bq9U6XN8yk8plYd5x+9Yql5VCn89IzIz+2mu4tcGo3bSZd93mhNZHqs8MVhsh
+         F5nBDW/gFKr62/HaWw3AVqmKicJYRxLBvY4lpUneZ1Ul/llDkLfuWCLWEAaItvu2COUg
+         8XVSBstIBj2flOKe+ZqNUpmBQhLoFdr87WehnupMio/qUe+KKaHAOIn9F8M0aRQwnsEH
+         vnVw==
+X-Gm-Message-State: AOJu0YyCUShf+/jfUO/1UiQAULxWkMXymytQ50qdpFGkJ3oCt7MxBfy+
+	8OcrRBjSrcLfRPY9u/3fVRXd1GZMTUhJZGf9sHzzMav083YRoG1Tm49LCgTb2SQm
+X-Gm-Gg: AZuq6aKHrfYvWK+MbWHOFP5aOwpVAn8m6LI1lxfFwzIxc2w99Ki+jP9TSceNLt+S6Wm
+	4Gb6hTiD5m3lvjJMkV3crc/zk+nvWwaXc/UvspncNdWp/dH+LiwAgppHM+Gz/dEgXAxiKZ8AIy5
+	3i9mzqUykR+dKsNHpWAjqctRxnZXiA+Er9RymC7u/MkKT4wideMd1inqbvJ5qVinG8QSUEqMPW4
+	mr/nFsXb4ToQfTHtUBet+NA5LDXfP5wbBgVJX24UGzi4aGmmY2NQXMksyTFgUJ8QA8PPHKU+R/u
+	YoP/X+HNklR1Il5d6y3NnZFAapYcies9uurzHzISyZg9ZkYhJAOnBe9BHSwzXxV2Gq9mSG0GOOD
+	5hsjZxazbyEzHALKRF83JpC3ULNa35Wmhpu9rBsJtW/j7xiQ8y8nh5GXOFY57y7bvhsTmIqcGVg
+	wQlbBiM3RnTRTUQSiFNuGZldpn51sF6jXEq4uzoQB4Pb2nw+ZCTg==
+X-Received: by 2002:a05:6a21:4c03:b0:38d:e9e8:25e0 with SMTP id adf61e73a8af0-39483897793mr17324026637.20.1771521208129;
+        Thu, 19 Feb 2026 09:13:28 -0800 (PST)
 Received: from name2965-Precision-7820-Tower.. ([121.185.236.165])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6e532fa2e5sm15895002a12.26.2026.02.19.09.13.20
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6e532fa2e5sm15895002a12.26.2026.02.19.09.13.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Feb 2026 09:13:23 -0800 (PST)
+        Thu, 19 Feb 2026 09:13:27 -0800 (PST)
 From: Jeongjun Park <aha310510@gmail.com>
 To: stable@vger.kernel.org
 Cc: gregkh@linuxfoundation.org,
@@ -97,9 +97,9 @@ Cc: gregkh@linuxfoundation.org,
 	aha310510@gmail.com,
 	linux-staging@lists.linux.dev,
 	Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH 5.10.y 02/15] ARM: spear: Do not use timer namespace for timer_shutdown() function
-Date: Fri, 20 Feb 2026 02:12:57 +0900
-Message-Id: <20260219171310.118170-3-aha310510@gmail.com>
+Subject: [PATCH 5.10.y 03/15] clocksource/drivers/arm_arch_timer: Do not use timer namespace for timer_shutdown() function
+Date: Fri, 20 Feb 2026 02:12:58 +0900
+Message-Id: <20260219171310.118170-4-aha310510@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260219171310.118170-1-aha310510@gmail.com>
 References: <20260219171310.118170-1-aha310510@gmail.com>
@@ -128,7 +128,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-217468-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217469-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -140,20 +140,20 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,arndb.de:email,linutronix.de:email,roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linaro.org:email]
-X-Rspamd-Queue-Id: 1831516109D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,roeck-us.net:email,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 0B3171610B2
 X-Rspamd-Action: no action
 
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-[ Upstream commit 80b55772d41d8afec68dbc4ff0368a9fe5d1f390 ]
+[ Upstream commit 73737a5833ace25a8408b0d3b783637cb6bf29d1 ]
 
 A new "shutdown" timer state is being added to the generic timer code. One
 of the functions to change the timer into the state is called
-"timer_shutdown()". This means that there can not be other functions called
-"timer_shutdown()" as the timer code owns the "timer_*" name space.
+"timer_shutdown()". This means that there can not be other functions
+called "timer_shutdown()" as the timer code owns the "timer_*" name space.
 
-Rename timer_shutdown() to spear_timer_shutdown() to avoid this conflict.
+Rename timer_shutdown() to arch_timer_shutdown() to avoid this conflict.
 
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
@@ -161,56 +161,57 @@ Tested-by: Guenter Roeck <linux@roeck-us.net>
 Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://lkml.kernel.org/r/20221106212701.822440504@goodmis.org
-Link: https://lore.kernel.org/all/20221105060155.228348078@goodmis.org/
-Link: https://lore.kernel.org/r/20221110064146.810953418@goodmis.org
-Link: https://lore.kernel.org/r/20221123201624.513863211@linutronix.de
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lkml.kernel.org/r/20221106212702.002251651@goodmis.org
+Link: https://lore.kernel.org/all/20221105060155.409832154@goodmis.org/
+Link: https://lore.kernel.org/r/20221110064146.981725531@goodmis.org
+Link: https://lore.kernel.org/r/20221123201624.574672568@linutronix.de
 Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 ---
- arch/arm/mach-spear/time.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/clocksource/arm_arch_timer.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-spear/time.c b/arch/arm/mach-spear/time.c
-index e979e2197f8e..5371c824786d 100644
---- a/arch/arm/mach-spear/time.c
-+++ b/arch/arm/mach-spear/time.c
-@@ -90,7 +90,7 @@ static void __init spear_clocksource_init(void)
- 		200, 16, clocksource_mmio_readw_up);
+diff --git a/drivers/clocksource/arm_arch_timer.c b/drivers/clocksource/arm_arch_timer.c
+index fee1c4bf1021..ddcbf2b19651 100644
+--- a/drivers/clocksource/arm_arch_timer.c
++++ b/drivers/clocksource/arm_arch_timer.c
+@@ -687,8 +687,8 @@ static irqreturn_t arch_timer_handler_virt_mem(int irq, void *dev_id)
+ 	return timer_handler(ARCH_TIMER_MEM_VIRT_ACCESS, evt);
  }
  
--static inline void timer_shutdown(struct clock_event_device *evt)
-+static inline void spear_timer_shutdown(struct clock_event_device *evt)
+-static __always_inline int timer_shutdown(const int access,
+-					  struct clock_event_device *clk)
++static __always_inline int arch_timer_shutdown(const int access,
++					       struct clock_event_device *clk)
  {
- 	u16 val = readw(gpt_base + CR(CLKEVT));
+ 	unsigned long ctrl;
  
-@@ -101,7 +101,7 @@ static inline void timer_shutdown(struct clock_event_device *evt)
+@@ -701,22 +701,22 @@ static __always_inline int timer_shutdown(const int access,
  
- static int spear_shutdown(struct clock_event_device *evt)
+ static int arch_timer_shutdown_virt(struct clock_event_device *clk)
  {
--	timer_shutdown(evt);
-+	spear_timer_shutdown(evt);
- 
- 	return 0;
+-	return timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_VIRT_ACCESS, clk);
  }
-@@ -111,7 +111,7 @@ static int spear_set_oneshot(struct clock_event_device *evt)
- 	u16 val;
  
- 	/* stop the timer */
--	timer_shutdown(evt);
-+	spear_timer_shutdown(evt);
+ static int arch_timer_shutdown_phys(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_PHYS_ACCESS, clk);
+ }
  
- 	val = readw(gpt_base + CR(CLKEVT));
- 	val |= CTRL_ONE_SHOT;
-@@ -126,7 +126,7 @@ static int spear_set_periodic(struct clock_event_device *evt)
- 	u16 val;
+ static int arch_timer_shutdown_virt_mem(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_MEM_VIRT_ACCESS, clk);
+ }
  
- 	/* stop the timer */
--	timer_shutdown(evt);
-+	spear_timer_shutdown(evt);
+ static int arch_timer_shutdown_phys_mem(struct clock_event_device *clk)
+ {
+-	return timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
++	return arch_timer_shutdown(ARCH_TIMER_MEM_PHYS_ACCESS, clk);
+ }
  
- 	period = clk_get_rate(gpt_clk) / HZ;
- 	period >>= CTRL_PRESCALER16;
+ static __always_inline void set_next_event(const int access, unsigned long evt,
 --
 
