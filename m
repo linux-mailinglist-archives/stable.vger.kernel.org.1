@@ -1,200 +1,288 @@
-Return-Path: <stable+bounces-217440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGmNIo4Rl2n7uAIAu9opvQ
-	(envelope-from <stable+bounces-217440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 14:35:10 +0100
+	id YPAsNzscl2ktuwIAu9opvQ
+	(envelope-from <stable+bounces-217441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 15:20:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F4E15F1E2
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 14:35:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC0115F6B9
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 15:20:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 234AE301F31D
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 13:35:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 888503021E5E
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 14:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53034338596;
-	Thu, 19 Feb 2026 13:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2AB41DE3A4;
+	Thu, 19 Feb 2026 14:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Y4z9GCJn";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IQRvx1uo"
+	dkim=pass (2048-bit key) header.d=linbit-com.20230601.gappssmtp.com header.i=@linbit-com.20230601.gappssmtp.com header.b="wyO1xh1b"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20221308F33
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 13:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F472FE074
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 14:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771508107; cv=none; b=rKSU+Q9aMhzk5oe3EK65ORTIF1t6s1DlC3sDDVzCdmXjp/IBG1lYPuSqlS7wOLVjNOb5A+/iSzUUjg6ydcG1qROA21YoaISmb7x8/WCyJmbxE4WxI0J/xhnLibOCL+Yv3i6G5P0jFEeGBvVQLNI+tbp+8B12rN9Y3N6Qiu9J8o0=
+	t=1771510824; cv=none; b=WI4n/jxKhVZBwnpLkIPesWzIzxt3SgAEIUEKj0HYxcI7/kyc76eWMWrTbb8ykuAXiDDxP1TvFz4jt7oJ6TY5amxRlYjveIOaWO7iCiKZXghTtLo0/LXwGfCZDjnVrIZdnERovO9PCeff4bZbri0B1RG/vZY7g+grHWquwmlZa5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771508107; c=relaxed/simple;
-	bh=Zroplj6cKweV00qBUf/DfTbYNXFxZiO96V0pSI5AuTk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gWssxanGRuBqiVVSfZHXm8wsRwWegfEnIuG//tamywvB3EFdE8NL0mN4//eRtaMQsuYjNlOoxx5mmmtKmloUvFXadb5NOLJHAIl/mqYoslH6jGTRtDxbY+Q1n1Uw01yEidGkXnv8U55QMYcz5ONK3KoqsuIeuKY0/oH+AaDfQSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Y4z9GCJn; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IQRvx1uo; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61JCOUI1408538
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 13:35:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	uC7s8FOKOc4QcSg/6dSZjoiAxg49acrq24OqsiqPGu8=; b=Y4z9GCJntT7Upwi9
-	2gxU9QMbAknnA3JdKLhsH2LZjLkIGWWLsweitBpQpmz+fHNlG21GSVlSzkJAP2WV
-	MPPVApekODBuKVJcxLQRkjKogHFRiQ6a5LSAvCIlFdTPdBEn+WehhktCKlqwNv+c
-	RFq8nNnD+esrQsLf4vUtll8xUKDTs4u+9YwdwK8s4mvyfLOkO23zhASPqXagtDGw
-	EjDy5r0/cU8R+ZfsDD32PLlcnfKyWVuaFVWWGpGusqHTV5bIpTtutf/q9QhdTF3z
-	WlGJmdbRnl0vm/7j0aaFw57GbLC1riWL65Xekujzj/u8jD0vyesDlomkgVhOV+ZG
-	jHpy5g==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ce2geg6gx-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 13:35:05 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8cb399597fbso69912585a.3
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 05:35:05 -0800 (PST)
+	s=arc-20240116; t=1771510824; c=relaxed/simple;
+	bh=sCDkI7ENHQnXmpAh3KuSLSxg0XzvGEd48fbJO0pMl7o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aERB0JYOTSVItHZftYPu5Q8MKmdSGjEebLBkVBEnZCm4qDEktulv+HALYk3h3lAtGzTtFij5NZcBvwP7AcI4WkU+rinB2WPZM6jXXGHmfVqJbVhsHpzBakyJC36c1EN88oyNUPkkTXtcKZmB+Uu+0ThkQcvF7LOgynpNMzML2Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20230601.gappssmtp.com header.i=@linbit-com.20230601.gappssmtp.com header.b=wyO1xh1b; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4376de3f128so682061f8f.0
+        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 06:20:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771508104; x=1772112904; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uC7s8FOKOc4QcSg/6dSZjoiAxg49acrq24OqsiqPGu8=;
-        b=IQRvx1uoKnlU6b591TEF+rXRYBNpdF2zuUMlFQGtMovvvH3dEmy8wpxbiv354Aerap
-         a6Tlk97O18tbLIM8N7JQgkM9KGA2dGlz826JvjzFEguj6/toC+YxytKT7fo8WNsuEtNf
-         0oUI4noyheHEFogitMLKKdOlsgKPnTxoMXO9y5NKiCFIOoFE9BKn1ayVe+p9c1piaiTu
-         tKurJtqBU41Pn0avW/xs36nRfmqNMMmE6ON4O+LyaBsquNdN1I0C0gQSYmuTzyAA1AH4
-         5wcr2Zrqd6L6XtoAf1v7lEUv0v7pBcf9j7gfH3O8Rmmytq8VfJsJ7mZSB99QJShVdJiI
-         LtJA==
+        d=linbit-com.20230601.gappssmtp.com; s=20230601; t=1771510821; x=1772115621; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5WPV5zc+4pTYNW/WHh9z0i95W/Lb1GJgH88opLKR1Gc=;
+        b=wyO1xh1bbqeqBY+KIqukgTEM6kchR+ZVBd/FALdRv5m7+YXXQnkMDM5o2cHAZTgKCC
+         RDmAgDO4zOSW/QxhgW4GxHF1J7TCG2aFQRm0/+0DRwrtagY52KqtNcteEk8ypTy4clb+
+         X3/b9tNZk754jVwBMRsna3iB7+s4XgZRD2pZW4yilyNDkCC5uAAx1xro1ownVuXoNMJo
+         BtQAeYCQk94NeA0pjzsCuLXuGw5q/TJ+HQhCJQIZbmcKUd0H1iTcrZoF+GgGU6AzuYYx
+         qPBD9cqZ0LSbsnIljmVLJpdTWocjKKz9HWqcqeHfF9TbyEnfCxxUchmp+PvLWP3B4Ot3
+         xepw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771508104; x=1772112904;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uC7s8FOKOc4QcSg/6dSZjoiAxg49acrq24OqsiqPGu8=;
-        b=TkskGa/YftUn1kYWj4x1LvNINEjb2T9c6pOz19dmQMlkK23+t7C8eqeaQaQva077IV
-         1+GURY6jU5fsvePGoVc47kN5x2N/w/V6cgQA55EzRbuu46i1HoS3WBzrRErveGzfEyYo
-         L32iSVm7/r3kMUzWvZnKK1n15Af7zclNGoMMu3c9MLuhlgoYHmHd9Y95y/Gs4ejzXCKE
-         UVPuGfLkBFTmf3i7LGLJhtb1Y4mX8BjvU+oavvyjf4ZE4YSQYUyUWfKW56gnWq092Xcd
-         H3PEuamviuoevzLWVPvcpIU+0nGsTb6WYU1yybz09w8jhlMePlqGb+NCteqcsoWuRnKh
-         cmTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXGRPU1wXvT+HENgi1+RQNbZ73u7Xd0HiE9UQVTuVeTv/ugD17315xPY0np7wXRAJdF1WRM5/c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9ElmpO4Aj7sGTMQrIe1jFdSs/nINRbmBzg9awfCSP8UyZ1fFA
-	kIu9yATnThF6GS5ekX3SDUTH35pkFwrKlL3pOA/PBZYqZ5KFoLHnILONTpnsk9pQnKgiBOEtZIt
-	4VsmZy49LmBHHO3MMGPYSigaF8JtPAtkk+vieVqt6LBOEW7uESwJFo1MawCQ=
-X-Gm-Gg: AZuq6aKzqeEqJzd2LVJQ+v/5VPf9r+DV6BQSLEZQfWzHj9+RYAe4lB6v+7NeedNXwbY
-	b/BdMOhOSPSBcOFrEHEPXNzUPnTvuFEloQpn14zzuKog2r/HUASb83pyXecTJ+Yb7T0apw9vlGm
-	NM8CkkCrIygc7xGwdbkFLMdKGEYE7qbcnFJdwJV/z+n6O7yHGXaR2aRr7vxurWIA63kDgUNuP/b
-	jGMdk8EZz8OkJIKzXlA5hUTaHUiGxnxRWnyTZuWK+OgD4zqJYQdHg2BO8O3E4Mlpcq1OXE/4+qo
-	nu3r59mhko3EY2V0YEW4AI2CV0GpBWXz1vREwFRUmdn5IeNzJ7JslapmqFFLVL2Ezudg64g57X2
-	OiSulzotRMhuBIP2eiw/Hn6VC3C1dgmLp+uKcH0Q3HDBsWh9mD/3ihzGjQooDjm7r2YePOfAxZq
-	yv5VU=
-X-Received: by 2002:a05:620a:708e:b0:8c6:ab77:f95e with SMTP id af79cd13be357-8cb4091adb2mr1953560185a.11.1771508104344;
-        Thu, 19 Feb 2026 05:35:04 -0800 (PST)
-X-Received: by 2002:a05:620a:708e:b0:8c6:ab77:f95e with SMTP id af79cd13be357-8cb4091adb2mr1953557485a.11.1771508103863;
-        Thu, 19 Feb 2026 05:35:03 -0800 (PST)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8fc76c6b8bsm552980666b.65.2026.02.19.05.34.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Feb 2026 05:35:01 -0800 (PST)
-Message-ID: <3ee0a0b8-7070-4317-b8fb-20cb7ab467c0@oss.qualcomm.com>
-Date: Thu, 19 Feb 2026 14:34:57 +0100
+        d=1e100.net; s=20230601; t=1771510821; x=1772115621;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5WPV5zc+4pTYNW/WHh9z0i95W/Lb1GJgH88opLKR1Gc=;
+        b=EM/SOJ3eNtr9OB+teb7ZygsbrUPmBwDJ4R15yXbZJDAPm61d8viaqjuGjDTKmYcBot
+         k0xzGmbSf3p4O+UvY+3OXdLim0n2NkTySUlw3Xsd4Lfzr7mFvm7GWX9Hi/lwKNAcl99N
+         SyyLk90q6QHM78Jgo21YxsgCkumOXCQs2ot41AI9w60Oedi3fOSnj7gEDbsaxm18PbVI
+         JKpuWpKLN57czW8E9MT9k/VFaIA7//BELGrex+oFefpr236tkiy548hD1K8ulMnXbNOe
+         aRU7p6WoxU8XWuHRTo7PBNuqR0VIDHTUN1Gr01IMCXyG5gOL1eijTQ5y62qH8L9VqOGU
+         jpEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhE7BfX0x0ZtJR+zRDt5jE9urWH975IiVIqbN/xw8szF5+O/frWLWbNIzVEYtID5W0MMm3M6c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/yQLa5OA59t++eCmlm/KxSY2ZABSXIaJELTgaD3Gna7o33cTI
+	yvtoCgbaeljSCJfBoLj6vBjJ/NjCMWi8KGn6MZF/IiQPFSS99x9ZnvGnkTuGKRNHaM0=
+X-Gm-Gg: AZuq6aL19RxleuJsk5jkM87flftfmjDahjbXN6TENDysu/W8ptpmgscLm67aARaQRhb
+	hrVEPUPg1S9oAPCnZQIk3jJg1TyVLeXHN20YLbMhfXVXYBl9+JUQXwLZh66ITU0oKf1bQ+3LMYn
+	Ikga7hilVVVMZ4YMN6An3iLEhrUh9w4bzVSMAZ+MjlodGfD5PB+itUQpSFOfC7bWRmeK4kocPzF
+	bv/G1EW45mDzO5QzQxdfVKo8TT1V1Fmf28fAVwciSyzoGdIslNoNY9Ee2Wpf9WlstSqQphdTM8I
+	uVuA/vcs4FNQk6QvdqArDDBFW6TI/5eCHWKw1JXAgukv/lbfd0sEjvWt365C5iOsR74KKcLYSLh
+	Ho9sSdn8S6lg+WJ4ATT3UE76MpDk0wWzYgETOIBks+fo1Q4v9PLNywi+UObmvziLRGMQ/1HYOOn
+	oAyOzkkSeK17Jm5pUFKXT2XAQZc5fgbYkapC6ak3Ri8LCKz4xjZovfQ2Arij8hkrvx0fA1tLguN
+	+guhD7VzVRA7oxlJXbyeLJlu5oex9sx+N4=
+X-Received: by 2002:a5d:5d83:0:b0:437:6b6e:d114 with SMTP id ffacd0b85a97d-4379db9800dmr29808717f8f.30.1771510820603;
+        Thu, 19 Feb 2026 06:20:20 -0800 (PST)
+Received: from localhost.localdomain.com (62-99-137-214.static.upcbusiness.at. [62.99.137.214])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796a5ac7csm47122906f8f.7.2026.02.19.06.20.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Feb 2026 06:20:20 -0800 (PST)
+From: =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Philipp Reisner <philipp.reisner@linbit.com>,
+	Lars Ellenberg <lars@linbit.com>,
+	drbd-dev@lists.linbit.com,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lars Ellenberg <lars.ellenberg@linbit.com>,
+	stable@vger.kernel.org,
+	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
+Subject: [PATCH] drbd: fix "LOGIC BUG" in drbd_al_begin_io_nonblock()
+Date: Thu, 19 Feb 2026 15:20:12 +0100
+Message-ID: <20260219142012.97756-1-christoph.boehmwalder@linbit.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4
-To: Abel Vesa <abel.vesa@oss.qualcomm.com>, Vinod Koul <vkoul@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-References: <20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-v1-1-f136505b57f6@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-v1-1-f136505b57f6@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=Z5/h3XRA c=1 sm=1 tr=0 ts=69971189 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=hrNMlQYg83u7S6_LzQYA:9 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-GUID: 8Z6b7HaxhI95Ubd_lo-03JSLn9gWu7WE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE5MDEyNCBTYWx0ZWRfXxNZMUlDl/t3j
- Kd/c6N4Ru+0iJLfug0AB7etLIuo8lvtCrCM3GRmcRyEKC874IBZcbBcjkQL/D0rzp/LClyOJchE
- vQKr5bbjHrVvTKVL6jaXHjr7/AKVGNo+qQM33zRMwj541vsrFYL+aZL9eSPACxFK/7NWCGwfh6r
- rO6l+WqZW/c0HTIhcpHQUvZNnmiI7TBcjd9H82w2r+1FqKENdJd2e/vqdTum6mD7C94sHg/ZK1I
- mERg2PIPy5UIu5/ZhmAZrtx7pXDJloVAr2BnoFZP/160SEC+O/v7r0taDHAv2Odr7YCFEkerTvr
- t6R7b2LuD1gArUIkacrNLVYjZHRXNut3aO54gO98J4BTYhFMoafzx5B/2PJA5eUHfRLRPlDGqKs
- ldMNMRGOql4zTCnnVMKYW+3GMdQcrp5ztmIzAFizilAeSHf4Re2W/gkhbN+R70OfcR9MN5FIRW2
- SSGetsJ+lFsnJUcyZUQ==
-X-Proofpoint-ORIG-GUID: 8Z6b7HaxhI95Ubd_lo-03JSLn9gWu7WE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-19_04,2026-02-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 bulkscore=0 adultscore=0 priorityscore=1501
- malwarescore=0 lowpriorityscore=0 phishscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602190124
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.56 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linbit-com.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[linbit.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217440-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[konrad.dybcio@oss.qualcomm.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217441-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linbit-com.20230601.gappssmtp.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[christoph.boehmwalder@linbit.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: D9F4E15F1E2
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linbit-com.20230601.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4AC0115F6B9
 X-Rspamd-Action: no action
 
-On 2/19/26 12:11 PM, Abel Vesa wrote:
-> According to internal documentation, on SM8650, when the PHY is configured
-> in Gear 4, the QPHY_V6_PCS_UFS_PLL_CNTL register needs to have the same
-> value as for Gear 5.
-> 
-> At the moment, there is no board that comes with a UFS 3.x device, so
-> this issue doesn't show up, but with the new Eliza SoC, which uses the
-> same init sequence as SM8650, on the MTP board, the link startup fails
-> with the current Gear 4 PCS table.
-> 
-> So fix that by moving the entry into the PCS generic table instead,
-> while keeping the value from Gear 5 configuration.
-> 
-> Cc: stable@vger.kernel.org # v6.10
-> Fixes: b9251e64a96f ("phy: qcom: qmp-ufs: update SM8650 tables for Gear 4 & 5")
-> Suggested-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-> Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-> ---
+From: Lars Ellenberg <lars.ellenberg@linbit.com>
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Even though we check that we "should" be able to do lc_get_cumulative()
+while holding the device->al_lock spinlock, it may still fail,
+if some other code path decided to do lc_try_lock() with bad timing.
 
-Konrad
+If that happened, we logged "LOGIC BUG for enr=...",
+but still did not return an error.
+
+The rest of the code now assumed that this request has references
+for the relevant activity log extents.
+
+The implcations are that during an active resync, mutual exclusivity of
+resync versus application IO is not guaranteed. And a potential crash
+at this point may not realizs that these extents could have been target
+of in-flight IO and would need to be resynced just in case.
+
+Also, once the request completes, it will give up activity log references it
+does not even hold, which will trigger a BUG_ON(refcnt == 0) in lc_put().
+
+Fix:
+
+Do not crash the kernel for a condition that is harmless during normal
+operation: also catch "e->refcnt == 0", not only "e == NULL"
+when being noisy about "al_complete_io() called on inactive extent %u\n".
+
+And do not try to be smart and "guess" whether something will work, then
+be surprised when it does not.
+Deal with the fact that it may or may not work.  If it does not, remember a
+possible "partially in activity log" state (only possible for requests that
+cross extent boundaries), and return an error code from
+drbd_al_begin_io_nonblock().
+
+A latter call for the same request will then resume from where we left off.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Lars Ellenberg <lars.ellenberg@linbit.com>
+Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+---
+ drivers/block/drbd/drbd_actlog.c   | 53 +++++++++++++-----------------
+ drivers/block/drbd/drbd_interval.h |  5 ++-
+ 2 files changed, 27 insertions(+), 31 deletions(-)
+
+diff --git a/drivers/block/drbd/drbd_actlog.c b/drivers/block/drbd/drbd_actlog.c
+index 742b2908ff68..b3dbf6c76e98 100644
+--- a/drivers/block/drbd/drbd_actlog.c
++++ b/drivers/block/drbd/drbd_actlog.c
+@@ -483,38 +483,20 @@ void drbd_al_begin_io(struct drbd_device *device, struct drbd_interval *i)
+ 
+ int drbd_al_begin_io_nonblock(struct drbd_device *device, struct drbd_interval *i)
+ {
+-	struct lru_cache *al = device->act_log;
+ 	/* for bios crossing activity log extent boundaries,
+ 	 * we may need to activate two extents in one go */
+ 	unsigned first = i->sector >> (AL_EXTENT_SHIFT-9);
+ 	unsigned last = i->size == 0 ? first : (i->sector + (i->size >> 9) - 1) >> (AL_EXTENT_SHIFT-9);
+-	unsigned nr_al_extents;
+-	unsigned available_update_slots;
+ 	unsigned enr;
+ 
+-	D_ASSERT(device, first <= last);
+-
+-	nr_al_extents = 1 + last - first; /* worst case: all touched extends are cold. */
+-	available_update_slots = min(al->nr_elements - al->used,
+-				al->max_pending_changes - al->pending_changes);
+-
+-	/* We want all necessary updates for a given request within the same transaction
+-	 * We could first check how many updates are *actually* needed,
+-	 * and use that instead of the worst-case nr_al_extents */
+-	if (available_update_slots < nr_al_extents) {
+-		/* Too many activity log extents are currently "hot".
+-		 *
+-		 * If we have accumulated pending changes already,
+-		 * we made progress.
+-		 *
+-		 * If we cannot get even a single pending change through,
+-		 * stop the fast path until we made some progress,
+-		 * or requests to "cold" extents could be starved. */
+-		if (!al->pending_changes)
+-			__set_bit(__LC_STARVING, &device->act_log->flags);
+-		return -ENOBUFS;
++	if (i->partially_in_al_next_enr) {
++		D_ASSERT(device, first < i->partially_in_al_next_enr);
++		D_ASSERT(device, last >= i->partially_in_al_next_enr);
++		first = i->partially_in_al_next_enr;
+ 	}
+ 
++	D_ASSERT(device, first <= last);
++
+ 	/* Is resync active in this area? */
+ 	for (enr = first; enr <= last; enr++) {
+ 		struct lc_element *tmp;
+@@ -529,14 +511,21 @@ int drbd_al_begin_io_nonblock(struct drbd_device *device, struct drbd_interval *
+ 		}
+ 	}
+ 
+-	/* Checkout the refcounts.
+-	 * Given that we checked for available elements and update slots above,
+-	 * this has to be successful. */
++	/* Try to checkout the refcounts. */
+ 	for (enr = first; enr <= last; enr++) {
+ 		struct lc_element *al_ext;
+ 		al_ext = lc_get_cumulative(device->act_log, enr);
+-		if (!al_ext)
+-			drbd_info(device, "LOGIC BUG for enr=%u\n", enr);
++
++		if (!al_ext) {
++			/* Did not work. We may have exhausted the possible
++			 * changes per transaction. Or raced with someone
++			 * "locking" it against changes.
++			 * Remember where to continue from.
++			 */
++			if (enr > first)
++				i->partially_in_al_next_enr = enr;
++			return -ENOBUFS;
++		}
+ 	}
+ 	return 0;
+ }
+@@ -556,7 +545,11 @@ void drbd_al_complete_io(struct drbd_device *device, struct drbd_interval *i)
+ 
+ 	for (enr = first; enr <= last; enr++) {
+ 		extent = lc_find(device->act_log, enr);
+-		if (!extent) {
++		/* Yes, this masks a bug elsewhere.  However, during normal
++		 * operation this is harmless, so no need to crash the kernel
++		 * by the BUG_ON(refcount == 0) in lc_put().
++		 */
++		if (!extent || extent->refcnt == 0) {
+ 			drbd_err(device, "al_complete_io() called on inactive extent %u\n", enr);
+ 			continue;
+ 		}
+diff --git a/drivers/block/drbd/drbd_interval.h b/drivers/block/drbd/drbd_interval.h
+index 366489b72fe9..5d3213b81eed 100644
+--- a/drivers/block/drbd/drbd_interval.h
++++ b/drivers/block/drbd/drbd_interval.h
+@@ -8,12 +8,15 @@
+ struct drbd_interval {
+ 	struct rb_node rb;
+ 	sector_t sector;		/* start sector of the interval */
+-	unsigned int size;		/* size in bytes */
+ 	sector_t end;			/* highest interval end in subtree */
++	unsigned int size;		/* size in bytes */
+ 	unsigned int local:1		/* local or remote request? */;
+ 	unsigned int waiting:1;		/* someone is waiting for completion */
+ 	unsigned int completed:1;	/* this has been completed already;
+ 					 * ignore for conflict detection */
++
++	/* to resume a partially successful drbd_al_begin_io_nonblock(); */
++	unsigned int partially_in_al_next_enr;
+ };
+ 
+ static inline void drbd_clear_interval(struct drbd_interval *i)
+
+base-commit: 72f4d6fca699a1e35b39c5e5dacac2926d254135
+-- 
+2.52.0
+
 
