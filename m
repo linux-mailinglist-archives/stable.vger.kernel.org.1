@@ -1,247 +1,220 @@
-Return-Path: <stable+bounces-217487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEONHT9Nl2m2wQIAu9opvQ
-	(envelope-from <stable+bounces-217487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:49:51 +0100
+	id CEVQNSBRl2nswwIAu9opvQ
+	(envelope-from <stable+bounces-217488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 19:06:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D64016167B
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:49:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98235161770
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 19:06:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17E3A3012C51
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:49:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D850D302DF89
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D19350A1A;
-	Thu, 19 Feb 2026 17:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040FE352C4C;
+	Thu, 19 Feb 2026 18:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H5eaFwji"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jsuEO8X1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F3D2580F2
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 17:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771523363; cv=pass; b=ibz3hYZxi48cz4wBH6Lr3ZHCtfoa9t9kPLh75TH8tqOUE7y3d8txCvUX6yICBTP0YqTs2CsuFlj7Kl8yfkiar6mZdFuuMRK71bYlHNtLK1VriVENGQVabfN1sZooh9HOINtn1soO+RScyeJ5NudEr5Z3aXbxA/DsHSA8N/HxlnM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771523363; c=relaxed/simple;
-	bh=nthbS0viVjFrlhnBCE7lWWs7/UpBfZh1k0Iq3ugZ8n8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ohkv4j40jVE5h8FqaBLqEVtrDuR0ExlmTsIY86zMH6IGk4IB2ro7n8eMfidvkAhXEHBMDCzRGA/lnjrhdeNv78qjAqyKfLKDCpHcatmbDJFc11+N1nlfo5pxmKJxTL0DypD5JnGQeRFx+7OmBKJp2RGYFVJLpat8TbsIgHetFUE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H5eaFwji; arc=pass smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7947cf097c1so10983317b3.2
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 09:49:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771523361; cv=none;
-        d=google.com; s=arc-20240605;
-        b=L3hFHNA0ZFTvCbBA8QJMsL3fz54t3aObZpErdEor0jVxATL4gEK0yv7qEmF61On6fv
-         A6gdk9yZ0znz8gec41hHmk3c+UQWrVdfYxL/SxoLgzu22yepZUhfGvFNKWOpwjs/wZHl
-         /K4QRZFTKUnqASHTGJ0eG7dOD8+E8DyA2sUcjRVvlB0q4NPoIq3u7WauJNvFqn7sj1CS
-         lc3KZIzJ/irC4ZtrVvCme9ZCVUMPEVrL6igPEf3AIrZMMe6EMPqXGYvcaHwTJqdwplSB
-         eZS1sIeDTe/9O8WlgZy4kJwqubuJ3Oo8GCnB97rvGyVwO8/NDt8g0YvxLCkXhRixv0SH
-         Vzjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LNq8j0WObSJ7gPKSfbCO7fM3Ese3EJIEbd+/lawWf+4=;
-        fh=i3hZ9tIkMctsWgkoZalXSYQ9h9yhKyMKrU4dWnStDKs=;
-        b=WywJTyM04k+ygt8bxWbUa6qIE++EiYDn91XKoOnu4/anJdtlwh5+VBBoIAQZLhTu7S
-         tvr8Lh989Ex1iBBIHkHe1T0fwMbQcpkgAjSG7qhf3G9UmUMZDyVBVeL0yBusD+fQLvTu
-         heHAlwG6wSIQ97nanIZ1/Rh9cO8vmJxcIVaZ9mb+ngprX4F3OR6Dpae9d0/NN7PSGrPE
-         g4ryxL3h2FtVR835zVbkTraGPfGvcrZNeC3NCNrI3L/JtFrzGeCSEgEAZzL6Eem8EmIo
-         5loO94QHcoeM3jf84v/Xky5TxXH0HWrb2VNPkgKio4JLc2d0xsQDDRVjBFkcBnV8uwOO
-         zMdQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771523361; x=1772128161; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LNq8j0WObSJ7gPKSfbCO7fM3Ese3EJIEbd+/lawWf+4=;
-        b=H5eaFwjibveyfStWBXDAHbmpCNc8oIlhXjPGDD9b7bvERL/omWio7xdSccZZkyGPx5
-         CH/kOFlzraNnqZNpETdb3Tk8VnWwTJbQILdB2AxTK99wTfOH4FXJNJ0HWd2qiDEP9v/c
-         roHNZaAalojbiCeWSdquT4PCYcdgfvkWuol9efIryzsS6nv09Y4V+wdvGukSPoS66eI+
-         qksN9z7VJ6Sln5BTPgelL0NsUFxvRasJE85BXeD1c3PleMcbKcR7ALpuKveh2tCxnLfU
-         ou67PW3yBmAp9LCf9ZHj6S9zLMzt1zVsefohS2bGnjpK/m3jMJCTbq/PIhKEfAuppCJS
-         mJPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771523361; x=1772128161;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LNq8j0WObSJ7gPKSfbCO7fM3Ese3EJIEbd+/lawWf+4=;
-        b=Z4TNUe7YXjIcFFi6ZvJhANCVEbe5vCQVOKq7vOodniy5BRWuOcCZQgm9f/q8YN7LcZ
-         QUeKAo2VTxy7fG4a5TQnnOP/bWcttD+8RxPUrm1w02I8KPysGxsrc6s0SWZC20y+Uj1H
-         ZNaPxSEmO4y9q9X++5VfS2ZclNRa2iQK/Cfg2S2Nl4po7j/P9UZPdNjH9QLoqaPfthx1
-         +eAhswcRSi33R+Zl3rlFvsYywxiy1BgJI4AcF0WmfO332ZbmDatKG47Hawp8bKQQPDtp
-         LKH7ig70CLwMx8UnPPGe9ixrMcBKAUxUVTFZMCky9A9djK5RO60UosUF/2f/UjqJtf/I
-         g8vQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuA1HShCECDypErmbyEpsopHL38EYs4lXadOk6au2PSA6rS7zwDEWaijsGUyJ53sHfjmPFRJo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPLEYPKsyV8H3G6LhItCVZ4IxGOBXen/IINsFLx6zC4w5CEDaK
-	KZgEJlo25zcD0a38tOOHiJJfT2fYUUEqbJEKZdVbPjAcYWVijcHmf5wnAjrjRj0HsHcSAQ39CYJ
-	uace+cqQ8EAV36kv+wzZK8arVRBj4F7w=
-X-Gm-Gg: AZuq6aLdmAoWNgOWUnPvQ9FG2QnITzAjWMDS0ovF06D8YTOC1CxSYXPhL+50dRC6CCl
-	P40myWrgr8Bn9HuIW84gGZ+f8tIjTFAutMk68rIvmy1yfOeP871//c+ho+Jxv0L18O1S0+7/dso
-	xthpaoUKJJPYi6Stam5U8pZSMHEQpvJhYhzdriirxqv3qL2nxXIP41kYqdmJqVOPl7G4CpuHb4/
-	U2TkujMHoLxJBf4mcpaR0zDETnjB7TOPPTvJTYuSp6WBmLHoMSplA1q5QgCYmS2yENR3HETjaDE
-	ebkmmnMO7PHYI7cc7who43t+wR9hk8hITT2pMkZmQPDiYNxuMw7TNIWpIgexOER9j9UrFQ==
-X-Received: by 2002:a05:690e:130b:b0:64a:d7b7:8fab with SMTP id
- 956f58d0204a3-64c21b8b654mr15264045d50.91.1771523361363; Thu, 19 Feb 2026
- 09:49:21 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B15284898;
+	Thu, 19 Feb 2026 18:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771524377; cv=none; b=QFEWwcrlkOUgyo5IN9c2MWRFV7OJr66wIRPqeEFPhhBoxEvCT+Kh9259qZL+wvvcJV7+wFjKqRoj+YStHl0UG2agtRypgKuooIcppAjTxZGnqFX+BfseUwbE3TE0aIWUGafX0pqYn2A8l2asCOJkCMSZbUIHCHwl2BlbhniFa0M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771524377; c=relaxed/simple;
+	bh=ei+32J12dH5XTmY6HIsq/qfutT8wLhlFs3aD7kLVufI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eJh4TwNDHHHxvTIZGbMvD7YZuLSTv2ixwZWge1fzWb4qXwNrDqjER4p+kjrspbBDylgoZ+ipNKrtGCCe7khCGbCJIgs7Ms+7xoGsa6NV8ZY0QldjuW40MuowolimQfKnf1eECGy3mM2zfN9cYrcNuUnq2FphLX74waetLtKQRgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jsuEO8X1; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61J9A0nR1260396;
+	Thu, 19 Feb 2026 18:06:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=i77lVC
+	+87WV3PYgyMRs88BGYUND9L7VM9FRfQUTm8vk=; b=jsuEO8X1bgt+KZBXDNNNQY
+	paLZQ5ZgSZosZeqUYn1pe9WXnMzqGo04a3KJrh3bLvR5inW6+N8w+anvmdLMpMvx
+	EXyImY+hxbqyFcJg/yO7NGzOo91Y4OMXjlFjrgBjdTR5TntVg1tjDKgT9QVR0evy
+	lUVt+QvozMaEMA6cjafXxAvRUDztLzKDK/i8rxb8gT7CuhFLDoDsMEr7Ae+NjXuE
+	f5dxwsGjw6LOj0fOy8vwW9IyzMWnqBlRxv+6g5k5B4Mp0DZTk3YM79IRn8/t9EL4
+	mQ/3YC1wwjk8y1hmxArm0BudYv+wgarB6iwzs1bNb1q7jGyUTT1uzQNLLZVEz71A
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj6s7dsa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Feb 2026 18:06:09 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61JHWwkH024324;
+	Thu, 19 Feb 2026 18:06:08 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb45da1g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Feb 2026 18:06:08 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61JI678C13632220
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Feb 2026 18:06:07 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 88D465804B;
+	Thu, 19 Feb 2026 18:06:07 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4C08658059;
+	Thu, 19 Feb 2026 18:06:06 +0000 (GMT)
+Received: from [9.61.251.177] (unknown [9.61.251.177])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Feb 2026 18:06:06 +0000 (GMT)
+Message-ID: <f6ef9900-ae3a-4580-a89d-f497fb4e5adf@linux.ibm.com>
+Date: Thu, 19 Feb 2026 10:06:05 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADbaWgHykWB_EBiqp15W1C+v0OUMG2RXWv7zG_gocp2kgmkcew@mail.gmail.com>
- <CABBYNZKPyi=qz-XfiNex2oS3DaJUQq-JN7uOxip90jaaHC2cHg@mail.gmail.com>
- <CADbaWgEfX87oPoiO3vdn_s4=Q4TVRVzh=qDgewEC-t2Xa9gU7Q@mail.gmail.com> <CALGDAeCGPpEjJonFJ5q7tg7UhJwp+CnLO9Fb8U6dEhjGzRS=nQ@mail.gmail.com>
-In-Reply-To: <CALGDAeCGPpEjJonFJ5q7tg7UhJwp+CnLO9Fb8U6dEhjGzRS=nQ@mail.gmail.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Thu, 19 Feb 2026 12:49:09 -0500
-X-Gm-Features: AZwV_QjYWiliR1zasSh8flKtwogXUGhGG_iQzwQpvtfDZaoyhjDTUMVfQKN_vMQ
-Message-ID: <CABBYNZJ9cSB_-Q_yVPPivqHCPw+9DE=mfN0J3oqDSm0naDxwjg@mail.gmail.com>
-Subject: Re: Bluetooth: mgmt: Fix heap overflow in mgmt_mesh_add
-To: Maiquel Paiva <maiquelpaiva@gmail.com>
-Cc: Daniel Matsumoto <insidetf2@gmail.com>, luiz.von.dentz@intel.com, 
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 3/9] PCI: Avoid saving config space state in reset path
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Keith Busch <kbusch@kernel.org>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        lukas@wunner.de, Alex Williamson <alex@shazbot.org>, clg@redhat.com,
+        stable@vger.kernel.org, schnelle@linux.ibm.com, mjrosato@linux.ibm.com,
+        Bjorn Helgaas <bhelgaas@google.com>
+References: <20260219002010.GA3445930@bhelgaas>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <20260219002010.GA3445930@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=dvvWylg4 c=1 sm=1 tr=0 ts=69975112 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=KHt2tSRMWXP2V5P9C2UA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: PgvV2eCn__ZMzQDdTIqaBapV090V5-Fl
+X-Proofpoint-ORIG-GUID: WrJCnkgNYeeWHdlD_Gt9-2Vk2ySxY_MN
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE5MDE2MCBTYWx0ZWRfXzR8yYh1Mxv/K
+ tMs2C07tybTT8Qi9XaYmMINHICXHqr3uXBGdfqKzXjaM8B1GBKwh/U1/G9SwLK7tyjXseXc+N3Q
+ 1/3m9xzLAdaBNFTBpm4pgpMULg5+XoRFdEaX/oYT2kBc8NeBtyHaOoDa/d3YvYGsSxCucyve+Xt
+ vWL9zBX+o1FMArKEeFfg16RkxLmmtFZHUJUg3SCZqWMecHifW2Ia4w1pIyqkZooVL3ZuBxvVAhe
+ u4RigeZi5y3eG9P35f+gNOE4TYsMP0GGlmXxSjHPAKRm2B10mKy61KRsh0jqcUlFIj172I6qoPw
+ 2InjNQzO3WpZZ9Mv2Q+VbVxHHI96uYG/vicm4VzQx8qRmQbcQsGnR22xLfwpHz+RX+zwRPBUCQX
+ 3niqoiq8Ov5TCIGvYzdARRzpZcDYOid6f0MF9SPfYVrQffqI80d68O8bD3f/Nn7Va93k05z5Ifi
+ ibfLMwpr2SRu+bCC8dg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-19_04,2026-02-19_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 malwarescore=0 phishscore=0 suspectscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602190160
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217487-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-217488-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,intel.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 9D64016167B
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 98235161770
 X-Rspamd-Action: no action
 
-Hi Maiquel,
 
-On Thu, Feb 19, 2026 at 12:08=E2=80=AFPM Maiquel Paiva <maiquelpaiva@gmail.=
-com> wrote:
->
-> Thank you for the detailed follow-up.
-> The explanation about EXPORT_SYMBOL makes perfect sense.
->
-> I was analyzing the function's limits in complete isolation,
-> and didn't realize the context of the trust limit within the module itsel=
-f.
->
-> I will certainly use this as a great learning experience,
-> (it's never too late to learn!)
->
-> I fully agree with reverting commit ac0c6f1b6a58
-> ("Bluetooth: mgmt: Fix heap overflow in mgmt_mesh_add")
-> to avoid confusion and unnecessary code changes,
-> since the function that calls mesh_send already handles sanitization.
->
-> Just to confirm: what will happen to the other commit in this series that=
- addresses the blocking problem
-> (003ca042a386)? The handling of the mesh_pending list was indeed unprotec=
-ted
-> that's exactly what guard(mutex) is for.
+On 2/18/2026 4:20 PM, Bjorn Helgaas wrote:
+> On Wed, Feb 18, 2026 at 01:48:57PM -0800, Farhan Ali wrote:
+>> On 2/18/2026 11:35 AM, Bjorn Helgaas wrote:
+>>> On Wed, Feb 18, 2026 at 12:02:01PM -0700, Keith Busch wrote:
+>>>> On Tue, Feb 17, 2026 at 11:55:43AM -0800, Farhan Ali wrote:
+>>>>> Yes I think you are right, with this change the PCI Command
+>>>>> register gets restored to state at enumeration. So we will
+>>>>> lose the updated state after pci_clear_master() and
+>>>>> pci_enable_device(). I think we can update the vfio driver to
+>>>>> call pci_save_state() after pci_enable_device()?
+>>>> Either that, or move the pci_enable_device() call to after the
+>>>> function reset.
+>>> I kind of like the latter idea because it seems a little simpler
+>>> for the rule of thumb to be that a reset done by the PCI core
+>>> returns the device to the same state as when the driver first
+>>> probed the device.  Drivers would generally not use
+>>> pci_save_state() at all, and they could share some initialization
+>>> logic between probe and post-reset recovery.
+>> I think the vfio-pci driver was intentionally doing the
+>> pci_enable_device() before doing the reset. As per commit
+>> 9a92c5091a42 ("vfio-pci: Enable device before attempting reset") it
+>> was done to handle devices using PM reset, that were getting
+>> incorrectly identified not supporting PM reset due to current state
+>> of the device not being D0. It looks like pci_pm_reset() still
+>> returns -EINVAL if current power state is not D0. So I think we
+>> can't move pci_enable_device() after reset. Unless we want to update
+>> pci_pm_reset() to not use cached value of current_state and read it
+>> directly from register?
+> Devices are generally disabled at .probe() time, so that will be the
+> default saved state.  But every driver will expect the device to be
+> enabled after the reset.  Skipping the save state at reset time seems
+> like it would need a lot of work first and maybe it wouldn't ever be
+> practical.  It wasn't really thought out; I was just hoping we could
+> simplify the save-state model and maybe unify driver reset and error
+> recovery paths.  I think we need to drop this patch at least for now.
 
-That seems valid, although it lacks a reproducer, since we need to
-protect the list mesh_pending.
+Yeah, I agree this patch might be too disruptive for drivers. In that 
+case would my previous version [1] to at least prevent saving state in 
+case of an error be acceptable? Or is there another approach we should 
+consider?
 
-> Thank you for the review.
+[1] https://lore.kernel.org/all/20260122194437.1903-4-alifm@linux.ibm.com/
+
 >
-> Thanks,
-> Maiquel Paiva
+> 9a92c5091a42 ("vfio-pci: Enable device before attempting reset") was
+> mostly done to make pci_pm_reset() work, which requires the device to
+> be in D0.  The main purpose of pci_enable_device() is to make device
+> BARs accessible; it *does* also put the device in D0 because BARs are
+> only accessible in D0, but pci_pm_reset() itself doesn't need the
+> BARs.
 >
-> Em qui., 19 de fev. de 2026 =C3=A0s 13:23, Daniel Matsumoto <insidetf2@gm=
-ail.com> escreveu:
->>
->> Hi Luiz,
->>
->> Makes perfect sense regarding EXPORT_SYMBOL. Thanks for taking a look
->> and dropping it.
->>
->> Regards,
->> Daniel
->>
->>
->> On Thu, Feb 19, 2026 at 1:16=E2=80=AFPM Luiz Augusto von Dentz
->> <luiz.dentz@gmail.com> wrote:
->> >
->> > Hi Daniel,
->> >
->> > On Tue, Feb 17, 2026 at 1:09=E2=80=AFPM Daniel Matsumoto <me@celes.in>=
- wrote:
->> > >
->> > > Regarding commit ac0c6f1b6a58 ("Bluetooth: mgmt: Fix heap overflow i=
-n
->> > > mgmt_mesh_add"):
->> > >
->> > > I reviewed the call path for this patch and the overflow condition
->> > > appears to be unreachable in the current tree.
->> > > The only caller of mgmt_mesh_add() is mesh_send() in
->> > > net/bluetooth/mgmt_util.c. The length parameter is explicitly
->> > > sanitized before the call:
->> > >
->> > > if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED) ||
->> > >    len <=3D MGMT_MESH_SEND_SIZE ||
->> > >    len > (MGMT_MESH_SEND_SIZE + 31))
->> > > return mgmt_cmd_status(sk, hdev->id, MGMT_OP_MESH_SEND,
->> > >       MGMT_STATUS_REJECTED);
->> > >
->> > > Given that mgmt_mesh_add() allocates sizeof(*mesh_tx), which include=
-s
->> > > the param buffer sized for this maximum length, the bounds check
->> > > introduced in the commit is redundant.
->> > > While defensive programming is valid, tagging this as a fix for a he=
-ap
->> > > overflow is misleading for backporters and security scanners, as the
->> > > overflow cannot be triggered.
->> >
->> > Yeah, well I would say it would only be valid to apply defensive
->> > programming if that function would be marked with EXPORT_SYMBOL so it
->> > could be used outside of net/bluetooth context.
->> >
->> > > Please consider dropping this from the stable queue to avoid
->> > > unnecessary code churn.
->> >
->> > +1, will drop it entirely, it seems I will need to ask for more
->> > evidence as apparently people are relying too much on LLVM nowadays.
->> >
->> > --
->> > Luiz Augusto von Dentz
->> >
+> Other reset methods, e.g., FLR, don't seem to require the device to be
+> in D0, so I'm not sure why pci_pm_reset() requires that.  I think the
+> critical piece is the D3->D0 transition, and maybe we could arrange
+> for that to happen even if the device is already in D1/D2/D3hot or
+> even D3cold.
+
+Looking at the PCI spec (v6.1) I didn't see any requirement for the 
+device to be in D0 state to perform a power state change. So I think we 
+should be able to transition from D1/D2/D3hot to D0. But IIUC if a 
+device is in D3cold, then won't register reads/writes fail till power is 
+available to the device?
+
+Thanks
+
+Farhan
 
 
-
---=20
-Luiz Augusto von Dentz
 
