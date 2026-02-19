@@ -1,179 +1,176 @@
-Return-Path: <stable+bounces-217463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217464-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JqMFF9Bl2lXwAIAu9opvQ
-	(envelope-from <stable+bounces-217463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:59:11 +0100
+	id MFprI4lBl2lXwAIAu9opvQ
+	(envelope-from <stable+bounces-217464-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:59:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B29160DCD
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:59:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AF49160DDC
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:59:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32F593028364
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:59:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 57EAC3013442
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 16:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA02F34CFB9;
-	Thu, 19 Feb 2026 16:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05C134D93E;
+	Thu, 19 Feb 2026 16:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="1hQYIBZ4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CSs/0xO+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
+Received: from mail-dy1-f194.google.com (mail-dy1-f194.google.com [74.125.82.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4D8F507
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 16:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D06334CFB9
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 16:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771520347; cv=none; b=dy7Xd9c6MQM0fW053jeJp9JjqQq/ETaekvrN1yDX/D3XAYEbtxBW99BWGvclmXOfVcNx11rk3SAPP0CbbGs9m7YdwXFG0XNar4I2t26XUVH+wW0mHiDsUGBW3Q5zsAo1HTl0ugH/FpfeQ7Ne0WKThLfSLwqRpx+ea55k8AiElGM=
+	t=1771520391; cv=none; b=DATikmG/6brl3GQTy4IJs5+gUXyDIx84jccXhAkhlhlTmoVBGcsB0g3kVCO8Ulgj5fltE/iQe/1cNza0QLCMEbZLnAKVyxoQKfR9FOunNNcknyDcbgu8E6Ha7utdN6L0EM3IMmXx0eVIc9/q+4/BKYBkbyd5ziV0MhTnROvjugU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771520347; c=relaxed/simple;
-	bh=uc6//qM7RSyua4jVbI4TS+aO1l5SshYzUrKKYL/ihb4=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=EbargajHjp9UMGEPV1U7JKQnLSdC4/j45JgG+3wG8HkgPl14RvXNGtAVL+zkuP9IQTgF+HZwOE6JGmN8BnbQoC9UqnJzP/O4tI+ah0z4XUhxvbjXV2wf0I3ktUJsfFnF7g4rOXzOT/tg+WtP+4pBmTgMLGi1coTdf2RYbUyAweE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=1hQYIBZ4; arc=none smtp.client-ip=74.125.82.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-127423bea4bso95162c88.0
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 08:59:05 -0800 (PST)
+	s=arc-20240116; t=1771520391; c=relaxed/simple;
+	bh=RtI4mwfwD+P3PGHnYKcB617QTsULwQHjdTQD30kM5yE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NZ9sZtNIPIZPLYBu2qQTzxpkFq8zP9/2+3+K3LqroROScK9n/QizyPpQ8rcgZD9k4mvFro2aRgd4y7IyU0STchuSmhrYMRK5Ru15knn4GJ0WLAiDituIT6ZQ843OOAxrbOzT8x2a8+Ax0ESGiTYRIK8BNjBmpjsuVTXCYs8OHMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CSs/0xO+; arc=none smtp.client-ip=74.125.82.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f194.google.com with SMTP id 5a478bee46e88-2ba895adfeaso1180958eec.0
+        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 08:59:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1771520345; x=1772125145; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TazV2Mfx4AWxoMb7Ln2DbhJ2thA70KIsj1RNl3kuPfs=;
-        b=1hQYIBZ4FsujkZXVFvmsa8/VxjGq3xWdknVXHoPCMr1RQFrEsmGGoImHZ0nJg2IUu/
-         pSbEyZ1or42S/zCm9HgFd+c15wI0Gba8tgG7L74YebaaXedIe/W6fn+TAQTslGrpt175
-         fZieRjfazEDO28tuf5yYWJoSq7KZ8Zzv4HQXm/+8m9W1CwQ8K/sM1OOxqVCEVVgAyCdX
-         VqeyIZE2OXpQMd85Mkb+ytDdpXEr38HyxUnbfelGq35SQpU1v+m2IFs3otX1F/VB0ipC
-         sEgnYCA45uwkyh9xlBHmcm7Xibh2I6+rBLXXoGUBjKCmt+cB2kGSc8FuQaMR21yzrvv/
-         bj7A==
+        d=gmail.com; s=20230601; t=1771520388; x=1772125188; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2gvE0EmLNuGUVVdF/D3DSAFzHLiwuA/iBJjerEqpTAE=;
+        b=CSs/0xO+xNcfj07lRrvq8rBQemimXV5BIrmNEUj99nlHY7+LPM89d70fkX54tbPkq0
+         Z3NMTjHTXEBtfNvXXp66tZVCg9akCgH6n00Sa6fPYALxUfKPBxsTuBh5IFV8WEjXt9N2
+         S82o5DBuFdAlAXMUg96YnOYrMTjNovNOEcT3EZI9oywseWqhGz9zwtYe7V6MnY88vb8i
+         bRUowXZr7vXMobh5YfR43S4ndJgjwOeA3Dmg3oNvLyuZsuTW8i0YEHBleV4evMmyR85g
+         qBLmHg5UCXxG/wpTx2xMq1eh43nWYOFCRWst2sY4q1KWKfODwHaXTTA9/fKUA64D3QAk
+         wgYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771520345; x=1772125145;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TazV2Mfx4AWxoMb7Ln2DbhJ2thA70KIsj1RNl3kuPfs=;
-        b=gUkldtEtePoef7t4vBWGx6vSnHLki5qrCJnFPg68hHOBbQs3giAAU2WTymeaxtLXB+
-         qnTG5ZqiQXNvhR4U1YVBdbwV4VwrdpLSECg8DYEqUfynLkkSBDrEYfeOpr9wqmUhjmSa
-         JQPyTuLll29ZYfmySoG9IgFVTdNOYdniNBRN9ycEYvgaknfUVWhES+szq3L6/DhM0QNG
-         fIYCCB6zcCoNF82qZRphqRk3yWFcARoCw6GCM4fTho68gEMHmMwZO0oQ/fpP5M3Khr83
-         yP3EdDZOUhW9hLbrWs3kE3chK5MQbcDDLh52BgFeCGLIMe+dsVzrmSonKJyfQZM6hOHL
-         oBPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmdW2TNI/XP72mR/doi2EcQ+oj/cdZC2cFn3Rk291puxRErUW0Dnb9py2cMFchQXSc9VZ33Q8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMB4aSxrbXi03BPQsOIwXR2xolEiAHce/fvwffEshGMxGcwp6U
-	AoRbkx/aROVQHYrrtPrv+vFDw8MyoDXH4KKp4GTJKuD7SQ6q24FgD9KfF4jG6maoAlUPVTUhrRc
-	1fpCvm2g=
-X-Gm-Gg: AZuq6aIxMGxsQ6bpQeGGzXp4FYFrGC//QDMiMeINbjLUA00xU4hTkAIFvq97fsqQfac
-	jt0Hcwi40isISaAFnxwXvOTQF25PRF46sUN/sNRNg1+9XQ85C1FJi8l7nuIbvlj841jHUZq9gvA
-	tttLn1jEfmdcMa+g46ydtQinxmK+TjwQPqVE6M9pyGpJyA51Ud/GzM0qsTkgw5KzHgAS2uF32jn
-	prMTYO7JvuD7IPWpnsS8+EtxNEwxjLlfl6KMdt8pZ5oroHZz7gsK0RwBeG4QPLwm23zBEea3HgC
-	XLGcLS4RFmVqEWuP05VP99ggHavSHcCGLuf9KOyHD08bCziLUaUyQ89CZ5S7jVLbMbsZqcT0aQi
-	VuaaXMAOlSz0dJ01Rtbc7rHIp4agycgsj9iZp1fOAjxHh/FSdehVYLG3FX34EGWjfxd4mzqK4PC
-	Qx7SjgkA/V1WRZ62Iy
-X-Received: by 2002:a05:7022:4584:b0:11b:9386:8262 with SMTP id a92af1059eb24-1273ae8d7dbmr8460631c88.47.1771520345087;
-        Thu, 19 Feb 2026 08:59:05 -0800 (PST)
-Received: from d14e337afe00 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742cc9376sm25612344c88.16.2026.02.19.08.59.04
+        d=1e100.net; s=20230601; t=1771520388; x=1772125188;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2gvE0EmLNuGUVVdF/D3DSAFzHLiwuA/iBJjerEqpTAE=;
+        b=o2yaG4E3lh1UlCWZTBq4L1/jgJFngj79rZTnG4zD0R/2wotAdWF9dgLc6qNaZOTz8D
+         samxfM6GdNoIjH/LfC0gcsEwHZT2XFEADD6ayF008uKv6gb1svF44fBSevcKBfXEmDFh
+         dbQvnHhqPj9sJmXZ8MY0eSDtcTy4SkBk/xy93yty72LfGFUDAdtNcP+nN6B5HEO/XIVP
+         8xNeg1iD+lux7br3dw2esCmPRMugnMcVhLhJEmh65L4ncqyCMRVm3KcvdZAsw/e0wU4K
+         Kw1w3e21v8NwHwujBp7KJq2txqvIskclD3SFpQa0w19/+l9Dp4lqFfivfOR67bRn0ZWn
+         ecwg==
+X-Forwarded-Encrypted: i=1; AJvYcCXKnNWHHiCjXpaNnTWTbNZcvFyOnbgikwO/h521TnqfahPdraBWndushFuSKzMfxkL6agf7+K0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7uQvICso+8wn2Ed2iQ1mWf7qdwJ8a9w69EFh5hu1Q7wQCGLR3
+	mwhzHEdfKsulC5zj8GiiBKSVV/LbZ8BTc/7vOX1vGlXhlamzuX+Tzdu2
+X-Gm-Gg: AZuq6aLlhBjsja+rG9KG5X17puiHlB/OrEfv8TcnMXmYSQtsdtwFqoTBLo+62jSA1O8
+	+n2kG9R6vx4oiOvA964JqeEDw2zeCp+zJwWzX62KR+5XjCEmvsJT20beiXQaaPsALLN+IDVErMw
+	o9Dz5D5WyeaugeOcL/PUMYZ8Va0Jsj/eSk8tCDm9Bgvo4be/5jLYt9rsyUUt7jDbHnwtxZVnmQy
+	rRUCtWR9W2MQPZGqA4kbub6Y+th5u0lKaDoEo1Co+UtTbIeUjFR5/hosUBTUB7Hr6pSAHvea45+
+	muGo8IzYZ/yz9e5K1TlsnImbgfSDaq8cne1ed8Rj6GVPRS5n5qryACN1Lg9rkBYIScm+vxqysFS
+	te/eyQT8uZtmhvhue+zUgsekY1t/ChNsDK92WLksZE2DuZLEMG6LsJSIvMWyBVL6r6K/XFHc8yv
+	yIXelLnlPVXT0nvwNbyAIWLJNf8QaNnNak2KaK6h7gG2irsRBpRk/YVGGtzGsTYnqg
+X-Received: by 2002:a05:693c:3108:b0:2ba:6854:8d4d with SMTP id 5a478bee46e88-2bd501701e4mr2840676eec.20.1771520388134;
+        Thu, 19 Feb 2026 08:59:48 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:9c24:8181:603e:7ad7])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bacb658fc4sm24932889eec.22.2026.02.19.08.59.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Feb 2026 08:59:04 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        Thu, 19 Feb 2026 08:59:47 -0800 (PST)
+Date: Thu, 19 Feb 2026 08:59:45 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Linus Walleij <linusw@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] gpiolib: normalize the return value of gc->get() on
+ behalf of buggy drivers
+Message-ID: <aZdA_1gHt_8no6m0@google.com>
+References: <20260219-gpiolib-set-normalize-v2-1-f84630e45796@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-6.1.y: (build) stack frame size (2456)
- exceeds
- limit (2048) in 'dml31_ModeSupport...
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Thu, 19 Feb 2026 16:59:04 -0000
-Message-ID: <177152034349.119.6431923116518979346@d14e337afe00>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260219-gpiolib-set-normalize-v2-1-f84630e45796@oss.qualcomm.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-clang-21-x86-kselftest-69973d5a7b34c3305539ab72/.config];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217463-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217464-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernelci.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,lists.linux.dev:replyto]
-X-Rspamd-Queue-Id: 92B29160DCD
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2AF49160DDC
 X-Rspamd-Action: no action
 
+On Thu, Feb 19, 2026 at 10:51:33AM +0100, Bartosz Golaszewski wrote:
+> Commit 86ef402d805d ("gpiolib: sanitize the return value of
+> gpio_chip::get()") started checking the return value of the .get()
+> callback in struct gpio_chip. Now - almost a year later - it turns out
+> that there are quite a few drivers in tree that can break with this
+> change. Partially revert it: normalize the return value in GPIO core but
+> also emit a warning.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 86ef402d805d ("gpiolib: sanitize the return value of gpio_chip::get()")
+> Reported-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Closes: https://lore.kernel.org/all/aZSkqGTqMp_57qC7@google.com/
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+> Changes in v2:
+> - it's gpio_chip::get() that needs normalizing, not gpio_chip::set()
+> - Link to v1: https://patch.msgid.link/20260219-gpiolib-set-normalize-v1-1-f0d53a009db4@oss.qualcomm.com
+> ---
+>  drivers/gpio/gpiolib.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index c52200eaaaff82b12f22dd1ee8459bdd8ec10d81..c9cd751e7de2307fc5994eb682c53f2b3ce39233 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -3268,8 +3268,12 @@ static int gpiochip_get(struct gpio_chip *gc, unsigned int offset)
+>  
+>  	/* Make sure this is called after checking for gc->get(). */
+>  	ret = gc->get(gc, offset);
+> -	if (ret > 1)
+> -		ret = -EBADE;
+> +	if (ret > 1) {
+> +		gpiochip_warn(gc,
+> +			"invalid return value from gc->get(): %d, consider fixing the driver\n",
+> +			ret);
+> +		ret = !!ret;
+> +	}
+>  
+>  	return ret;
+>  }
 
+Thank you Bartosz. I guess this could turn out to be pretty noisy but
+maybe that will make users report it faster ;)
 
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-
-Hello,
-
-New build issue found on stable-rc/linux-6.1.y:
-
----
- stack frame size (2456) exceeds limit (2048) in 'dml31_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than] in drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.o (drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.c) [logspec:kbuild,kbuild.compiler.error]
----
-
-- dashboard: https://d.kernelci.org/i/maestro:8142d3efa880b8ebb062bcaa4e5b10da200f4575
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  779f9571ac3e3b2c969690d09e5353f56b7ed4ef
-- tags: v6.1.164
-
-Please include the KernelCI tag when submitting a fix:
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
-
-Log excerpt:
-=====================================================
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn31/display_mode_vba_31.c:3795:6: error: stack frame size (2456) exceeds limit (2048) in 'dml31_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
- 3795 | void dml31_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-      |      ^
-  CC      drivers/i2c/busses/i2c-i801.o
-1 error generated.
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## x86_64_defconfig+kselftest+x86-board on (x86_64):
-- compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-x86-kselftest-69973d5a7b34c3305539ab72/.config
-- dashboard: https://d.kernelci.org/build/maestro:69973d5a7b34c3305539ab72
-
-
-#kernelci issue maestro:8142d3efa880b8ebb062bcaa4e5b10da200f4575
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+-- 
+Dmitry
 
