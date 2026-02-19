@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-217510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLpsAol8l2nmzAIAu9opvQ
-	(envelope-from <stable+bounces-217510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 22:11:37 +0100
+	id uMshCgqAl2kOzQIAu9opvQ
+	(envelope-from <stable+bounces-217511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 22:26:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4D4162A27
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 22:11:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1FC1162C8C
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 22:26:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E701305561F
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 21:07:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 98DBA303BA54
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 21:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47189326958;
-	Thu, 19 Feb 2026 21:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33B5329389;
+	Thu, 19 Feb 2026 21:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DxCeWYTD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s8KM43Xh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D1130DD3C;
-	Thu, 19 Feb 2026 21:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EAE329363;
+	Thu, 19 Feb 2026 21:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771535228; cv=none; b=X+0aG5YyGE06dDW3kf0yYEf8oN99TKbSdXx72uHcQVGC/dngqxoEUJBL5gQB7e3TUzUrx2phonEYyOSN5Xw5ToeNUaG5E6D8M7TeYt4ahND3oW+2BG9v9XLSMdI07d9uyoUHl8goOmbv6AxfVswh0DHImBtUPZqVHXDF54u7qNo=
+	t=1771536373; cv=none; b=gZiJPqHylE1qBgDLLij3mZwCruzYEsmmU3chjRMcuP92/iiouBz8wXSPvbGDgwtDcW33RRbsPPOcIdtwrZ3upMtsk5HIX3yyYTHcBRqdrFpCv2ND3EG2qPSP2HZSNtYF7puOk+im9xv66gsmxdWi3n04lyf/YWoJzRC+pHc1yFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771535228; c=relaxed/simple;
-	bh=kbPGLw5tyUAB31exC6lWSQacjTwqSUR7zdOBsZzzGRs=;
+	s=arc-20240116; t=1771536373; c=relaxed/simple;
+	bh=k3eIOjmh31KGZ2V8juxtChJ2D5hufhrXBQDrTquxias=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HWkfm+XzVuuvxci6UNePAQMY3ZRXNGyiFkvEaeQLooQ7hDOykJ8EPuGz1ff2Ae15ac2XX3b0k0CC7qkIJYV+uc/50anKJ0+H/zWggCXUajEUEmKcveSgVCbBgczmR16wiFGX77Dr9u+9TjlYLKI2gUS+6gViW5R7jOKhaUXeBx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DxCeWYTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70970C4CEF7;
-	Thu, 19 Feb 2026 21:07:07 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=rXRlFWsHqdy71k/5FwSDkdgDKcq9mHNLJrA5b//FGEy0l75QeF5zLY3Zktzldhl9PO3BeeTVbriDaWBsaUxwYMkxXL+goNgM06tMaQ5CfjwQlyt7K/ED0zeBV15x58m3rp5e0/jv0QceZMhK04we3yQ3zeMmc+8IuuOvmbUbP9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s8KM43Xh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FF7C4CEF7;
+	Thu, 19 Feb 2026 21:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771535227;
-	bh=kbPGLw5tyUAB31exC6lWSQacjTwqSUR7zdOBsZzzGRs=;
+	s=k20201202; t=1771536373;
+	bh=k3eIOjmh31KGZ2V8juxtChJ2D5hufhrXBQDrTquxias=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DxCeWYTDQ/GuyvTSE+sQ0CVBfhg+ZlqLXav5CCRI2wK/YR2A07kNlpM7+Owmpe2b9
-	 ImLigW5t6UQLf7vfw9TPAGbu+EMnQLqClKm+od0Cq6qLXc1Z8qjoPLWx40wr+4J3QS
-	 k9hObMi/Nf5UsszPBFPI6vRDxy1yANOiTbEOb/92oN7uGN27z9wSu3c9u1pvxkeilT
-	 MWo465UhkyRMvXwfSLiinRka22YmHLNyiw96MGmf9gdBX+T3JIJIVs9LfH/4aroT4X
-	 9DTZGfrPSevybm4fJ9mZbQHnY35KFp90tytazXVfOA0MWJak4I1l17fdWWYQPHoP9U
-	 4KW2PKuoUIg/w==
-Date: Thu, 19 Feb 2026 13:07:06 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Ethan Tidmore <ethantidmore06@gmail.com>
-Cc: cem@kernel.org, nirjhar.roy.lists@gmail.com, neil@brown.name,
-	brauner@kernel.org, jlayton@kernel.org, amir73il@gmail.com,
-	jack@suse.cz, linux-xfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] xfs: Fix error pointer dereference
-Message-ID: <20260219210706.GC6503@frogsfrogsfrogs>
-References: <20260219200715.785849-1-ethantidmore06@gmail.com>
+	b=s8KM43XhU0arShApnLbNpQww9PEWG6/97TNtfrZH0HjUr+Z4brlGSTbbhezLDlMsp
+	 7jRtxA5Rb4YgrJdXftmRS7RSuHwZjfCEaShZ5FtoJ0qqtroxhhFs1/HQflZDllFqPo
+	 9nRUFgJP23iqKE7nTRZZ5tPo4o8sh6y7sVtPMyMLMxtHrHMDKpsI2kyWe1NJFem/hT
+	 XNDR9844+LCMGcGqyKi6tFGesrq2mhy6kfLQrVZLi0Y3wUY7qGNdWilcEnfwkN2cwy
+	 f2kW9UBgKQYQ+i4F9p5tDpmxIH8q86oGB2a2jQraPI0fjzf1YZxBUH6oNNqyKXrYL6
+	 ROaXgwKdprhpA==
+Date: Thu, 19 Feb 2026 13:26:11 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 03/15] crypto: arm64/aes - Fix 32-bit aes_mac_update()
+ arg treated as 64-bit
+Message-ID: <20260219212611.GA32578@quark>
+References: <20260218213501.136844-1-ebiggers@kernel.org>
+ <20260218213501.136844-4-ebiggers@kernel.org>
+ <21d30582-9cb2-4e7a-9aa8-36e16aa45ff9@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,108 +66,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260219200715.785849-1-ethantidmore06@gmail.com>
+In-Reply-To: <21d30582-9cb2-4e7a-9aa8-36e16aa45ff9@app.fastmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-217510-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217511-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,brown.name,suse.cz,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9E4D4162A27
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D1FC1162C8C
 X-Rspamd-Action: no action
 
-On Thu, Feb 19, 2026 at 02:07:15PM -0600, Ethan Tidmore wrote:
-> The function try_lookup_noperm() can return an error pointer and is not
-> checked for one.
+On Thu, Feb 19, 2026 at 10:23:39AM +0100, Ard Biesheuvel wrote:
+> On Wed, 18 Feb 2026, at 22:34, Eric Biggers wrote:
+> > Since the 'enc_after' argument to neon_aes_mac_update() and
+> > ce_aes_mac_update() has type 'int', it needs to be accessed using the
+> > corresponding 32-bit register, not the 64-bit register.  The upper half
+> > of the corresponding 64-bit register may contain garbage.
 > 
-> Add checks for error pointer in xrep_adoption_check_dcache() and
-> xrep_adoption_zap_dcache().
-> 
-> Detected by Smatch:
-> fs/xfs/scrub/orphanage.c:449 xrep_adoption_check_dcache() error:
-> 'd_child' dereferencing possible ERR_PTR()
-> 
-> fs/xfs/scrub/orphanage.c:485 xrep_adoption_zap_dcache() error:
-> 'd_child' dereferencing possible ERR_PTR()
-> 
-> Fixes: 73597e3e42b4 ("xfs: ensure dentry consistency when the orphanage adopts a file")
-> Cc: <stable@vger.kernel.org> # v6.16
-> Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-> ---
-> v3:
-> - Add dput(d_orphanage) before returning error code in 
->   xrep_adoption_check_dcache().
-> - Revert xrep_adoption_zap_dcache() change back to v1 version.
-> - Include function names where error pointer checks were added.
-> v2:
-> - Propagate the error back in xrep_adoption_check_dcache().
-> - Add Cc to stable.
-> - Add correct Fixes tag.
-> 
->  fs/xfs/scrub/orphanage.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/xfs/scrub/orphanage.c b/fs/xfs/scrub/orphanage.c
-> index 52a108f6d5f4..682af1bcf131 100644
-> --- a/fs/xfs/scrub/orphanage.c
-> +++ b/fs/xfs/scrub/orphanage.c
-> @@ -442,6 +442,10 @@ xrep_adoption_check_dcache(
->  		return 0;
->  
->  	d_child = try_lookup_noperm(&qname, d_orphanage);
-> +	if (IS_ERR(d_child)) {
-> +		dput(d_orphanage);
-> +		return PTR_ERR(d_child);
-> +	}
+> How could that happen? Setting the 32-bit alias of a GPR clears the upper half.
 
-Nit: blank link after the closing brace.
+The ABI doesn't guarantee that the upper 32 bits are cleared.  Try the
+following:
 
-Other than me nitpicking this looks ok to me so
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+void g(unsigned int a);
 
-Thanks for fixing this!
+void f(unsigned long long a)
+{
+	g((unsigned int)a);
+}
 
---D
+Both gcc and clang generate code that simply tail-calls g(), leaving the
+upper 32 bits unchanged rather than zeroing them as per the cast:
 
+0000000000000000 <f>:
+       0: 14000000     	b	0x0 <f>
 
->  	if (d_child) {
->  		trace_xrep_adoption_check_child(sc->mp, d_child);
->  
-> @@ -479,7 +483,7 @@ xrep_adoption_zap_dcache(
->  		return;
->  
->  	d_child = try_lookup_noperm(&qname, d_orphanage);
-> -	while (d_child != NULL) {
-> +	while (!IS_ERR_OR_NULL(d_child)) {
->  		trace_xrep_adoption_invalidate_child(sc->mp, d_child);
->  
->  		ASSERT(d_is_negative(d_child));
-> -- 
-> 2.53.0
-> 
+So it's possible.  Now, it's certainly unlikely to happen in practice,
+as the real code doesn't use truncating casts like that, and the
+instructions that write to the 32-bit registers clear the upper 64 bits
+-- as you noted and as I've noted before in similar fixes (e.g.
+https://lore.kernel.org/r/20251102234209.62133-2-ebiggers@kernel.org/).
+
+So does it really matter?  Probably not.  However, given that the
+correct behavior wasn't *guaranteed*, I think that to be safe we should
+continue to consider patches like this to be bugfixes.
+
+- Eric
 
