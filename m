@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-217437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217438-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPS5OToLl2kcuAIAu9opvQ
-	(envelope-from <stable+bounces-217437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 14:08:10 +0100
+	id wOCqIqULl2kcuAIAu9opvQ
+	(envelope-from <stable+bounces-217438-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 14:09:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1413E15EE60
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 14:08:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E9915EED9
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 14:09:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C13E03004D06
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 13:08:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36DFC301F32A
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 13:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25F433ADBF;
-	Thu, 19 Feb 2026 13:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82022261B9C;
+	Thu, 19 Feb 2026 13:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nCMeonqM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W5juXETj"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789A3145B3E
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 13:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1201CD2C
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 13:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771506485; cv=none; b=Gg+A4TLlhr6NhW7Z6fb4o0WuNw+5yvE6PHjKz2uubfWoaDB2S38nuIOsl5oVPYp2M33M7mLciq/dLciQw3IJs820TqVo4vaTQITIqwfw5f7n/5YvYNYV9fASnuaNH6Z9L7YK4NNjHGrinWWKMTK/+gtp7bGI22Eu6/tXEXz+a7o=
+	t=1771506490; cv=none; b=kVXGCLsCk7n3I6UnSj9f8ljVUXLBinVek1Vsd6P/taK+VLB8vMh0p3mUDEa6hfigHOTEazveOR4kg7XpC1N3XoaWXZpdVp9sxVM/uCesm4a35mXjVSsT/F/j8isp2jPpLVMbnm3SmUC8MKlXpir0RSPQ8PgoAjUxxFY0q5CChYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771506485; c=relaxed/simple;
-	bh=oG8IDVvOXCZbhbLGPyel7P4Y5Xx0Y2fz4FVVVvp8D58=;
+	s=arc-20240116; t=1771506490; c=relaxed/simple;
+	bh=27RuguUc24Foz/Z0yMb63i9Bn80pnNrEE9wi9biXXOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jZ09/F4q7VHGsluFmixErYWWv9Sy1Vvu2/bPiVgK+byfUyOd8MDUFz81GPLK6PKKauokQgPkVE/JTF93s5FIGp29udMgt4eROvVn0gGJb4nnzcGuvRW8N1d5mQhzhVpH4WME1Yod9nCbWS8VPl/XnIJhfAsL+LCCloYF10kU1Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nCMeonqM; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version:Content-Type; b=XR3ia94euo8Qn3vTfKua7oeCFmfH3p02IBRSsWIutE3EXmabGdn1hFX7wvC6mJXm4lL5QjFWwGMqAzmcQIXCvspg3ZlsccVL2AOwoThvy96Yqtf75vMjETc1c/yBP7lb3N+rh2cGEeuT7QtRtg08a5X1QcIENauAc0A2arIB2AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W5juXETj; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771506484; x=1803042484;
+  t=1771506489; x=1803042489;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oG8IDVvOXCZbhbLGPyel7P4Y5Xx0Y2fz4FVVVvp8D58=;
-  b=nCMeonqMAhfZvINXmhtw/btQOUY/7mr+nicj4uanJ7gQmSTOOT55NP57
-   +yhoT4s1RxPkRQwTAFHwydLJN32NWGqBNXHckoCoQZwywv2l+anwyOzkE
-   i14DodHMs+lj1DjLlKByHvG2UQtNYK2ywdaVYBJYJSALmSWYBC+FGDVW+
-   DSp4W66DXff08vjPtDKOKtxf3yugZgGPH8yd0V756eZVr2BYtYO5CS+85
-   EqT/E7fyd5KlV5blpa9zPnhBmw7yMDGufdZHGtz7RvbVDqykJRF1KbBQf
-   d/jdKW4Hg6AUF97IqT4u72L+s38/so1POTetU9wpWK1mAimIUCYyMQZJu
-   Q==;
-X-CSE-ConnectionGUID: +TyCg6S6S6usjLorqpgVaQ==
-X-CSE-MsgGUID: 6hZP5Nx+Q0K+P3uV0ZBeBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11705"; a="72475499"
+  bh=27RuguUc24Foz/Z0yMb63i9Bn80pnNrEE9wi9biXXOM=;
+  b=W5juXETjVVo1hLyXJxk9G0oSP7u3Fu1BkrKqhAESl1Q/slhV76Y/P2Uf
+   vRyLfA6ZelJIz303+2FC2w66DONb1E/ubb4/HGdYIukJJgdIgs28xu18w
+   jUKKh6P7whvNH1TGv/0YVYezrmhnRSY3bPl4iYGA45tC2eiHFx74uk4CW
+   0N1cpmu6QVCrc9QqNTqgI4SYX+wY4VBAhQG3tGvoMYPQcRh45fPmCpQoT
+   +Bk3YHT1Ox7PeTQ3R9WydkLe4jbNA6tqe4isCc/QEwDQHjAx5l+KzRyiE
+   58vsrMmWsE8oZjSS/lKwCdilweVJEIY2OSssv+2lTIAlHBmzKu9w/rz7E
+   w==;
+X-CSE-ConnectionGUID: xRhfwW2ERX6TB0MJLbYV/w==
+X-CSE-MsgGUID: g6P9xicPQAixx2KOQwNQIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11705"; a="72475530"
 X-IronPort-AV: E=Sophos;i="6.21,300,1763452800"; 
-   d="scan'208";a="72475499"
+   d="scan'208";a="72475530"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 05:08:04 -0800
-X-CSE-ConnectionGUID: 3liwWQRKQ2irxBxICy5Ugg==
-X-CSE-MsgGUID: trry5lNsRDu+uJQ9sHQWyA==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 05:08:09 -0800
+X-CSE-ConnectionGUID: xUdHBKghRzOuz/qi5X3xXg==
+X-CSE-MsgGUID: 9xbGTC8vTSyhC9HNgbqMIw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,300,1763452800"; 
-   d="scan'208";a="212458564"
+   d="scan'208";a="212458604"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO jhogande-mobl3.intel.com) ([10.245.246.120])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 05:08:02 -0800
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 05:08:07 -0800
 From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
 To: intel-gfx@lists.freedesktop.org,
 	intel-xe@lists.freedesktop.org
 Cc: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/5] drm/i915/psr: Repeat Selective Update area alignment
-Date: Thu, 19 Feb 2026 15:07:39 +0200
-Message-ID: <20260219130743.1232188-2-jouni.hogander@intel.com>
+Subject: [PATCH 4/5] drm/i915/psr: DSC configuration for Early Transport
+Date: Thu, 19 Feb 2026 15:07:42 +0200
+Message-ID: <20260219130743.1232188-5-jouni.hogander@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260219130743.1232188-1-jouni.hogander@intel.com>
 References: <20260219130743.1232188-1-jouni.hogander@intel.com>
@@ -86,12 +86,12 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217437-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217438-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[intel.com:+];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -106,88 +106,85 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1413E15EE60
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:mid,intel.com:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D9E9915EED9
 X-Rspamd-Action: no action
 
-Currently we are aligning Selective Update area to cover cursor fully if
-needed only once. It may happen that cursor is in Selective Update area
-after pipe alignment and after that covering cursor plane only
-partially. Fix this by looping alignment as long as alignment isn't needed
-anymore.
+There is Selective Update slice row per frame and picture height
+configurations needed on DSC when using Selective Update Early
+Transport. Calculate and configure these when using Early Transport.
 
-Fixes: 1bff93b8bc27 ("drm/i915/psr: Extend SU area to cover cursor fully if needed")
+Bspec: 68927
+Fixes: 467e4e061c44 ("drm/i915/psr: Enable psr2 early transport as possible")
 Cc: <stable@vger.kernel.org> # v6.9+
 Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c | 32 ++++++++++++++++--------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ .../drm/i915/display/intel_display_types.h    |  1 +
+ drivers/gpu/drm/i915/display/intel_psr.c      | 24 +++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
+diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
+index e8e4af03a6a6..8903804c04b1 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1381,6 +1381,7 @@ struct intel_crtc_state {
+ 	u32 psr2_man_track_ctl;
+ 
+ 	u32 pipe_srcsz_early_tpt;
++	u32 dsc_su_parameter_set_0_calc;
+ 
+ 	struct drm_rect psr2_su_area;
+ 
 diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 5bea2eda744b..331645a2c9f6 100644
+index 331645a2c9f6..0a2948ec308d 100644
 --- a/drivers/gpu/drm/i915/display/intel_psr.c
 +++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -2688,11 +2688,12 @@ static void clip_area_update(struct drm_rect *overlap_damage_area,
- 		overlap_damage_area->y2 = damage_area->y2;
+@@ -2618,6 +2618,11 @@ void intel_psr2_program_trans_man_trk_ctl(struct intel_dsb *dsb,
+ 
+ 	intel_de_write_dsb(display, dsb, PIPE_SRCSZ_ERLY_TPT(crtc->pipe),
+ 			   crtc_state->pipe_srcsz_early_tpt);
++	intel_de_write_dsb(display, dsb, DSC_SU_PARAMETER_SET_0_DSC0(crtc->pipe),
++			   crtc_state->dsc_su_parameter_set_0_calc);
++	if (intel_dsc_get_vdsc_per_pipe(crtc_state) > 1)
++		intel_de_write_dsb(display, dsb, DSC_SU_PARAMETER_SET_0_DSC1(crtc->pipe),
++				   crtc_state->dsc_su_parameter_set_0_calc);
  }
  
--static void intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_state)
-+static bool intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_state)
- {
- 	struct intel_display *display = to_intel_display(crtc_state);
- 	const struct drm_dsc_config *vdsc_cfg = &crtc_state->dsc.config;
- 	u16 y_alignment;
-+	bool aligned = false;
- 
- 	/* ADLP aligns the SU region to vdsc slice height in case dsc is enabled */
- 	if (crtc_state->dsc.compression_enable &&
-@@ -2701,10 +2702,18 @@ static void intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_st
- 	else
- 		y_alignment = crtc_state->su_y_granularity;
- 
--	crtc_state->psr2_su_area.y1 -= crtc_state->psr2_su_area.y1 % y_alignment;
--	if (crtc_state->psr2_su_area.y2 % y_alignment)
-+	if (crtc_state->psr2_su_area.y1 % y_alignment) {
-+		crtc_state->psr2_su_area.y1 -= crtc_state->psr2_su_area.y1 % y_alignment;
-+		aligned = true;
-+	}
-+
-+	if (crtc_state->psr2_su_area.y2 % y_alignment) {
- 		crtc_state->psr2_su_area.y2 = ((crtc_state->psr2_su_area.y2 /
- 						y_alignment) + 1) * y_alignment;
-+		aligned = true;
-+	}
-+
-+	return aligned;
+ static void psr2_man_trk_ctl_calc(struct intel_crtc_state *crtc_state,
+@@ -2668,6 +2673,23 @@ static u32 psr2_pipe_srcsz_early_tpt_calc(struct intel_crtc_state *crtc_state,
+ 	return PIPESRC_WIDTH(width - 1) | PIPESRC_HEIGHT(height - 1);
  }
  
- /*
-@@ -2945,15 +2954,16 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
- 	if (ret)
- 		return ret;
++static u32 psr2_dsc_su_parameter_set_0_calc(struct intel_crtc_state *crtc_state,
++					    bool full_update)
++{
++	const struct drm_dsc_config *vdsc_cfg = &crtc_state->dsc.config;
++	int slice_row_per_frame, pic_height;
++
++	if (!crtc_state->enable_psr2_su_region_et || full_update ||
++	    !crtc_state->dsc.compression_enable)
++		return 0;
++
++	slice_row_per_frame = drm_rect_height(&crtc_state->psr2_su_area) / vdsc_cfg->slice_height;
++	pic_height = slice_row_per_frame * vdsc_cfg->slice_height;
++
++	return DSC_SU_PARAMETER_SET_0_SU_SLICE_ROW_PER_FRAME(slice_row_per_frame) |
++		DSC_SU_PARAMETER_SET_0_SU_PIC_HEIGHT(pic_height);
++}
++
+ static void clip_area_update(struct drm_rect *overlap_damage_area,
+ 			     struct drm_rect *damage_area,
+ 			     struct drm_rect *pipe_src)
+@@ -3026,6 +3048,8 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
+ 	psr2_man_trk_ctl_calc(crtc_state, full_update);
+ 	crtc_state->pipe_srcsz_early_tpt =
+ 		psr2_pipe_srcsz_early_tpt_calc(crtc_state, full_update);
++	crtc_state->dsc_su_parameter_set_0_calc = psr2_dsc_su_parameter_set_0_calc(crtc_state,
++										   full_update);
+ 	return 0;
+ }
  
--	/*
--	 * Adjust su area to cover cursor fully as necessary (early
--	 * transport). This needs to be done after
--	 * drm_atomic_add_affected_planes to ensure visible cursor is added into
--	 * affected planes even when cursor is not updated by itself.
--	 */
--	intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
-+	do {
-+		/*
-+		 * Adjust su area to cover cursor fully as necessary (early
-+		 * transport). This needs to be done after
-+		 * drm_atomic_add_affected_planes to ensure visible cursor is added into
-+		 * affected planes even when cursor is not updated by itself.
-+		 */
-+		intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
- 
--	intel_psr2_sel_fetch_pipe_alignment(crtc_state);
-+	} while (intel_psr2_sel_fetch_pipe_alignment(crtc_state));
- 
- 	/*
- 	 * Now that we have the pipe damaged area check if it intersect with
 -- 
 2.43.0
 
