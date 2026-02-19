@@ -1,220 +1,147 @@
-Return-Path: <stable+bounces-217488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEVQNSBRl2nswwIAu9opvQ
-	(envelope-from <stable+bounces-217488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 19:06:24 +0100
+	id +KsEG01Rl2nswwIAu9opvQ
+	(envelope-from <stable+bounces-217489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 19:07:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98235161770
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 19:06:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B2D161781
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 19:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D850D302DF89
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:06:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 32673302812B
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040FE352C4C;
-	Thu, 19 Feb 2026 18:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8C134FF78;
+	Thu, 19 Feb 2026 18:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jsuEO8X1"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BFnHLGds"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B15284898;
-	Thu, 19 Feb 2026 18:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C904D334C05
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 18:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771524377; cv=none; b=QFEWwcrlkOUgyo5IN9c2MWRFV7OJr66wIRPqeEFPhhBoxEvCT+Kh9259qZL+wvvcJV7+wFjKqRoj+YStHl0UG2agtRypgKuooIcppAjTxZGnqFX+BfseUwbE3TE0aIWUGafX0pqYn2A8l2asCOJkCMSZbUIHCHwl2BlbhniFa0M=
+	t=1771524425; cv=none; b=Ft3qwHoH3/YJ4KX+KS9mN2na998y1z/loZ3OhGYTp38i48PPQTMQZfjyEmGM/5Qek8nRCOo3c4/OlzqhbKHMh5z0Qdc2db1SbztFlA9le1h6vN3kbd0xFGqu5CG7qL/xnCc73dQBKx1/Rw1MnSGB6GYdA+RDc8m7SEYjxyCDFBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771524377; c=relaxed/simple;
-	bh=ei+32J12dH5XTmY6HIsq/qfutT8wLhlFs3aD7kLVufI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eJh4TwNDHHHxvTIZGbMvD7YZuLSTv2ixwZWge1fzWb4qXwNrDqjER4p+kjrspbBDylgoZ+ipNKrtGCCe7khCGbCJIgs7Ms+7xoGsa6NV8ZY0QldjuW40MuowolimQfKnf1eECGy3mM2zfN9cYrcNuUnq2FphLX74waetLtKQRgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jsuEO8X1; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61J9A0nR1260396;
-	Thu, 19 Feb 2026 18:06:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=i77lVC
-	+87WV3PYgyMRs88BGYUND9L7VM9FRfQUTm8vk=; b=jsuEO8X1bgt+KZBXDNNNQY
-	paLZQ5ZgSZosZeqUYn1pe9WXnMzqGo04a3KJrh3bLvR5inW6+N8w+anvmdLMpMvx
-	EXyImY+hxbqyFcJg/yO7NGzOo91Y4OMXjlFjrgBjdTR5TntVg1tjDKgT9QVR0evy
-	lUVt+QvozMaEMA6cjafXxAvRUDztLzKDK/i8rxb8gT7CuhFLDoDsMEr7Ae+NjXuE
-	f5dxwsGjw6LOj0fOy8vwW9IyzMWnqBlRxv+6g5k5B4Mp0DZTk3YM79IRn8/t9EL4
-	mQ/3YC1wwjk8y1hmxArm0BudYv+wgarB6iwzs1bNb1q7jGyUTT1uzQNLLZVEz71A
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4caj6s7dsa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Feb 2026 18:06:09 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61JHWwkH024324;
-	Thu, 19 Feb 2026 18:06:08 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ccb45da1g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Feb 2026 18:06:08 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61JI678C13632220
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Feb 2026 18:06:07 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 88D465804B;
-	Thu, 19 Feb 2026 18:06:07 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4C08658059;
-	Thu, 19 Feb 2026 18:06:06 +0000 (GMT)
-Received: from [9.61.251.177] (unknown [9.61.251.177])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 19 Feb 2026 18:06:06 +0000 (GMT)
-Message-ID: <f6ef9900-ae3a-4580-a89d-f497fb4e5adf@linux.ibm.com>
-Date: Thu, 19 Feb 2026 10:06:05 -0800
+	s=arc-20240116; t=1771524425; c=relaxed/simple;
+	bh=QIdzlmeRuW02yxleV9RXkd4SZV/3Vp/4Ei7AIjsUXLo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aCpMlTnzQObL9JLADS7t1yeMDSrRUq1HKUwg2zrxrroVvXPqAHtCG0dsCyIaR8i1rDmk3fNKsfJh94LyH0MLtGEpYS/6cfD5zrw0iU3YfeKNrSWVGwn92kM2FQsO3a2VsNeTyhFfvahc4eCb89X865hUCA2FDILe6O9DTgwwJ9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BFnHLGds; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771524424; x=1803060424;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=QIdzlmeRuW02yxleV9RXkd4SZV/3Vp/4Ei7AIjsUXLo=;
+  b=BFnHLGds5n4oL7VkyCI1QgcFBRTxW9zm5Oc6F7OemEr5DJkUqJl8HlzU
+   goIFcAnuIqEgS9V/tyNcrtKjwdyXNczcLX3yAAar/OxIK5WvAFYrf5iV7
+   NLW3LJO39eguLdspY9nn00nxriIvB3ORyoxYwKKY8s1AIuQJ+oNLV1FY0
+   QMwdhl6k+spdBBo9uV0fr+zLjCDPcVu9793hBYCWjUySx0OZHvkNbP7Ue
+   z2aVaLEU9nS9Cz8N2uv/qFsw5HFLHSHpnaZxbKhcnGwo5Qooaf7a0YjoZ
+   ScCOJsjjRmPdUk3Lxi6VCAfTQfDSa46frJurM3cFhV6twoDu4EY7n3A6e
+   Q==;
+X-CSE-ConnectionGUID: 0/X+Nk3IQVi5frz5MFGtHA==
+X-CSE-MsgGUID: PfJV+gcjSvC5qgrlQsQMlg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11706"; a="76482812"
+X-IronPort-AV: E=Sophos;i="6.21,300,1763452800"; 
+   d="scan'208";a="76482812"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 10:07:03 -0800
+X-CSE-ConnectionGUID: zAodoqX7RFe/mi3qygbY9A==
+X-CSE-MsgGUID: FQOP7MgsS92zsAkqgPQ3mw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,300,1763452800"; 
+   d="scan'208";a="245189015"
+Received: from guc-pnp-dev-box-1.fm.intel.com ([10.1.39.24])
+  by orviesa002.jf.intel.com with ESMTP; 19 Feb 2026 10:07:03 -0800
+From: Zhanjun Dong <zhanjun.dong@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Wajdeczko@web.codeaurora.org,
+	Michal <Michal.Wajdeczko@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>, stable@vger.kernel.org,
+	Zhanjun Dong <zhanjun.dong@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>
+Subject: [PATCH v7 1/7] drm/xe: Always kill exec queues in xe_guc_submit_pause_abort
+Date: Thu, 19 Feb 2026 13:06:55 -0500
+Message-Id: <20260219180701.2418453-2-zhanjun.dong@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260219180701.2418453-1-zhanjun.dong@intel.com>
+References: <20260219180701.2418453-1-zhanjun.dong@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/9] PCI: Avoid saving config space state in reset path
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Keith Busch <kbusch@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        lukas@wunner.de, Alex Williamson <alex@shazbot.org>, clg@redhat.com,
-        stable@vger.kernel.org, schnelle@linux.ibm.com, mjrosato@linux.ibm.com,
-        Bjorn Helgaas <bhelgaas@google.com>
-References: <20260219002010.GA3445930@bhelgaas>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <20260219002010.GA3445930@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=dvvWylg4 c=1 sm=1 tr=0 ts=69975112 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=KHt2tSRMWXP2V5P9C2UA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: PgvV2eCn__ZMzQDdTIqaBapV090V5-Fl
-X-Proofpoint-ORIG-GUID: WrJCnkgNYeeWHdlD_Gt9-2Vk2ySxY_MN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE5MDE2MCBTYWx0ZWRfXzR8yYh1Mxv/K
- tMs2C07tybTT8Qi9XaYmMINHICXHqr3uXBGdfqKzXjaM8B1GBKwh/U1/G9SwLK7tyjXseXc+N3Q
- 1/3m9xzLAdaBNFTBpm4pgpMULg5+XoRFdEaX/oYT2kBc8NeBtyHaOoDa/d3YvYGsSxCucyve+Xt
- vWL9zBX+o1FMArKEeFfg16RkxLmmtFZHUJUg3SCZqWMecHifW2Ia4w1pIyqkZooVL3ZuBxvVAhe
- u4RigeZi5y3eG9P35f+gNOE4TYsMP0GGlmXxSjHPAKRm2B10mKy61KRsh0jqcUlFIj172I6qoPw
- 2InjNQzO3WpZZ9Mv2Q+VbVxHHI96uYG/vicm4VzQx8qRmQbcQsGnR22xLfwpHz+RX+zwRPBUCQX
- 3niqoiq8Ov5TCIGvYzdARRzpZcDYOid6f0MF9SPfYVrQffqI80d68O8bD3f/Nn7Va93k05z5Ifi
- ibfLMwpr2SRu+bCC8dg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-19_04,2026-02-19_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 clxscore=1015 malwarescore=0 phishscore=0 suspectscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602190160
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+X-Spamd-Result: default: False [3.14 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:subspace.kernel.org:reject}];
+	R_DKIM_REJECT(1.00)[intel.com:s=Intel];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[intel.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-217488-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217489-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:-];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[zhanjun.dong@intel.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.978];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 98235161770
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:mid,intel.com:email]
+X-Rspamd-Queue-Id: A8B2D161781
 X-Rspamd-Action: no action
 
+From: Matthew Brost <matthew.brost@intel.com>
 
-On 2/18/2026 4:20 PM, Bjorn Helgaas wrote:
-> On Wed, Feb 18, 2026 at 01:48:57PM -0800, Farhan Ali wrote:
->> On 2/18/2026 11:35 AM, Bjorn Helgaas wrote:
->>> On Wed, Feb 18, 2026 at 12:02:01PM -0700, Keith Busch wrote:
->>>> On Tue, Feb 17, 2026 at 11:55:43AM -0800, Farhan Ali wrote:
->>>>> Yes I think you are right, with this change the PCI Command
->>>>> register gets restored to state at enumeration. So we will
->>>>> lose the updated state after pci_clear_master() and
->>>>> pci_enable_device(). I think we can update the vfio driver to
->>>>> call pci_save_state() after pci_enable_device()?
->>>> Either that, or move the pci_enable_device() call to after the
->>>> function reset.
->>> I kind of like the latter idea because it seems a little simpler
->>> for the rule of thumb to be that a reset done by the PCI core
->>> returns the device to the same state as when the driver first
->>> probed the device.  Drivers would generally not use
->>> pci_save_state() at all, and they could share some initialization
->>> logic between probe and post-reset recovery.
->> I think the vfio-pci driver was intentionally doing the
->> pci_enable_device() before doing the reset. As per commit
->> 9a92c5091a42 ("vfio-pci: Enable device before attempting reset") it
->> was done to handle devices using PM reset, that were getting
->> incorrectly identified not supporting PM reset due to current state
->> of the device not being D0. It looks like pci_pm_reset() still
->> returns -EINVAL if current power state is not D0. So I think we
->> can't move pci_enable_device() after reset. Unless we want to update
->> pci_pm_reset() to not use cached value of current_state and read it
->> directly from register?
-> Devices are generally disabled at .probe() time, so that will be the
-> default saved state.  But every driver will expect the device to be
-> enabled after the reset.  Skipping the save state at reset time seems
-> like it would need a lot of work first and maybe it wouldn't ever be
-> practical.  It wasn't really thought out; I was just hoping we could
-> simplify the save-state model and maybe unify driver reset and error
-> recovery paths.  I think we need to drop this patch at least for now.
+xe_guc_submit_pause_abort is intended to be called after something
+disastrous occurs (e.g., VF migration fails, device wedging, or driver
+unload) and should immediately trigger the teardown of remaining
+submission state. With that, kill any remaining queues in this function.
 
-Yeah, I agree this patch might be too disruptive for drivers. In that 
-case would my previous version [1] to at least prevent saving state in 
-case of an error be acceptable? Or is there another approach we should 
-consider?
+Fixes: 7c4b7e34c83b ("drm/xe/vf: Abort VF post migration recovery on failure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+---
+ drivers/gpu/drm/xe/xe_guc_submit.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-[1] https://lore.kernel.org/all/20260122194437.1903-4-alifm@linux.ibm.com/
-
->
-> 9a92c5091a42 ("vfio-pci: Enable device before attempting reset") was
-> mostly done to make pci_pm_reset() work, which requires the device to
-> be in D0.  The main purpose of pci_enable_device() is to make device
-> BARs accessible; it *does* also put the device in D0 because BARs are
-> only accessible in D0, but pci_pm_reset() itself doesn't need the
-> BARs.
->
-> Other reset methods, e.g., FLR, don't seem to require the device to be
-> in D0, so I'm not sure why pci_pm_reset() requires that.  I think the
-> critical piece is the D3->D0 transition, and maybe we could arrange
-> for that to happen even if the device is already in D1/D2/D3hot or
-> even D3cold.
-
-Looking at the PCI spec (v6.1) I didn't see any requirement for the 
-device to be in D0 state to perform a power state change. So I think we 
-should be able to transition from D1/D2/D3hot to D0. But IIUC if a 
-device is in D3cold, then won't register reads/writes fail till power is 
-available to the device?
-
-Thanks
-
-Farhan
-
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index de716c1fb18e..42712acf2ec2 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -2763,8 +2763,7 @@ void xe_guc_submit_pause_abort(struct xe_guc *guc)
+ 			continue;
+ 
+ 		xe_sched_submission_start(sched);
+-		if (exec_queue_killed_or_banned_or_wedged(q))
+-			xe_guc_exec_queue_trigger_cleanup(q);
++		guc_exec_queue_kill(q);
+ 	}
+ 	mutex_unlock(&guc->submission_state.lock);
+ }
+-- 
+2.34.1
 
 
