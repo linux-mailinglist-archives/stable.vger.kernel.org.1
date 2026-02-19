@@ -1,167 +1,210 @@
-Return-Path: <stable+bounces-217397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DVMEOGylmmRjwIAu9opvQ
-	(envelope-from <stable+bounces-217397-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:51:13 +0100
+	id wFOyL32zlmmRjwIAu9opvQ
+	(envelope-from <stable+bounces-217398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:53:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B911015C7EC
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:51:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6409415C84B
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 07:53:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1DEC1301469B
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 06:51:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CC7E2300CA31
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 06:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82ED931AF3D;
-	Thu, 19 Feb 2026 06:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3DC324B38;
+	Thu, 19 Feb 2026 06:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="HiOes7gZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XGKkeM6U"
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BD73054EF
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 06:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C815275AEB;
+	Thu, 19 Feb 2026 06:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771483866; cv=none; b=tImTD7isShEb/60bSE6uVT3go02YbT6UCOPO0eb2v3+R4sPB92UaguIRXZ9sO0x/rpQ1So9qOoJQDckuPlAH4s95xGIvUFD+5A+44OgzeXc/c/8XoFmcXddgHE2V874Ia/inQjyUwbphnfHXEAPsyjVO9MMnq7vwuU922AROdU0=
+	t=1771484024; cv=none; b=IZFKUqJ4hhLrcw8FukgYqjmKFfgKyTbATGNlThAMnz2VbNBfBL/6AGSEPKdppmuR+SsAMfo7zdK/8BFcTDDtJ/aVz0fkbSc/qGTBhIWzvWF9SwjvRlRhZlC/goTHZmuZTpQgZiiPCkvG3PTyI9jZ2GIYPdmog8DgAevZpMjFHT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771483866; c=relaxed/simple;
-	bh=Tc6IKilvxVWEgLeD/kY2yKy0uRFz/4bkhPiGqS126Y0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F8Nd2wjioiXQ7PsBsabvEBHmhgmq7Yi4IA4JgBwGyWgwdRXGzkumTHQGYOIytmZTbQMYuuLDrxVAUQWGEE/ST+8c1sbjjXb0sJNuJzbEN28fa1DFHYlhOSD3tzGOihagTYjgs06Tg5yGCw9FF1aJVwl2Ujj9Wy8V3BflT1/JfvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=HiOes7gZ; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
-	by cmsmtp with ESMTPS
-	id svCtvA2TXSkcfsxsOvJdkD; Thu, 19 Feb 2026 06:51:04 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id sxsNvjLLJh8QWsxsNvYt3R; Thu, 19 Feb 2026 06:51:03 +0000
-X-Authority-Analysis: v=2.4 cv=Mcdsu4/f c=1 sm=1 tr=0 ts=6996b2d7
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=x6Ducos6UYMGwXt6jLcA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ebBsodXuHOD7VCHm0Tbnrmw1Sh1+viWnoLTHXpiYaAo=; b=HiOes7gZHHX7TbJf21zZpwHUwt
-	hQRny9Luoz73cM4Bpy9k2oUjhIjCbkWAGaoL3SQeTYjPGnV0uGxeL0LowL2IXYSothk5/l/cR5OWc
-	SYfblWVCem8NyMtY5cbj5JGDHQcXzkA1ojLdf/PVboUx/2VCFOmiXmBi7FipE8S4cqyHwOJEcBktd
-	ZvJ3x7M76as4p2kzujp7RKkvKNqV9t1WgQokSAdQYd1C/MMuy+D7+ac+YVwJeRFYI32NcLOxdPbxf
-	quRUVur3hAWWvJZSryA3ZphnCc/GDjFjViVBg1ZwqnUJ5DynGgps9RGeYX4l1LY3HuZGRc+SSd4Po
-	Ae+RO1LQ==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:40598 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vsxsN-00000002I8V-0Kq4;
-	Wed, 18 Feb 2026 23:51:03 -0700
-Message-ID: <a8a18a72-e935-407d-b2af-c95382534bda@w6rz.net>
-Date: Wed, 18 Feb 2026 22:51:01 -0800
+	s=arc-20240116; t=1771484024; c=relaxed/simple;
+	bh=mUGtpDtI+pYLvLN8/jlVVukzx+jkyFh+aZPyBC0yMZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=deQFLN1n1JdQ9XhC4MVFG/hUJR/gtVt+pNpAvFt75AWRCqF01xGTTa8GbTau/dAhOR2MjViN2N2SSI7rOxZ3tf/CJP1SjbJshX9ouFz/DuRA7ETzgi/I9W7bdzQFEm+jQ7VZNCNIKTN0EB5tMOPbHcew+Aim26OXqUqakykR4IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XGKkeM6U; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771484022; x=1803020022;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=mUGtpDtI+pYLvLN8/jlVVukzx+jkyFh+aZPyBC0yMZA=;
+  b=XGKkeM6UMw+gLWVWF3Q1jfPAiTD1yUnOtwOxykfBjHn9c7ROVcNZtrIN
+   JgLCfrcmyCiSNeXO8TsaKMcM/Mfz6+3lcmceeXlJp+vYyFvmiFlg8EXaS
+   EHrH3A6nY7SXAPKy0Pa67vVCURuAnlr3HwII0pUPENoC+cfnAWYAz622i
+   KwsJpKgKuKkHPZMOUZihoAbMTI1wXTAYTJM9VQNqYpFd9PCAKHq8Dggg5
+   vxjbz7ZxBSdoOfx6+5qE1UhWrjacsSLDB+rBq4BHXQ63/ipGi2KQKY2t/
+   i3Rzo9vFVVis1juqVTumm0+f/L3Mm8n047HibrDk6v9QSsRpEO4I/+i26
+   Q==;
+X-CSE-ConnectionGUID: S2BFEkJAT4+zwqtrg8EjLw==
+X-CSE-MsgGUID: JYPu20ACT9akGKpwC2j0dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11705"; a="71767545"
+X-IronPort-AV: E=Sophos;i="6.21,299,1763452800"; 
+   d="scan'208";a="71767545"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2026 22:53:41 -0800
+X-CSE-ConnectionGUID: fBOxgcIqQrGwlkAnkpsWMg==
+X-CSE-MsgGUID: eHrtIraeQwmaEuDaaHFNSw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,299,1763452800"; 
+   d="scan'208";a="237418777"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.114])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2026 22:53:38 -0800
+Date: Thu, 19 Feb 2026 08:53:36 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@kernel.org>, Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] gpio: swnode: restore the
+ swnode-name-against-chip-label matching
+Message-ID: <aZazcDYdoZBzuH6f@smile.fi.intel.com>
+References: <20260211085313.16792-1-bartosz.golaszewski@oss.qualcomm.com>
+ <aZUIFiOYt6GOlDQx@google.com>
+ <CAMRc=Md_x+DxmW742HRUW-jeg9_AW-stKkHUP9z13+M+POd4Tw@mail.gmail.com>
+ <aZXyPjIjIDKCBLvs@google.com>
+ <CAMRc=MdQmR-_Yqdh4TiHSzjmGVJY+0guDpFEM6F1QD_SJ2+T0Q@mail.gmail.com>
+ <aZYPv1_kWQd9OdHD@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/39] 5.15.201-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260217200002.929083107@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260217200002.929083107@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1vsxsN-00000002I8V-0Kq4
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:40598
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 119
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfPvU5Qa5EcoJOnfQxu8ZYLn6q4nhpGPr/AI0Lk149J/AVK9oiYhosGzqWuScr4tGd125pMNJGjcTESunM2PNcMFYdw5tGCA7Sc6Z2ntJYWYrbOJ8JLV8
- HOSpBHisoesrKoP4xxTmEjeobrREXh7YK8V9lRSi1yROcNglY+VI4/cbhtRSqiZ6HaNIiP8caNepXQ==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aZYPv1_kWQd9OdHD@google.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217398-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217397-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[w6rz.net];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_X_SOURCE(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	NEURAL_HAM(-0.00)[-0.998];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[w6rz.net:mid,w6rz.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B911015C7EC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smile.fi.intel.com:mid,qualcomm.com:email,intel.com:email,intel.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6409415C84B
 X-Rspamd-Action: no action
 
-On 2/17/26 12:31, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.201 release.
-> There are 39 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 19 Feb 2026 19:59:50 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.201-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Wed, Feb 18, 2026 at 11:22:07AM -0800, Dmitry Torokhov wrote:
+> On Wed, Feb 18, 2026 at 07:08:22PM +0100, Bartosz Golaszewski wrote:
+> > On Wed, Feb 18, 2026 at 6:15 PM Dmitry Torokhov
+> > <dmitry.torokhov@gmail.com> wrote:
+> > > On Wed, Feb 18, 2026 at 09:42:28AM +0100, Bartosz Golaszewski wrote:
+> > > > On Wed, Feb 18, 2026 at 1:31 AM Dmitry Torokhov
+> > > > <dmitry.torokhov@gmail.com> wrote:
+> > > > > On Wed, Feb 11, 2026 at 09:53:13AM +0100, Bartosz Golaszewski wrote:
+> > > > > > Using the remote firmware node for software node lookup is the right
+> > > > > > thing to do. The GPIO controller we want to resolve should have the
+> > > > > > software node we scooped out of the reference attached to it. However,
+> > > > > > there are existing users who abuse the software node API by creating
+> > > > > > dummy swnodes whose name is set to the expected label string of the GPIO
+> > > > > > controller whose pins they want to control and use them in their local
+> > > > > > swnode references as GPIO properties.
+> > > > > >
+> > > > > > This used to work when we compared the software node's name to the
+> > > > > > chip's label. When we switched to using a real fwnode lookup, these
+> > > > > > users broke down because the firmware nodes in question were never
+> > > > > > attached to the controllers they were looking for.
+> > > > > >
+> > > > > > Restore the label matching as a fallback to fix the broken users but add
+> > > > > > a big FIXME urging for a better solution.
+> > > > > >
+> > > > > > Cc: stable@vger.kernel.org # v6.18, v6.19
+> > > > > > Fixes: 216c12047571 ("gpio: swnode: allow referencing GPIO chips by firmware nodes")
+> > > > > > Link: https://lore.kernel.org/all/aYkdKfP5fg6iywgr@jekhomev/
+> > > > > > Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > > > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> > > > > > ---
+> > > > > > Changes in v2:
+> > > > > > - check if gdev_node and gdev_node->name are not NULL before trying to
+> > > > > >   match the label (Hans & Dan)
+> > > > > > - use the right link
+> > > > > > - collect tags
+> > > > > >
+> > > > > >  drivers/gpio/gpiolib-swnode.c | 19 +++++++++++++++++++
+> > > > > >  1 file changed, 19 insertions(+)
+> > > > > >
+> > > > > > diff --git a/drivers/gpio/gpiolib-swnode.c b/drivers/gpio/gpiolib-swnode.c
+> > > > > > index 21478b45c127d..0d7f3f09a0b4b 100644
+> > > > > > --- a/drivers/gpio/gpiolib-swnode.c
+> > > > > > +++ b/drivers/gpio/gpiolib-swnode.c
+> > > > > > @@ -42,6 +42,25 @@ static struct gpio_device *swnode_get_gpio_device(struct fwnode_handle *fwnode)
+> > > > > >
+> > > > > >  fwnode_lookup:
+> > > > > >       gdev = gpio_device_find_by_fwnode(fwnode);
+> > > > >
+> > > > > By the way, should we extend gpio_device_find_by_fwnode() to use both
+> > > > > primary and secondary nodes?
+> > > > >
+> > > >
+> > > > That's already done on a higher lever for all fwnodes in gpiod_fwnode_lookup().
+> > >
+> > > How exactly? I am not talking about checking secondary node for the
+> > > fwnode that is used in the reference, I am talking about secondary
+> > > fwnode that might be assigned to the gpio chip and you need to check
+> > > both primary and secondary if they match with the fwnode that you call
+> > > gpio_device_find_by_fwnode() with.
+> > >
+> > 
+> > Right, I didn't quite get it. I was surprised to find out
+> > device_match_fwnode() - which we use in gpiolib - does not do it
+> > already. I'm wondering if this is something we should change in device
+> > core or only locally.
+> 
+> Yes, I think so (change in driver core). There is only a handful of
+> calls to device_match_fwnode() that they can be audited to make sure the
+> conversion is safe.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+I believe there was already similar discussion and IIRC conclusion was to
+distinguish current device_match_fwnode() with something new that will check
+also secondary one. This way we can in a usual way convert drivers one-by-one
+if even required.
 
-Tested-by: Ron Economos <re@w6rz.net>
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
