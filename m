@@ -1,230 +1,237 @@
-Return-Path: <stable+bounces-217481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJqEMnZGl2m2wQIAu9opvQ
-	(envelope-from <stable+bounces-217481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:20:54 +0100
+	id IFCyBbhFl2lMwQIAu9opvQ
+	(envelope-from <stable+bounces-217482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:17:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D691611DB
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:20:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9079161103
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 18:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F9BE313AD61
-	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:15:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF780300847E
+	for <lists+stable@lfdr.de>; Thu, 19 Feb 2026 17:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECCE353EF4;
-	Thu, 19 Feb 2026 17:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A073C07A;
+	Thu, 19 Feb 2026 17:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OTSVdSNV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Euoj26kU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9D034F27B
-	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 17:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771521260; cv=none; b=eXMEIUrFvwP8GuSuaKQXc7zls8nOvoVzwvjlJKV8QW9hdJs92/x6qGhkdnyoCfRAo0QfrlPaBkIkHU1KIGRzqMYQ6Vc/L/WRhCiQ9fTJtwEjz2hmWStWv7dFBFiWwIKRqt6wUln9LHx/eApTsC3RGEpJ/Cc1ushkLU5kYGDjJRU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771521260; c=relaxed/simple;
-	bh=Hkj+3H7Z8a3D2Y8tRX2SbgMdeMF/kuGLJMd704mftHc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZNcc+FexSl54He2jm7r7S2wPEj8+pJgZE2oOoLb4kkMkULsYqQ3sMsZplOjUcO6L6BxqM/4qdQ9WgX1J672Djl9Xcdc4hcg80/VQDmEVtNpadC0lS2qk9I2TczCBHC7+jGco8lV7R4qRpJK5TqyR0xI9+VicYg4vm30Nm6vY5Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OTSVdSNV; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87EF347FD9
+	for <stable@vger.kernel.org>; Thu, 19 Feb 2026 17:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771521451; cv=pass; b=Jzjg6jXGuSZHD4+OoMqhZer/Z/63t/5Mp0XJBql5btrC7qkXPnc8MZIlurOZAydpiFveVCrlOdxG+jjPZV/cVAhi6FLZ5OBBpHUePtJPaVL8dw5rEQG/OOLzsEkTwtYEdWo0DEVfA5iXnmUFXVd4GFa5HvHYDKWPHIsGb2DyWgU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771521451; c=relaxed/simple;
+	bh=8s7zqn+JKR5OYoKOoaTPQWs8K5lNLxKEgdGO9RiCybo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZldFA00/dHWwOI7Ef71pJ5jJK/k57eJzvEi8Cb5qK3ayIdcAlKHcVw0FDWAjWYbCiPopiknfgDHsElpOJw+NqF2kbALQAKf4rMJP43xjRR83xji/LA5kCnRhjHrtKItMm7Y0chXE6dfpsbNuN0imc8vfmRa2mtRNPD+S91NSnmo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Euoj26kU; arc=pass smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-81df6a302b1so1193843b3a.2
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 09:14:19 -0800 (PST)
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-89464760408so7568656d6.0
+        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 09:17:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771521448; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gl67hP3chNbGR2c2gnk0Cjeuw7HQVbdn4KANk1A0XB1UfxbZXp8dUxI2OjbHTGcQV3
+         CU49UfFLwqQ3zeQDAw5wu0Qo9lCut5Gb13lv59xANXwZzcbGDYpweMN2AI8YLFLlUJSa
+         irQe1FUKVERMAHKSjkWEFNTWp/BukTYLuoxN9ZqX/GYlYaZ1b69hHqLq7IkQKvycIHaF
+         N8+upYL29hIjf7Y0rT+wfaV7342MpGzytQuMdWjR7NOK0K36gJd5/ptWz8Xs84RqXtKS
+         7xQO3rNAypEU9TpMeW04bAGji2nEeXDlIQQRz63STZlrppvWO9vQ7E6LHlM+Z9yfCCMr
+         eTdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=S5w/msoFDa9orh2H96VLrf36iiFdGsvKYnvJC5OxIJw=;
+        fh=hit7+KdilZsr382BZO8LJG5cmwRLRQOdxC7FbTBCTWQ=;
+        b=OQejiocZrB51afxoLItT+TlA1WKVaNECiLYBQn3r3t/kbJKHIsVE68DdTy9cAzB3kt
+         ebC1yNNQay9oi31SoNpDyOAtmn2ldPl54GO5BSDkzfaE72oPVwiEmYNtQJjA2MF/4drR
+         xqDEBBwDPW0///bf8460RzCg+1PWwI+gflNkJd+RzFUCoOeOpxw841piqZiC05yuBDy2
+         j+tXPysv5FTyHWhEHJuLx2GxX/4LXExwyTzPXx+BmxoU/4ZGhLf3U9/1YNItspXkj3VH
+         bEkHDWBUVwsBMGmION6ulmiMUHnTPp2uMM2J+dnaFBkg20c8wx2qI7iCvUOyTSyNigQw
+         ojSg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771521258; x=1772126058; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QKKfl8PT/GCaUO5UcTwQ5MiYDnn0Vh3veSo7jvr1Ic4=;
-        b=OTSVdSNVuwBDyXp3D/0mYMOlcZ/IMRRwNikzboDFnxJPVV2zhMW7RKKZgUclNIQXDg
-         7jzvPDlKIG0kRzsfa8L3IwpnM7wnF1+XfsxKv2pAgjANZ9fv1qDdOdfUPT95aLQCorng
-         ZSLElhkX3S6L28YVBEnvfkIg3Ynaba9hm34SBOrqeNcxQ1zlxrMfkxyiu4Vib9ydiIV0
-         +Dpz+Kyn2QHw0DeC1yjlpg3wtvrVEUbKlC0V9gmjVIccqXbqjL+2d5sV8ZuYpREEnEZO
-         5EMcqLTixUWA0UKXvNBQ7VS81ZCKuv/pS4dlgKcMqGCY1+/1AB4Ssj1HAZn8kKdodPPc
-         1i9g==
+        d=gmail.com; s=20230601; t=1771521448; x=1772126248; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=S5w/msoFDa9orh2H96VLrf36iiFdGsvKYnvJC5OxIJw=;
+        b=Euoj26kUrtcgEk6QPtpHD+kB/MwC2KTzN6gfCyDpZjfIcIziTSNNcrxFLz4YEz4580
+         kVBu8Ky1ewyPSj6UsZO6k5e17FbGgup5BHqzPN2ENpIKbBzKaLqymZc+dA2Je9l+tE22
+         UzhMSfPYKHn/oY0vVTp3MqyUppHs6enM6PIRN47idsdDmlAZ29nuAsXGafMCSvoTnRW7
+         4+9wI15XYWfeviVRigEa1ovsO/O92xzwvn59ba8ipb2y26bMmo25smsIKM5P/O6r4wA1
+         XA6O8HBKM+AKaUNgSFwpZBvvi4OeAWGcqwbglEkQFtnlpCpA6ZFaEBmRsG30VLOs1V1A
+         V42Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771521258; x=1772126058;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QKKfl8PT/GCaUO5UcTwQ5MiYDnn0Vh3veSo7jvr1Ic4=;
-        b=A32OJ34YFI2PdRTsPQyH3oJc49d90JD+YEaNNiG3CsHxUEfGA9O74sVGUq2crsi+su
-         Hi3EJqOXpkUpFsxPv2ce4b32LcATOvVZlrMOQ2Gk02MjyhrPC9HT09Yc+IQPElGkRwDl
-         zuS4QvFTlTs7Q811e58iE0h9Vt3mj1oSUrkhrbPyJ2Flf1WdohJbVDi7UeTsl+DNcpCp
-         +zv4G3sahbfJ480NOC1T62wKFyTqs3+OfPfqR4zNQNJN6v/pGu1usZvvbf0ged4W3PAT
-         IBAqD2uTsJMNGI8gRjAFqVUd+GYeBzS5x/LbuJnwDOmi64pC40dv6UY/qvePD0GWDtSm
-         QeUg==
-X-Gm-Message-State: AOJu0YxWiHA2Uym1bGWLG47RJ6eIRSB2OiFlE467g8E/j+gsM4GxO6TM
-	peuzQ6CbtrfHeyrmkVwFuyPjqsHTzCB/GkTw5bq51vucP7nAHdIFYAoUw2j4Pcmn
-X-Gm-Gg: AZuq6aJypIJ85yj+KXYJzIKxsr5fzFDQ4WofIsbjboehiHrpLbKOAKW+vbCTAA697HC
-	P2kPf93KjxZ7Wzxq0v746VZ2MYYCs0+SCWmDBnpPbc9A8PaXvntHwB8OfbPvIX88qNrKYTWbOn0
-	Z4bBt35UuJPyvIKrYCFRhcmj1PLG61xBtG943yF8mrWCJ/ga3vL31KTGQ7QtGk6yBcK5QlYEMgU
-	ySxxIuhiWqGaoYO1O6FcBvsDPO/2zRY3nVJyYCx7KPoAsr7q0OtRtobiBzt5b9AnqOgKt9c3vM0
-	okuOciztvjrFn/j45fbxfy09AXy712gi5xg70Gl+i7ibV0VZ6e8rHvZB0+ifrqQnD0+mW4Al3BR
-	Jvq51PEKv/S2VzPb2cHx/6ncY6+STjJgu5qPEBLgNCjOVGxEScda7dQxe3l1ybGYGSMyGGhTPRt
-	/+sU7UCSFTehLjcpPanTwfEfRKPVwu+rKNbbwebMb+lrVrXALSDg==
-X-Received: by 2002:a05:6a20:cf88:b0:361:28dd:a9ff with SMTP id adf61e73a8af0-39483a5a85dmr17158114637.38.1771521258512;
-        Thu, 19 Feb 2026 09:14:18 -0800 (PST)
-Received: from name2965-Precision-7820-Tower.. ([121.185.236.165])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6e532fa2e5sm15895002a12.26.2026.02.19.09.14.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Feb 2026 09:14:17 -0800 (PST)
-From: Jeongjun Park <aha310510@gmail.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	tglx@linutronix.de,
-	Julia.Lawall@inria.fr,
-	akpm@linux-foundation.org,
-	anna-maria@linutronix.de,
-	arnd@arndb.de,
-	linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	luiz.dentz@gmail.com,
-	marcel@holtmann.org,
-	maz@kernel.org,
-	peterz@infradead.org,
-	rostedt@goodmis.org,
-	sboyd@kernel.org,
-	viresh.kumar@linaro.org,
-	zouyipeng@huawei.com,
-	aha310510@gmail.com,
-	linux-staging@lists.linux.dev
-Subject: [PATCH 5.10.y 15/15] timers: Fix NULL function pointer race in timer_shutdown_sync()
-Date: Fri, 20 Feb 2026 02:13:10 +0900
-Message-Id: <20260219171310.118170-16-aha310510@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260219171310.118170-1-aha310510@gmail.com>
-References: <20260219171310.118170-1-aha310510@gmail.com>
+        d=1e100.net; s=20230601; t=1771521448; x=1772126248;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S5w/msoFDa9orh2H96VLrf36iiFdGsvKYnvJC5OxIJw=;
+        b=Bg5XNheHXukQ6feExheAiMl0/Myf+aEXgColc5UYYJRmpqm6GdSYeDG5nJqHA1LI3P
+         l62vaty9R6rv1qWzvodIxwjWyKIq/w4o49Z6vV/d0ArJL9FJRKdD8jp4y2cQCiWGWeKw
+         75A8atsKF1Atd1desFLxyMMf8wdsmU3fLQo6S2Zl3EVbiXS51vA14/OstkpEKJmVRYcX
+         8RjLsHBCdgSMvcbrJ786PiV+40LgXJY1vl0aQjA0GP2NM05hl+LCVQ0IPKD0YgL/yiER
+         q4EJMOWac3WyFfTKCMYewgS1SdcE8me0Yyuhq6U2vZNhdxhHWMci7d/bAnzIuy0XY7Ty
+         7IsA==
+X-Gm-Message-State: AOJu0YwoenRnw+rm0FEl1ZLGkM45m3xWC6uf2wvQxVeN4CEXp9Fr9+0w
+	kpfz3KE3I8iJwKGsovgL00kzNNPfzhwZRQ01XdPpbN0eLigwSwNBadLBtq4gzXF/YyX4kQXjKDt
+	+y9jELoJA90YtxrdH1UxSTo8/Xz7URhkFdiSd
+X-Gm-Gg: AZuq6aIgVF9DltQzlc6lB62Mrt/nxarIHdpR8v9OltSFJzkcXaZEFNO++EIMe5XU4ii
+	RrEGL21/DHmXEQNL/NNKkUQrGJZwRm3jc+eMMztfGfDndjujtW6aCleJDKUNtS8hnWlp26YVc5x
+	vKW+ZP5HIMXWFJGI1EAkj5pYGoLleglCsYvgGUqbKlRDhUD0ud4aAN+AtASqbGKg9pI2IBk75/e
+	wvLOjS//3ZiV/GRe3ejDlLlHFxvEcyGtU2Z8In8gpTYnT8uMkZirxzq+GsVBP5Uiatt4co6m+7g
+	Qy+fyFSpJw==
+X-Received: by 2002:a05:6214:27eb:b0:896:f6d5:c73c with SMTP id
+ 6a1803df08f44-899580a8bcbmr89613496d6.41.1771521447631; Thu, 19 Feb 2026
+ 09:17:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260219171310.118170-1-aha310510@gmail.com> <20260219171310.118170-16-aha310510@gmail.com>
+In-Reply-To: <20260219171310.118170-16-aha310510@gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Fri, 20 Feb 2026 02:17:18 +0900
+X-Gm-Features: AaiRm529edBYEh1GUJI3ts8-SzVmsBmd3V91rJtHn___pgs9QXwHrjAbeawXVSs
+Message-ID: <CAO9qdTGZVdkug1kn0goW8Uwro95P+_jLW3MBxxp04bxgq=SsCA@mail.gmail.com>
+Subject: Re: [PATCH 5.10.y 15/15] timers: Fix NULL function pointer race in timer_shutdown_sync()
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, tglx@linutronix.de, Julia.Lawall@inria.fr, 
+	akpm@linux-foundation.org, anna-maria@linutronix.de, arnd@arndb.de, 
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux@roeck-us.net, luiz.dentz@gmail.com, marcel@holtmann.org, maz@kernel.org, 
+	peterz@infradead.org, rostedt@goodmis.org, sboyd@kernel.org, 
+	viresh.kumar@linaro.org, zouyipeng@huawei.com, linux-staging@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,linutronix.de,inria.fr,linux-foundation.org,arndb.de,vger.kernel.org,roeck-us.net,gmail.com,holtmann.org,kernel.org,infradead.org,goodmis.org,linaro.org,huawei.com,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-217482-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217481-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,linutronix.de,inria.fr,linux-foundation.org,arndb.de,vger.kernel.org,roeck-us.net,gmail.com,holtmann.org,kernel.org,infradead.org,goodmis.org,linaro.org,huawei.com,lists.linux.dev];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[aha310510@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 15D691611DB
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: D9079161103
 X-Rspamd-Action: no action
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+Jeongjun Park <aha310510@gmail.com> wrote:
+>
+> From: Yipeng Zou <zouyipeng@huawei.com>
+>
+> [ Upstream commit 20739af07383e6eb1ec59dcd70b72ebfa9ac362c ]
+>
+> There is a race condition between timer_shutdown_sync() and timer
+> expiration that can lead to hitting a WARN_ON in expire_timers().
+>
+> The issue occurs when timer_shutdown_sync() clears the timer function
+> to NULL while the timer is still running on another CPU. The race
+> scenario looks like this:
+>
+> CPU0                                    CPU1
+>                                         <SOFTIRQ>
+>                                         lock_timer_base()
+>                                         expire_timers()
+>                                         base->running_timer = timer;
+>                                         unlock_timer_base()
+>                                         [call_timer_fn enter]
+>                                         mod_timer()
+>                                         ...
+> timer_shutdown_sync()
+> lock_timer_base()
+> // For now, will not detach the timer but only clear its function to NULL
+> if (base->running_timer != timer)
+>         ret = detach_if_pending(timer, base, true);
+> if (shutdown)
+>         timer->function = NULL;
+> unlock_timer_base()
+>                                         [call_timer_fn exit]
+>                                         lock_timer_base()
+>                                         base->running_timer = NULL;
+>                                         unlock_timer_base()
+>                                         ...
+>                                         // Now timer is pending while its function set to NULL.
+>                                         // next timer trigger
+>                                         <SOFTIRQ>
+>                                         expire_timers()
+>                                         WARN_ON_ONCE(!fn) // hit
+>                                         ...
+> lock_timer_base()
+> // Now timer will detach
+> if (base->running_timer != timer)
+>         ret = detach_if_pending(timer, base, true);
+> if (shutdown)
+>         timer->function = NULL;
+> unlock_timer_base()
+>
+> The problem is that timer_shutdown_sync() clears the timer function
+> regardless of whether the timer is currently running. This can leave a
+> pending timer with a NULL function pointer, which triggers the
+> WARN_ON_ONCE(!fn) check in expire_timers().
+>
+> Fix this by only clearing the timer function when actually detaching the
+> timer. If the timer is running, leave the function pointer intact, which is
+> safe because the timer will be properly detached when it finishes running.
+>
+> Fixes: 0cc04e80458a ("timers: Add shutdown mechanism to the internal functions")
+> Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Cc: stable@vger.kernel.org
+> Link: https://patch.msgid.link/20251122093942.301559-1-zouyipeng@huawei.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 20739af07383e6eb1ec59dcd70b72ebfa9ac362c ]
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 
-There is a race condition between timer_shutdown_sync() and timer
-expiration that can lead to hitting a WARN_ON in expire_timers().
-
-The issue occurs when timer_shutdown_sync() clears the timer function
-to NULL while the timer is still running on another CPU. The race
-scenario looks like this:
-
-CPU0					CPU1
-					<SOFTIRQ>
-					lock_timer_base()
-					expire_timers()
-					base->running_timer = timer;
-					unlock_timer_base()
-					[call_timer_fn enter]
-					mod_timer()
-					...
-timer_shutdown_sync()
-lock_timer_base()
-// For now, will not detach the timer but only clear its function to NULL
-if (base->running_timer != timer)
-	ret = detach_if_pending(timer, base, true);
-if (shutdown)
-	timer->function = NULL;
-unlock_timer_base()
-					[call_timer_fn exit]
-					lock_timer_base()
-					base->running_timer = NULL;
-					unlock_timer_base()
-					...
-					// Now timer is pending while its function set to NULL.
-					// next timer trigger
-					<SOFTIRQ>
-					expire_timers()
-					WARN_ON_ONCE(!fn) // hit
-					...
-lock_timer_base()
-// Now timer will detach
-if (base->running_timer != timer)
-	ret = detach_if_pending(timer, base, true);
-if (shutdown)
-	timer->function = NULL;
-unlock_timer_base()
-
-The problem is that timer_shutdown_sync() clears the timer function
-regardless of whether the timer is currently running. This can leave a
-pending timer with a NULL function pointer, which triggers the
-WARN_ON_ONCE(!fn) check in expire_timers().
-
-Fix this by only clearing the timer function when actually detaching the
-timer. If the timer is running, leave the function pointer intact, which is
-safe because the timer will be properly detached when it finishes running.
-
-Fixes: 0cc04e80458a ("timers: Add shutdown mechanism to the internal functions")
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251122093942.301559-1-zouyipeng@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- kernel/time/timer.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -1360,10 +1360,11 @@ static int __try_to_del_timer_sync(struc
- 
- 	base = lock_timer_base(timer, &flags);
- 
--	if (base->running_timer != timer)
-+	if (base->running_timer != timer) {
- 		ret = detach_if_pending(timer, base, true);
--	if (shutdown)
--		timer->function = NULL;
-+		if (shutdown)
-+			timer->function = NULL;
-+	}
- 
- 	raw_spin_unlock_irqrestore(&base->lock, flags);
-
---
+> ---
+>  kernel/time/timer.c |    7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>
+> --- a/kernel/time/timer.c
+> +++ b/kernel/time/timer.c
+> @@ -1360,10 +1360,11 @@ static int __try_to_del_timer_sync(struc
+>
+>         base = lock_timer_base(timer, &flags);
+>
+> -       if (base->running_timer != timer)
+> +       if (base->running_timer != timer) {
+>                 ret = detach_if_pending(timer, base, true);
+> -       if (shutdown)
+> -               timer->function = NULL;
+> +               if (shutdown)
+> +                       timer->function = NULL;
+> +       }
+>
+>         raw_spin_unlock_irqrestore(&base->lock, flags);
+>
+> --
 
