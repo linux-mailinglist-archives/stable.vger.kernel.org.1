@@ -1,159 +1,200 @@
-Return-Path: <stable+bounces-217589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EABoD92lmGl5KgMAu9opvQ
-	(envelope-from <stable+bounces-217589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 19:20:13 +0100
+	id SIPRMIe3mGkjLQMAu9opvQ
+	(envelope-from <stable+bounces-217590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 20:35:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3F3169FD2
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 19:20:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D51916A619
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 20:35:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC6573040237
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 18:20:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75D833044159
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 19:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA64029B78F;
-	Fri, 20 Feb 2026 18:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46367311C3D;
+	Fri, 20 Feb 2026 19:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B+ARzZ1e"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="PI2+27SB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A4B13959D
-	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 18:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771611609; cv=pass; b=sdNnak8zY0f2FYJIovyDHcyz1kjgl/ZsnAvQq12NYeO8VqY7cNAY2xPd6K6EPMefeoHJzsegqbqqqUB8N/z9Nkph8tJjXv00Cq3UQHQ3NejTyulEvym5fVQGssEQLFmhrGXt7hxpQ1lSJUjNDzfQE+U43kqKBR6uW09AFZ4Yjsw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771611609; c=relaxed/simple;
-	bh=079/NS8VuSUOMcWzywWBSt20rOfVGMUvYmPiYDeKOB4=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=CaNFLC/XyGbnldkfNQ9mzszGUmXBLR37yvCMfBGuypsugebQK46fF2iLuW3JFP3uOuJPgFhr+Pz3CxI8W4JyTw5TmVf5xfHfPoTHWtn3584OxagWmg5Cl6T3CMZDdRPwov+T6BYRNVAmeQTi+VJN/TJ36bBlLOR5F1T8s+pOTS4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B+ARzZ1e; arc=pass smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-506bad34f51so18394181cf.2
-        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 10:20:08 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771611607; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QixC5T/O3O4w9jG85X4E0cYP7nnMuvi4gBt4xcvhhiFC4+d053usleeTAc9Ha2d5RY
-         1UtPY5AkWOULoUr55oZ73LMfaKr3u9A5zYodhFH5uydvAJJwJCLXOvo9HO6SG4e14yEx
-         HNohh98PQpjxyzOx9ASs+EAUY63u6LwQjZafjrwb/unW7AmsRpapOPrFnIPPyBKF+1mP
-         NTO9E332NxEz2RPD2Tz4p8F4ssAGOX6iCT8EZRS78S3xRaFwHysK3h8hlDZ8MjVkrTcQ
-         Bi560mgfOKYYLBN0mzMGf4m0oecl31K8Nb9dHaJvpLvai8qEHz8Ja0Gc8+A3HrTsn9Xr
-         Lzpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=079/NS8VuSUOMcWzywWBSt20rOfVGMUvYmPiYDeKOB4=;
-        fh=mzrmzZltjJGoZQHgr2jk5Sdq55v0rsB8HP+UWEW4HVc=;
-        b=D9ccbb7A2q7s9z/EsbB8aJvDuB5vtDw2RWe12bTnMKn1NWSnLXTMaNEKJjng7kMHQx
-         5+GAmJoOwQfxTpDFMlL+U3M7uQCc+sfBPq5qm5TW/R0nvcYwEDuos+O5KisIV2kYxW8U
-         DClQOZ+tqf0P9hGYbAXlkTSBD3H/zO2llbCOPi3UXfqQX5Ouvfl3CKrsHNooGvZSuKfF
-         b6OSNGTQnPciy6aAWosrMjVndkTlWRaB2xcl0DwqOEkuHa6fKYbQXRd6KHqzaBOLc12C
-         vX4AROcETmXg7u70fDqqTeTu/AiQUeySwruLKR2lgrdl1QaVUaX/DoBaRm3bQmX5+wu0
-         G9lQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660312D7DEF
+	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 19:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771616132; cv=none; b=Qhr2lW5Rd9or9o/nrcga5cJl+UlwBLdHT8fTDFrwjZ3HxvBkLSkIBo2/cpNIKp84S7hEzP5Px6vjqjRHXqkw6OdXzSDPFOD6ajBwsRciWlcR2h8r25UKhdxCu2+UYyl8HNb+vN51YvzyDAfrfIRPwOEjYQiZsQctcEOmWR4Ic1A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771616132; c=relaxed/simple;
+	bh=LYZloxUJSzRdHctVm4Y6mMvZoA7OLACBbBSl/9SMfqk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NOXKTLn7gOiFRgXAS0Cf11/MSbNNJzLozyamPooRQ9sESqFqpbk5TBnXmyeU5vMH+AMvXx+Z6BFyyTZc+PBE417oKg6WxpGqgeRHEF3q3Wa5vWoEDgiFLaaVlhd6Kj/UycHo0U4Qf7SWVGxNVpdFmbQ1VljZp1AYGa/vLAzS7kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=PI2+27SB; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48069a48629so24154575e9.0
+        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 11:35:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771611607; x=1772216407; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=079/NS8VuSUOMcWzywWBSt20rOfVGMUvYmPiYDeKOB4=;
-        b=B+ARzZ1e0cfr3nizlrBXIHWQmrxSoEOAsKXcgbL2G4DM5nsRxoXPn1An9mae0K2YrH
-         OkAWy3edeP3uf5oFw8X44q7St6KNhnU0iCtACDXYb6of8OeXXbxJk8yzfIw6yZGjqOKb
-         S1E6XaUddP3vK2wQjrS9qZGTCfD8DsMTAY9hjzHy0R6Wivsr41zYfvbr1fl8fdd8tS79
-         lYl5hxRN2sHYusgkISp3RWeEpqwVitBeCGoi9+a/pi/UEzNRVRrlft8xPFSEFQKR1mkC
-         ww/hx+W39zCN+jAyx06S3Nx44ud5P0xQ7o80idmFy4brFG2rOANGGXyLnOEBSfbDlMez
-         M7QA==
+        d=suse.com; s=google; t=1771616128; x=1772220928; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AwRHp70gE2bWaz2xP2c3oHH9CidSSykG+nY7Zt3zE1Q=;
+        b=PI2+27SBF2NwUELq3geAXrZM1DPPibP29GSKuoGpEo75zXRYLkhKWukheHNsNZFV7A
+         KGa3vUL5PFRDLWOB0tJ1EVEUlXy5lio1q2sUCVght3Ma/CWJGszzaO08Oe32wcqbSiLb
+         i39OGBvrEDcZIp+ozQ5cgR5zw8DjrnTQQMkq2s8GMpjBr0K/GjFv1OzAjoNqxHZ/0uiC
+         wCP1o3l0X3KllSQ6R/t12lzLKVi0kB/8r1FvUumIXvKprXUHn4pxVm+xPpE+UsHt5AS5
+         NP+qt8EFbSW5/pN0pwlRjknCABjwedgnuAQCQwVbwNYWs7bvWYUmCfh5+R4mqfScijFs
+         BdbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771611607; x=1772216407;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=079/NS8VuSUOMcWzywWBSt20rOfVGMUvYmPiYDeKOB4=;
-        b=cukBtJMBGfqYRY8qYkhF5ID8AKb9UgM644B5BkVl7mKlg6EBCo84anVURlWHR3inTY
-         iyS49zNjY83sRRPTlvYcjIDBLZPHk/ahCY9W0tRfsJJPuoY09lwenLF05dK7cbzQ93uz
-         990bCno5T5Os7BqcspoWaJ1BQ+0Y2CRfSLtwQeHRjrm75pnB0Fizh01npDlxOZS0wfvS
-         gULAZhgkPbDDNoJVThFGazwQB0jNcLa+3GBMkwdUEAAl9mQ3PEo6Hpyujp+dmTQQJ8hn
-         3v4KM6jPaiPGRzIYUxsrPudLavLVWXSqYIcCak0GTaiPWE84YCCwMM5srhuunlkdC3B3
-         pPNA==
-X-Gm-Message-State: AOJu0YxKPxrVCT2lZc58N194h7NWKHqi3HX/evK8/zsaWDT1XRHspED8
-	WBy9D2oNiYSkkQzzQtRDMJBERTLaP/ehdFIdPEW200X1tbtCjoK9GS9yRFJZEkLft0Bz8kAuISI
-	qZR/8Vuj9L6bGNJ9xGFShXdtiDsqNiIKKEB0pYMA=
-X-Gm-Gg: AZuq6aI9pbw5pEUb6Fa9e6SVHJpqfjkfHBrt42k+C47E6cwtDJIwb8TmKXlXtuBJ4Fc
-	F1ifqIDyWsMrCiwEOxuJ8tmngcE1wnu8vuJcVrBnvC/gobQMX4yv8w0cc1sncmfwXNUhnwH4pnW
-	6Kh1fjsADrSswpORqvMz5nttByLxrnKmqMLbWBn/XfvdsyoBPoc34/gCCjyF3z22ObeQlPOFJq9
-	dn9w2cyzryw6aTX/NmVs3969yByiJj0o1XUFAsHhaXzhf8kKxWpupblG2b4OMh4chpy9dXQ6WlF
-	F+e04Q==
-X-Received: by 2002:ac8:7d46:0:b0:506:1c5e:d1c2 with SMTP id
- d75a77b69052e-5070bbde721mr11233391cf.27.1771611606895; Fri, 20 Feb 2026
- 10:20:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1771616128; x=1772220928;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AwRHp70gE2bWaz2xP2c3oHH9CidSSykG+nY7Zt3zE1Q=;
+        b=kYoY7qsxRfXmAbNJ158F/hkGoIBUrxSOKX1ggq4PXnpIyziAuKlQfNUiGXroNNKSC2
+         tx6Je7H0kO5Wy1lNHQSrgU6QF5Mfz/ZzvXMQE3bP/S2vvhYvEmjrmG+GmC2J07ZEys9F
+         oURAHNyUwSyQpXuU9z4I1RTo+OzCNlk00OB4QtwPYb0i0YVpj/m8AKx77Mhc1Oau0c2w
+         NEQkHeIuL0a6d1JSWsxSQX8uASY7Ff//OJfCS4FBR89BbWe3Rz5Ge4gq11w9Unmh/sHG
+         ZWqrMTXZxnfkieOPiPDa1nOzFpvG/izpbhCuE8DvoD5xrwOHuyRUUD5IA3XiAD07yo56
+         lc0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVMHCYFxdzdoPti8kvYanwvGLimgZrC6sNeZEQ5o6SDt1JpLOB3s+1wPULcb+KI742ZVH2LgUQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyabicTBYcnl/0vHLfrejE8fr/p1wzpbntSazDw/w4FGVsVpERL
+	mk1quhqNRBHfb5k/MR8iv1+ye1AQrXudPfdGM+PKTjEo9dgoNGH3DbqSaTb9ykm4Gz8=
+X-Gm-Gg: AZuq6aKH9a+AjrWxiEly/+pNSvJq8zHPJpOHoFPFrM1awfR9nCoLL4vQqfMu8pHGi/P
+	U4qRMPjlBOOaEQhhlVkJIZ+AejHNuigLuZQ55u87Q9+AlHmeYiKALdefG6W43tbswKIxSzRklBl
+	smZIRDRMRyT8BAmn1O9x7gB2HgKfFRlNrLGfhIZ/qjsKA6gNfdYAUZBuBuWYtq9ljh7jKKrfgs9
+	Eg++4bO1ZAIgmr1id4sL+vZccrpQmV0cb+kV1AMW7lHPWth54eziPA8KI3S9wQ3b2bRvDe2SuXF
+	CgZqG1166htxZ3PheEOlJXL4OVuYsJbRAcpSxNmTRfeHv4NRE1lyf/vRHly6uFpYp2DJvrPYsmh
+	ydGhRdj1uBX9DjNlnEWm+WsolGT9yljeaovWstn5i1srWw8iv65V63feRRGU4NKmoWI7ZA+jwoH
+	Q/X1s/eBvbNaUDTHYtY6nDnz3oR5sKjxCnfhXYuinQ
+X-Received: by 2002:a05:600c:8b02:b0:47d:5e02:14e5 with SMTP id 5b1f17b1804b1-483a95a86eamr11854985e9.5.1771616127398;
+        Fri, 20 Feb 2026 11:35:27 -0800 (PST)
+Received: from precision ([179.82.226.246])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5feb6204a47sm245149137.2.2026.02.20.11.35.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Feb 2026 11:35:26 -0800 (PST)
+From: Henrique Carvalho <henrique.carvalho@suse.com>
+To: sfrench@samba.org
+Cc: pc@manguebit.org,
+	ronniesahlberg@gmail.com,
+	sprasad@microsoft.com,
+	tom@talpey.com,
+	bharathsm@microsoft.com,
+	ematsumiya@suse.de,
+	linux-cifs@vger.kernel.org,
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	stable@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH v2] smb: client: fix cifs_pick_channel when channels are equally loaded
+Date: Fri, 20 Feb 2026 16:35:05 -0300
+Message-ID: <20260220193505.553838-1-henrique.carvalho@suse.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 20 Feb 2026 10:19:56 -0800
-X-Gm-Features: AaiRm53NcewFV0drPM_wHuaqtA-N7MZf7-M1X5pzDMz-zTmt8wwk1yBlW3nR6B4
-Message-ID: <CAJnrk1YA9hk5Mv0BXFe+TcWLXsNLpWtcA-gy+k03zDt4f0z7zg@mail.gmail.com>
-Subject: [PATCH] io_uring/rsrc: clean up buffer cloning arg validation (for
- 6.18-stable tree)
-To: stable@vger.kernel.org
-Cc: clm@meta.com, Jens Axboe <axboe@kernel.dk>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217589-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-217590-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[manguebit.org,gmail.com,microsoft.com,talpey.com,suse.de,vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[henrique.carvalho@suse.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[suse.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 9D3F3169FD2
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6D51916A619
 X-Rspamd-Action: no action
 
-Commit id upstream: b8201b50e403815f941d1c6581a27fdbfe7d0fd4
-("io_uring/rsrc: clean up buffer cloning arg validation")
-Link to the patch:
-https://lore.kernel.org/io-uring/20251204215116.2642044-1-joannelkoong@gmail.com/#t
-Kernel version to apply it to: 6.18-stable tree
+cifs_pick_channel uses (start % chan_count) when channels are equally
+loaded, but that can return a channel that failed the eligibility
+checks.
 
-Hi stable@,
+Drop the fallback and return the scan-selected channel instead. If none
+is eligible, keep the existing behavior of using the primary channel.
 
-Chris Mason recently detected that this patch is a required dependency
-for commit 5b804b8f1e0d ("io_uring/rsrc: fix lost entries after cloned
-range") in the 6.18-stable tree [1]. Without this patch, the changes
-in commit 5b804b8f1e0d use an incorrect value for nbufs when it
-assigns "i = nbufs" [2].
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Acked-by: Meetakshi Setiya <msetiya@microsoft.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+---
+v1 -> v2:
+- Remove unneeded max_in_flight and associated code
 
-Could you please apply this patch to the 6.18-stable tree as a
-dependency fix needed for commit 5b804b8f1e0d?
+ fs/smb/client/transport.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-Thanks,
-Joanne
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index 75697f6d2566..05f8099047e1 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -807,16 +807,21 @@ cifs_cancelled_callback(struct TCP_Server_Info *server, struct mid_q_entry *mid)
+ }
+ 
+ /*
+- * Return a channel (master if none) of @ses that can be used to send
+- * regular requests.
++ * cifs_pick_channel - pick an eligible channel for network operations
+  *
+- * If we are currently binding a new channel (negprot/sess.setup),
+- * return the new incomplete hannel.
++ * @ses: session reference
++ *
++ * Select an eligible channel (not terminating and not marked as needing
++ * reconnect), preferring the least loaded one. If no eligible channel is
++ * found, fall back to the primary channel (index 0).
++ *
++ * Return: TCP_Server_Info pointer for the chosen channel, or NULL if @ses is
++ * NULL.
+  */
+ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
+ {
+ 	uint index = 0;
+-	unsigned int min_in_flight = UINT_MAX, max_in_flight = 0;
++	unsigned int min_in_flight = UINT_MAX;
+ 	struct TCP_Server_Info *server = NULL;
+ 	int i, start, cur;
+ 
+@@ -846,14 +851,8 @@ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
+ 			min_in_flight = server->in_flight;
+ 			index = cur;
+ 		}
+-		if (server->in_flight > max_in_flight)
+-			max_in_flight = server->in_flight;
+ 	}
+ 
+-	/* if all channels are equally loaded, fall back to round-robin */
+-	if (min_in_flight == max_in_flight)
+-		index = (uint)start % ses->chan_count;
+-
+ 	server = ses->chans[index].server;
+ 	spin_unlock(&ses->chan_lock);
+ 
+-- 
+2.52.0
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.18.y&id=5b804b8f1e0d66413774d43f7a4b78bba0ca6272
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/io_uring/rsrc.c?h=linux-6.18.y#n1252.
 
