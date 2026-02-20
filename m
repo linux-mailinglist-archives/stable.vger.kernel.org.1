@@ -1,144 +1,194 @@
-Return-Path: <stable+bounces-217550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPGHLtYtmGkNCQMAu9opvQ
-	(envelope-from <stable+bounces-217550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 10:48:06 +0100
+	id +G6bB7cwmGkzCQMAu9opvQ
+	(envelope-from <stable+bounces-217551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 11:00:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C32E16667A
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 10:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7094516690F
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 11:00:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0CCAC3028027
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 09:48:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAFBD3025289
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 10:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59340322B67;
-	Fri, 20 Feb 2026 09:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F5A33710F;
+	Fri, 20 Feb 2026 10:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="khMD/SJz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BdzFF0e/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CAF2BD030;
-	Fri, 20 Feb 2026 09:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C896B336EE7
+	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 10:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771580879; cv=none; b=pMg6VBXPq+MzIJxRRCjnCIQbw47hSTPws93knMYLY8ZOfCGL1c+ZptnI97NufIoX4Dm0edu8sfSaybhca0hGIkof07lQuv9cgQIuYx81c/5yzkFHVxy9ImdEGUvTySQ0Xi5JTyAsVEC2f4XuE2tN8yIwT8erYruotIxDG+BCG7I=
+	t=1771581616; cv=none; b=oZI70Jzp23ANsBashP6RnwT4dq7F+Tth4BVpiBKAGsjUoixDd5NlKgSG84WHOkH1gOLQ8NDPx8cBTZ4Kq8epot7krT7ntIJDrI2jP8IP7p0kYvR3Ax8OnJ8hSmR3GB09GcPas5LDR+5r9OnifoJDu+YmqeNM6Jewo/LFY+byPlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771580879; c=relaxed/simple;
-	bh=LDXix9PN0IinDABVv8UkHXsICzMk77zfNM7DbdoMYVA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qKfaDRhoW3GkB4hAvK++LBIZC4LwPUFg81F2+LwtOKQt0PeN7GKcNTZnF79AmOWhrcsAvwPUMOnKmJALDkpB+CvCx1PFqAS9VXp0SMgypNclhfh8JG5bKNdJXA5cA0foXDxI1+nx73h+kgye0tF8/2ppyCr+g3eMMp/yR3bGops=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=khMD/SJz; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from debian.lan (unknown [79.139.245.7])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 746B440ACE0A;
-	Fri, 20 Feb 2026 09:47:47 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 746B440ACE0A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1771580867;
-	bh=uv2nVANfS7S6tqJoCX4h4dxXBtr6Gdnxmxsiz6IGxtc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=khMD/SJz+Y3W9A/u4yhh7yzz9jtxXADq4YgWLZxModnOdqATzkUfjev/6O61BdveO
-	 MNIEwvSDKyUCCJSFVAovu9GAwxbWqDr8huV/SzUELfPY5J8nbPSsiDaqkRwm5tmpB2
-	 kcb/SZNT1hxyECrplJI0qjy8w506FZ2LIo4582jE=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH rtw-next] wifi: rtw88: check for PCI upstream bridge existence
-Date: Fri, 20 Feb 2026 12:47:30 +0300
-Message-ID: <20260220094730.49791-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1771581616; c=relaxed/simple;
+	bh=rFa1JNOOh8Ssk8Y8ywFKJB6552RP7UBIeqsSW/gEraI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:Mime-Version; b=JX7LyDMv04ASjLgG8DvUloEk1rwTKdmJPMjXTmWRPWqtgvmoiCY4PP0gKay+b6qlFB5b9i/zq3oLv5YcIs66r+4gZHx0Q4p9b1yjEfjeVltcSjevhI7iyOOoOOXEL9H2qievxlYJK+jvMfutVUNobaFF6ukkS6HcS2tql9wI7xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BdzFF0e/; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c6e191c4b8fso724240a12.0
+        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 02:00:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771581615; x=1772186415; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:date
+         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E21Ynhw++H4r3Jkl9ZIAjOT6EVhP7EbsgEinOa2T0OU=;
+        b=BdzFF0e/jLSJTHcSA34sOUbNrNEJhWIPpyKxBf6/g8NkOVhBCaaI/FiDCUer/sLl3b
+         x/RArfUs6pkTvtlVoRKyXHL+iRwGRCxhb0893hOFk5jYOZwUH4jSxYkGyumDIZG1HdGQ
+         l5pWszK6La+t+3qmFg5VG/MMFhTqE2lA9FfGhIV/XAcsfm7jCUupKNxJDHpsgm3fve5q
+         1KjixJdnBfSc8/xSkeHXMGIO77Dgu+RmpdCDNM3X86KZnq4sjAqh4/bt+bxHC1LWI467
+         dI9N0eNv/9iLs8/bDrhAhARk+jXVLIm2Bdg8cWm+8a6aKDH4DSMPXKUw54z+HhOx1/EC
+         YaLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771581615; x=1772186415;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:date
+         :cc:to:from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E21Ynhw++H4r3Jkl9ZIAjOT6EVhP7EbsgEinOa2T0OU=;
+        b=D3uWu9luyZMQApg0UoFcbx2jtfsliIDiVUwZLtgA/Ll/U3yF28gjWqSeIRqfUx1Suf
+         mWNpHYhWd+CtQt7lBMlziL2pmtIosGOhvOaocTxbryZdpO/Ap/vl0T87RwP3czJVsNll
+         C8d99tBcZGvFl2bFpUK4Yk5l4LZTuhb0OTpWwNzIrXF6fHx1hKxt8q32FUZ41od3E/j0
+         hHnL8EKIB8buVPTMB994k1EB+DFpWLekUt1i6JBFb58uaczsaMpsOURD43GH9ub7e6M6
+         +TwcjvU83fibC3NHIAoOSPeiBGjk8KWmWay6GKBR2A9FDpYWBsqYCxtrqVUxhd8T5/ID
+         +nyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUendYduGto5i+o1JghKS+eV+0s0r0zIotYqAdbNMt84C4lRZz1v/VwdzjoXUthx9/Q3G2J0ek=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywlv05m8WnDp3rWjYJHcg/fywRNoV7X2S/mZP9s+pWPH5m7paCR
+	GQbBi65fzOkIB3sHiN80sCLv3S6vU6ByOVO++CHRXFFxytHcBTkgZVvE
+X-Gm-Gg: AZuq6aL4UjETPaxQCwSe/t2ETBrKoVh/EUfa/r/NZWC8smhuyHtMEe1cQjJrk0YPWqn
+	C6S0zsUIDBcQYMNJCac5BUVoXdC7EemWLKakHpgtbKgwoN4dKFvsTq9AR6zzJzdLyyr/pDM/s5M
+	bzdAWW2/UT94SzNO9FiU9zBpobNWzYA4uoqw6FDHrmMc1G9vVlB8NrSif1L7OplamQxXLqtsoCv
+	J7aYhOCgeNfvJUgVi9Z7ky75h4rb7npnHDmwYl3hFfcPSL1riuTm+Whp1FDJc3A2s9C6kyngD4O
+	YWqYtflMCn5dwJ03G8xfh8QCTfGgfWD+2jpojFR5+SHsphlIdvCSMjW/fJ2DuNKBGUkIGjL1RV8
+	McOzucTflJO10rkzJf0b7V0H6L372r6ge3RksAyDkEUry8GXV+/7CY4/CYDFs+f0DfQ1H6b15Ds
+	7hauERp9vY5qVz1+d4z4r3W+aUVcfO6UM3DC1b75exb75sQGr6rerk7PgPYvA3+DOtA24oIfivb
+	H/w
+X-Received: by 2002:a17:90b:2541:b0:343:6108:1712 with SMTP id 98e67ed59e1d1-35844f9bf28mr19807914a91.18.1771581615001;
+        Fri, 20 Feb 2026 02:00:15 -0800 (PST)
+Received: from li-5d80d4cc-2782-11b2-a85c-bed59fe4c9e5.ibm.com ([49.207.233.114])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3589d7f1774sm2444331a91.1.2026.02.20.02.00.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Feb 2026 02:00:14 -0800 (PST)
+Message-ID: <f8ea8da2649595f2edcb57a9776748cbced391a7.camel@gmail.com>
+Subject: Re: [PATCH v3] xfs: Fix error pointer dereference
+From: "Nirjhar Roy (IBM)" <nirjhar.roy.lists@gmail.com>
+To: Ethan Tidmore <ethantidmore06@gmail.com>, cem@kernel.org,
+ djwong@kernel.org
+Cc: neil@brown.name, brauner@kernel.org, jlayton@kernel.org,
+ amir73il@gmail.com,  jack@suse.cz, linux-xfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  stable@vger.kernel.org
+Date: Fri, 20 Feb 2026 15:30:08 +0530
+In-Reply-To: <20260219200715.785849-1-ethantidmore06@gmail.com>
+References: <20260219200715.785849-1-ethantidmore06@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ispras.ru,none];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MV_CASE(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ispras.ru:s=default];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[ispras.ru,endlessos.org,kernel.org,canonical.com,vger.kernel.org,gmail.com,yandex.ru,linuxtesting.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217550-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ispras.ru:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pchelkin@ispras.ru,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-217551-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[brown.name,kernel.org,gmail.com,suse.cz,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nirjharroylists@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0C32E16667A
+X-Rspamd-Queue-Id: 7094516690F
 X-Rspamd-Action: no action
 
-pci_upstream_bridge() returns NULL if the device is on a root bus.  If
-8821CE is installed in the system with such a PCI topology, the probing
-routine will crash.  This has probably been unnoticed as 8821CE is mostly
-supplied in laptops where there is a PCI-to-PCI bridge located upstream
-from the device.  However the card might be installed on a system with
-different configuration.
+On Thu, 2026-02-19 at 14:07 -0600, Ethan Tidmore wrote:
+> The function try_lookup_noperm() can return an error pointer and is not
+> checked for one.
+> 
+> Add checks for error pointer in xrep_adoption_check_dcache() and
+> xrep_adoption_zap_dcache().
+> 
+> Detected by Smatch:
+> fs/xfs/scrub/orphanage.c:449 xrep_adoption_check_dcache() error:
+> 'd_child' dereferencing possible ERR_PTR()
+> 
+> fs/xfs/scrub/orphanage.c:485 xrep_adoption_zap_dcache() error:
+> 'd_child' dereferencing possible ERR_PTR()
+> 
+> Fixes: 73597e3e42b4 ("xfs: ensure dentry consistency when the orphanage adopts a file")
+> Cc: <stable@vger.kernel.org> # v6.16
+> Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+> ---
+> v3:
+> - Add dput(d_orphanage) before returning error code in 
+>   xrep_adoption_check_dcache().
+> - Revert xrep_adoption_zap_dcache() change back to v1 version.
+> - Include function names where error pointer checks were added.
+> v2:
+> - Propagate the error back in xrep_adoption_check_dcache().
+> - Add Cc to stable.
+> - Add correct Fixes tag.
+> 
+>  fs/xfs/scrub/orphanage.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/xfs/scrub/orphanage.c b/fs/xfs/scrub/orphanage.c
+> index 52a108f6d5f4..682af1bcf131 100644
+> --- a/fs/xfs/scrub/orphanage.c
+> +++ b/fs/xfs/scrub/orphanage.c
+> @@ -442,6 +442,10 @@ xrep_adoption_check_dcache(
+>  		return 0;
+>  
+>  	d_child = try_lookup_noperm(&qname, d_orphanage);
+> +	if (IS_ERR(d_child)) {
+> +		dput(d_orphanage);
+> +		return PTR_ERR(d_child);
+> +	}
+>  	if (d_child) {
+>  		trace_xrep_adoption_check_child(sc->mp, d_child);
+>  
+> @@ -479,7 +483,7 @@ xrep_adoption_zap_dcache(
+>  		return;
+>  
+>  	d_child = try_lookup_noperm(&qname, d_orphanage);
+> -	while (d_child != NULL) {
+> +	while (!IS_ERR_OR_NULL(d_child)) {
+>  		trace_xrep_adoption_invalidate_child(sc->mp, d_child);
+>  
+>  		ASSERT(d_is_negative(d_child));
 
-Check if the bridge does exist for the specific workaround to be applied.
-
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
-
-Fixes: 24f5e38a13b5 ("rtw88: Disable PCIe ASPM while doing NAPI poll on 8821CE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
-
-I don't have 8821CE but 8822CE instead and I've been able to reproduce the
-NULL bridge pointer dereference with rtwdev->chip->id manually adjusted in
-the workaround.  Wifi devices happen to be located on a root bus in most
-of the systems I have access to.
-
- drivers/net/wireless/realtek/rtw88/pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 56b16186d3aa..ec0a45bfb670 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1804,7 +1804,8 @@ int rtw_pci_probe(struct pci_dev *pdev,
- 	}
- 
- 	/* Disable PCIe ASPM L1 while doing NAPI poll for 8821CE */
--	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821C && bridge->vendor == PCI_VENDOR_ID_INTEL)
-+	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821C &&
-+	    bridge && bridge->vendor == PCI_VENDOR_ID_INTEL)
- 		rtwpci->rx_no_aspm = true;
- 
- 	rtw_pci_phy_cfg(rtwdev);
--- 
-2.51.0
+Based on my reviews in the previous version[1], this looks good to me.
+Reviewed-by: Nirjhar Roy (IBM) <nirjhar.roy.lists@gmail.com>
+[1] https://lore.kernel.org/all/61386abf00c817e65ab70c994ed584fde339f9ed.camel@gmail.com/
 
 
