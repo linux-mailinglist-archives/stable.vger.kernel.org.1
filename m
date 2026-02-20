@@ -1,149 +1,123 @@
-Return-Path: <stable+bounces-217574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIigBrxcmGlRGwMAu9opvQ
-	(envelope-from <stable+bounces-217574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 14:08:12 +0100
+	id 0KYiKvxfmGnzHAMAu9opvQ
+	(envelope-from <stable+bounces-217576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 14:22:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5A2167AD9
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 14:08:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 038BD167C64
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 14:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5823A30233E7
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 13:08:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 802C23095E72
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 13:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE503451B2;
-	Fri, 20 Feb 2026 13:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE82344D99;
+	Fri, 20 Feb 2026 13:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQe0EPpd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A54vb1jV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0293132E724
-	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 13:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4AC32E724;
+	Fri, 20 Feb 2026 13:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771592887; cv=none; b=TmaRR34Dy12IsmlPDdJvT7ME1O3PFYXi5Ganl6SZKaYXxIu44pc4vXbPTWgWW7UrUAN9fRwYGcRrxGsuzQxYFbdWzX7OjjaYj6+bjXNoG5YKmJBeGXnRD8sNzm8RHn2f7ftsU7pNwwnO87gjKU328K/zXUDbfwcDrKvYYDxRZO8=
+	t=1771593657; cv=none; b=Ppr/l/z5dbkfFntDFN1LFnh5tNohac+MxmjdUpGhxcm1P+vSjrvf7oPm1MEDey/nrA5jwmKgymZvvwtwZDORiOe9rMGQNBgIMdQpAsfj9r5utYPXQru23KZcmPLbEIQTU/kYnfWGChEoLGNrFcN2iAhHnOGifJA74JEynmZA2Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771592887; c=relaxed/simple;
-	bh=gwMlFboWcviwKqcx+u6xwyq6zo5SZjy/u1mM/Nt/npg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iift1KEK162TsJr/LPT4LqDyXEZfYh779jjcUIxrDp9qf9ai+oEPlj3HnFhcOV9b2hOYZ18VZSpuDq4wOsZ1Nv7V/NM488Wrkb4cS3NKADO4VuLL9MVrhIoOqiDhY3WnM+mIVESGqpyL1BYFK37qX6/eBiCvcx0pDqjc2Bi1maU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQe0EPpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86922C19421
-	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 13:08:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771592886;
-	bh=gwMlFboWcviwKqcx+u6xwyq6zo5SZjy/u1mM/Nt/npg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bQe0EPpdfTMtwb935lXXAtjZOvSIfqFcqAkqNYjcnhNgdVKAC6JungiBJiVcrMvfo
-	 HV8qiGMoypk1ZpOSxKZUd74dU8iMcQntcY3IvUHWWcIIesn1ogY86i2mmzEj2cC1Lx
-	 f7hV3QgizT2jHhU/LJIdfkZAzHCBuNjMrG54pzBn4Fq4zxx4Xa7MgniCJLSMWl8d7t
-	 LwD2sljYSprLn/O1uHJWrl9KpYp4pZqrQwOZD13vh5Ff5bGjGiEV4Dcm0BImkh3JgF
-	 9nCcTQV+VBz5ZWm3/w1I282LQh0jcld3RejxSsblJbNUaMj6itfaQc825tC1qVQaKZ
-	 Ff8tseRDQAawg==
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b8fa79b9fcdso339104966b.0
-        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 05:08:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX5if4pYpizzVHiBxkJHnjPcGznhXUBXPalAGYRo1RCReAcvr1MlB+aTYp3e2CErQksndEYCFk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUMuCYOcY4drIo8FZd2YJo55loLlCGItN5X8EXeN37FgXrDzdL
-	tsdscBPzbnz98e2vd0bZn8DvRXArvH2gG/PXP/ASM+h1lgD6U6mdIbS/14g3dx9UPKXmDXsDRUG
-	S96XKq0nrr0tVtfkJcO6aTtZsl2P0qYQ=
-X-Received: by 2002:a17:906:7953:b0:b8e:fc90:7119 with SMTP id
- a640c23a62f3a-b905444d1fbmr365267566b.30.1771592884934; Fri, 20 Feb 2026
- 05:08:04 -0800 (PST)
+	s=arc-20240116; t=1771593657; c=relaxed/simple;
+	bh=+/qPuPAVaJSpihzZa+SDcXfGfdnlNwfaWfbPw+GQyDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X/JY4U2gcUgmYQUtsbmvkAKDlXFggQ02BkbPvkNgRF75eOCIxGJX6NAtAMUjsmrnQsffX+9Jgl/TH/k9pjhc+lOpeef9azT0SZ0OfmXZNMR1+PT1bVWP0JkpEo7JU/srH29eWrKnMXGGzodPspH2wnBwl1HSwdxlksP3hjPEsFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A54vb1jV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF06C116D0;
+	Fri, 20 Feb 2026 13:20:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771593656;
+	bh=+/qPuPAVaJSpihzZa+SDcXfGfdnlNwfaWfbPw+GQyDE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A54vb1jV4QD7H3Ux0lg52BYY/99wnh+upsYDRaL4oQb7hvedAZnI5J9ZLjHCfx1LC
+	 RbtHtu26J98IFj1pQkmSsbPPk7dddpiQW908RewGu1C5100prQymd9wPl6zVkG5jai
+	 uwqvxsEXf7xcQqsN9rRuvQYmP+Ea9SDs0riDn5kw=
+Date: Fri, 20 Feb 2026 14:20:53 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Filipe Manana <fdmanana@kernel.org>
+Cc: Mark Harmstone <mark@harmstone.com>, linux-btrfs@vger.kernel.org,
+	johannes.thumshirn@wdc.com, stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: fix chunk map leak in btrfs_map_block() after
+ btrfs_chunk_map_num_copies()
+Message-ID: <2026022052-aqueduct-gallows-a487@gregkh>
+References: <20260220130209.5020-1-mark@harmstone.com>
+ <CAL3q7H6RnMw=GLAuv20u0e8azr5Tyr_wXFKKjUEgvp3iFAak_g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260220130209.5020-1-mark@harmstone.com>
-In-Reply-To: <20260220130209.5020-1-mark@harmstone.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Fri, 20 Feb 2026 13:07:27 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H6RnMw=GLAuv20u0e8azr5Tyr_wXFKKjUEgvp3iFAak_g@mail.gmail.com>
-X-Gm-Features: AaiRm53pucSv0UQFR3EIQx9E0_Zd4J-FckBNMxiIIsr3C0Jl2XGOHVbYYnY1lPc
-Message-ID: <CAL3q7H6RnMw=GLAuv20u0e8azr5Tyr_wXFKKjUEgvp3iFAak_g@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: fix chunk map leak in btrfs_map_block() after btrfs_chunk_map_num_copies()
-To: Mark Harmstone <mark@harmstone.com>
-Cc: linux-btrfs@vger.kernel.org, johannes.thumshirn@wdc.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL3q7H6RnMw=GLAuv20u0e8azr5Tyr_wXFKKjUEgvp3iFAak_g@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-217574-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-217576-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,harmstone.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: 8C5A2167AD9
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,harmstone.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 038BD167C64
 X-Rspamd-Action: no action
 
-On Fri, Feb 20, 2026 at 1:02=E2=80=AFPM Mark Harmstone <mark@harmstone.com>=
- wrote:
->
-> Fix a chunk map leak in btrfs_map_block(): if we return early with -EINVA=
-L,
-> we're not freeing the chunk map that we've just looked up.
->
-> Signed-off-by: Mark Harmstone <mark@harmstone.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 0ae653fbec2b ("btrfs: reduce chunk_map lookups in btrfs_map_block(=
-)")
+On Fri, Feb 20, 2026 at 01:07:27PM +0000, Filipe Manana wrote:
+> On Fri, Feb 20, 2026 at 1:02 PM Mark Harmstone <mark@harmstone.com> wrote:
+> >
+> > Fix a chunk map leak in btrfs_map_block(): if we return early with -EINVAL,
+> > we're not freeing the chunk map that we've just looked up.
+> >
+> > Signed-off-by: Mark Harmstone <mark@harmstone.com>
+> > Cc: stable@vger.kernel.org
+> > Fixes: 0ae653fbec2b ("btrfs: reduce chunk_map lookups in btrfs_map_block()")
+> 
+> Reviewed-by: Filipe Manana <fdmanana@suse.com>
+> 
+> Side note: if there's a Fixes tag, we don't need a CC stable tag
+> anymore nowadays.
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Not true at all, please read:
 
-Side note: if there's a Fixes tag, we don't need a CC stable tag
-anymore nowadays.
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
 
+You HAVE to have a cc: stable if you know you want it to be added to a
+stable tree.  If you do not do that, you are at the mercy of "when Greg
+and Sasha get bored and attempt to pick up things that maintainers
+forgot about".
 
+thanks,
 
-> ---
->  fs/btrfs/volumes.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-> index 1bd3464ccdd8..a1f0fccd552c 100644
-> --- a/fs/btrfs/volumes.c
-> +++ b/fs/btrfs/volumes.c
-> @@ -7096,8 +7096,10 @@ int btrfs_map_block(struct btrfs_fs_info *fs_info,=
- enum btrfs_map_op op,
->         }
->
->         num_copies =3D btrfs_chunk_map_num_copies(map);
-> -       if (io_geom.mirror_num > num_copies)
-> -               return -EINVAL;
-> +       if (io_geom.mirror_num > num_copies) {
-> +               ret =3D -EINVAL;
-> +               goto out;
-> +       }
->
->         map_offset =3D logical - map->start;
->         io_geom.raid56_full_stripe_start =3D (u64)-1;
-> --
-> 2.52.0
->
+greg k-h
 
