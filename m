@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-217548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHdGIP8smGmzCAMAu9opvQ
-	(envelope-from <stable+bounces-217548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 10:44:31 +0100
+	id EBLEFPEsmGmzCAMAu9opvQ
+	(envelope-from <stable+bounces-217549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 10:44:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C3816662E
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 10:44:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E325B16661C
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 10:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9F6423040F9B
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 09:43:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 68696300DF4E
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 09:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867A031AAAF;
-	Fri, 20 Feb 2026 09:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71144325738;
+	Fri, 20 Feb 2026 09:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hmiGgu0o"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FIP/ViHz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D129A32573D
-	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 09:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9B8326935
+	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 09:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771580636; cv=none; b=mIcwbJy3PXe3V52PDrB48vi8omgvoSR9RQcETeZ+zGQ/Xh20Byc8ndNIKi5cwPQ8wUI4m7Rs72YNt+Mx5175HT6NwWXlsKmLLKkV5MpeCAWFG4pP7vp8G8fUxUtLI0cZz4h6kmfEkXFHdvnOToY97UCgW957D/5FnyJ/FAK1/5A=
+	t=1771580651; cv=none; b=lZ7Vr4LF1XMnvKkWjxfSJmkbhR1KayU9nz++T4yiEqb7qBScWygrFwC2ya32kGD0A9fpxixJRuLNKQIhzVXWj1VlySJwwZEusKwbPpI4aqg0zaRFb251yZ+YUESJ1ohWZgaquPmS8zLxmmrQ6uCN6A9MbwOrR2c7mpN5cUCjwLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771580636; c=relaxed/simple;
-	bh=4inxDekGJT14s5pRzFgIVbyyDkfJdx2aozoHWwjeCNk=;
+	s=arc-20240116; t=1771580651; c=relaxed/simple;
+	bh=JDc/qo7rkUOcZGNhJ0Wl/HeJIKj7/AleosrYhzqya/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISAiVxDPpkbFFshDA43wTorBzKNppzj3VW0igtnzVpRLfsT39uRRq2HV6OIGvKg5hv9rtkUH+24fjLuBgPKaCw8m9x7EAPgr/vmJ09DpcpIviYZdSprCulKsTSVZUu/8SYWS5gYXTMonuPGOBLNzxex86jRSCSXEmj6HsNegRFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hmiGgu0o; arc=none smtp.client-ip=209.85.214.175
+	 MIME-Version; b=K6EcptY4vzgXry/VftSs4UOKRsGTIBFnDnq6KjTVPff3kxQO+icpMembYJH3L1PNJ6EGdNkmpsCnOxaBrjsO7nN8FyAJZ2ou9Hnx8uS+ILcMLgivVhL7aCdcu3CmaqkyOyF0t5aiKHWL5Glhs6AKZ0J6wC4o5+WD1QEcFwBeJPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FIP/ViHz; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a929245b6aso18189305ad.0
-        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 01:43:54 -0800 (PST)
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c54f700b5b1so1222471a12.0
+        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 01:44:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771580634; x=1772185434; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771580649; x=1772185449; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U+8OkdNO1fPtr3MKMAcMES8k9rb9A7ACMmCYnwoCgbE=;
-        b=hmiGgu0o8EtY/7W792q/4fI843+FN+NHP6FPMmHTGeqtjxfhm8xnDYHAHBuEPUJZaC
-         BzS0MimGYiTCPpFozQPdusrXBCyatae4noIPY4mU7y8sktGYTx64JPLB6ozZVeWRe/c9
-         OwakD3nZbmBXStOKByysGVFyZlYdOX4PyOdMn6Y/StsldFZ3/lYB1+32Ush8GXuEcdqx
-         LfY1U8mJRF5LLjkujP6KdGV8ZVi4Q/qrxU1+8JEt17Hvm/KpWbCdZaX28O+WWSIQ3Mj9
-         xRDqdmlv5t0YC4I/mVDTJyMJNS5m760OCnFlOZs78dZr1ICFt0+LsH7Mxhj/SAydwJqa
-         wvhg==
+        bh=ZxR8y+DDVU/sD2lLySC6/WbxsSmg5U6pRubVnyPkrSo=;
+        b=FIP/ViHzKEoySA+q9ItRCihNG31XGMY/uZaszr6PQIz4OnswHSy+vHOjeOSgy90ozF
+         nZxg88YqluZfE6ftU5ZAthG/WW3p5jmYydV8ivmBgq+dHOw5xf1ny4LDsxQtDF175Xn6
+         UFYpFy6MqJHaolf5xpElflM94V5+lH9imZ1+sNH7zRElDZU2L0a/9GrEHyfGhl+EIVJQ
+         U5mipE5Lglq4mBC5sk53sUZhNpf/tesxQWAlHrfZQCJtYoTmVaaO+tn2cQmOSkOtGmte
+         Z8IZb7E+WtnSLvRfKsvOWhD/YQNoX5j7O5RsHm8AuLN8E22RXa8LyUuRi3ygeaOU70cy
+         6T0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771580634; x=1772185434;
+        d=1e100.net; s=20230601; t=1771580649; x=1772185449;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=U+8OkdNO1fPtr3MKMAcMES8k9rb9A7ACMmCYnwoCgbE=;
-        b=uLDp1NR69WRCFFp3t+0iREomuGhtv1YuQge6koB7AF7gnWmW0kbHL5ax+3xWhdifP5
-         HiK59kLe3ShvTSoZ61vlt2kcowdG5oDMmRy1li5l/ZctsdvQUf5ch1/TBRJ+CHGfiIoX
-         bdX0ahIqkyhXAro1Oai6dKA4htUZWkOHjNQnZw33j7SMMjPTaDENSr7frgSW5rjYC8sq
-         dvxL+OF9W2LbkNi5rGEc8hK0B82YvKVClpuzuv/+Bs9a43wypQrT4CNJeUdQiKOWpy2Q
-         V54xJgjZgUTVOTdlYCHlSdafwJeBWobYuC9h+bazOQKqvV+/hzgwjmze+4R+438FXlhW
-         DWsA==
-X-Forwarded-Encrypted: i=1; AJvYcCXh9iUyveGE/wd7EAWq9jyFy4WV6LqKOW2/dZWpjPnjpiodF6ePZh+/FYqs65cO13j92QdVt8k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/KDwe3Kk4itxlKY411kCi2lZHsLycvWDIXE6plUNi3dZIejyG
-	+orgruRZnNvm9fVPvyoh501mvFfBwNuTPvblmOjFT4x5ys8UD5GZ9zAV
-X-Gm-Gg: AZuq6aK0aKqvmtpM/Jssgw5R0Gcbf1uIdcRm3BtVJ4ahbSFavCHdQEBMb7LewF62Rx8
-	0p46GQNX/z0Z8+24TUJUcjVFRbwnVJ7fTXQfuU2jGficY2wYqSTTvWaNV3L+pmn3/NIsrNOfx1q
-	WFUL3Y3NS4iYvufKXN7LU9oidE5x+v5An8U//cOw7qwsFI3uqCQMjFOJaRGEEZhInRK8PYpnQ51
-	h85lvIACglxqhp85bupQFoFYCXyFhWQ1IqfU6FrYjbnM15fa+bQgE72ta8eOIwVU5Nxeij3PzFy
-	E/xehOOE5T/6yZDS/87fcCbJ2bsr6ocS4kDrQUm8PJq2uCUg0Q7mxpT2ci9eF4ekl0EthjynSGG
-	yUtS6OuZ6mUIvrchsvQ8SWqrRBzPMYSiJNnwRXgPUO+7OugLdsiD+Nj8r4vopgBI8qwnuILwPxz
-	WRiyWhjiSj/w6Gux9DJrq++JCURyjmjg==
-X-Received: by 2002:a17:903:19e6:b0:2aa:d608:ec55 with SMTP id d9443c01a7336-2ad175017e9mr190151945ad.28.1771580634204;
-        Fri, 20 Feb 2026 01:43:54 -0800 (PST)
+        bh=ZxR8y+DDVU/sD2lLySC6/WbxsSmg5U6pRubVnyPkrSo=;
+        b=LN5czMTs2QY/42wO+GC2z4O82+y9mRsmvsZTjPUzfAMmlPqInmAMaSPx3UjmjvSow1
+         HYmuWpoT6Zokup6RnT02AwlVmK7iU6ULbiA0uP2m9EoaQbED9RwBx8CyuU/4xIz7E8Jl
+         nPbfJLHnEb++s3tqnr9/Ww47I+/sNJnSG6erg0/uPpFh7RH+ewKZkuHPKFYp2U9aOMSD
+         DxoidVi9d9e3m/pRUVfYzkvfCQ8MOjpVvThEyqT0mHIV3PRJ8wmO1Dp3c6u0l1nwS7kD
+         pfkyw++vlLa9F0jIpFhiY2TzkamCsPdraRzsjS6vY/6t+RP8Ah7qUMTy5D1BMdRXrqed
+         V+Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqG1yto6x0dYlajEQUImusGhkwHpA+TBVBGaGTFdnA1zolDmNDStLRSI6J5b2iU1ZsAsYGps0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfI6B68njerR0N3QfX81DAX1EoEn8b4yueuL3+RgCinB7Zjx7F
+	bYmp8cZSqFNo/79Qf/huV9u0ccgqxsqpLsP9djViy17p3LbOuXC0YbmY
+X-Gm-Gg: AZuq6aJECBMHvt/FizKpgFz0cYDkZJmVQ+i5aJ2xnTguAAQuXx2yv/VASkQdbev7QTr
+	Hmb9Rs4YOh4edLMg3805xwW/pfakFzyNCDXQIMw5ob8dOwcXoxs8fZu5NRvTxyku+ujhWxUMyta
+	f3hWzShdOUG/EyOSGatoCAYvn/5jJe4OgUn4AvLQ8GEmaKUKU5H6MElMLFQgPhRbxgzAMYNREUN
+	BWBvG/2mqdBM2ZGf7JosLhkXTC4O9wAuAVahIqzhgdwnmtQfyUM3AgFB3W6rqGzbBko85BxkV96
+	daotykbD8CU1njd4wVVqwxtM+qh4lnn9fhQM+q/2t7xfp4u4vTkG90ApMSqU5i9kfhNlkMdExZ2
+	b1CLJgveuF+WCusJbMOibHoA3cIhpAKlA7S6p/8kvFWGn5oJz5ltvLd4ITpScLs+27CAjRrGTGN
+	+QzOife7ckseJYXY5xwFgyEZ4lNGLZsQ==
+X-Received: by 2002:a17:903:228e:b0:2ab:2bc5:4365 with SMTP id d9443c01a7336-2ad1747b69fmr212269585ad.19.1771580648956;
+        Fri, 20 Feb 2026 01:44:08 -0800 (PST)
 Received: from f0d65881db18 ([115.245.213.202])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1ace5e25sm185309555ad.91.2026.02.20.01.43.50
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1ace5e25sm185309555ad.91.2026.02.20.01.44.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Feb 2026 01:43:53 -0800 (PST)
+        Fri, 20 Feb 2026 01:44:08 -0800 (PST)
 From: Sanjaikumar V S <sanjaikumarvs@gmail.com>
 To: linux-mtd@lists.infradead.org
 Cc: tudor.ambarus@linaro.org,
@@ -87,9 +87,9 @@ Cc: tudor.ambarus@linaro.org,
 	linux-kernel@vger.kernel.org,
 	Sanjaikumar V S <sanjaikumar.vs@dicortech.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/2] mtd: spi-nor: sst: Fix write enable before AAI sequence
-Date: Fri, 20 Feb 2026 09:42:35 +0000
-Message-ID: <20260220094236.28-2-sanjaikumarvs@gmail.com>
+Subject: [PATCH v2 2/2] mtd: spi-nor: core: Fix AAI mode when dirmap is not available
+Date: Fri, 20 Feb 2026 09:42:36 +0000
+Message-ID: <20260220094236.28-3-sanjaikumarvs@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260220094236.28-1-sanjaikumarvs@gmail.com>
 References: <20260220094236.28-1-sanjaikumarvs@gmail.com>
@@ -106,13 +106,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217548-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217549-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -127,49 +127,43 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,dicortech.com:email]
-X-Rspamd-Queue-Id: 04C3816662E
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,dicortech.com:email]
+X-Rspamd-Queue-Id: E325B16661C
 X-Rspamd-Action: no action
 
 From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
 
-When writing to SST flash starting at an odd address, a single byte is
-first programmed using the byte program (BP) command. After this
-operation completes, the flash hardware automatically clears the Write
-Enable Latch (WEL) bit.
+When the SPI controller does not support direct mapping (nodirmap=true),
+spi_nor_spimem_write_data() calls spi_mem_dirmap_write() which falls
+back to spi_mem_no_dirmap_write(). This fallback uses the operation
+template created at probe time with the standard page program opcode.
 
-If an AAI (Auto Address Increment) word program sequence follows, it
-requires WEL to be set. Without re-enabling writes, the AAI sequence
-fails.
+For SST flashes using AAI mode, this fails because the template cannot
+handle the dynamic opcode and address byte changes required by AAI.
 
-Add spi_nor_write_enable() after the odd-address byte program, but only
-when an AAI sequence will follow (len > 2 bytes remaining).
+Fix by checking nodirmap and using spi_nor_spimem_exec_op() directly,
+which uses the runtime-built operation with correct AAI configuration.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
 ---
- drivers/mtd/spi-nor/sst.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mtd/spi-nor/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/spi-nor/sst.c b/drivers/mtd/spi-nor/sst.c
-index 175211fe6a5e..fe714e6d0914 100644
---- a/drivers/mtd/spi-nor/sst.c
-+++ b/drivers/mtd/spi-nor/sst.c
-@@ -210,6 +210,13 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index d3f8a78efd3b..7caeb508d628 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -281,7 +281,7 @@ static ssize_t spi_nor_spimem_write_data(struct spi_nor *nor, loff_t to,
+ 	if (spi_nor_spimem_bounce(nor, &op))
+ 		memcpy(nor->bouncebuf, buf, op.data.nbytes);
  
- 		to++;
- 		actual++;
-+
-+		/* BP clears WEL, re-enable if AAI sequence follows */
-+		if (actual < len - 1) {
-+			ret = spi_nor_write_enable(nor);
-+			if (ret)
-+				goto out;
-+		}
- 	}
- 
- 	/* Write out most of the data here. */
+-	if (nor->dirmap.wdesc) {
++	if (nor->dirmap.wdesc && !nor->dirmap.wdesc->nodirmap) {
+ 		nbytes = spi_mem_dirmap_write(nor->dirmap.wdesc, op.addr.val,
+ 					      op.data.nbytes, op.data.buf.out);
+ 	} else {
 -- 
 2.43.0
 
