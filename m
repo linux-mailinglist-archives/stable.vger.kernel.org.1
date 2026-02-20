@@ -1,248 +1,201 @@
-Return-Path: <stable+bounces-217599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FHIKeDJmGl7MQMAu9opvQ
-	(envelope-from <stable+bounces-217599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 21:53:52 +0100
+	id QGY3Ik7NmGmuMgMAu9opvQ
+	(envelope-from <stable+bounces-217600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 22:08:30 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099A616ACDE
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 21:53:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F6816AE9F
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 22:08:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 451C5303DD12
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 20:53:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB49B3038AFA
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 21:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2053D30C345;
-	Fri, 20 Feb 2026 20:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A68B307481;
+	Fri, 20 Feb 2026 21:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Yu/+eoeN";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CGzfpmTn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="r012pDis"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC69309EFC;
-	Fri, 20 Feb 2026 20:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16A98632B;
+	Fri, 20 Feb 2026 21:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771620796; cv=none; b=qMPMp/42VHFbdqL+H3aLzlVOVPQVGGARIQcrE8ZIPDi1qFWVQtdy5YAy6A6p/d0SskZr38Ii5a61Hkoxqqj62ca3TJG5cJiaUqMGaQ3Hxj7BdJeNb0IAk3jTE7bgfgCP7NEFns/VLEtttHtlMYZ1PPAadXqiMr7BOXso2ZO0VV0=
+	t=1771621695; cv=none; b=eisd71/shm+K9JdLQ9hgMtYAdLhQhHv0Jnm8LZQEjFGQVYk+GqCk/dF8PowQvj7oMa7qMlBFoYiSBc+1K/bKbks1RZCBvNvpR7DnGPTy0cTXXoQ7l5dyFN2Ay/8+rJTU4a1LakLnN6Dk/fw0J7KK1YayVwOQpsCeu1GyESJbM9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771620796; c=relaxed/simple;
-	bh=wvPZ+iAZm0GaEH+FUhgCt1TsGu2hBXjc9GP/9tT7qZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nnXBYodK9h6zpKzjQ5EbNj2cMZ9sa+T4TgonULP2nlrUxCWUwoRJKZDyljvKTrpeimITeHBfVQ5RwiKI7ndIrMIA9AbOKzqO+3XlQMzZLZTtceyUdaEeLN112MPcELCDXN3D07wa5aaAS1Bc1Yqnea7RitwpxawyF5iUOm4AbXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Yu/+eoeN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CGzfpmTn; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfout.phl.internal (Postfix) with ESMTP id 15293EC05A5;
-	Fri, 20 Feb 2026 15:53:12 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Fri, 20 Feb 2026 15:53:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1771620792;
-	 x=1771707192; bh=D9VGSeggv5pbXKRZhKSaAquvTwtnNjiZ0IjcroFhx90=; b=
-	Yu/+eoeN3KHq3XOCG6vANYO7WgqR6V6wbP5JTAnymrYMQSGbOBGtQu/ZFfdMS8NY
-	CeDErX91mg51KXANmVtzuJ3e33yYC8I8OFCQrwIxsQCgikd5Dq8Bpzm4mLm5WUjF
-	8nlLD3KNOFDFUAgUX6N0pSyNQhOQbhJwAbMMythR2WNDwJj5buaXjnZ9p36wNfk3
-	sBfiSc3NZUrur1WfYnCvGzHLvSPIB7Yrf3lJqey1ynsWxHDT+x+66/cJ6DsiL24t
-	DOQ+YYcHDz1T2axBkdiLgq1J6sOwmkeAqDG07z9GhrsipF4aw6f3nkqs49k21/zH
-	KgBjlhow8MgCFyNalwY5VA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771620792; x=
-	1771707192; bh=D9VGSeggv5pbXKRZhKSaAquvTwtnNjiZ0IjcroFhx90=; b=C
-	GzfpmTnvcFLr7cbCxnDGZMtReQ7v1VNOBFojknS0p7E4QHg7JbgcTfzb/hVKV55m
-	Q7z29FvctnpWFzyjuP1/rmiA3LkxU4RgyiS9YjqAKQ8tNMK+s8wQPyhQE0hig2PQ
-	CZ8RoWiXdKHR5ZgLweOkTVoA6VDEBKpCGht/XKQ+Zei99goq99T0Z/zuDgzHoxjD
-	pIvOI4ZVUyPYAA20twRtVzOQTjafZ4T/wioN+JN8i5ZFASj8JJe5KNOUlpHkhx8K
-	G8jyB/CbXDZqvCnBIbgfGg/YlehKaQVBuOjuSxK4hIqTdgqpCb1YZANml53tQimY
-	4DNFbD1Zl+UqVsAwISXfA==
-X-ME-Sender: <xms:t8mYaaYl882_KgUMUPCceDYTR8_LeMvjuOVTtL7mdYlCFgV3UpO5xQ>
-    <xme:t8mYadi8HRBgwUPeV92bKUyIPLtlV-CobZ7Ehjo12RZx-2o56NTuNIqvnTq21r-Q8
-    FOpf75mvb5YULKbTx8eVh6tfMEa5Mhg5XeiDt4KCo1lB6V3T1ecrQ>
-X-ME-Received: <xmr:t8mYacaMqILaMPhnTmt5Kmt5jLA1wEpusgdgn0LNP0aS5ALXT-JNgZo8lrE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvdelgeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
-    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
-    pdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprg
-    hlihhfmheslhhinhhugidrihgsmhdrtghomhdprhgtphhtthhopehhvghlghgrrghssehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehksghushgthheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheplhhinhhugidqshefledtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehluhhkrghsseifuhhnnhgvrhdruggvpdhrtghpthhtoheptghlghesrhgvug
-    hhrghtrdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhg
-X-ME-Proxy: <xmx:t8mYaTN0jDcRPdW5IcUxnqWblm_mDv5i2fZyRmYyZHrHoylB1Et_vA>
-    <xmx:t8mYadZvnkttPZT0I6OyWPhobqpD7U9mMTnjoNFSQJPEjxik_Gxwaw>
-    <xmx:t8mYaTXnYsx7XSF7b0mCcRBAUTva9wfnzRiPSx40r9mct62hs1m9EA>
-    <xmx:t8mYacCCXDBslqBgwjS5EpXvqNNvZsbaFKD76RZiLgEHBarNsFJ5FQ>
-    <xmx:uMmYaXjCDZf-j-BOV6qgBe3YvRI25Sy9hztBI4-25pKxjlQE4gIITBUS>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Feb 2026 15:53:10 -0500 (EST)
-Date: Fri, 20 Feb 2026 13:53:09 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Keith Busch <kbusch@kernel.org>,
- linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, lukas@wunner.de, clg@redhat.com,
- stable@vger.kernel.org, schnelle@linux.ibm.com, mjrosato@linux.ibm.com,
- Bjorn Helgaas <bhelgaas@google.com>, alex@shazbot.org
-Subject: Re: [PATCH v9 3/9] PCI: Avoid saving config space state in reset
- path
-Message-ID: <20260220135309.0014e308@shazbot.org>
-In-Reply-To: <f6ef9900-ae3a-4580-a89d-f497fb4e5adf@linux.ibm.com>
-References: <20260219002010.GA3445930@bhelgaas>
-	<f6ef9900-ae3a-4580-a89d-f497fb4e5adf@linux.ibm.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1771621695; c=relaxed/simple;
+	bh=fo9J7Kh5LXZ4sAfujsd/dDL1VGh9hmHvsbJR1d7LZ34=;
+	h=Date:To:From:Subject:Message-Id; b=txJQAegi0M+K2wAQPuC5J65mJi5kI+kSnh/u6z9bx9XMB5fq1d4IXIHiSEFv4BKuSEVgZrrxOWbGmPLvN93KWuyh9yCcnuiWLNDbIy0hbuVCw4UNtK5mBikdmgl051off9JqMgZmL22pLkeQZpbpii/XtT8rZ/z+1mA+UkpQlOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=r012pDis; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077E5C116C6;
+	Fri, 20 Feb 2026 21:08:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1771621695;
+	bh=fo9J7Kh5LXZ4sAfujsd/dDL1VGh9hmHvsbJR1d7LZ34=;
+	h=Date:To:From:Subject:From;
+	b=r012pDis/MIiENZFG9rf40avsWS7hqKdXMBeLa6OIxXB4sCXt/df/kw2WQKpdIm3r
+	 5lMUDVF0heobob39mWSgZ54b/uCKIacJwmjeSoIy9IUN67zEb0iKuCvIpyMZADQq2F
+	 wFPJKly13kd8o3+XC9OEUtdpTHdjCVYyjusRgASU=
+Date: Fri, 20 Feb 2026 13:08:14 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryabinin.a.a@gmail.com,kees@kernel.org,gregkh@linuxfoundation.org,ernesto.martinezgarcia@tugraz.at,elver@google.com,dvyukov@google.com,andreyknvl@gmail.com,glider@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-kfence-fix-kasan-hardware-tag-faults-during-late-enablement.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260220210815.077E5C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm2,messagingengine.com:s=fm3];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-217599-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217600-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,kernel.org,linuxfoundation.org,tugraz.at,google.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.998];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 099A616ACDE
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: B0F6816AE9F
 X-Rspamd-Action: no action
 
-On Thu, 19 Feb 2026 10:06:05 -0800
-Farhan Ali <alifm@linux.ibm.com> wrote:
 
-> On 2/18/2026 4:20 PM, Bjorn Helgaas wrote:
-> > On Wed, Feb 18, 2026 at 01:48:57PM -0800, Farhan Ali wrote:  
-> >> On 2/18/2026 11:35 AM, Bjorn Helgaas wrote:  
-> >>> On Wed, Feb 18, 2026 at 12:02:01PM -0700, Keith Busch wrote:  
-> >>>> On Tue, Feb 17, 2026 at 11:55:43AM -0800, Farhan Ali wrote:  
-> >>>>> Yes I think you are right, with this change the PCI Command
-> >>>>> register gets restored to state at enumeration. So we will
-> >>>>> lose the updated state after pci_clear_master() and
-> >>>>> pci_enable_device(). I think we can update the vfio driver to
-> >>>>> call pci_save_state() after pci_enable_device()?  
-> >>>> Either that, or move the pci_enable_device() call to after the
-> >>>> function reset.  
-> >>> I kind of like the latter idea because it seems a little simpler
-> >>> for the rule of thumb to be that a reset done by the PCI core
-> >>> returns the device to the same state as when the driver first
-> >>> probed the device.  Drivers would generally not use
-> >>> pci_save_state() at all, and they could share some initialization
-> >>> logic between probe and post-reset recovery.  
-> >> I think the vfio-pci driver was intentionally doing the
-> >> pci_enable_device() before doing the reset. As per commit
-> >> 9a92c5091a42 ("vfio-pci: Enable device before attempting reset") it
-> >> was done to handle devices using PM reset, that were getting
-> >> incorrectly identified not supporting PM reset due to current state
-> >> of the device not being D0. It looks like pci_pm_reset() still
-> >> returns -EINVAL if current power state is not D0. So I think we
-> >> can't move pci_enable_device() after reset. Unless we want to update
-> >> pci_pm_reset() to not use cached value of current_state and read it
-> >> directly from register?  
-> > Devices are generally disabled at .probe() time, so that will be the
-> > default saved state.  But every driver will expect the device to be
-> > enabled after the reset.  Skipping the save state at reset time seems
-> > like it would need a lot of work first and maybe it wouldn't ever be
-> > practical.  It wasn't really thought out; I was just hoping we could
-> > simplify the save-state model and maybe unify driver reset and error
-> > recovery paths.  I think we need to drop this patch at least for now.  
-> 
-> Yeah, I agree this patch might be too disruptive for drivers. In that 
-> case would my previous version [1] to at least prevent saving state in 
-> case of an error be acceptable? Or is there another approach we should 
-> consider?
-> 
-> [1] https://lore.kernel.org/all/20260122194437.1903-4-alifm@linux.ibm.com/
-> 
-> >
-> > 9a92c5091a42 ("vfio-pci: Enable device before attempting reset") was
-> > mostly done to make pci_pm_reset() work, which requires the device to
-> > be in D0.  The main purpose of pci_enable_device() is to make device
-> > BARs accessible; it *does* also put the device in D0 because BARs are
-> > only accessible in D0, but pci_pm_reset() itself doesn't need the
-> > BARs.
-> >
-> > Other reset methods, e.g., FLR, don't seem to require the device to be
-> > in D0, so I'm not sure why pci_pm_reset() requires that.  I think the
-> > critical piece is the D3->D0 transition, and maybe we could arrange
-> > for that to happen even if the device is already in D1/D2/D3hot or
-> > even D3cold.  
-> 
-> Looking at the PCI spec (v6.1) I didn't see any requirement for the 
-> device to be in D0 state to perform a power state change. So I think we 
-> should be able to transition from D1/D2/D3hot to D0. But IIUC if a 
-> device is in D3cold, then won't register reads/writes fail till power is 
-> available to the device?
+The patch titled
+     Subject: mm/kfence: fix KASAN hardware tag faults during late enablement
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-kfence-fix-kasan-hardware-tag-faults-during-late-enablement.patch
 
-Yes, config space could be inaccessible in D3cold.  IIRC, 9a92c5091a42
-was specifically addressing that devices are typically provided to the
-driver in the PCI_UNKNOWN state and at the time vfio-pci wasn't
-changing that in the .probe function, like most drivers would, so we
-needed to adjust the ordering of enabling the device versus calling
-reset function.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-kfence-fix-kasan-hardware-tag-faults-during-late-enablement.patch
 
-Now that we've gained PM management in vfio-pci, that's no longer an
-issue, but pci_pm_reset() does still require the device to arrive in
-D0.  Accepting devices arriving in D3cold or D3hot (with NoSoftReset-)
-might avoid a power state bounce in some circumstances, but would not
-have solved the original 9a92c5091a42 scenario where the device was in
-PCI_UNKNOWN power state.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Sorry I missed my opportunity to reply to the suggestion for this
-approach in the previous revision.  I'm not sure if anything
-specifically breaks with this approach to restore the initial device
-state, but it's certainly not the contract I currently expect as a
-user of the reset-function interfaces.  I think that contract is
-"reset the internal state of the device while saving and restoring
-current config space".  If we stray from that, what's the expectation
-for things like resizable BARs?  I don't think we want to reprovision
-resources as a result of reset.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Here we seem to be worried about a specific, testable scenario where
-config space might be inaccessible after error and applying the
-workaround to that regardless whether that specific scenario is preset.
-I don't see that a "test if config space is accessible and stuff the
-original save state into the buffer rather than creating an invalid
-save state" should be so complex as to require this simplification and
-associated risk.  Thanks,
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Alex
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Alexander Potapenko <glider@google.com>
+Subject: mm/kfence: fix KASAN hardware tag faults during late enablement
+Date: Fri, 20 Feb 2026 15:49:40 +0100
+
+When KASAN hardware tags are enabled, re-enabling KFENCE late (via
+/sys/module/kfence/parameters/sample_interval) causes KASAN faults.
+
+This happens because the KFENCE pool and metadata are allocated via the
+page allocator, which tags the memory, while KFENCE continues to access it
+using untagged pointers during initialization.
+
+Use __GFP_SKIP_KASAN for late KFENCE pool and metadata allocations to
+ensure the memory remains untagged, consistent with early allocations from
+memblock.  To support this, add __GFP_SKIP_KASAN to the allowlist in
+__alloc_contig_verify_gfp_mask().
+
+Link: https://lkml.kernel.org/r/20260220144940.2779209-1-glider@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Suggested-by: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/kfence/core.c |   14 ++++++++------
+ mm/page_alloc.c  |    3 ++-
+ 2 files changed, 10 insertions(+), 7 deletions(-)
+
+--- a/mm/kfence/core.c~mm-kfence-fix-kasan-hardware-tag-faults-during-late-enablement
++++ a/mm/kfence/core.c
+@@ -1004,14 +1004,14 @@ static int kfence_init_late(void)
+ #ifdef CONFIG_CONTIG_ALLOC
+ 	struct page *pages;
+ 
+-	pages = alloc_contig_pages(nr_pages_pool, GFP_KERNEL, first_online_node,
+-				   NULL);
++	pages = alloc_contig_pages(nr_pages_pool, GFP_KERNEL | __GFP_SKIP_KASAN,
++				   first_online_node, NULL);
+ 	if (!pages)
+ 		return -ENOMEM;
+ 
+ 	__kfence_pool = page_to_virt(pages);
+-	pages = alloc_contig_pages(nr_pages_meta, GFP_KERNEL, first_online_node,
+-				   NULL);
++	pages = alloc_contig_pages(nr_pages_meta, GFP_KERNEL | __GFP_SKIP_KASAN,
++				   first_online_node, NULL);
+ 	if (pages)
+ 		kfence_metadata_init = page_to_virt(pages);
+ #else
+@@ -1021,11 +1021,13 @@ static int kfence_init_late(void)
+ 		return -EINVAL;
+ 	}
+ 
+-	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE, GFP_KERNEL);
++	__kfence_pool = alloc_pages_exact(KFENCE_POOL_SIZE,
++					  GFP_KERNEL | __GFP_SKIP_KASAN);
+ 	if (!__kfence_pool)
+ 		return -ENOMEM;
+ 
+-	kfence_metadata_init = alloc_pages_exact(KFENCE_METADATA_SIZE, GFP_KERNEL);
++	kfence_metadata_init = alloc_pages_exact(KFENCE_METADATA_SIZE,
++						 GFP_KERNEL | __GFP_SKIP_KASAN);
+ #endif
+ 
+ 	if (!kfence_metadata_init)
+--- a/mm/page_alloc.c~mm-kfence-fix-kasan-hardware-tag-faults-during-late-enablement
++++ a/mm/page_alloc.c
+@@ -6928,7 +6928,8 @@ static int __alloc_contig_verify_gfp_mas
+ {
+ 	const gfp_t reclaim_mask = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
+ 	const gfp_t action_mask = __GFP_COMP | __GFP_RETRY_MAYFAIL | __GFP_NOWARN |
+-				  __GFP_ZERO | __GFP_ZEROTAGS | __GFP_SKIP_ZERO;
++				  __GFP_ZERO | __GFP_ZEROTAGS | __GFP_SKIP_ZERO |
++				  __GFP_SKIP_KASAN;
+ 	const gfp_t cc_action_mask = __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
+ 
+ 	/*
+_
+
+Patches currently in -mm which might be from glider@google.com are
+
+mm-kfence-disable-kfence-upon-kasan-hw-tags-enablement.patch
+mm-kfence-fix-kasan-hardware-tag-faults-during-late-enablement.patch
+
 
