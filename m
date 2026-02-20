@@ -1,170 +1,290 @@
-Return-Path: <stable+bounces-217560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217561-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 5scUEgpImGnYFAMAu9opvQ
-	(envelope-from <stable+bounces-217560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 12:39:54 +0100
+	id MOBsLcZVmGncGQMAu9opvQ
+	(envelope-from <stable+bounces-217561-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 13:38:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCAE16750B
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 12:39:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E22A16787A
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 13:38:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB3B4300B76F
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 11:39:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74B253049701
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 12:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEE5331211;
-	Fri, 20 Feb 2026 11:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96350344025;
+	Fri, 20 Feb 2026 12:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linbit-com.20230601.gappssmtp.com header.i=@linbit-com.20230601.gappssmtp.com header.b="Mh8hHb79"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rzc807DJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981D7330B28
-	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 11:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A3229B79B;
+	Fri, 20 Feb 2026 12:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771587587; cv=none; b=eMW7gHWHql7Vqkpn+eTkVDxDyjTBTYKhyfU4TGbfA8uNrgs4UwD4lEwMzlhrqDNMKfUIZ9TIeTSRuJB/UVyTc/8rRQBzapKdAjvJ/rUyVkOODDOnp3PtMGlFx9zvDVXBc6VwId8Usp/ezxylUqhGFUMEbQdPvUAOIaoYHXKhDOk=
+	t=1771591088; cv=none; b=Fqj78PKeSYBFas0SI+QHL8ggPj/AZTpk91KeSEMWxRrouRXMhpgL3tnfj37mjFtDkv/bINq6bXaXsSnJfAngRrSqUP9UyvGW7Km51wzZa5M2TGdJhSpmhUQOhxtZKAz/XvG1/MJpPirwZ/qksAq9xlHAfIROKoeZ4oF0PYxfvb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771587587; c=relaxed/simple;
-	bh=09UEbk9dCc1/v7GTUjrY4SUM9KDAOWfH15C+AzLS2AM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=h2MdTBC5sbg75CCPb2+5kqMo1NTWx+uqFmsYFj3+LRyt6YehuHAO+fYnCFJFR9PO2xpQk0jIKTLjLmOLOhzma05sHo+6LjDZYL/kudEi3og7pUcke8om+x1tA3ql1RlEJk7CrEt54by1btA/DqDTph3QSGclhoFF8S40kcDKSiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com; spf=pass smtp.mailfrom=linbit.com; dkim=pass (2048-bit key) header.d=linbit-com.20230601.gappssmtp.com header.i=@linbit-com.20230601.gappssmtp.com header.b=Mh8hHb79; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linbit.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4836e3288cdso13488125e9.0
-        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 03:39:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linbit-com.20230601.gappssmtp.com; s=20230601; t=1771587584; x=1772192384; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NAZvmYa4+oLnoaGzT3J4OlkyuUdxp/o/vWFvPoP3fG0=;
-        b=Mh8hHb794dTdhWTQo28a964za56bBpuZ9D4oliBPpVgnd1Yrs2rgIgfwZHn/yNRvQg
-         EF7iJyFR3nf0tOVrBT7Gy89mRTAfnZgwUIxjWn1CXc6tVjwMzrU4hQ9W7JpZXZTRAOY4
-         gu+nivpZ87n3oKx/u8rhnpLqXjOfUBgD25tMcp0FrnmYosm+N4rhzLDdrk6d3mzOFkfz
-         UBbUWfb7Grs+oHCZuQy43E8JtOizYc3030pIbWR0dw2TyoTq+Om3XALDBTZW9zQBEZM7
-         YlsheWQLhIdJZKU7Eq22Wb/2XJvXPTf9TNq5TPgWQxLSvNnEQus7YE9ByolRRLZt0ViU
-         c5ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771587584; x=1772192384;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NAZvmYa4+oLnoaGzT3J4OlkyuUdxp/o/vWFvPoP3fG0=;
-        b=VjWjlbYEUT4eXHmuTadQrnP4DLYUwgDDDBF41D4DzBWSievR351eSxvlMS3rwMHcc2
-         imTzzyq1dqjgZrTq/ndWrg6GUxWZ3WiIK0KNMxw5gvIwDzJqHjplz9JhYP2SA2IPlVbO
-         suo6G9RjZ8VJm9iPtcXl45FOfmvYi97Z4rfW4Si509wyUPrI6M0JG8zI2wAjjZJNoDnC
-         fuP45ghD3zFETVzmNDiMkHF4UQpy3iC8OmyNN8nSEGNBA1VzURKugfK0KlPverUUK2lV
-         flzCCPoIB4w7XxBPWsnGZPsFFPthr5yIE7kofehHprCru6g6B9sGFut2aAGBt07So4O+
-         8exQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ0IdB6n3l0vo7hMvXmuXMz0ry72qKRg6+5Morgb86dIY6BV2mBDjtPFMyh/6MbI8aTFlrMDo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJ0zN7RANXKeq9Vhw2wOTdTMo1wpQnVZ/RVeJZSw99lFJch3LV
-	gFY/GQVjvYNPUPAG4uKPulP8HKGhwi3e59yyP2KEbOzOiLkJuBQ5YI1rStLMx2KJd5o=
-X-Gm-Gg: AZuq6aIKdaMurtQ7hKBYSKL5OoiGdNXhvLvUI5tr7RbJqvIt+k+Vdf0q1zcW36rin2c
-	/sPhY8fQ4s8Kzo0xV3qR9Gfn+3oiDFWa8/YStDxK+tGGwPyYCgIz6NI0WXd8tgXGL2J+1k3fAFc
-	aiZbSrzLaH5uamnSePRQgHZr6hVJap/ld4uCrs7zeirAtYI+ngtkdpJpq0IJLtybB9Q6VTSx1CF
-	hKacmjFCqw0sFlm+0+pdMAM0qehUkqOHzTaD5NmlUNOsMFGguF5wmJyTM38hezrTSP1R7HrUoDj
-	C3+XqCIkkQOy8yBJpsKMMHk4MLNl3gN0m1NtvzpzLyeW1DGEXCX/Oh3sbTZ/tKh0Jgo/jVwNxu2
-	0bScGN5Y1IxUK/ZznxYN9mHuP5BQHfKu6EPRuyIvuijl4AETJP7mRBry6jAV1fJbatUVeutTR40
-	r5yJ6EpSJKJwxcmxucOvClsp0Qt8Y29tkmS3cFHxz4EbWpi3kipKlZpuqYrBCtUOggt/Kxxjdoe
-	9w+kjratGxB2mrRoFiG0Q==
-X-Received: by 2002:a05:600c:c114:b0:47e:e97e:11aa with SMTP id 5b1f17b1804b1-4839fe8e843mr76621565e9.4.1771587583811;
-        Fri, 20 Feb 2026 03:39:43 -0800 (PST)
-Received: from localhost.localdomain (h082218028181.host.wavenet.at. [82.218.28.181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a316eb08sm75529045e9.0.2026.02.20.03.39.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Feb 2026 03:39:43 -0800 (PST)
-From: =?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: drbd-dev@lists.linbit.com,
-	linux-kernel@vger.kernel.org,
-	Lars Ellenberg <lars.ellenberg@linbit.com>,
-	Philipp Reisner <philipp.reisner@linbit.com>,
-	linux-block@vger.kernel.org,
-	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
-	stable@vger.kernel.org,
-	Tuo Li <islituo@gmail.com>
-Subject: [PATCH] drbd: fix null-pointer dereference on local read error
-Date: Fri, 20 Feb 2026 12:39:37 +0100
-Message-ID: <20260220113937.2691322-1-christoph.boehmwalder@linbit.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1771591088; c=relaxed/simple;
+	bh=PcXHPkPK8Tu8BLTVlD50Lp9knCyg3f3SAsJ8fwwB/UA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jXZ83N+KTDP4xd69/RQPwrLQtMFA0MTZjmWupp/a9A6VBfmAfJaGPoe7gU+fOwNUi/GeCPDDS4bol8xNrs4neRl3RupQ6H+fnjNZFhxeYiFtYvzYZP1PJEXHyPYJ9V8OfiHYUkoBp/qUh+zIZz9f+e1ulyqfeuOFtWyZaMb7Vvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rzc807DJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CE8C116C6;
+	Fri, 20 Feb 2026 12:38:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771591087;
+	bh=PcXHPkPK8Tu8BLTVlD50Lp9knCyg3f3SAsJ8fwwB/UA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rzc807DJlNxrul32rjTNYOxCgSSWlvY3WaB9zvH1JBlH3lzPGiKv7G0Xl1ZLQpBJl
+	 Qc5PUtN50OUL+gDw3IpxfRiaUKuuZerC5FsrppogPZscpOnaIWXRBKwycXDhMi4z94
+	 KdBktkJ1L3UjBLwNBsf6CXVI6wLkFKfAKdByDUPsFRjh5w7NMYB9T/cIY0bAUPuA9e
+	 rZIZi5ZgWoKJyFC1/Sj0BCKqZH1EOiEjssPixLKZfTdZZNbVeGM2HQICGVkClW/JE+
+	 4JyOtbO0mFuh5YmhBdVNU81NwCrmSWkRb9wSNOMXFBxRgPZ99/w/GBgCYt+Wfkh3Hx
+	 erpsz1HjlgVxw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Ilya Dryomov <idryomov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	amarkuze@redhat.com,
+	slava@dubeyko.com,
+	ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-5.15] libceph: define and enforce CEPH_MAX_KEY_LEN
+Date: Fri, 20 Feb 2026 07:37:50 -0500
+Message-ID: <20260220123805.3371698-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19.3
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.56 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[linbit-com.20230601.gappssmtp.com:s=20230601];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[linbit.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linbit.com,vger.kernel.org,linbit.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,redhat.com,dubeyko.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-217561-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217560-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linbit-com.20230601.gappssmtp.com:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christoph.boehmwalder@linbit.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linbit.com:mid,linbit.com:email]
-X-Rspamd-Queue-Id: 8DCAE16750B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1E22A16787A
 X-Rspamd-Action: no action
 
-In drbd_request_endio(), READ_COMPLETED_WITH_ERROR is passed to
-__req_mod() with a NULL peer_device:
+From: Ilya Dryomov <idryomov@gmail.com>
 
-  __req_mod(req, what, NULL, &m);
+[ Upstream commit ac431d597a9bdfc2ba6b314813f29a6ef2b4a3bf ]
 
-The READ_COMPLETED_WITH_ERROR handler then unconditionally passes this
-NULL peer_device to drbd_set_out_of_sync(), which dereferences it,
-causing a null-pointer dereference.
+When decoding the key, verify that the key material would fit into
+a fixed-size buffer in process_auth_done() and generally has a sane
+length.
 
-Fix this by obtaining the peer_device via first_peer_device(device),
-matching how drbd_req_destroy() handles the same situation.
+The new CEPH_MAX_KEY_LEN check replaces the existing check for a key
+with no key material which is a) not universal since CEPH_CRYPTO_NONE
+has to be excluded and b) doesn't provide much value since a smaller
+than needed key is just as invalid as no key -- this has to be handled
+elsewhere anyway.
 
-Cc: stable@vger.kernel.org
-Reported-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/linux-block/20260104165355.151864-1-islituo@gmail.com
-Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/drbd/drbd_req.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/drbd/drbd_req.c b/drivers/block/drbd/drbd_req.c
-index d15826f6ee81..70f75ef07945 100644
---- a/drivers/block/drbd/drbd_req.c
-+++ b/drivers/block/drbd/drbd_req.c
-@@ -621,7 +621,8 @@ int __req_mod(struct drbd_request *req, enum drbd_req_event what,
- 		break;
+LLM Generated explanations, may be completely bogus:
+
+This confirms the vulnerability. Now let me provide my complete
+analysis.
+
+## Analysis
+
+### What the commit does
+
+This commit makes three changes to the libceph subsystem:
+
+1. **Renames `CEPH_KEY_LEN` to `CEPH_MAX_KEY_LEN`** (value remains 16)
+   in `net/ceph/crypto.h` to clarify the constant's purpose as a maximum
+   bound.
+
+2. **Adds a bounds check** in `ceph_crypto_key_decode()`
+   (`net/ceph/crypto.c:83-86`) that validates `key->len <=
+   CEPH_MAX_KEY_LEN` before the key material is used. The old
+   `!key->len` check in `set_secret()` is removed as it's superseded by
+   this.
+
+3. **Updates the buffer reference** in `process_auth_done()`
+   (`net/ceph/messenger_v2.c:2363`) to use the renamed constant.
+
+### The vulnerability: Stack buffer overflow from network data
+
+This is a **security fix** preventing a potential stack buffer overflow:
+
+1. `process_auth_done()` allocates a fixed-size stack buffer: `u8
+   session_key_buf[CEPH_KEY_LEN + 16]` (32 bytes, of which 16 are usable
+   after alignment).
+
+2. This buffer is passed to `handle_auth_done()` →
+   `ceph_auth_handle_reply_done()` → `handle_auth_session_key()` in
+   `auth_x.c:627-629`, which does:
+  ```c
+  memcpy(session_key, th->session_key.key, th->session_key.len);
+  ```
+
+3. `th->session_key` is populated by `ceph_crypto_key_decode()` in
+   `process_one_ticket()` (`auth_x.c:207`), where `key->len` is decoded
+   directly from the network as a 16-bit integer with **no upper bounds
+   validation**.
+
+4. A malicious or compromised Ceph server (or MITM attacker) could send
+   a key length > 16, causing a stack buffer overflow when the key
+   material is `memcpy`'d into the 16-byte `session_key_buf`.
+
+### Stable kernel criteria assessment
+
+- **Fixes a real bug**: Yes - a security vulnerability (stack buffer
+  overflow from network input)
+- **Obviously correct**: Yes - adding a bounds check on network-decoded
+  length against a buffer size constant is straightforward
+- **Small and contained**: Yes - only ~10 lines of meaningful change
+  across 3 files
+- **No new features**: Correct - this only adds input validation
+- **Tested**: The author is Ilya Dryomov, the Ceph subsystem maintainer
+  himself
+
+### Risk assessment
+
+- **Very low risk**: The only behavioral change is rejecting keys with
+  length > 16 bytes. AES-128 keys are 16 bytes, so valid Ceph keys will
+  never be larger. There's no possibility of breaking existing working
+  setups.
+- **High benefit**: Prevents a remotely triggerable stack buffer
+  overflow in the kernel.
+
+### Related commits
+
+Commit `818156caffbf5` ("libceph: prevent potential out-of-bounds reads
+in handle_auth_done()") was a related security fix with explicit `Cc:
+stable@vger.kernel.org`, showing the Ceph maintainer considers these
+auth handling bounds checks to be stable-worthy.
+
+### Verification
+
+- **Verified call chain**: `process_auth_done()` (messenger_v2.c:2361) →
+  `handle_auth_done` callback → `handle_auth_session_key()`
+  (auth_x.c:627-629) copies `th->session_key.key` with length
+  `th->session_key.len` into the fixed-size `session_key` buffer via
+  `memcpy`.
+- **Verified network origin of key->len**: `ceph_crypto_key_decode()`
+  (crypto.c:82) reads `key->len = ceph_decode_16(p)` directly from
+  network-supplied data, with only `ceph_decode_need()` checking buffer
+  availability, not the value itself.
+- **Verified buffer size**: `session_key_buf` at messenger_v2.c:2363 is
+  `CEPH_KEY_LEN + 16 = 32` bytes, with usable session key portion being
+  only 16 bytes after `PTR_ALIGN`.
+- **Verified related commit**: `git show 818156caffbf5` confirmed it's
+  another auth bounds-check fix with explicit `Cc:
+  stable@vger.kernel.org` and review from the same maintainer (Ilya
+  Dryomov).
+- **Verified the process_one_ticket path**: auth_x.c:207 shows
+  `ceph_crypto_key_decode(&new_session_key, &dp, dend)` decoding the key
+  from encrypted ticket data received from the network.
+- **Verified the old check was insufficient**: The removed `if
+  (!key->len) return -EINVAL` in `set_secret()` only rejected zero-
+  length keys, not oversized ones.
+
+### Conclusion
+
+This is a clear security fix that prevents a remotely triggerable stack
+buffer overflow in the Ceph authentication path. The fix is minimal,
+obviously correct, and has no risk of regression. The Ceph subsystem
+maintainer authored it himself, and a closely related commit was
+explicitly marked for stable. This meets all stable kernel criteria.
+
+**YES**
+
+ net/ceph/crypto.c       | 8 +++++---
+ net/ceph/crypto.h       | 2 +-
+ net/ceph/messenger_v2.c | 2 +-
+ 3 files changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/net/ceph/crypto.c b/net/ceph/crypto.c
+index 01b2ce1e8fc06..5601732cf4faa 100644
+--- a/net/ceph/crypto.c
++++ b/net/ceph/crypto.c
+@@ -37,9 +37,6 @@ static int set_secret(struct ceph_crypto_key *key, void *buf)
+ 		return -ENOTSUPP;
+ 	}
  
- 	case READ_COMPLETED_WITH_ERROR:
--		drbd_set_out_of_sync(peer_device, req->i.sector, req->i.size);
-+		drbd_set_out_of_sync(first_peer_device(device),
-+				req->i.sector, req->i.size);
- 		drbd_report_io_error(device, req);
- 		__drbd_chk_io_error(device, DRBD_READ_ERROR);
- 		fallthrough;
-
-base-commit: 72f4d6fca699a1e35b39c5e5dacac2926d254135
+-	if (!key->len)
+-		return -EINVAL;
+-
+ 	key->key = kmemdup(buf, key->len, GFP_NOIO);
+ 	if (!key->key) {
+ 		ret = -ENOMEM;
+@@ -83,6 +80,11 @@ int ceph_crypto_key_decode(struct ceph_crypto_key *key, void **p, void *end)
+ 	ceph_decode_copy(p, &key->created, sizeof(key->created));
+ 	key->len = ceph_decode_16(p);
+ 	ceph_decode_need(p, end, key->len, bad);
++	if (key->len > CEPH_MAX_KEY_LEN) {
++		pr_err("secret too big %d\n", key->len);
++		return -EINVAL;
++	}
++
+ 	ret = set_secret(key, *p);
+ 	memzero_explicit(*p, key->len);
+ 	*p += key->len;
+diff --git a/net/ceph/crypto.h b/net/ceph/crypto.h
+index 23de29fc613cf..a20bad6d1e964 100644
+--- a/net/ceph/crypto.h
++++ b/net/ceph/crypto.h
+@@ -5,7 +5,7 @@
+ #include <linux/ceph/types.h>
+ #include <linux/ceph/buffer.h>
+ 
+-#define CEPH_KEY_LEN			16
++#define CEPH_MAX_KEY_LEN		16
+ #define CEPH_MAX_CON_SECRET_LEN		64
+ 
+ /*
+diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
+index c9d50c0dcd33a..31e042dc1b3f2 100644
+--- a/net/ceph/messenger_v2.c
++++ b/net/ceph/messenger_v2.c
+@@ -2360,7 +2360,7 @@ static int process_auth_reply_more(struct ceph_connection *con,
+  */
+ static int process_auth_done(struct ceph_connection *con, void *p, void *end)
+ {
+-	u8 session_key_buf[CEPH_KEY_LEN + 16];
++	u8 session_key_buf[CEPH_MAX_KEY_LEN + 16];
+ 	u8 con_secret_buf[CEPH_MAX_CON_SECRET_LEN + 16];
+ 	u8 *session_key = PTR_ALIGN(&session_key_buf[0], 16);
+ 	u8 *con_secret = PTR_ALIGN(&con_secret_buf[0], 16);
 -- 
-2.53.0
+2.51.0
 
 
