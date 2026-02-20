@@ -1,225 +1,173 @@
-Return-Path: <stable+bounces-217546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHLaEpIcmGnp/wIAu9opvQ
-	(envelope-from <stable+bounces-217546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 09:34:26 +0100
+	id wOwxIcsemGnhAgMAu9opvQ
+	(envelope-from <stable+bounces-217547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 09:43:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9966F165B29
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 09:34:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B31D165D76
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 09:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 512A9300DDCC
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 08:30:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A98153015713
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 08:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652D330E824;
-	Fri, 20 Feb 2026 08:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81083328ED;
+	Fri, 20 Feb 2026 08:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZbRXnIlf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GHSavYwB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81C624169D
-	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 08:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D79F2C1788
+	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 08:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771576231; cv=none; b=AJ5daUIjjLqFpmm+S9g+p/Twz3PhWSPY9UFfflEeAYHfAQQ0GYvZ3fqRpIm4KV4YQmNgZ1os0TEOBJYzk09cmcBTVucgm/I9u2MLeZ/H7IJBme8Q4EMf7oGzb62+MoIv0CtUQOsVOFr4Qdw0DFXqUqHjvV3OqBLmrL3tqCEkcqw=
+	t=1771577023; cv=none; b=JBx9QvMX/T84FXnIYQKUT3IemhIaTJGxDNROcle3zWJJwkzk290p6lzsYpLDIHtedZ0Vf2ZdsdLVYkjOm/HddFEG4XQhtlEVULUwDYJWaM2nC9GDT3sBsS5lKuxDsKe8xd3twHSFJ8GS7jsoii9nrLfB0lPp9l4qR8lQf2fh8CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771576231; c=relaxed/simple;
-	bh=+24v2V0R66T0uswD2ccmoBV/vUFaQyxXjZ7Xh38CFXg=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=q7yoo1Yc+DEro16JQcaNqBGdlWI0XdzTYKKDlqKeBAP0akeqXU4a6l1o/EhrjSxfKmlX7uyTZ96+kFcG2MK/3bAJ59wHGT/ih6U4YXRh2vwZNqcPQbQWX13cvClmRTeOp+isXza1kdG6MLyLBNyF7t8m2dhIkt5ZcfMjbwfYd7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZbRXnIlf; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43638a3330dso1499002f8f.0
-        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 00:30:29 -0800 (PST)
+	s=arc-20240116; t=1771577023; c=relaxed/simple;
+	bh=uibJCDU21LOfe74/m1+PQf1uDx4pPIW7eQn+SHK5qSg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=agw2qYLZ788x/eoB0j6psQP5o/D34h9cGzNMZpNCyqXpb9zUq1u+9sjO7uBk1ZZ1drmpSNWD35cbVexHB+uzepbjin+Lrsrdhm9ZqbnRVsV3Mwg8HKGcMWE5CikTgYLDA/CGpTmOX6gU7qwxMB+VdfYcs8e+PRelk+aWf6z8W90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GHSavYwB; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a871c8b171so11436785ad.3
+        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 00:43:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1771576228; x=1772181028; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0Qq3S+r4Rhk85CvydKyOggoRE+fgwt5wCw5yPrVvJwA=;
-        b=ZbRXnIlfQAHsA/P6Yy78tDAWv68BIu3YetmJ3mkhAO0zrYmBZK0sNg+DWipQVqsNOH
-         HisOm6zYIcS35V03fzzB6XRq957pPWkKp3KJ5isbRIoz4l2qWB+O9yQsfvGInsjNtQJI
-         l/W/N4Fu0MulvtNf6Fc7f+2JSPvCTpVYDovH/y5phqS3Vkk/Wa7EKYB+ZmXzJT+cLTJT
-         fzJRZ7UY6zS2iRWNiL8ieid31XiuHIppcMn+M5S+RW6PGAfrLgNQw8vNiipgjscuSEYQ
-         sNV2WTScCfOrqM44Er3Emuo9SSnoxqu6AqZYsRG028RjQi1mzD8NOhlxfkaHmzsgWEo9
-         YidA==
+        d=gmail.com; s=20230601; t=1771577021; x=1772181821; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qO2PxxzQfOEeSvBvTUAwrdOV1cPvLc1kKprU8EjanXk=;
+        b=GHSavYwBPgNIew7c0/qa1Dq6xd8SVLXGh6C20UQ5P8zwU7vg8FQdvr0LASVCx313k0
+         7W+KduWY7e8PSbFQ+uORfpcxFfLQCEoxDEzZRNH6EWnRBp3WrGx6h1IxT+kNEd4/K1Zy
+         cohqXs1FXGErQxwqU93auNUWhPmEdChRlW1EDHjALHiodWQh9eEL4FbiR/WXwQ7TG66/
+         bDQy9c6z42FAQ8p4YRVeCRKOpq4a8mL9hLes5BuARL+KLVI/d7nEaVJ07FdhgIAZA2Tr
+         9JZCRU603aJTs4pyYs4usvEb4wTipGuLjRTLEyCI1a8gTZ2zZ5jjnu0wSfFDRz7FEJqZ
+         akuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771576228; x=1772181028;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Qq3S+r4Rhk85CvydKyOggoRE+fgwt5wCw5yPrVvJwA=;
-        b=qauBC/n46rwOTt4bc7QchUVWDr37T/SN7av4zjK+IWklTiNKR3CfDhvd3+CqGDIViX
-         SQGli8knscJ+SRo6jP6hSdWgH8UXt+0JOxfwXcBM5DuB/GwWdGHWfNgz5GHnW0Qi+0k9
-         F+6JneO1b+RaLbVv26NY+BJFpA0FtURd7lOk1hdPF/r48gSa1jgxlH1C6kbgMizxWfB+
-         KsOZt79eZlOKva8iF6JPZTxgpvPkEEN6lHZEpJiKjU9ZRhiIcyezKu5QfjoWS3HAPsya
-         4Yrp8sf62jzrY59igDWnAoJ34W04BWlO1LxUregTiWstf2kYGx9oxh1nKaeIKq9mLY+q
-         2xyg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4OaRySxVFm5+FB5XnSvZPhM37cCxlVDtOWamznhjcD5fZZVeW/PL2RvNy7iwskWFyQp8tWOg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzxb/KdJeo5ujRTNbxYFDJaIw/Wbo97XgS4EyBJwW/Kmy7oKrvO
-	j7Y79sB/QAbJgHF3UihGFean+U+aqWmtm/ZVYxKgbnmZ0DlgMkOVcqepjaR1oTWWFMs=
-X-Gm-Gg: AZuq6aKE2UwcV0bRKfpn2Uj5lNbLGlVg/Fh9TDBN9zaRDdJ+p8rd6SVuGxV2U+HxxdO
-	fEGC8K56iL8SG/o8dvBLNlcF8xcVOZ1mKE5GFalR8yYVQkAwOeEvOwn/x7350HMpLvUTITlPC6U
-	bKo9ZSppX/xJZLWW2MFXbwT6LeW3TDsFsCcpaRXTz21MQwYUKMC325E5bKpA+FzF/TSr3iNVB7U
-	5JBhsuDX3h72jEUyb7/Xjw5oamlfoUBmBoag0m6gb295BqaUtOm+TWtlt6CyfBxwV2CIc9uo1DL
-	JQdhM3ksIEdpvgqceJCyDS2rAVXHK1klqO9uRxkZei67/rMJMo783fnu0VVBIG6wKHiQedQKnjb
-	lcuQRHCyGteYTEyhxSK58zv6QiMuOwD2XMWwUnRZHVwmyAknUwYrtfCnlMIYTqcwz0WxviOrJHk
-	eAqiblctY7NCMx6e5diY5DlvAFH0WT1N4Vvz0qNOBqiJ4lZ6AWNrvozv7C8rQ4z0QUVVgrFISyQ
-	kWQ7q/yJiGgRsqB
-X-Received: by 2002:a05:6000:22c9:b0:436:1989:a1ba with SMTP id ffacd0b85a97d-4379db31007mr40196308f8f.10.1771576227964;
-        Fri, 20 Feb 2026 00:30:27 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:106d:1080:5499:ba16:213c:9028? ([2a01:e0a:106d:1080:5499:ba16:213c:9028])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796abc85csm53586490f8f.22.2026.02.20.00.30.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Feb 2026 00:30:27 -0800 (PST)
-Message-ID: <c19858cb-9cbe-4ece-b8e5-93453a3ba932@linaro.org>
-Date: Fri, 20 Feb 2026 09:30:27 +0100
+        d=1e100.net; s=20230601; t=1771577021; x=1772181821;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qO2PxxzQfOEeSvBvTUAwrdOV1cPvLc1kKprU8EjanXk=;
+        b=FC1TZ/YlJ5LFpw6VojIQmSRzgrZfYwvUWpJn6dCbl3P/IoLeZ/SjGKriRPS+EdAdHQ
+         AwYTHFSOkBto4gAKBofQGFT7E/D+8Vb8nu0Xgx7/TRnl1MYM5mbROYDAOPR6C9QMtg7+
+         pSAh+FfNVSHD1vSrGrBvSd7Cu1NsaZGcPLvBwAKSWfaRYNMvf0xueDVJVta492APaqxg
+         NyILmFg31nFLH13JdXpLRKZ/mWTs6CDhxnxKRxOYnDPg/gJiCNDKbhTYUmemWyMvgY8E
+         Cx6JSCdEw/ibg/9/iKeHaJH3XgiaaKTmzsrZ4ErS0pguYBKQhT6+tXAspeNjGqsoIIfQ
+         hZ3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVCYCLg46UsQGAtDkD58iv9FBCi6smMFBPQaVj9eG7jBAJFN5GRhxia+rkw18IgwpoqhuYIbi0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeWx4uxMPOy0G9UuLtjZwZxPG7NLD5ButAMGEqCMGJ3flmGU4b
+	xFRGtXY9OenvCc6Vg64S48607NqgXuAUOduVVQdJWRZjYdGDgrNSLgsmdb7WEuSq
+X-Gm-Gg: AZuq6aIZd/g23UfejP8cCie06irvTfe8yoE0ycJ3WGyYcIBHjWW8h7mS6gHEK1l2SHJ
+	QyB05/BrbFoWob9Uc4BBGIvwdKQJ24HDBRRDffabT+Rj+M2u2TUhftgMZ6U3hCgma5X51hVfP4y
+	AY8Wo3PR7zL1kMOpfhKVpyW0g2XAi1vLuyPRE93JREbCY2mEk7VAVC+MvzNkDudV+xRAQ6Te7op
+	LSt3RSHrc7n8YxxUDbqMvRdvA8hIVawXGQq1A6xpZecvimBcWCn05NeInk8Z6D+jHNmGSHDjme5
+	iZOCPi99hp4tGy/STWyHsnFi87oSBbu/V6czutCw9c2KrEzNtqkYSXuZQ54dcXTZrqjqi/mVZZi
+	hmQqd1o/v2jI+rxH88aDz2A+39JVryXSWLOk3t/POL/0YECvdijZSrWXy4lXe5T4TxJGTuRsOqi
+	JQ4DBnuejY5tnm3HhFcns8z1NNAVe+sHAhy6UBdw==
+X-Received: by 2002:a17:902:f683:b0:2aa:ea3d:a37b with SMTP id d9443c01a7336-2ad50e763b1mr67775945ad.2.1771577020921;
+        Fri, 20 Feb 2026 00:43:40 -0800 (PST)
+Received: from localhost.localdomain ([119.204.109.83])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1a9d624esm185489455ad.49.2026.02.20.00.43.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Feb 2026 00:43:40 -0800 (PST)
+From: James Kim <james010kim@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: mporter@kernel.crashing.org,
+	alex.bou9@gmail.com,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	James Kim <james010kim@gmail.com>
+Subject: [PATCH] rapidio: mport_cdev: fix sequential UAF in dma_req_free()
+Date: Fri, 20 Feb 2026 17:36:22 +0900
+Message-Id: <20260220083621.3512086-1-james010kim@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH] phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4
-To: Abel Vesa <abel.vesa@oss.qualcomm.com>, Vinod Koul <vkoul@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-References: <20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-v1-1-f136505b57f6@oss.qualcomm.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-v1-1-f136505b57f6@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217546-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:mid,linaro.org:replyto,linaro.org:dkim,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.crashing.org,gmail.com,vger.kernel.org,linuxfoundation.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217547-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	HAS_REPLYTO(0.00)[neil.armstrong@linaro.org];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[neil.armstrong@linaro.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[james010kim@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	REPLYTO_EQ_FROM(0.00)[]
-X-Rspamd-Queue-Id: 9966F165B29
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1B31D165D76
 X-Rspamd-Action: no action
 
-On 2/19/26 12:11, Abel Vesa wrote:
-> According to internal documentation, on SM8650, when the PHY is configured
-> in Gear 4, the QPHY_V6_PCS_UFS_PLL_CNTL register needs to have the same
-> value as for Gear 5.
-> 
-> At the moment, there is no board that comes with a UFS 3.x device, so
-> this issue doesn't show up, but with the new Eliza SoC, which uses the
-> same init sequence as SM8650, on the MTP board, the link startup fails
-> with the current Gear 4 PCS table.
-> 
-> So fix that by moving the entry into the PCS generic table instead,
-> while keeping the value from Gear 5 configuration.
-> 
-> Cc: stable@vger.kernel.org # v6.10
-> Fixes: b9251e64a96f ("phy: qcom: qmp-ufs: update SM8650 tables for Gear 4 & 5")
-> Suggested-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-> Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-> ---
->   drivers/phy/qualcomm/phy-qcom-qmp-ufs.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-> index df138a5442eb..771bc7c2ab50 100644
-> --- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-> +++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-> @@ -990,6 +990,7 @@ static const struct qmp_phy_init_tbl sm8650_ufsphy_pcs[] = {
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PCS_CTRL1, 0xc1),
-> +	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_POST_EMP_LVL_S4, 0x0e),
-> @@ -999,13 +1000,11 @@ static const struct qmp_phy_init_tbl sm8650_ufsphy_pcs[] = {
->   };
->   
->   static const struct qmp_phy_init_tbl sm8650_ufsphy_g4_pcs[] = {
-> -	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x13),
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x04),
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x04),
->   };
->   
->   static const struct qmp_phy_init_tbl sm8650_ufsphy_g5_pcs[] = {
-> -	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_HSGEAR_CAPABILITY, 0x05),
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HSGEAR_CAPABILITY, 0x05),
->   	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_HS_G5_SYNC_LENGTH_CAPABILITY, 0x4d),
-> 
-> ---
-> base-commit: 50f68cc7be0a2cbf54d8f6aaf17df32fb01acc3f
-> change-id: 20260219-phy-qcom-qmp-ufs-fix-sm8650-pcs-g4-table-9d1adf1508fb
-> 
-> Best regards,
-> --
-> Abel Vesa <abel.vesa@oss.qualcomm.com>
-> 
+dma_req_free() drops the mapping reference under buf_mutex and then
+dereferences req->map again to unlock the mutex.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+If kref_put() drops the last reference, mport_release_mapping() frees
+the mapping, and the subsequent mutex_unlock() dereferences a freed
+object. This is a sequential (non-racy) use-after-free.
 
-Thanks,
-Neil
+Fix this by caching map and md before kref_put() and using the cached
+md for mutex unlocking.
+
+Fixes: 4b0986a36 ("rapidio: add mport character device support")
+Cc: stable@vger.kernel.org
+Signed-off-by: James Kim <james010kim@gmail.com>
+---
+ drivers/rapidio/devices/rio_mport_cdev.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+Resending to the proper list(s), no changes since the original submission.
+
+diff --git a/drivers/rapidio/devices/rio_mport_cdev.c b/drivers/rapidio/devices/rio_mport_cdev.c
+index 7df466e22282..5fb6ec439028 100644
+--- a/drivers/rapidio/devices/rio_mport_cdev.c
++++ b/drivers/rapidio/devices/rio_mport_cdev.c
+@@ -582,9 +582,14 @@ static void dma_req_free(struct kref *ref)
+ 	}
+ 
+ 	if (req->map) {
+-		mutex_lock(&req->map->md->buf_mutex);
+-		kref_put(&req->map->ref, mport_release_mapping);
+-		mutex_unlock(&req->map->md->buf_mutex);
++		struct rio_mport_mapping *map = req->map;
++		struct mport_dev *md = map->md;
++
++		mutex_lock(&md->buf_mutex);
++		kref_put(&map->ref, mport_release_mapping);
++		mutex_unlock(&md->buf_mutex);
++
++		req->map = NULL;
+ 	}
+ 
+ 	kref_put(&priv->dma_ref, mport_release_dma);
+-- 
+2.25.1
+
 
