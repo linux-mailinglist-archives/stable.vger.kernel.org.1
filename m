@@ -1,101 +1,95 @@
-Return-Path: <stable+bounces-217531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217532-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDaoM7DWl2k99QIAu9opvQ
-	(envelope-from <stable+bounces-217531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 04:36:16 +0100
+	id +Fn7AlDXl2k99QIAu9opvQ
+	(envelope-from <stable+bounces-217532-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 04:38:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05BDD164699
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 04:36:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4321646DC
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 04:38:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4538F300B8F6
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 03:36:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6199B302E93C
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 03:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FC52E0412;
-	Fri, 20 Feb 2026 03:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440232DECC2;
+	Fri, 20 Feb 2026 03:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kg0gSW/M"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2mzisgh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C07B2DECC2
-	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 03:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F572DC349
+	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 03:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771558563; cv=none; b=SWYrufcKQEmDq6daeNGsZdZOm/J14rGMpHQQ3t95iZklL0NAqKM4B9muqWTlR/x63uQoZ5ZbgUx/BkvMHNOcvhKLKAbKGxmz2KjQ0pKXTZ9VEiqjxIFK35eV98O2ifKTzyq+lIxmxZVj5xBgrDhKFc+99UWRjP3Xevi3ptIc6W4=
+	t=1771558728; cv=none; b=fwyx76miHkyv/xEpympzG4XvYNVDBzh223T9qnPF/O+3oRpmjjbWRGErTIQOQg7z1Gyv96WLXYOfszZ222mdTdzbmS4bFoDJfdMi/jIOpXTt42XtPCMe4EFh81EWBVdJ0P9XS0BBXoqeXdObwAI2/pEE78mnrsfq9jm01E6KcWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771558563; c=relaxed/simple;
-	bh=14tp/ZbiHhc9fo6I3d3q5B/zYDGp7+QSAvy5xrmzM58=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HMHEjC18z73Q7sG75Wmc/6xxjm8aRfin8P2fLTJA0Rn+3jQBSfQN0fIZ8LtHW0CThPdRJa1UWVA9mRxuaWbndA6EATtIWDy+Iy6lmgdO2E/F1BZfvyrHsr2yrpi1tMi8W1OvX78MrXeRVqxImyN9s8A4SPue7DWlJEBmaEMmDgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kg0gSW/M; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1771558728; c=relaxed/simple;
+	bh=ERiI0ik+7C8U2bOZoMUPA8NBk6mNeP8oUH1ilI5DrIk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hE7BjGrwreHBbqKn1wBS4sMyReXDnBGuQN+0XBW5xId7tBCEm9D+Tf+QDbpeZFM0pJxHD6pFik1hJOO1exHLzsdpx0Hkagp9keOhIurZgYTsxSX7fTgfcxc4qXovgx8a1XVyW+CWpZoqeilu734im3+C6fNk9aGw2L2MAGl7qks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2mzisgh; arc=none smtp.client-ip=74.125.224.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c61343f82d7so590274a12.1
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 19:36:02 -0800 (PST)
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-649278a69c5so2181383d50.3
+        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 19:38:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771558561; x=1772163361; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3SNYtFmJqSV95moRlaJ0QYmUhL+TICukmgmBhi3zA4c=;
-        b=kg0gSW/MXrjrrzq9iQGnNOuOjnn29PekJPPoWL1aoMTMyzkREyf8YthxbKs6phcxHx
-         DBNiXnmIaNuAhr1z+9Ui4sKwHQWeePTgPfU6RdEVp+nPL0K0AZ8+ll9lLOcjDDLFMGnf
-         n9dcA0XqdICkJ/gH0XVKE9G779SwyJBcai8UiWa51z041IfXKhlAgFvTtK5lG6Bzoq8L
-         y7lHU1kMWBg/joEkYn+vLOu8xPEyNvppe+p+WSDVvqmjkODxKTM69ybb8gO541vKYzqL
-         PgB2JrS+UnVFCzs8K3oMT0+IUbKsLECJIZVN9AA3+sZfSaBl+DEA5rONAX9FfbULqoU0
-         eg3Q==
+        d=gmail.com; s=20230601; t=1771558726; x=1772163526; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TYi5KdDTrgKmUbM9Hgtml02i+c073pK3aRdi4XL87EQ=;
+        b=I2mzisghLi54jACxIHeX8n3kJC+GUbKVsBaMTS0RIZ1mrQ7Uy+rXOU5GNEbSJJ5kVj
+         d96b8G2UbQKwo1R1/3iv5Xc4kb5Nnl7UqbnqWwJxsqmPkTFrgVT+bMl9Wcm5J1OooJQ6
+         TI+5UDTRMCa0r0UtTkS6m0d4vf/fG+QIZ28K71uLaxB7Gxmw6iPmi8vLveN7Sgsujf4a
+         h2ljmIBhLr8qR1pbzqgX6OM77tMCFM9QsL7WTwQMR4nTtjZfQHtdAvJi4dk6MFxKMU8K
+         oOKkszHSEZyPGz8xUpUW3rC7z0f7jfq65VQA/L5uuRhEdAJVYFPImPyfyGny9rGvH+Te
+         ozYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771558561; x=1772163361;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3SNYtFmJqSV95moRlaJ0QYmUhL+TICukmgmBhi3zA4c=;
-        b=POB/Gaf+osFgfHTF7thdk4SBinvg5Uc5Y1i+9iJqCv1RMJYo8KOIKUsHGcEP24Mybq
-         tV42L+hu5fnOppUuxDNG1yxrYFkVL6DTulrfXM8IKpRUZ33c39eYod5Sn2vvlAfbskqx
-         HNMyYVUoUuQKi+zn+vE9S6Nnt7tla190FRT43RN8ElkTBdf7HGti6miGucp+GUJG7g/6
-         /K6OqoyjmakN2satRvNsQZowoej5gq9Mi3AkFtSvqUVkUbcpUk0efERrgV5OpsgzxpYW
-         8cpobgI9SCsu7GsxrVJ9+C6DYvUjlpohD1FiZ/AsdcWl8FXGk16Jyi2y5TyAsi/U2Y65
-         vm8Q==
-X-Gm-Message-State: AOJu0YyIXEDsQcaX0fXLHk8O3K/DGaqqJRxYsuofVYScJu9X3mCmRmbr
-	VQBkHIrKvc5gJL+REXNdomTxJ0bez3vUMocADVJ9YOdke7P3zOV+8lxyDrFue3sx
-X-Gm-Gg: AZuq6aICojuetD1ms1qFxMVT4glb/AsQcfZwmZThTW4/FBqoO/s6dGBKRCZ+/zR3DZe
-	Al/Zx5CuLeZ4gZCEF7YMXWAn93yVGTV+CRMNfQjvjJ8PWJHbTwspyzaqO2mcPjRs0I6EE7hcuhI
-	yJ38VZerPNXN5Wyg1bOi3aMrdnxJt09r+IywwARYNB22R33k0+Wis/9L635gnSo+VltRO8xXREI
-	x7EqOUni+OaIpyvd0YTjdyEne8e9WcpGjiAko8yQQHAjmPrENvsRoXtREclKAH6pI5jLkaAIIVZ
-	nZhGpiE7NSufVuIM5xA15semksgDuaBzXs2k6GDI2LKLja5r7T7urb4Eku9WlJMr2ra3ykFdevc
-	pPZtTw4Wp7i00NtUbuBW7uEP+PL42Gd8jatqPewAXdPozawk3tzSAaMoR+yT2/8fUOKY8yIvZo2
-	bU6MemBtrdW+Wo9oCbp49dc0kBwmEVu2BDbF9q2ImwG2ULVeoq+P/L5ZPAvBdB
-X-Received: by 2002:a17:902:da8d:b0:2a7:80ac:85b0 with SMTP id d9443c01a7336-2ad17431c2bmr182977825ad.2.1771558561498;
-        Thu, 19 Feb 2026 19:36:01 -0800 (PST)
-Received: from name2965-Precision-7820-Tower.. ([121.185.236.165])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad1a9d5cf8sm177143675ad.52.2026.02.19.19.35.59
+        d=1e100.net; s=20230601; t=1771558726; x=1772163526;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TYi5KdDTrgKmUbM9Hgtml02i+c073pK3aRdi4XL87EQ=;
+        b=Gbhd0Mhdzx+l1ilksDG/8fMaCQZs8faJAfY9hTvxFWUKs3rGvMKCCLBZTu5SwXtxwu
+         NrfjDI+gYcCpFKBf0PmDpqVQI21EITXKevo32M2izSJPtNRZaTkrjs/iFLnGOA3Jxy84
+         kq+/khFydzfowjLk71sZUdr9OCbvUKI9v8ZhvCm7y2kl37l0dNlnsJ7UcQTMdvqqci6U
+         PVxfKjxp2dopUrFM9xxoI1IM44lRWc1RnYJxsJxlrDFzAJ+nIH6E3qmY9zRo1aiWdV4A
+         tj74Qxmq3v3pmHn5lMg7GSakf6+30m7iybApB8Gpo78gTZdJQ1d2rEaf1rcrG3QNH9Dj
+         dcHw==
+X-Forwarded-Encrypted: i=1; AJvYcCU7HqOuquYumDpq3MWUA2MJiMESAFw72CTJ+WycvtA7oj3sCYMAQod8V0AmSu/6j+Vj5o0wJso=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhhJ5w5+ByyAdlS9eL8h+VbyPN3wzmO31Prymd3s/5A+vYUeHU
+	6AWq3QvDJxNvcLevGmV0gkaBY4e2zIls3UDv85hDgORP/daJUNkftp2Z
+X-Gm-Gg: AZuq6aIbNaPjv9k2oCvBQTSJTsyWPigEJcISCarvZhQ+Hx8r5zlwBqOXrgFPiKgNCW1
+	agPztlbNNb31B3vKA9RIlj40oDdQ8CvsL6Upl7/LWhr3n07aDM9V4vaqlch56uP/PD/RUvQjnVO
+	D2QzzVIqtnWUCy7IGjcWJMZ6Mce/rg0mRur7kUQnn0TJv/5MIh9NuDEgZlp3AZnKJpIaIvFJC6z
+	FNFt35xtS5CQc6BWBFDCoc0fBYRp22ieHRSebbVs3ziqi+fbmDMh99vleAtmvavbCaPjAlxpGpf
+	kAemojVXnJiaS3mQuwhwBiU9/EwZ3XhsCFS3yxQWpfmuRUL16k9AtaT1uXkWr6idvtSSIMJsJXq
+	BIHli4EVvEiBaOQA975eZCMUVsYCvOhnkuIWKRZWLsURpiheU1+sw2l5gCRE+1Mp1b7sZ+w/z4m
+	RAOdb2tBDQLi10/aD4u5q/ysq+anBf9Y8Nh+NixfPdmafxiQQOkq/l3CHu7eVdKgB7h5YVTRoJH
+	3qeo1tHzDUL5NCX9KajB8uFvvt16l1uwEICpp0KyRU=
+X-Received: by 2002:a05:690e:408a:b0:646:b1f3:aeb2 with SMTP id 956f58d0204a3-64c70ba3c7dmr277466d50.3.1771558725713;
+        Thu, 19 Feb 2026 19:38:45 -0800 (PST)
+Received: from tux ([2601:7c0:c37c:4c00:e3a8:26f7:7e08:88e1])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64c22eb2059sm7927069d50.10.2026.02.19.19.38.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Feb 2026 19:36:01 -0800 (PST)
-From: Jeongjun Park <aha310510@gmail.com>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Inki Dae <inki.dae@samsung.com>,
-	Seung-Woo Kim <sw0312.kim@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
+        Thu, 19 Feb 2026 19:38:45 -0800 (PST)
+From: Ethan Tidmore <ethantidmore06@gmail.com>
+To: cem@kernel.org,
+	djwong@kernel.org
+Cc: brauner@kernel.org,
+	neil@brown.name,
+	jlayton@kernel.org,
+	amir73il@gmail.com,
+	linux-xfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.19.y 6.18.y 2/2] drm/exynos: vidi: fix to avoid directly dereferencing user pointer
-Date: Fri, 20 Feb 2026 12:35:50 +0900
-Message-Id: <20260220033550.124346-3-aha310510@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260220033550.124346-1-aha310510@gmail.com>
-References: <20260220033550.124346-1-aha310510@gmail.com>
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] xfs: Fix error pointer dereference
+Date: Thu, 19 Feb 2026 21:38:25 -0600
+Message-ID: <20260220033825.1153487-1-ethantidmore06@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,88 +99,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,samsung.com,gmail.com,ffwll.ch,kernel.org,lists.freedesktop.org,lists.infradead.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-217531-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,brown.name,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-217532-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ethantidmore06@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aha310510@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email]
-X-Rspamd-Queue-Id: 05BDD164699
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7B4321646DC
 X-Rspamd-Action: no action
 
-[ Upstream commit d4c98c077c7fb2dfdece7d605e694b5ea2665085 ]
+The function try_lookup_noperm() can return an error pointer and is not
+checked for one.
 
-In vidi_connection_ioctl(), vidi->edid(user pointer) is directly
-dereferenced in the kernel.
+Add checks for error pointer in xrep_adoption_check_dcache() and
+xrep_adoption_zap_dcache().
 
-This allows arbitrary kernel memory access from the user space, so instead
-of directly accessing the user pointer in the kernel, we should modify it
-to copy edid to kernel memory using copy_from_user() and use it.
+Detected by Smatch:
+fs/xfs/scrub/orphanage.c:449 xrep_adoption_check_dcache() error:
+'d_child' dereferencing possible ERR_PTR()
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+fs/xfs/scrub/orphanage.c:485 xrep_adoption_zap_dcache() error:
+'d_child' dereferencing possible ERR_PTR()
+
+Fixes: 73597e3e42b4 ("xfs: ensure dentry consistency when the orphanage adopts a file")
+Cc: <stable@vger.kernel.org> # v6.16
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+v4:
+- Add blank line after closing brace.
+v3:
+- Add dput(d_orphanage) before returning error code in 
+  xrep_adoption_check_dcache().
+- Revert xrep_adoption_zap_dcache() change back to v1 version.
+- Include function names where error pointer checks were added.
+v2:
+- Propagate the error back in xrep_adoption_check_dcache().
+- Add Cc to stable.
+- Add correct Fixes tag.
+ fs/xfs/scrub/orphanage.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index 1fe297d512e7..601406b640c7 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -251,13 +251,27 @@ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
+diff --git a/fs/xfs/scrub/orphanage.c b/fs/xfs/scrub/orphanage.c
+index 52a108f6d5f4..33c6db6b4498 100644
+--- a/fs/xfs/scrub/orphanage.c
++++ b/fs/xfs/scrub/orphanage.c
+@@ -442,6 +442,11 @@ xrep_adoption_check_dcache(
+ 		return 0;
  
- 	if (vidi->connection) {
- 		const struct drm_edid *drm_edid;
--		const struct edid *raw_edid;
-+		const void __user *edid_userptr = u64_to_user_ptr(vidi->edid);
-+		void *edid_buf;
-+		struct edid hdr;
- 		size_t size;
- 
--		raw_edid = (const struct edid *)(unsigned long)vidi->edid;
--		size = (raw_edid->extensions + 1) * EDID_LENGTH;
-+		if (copy_from_user(&hdr, edid_userptr, sizeof(hdr)))
-+			return -EFAULT;
- 
--		drm_edid = drm_edid_alloc(raw_edid, size);
-+		size = (hdr.extensions + 1) * EDID_LENGTH;
+ 	d_child = try_lookup_noperm(&qname, d_orphanage);
++	if (IS_ERR(d_child)) {
++		dput(d_orphanage);
++		return PTR_ERR(d_child);
++	}
 +
-+		edid_buf = kmalloc(size, GFP_KERNEL);
-+		if (!edid_buf)
-+			return -ENOMEM;
-+
-+		if (copy_from_user(edid_buf, edid_userptr, size)) {
-+			kfree(edid_buf);
-+			return -EFAULT;
-+		}
-+
-+		drm_edid = drm_edid_alloc(edid_buf, size);
-+		kfree(edid_buf);
- 		if (!drm_edid)
- 			return -ENOMEM;
+ 	if (d_child) {
+ 		trace_xrep_adoption_check_child(sc->mp, d_child);
  
---
+@@ -479,7 +484,7 @@ xrep_adoption_zap_dcache(
+ 		return;
+ 
+ 	d_child = try_lookup_noperm(&qname, d_orphanage);
+-	while (d_child != NULL) {
++	while (!IS_ERR_OR_NULL(d_child)) {
+ 		trace_xrep_adoption_invalidate_child(sc->mp, d_child);
+ 
+ 		ASSERT(d_is_negative(d_child));
+-- 
+2.53.0
+
 
