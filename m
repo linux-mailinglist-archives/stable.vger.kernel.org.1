@@ -1,178 +1,167 @@
-Return-Path: <stable+bounces-217527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDh/MTjHl2ma8QIAu9opvQ
-	(envelope-from <stable+bounces-217527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 03:30:16 +0100
+	id 8E92K1HMl2mh8gIAu9opvQ
+	(envelope-from <stable+bounces-217528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 03:52:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D7116443B
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 03:30:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 167E21644DE
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 03:52:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D5173014437
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 02:30:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 311CB301DB8F
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 02:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BE427E1C5;
-	Fri, 20 Feb 2026 02:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE3B2BD59C;
+	Fri, 20 Feb 2026 02:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="oqzqecZi"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="k4qn2h1F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8622BE033
-	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 02:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048932BAF8;
+	Fri, 20 Feb 2026 02:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771554612; cv=none; b=qmfhFm7/hBIQYDHPNNlvQjWBf3EdK2fO34mmx3Hqi2nESQLH25jpoDfW4+A3ENDPWNvlzeB1t2pMQKVEv9qr85oH/EqlO4bYhhUWcYrbo+3/EUVqKLWj1/SXfXARlbOTrylQJPF3tPXf3QzSVHCxO/jujT8VMwbKnEMNxrS+aOA=
+	t=1771555917; cv=none; b=MpbcR//OnYlaBeqtxS9uZpW62c/3DV2Y+Ys5hRpFUgUAG+VpxXG2DHZ9NyQjLCoCYQnuVtrsEakzx6yxVKjI0zxMMtxAC8nqDBtkbLU3si/+o/Q/Vfqj7lwihOQOm9p0zmip5xpTHD8j7vBNryQWmiw7u0wDYFQ5n1f8+D5RGBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771554612; c=relaxed/simple;
-	bh=0ucVc449LZJSow5SrJr/ZYjYyanHcO8JkOb/ytogvgY=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=i3LnQdh6KI0S4t39W+sR83yLUojEhundJDzMzlH0X2DI99kxKcv4cBAEsjjanUXoNuaSF9kAaGzyNOTNwhwA0lboxt5HPMUS592kMStXxg8oubUd9ncaAC1q+ECW6VZTGHLNNvjIF/6ezmd9Pjd+M2k9BsGlN28Ps4w/rjHqTro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=oqzqecZi; arc=none smtp.client-ip=74.125.82.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-126ea4b77adso2086675c88.1
-        for <stable@vger.kernel.org>; Thu, 19 Feb 2026 18:30:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1771554610; x=1772159410; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=09zGI27jvz0mP5k5CE7n3fPf3I1giaidh1eTQLIOL1E=;
-        b=oqzqecZivSsA03DL/cD8Ml3v3wIuE9KKnwrCiuiT9Tb29YbEXXMw/yUVij0kVvWOl2
-         VI6nVlg0f834Km7TI7GQrwSSp5Ppg7zW2OE40egzbmJ2yUniazreYAOP0tP7SbyWeSDH
-         02tjD5BwfObcafd2np+/vdTl/KNOcsAL0FwZkGjqPKlNypGBJ5wPp4Sp5NPcMVgeqpU3
-         FDLqRkGy3wnEamOQ01m4l7fw10uiXLUnXaUmtaO6WG2wAY/0xBnjTAmy/mHTAbR77lAu
-         +DwRbJCUFzqluhoNZHsPdzYLouLOl9pWLRrV7ynzxaApoaUXj+ogbhWhHFiDLOrY9VLj
-         63pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771554610; x=1772159410;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=09zGI27jvz0mP5k5CE7n3fPf3I1giaidh1eTQLIOL1E=;
-        b=d4Ks8GpyoguIpW/nUYu9wdWPpFZG4j52qRRG06jdpw2l/vl7Hb2tmrzKXyWpzYSyJ6
-         XSIoIspo9nozoO60Mq13wT63y8b26D88RvDhe78wk2nZ0PmJY5LYyFGcTnqrcenbalcl
-         RN381KonGjiMnF6nSINPSzU1IlhYKyy/2rxWuQIoS9B+L/4q/keuThy9pOybdgvnOdFy
-         EE1I4Cw6FnQLSE/tEnpXaK3cKoTBpMiREl1qk6ykWzuqD4eLQN7vdlSoP5JDvlUEksnW
-         /c3nEp8kY2xf/WyozQjHn5ApYeKsfrLr6ee3zzB40Wf5P5zgBJrNXTZVrUbazDUpgPKP
-         G+TA==
-X-Gm-Message-State: AOJu0YzgZKYljKeMqF5uoJzti29yzB7iVf1AS46mVhYTbt/MOOHz64Jm
-	JBBgBIHP/3SfpkljkZcc9cnEk5LhJcEesaMplHJfQlnaX7AS4TsTjN4JaC7/3QutGlo9QtGNmM8
-	wQ2XWq0U=
-X-Gm-Gg: AZuq6aLpqrzrT0A/QFwWJ30Z6TtsrLzuveMqNrZAVQ5Qdu3UAcIkMGEBEh2IgkVOXJQ
-	D726RTOZsIW0vIhD0FTe+c6sPEbX2Bep4RWnHJw6Kaa4MMsOvFpQy95pG3M6aozcJDTvSgcfRIf
-	iuliyuXYf4738Fcc6M/iBjLVyF3DtiWsbHUzl9yCjr9EUF/cqJ/c7AZJdQiaHEqBR0uT4fbKh+i
-	JnSRRy4pjH2VyBTgmFzillyIw1jmOPDK2Vz+XenY8+yOa0Zc3oVXKXsMgOsIaZYUJvO2tE1SMTq
-	EuXY9JVT6DsjGK0dF6U3EbAL4Paj7T+iS4b/4ziM22MU93aZz2xsheg+VJ0D4zEv9gpYzEG6p11
-	pcM0qMf67G0RHMjMigSbUm8slAQKeHQFkHSOlOCyPMkEJB/l3p/JuXLNs9zrZOSp1pWmhFow89+
-	vcI2rbe8UAGyT4U2Ea
-X-Received: by 2002:a05:7022:2509:b0:124:9acd:3bd0 with SMTP id a92af1059eb24-12766026a49mr66248c88.5.1771554610304;
-        Thu, 19 Feb 2026 18:30:10 -0800 (PST)
-Received: from d14e337afe00 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742cada1csm22434267c88.9.2026.02.19.18.30.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Feb 2026 18:30:09 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1771555917; c=relaxed/simple;
+	bh=AHELUwQPBzjKmeCEx6oeCsjua/bek7ErvL8tiwh9U/U=;
+	h=Date:To:From:Subject:Message-Id; b=s0DYhA5slNog75oY0tfLtv1NYzsRrmLXqlcfUklO919aL0W1e9muNsQuXdlwvxgZzDoRmOj6LzBtWemfb+qcphxK/mhl9rnoHuc+an397q5C93MbYoK7iHjHYqmYiItwC6FXfj9sGPTom9TUAEMFShngl0bvnhXesBHDOLDXbto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=k4qn2h1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F61C4CEF7;
+	Fri, 20 Feb 2026 02:51:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1771555916;
+	bh=AHELUwQPBzjKmeCEx6oeCsjua/bek7ErvL8tiwh9U/U=;
+	h=Date:To:From:Subject:From;
+	b=k4qn2h1FjV+tDzeCy5RlUm/Rgcn4vhGXkA/tQvWv1DrS4LkO+drzoJRQUKxd0I41A
+	 d6AK/8l6SewCrXORqvNZlbYB3794b3GvWegK1Zs+j4n2vax/uE3Im0yWNLkcSDRph2
+	 6hewHgKqG7gkn0U5Xanp2VgdX9yve8IL1wKSmppA=
+Date: Thu, 19 Feb 2026 18:51:55 -0800
+To: mm-commits@vger.kernel.org,yanquanmin1@huawei.com,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-core-disallow-non-power-of-two-min_region_sz.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260220025156.82F61C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [STATUS] stable/linux-5.10.y -
- 3e2558088a1a3dc941eec8edafd002758ae97d77
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Fri, 20 Feb 2026 02:30:09 -0000
-Message-ID: <177155460925.304.9760428761200974217@d14e337afe00>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217527-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217528-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernelci.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernelci-org.20230601.gappssmtp.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernelci.org:url,linux.dev:email]
-X-Rspamd-Queue-Id: 30D7116443B
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid,linux-foundation.org:email,linux-foundation.org:dkim]
+X-Rspamd-Queue-Id: 167E21644DE
 X-Rspamd-Action: no action
 
 
+The patch titled
+     Subject: mm/damon/core: disallow non-power of two min_region_sz
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-core-disallow-non-power-of-two-min_region_sz.patch
 
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-disallow-non-power-of-two-min_region_sz.patch
 
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Hello,
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Status summary for stable/linux-5.10.y
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Dashboard:
-https://d.kernelci.org/c/stable/linux-5.10.y/3e2558088a1a3dc941eec8edafd002758ae97d77/
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-branch: linux-5.10.y
-commit hash: 3e2558088a1a3dc941eec8edafd002758ae97d77
-origin: maestro
-test start time: 2026-02-19 15:26:20.928000+00:00
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/core: disallow non-power of two min_region_sz
+Date: Sat, 14 Feb 2026 13:41:21 -0800
 
-Builds:	   45 ✅    0 ❌    0 ⚠️
-Boots: 	   55 ✅    0 ❌    0 ⚠️
-Tests: 	  870 ✅  300 ❌  435 ⚠️
+DAMON core uses min_region_sz parameter value as the DAMON region
+alignment.  The alignment is made using ALIGN() and ALIGN_DOWN(), which
+support only the power of two alignments.  But DAMON core API callers can
+set min_region_sz to an arbitrary number.  Users can also set it
+indirectly, using addr_unit.
 
-### POSSIBLE REGRESSIONS
+When the alignment is not properly set, DAMON behavior becomes difficult
+to expect and understand, makes it effectively broken.  It doesn't cause a
+kernel crash-like significant issue, though.
 
-  No possible regressions observed.
+Fix the issue by disallowing min_region_sz input that is not a power of
+two.  Add the check to damon_commit_ctx(), as all DAMON API callers who
+set min_region_sz uses the function.
 
+This can be a sort of behavioral change, but it does not break users, for
+the following reasons.  As the symptom is making DAMON effectively broken,
+it is not reasonable to believe there are real use cases of non-power of
+two min_region_sz.  There is no known use case or issue reports from the
+setup, either.
 
-### FIXED REGRESSIONS
+In future, if we find real use cases of non-power of two alignments and we
+can support it with low enough overhead, we can consider moving the
+restriction.  But, for now, simply disallowing the corner case should be
+good enough as a hot fix.
 
-  No fixed regressions observed.
+Link: https://lkml.kernel.org/r/20260214214124.87689-1-sj@kernel.org
+Fixes: d8f867fa0825 ("mm/damon: add damon_ctx->min_sz_region")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.18+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
+ mm/damon/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-### UNSTABLE TESTS
-    
-Hardware: beaglebone-black
-  > Config: multi_v7_defconfig
-    - Architecture/compiler: arm/gcc-14
-      - ltp
-      last run: https://d.kernelci.org/test/maestro:69974ed47b34c3305539d46f
-      history:  > ❌  > ✅  > ✅  > ❌  > ✅  
-            
+--- a/mm/damon/core.c~mm-damon-core-disallow-non-power-of-two-min_region_sz
++++ a/mm/damon/core.c
+@@ -1252,6 +1252,9 @@ int damon_commit_ctx(struct damon_ctx *d
+ {
+ 	int err;
+ 
++	if (!is_power_of_2(src->min_region_sz))
++		return -EINVAL;
++
+ 	err = damon_commit_schemes(dst, src);
+ 	if (err)
+ 		return err;
+_
 
+Patches currently in -mm which might be from sj@kernel.org are
 
-Sent every day if there were changes in the past 24 hours.
-Legend: ✅ PASS   ❌ FAIL  ⚠️ INCONCLUSIVE
+mm-damon-core-disallow-non-power-of-two-min_region_sz.patch
 
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
