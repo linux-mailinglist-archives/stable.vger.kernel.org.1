@@ -1,94 +1,96 @@
-Return-Path: <stable+bounces-217554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOsNKToxmGkzCQMAu9opvQ
-	(envelope-from <stable+bounces-217554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 11:02:34 +0100
+	id 6H7hIHUzmGleCgMAu9opvQ
+	(envelope-from <stable+bounces-217555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 11:12:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450E916699D
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 11:02:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D591F166B59
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 11:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A8B1530090AF
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 10:02:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A2C330031E4
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 10:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CB73164D4;
-	Fri, 20 Feb 2026 10:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBF8323411;
+	Fri, 20 Feb 2026 10:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jrG/VvCO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CSIGQVuM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3093115A2
-	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 10:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B449C2BCF4C
+	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 10:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771581751; cv=none; b=ZcMhYG0ubER92nxMaa/pXjnT4y9N1N2snwIAhlJoYRLa/GwFIqhCHUsuszfhUFo3DlIhZAyn72bYKR2JGcA96Hqc081lJzRlECOErhZVpAg6CujLRS6aRYI5r7UuLZgvExZvV23SCQ8PlSelNel7Byn6cH+wVtsTMwGMdD42YHk=
+	t=1771582320; cv=none; b=CDbHkofX4pb2rn4trqo74OB85xhHyeQd2px6s/8Kzhc3MrZVnEq65g9zG2CwkWG6H6w+vhO5R3f5H9+MPrH/QWMb2dPv4KY/6oPzcvSXYGrR3tYUju1nxeIE69zyMas1HZGdZMOkJdo9RwSyuKqWe6mE8C7nVK5Imn3S7kDy9LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771581751; c=relaxed/simple;
+	s=arc-20240116; t=1771582320; c=relaxed/simple;
 	bh=6eGWr3H780PQ4tTMZavzMacgOr0bw9BFvOMyrG343WM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bskq1z5p1TtCNDEG/U4MLUp1nWRKwbdqAzLShutkX3vmgRxaZpXbkDAAqIMDbsrQIiaRblLiBwVB8XQf4m04pFIpymQL582C5LHOlNT+eb9yUkj5T630lYcTAsD4GslTIk/q7ComSy/x09Y4iwsB32k9lnRo4KcD4As+l63YTh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jrG/VvCO; arc=none smtp.client-ip=209.85.222.41
+	 MIME-Version; b=eKkzKpiriXYQJwPPiI04POzW1zzD4wwzuSftfBRV3BkrGWa/Y6L4s29CN+ghMD2cBLl+pRwUnFR1ZOow4SuJYbLaOXzojA+itVaF+hS+RRFOuhnxyTqA3hUtlYmQwUcCauawsFURUKuHsHVGs6g6krZZbvtr1wBYhR2YKZy4/Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CSIGQVuM; arc=none smtp.client-ip=209.85.221.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-94a231b285dso985596241.1
-        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 02:02:30 -0800 (PST)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5662c2937fdso1803231e0c.0
+        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 02:11:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771581749; x=1772186549; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771582318; x=1772187118; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
         bh=zuB9Y2YaYrSJOMH0MnZVGF4L2Pbe5s6knowQ2Ay53LQ=;
-        b=jrG/VvCOig0cprj4431o0rqbmLXZ1kJ4H80q39OjdLT0NPsfo53AEDzybXr8Y/aSE4
-         B0WqkhGdfZO2v7WV4m9HpAvX847XYxaB9oB98Ce2ti/TA2C4GhZ98X8qj6FhbUjl8UZT
-         MSFyk3g3WXrV2sv9zPFxkLjFk8VK3FRhMrShzbTkn4K7cGV7zBirUl74lbIJvCIsFEdL
-         DkzdpMFcoSGzjxSG6MELv7wAzdPVaQOLhkEt7ew4+wSJL7rVzODghkg63FXuqRvWXFwS
-         Dvj9r8PLV1WZrfh9kCzE5GGWJgNdwBVH7GgDEQqoGcoR2Hb4LxA8aFHsAUGeO9OxUIiO
-         czsw==
+        b=CSIGQVuMODWwDg+q7zbPcX9H0WD7vb4goSdU7BChwRRNZM7TFVgqtSe36YuR+5w3U8
+         G4bQVHWZDIkgTAU95MkcVizM8TQLSIAYETwD2szHEV4yTymDOF+G3yifQOpl02dwRrzb
+         iZgQz6Tyt46Gg5IXrWkiG6ka3j7rR0CWH56/56OgrfoRSiuii3oe6WYkZ9t6/bFxBNCr
+         rUC4TyVWbv12AcHKZbGfn9aZnK5MTaRBAXmFBYpXZKiuyYi0zKT2MeBj7a+WDH5N++TI
+         zL7lLto/NnC18ee2C2xmO7UdDxgabaNdH6FBhWvtSG6hQiAx4LXO0MrRTkO3oM2juHU5
+         DWdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771581749; x=1772186549;
+        d=1e100.net; s=20230601; t=1771582318; x=1772187118;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
         bh=zuB9Y2YaYrSJOMH0MnZVGF4L2Pbe5s6knowQ2Ay53LQ=;
-        b=GTnBW1Klhf0bTJG0RXQxkl1ri3NTWowpX0od9NxQNpqM4x6pJhDyxdO3Juz+jvyVkC
-         MO1AJj0YrtoyUuhRb/Q1LS9/QgLc3vi81WFSWlJcLbar0EFFX+OYvNMbSN6ARHrryr0x
-         LlXoWR3YfyGqB7LTIyeOpR0M13FjNF9q/Sni4d6conU3ofIfUspuy2N1y3c5pj48LaE9
-         B/MxbGfkqDZvlePFcC8AgOdQAS+ItoxwfdHvwYO1M6ykn9cihgPKofRPVBF5u7uyOXzu
-         nALdjUZPbTVMo5XksKwXshUI1l0Qbm/9ZRtMy8W6WFLkmOg3puN6RBTGHO1M30IVJh5b
-         pG7g==
-X-Forwarded-Encrypted: i=1; AJvYcCWA3+Byc+dbREA16Zxrj5pzYer/GcBlo8d5YT6+cw1P54amdFK0RK0fWxXrSz1hM+AUhIMIy9Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAk54rr0rjiln7Ikzii0lBk9JF7ZpPzkCx6bWCdcbF70GTzDpU
-	uDl+ycNUgH/Cwctu9zJyTyxybHfMm19Q+nxMo3QlMKh6Et5H4Pni064o
-X-Gm-Gg: AZuq6aLIF+V0zU57oYfsHPP7xDaV8LTNkHzzp6osfgje9oRH0eZ7SLJ3ur2Ue08KsQ8
-	yNDmlz1QL3zlnRuO7Su6oRr/rL0K6DtcLS0cnYYk2Bzqb0eHq+3zQneM948Im0C2HYS/TYjLU8J
-	3BDYRL95+h+u2Swc3dfbwRPDbs7lRE/J54p7waykczTyHSh7toARIgLXiCL+MWUdHFnaNQMTaJH
-	b0w8eeGhEYbbFXokPcoU9kIn2QcC62H4qr9dw/pI2p+Kp+NbEWqDJFnT0vMySGqkwwr8vkHHyj7
-	PzdCeUTvuTRIfLVjV1lwxPuH0+NT2O3RRndb9IdygGipR0WJV8YW2KTo21Q/SBd1jjSakJ1o1eU
-	NjX3HAWLh4ss3gk8hnsAhhZd7v6LRrC1K4g8Se1S6l3+4rWhrDCOkNiDmKte2DFCwyEPJmz3a7f
-	BGBTYyFS02FVB/DLtmWbz8/LIuCXxRnFpSsfZHXRwgQnt7yz2dLO9qm7mvM2ZGoh1ONo82qJ+DQ
-	5W3eOKTvRw=
-X-Received: by 2002:a05:6102:1627:b0:5f8:e4c1:7bd2 with SMTP id ada2fe7eead31-5fe7fc59367mr4742996137.16.1771581749104;
-        Fri, 20 Feb 2026 02:02:29 -0800 (PST)
+        b=k/sOUhKAOryhtvA+MoEavhNSGR24TSc6xwZ/g5ofOqAUUPpTn9QMRwPdveS257/Wt1
+         kAk76Uc2lZ8DfJOiF1DhHRF5numbbpjcSPDCG7DxkVE/MUWXU/t0Qqz/3CGWo5JjIzzH
+         GLjYXGjFZSkBfX6Cxrv5Olb20xmjtlCGt8P39+1h4jpqTPzjiWolH7zXBMN5wFyBFzEO
+         xx8yGLhFSBxNf4JZhC36gkmDnjtuJtynYV4zEZbLeD3hYKlUm0+xGNK8cwxFZL162ZfX
+         TzQRmEnA6Hgb8iAdUkxsaA/h4hhJdakqhwvvxT+ogtsOvyvB6VNazK73/bPfnECwCugH
+         35ew==
+X-Forwarded-Encrypted: i=1; AJvYcCWMI4nMXatvthGjgdpHEkPc6+vtC5M/FCi3pk7zOqCp9Jlg3pQtTL3xcMDzNwPLb5If9/WYV6U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbaIS6+wer9Ha8Mmn92PsgR2LtCsQm/fG8iRrshbNMh5PATqO3
+	swk70nhjHrIll70urK4bGYgxoOtNtcndx8wdFei4E0cqxEB00iV1evEZ
+X-Gm-Gg: AZuq6aICrfnrWZMVyQFaPSNh0mHgQMYf/EANNbxwvdvOQxIZHqC29gzQRsCiivOvc5R
+	Tz0QdSwQS8z4m/vWOBLfgBauqGJlejin/rSLiBCfooKLxPTuR3z0SCXKF//4q6fcC30Xy0Y9+iv
+	jfio3kEWo2XtApnyJ89GxoKlrC6TgfhHIwj4JW6XMSxs1vOWA+Deh0WwqWxzqm3F78455BXKV0C
+	qnMH+7Gh5B2K5MmYG+tp4ur4cRm0pz9WVO5iqAhPr797vMbQuxq4LVv4PuAQOBgPXG51wJKJ4pp
+	FaCqpCqBX8y0lV71mRP6h8sT5own+pRWUnUqvBPpTYccoWdkv6nw2mPaMdAtcMBY+KhuXvRwwWd
+	uY9MHs3GTf6VcUq40DwTRUcayLBagDKPzf7n755YoIHt1QWVh6utHD6RC6Ge/Lz+iyvCQltKm16
+	F7WUB6BfnRq8nsaMpfu1RngZ5maYu9GD3x+aHelkLDtfw2hHEYTs145954EzPrTh6jQ/IOojvCc
+	BU4QE/lask=
+X-Received: by 2002:a05:6122:1dac:b0:567:fb8:c7ea with SMTP id 71dfb90a1353d-568cdcff321mr2699908e0c.8.1771582318351;
+        Fri, 20 Feb 2026 02:11:58 -0800 (PST)
 Received: from vm-ubuntu-ariels.. (250.54.231.35.bc.googleusercontent.com. [35.231.54.250])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5fde87fc73esm15826809137.1.2026.02.20.02.02.27
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5674c20b0e5sm16892349e0c.12.2026.02.20.02.11.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Feb 2026 02:02:28 -0800 (PST)
+        Fri, 20 Feb 2026 02:11:56 -0800 (PST)
 From: cr-ArielSilver <arielsilver77@gmail.com>
 X-Google-Original-From: cr-ArielSilver <Ariel.Silver@cybereason.com>
-To: arielsilver88@gmail.com
-Cc: monte.silver@gmail.com,
+To: johannes@sipsolutions.net
+Cc: torvalds@linuxfoundation.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	Ariel Silver <arielsilver77@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] wifi: mac80211: bounds-check link_id in ieee80211_ml_reconfiguration
-Date: Fri, 20 Feb 2026 10:02:21 +0000
-Message-ID: <20260220100221.1200241-1-Ariel.Silver@cybereason.com>
+Subject: [PATCH v2] wifi: mac80211: bounds-check link_id in ieee80211_ml_reconfiguration
+Date: Fri, 20 Feb 2026 10:11:29 +0000
+Message-ID: <20260220101129.1202657-1-Ariel.Silver@cybereason.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CABTQugqJwFHMY0QjvQsvugc=J292M3MB29VMZ7iv12dSchp1ew@mail.gmail.com>
-References: <CABTQugqJwFHMY0QjvQsvugc=J292M3MB29VMZ7iv12dSchp1ew@mail.gmail.com>
+In-Reply-To: <0fdab034a93626704d84eefbda652f5bfcbeac7e.camel@sipsolutions.net>
+References: <0fdab034a93626704d84eefbda652f5bfcbeac7e.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,37 +99,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217554-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-217555-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,redhat.com,gmail.com,vger.kernel.org];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[arielsilver77@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 450E916699D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D591F166B59
 X-Rspamd-Action: no action
 
 From: Ariel Silver <arielsilver77@gmail.com>
