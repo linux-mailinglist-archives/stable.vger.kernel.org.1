@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-217607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217608-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +C2QHFf0mGkaOgMAu9opvQ
-	(envelope-from <stable+bounces-217607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 00:55:03 +0100
+	id KIdyBl30mGkaOgMAu9opvQ
+	(envelope-from <stable+bounces-217608-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 00:55:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CF416B72C
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 00:55:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD8016B734
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 00:55:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65F49304C4BB
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 23:54:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0ABBB3006B13
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 23:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1150B2DB79F;
-	Fri, 20 Feb 2026 23:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA867318BB7;
+	Fri, 20 Feb 2026 23:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zCf0RJby"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qoE+6pNO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DB6311C3D
-	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 23:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47966316917
+	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 23:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771631685; cv=none; b=JFOQW7T8UrJzG2UxvFZWX2NZr4oNTyuR60nbZJOYSIfGql51/0fc9gMjtLllOUFT8TKUz60s40frjuAgoDDw21WZaF8v2qm1E8dI9dapbtdoeJCPuzUTljFKP3sCH3dOfT9Bbdv929JBDQocCoqctgtt6sKdleLM2yKxBoaJ7bU=
+	t=1771631687; cv=none; b=fHB2rPMRtRL7LI70vyJbGJreEa0LDU5Wg8bspGwMZBkI+qO3niZH9omqPSV9ABE3/jT28mjFkFckGQr3/kb4H97R9XwDj+hrGWXvklWu3ocxN5QDoPrIeKeUk9EPkSjQQd5iU0LC1gcf6hivc7tMNa9p0MqHXrjArYi6zwVTFhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771631685; c=relaxed/simple;
-	bh=S95391Nv2N1C7cuTrHJL9ItK4+s15TFj+YAB1tlQ2Dk=;
+	s=arc-20240116; t=1771631687; c=relaxed/simple;
+	bh=xQmQKRSPkBcxt00vHcqWtQXUDsYhNrAym2RYyWUg24I=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=u7NDJZlsooc3gIM/QG9Oxr36P/GcYxVFo5z25OSNefZiknGNtHNqZwno0VKgNE7dWd4c9u2Hp5LwxmKMtdGCCGgAYxOBUrPC3IxGz2yDDLwUVymgmaFDeH4Ol0D83+Di1gzLPCcfz6wtYRuRd9R2KXf3Q3+Uksa7WpEWZNUkFS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zCf0RJby; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=WHxjofAraaLBJtoNqvMvyDT3hEcRCrdifBuc5irTdnf/59sbTYLQAXMbm9v4kkElBeyBN1IVW+/NJMYfIYqgmGvNrgjLRjawsZTp4qReMlsNG0kEgnHlrdn6zJMQUmO04AaGJWRLaoJaxKubZWko6US4kIkEhAqJf8bEmtl8C7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qoE+6pNO; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c709551ec08so13784214a12.3
-        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 15:54:44 -0800 (PST)
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8249a739d4eso8852971b3a.3
+        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 15:54:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771631684; x=1772236484; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1771631686; x=1772236486; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AsOcE+q9g9Rn3X6/odlnCkM6qqA9vgkvaxtReZc0KH0=;
-        b=zCf0RJbyXzylbldGAO0LmvXUtgPFL4d6fd/3JGV+0DmqG4usNruldJzFrkMJPhszav
-         qf8Mj5MVln1zlnCQitnMEg+WnMpoV5XlIWPFjYhqqJe9ctJMymAyjpPMiy+gptOn/L/m
-         EEqzJnqAgpNl9VMH7d4n+ZYJ0TcI2XUP8rPdz3L3cihCZk6gyQ1CYsm77qQgUpfjtffa
-         x0hmFQw1eriFwK7rBe0no6zqlw5lxKCXjPqy8XKsk/DvRJccd61E/5qoD2hrvVLGRtV8
-         JkuuAC35jBGKdBdRLbAAYEXg/R5Rt5qRcorpkjm0hRW0zSyCKM7VMWzleoLT7Qpu4j+R
-         LHWQ==
+        bh=E9n+rIu6TMqcCjcRNbiRVZNUoVIfjXuiOSfksLOomjk=;
+        b=qoE+6pNOvS/ZI0NNxvdrAFIf0hO7DnsYTxcfI+eyG16jewTBVNDXf/N/WGLB9CVndG
+         EJfC9TldM9kDI82Nq7m6u+TxGE2JQGDM5WBUdCcb9psiha36QVquYsncNlj137DuwwvI
+         X6PCVJJdM9VWu1Ytp7W+f1xToOw8W55CDHs/2EGAs1M5TdyLnSZ8wToQE0JlQt18LU/o
+         kjfktnsi0YzNdA+LA+AHxA0jQqx+Lms8PgK8jp/geP5568ctBFYNbwfx4S/EQiFCv52b
+         RLeHzmtr2SC/SEJsnUfawnklqxDfCmJO1iWEXibRf/5iLW/3Qj66pz3prNJMm8XebG2U
+         Wiqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771631684; x=1772236484;
+        d=1e100.net; s=20230601; t=1771631686; x=1772236486;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AsOcE+q9g9Rn3X6/odlnCkM6qqA9vgkvaxtReZc0KH0=;
-        b=VDmg50Ky1yZtqpYNWJw8MTjBGznmBDrPxAgMfg53oizBMYCzfHiITtYPOwQS9vQe36
-         6pSdOblHmkUfsDmjuWyzrUaPNnNZ+bvEv5jpuxuhh/rDcfKru5rUQS8DrYDchRobLlSP
-         PpSTfSTiwuXNrene6oMSWE7U8rYEh+F7U/QaIFCi0Z/hKChxGXE7+Q3yb+2whJ51w9R8
-         ix34JD8Q3BCWOyxPcpaOgWYWqrMD4+HYwZjvGCEvc4PgRjisSLLODMy7AVRFzALcOL+P
-         g8hjt4HsKbT82x82DVrIICn7ilcyZclk2inI6V4PQ5tHS6ptqHQP3tt0UXwR2TMOOkeQ
-         Noyg==
-X-Forwarded-Encrypted: i=1; AJvYcCW9iAPF9+oVbs/NtTZT3NjQPhGAZeVn6I8PlGvyXKiwQhDGQaXoXonoTH4cU4JxIm3BFoJbfWg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxhq55gOaSfgZTkV6Qi7w7qGmD4HQ2S0XdZbF/k0VarT2VNmVKB
-	sT7XeefRTDf4areXbwWoHbAFCXbsckDJEXEf1GjKmKGeee0lgQMSE0sP49cTVE8qEw2k7/ZAP2H
-	+jdUZaZ158rng1E9thHhYz8EbIQ==
-X-Received: from pgig4.prod.google.com ([2002:a63:f404:0:b0:c6e:1b27:7693])
+        bh=E9n+rIu6TMqcCjcRNbiRVZNUoVIfjXuiOSfksLOomjk=;
+        b=kZaXgaZXXZvwd6L5Acnrm43eomF/0t38xFZjKQj4KrJGYn5tTzFh2ydmX9zXrNfe/v
+         yO+pYhBy9b49gC78iM6ysvJWeTdEBVxzECA9KfD1kTYb13Src9ZFTcKrGEV9MW6H5AND
+         +/VNzQARk1btteygUzOpTLT8Yh5n3yeZmKQLSiUJ1GFf/r7EaE/U8g5OUoRI4UwzvbjC
+         Y0YzafbTQiQWXsZf+ZbZ4jZ9gUK0uScS6a9e53l+2Tp7vnktdYTs4DSYTMZb2TZ9Am8J
+         Kvc4SWypIlZQBY+Ql9w0bOE9gXI11GwyBqAbmtFb+aKMrBcnzAbzAo+fzktPXy/3oSW6
+         i7nw==
+X-Forwarded-Encrypted: i=1; AJvYcCXCMZiQ/9ixB/IryqIYpnOKyZGfWOh2lPClTW/Yeaem2hh2BGC/UrUEqnPWNAGcTQaOZP6XnV4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHxBUzC8iMYzYgMaDe51G4Z7eSNSJpc+XlB9ebmU9Wm/mRSdC3
+	XVdoEOs5MHAsop8LvfPokLyPwS14ayMXRS83uYj8usVMZf2nGghcIQrki1oq1iwI9HOekFlTpM2
+	kls2NvT7uBlDqtcFujKFHo8MrnA==
+X-Received: from pfbjo15.prod.google.com ([2002:a05:6a00:908f:b0:824:bfe3:b54e])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:734d:b0:38c:792:56af with SMTP id adf61e73a8af0-39545dbf3afmr1066001637.2.1771631684094;
- Fri, 20 Feb 2026 15:54:44 -0800 (PST)
-Date: Fri, 20 Feb 2026 23:54:35 +0000
+ 2002:a05:6a00:b92:b0:81f:b3ce:17a3 with SMTP id d2e1a72fcca58-826daa20081mr1165866b3a.48.1771631685524;
+ Fri, 20 Feb 2026 15:54:45 -0800 (PST)
+Date: Fri, 20 Feb 2026 23:54:36 +0000
 In-Reply-To: <cover.1771630983.git.ackerleytng@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,8 +76,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <cover.1771630983.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
-Message-ID: <455483ca29a3a3042efee0cf3bbd0e2548cbeb1c.1771630983.git.ackerleytng@google.com>
-Subject: [PATCH v2 1/2] KVM: selftests: Wrap madvise() to assert success
+Message-ID: <8048d04f150326d1e2231318aa9f1b3fce3e2e2c.1771630983.git.ackerleytng@google.com>
+Subject: [PATCH v2 2/2] KVM: selftests: Test MADV_COLLAPSE on guest_memfd
 From: Ackerley Tng <ackerleytng@google.com>
 To: kartikey406@gmail.com, seanjc@google.com, pbonzini@redhat.com, 
 	shuah@kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
@@ -96,13 +96,13 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217607-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217608-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -117,30 +117,133 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 11CF416B72C
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8AD8016B734
 X-Rspamd-Action: no action
 
-Extend kvm_syscalls.h to wrap madvise() to assert success. This will be
-used in the next patch.
+guest_memfd only supports PAGE_SIZE pages, and khugepaged or MADV_COLLAPSE
+collapsing pages may result in private memory regions being mapped into
+host page tables.
 
+Add test to verify that MADV_COLLAPSE fails on guest_memfd folios, and any
+subsequent usage of guest_memfd memory faults in PAGE_SIZE folios. Running
+this test should not result in any memory failure logs or kernel WARNings.
+
+This selftest was added as a result of a syzbot-reported issue where
+khugepaged operating on guest_memfd memory with MADV_HUGEPAGE caused the
+collapse of folios, which then subsequently resulted in a WARNing.
+
+Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
+Suggested-by: David Hildenbrand <david@kernel.org>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/include/kvm_syscalls.h | 1 +
- 1 file changed, 1 insertion(+)
+ .../testing/selftests/kvm/guest_memfd_test.c  | 70 ++++++++++++++++++-
+ 1 file changed, 67 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-index d4e613162bba9..843c9904c46f6 100644
---- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
-+++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-@@ -77,5 +77,6 @@ __KVM_SYSCALL_DEFINE(munmap, 2, void *, mem, size_t, size);
- __KVM_SYSCALL_DEFINE(close, 1, int, fd);
- __KVM_SYSCALL_DEFINE(fallocate, 4, int, fd, int, mode, loff_t, offset, loff_t, len);
- __KVM_SYSCALL_DEFINE(ftruncate, 2, unsigned int, fd, off_t, length);
-+__KVM_SYSCALL_DEFINE(madvise, 3, void *, addr, size_t, length, int, advice);
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 618c937f3c90f..0edbc7cf6c1ad 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -171,6 +171,64 @@ static void test_numa_allocation(int fd, size_t total_size)
+ 	kvm_munmap(mem, total_size);
+ }
  
- #endif /* SELFTEST_KVM_SYSCALLS_H */
++static void test_collapse(int fd, uint64_t flags)
++{
++	const size_t pmd_size = get_trans_hugepagesz();
++	void *reserved_addr;
++	void *aligned_addr;
++	char *mem;
++	off_t i;
++
++	/*
++	 * To even reach the point where the guest_memfd folios will
++	 * get collapsed, both the userspace address and the offset
++	 * within the guest_memfd have to be aligned to pmd_size.
++	 *
++	 * To achieve that alignment, reserve virtual address space
++	 * with regular mmap, then use MAP_FIXED to allocate memory
++	 * from a pmd_size-aligned offset (0) at a known, available
++	 * virtual address.
++	 */
++	reserved_addr = kvm_mmap(pmd_size * 2, PROT_NONE,
++				 MAP_PRIVATE | MAP_ANONYMOUS, -1);
++	aligned_addr = align_ptr_up(reserved_addr, pmd_size);
++
++	mem = mmap(aligned_addr, pmd_size, PROT_READ | PROT_WRITE,
++		   MAP_FIXED | MAP_SHARED, fd, 0);
++	TEST_ASSERT(IS_ALIGNED((u64)mem, pmd_size),
++		    "Userspace address must be aligned to PMD size.");
++
++	/*
++	 * Use reads to populate page table to avoid setting dirty
++	 * flag on page.
++	 */
++	for (i = 0; i < pmd_size; i += getpagesize())
++		READ_ONCE(mem[i]);
++
++	/*
++	 * Advising the use of huge pages in guest_memfd should be
++	 * fine...
++	 */
++	kvm_madvise(mem, pmd_size, MADV_HUGEPAGE);
++
++	/*
++	 * ... but collapsing folios must not be supported to avoid
++	 * mapping beyond shared ranges into host userspace page
++	 * tables.
++	 */
++	TEST_ASSERT_EQ(madvise(mem, pmd_size, MADV_COLLAPSE), -1);
++	TEST_ASSERT_EQ(errno, EINVAL);
++
++	/*
++	 * Removing from host page tables and re-faulting should be
++	 * fine; should not end up faulting in a collapsed/huge folio.
++	 */
++	kvm_madvise(mem, pmd_size, MADV_DONTNEED);
++	READ_ONCE(mem[0]);
++
++	kvm_munmap(reserved_addr, pmd_size * 2);
++}
++
+ static void test_fault_sigbus(int fd, size_t accessible_size, size_t map_size)
+ {
+ 	const char val = 0xaa;
+@@ -350,14 +408,17 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
+ 	}
+ }
+ 
+-#define gmem_test(__test, __vm, __flags)				\
++#define __gmem_test(__test, __vm, __flags, __gmem_size)			\
+ do {									\
+-	int fd = vm_create_guest_memfd(__vm, page_size * 4, __flags);	\
++	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
+ 									\
+-	test_##__test(fd, page_size * 4);				\
++	test_##__test(fd, __gmem_size);					\
+ 	close(fd);							\
+ } while (0)
+ 
++#define gmem_test(__test, __vm, __flags) 				\
++	__gmem_test(__test, __vm, __flags, page_size * 4)
++
+ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
+ {
+ 	test_create_guest_memfd_multiple(vm);
+@@ -367,9 +428,12 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
+ 
+ 	if (flags & GUEST_MEMFD_FLAG_MMAP) {
+ 		if (flags & GUEST_MEMFD_FLAG_INIT_SHARED) {
++			size_t pmd_size = get_trans_hugepagesz();
++
+ 			gmem_test(mmap_supported, vm, flags);
+ 			gmem_test(fault_overflow, vm, flags);
+ 			gmem_test(numa_allocation, vm, flags);
++			__gmem_test(collapse, vm, flags, pmd_size);
+ 		} else {
+ 			gmem_test(fault_private, vm, flags);
+ 		}
 -- 
 2.53.0.345.g96ddfc5eaa-goog
 
