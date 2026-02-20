@@ -1,292 +1,165 @@
-Return-Path: <stable+bounces-217571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217572-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNbpGOVVmGncGQMAu9opvQ
-	(envelope-from <stable+bounces-217571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 13:39:01 +0100
+	id +IiLAlBXmGncGQMAu9opvQ
+	(envelope-from <stable+bounces-217572-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 13:45:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0876516789B
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 13:39:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B6916794E
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 13:45:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 70A963029274
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 12:38:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4EEFB300A8FB
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 12:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC525345743;
-	Fri, 20 Feb 2026 12:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F4C342CBA;
+	Fri, 20 Feb 2026 12:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sIihn3lw"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="duPk0HQC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-244121.protonmail.ch (mail-244121.protonmail.ch [109.224.244.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7323F343D83;
-	Fri, 20 Feb 2026 12:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57BD278156
+	for <stable@vger.kernel.org>; Fri, 20 Feb 2026 12:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771591103; cv=none; b=LSXbRJ/cYH9rf7xL6kfXvz1/64TOnniLebBs6w7VCgttGezSeObvE4mjp7IVqlnKA7xwOjccjWRDPI1d+J5dcWCDmiKKoFtdNMz3BgcDR844eBdmMREammszQkBJLdcfKePSyuukwrHTJWnK0jekJaI5vJSFHitgHsXQ8KHcdJw=
+	t=1771591490; cv=none; b=lh11RZQIH/jKTC7oW9xYJA7WDP7bNOcS0zJZ7Yv22SOOhle4WGkEMWbO83R5BER8poqiNZczOhjt3dtK/ZkExvMWzcSFwcAolUM9pOkt9wSz02b3y3SKysklmxTVRcpjq8eohrUDuGMdaCdtXNFVSD9L1ASWaiD1SvyJLkeEgDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771591103; c=relaxed/simple;
-	bh=kvpOnPUV0DmLkneoyI6XI9qQet3OhXzZyF6gbVsW0hs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UKoCg1o9fcOED/XVwOM5xP8I9Cgm40Q8ELFkbv7fX5JkP2OTyjC4H7eeJeswBSOKDh8U41E4r+ydhRhjCPzA9V+7sx0uq1qHkQnrPRQGJLswJLmFHpRiW9AsKRFOsaaOK+iS8TFWUh7cPDzeO6snqE2boSNapAN+4nCIzK18uPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sIihn3lw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CC4C116D0;
-	Fri, 20 Feb 2026 12:38:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771591103;
-	bh=kvpOnPUV0DmLkneoyI6XI9qQet3OhXzZyF6gbVsW0hs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIihn3lwkRKNsBybA9Ly3Dzm4OfsIfv1U5ynlaTJnC0kY+hN93/jkJiM7Gc3x0r3j
-	 Laft5Fxje2hfSi86KekXxya76Rd+9VCQGi3V3hVNQdhB2bCadf8XzOe03LhfTBzU0y
-	 Aj0eSgYmbgWN9GZrBwX3XJfFT5EUkGoW2jEY/PIfTUpHF0XrDVBVVYvw1yYLOQ3LN1
-	 2ZnualHbcJJC4aCAZJRxUj/WqpAvN9J+GpIaepvIVtRPyTa5f7l18BRzffPTJ/Eune
-	 EFr9vZ7UDfhZRopS2nO60qmBkYjo6hNkjl2ZESCda5BmspHJWhZlOn7ka+JPAIekhD
-	 UnyxKSRom20Jw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Jaehun Gou <p22gone@gmail.com>,
-	Seunghun Han <kkamagui@gmail.com>,
-	Jihoon Kwon <kjh010315@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>,
-	ntfs3@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.15] fs: ntfs3: fix infinite loop in attr_load_runs_range on inconsistent metadata
-Date: Fri, 20 Feb 2026 07:38:00 -0500
-Message-ID: <20260220123805.3371698-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260220123805.3371698-1-sashal@kernel.org>
-References: <20260220123805.3371698-1-sashal@kernel.org>
+	s=arc-20240116; t=1771591490; c=relaxed/simple;
+	bh=6u5IeIgvjbDjaxjJTuRXTmR6NGkknxCa5fR2Rwz+LWc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CRBZyaH7lUstO4UkXxWLKxU12aCTMdtAogFMGk7rYioFi1vD2CCxexc42GXfXlzPdGDmz3v8QLW1KBfKYlAbb0b61RnSjbjmY308qrppIhkQ/7JbLAL7C/XikrD13vlm3guOorGAe9wJFIzpxYy8OCT7wx0cgzoM98026799GRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=duPk0HQC; arc=none smtp.client-ip=109.224.244.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1771591485; x=1771850685;
+	bh=8dY8pcaRxOZ1sCdxB4dipkfHn87abpoNsKCXX3e6sA4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=duPk0HQCa7RpiMdt1qbkfvCrZxOHkzMtmT0R8vqy0qM/+st/6I+LVd+FcDxuflMdh
+	 emSSnWcd5+85uiNTmMbix8W35Dzz+/FJNz1zmdtQM2WiPTutPZUVJKjupy8DY4Q304
+	 HuL2+GZjXiApd50GvOQr+D8MTqG/hpZcyRbw+NqYBYz4+s2ydhJ9poWY9iWcNfY3CG
+	 N6+vylw7tsSnFLPswizHrJ/1tBlyQzoQPwGQ8gHsvL2TWhp0KjwBs5jX2gNtR6EDF5
+	 ucWNe7XGMRij5ZOq1HUHtCMSplUb/BaxeY80moFCAONYFQKQhJUOgAnS8PPMhZYbVI
+	 LFuLGtFtd95mQ==
+Date: Fri, 20 Feb 2026 12:44:41 +0000
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: m.wieczorretman@pm.me, Farrah Chen <farrah.chen@intel.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v6 1/3] x86/cpu: Clear feature bits disabled at compile-time
+Message-ID: <b7d1fc26c8f0cca21e710360954a11be6c5d93e4.1771590895.git.m.wieczorretman@pm.me>
+In-Reply-To: <cover.1771590895.git.m.wieczorretman@pm.me>
+References: <cover.1771590895.git.m.wieczorretman@pm.me>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: f321113ee7ba66fe27866265a4af1d7666746fec
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19.3
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[pm.me,quarantine];
+	R_DKIM_ALLOW(-0.20)[pm.me:s=protonmail3];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,paragon-software.com,kernel.org,lists.linux.dev,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-217571-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217572-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[pm.me:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0876516789B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[m.wieczorretman@pm.me,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pm.me:mid,pm.me:dkim]
+X-Rspamd-Queue-Id: 62B6916794E
 X-Rspamd-Action: no action
 
-From: Jaehun Gou <p22gone@gmail.com>
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-[ Upstream commit 4b90f16e4bb5607fb35e7802eb67874038da4640 ]
+If some config options are disabled during compile time, they still are
+enumerated in macros that use the x86_capability bitmask - cpu_has() or
+this_cpu_has().
 
-We found an infinite loop bug in the ntfs3 file system that can lead to a
-Denial-of-Service (DoS) condition.
+The features are also visible in /proc/cpuinfo even though they are not
+enabled - which is contrary to what the documentation states about the
+file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
+split_lock_detect, user_shstk, avx_vnni and enqcmd.
 
-A malformed NTFS image can cause an infinite loop when an attribute header
-indicates an empty run list, while directory entries reference it as
-containing actual data. In NTFS, setting evcn=-1 with svcn=0 is a valid way
-to represent an empty run list, and run_unpack() correctly handles this by
-checking if evcn + 1 equals svcn and returning early without parsing any run
-data. However, this creates a problem when there is metadata inconsistency,
-where the attribute header claims to be empty (evcn=-1) but the caller
-expects to read actual data. When run_unpack() immediately returns success
-upon seeing this condition, it leaves the runs_tree uninitialized with
-run->runs as a NULL. The calling function attr_load_runs_range() assumes
-that a successful return means that the runs were loaded and sets clen to 0,
-expecting the next run_lookup_entry() call to succeed. Because runs_tree
-remains uninitialized, run_lookup_entry() continues to fail, and the loop
-increments vcn by zero (vcn += 0), leading to an infinite loop.
+Once the cpu_caps_cleared array is initialized with the autogenerated
+disabled bitmask apply_forced_caps() will clear the corresponding bits
+in boot_cpu_data.x86_capability[] and other secondary cpus'
+cpu_data.x86_capability[]. Thus features disabled at compile time won't
+show up in /proc/cpuinfo.
 
-This patch adds a retry counter to detect when run_lookup_entry() fails
-consecutively after attr_load_runs_vcn(). If the run is still not found on
-the second attempt, it indicates corrupted metadata and returns -EINVAL,
-preventing the Denial-of-Service (DoS) vulnerability.
-
-Co-developed-by: Seunghun Han <kkamagui@gmail.com>
-Signed-off-by: Seunghun Han <kkamagui@gmail.com>
-Co-developed-by: Jihoon Kwon <kjh010315@gmail.com>
-Signed-off-by: Jihoon Kwon <kjh010315@gmail.com>
-Signed-off-by: Jaehun Gou <p22gone@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220348
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: <stable@vger.kernel.org> # 6.18.x
 ---
+Changelog v6:
+- Remove patch message portions that are not just describing the diff.
 
-LLM Generated explanations, may be completely bogus:
+ arch/x86/kernel/cpu/common.c       | 3 ++-
+ arch/x86/tools/cpufeaturemasks.awk | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-This confirms the key detail: `run_unpack()` (called via
-`run_unpack_ex()`) at line 940-941 returns 0 (success) when `evcn + 1 ==
-svcn` — the "empty run" condition. This means `attr_load_runs_vcn()`
-returns success even when no runs are actually loaded into the
-`runs_tree`.
-
-Let me now verify the infinite loop mechanism more carefully:
-
-1. `attr_load_runs_range()` enters the loop, `run_lookup_entry()` fails
-   (returns false) because `run->runs` is NULL
-2. `attr_load_runs_vcn()` is called, which calls `run_unpack_ex()` →
-   `run_unpack()`, which returns 0 (success) for the empty run case
-   without adding any entries
-3. `clen` is set to 0
-4. Loop iterates: `vcn += clen` → `vcn += 0` — no progress
-5. `run_lookup_entry()` fails again → infinite loop
-
-The fix adds a `retry` counter. If `run_lookup_entry()` fails after
-`attr_load_runs_vcn()` has already been called once for the same VCN, it
-returns `-EINVAL` instead of looping forever.
-
-## Analysis
-
-### 1. COMMIT MESSAGE ANALYSIS
-- **Subject**: Clearly states "fix infinite loop" — this is a bug fix
-- **Body**: Excellent description of the root cause, trigger mechanism,
-  and DoS impact
-- **Impact**: Denial-of-Service via crafted NTFS image — security
-  relevant
-- **Tags**: Multiple Co-developed-by/Signed-off-by, signed by ntfs3
-  maintainer (Konstantin Komarov)
-
-### 2. CODE CHANGE ANALYSIS
-The patch is small and surgical (~20 lines changed in a single
-function):
-- Adds a `retry` counter initialized to 0
-- After `attr_load_runs_vcn()` succeeds but `run_lookup_entry()` still
-  fails on the next iteration, returns `-EINVAL`
-- Resets `retry` to 0 on successful lookup
-- Changes `return err` to `break` for consistency with the new error
-  path
-- All changes are self-contained within `attr_load_runs_range()`
-
-### 3. BUG CLASSIFICATION
-- **Type**: Infinite loop / DoS from inconsistent metadata on malformed
-  NTFS image
-- **Trigger**: Mounting/reading a crafted NTFS image where attribute
-  header claims empty run list (evcn=-1, svcn=0) but directory entries
-  reference it as containing data
-- **Severity**: HIGH — causes complete system hang (infinite loop in
-  kernel)
-- **Security**: This is a DoS vulnerability triggerable by mounting a
-  malicious filesystem image (e.g., USB stick)
-
-### 4. SCOPE AND RISK
-- **Lines changed**: ~20, single function, single file
-- **Risk**: Very low — only adds early termination for a detected
-  inconsistency condition
-- **Side effects**: None — the retry counter only triggers when metadata
-  is already corrupt
-- **Regression risk**: Minimal — legitimate NTFS images won't trigger
-  the retry mechanism because `run_lookup_entry()` will succeed after
-  loading runs
-
-### 5. USER IMPACT
-- Affects anyone who mounts NTFS volumes (very common: USB drives, dual-
-  boot, data exchange)
-- A malicious NTFS image on a USB drive could hang the kernel
-- Multiple callers of `attr_load_runs_range()` are affected: xattr,
-  index, frecord, WOF operations
-
-### 6. STABLE CRITERIA
-- **Obviously correct**: Yes — if loading runs succeeded but lookup
-  still fails, metadata is corrupt
-- **Fixes a real bug**: Yes — infinite loop / DoS
-- **Small and contained**: Yes — ~20 lines in one function
-- **No new features**: Correct — only adds error detection
-- **Tested**: Signed by ntfs3 maintainer, merged to mainline
-
-### Verification
-
-- **Verified** the `run_unpack()` early return at line 940-941: `if
-  (evcn + 1 == svcn) return 0;` — this is the empty run case that
-  returns success without populating runs_tree
-- **Verified** `run_lookup_entry()` at line 201: `if (!run->runs) return
-  false;` — confirms it returns false when runs_tree is uninitialized
-- **Verified** the infinite loop mechanism: `vcn += clen` with `clen =
-  0` causes no progress, leading to infinite re-entry into the same
-  lookup failure path
-- **Verified** callers via grep: `attr_load_runs_range` is called from
-  xattr.c:127, xattr.c:498, index.c:1080, frecord.c:2529, and
-  attrib.c:1463 — multiple code paths are affected
-- **Verified** the fix is self-contained: only changes
-  `attr_load_runs_range()` in attrib.c, no dependencies on other commits
-- **Verified** via git log that this code has been present in ntfs3
-  since its inclusion (the function structure is unchanged), meaning all
-  stable trees with ntfs3 are affected
-- **Could not verify** specific CVE assignment (none mentioned in
-  commit), but the DoS nature makes it security-relevant regardless
-
-This is a textbook stable backport candidate: a small, surgical fix for
-a DoS-triggering infinite loop in a filesystem driver, caused by
-inconsistent metadata on crafted images. The fix is obviously correct,
-contained, low-risk, and signed off by the subsystem maintainer.
-
-**YES**
-
- fs/ntfs3/attrib.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index 980ae9157248d..c45880ab23912 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -1354,19 +1354,28 @@ int attr_load_runs_range(struct ntfs_inode *ni, enum ATTR_TYPE type,
- 	CLST vcn;
- 	CLST vcn_last = (to - 1) >> cluster_bits;
- 	CLST lcn, clen;
--	int err;
-+	int err = 0;
-+	int retry = 0;
- 
- 	for (vcn = from >> cluster_bits; vcn <= vcn_last; vcn += clen) {
- 		if (!run_lookup_entry(run, vcn, &lcn, &clen, NULL)) {
-+			if (retry != 0) { /* Next run_lookup_entry(vcn) also failed. */
-+				err = -EINVAL;
-+				break;
-+			}
- 			err = attr_load_runs_vcn(ni, type, name, name_len, run,
- 						 vcn);
- 			if (err)
--				return err;
-+				break;
-+
- 			clen = 0; /* Next run_lookup_entry(vcn) must be success. */
-+			retry++;
- 		}
-+		else
-+			retry = 0;
- 	}
- 
--	return 0;
-+	return err;
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index e7ab22fce3b5..8d12c5722245 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -732,7 +732,8 @@ static const char *table_lookup_model(struct cpuinfo_x8=
+6 *c)
  }
- 
- #ifdef CONFIG_NTFS3_LZX_XPRESS
--- 
-2.51.0
+=20
+ /* Aligned to unsigned long to avoid split lock in atomic bitmap ops */
+-__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
+));
++__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
+)) =3D
++=09DISABLED_MASK_INITIALIZER;
+ __u32 cpu_caps_set[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long));
+=20
+ #ifdef CONFIG_X86_32
+diff --git a/arch/x86/tools/cpufeaturemasks.awk b/arch/x86/tools/cpufeature=
+masks.awk
+index 173d5bf2d999..b7f4e775a365 100755
+--- a/arch/x86/tools/cpufeaturemasks.awk
++++ b/arch/x86/tools/cpufeaturemasks.awk
+@@ -82,6 +82,12 @@ END {
+ =09=09}
+ =09=09printf " 0\t\\\n";
+ =09=09printf "\t) & (1U << ((x) & 31)))\n\n";
++
++=09=09printf "\n#define %s_MASK_INITIALIZER\t\t\t\\", s;
++=09=09printf "\n\t{\t\t\t\t\t\t\\";
++=09=09for (i =3D 0; i < ncapints; i++)
++=09=09=09printf "\n\t\t%s_MASK%d,\t\t\t\\", s, i;
++=09=09printf "\n\t}\n\n";
+ =09}
+=20
+ =09printf "#endif /* _ASM_X86_CPUFEATUREMASKS_H */\n";
+--=20
+2.53.0
+
 
 
