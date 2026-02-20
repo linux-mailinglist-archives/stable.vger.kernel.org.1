@@ -1,123 +1,131 @@
-Return-Path: <stable+bounces-217576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KYiKvxfmGnzHAMAu9opvQ
-	(envelope-from <stable+bounces-217576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 14:22:04 +0100
+	id INZwL4dimGkVHgMAu9opvQ
+	(envelope-from <stable+bounces-217577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 14:32:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038BD167C64
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 14:22:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A450167D4D
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 14:32:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 802C23095E72
-	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 13:20:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E2A8B3008E26
+	for <lists+stable@lfdr.de>; Fri, 20 Feb 2026 13:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE82344D99;
-	Fri, 20 Feb 2026 13:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D3E3451DA;
+	Fri, 20 Feb 2026 13:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A54vb1jV"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NQgoFklQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4AC32E724;
-	Fri, 20 Feb 2026 13:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3FD33987;
+	Fri, 20 Feb 2026 13:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771593657; cv=none; b=Ppr/l/z5dbkfFntDFN1LFnh5tNohac+MxmjdUpGhxcm1P+vSjrvf7oPm1MEDey/nrA5jwmKgymZvvwtwZDORiOe9rMGQNBgIMdQpAsfj9r5utYPXQru23KZcmPLbEIQTU/kYnfWGChEoLGNrFcN2iAhHnOGifJA74JEynmZA2Pg=
+	t=1771594372; cv=none; b=iCjXkI2xftv9v2AjhzfAdqBuSXMKXif66nXKinthUDcHZm6nkLyQl7DBjLrVdMqtjREWsFYYp1lk0kKobJhhSeAQpcEPrxsQIqpAf5S3o/3hwK2QRNxe+xd2rznsgJhzpQpCaG6qIorZavAl+5/qUkfxpIDKuqw347bcc6S2rcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771593657; c=relaxed/simple;
-	bh=+/qPuPAVaJSpihzZa+SDcXfGfdnlNwfaWfbPw+GQyDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X/JY4U2gcUgmYQUtsbmvkAKDlXFggQ02BkbPvkNgRF75eOCIxGJX6NAtAMUjsmrnQsffX+9Jgl/TH/k9pjhc+lOpeef9azT0SZ0OfmXZNMR1+PT1bVWP0JkpEo7JU/srH29eWrKnMXGGzodPspH2wnBwl1HSwdxlksP3hjPEsFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A54vb1jV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF06C116D0;
-	Fri, 20 Feb 2026 13:20:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771593656;
-	bh=+/qPuPAVaJSpihzZa+SDcXfGfdnlNwfaWfbPw+GQyDE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A54vb1jV4QD7H3Ux0lg52BYY/99wnh+upsYDRaL4oQb7hvedAZnI5J9ZLjHCfx1LC
-	 RbtHtu26J98IFj1pQkmSsbPPk7dddpiQW908RewGu1C5100prQymd9wPl6zVkG5jai
-	 uwqvxsEXf7xcQqsN9rRuvQYmP+Ea9SDs0riDn5kw=
-Date: Fri, 20 Feb 2026 14:20:53 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Filipe Manana <fdmanana@kernel.org>
-Cc: Mark Harmstone <mark@harmstone.com>, linux-btrfs@vger.kernel.org,
-	johannes.thumshirn@wdc.com, stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: fix chunk map leak in btrfs_map_block() after
- btrfs_chunk_map_num_copies()
-Message-ID: <2026022052-aqueduct-gallows-a487@gregkh>
-References: <20260220130209.5020-1-mark@harmstone.com>
- <CAL3q7H6RnMw=GLAuv20u0e8azr5Tyr_wXFKKjUEgvp3iFAak_g@mail.gmail.com>
+	s=arc-20240116; t=1771594372; c=relaxed/simple;
+	bh=wYqdHt6VumXCo8KYxClK4m7+eBdpv3IEO6zO5lzrj3A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GPzxlFULZ+DvlL3QBRP5KRdObh7yLGPWfcFNJAck2wIOOymwy8TIsWM8j8MWbnuawUh2qjLDjmHq6IUPYNql6uFf0aDAe+g3Q34Dva4MLggrNHwzs1obYrz0MCHgsnDF4srcKfvzkSBhhI+n4l1k1oacimtLjGBOJtS5WBy2iq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NQgoFklQ; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771594359;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Qv9W0wQRDmkr+3Q7aTuBQudRy6movyrphWCLG7hTrqc=;
+	b=NQgoFklQEOjaZj22rTHsNvV11JTkMU/g01rNteMF9rdRZ0STWk0GB9Zj2SjLfHk4/4CCTl
+	B1pc3y3OaEhO8yWZAwUVQC9nS6fxPnW1YzhI58J65EghaRK6P708PDME1ZJRgTxEQCfeWX
+	9EgEQ6TgcDu/wG0anpb5hM8ze91MNwE=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Lothar Rubusch <l.rubusch@gmail.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	stable@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: atmel-sha204a - Fix uninitialized data access on OTP read error
+Date: Fri, 20 Feb 2026 14:31:36 +0100
+Message-ID: <20260220133135.1122081-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL3q7H6RnMw=GLAuv20u0e8azr5Tyr_wXFKKjUEgvp3iFAak_g@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217576-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gondor.apana.org.au,davemloft.net,microchip.com,bootlin.com,tuxon.dev,gmail.com];
+	TAGGED_FROM(0.00)[bounces-217577-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,harmstone.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 038BD167C64
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,cmd.data:url]
+X-Rspamd-Queue-Id: 2A450167D4D
 X-Rspamd-Action: no action
 
-On Fri, Feb 20, 2026 at 01:07:27PM +0000, Filipe Manana wrote:
-> On Fri, Feb 20, 2026 at 1:02 PM Mark Harmstone <mark@harmstone.com> wrote:
-> >
-> > Fix a chunk map leak in btrfs_map_block(): if we return early with -EINVAL,
-> > we're not freeing the chunk map that we've just looked up.
-> >
-> > Signed-off-by: Mark Harmstone <mark@harmstone.com>
-> > Cc: stable@vger.kernel.org
-> > Fixes: 0ae653fbec2b ("btrfs: reduce chunk_map lookups in btrfs_map_block()")
-> 
-> Reviewed-by: Filipe Manana <fdmanana@suse.com>
-> 
-> Side note: if there's a Fixes tag, we don't need a CC stable tag
-> anymore nowadays.
+Return early if atmel_i2c_send_receive() fails to avoid checking
+potentially uninitialized data in 'cmd.data'.
 
-Not true at all, please read:
+Cc: stable@vger.kernel.org
+Fixes: e05ce444e9e5 ("crypto: atmel-sha204a - add reading from otp zone")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+ drivers/crypto/atmel-sha204a.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204a.c
+index 0fcf4a39de27..f4a04b297257 100644
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -103,6 +103,10 @@ static int atmel_sha204a_otp_read(struct i2c_client *client, u16 addr, u8 *otp)
+ 	}
+ 
+ 	ret = atmel_i2c_send_receive(client, &cmd);
++	if (ret < 0) {
++		dev_err(&client->dev, "failed to read otp at %04X\n", addr);
++		return ret;
++	}
+ 
+ 	if (cmd.data[0] == 0xff) {
+ 		dev_err(&client->dev, "failed, device not ready\n");
+-- 
+Thorsten Blum <thorsten.blum@linux.dev>
+GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
 
-You HAVE to have a cc: stable if you know you want it to be added to a
-stable tree.  If you do not do that, you are at the mercy of "when Greg
-and Sasha get bored and attempt to pick up things that maintainers
-forgot about".
-
-thanks,
-
-greg k-h
 
