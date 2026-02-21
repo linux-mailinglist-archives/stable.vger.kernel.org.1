@@ -1,209 +1,127 @@
-Return-Path: <stable+bounces-217619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAtNLVMqmWk6RQMAu9opvQ
-	(envelope-from <stable+bounces-217619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 04:45:23 +0100
+	id gKLdCdc9mWknSAMAu9opvQ
+	(envelope-from <stable+bounces-217620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 06:08:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3302016C11F
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 04:45:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7925B16C263
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 06:08:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8B393047525
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 03:44:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C86DF3038AE4
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 05:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A8932939C;
-	Sat, 21 Feb 2026 03:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F0D334C20;
+	Sat, 21 Feb 2026 05:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RKcl84+V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4X0jDk8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE662E8B83
-	for <stable@vger.kernel.org>; Sat, 21 Feb 2026 03:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A900334C05
+	for <stable@vger.kernel.org>; Sat, 21 Feb 2026 05:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771645466; cv=none; b=TaNJeZ0Qe0KF4+ArvP1IP11Zme9PdmW0DplXqW8BKGuTh52q0ozFbDSPPcZldDqJafEs6Ux6h3TjPoWKjRF8OQfJ83rEJC6dp4AnMv5DqOU+BlOJ5f8G3cpxmU9vAsRtDzC1+8jy/pEFMqcKDxmS/w7/wwrWSjwvCfTsjT/CL4M=
+	t=1771650511; cv=none; b=MHBc8jTDr+B6zCQRUYzwUyrPbD5IjKSLqmdDp+6R7JGmAtYhQHB1Xvk3EPOb7OuGQwoKnlLZxadB3CvHoK3QMoHRIgNcehGIVUy04p7vCe3QycSr2Jy+K5sX+UH2QAIFSgBqINpPgrMAh3qMB2J5wVsa5ANcoa8myOFsqXmcgi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771645466; c=relaxed/simple;
-	bh=szFkTr5OZJGdedtsZIzGuBxUq+XZC1VNS8vDJTaTxNQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ez35j7g5a6X/9k3rwH+GDDwEhUZ5m28B1P+lDybh2hSpXWG/Ztno0+bRpdZ7Lt9XTQosDbbjlMsWOQfMsnqfLl93yREqy2LRwuxld0Ee/F9DRTNZUPDFeT800a0XPlAIL74f8DrcTUTKCxO0JTJC9Fa4TRqYpQkO2VNWK1sZW3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RKcl84+V; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-82418b0178cso1603709b3a.1
-        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 19:44:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771645464; x=1772250264; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M8mQ/6om80WOoxF8Tb2IxdKJHO+VtjTLYYsstxqzSHM=;
-        b=RKcl84+V/WGg+nltbnqh0uvgSCZROhUbQdKYiQnS1xSEWvaI7VAARmhp5oqhEa8Uah
-         0SlVNRVrY7VGxMASgtNcdB9JbTgxWeXdNXtpxRwGzTBXW4sko2F/lNluxyiPN+hSPwkJ
-         ByyWLs3gWG02AU79cTYJlQo1aGjfMe8wzsE2t75p433BCg+DxZfrDhOXHmjcde3gd4BU
-         K2lywhTi96BCbYq782XY5nv7ydpAOxzFW9DoBG87FYcej7EHmSweYFbKrzcSXHyHOJ4J
-         z38s0DdXRqpzDYdya1jckiuPMuyRlRJCd7ru8xzVj/q4kc61P4kO0gPJmqUXDH502Xis
-         3wWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771645464; x=1772250264;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=M8mQ/6om80WOoxF8Tb2IxdKJHO+VtjTLYYsstxqzSHM=;
-        b=OB9GE96bMxz7v6+DZ7V9CFIeOLnkwKoy4NeTVNnd/C/g1EHuQhC+XIX9I8KBFhMb6a
-         gTj2d8ShzQ+dukrrmFNkl2CQM4YGiNl7K6qdr2UNGUMBkcK50dyh2QnXkTB4ggY1iYI7
-         RZQvCQTqZEptIBYvWMKf9D98tS8dtZ8YHTn0TXnCDrsKAGs2Ql4ky+fIhGg65UrXDMuX
-         kc1np3HDQWwlN43UbL74/+28p1jyerSCT5d0yYx52lnm3Hrr/npj7FcX4KuezNgL9cvI
-         Em/nuzeZjseKVZPnT3ALkHLqvleXRTrX8wFHiyt/FsS+q7M5ZOY9zM3oOMZuQM/BKPqK
-         woYw==
-X-Gm-Message-State: AOJu0Yw6ZfhosIwA9B4gbc3TdLxcf2SSLdZRiJP/9JRdstZi7sTa8VD+
-	9rK5ijb+ZhpoSEbxDt0JrbrfwJcIT0fKzJ/YRiFJysPetQn3jeEOrnNwejYSmg4N
-X-Gm-Gg: AZuq6aIP/d2uWNKDFm3l0qDVHCihV5GvnR6PKOwoBPUe2Fx5R1MypIZ97FGss09X4Je
-	F8ayQcdftmx/h8BHMe0lLOKlMeiNbzYiljEqHwi6klY5GGvNv78ooGAYOuu3bykpQ8uzjFf+FFi
-	+UDQyiZ+ZWHl9k5gF3qkn5BShGDBc0XKiWnrfnmCFv7xZEsz3mrusVTtEAV5ZaQHcc8e6XTjly5
-	uSXpkyXRLtcE9Mh79/ncJQ85UaaGKq/M1O7Y0KisZ+swdMMmpsbYKzi2KWupYDm0D1b9jkZSsgZ
-	wFHglkbk5HdgAr99+kMm3rmWku9e/VSnd7JYJT8LiwVmnDGLDzzT41lFg34JxRO1h/mbvL2fgNW
-	AdOJJiHb+5WWeVC4oc2R9zW4uyrtgD+rnHBbGANwSNL9r7lyPJabF2++WEF52quG+pjNU
-X-Received: by 2002:a05:6a00:392a:b0:81f:2b25:ca73 with SMTP id d2e1a72fcca58-826daa021c5mr1721717b3a.38.1771645463914;
-        Fri, 20 Feb 2026 19:44:23 -0800 (PST)
-Received: from ryzen ([2601:644:8000:56f5::8bd])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd8ba11bsm714951b3a.50.2026.02.20.19.44.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Feb 2026 19:44:23 -0800 (PST)
-From: Rosen Penev <rosenp@gmail.com>
-To: stable@vger.kernel.org
-Cc: Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Xinhui Pan <Xinhui.Pan@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	amd-gfx@lists.freedesktop.org (open list:AMD POWERPLAY AND SWSMU),
-	dri-devel@lists.freedesktop.org (open list:DRM DRIVERS),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 2/2] Revert "drm/amd/pm: Disable SCLK switching on Oland with high pixel clocks (v3)"
-Date: Fri, 20 Feb 2026 19:44:02 -0800
-Message-ID: <20260221034402.69537-3-rosenp@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260221034402.69537-1-rosenp@gmail.com>
-References: <20260221034402.69537-1-rosenp@gmail.com>
+	s=arc-20240116; t=1771650511; c=relaxed/simple;
+	bh=FfDkPtaibjMhcxs+7vtPQVv7ihhi6cR/ixcoHKsdKbs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QO9dJ+uW1ehFM5ifR7yEgu4fas5MnBao+YZ+ZOpn/QYByH+GSwy+9vTxTxWo5kq9F0ahujBxER/oghzc9BPRoRXkL8qpkVSFt18ImX6r0M5UwkGZUmghzYkJ/DDz4jaEUSUaDxx0iIViNiR2g490XBndmzXjArTj4ZqkUAE2VVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4X0jDk8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4335C19424
+	for <stable@vger.kernel.org>; Sat, 21 Feb 2026 05:08:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771650510;
+	bh=FfDkPtaibjMhcxs+7vtPQVv7ihhi6cR/ixcoHKsdKbs=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=V4X0jDk8itTjg9vyHKn20lEus74dyl1K7C7iYbl8dw1Vyr4rYxkO8mxCCW/J6+V6m
+	 zm6rBmvkm/9FxN3FA4j/vTswV3+eFmusvExRRdp16nUYNzW1+EUuq4FqVOJalOe0Yb
+	 1WkHGoJgkeGv2ZCh/Jziye08vBMq18MKafo42Fqx4QTs9gZZgC8OXlEBkEJy+J1uWM
+	 +1egfqN/EQGsTnpU1eYXWw7ttGTnuBjuBejdFG3kEq4pTM4kTVP2LW7m3Xl+4n11aF
+	 PGy+arOD0GtutzlqRjlqsb3ih/AXzJ8rAXWcxxyAcKslFTJQH7ievIFWruittdN5f7
+	 GJdn0Eyb2tfFA==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38704f70ea3so24658701fa.2
+        for <stable@vger.kernel.org>; Fri, 20 Feb 2026 21:08:30 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXa1Qn903XezKnIypnJpMoOwvZKHjn88i+SZrJrLzEWhvM1TpCO9f0D81jsvGTUbzBIXidO4Ug=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIdsh6oq5gr2v/dgW46Em62SlkgqVvW4vQ5j9WBnvlt4nJi2I3
+	y5ubEJ2JCByeCED0bjN4uuTBRGF8eHihNrHS/sllLPOyrcUha1gzcb/7emgFAovzUkM+SRTBpRw
+	VwlxvTJ9fUXYRwvY+ZW0ec2ekPa7mDZk=
+X-Received: by 2002:a2e:bc20:0:b0:385:9b50:91a2 with SMTP id
+ 38308e7fff4ca-389a5ad674fmr4879541fa.10.1771650509149; Fri, 20 Feb 2026
+ 21:08:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260220174938.672883-5-krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20260220174938.672883-5-krzysztof.kozlowski@oss.qualcomm.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Sat, 21 Feb 2026 13:08:17 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65DiAEXR27TAEBBuP+=Pig2YZdp9w-70ue3TCOT9JGLGw@mail.gmail.com>
+X-Gm-Features: AaiRm52TPU0KT3mTHxl4kTJwTo8ag6W6iRhOZSo2XcVHXwftrG7b7iYHyYyc8kQ
+Message-ID: <CAGb2v65DiAEXR27TAEBBuP+=Pig2YZdp9w-70ue3TCOT9JGLGw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] power: supply: axp288_charger: Do not cancel work
+ before initializing it
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Sebastian Reichel <sre@kernel.org>, Hans de Goede <hansg@kernel.org>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-217619-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217620-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	RCPT_COUNT_FIVE(0.00)[6];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wens@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 3302016C11F
+	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[wens@kernel.org]
+X-Rspamd-Queue-Id: 7925B16C263
 X-Rspamd-Action: no action
 
-This reverts commit 0bb91bed82d414447f2e56030d918def6383c026.
+On Sat, Feb 21, 2026 at 1:49=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@oss.qualcomm.com> wrote:
+>
+> Driver registered devm handler to cancel_work_sync() before even the
+> work was initialized, thus leading to possible warning from
+> kernel/workqueue.c on (!work->func) check, if the error path was hit
+> before the initialization happened.
+>
+> Use devm_work_autocancel() on each work item independently, which
+> handles the initialization and handler to cancel work.
+>
+> Fixes: 165c2357744e ("power: supply: axp288_charger: Properly stop work o=
+n probe-error / remove")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-This commit breaks stable kernels older than 6.18 that are booted with
-radeon.si_support=0 amdgpu.si_support=1 amdgpu.dc=1
-
-In 6.17, threre are further commits that are needed to get the DC
-codepath in amdgpu for Southern Islands GPUs working but they seem to be
-too much of a hastle to backport cleanly. The simplest solution is to
-revert this problematic commit
-
-Cc: Timur Kristóf <timur.kristof@gmail.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 31 ----------------------
- 1 file changed, 31 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index 05eaa06dfa34..c4386c86153b 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -3426,14 +3426,12 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- {
- 	struct  si_ps *ps = si_get_ps(rps);
- 	struct amdgpu_clock_and_voltage_limits *max_limits;
--	struct amdgpu_connector *conn;
- 	bool disable_mclk_switching = false;
- 	bool disable_sclk_switching = false;
- 	u32 mclk, sclk;
- 	u16 vddc, vddci, min_vce_voltage = 0;
- 	u32 max_sclk_vddc, max_mclk_vddci, max_mclk_vddc;
- 	u32 max_sclk = 0, max_mclk = 0;
--	u32 high_pixelclock_count = 0;
- 	int i;
- 
- 	if (adev->asic_type == CHIP_HAINAN) {
-@@ -3466,35 +3464,6 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- 		}
- 	}
- 
--	/* We define "high pixelclock" for SI as higher than necessary for 4K 30Hz.
--	 * For example, 4K 60Hz and 1080p 144Hz fall into this category.
--	 * Find number of such displays connected.
--	 */
--	for (i = 0; i < adev->mode_info.num_crtc; i++) {
--		if (!(adev->pm.dpm.new_active_crtcs & (1 << i)) ||
--			!adev->mode_info.crtcs[i]->enabled)
--			continue;
--
--		conn = to_amdgpu_connector(adev->mode_info.crtcs[i]->connector);
--
--		if (conn->pixelclock_for_modeset > 297000)
--			high_pixelclock_count++;
--	}
--
--	/* These are some ad-hoc fixes to some issues observed with SI GPUs.
--	 * They are necessary because we don't have something like dce_calcs
--	 * for these GPUs to calculate bandwidth requirements.
--	 */
--	if (high_pixelclock_count) {
--		/* On Oland, we observe some flickering when two 4K 60Hz
--		 * displays are connected, possibly because voltage is too low.
--		 * Raise the voltage by requiring a higher SCLK.
--		 * (Voltage cannot be adjusted independently without also SCLK.)
--		 */
--		if (high_pixelclock_count > 1 && adev->asic_type == CHIP_OLAND)
--			disable_sclk_switching = true;
--	}
--
- 	if (rps->vce_active) {
- 		rps->evclk = adev->pm.dpm.vce_states[adev->pm.dpm.vce_level].evclk;
- 		rps->ecclk = adev->pm.dpm.vce_states[adev->pm.dpm.vce_level].ecclk;
--- 
-2.53.0
-
+Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
 
