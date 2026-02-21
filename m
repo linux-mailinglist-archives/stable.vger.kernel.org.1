@@ -1,157 +1,184 @@
-Return-Path: <stable+bounces-217636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAwqKy3LmWkXWwMAu9opvQ
-	(envelope-from <stable+bounces-217636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 16:11:41 +0100
+	id qoV4N37MmWk2WwMAu9opvQ
+	(envelope-from <stable+bounces-217637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 16:17:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1852816D207
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 16:11:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6288716D22D
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 16:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0C6B301CCCB
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 15:11:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56DE6300D6B4
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 15:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D09E20299B;
-	Sat, 21 Feb 2026 15:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F4E1E51EE;
+	Sat, 21 Feb 2026 15:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xw+i1+24"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gC8rZjjA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863B138FA3
-	for <stable@vger.kernel.org>; Sat, 21 Feb 2026 15:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9620510FD;
+	Sat, 21 Feb 2026 15:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771686683; cv=none; b=Ot4AD2gSmTEs0ts8PmnHmDUdADEIhN9v6el+LWrSjYJ4O7yIkgWE2QXllR4YWxqJAun6l04rcN2mXTL78CXutqQg8pIQVZ+ePJrmcvO/iD8U/9J10Yx2a8E7GK2skuhVoR5Bxn4RB1z7MgSx4QaAPLtLItrQJEVCDa1UCtNbtOE=
+	t=1771687035; cv=none; b=vDQKQgoK4fXdczVUSzgRe6Xdk0FQErlDC2LUuqDKN18w0ynE2DcHC0BuGGi2EIQwqFWsMvlO+FMg+T4hQyxpBUWwb9JmlVuKz9wEPK5bB4h4C7vt1761CYHf9XYH8efsHAMYxaKgdGEw7lejgM8Hb2e2BTVIROhjjGUSxJWtCek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771686683; c=relaxed/simple;
-	bh=31YwMowNkuM4idkQhWbY+/kiCcVdVFVM42qTq+Hc+Og=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V1sosIAkc5EaPMSRyp/A0y+JcM6wyzaMo0fneGdG+ETMFZGiz+mlxjQQpZSEb7uJCiGTK+8dMZleMxYXbg2m+/tUDjFlT/MmfffoADO3C5iGTE8t6tQb2PkHO65BeCkPT9CawxzGEk1R8sTbM7LTz0AEcyEFHM4dleXjhipD6WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xw+i1+24; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so27063275ad.2
-        for <stable@vger.kernel.org>; Sat, 21 Feb 2026 07:11:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771686680; x=1772291480; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nZ1v4uZYYfrFz53g2OEyCTHVBc4Ni9iWSFPy2XJU9Bc=;
-        b=Xw+i1+24a7ShCNdUHTu3QJ6UUyUHuTHUrHuO+kNehuHppUQBNb+uSzQOl7w6Lwtn5p
-         w4B8kzrBuYt7oCq4itdLHvYTdFPlh68tcTNqidcJtBC/bAB5x9umqtv1HILIe+wjAv9o
-         /9YpP+PGMSNDg/qfE00m1FUVCYvqBjzxVcAuLtGtlHdO/lmM6ibgZL0XaUagS+SQzgYv
-         VlX2wB11hgTFVgmhBl+tOHqCJ30BudirxCUNVJS7MMIbOOqRdJk4zAe704WkiCWP6OPi
-         HJPgssQb2qVtlZhirZCPmoEUXTJ/CbgILsheUKTGVra9PCT9WTF8oE58AbcBZzPzznuj
-         qp8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771686680; x=1772291480;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nZ1v4uZYYfrFz53g2OEyCTHVBc4Ni9iWSFPy2XJU9Bc=;
-        b=EWGTN7BCfqgaCT8pSf1oUoPWSTeBe+09PeaBWOjtIgXBBj8JEpU4MjvAfCO6aABroK
-         LcRi2h3M/1nmWQdDFzZm+lj/x09w71uXgN6NIjTX7VeU1kWazWwg1S4ASexpz8J4+wqK
-         qLbe6mu4UaICkZLwB2mSkvG01ILELSPGV6cR0FwDxoBdNeEZRXxNI2H408R6fi7+nMTf
-         MsUm4JPPyVj6ntt5EUSli0Xj7sqBcKdEnf/D5Gkz3YRHgNQucUptLpR6VEiM6iYJbAHn
-         uJV86jVy7LVj2rSD+//aPkXi6wWMwmW5k1tPCuqSA8R6exCo9jGqIJi0qQGBqXtevf9Z
-         QD7w==
-X-Forwarded-Encrypted: i=1; AJvYcCXUH1ojx93SG180KiCKPklZzLAmhU+OXD/HFDeyHnZuMXZap9WjUAZGAY6bw/lTlgMpkpXSWFk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGVbsUhsYc7pEljqbAnLGnd5QcVDb1h9D3R4wP2Vic7Eh8R/NY
-	JD4ClRlu9pUTdyLNMMOlrB/4eQ1UMYRjw7dndjrs++WVopoZ4eV4H7RS
-X-Gm-Gg: AZuq6aLmeaUOCruq7JkbrA5ef4wEkadIBkr4RIK23QFpME7Rz+4E+IWefY+xx2Uq/cu
-	IZWimYn90WJyyVftFh9NF5Bc7rsga2imzLCAMqGaEodnuWZoK11R0XhI9E75PNz9ZIR+zD0izID
-	rLnKFY55iKnFoZpMtlNaFN3mNSIa+Kh98ipETSTC/N6ypZUWvbMuODhCu4gyv6F44uMFYCfX0dA
-	yKyBrU91U4U8zZeYzmHzOMhTlqm3YeqLwvL27kSuBJf28wZX39o576qgCGZkMJrIyOBeDB9yZuo
-	pXmWUsWkM5xNHq24y1u/hxIzsukM0vcgk157u/t8QIura4bLG2oGtyod5TJ5B4oEHEqsI8A3aAn
-	8W8upIEqPEtNhLQN0PHmSDFITEgsRjbfJ1V5QTLFWl8H6UsGy2JqOW6Bno5lNErqNmT9qYoJPfZ
-	nPPI5yceFlkzaXkhsv8A8=
-X-Received: by 2002:a17:902:d50b:b0:2aa:fad8:7474 with SMTP id d9443c01a7336-2ad744ec585mr29723225ad.33.1771686679877;
-        Sat, 21 Feb 2026 07:11:19 -0800 (PST)
-Received: from lmao.. ([2405:201:2c:5868:cba9:7936:c19a:9313])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad7500e346sm34517345ad.49.2026.02.21.07.11.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Feb 2026 07:11:19 -0800 (PST)
-From: Manas <ghandatmanas@gmail.com>
-To: davem@davemloft.net,
-	herbert@gondor.apana.org.au
-Cc: linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Manas <ghandatmanas@gmail.com>,
-	Rakshit Awasthi <rakshitawasthi17@gmail.com>
-Subject: [PATCH] Crypto : Fix Null deref in scatterwalk_pagedone
-Date: Sat, 21 Feb 2026 20:40:41 +0530
-Message-ID: <20260221151041.65141-1-ghandatmanas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1771687035; c=relaxed/simple;
+	bh=5rRvK4UqSzYb6hJHK0ht9Oi4O+1viWlSpW9vNbhW5uU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B4TcPh9cHY3Zs0+Uoez+xJ8tSz22B+kl6NpJ4N073xnf6TNlNHJUZV/kjTUtDgwSt2HwCpKgv/Z0Dm05/BjWn6iKGf5synmMdbFpC7pFypYOhNuOHOzf3b3IloCCvFm0D7qRloJZjEGbegteG7WrRmCT57X5hKL6VMvWJkPklhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gC8rZjjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F08C4CEF7;
+	Sat, 21 Feb 2026 15:17:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771687035;
+	bh=5rRvK4UqSzYb6hJHK0ht9Oi4O+1viWlSpW9vNbhW5uU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gC8rZjjA9C8P3w/BGuH7J/kow/Y5IRs57jBkmJdmO6ZCk4BrnjXiF2C5iRrK1jMrq
+	 Qy5dcmekQpvcSMP9cyDLPU+6704lvr7E5hDDsNnnqLwzhhYZfFkUP+XeaGkT5s+pXD
+	 dZcNjPIWJy4eKkL+oilg5ObihyFPZ1jQyONbPUnt89K9/iVYXJQJ7mFcOwB/HAaRac
+	 4UnKE4V0D8767Kx1lgR60o2k9N807d2f8STl5QhN7qUqYg0+LIClTO+G8kA342aotC
+	 H8K8WKKpSicta7siFxvjA9EmEzVROu1G37JwiVM5jIxIpcODlX0DYqHd03sTTqymNF
+	 A3hVRtBdNkocg==
+Message-ID: <8a23c0cd-12a8-4c1d-9420-fd029ccf30e0@kernel.org>
+Date: Sat, 21 Feb 2026 16:17:11 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] power: supply: axp288_charger: Do not cancel work
+ before initializing it
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+ Sebastian Reichel <sre@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260220174938.672883-5-krzysztof.kozlowski@oss.qualcomm.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20260220174938.672883-5-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-217636-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217637-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ghandatmanas@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[hansg@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1852816D207
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6288716D22D
 X-Rspamd-Action: no action
 
-`sg_next` can return NULL which causes NULL deref in
-`scatterwalk_start`
+Hi,
 
-Reported-by: Manas Ghandat <ghandatmanas@gmail.com>
-Reported-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
-Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
-Signed-off-by: Rakshit Awasthi <rakshitawasthi17@gmail.com>
----
- include/crypto/scatterwalk.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+On 20-Feb-26 18:49, Krzysztof Kozlowski wrote:
+> Driver registered devm handler to cancel_work_sync() before even the
+> work was initialized, thus leading to possible warning from
+> kernel/workqueue.c on (!work->func) check, if the error path was hit
+> before the initialization happened.
+> 
+> Use devm_work_autocancel() on each work item independently, which
+> handles the initialization and handler to cancel work.
+> 
+> Fixes: 165c2357744e ("power: supply: axp288_charger: Properly stop work on probe-error / remove")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-diff --git a/include/crypto/scatterwalk.h b/include/crypto/scatterwalk.h
-index 32fc4473175b..abbb67391710 100644
---- a/include/crypto/scatterwalk.h
-+++ b/include/crypto/scatterwalk.h
-@@ -78,7 +78,8 @@ static inline void scatterwalk_pagedone(struct scatter_walk *walk, int out,
- 		page = sg_page(walk->sg) + ((walk->offset - 1) >> PAGE_SHIFT);
- 		flush_dcache_page(page);
- 	}
--
-+	if (sg_next(walk->sg) == NULL)
-+		return;
- 	if (more && walk->offset >= walk->sg->offset + walk->sg->length)
- 		scatterwalk_start(walk, sg_next(walk->sg));
- }
--- 
-2.43.0
+Thanks, patch looks good to me:
+
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+
+Regards,
+
+Hans
+
+
+
+> ---
+>  drivers/power/supply/axp288_charger.c | 19 ++++++++-----------
+>  1 file changed, 8 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/power/supply/axp288_charger.c b/drivers/power/supply/axp288_charger.c
+> index ac05942e4e6a..ca52c2c82b2c 100644
+> --- a/drivers/power/supply/axp288_charger.c
+> +++ b/drivers/power/supply/axp288_charger.c
+> @@ -10,6 +10,7 @@
+>  #include <linux/acpi.h>
+>  #include <linux/bitops.h>
+>  #include <linux/module.h>
+> +#include <linux/devm-helpers.h>
+>  #include <linux/device.h>
+>  #include <linux/regmap.h>
+>  #include <linux/workqueue.h>
+> @@ -821,14 +822,6 @@ static int charger_init_hw_regs(struct axp288_chrg_info *info)
+>  	return 0;
+>  }
+>  
+> -static void axp288_charger_cancel_work(void *data)
+> -{
+> -	struct axp288_chrg_info *info = data;
+> -
+> -	cancel_work_sync(&info->otg.work);
+> -	cancel_work_sync(&info->cable.work);
+> -}
+> -
+>  static int axp288_charger_probe(struct platform_device *pdev)
+>  {
+>  	int ret, i, pirq;
+> @@ -911,12 +904,12 @@ static int axp288_charger_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	/* Cancel our work on cleanup, register this before the notifiers */
+> -	ret = devm_add_action(dev, axp288_charger_cancel_work, info);
+> +	ret = devm_work_autocancel(dev, &info->cable.work,
+> +				   axp288_charger_extcon_evt_worker);
+>  	if (ret)
+>  		return ret;
+>  
+>  	/* Register for extcon notification */
+> -	INIT_WORK(&info->cable.work, axp288_charger_extcon_evt_worker);
+>  	info->cable.nb.notifier_call = axp288_charger_handle_cable_evt;
+>  	ret = devm_extcon_register_notifier_all(dev, info->cable.edev,
+>  						&info->cable.nb);
+> @@ -926,8 +919,12 @@ static int axp288_charger_probe(struct platform_device *pdev)
+>  	}
+>  	schedule_work(&info->cable.work);
+>  
+> +	ret = devm_work_autocancel(dev, &info->otg.work,
+> +				   axp288_charger_otg_evt_worker);
+> +	if (ret)
+> +		return ret;
+> +
+>  	/* Register for OTG notification */
+> -	INIT_WORK(&info->otg.work, axp288_charger_otg_evt_worker);
+>  	info->otg.id_nb.notifier_call = axp288_charger_handle_otg_evt;
+>  	if (info->otg.cable) {
+>  		ret = devm_extcon_register_notifier(dev, info->otg.cable,
 
 
