@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-217622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wP3LNH5FmWnNSQMAu9opvQ
-	(envelope-from <stable+bounces-217622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 06:41:18 +0100
+	id 8NtOEplFmWnNSQMAu9opvQ
+	(envelope-from <stable+bounces-217623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 06:41:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADF116C320
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 06:41:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E1316C337
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 06:41:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0C683038AC2
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 05:41:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 91EEC3008C3E
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 05:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97543313287;
-	Sat, 21 Feb 2026 05:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE23313298;
+	Sat, 21 Feb 2026 05:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvJV7tIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiY6AZ35"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B746286410;
-	Sat, 21 Feb 2026 05:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D354414;
+	Sat, 21 Feb 2026 05:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771652473; cv=none; b=dOqGUBFzSPKjfUb+0KbpcrW8UvldAa/RZGoJbKH9vNqROuMHMsq3A3CRZsGdPnN5XhPyWNYMsJ5iA7PpOL1aViCAae0aOuwEEn+yW5NvSzsS/SlfM/65YNt57EkHCQcdh+JIutocXrMuJhVcj5za5SkkGAsGtHss0Cz1hu4RAb4=
+	t=1771652501; cv=none; b=sCYErEYThjvDeCDMY3a3/GF879Y3pCTVvmknxnE+C6jRGJ1s6ZpF5+bC7SFh28udwJ90w0bpkPOmpO7wxtfWluyg7saTURoz1PE7vWuS7KONGxY4y440yI0n0FhbFSpTQaYlriru//cECIL887ZP1ySfWTuLeWptSrMVKQdbahA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771652473; c=relaxed/simple;
-	bh=EtABGilW/ybxyF/sBxk1E7K/D842FMAghACNgHJRUZk=;
+	s=arc-20240116; t=1771652501; c=relaxed/simple;
+	bh=dILJaJLWNaymGhs7gSN08DU8nY4kViwy9GwyMBXqpl8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dL8eXPHZBijAzdFvc11LduFYccUGmzj2YiQzhQ0pwJRaEyESuz13VKeLsseTB6uLJjZ8IeNYF7BJNmLjxRIKihHMFtzXbBvMOKg1rRvy/XFSFhIBi2yngyMztw3/9SPtYx/xzpJdKVnZ+UiunK4osCc9MdeGHluOlpYUePgeFc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvJV7tIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17CBC4CEF7;
-	Sat, 21 Feb 2026 05:41:12 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UwZ+tktygvvhJN9f7/Gfb8cAekuGkDnljy7P/ZN3uDjoq7/2/7htbi5UAa7enExTU0LGf106uuUVqBWFH1Bvg6XeyiXeL8iK9pG6ZTFT0LRpDTQ0sT6TyvS8fPo4Ivgv+ppbvRZB1i2zoPzo0l/8+6+5m6cGDlt0yPJynhONHs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiY6AZ35; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68461C4CEF7;
+	Sat, 21 Feb 2026 05:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771652473;
-	bh=EtABGilW/ybxyF/sBxk1E7K/D842FMAghACNgHJRUZk=;
+	s=korg; t=1771652500;
+	bh=dILJaJLWNaymGhs7gSN08DU8nY4kViwy9GwyMBXqpl8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SvJV7tIToUjndHp8UPEN96Pi3sKQXusH2kwOSFLfhGp7TDWo9mYVtiS+7/HxYDQTw
-	 af9XHIeVDazzUpb89IvjJNYgnor4B0VSYfOme6APdYD1jUwd48aCFCFz8MZgORz4cm
-	 h6JkUWbE87I0hVELf0fHZhv4O4swRHsJeZHz7Pjo=
-Date: Sat, 21 Feb 2026 06:41:07 +0100
+	b=jiY6AZ35TrJOFjA1SxH9rqIxI/9lg0sGDlmZm4m0KItyXLqq+68cSfrFgFjKVITcq
+	 ZZccWg8G7+I79sWX/wGnmMyCbKuUXT3k0pckiYC4UCTzEtXnKB2iFiou75i6IDzYGD
+	 j90LzJWXFruCYdx0DAIk4Y63nBRMxqvFEmHfrGhI=
+Date: Sat, 21 Feb 2026 06:41:37 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Rosen Penev <rosenp@gmail.com>
 Cc: stable@vger.kernel.org, Kenneth Feng <kenneth.feng@amd.com>,
@@ -52,11 +52,9 @@ Cc: stable@vger.kernel.org, Kenneth Feng <kenneth.feng@amd.com>,
 	"open list:AMD POWERPLAY AND SWSMU" <amd-gfx@lists.freedesktop.org>,
 	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
 	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] Revert "drm/amd/pm: Disable SCLK switching on Oland
- with high pixel clocks (v3)"
-Message-ID: <2026022148-unsorted-pushover-8262@gregkh>
+Subject: Re: [PATCH 0/2] 6.12 and below: amdgpu: fix panic with SI and DC
+Message-ID: <2026022126-calculate-matador-e7bd@gregkh>
 References: <20260221034402.69537-1-rosenp@gmail.com>
- <20260221034402.69537-3-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260221034402.69537-3-rosenp@gmail.com>
+In-Reply-To: <20260221034402.69537-1-rosenp@gmail.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -73,12 +71,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217622-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217623-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[gmail.com];
 	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,gmail.com,ffwll.ch,lists.freedesktop.org];
@@ -95,23 +93,26 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3ADF116C320
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 01E1316C337
 X-Rspamd-Action: no action
 
-On Fri, Feb 20, 2026 at 07:44:02PM -0800, Rosen Penev wrote:
-> This reverts commit 0bb91bed82d414447f2e56030d918def6383c026.
+On Fri, Feb 20, 2026 at 07:44:00PM -0800, Rosen Penev wrote:
+> The first commit is needed for the second one to be reverted cleanly.
 > 
-> This commit breaks stable kernels older than 6.18 that are booted with
-> radeon.si_support=0 amdgpu.si_support=1 amdgpu.dc=1
+> The second breaks DC support on my AMD 7750. Kernel panics and I get a
+> black screen on boot. With these two reverted, 6.12 is usable again.
 > 
-> In 6.17, threre are further commits that are needed to get the DC
-> codepath in amdgpu for Southern Islands GPUs working but they seem to be
-> too much of a hastle to backport cleanly. The simplest solution is to
-> revert this problematic commit
+> Tried to git cherry-pick the fixes but that proved to be difficult to
+> do cleanly.
+> 
+> I see 6.6 also has these two commits.
+> 
+> Not sure what the proper procedure is to request reverts on stable
+> kernels.
 
-Ok, this is better, but still, this only applies to 6.12.y, right?
+Close, see my comments on the first patch.
 
 thanks,
 
