@@ -1,127 +1,123 @@
-Return-Path: <stable+bounces-217650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNu6AZkLmmlmYAMAu9opvQ
-	(envelope-from <stable+bounces-217650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 20:46:33 +0100
+	id haV2ATYNmmmqYAMAu9opvQ
+	(envelope-from <stable+bounces-217652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 20:53:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B5F16DB6E
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 20:46:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B15716DBE4
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 20:53:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 555033025F66
-	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 19:46:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C1AD0301AF77
+	for <lists+stable@lfdr.de>; Sat, 21 Feb 2026 19:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BC1308F26;
-	Sat, 21 Feb 2026 19:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C6B33EB09;
+	Sat, 21 Feb 2026 19:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KRavfNFo"
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="XHthcOUV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95989CA6F;
-	Sat, 21 Feb 2026 19:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F12212564
+	for <stable@vger.kernel.org>; Sat, 21 Feb 2026 19:53:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771703189; cv=none; b=TZ0/wail5fBURj9zq8uL8c75FZniG9ikNHoag2eJbn9SZK+j/H7Bja5D30l7R1fXJ74GWAbuOg8cg+IzI+JZS043pVnJEfAc24NZ1m/72jAxJxRiOp7+z+y6sh4V7CQjv2mZdT2UI3O2y7P1CT+HVm0TTV8raSerSfK6DmKbZ3M=
+	t=1771703602; cv=none; b=Sr3C6Y1Czc9dtdw1EF6HB62qDc02VLeC7dQ/OOvUNmPNSezC9ogv7/Vzj8eytDKjm7QNq2MZkPecrpMUt1c6n59q52Jyrytz4G2kBFzZ8RLez6sb5D7e57TU1Br/5YsMYx/tbkohVRxETIO1rojFSuB2/pdKBm/urtsnrx5rH3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771703189; c=relaxed/simple;
-	bh=1FDwAsvp9YVgjzhyL/oJX8kk/GEGNxZtKFH4L7LAkT8=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Etp9Fl0EibtTjUQbJtDk/yvD5jq4HrOw81uDKw3rPptev3h+fCuHF2jPMeS/u8CLj8yqxhnScixjVh9VVZsaLO9T/z8YkeM1ASsY5Tq0x9sq1PuIjmMbUxXuGwJ69HHgMvMtTB+BlTzsqk/y8Ys6BWgys6PtAhBTHWCTZNDyvxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KRavfNFo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EFAC4CEF7;
-	Sat, 21 Feb 2026 19:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771703189;
-	bh=1FDwAsvp9YVgjzhyL/oJX8kk/GEGNxZtKFH4L7LAkT8=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=KRavfNFo55hbqluDAKIezEaPoKJ+67IdVr0l/I7zD7XXEMHbZxmJUZuHC3oGhUtNU
-	 hCUB/3H8RP+gSXNW6M36rCbGneZSiUOI6V59CFTeWQoqBaOxQrzXPhuMMRb6jUX9t4
-	 R48Gz7V426TBuB6BOKZ8wgiq6zSQCUNEZBeTAHOgBbCwiX8UMIGtt8OJG4ytvsljGl
-	 stqg+DQnSXxMw2p4RXvF5wCPCcHYXZAgCHXxcKblCTSCoTxYCKNyJP42KtETg7HZLb
-	 4uzH2fOj+VwJXWHcVLntuvhhFJJeexOoPqRAB79RVZUS/qWBoLVcgMX8VLZ7XcrKhf
-	 8oY0zXx0rCv6w==
-Date: Sat, 21 Feb 2026 20:46:26 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Benjamin Tissoires <bentiss@kernel.org>
-cc: Lee Jones <lee@kernel.org>, David Rheinsberg <david@readahead.eu>, 
-    linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] HID: uhid: Fix out-of-bounds write caused by raw
- events mismanagement
-In-Reply-To: <aZmsTQeeGf26FqvY@plouf>
-Message-ID: <172q4775-616s-p7s4-7n80-p8579n0r3516@xreary.bet>
-References: <20260211164025.171242-1-lee@kernel.org> <aZmsTQeeGf26FqvY@plouf>
+	s=arc-20240116; t=1771703602; c=relaxed/simple;
+	bh=2cH/jP8PR65zntl1Pn74rr5Xd5vT9vGJDk5z+nQ0ypM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ItyhQHq9lFjFn3WD/9taJvWQxbThekIAmot+xFZbZyr+SZwqNe7OlDYe4X7waTmp62oIcEE2W+Uz9XOCIjsF4q2BXXUTDhDY1hcIRgdVt9g9RyRpsSgCv24VrDOgxwMx0924L6f0f8emGVB87c+rRIQHLE+zw0GtVCip7pUpLv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=XHthcOUV; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id DD31E240103
+	for <stable@vger.kernel.org>; Sat, 21 Feb 2026 20:53:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
+	t=1771703599; bh=2cH/jP8PR65zntl1Pn74rr5Xd5vT9vGJDk5z+nQ0ypM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=XHthcOUV/z1qsuIflLLnrCMiPBJz8PYj+yF/o23JG5oAsA+nzW5bSUpCtifdCHhbr
+	 1beQtGD4CE6aJ23CYT+iiVvi2LdVmwLr8LHq/KE4cikMwL8zSU31KeGANzDiuhSzH0
+	 hMe9wkJk1m7XtC3MYEj2rgDiWcD5SLlwznjgr07d7/rXFFqXpgJ177vssgXVvARna4
+	 oytePjpkRfem9cHLKmxhMi/42EUfZfmdfLdK9+7gEwdn71++1ol2WC+BHeTYNIDtfq
+	 s7n+Cd9Hsmga5fyB52/PVgrZEJZ6qvxwyNUPTG5VuCAXRiMkFvSIZtNUrvF7lhhtCT
+	 urgPOCZiAGxEQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fJHq30dQsz9rxD;
+	Sat, 21 Feb 2026 20:53:19 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Panagiotis Foliadis <pfoliadis@posteo.net>
+Cc: Jaroslav Kysela <perex@perex.cz>,  Takashi Iwai <tiwai@suse.com>,
+  linux-sound@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: hda/realtek: Add quirk for Acer Aspire V3-572G
+In-Reply-To: <20260221-fix-detect-mic-v1-1-b6e427b5275d@posteo.net>
+References: <20260221-fix-detect-mic-v1-1-b6e427b5275d@posteo.net>
+Date: Sat, 21 Feb 2026 19:53:19 +0000
+Message-ID: <87wm057u1d.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[posteo.net,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[posteo.net:s=2017];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217650-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217652-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jikos@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[posteo.net:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[charmitro@posteo.net,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: 68B5F16DB6E
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4B15716DBE4
 X-Rspamd-Action: no action
 
-On Sat, 21 Feb 2026, Benjamin Tissoires wrote:
+Panagiotis Foliadis <pfoliadis@posteo.net> writes:
 
-> > Since the report ID is located within the data buffer, overwriting it
-> > would mean that any subsequent matching could cause a disparity in
-> > assumed allocated buffer size.  This in turn could trivially result in
-> > an out-of-bounds condition.  To mitigate this issue, let's refuse to
-> > overwrite a given report's data area if the ID in get_report_reply
-> > doesn't match.
-> 
-> That's a strong assumption and a breakage of the userspace FWIW. The CI
-> is now full of errors:
-> https://gitlab.freedesktop.org/bentiss/hid/-/commits/for-7.0/upstream-fixes
-> 
-> It is pretty common to allocate the buffer and not initialize it in
-> get_report operations.
-> 
-> It was a bad API choice to have rnum and data[0] for all HID requests
-> (internally, externally), but we should stick to it. The CI breakage in
-> itself is not a big issue TBH, but if it breaks here, it will probably
-> break existing users.
+> The Acer Aspire V3-572G has a combo jack (ALC283) but the BIOS
+> sets pin 0x19 to 0x411111f0 (not connected), so the headset mic
+> is not detected.
+>
+> Add a quirk to override pin 0x19 as a headset mic and enable
+> headset mode.
+>
+> Cc: stable@vger.kernel.org
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221075
+> Suggested-by: Charalampos Mitrodimas <charmitro@posteo.net>
+> Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
+> ---
 
-Lee,
+Thanks for taking care of this Panagiotis.
 
-was this found via code inspection, fuzzing, or is there some real-world 
-report behind it?
+Reviewed-by: Charalampos Mitrodimas <charmitro@posteo.net>
 
-Thanks,
-
--- 
-Jiri Kosina
-SUSE Labs
-
+Cheers,
+C. Mitrodimas
 
