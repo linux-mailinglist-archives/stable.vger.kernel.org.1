@@ -1,190 +1,240 @@
-Return-Path: <stable+bounces-217674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8E5/LTs9m2lvwgMAu9opvQ
-	(envelope-from <stable+bounces-217674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 18:30:35 +0100
+	id eIT2ND1Em2ljxQMAu9opvQ
+	(envelope-from <stable+bounces-217675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 19:00:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3606516FEBE
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 18:30:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 406A216FFE4
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 19:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 439F7300B870
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 17:30:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81399300F526
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 17:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADE4350A3D;
-	Sun, 22 Feb 2026 17:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BF93587D7;
+	Sun, 22 Feb 2026 17:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WCjRzzx6"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4apLAmbw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268192B9BA
-	for <stable@vger.kernel.org>; Sun, 22 Feb 2026 17:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753DF18787A
+	for <stable@vger.kernel.org>; Sun, 22 Feb 2026 17:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771781429; cv=pass; b=gS4b+JlsKDc/xYgq3lkQFXmHt2mg/Pgu3IUI8dxbAZtLu7XRUvVgrwp9dpjzuTtw12tlyvO+9giWN6/5xdbISP21Aw1L2xMaqilXK4ai4BLtvO0Q77cPVera8dkwECm2/qlfgOzJTFOeLUbYJedCTk+lYOosxvybgc5iSYJ9myA=
+	t=1771783190; cv=pass; b=uY9YBZcEQb0tiexU3mcfhiKrKc93rSO3qPVXPqFouSVixiVIZCSMJ8j11h/xuihR8LXo9cftV8mMmtRj4+EY0mGKk7Lush5hZuJQ70OOIwOQ/G1T8e8tbSjntj3K1lJM80rus1mdiMGfct4zEt9/oBglTDb6Y7z9Vvnkfiz+xUs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771781429; c=relaxed/simple;
-	bh=WuQdtA91bXirdlbXnxD3/MRjhUKTcOvVKRMaaSclhvo=;
+	s=arc-20240116; t=1771783190; c=relaxed/simple;
+	bh=eKuRo72pi3QcR/TAbX6JrQsIwy/ci3OUBS1cUlynznM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b1dgYretxt2PX7oYf9YYLTf89MHLVHCbXju5huYy9wUpctJecbCydq0Eal7oHgqjammgO61EluveiPIT6PJt8Tj+VkFH1u3pOqpddrwfB7Zs+6Ewmq5/AxnO0j11ZjqOIotaqkM50f63D6KnYu054dCLiZyItMms7UYpWyp6pWI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WCjRzzx6; arc=pass smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-794cc7e06f0so1335367b3.2
-        for <stable@vger.kernel.org>; Sun, 22 Feb 2026 09:30:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771781427; cv=none;
+	 To:Cc:Content-Type; b=IDACZfCZfFOOKlCdBONeNKWgAilNekNgqM00NB3Z11O+jEUg3OergSXm/Ls1R8LFmj7h38vU6a7aoimihS6oAQt73EpXqwuvpP5xdTNHkMpg9d4cV2DHkxfr0vlv98j6qLkPesxoPWbngRPYnBQMOSNL2B+Z4ZZYBm1ogxHot6s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4apLAmbw; arc=pass smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-506a355aedfso595411cf.0
+        for <stable@vger.kernel.org>; Sun, 22 Feb 2026 09:59:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771783188; cv=none;
         d=google.com; s=arc-20240605;
-        b=bQs/FsiBfBNpFa8XeECWAHw7/nLscHl+qRXxF4hSOuK8GOx+/6ewPAQulepoU4bHRH
-         ISY3tH5GbFY5EeSH969hXj2LI0IGeFyvt7O6L1DRu84ml0Zlxj7rbdKu04tzBsaNBnr3
-         oaM1UQmpZLIzMsvggHgqRXNZbNExOqAPmEixxYJM8b0OKGfx3E7m2uc3r66IP2rWHgCV
-         6bLBRo0HV+8AuApA3ATXkl2CuMnSVQq+Yhun+GkrseNIYgD7gwBx5nxyY0PF+zKoBQbz
-         poLKfcKTcLB6JsxaNtrZ9GAPakc4Hjv1vkxyUdyNjzUeKLqckbq+1vSx48gbdbOiXHJf
-         KQyA==
+        b=ZyNoRybAedAF6kZe3ge/k0WtyU9TbrS9BTfjt0+SvawHSN1lamZ/R87QatXDiJdsm1
+         aCj0Sv6N9jKIm2sIbW62ehW8fXNsE4a6iZodqkJiYEJgLS5FOmxFek20IGjg3NNF/LJD
+         6CY7xVeMxU1CW9SfqkT7KLEZYZax2lpAVFP5PbaNqUH3f6cg5yiwKLSlewsrXl8uD67n
+         WMF5jgrimBhGPHcH/srrMB+dIHXlTGZHCrT1qBAm1tZNgNAhk84FGtMaZlVskrLYT870
+         NeWCVtcd7irSd6dk7btTDiDukeaD+Z/hUTvgUGXZJhMjN3QWrKzeum/DT66+PnWQ3MtR
+         mjXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BnmkLIgWSk18hKSD8wtaKdnDH56mNXzkJ0gXdtf3O2E=;
-        fh=pxPwuqQ202qnxPyjQZV0ZVEVT49aCBBrUxhtXNMQuCE=;
-        b=UkGxDTI3EKtiMYM2BadsJ1ba1RWlnpSX4u6H8b1s/6rbOZ5ILZfOJQPVljSALV6k7D
-         gnnylQd824BO0CG5xaw4mq13fGq4JXXhEYCZsmqyakREPgwWEgkzO3l88zoYTIGN59cr
-         Xr0ezsr9hFqJ3cMiTLTq/NjzXshc7d7ad5onPP5OqfNjJDlpl9TYOdyLUIYYncgAntre
-         89GXWdldNgoV9UBTqZ9F9QXbpt9e4FH5L6GaI7hwTcbpUHoClo0e9o+kvzknYfdXA060
-         ADvFxjOEVf4G3HAapBQ9bNRi2c2oot/OHZ6a4xVugeojS+/e5X5mwkyANGxR5kGos0nw
-         3toQ==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=pQ/DTelLQW8X8WLIzdKUZ9IVFS1QEQ7S0xRLul8dB6U=;
+        fh=oVHs6VSs0CnfPgL6/tpE/Bxcwa/eIJpe5pIYz+svw8A=;
+        b=NNQMCeC5ARIRVd/oWfai9krlCKlgWQalY2M9CWnh0C6uFwSZzW/vN6V3qrmmXec/af
+         UppfKNgg1JG/lpEk+Ecvln2MpmgQYYXg/NtiyB3eAQzDXC0z7E37ndRkjgeDmVPEx6V7
+         pSbv09FeDKeqd+F80tJVjhejrOx6zDOuNbpLJ11le14nZARW2ZE3LnHvolQd0BpQPiVM
+         G/pp1uAvsfu8EaM/tL998/sb9OW3Y+O6rfQE78a9DRqqIvfVUwqzY1XNQ9aQEy3gFapF
+         Hd0lyMdLUJxYavHmJqvSCDY/U6CqGXbbqa8ikS6CVJZJ3nfs0RHwR6rTe5uvwcHjGfIH
+         Rj9g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771781427; x=1772386227; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BnmkLIgWSk18hKSD8wtaKdnDH56mNXzkJ0gXdtf3O2E=;
-        b=WCjRzzx6KfSJqqYW83VzdtyLvMYdW8PsT/ow9+r0LzfRGru9LbKcLTrU/2TciFiB8m
-         rYNQehnqqVCKN5zafnjuSdNIPlXxusR1AGfr06uY5f8wO2H0vE77fc2XuWODOih+N/8b
-         /YKIRGhuyl5+IoLxLicTi0QTEQleXjoIWT+Db35hsYctHSqNdEm+UQe7wE7EE5v+d/yX
-         NUPEilzve142qk8qybCt0JmqufMGJDvs74IrsbJYiTrvFayULdcJg0YAeCM3b8ors1K+
-         f17gR7/fn/EsHKzt/thiLr94RxqeJDx9jO4SBaYMpwmRB6iFoyNisO3PF/b/yzmDA+6l
-         IzRQ==
+        d=google.com; s=20230601; t=1771783188; x=1772387988; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pQ/DTelLQW8X8WLIzdKUZ9IVFS1QEQ7S0xRLul8dB6U=;
+        b=4apLAmbwUxRD3+G7RgF3PwHl8p4yDeCav0Szwqclkmr/d8zgJHldok2/Oo38jsRgsF
+         +OYzwTHmxlBpG79dLpvGnEENVE3CbOA5HNHcTWSOjb+zSsYXNvXjiDELxpXxz4WFX2St
+         YMmRzZPgTxXbBmjmBtiFmRRq7/y10vOdmPm/J1erBh6yu6ovVIoyziX5lAMOSHXtC2WA
+         y5e5Mhp7tfMJcJw3mGyKOTYZ2K3z5uq3J4MobpCXfhUwsKWmvxOCt0cGMM18gKAMJZi9
+         ftIqMq2uQN8RV4RaIFhvK7XCrwENm4eExG8dgOv+c1NEPRkYanivHyrqKBgrO+zOB+kO
+         9KWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771781427; x=1772386227;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BnmkLIgWSk18hKSD8wtaKdnDH56mNXzkJ0gXdtf3O2E=;
-        b=IT6w0r/pbeN6yb9htM3IbA7cjes8BOFxsFDSw3aWm0rCIK+w5VwwtVxbVelD7WuY3S
-         r/JrkrmimMp9mdpaN0/u8UxcZN+gQNdQ83dihLVmIxbfeQBjwR5irQ8xKc4cap5X8laY
-         ystKE1+xsNBBws8y3hrCFlcsAbXjYItqGNI7KqIHGZmV+tt9xs4KyFV49NEnPhdhP0Es
-         GPCgUrTmcPgs5l0C0ioQvFyMWzBeshTIYdwHrtui3v1IXm/0CXRIZkJni4Rof4/4YfAO
-         5shcbOsn/ciRsP+p0s+rBLaKMtGiZxouK5Yme6b3FF8HL1EOpmOrmem0dtTEfZRe+O3Q
-         /kcw==
-X-Forwarded-Encrypted: i=1; AJvYcCXai5mBy59gRLHA932UcaX1LoT1YaWKdiZIXhCJyvQ0gkwU0rcZNWhSnibKHi5ptjnLBc2Xz9Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmMFctfL+yx7bRB3zyAnummNHq8f1PT5BSP/2NyA+l1yMte/F2
-	rGS4vRsItqBH8VaGHivuPxQw7vOv2Gg4KCSRkzg8ZHwlyBrLkZJgHf/qvO6Bd06SbHG5crOAy6e
-	v9rzxA9g5rIeGfEqg3UFO6RYEaEli04g=
-X-Gm-Gg: AZuq6aIG2p6SngQzLVgOwmul+lci9QQKW27A36N4ECNFZQpic5W3ZkGchYZMGW/X0fV
-	1jGuAfrv0r1c3tPEIS9izdVP9NPRNj78XBibrgpv3mQKcJPAAZ5XjVbH76fdmPxpazarjXKIP28
-	ZpsTpAtSuv/fqVc6j04pnnd0WbVBK+6FRQjsJLqDXnwWEqPCxhkHnU4K1UAhbFoOWmnAPsUk4OV
-	WBqQmMusGrmDUj4ZuLnycWTEkdClfOGvsYPaF7W81D/7Pw2LNcj7rQckWgWb/yjfuLUycELo87b
-	Z49Y
-X-Received: by 2002:a05:690c:93:b0:797:ab72:628f with SMTP id
- 00721157ae682-79828fa2ab5mr44574817b3.4.1771781427236; Sun, 22 Feb 2026
- 09:30:27 -0800 (PST)
+        d=1e100.net; s=20230601; t=1771783188; x=1772387988;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pQ/DTelLQW8X8WLIzdKUZ9IVFS1QEQ7S0xRLul8dB6U=;
+        b=L75DVroLeWvZCmEnyX3FlmlkWoCdc6JETFAUFRo6+tXpwdKC1lh48/L7xaSjgjq5FQ
+         5fH6bD311be6LvTlOrvnoifiRLv426g/CSoLfQ9frY91xtW5CfpfRYfUrX/U9dhvlkcQ
+         ppwXpC6LqM+RiV6QJaWHv0F0kXt+Cl6XaS2SE82uELcN4xQNyxNWKJaFpOkEYEAqTpcg
+         kCPSExvuRFO/W67yI3o51t9MiZl5Em3dobN3p7VVid5s9ZsWn5KP6A0ptLGo5GJMlOQT
+         UrAvlDcs6TS48H1I9lmFP0m1TNZPYVCRS684t5jGFe2VzNwh7iHirtrYXnM5ycIjZSNu
+         f4ug==
+X-Forwarded-Encrypted: i=1; AJvYcCWCGL8AOvRH3I6Pb8N2C6yHtVkZJTsocC1lXRpXWsvg7K33ndPqQKih03F/Z9TCjxxBperI0P0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywmt26cSip6xDtXNkzcYbGSqhBnTFo3EZjC5/66N0Ln6ZyhSmyM
+	jncHShLpUeznW3I6z4eqLur2kmnyK4IzKZ4qzpEhipnKm98yyM2PVUX+GwongEkQIW8XQrMC3RR
+	WXrJ85URJWCPNezqIwLvI9wnBuEdWEnci4TI9bbGz
+X-Gm-Gg: AZuq6aItx1zlIu3obUJKI5d3YkHA1cLCD2G8D/vmW6gJt29jzoWe4ftVwiWNbTzI8NF
+	A2Rvsqj7bsJzd0SgV/dhdMhn+f0l91VXeLJttA1G+g1JIEmXCSAU7kD2a3bZDIyDi6BpZBU/lSa
+	zIGZTVR3MIaU3sEcd8vxa1z0CnunRLfD0kelvNRyMUwz4WZM9AU1VyjQJEDAvMQxlfDWp5u0Elj
+	fZ8W6OnlKH5fEglu5BCNWz3MNTvltTRkcX5AMWgO5LkVNY0werg0UHdrm1m1/NBfgUiyK/OOQk4
+	OSOOjUgm
+X-Received: by 2002:a05:622a:1451:b0:4ff:bffa:d9e4 with SMTP id
+ d75a77b69052e-5070e8c5755mr13358721cf.13.1771783188028; Sun, 22 Feb 2026
+ 09:59:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260220133135.1122081-2-thorsten.blum@linux.dev>
-In-Reply-To: <20260220133135.1122081-2-thorsten.blum@linux.dev>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Sun, 22 Feb 2026 18:29:51 +0100
-X-Gm-Features: AaiRm50kypTpMDY3ZXdNnlUeMETOr3yH_tAg04sHJcHrEEiY_Yo7xkfaj11LYrM
-Message-ID: <CAFXKEHY40ybHVbWLWPjOR_wuv5sV9YYXyum6nTT7LHG+irBpUw@mail.gmail.com>
-Subject: Re: [PATCH] crypto: atmel-sha204a - Fix uninitialized data access on
- OTP read error
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	stable@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260222141000.3084258-1-maz@kernel.org>
+In-Reply-To: <20260222141000.3084258-1-maz@kernel.org>
+From: Fuad Tabba <tabba@google.com>
+Date: Sun, 22 Feb 2026 17:58:00 +0000
+X-Gm-Features: AaiRm50zqZjqoVrNG72cEBICJ3I1cXMK2s6jm__GSaPoqNDpAt8k3N-biQWzjiE
+Message-ID: <CA+EHjTy4p-Mbfr86NR9n1LgHC0EWrkdVjYb8O3z7k=Lv1entQg@mail.gmail.com>
+Subject: Re: [PATCH] KVM: arm64: Fix protected mode handling of pages larger
+ than 4kB
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	Quentin Perret <qperret@google.com>, Will Deacon <will@kernel.org>, 
+	Vincent Donnefort <vdonnefort@google.com>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>, 
+	Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217675-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217674-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lrubusch@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linux.dev:email,cmd.data:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3606516FEBE
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 406A216FFE4
 X-Rspamd-Action: no action
 
-Hi Thorsten! So this one was tested on your hardware?
+Hi Marc,
 
-Wouldn't it make more sense to squash this with the patch before: 'Fix
-error codes in OTP reads' (which IMHO actually fixes mainly the bounds
-check)? This on it's own I'd consider rather a refac than "Fixes".
+On Sun, 22 Feb 2026 at 14:10, Marc Zyngier <maz@kernel.org> wrote:
+>
+> Since 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings"),
+> pKVM tracks the memory that has been mapped into a guest in a
+> side data structure. Crucially, it uses it to find out whether
+> a page has already been mapped, and therefore refuses to map it
+> twice. So far, so good.
+>
+> However, this very patch completely breaks non-4kB page support,
+> with guests being unable to boot. The most obvious symptom is that
+> we take the same fault repeatedly, and not making forward progress.
+> A quick investigation shows that this is because of the above
+> rejection code.
+>
+> As it turns out, there are multiple issues at play:
+>
+> - while the HPFAR_EL2 register gives you the faulting IPA minus
+>   the bottom 12 bits, it will still give you the extra bits that
+>   are part of the page offset for anything larger than 4kB,
+>   even for a level-3 mapping
 
-On Fri, Feb 20, 2026 at 2:32=E2=80=AFPM Thorsten Blum <thorsten.blum@linux.=
-dev> wrote:
+Matches the ARM ARM.
+
+> - pkvm_kvm_pgtable_stage2_map() assumes that the address passed
+>   as a parameter is aligned to the size of the intended mapping
+
+nit: pkvm_kvm_pgtable_stage2_map() -> kvm_pgtable_stage2_map()
+
+> - the faulting address is only aligned for a non-page mapping
 >
-> Return early if atmel_i2c_send_receive() fails to avoid checking
-> potentially uninitialized data in 'cmd.data'.
+> When the planets are suitably aligned (pun intended), the guest
+> faults a page by accessing it past the bottom 4kB, and extra bits
+> get set in the HPFAR_EL2 register. If this results in a page mapping
+> (which is likely with large granule sizes), nothing aligns it further
+> down, and pkvm_mapping_iter_first() finds an intersection that
+> doesn't really exist. We assume this is a spurious fault and return
+> -EAGAIN. And again.
 >
+> This doesn't hit outside of the protected code, as the page table
+> code always aligns the IPA down to a page boundary, hiding the issue
+> for everyone else.
+>
+> Fix it by always forcing the alignment on vma_pagesize, irrespective
+> of the value of vma_pagesize.
+>
+> Fixes: 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings")
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
 > Cc: stable@vger.kernel.org
-> Fixes: e05ce444e9e5 ("crypto: atmel-sha204a - add reading from otp zone")
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 > ---
->  drivers/crypto/atmel-sha204a.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  arch/arm64/kvm/mmu.c | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
 >
-> diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204=
-a.c
-> index 0fcf4a39de27..f4a04b297257 100644
-> --- a/drivers/crypto/atmel-sha204a.c
-> +++ b/drivers/crypto/atmel-sha204a.c
-> @@ -103,6 +103,10 @@ static int atmel_sha204a_otp_read(struct i2c_client =
-*client, u16 addr, u8 *otp)
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 8c5d259810b2f..aa587f2e28264 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1753,14 +1753,12 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
 >         }
 >
->         ret =3D atmel_i2c_send_receive(client, &cmd);
-> +       if (ret < 0) {
-> +               dev_err(&client->dev, "failed to read otp at %04X\n", add=
-r);
-> +               return ret;
-> +       }
+>         /*
+> -        * Both the canonical IPA and fault IPA must be hugepage-aligned to
+> -        * ensure we find the right PFN and lay down the mapping in the right
+> -        * place.
+> +        * Both the canonical IPA and fault IPA must be aligned to the
+> +        * mapping size to ensure we find the right PFN and lay down the
+> +        * mapping in the right place.
+>          */
+> -       if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE) {
+> -               fault_ipa &= ~(vma_pagesize - 1);
+> -               ipa &= ~(vma_pagesize - 1);
+> -       }
+> +       fault_ipa &= ~(vma_pagesize - 1);
+> +       ipa &= ~(vma_pagesize - 1);
+
+nit: Since we're changing this code anyway, should we use the ALIGN
+macros instead?
+
+Reviewed-by: Fuad Tabba <tabba@google.com>
+
+and using 4, 16, and 64KB pages:
+
+Tested-by: Fuad Tabba <tabba@google.com>
+
+Cheers,
+/fuad
+
+
 >
->         if (cmd.data[0] =3D=3D 0xff) {
->                 dev_err(&client->dev, "failed, device not ready\n");
+>         gfn = ipa >> PAGE_SHIFT;
+>         mte_allowed = kvm_vma_mte_allowed(vma);
 > --
-> Thorsten Blum <thorsten.blum@linux.dev>
-> GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
+> 2.47.3
 >
 
