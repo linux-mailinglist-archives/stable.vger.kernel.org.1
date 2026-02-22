@@ -1,256 +1,150 @@
-Return-Path: <stable+bounces-217660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAggGgP1mmk+oQMAu9opvQ
-	(envelope-from <stable+bounces-217660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 13:22:27 +0100
+	id lwowItL1mmmnoQMAu9opvQ
+	(envelope-from <stable+bounces-217661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 13:25:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1455216F05B
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 13:22:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC73A16F06F
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 13:25:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E726630125F4
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 12:22:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 228E0300C832
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 12:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6551F4634;
-	Sun, 22 Feb 2026 12:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD271D88B4;
+	Sun, 22 Feb 2026 12:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="BVgrSz3g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YqlyXUQQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2C714F9FB;
-	Sun, 22 Feb 2026 12:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537C614F9FB
+	for <stable@vger.kernel.org>; Sun, 22 Feb 2026 12:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771762939; cv=none; b=shwzockfTIIReU/Rly6lq1fr63+cKfE9dYRbDgNqmZCE7HKNqPwB8BaWWPGR+zXYkiBMkNUzQQJG1Afr9cL+N9sfXYx7h2tjGbibLUCy/t6n4zsRNuHW0RCAJ3V9qRDUoj3Ugj4i+zlmFgqYWdCtoaIoz07Ma8rm6VYfjqk6VRc=
+	t=1771763149; cv=none; b=hqwHL64ThMId6T/GbPJIikT4WtAg1TA//Nfru+upi8TVnUalkoVr7uAfYgambi5Aj8bNTBYvzt7Z/WFVE4v2qy85SS0QJf0SvCmZ+YL3nLbUBuSNoSNS5yKyhA9x/dEqpj4sucPxOOeS48oO1ega1EvyonUIJPbkJjNwRUMSJQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771762939; c=relaxed/simple;
-	bh=HStVimIBZcTfWDwn3rn/FzWejp91R9WXQ1Ij2jOs3yc=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=lQOYzwNMciGoU7kk+m0UJGW9/04A74e7FWIdtFgYiY9Lf79jVOZNQ9lR1Ze2MuTHfFeFDiCwZ4c53gmIpP65bO88c0xPCbS7azt4/FcksRY8+obla0dLA0apO08e2nZqa4ufEJB/R/Lwn/EVn+Hk2hlEV2tcInNUzADRjCMMajI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=BVgrSz3g; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61M9Llr11191599;
-	Sun, 22 Feb 2026 12:22:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=rXjejD
-	Wrq7IPZo9PdMF10tAzhPn8ttHft2CPrcS7Lgo=; b=BVgrSz3gFG7fWw/NOEvhkW
-	2qrOjJDJu6x1ZdqVfg3Icw1/pO0ftwMml0y+E4dzdjK5qZ1QJH9epvUneO8mr6+p
-	gxTqK9BcGGMYiRKktjhKSjj49Mn55HrhXwdM11EeI9pYLkeYc8sJ5qSqPdhlQpRe
-	VbN1obakuc/XzY/FNmoS7Rjc5EANgO77HKXLOyX3RTM8XDMAiYpUesrUOArhrlR+
-	nKynA7+tz1o6bZENI0bfYVscmgUNryzaOV59+lHlx+JU5uaU9J/NZYCyvRmbSHtq
-	bKhdlkMN9MC7MwwUastpjnqADMyPfpcVTMDsCLoUb8O/spoO4qoAAtFhsxIeRG5w
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4e33wcd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 22 Feb 2026 12:21:59 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61M8jZps001607;
-	Sun, 22 Feb 2026 12:21:58 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfr1msa8j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 22 Feb 2026 12:21:58 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61MCLvw718350756
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 22 Feb 2026 12:21:57 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 514A55805E;
-	Sun, 22 Feb 2026 12:21:57 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C854358052;
-	Sun, 22 Feb 2026 12:21:56 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 22 Feb 2026 12:21:56 +0000 (GMT)
+	s=arc-20240116; t=1771763149; c=relaxed/simple;
+	bh=hGd8RjJcLkhxXpiwAbyrgRWvswqH7r+T9SscVabbvo0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OayTYotR12zGg37HN7GN3jONHM8/wdWdS2MFHCYBKE9znJTRw9jzxk5yU6jQOtmt1tW+C6YaFCU/J/rFXHFbeqYdk9Q0wdPvbV3zk9nJ9UudaBFuauEvgOQR+JLdkCHFJvhfW7ooOD4PpTMA+UoesEWVcpUKTbwUDmWOwTCx7ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YqlyXUQQ; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a962230847so34294715ad.3
+        for <stable@vger.kernel.org>; Sun, 22 Feb 2026 04:25:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771763147; x=1772367947; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jab/06e1zia4iBapr6aB3V9FEmhexkRh2fXXZsF5Egw=;
+        b=YqlyXUQQhbEh71hBWI42REg8C1ERosXc7u2U67n2g3maQxLeOlWZryKdeFZ3IjZTKx
+         87nXJC8if2TA1orJjZRLgqK0yK/E2Xrh0wNVnDOOCAT2huq8JKUY3khX6/BQWB+N3zaA
+         kF8Z01qDTMBDz59rbcQ0YVw1riOZ5sbyN3evZ1ZtiyVJIUzqihf+ytIbiZKqtebHLQs3
+         Fgp3ycHoHmEPj+hTsi4h/k4JNTCcI93Mrd25rpdls4Tf8ndJZf7baip4fPWuy7pcqNz/
+         N9xX7vNiREwaJI0JBi9qwnlSQ2bcCLN+PZYu+wMIakUjt5JjVRUeiMfRmqM/x9Q4BogJ
+         xw2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771763147; x=1772367947;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jab/06e1zia4iBapr6aB3V9FEmhexkRh2fXXZsF5Egw=;
+        b=UVuXPAxDGJoD86LDuBwM3gu3DCjwMgJDUaraEHYHYxIXOyDKru67wR3uddX0nnWB0W
+         5AE6EvMiglPY5lxIWm4AFWmU6Q6Olga/xXIOHJ7nB1vdIEqGZukPwJHBgE+W1TCsI/vR
+         zEiMhTpIg3F1mKu6fhx0bLAghX3VoaWKDFvuleDl8P4u7QRgdWTQY9Ps66UOnEnYmdFm
+         j9h8imTdp/glxPH1Jp+hKijrlUgnxlfpdGnO8UBsDBmuUX7uRiUFsPcDcEVWP4AgotFN
+         Z3bmBxx9Rnb+mJwU5wyPz4JexQy3Lj2F4d8PLTX2MN9iEy/ux9xZJPhO1Q+2mvAP9U6y
+         VKSQ==
+X-Gm-Message-State: AOJu0YxRvg8VkoZUG93IH/wJHl1a58RcgUwvvgWbJCZcXV5ILveZe4VX
+	DSYaprsrys+LJMnzf4x0jC5yLS7qx9sknEiF6IzXnUyzMBm6CZilkqAIwQgdjyQVLJA=
+X-Gm-Gg: AZuq6aIXsXfx21xysXKnD8KrUZRoUJr4Z0P/YMGhSE0AnwZHeNWrmcZumMc0O7ay7mO
+	v0ZTrElns37akGj6So45OBFB9ZXtgI0Wwg10MEsoRARO1Fk8AoyijTfOZloOIKFefu5qnQoKST7
+	eG3CKd7XKLo93/JFeo0/w9qEepWRlANQg/M5ynBs/4yqCxviQdUhlMnW8mIz2LLelR0cfRczPRi
+	l5aV/2iNqLSItnZrnhMYTJiTGEZKrUXwT3s4UrlF8niWLL7doZiewFjgtHfNXzmPksFmnwfmY2/
+	On1TKR+N2qVTVFaKJ+CL51eROV9DqEaGk5WzwsD5cbQU4dJ4002CF4zju5U/gtYMUXwn9pQwU2K
+	Wu5HhH7ID337lOEHhONMEZksLOc+13DUhgNZSdd710MMtdCTrW4Hyt9pq/pc8enkzRsdoqVrPqU
+	oeTyiZvLSi2x8JT9mXO+RS6pTpmkQVXXx1IHyvTz2GGVGN6GBDQq6lyzw6hG9er59bsDU=
+X-Received: by 2002:a17:902:f683:b0:2a9:30d4:2b07 with SMTP id d9443c01a7336-2ad744ea70amr59440225ad.32.1771763147412;
+        Sun, 22 Feb 2026 04:25:47 -0800 (PST)
+Received: from arter97-x1 ([58.124.177.116])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad74e34fe7sm43851675ad.2.2026.02.22.04.25.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Feb 2026 04:25:46 -0800 (PST)
+From: Juhyung Park <qkrwngud825@gmail.com>
+To: Juhyung Park <qkrwngud825@gmail.com>
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/2] ALSA: hda/realtek: fix model name typo for Samsung Galaxy Book Flex (NT950QCG-X716)
+Date: Sun, 22 Feb 2026 21:25:42 +0900
+Message-ID: <20260222122543.281017-1-qkrwngud825@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 22 Feb 2026 17:51:56 +0530
-From: adubey <adubey@linux.ibm.com>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Alexei Starovoitov
- <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko
- <andrii@kernel.org>,
-        Saket Kumar Bhaskar <skb99@linux.ibm.com>,
-        Venkat Rao
- Bagalkote <venkat88@linux.ibm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] powerpc64/bpf: fix the address returned by
- bpf_get_func_ip
-In-Reply-To: <20260220063933.196141-3-hbathini@linux.ibm.com>
-References: <20260220063933.196141-1-hbathini@linux.ibm.com>
- <20260220063933.196141-3-hbathini@linux.ibm.com>
-Message-ID: <1c1e950c3513176c99a2a9b027c3be21@linux.ibm.com>
-X-Sender: adubey@linux.ibm.com
-Organization: IBM
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=XMs9iAhE c=1 sm=1 tr=0 ts=699af4e7 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=VwQbUJbxAAAA:8 a=vzIvt4CvfZBVuRaKyhAA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: xpfEw_kcP__nZcGDNwprFmhQRz6TNl3O
-X-Proofpoint-ORIG-GUID: xpfEw_kcP__nZcGDNwprFmhQRz6TNl3O
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIyMDExNyBTYWx0ZWRfX7xDt10zT7jME
- gBR6D66W/Bn9MW+NIdcn8FnCQ0iLrozYpEVGRU8UuSqV8T8GrLf0+GkVQxAGv+abkRqdIVfWd63
- 5yOt/jHeuTqdd1duS1TxkL9Q3SLwo2gm5HgXbkPi//3M5iCmdeiR0ncFNdbOo5KBBnNii8X9LNz
- FuJlyJOopAXwKuDT2iTxNlEDx21ydte6huaQBQt5N7uRLXMG4qn+Utk6rZdvmtT6hO6Coo6IiV7
- UVhc8qicVpMrbh6rnXRDPUsKYiqCW+tLxZ3BobeaPAlgXYQTRQvKcpDc34sAanbXzreTSLcK9xD
- DjocyTUO488w1oQpR+Tp9m4emkp0y9R+Trxh0ETsRdV5mWWxXZtVAPwjvzLhyarY3HsvTbXujNA
- j07uVUHnzpXuq5Y4hKr4VD77WCRi3TWXGXd53Nc6RkhwKtExHNSqLUqJeMTOo6XZ0pd5ADrWGPB
- 9niGbiX7Q5R3RaHua9A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-22_02,2026-02-20_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- clxscore=1011 adultscore=0 spamscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602220117
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217661-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-217660-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.ibm.com:mid];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[qkrwngud825@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 1455216F05B
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:url]
+X-Rspamd-Queue-Id: DC73A16F06F
 X-Rspamd-Action: no action
 
-On 2026-02-20 12:09, Hari Bathini wrote:
-> bpf_get_func_ip() helper function returns the address of the traced
-> function. It relies on the IP address stored at ctx - 16 by the bpf
-> trampoline. On 64-bit powerpc, this address is recovered from LR
-> accounting for OOL trampoline. But the address stored here was off
-> by 4-bytes. Ensure the address is the actual start of the traced
-> function.
-> 
-> Reported-by: Abhishek Dubey <adubey@linux.ibm.com>
-> Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
-> 
-> * No changes since v1.
-> 
-> 
->  arch/powerpc/net/bpf_jit_comp.c | 21 +++++++++++++--------
->  1 file changed, 13 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/powerpc/net/bpf_jit_comp.c 
-> b/arch/powerpc/net/bpf_jit_comp.c
-> index 987cd9fb0f37..fb6cc1f832a8 100644
-> --- a/arch/powerpc/net/bpf_jit_comp.c
-> +++ b/arch/powerpc/net/bpf_jit_comp.c
-> @@ -786,8 +786,8 @@ static int __arch_prepare_bpf_trampoline(struct
-> bpf_tramp_image *im, void *rw_im
->  	 *                              [ reg argN          ]
->  	 *                              [ ...               ]
->  	 *       regs_off               [ reg_arg1          ] prog ctx 
-> context
-prog ctx context/prog_ctx context/prog_ctx, to be in sync with tags 
-below.
-please refer s390's field tagging
-> -	 *       nregs_off              [ args count        ]
-> -	 *       ip_off                 [ traced function   ]
-> +	 *       nregs_off              [ args count        ] ((u64 
-> *)prog_ctx)[-1]
-> +	 *       ip_off                 [ traced function   ] ((u64 
-> *)prog_ctx)[-2]
->  	 *                              [ ...               ]
->  	 *       run_ctx_off            [ bpf_tramp_run_ctx ]
->  	 *                              [ reg argN          ]
-> @@ -895,7 +895,7 @@ static int __arch_prepare_bpf_trampoline(struct
-> bpf_tramp_image *im, void *rw_im
-> 
->  	bpf_trampoline_save_args(image, ctx, func_frame_offset, nr_regs, 
-> regs_off);
-> 
-> -	/* Save our return address */
-> +	/* Save our LR/return address */
->  	EMIT(PPC_RAW_MFLR(_R3));
->  	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
->  		EMIT(PPC_RAW_STL(_R3, _R1, alt_lr_off));
-> @@ -903,24 +903,29 @@ static int __arch_prepare_bpf_trampoline(struct
-> bpf_tramp_image *im, void *rw_im
->  		EMIT(PPC_RAW_STL(_R3, _R1, bpf_frame_size + PPC_LR_STKOFF));
-> 
->  	/*
-> -	 * Save ip address of the traced function.
-> -	 * We could recover this from LR, but we will need to address for
-> OOL trampoline,
-> -	 * and optional GEP area.
-> +	 * Get IP address of the traced function.
-Get/Derive
-> +	 * In case of CONFIG_PPC_FTRACE_OUT_OF_LINE or BPF program, LR
-> +	 * points to the instruction after the 'bl' instruction in the OOL 
-> stub.
-> +	 * Refer to ftrace_init_ool_stub() and bpf_arch_text_poke() for OOL 
-> stub
-> +	 * of kernel functions and bpf programs respectively.
-> +	 * Recover kernel function/bpf program address from the unconditional
-> +	 * branch instruction at the end of OOL stub.
->  	 */
->  	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE) || flags & 
-> BPF_TRAMP_F_IP_ARG) {
->  		EMIT(PPC_RAW_LWZ(_R4, _R3, 4));
-Please add comment what R4 points to; for easy referencing
->  		EMIT(PPC_RAW_SLWI(_R4, _R4, 6));
->  		EMIT(PPC_RAW_SRAWI(_R4, _R4, 6));
->  		EMIT(PPC_RAW_ADD(_R3, _R3, _R4));
-> -		EMIT(PPC_RAW_ADDI(_R3, _R3, 4));
->  	}
-> 
->  	if (flags & BPF_TRAMP_F_IP_ARG)
->  		EMIT(PPC_RAW_STL(_R3, _R1, ip_off));
-> 
-> -	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
-> +	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE)) {
->  		/* Fake our LR for unwind */
-> +		EMIT(PPC_RAW_ADDI(_R3, _R3, 4));
->  		EMIT(PPC_RAW_STL(_R3, _R1, bpf_frame_size + PPC_LR_STKOFF));
-> +	}
-> 
->  	/* Save function arg count -- see bpf_get_func_arg_cnt() */
->  	EMIT(PPC_RAW_LI(_R3, nr_regs));
--Abhishek
+There's no product named "Samsung Galaxy Flex Book".
+Use the correct "Samsung Galaxy Book Flex" name.
+
+Link: https://www.samsung.com/sec/support/model/NT950QCG-X716
+Link: https://www.samsung.com/us/computing/galaxy-books/galaxy-book-flex/galaxy-book-flex-15-6-qled-512gb-storage-s-pen-included-np950qcg-k01us
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Juhyung Park <qkrwngud825@gmail.com>
+---
+ sound/hda/codecs/realtek/alc269.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 36053042ca77..421a84b9fb44 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7311,7 +7311,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x144d, 0xc109, "Samsung Ativ book 9 (NP900X3G)", ALC269_FIXUP_INV_DMIC),
+ 	SND_PCI_QUIRK(0x144d, 0xc169, "Samsung Notebook 9 Pen (NP930SBE-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc176, "Samsung Notebook 9 Pro (NP930MBE-K04US)", ALC298_FIXUP_SAMSUNG_AMP),
+-	SND_PCI_QUIRK(0x144d, 0xc189, "Samsung Galaxy Flex Book (NT950QCG-X716)", ALC298_FIXUP_SAMSUNG_AMP),
++	SND_PCI_QUIRK(0x144d, 0xc189, "Samsung Galaxy Book Flex (NT950QCG-X716)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc18a, "Samsung Galaxy Book Ion (NP930XCJ-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc1a3, "Samsung Galaxy Book Pro (NP935XDB-KC1SE)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc1a4, "Samsung Galaxy Book Pro 360 (NT935QBD)", ALC298_FIXUP_SAMSUNG_AMP),
+-- 
+2.53.0
+
 
