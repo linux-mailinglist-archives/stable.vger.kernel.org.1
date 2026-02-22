@@ -1,264 +1,234 @@
-Return-Path: <stable+bounces-217672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217673-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFG7NxAvm2lluwMAu9opvQ
-	(envelope-from <stable+bounces-217672-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 17:30:08 +0100
+	id OPYwD2I3m2mVvwMAu9opvQ
+	(envelope-from <stable+bounces-217673-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 18:05:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7F016FA1D
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 17:30:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F1A16FD8D
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 18:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78E7E300CC3F
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 16:30:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 848353044A77
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 17:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EB2354AF8;
-	Sun, 22 Feb 2026 16:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD5035B621;
+	Sun, 22 Feb 2026 17:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D64R3jrn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mhFEelBx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B53357716;
-	Sun, 22 Feb 2026 16:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771777803; cv=none; b=sD0famZsPgDm5Q5oeV0b0ZF4UDxvO2NsKC32bV8TNtKSbeqdwzNkQ2jeMMgwanismC+Q24spw/ov4InQCYEb1foYF7erBnfmwuagIB6cQwSraKtrygKBR6LyOAOsEcJ3NK7H3YVpUms6mL4ua+GbqxazTX91wjbMoVS4BSza0xg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771777803; c=relaxed/simple;
-	bh=r8blr4lUK/hyGtCcj6d0ju2YO+6PPYpgeQ+iODPCV2k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8TpIYyoUzlOgMkI2wNo9qgfuqdqPq040XJ/lKWgmLJ5TVLm5ws+xhqXFaCDBOlcxG0mGdR2m8oipRciZziZAraXoIhTpFtxm1+oHx/vp39/Ruhluuq+paBPYG6vAV95TLnd+cMayWX1bx+C/4ZUS7IRkUPr3pF3GaQVLZ7iuTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D64R3jrn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108C9C116D0;
-	Sun, 22 Feb 2026 16:29:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771777802;
-	bh=r8blr4lUK/hyGtCcj6d0ju2YO+6PPYpgeQ+iODPCV2k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D64R3jrn2VIvuTjEvCQJYfO0SMH8ZC/bkcq3qDt1pNiXD33gHEhHIZtCRpMUsPicw
-	 d2yk83fh2WRM/g0u6LvlOc8ACkTGd6vjrp9D/BeivT87IAV5syryMaBD726L3IzM08
-	 stESZxL+ruOqFuGlbKC7U4L52EqUDvOYJTJiStcHg0RqKKis25WEI1PEwntVG7eX/U
-	 Gogbgcuc5WDFTIhTOaLlQ5VhfIwkJjWsQgwvcZefkcn1JAe3GEu3SAtib9DWUuWMhn
-	 rdr+KpLnk+2rXGxeXifjS1VJ57tW9Vp7R8K2rGkdzcst8od9oRzUC07Ic8rNzJXtSu
-	 ztuIiDzwmKITw==
-From: Simon Horman <horms@kernel.org>
-To: anthony.l.nguyen@intel.com
-Cc: Simon Horman <horms@kernel.org>,
-	joshua.a.hay@intel.com,
-	aaron.ma@canonical.com,
-	przemyslaw.kitszel@intel.com,
-	Samuel.salin@intel.com,
-	jacob.e.keller@intel.com,
-	pmenzel@molgen.mpg.de,
-	sridhar.samudrala@intel.com,
-	brett.creeley@amd.com,
-	decot@google.com,
-	david.m.ertman@intel.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	sreedevi.joshi@intel.com,
-	rafal.romanowski@intel.com,
-	en-wei.wu@canonical.com,
-	dima.ruinskiy@intel.com,
-	michal.kubiak@intel.com,
-	tglx@kernel.org,
-	pabeni@redhat.com,
-	willemb@google.com,
-	avigailx.dahan@intel.com,
-	davem@davemloft.net,
-	aleksandr.loktionov@intel.com,
-	edumazet@google.com,
-	piotr.kwapulinski@intel.com,
-	sx.rinitha@intel.com,
-	emil.s.tantilov@intel.com,
-	brianvv@google.com,
-	vitaly.lifshits@intel.com,
-	jedrzej.jagielski@intel.com,
-	stable@vger.kernel.org,
-	kuba@kernel.org,
-	richardcochran@gmail.com,
-	joe@dama.to,
-	mschmidt@redhat.com,
-	boolli@google.com
-Subject: Re: [net,13/13] e1000e: correct TIMINCA on ADP/TGP systems with wrong XTAL frequency
-Date: Sun, 22 Feb 2026 16:28:35 +0000
-Message-ID: <20260222162835.23954-1-horms@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260220004027.729384-14-anthony.l.nguyen@intel.com>
-References: <20260220004027.729384-14-anthony.l.nguyen@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AB82153D8
+	for <stable@vger.kernel.org>; Sun, 22 Feb 2026 17:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771779835; cv=pass; b=Ml+S0w6R5Ayewd/8svh+61l9vR7dJUevDwhcWii22AbFDUSvmqpPB9ytK1eQgla9ky/C/F0mGshfS6qMQO0XaconRlI/ZSfTNYjh66GpgQhqkfny7urdj9CuleZtXm003obTkh3jqEze7WIx4MohNiK+T0k1XIKf1e/+v/jmNn8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771779835; c=relaxed/simple;
+	bh=gfPxTAcGn6GgS3LFZjQMK6EB0WGi51aqWGuEHQrQwqg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wsqil3psM+R7U8xdV9qQOdYlDfyDwkARcN6iZX+3gvunJoim2ZPaiTaHXZ4997ECrrTyVWX9DTAitizjk4hqZvybBcJECgd4tGmQlklw9tb9QZH8dso4vlw3tBvdMavlymAS5Q3n/wsqw/4oW7YPHLyaRMJm8XGXYom3osp3Dbc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mhFEelBx; arc=pass smtp.client-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64ae58222aaso509161d50.1
+        for <stable@vger.kernel.org>; Sun, 22 Feb 2026 09:03:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771779832; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hERAgqKHLFSHM7OwZERrLL5LtZ0BLRVXUxYjIuuHsDOur6K85FWpiY+7i78mi3n+9e
+         eM1gUmGRLRfFfsoqJN3psr4stnx43flT3uczgpYg64HoIJ0eYxOVGvF/TLLqDPnxtZ62
+         JoWloKfbG5CCnjgRKAj7Qy8J6ejURXdSc6nsQqSqiBx6Q0kYI2mu35azgtL6kYztiPJD
+         Q6gpOofMCDoufU02wFdIX7yAdRXd8KeW+bLhVeDsDl5tiH2+g3wC/l8Qehzw/IK3bYW8
+         yhoISOsvVLOGQanxRBSZQ3vXCUVAE3QhFgdzkw23XGTsww8nQmqg3saO/08Ua8R3QpKg
+         vmlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=iBykXcry3hRl95wYDSUTJ/cR3J3An6RSzJqIbZMk+XY=;
+        fh=c+me+cyWp440Wh+hEce0vwFMPPm/5HgjcGDhodm3m8E=;
+        b=Z8jvLOCEZbjPtWZaxp8haFZdw56JUkBFTNvUZMFPbvFJbw3yAfzADaKglJcydugon7
+         XgqMEDgUQqOVtLeaNzT65Z9w8nmyT0D0d6kynziaMqTRUWAkV9msOku26MCTGztQWpeE
+         AbgBu34+fR1dKBNE1btShxr/Fcc8Nrwr366ACHt8if0gEcW6td1a4mHYRlrwhY6Vxdqp
+         9lxLwZSF7RYOPL9ckQi8wUMgOjelEcob0XiFuTHoxRkKUhkF8ZeUEab4GSNmUUSApwa8
+         0TDUUjasxBEHG7oWiXmCho/3r5RE52V+85bJ/TPnmZzHyMXbEeMOab5spjKi1p7fvLdz
+         9kzw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771779832; x=1772384632; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iBykXcry3hRl95wYDSUTJ/cR3J3An6RSzJqIbZMk+XY=;
+        b=mhFEelBxILapHAdw/HYaKg34ulq0t6tjFxadbe6MiXapvc1Rz6AwtnKd2ec+kWbESx
+         tUpXBcBZhclsZffi3asUHwCyPiV5pial1yZ3TuEWW0JJD4XLrXySlalOST5JBpTnR9DX
+         FY4y5yfitsCzMiNwUN+aWVziCBKBaXZ516faTQG3mQXgUPDPoA0Ome9gnrvqCbO0oL0o
+         bnbUepcgeGuTVSH5HD1dxTeaFgP6wU/gm6Z9NwWsce++YSCdWRsNzP5mpBqtU2nQj8H5
+         CGSiVia+pu1YXVR1cavnDD1nruRYpkEz6jRsOFb4wEMJJ7jDZpRJXLk8+5eo8I4x4n7C
+         2fZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771779832; x=1772384632;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=iBykXcry3hRl95wYDSUTJ/cR3J3An6RSzJqIbZMk+XY=;
+        b=KdCNiSAYNKu3FHlGtH0UQfGA1Nudz7pD9dtErcwr4WuKixVnvIer8mhUQcH8wPFlxl
+         zmCc5icpvEm2R6T+/EcIH7VwVGNvvBzD2DnNG0VzYB8STa+SkYnImC2awoWYa9gN9Y75
+         zFTQSvMAiTcvhCGrUywUBIKqHbuC1wC6ELhkPUzGKZVBoU8B1LdKJ6nNIFDwWIF+QPyE
+         hKnhgm6Vq/52NHQiTYg5qHi77hWxeAOyvhMvF47N9tZdb190cCE1lWEHx2ghgPjWkj1V
+         kGvT5zdXJJ0D7u8/rPDoYc+5gPZ9ZTodnUe1LV77jfVXAX4oZW9jEivmKz+psztZSAUm
+         bRmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXG0IDCUIDdWIajFO6wHVDz3T8ePywOcUYnjkgnfoXe++hZ6L2VHKTPkPA2mjdFRt9nkV017nc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhxqGpFa1n8gzKgY3KgKo0FlbWaDf2gg2oW91o0eI0WRICCRpB
+	BGSYvu1APgO7q4hsSp/zHu+to0ClE6yuRyFiB1JhWhU5hdd4szQrvmo7blX0fpRS5o7ynd1vYFj
+	8FPdscqfiKm6O1bIoP1ElwGz1L9+fhm4=
+X-Gm-Gg: AZuq6aJo9MDYpl6QAICm2wU3ZgQpiOqCQd/5pJgUyD8g8HwogZcqIicqjaDY4OcDMtJ
+	1l4M7LYxN6j7B5lcPPSLjXdQSg4/1LS7JwBbG9SxV1LSKh0SrXZkp9UJAB+ESFXo6WKaFDPRjUu
+	tU1MJtJhRHrhHnJF6X0lZw1ZaguVPZlUJT6Hj0HGUYRgdA2ugnXeRTFeNQAGGWcCn1QGvcIBdzL
+	pmWrZaLMVm6lsbkcSYpgcLyFrKJ0SrxgPb+E0dvc78xtBF1aAyA+9+R3UNXKY/uy7Yd9Zmh82Xv
+	I9XF
+X-Received: by 2002:a53:d009:0:b0:649:c3be:a387 with SMTP id
+ 956f58d0204a3-64c78d3e730mr3895155d50.4.1771779831946; Sun, 22 Feb 2026
+ 09:03:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260215205152.518472-3-thorsten.blum@linux.dev>
+In-Reply-To: <20260215205152.518472-3-thorsten.blum@linux.dev>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Sun, 22 Feb 2026 18:03:16 +0100
+X-Gm-Features: AaiRm501A03rgVMp3fr1R-CFD3HgkD42BVCx_r2SycJdlIw_EXWDQ4yLRJnqDhk
+Message-ID: <CAFXKEHZ9TTZMdzKr8_5UesUdajGoQNm_u_paakggtGONbzjPcQ@mail.gmail.com>
+Subject: Re: [PATCH] crypto: atmel-sha204a - Fix error codes in OTP reads
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	stable@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,intel.com,canonical.com,molgen.mpg.de,amd.com,google.com,lunn.ch,vger.kernel.org,lists.osuosl.org,redhat.com,davemloft.net,gmail.com,dama.to];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217673-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[39];
-	TAGGED_FROM(0.00)[bounces-217672-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4A7F016FA1D
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lrubusch@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cmd.data:url,linux.dev:email,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 92F1A16FD8D
 X-Rspamd-Action: no action
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+Hi, find some comments below inlined.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-e1000e: correct TIMINCA on ADP/TGP systems with wrong XTAL frequency
-
-On some Tiger Lake (TGP) and Alder Lake (ADP) platforms, the hardware
-XTAL clock is incorrectly interpreted as 24 MHz instead of the actual
-38.4 MHz. The commit measures PHC vs system time over 1 ms and if the
-delta exceeds 100 microseconds, reprograms TIMINCA for the 38.4 MHz
-profile and reinitializes the timecounter.
-
-> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-> index 814698807f3d..ae35ac479026 100644
-> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
-> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-
-[ ... ]
-
-> @@ -3905,6 +3905,80 @@ static void e1000_flush_desc_rings(struct e1000_adapter *adapter)
->  		e1000_flush_rx_ring(adapter);
->  }
+On Sun, Feb 15, 2026 at 9:52=E2=80=AFPM Thorsten Blum <thorsten.blum@linux.=
+dev> wrote:
 >
-> +/**
-> + * e1000e_xtal_tgp_workaround - Adjust XTAL clock based on PHC and system
-> + * clock delta.
-> + * @adapter: Pointer to the private adapter structure
-> + *
-> + * Measures the time difference between the PHC (Precision Hardware Clock)
-> + * and the system clock over a 1 millisecond interval. If the delta
-> + * exceeds 100 microseconds, reconfigure the XTAL clock to 38.4 MHz.
-> + */
-> +static void e1000e_xtal_tgp_workaround(struct e1000_adapter *adapter)
-> +{
-> +	s64 phc_delta, sys_delta, sys_start_ns, sys_end_ns, delta_ns;
-> +	struct ptp_system_timestamp sys_start = {}, sys_end = {};
-> +	struct ptp_clock_info *info = &adapter->ptp_clock_info;
-> +	struct timespec64 phc_start, phc_end;
-> +	struct e1000_hw *hw = &adapter->hw;
-> +	struct netlink_ext_ack extack = {};
-> +	unsigned long flags;
-> +	u32 timinca;
-> +	s32 ret_val;
-> +
-> +	/* Capture start */
-> +	if (info->gettimex64(info, &phc_start, &sys_start)) {
-> +		e_dbg("PHC gettimex(start) failed\n");
-> +		return;
-> +	}
-> +
-> +	/* Small interval to measure increment */
-> +	usleep_range(1000, 1100);
-> +
-> +	/* Capture end */
-> +	if (info->gettimex64(info, &phc_end, &sys_end)) {
-> +		e_dbg("PHC gettimex(end) failed\n");
-> +		return;
-> +	}
-> +
-> +	/* Compute deltas */
-> +	phc_delta = timespec64_to_ns(&phc_end) -
-> +		    timespec64_to_ns(&phc_start);
-> +
-> +	sys_start_ns = (timespec64_to_ns(&sys_start.pre_ts) +
-> +			timespec64_to_ns(&sys_start.post_ts)) >> 1;
-> +
-> +	sys_end_ns = (timespec64_to_ns(&sys_end.pre_ts) +
-> +		      timespec64_to_ns(&sys_end.post_ts)) >> 1;
-> +
-> +	sys_delta = sys_end_ns - sys_start_ns;
-> +
-> +	delta_ns = phc_delta - sys_delta;
-> +	if (delta_ns > 100000) {
-> +		e_dbg("Corrected PHC frequency: TIMINCA set for 38.4 MHz\n");
-> +		/* Program TIMINCA for 38.4 MHz */
-> +		timinca = (INCPERIOD_38400KHZ <<
-> +			   E1000_TIMINCA_INCPERIOD_SHIFT) |
-> +			  (((INCVALUE_38400KHZ <<
-> +			     adapter->cc.shift) &
-> +			   E1000_TIMINCA_INCVALUE_MASK));
+> Return -EINVAL from atmel_i2c_init_read_otp_cmd() on invalid addresses
+> instead of -1. Since the OTP zone is accessed in 4-byte blocks, valid
+> addresses range from 0 to OTP_ZONE_SIZE / 4 - 1. Fix the bounds check
+> accordingly.
+>
+> In atmel_sha204a_otp_read(), propagate the actual error code from
+> atmel_i2c_init_read_otp_cmd() instead of -1. Also, return -EIO instead
+> of -EINVAL when the device is not ready.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: e05ce444e9e5 ("crypto: atmel-sha204a - add reading from otp zone")
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+> Compile-tested only.
+> ---
+>  drivers/crypto/atmel-i2c.c     | 4 ++--
+>  drivers/crypto/atmel-sha204a.c | 7 ++++---
+>  2 files changed, 6 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/crypto/atmel-i2c.c b/drivers/crypto/atmel-i2c.c
+> index 9688d116d07e..ba9d3f593601 100644
+> --- a/drivers/crypto/atmel-i2c.c
+> +++ b/drivers/crypto/atmel-i2c.c
+> @@ -72,8 +72,8 @@ EXPORT_SYMBOL(atmel_i2c_init_read_config_cmd);
+>
+>  int atmel_i2c_init_read_otp_cmd(struct atmel_i2c_cmd *cmd, u16 addr)
+>  {
+> -       if (addr < 0 || addr > OTP_ZONE_SIZE)
+> -               return -1;
+> +       if (addr >=3D OTP_ZONE_SIZE / 4)
+> +               return -EINVAL;
+>
+>         cmd->word_addr =3D COMMAND;
+>         cmd->opcode =3D OPCODE_READ;
+> diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204=
+a.c
+> index 0fcf4a39de27..6b4e2764523e 100644
+> --- a/drivers/crypto/atmel-sha204a.c
+> +++ b/drivers/crypto/atmel-sha204a.c
+> @@ -94,9 +94,10 @@ static int atmel_sha204a_rng_read(struct hwrng *rng, v=
+oid *data, size_t max,
+>  static int atmel_sha204a_otp_read(struct i2c_client *client, u16 addr, u=
+8 *otp)
+>  {
+>         struct atmel_i2c_cmd cmd;
+> -       int ret =3D -1;
+> +       int ret;
+>
+> -       if (atmel_i2c_init_read_otp_cmd(&cmd, addr) < 0) {
+> +       ret =3D atmel_i2c_init_read_otp_cmd(&cmd, addr);
+> +       if (ret < 0) {
+>                 dev_err(&client->dev, "failed, invalid otp address %04X\n=
+",
+>                         addr);
+>                 return ret;
+Since I2C bus errors are caught here.
 
-Is adapter->cc.shift correct here? When e1000e_xtal_tgp_workaround runs,
-the earlier call to e1000e_get_base_timinca (via e1000e_phc_adjfine in
-e1000e_systim_reset) has already set adapter->cc.shift based on the
-incorrectly reported 24 MHz XTAL frequency.
+> @@ -106,7 +107,7 @@ static int atmel_sha204a_otp_read(struct i2c_client *=
+client, u16 addr, u8 *otp)
+>
+>         if (cmd.data[0] =3D=3D 0xff) {
+>                 dev_err(&client->dev, "failed, device not ready\n");
+> -               return -EINVAL;
+> +               return -EIO;
+The cmd.data holding 0xff here is not a bus error. AFAIR it can have
+to do with the locking state, pre-initialization,
+typically the atmel watchdog kicked in / timeout, etc - so the
+response is invalid, although hardware connection (I2C) is
+supposed to work. Currently the caller of this function does not
+distinguish anyway.
 
-On affected hardware where SYSCFI reports 24 MHz:
+But why is EIO preferable here, over EINVAL?
 
-e1000e_systim_reset()
- -> e1000e_phc_adjfine(0)
-    -> e1000e_get_base_timinca() sets:
-       adapter->cc.shift = INCVALUE_SHIFT_24MHZ (14)
- -> e1000e_xtal_tgp_workaround()
 
-So when computing TIMINCA for 38.4 MHz, the code uses shift=14:
-
-  INCVALUE_38400KHZ << 14 = 26 << 14 = 425984
-
-But the 38.4 MHz profile needs shift=19:
-
-  INCVALUE_38400KHZ << 19 = 26 << 19 = 13631488
-
-This produces timinca = 17203200 instead of the correct 30408704.
-
-Additionally, the subsequent timecounter_init call uses adapter->cc which
-still has shift=14. This computes tc->mask = (1ULL << 14) - 1 = 16383
-instead of the correct (1ULL << 19) - 1 = 524287.
-
-Should the function update adapter->cc.shift = INCVALUE_SHIFT_38400KHZ
-before computing timinca and calling timecounter_init, matching the
-pattern in e1000e_get_base_timinca for the 38.4 MHz profile?
-
-> +		ew32(TIMINCA, timinca);
-> +
-> +		/* reset the systim ns time counter */
-> +		spin_lock_irqsave(&adapter->systim_lock, flags);
-> +		timecounter_init(&adapter->tc, &adapter->cc,
-> +				 ktime_to_ns(ktime_get_real()));
-> +		spin_unlock_irqrestore(&adapter->systim_lock, flags);
-> +
-> +		/* restore the previous hwtstamp configuration settings */
-> +		ret_val = e1000e_config_hwtstamp(adapter,
-> +						 &adapter->hwtstamp_config,
-> +						 &extack);
-> +		if (ret_val && extack._msg)
-> +			e_err("%s\n", extack._msg);
-> +	}
-> +}
-
-[ ... ]
+>         }
+>
+>         memcpy(otp, cmd.data+1, 4);
+> --
+> Thorsten Blum <thorsten.blum@linux.dev>
+> GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
+>
 
