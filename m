@@ -1,219 +1,228 @@
-Return-Path: <stable+bounces-217670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217669-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WD7eHF4gm2n6tAMAu9opvQ
-	(envelope-from <stable+bounces-217670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 16:27:26 +0100
+	id 2P3METggm2n6tAMAu9opvQ
+	(envelope-from <stable+bounces-217669-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 16:26:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA77416F858
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 16:27:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EAA716F84A
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 16:26:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2EA930107DF
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 15:26:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24028300FECE
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 15:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C7A34F46F;
-	Sun, 22 Feb 2026 15:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4BC33859C;
+	Sun, 22 Feb 2026 15:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QmaWvtPB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FOAVHYQH"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E3C19C542;
-	Sun, 22 Feb 2026 15:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7FE19C542;
+	Sun, 22 Feb 2026 15:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771774011; cv=none; b=a1xb+T+vHINEw+KO7ytKgNq8saykm5JtvLEEgX2Wp/intRMlC3Fm6/iO06K2zCS0QYNrd7NpkIB8d/hQe/zL6Y5zSO92QLwo5ViY1hCQ035jRQ/eqjXUPCmN6hedOYK8oTBfXr9NIxmFCo1/NjcnvcohIOxIBA0ifQ+nIoYpY1o=
+	t=1771774001; cv=none; b=CHNcNOt5ITJDdT+QJCx8iVLYtOL47NM/9lMAVvENwYgBT/dB1vvXiDDXWQtppibxD5FADM2lZ2Z9MCQO2S8PeSL+EQT43SaB5qzkXXRnkReTrRlr3ijVzoV0FAa9fZahFxo1TuEcyF7iIUJBKQGdVXuqkqX9jqJnGlXwN/6VqJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771774011; c=relaxed/simple;
-	bh=URStFRYH3QeekRz6CFpSndVb6XF0RDSjwl1v3/oyeD8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aSPUnRDHo+BIJoIOomxS0txrmbBu21cxGWJc5I8+LxVfDIm8XgnkpU4D4vrPnIlB4vFOPBEokcDbwFCyA1auQUj08RLvK172rwqZPCjFrd1FheNzCw7SI22HtQ0gAaknc2THaba/XdPzVSz6w4Bu93aI+yNS6e9cbw5HFXXMNXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QmaWvtPB; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Content-Disposition:In-Reply-To:References;
-	bh=2QCq521/BosX1rLa/9Zz58pIWYCgkcyHWpGslEP5zrU=; b=QmaWvtPBkxBC/kxvsa2JVHTwKU
-	toIjvHbKRc5wryRQ9IoypwIjadWrVY8zFsuavjQGddIVwKD4BVwaKMdlDGEC2Gkg23NUiyiTIZNQn
-	1JyrrXx2Cj8lJFBPhNHifr/7sQYE0pgJBTJANjMxXMRmEnqguZhWyPclyc4azsEpDU/c=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vuBLx-008Ik1-Fn; Sun, 22 Feb 2026 16:26:37 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: <edumazet@google.com>,
-	<kuba@kernel.org>,
-	<pabeni@redhat.com>,
-	<davem@davemloft.net>
-Cc: netdev <netdev@vger.kernel.org>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Ben Whitten <ben.whitten@gmail.com>,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	stable@vger.kernel.org
-Subject: [patch net] net: phy: register phy led_triggers during probe to avoid AB-BA deadlock
-Date: Sun, 22 Feb 2026 16:26:01 +0100
-Message-Id: <20260222152601.1978655-1-andrew@lunn.ch>
-X-Mailer: git-send-email 2.37.2
+	s=arc-20240116; t=1771774001; c=relaxed/simple;
+	bh=WZHqKZ7RHO9FGDtLNE9eTusosEENC9JH1jqIRs2bwUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LONvvea4HNGSS+31lPmT6rxMfNFKIuYAGgxogcLnuRzHiGLyOceYJ0+ukL2P5fti7KqyvmKucICGuyUnCwodxuIONCp4cYGpDJiOGFMn4F05w0VXrNSfg9+jVkOKetIys9INJwPbNsDkGtiRAITfXllyvCZDyU0E32SDgJj/2fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FOAVHYQH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E07C116D0;
+	Sun, 22 Feb 2026 15:26:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771774000;
+	bh=WZHqKZ7RHO9FGDtLNE9eTusosEENC9JH1jqIRs2bwUo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FOAVHYQHYYkTdHL6rTzMh7gNolEM4asR6tPB1+GPgpGwXgq3xV8ygqv84cFa9H2Yi
+	 llwMs4XNGXby/j8qZdyBJXgfAs6V2139MYveFNo/KdE+YONLnR3+yLb4mtQJpHVJjN
+	 dWJmUKmwByXXRhcnz777ukC2X2dD49KG+nU8wRsYz1isW2/6gFsPRw8odcEkt1UfFU
+	 2wEhTDUndD39ATIw+z94ggpyebC/eTX/4sBZEKCr436JMLPYUCmKzVh8zvOTZiynSV
+	 uGiKoZ36vFrty35QIh9/lno18wxd9ksvRUaV2AHEF/r0iPwLMG3jru+K+Gex7Gz2kx
+	 OGCQ1NLj2cmag==
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+To: stable@vger.kernel.org,
+	Steven Rostedt <rostedt@goodmis.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH 6.12.y] tracing: Fix to clear fprobe after unregister_fprobe() when module unloading
+Date: Mon, 23 Feb 2026 00:26:36 +0900
+Message-ID: <177177399650.99709.12415733322341955461.stgit@devnote2>
+X-Mailer: git-send-email 2.43.0
+User-Agent: StGit/0.19
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[lunn.ch,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[lunn.ch:s=20171124];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217670-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,armlinux.org.uk,gmail.com,ucw.cz,outlook.com,lunn.ch];
-	DKIM_TRACE(0.00)[lunn.ch:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217669-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	FROM_NEQ_ENVFROM(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,lunn.ch:mid,lunn.ch:dkim,lunn.ch:email]
-X-Rspamd-Queue-Id: DA77416F858
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9EAA716F84A
 X-Rspamd-Action: no action
 
-There is an AB-BA deadlock when both LEDS_TRIGGER_NETDEV and
-LED_TRIGGER_PHY are enabled:
+From: Masami Hiramatsu <mhiramat@kernel.org>
 
-[ 1362.049207] [<8054e4b8>] led_trigger_register+0x5c/0x1fc             <-- Trying to get lock "triggers_list_lock" via down_write(&triggers_list_lock);
-[ 1362.054536] [<80662830>] phy_led_triggers_register+0xd0/0x234
-[ 1362.060329] [<8065e200>] phy_attach_direct+0x33c/0x40c
-[ 1362.065489] [<80651fc4>] phylink_fwnode_phy_connect+0x15c/0x23c
-[ 1362.071480] [<8066ee18>] mtk_open+0x7c/0xba0
-[ 1362.075849] [<806d714c>] __dev_open+0x280/0x2b0
-[ 1362.080384] [<806d7668>] __dev_change_flags+0x244/0x24c
-[ 1362.085598] [<806d7698>] dev_change_flags+0x28/0x78
-[ 1362.090528] [<807150e4>] dev_ioctl+0x4c0/0x654                       <-- Hold lock "rtnl_mutex" by calling rtnl_lock();
-[ 1362.094985] [<80694360>] sock_ioctl+0x2f4/0x4e0
-[ 1362.099567] [<802e9c4c>] sys_ioctl+0x32c/0xd8c
-[ 1362.104022] [<80014504>] syscall_common+0x34/0x58
+Clear fprobe after unregister_fprobe() for preventing double
+unregistering fprobe.
 
-Here LED_TRIGGER_PHY is registering LED triggers during phy_attach
-while holding RTNL and then taking triggers_list_lock.
+Without this fix, test.d/dynevent/add_remove_tprobe_module.tc test
+case of ftracetest caused a kernel panic as below on 6.12.y.
 
-[ 1362.191101] [<806c2640>] register_netdevice_notifier+0x60/0x168      <-- Trying to get lock "rtnl_mutex" via rtnl_lock();
-[ 1362.197073] [<805504ac>] netdev_trig_activate+0x194/0x1e4
-[ 1362.202490] [<8054e28c>] led_trigger_set+0x1d4/0x360                 <-- Hold lock "triggers_list_lock" by down_read(&triggers_list_lock);
-[ 1362.207511] [<8054eb38>] led_trigger_write+0xd8/0x14c
-[ 1362.212566] [<80381d98>] sysfs_kf_bin_write+0x80/0xbc
-[ 1362.217688] [<8037fcd8>] kernfs_fop_write_iter+0x17c/0x28c
-[ 1362.223174] [<802cbd70>] vfs_write+0x21c/0x3c4
-[ 1362.227712] [<802cc0c4>] ksys_write+0x78/0x12c
-[ 1362.232164] [<80014504>] syscall_common+0x34/0x58
+This is only happens on 6.12.y because this bug was introduced by
+commit 5ba4f58ec2de ("tracing: tprobe-events: Fix to clean up tprobe
+correctly when module unload"). This fix expects that the new fprobe
+implementation based on fgraph, but on 6.12.y, fprobe is still using
+ftrace.
 
-Here LEDS_TRIGGER_NETDEV is being enabled on an LED. It first takes
-triggers_list_lock and then RTNL. A classical AB-BA deadlock.
+ ------------[ cut here ]------------
+ WARNING: CPU: 0 PID: 156 at kernel/trace/ftrace.c:378 __unregister_ftrace_function+0x154/0x170
+ Modules linked in: [last unloaded: trace_events_sample]
+ CPU: 0 UID: 0 PID: 156 Comm: ftracetest Not tainted 6.12.74 #1
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+ RIP: 0010:__unregister_ftrace_function+0x154/0x170
+ Code: 85 30 ff ff ff c6 05 fd d5 85 01 01 48 c7 c7 eb 8e 14 82 be 39 01 00 00 48 c7 c2 dd bd 1c 82 e8 52 12 93 00 e9 0c ff ff ff 90 <0f> 0b 90 b8 f0 ff ff ff 5b e9 be 8b 95 00 cc 66 66 66 66 2e 0f 1f
+ RSP: 0018:ffffc900005c3b48 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: ffff8880054ba818 RCX: 7a7d3ccd1e752c00
+ RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff8880054ba818
+ RBP: 0000000000000000 R08: 000000000000017b R09: 0000000000000000
+ R10: 0000000000000002 R11: 0000000000000000 R12: ffff8880048216d0
+ R13: ffff8880052f7850 R14: ffff8880054ba818 R15: ffffffff8124e160
+ FS:  000000002de743c0(0000) GS:ffff88807d800000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000002de8b898 CR3: 0000000005b3a000 CR4: 00000000000006b0
+ Call Trace:
+  <TASK>
+  ftrace_shutdown+0x25/0x260
+  ? __pfx_dyn_event_open+0x10/0x10
+  unregister_ftrace_function+0x2a/0x140
+  ? __pfx_dyn_event_open+0x10/0x10
+  unregister_fprobe+0x57/0x90
+  trace_fprobe_release+0x56/0x150
+  dyn_event_open+0x99/0xe0
+  do_dentry_open+0x14a/0x3e0
+  vfs_open+0x2c/0xe0
+  path_openat+0xca5/0xf10
+  ? __lock_acquire+0xd38/0x2af0
+  ? __create_object+0x36/0x100
+  ? __create_object+0x36/0x100
+  do_filp_open+0xb5/0x160
+  do_sys_openat2+0x7f/0xd0
+  __x64_sys_openat+0x81/0xa0
+  do_syscall_64+0xec/0x1d0
+  ? exc_page_fault+0x92/0x110
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ RIP: 0033:0x4aa9cb
+ Code: 25 00 00 41 00 3d 00 00 41 00 74 4b 64 8b 04 25 18 00 00 00 85 c0 75 67 44 89 e2 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 91 00 00 00 48 8b 54 24 28 64 48 2b 14 25
+ RSP: 002b:00007ffce30daf50 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+ RAX: ffffffffffffffda RBX: 000000002de79bd0 RCX: 00000000004aa9cb
+ RDX: 0000000000000241 RSI: 000000002deb08f0 RDI: 00000000ffffff9c
+ RBP: 000000002deb08f0 R08: 0000000000000000 R09: 0000000000000000
+ R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000241
+ R13: 000000002deb08f0 R14: 00007ffce30db3f8 R15: 0000000000000000
+  </TASK>
+ irq event stamp: 147361
+ hardirqs last  enabled at (147373): [<ffffffff81128511>] __console_unlock+0x81/0xd0
+ hardirqs last disabled at (147386): [<ffffffff811284f6>] __console_unlock+0x66/0xd0
+ softirqs last  enabled at (146866): [<ffffffff8109a74f>] handle_softirqs+0x34f/0x3b0
+ softirqs last disabled at (146861): [<ffffffff8109a956>] __irq_exit_rcu+0x66/0xd0
+ ---[ end trace 0000000000000000 ]---
+ BUG: kernel NULL pointer dereference, address: 000000000000002e
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 8000000005af0067 P4D 8000000005af0067 PUD 55d7067 PMD 0
+ Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+ CPU: 0 UID: 0 PID: 156 Comm: ftracetest Tainted: G        W          6.12.74 #1
+ Tainted: [W]=WARN
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+ RIP: 0010:trace_fprobe_release+0x78/0x150
+ Code: 4c 89 f7 e8 ba e2 ff ff ba f0 01 00 00 4c 89 f7 31 f6 e8 9b 64 8d 00 48 8b bb 10 02 00 00 48 85 ff 74 21 4c 8d b3 10 02 00 00 <48> 8b 77 30 31 d2 e8 8d cf f8 ff 49 c7 06 00 00 00 00 49 c7 46 08
+ RSP: 0018:ffffc900005c3be8 EFLAGS: 00010282
+ RAX: ffff8880054ba818 RBX: ffff8880054ba800 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: fffffffffffffffe
+ RBP: 00000000fffffff0 R08: 000000000000017b R09: 0000000000000000
+ R10: ffff8880054ba818 R11: 0000000000000000 R12: ffff8880048216d0
+ R13: ffff8880052f7850 R14: ffff8880054baa10 R15: ffffffff8124e160
+ FS:  000000002de743c0(0000) GS:ffff88807d800000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000000000002e CR3: 0000000005b3a000 CR4: 00000000000006b0
+ Call Trace:
+  <TASK>
+  dyn_event_open+0x99/0xe0
+  do_dentry_open+0x14a/0x3e0
+  vfs_open+0x2c/0xe0
+  path_openat+0xca5/0xf10
+  ? __lock_acquire+0xd38/0x2af0
+  ? __create_object+0x36/0x100
+  ? __create_object+0x36/0x100
+  do_filp_open+0xb5/0x160
+  do_sys_openat2+0x7f/0xd0
+  __x64_sys_openat+0x81/0xa0
+  do_syscall_64+0xec/0x1d0
+  ? exc_page_fault+0x92/0x110
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ RIP: 0033:0x4aa9cb
+ Code: 25 00 00 41 00 3d 00 00 41 00 74 4b 64 8b 04 25 18 00 00 00 85 c0 75 67 44 89 e2 48 89 ee bf 9c ff ff ff b8 01 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 91 00 00 00 48 8b 54 24 28 64 48 2b 14 25
+ RSP: 002b:00007ffce30daf50 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+ RAX: ffffffffffffffda RBX: 000000002de79bd0 RCX: 00000000004aa9cb
+ RDX: 0000000000000241 RSI: 000000002deb08f0 RDI: 00000000ffffff9c
+ RBP: 000000002deb08f0 R08: 0000000000000000 R09: 0000000000000000
+ R10: 00000000000001b6 R11: 0000000000000246 R12: 0000000000000241
+ R13: 000000002deb08f0 R14: 00007ffce30db3f8 R15: 0000000000000000
+  </TASK>
+ Modules linked in: [last unloaded: trace_events_sample]
+ CR2: 000000000000002e
+ ---[ end trace 0000000000000000 ]---
 
-phy_led_triggers_registers() does not require the RTNL, it does not
-make any calls into the network stack which require protection. There
-is also no requirement the PHY has been attached to a MAC, the
-triggers only make use of phydev state. This allows the call to
-phy_led_triggers_registers() to be placed elsewhere. PHY probe() and
-release() don't hold RTNL, so solving the AB-BA deadlock.
-
-Reported-by: Shiji Yang <yangshiji66@outlook.com>
-Closes: https://lore.kernel.org/all/OS7PR01MB13602B128BA1AD3FA38B6D1FFBC69A@OS7PR01MB13602.jpnprd01.prod.outlook.com/
-Fixes: 06f502f57d0d ("leds: trigger: Introduce a NETDEV trigger")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Fixes: 5ba4f58ec2de ("tracing: tprobe-events: Fix to clean up tprobe correctly when module unload")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ kernel/trace/trace_fprobe.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 9b8eaac63b90..cbb4af604aa5 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1866,8 +1866,6 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 		goto error;
- 
- 	phy_resume(phydev);
--	if (!phydev->is_on_sfp_module)
--		phy_led_triggers_register(phydev);
- 
- 	/**
- 	 * If the external phy used by current mac interface is managed by
-@@ -1982,9 +1980,6 @@ void phy_detach(struct phy_device *phydev)
- 	phydev->phy_link_change = NULL;
- 	phydev->phylink = NULL;
- 
--	if (!phydev->is_on_sfp_module)
--		phy_led_triggers_unregister(phydev);
--
- 	if (phydev->mdio.dev.driver)
- 		module_put(phydev->mdio.dev.driver->owner);
- 
-@@ -3778,16 +3773,27 @@ static int phy_probe(struct device *dev)
- 	/* Set the state to READY by default */
- 	phydev->state = PHY_READY;
- 
-+	/* Register the PHY LED triggers */
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_register(phydev);
-+
- 	/* Get the LEDs from the device tree, and instantiate standard
- 	 * LEDs for them.
- 	 */
--	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev))
-+	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev)) {
- 		err = of_phy_leds(phydev);
-+		if (err)
-+			goto out;
-+	}
-+
-+	return 0;
- 
- out:
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_unregister(phydev);
-+
- 	/* Re-assert the reset signal on error */
--	if (err)
--		phy_device_reset(phydev, 1);
-+	phy_device_reset(phydev, 1);
- 
- 	return err;
- }
-@@ -3801,6 +3807,9 @@ static int phy_remove(struct device *dev)
- 	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev))
- 		phy_leds_unregister(phydev);
- 
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_unregister(phydev);
-+
- 	phydev->state = PHY_DOWN;
- 
- 	phy_cleanup_ports(phydev);
--- 
-2.51.0
+diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
+index 440dbfa6bbfd..2cf5036c825d 100644
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -984,6 +984,7 @@ static int __tracepoint_probe_module_cb(struct notifier_block *self,
+ 			}
+ 		} else if (val == MODULE_STATE_GOING && tp_mod->mod == tf->mod) {
+ 			unregister_fprobe(&tf->fp);
++			memset(&tf->fp, 0, sizeof(tf->fp));
+ 			if (trace_fprobe_is_tracepoint(tf)) {
+ 				tracepoint_probe_unregister(tf->tpoint,
+ 					tf->tpoint->probestub, NULL);
 
 
