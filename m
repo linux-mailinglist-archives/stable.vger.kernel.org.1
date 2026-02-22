@@ -1,237 +1,117 @@
-Return-Path: <stable+bounces-217677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANknAAxRm2mByAMAu9opvQ
-	(envelope-from <stable+bounces-217677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 19:55:08 +0100
+	id OCkICh5bm2k4ygMAu9opvQ
+	(envelope-from <stable+bounces-217678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 20:38:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A42F170181
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 19:55:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCDF170358
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 20:38:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DDFC7300F121
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 18:55:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 02D043004C54
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 19:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65AF356A23;
-	Sun, 22 Feb 2026 18:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F24F13D891;
+	Sun, 22 Feb 2026 19:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BulHsGTT"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AZCMsAWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE4F35B64C;
-	Sun, 22 Feb 2026 18:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B5E35C195
+	for <stable@vger.kernel.org>; Sun, 22 Feb 2026 19:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771786502; cv=none; b=leIIidUbfCOseum4qI9isWIz3o4/wE4ZDB6K5D/gUSOt7OgaIDHr5RyqwkKb1Q9oqQOikoNoGBpi8HCFZ75zeIg9k0HVLoi4Ko66LbaJbYD0AsXL9Mtw4IMiLF2ECvYM8kJ0VRPeC/W6tf04SVv9pU53CwshhTaJJlww4xDzo/w=
+	t=1771788993; cv=none; b=iUxwpdfrNyXMN8ZujoYsWv9jQvJlqUAJP50N8BstU8rbzce20nfx8JyWNBc8vnehK6PIeefgiNrsxzCDya99F8l8EDQEyB+ehByMEHEbPvvaghx7rWDxV1Gf85K2nClZDKGk55SLeTUk/xbnvkK4rzPZ9ZUq4v6csqmD5Pgz4Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771786502; c=relaxed/simple;
-	bh=wFo8UbUa82jGUjMKBA3eL1iC8v+b9J2tS9Z1+mG5XAQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ShP2w3bCP176VoganvOw40k9NO/V0JrAFw9KFwsUimjday0Vq8r5KE5KosMOV7kc9OYAtv+hohiC0g3/wYmhzeO1qImTFt/FvPBTSsfLcI/HrrFsuAAnrnyjDjk22N+qYBV1aKbgTAO1z56cULP6c9tLrW1u9m2gvJLTMraqby4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BulHsGTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1F7C116D0;
-	Sun, 22 Feb 2026 18:55:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771786501;
-	bh=wFo8UbUa82jGUjMKBA3eL1iC8v+b9J2tS9Z1+mG5XAQ=;
+	s=arc-20240116; t=1771788993; c=relaxed/simple;
+	bh=j6Aq3bLjqLlAE41T2HRH6SRYftcu10d13je1+Jl1r4U=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=HQ8oG0/xPq9CcBLxUmY0Y1tDqnVYcKG5xy+u1zYXf61iDJSpJLIoT5RB2QI4WWGLDCxaJw09bCYaUc4BNn9KjWArJyTfxVYLmrlas4ztDswKvFqXQ7CRuEqaQ9EsqOWqj6VYwqY84HpcXJgLNa5S7IEBw0mpYa61g21V50cfYFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AZCMsAWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAEAC116D0;
+	Sun, 22 Feb 2026 19:36:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1771788992;
+	bh=j6Aq3bLjqLlAE41T2HRH6SRYftcu10d13je1+Jl1r4U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BulHsGTTThcYf4CoitxBzJKckfnkMBZG22DPj41pbdPCVms96aj1X9/gAi80/AtzE
-	 T7UzXSSqjE3aWUjJzdIYfSVhF8KtXf/zXV3RSFQYJeYnzbKTOqnlAAPEw8VIr9UVoF
-	 sMw5YAInw3Z1h+ch++mvIi8djRoLIfEyiixOrGfhPsbLQcWudO+B66UgTdAI3JCbj6
-	 G/h0KC7AF2lwfn32I2T+XvkytG69ecPiabfLrQ/aTZB2smp//rLSRRWS23wxIwmGjc
-	 3QCChY+CV7lbA0OZKpmpn1AzdtVie/GA1ZSxgOhcvr4HgWlpYgCPYINQA0mVpXTwgj
-	 xJcZCNg4vcnZw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vuEbb-0000000Co9G-1U40;
-	Sun, 22 Feb 2026 18:54:59 +0000
-Date: Sun, 22 Feb 2026 18:54:58 +0000
-Message-ID: <878qckehh9.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <tabba@google.com>
-Cc: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Quentin Perret <qperret@google.com>,
-	Will Deacon <will@kernel.org>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Fix protected mode handling of pages larger than 4kB
-In-Reply-To: <CA+EHjTy4p-Mbfr86NR9n1LgHC0EWrkdVjYb8O3z7k=Lv1entQg@mail.gmail.com>
-References: <20260222141000.3084258-1-maz@kernel.org>
-	<CA+EHjTy4p-Mbfr86NR9n1LgHC0EWrkdVjYb8O3z7k=Lv1entQg@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	b=AZCMsAWKL+/zY8NFl0Po/6EbZiGpdgS8AA5J6C27bJSt27K4bXZpGss4wAXbRL7G0
+	 txWNxp4a2TET+NfCMmAHz2Ut++fN12p+1OZEySCZc0eHUWQNTlhJ2rfBQs6buFLkdn
+	 ORFfplOCuxjoO/fR6VoOASJReEhD/6m8S9SHmYBA=
+Date: Sun, 22 Feb 2026 11:36:31 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: Chris Mason <clm@meta.com>, stable@kernel.org, chrisl@kernel.org,
+ kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, baohua@kernel.org, linux-mm@kvack.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm/swapfile: fix list iteration when next node
+ is removed during discard
+Message-Id: <20260222113631.6011221e2d8d8f3973f035ae@linux-foundation.org>
+In-Reply-To: <aZpe3kD/xmz87zYH@yjaykim-PowerEdge-T330>
+References: <20251127100303.783198-2-youngjun.park@lge.com>
+	<20260220151338.3234934-1-clm@meta.com>
+	<aZpe3kD/xmz87zYH@yjaykim-PowerEdge-T330>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: tabba@google.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, will@kernel.org, vdonnefort@google.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-217678-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217677-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_CC(0.00)[meta.com,kernel.org,tencent.com,huaweicloud.com,gmail.com,redhat.com,kvack.org,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4A42F170181
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:mid,linux-foundation.org:dkim]
+X-Rspamd-Queue-Id: 7BCDF170358
 X-Rspamd-Action: no action
 
-Hi Fuad,
+On Sun, 22 Feb 2026 10:41:50 +0900 YoungJun Park <youngjun.park@lge.com> wrote:
 
-On Sun, 22 Feb 2026 17:58:00 +0000,
-Fuad Tabba <tabba@google.com> wrote:
-> 
-> Hi Marc,
-> 
-> On Sun, 22 Feb 2026 at 14:10, Marc Zyngier <maz@kernel.org> wrote:
-> >
-> > Since 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings"),
-> > pKVM tracks the memory that has been mapped into a guest in a
-> > side data structure. Crucially, it uses it to find out whether
-> > a page has already been mapped, and therefore refuses to map it
-> > twice. So far, so good.
-> >
-> > However, this very patch completely breaks non-4kB page support,
-> > with guests being unable to boot. The most obvious symptom is that
-> > we take the same fault repeatedly, and not making forward progress.
-> > A quick investigation shows that this is because of the above
-> > rejection code.
-> >
-> > As it turns out, there are multiple issues at play:
-> >
-> > - while the HPFAR_EL2 register gives you the faulting IPA minus
-> >   the bottom 12 bits, it will still give you the extra bits that
-> >   are part of the page offset for anything larger than 4kB,
-> >   even for a level-3 mapping
-> 
-> Matches the ARM ARM.
-> 
-> > - pkvm_kvm_pgtable_stage2_map() assumes that the address passed
-> >   as a parameter is aligned to the size of the intended mapping
-> 
-> nit: pkvm_kvm_pgtable_stage2_map() -> kvm_pgtable_stage2_map()
+> > Hi everyone,
+> > 
+> > This fix landed upstream in v6.19-rc1:
+> > 
+> > commit f9e82f99b3771eef396dbf97e0f3c76e20af60dd
+>
+> > Author: Youngjun Park <youngjun.park@lge.com>
+> > Date:   Thu Nov 27 19:03:02 2025 +0900
+> > Subject: mm/swapfile: fix list iteration when next node is removed during discard
+> > 
+> > Looks like the commit being fixed is actually:
+> > 
+> > commit 9fb749cd15078c7bdc46e5d45c37493f83323e33
 
-Actually, that's pkvm_pgtable_stage2_map(). kvm_pgtable_stage2_map()
-itself isn't affected.
+yup.  I've updated the changelog.
 
-> 
-> > - the faulting address is only aligned for a non-page mapping
-> >
-> > When the planets are suitably aligned (pun intended), the guest
-> > faults a page by accessing it past the bottom 4kB, and extra bits
-> > get set in the HPFAR_EL2 register. If this results in a page mapping
-> > (which is likely with large granule sizes), nothing aligns it further
-> > down, and pkvm_mapping_iter_first() finds an intersection that
-> > doesn't really exist. We assume this is a spurious fault and return
-> > -EAGAIN. And again.
-> >
-> > This doesn't hit outside of the protected code, as the page table
-> > code always aligns the IPA down to a page boundary, hiding the issue
-> > for everyone else.
-> >
-> > Fix it by always forcing the alignment on vma_pagesize, irrespective
-> > of the value of vma_pagesize.
-> >
-> > Fixes: 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings")
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  arch/arm64/kvm/mmu.c | 12 +++++-------
-> >  1 file changed, 5 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> > index 8c5d259810b2f..aa587f2e28264 100644
-> > --- a/arch/arm64/kvm/mmu.c
-> > +++ b/arch/arm64/kvm/mmu.c
-> > @@ -1753,14 +1753,12 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
-> >         }
-> >
-> >         /*
-> > -        * Both the canonical IPA and fault IPA must be hugepage-aligned to
-> > -        * ensure we find the right PFN and lay down the mapping in the right
-> > -        * place.
-> > +        * Both the canonical IPA and fault IPA must be aligned to the
-> > +        * mapping size to ensure we find the right PFN and lay down the
-> > +        * mapping in the right place.
-> >          */
-> > -       if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE) {
-> > -               fault_ipa &= ~(vma_pagesize - 1);
-> > -               ipa &= ~(vma_pagesize - 1);
-> > -       }
-> > +       fault_ipa &= ~(vma_pagesize - 1);
-> > +       ipa &= ~(vma_pagesize - 1);
-> 
-> nit: Since we're changing this code anyway, should we use the ALIGN
-> macros instead?
-
-That'd be ALIGN_DOWN() then, as ALIGN() really is ALIGN_UP(), and
-that'd be counter-productive.  Something like:
-
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index aa587f2e28264..3952415c4f83b 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1757,8 +1757,8 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
- 	 * mapping size to ensure we find the right PFN and lay down the
- 	 * mapping in the right place.
- 	 */
--	fault_ipa &= ~(vma_pagesize - 1);
--	ipa &= ~(vma_pagesize - 1);
-+	fault_ipa = ALIGN_DOWN(fault_ipa, vma_pagesize);
-+	ipa = ALIGN_DOWN(ipa, vma_pagesize);
- 
- 	gfn = ipa >> PAGE_SHIFT;
- 	mte_allowed = kvm_vma_mte_allowed(vma);
-
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> 
-> and using 4, 16, and 64KB pages:
-> 
-> Tested-by: Fuad Tabba <tabba@google.com>
-
-Ah, great! I couldn't be bothered with 64kB, and only used 16kB in NV
-to debug quickly and then bare-metal to verify the fix.
-
-Thanks!
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
 
