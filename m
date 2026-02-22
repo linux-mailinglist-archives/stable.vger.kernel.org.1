@@ -1,161 +1,264 @@
-Return-Path: <stable+bounces-217671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217672-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDvLIM0hm2mStQMAu9opvQ
-	(envelope-from <stable+bounces-217671-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 16:33:33 +0100
+	id mFG7NxAvm2lluwMAu9opvQ
+	(envelope-from <stable+bounces-217672-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 17:30:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BEF316F88D
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 16:33:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7F016FA1D
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 17:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5C383300B445
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 15:33:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78E7E300CC3F
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 16:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3849634F259;
-	Sun, 22 Feb 2026 15:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EB2354AF8;
+	Sun, 22 Feb 2026 16:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="JK38DpPX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D64R3jrn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656F1CA6F
-	for <stable@vger.kernel.org>; Sun, 22 Feb 2026 15:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B53357716;
+	Sun, 22 Feb 2026 16:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771774411; cv=none; b=t1rQRjK0fFHsJvHeICHV6NKa9HQgD3YmpXq64LVfOoo6E9FQ3AiWgv09hWrb7t0vUqe1o0RslzFGIi+A3H26EXe95d4efjC35LhsqSaeQiQkIEdSkZh29rznxKHiOi4uDL7qEm+hWn7FS23Vr0HpYpvid++H6U0Xr6BImdEaI74=
+	t=1771777803; cv=none; b=sD0famZsPgDm5Q5oeV0b0ZF4UDxvO2NsKC32bV8TNtKSbeqdwzNkQ2jeMMgwanismC+Q24spw/ov4InQCYEb1foYF7erBnfmwuagIB6cQwSraKtrygKBR6LyOAOsEcJ3NK7H3YVpUms6mL4ua+GbqxazTX91wjbMoVS4BSza0xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771774411; c=relaxed/simple;
-	bh=fZANeEVcMhdCynQNpAQpU+Fxs3tkRMVwsp/nTFeEYy8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lZAtXi2uOptGnBYaOUkkolk1aR73/6Ib4hbna+ftySPD/5JetnoMPXGJ4ZnhSoNd7NQDp+zlMMyx1TuGvtG8IHOHBit+uXcUUL+fao8HHMKLQ5J8dg9rjR2haCKmw01tocFSxHzFyLP5fk7ZIH/ESRUGWfhXUVZbEjpIpTV2w9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=JK38DpPX; arc=none smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-45f0b597eb4so2131661b6e.2
-        for <stable@vger.kernel.org>; Sun, 22 Feb 2026 07:33:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1771774407; x=1772379207; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HH5ka964ImU4MPRn0XUQDpQ1hlSBdaDzyXvjeAzs27Y=;
-        b=JK38DpPXnLtdH0sYJ9AxiRcgoxqoLNADNEKjzmWdqDmGmYbQP+Dc73lkxH+53pkPMX
-         r9GFqgCN+vbOFQqNV6xvj6x4QbfKsycdwCv5KdG+WI1//tnHFi3aaAKhVu/DplRLHgjX
-         RlJax3UoYluA8POMsJwOVUEL4S0VGl8QZX4l6byd8oD1Web2zDt0jPDoAJLfxCGMKHa4
-         R7alzPR8K86fTB9LqUpJNtTjYEiD18E4c26nWTvJwheonrMsnwI+ANEcmYaLNbABqvSa
-         8ahay4957B2h788LvgbD+upkEI7ssSRbmm968wm3UXuPhklH/Vv8D5z6sPJvhjxtjghC
-         Uzfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771774407; x=1772379207;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HH5ka964ImU4MPRn0XUQDpQ1hlSBdaDzyXvjeAzs27Y=;
-        b=hCCcbAbl/WLqV9golSv8WLJ1ePbwYqMSeJKT58WPTEeUL13gBEn88ALymDW3g5jnw7
-         K2glDJnK489y2PQGZb9mbUtkRbEMOQvEQ/i6UHVn6L0mulg+dxn6xueQMBrOL/ca+qcQ
-         ZnswYGLYvja+SNvEojAekqsCqHdRjZyLDKfQ0p0gypZ6py8zti+jezf0zZYdQGV3Xhqm
-         ijf9A1YTXyW+ykmyfxWoySqh0azcd0CqUWXaYrLigUXYOo5VUNluH2kmhB09TSS9K7jI
-         ZxrViX5HjAu+A+YPJXIw79vGBWKeCNMWJ9UIVMhGxnfqVMF4AHdB5XmNASnhOoHuZW88
-         Y7Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCUwarpQmkK4C7AxkxYilpar/tobl7461mUkVfI0G2ym3icetZ7Nv3+igZRQMvCPcFMXFtFpo54=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAtSjAGHetwqkLXwAj+RDdeaXRyxu3iRU/1mYpIqgDdgPTQ5ys
-	wSLCVdfJExK6plVE4MAoZR0YIySdUgcI0nuUEk0OLVDn1C6v59lspu7emDDGFREIHpQ=
-X-Gm-Gg: AZuq6aKpc1M4DLLwUtauf2p3TxI983fxxaf+QyE8nrQMkbEe+y722+D7MeFCBNbtv/V
-	BHEHPBr+64qNA2Zf8P92d3fWV4dztuFN/Zs77rIQlVA8eWtRz9Y74YXYlHHG+xR37G5+mGo4J6W
-	Jdt5AOiCw2iICqJpbM2PNyWX8CMcuW2EktFja1ZqnkoZwGtxmTzZSzVvlY63n9qtfmgYExM0sLS
-	DWRniLyjC/8rNutMazIbj/V4OyNlJJw2KdkfexGuQxsNjz0Jt9rDSywR8vf1Kt/eDsAVPi9g2IB
-	3mAg8HtyesuEfxGaf9LiQXs58j1av1MrPnpWJo7YuSlgW4MLhPppJeqO89SVibeRgKv1Dn5mArH
-	SOaO+bv/H4TwD+gG3BWYh7tCWtz7luRLrzd8zluoxvgiY0AMF9e0sm09uuCxP2uGMX2BPO54eyJ
-	vaWvxi9InlYj7kwNngWTrqAiRb4v4XZ/TxzNYwEyCBcvUKwcIzLAd+29fxfowtmh1SN5G1t45hU
-	YDXLUO9zO0=
-X-Received: by 2002:a05:6808:1b8e:b0:459:b569:702f with SMTP id 5614622812f47-464461b2aa6mr4205108b6e.15.1771774406890;
-        Sun, 22 Feb 2026 07:33:26 -0800 (PST)
-Received: from [172.25.209.35] ([187.199.77.89])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-46449fd7a0asm3428446b6e.1.2026.02.22.07.33.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Feb 2026 07:33:26 -0800 (PST)
-Message-ID: <ee96be6b-f0d9-479c-8ab1-f8c7e04ccdeb@kernel.dk>
-Date: Sun, 22 Feb 2026 08:33:24 -0700
+	s=arc-20240116; t=1771777803; c=relaxed/simple;
+	bh=r8blr4lUK/hyGtCcj6d0ju2YO+6PPYpgeQ+iODPCV2k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=u8TpIYyoUzlOgMkI2wNo9qgfuqdqPq040XJ/lKWgmLJ5TVLm5ws+xhqXFaCDBOlcxG0mGdR2m8oipRciZziZAraXoIhTpFtxm1+oHx/vp39/Ruhluuq+paBPYG6vAV95TLnd+cMayWX1bx+C/4ZUS7IRkUPr3pF3GaQVLZ7iuTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D64R3jrn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108C9C116D0;
+	Sun, 22 Feb 2026 16:29:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771777802;
+	bh=r8blr4lUK/hyGtCcj6d0ju2YO+6PPYpgeQ+iODPCV2k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D64R3jrn2VIvuTjEvCQJYfO0SMH8ZC/bkcq3qDt1pNiXD33gHEhHIZtCRpMUsPicw
+	 d2yk83fh2WRM/g0u6LvlOc8ACkTGd6vjrp9D/BeivT87IAV5syryMaBD726L3IzM08
+	 stESZxL+ruOqFuGlbKC7U4L52EqUDvOYJTJiStcHg0RqKKis25WEI1PEwntVG7eX/U
+	 Gogbgcuc5WDFTIhTOaLlQ5VhfIwkJjWsQgwvcZefkcn1JAe3GEu3SAtib9DWUuWMhn
+	 rdr+KpLnk+2rXGxeXifjS1VJ57tW9Vp7R8K2rGkdzcst8od9oRzUC07Ic8rNzJXtSu
+	 ztuIiDzwmKITw==
+From: Simon Horman <horms@kernel.org>
+To: anthony.l.nguyen@intel.com
+Cc: Simon Horman <horms@kernel.org>,
+	joshua.a.hay@intel.com,
+	aaron.ma@canonical.com,
+	przemyslaw.kitszel@intel.com,
+	Samuel.salin@intel.com,
+	jacob.e.keller@intel.com,
+	pmenzel@molgen.mpg.de,
+	sridhar.samudrala@intel.com,
+	brett.creeley@amd.com,
+	decot@google.com,
+	david.m.ertman@intel.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	sreedevi.joshi@intel.com,
+	rafal.romanowski@intel.com,
+	en-wei.wu@canonical.com,
+	dima.ruinskiy@intel.com,
+	michal.kubiak@intel.com,
+	tglx@kernel.org,
+	pabeni@redhat.com,
+	willemb@google.com,
+	avigailx.dahan@intel.com,
+	davem@davemloft.net,
+	aleksandr.loktionov@intel.com,
+	edumazet@google.com,
+	piotr.kwapulinski@intel.com,
+	sx.rinitha@intel.com,
+	emil.s.tantilov@intel.com,
+	brianvv@google.com,
+	vitaly.lifshits@intel.com,
+	jedrzej.jagielski@intel.com,
+	stable@vger.kernel.org,
+	kuba@kernel.org,
+	richardcochran@gmail.com,
+	joe@dama.to,
+	mschmidt@redhat.com,
+	boolli@google.com
+Subject: Re: [net,13/13] e1000e: correct TIMINCA on ADP/TGP systems with wrong XTAL frequency
+Date: Sun, 22 Feb 2026 16:28:35 +0000
+Message-ID: <20260222162835.23954-1-horms@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260220004027.729384-14-anthony.l.nguyen@intel.com>
+References: <20260220004027.729384-14-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] io_uring/rsrc: clean up buffer cloning arg validation
- (for 6.18-stable tree)
-To: Joanne Koong <joannelkoong@gmail.com>, stable@vger.kernel.org
-Cc: clm@meta.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <CAJnrk1YA9hk5Mv0BXFe+TcWLXsNLpWtcA-gy+k03zDt4f0z7zg@mail.gmail.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <CAJnrk1YA9hk5Mv0BXFe+TcWLXsNLpWtcA-gy+k03zDt4f0z7zg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217671-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
+	FREEMAIL_CC(0.00)[kernel.org,intel.com,canonical.com,molgen.mpg.de,amd.com,google.com,lunn.ch,vger.kernel.org,lists.osuosl.org,redhat.com,davemloft.net,gmail.com,dama.to];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[39];
+	TAGGED_FROM(0.00)[bounces-217672-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kernel.dk:mid,kernel-dk.20230601.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 1BEF316F88D
+	TAGGED_RCPT(0.00)[stable,netdev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4A7F016FA1D
 X-Rspamd-Action: no action
 
-On 2/20/26 11:19 AM, Joanne Koong wrote:
-> Commit id upstream: b8201b50e403815f941d1c6581a27fdbfe7d0fd4
-> ("io_uring/rsrc: clean up buffer cloning arg validation")
-> Link to the patch:
-> https://lore.kernel.org/io-uring/20251204215116.2642044-1-joannelkoong@gmail.com/#t
-> Kernel version to apply it to: 6.18-stable tree
-> 
-> Hi stable@,
-> 
-> Chris Mason recently detected that this patch is a required dependency
-> for commit 5b804b8f1e0d ("io_uring/rsrc: fix lost entries after cloned
-> range") in the 6.18-stable tree [1]. Without this patch, the changes
-> in commit 5b804b8f1e0d use an incorrect value for nbufs when it
-> assigns "i = nbufs" [2].
-> 
-> Could you please apply this patch to the 6.18-stable tree as a
-> dependency fix needed for commit 5b804b8f1e0d?	
-> 
-> Thanks,
-> Joanne
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.18.y&id=5b804b8f1e0d66413774d43f7a4b78bba0ca6272
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/io_uring/rsrc.c?h=linux-6.18.y#n1252.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-FWIW, this is approved on my end. CC Greg.
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+e1000e: correct TIMINCA on ADP/TGP systems with wrong XTAL frequency
 
+On some Tiger Lake (TGP) and Alder Lake (ADP) platforms, the hardware
+XTAL clock is incorrectly interpreted as 24 MHz instead of the actual
+38.4 MHz. The commit measures PHC vs system time over 1 ms and if the
+delta exceeds 100 microseconds, reprograms TIMINCA for the 38.4 MHz
+profile and reinitializes the timecounter.
 
--- 
-Jens Axboe
+> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+> index 814698807f3d..ae35ac479026 100644
+> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
+> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
 
+[ ... ]
+
+> @@ -3905,6 +3905,80 @@ static void e1000_flush_desc_rings(struct e1000_adapter *adapter)
+>  		e1000_flush_rx_ring(adapter);
+>  }
+>
+> +/**
+> + * e1000e_xtal_tgp_workaround - Adjust XTAL clock based on PHC and system
+> + * clock delta.
+> + * @adapter: Pointer to the private adapter structure
+> + *
+> + * Measures the time difference between the PHC (Precision Hardware Clock)
+> + * and the system clock over a 1 millisecond interval. If the delta
+> + * exceeds 100 microseconds, reconfigure the XTAL clock to 38.4 MHz.
+> + */
+> +static void e1000e_xtal_tgp_workaround(struct e1000_adapter *adapter)
+> +{
+> +	s64 phc_delta, sys_delta, sys_start_ns, sys_end_ns, delta_ns;
+> +	struct ptp_system_timestamp sys_start = {}, sys_end = {};
+> +	struct ptp_clock_info *info = &adapter->ptp_clock_info;
+> +	struct timespec64 phc_start, phc_end;
+> +	struct e1000_hw *hw = &adapter->hw;
+> +	struct netlink_ext_ack extack = {};
+> +	unsigned long flags;
+> +	u32 timinca;
+> +	s32 ret_val;
+> +
+> +	/* Capture start */
+> +	if (info->gettimex64(info, &phc_start, &sys_start)) {
+> +		e_dbg("PHC gettimex(start) failed\n");
+> +		return;
+> +	}
+> +
+> +	/* Small interval to measure increment */
+> +	usleep_range(1000, 1100);
+> +
+> +	/* Capture end */
+> +	if (info->gettimex64(info, &phc_end, &sys_end)) {
+> +		e_dbg("PHC gettimex(end) failed\n");
+> +		return;
+> +	}
+> +
+> +	/* Compute deltas */
+> +	phc_delta = timespec64_to_ns(&phc_end) -
+> +		    timespec64_to_ns(&phc_start);
+> +
+> +	sys_start_ns = (timespec64_to_ns(&sys_start.pre_ts) +
+> +			timespec64_to_ns(&sys_start.post_ts)) >> 1;
+> +
+> +	sys_end_ns = (timespec64_to_ns(&sys_end.pre_ts) +
+> +		      timespec64_to_ns(&sys_end.post_ts)) >> 1;
+> +
+> +	sys_delta = sys_end_ns - sys_start_ns;
+> +
+> +	delta_ns = phc_delta - sys_delta;
+> +	if (delta_ns > 100000) {
+> +		e_dbg("Corrected PHC frequency: TIMINCA set for 38.4 MHz\n");
+> +		/* Program TIMINCA for 38.4 MHz */
+> +		timinca = (INCPERIOD_38400KHZ <<
+> +			   E1000_TIMINCA_INCPERIOD_SHIFT) |
+> +			  (((INCVALUE_38400KHZ <<
+> +			     adapter->cc.shift) &
+> +			   E1000_TIMINCA_INCVALUE_MASK));
+
+Is adapter->cc.shift correct here? When e1000e_xtal_tgp_workaround runs,
+the earlier call to e1000e_get_base_timinca (via e1000e_phc_adjfine in
+e1000e_systim_reset) has already set adapter->cc.shift based on the
+incorrectly reported 24 MHz XTAL frequency.
+
+On affected hardware where SYSCFI reports 24 MHz:
+
+e1000e_systim_reset()
+ -> e1000e_phc_adjfine(0)
+    -> e1000e_get_base_timinca() sets:
+       adapter->cc.shift = INCVALUE_SHIFT_24MHZ (14)
+ -> e1000e_xtal_tgp_workaround()
+
+So when computing TIMINCA for 38.4 MHz, the code uses shift=14:
+
+  INCVALUE_38400KHZ << 14 = 26 << 14 = 425984
+
+But the 38.4 MHz profile needs shift=19:
+
+  INCVALUE_38400KHZ << 19 = 26 << 19 = 13631488
+
+This produces timinca = 17203200 instead of the correct 30408704.
+
+Additionally, the subsequent timecounter_init call uses adapter->cc which
+still has shift=14. This computes tc->mask = (1ULL << 14) - 1 = 16383
+instead of the correct (1ULL << 19) - 1 = 524287.
+
+Should the function update adapter->cc.shift = INCVALUE_SHIFT_38400KHZ
+before computing timinca and calling timecounter_init, matching the
+pattern in e1000e_get_base_timinca for the 38.4 MHz profile?
+
+> +		ew32(TIMINCA, timinca);
+> +
+> +		/* reset the systim ns time counter */
+> +		spin_lock_irqsave(&adapter->systim_lock, flags);
+> +		timecounter_init(&adapter->tc, &adapter->cc,
+> +				 ktime_to_ns(ktime_get_real()));
+> +		spin_unlock_irqrestore(&adapter->systim_lock, flags);
+> +
+> +		/* restore the previous hwtstamp configuration settings */
+> +		ret_val = e1000e_config_hwtstamp(adapter,
+> +						 &adapter->hwtstamp_config,
+> +						 &extack);
+> +		if (ret_val && extack._msg)
+> +			e_err("%s\n", extack._msg);
+> +	}
+> +}
+
+[ ... ]
 
