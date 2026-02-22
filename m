@@ -1,154 +1,166 @@
-Return-Path: <stable+bounces-217664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217665-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDL5H+/1mmmnoQMAu9opvQ
-	(envelope-from <stable+bounces-217664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 13:26:23 +0100
+	id aMTuL+oDm2n5pwMAu9opvQ
+	(envelope-from <stable+bounces-217665-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 14:26:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1237E16F08C
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 13:26:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DADE16F39B
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 14:26:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D1827300D9FD
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 12:26:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 33AC3300C02B
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 13:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667A414F9FB;
-	Sun, 22 Feb 2026 12:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89622331A70;
+	Sun, 22 Feb 2026 13:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DMdVTT0L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYnYMlxu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D65723D288
-	for <stable@vger.kernel.org>; Sun, 22 Feb 2026 12:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6E3331A4B;
+	Sun, 22 Feb 2026 13:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771763177; cv=none; b=TnabKyKYjjSYtYVjPyvJXPPkRG/aSKCzoULc6Xs3vh8ZC4b9WOuq1naBxHYpLe0BaOhVSuZTfwRTxNFwB7rqQ6buR2wEczN93L0Tits6WrUmDQFpGb0FDtl+xU7OlNTx+mTCFkGkqLhMAUDuXOblHTAp17uOBUb8GM2ip0leRfo=
+	t=1771766756; cv=none; b=j3AZhfokXZz2RL85Y3rpdCZ10VydydkL73MeZT0d6xqu6fxuLYhStirFUQxUa+imhF8TQs6++FjthCXaqocSlUiBoZesWbkjxj7k7+OFnbERoFyTJHCF9GD1hbNO/jYTGjc3C296SNhhTVZ8HUnmXNSTYkPI93EoQAd7xKQoQ5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771763177; c=relaxed/simple;
-	bh=r8qtfrRZ+a9tDUEL52UyAQXfb+IQdTBvTcDT180+jDE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVI5WUlzJlAqtoiRrSvTOX2C3SCUz4QqPiAaccyrQwVrOxDx3Te+N7zZNi/GroMKjwv11B34RJxoRy8kxd1uKVggigZInYGhLideSQP2h/Tu+tW0kIv/j3qO2fkzy2X9fFuFR0NryuTeW0cjZ510eKOeBqmnsy2h1aksvfdVan4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DMdVTT0L; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8217f2ad01eso3513228b3a.2
-        for <stable@vger.kernel.org>; Sun, 22 Feb 2026 04:26:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771763175; x=1772367975; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c7Yy+PNSGZ+0k2NhhJxCl7Lu7PtCSNFAVWFUv+fEbH8=;
-        b=DMdVTT0LP05G7XVeZuvKCbycOC0vInnXnsNHeV8mLsTdsrEcqugAccDDKaY6wHvXl6
-         wcjWsmLvrdvuSOfvm3zQHEfadDBOtNf62GrgLlfRwqLloDgOQVPOxrvXtPt3oT+SEy2N
-         7q6mP9GiuxneZIZdM2No+PzknuT9oOqdVpz5VE6BVymsjFliu8Gks2LpFAXUU8hsCz0E
-         CNgZVkqRLvPQHriTLcnVJ4l2779xSM8/k8rjJV2RUHJWIKPLSVbYFvLu6rrl6C2UJ7ms
-         t1YOUEjk2OHhHLilpZYshccR0JKH6e0X1AjxW2g92UzZb74Yj2qiik7+mKrJIEXebqDQ
-         sVCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771763175; x=1772367975;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=c7Yy+PNSGZ+0k2NhhJxCl7Lu7PtCSNFAVWFUv+fEbH8=;
-        b=dSDnAmwkfDO/QkRzCJNV0hBCJGQiC879DDnmTPIf9TZiNAooz7CdjeTcOu1C9xsfFd
-         pDR3wlhtYeSBwgrq0BOLtjfExmG88TLyuk1rhrzbLk1nNNE+A/NAIVizJErSyISJcY58
-         RM3QIvkL/3FqEKXFk2bsTjLADit96wosU776mGwxUAat7/ovtGA4R2jrsEwfAPNvxZIg
-         ekiGMOoR1dZqZWyl8L4jvkFOO7Z+SbQ68YeEgyxV0OgliE257YbOh/L6fCUtS3ydTDXp
-         ycaGz6rdWXjP4UBzJ207tHJelwmWk1CClIYxYee7fnwV8F58bwQY1Vv03EC8Ntrd9cbw
-         DKiw==
-X-Forwarded-Encrypted: i=1; AJvYcCWBymaAbggZJUDi215T0tvCp1G3DXf3khLTYQCEPPp0qBZLK171jwIHrybbLyv6foBc0YZ9Bek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFyeYqkm5q4qKQGHQYTsYvIC0dNUlsbXKc0arWofjyO7e56FBE
-	XEdHEJ2txJrWVETFlzr/2BGnE6Vm9Zvy+3y+Rt3wDTRVQeozgiOat3I5
-X-Gm-Gg: AZuq6aK//Sx+3IC/aPqq/U2K1WNhaydmtXHNi5QdW1FEl3wavgEZrxdqzGRv4qH3/Nl
-	mW4Vp+KRJCauEanGU02FAs/9itbhKrZofF28yR5ttyuajWAwFCjPY8xAcbORoAfQ0L2fkbfZjM0
-	BuldVdFu8pdUoSPt14d9wcooPzlXp4f8C6n02atDQot3u/LFz70N/+zYsCa0UJvdIPDiX+gXYEy
-	oBPZSXRjVfnLiqynaCUz5FEUklYtry2aM4q55gFs48oQPoZ2ziIG2EnhgH7V6lrKAPIE04lfGUO
-	yMf+EIItCiJ5d5EQEOm5EA9Q3awhXzra4AItch/D4nJm2sl3yHaGvsO8mIoAMnCW8ZD7FJzSV/S
-	qsF0Q0EYw4vbBaaKvMixP8wuqUZPCXl4WOk2q8wRMbhBh+G9EjGKediccDVu0Ye6lsf+R3BQptg
-	7RPBk+xSx8VD3AgUEgqw5DoHZ8U/Ws1L5yI8wjONZaprafVkAjDWYJRGKN
-X-Received: by 2002:a05:6a20:748b:b0:36a:dbc6:2572 with SMTP id adf61e73a8af0-39545eba4d3mr4701634637.18.1771763175425;
-        Sun, 22 Feb 2026 04:26:15 -0800 (PST)
-Received: from arter97-x1 ([58.124.177.116])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70b7180613sm4408021a12.3.2026.02.22.04.26.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Feb 2026 04:26:14 -0800 (PST)
-From: Juhyung Park <qkrwngud825@gmail.com>
-To: linux-sound@vger.kernel.org,
-	stable@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Juhyung Park <qkrwngud825@gmail.com>
-Subject: [PATCH 2/2] ALSA: hda/realtek: add quirk for Samsung Galaxy Book Flex (NT950QCT-A38A)
-Date: Sun, 22 Feb 2026 21:26:09 +0900
-Message-ID: <20260222122609.281191-2-qkrwngud825@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260222122609.281191-1-qkrwngud825@gmail.com>
-References: <20260222122609.281191-1-qkrwngud825@gmail.com>
+	s=arc-20240116; t=1771766756; c=relaxed/simple;
+	bh=MvZPMoyGaIgVmDQJdwrZgE47Hm5SuVzFeNLAh5sPhZw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PkkyjAd69wUl/+QxiVA3SKuRlaftqZWzAYYO9WdMy9w2YD+5YsxxEetN/5Wp/OlbK73N8tDiNLWmFm+zmFHd0DTbEMJS3Th4xNDRQjWH7iuDWOlmppQbigviipdouwAkH7W74WuULkmKoieyMWPz6Mreu70L7dk7Seevxg62eAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYnYMlxu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B76C116D0;
+	Sun, 22 Feb 2026 13:25:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771766755;
+	bh=MvZPMoyGaIgVmDQJdwrZgE47Hm5SuVzFeNLAh5sPhZw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PYnYMlxu4vOH1JTqm+SLUmV44cdK3vhgg15zsOKfXkVanSpoQBhjKclp0Qd/n2VG5
+	 GttKU+E/9te25bqR/9tYMMuAci1072Uc4kJxXEwKYzTObQA7zDCAqZlO6ErADZCrEl
+	 PCaBen7nHwZg/d2yBS7EaaElnhhdZiEPqe70zR8ZBq7+GNN5tObNpY4O30Hi/Mnich
+	 gkGk+zsQklPSheDn7Q3fj+pqTQ10RZn8jObJxHceG2IpdNbb/lyNJkU7u58DAEUNLI
+	 Db5VhAT8Ljni1VBF/yO9GxXuTlvPO5Fv17zf67gP75qdWhDAMkSFhMLyMDlgtw7m5C
+	 cdAlZQSlNv1AA==
+Date: Sun, 22 Feb 2026 13:25:47 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jean-Baptiste Maneyrol via B4 Relay
+ <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Cc: jean-baptiste.maneyrol@tdk.com, Remi Buisson <remi.buisson@tdk.com>,
+ David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: imu: inv_icm45600: fix regulator put warning
+ when probe fails
+Message-ID: <20260222132547.34d4134e@jic23-huawei>
+In-Reply-To: <20260217-inv-icm45600-fix-regulator-put-warning-v2-1-08ad62b1dcdb@tdk.com>
+References: <20260217-inv-icm45600-fix-regulator-put-warning-v2-1-08ad62b1dcdb@tdk.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-217665-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217664-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qkrwngud825@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1237E16F08C
+	TAGGED_RCPT(0.00)[stable,jean-baptiste.maneyrol.tdk.com];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,tdk.com:email]
+X-Rspamd-Queue-Id: 2DADE16F39B
 X-Rspamd-Action: no action
 
-Similar to other Samsung laptops, NT950QCT also requires the
-ALC298_FIXUP_SAMSUNG_AMP quirk applied.
+On Tue, 17 Feb 2026 11:44:50 +0100
+Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Juhyung Park <qkrwngud825@gmail.com>
----
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> When the driver probe fails we encounter a regulator put warning
+> because vddio regulator is not stopped before release. The issue
+> comes from pm_runtime not already setup when core probe fails and
+> the vddio regulator disable callback is called.
+> 
+> Fix the issue by setting pm_runtime active early before vddio
+> regulator resource cleanup. This requires to cut pm_runtime
+> set_active and enable in 2 function calls.
+> 
+> Fixes: 7ff021a3faca ("iio: imu: inv_icm45600: add new inv_icm45600 driver")
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> Cc: stable@vger.kernel.org
+Applied to the fixes-togreg branch of iio.git.
+Note I'll rebase that on rc1 once available and then spin a pull request.
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 421a84b9fb44..22b182fd6129 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7311,6 +7311,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x144d, 0xc109, "Samsung Ativ book 9 (NP900X3G)", ALC269_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x144d, 0xc169, "Samsung Notebook 9 Pen (NP930SBE-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc176, "Samsung Notebook 9 Pro (NP930MBE-K04US)", ALC298_FIXUP_SAMSUNG_AMP),
-+	SND_PCI_QUIRK(0x144d, 0xc188, "Samsung Galaxy Book Flex (NT950QCT-A38A)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc189, "Samsung Galaxy Book Flex (NT950QCG-X716)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc18a, "Samsung Galaxy Book Ion (NP930XCJ-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc1a3, "Samsung Galaxy Book Pro (NP935XDB-KC1SE)", ALC298_FIXUP_SAMSUNG_AMP),
--- 
-2.53.0
+Thanks,
+
+Jonathan
+
+> ---
+> Changes in v2:
+> - Rework patch to move pm_runtime set active early.
+> - Requires to cut pm_runtime set active and enable in 2 functions.
+> - Link to v1: https://lore.kernel.org/r/20260205-inv-icm45600-fix-regulator-put-warning-v1-1-314ec12512cb@tdk.com
+> ---
+>  drivers/iio/imu/inv_icm45600/inv_icm45600_core.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+> index ab1cb7b9dba435a3280e50ab77cd16e903c7816c..811ff80a2e626b4c2bb7b718899abe77488c7745 100644
+> --- a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+> @@ -744,6 +744,11 @@ int inv_icm45600_core_probe(struct regmap *regmap, const struct inv_icm45600_chi
+>  	 */
+>  	fsleep(5 * USEC_PER_MSEC);
+>  
+> +	/* set pm_runtime active early for disable vddio resource cleanup */
+> +	ret = pm_runtime_set_active(dev);
+> +	if (ret)
+> +		return ret;
+> +
+>  	ret = inv_icm45600_enable_regulator_vddio(st);
+>  	if (ret)
+>  		return ret;
+> @@ -776,7 +781,7 @@ int inv_icm45600_core_probe(struct regmap *regmap, const struct inv_icm45600_chi
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = devm_pm_runtime_set_active_enabled(dev);
+> +	ret = devm_pm_runtime_enable(dev);
+>  	if (ret)
+>  		return ret;
+>  
+> 
+> ---
+> base-commit: d820183f371d9aa8517a1cd21fe6edacf0f94b7f
+> change-id: 20260205-inv-icm45600-fix-regulator-put-warning-7c45a49c4c53
+> 
+> Best regards,
 
 
