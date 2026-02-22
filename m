@@ -1,279 +1,288 @@
-Return-Path: <stable+bounces-217680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kADpFxFnm2nEzAMAu9opvQ
-	(envelope-from <stable+bounces-217680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 21:29:05 +0100
+	id OAHSIYp7m2n00AMAu9opvQ
+	(envelope-from <stable+bounces-217681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 22:56:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755A81704DA
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 21:29:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A7B170864
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 22:56:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D3D3300B560
-	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 20:29:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 477F93011592
+	for <lists+stable@lfdr.de>; Sun, 22 Feb 2026 21:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18473590C3;
-	Sun, 22 Feb 2026 20:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5C335C19D;
+	Sun, 22 Feb 2026 21:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D3kiuw89"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PuUmUTQB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614323563E9
-	for <stable@vger.kernel.org>; Sun, 22 Feb 2026 20:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F959352926
+	for <stable@vger.kernel.org>; Sun, 22 Feb 2026 21:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771792139; cv=pass; b=jQ9hUZwfVo5NnOqaV5N7nAloogh7M891vTvFZH3BT5vJqgzUgH+nu5gGWdYPUZ6nUtV7aanM0qFonKtUHmOxnRtdp1eyjXGR4giDVDXu/acVyhjIZGjH/8eOofgKfoW7S53fYlgL6OZ7CkVbJF8nJMKyt1izK9OSVa3nleWqqdM=
+	t=1771797376; cv=pass; b=TQzJTBp/L3k33SLk7HT8z1k1GmxCo+ACNXiqfSEHdgUudDYVgQXiHPwM+Rr2I814IrQA1u2FiRBvLco4rBvLVxCjBSKFQ6kzXIH0YlHQ+99TYEtMvnnNAVcPXekmjxckmFXR1rCYvaIgz8kkHeQbdrMy85v6HV5VnPGlZZ9a77o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771792139; c=relaxed/simple;
-	bh=yjt+fj5rpYQBXgVHixsScjBAGfbqYqJIprbU4BqHtNg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pMf3tYGEwngGP++2Y3yKKTNZjoDUnzsl5gRsT5DgVUW6dzf5FfmM8tQWWOyRZAmVN/LJoJMdC3NucqwmUmlkqD/KWKNZ/sGOgXSikEKmXxxaaJgyMIEjn5pSUnuT0BnJ2vOLM3iKwuYLPWBxBwzSV/ufokM8v5Zcz6SGqffNnnE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D3kiuw89; arc=pass smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5033b64256dso715771cf.0
-        for <stable@vger.kernel.org>; Sun, 22 Feb 2026 12:28:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771792137; cv=none;
+	s=arc-20240116; t=1771797376; c=relaxed/simple;
+	bh=JmSvQO5XqyT6TdvcO2hqlfP/xs6Gk//750J3WTyc8u0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=MLKSn4Hke5B614LQ8u2Ex3rUK3BwUiAKVsjcXkve+CKidznHPjIDot7ZvF7rnYvc7sm3ZXClmi9C4iBjzrE3aRNpuEXu3euLjdcHz7/5pXxMVLVpXsJunZ4kvlX1AaIeuX4I66rBAzDwxMgR30xIjbZaCF8Yr3yQql/D+rWac0Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PuUmUTQB; arc=pass smtp.client-ip=209.85.221.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5688c221fd3so1615703e0c.2
+        for <stable@vger.kernel.org>; Sun, 22 Feb 2026 13:56:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771797374; cv=none;
         d=google.com; s=arc-20240605;
-        b=aXYmlicpPmeyozCI6+33Xsu5pxPWk2sqsjoKFfYcOnKP6Hag3LkL+JV0xgt2PjYWve
-         pRg60qwXvUn16M6BwlcCb9x5jEFLJ5zj5/7a3rC+yXFdOGzVedGUPEJBr+oqdEJJkV66
-         ohHzivtwLQO37zfIGhwJDTY6ndw4PhO5srfWNdNb2jrDBmBEYC61LyLAjybcidob+8YU
-         AyvsQFlzpLyaEXaXlpgtYjCCgoOvXlbshT1znxnkt9/HYvKdKP3qt2myZMmsRMXSyE5u
-         DMkUv1gcYRvk3q04DY6QOcdXJsOi13XAtucw48JD4SVuktDeKBJYB3nuz3SyurJCCUGu
-         CuQg==
+        b=L0UZGitwOi4AjO2b3OT7LZZy4CrPmAQ4dPxPh91rOdSnZxgKOzNokcbmIsC2wVzu4P
+         Rzo/H6jLwaY2CHxCpGshcoeBFn+WWWdb6yp21SVD8Mxrxue60ZT9y/o2dtybl+4UrQpm
+         SVR/4rUi6XhhpryVV8UdUVGxyOf1XvzzxdSlyQC1DnRN+OkKZGOby06GLjrBwxdH0wbs
+         eKBzfxxz/UReqND9pjcZA7YhO2eqnle0OwL7muycTsdFKzqiDQqKNMGmpKr9QEkfbGdC
+         mRXHBbjmw7VOu/i2632ebe4O6yLWT99ypCIAdAFdmEx7O4q4WQd1tCgKMJdBKAaWNwp9
+         yPBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :mime-version:dkim-signature;
-        bh=F2/zSsN0ZphntQc+eR+dJyrmvjXaa4Ou1pt58IXRg+A=;
-        fh=pnPjticfK1C2eOYm9mFORoR/TjM2yetx14EJz8VCNV4=;
-        b=RMqApuzWhHAv6yArS8aKCV2FBLFNPuHtNbT5AkFsqKXAYMH5SSpGuWNqHqO4Mo4U5Y
-         lCvqBDHwCDDJbvZ+fgdf36xbfOi1ko8uJMzL4C6CXwkxPHuJp9g9x8Ijx+5wpQNcYz/y
-         r2q9py4EiNxylp8QrNYco9chaYzdikz+qktLCxq9ALjNepvtSWLnm0bN0jD/V5putUnH
-         KhuizmtVzq3lA282Evpy5fiO4icAaj9+GMliTK2RpjzlVB61P78ZyyJOAV+YWva80KVs
-         yb8vtZcXfhiscJ3W3Z2esd/L8mflXMz09r/YSUx0QWf5dKkBlqH6m9XX6JueyQnu1L3L
-         7G5Q==;
+        bh=fvZFs6ZWQcArHoivTdoRPMVBttlGZZKU4uro3YAyvz8=;
+        fh=E5g3maHsnyUMAiwVmwUyq6VP4zbCj1sjpTAtNm8Z8AY=;
+        b=SQUdTu4OhXfYGmy5gL8t+4L/lFaDW/kNYO5/3sGFlWQG73FWQxRYAn3KzFgi3wEiI/
+         +s8BhotstCwERfQDjZcqdAEZJvdx6CWQN/8LBy+NAsV9TM2e0lyjur54m57nrtpQs7UO
+         f/VyjLb9RYBeQfvJ1v/2a2X/HZXTXpVQLMVryko1jkJO1eJWTED6QatLlBanpe97ZFXp
+         t4akXY849HITLpuuWb5CIg730d7OunCuwzIxSE8aWOvthdlyw/P3te1S7Vl39voDQWVW
+         nXOw7eFN6AvsXuMhiHPU4sJpNTnUw1PKfFhowKBIYTuWEjdh3vonrkQPrlVll3mSLLpW
+         haUw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771792137; x=1772396937; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        d=gmail.com; s=20230601; t=1771797374; x=1772402174; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=F2/zSsN0ZphntQc+eR+dJyrmvjXaa4Ou1pt58IXRg+A=;
-        b=D3kiuw89fn0WsIuijRrXC5qj8nC1pi/3ZBSeJEyq9qwk0Nj6/UikuSC0MiwkemYYnn
-         nwhDvB4czgF4D8MGqEzfr0c3rq3nv6LZoYOba4ay2M3ksZpChJ8AOsOsRupoJAq7DIla
-         7z+Ls/GJsMteMmkP4yzWYd3ZYQCAMITIKHXWfyN50s5jrDRR8Y/q5TgdvcMBwzCrCxmB
-         HGiEapRDJ+EFfk1A7m/a+NauFgwX01K+bB34SnWrfi3exesEvV9vX3x3ffUVuCF9IU7S
-         hxqSt77Ws3Sp0ZNnXBgmdKXaXWcuFqHNSEWGdWBePc/mitzbF6HwzpA0KE3inRS/HSAu
-         9dRg==
+        bh=fvZFs6ZWQcArHoivTdoRPMVBttlGZZKU4uro3YAyvz8=;
+        b=PuUmUTQBb+Mb558N6vMGiEpSEsrP9fJKT7Yd10sPSRpeznTjeAmClndE+ROruMPtY6
+         coIfG5XhLIYEpBgWdUKVm/qMOI2HaBVc/gz8RKSwVUK13g6kiPpL/3eVe/+tQgRrTrVQ
+         Ez9f8FKMJPfvpeoHqU5X5trewXM4nQVr/1sttBiuF9eIZ7efTk+UcVgTB7N+ucixgaTs
+         wzNHELCG3Jqq+w8MD6RRB32eRn31+kBete7k6qrsYZpR6IuRXh78xpsuOD71o7DK3Epi
+         5TEMHk0ku1B8Gi6WL/wRv+cPVFcU/1As7KPc2yl3fByO73mc3GNboxakUUhNsJ4vj64k
+         QMow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771792137; x=1772396937;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        d=1e100.net; s=20230601; t=1771797374; x=1772402174;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=F2/zSsN0ZphntQc+eR+dJyrmvjXaa4Ou1pt58IXRg+A=;
-        b=UjGcAaO9OjhENUIUYp2M/gT4qaSID88cax51HnaQr0PQRPqPZmEKObOb+SF1R2BdIt
-         cwKLJ5zH3BdrXE+dMLbqNNhRRS26Eoy7aoOXoNN/svAEO9Qr2EBI+Dnt7kHPHjPsgR5D
-         TE1yBbdg97lXDTb1L1T6uxrkqAJCfnBBe899DxEcZ25AgmHoA1hS5sbVqtf4ffE6h58I
-         EVwNN63vZ/d4EE/8thkHvhsB4GjdoLB/6LtMx/AWm/byMXVK/6CTwFYhLj1JG5e+7Kuz
-         Za6Q2YVEOPGZiC3pIyEVJvCdxRoJfObdmQeeTPkauCgV/j7X6ZKiaxbiELmYYtOboIOH
-         Ho+g==
-X-Forwarded-Encrypted: i=1; AJvYcCWHCNOvwfX3Uf0zDqnxoMxl5UlXZ8+bxd0/03Sea16w0kC/U26VsXfTJ/eoAWzZi43IXW/DY9w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWa9ejxlilstAYAIttenVUxQTbzRFlEhXiWU/1r0ts+DuarJKx
-	E2ByGLRuJL9o/SgVpH4SIEKSct7mfnZRGMpEjYs3bm7iRpNFap1bm0N56q9gxXqpM2cx5+LeqYf
-	r7T4f4jH9GWMQMGsf9BKeqLM3euQmLSmHdUD7hrhl
-X-Gm-Gg: AZuq6aKDl5tDJPE062l4KUusl76LHudwfItYco6C+oMUqvFWtS8sjejOpz01komozOM
-	z5M3u3T16cZ4z3eCYyACFwbhgGixp5Sk8k2/6LsS/G0p4d28EynOedqAsWJ1Fvyy+qZCmVESPYt
-	K5w1phuu20432jWspmqu2Xc3355k5BIcXC95DXgFkJb5SBW5RXNO9c7waG4KXP5YcTHo5fgispL
-	ULey4XflV8p2Wmb6NjDZE/3LTYagUXSunzJJaznXc66Km4jiDR2hqgAiUWd6sxL6Am6OoBngU8W
-	0Sfc3Bo5
-X-Received: by 2002:ac8:7dc1:0:b0:4f0:2e33:81aa with SMTP id
- d75a77b69052e-5070e893faemr12700351cf.11.1771792136883; Sun, 22 Feb 2026
- 12:28:56 -0800 (PST)
+        bh=fvZFs6ZWQcArHoivTdoRPMVBttlGZZKU4uro3YAyvz8=;
+        b=Z33+HzWxw731CjnQkStpdps2UkC6wakXYT71ewXD9qv6MTgPwQ/QeaMJxwh+gyLmyJ
+         +ey5kniVUY/rV3feEJemvbSPgHcbBVx87KOTpdcFL/5WTxLGk/uh2/Bug+0rSx8J6EPT
+         EjmGyFoqhRtSRlyFqYj5WzQUNPTDX/RLixcjiBPIqkFUaNZvhDt0OCX3U/iYsPyhycTQ
+         GPs8EUxILijUjLCKPbZTCmG+kr6hZ6M6ajT0po8zNzsxmboHDFZ5XWWVY9GwZO7YDhVc
+         2rGjpjgRFVB09wOWe8DO977xMFgOcHwWBo4F50+w+ZGAoLnV+ntmYnbfNvK3bms6uHqy
+         DnBg==
+X-Gm-Message-State: AOJu0Ywhf6kZhwsxKWjS3yf97MvdEG8eRKVUf7IVoDm0tGkqFHGWkymC
+	Igt8zS4+AtSEgK4REsTxJNAFKG2Tqd4vtW4LuH5e0ZhfRRgx6G866iO9i1IhhdFVRx403zeUWaC
+	7EyXITQ/W80HI2E5VtuuZpP2yXJO6LTIjma5hjvqn8Q==
+X-Gm-Gg: AZuq6aJQDP8Bi3RmktG64vOIesu3gI9JcYNSF0o7DH21kVlEcYnddzo8BvLnSKsOoyz
+	AcEyNsyhxrk2LySVNeIZMkx6auGRj43gJ/r696Y6VZ1tOM6xKmM+0dm0wbaQwDnkFi76quy+Opq
+	xH8CWWczCNqqHk9USr98w4M23a2hh2HiOgll1rhPpBnkPDAzXBgpS4Rohh2bvOMay1FButd13tE
+	yNwdYdZweie0eWc4CWoAqEbGZwUgSq89ga5qkPdCj93fGxyFc6roHpeDm1AwOGF7j6GWwvxJh/d
+	3LtUyJf2YOWSyHpvu/4qiDN04Qx/SvKPqLzSDMifrJcRLgtvckVfOC+y2A0DMsSziCR0R14srdq
+	/XmV+Dntz/A==
+X-Received: by 2002:a05:6122:469b:b0:55b:1a1b:3273 with SMTP id
+ 71dfb90a1353d-568e47abec3mr2195110e0c.6.1771797374061; Sun, 22 Feb 2026
+ 13:56:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260222141000.3084258-1-maz@kernel.org> <CA+EHjTy4p-Mbfr86NR9n1LgHC0EWrkdVjYb8O3z7k=Lv1entQg@mail.gmail.com>
- <878qckehh9.wl-maz@kernel.org>
-In-Reply-To: <878qckehh9.wl-maz@kernel.org>
-From: Fuad Tabba <tabba@google.com>
-Date: Sun, 22 Feb 2026 20:28:19 +0000
-X-Gm-Features: AaiRm50cURl-e3Du3IJOwxV9NVX2guzIAipyh62nI0lRBrHVyFZMVoDigEP_TR8
-Message-ID: <CA+EHjTxtFZU24rwh3zeiJjHgV2_g_HfJvMFJDC3WNKCLa58kaA@mail.gmail.com>
-Subject: Re: [PATCH] KVM: arm64: Fix protected mode handling of pages larger
- than 4kB
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	Quentin Perret <qperret@google.com>, Will Deacon <will@kernel.org>, 
-	Vincent Donnefort <vdonnefort@google.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>, 
-	Zenghui Yu <yuzenghui@huawei.com>, stable@vger.kernel.org
+From: =?UTF-8?B?QW5kcsOpcyBQw6lyZXo=?= <andres.f.perez@gmail.com>
+Date: Sun, 22 Feb 2026 21:55:54 +0000
+X-Gm-Features: AaiRm50d7jLgPyD4kdVKiyrm9CHXFWwo9PDyCMT5qvyZh7PMRFS6zqm3NMkVBvk
+Message-ID: <CAD0gVBsyzYNA6ydPwg9mJ9VQzYg4zPAi24JQ13-=0KtdbQ039A@mail.gmail.com>
+Subject: [REGRESSION] Display freeze on VT switch back to X11 since v6.16
+To: stable@vger.kernel.org, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hansg@kernel.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, intel-gfx@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: regressions@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.45 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_MIXED_CHARSET(0.71)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217680-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217681-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[vger.kernel.org,ideasonboard.com,kernel.org,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,lists.freedesktop.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andresfperez@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 755A81704DA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E4A7B170864
 X-Rspamd-Action: no action
 
-On Sun, 22 Feb 2026 at 18:55, Marc Zyngier <maz@kernel.org> wrote:
->
-> Hi Fuad,
->
-> On Sun, 22 Feb 2026 17:58:00 +0000,
-> Fuad Tabba <tabba@google.com> wrote:
-> >
-> > Hi Marc,
-> >
-> > On Sun, 22 Feb 2026 at 14:10, Marc Zyngier <maz@kernel.org> wrote:
-> > >
-> > > Since 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings"),
-> > > pKVM tracks the memory that has been mapped into a guest in a
-> > > side data structure. Crucially, it uses it to find out whether
-> > > a page has already been mapped, and therefore refuses to map it
-> > > twice. So far, so good.
-> > >
-> > > However, this very patch completely breaks non-4kB page support,
-> > > with guests being unable to boot. The most obvious symptom is that
-> > > we take the same fault repeatedly, and not making forward progress.
-> > > A quick investigation shows that this is because of the above
-> > > rejection code.
-> > >
-> > > As it turns out, there are multiple issues at play:
-> > >
-> > > - while the HPFAR_EL2 register gives you the faulting IPA minus
-> > >   the bottom 12 bits, it will still give you the extra bits that
-> > >   are part of the page offset for anything larger than 4kB,
-> > >   even for a level-3 mapping
-> >
-> > Matches the ARM ARM.
-> >
-> > > - pkvm_kvm_pgtable_stage2_map() assumes that the address passed
-> > >   as a parameter is aligned to the size of the intended mapping
-> >
-> > nit: pkvm_kvm_pgtable_stage2_map() -> kvm_pgtable_stage2_map()
->
-> Actually, that's pkvm_pgtable_stage2_map(). kvm_pgtable_stage2_map()
-> itself isn't affected.
+# OVERVIEW
 
-Right, I meant to remove the kvm, not the pkvm. It is indeed
-pkvm_pgtable_stage2_map().
+Since kernel v6.16.1, switching from an X11 session to a text VT and back
+freezes the display on a ThinkPad P15 Gen 2. The system remains responsive
+over SSH; only the display is frozen. Bisecting identified commit
+d1b618e7954802fe ("media: uvcvideo: Do not turn on the camera for some
+ioctls") as the trigger. Reverting the logic change in that commit
+fixes VT switching
+on v6.16.1, v6.17.9, and v6.18.9, but that is not an actual solution. Wayla=
+nd
+compositors (e.g., river and sway) are not affected.
 
-> >
-> > > - the faulting address is only aligned for a non-page mapping
-> > >
-> > > When the planets are suitably aligned (pun intended), the guest
-> > > faults a page by accessing it past the bottom 4kB, and extra bits
-> > > get set in the HPFAR_EL2 register. If this results in a page mapping
-> > > (which is likely with large granule sizes), nothing aligns it further
-> > > down, and pkvm_mapping_iter_first() finds an intersection that
-> > > doesn't really exist. We assume this is a spurious fault and return
-> > > -EAGAIN. And again.
-> > >
-> > > This doesn't hit outside of the protected code, as the page table
-> > > code always aligns the IPA down to a page boundary, hiding the issue
-> > > for everyone else.
-> > >
-> > > Fix it by always forcing the alignment on vma_pagesize, irrespective
-> > > of the value of vma_pagesize.
-> > >
-> > > Fixes: 3669ddd8fa8b5 ("KVM: arm64: Add a range to pkvm_mappings")
-> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > > Cc: stable@vger.kernel.org
-> > > ---
-> > >  arch/arm64/kvm/mmu.c | 12 +++++-------
-> > >  1 file changed, 5 insertions(+), 7 deletions(-)
-> > >
-> > > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> > > index 8c5d259810b2f..aa587f2e28264 100644
-> > > --- a/arch/arm64/kvm/mmu.c
-> > > +++ b/arch/arm64/kvm/mmu.c
-> > > @@ -1753,14 +1753,12 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
-> > >         }
-> > >
-> > >         /*
-> > > -        * Both the canonical IPA and fault IPA must be hugepage-aligned to
-> > > -        * ensure we find the right PFN and lay down the mapping in the right
-> > > -        * place.
-> > > +        * Both the canonical IPA and fault IPA must be aligned to the
-> > > +        * mapping size to ensure we find the right PFN and lay down the
-> > > +        * mapping in the right place.
-> > >          */
-> > > -       if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE) {
-> > > -               fault_ipa &= ~(vma_pagesize - 1);
-> > > -               ipa &= ~(vma_pagesize - 1);
-> > > -       }
-> > > +       fault_ipa &= ~(vma_pagesize - 1);
-> > > +       ipa &= ~(vma_pagesize - 1);
-> >
-> > nit: Since we're changing this code anyway, should we use the ALIGN
-> > macros instead?
->
-> That'd be ALIGN_DOWN() then, as ALIGN() really is ALIGN_UP(), and
-> that'd be counter-productive.  Something like:
->
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index aa587f2e28264..3952415c4f83b 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1757,8 +1757,8 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->          * mapping size to ensure we find the right PFN and lay down the
->          * mapping in the right place.
->          */
-> -       fault_ipa &= ~(vma_pagesize - 1);
-> -       ipa &= ~(vma_pagesize - 1);
-> +       fault_ipa = ALIGN_DOWN(fault_ipa, vma_pagesize);
-> +       ipa = ALIGN_DOWN(ipa, vma_pagesize);
+Last good:  v6.15.9
+First bad:  v6.16.1
+Bisect result: d1b618e7954802fe media: uvcvideo: Do not turn on the
+camera for some ioctls
 
-Yup, that's what I had in mind.
+## Hardware:   Lenovo ThinkPad P15 Gen 2i (20YQ0031US)
+CPU:        Intel Core i7-11800H (Tiger Lake-H)
+iGPU:        Intel UHD Graphics (TGL GT1)
+dGPU:       NVIDIA T1200 (not involved in eDP output; driver: nvidia-open)
+Display:    15.6" 1920x1080 eDP, 10 bpc capable (EDID 1.4)
+Webcam:     Integrated Camera on PCH xHCI (Bus 003 Port 004)
+Firmware:   LENOVO N37ET61W (1.97)
+OS:         Arch Linux, Nix home-manager, X11 + xmonad, no display manager
 
->         gfn = ipa >> PAGE_SHIFT;
->         mte_allowed = kvm_vma_mte_allowed(vma);
->
-> > Reviewed-by: Fuad Tabba <tabba@google.com>
-> >
-> > and using 4, 16, and 64KB pages:
-> >
-> > Tested-by: Fuad Tabba <tabba@google.com>
->
-> Ah, great! I couldn't be bothered with 64kB, and only used 16kB in NV
-> to debug quickly and then bare-metal to verify the fix.
->
-> Thanks!
+## Symptoms and reproduction steps:
+1. Boot, start X11 on tty1 (startx).
+2. Switch to tty2 (Ctrl+Alt+F2): works.
+3. Switch back to tty1 (Ctrl+Alt+F1): display freezes.
+   - Frozen on the last frame shown before switching away.
+   - System is fully responsive over SSH.
+   - Other VTs switch normally between each other as long as X11 is
+not active on them.
+   - Killing X does not recover the display. A reboot is required.
 
-Thank you!
-/fuad
+# DEBUG ANALYSIS
 
->
->         M.
->
-> --
-> Jazz isn't dead. It just smells funny.
+On v6.16.1, the VT switch back to X triggers a full modeset due to pipe
+configuration mismatches detected by intel_pipe_config_compare:
+
+[drm:intel_pipe_config_compare] fastset requirement not met in pipe_bpp
+  (expected 30, found 24)
+[drm:intel_pipe_config_compare] fastset requirement not met in dp_m_n
+  (expected link 269484/524288, found link 336855/524288)
+[drm:intel_pipe_config_compare] fastset requirement not met in dpll_hw_stat=
+e
+  (expected cfgcr0: 0xe001a5, found cfgcr0: 0x1c2)
+[drm:intel_pipe_config_compare] fastset requirement not met in port_clock
+  (expected 270000, found 216000)
+[drm:intel_atomic_check] forcing full modeset
+
+On v6.15.9, the same VT switch shows no such messages.
+no pipe_config_compare runs, no modeset, no freeze.
+
+# BISECT AND VERIFICATION
+
+The bisect converged on d1b618e7954802fe in the uvcvideo driver. This
+commit adds a switch statement to uvc_v4l2_unlocked_ioctl that allows
+certain V4L2 IOCTLS to call video_ioctl2 directly without first calling
+uvc_pm_get/uvc_pm_put. Prior to this commit, all ioctls called uvc_pm_get
+before video_ioctl2.
+
+## VT switching verification across kernel versions:
+
+  v6.12.74 arch pkg:   WORKS
+  v6.15.9 arch pkg:    WORKS
+  v6.15.9 from source: WORKS
+  v6.16.1 with d1b618e reverted:     WORKS
+  v6.17.9 with PM wrapping restored: WORKS
+  v6.18.9 with PM wrapping restored: WORKS
+
+  v6.16.1 from source:  FREEZES
+  v6.16.1 arch pkg:     FREEZES
+  v6.17.9 arch pkg:     FREEZES
+  v6.18.9 from source:  FREEZES
+  v6.18.9 arch pkg:     FREEZES
+
+## Things that do not eliminate the freeze
+
+  - module_blacklist=3Duvcvideo on boot
+  - CONFIG_USB_VIDEO_CLASS=3Dn (compiled out)
+  - i915.enable_psr=3D0
+  - Bypassing intel_vrr_transcoder_enable/disable (no-op)
+  - xrandr --output eDP-1 --set "max bpc" 10
+  - Xorg config FBDepth 30 (No effect on pipe_bpp)
+
+## Workaround patch
+
+Reverting the optimization from d1b618e to restore the unconditional
+uvc_pm_get/put wrapping for all ioctls. This is not a proper fix.
+
+diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v=
+4l2.c
+index 9e4a251eca88..15057b47ec4f 100644
+--- a/drivers/media/usb/uvc/uvc_v4l2.c
++++ b/drivers/media/usb/uvc/uvc_v4l2.c
+@@ -1199,33 +1199,12 @@ static long uvc_v4l2_unlocked_ioctl(struct file *fi=
+le,
+  unsigned int converted_cmd =3D v4l2_translate_cmd(cmd);
+  int ret;
+
+- /* The following IOCTLs need to turn on the camera. */
+- switch (converted_cmd) {
+- case UVCIOC_CTRL_MAP:
+- case UVCIOC_CTRL_QUERY:
+- case VIDIOC_G_CTRL:
+- case VIDIOC_G_EXT_CTRLS:
+- case VIDIOC_G_INPUT:
+- case VIDIOC_QUERYCTRL:
+- case VIDIOC_QUERYMENU:
+- case VIDIOC_QUERY_EXT_CTRL:
+- case VIDIOC_S_CTRL:
+- case VIDIOC_S_EXT_CTRLS:
+- case VIDIOC_S_FMT:
+- case VIDIOC_S_INPUT:
+- case VIDIOC_S_PARM:
+- case VIDIOC_TRY_EXT_CTRLS:
+- case VIDIOC_TRY_FMT:
+- ret =3D uvc_pm_get(handle->stream->dev);
+- if (ret)
+- return ret;
+- ret =3D video_ioctl2(file, cmd, arg);
+- uvc_pm_put(handle->stream->dev);
++ ret =3D uvc_pm_get(handle->stream->dev);
++ if (ret)
+  return ret;
+- }
+-
+- /* The other IOCTLs can run with the camera off. */
+- return video_ioctl2(file, cmd, arg);
++ ret =3D video_ioctl2(file, cmd, arg);
++ uvc_pm_put(handle->stream->dev);
++ return ret;
+ }
+
+ const struct v4l2_ioctl_ops uvc_ioctl_ops =3D {
+
+Andr=C3=A9s
 
