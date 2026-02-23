@@ -1,321 +1,164 @@
-Return-Path: <stable+bounces-217831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JX2FjjDnGnJKAQAu9opvQ
-	(envelope-from <stable+bounces-217831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 22:14:32 +0100
+	id gPyFKsTFnGnJKAQAu9opvQ
+	(envelope-from <stable+bounces-217832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 22:25:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58E217D6D7
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 22:14:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D272A17D904
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 22:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A1E8307B7D7
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 21:14:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4CD153008C96
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 21:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEC136CE06;
-	Mon, 23 Feb 2026 21:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F16D36BCD6;
+	Mon, 23 Feb 2026 21:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="cVXsvDaS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cueMh55B"
 X-Original-To: stable@vger.kernel.org
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013010.outbound.protection.outlook.com [40.93.196.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C08314B6A
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 21:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62584F881
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 21:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771881269; cv=fail; b=RmLa9WOxDFMJej0GXJhQ/cMYygm4/RZBbBrgyYPZqrpRaJXzdZ0x6pK8llxok9hCtbFHmAbvXcF/Hatdgw1Zdw9RVySUYh0/lO3QMnjA5wo2Kk6gNjqpFZ6VC3YgcygmYgW1j6FZbTWpOq33Ixaq7mnjlbCw+OMgi3GAR6HY5AM=
+	t=1771881920; cv=pass; b=DTfrKfrRVCnEnmbXpOufAe9JtXnbpKKraJ0ANwmrey0XhBqfGU128tI86YtpSwCyBsa8syGNJVNPg8yAGfs3fb1+lco9nRRBtj9x24TVmHT5tNWLw9fOQDGWjGLFM8yMzxvIZB9muw3gRBvySd5lQH6MS/C5eil/rUmEDaOuVSg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771881269; c=relaxed/simple;
-	bh=NMeXrjFHUCqK2BB0fx5M8GniMs9ngyud/J6FbTsVRw8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=SrpO8HIN+gFf6J+rwIeM3EnKxUR3d4wCFH+aMNkqV+Sco8GEF1C9i+EwE2B/Las/xllxO7t5bZfQWamubw97YyOUagleBRV645a3QLhB66SR/LUBN8q13z0BflIzc2fUzFOT5MZTSiVdianwNA2RH3atFQJXQDk1i2GzaeWuOcU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=cVXsvDaS; arc=fail smtp.client-ip=40.93.196.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sAdFn1RhwQ9oV3rFUC5jnPwKZ8ayu8UE0BgxTYE3FpxhYxQGca/AMfd+XVnMsHu2g7iQdsINRh8yoXrU+HHHWQSh4uo30tNF5A5VoxUGRA3UhArrZTUuIGGaw2kwhiD3KXMJhvShRG+c6fMNqDGPJiNjhEuZ9pNzwYxHXxElXfsGFxU45Hu8vvJmbcNCsIOVrL0MGHrkJ+zeUx8RascR1+xJV84IQ5G4mhyPsENMokPtmIizvNIytripmmirPNwt59TjMw2qZzNDxNBjXhGExAoQ5CI8FVU31bGtVrPma5m3ry3TVIcfvfCyoByW5KCxeyGZwosMEITsMIjQScO3Dw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ziCnCnad/2U0jJbatk8l5s9kM3psNGZ1xmghRM9H6RU=;
- b=rBm+jkkJ5WcLbGOM4QPtyPQBqhDjnG+ONX7WbzT5q8lzcUt2Zv7Ub0T2ZpNOhcDAiYOwAQiXNfbvmHx+V1pgLo3sticwGVCVCuACudaej8CHCwrmJ/XH+yrB/G1Hooujr7Bl6mE+oVB+aoEznkOxGBIRTv5F2DkfGRllWw+ByQLejha4JPurJEJtTm+FqkEdI4zvDwyaubKDxD0OBTiKcjSNr56g1NC3TAqFncaCl67kdpIMCK0RPym4PGJB6bCQTAaknXeRWA42LdluglQ31Dl/yoGrHAQpba1oHCmMGwwIMNK9PnzAohDmfqG99bHjjGpVwf3/gnme86Ws/kfRXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ziCnCnad/2U0jJbatk8l5s9kM3psNGZ1xmghRM9H6RU=;
- b=cVXsvDaS6+quaj2J2jqrGk/l3BcvzEtK5DNBZposF6EbvDXWVMAFQ4OzklWZM1RfZo+dIC/nhONsYK9XJZi42BSQ+gJ/siRN0Ml1TD+P/ReaNfMP2pTr7JHC97PWe1sz+A8ruTMRNsc37G5i252v8Qm4fb2hx+U4/gjuCxmXj+M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5126.namprd12.prod.outlook.com (2603:10b6:208:312::8)
- by BL1PR12MB5922.namprd12.prod.outlook.com (2603:10b6:208:399::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Mon, 23 Feb
- 2026 21:14:23 +0000
-Received: from BL1PR12MB5126.namprd12.prod.outlook.com
- ([fe80::c3e7:1bc5:2b91:1cfe]) by BL1PR12MB5126.namprd12.prod.outlook.com
- ([fe80::c3e7:1bc5:2b91:1cfe%4]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
- 21:14:23 +0000
-Message-ID: <f670f350-7230-4bbc-9443-a6307429d7b3@amd.com>
-Date: Mon, 23 Feb 2026 16:14:06 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] drm/colorop: Keep colorop state consistent across
- atomic commits
-To: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org
-Cc: contact@emersion.fr, alex.hung@amd.com, daniels@collabora.com,
- mwen@igalia.com, sebastian.wick@redhat.com, uma.shankar@intel.com,
- ville.syrjala@linux.intel.com, maarten.lankhorst@linux.intel.com,
- jani.nikula@intel.com, louis.chauvet@bootlin.com, stable@vger.kernel.org
-References: <20260218065713.326417-1-chaitanya.kumar.borah@intel.com>
-Content-Language: en-US
-From: Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <20260218065713.326417-1-chaitanya.kumar.borah@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YQBPR01CA0057.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:2::29) To BL1PR12MB5126.namprd12.prod.outlook.com
- (2603:10b6:208:312::8)
+	s=arc-20240116; t=1771881920; c=relaxed/simple;
+	bh=lNwiP+yq+WCKO6q1xj4yFmFEyVGG0O673czMF78Wt64=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LsyGBdrMZvFmPR5UIsgOLyJ1oPzDB8CuGR+VExSw4ebrExKRscuDcIO24oFTFSqXE/ejoZ82XwO7qBjmMBL/gSwuil+S05vobmNL+Ri9GvMQ75qSVC9Le2gm1dbR+MlWh1wY3hyFOuzE5BAONCY8jz6icMQwhDPPKfE0ySJKueo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cueMh55B; arc=pass smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-64ad019bbd4so4377715d50.0
+        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 13:25:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771881918; cv=none;
+        d=google.com; s=arc-20240605;
+        b=X5fYdsPaWZU5KJLwiB/A25cymb5jKVl1FoFbjt4/UCDwFxH+yidJuFM3dnx+y8JLId
+         WtXcgWY+ch6DzILgFbQAMj9YGMkcvyGqmcq1wGue/14H5blzh8u48exUlJDRQ75YtFUL
+         UlrB19qJcDkQMdEXg9uNrK5R1pEs2KUyq4sfU+BkHzGN2A8KUh2uSD5/bsAquCYxXzWv
+         Xlni9BiNmEKfaVkJgrnm7XLieQj06iNf2ScbGFxbWh3H8zcr1TUofn0lTmVpWr0V3KCa
+         yPuCC5SIfSqw/2F7BgXR2vvMPp421t8L9y5eUcWICPjxf17nJ87N4vD6zEvZVOSQgAU4
+         t30w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=lNwiP+yq+WCKO6q1xj4yFmFEyVGG0O673czMF78Wt64=;
+        fh=GZMaHABDBCy3eGlO2eORJ9AAtryZMBdl57ukUk/hs5k=;
+        b=Cywxr//LnhaYN1hc3n9h0rLiND8iRr4U/VuUOUSnz29s95PmcOaCrOaQmtDoOQus+I
+         Fad4EyamRqsDoUxRqse8YGYjv+CzJlz+pGWdtHHRxZunkAKvhR5ZiLTDZ1/zsHQBnYSx
+         2OsoIQMeGM1tToFviDsYyuuR4wRkw4/JAiJsjHxoLG/TwPLxz2GefEKy1zwdWnOHN/9h
+         0gFfZSpPhNB09i1ya5Ph71bh7yWhEqtvqY4uA5mC/3e2Dx2LswQ/CaeDF6xRPXs6llvi
+         5DAiINGaI2N69EjVbaa0qlZQinnI9dEVYXWIc/lPPSVxIOQdIxwkF/SwS8tXdirnjuiC
+         W0Tw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771881918; x=1772486718; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lNwiP+yq+WCKO6q1xj4yFmFEyVGG0O673czMF78Wt64=;
+        b=cueMh55B1nbA+Rz7eDJ5URRnFwXV6adznx2cY7LHTvKSQWCv+1EEVmPEJo3qaIsM4Z
+         0HoggIe9IddZ7w1K94LWIYDOHhLI+7PnFLFDhNE2fvLreVvruuhzUgVw6Trt5FyKdeXl
+         hUyGNY4F42bjBZUzBcL6Iu96SKk9KplroSYXJR8wsRSOzVCxpiZBEx351jF5GayuHuCg
+         qa1dIxzSz66l/K3PQtqmGzmCyaGiM6ez0JKNrPwe/5oP9M/egcfiZJVaHZVtWP/O5FGR
+         XKUVqoofxIVfRbrRk06i9doeLPOKBByftT5sKn2XSOmYhVw+uQqakKN4Ntu+jymg6Aqt
+         TjsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771881918; x=1772486718;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lNwiP+yq+WCKO6q1xj4yFmFEyVGG0O673czMF78Wt64=;
+        b=biNbxmU/1WbMrMP+c5EpwVEewHrHbBXuVRYhn8/34tPfwzKGPckxbNe57Yms8yr7+t
+         vObsUfMQTCj6gwnVuv2BXh/15oNoecubY7AQm0LfueOdcs9ZojEJjAO18yZOK6/xehMs
+         n7XBv21hk7b+MkJCV8CHkpH42oeaVramLdLokFWnPS8daghDPP5ya5dLjuo1UBubQvvj
+         nFSam6GYOY/yzpGNLnhas4nSeGRuO2Aqflocx+zy8etoEdSbuexEM3n+OuP9dU0oV8AJ
+         8H5hzeEpxZdAA7T6xflyoTwd5+Qyo/IKhcvCxzT/OAumq/Azq+Ktx5kcYrqGplDGsGIp
+         CLmA==
+X-Gm-Message-State: AOJu0YwL3t2V9pVAgDS8WJb+0Vd+LvSZtNafxCS70XQAs5FPBAeZRQSs
+	fKp2cOYXmDpX5H1jT6MiMUMy7tWo04ouHFrRFcFHPkiSzo+wTwWBOTQUioS/5zmCL6X0qCnq+8J
+	EdF/9DZDUUsPXFldsMSEYXMeBWlWu+eM=
+X-Gm-Gg: ATEYQzwo7rgAHjcB92t5SpdCrGy1YG+eX5GbW7kSy+qO7IVUniQ5aG1VmqDunv3uVlw
+	1oHWafl5z5+he36QfBVTv1ELmL4mAIBulKjHdXpIBBqYCVUVcaEcQB8HkPxZ6Nbql/K8srB1fbr
+	Hs7oUlkktvBz+HSF7tfJZ8AKehbkMA3R32u9CVYilmQ9lHBnIzdCvNbUhbAUn/Xi9EMjc1WjVN7
+	1GXfFHsdjVAp/JC9Rr6ge7Hvfl3Pn98cqfOaSdVpvn2w+WIJYxYFzPhW3wahKI+txz39opedCQ6
+	/pdsel0jq8SVk6z5+KZ/7xIyM5RNN8GpCHK2MFcJPjQizSHNzF36CG2RfA8rIUBJnCXCNtc=
+X-Received: by 2002:a05:690e:134b:b0:649:d59f:dccc with SMTP id
+ 956f58d0204a3-64c789d4163mr8198956d50.25.1771881917993; Mon, 23 Feb 2026
+ 13:25:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5126:EE_|BL1PR12MB5922:EE_
-X-MS-Office365-Filtering-Correlation-Id: 93aa6ede-f2d0-4dda-def3-08de732084ae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?d1lXVFlNRXd4WEJkNWZoNnB5OTJ3ZndPSGQ5L2JLUm1HYmU0UytpNDRqOHZs?=
- =?utf-8?B?aDdrRTJZa3pjZWtXMVRVYmdwVVFHcnBTQ051c2lpV3RSclpyUk1hbWI3R2Ew?=
- =?utf-8?B?R3lHOU1UbjBMU0RSQ2ZodTdXdjc4QVRZQzFyWUJBRjltREtYTFdhdG0wdldz?=
- =?utf-8?B?QWtpeGtpWVpLbkFWcG1BMFMzaTd0L3lITGNxUVo5VGVuRTZJakIyUzZnbHBB?=
- =?utf-8?B?YmtTK212dmNEOFl0SmVFNWJCU3FqdnlnaUVjOUJ6T3ZhTC9kVlM2Nmd2aFQ4?=
- =?utf-8?B?UDNLYUppZS9SN2JuVWM5T2w3dGhnUGhOeWhDSEVORGNRNmdRK3B5d0dRTUx6?=
- =?utf-8?B?WHJpMFFVNzYxMXI1a3cxZmtvQmNmNVRQWDIvZmdYY1kwOVFtMEd0c2lORWl3?=
- =?utf-8?B?SitDcWQzdWRVTFJyeHJnWC9lR0JJVTZNRWZJUVVpYWMveHNoWGRVU05tUjFu?=
- =?utf-8?B?WURjRlp1bDV0VE0rN2JWNDlkOFRHdVBzRkttQkFPUWJTSWRYbW5FUFU2MUdt?=
- =?utf-8?B?R3FXUXV4QzNWVTRwakc4SnV5T080eUVTQ1VoaXA1SGhrZnBkR2k3UHJZRk1k?=
- =?utf-8?B?ejJJK2FmaXZHMFRxYUVzTkxYcVJZZnlGVXQwODNsOXR3R2UyTFlGTkxOclpC?=
- =?utf-8?B?eHdRNTNpay9keDNnUEZpbjZLakQzdE5XRmM1Y0hScVJCcTBDQzNUUnZrVTFu?=
- =?utf-8?B?WVEzVEk1L1NxSFJYbUErVDljSEJ0NmpnU0N5ZVFvUWFlOHg1cWcrWW93N1pV?=
- =?utf-8?B?ek9JUisyeGw0eDB4UzhUUlhHbVhtaVlTNTlpT3JzM0dUSGFQaG1Fak5UdzNZ?=
- =?utf-8?B?VWV3czNMVGhaaTRzZER0TG5ybzVGYVdOK20vTjFTamd0Sy9ST3FwVnpQYmtO?=
- =?utf-8?B?K05Rb1RnaXVDL09KWHlaK3orWnBPL09zVitadUJMYWF2TDF2NjJXZlpDbmY1?=
- =?utf-8?B?VEtqTGEydzBaRzd2Q3gyRGRjUnVmWDJxUmVHR21IeTZZSVZqMEtTdHZVUmpr?=
- =?utf-8?B?WXQ0dUVMWVhwY21QUUgvWUdValJhSmpvZ3ZBczdsYXY1WjNNWG5tZ2M2VDM4?=
- =?utf-8?B?cmJpUmkyYnozQUFFUWNySnRpMVFTMFMzWHJOd2pjVlA0cUQ1TkxLaFJVakZM?=
- =?utf-8?B?a3I0dlhza2UzbjdLaXZzUGNvbSt1M281TnllTERUdlZpZnJjaXgzUkVjeUFl?=
- =?utf-8?B?UG9RTk5yL3ZTUnBhQTYwQ2NxdWErSG1FcUtsa2xtZTZDaWprZlo4YWdkeUJp?=
- =?utf-8?B?QTBuL1BPL3QvR1VMSzdlUTRWWWZHVGsxWFRzWGVocVR6d2gwK1JlMVUxQ01K?=
- =?utf-8?B?RlUyZ0dzdTVsRTB3Mmg3SFZJS2VUbTd3bk1CRnZZTllrT3lXd2xJWXdzWlVu?=
- =?utf-8?B?S3FOQ1VJTUUxMGdCQWJCTldxZTJOVVp2RG5YV0ZFcVBQdkhDRHpla1IyUld2?=
- =?utf-8?B?UlVFb3k3aURGb1kxZWVpQ0hjak1kQldnUWJLbjFHTThFekFBeDZzVDVBejlB?=
- =?utf-8?B?SEZXSHBFSGFXdHZwYTgwRzJCMWNLWHFYZStDWVRhbXBMYXIxSGJueEkrbG92?=
- =?utf-8?B?Ujd6RTVNS3hMQmh4ZjlkQ0JZN2FYbUw0c25jc3U5Qm1vOTJvUnN4YWRneThr?=
- =?utf-8?B?WkR0bGZSTmpvM3BsME1WaTRRcDNYNk0vZis4VklQQW00dFE3WnAwWmxFZXIv?=
- =?utf-8?B?akNHYncvNmtNS0ZINEYwRTlhM3NDd0NPeTdKb0pIcS9velJNNkF4bUNSZ1BG?=
- =?utf-8?B?Y1ErcTIzMms0TzVWZTVVK21iSDNpeG5hSFI1aE5iZzZteUpWa3NzMWF3REFG?=
- =?utf-8?B?cm1CMkNwcDhVZ09Jaysyc2hCcFRYdnlRaGJIVFd3QzBadEhsME4zT3dPWkhz?=
- =?utf-8?B?L0FYYXlJRGlWazVIeUxXeXo2dGJrQWFmQUttTTBkUjE4enFUMlQxcWpVdk5C?=
- =?utf-8?B?NlVoeDBwam9UTWg4UW9sV01DekRLVGZkcXIyYjVhQlllSTFCT1JTUDhwS2RX?=
- =?utf-8?B?N2ZoalVBTWxEUDk3WkxlbldyWG81Ym0wU3ZKdStUZjVkVkh5TGlWUFBncUxp?=
- =?utf-8?Q?vcEDm+?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5126.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TmFJbFNDdzBxSzl0QXFxZkh6dm1oSEs1LzROZWgzdEdDa3l6NW52Vnd3VXk1?=
- =?utf-8?B?YzJFc2dMTXQ2YXRXUTJ1MU90QmJjSkszR2dnSDdpMHZjZElyV0pSWnc3aUJV?=
- =?utf-8?B?R2VnMUF2SjJjMDVhUVA1LytMNHZabWg4RGlFSXFWcUs5OHcwL3pMZnArak03?=
- =?utf-8?B?TENUemIvN0lIOFhLUkU3b3ZDWk9SYksvV3Fxc0ZQT1JtMzZOd0ZoYTcxS3lZ?=
- =?utf-8?B?cmdWZDlDekRibDVIUXNOc3V3Njl1MWF4eElmSHQxVDBPMWpYR2V5Y1NDcUg0?=
- =?utf-8?B?dnIrdmRsMmd5ODlPZU1wc1pIR2k3azUrRmU3eERDbnNmU09tS29OM2Q2cEE4?=
- =?utf-8?B?SGNKZ0d2OW1CZW9hVk1yVHZhSnp1TllpNFAwYktEOTd6MFphUklReG5OR1JT?=
- =?utf-8?B?by9NL1JsUnk5NFNtVFRNSUJLeTV6K0JKSUJNNkpFa08yL1J0RE4waklGcytU?=
- =?utf-8?B?dXVEK3JuUWd5VkF1aXREZkJHQmxDRTNNckFqOUpaWDRSTHhzWEorZUNoTVVE?=
- =?utf-8?B?TjU3NnlvclRCbzRQQmpUdjBpNkJCTnlRMGwvWUFyQjRaWkxVbWczcTRRNnJk?=
- =?utf-8?B?ZjhiNDJEODRoemhPMzFNbThTRVUycjl6UHl6QWtUZWEyS2Y3cDhSUlA3a0ky?=
- =?utf-8?B?YzRJZHMvcGJVY21XSUtLTGdYbjhneTNXK3FIYXgxV3VwUUpiQXk0djMzTExo?=
- =?utf-8?B?Q3FzSkVRWWRReEZDOGo0andHL0t3REJyTkVkRXUvTXBFUlhrVGRZeGY5RVdN?=
- =?utf-8?B?RU9OODIvUFI4ZmlRK3NXc3ZBR1ZDVlF0bWNKWFhQb3Vxck5XRUpNSUhNeEJV?=
- =?utf-8?B?OUlWbUpjMHV2T0JZaHllZlR3VWtNV2VmaHZiVXZRYjNpTElVclpXdjU3ZGxi?=
- =?utf-8?B?V0F5U0xvRTJJRlNPQ3pQR1JXUXVidE5walBLRmhjckJxaE80MlVSTWlzZ2dx?=
- =?utf-8?B?QjFSR2tyR3pxcWw4QVczNDl4aFZUMXFFN1FLODd0MjN2WnZsWHpObTNWS1BW?=
- =?utf-8?B?ak1KQVJvZG5wRkJjUFFMSDhkc0treFFXNHZPR3ZyeTloQUk2Y2hGdjdqdmY3?=
- =?utf-8?B?SVRaS1RZSVNLRHpBZTRibGhXRmVDR3ZKRFlkVWNUVkNQVTB6YVExV0tINzh3?=
- =?utf-8?B?V01Xb29CNEUzS1JpcWhnUDVSVlE5QVFPQmpNYmdUYTJGTWp5aVVFQXpKWTBB?=
- =?utf-8?B?NmF4ZkRjbStCYVZlRVB6YThOWTRmVDVJTTVIVExPUkpMYXNzMHZCMWR6T1pj?=
- =?utf-8?B?OGFTbnZKRGFFNm5lNnBqNlY5NWo4SWp5STZ3dUMvY09oWEladzJvMGZPR01O?=
- =?utf-8?B?dkd0aDZyS3RtcldoeHd5MU81ZExkY2NwMndrOU9lbDlkaGFVWUllNDNpRTI3?=
- =?utf-8?B?ckxOSDh6TmQ1NndUVmRSRERLaVc3ZWYyeUxPR3MyRzkzOE53YzZtdGVyd3Nz?=
- =?utf-8?B?aUFGalVXUWFOTTBkTHU0TGRPRFNwZnpRRXBXbVR6c1czYm8yOVFhVUNIU1M1?=
- =?utf-8?B?NzZ5RmlkaHQzbEQ1dUF0eDh0UkZpR2tzRmJ0YkE2TVV5UGx1aG9qYzg2T1Np?=
- =?utf-8?B?VXh2RExYZ1E2V3dUTVdvVFpMdHlUNDJVRkRMT0Fka2l2MmhteFhoT0Q4YUpZ?=
- =?utf-8?B?WGl0TGx2bEJ3YVRKUTVjdVY0K1dDRWVvZy9aS1NzMjlmOHFXWFNjYlpENFl1?=
- =?utf-8?B?UTVHaEUvckkxaFJGd2V2OUhDdkVHOVJ1anV4ZXMxK3JxcVpqMUJ3eTBPblE2?=
- =?utf-8?B?dmhjaFdRWUZzTjNsTzg0UlkrMlhxVmRWUGhHTENlczl5VlFXMnBDNE82TlI3?=
- =?utf-8?B?RkpCa1czSURLOEFTbVBwa1Z2S0FMMVNFZHpFU3hpT2NmUmFaWjVFWnIwY3N4?=
- =?utf-8?B?Q0V3WnptLytJWVEyZXl2czJPaTNzVndubEJTeVFtSjk3OGUxK3dLMnNWanhu?=
- =?utf-8?B?OHZlQ2NKQWJPS2MrUHR3dHc3QS91ZTVkVE9uOGxud1drTnR5NmRlSWQzbGtj?=
- =?utf-8?B?RFFFYllEUTFheFZyMkpWRmZ5dWZDUjFqNHJaQzRYU2Z2MmtHMnVSeFoxeE9n?=
- =?utf-8?B?a29mMnlQd2d6VmQyVzEyZzVsYThSbjRRdE56UFVvdWR0QStZcWpVM0daZVJM?=
- =?utf-8?B?bDdNNytmQUJNUVgxK3lMOURZRElwUkthLzhxdE03WWZYY3NtWTJIbS9rOWZR?=
- =?utf-8?B?MjVjcEl2SnMvMWZJK2tPM2pqdXgwd0t2M3A2cTRMNVBqTHVSSk02S1QvS1FP?=
- =?utf-8?B?OEtWOUx2c05BeVRYWWhTQms5RFRCL3NVYUhKak9odFNOQmZRU3oxWnorNkcy?=
- =?utf-8?B?UHNzY0NONG1kamd6d1phZUJJM0MrS0dKV01UbFlWQUhkZHdtYnpEUT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93aa6ede-f2d0-4dda-def3-08de732084ae
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5126.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 21:14:23.6418
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8oyTznPMvQcpSky8yDqnjEdXnCkG7qsRtNqAjbkbFOeRoOtn+n0M/ZDBZeaQdKWG5Va4EuXKEyNITBAUcQeGZQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5922
+References: <20260223074357.7507-1-aminekhemissi61@gmail.com> <ce957e8c-a73c-4259-a040-a1679e9caad6@oracle.com>
+In-Reply-To: <ce957e8c-a73c-4259-a040-a1679e9caad6@oracle.com>
+From: Amine Khemissi <aminekhemissi61@gmail.com>
+Date: Mon, 23 Feb 2026 22:25:07 +0100
+X-Gm-Features: AaiRm50Ps-eluzG-Sq5c_erL9ZtT8Y6naiG7GyV79RDW-F25wIAt0fKWBui7yL4
+Message-ID: <CAEc6xTXq+WTvZFx8FoGhJE4NLbj6p-R7VMyCq7Vj_1O6_WBYOw@mail.gmail.com>
+Subject: Re: [PATCH] scsi: backport fix for NULL deref in scsi_queue_rq to 5.10.y
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217831-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[amd.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-217832-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harry.wentland@amd.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aminekhemissi61@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B58E217D6D7
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D272A17D904
 X-Rspamd-Action: no action
 
-On 2026-02-18 01:57, Chaitanya Kumar Borah wrote:
-> This series aims to keep colorop state consistent across atomic
-> transactions by ensuring it accurately reflects committed hardware
-> state and remains part of the atomic update whenever its associated
-> plane is involved.
-> 
-> It contains two changes:
-> - Preserves the bypass value in duplicated colorop state.
-> 
-> _drm_atomic_helper_colorop_duplicate_state() unconditionally reset
-> bypass to true, which means the duplicated state no longer reflects the
-> committed hardware state. Since bypass directly controls whether the
-> colorop is active in hardware, this can lead to an unintended disable
-> during subsequent commits.
-> 
-> This could potentially be a problem also for colorops where bypass value
-> is immutably false.
-> 
-> Conceptually, I consider 'bypass' to behave similar to 'visible' in plane 
-> state - it represents current HW state and should therefore be preserved
-> across duplication.
-> 
-> - Add affected colorops with affected plane
-> 
-> Colorops are unique in the DRM model. While they are DRM objects with their
-> own states, they are logically attached to a plane and exposed through
-> a plane property. In some sense, they share the same hierarchy as CRTC and
-> planes while following a different 'ownership' model.
-> 
-> Given that enabling a CRTC pulls in all its affected planes into the atomic
-> state, it follows that when a plane is added, its associated colorops are
-> also included. Otherwise, during modesets or internal commits, colorop state
-> may be missing from the transaction, resulting in inconsistent or incomplete
-> state updates.
-> 
+Hi Harshit,
 
-That tends to reflect my thinking when I wrote the colorop stuff.
+Thank you again for your patience and detailed feedback.
 
-> That said, I do have a concern about potentially inflating the atomic
-> state by automatically pulling in colorops from the core. It is not
-> entirely clear to me whether inclusion of affected colorops should be
-> handled in core, or left to individual drivers.
-> 
+I want to be fully transparent: this is my first time submitting a
+kernel patch, and I made several mistakes I now understand:
 
-Could this lead drivers to reprogram possibly expensive colorops
-when they didn't change? It won't be an issue for amdgpu since we
-have another level of state tracking, but for drivers that strictly
-follow the atomic model it might lead to issues.
+- CVE-2021-47552 is unrelated to this bug (blk-mq race, not NULL dereference)
+- The commits I referenced do not fix this specific issue
+- This is an original fix, not a backport
 
-On the other hand it makes colorop handling less error-prone in amdgpu,
-and possibly fixes a bug I've come across where we get confused if an
-active colorop isn't part of the state.
+I also have a practical problem: I am not yet familiar with git
+send-email, and when I paste the patch manually, the whitespace gets
+corrupted.
 
-Harry
+Could you kindly advise me on the correct way to submit this patch as
+a beginner? I want to do this properly.
 
-> My understanding of the atomic framework is still evolving, so
-> I would appreciate feedback from those more familiar with the intended
-> design direction.
-> 
-> ==
-> Chaitanya
-> 
-> P.S/Background/TL;DR:
-> 
-> I discovered inconsistency with the colorop state while analysing CRC mismatches
-> in kms_color_pipeline test cases[1]. Visual inspection reveals that while CRC is
-> being collected degamma block has been reset. This was traced back to the internal
-> commit that the driver does to disable PSR2 and selective fetch for CRC collection.
-> 
-> crtc_crc_open
->     -> intel_crtc_set_crc_source
->         -> intel_crtc_crc_setup_workarounds
->             -> drm_atomic_commit
-> 
-> During this flow colorop states are never added to the atomic state which in turn
-> makes intel_plane_color_copy_uapi_to_hw_state() disable the colorops.
-> 
-> If we add the colorops, to the atomic state, the problem still persisted because
-> while duplicating the colorop state, 'bypass' was getting reset to true.
-> 
-> The two changes made in this series fixes the issue.
-> 
-> [1] https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18001/shard-mtlp-6/igt@kms_color_pipeline@plane-lut1d.html
-> 
-> Cc: Simon Ser <contact@emersion.fr>
-> Cc: Alex Hung <alex.hung@amd.com>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Daniel Stone <daniels@collabora.com>
-> Cc: Melissa Wen <mwen@igalia.com>
-> Cc: Sebastian Wick <sebastian.wick@redhat.com>
-> Cc: Alex Hung <alex.hung@amd.com>
-> Cc: Uma Shankar <uma.shankar@intel.com>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> Cc: <stable@vger.kernel.org> #v6.19+
-> 
-> Chaitanya Kumar Borah (2):
->   drm/colorop: Preserve bypass value in duplicate_state()
->   drm/atomic: Add affected colorops with affected planes
-> 
->  drivers/gpu/drm/drm_atomic.c  | 5 +++++
->  drivers/gpu/drm/drm_colorop.c | 2 --
->  2 files changed, 5 insertions(+), 2 deletions(-)
-> 
+The bug itself is real and 100% reproducible. I just want to
+contribute it correctly.
 
+Thank you,
+Amine
 
