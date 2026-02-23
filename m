@@ -1,218 +1,339 @@
-Return-Path: <stable+bounces-217734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJsBMQM+nGklCAQAu9opvQ
-	(envelope-from <stable+bounces-217734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:46:11 +0100
+	id aJszN00/nGljCQQAu9opvQ
+	(envelope-from <stable+bounces-217735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:51:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2631F175A9B
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:46:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2197E175B23
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:51:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC189300A8E0
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:46:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C073B3007AD9
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BF61A0BD0;
-	Mon, 23 Feb 2026 11:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A554E35B621;
+	Mon, 23 Feb 2026 11:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=natalie.vock@gmx.de header.b="ddAhWS7J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nA1G06i6"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7D21F5846
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 11:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771847168; cv=none; b=Cv9r4fWb/9qpyvKPCYaGhXoonicm0nJ4g5MyOgi6FRGI5hfia6GgZPAwmfmVnn4w02kZhy70FXMc5hFA68xdCTkxKGZxLt9ebl6jsj2K/chNygasqiP/fpsyr3yS6Nk3NdZI8qKeyGs1Sxucte5iliGaZsG+qSyEeRX7AjYJ5to=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771847168; c=relaxed/simple;
-	bh=vgdOfHYHELlnJFoL3GM9WeoNXMGxfeFxlL8+UdQpeyM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kb0522YOegujL9ZtP+8N7KTGpkwiCvNIgzc4R21Pw0hEniGrDsgfbtPQWibX2SVGzovBRJsmm4y2UgtLVLpG6ptE6F4yocdVkqovqurIY4yK6c5O9J2GlOxFQNPAtmrQKiVT/u7lH8YWJyHAR02k2yV+/cwXgYFmkk7hKYeCE+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=natalie.vock@gmx.de header.b=ddAhWS7J; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1771847161; x=1772451961; i=natalie.vock@gmx.de;
-	bh=PcoQpiSLqGlTbhPyGX90b6puX2R8XcKjDGh+e3FPiCA=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=ddAhWS7JyE6iOK4hIGEeN/GlC1jBk3A9Pki+D6JeM46YW2LyAN6pPvWquUdLzWLh
-	 UShrULc4jJdAgYwWfyF6NqklHyKplt94ZkVO8Mx2SgPOrktLBZxcweOf0HGJaKrD6
-	 epdXvi+IKbOWG8sjqoQTPZgiV2t00tcSb9CCpm5CtgJBxczGK7ZtYJkvl6EFhtalB
-	 TRI11gX8HAMWUiVrldlMUQoa9M4wgIwQzRk8C1YarWeJgsLwV3mgeDouRlNcnbCmb
-	 YzuuRZwZwvlhnTrSsKuaCBXyNmHCmEgNok+h0OaqGBk8kpSVwwcZVVKT//JhQFZjI
-	 dgr1bTUVfB/kOAoZ3Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from rizzler.fritz.box ([88.133.252.134]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MvK4f-1vdMyX3d0z-00quGp; Mon, 23
- Feb 2026 12:46:00 +0100
-From: Natalie Vock <natalie.vock@gmx.de>
-To: Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>
-Cc: amd-gfx@lists.freedesktop.org,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/amd/display: Use GFP_ATOMIC in dc_create_stream_for_sink
-Date: Mon, 23 Feb 2026 12:45:37 +0100
-Message-ID: <20260223114537.38145-1-natalie.vock@gmx.de>
-X-Mailer: git-send-email 2.53.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E92360753
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 11:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771847497; cv=pass; b=hh31HqW3BT+H/kgZATFpNBpOsQd/jMF0AcXPMofsYhTsOPGTh/fLy+FvWeqXSfFk5sxfiyeh2Fg1yTi22Vuems5xEA1kRQ+o0iJfi5zUjOuEnQbLP/OfPkz21O313bX4GF2FpTYpdSaRBuYsOkAQgRQOcCCjre6wxOWg144/az0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771847497; c=relaxed/simple;
+	bh=6iocD9MNSzx4u2ot8rxH8bvtMLCokh3pHlrbgw2W8ik=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mG0L6fAHKaCCwoKpORRI7GHgAYBkKsZBWW59HrAP6gzcXi4rBJ5PdhHT2UmtzJ12+UXel148AG430odjLHmX+jcgAyVU6QjiMwBECCdiWbVd7yM/EHtz+gZXrvHgxXtRpYB8YCq/lGL237yKINmElL3su9VK1bHUqLdd4Koddls=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nA1G06i6; arc=pass smtp.client-ip=209.85.217.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-5fc41477460so1055203137.3
+        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 03:51:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771847495; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jtu5ezppxMItYu43w+P5JJ1RsWlpKDh9PVzxB+rnqNvjV09WkUidNzTJCV0AEMLmmA
+         CZ3bM5o9SYOOkRu5CO1u9hgr0n76Qs9T6l3V2cTvP1HWegQnQruCHj3wvJwtJUxSPUHq
+         KHhXwiJG+YY0Qz5s8HgDwhr6uX5pVzAMxGOyeowArZPNEkuPLh4cy3Th6Ix6aSk1lPgw
+         Y6aBWvmeqkN6mmGyUPEmoBGbvh9pwOT33rxEMMOxCOQCA/JOlTHsz/NyhpW/pYjsSPOC
+         GXO/EY2FL8MGQ9nRmh2lN3fjq0ObUQ6hFxYQkqW/kIOfJfWDsOjRVtfJ6SotHYkJqIZ+
+         Vcww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rMp9NyS10Y7o5BbV0/n1cd3o9I8LFMg8n5wPuOM1jvE=;
+        fh=HhPdB4slcbRohZsyEA6TpYW0sx6GJNp97fLLK+LCd2Q=;
+        b=fkn/Ow27ch+v6QFsXtpdV4pf66oHGZtP6048Iuifg/xf+GMnT8DELAoM5nlQbVuKM+
+         Ol7Itc79R4fsKSvTIWxee4wSuRHPMZrfzVoH37aQ8tVk0Z1+163j2gk4s1itMGCRHmDl
+         EYRHAZ9hvPW1P2npWP6wgsRRE/KewbahdV9IOaCG/jyJ9a/uV4bvfNUHM3YnF4pRE3gE
+         VCiqOL5zsigm3rnXo3VnQl+36/VtuuYU0WFmuMXU3UCEOOSTW19KE4+5+OGofwf8u5N9
+         DmEnTspt9DyceJ+GT5XYwxtZ4jDQ5lyX/cOy/ekt25tv8hkmnpfBnl7UiGE04QIJRXl+
+         zPyQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771847495; x=1772452295; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rMp9NyS10Y7o5BbV0/n1cd3o9I8LFMg8n5wPuOM1jvE=;
+        b=nA1G06i6cyzu5cXu8J8mZuLliJ9xeC1xvtVBi6ohONN6T1CKlAcj6tXM7hdSo/vqM8
+         +EWfbaaX1/gKWWBN1mjYYtbPTkTgPa0TD7jfKF9a9P+oE3kNx4Brrzt3yxa+Ec7ZpZjb
+         2IJh3WyreNBPWeW4VngZwznynpfdqwGbpvOOK564OgRIS41lQdMlBx3Ln0HNnXmJ+5Tu
+         aefEcp4+metaECtfTzrhAjnvm+7LLZQzF0VBf72+mIP+ZpmNYSFpDQPmBSVdHeZYk8Em
+         X0lzobHwhvSv83cAP8lnZhCx+y4O0AAmeCVXIANlUxwX0dodwK5JsvtXxXgXDH0Xhpkb
+         zsJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771847495; x=1772452295;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rMp9NyS10Y7o5BbV0/n1cd3o9I8LFMg8n5wPuOM1jvE=;
+        b=P/mEd+fHqQTfD8nVZ/d+2AkKSLUeF2I8Cz5aCqZkatsjlUTKW9iZ/cpBaCnDZ1ei74
+         lpj6ljUAQ54LoM4i/87jjaogTPAmD2n3H941gbAft95zS57Lv7sbAeBGj6Y6OmDu+Ym3
+         0t8R5MRGKQYPnFon0HWkS+qs99ROyUk1uuD8T6tt8IzV3le31iZnrfOiLgquymyH2ZzA
+         +CmT89lBrVFVGqc0/pbLR5lSJZfNC4bER8flTVtz5REcjnpTe+rA6I9te7eBMhyxYLXA
+         rg/VpZS76y81dzU3pA13ca3+DL1BzLzxbSuSQVca45VHSd9YMXLpsdQPnCFWlTND16ls
+         qpvg==
+X-Gm-Message-State: AOJu0YxVLoO+nFhBoDnon4C5Zc39iVuqZkYVUYySLlX9+hxoHHh+VG1Q
+	4oEsUn6XYZWDj570wPA4touzyEmce2DeM7GKTXzpfiUSxxo9ksgOvK4TJ32U1h77byg43TbxHg2
+	LOBlmNbgzbOzbeH6kulMPb8VoDeTeHH4=
+X-Gm-Gg: AZuq6aIVWnRgWOX42mvs9wE87kPxTEEJQvzHKL/v28Cd1ZmAEyzef6NnklnJp9NuXxh
+	CcbqryWHu6ciALwgj6bFUsZ5cKYFxqyNM/knltslRj1yzEez6Ryv/SMrufxawKkQux8/wXpDYjb
+	mLtIaKE0tkvWg3ZsPvzrww5vqxTYSJjJ11lxQ6HQ/PBf2tyzidsAkiTUWlc6faE9YkG8JenBxWB
+	b/sgpERcmormfWWjgQ6aQRlMWy+tEhe/hMh2UJz+xE8hqJV6GuBp7f1MkXZzoFaR+ZBxNhRWG7l
+	3vKUarWdl9ZifmjOTYRRraoYc4FpQxpUqucIt062OYSpPuJk4geoXCOBt/guJ754Z25XUdsoD85
+	Dy6vdwlg/4Q==
+X-Received: by 2002:a05:6102:e0e:b0:5df:8f4:61e6 with SMTP id
+ ada2fe7eead31-5feb310b93bmr3236127137.32.1771847494951; Mon, 23 Feb 2026
+ 03:51:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <CAD0gVBsyzYNA6ydPwg9mJ9VQzYg4zPAi24JQ13-=0KtdbQ039A@mail.gmail.com>
+ <CANiDSCsMVE7qAcjcjbjhYSMoyypkR5Nq-ZA-e=CJVY5CUGAG7Q@mail.gmail.com>
+In-Reply-To: <CANiDSCsMVE7qAcjcjbjhYSMoyypkR5Nq-ZA-e=CJVY5CUGAG7Q@mail.gmail.com>
+From: =?UTF-8?B?QW5kcsOpcyBQw6lyZXo=?= <andres.f.perez@gmail.com>
+Date: Mon, 23 Feb 2026 11:51:14 +0000
+X-Gm-Features: AaiRm52aszgholXfDNGG6k-0d1fHGX88p3iT8Mn4sxSWllcwfxYwH-T9tRbXK5Q
+Message-ID: <CAD0gVBtWhQqnxVt7kvQoQcbazGiLH-rUNrTfnZZpm40-jKvTUA@mail.gmail.com>
+Subject: Re: [REGRESSION] Display freeze on VT switch back to X11 since v6.16
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: stable@vger.kernel.org, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hansg@kernel.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, intel-gfx@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:t/hBrkRfBrWp0UhQ+7vHjNRHLl8fnAP5mzvf7af82ZN/WoJ6aoF
- lGGeqkoL5Fj8PpO2zhIYe1bUtP2hUKAk1nUgL50JGLPj6OFuorcFe6vNUTeztY9RNGxpX1A
- erMTlSdi063XsizslhJ17ehbDOOIOGNuYsADHDXGM6yfWW2gB1KG9SUQNOyuDtlYU/iWiu/
- UJ6Fb6P1ZD8y3DsHJG67w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:u/XyADBLK5A=;7c5cykvYvlksdq9yqoYC2PBT5YG
- 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
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+X-Spamd-Result: default: False [-1.49 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_MIXED_CHARSET(0.67)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-217734-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
+	TAGGED_FROM(0.00)[bounces-217735-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[natalie.vock@gmx.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,ideasonboard.com,kernel.org,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,lists.freedesktop.org,lists.linux.dev];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmx.de:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andresfperez@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:mid,gmx.de:dkim,gmx.de:email]
-X-Rspamd-Queue-Id: 2631F175A9B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 2197E175B23
 X-Rspamd-Action: no action
 
-This can be called while preemption is disabled, for example by
-dcn32_internal_validate_bw which is called with the FPU active.
+Ricardo,
 
-Fixes "BUG: scheduling while atomic" messages I encounter on my Navi31
-machine.
+Listen, I'm right there with you, scratching my head. First thing I
+did when I bisected to that commit was modprobe -r that module. Easy
+sacrifice; I don't use my camera that often. When it still froze, I
+assumed that maybe something related to module init was still
+lingering, so I disabled it by kernel boot param. When that didn't
+work, I just didn't build it in at all. Then I ignored it and tried a
+few other things. Eventually I came back to that commit. Instead of
+patching any code, I just added a comment to the file, thinking maybe
+this is just some build artifact that's causing a false positive. No
+dice. So far, the only thing that has allowed VT switching to work is
+restoring those PM calls around the video_ioctl2 call. I am not
+presenting it as a solution (quite the contrary!), I am presenting it
+solely because it's all I've got to go on.
 
-Cc: stable@vger.kernel.org
+Andr=C3=A9s
 
-Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
-=2D--
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c b/drivers/gpu=
-/drm/amd/display/dc/core/dc_stream.c
-index 191f6435e7c64..87c0cf7e290ea 100644
-=2D-- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -170,11 +170,11 @@ struct dc_stream_state *dc_create_stream_for_sink(
- 	if (sink =3D=3D NULL)
- 		goto fail;
-=20
--	stream =3D kzalloc(sizeof(struct dc_stream_state), GFP_KERNEL);
-+	stream =3D kzalloc(sizeof(struct dc_stream_state), GFP_ATOMIC);
- 	if (stream =3D=3D NULL)
- 		goto fail;
-=20
--	stream->update_scratch =3D kzalloc((int32_t) dc_update_scratch_space_siz=
-e(), GFP_KERNEL);
-+	stream->update_scratch =3D kzalloc((int32_t) dc_update_scratch_space_siz=
-e(), GFP_ATOMIC);
- 	if (stream->update_scratch =3D=3D NULL)
- 		goto fail;
-=20
-=2D-=20
-2.53.0
-
+On Mon, Feb 23, 2026 at 8:18=E2=80=AFAM Ricardo Ribalda <ribalda@chromium.o=
+rg> wrote:
+>
+> Hi Andr=C3=A9s
+>
+> Thanks for doing the bisecting
+>
+> On Sun, 22 Feb 2026 at 22:56, Andr=C3=A9s P=C3=A9rez <andres.f.perez@gmai=
+l.com> wrote:
+> >
+> > # OVERVIEW
+> >
+> > Since kernel v6.16.1, switching from an X11 session to a text VT and ba=
+ck
+> > freezes the display on a ThinkPad P15 Gen 2. The system remains respons=
+ive
+> > over SSH; only the display is frozen. Bisecting identified commit
+> > d1b618e7954802fe ("media: uvcvideo: Do not turn on the camera for some
+> > ioctls") as the trigger. Reverting the logic change in that commit
+> > fixes VT switching
+> > on v6.16.1, v6.17.9, and v6.18.9, but that is not an actual solution. W=
+ayland
+> > compositors (e.g., river and sway) are not affected.
+> >
+> > Last good:  v6.15.9
+> > First bad:  v6.16.1
+> > Bisect result: d1b618e7954802fe media: uvcvideo: Do not turn on the
+> > camera for some ioctls
+> >
+> > ## Hardware:   Lenovo ThinkPad P15 Gen 2i (20YQ0031US)
+> > CPU:        Intel Core i7-11800H (Tiger Lake-H)
+> > iGPU:        Intel UHD Graphics (TGL GT1)
+> > dGPU:       NVIDIA T1200 (not involved in eDP output; driver: nvidia-op=
+en)
+> > Display:    15.6" 1920x1080 eDP, 10 bpc capable (EDID 1.4)
+> > Webcam:     Integrated Camera on PCH xHCI (Bus 003 Port 004)
+> > Firmware:   LENOVO N37ET61W (1.97)
+> > OS:         Arch Linux, Nix home-manager, X11 + xmonad, no display mana=
+ger
+> >
+> > ## Symptoms and reproduction steps:
+> > 1. Boot, start X11 on tty1 (startx).
+> > 2. Switch to tty2 (Ctrl+Alt+F2): works.
+> > 3. Switch back to tty1 (Ctrl+Alt+F1): display freezes.
+> >    - Frozen on the last frame shown before switching away.
+> >    - System is fully responsive over SSH.
+> >    - Other VTs switch normally between each other as long as X11 is
+> > not active on them.
+> >    - Killing X does not recover the display. A reboot is required.
+> >
+> > # DEBUG ANALYSIS
+> >
+> > On v6.16.1, the VT switch back to X triggers a full modeset due to pipe
+> > configuration mismatches detected by intel_pipe_config_compare:
+> >
+> > [drm:intel_pipe_config_compare] fastset requirement not met in pipe_bpp
+> >   (expected 30, found 24)
+> > [drm:intel_pipe_config_compare] fastset requirement not met in dp_m_n
+> >   (expected link 269484/524288, found link 336855/524288)
+> > [drm:intel_pipe_config_compare] fastset requirement not met in dpll_hw_=
+state
+> >   (expected cfgcr0: 0xe001a5, found cfgcr0: 0x1c2)
+> > [drm:intel_pipe_config_compare] fastset requirement not met in port_clo=
+ck
+> >   (expected 270000, found 216000)
+> > [drm:intel_atomic_check] forcing full modeset
+> >
+> > On v6.15.9, the same VT switch shows no such messages.
+> > no pipe_config_compare runs, no modeset, no freeze.
+> >
+> > # BISECT AND VERIFICATION
+> >
+> > The bisect converged on d1b618e7954802fe in the uvcvideo driver. This
+> > commit adds a switch statement to uvc_v4l2_unlocked_ioctl that allows
+> > certain V4L2 IOCTLS to call video_ioctl2 directly without first calling
+> > uvc_pm_get/uvc_pm_put. Prior to this commit, all ioctls called uvc_pm_g=
+et
+> > before video_ioctl2.
+> >
+> > ## VT switching verification across kernel versions:
+> >
+> >   v6.12.74 arch pkg:   WORKS
+> >   v6.15.9 arch pkg:    WORKS
+> >   v6.15.9 from source: WORKS
+> >   v6.16.1 with d1b618e reverted:     WORKS
+> >   v6.17.9 with PM wrapping restored: WORKS
+> >   v6.18.9 with PM wrapping restored: WORKS
+> >
+> >   v6.16.1 from source:  FREEZES
+> >   v6.16.1 arch pkg:     FREEZES
+> >   v6.17.9 arch pkg:     FREEZES
+> >   v6.18.9 from source:  FREEZES
+> >   v6.18.9 arch pkg:     FREEZES
+> >
+> > ## Things that do not eliminate the freeze
+> >
+> >   - module_blacklist=3Duvcvideo on boot
+> >   - CONFIG_USB_VIDEO_CLASS=3Dn (compiled out)
+>
+> This is puzzling me a bit... You are saying that if you do not build
+> the uvc driver, the freeze is still happening?
+>
+> Am I understanding this correctly?
+>
+> >   - i915.enable_psr=3D0
+> >   - Bypassing intel_vrr_transcoder_enable/disable (no-op)
+> >   - xrandr --output eDP-1 --set "max bpc" 10
+> >   - Xorg config FBDepth 30 (No effect on pipe_bpp)
+> >
+> > ## Workaround patch
+> >
+> > Reverting the optimization from d1b618e to restore the unconditional
+> > uvc_pm_get/put wrapping for all ioctls. This is not a proper fix.
+> >
+> > diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/u=
+vc_v4l2.c
+> > index 9e4a251eca88..15057b47ec4f 100644
+> > --- a/drivers/media/usb/uvc/uvc_v4l2.c
+> > +++ b/drivers/media/usb/uvc/uvc_v4l2.c
+> > @@ -1199,33 +1199,12 @@ static long uvc_v4l2_unlocked_ioctl(struct file=
+ *file,
+> >   unsigned int converted_cmd =3D v4l2_translate_cmd(cmd);
+> >   int ret;
+> >
+> > - /* The following IOCTLs need to turn on the camera. */
+> > - switch (converted_cmd) {
+> > - case UVCIOC_CTRL_MAP:
+> > - case UVCIOC_CTRL_QUERY:
+> > - case VIDIOC_G_CTRL:
+> > - case VIDIOC_G_EXT_CTRLS:
+> > - case VIDIOC_G_INPUT:
+> > - case VIDIOC_QUERYCTRL:
+> > - case VIDIOC_QUERYMENU:
+> > - case VIDIOC_QUERY_EXT_CTRL:
+> > - case VIDIOC_S_CTRL:
+> > - case VIDIOC_S_EXT_CTRLS:
+> > - case VIDIOC_S_FMT:
+> > - case VIDIOC_S_INPUT:
+> > - case VIDIOC_S_PARM:
+> > - case VIDIOC_TRY_EXT_CTRLS:
+> > - case VIDIOC_TRY_FMT:
+> > - ret =3D uvc_pm_get(handle->stream->dev);
+> > - if (ret)
+> > - return ret;
+> > - ret =3D video_ioctl2(file, cmd, arg);
+> > - uvc_pm_put(handle->stream->dev);
+> > + ret =3D uvc_pm_get(handle->stream->dev);
+> > + if (ret)
+> >   return ret;
+> > - }
+> > -
+> > - /* The other IOCTLs can run with the camera off. */
+> > - return video_ioctl2(file, cmd, arg);
+> > + ret =3D video_ioctl2(file, cmd, arg);
+> > + uvc_pm_put(handle->stream->dev);
+> > + return ret;
+> >  }
+> >
+> >  const struct v4l2_ioctl_ops uvc_ioctl_ops =3D {
+> >
+> > Andr=C3=A9s
+> >
+>
+>
+> --
+> Ricardo Ribalda
 
