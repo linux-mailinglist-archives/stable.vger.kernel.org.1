@@ -1,203 +1,120 @@
-Return-Path: <stable+bounces-217774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKeOABFhnGntFQQAu9opvQ
-	(envelope-from <stable+bounces-217774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 15:15:45 +0100
+	id IEplEoZinGkoFgQAu9opvQ
+	(envelope-from <stable+bounces-217775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 15:21:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA51177E2F
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 15:15:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CEC177F12
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 15:21:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26C6D30AE09C
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 14:13:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E12AF3044BB9
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 14:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BC8281358;
-	Mon, 23 Feb 2026 14:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB9C275861;
+	Mon, 23 Feb 2026 14:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ay9uNtRW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzgCme/8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50D4281503
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 14:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771856026; cv=pass; b=g3+x+4U2HtQ/8m1unC1ygMI+5ppK2wIqeo1BgJeVDwNmyh7McfEQYHmXkp8B5JdtHNBe19j81+pdM7CtRGEAltB+hpLmJvslPpkuXktTFO+fY2DJ7/O/7Nct5BNm0oLD7V1E2WE2Ihhjw7s0DI+f1fylaTyfRCTTAh3u9y4IjNQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771856026; c=relaxed/simple;
-	bh=4KkXfb0hX48GWnAgt+Gf2q0dnfvPe2syfroDOciYpG0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KNOhq+20NFw0KMR9PzwAR9E2MMJ015+m1IFEf2AfUELbz9cbuOX8gj9G8y8ekla0PvBOALy7mRXP2np10A1/rvnXxYTlnzCy/SSL1OVqSLzyJtqM1AHdnb+V7k1o43Awq72Rn6lDfywDsbsKQ938brm1IM/46INkNwTiyAxSmME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ay9uNtRW; arc=pass smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59e4a04f059so5622338e87.2
-        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 06:13:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771856023; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iQIbyy5n/MmuRVFa6ixwythsO+MwL+FCyol0JghYwbiFv4mK6BeMRSi+Ge+nfncSEq
-         IWHNIzFpys6wzv1rwX7C97dJuX8XfvPpknW740fG7daWtLu4djXLEV0E8Mxq9iCUJfEH
-         fgTYIjoo4TtCBjt7yiIurBXaY8D4tEwwizHF+yKi18QpmRcJ8ALaAoDuiTNPDB9gmcgH
-         eHD6f/vF+wUTlexuzPU8Nrx7hw9sj1K8VNFILtEWVpKNTV661tARCLb6xP5K6JBOceGv
-         l/6R3HeSUgkhEC1BUI5udCKXZiseCs2rn9uADlw/tixR9OSnJklr+mdlC46JpvzQ0KEx
-         o8zA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ZSkS4xSTQDd/nSKVQ38rSQfj2WvDl93Pr4Jl1qJpA/E=;
-        fh=xckTzEE5/pf47A2MZaKTrtlKQcUFSE4DF7wddvAamKw=;
-        b=PBWKCASVxMJzZPAB5vh+I5QU1gHEl3J5TkxWRdjEt3uMacsrXQJe2MtXKV11AR25Ta
-         OmAcOTLIfjJSvFrFxwS4ieWDahAssc+d8hvmmfz7P0r19HlJ5jglKgpDtXyNWOjwYKQ3
-         OWXJnL9lQWKGx/+QlGRbHtHxhAqC/hcH1g1j+sjiaQzJcWN7zPq59HRU3T3ZDniXvZrt
-         LXWRMBXK4iwazvrUgsju0osMbBc+QaGjAqWYvUJxTVyILuvpBvEujoGBDtDO3hbf9QwL
-         ULF667qqbjKGzXxIXdi8Nat90a2AlWgddSM1YAbSo1Jv3bPdMvsYb94ofab3X+UUuypt
-         YNgw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1771856023; x=1772460823; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZSkS4xSTQDd/nSKVQ38rSQfj2WvDl93Pr4Jl1qJpA/E=;
-        b=ay9uNtRWfsroWDhWra3P/fVC3FaHx730i8NDjSneTGNlcz0AmiYYki7kSPVRA+iSMS
-         q7VYS9GwzcTsMe22o2kjSsQgtD1DgVGyyINLNbDs7HHJWOEKWqwvukKa3lv8e+H0wk3T
-         b53y5tsQzrHeW0yrTp01uztImjyOC7wKbJLWeAj6fAD27c784Nw0D0AtrNBhDjTy6+Fa
-         EQgz8eTiHIRR1y23rpTpwc8Jl+OHyPHFv7a7V3Q+Mv9Gaw9kfon+3pLbFpYIHh7ljCE8
-         cMEKg5eRt1B3dYX8KOttPYkGV9pVNvw1/zLaPNhwjT60IMq5M1Uy71vucP1d1/jB4eWb
-         cfRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771856023; x=1772460823;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZSkS4xSTQDd/nSKVQ38rSQfj2WvDl93Pr4Jl1qJpA/E=;
-        b=MpuOuyN9Z63kprKvJExP71odhqbR79QY5Om/uIwJHeNwhON1j8R3qKLxpc7XTnCP+1
-         1UUf1nSnxXmuCRwT6nEb8w9SE+kHDP9O0kVbIlFK5JevZoAEoxJcilfTybqctD7LjYve
-         kfCP89ia5HDXgJEVLTUUbBxpyBXcWHmqvHO/BsBuT+aBJrfYF5fdd4lWEEHzOblRSxaR
-         HcE5XtNCI/pdwZdGz0cWTGmAWfJRFmBLTPCEyQmWCKdYNVpKjosqY/85KQdKqGBBUO1W
-         0d7Q0h9THgpm6CvdGsXDeix0a+vMiu76wJRhBsiqcLqJnXjKQxxFqitQhD8dYNJ1VR54
-         Bv6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUh+NPtuI96lXKwPwO4T66crRfHBuwH/sOgZTE0tdY8r2pcTudNirNhzc2ZxUSxfy44CDLxfXQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL4p0fceEeIbm1YPGUOrBmE0gsJy7t1QgXTKxy8+jp1aGyK/FK
-	7KXhyFQj/n7pLZIvbX+pRxxRnS9YZi5wCv8j7abQqvUFI4JWebt1dgHq75V1Pztmz3ZYC9W8mmb
-	LUzr/Mjw1bkq4yF2T1ZmS7ykRA4RC22etZQbMPRJIlQ==
-X-Gm-Gg: AZuq6aLhxhI7zwKPKtvJLbFxwGwzxmYq1K9Rxpd4d3S2BY/FAbpRjD7LzoNggicsk5V
-	YyhHBIuWjXaznhRads2C1lS34fVrq12koSDtmS8+R7S8wrB+S6LKsOVlaoLFzlVKSyOX/x1T/nZ
-	02ThIX4NsuiPo2Yz2xspMaFkhDVrHnphXqYB6FNkZ0xbtvqcyPQV4w3BmtIxgHkJFMogboEV2+i
-	RomjruFWpXiw6pfVmJ0yUzAeZ7sIlKOzZRMnfBWwsnHrxWqIoez4b/pDJ5C3nLxlD4QH8q4hBnt
-	L+JB9N6w
-X-Received: by 2002:a05:6512:63ce:20b0:5a0:ee55:3dbd with SMTP id
- 2adb3069b0e04-5a0ee553e23mr1810374e87.9.1771856022895; Mon, 23 Feb 2026
- 06:13:42 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A25155757;
+	Mon, 23 Feb 2026 14:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771856384; cv=none; b=F4sd5TCowTaaFCLT/p0u4NLoB2nfwsS1pHSgxKsUhPAdDO45anngr851IOkVVNdxCVag4YOk1+1qD7YSFySdj2OiQLpevK22t94oG+1/9pf4bQQsHUGMwlsSYqX3it2aICijjr2MkeEQi7OSjIat3kImjLHC588e0e8fPVtKa+U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771856384; c=relaxed/simple;
+	bh=+FWXa0tJn3HZmH0vuZ3D0gYVTPVqOfX6DexcZ21dnGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UFmXxfa4cCKz+hOdbV6MYmH7Q1L4zFi5kPvuOOJP+5SKDiuSgyPrOqDDZtNBjNT6TC+3mbVSCFf9T8LjUyWOurx2fEAF+ePwwoGEqVjc7FwY1tmK6sIUMkIS4rcAH08Qf4uyrApcdv4PQupxA9AaG07mCaD2PDAJd0v8mJa1074=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzgCme/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0635C19423;
+	Mon, 23 Feb 2026 14:19:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771856384;
+	bh=+FWXa0tJn3HZmH0vuZ3D0gYVTPVqOfX6DexcZ21dnGE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=yzgCme/8+B3BdU/BTrUU/m4wAki0ZSyOQ9Q0toRMgfNelTfChoB953e3kGW9V//79
+	 SolAjydiypAM5A9nRtN4TUdwZcNxEzM36VT2sR2Dv4xsxDc97HQeHHH93cmLnOuE29
+	 QtzLRlKtfBYG7OEpWdC87wFyG1sXgmPDkVGjr8TE=
+Date: Mon, 23 Feb 2026 15:18:27 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: luka.gejak@linux.dev
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 01/22] staging: rtl8723bs: fix potential out-of-bounds
+ read in rtw_restruct_wmm_ie
+Message-ID: <2026022332-reemerge-gestate-5760@gregkh>
+References: <20260208110111.46642-1-luka.gejak@linux.dev>
+ <20260208110111.46642-2-luka.gejak@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115214648.168365-1-pgeng@nvidia.com> <20260219202954.937508-1-pgeng@nvidia.com>
-In-Reply-To: <20260219202954.937508-1-pgeng@nvidia.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 23 Feb 2026 15:13:05 +0100
-X-Gm-Features: AaiRm52TCuoishBZCXeYAUbucX7Og7doxnsYuSPgLiLI9z3JRm4io_MyXU9Dlak
-Message-ID: <CAPDyKFpw0Qe0doJ_H0E++4+OtGR0xBCqMDxZ_FHvTLPk1-AK-w@mail.gmail.com>
-Subject: Re: [PATCH mmc v2] mmc: core: Avoid bitfield RMW for claim/retune flags
-To: Penghe Geng <pgeng@nvidia.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260208110111.46642-2-luka.gejak@linux.dev>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217774-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217775-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linaro.org:+];
 	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,linaro.org:dkim]
-X-Rspamd-Queue-Id: 4CA51177E2F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linux.dev:email]
+X-Rspamd-Queue-Id: 96CEC177F12
 X-Rspamd-Action: no action
 
-On Thu, 19 Feb 2026 at 21:31, Penghe Geng <pgeng@nvidia.com> wrote:
->
-> Move claimed and retune control flags out of the bitfield word to
-> avoid unrelated RMW side effects in asynchronous contexts.
->
-> The host->claimed bit shared a word with retune flags. Writes to claimed
-> in __mmc_claim_host() or retune_now in mmc_mq_queue_rq() can overwrite
-> other bits when concurrent updates happen in other contexts, triggering
-> spurious WARN_ON(!host->claimed). Convert claimed, can_retune,
-> retune_now and retune_paused to bool to remove shared-word coupling.
->
-> Fixes: 6c0cedd1ef952 ("mmc: core: Introduce host claiming by context")
-> Fixes: 1e8e55b67030c ("mmc: block: Add CQE support")
+On Sun, Feb 08, 2026 at 12:00:50PM +0100, luka.gejak@linux.dev wrote:
+> From: Luka Gejak <luka.gejak@linux.dev>
+> 
+> The current code checks 'i + 5 < in_len' at the end of the if statement.
+> However, it accesses 'in_ie[i + 5]' before that check, which can lead
+> to an out-of-bounds read. Move the length check to the beginning of the
+> conditional to ensure the index is within bounds before accessing the
+> array.
+> 
+> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
 > Cc: stable@vger.kernel.org
-> Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-> Signed-off-by: Penghe Geng <pgeng@nvidia.com>
-
-Applied for fixes, thanks!
-
-Kind regards
-Uffe
-
-
+> Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
 > ---
->  include/linux/mmc/host.h | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-> index e0e2c265e5d1..ba84f02c2a10 100644
-> --- a/include/linux/mmc/host.h
-> +++ b/include/linux/mmc/host.h
-> @@ -486,14 +486,12 @@ struct mmc_host {
->
->         struct mmc_ios          ios;            /* current io bus settings */
->
-> +       bool                    claimed;        /* host exclusively claimed */
-> +
->         /* group bitfields together to minimize padding */
->         unsigned int            use_spi_crc:1;
-> -       unsigned int            claimed:1;      /* host exclusively claimed */
->         unsigned int            doing_init_tune:1; /* initial tuning in progress */
-> -       unsigned int            can_retune:1;   /* re-tuning can be used */
->         unsigned int            doing_retune:1; /* re-tuning in progress */
-> -       unsigned int            retune_now:1;   /* do re-tuning at next req */
-> -       unsigned int            retune_paused:1; /* re-tuning is temporarily disabled */
->         unsigned int            retune_crc_disable:1; /* don't trigger retune upon crc */
->         unsigned int            can_dma_map_merge:1; /* merging can be used */
->         unsigned int            vqmmc_enabled:1; /* vqmmc regulator is enabled */
-> @@ -508,6 +506,9 @@ struct mmc_host {
->         int                     rescan_disable; /* disable card detection */
->         int                     rescan_entered; /* used with nonremovable devices */
->
-> +       bool                    can_retune;     /* re-tuning can be used */
-> +       bool                    retune_now;     /* do re-tuning at next req */
-> +       bool                    retune_paused;  /* re-tuning is temporarily disabled */
->         int                     need_retune;    /* re-tuning is needed */
->         int                     hold_retune;    /* hold off re-tuning */
->         unsigned int            retune_period;  /* re-tuning period in secs */
-> --
-> 2.43.0
->
->
+>  drivers/staging/rtl8723bs/core/rtw_mlme.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+
+You have mixed bugfixes that should go into 7.0-final with cleanups in
+the same series, makeing it a mess for me to try to apply this.  Can you
+resend this as two different series, one with just bugfixes for
+7.0-final and the rest being the normal coding style cleanups?  That way
+I can apply them properly.
+
+thanks,
+
+greg k-h
 
