@@ -1,173 +1,209 @@
-Return-Path: <stable+bounces-217719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCPFHYwpnGl1AAQAu9opvQ
-	(envelope-from <stable+bounces-217719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:18:52 +0100
+	id WJOdIdAsnGmcAQQAu9opvQ
+	(envelope-from <stable+bounces-217720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:32:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4603174B92
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:18:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC113174F08
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:32:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D710302DB72
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:17:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 26C72302642E
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF9935B62E;
-	Mon, 23 Feb 2026 10:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557A235C1AC;
+	Mon, 23 Feb 2026 10:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LfAPOLYH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F/v57GEz";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kXHwFG81"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B436B34EF0C
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 10:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D4334FF41;
+	Mon, 23 Feb 2026 10:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771841877; cv=none; b=NaJZvh04oaXYnG9edOYZQO5I6ZG21zz/kP7+megwmAnXTIJszW8SXKIBfZxJ1SgFFlSvtpnS+X5QGiYb34hIb+JI8ql7C2ICCREfbkqmoD+SDEvdxBRN+azanpdKlMFcoPA6onEhFbcSKwd17g/H+QOqxfgQjTvtQW6B6UWySq8=
+	t=1771842655; cv=none; b=s5AJ8htWY3Kd2ujnmPxaKC4oqFnr9aPMp5pV7EegYWaOo+st0e7H1NVCscJzi3H9bS7m2kfPYzR2pn/2/v0CB70VfuTkaz+M1crdO5AbH99oDdJFE0Mybbg+9u99mr4ryXqOBI7XiZphnfK2nAgvY9HmI5d170x0XOObHy5x9JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771841877; c=relaxed/simple;
-	bh=JDc/qo7rkUOcZGNhJ0Wl/HeJIKj7/AleosrYhzqya/c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTzP+/Vx/oqhfxgcP9O20+ISJiwANX3OKovTK701nMw9UmdehUTvakgDBGGiWlJXXxvpzFDw8FS9mame4yKmhqh2NWG9aO0xxZRjFfO7Uox1stLMuKhi2DWgYbbu3uNTeaowcuTlX7tp8Ha58qnHdAuU3TNK6nyvb9DeoIlx8uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LfAPOLYH; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a7d98c1879so26689665ad.3
-        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 02:17:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771841876; x=1772446676; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZxR8y+DDVU/sD2lLySC6/WbxsSmg5U6pRubVnyPkrSo=;
-        b=LfAPOLYH6/CYmyGD7y4Gx0nzk6YR60hu8x8bNhN9eHhmgHw8AKeWeSjbFYxfNGOF7y
-         PSLRHi7NwZMGQNxMuzaeUQ3Bk5CtRIl9J/R2KUPpuksndQKe1+67t+jG16kpqYNnUYcM
-         Vx+Mvx2zPXp7xSkGWtL121S0fuVWFkpWVJF5RBvVXbncaTyTV6EJreHK5eQpkChjKJjO
-         E15Y7c41PukhNxqe4QThS9lsby/UeqSWovmDilGFYmJ+jhD3/n6asTMFJn8k5URXiBS4
-         AMRMDX+2i8GocCiuRHrP54kNAz3UKQxG/OZK1GVSDj6hBuZFaY5prAxGvpAQZS77Kd5X
-         /lUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771841876; x=1772446676;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZxR8y+DDVU/sD2lLySC6/WbxsSmg5U6pRubVnyPkrSo=;
-        b=eCP9OUe5m/gM8u/a9K9zXo2eEqBiMl1IntpXhJcyfyC7ea4E9kb9P5oqUczFPvETkx
-         SI7Sb4oGog1Ll9XMV5zWpGQN+ZJCVVJDA6L9jF0vwv1DY17Blsa6lXuVniLsA9+tfHu+
-         mdkwWmIwBvSgLvCx/Y6h4oYBM4fUO5eh8ViQYc6Kpfn2OjEB9zIzv8R/180UqhlKyd90
-         F88bc9umQ+9DzJ9xQk0MbOvZ2gKtV2MtAF5FFnDLAxW2GicAp4WlQwek/kKE36Dn7e6M
-         zDgSQHjt0SZGE7tvgW/N1RqvIGyf23BhwNdSygTegRNgYYuUBkAeRN2/g2OUxxlD2HY4
-         dcJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwpSaAl8tSrffoW4iDBXz9UFz3QsNpnLQDSr9fCoK13k8fGSbTo3eig7UPtRkVGpdbuSbgLjo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhYPgg5Xk6TQqzfBN3keFVxSvkokLVm9/7Kspbq7ygWaN6gkut
-	/gZPsueV7jldYbvzYpFyc60BBdPHwMmFCXx6sZen7FAgaYicureJOKYP
-X-Gm-Gg: ATEYQzyp3zv8KN1LET90y4BourOoVK+f8hVxD1pImxBamcbenJJ7Eteq5ZYUknMzaK0
-	aw12mCwfiIBsC2vdSUIEupoUT5+iLro/AkZD3HR4zUod9mGzOPSgH/V+9rrWEUWpZhJ383HOfpM
-	bDIncIeC0BI2/K8f9Me8vhHgaY8dnjZN64FcRb26dVbyZva5OJ7/qmPaYunPjOrYXxSioML8ev0
-	d4NUfbwfsbAYWL6idb37XO5c0LnKaFb5yE/DnrKeW1zekGF9uHMtqq7HQpDq55Ss0kgCoZiKmwp
-	G/EjrKCLDeZB9fQW0gyVyI/SrlbgheRyeYF1+Y+ehslnZilSWw5AYTfeNvzRB6zCnW54ZPryl5O
-	tNSfj9/zgfAX0ujYqaKMaD41Kpq7/nATUOcxOcw/ojWwe5NAGDng+ItzvhAT+HvLVnNmHeeuT2+
-	VeO2KBiT1AZyF+X+VvuPBp76oFvLa/UQ==
-X-Received: by 2002:a17:902:d4d2:b0:2a7:c2d5:bcd7 with SMTP id d9443c01a7336-2ad74464b22mr67997785ad.20.1771841876019;
-        Mon, 23 Feb 2026 02:17:56 -0800 (PST)
-Received: from c6dfb3cc7c9a ([115.245.213.202])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad74e3425dsm66574795ad.16.2026.02.23.02.17.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 02:17:55 -0800 (PST)
-From: Sanjaikumar V S <sanjaikumarvs@gmail.com>
-To: mwalle@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	miquel.raynal@bootlin.com,
-	pratyush@kernel.org,
-	richard@nod.at,
-	sanjaikumarvs@gmail.com,
-	sanjaikumar.vs@dicortech.com,
-	tudor.ambarus@linaro.org,
-	stable@vger.kernel.org,
-	vigneshr@ti.com
-Subject: [PATCH v3 2/2] mtd: spi-nor: core: Fix AAI mode when dirmap is not available
-Date: Mon, 23 Feb 2026 10:17:18 +0000
-Message-ID: <20260223101718.89-3-sanjaikumarvs@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260223101718.89-1-sanjaikumarvs@gmail.com>
-References: <20260220094236.28-1-sanjaikumarvs@gmail.com>
- <20260223101718.89-1-sanjaikumarvs@gmail.com>
+	s=arc-20240116; t=1771842655; c=relaxed/simple;
+	bh=qnVIFbm1j4rtKlvtvGWiRFAMyvCCAKGcDPhd1pHIJZ0=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=I8lNakdhlAz6NhNPWaNtDSWNDwNGWNr3U77QYG3B7vonRDIceVv0gletDGxyLSZ3SS4kAH5udawM+z2ZxckMWSJyXQR1dp/z3n6Qpkl9locUQS4kx9I+4Cl8ifhQrByLpTNjqUc2UI6M4VRZgo8EQt4c/seYiLeO7HAN9AjB9UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F/v57GEz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kXHwFG81; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 23 Feb 2026 10:30:51 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1771842652;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gIXnMDP6SWiGCWv6ySuJmJBgBaWkeCyUDqIL3hBumbc=;
+	b=F/v57GEzm+wu7rOrXchSlrNY8QjhPkVInUEoZ/qh+H0kxgzovqJpjtPnHKArLOgHxHpQTy
+	IAzNohXn7MS/mwhe7htqOpdZE/Vp5bw9v0ezOLao59j8ik52MKelv1UX+Ge32UJCL6ZPDR
+	RCZBjvHzmUGJSMXTyTB5jRVT/k+Gt9itlYvMW/aM55ImWZGuVDj0TBtAMC8bZs5YGAraGV
+	bUZludpg247hXORYWcb/Cf8GJEeFOVyapP+/MYKi7zsAnOd1phDG9RiLxcqXpXelA1Iby3
+	kwP/n8/kLIG4eIm7uQkgoRk14QKT9ozm7H6L2kftmKiZe8ippu/Wjuz/fbgYEw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1771842652;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gIXnMDP6SWiGCWv6ySuJmJBgBaWkeCyUDqIL3hBumbc=;
+	b=kXHwFG81uTZbWT60ptrfRvr7o33x0v6jBuMsIDZsMzEZYkKsKe6Q2+ofeZ21385GiWwESS
+	qypxjCfUIZNcEYAA==
+From: "tip-bot2 for Zide Chen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/intel/uncore: Add per-scheduler IMC CAS
+ count events
+Cc: Reinette Chatre <reinette.chatre@intel.com>,
+ Zide Chen <zide.chen@intel.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260210005225.20311-1-zide.chen@intel.com>
+References: <20260210005225.20311-1-zide.chen@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <177184265133.1647592.517494925626141391.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-217719-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,bootlin.com,kernel.org,nod.at,gmail.com,dicortech.com,linaro.org,ti.com];
+	TAGGED_FROM(0.00)[bounces-217720-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sanjaikumarvs@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dicortech.com:email]
-X-Rspamd-Queue-Id: C4603174B92
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linutronix.de:dkim,intel.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:replyto]
+X-Rspamd-Queue-Id: AC113174F08
 X-Rspamd-Action: no action
 
-From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+The following commit has been merged into the perf/urgent branch of tip:
 
-When the SPI controller does not support direct mapping (nodirmap=true),
-spi_nor_spimem_write_data() calls spi_mem_dirmap_write() which falls
-back to spi_mem_no_dirmap_write(). This fallback uses the operation
-template created at probe time with the standard page program opcode.
+Commit-ID:     6a8a48644c4b804123e59dbfc5d6cd29a0194046
+Gitweb:        https://git.kernel.org/tip/6a8a48644c4b804123e59dbfc5d6cd29a01=
+94046
+Author:        Zide Chen <zide.chen@intel.com>
+AuthorDate:    Mon, 09 Feb 2026 16:52:25 -08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 23 Feb 2026 11:19:25 +01:00
 
-For SST flashes using AAI mode, this fails because the template cannot
-handle the dynamic opcode and address byte changes required by AAI.
+perf/x86/intel/uncore: Add per-scheduler IMC CAS count events
 
-Fix by checking nodirmap and using spi_nor_spimem_exec_op() directly,
-which uses the runtime-built operation with correct AAI configuration.
+IMC on SPR and EMR does not support sub-channels.  In contrast, CPUs
+that use gnr_uncores[] (e.g. Granite Rapids and Sierra Forest)
+implement two command schedulers (SCH0/SCH1) per memory channel,
+providing logically independent command and data paths.
 
+Do not reuse the spr_uncore_imc[] configuration for these CPUs.
+Instead, introduce a dedicated gnr_uncore_imc[] with per-scheduler
+events, so userspace can monitor SCH0 and SCH1 independently.
+
+On these CPUs, replace cas_count_{read,write} with
+cas_count_{read,write}_sch{0,1}.  This may break existing userspace
+that relies on cas_count_{read,write}, prompting it to switch to the
+per-scheduler events, as the legacy event reports only partial
+traffic (SCH0).
+
+Fixes: 632c4bf6d007 ("perf/x86/intel/uncore: Support Granite Rapids")
+Fixes: cb4a6ccf3583 ("perf/x86/intel/uncore: Support Sierra Forest and Grand =
+Ridge")
+Reported-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
+Link: https://patch.msgid.link/20260210005225.20311-1-zide.chen@intel.com
 ---
- drivers/mtd/spi-nor/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/uncore_snbep.c | 28 ++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index d3f8a78efd3b..7caeb508d628 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -281,7 +281,7 @@ static ssize_t spi_nor_spimem_write_data(struct spi_nor *nor, loff_t to,
- 	if (spi_nor_spimem_bounce(nor, &op))
- 		memcpy(nor->bouncebuf, buf, op.data.nbytes);
- 
--	if (nor->dirmap.wdesc) {
-+	if (nor->dirmap.wdesc && !nor->dirmap.wdesc->nodirmap) {
- 		nbytes = spi_mem_dirmap_write(nor->dirmap.wdesc, op.addr.val,
- 					      op.data.nbytes, op.data.buf.out);
- 	} else {
--- 
-2.43.0
-
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/unc=
+ore_snbep.c
+index 5ed6e0b..0a1d081 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -6497,6 +6497,32 @@ static struct intel_uncore_type gnr_uncore_ubox =3D {
+ 	.attr_update		=3D uncore_alias_groups,
+ };
+=20
++static struct uncore_event_desc gnr_uncore_imc_events[] =3D {
++	INTEL_UNCORE_EVENT_DESC(clockticks,      "event=3D0x01,umask=3D0x00"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0,  "event=3D0x05,umask=3D0xcf"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0.unit, "MiB"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1,  "event=3D0x06,umask=3D0xcf"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1.unit, "MiB"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0, "event=3D0x05,umask=3D0xf0"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0.unit, "MiB"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1, "event=3D0x06,umask=3D0xf0"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1.unit, "MiB"),
++	{ /* end: all zeroes */ },
++};
++
++static struct intel_uncore_type gnr_uncore_imc =3D {
++	SPR_UNCORE_MMIO_COMMON_FORMAT(),
++	.name			=3D "imc",
++	.fixed_ctr_bits		=3D 48,
++	.fixed_ctr		=3D SNR_IMC_MMIO_PMON_FIXED_CTR,
++	.fixed_ctl		=3D SNR_IMC_MMIO_PMON_FIXED_CTL,
++	.event_descs		=3D gnr_uncore_imc_events,
++};
++
+ static struct intel_uncore_type gnr_uncore_pciex8 =3D {
+ 	SPR_UNCORE_PCI_COMMON_FORMAT(),
+ 	.name			=3D "pciex8",
+@@ -6544,7 +6570,7 @@ static struct intel_uncore_type *gnr_uncores[UNCORE_GNR=
+_NUM_UNCORE_TYPES] =3D {
+ 	NULL,
+ 	&spr_uncore_pcu,
+ 	&gnr_uncore_ubox,
+-	&spr_uncore_imc,
++	&gnr_uncore_imc,
+ 	NULL,
+ 	&gnr_uncore_upi,
+ 	NULL,
 
