@@ -1,301 +1,247 @@
-Return-Path: <stable+bounces-217828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SO/XLF26nGlHKAQAu9opvQ
-	(envelope-from <stable+bounces-217828-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 21:36:45 +0100
+	id 0HgTEoK6nGlHKAQAu9opvQ
+	(envelope-from <stable+bounces-217829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 21:37:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D86B617CFCD
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 21:36:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DCF17CFF4
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 21:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3C9C3056D9C
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 20:33:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4EB7A30D63A4
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 20:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19918344DB5;
-	Mon, 23 Feb 2026 20:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314C61BC46;
+	Mon, 23 Feb 2026 20:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jyc3CEhk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTDwjTaY"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7409369979
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 20:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771878831; cv=fail; b=ud+TukpAOcx+5feTk3+eAIgRVddzrmQe7iCE9vmMzfan/NzwitWGMa9tpzhocrtcmV03k+AvITGx4uvr0FXwv7W2yxEH7NHQRxHG5EGJsjixED0Q946RsL1lqhPMQTayRcXb0yqMaAw8woHNyCzOJDZsZCEPP8H1vz9oUpiCW/M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771878831; c=relaxed/simple;
-	bh=gb+qU7XX60mbg6mJmedUaEkeOozcTpsstZrZEvJI04U=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=EVOr2WB8yi7apu5dzVEhCurwCeOHWu1LODG4ikbyVd0zaNuiVkMjmZNfD6TiCiKXQhjG2T4k/J71dk9GElRxGeSKBY6iy+WYzdlpFMId8iXpFUAobeavRLYtfLSdq+veTwAkFcthSIjY/UT9aUxEMGePiHS+qKFYCee3IRWEkz8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jyc3CEhk; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771878830; x=1803414830;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=gb+qU7XX60mbg6mJmedUaEkeOozcTpsstZrZEvJI04U=;
-  b=Jyc3CEhk0Tx2Yla1Ns4KGCVz0NhXbYqo4CEZS4uYsh0Kn2Bi0hoKO9um
-   tqJXgO2VYuw3yNq/CngxsCqGgtCi/VEqcABInBXO/NKx9+FHhAZig/ihh
-   VuhZ0V0HTqUbyjQPYKadNYFndX7q+XmN00SPsrnEmPE3ecEsTNg3vO7gc
-   R+j4RbapOWn00gBRkfS7ES9D388ErshseK9Ze4toUdXNNXeUNhawFsxMB
-   ByVe4sS6UeqB1qkO09XdB/4aWV8xeq4lZJ71sBDaLUUdXwaOPmevBqR+z
-   vgP5Km7KTMIlKFHGayAVl9z+APD9tc9ADPeA3PgCu8T2mVdNRKCGbfwER
-   w==;
-X-CSE-ConnectionGUID: BmkpFD94TJGeHIcAJtFZQQ==
-X-CSE-MsgGUID: K3Mni/OjToSuErCzbqajsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72950885"
-X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; 
-   d="scan'208";a="72950885"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 12:33:49 -0800
-X-CSE-ConnectionGUID: qWBbl18VTUmBIlXOC+4n+Q==
-X-CSE-MsgGUID: eAmcY++qQCSaAD18Y0ftCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; 
-   d="scan'208";a="214902829"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 12:33:49 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 23 Feb 2026 12:33:48 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Mon, 23 Feb 2026 12:33:48 -0800
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.11) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 23 Feb 2026 12:33:48 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y1JZltHR8OQtmUj+SylCIp9/VCFlbfaWmqPMkAn7aqGu8rFrxf3hB3NHyEbvtuHM1BoCvkFlglbpTEA6LjJSkwO6hnEhnbjSQITQL44mFJIXIf3pigQyftCR+Kkem7f6ouURPVotNK9unrl6G6fvZRlGCxKlSYWStVglG136x06l8SinxD9c6r0wOO6gnphs0h2sQSMFwi4aUiliAVHS+J4mXNEMzRwkjftkqj0ZlEFicHaC9nMVHqxat0hpAJoANpmLwW0Tfey33/6hN9ld7gHpkZLao9ym8B04ZyEGtQ4CzTswMYB99YVfhEhWJx9BgBTTQ5pDVJNxQi1++j3Bgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jE8OpcvAIRpMndAlkjQZW0GymRrEl5npjrMHK8dS7A8=;
- b=Hj+VS0xtVhf8N4i4QyzsaaHHCnsgbJh3I/VU9CZq7dTNAXk9E3mXL+mgqoYa0aJOanj34cdi8a4CUhysYU0xJDErZa5Td7+mEbEsvsqB1yJcWym2kIPtljyoCnK4LmuwHP1EctyCz5i22Byna5Eb/QKXzO4p8yPKFYv8n94Zz6ZlLHf8L26qwb7WxEAWkdS3Om67afqXvjzKJpZFItCi1Vk4XhiY878Lad6nUQmFkB/2QGa2P0jf7GcC3JA/CliR99pWoqhubIw73zkDYEu3XfK+43LpHvB2rtRpztBflGni6OpcWoJEn1DSecFhM0vfrnKEP7X7d9owPMddvrlIuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM4PR11MB6360.namprd11.prod.outlook.com (2603:10b6:8:bd::12) by
- PH3PPF5AF05F6D9.namprd11.prod.outlook.com (2603:10b6:518:1::d24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Mon, 23 Feb
- 2026 20:33:45 +0000
-Received: from DM4PR11MB6360.namprd11.prod.outlook.com
- ([fe80::22d9:ae03:5db1:680]) by DM4PR11MB6360.namprd11.prod.outlook.com
- ([fe80::22d9:ae03:5db1:680%5]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
- 20:33:44 +0000
-From: "Shankar, Uma" <uma.shankar@intel.com>
-To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
-CC: "contact@emersion.fr" <contact@emersion.fr>, "alex.hung@amd.com"
-	<alex.hung@amd.com>, "harry.wentland@amd.com" <harry.wentland@amd.com>,
-	"daniels@collabora.com" <daniels@collabora.com>, "mwen@igalia.com"
-	<mwen@igalia.com>, "sebastian.wick@redhat.com" <sebastian.wick@redhat.com>,
-	"ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
-	"Nikula, Jani" <jani.nikula@intel.com>, "louis.chauvet@bootlin.com"
-	<louis.chauvet@bootlin.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH 1/2] drm/colorop: Preserve bypass value in
- duplicate_state()
-Thread-Topic: [PATCH 1/2] drm/colorop: Preserve bypass value in
- duplicate_state()
-Thread-Index: AQHcoKdZieIlGOLH5EC+oZWb/6TKNLWQxccw
-Date: Mon, 23 Feb 2026 20:33:44 +0000
-Message-ID: <DM4PR11MB63601E519B7477B12642B51EF477A@DM4PR11MB6360.namprd11.prod.outlook.com>
-References: <20260218065713.326417-1-chaitanya.kumar.borah@intel.com>
- <20260218065713.326417-2-chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20260218065713.326417-2-chaitanya.kumar.borah@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB6360:EE_|PH3PPF5AF05F6D9:EE_
-x-ms-office365-filtering-correlation-id: 2f77cd20-7171-4a69-3062-08de731ad6fd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014|7053199007|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?mgriBisHZGTfgKBpNmtauzHaB/GfzIj+L20klmws1Va/EPWhp9B/ZVZfqE/w?=
- =?us-ascii?Q?T52PU8AV+dyECFnTyDvzv29a96mtHMlSLnmuAKKPD9tm53zy/DD/sfVWqhB7?=
- =?us-ascii?Q?ZPou4E6WxLIKchjY6t1XyQZ1+Y0xRbnT/aGd+JbVFpw8DoOPju/QKNdmhF0H?=
- =?us-ascii?Q?WXVx0bdmPA3TnkPJll3p0S+7C3anj37cyjHhbiIVBC9zN/g6YeSkqZP9Ps9F?=
- =?us-ascii?Q?6ILHrjbRX6Grb2VEopGjZPkXsRPVCdytDhxQHJEW3vPbVYFTCAdcj3H5dVCW?=
- =?us-ascii?Q?CJzyJIcnE5Jf0WMnxmw0HtWrhGdQY8KrHdzBjdweoGS8xZEVS0GHBGOC9cFE?=
- =?us-ascii?Q?V+vVVF2J815hQoVuEWtJTl8uD+e9Sy2bIcUXkb4GWAOEMzLreEvp5YsrS7dS?=
- =?us-ascii?Q?zlVgsd1PrT0+fiYHTR8JJKewkZRvMXUepdB5Dzmu9CSdTjDkKiaupyNkYXaC?=
- =?us-ascii?Q?NibnbCrh2rMZlhDV/8iouh37IvUYwyL7GrTRfR4INl3QAVO4ujl9LxEM7deN?=
- =?us-ascii?Q?vgMndtXrIvSDOPT0N+zgViDOIhJh7vBtb4neHXuEhOnkpgEX6WP4e8g4V+wj?=
- =?us-ascii?Q?OtDARvTTzB4GomXmKv+yhojdwZiVswgzbdQYK2DojC0fHj21slte2d3GitMI?=
- =?us-ascii?Q?4QsMAKv6El/AY4zjHoeVHIDdW2/Ifuks0CaoV7vCnsQNWRmbDnw46nKJWYTY?=
- =?us-ascii?Q?3ddY7l0AP4QUamc6Q5DHtcbAPTu0uXo6aIWNusuTPsIb2Us/PnqXRAJh5t/r?=
- =?us-ascii?Q?KrL4snkxwnNjA8beicLX8EcaPrRt0en1j0wAqo0FOfPoV6UEz4zL3OgzE4Hr?=
- =?us-ascii?Q?Gl/PFp/meLwvwrMBAcQDbXxN5TSNfGK8rJWsFw3MziHRLzqNuFcYF0pCDfY9?=
- =?us-ascii?Q?zK0XSrtn4dUVWZ5lZUvP002n195CG2wtkmbxZtNpd6yTMeFau2C8D79PSfPf?=
- =?us-ascii?Q?aWLSzgYej/D7C8sI8bb23wbpLc9XsBP3EM/ihxkQByUFOQPZNHbYPRzBNSBm?=
- =?us-ascii?Q?94qoHHFLaDLi5dEf8AF9RweP/icuIdU6txD5hrDQUgyVQ4CEa3ncOgpNaqFG?=
- =?us-ascii?Q?5bSjNpav4J2/nKEKQGDdIFLvMoQi4cmkNDDPsUbNZZJ/MX2vZD0BXSjTAdNM?=
- =?us-ascii?Q?LprTmxGO0bsgiV79PPwBqqbumwh2/gZ+WR1j7BumUw75aMhtv/RVt3zIhfsu?=
- =?us-ascii?Q?Qf/tfXVImh36iGZXtRG47bP+UnDuUgDP0ISFTZOE8VZm0KDNVTOSAJj0hUZj?=
- =?us-ascii?Q?BYQ0+4aS3TckD8V67L6S7Io7GYmB888lUjzdGmw2qggoCbvlJUtHmkP9KJvh?=
- =?us-ascii?Q?XTc3MkpFz0Fqv251cA2u1XSCSHFSy2zM3YUeAO8CwmnpvbDqhCZW4R/KUcTK?=
- =?us-ascii?Q?lkU2EF+6sWzpmtcIzG/dl3viPGzFu3KeCvQqkHEnjuJKpv0utFdrhOKqRTzQ?=
- =?us-ascii?Q?M0tMmrGyjlJGxoNmLXiaPsAF2naqTnxIuh9+EXtbOwh0EBGpJ4Z6UiSTxn+A?=
- =?us-ascii?Q?Rs10tKOPOtwDj0kRN+O1IqfMPOCy0ZC7gZXfE/clV2D0cMXzxMNxe5kKU7uC?=
- =?us-ascii?Q?EmX1O56XvjzLDLG1V4qP3RSLOvYr0Ak8t6fJIiifxm3hvAh+PfxaU2+XdCBq?=
- =?us-ascii?Q?2pGthOx72UWdidzVJttoWvE=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6360.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(7053199007)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?H8OZ6N5R42a/fKRcOBdo5FmvtHhUEEP5noPqrOFK1A0CShMnbaYmgbpcKu7l?=
- =?us-ascii?Q?NXYHm1lkTBU9dOlWo0ZOga29tcgruFTO/Ail9TptbJCm3tktXJpFYVQwtHQ0?=
- =?us-ascii?Q?dkbuMV3IDb/6Vyo3Uqbm20i0BkT9/Uzaw769gFh7vr0uB5Zp9xDknv6QdTou?=
- =?us-ascii?Q?4O1+4B5wrwZoY+0Q9ryZ9NnuDEypvQGlQUwkHW5jiDSv7o8g5+AVes3vzYtD?=
- =?us-ascii?Q?j9z6v8cu38s60PwRixuxkp25D8EOoBPu5xOf5Z6XSLC/Ci4lefeNOxvFQx3b?=
- =?us-ascii?Q?YLXnB+j73InprJc335U+/OOgkA1GoFugYAmLPOG7bJBQShI3bisyfwyFQ8Hs?=
- =?us-ascii?Q?e9cpqAsfV1Q+FzP6/mQvvA9F1c3kbUxhbq9003fJMtfy9X6CQYq8PYd5g7ei?=
- =?us-ascii?Q?pO8lB49iqluUeaLs4WVCSbD1iNUf24ikk2y/GN3gC3VQFV5udD3Fg6Q8WWIe?=
- =?us-ascii?Q?eKhhIDCdgXnD0zOTGKVnoMWjhdyYotEiwl6PeVX8b3LnlAErH8xgB9Whm2T7?=
- =?us-ascii?Q?65yfuhbZkjI0IAT9WFeSW3tln3ksaT69+qF+IryjfeYLOg3D58fcetEPWWSi?=
- =?us-ascii?Q?rT/sCnHT8ZcTVu8XyjcXnDaDEQ+rOAoCsZy5z50vKO4eiqcFeAggPU6tZldp?=
- =?us-ascii?Q?tuJkZZPyZXr13BU6OqLKiu5Hm5WX2IxTv05Z7R9Drf5kktaTMi3hKoNjutIh?=
- =?us-ascii?Q?Ooyy5iNmCgDDlG98C0wzAgdiiWTkazMxtUGcqboQRmjlyftQ8nmA9FQnDE1h?=
- =?us-ascii?Q?vKT8hg+TJ2bV/FSHgfzQSnY2E6ETJ1i1NG2bW0ayj7GKsqu+xWLuZDvsu2yd?=
- =?us-ascii?Q?2bJcFMov+3ad2gCG2OkaPz3iMrAWWuixIT28o86P6Zt50sqcEu9/30JRqy9k?=
- =?us-ascii?Q?yKRNhLm/qBilmALJz9ogXcNwrGZ+kC6nsKuKith1/nOgmnnRueDRPzL0miaa?=
- =?us-ascii?Q?9/FT3OWKXNS1aR5HTRI0D/g2v1nKffTL4tKJHhwPINH/Q2wHoUF6fvAeLFaI?=
- =?us-ascii?Q?VuqEapveoSmSkkZxvkLSMMsi7bf8tE+b0a1sd2m//vtGIPUcgqdoCnf+Ea9W?=
- =?us-ascii?Q?0Q5ZUzh0wDllf1H+2YB95VUrHPq7bVHo4/tlt2k6ifmhFE3vJYb2+kmF/+Y5?=
- =?us-ascii?Q?jsG/psGmqR/fGRPPgCtfGYjFg0yducWbHAlvex2EehhIpqgvObFO7kISzGok?=
- =?us-ascii?Q?q7jOAk3q4lTMNL/BVitZRW7/JnVYWrIqV9YrwqwrjGW4Z0EELujWUKklc1JH?=
- =?us-ascii?Q?CtnKjDrs8MCbhJMobiLlaC24NWhmFxiOQXSi+ewX04+1HxgW4FHCJsVmn1tm?=
- =?us-ascii?Q?HAEvymhEKPuZSQ9LMDgj9dqfSJOesap/kc4Lwaxcj/gUiuKKWYnBnY9917V0?=
- =?us-ascii?Q?HjoUt1dTido13YLaR7oYogbnkPILa8i1jKw8zL9sWvH1gOQ/IMHA05CoMW2l?=
- =?us-ascii?Q?OZW6R02sEAiUB4Bdjt7TAWRXqMQcMMf4U/bnI31lh5B+xonb9FH1l5eA01Go?=
- =?us-ascii?Q?xeh6a6ZWwEArkwdCM/EO2vCD14K3ML7k73etew2JYFLPLx8h+6Z0o+udSuKQ?=
- =?us-ascii?Q?uTbAXnZ3GHLorNM+okTxxFBK8xbkI4Jct+Pkw06jLQXXlP02vxHaX+odiRIa?=
- =?us-ascii?Q?sePJtdvqoFjHPDxGldRYjiEz5ppgI3wzRP3JDilypcfJs2yxfdKDHAvqY45G?=
- =?us-ascii?Q?2O8397tAfWvWRhFFJ0+1fzIYo1I0RUo6gIZCHAndKXARHHrx4XR8YvLeYEeh?=
- =?us-ascii?Q?KMY1HTBZKA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D7A24C076;
+	Mon, 23 Feb 2026 20:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771878908; cv=none; b=FjLYFOjji/RL9MgFbwFjG9gSk4eZgPxDfPYIRclkV7GFR6s7AYL4kwnVb4GbMqSIZzFg+7jPqkFsB0LA1azFKZPqla2L5KebTMGlmzo23nhEFs40ZxdxVjHqp5/LfwoxmwUSn/E0bW3CYlv8cAypv4wDX23A7KAXyuWUHts62rM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771878908; c=relaxed/simple;
+	bh=rOqSdRScNFD29t+Pk6i05NgN3EhYNGzQOGIkyT1MpKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jYzKRlq0i6RTAcZWRJ/gh5guhsQAAHNwtmSD2HaDjJnQWZNrc9ffd/FSG3ng0UdV7EDmZur292ABGwXhL39XCTzvTlv65XKm2SZdVp0CyUVRgTTPeHk9CNx76+SF+ID3n1iDct48+PmblNOIufXKnYT/HuY2nh+1sJ24RccnJiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTDwjTaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382F5C19421;
+	Mon, 23 Feb 2026 20:35:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771878907;
+	bh=rOqSdRScNFD29t+Pk6i05NgN3EhYNGzQOGIkyT1MpKs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YTDwjTaY1ti8LJ0EyGob64e68Sxmt9wuBPSpSfdDHG/n4Yi3vIFcdkGd97DTKZ9vz
+	 7+M1I7ZjM+0uT9ucuRrloNrhMqm8bvItgf/mEetZB4HoeSe2y+UWW+Ua7R51G4lccc
+	 SAVl2nZEtCfFyegsO3i7K2/vdag/R2lWNo91l0tdQIHylgpf/OTdTb8TnuPCcfhMde
+	 gLdkOtLztpS3OIQ1GfBAIcHtiLd74xSRvZ3UtF531uwv1VNEt+70vQOCbx4FiFR/kL
+	 HCn7f+bsmD3Pzh5tWy48AlxIln8ea0s38uN05xG057Psk/9XDIW04bLE409hldciKs
+	 LQ6WF5NQlBJqQ==
+Date: Mon, 23 Feb 2026 14:35:04 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: manivannan.sadhasivam@oss.qualcomm.com
+Cc: Konrad Dybcio <konradybcio@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Abel Vesa <abelvesa@kernel.org>, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] soc: qcom: ice: Fix race between qcom_ice_probe()
+ and of_qcom_ice_get()
+Message-ID: <h2uhrsjlvovjcj7k2ckpkgrhpuwm6biun4ueq7kyzcm4hqcsjr@y3iiqx2vo6s2>
+References: <20260223-qcom-ice-fix-v3-0-6ca5846329f7@oss.qualcomm.com>
+ <20260223-qcom-ice-fix-v3-1-6ca5846329f7@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6360.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f77cd20-7171-4a69-3062-08de731ad6fd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Feb 2026 20:33:44.6016
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IBNPOslck1kS/BygZlQ8C3Yxf43B/YsE/c6BzlPL9cHLcNHMkdaWiez70+I7dYQ8+gC5RRbjYdbUK+e6ZRKj2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF5AF05F6D9
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260223-qcom-ice-fix-v3-1-6ca5846329f7@oss.qualcomm.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217828-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[uma.shankar@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-217829-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andersson@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: D86B617CFCD
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: C4DCF17CFF4
 X-Rspamd-Action: no action
 
-
-
-> -----Original Message-----
-> From: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>
-> Sent: Wednesday, February 18, 2026 12:27 PM
-> To: dri-devel@lists.freedesktop.org; intel-gfx@lists.freedesktop.org; int=
-el-
-> xe@lists.freedesktop.org
-> Cc: contact@emersion.fr; alex.hung@amd.com; harry.wentland@amd.com;
-> daniels@collabora.com; mwen@igalia.com; sebastian.wick@redhat.com;
-> Shankar, Uma <uma.shankar@intel.com>; ville.syrjala@linux.intel.com;
-> maarten.lankhorst@linux.intel.com; Nikula, Jani <jani.nikula@intel.com>;
-> louis.chauvet@bootlin.com; stable@vger.kernel.org; Borah, Chaitanya Kumar
-> <chaitanya.kumar.borah@intel.com>
-> Subject: [PATCH 1/2] drm/colorop: Preserve bypass value in duplicate_stat=
-e()
->=20
-> __drm_atomic_helper_colorop_duplicate_state() unconditionally sets state-
-> >bypass =3D true after copying the existing state.
->=20
-> This override causes the new atomic state to no longer reflect the curren=
-tly
-> committed hardware state. Since the bypass property directly controls whe=
-ther the
-> colorop is active in hardware, resetting it to true can inadvertently dis=
-able an
-> active colorop during a subsequent commit, particularly for internal driv=
-er commits
-> where userspace does not touch the property.
->=20
-> Drop the unconditional assignment and preserve the duplicated bypass valu=
-e.
-
-Looks Good to me.
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-
-> Fixes: 8c5ea1745f4c ("drm/colorop: Add BYPASS property")
-> Cc: <stable@vger.kernel.org> #v6.19+
-> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+On Mon, Feb 23, 2026 at 01:32:52PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> 
+> The current platform driver design causes probe ordering races with
+> consumers (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE
+> probe fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops
+> with -EPROBE_DEFER, leaving consumers non-functional even when ICE should
+> be gracefully disabled. devm_of_qcom_ice_get() doesn't know if the ICE
+> driver probe has failed due to above reasons or it is waiting for the SCM
+> driver.
+> 
+> Moreover, there is no devlink dependency between ICE and consumer drivers
+> as 'qcom,ice' is not considered as a DT 'supplier'. So the consumer drivers
+> have no idea of when the ICE driver is going to probe.
+> 
+> To address these issues, introduce a global ice_handle to store the valid
+> ICE handle pointer, and set during successful ICE driver probe. On probe
+> failure, set it to an error pointer and propagate the error from
+> of_qcom_ice_get().
+> 
+> Additionally, add a global ice_mutex to synchronize qcom_ice_probe() and
+> of_qcom_ice_get().
+> 
+> Note that this change only fixes the standalone ICE DT node bindings and
+> not the ones with 'ice' range embedded in the consumer nodes, where there
+> is no issue.
+> 
+> Cc: <stable@vger.kernel.org> # 6.4
+> Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
+> Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 > ---
->  drivers/gpu/drm/drm_colorop.c | 2 --
->  1 file changed, 2 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/drm_colorop.c b/drivers/gpu/drm/drm_colorop.=
-c index
-> aa19de769eb2..5037efcc3497 100644
-> --- a/drivers/gpu/drm/drm_colorop.c
-> +++ b/drivers/gpu/drm/drm_colorop.c
-> @@ -466,8 +466,6 @@ static void
-> __drm_atomic_helper_colorop_duplicate_state(struct drm_colorop *colo
->=20
->  	if (state->data)
->  		drm_property_blob_get(state->data);
-> -
-> -	state->bypass =3D true;
->  }
->=20
->  struct drm_colorop_state *
-> --
-> 2.25.1
+>  drivers/soc/qcom/ice.c | 44 +++++++++++++++++++++++++++-----------------
+>  1 file changed, 27 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
+> index b203bc685cad..3c3c189e24f9 100644
+> --- a/drivers/soc/qcom/ice.c
+> +++ b/drivers/soc/qcom/ice.c
+> @@ -113,6 +113,9 @@ struct qcom_ice {
+>  	u8 hwkm_version;
+>  };
+>  
+> +static DEFINE_MUTEX(ice_mutex);
+> +static struct qcom_ice *ice_handle;
 
+Did we get confirmation that in the UFS + SDCC case, there's only a
+single ICE instance per SoC?
+
+Regards,
+Bjorn
+
+> +
+>  static bool qcom_ice_check_supported(struct qcom_ice *ice)
+>  {
+>  	u32 regval = qcom_ice_readl(ice, QCOM_ICE_REG_VERSION);
+> @@ -608,7 +611,6 @@ static struct qcom_ice *qcom_ice_create(struct device *dev,
+>  static struct qcom_ice *of_qcom_ice_get(struct device *dev)
+>  {
+>  	struct platform_device *pdev = to_platform_device(dev);
+> -	struct qcom_ice *ice;
+>  	struct resource *res;
+>  	void __iomem *base;
+>  	struct device_link *link;
+> @@ -631,6 +633,22 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
+>  		return qcom_ice_create(&pdev->dev, base);
+>  	}
+>  
+> +	guard(mutex)(&ice_mutex);
+> +
+> +	/*
+> +	 * If ice_handle is NULL, then it means the ICE driver is not probed
+> +	 * yet. So return -EPROBE_DEFER to let the client try later.
+> +	 */
+> +	if (!ice_handle)
+> +		return ERR_PTR(-EPROBE_DEFER);
+> +
+> +	/*
+> +	 * If ice_handle has error code, then it means the ICE driver has probe
+> +	 * failed. So return the handle for the client to digest it.
+> +	 */
+> +	if (IS_ERR(ice_handle))
+> +		return ice_handle;
+> +
+>  	/*
+>  	 * If the consumer node does not provider an 'ice' reg range
+>  	 * (legacy DT binding), then it must at least provide a phandle
+> @@ -647,24 +665,16 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
+>  		return ERR_PTR(-EPROBE_DEFER);
+>  	}
+>  
+> -	ice = platform_get_drvdata(pdev);
+> -	if (!ice) {
+> -		dev_err(dev, "Cannot get ice instance from %s\n",
+> -			dev_name(&pdev->dev));
+> -		platform_device_put(pdev);
+> -		return ERR_PTR(-EPROBE_DEFER);
+> -	}
+> -
+>  	link = device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_SUPPLIER);
+>  	if (!link) {
+>  		dev_err(&pdev->dev,
+>  			"Failed to create device link to consumer %s\n",
+>  			dev_name(dev));
+>  		platform_device_put(pdev);
+> -		ice = ERR_PTR(-EINVAL);
+> +		return ERR_PTR(-EINVAL);
+>  	}
+>  
+> -	return ice;
+> +	return ice_handle;
+>  }
+>  
+>  static void qcom_ice_put(const struct qcom_ice *ice)
+> @@ -716,20 +726,20 @@ EXPORT_SYMBOL_GPL(devm_of_qcom_ice_get);
+>  
+>  static int qcom_ice_probe(struct platform_device *pdev)
+>  {
+> -	struct qcom_ice *engine;
+>  	void __iomem *base;
+>  
+> +	guard(mutex)(&ice_mutex);
+> +
+>  	base = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(base)) {
+>  		dev_warn(&pdev->dev, "ICE registers not found\n");
+> +		ice_handle = base;
+>  		return PTR_ERR(base);
+>  	}
+>  
+> -	engine = qcom_ice_create(&pdev->dev, base);
+> -	if (IS_ERR(engine))
+> -		return PTR_ERR(engine);
+> -
+> -	platform_set_drvdata(pdev, engine);
+> +	ice_handle = qcom_ice_create(&pdev->dev, base);
+> +	if (IS_ERR(ice_handle))
+> +		return PTR_ERR(ice_handle);
+>  
+>  	return 0;
+>  }
+> 
+> -- 
+> 2.51.0
+> 
+> 
 
