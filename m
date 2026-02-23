@@ -1,242 +1,322 @@
-Return-Path: <stable+bounces-217772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPcALYtanGmzEgQAu9opvQ
-	(envelope-from <stable+bounces-217772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 14:47:55 +0100
+	id EDAXMC1anGmzEgQAu9opvQ
+	(envelope-from <stable+bounces-217773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 14:46:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E071773C0
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 14:47:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D904177339
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 14:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81E4330AF043
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:42:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A17853007499
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACE522B8B6;
-	Mon, 23 Feb 2026 13:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E77A24886A;
+	Mon, 23 Feb 2026 13:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ORS84013"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PhezQN2L"
 X-Original-To: stable@vger.kernel.org
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012058.outbound.protection.outlook.com [52.101.48.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AF3226D02
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 13:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771854133; cv=fail; b=naExsBN+eI8gbjl6zLQIzQhmY2iWGhGh/bPxYT8lIJMjR+2u5TE3D1EdgF5KH/9SIQPtY1toZPxBLqT2ciMzb4MhgbtXuMjtSm5r+7f+4TyNS0oPItrwooO5r3awWmQZ5FMWmVM3G5jFtJ67iBxhRWqYW7o+S5YlcNB1ZIXGfLs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771854133; c=relaxed/simple;
-	bh=vi3dPIUJ+LLa/hMw1yB11iMZz2HFbBnvwYX0eWherr4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cOHzI+x8IafUFEpCdH84RbDI2sa8fdmgOoSFL3P01wjAFH8A638DzeXnYI9z6DUZetu3Lpq7n2qsqUQ30OaIMBja//z6YDMoFnMYnM4iBeHiGlWuJvdkmlfWjVY8urbX/ULDHWqNXM1IkxJw7ERTsiL2waZKY1XywN4zW/pxqok=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ORS84013; arc=fail smtp.client-ip=52.101.48.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LwOH/S7/f8dk/oUOZvCi5msIwQwmP9YruPlDGqzfi7KJJ1ghp2BjvwMv8v46LSNO1bIpIO8ZIaBeA9XfXwBLlFN4Xa1RE+Fb/Zdi00I7XPTWFFRe39R1h6gW3CDM+/E4PSDVy7XY8Sx7eOf9chfLqEPxsuPXQyTvs/USWVr/O0iYgMmfcC3+2qyeyucbwp4DzJbJLHJhqjKM7iQcJhhMkxzi6Ro4ygWRVVeHJIvCDQsbJVnDPYB2DdjBX1BImPbbJM5hE26NJ/8n4Y9U5u2WxkuQXKG8rLX98xaweHYgoE2N7um3z56GulZ77+1bli5v0NnmWtEtME3Bsm+V+tyxmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vi3dPIUJ+LLa/hMw1yB11iMZz2HFbBnvwYX0eWherr4=;
- b=WPy+0ISYiWpGy1gDPhKl2LR60hu8hECVrev/lL97NZktDTy8lAEOKSqoUErdVuJnz7SqzeqRSLt2/Fwd7U25iJA8gK55iFrFIkPVw/kn+A2VmLnBgdVEvK/3+5sDsYqInZdAjlbKDu1pfVe8DHxNItWygsPwDe4VnLuXPiiWEJ8Dpb6pXBK4qWOZ3J8QlwWu6nPZk+XHnkn64ub2yBKwefFl6iYcmy80r787v6MpLd6s0X/lFHBIw67HSz4utvdcJf1Z95/e9NUqt85GSaGy+jtU9LgtaCvT25wRdJSq6TI+hD5eydHf3t8oJUxCT1NBw4omRzf0aDhhilLZPIwuFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vi3dPIUJ+LLa/hMw1yB11iMZz2HFbBnvwYX0eWherr4=;
- b=ORS840133xEtJ8+mb5dsMTGsIQPYpE4fXQti7d+pLw2i+H6oSEAHmRm2trlMRIlktUedd4P5TQ+6q0A7af3oHJUCewShDwPcDpXYKnPW89bPc+hfwUQbVjF61If16pKBmgaulNdbUK/bb9jF/2QhWIPxEOCgE0MMtt4A4v8w1nlhhBWXIKrIAOadkVlCATEuI0ZLwxIUXfFtVbyXz8a7Kcz6D1I91EGlMn+Nd7mredRzOUz9ZSXwMfea99vzuwyouHmyuszYGBaM6DIajkP9VmhlJDusZ8k6XF9imohg2mtXGBmvKfAbpQqUi4q23/U0ia5H5DnNuAvtLy2SYOUISA==
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- MW4PR12MB6706.namprd12.prod.outlook.com (2603:10b6:303:1e2::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Mon, 23 Feb
- 2026 13:42:06 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
- 13:42:04 +0000
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-CC: Koen Koning <koen.koning@linux.intel.com>, Greg KH
-	<gregkh@linuxfoundation.org>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>, "intel-xe@lists.freedesktop.org"
-	<intel-xe@lists.freedesktop.org>, Matthew Auld <matthew.auld@intel.com>, Dave
- Airlie <airlied@redhat.com>, Peter Senna Tschudin
-	<peter.senna@linux.intel.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH v3 1/3] gpu/buddy: fix module_init() usage
-Thread-Topic: [PATCH v3 1/3] gpu/buddy: fix module_init() usage
-Thread-Index:
- AQHcoeg0w7BvIkwG20iu+6ObT9zbqLWLGlAAgABGA4CAAD0cAIABCRgAgAJ+SYCAAQN1gIAAALiAgAAnl0E=
-Date: Mon, 23 Feb 2026 13:42:04 +0000
-Message-ID: <B4DB7124-32EE-436A-8447-679015162B87@nvidia.com>
-References: <DGJPMOESHINC.1NGNT8LLY8DKW@kernel.org>
- <1771594440.99434@nvidia.com> <2026022156-citizen-shredding-5d6d@gregkh>
- <cdc31857-c9a0-4d05-a243-780dc9819cb7@nvidia.com>
- <b45a50ce-de96-42ee-90c1-0a6cd7a78cc0@linux.intel.com>
- <DGMAUQLZGPZB.FWELZM9GYP0Z@kernel.org>
-In-Reply-To: <DGMAUQLZGPZB.FWELZM9GYP0Z@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR12MB6486:EE_|MW4PR12MB6706:EE_
-x-ms-office365-filtering-correlation-id: f46d92df-33b3-4010-b410-08de72e154d0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?SmFIZTkrQnUyZ2txclJScnM2NEdrRlJNUkZBd1pXWVdjSTJ6N3FZRU81VmJL?=
- =?utf-8?B?YVBBNzVJQTJkelJVVjRJQjczajMwbUw1MzNrWm1mQXhzbzdSRHczV3J5cEgw?=
- =?utf-8?B?c05GZElLUXZHNmtEY0djVHBPT2hLcmp5dlpkbWc5MXpLSTZEb1REOGRoVGNY?=
- =?utf-8?B?ZDBiZFFTTWJ6UkJ3NEF3R2laUXVCMUh2NUhRbkEvcHM1MFM0M3ZXQ1NlNm5o?=
- =?utf-8?B?WjFpKzBBT2phU2NlbE5GVnBPOENMbVpySW45dlduWDRFekVaUVphS0NpQ0d1?=
- =?utf-8?B?cHlFQmhTTFNpUjlqTys0ZkZRNU9zYysxY3Q2STNId3o1Y0VENWlnS0kwdkdo?=
- =?utf-8?B?eWpXVkdvTFZnZVhBV2V1a2tpNUI1cFY4UGhOUjJBS1ZldGpuNTFyQ0hpakpz?=
- =?utf-8?B?V0dTbm9MNDhXYW14WmJETTh2QW01MlJqQWpVd0xlczU3eDE5RHUyL1FLWkti?=
- =?utf-8?B?b2sybEJkdC9iYXRLWXduYTcraGdtZlZGdnV3Q2JFajlLVHZwNzV3MWFmSXFk?=
- =?utf-8?B?UnV2RkdrUVZkL0dncklOQVVQbTZBdXZRek5HMjBHd25lYzVEK3RSK1RFcGND?=
- =?utf-8?B?RlBZd1FuNHY3cWV0Y0Q1WVI0Z1pNVnd5bmgzSXFYZElGTGFYTW5RU283VDIx?=
- =?utf-8?B?R3liQzlTeW5Nb3dZYlVadkg3QTNObHZSS2JjTlNyTGFZUDJWZjMvb2c0cmJl?=
- =?utf-8?B?UTIzVXlJNng1Y1B2Nzc5SmNnY3ovemJIQlZNd3VrZDNlY0tpSU96NC94Njhi?=
- =?utf-8?B?UzVUa2QrQ2hOamlzaXFSMmFrT2h4TGRpYXgwb0ZxTUpqN3VNblUwbjFHZDNz?=
- =?utf-8?B?bFFTTkRVTUtXYmNjSi9OSFlWd0dDRWMxQ1p0d2YzZGJ4anVHbzVpL1BpcEto?=
- =?utf-8?B?aG92Y2lsbU9mcWw0WEFYdGRVQ2o4T3VyZm9GWVNhRi9mM2lCNjVTZE8xOGRn?=
- =?utf-8?B?MFFsekY2b0tyZVpQaVhFMU9SQ01UVnFXdnpvVkIyNDViVjcyUkoxYzNZTnpT?=
- =?utf-8?B?ZklkTG8xQlBXcXZxY0krUlB5R3EzejlUb3hrSDdqKzNPMWNQN2VuclhQSGk1?=
- =?utf-8?B?NjlKbk1jck5yMEpkNG55WkZvcVNWQ1drcENUUE13dXFPbjRoaWZFNFA2WHAw?=
- =?utf-8?B?dHJWdUllK2g3ZVhRWUJIS3JETWw3RWJrZUlkOFQ1NnJ0dWFiRTl5VUVkMnVu?=
- =?utf-8?B?eFB4YTI3WVAzYkxKNzU5MjQrSngwT1dQWWkyYUZERTVJNmJrYXZsUEIvSSto?=
- =?utf-8?B?TlhqYmVkSkp2THhRYUJaZVVqQnlVVXBBbE8zUk90ajRETmgwYjdaUldJb2px?=
- =?utf-8?B?dnY3OCtVMTFQdklpTDU1eVJGSXJYUkt4RFVwSFFlb1U2Vkc4V2E2NDhJZG5T?=
- =?utf-8?B?eCt2UEEyU2ZWbGg5RndrckdOSHZITmtvUEpZY1ZJZ3FrNjlNOThodHJzZXh2?=
- =?utf-8?B?N044Sk1RRitQMFhoSU04aXNlcTI0MTFqb1lzWWFMTzlVb1B3cVJONkVYQ0sv?=
- =?utf-8?B?TTlsSk9LS3o4d3BLYUtadmFidE53c3pCT2wwUEhQNkRmWVpEUVdRTHFGK3h6?=
- =?utf-8?B?U25vRmZYbTlSaWhhUlF4R3ZHazlSSk15bUJITWFCWDUyZVZVdE50NCtrK1FS?=
- =?utf-8?B?MWRvY1lvK3krdWNVTUVsbFRQMTF6NUpZc0tmV2lFbEFzcUVkTndCcmhsSnpL?=
- =?utf-8?B?N1o5NXBPUGw3Zko1WTk4VitLZjNpcGpqMnAyVTBab3FSR2h3Q1U5blU5V0FR?=
- =?utf-8?B?ZGU3N29oYzNvQXQ1ekdacldKUmFhR0dIR1ZrMFZ6aUcwYStpNGFJWkxvT3p4?=
- =?utf-8?B?Y016NnlRNEhSNXNFckxnNGZocWZhZjQwU0dpVmdlSDVDS0JtK2h2Wm9la3pk?=
- =?utf-8?B?ZDVDMWlvcWtlQ1VZc2RFaUNYT1g0d3VXQ00ya0YvUzIxa0Qzd0RBSjhJeEp4?=
- =?utf-8?B?TWVEcjZwdFVDUVlvR1c1b0ZQRjlSUEZpQ2lyZXFYSFRVaFRKTGdJNkF2Tm1D?=
- =?utf-8?B?S1ZqRFB3UEQzd3Y2cHNiVFFDK0ZiNjkrWkxFTkxFZ0JkREZ6TjJJemxpdi8y?=
- =?utf-8?B?LzVaMTJmR01VZndNaUM0blJqdG1ESFZOOUl3NEY4KzBLSEozRlZCcXluK2xI?=
- =?utf-8?B?K3J0QjV2S2pJWDI5WDB1NGtRSUJWV294alYrMGtOZjZoSzhEeXowREVCK01L?=
- =?utf-8?Q?ALID4qu6cpIexlBnUEL3OE0=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?dEJlbk1YdFpod1RoRXZVWSt2NTlHQ3QrcEkzZW9aMEpQU2VaMEk3ditoZ3B6?=
- =?utf-8?B?U09tTmRZM0RSY3N6cVdNK1o3S0xEU3NYWVJMTThhQzhtTlRsaEJMYnlrTVRW?=
- =?utf-8?B?WHdUM2xRR3BnWTQ1YjNmbXM0ZnlSWmZWQ3NvVXhuM3h1VldrMEg0RC9pYVFT?=
- =?utf-8?B?N2ZTTUhmRlpZSEtRVk5yalVHTmFKMDJqWnliVVJaOEZHMXhyNGI4Z3hsWmVD?=
- =?utf-8?B?WWcvdXQ2K0xyaExOeTJvQ2VxUy9uOHRma29QbU1KdDlkaWU5ZTc4eGN0ZnJt?=
- =?utf-8?B?dEhob1BrbE1maUNOTm54VzN3aXZVeSs5aTlPb29HTU8ySHErZjR2cnVNVVpZ?=
- =?utf-8?B?YWZBanRFRmRremdreTdFdG9udzU4ZXRsVDdKMHRxOWJpSDl2L1pBU2xXT3JB?=
- =?utf-8?B?SElrYkRSRVVVb01HQ0dYcC9LLzJBT096YWdvZ29PdWY2MHMvalpVOGNPSTRQ?=
- =?utf-8?B?bnQ2ajVna2EzWXhzaWpRNUJsSDZQTUdBMUtPd3FSaERBTys5NmVvNDEvVXBI?=
- =?utf-8?B?TmVNbXVIelZVUys2ck5zelgyRkg3TzREdmZqU2NEYUsxN0Rodm45T05uUENG?=
- =?utf-8?B?SkV2alYzR29kNDJSYy9MWDFmejlHbmROblhQOUI3bFgwb0c5V3pKd3l5TFF1?=
- =?utf-8?B?dkFraTd5TDc5NzRzVm15MENncGR1em5BRkJyVWI0SUp3YW9kNVZjcnlsdVdG?=
- =?utf-8?B?N0VSc0w2bk1xb2NUK0Y5RXJkUUd5VllzR2lCSUdaYmZjSTJSL2I0K0ZoV291?=
- =?utf-8?B?MW9Qc3EvRkhLWHNoUmlPZUZrVGhBQUZ2YklvN0lXYnBzVHRLbTU4eUp0aHJs?=
- =?utf-8?B?K1k1dnc2U3p4Z3VxdXVuQi9JQThmbjFoWitqbUtPZGdwbVJCU1preldaZ2xk?=
- =?utf-8?B?MjdXUTZuMFdyb2NFUVYyVU4vcVMySnBFMnVLZ0wrNmF4U210a2s0YWdOSWVi?=
- =?utf-8?B?ZTRWZTBJbDkzWXlhYW1WZUxjdWpXb2hhT1h2YS9Db3JuWWFJSmp4SngwelVl?=
- =?utf-8?B?MFZ2cStBYkF3RkpPdm9PRzU3azJIQTAranorRlF6UklZRVpEMVJPcVgrbE5J?=
- =?utf-8?B?RG52MFJiYXk4bmVvSVYwcGdvR2Z6NlBWQmhhTWFmRkpibDZwWEduTElBVVdX?=
- =?utf-8?B?bzhsaWRPUVpBeU1pMHFaM0kvaHVNZkI3SlpoZUwvdnJVaDl0LzJtRzhoVEJr?=
- =?utf-8?B?a0pNclpuUUo5YnRWblYydmtZcktreFlYVktsSUZhbGRFYkV2TEhRMmJtNjNT?=
- =?utf-8?B?cm14MTUzemRYek1FcGswejE3UHRSN244M1pFakhRMEJMWXF0YXpMZ1AyL2NT?=
- =?utf-8?B?NGJOTW5tVEN4ZG5vSDQ4Q3N0aWwvLy9JVkVwUmh5UWtpb2JYckErajZFVExH?=
- =?utf-8?B?RzN1VVM5TkZGenJYRVVsYXJQQ2kya2FuZE96M0Z4RkZ3cGZ3MEFPRTV2cEFj?=
- =?utf-8?B?eWV1ckFvSHVXeWtKd2taSmR0ODRoWlBzV2lreERNZkxXcGlwRSt2a1haalRl?=
- =?utf-8?B?SXEzK1k0dk4vT0g2SklhL1JoeEY2ZGFiVWljMWJFVGwyc01jMXJYbnIvZmRE?=
- =?utf-8?B?ellzRGp0b2JoZ2RUQkZMaUd2cVNzbzZxL2lVT2lFUHZ1RlN1NDNPeFBWeTM2?=
- =?utf-8?B?YWYybGZoUS9XZGhTei9haWlLU21xb0hLdWw4aTFraW5OQXhQSktSTk13QU4y?=
- =?utf-8?B?ejB3Mm5ITW1pNzJHMFQzMExJQWZlUGdWK2VVN3VZWHhKL1VxVFdtVmdzVEFm?=
- =?utf-8?B?YjlLS0VaSWtKTm54NkdFUG52WWl5N0t2dElLME1iOUk1WkZoLzZ1ZVN3dUhD?=
- =?utf-8?B?czFQcEliQXdXWDNGeUNxZ0I4V0pnMVArcGh4THVycWF4T1RBbXZ0YjFHV3hP?=
- =?utf-8?B?WXgzb1Roa0hyWDQzektoS2ErQkJPcFNqZkM3ZWlGNXVHdUUrMFpLazdlSDZU?=
- =?utf-8?B?a0JERjZqOVNrMXJtV2RGS0tjZnR2Q045V01nTklWaGphV1FqcFM2REJrMDlY?=
- =?utf-8?B?Yk10NUlFRmlZUWxWQk55NnNLRHZCQ3lMNlZiNWxjaUoyR1pYUVRwZHFJT0xT?=
- =?utf-8?B?RklSa3RsUnczTE5rbEMxaG5qeTRoWHRGUi9vQ1dGYUpUUkR0N0V2eVJMTVFK?=
- =?utf-8?B?YXhtdzhTRkpweVRpTGNrS0lEdDRDd1c3ZWNGMlhNUHUrTzBBaGhDNDhxdUhP?=
- =?utf-8?B?TzcwM1d4S2dQWlRTbVNUL2gxZVBmaWt6N3IzdEpmZWUzUytIaGxiZUpiRkUx?=
- =?utf-8?B?TS9Pb3RBcWNqOXVzVWhQVElUZW9Nbzg2QVlvdTcrQk42c0w1bmJMRUN3OG5Q?=
- =?utf-8?B?THZaa0U3dzBNbjJwM3QxaEhrK2twMFZ6amZHWmdKWFN1dTNZcDdzQT09?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D511924397A
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 13:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771854378; cv=none; b=hAgPTiGIF6I0yYOCCGAU6Q4E5hFN+e4CgbepJWM62dynNTu2sA5qahCKC4cE7zwlzLsW7s8xwLgNKzQFzffKFRGIwNuJIgtNb0jiyLHe+z+pKEacZS9kjcy8oVtqQc++8aL3KIbmidh64+mTs4kHLtWk74w+CxxLYOZzlMTwqhg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771854378; c=relaxed/simple;
+	bh=moj3QcCqGLm4CLDFDzhqpwOR0+qc8ZVyonKyqdrXhMs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sDnyrxuVim9XmfioBK2+zCpe2C6c/1JyuWNPoeK/67/+KHu1OWFRZtwjJ0CU7P4S4aP7ZO2dBX4lawLp59j1Fw9IMHGGBfa/8al4Bnv32zpV0KAhcGoqJd8aJ8u6677vhz511/ur1oTdUsIw0UcrL6MY/XHqBRq4hD3G+BwoUXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PhezQN2L; arc=none smtp.client-ip=209.85.221.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-4362507f0bcso3086464f8f.0
+        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 05:46:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771854375; x=1772459175; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nQQ7lnppDq+V0zgDgWba+T0g0+pMzVEGyZ983+O+pHg=;
+        b=PhezQN2LypfTN99J0BsO/WMhkHLSXCBM9MIncUdh37qhlM1/hN7eLdd9/4BEevLliJ
+         f+k3NBQBxSYlIii0PxfJk6NTYXJNxGcs2aZMS5EGVuTeV2hef3LW84CioV2iYGxrOLlw
+         nLVHeM/dkzQdtqMMbgSz+TOHnJJidbgr/9UMRHS5lEMSCO2/12I9g+TYCZcKvRI6jSw1
+         Q0/zQUxjNjtP8MBl8UQigKuowZBibCxsGCPIfnXexTtCPlAtLet7yvhgH1NYwjusj1Bb
+         vOv1ln8UtEbK6w7EJp/Gq1TWGjSPvAqq+I4NF7Hpv7q9mS2BQPMxx39DxDLTUCXlVCKd
+         UE+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771854375; x=1772459175;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nQQ7lnppDq+V0zgDgWba+T0g0+pMzVEGyZ983+O+pHg=;
+        b=EgKj43olTWYoktctEShaVRVxXMtEvaNlb/CGLLYGItk370kZEgyH/8cbu6dYYv4qET
+         NNF3yzWOz8cmi/e+o0NuuxdRChnZUk6U5BtXWE70FXE0u6laVgYnrusYLjOj2QGouGYK
+         x78R5XJG2TP7ysqNLYb71T90QMDVFDbd3qXd/EoBcYdTsU/+qQbGxSwT3uV6syI2FG/b
+         bNsrMZZTyt+0diBYH9bJD0Z0C7bLqLd9WdvDhq65Cn4LGhkTVSMb6RKX2dsxhAsumUur
+         VOV9FI//Tkj1dmnRSZYOvro6uqlop/lYh2vhHGkwuxT2qCqLldiTUc50NRPLyTEiABL0
+         7GRg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/U51gdFGMG/ROcYRbuid1pb5OC1/FQNOMmb+oMAoFv7RE7j0K2yKh3lUseDUtOhX/DHMUOOo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsTiisuPDIr3s3MkLMVrA31Vk6ePdt7JAR0c3kKxB5f5plt8BJ
+	nEXl9ZNSwsOcknzScAY+C4ibAbfhzEyxBI2L8oGx4FcESASSuxHGGQ98
+X-Gm-Gg: ATEYQzyN71PmBpTX4uvsRm3jPn7y3hUGC86rGzBs1SFJnOaS/c9Wal4RXrQQqVlZenX
+	SMu7hef514tlgDajGEAV6O5egbsvLSQvi/9d6te3uC0n1T1VEQ+snDBXG3Hz96Qz8qg863zNuXo
+	m51SHWnvcLJkmniHU0irioOuhVtbzV2cztbvRaHfhOa42tA7RwpYK0Q3t8O+yTgoE8OtCYdh8jB
+	TiqL973P4hWII7SZ2/sdSOn1sZUfu3J3nI6atHZ3pAlPkeQNva7lRrIfWzd3RfNiddeI8x/hI+f
+	JJ5kKKfOwiJmPcNKcS05lHUEbMqgGrdjo8PxyqtvNP3aPPFqOtgRPfv1PZz9cdaWv679GYndQPc
+	eRAGmrCTX/np3tIOgFtEseTUqCatHT0iTMW85p002HA0D2PXv7GJ7FGmdMqKFXEF0FZQOxZPq78
+	cZjJ/fYyxZiWKLDTAi12SCngi9AodkX0LkUGGq54Ua2R8=
+X-Received: by 2002:a05:6000:2282:b0:435:932e:f924 with SMTP id ffacd0b85a97d-4396fd9b8f6mr15083047f8f.2.1771854374934;
+        Mon, 23 Feb 2026 05:46:14 -0800 (PST)
+Received: from [10.158.36.109] ([72.25.96.17])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d3fc12sm17069302f8f.24.2026.02.23.05.46.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Feb 2026 05:46:14 -0800 (PST)
+Message-ID: <e24b4a4f-b7e7-4e9e-ade0-cdda06f5765a@gmail.com>
+Date: Mon, 23 Feb 2026 15:46:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f46d92df-33b3-4010-b410-08de72e154d0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Feb 2026 13:42:04.9174
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: x7/ElewPb8CCEdNDRc26ht7CtaaR7APIBvWVAEpGToxNyYnzvmqsL2KiLu4PXMhUAN1v02oQUj1S6bO8Km1zvQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6706
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/mlx5e: Precompute xdpsq assignments for
+ mlx5e_xdp_xmit()
+To: Finn Dayton <Finnius.Dayton@spacex.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc: "Alexei Starovoitov ," <ast@kernel.org>,
+ "Daniel Borkmann ," <daniel@iogearbox.net>,
+ "David S. Miller ," <davem@davemloft.net>, "Jakub Kicinski ,"
+ <kuba@kernel.org>, "Jesper Dangaard Brouer ," <hawk@kernel.org>,
+ "John Fastabend ," <john.fastabend@gmail.com>,
+ "Stanislav Fomichev ," <sdf@fomichev.me>,
+ "Saeed Mahameed ," <saeedm@nvidia.com>, "Leon Romanovsky ,"
+ <leon@kernel.org>, "Tariq Toukan ," <tariqt@nvidia.com>,
+ "Mark Bloch ," <mbloch@nvidia.com>, "Andrew Lunn ," <andrew+netdev@lunn.ch>,
+ "Eric Dumazet ," <edumazet@google.com>, "Paolo Abeni ," <pabeni@redhat.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <610D8F9E-0038-46D9-AD8A-1D596236B1EF@spacex.com>
+Content-Language: en-US
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <610D8F9E-0038-46D9-AD8A-1D596236B1EF@spacex.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217772-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,davemloft.net,gmail.com,fomichev.me,nvidia.com,lunn.ch,google.com,redhat.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-217773-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joelagnelf@nvidia.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ttoukanlinux@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:mid,Nvidia.com:dkim]
-X-Rspamd-Queue-Id: 37E071773C0
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3D904177339
 X-Rspamd-Action: no action
 
-DQoNCj4gT24gRmViIDIzLCAyMDI2LCBhdCA2OjIw4oCvQU0sIERhbmlsbyBLcnVtbXJpY2ggPGRh
-a3JAa2VybmVsLm9yZz4gd3JvdGU6DQo+IA0KPiDvu79PbiBNb24gRmViIDIzLCAyMDI2IGF0IDEy
-OjE3IFBNIENFVCwgS29lbiBLb25pbmcgd3JvdGU6DQo+PiBUaGFua3MgdGhhdCBtYWtlcyBzZW5z
-ZSwgdGhlbiBsZXQncyBqdXN0IHN0aWNrIHRvIGFkZHJlc3NpbmcgdGhlIGN1cnJlbnQNCj4+IHJl
-Z3Jlc3Npb24gd2l0aCBncHUvYnVkZHkgaW4gdGhlIGRybS10aXAgdHJlZS4NCj4gDQo+IFRoZSBw
-YXRjaCBzaG91bGQgZ28gaW50byBkcm0tbWlzYy1uZXh0Lg0KPiANCj4+IEpvZWwsIGNvdWxkIHlv
-dSBncmFiIHRoZSB2MSBvZiB0aGlzIHBhdGNoc2V0IChvciB0aGUgdjIgd2l0aCB3aXRoDQo+PiBz
-dWJzeXNfaW5pdGNhbGwsIGVpdGhlciB3b3JrcykgYW5kIHRyeSB0byBnZXQgaXQgYXBwbGllZCB0
-byBkcm0tdGlwPw0KPj4gU2luY2UgdGhpcyBpcyBteSBmaXJzdCB0aW1lIHN1Ym1pdHRpbmcgcGF0
-Y2hlcywgSSdtIG5vdCByZWFsbHkgc3VyZSBob3cNCg0KV2VsY29tZSB0byB0aGUgZGFyayBzaWRl
-ISA7LSkNCg0KPj4gdG8gcHJvY2VlZCBmcm9tIGhlcmUsIGFuZCBpdCB3aWxsIHByb2JhYmx5IGJl
-IGZhc3RlciBpZiB5b3UgaGF2ZSBhIGxvb2suDQo+IA0KPiBJIHRoaW5rIHdlIHNob3VsZCBsYW5k
-IHlvdXIgb3JpZ2luYWwgdjE7IEkgZG9uJ3Qga25vdyBpZiBKb2VsIGNhbiBwdXNoIHRvDQo+IGRy
-bS1taXNjLW5leHQsIGlmIG5vdCBwbGVhc2UgbGV0IG1lIGtub3csIEkgY2FuIHBpY2sgaXQgdXAg
-dGhlbi4NCg0KWWVzIEkgZG8gbm90IGhhdmUgYWNjZXNzIHRvIHRoaXMgdHJlZSwgc28gb3ZlciB0
-byBEYW5pbG8gOy0pDQoNClRoYW5rcywNCkpvZWwNCg0KDQo=
+
+
+On 23/02/2026 2:05, Finn Dayton wrote:
+> mlx5e_xdp_xmit() selects an XDP SQ (Send Queue) using smp_processor_id()
+> (CPU ID). When doing XDP_REDIRECT from a CPU whose ID is
+>> = priv->channels.num, mlx5e_xdp_xmit() returns -ENXIO and the
+> redirect fails.
+> 
+> Previous discussion proposed using modulo in mlx5e_xdp_xmit() to map
+> CPU IDs into the channel range, but modulo/division is too costly in
+> the hot path.
+> 
+
+That discussion reached to an agreement of using a while loop with 
+subtraction. It's expected to be fast, and optimizes the common case.
+
+> Instead, this solution precomputes per-cpu priv->xdpsq assignments when
+> channels are (re)configured and does a single lookup in  mlx5e_xdp_xmit().
+> 
+> Because multiple CPUs map to the same xdpsq when CPU count exceeds
+> channel count, serialize xdp_xmit on the ring with xdp_tx_lock.
+> 
+
+What's the advantage of this solution over the one we already agreed to?
+
+> Fixes: 58b99ee3e3eb ("net/mlx5e: Add support for XDP_REDIRECT in device-out side")
+> Link: https://lore.kernel.org/netdev/20251031231038.1092673-1-zijianzhang@bytedance.com/
+> Link: https://lore.kernel.org/netdev/44f69955-b566-4fb1-904d-f551046ff2d4@gmail.com
+> Cc: stable@vger.kernel.org # 6.12+
+> Signed-off-by: Finn Dayton <finnius.dayton@spacex.com>
+> ---
+> Testing:
+>   - XDP forwarding / XDP_REDIRECT verified with both low CPU ids and
+>     CPU ids > than number of send queues.
+>   - No -ENXIO observed, successful forwarding.
+> 
+>   drivers/net/ethernet/mellanox/mlx5/core/en.h  |  4 +++
+>   .../net/ethernet/mellanox/mlx5/core/en/xdp.c  | 16 +++++++----
+>   .../net/ethernet/mellanox/mlx5/core/en_main.c | 28 +++++++++++++++++++
+>   3 files changed, 43 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> index ea2cd1f5d1d0..387954201640 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> @@ -519,6 +519,8 @@ struct mlx5e_xdpsq {
+>   	/* control path */
+>   	struct mlx5_wq_ctrl        wq_ctrl;
+>   	struct mlx5e_channel      *channel;
+> +	/* serialize writes by multiple CPUs to this send queue */
+> +	spinlock_t xdp_tx_lock;
+>   } ____cacheline_aligned_in_smp;
+>   
+>   struct mlx5e_xdp_buff {
+> @@ -909,6 +911,8 @@ struct mlx5e_priv {
+>   	struct mlx5e_rq            drop_rq;
+>   
+>   	struct mlx5e_channels      channels;
+> +	/* selects the xdpsq during mlx5e_xdp_xmit() */
+> +	int __percpu              *send_queue_idx_ptr;
+>   	struct mlx5e_rx_res       *rx_res;
+>   	u32                       *tx_rates;
+>   
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> index 80f9fc10877a..2dd44ad873a1 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> @@ -845,7 +845,7 @@ int mlx5e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+>   	struct mlx5e_priv *priv = netdev_priv(dev);
+>   	struct mlx5e_xdpsq *sq;
+>   	int nxmit = 0;
+> -	int sq_num;
+> +	int send_queue_idx = 0;
+>   	int i;
+>   
+>   	/* this flag is sufficient, no need to test internal sq state */
+> @@ -855,13 +855,19 @@ int mlx5e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+>   	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
+>   		return -EINVAL;
+>   
+> -	sq_num = smp_processor_id();
+>   
+> -	if (unlikely(sq_num >= priv->channels.num))
+> +	if (unlikely(!priv->send_queue_idx_ptr))
+>   		return -ENXIO;
+>   
+> -	sq = priv->channels.c[sq_num]->xdpsq;
+> +	send_queue_idx = *this_cpu_ptr(priv->send_queue_idx_ptr);
+> +	if (unlikely(send_queue_idx >= priv->channels.num || send_queue_idx < 0))
+> +		return -ENXIO;
+>   
+> +	sq = priv->channels.c[send_queue_idx]->xdpsq;
+> +	/* The number of queues configured on a netdev may be smaller than the
+> +	 * CPU pool, so two CPUs might map to this queue. We must serialize writes.
+> +	 */
+> +	spin_lock(&sq->xdp_tx_lock);
+>   	for (i = 0; i < n; i++) {
+>   		struct mlx5e_xmit_data_frags xdptxdf = {};
+>   		struct xdp_frame *xdpf = frames[i];
+> @@ -941,7 +947,7 @@ int mlx5e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+>   
+>   	if (flags & XDP_XMIT_FLUSH)
+>   		mlx5e_xmit_xdp_doorbell(sq);
+> -
+> +	spin_unlock(&sq->xdp_tx_lock);
+>   	return nxmit;
+>   }
+>   
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> index 7eb691c2a1bd..adef35d06b89 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> @@ -1492,6 +1492,7 @@ static int mlx5e_alloc_xdpsq(struct mlx5e_channel *c,
+>   	sq->pdev      = c->pdev;
+>   	sq->mkey_be   = c->mkey_be;
+>   	sq->channel   = c;
+> +	spin_lock_init(&sq->xdp_tx_lock);
+>   	sq->uar_map   = c->bfreg->map;
+>   	sq->min_inline_mode = params->tx_min_inline_mode;
+>   	sq->hw_mtu    = MLX5E_SW2HW_MTU(params, params->sw_mtu) - ETH_FCS_LEN;
+> @@ -3283,10 +3284,30 @@ static void mlx5e_build_txq_maps(struct mlx5e_priv *priv)
+>   	smp_wmb();
+>   }
+>   
+> +static void build_priv_to_xdpsq_associations(struct mlx5e_priv *priv)
+> +{
+> +	/*
+> +	 * Build the mapping from CPU to XDP send queue index for priv.
+> +	 * This is used by mlx5e_xdp_xmit() to determine which xdpsq (send queue)
+> +	 * should handle the xdptx data, based on the CPU running mlx5e_xdp_xmit()
+> +	 * and the target priv (netdev).
+> +	 */
+> +	int send_queue_idx, cpu;
+> +
+> +	if (unlikely(priv->channels.num == 0))
+> +		return;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		send_queue_idx = cpu % priv->channels.num;
+> +		*per_cpu_ptr(priv->send_queue_idx_ptr, cpu) = send_queue_idx;
+> +	}
+> +}
+> +
+>   void mlx5e_activate_priv_channels(struct mlx5e_priv *priv)
+>   {
+>   	mlx5e_build_txq_maps(priv);
+>   	mlx5e_activate_channels(priv, &priv->channels);
+> +	build_priv_to_xdpsq_associations(priv);
+>   	mlx5e_xdp_tx_enable(priv);
+>   
+>   	/* dev_watchdog() wants all TX queues to be started when the carrier is
+> @@ -6263,8 +6284,14 @@ int mlx5e_priv_init(struct mlx5e_priv *priv,
+>   	if (!priv->fec_ranges)
+>   		goto err_free_channel_stats;
+>   
+> +	priv->send_queue_idx_ptr = alloc_percpu(int);
+> +	if (!priv->send_queue_idx_ptr)
+> +		goto err_free_fec_ranges;
+> +
+>   	return 0;
+>   
+> +err_free_fec_ranges:
+> +	kfree(priv->fec_ranges);
+>   err_free_channel_stats:
+>   	kfree(priv->channel_stats);
+>   err_free_tx_rates:
+> @@ -6295,6 +6322,7 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
+>   	for (i = 0; i < priv->stats_nch; i++)
+>   		kvfree(priv->channel_stats[i]);
+>   	kfree(priv->channel_stats);
+> +	free_percpu(priv->send_queue_idx_ptr);
+>   	kfree(priv->tx_rates);
+>   	kfree(priv->txq2sq_stats);
+>   	kfree(priv->txq2sq);
+
 
