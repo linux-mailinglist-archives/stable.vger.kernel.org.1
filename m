@@ -1,196 +1,254 @@
-Return-Path: <stable+bounces-217724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJJtE502nGnsBQQAu9opvQ
-	(envelope-from <stable+bounces-217724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:14:37 +0100
+	id aEzBJSM3nGnsBQQAu9opvQ
+	(envelope-from <stable+bounces-217725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:16:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66A517557F
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:14:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C6A17559F
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:16:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3D4C4303E3A8
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:14:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8F95302FA81
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9068F35CB67;
-	Mon, 23 Feb 2026 11:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b="JYoQi+NH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E653596E1;
+	Mon, 23 Feb 2026 11:16:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8B421770A;
-	Mon, 23 Feb 2026 11:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771845242; cv=pass; b=CyrQ7tjdZRiqgUDWSYa/qwY9Mrd49Ec/aOK+zER8zrVXn3fn24ofskC+1nlftsBw1l9dvpw/zE9LnYnPOW8KCIDjyUPrU+bk1SAyPx96LwLR4fey8ILQKiK316ka188jPOF60zRX1WJnzCMOUe1kwQ0gsZBbgxp5vB3czjONg4g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771845242; c=relaxed/simple;
-	bh=JRDaiMs2KAtrCCQY9S5E5Db1tU5X21ZS5TXgAhki0UA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XBerO1tfubqShb/VbOqwFjJ52hbXo7JqPOaLuubVqjuL/9Dgkddkb8e4sSdT0MfBlTIzejMgLV948uf4QrM0+M8DgOW35XpxcIcTHbyjDE72JM6qCahn7FNqo6HfBu0LE0u8VjwRKpk2ZssAK4D4jEvQI70ZGnwtnrfciGNCSs4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b=JYoQi+NH; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1771845234; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=TAj09Vc4VeX81NdMlcRp3dZyehQygv45dcwIBlMn2gRnq/D7mKHXLN7Qq7uepvBv7/jxacJt6ag39QaXTSrmGDWBCTlX9kBEG2GSsLE2YcoZbkZcUqLlIot3wQVMd8C21PURQJvngCjqKkKEuQR+LuJRMouQ+0YT1ghpLoATxYc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1771845234; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=6rry9lc+8ppJpTcNz8LoCA93qIEyl0rEmMFF316UV/s=; 
-	b=hcvr07i6FGVQq9YKB32lwMWTYPf0VdwAdQ04+wOulfA9WEeD2NAj5cbTptyOBZ004Dl/AbzApVcuZ3vWLe6EqVF2j6OW2pTc6VXXRKE1tikrdNrnqOwtuMhzxrzDo7EefYNZdNJr/+ImV4jDSpLaDyJqeZWm/ot+Aqt9sfJfBzY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
-	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771845234;
-	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-	bh=6rry9lc+8ppJpTcNz8LoCA93qIEyl0rEmMFF316UV/s=;
-	b=JYoQi+NHDUpl2nj/Aq1yNFVzs6MhUMEJqQUyyHXSN+aYn/7Cuo47VCOW5I8A6gR8
-	JgJk0kgnHHyIgbSwAUBSaTvO9xtyWRNhvblyDY7/Mi5iOUDjMw11lcwYnMxj5LQQ2Ct
-	vFdkkAIn5C3eTZZsjJw531ntfoKNdnK44p+YIr8o=
-Received: by mx.zohomail.com with SMTPS id 1771845232254975.0000309439166;
-	Mon, 23 Feb 2026 03:13:52 -0800 (PST)
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-To: stable-commits@vger.kernel.org, stable@vger.kernel.org
-Cc: Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>
-Subject:
- Re: Patch "clk: Respect CLK_OPS_PARENT_ENABLE during recalc" has been added
- to the 6.19-stable tree
-Date: Mon, 23 Feb 2026 12:13:48 +0100
-Message-ID: <2819833.mvXUDI8C0e@workhorse>
-In-Reply-To: <20260221160309.4048102-1-sashal@kernel.org>
-References: <20260221160309.4048102-1-sashal@kernel.org>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B70E2DB78E
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 11:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771845406; cv=none; b=bLGsikvtp9bHOEheWqBajTkH6Q7ZvY3XZhozsBnH7jm7kFQEe+2ww+WNdnXRq0GVDJW4GREbskrRebMd9E6etfpnEFP+xYvkYtZ/2f/h0W++tuQRhs2Z7nrErW6Huy3lG2Vjih8ttBdHiUZP9CqYn7o3fxyq0xXD8yJaL7qQACM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771845406; c=relaxed/simple;
+	bh=hIK2Fxq+MLs/D4s8eOraSGXje53f7uNucqYvOT88gTo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P33EYbOKHN2wWj7QtPFk0s634IlmEdEOiflfNjKwma0P+4TNYtK89LTnZsnhX5+wjC5gG3vhjTMr4r7JyhvwWJBy7mwdR5+CJppwtQ1ALbFmYuuZF1OC1/PcmwEC86xAi+MkZDaEHAmlE80Q8lw/o3asolYLAFhXS0qB2lq7yOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 67E3E339;
+	Mon, 23 Feb 2026 03:16:37 -0800 (PST)
+Received: from e134344.arm.com (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 837F03F62B;
+	Mon, 23 Feb 2026 03:16:41 -0800 (PST)
+Date: Mon, 23 Feb 2026 11:16:32 +0000
+From: Ben Horgan <ben.horgan@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Hyesoo Yu <hyesoo.yu@samsung.com>,
+	Quentin Perret <qperret@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: Force the use of CNTVCT_EL0 in __delay()
+Message-ID: <aZw3EGs4rbQvbAzV@e134344.arm.com>
+References: <20260213141619.1791283-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260213141619.1791283-1-maz@kernel.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	CTE_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
+X-Spamd-Result: default: False [-1.36 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-217724-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicolas.frattaroli@collabora.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[collabora.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217725-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben.horgan@arm.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email,collabora.com:email,collabora.com:dkim]
-X-Rspamd-Queue-Id: A66A517557F
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.972];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,e134344.arm.com:mid]
+X-Rspamd-Queue-Id: E2C6A17559F
 X-Rspamd-Action: no action
 
-On Saturday, 21 February 2026 17:03:09 Central European Standard Time Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     clk: Respect CLK_OPS_PARENT_ENABLE during recalc
-> 
-> to the 6.19-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      clk-respect-clk_ops_parent_enable-during-recalc.patch
-> and it can be found in the queue-6.19 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+Hi Marc,
 
-Drop this, it introduces a regression and has been reverted in [1]
-
-Link: https://lore.kernel.org/lkml/20260203002439.1223213-1-sboyd@kernel.org/ [1]
-
+On Fri, Feb 13, 2026 at 02:16:19PM +0000, Marc Zyngier wrote:
+> Quentin forwards a report from Hyesoo Yu, describing an interesting
+> problem with the use of WFxT in __delay() when a vcpu is loaded and
+> that KVM is *not* in VHE mode (either nVHE or hVHE).
 > 
+> In this case, CNTVOFF_EL2 is set to a non-zero value to reflect the
+> state of the guest virtual counter. At the same time, __delay() is
+> using get_cycles() to read the counter value, which is indirected to
+> reading CNTPCT_EL0.
 > 
+> The core of the issue is that WFxT is using the *virtual* counter,
+> while the kernel is using the physical counter, and that the offset
+> introduces a really bad discrepancy between the two.
 > 
-> commit 17b0f85bf6339d9e275389fa4ba8c9d2014a1bb7
-> Author: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-> Date:   Mon Dec 15 11:23:58 2025 +0100
+> Fix this by forcing the use of CNTVCT_EL0, making __delay() consistent
+> irrespective of the value of CNTVOFF_EL2.
 > 
->     clk: Respect CLK_OPS_PARENT_ENABLE during recalc
->     
->     [ Upstream commit 669917676e93fca5ea3c66fc9539830312bec58e ]
->     
->     When CLK_OPS_PARENT_ENABLE was introduced, it guarded various clock
->     operations, such as setting the rate or switching parents. However,
->     another operation that can and often does touch actual hardware state is
->     recalc_rate, which may also be affected by such a dependency.
->     
->     Add parent enables/disables where the recalc_rate op is called directly.
->     
->     Fixes: fc8726a2c021 ("clk: core: support clocks which requires parents enable (part 2)")
->     Fixes: a4b3518d146f ("clk: core: support clocks which requires parents enable (part 1)")
->     Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->     Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
->     Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
->     Signed-off-by: Stephen Boyd <sboyd@kernel.org>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Reported-by: Hyesoo Yu <hyesoo.yu@samsung.com>
+> Reported-by: Quentin Perret <qperret@google.com>
+> Reviewed-by: Quentin Perret <qperret@google.com>
+> Fixes: 7d26b0516a0df ("arm64: Use WFxT for __delay() when possible")
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Link: https://lore.kernel.org/r/ktosachvft2cgqd5qkukn275ugmhy6xrhxur4zqpdxlfr3qh5h@o3zrfnsq63od
+> Cc: stable@vger.kernel.org
+> ---
+>  arch/arm64/lib/delay.c | 19 +++++++++++++++----
+>  1 file changed, 15 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index 85d2f2481acf3..1b0f9d567f48e 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -1921,7 +1921,14 @@ static unsigned long clk_recalc(struct clk_core *core,
->  	unsigned long rate = parent_rate;
+> diff --git a/arch/arm64/lib/delay.c b/arch/arm64/lib/delay.c
+> index cb2062e7e2340..d02341303899e 100644
+> --- a/arch/arm64/lib/delay.c
+> +++ b/arch/arm64/lib/delay.c
+> @@ -23,9 +23,20 @@ static inline unsigned long xloops_to_cycles(unsigned long xloops)
+>  	return (xloops * loops_per_jiffy * HZ) >> 32;
+>  }
 >  
->  	if (core->ops->recalc_rate && !clk_pm_runtime_get(core)) {
-> +		if (core->flags & CLK_OPS_PARENT_ENABLE)
-> +			clk_core_prepare_enable(core->parent);
+> +/*
+> + * Force the use of CNTVCT_EL0 in order to have the same base as WFxT.
+> + * This avoids some annoying issues when CNTVOFF_EL2 is not reset 0 on a
+> + * KVM host running at EL1 until we do a vcpu_put() on the vcpu. When
+> + * running at EL2, the effective offset is always 0.
+> + *
+> + * Note that userspace cannot change the offset behind our back either,
+> + * as the vcpu mutex is held as long as KVM_RUN is in progress.
+> + */
+> +#define __delay_cycles()	__arch_counter_get_cntvct_stable()
+
+I'm seeing this CONFIG_DEBUG_PREEMPT warning, see below, when running 7.0-rc1 on
+FVP Base RevC. I haven't tried bisecting but it looks to be introduced by this
+change.
+
+The calls are:
+
+__this_cpu_read()
+erratum_handler()
+arch_timer_reg_read_stable()
+__arch_counter_get_cntvct_stable()
+__delay()
+
+This silences the warning:
+
+diff --git a/arch/arm64/include/asm/arch_timer.h b/arch/arm64/include/asm/arch_timer.h
+index f5794d50f51d..f07e4efa0d2b 100644
+--- a/arch/arm64/include/asm/arch_timer.h
++++ b/arch/arm64/include/asm/arch_timer.h
+@@ -24,14 +24,14 @@
+ #define has_erratum_handler(h)                                         \
+        ({                                                              \
+                const struct arch_timer_erratum_workaround *__wa;       \
+-               __wa = __this_cpu_read(timer_unstable_counter_workaround); \
++               __wa = raw_cpu_read(timer_unstable_counter_workaround); \
+                (__wa && __wa->h);                                      \
+        })
+ 
+ #define erratum_handler(h)                                             \
+        ({                                                              \
+                const struct arch_timer_erratum_workaround *__wa;       \
+-               __wa = __this_cpu_read(timer_unstable_counter_workaround); \
++               __wa = raw_cpu_read(timer_unstable_counter_workaround); \
+                (__wa && __wa->h) ? ({ isb(); __wa->h;}) : arch_timer_##h; \
+        })
+
+
+[    0.116471] CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.0.0-rc1 #787 PREEMPT
+[    0.116475] Hardware name: FVP Base RevC (DT)
+[    0.116476] Call trace:
+[    0.116477]  show_stack+0x18/0x24 (C)
+[    0.116481]  dump_stack_lvl+0x74/0x8c
+[    0.116486]  dump_stack+0x18/0x24
+[    0.116490]  check_preemption_disabled+0xd8/0xf8
+[    0.116496]  __this_cpu_preempt_check+0x1c/0x28
+[    0.116501]  __delay+0x114/0x1d4
+[    0.116507]  __const_udelay+0x2c/0x38
+[    0.116513]  its_wait_for_range_completion+0x54/0xe4
+[    0.116518]  its_send_single_command+0xd0/0x150
+[    0.116525]  its_create_device+0x260/0x3a4
+[    0.116528]  its_msi_prepare+0x100/0x168
+[    0.116532]  its_pci_msi_prepare+0x120/0x168
+[    0.116538]  msi_create_device_irq_domain+0x224/0x290
+[    0.116542]  pci_setup_msix_device_domain+0x90/0xcc
+[    0.116548]  __pci_enable_msix_range+0x1b8/0x620
+[    0.116554]  pci_alloc_irq_vectors_affinity+0xc4/0x144
+[    0.116559]  pci_alloc_irq_vectors+0x14/0x20
+[    0.116564]  ahci_init_one+0x568/0xea8
+[    0.116568]  local_pci_probe+0x40/0xa8
+[    0.116574]  pci_device_probe+0xd4/0x208
+[    0.116580]  really_probe+0xbc/0x29c
+[    0.116584]  __driver_probe_device+0x78/0x12c
+[    0.116588]  driver_probe_device+0x3c/0x15c
+[    0.116592]  __driver_attach+0xc8/0x1d4
+[    0.116597]  bus_for_each_dev+0x7c/0xe0
+[    0.116602]  driver_attach+0x24/0x30
+[    0.116606]  bus_add_driver+0xe4/0x208
+[    0.116610]  driver_register+0x5c/0x124
+[    0.116614]  __pci_register_driver+0x4c/0x58
+[    0.116619]  ahci_pci_driver_init+0x24/0x30
+[    0.116624]  do_one_initcall+0x58/0x3e8
+[    0.116629]  kernel_init_freeable+0x1e4/0x530
+[    0.116634]  kernel_init+0x24/0x1e4
+[    0.116640]  ret_from_fork+0x10/0x20
+
+
+
 > +
->  		rate = core->ops->recalc_rate(core->hw, parent_rate);
-> +
-> +		if (core->flags & CLK_OPS_PARENT_ENABLE)
-> +			clk_core_disable_unprepare(core->parent);
-> +
->  		clk_pm_runtime_put(core);
+>  void __delay(unsigned long cycles)
+>  {
+> -	cycles_t start = get_cycles();
+> +	cycles_t start = __delay_cycles();
+>  
+>  	if (alternative_has_cap_unlikely(ARM64_HAS_WFXT)) {
+>  		u64 end = start + cycles;
+> @@ -35,17 +46,17 @@ void __delay(unsigned long cycles)
+>  		 * early, use a WFET loop to complete the delay.
+>  		 */
+>  		wfit(end);
+> -		while ((get_cycles() - start) < cycles)
+> +		while ((__delay_cycles() - start) < cycles)
+>  			wfet(end);
+>  	} else 	if (arch_timer_evtstrm_available()) {
+>  		const cycles_t timer_evt_period =
+>  			USECS_TO_CYCLES(ARCH_TIMER_EVT_STREAM_PERIOD_US);
+>  
+> -		while ((get_cycles() - start + timer_evt_period) < cycles)
+> +		while ((__delay_cycles() - start + timer_evt_period) < cycles)
+>  			wfe();
 >  	}
->  	return rate;
-> @@ -4031,6 +4038,9 @@ static int __clk_core_init(struct clk_core *core)
->  	 */
->  	clk_core_update_duty_cycle_nolock(core);
 >  
-> +	if (core->flags & CLK_OPS_PARENT_ENABLE)
-> +		clk_core_prepare_enable(core->parent);
-> +
->  	/*
->  	 * Set clk's rate.  The preferred method is to use .recalc_rate.  For
->  	 * simple clocks and lazy developers the default fallback is to use the
-> @@ -4046,6 +4056,9 @@ static int __clk_core_init(struct clk_core *core)
->  		rate = 0;
->  	core->rate = core->req_rate = rate;
->  
-> +	if (core->flags & CLK_OPS_PARENT_ENABLE)
-> +		clk_core_disable_unprepare(core->parent);
-> +
->  	/*
->  	 * Enable CLK_IS_CRITICAL clocks so newly added critical clocks
->  	 * don't get accidentally disabled when walking the orphan tree and
+> -	while ((get_cycles() - start) < cycles)
+> +	while ((__delay_cycles() - start) < cycles)
+>  		cpu_relax();
+>  }
+>  EXPORT_SYMBOL(__delay);
+> -- 
+> 2.47.3
+> 
 > 
 
+Thanks,
 
-
-
+Ben
 
