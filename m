@@ -1,294 +1,164 @@
-Return-Path: <stable+bounces-217708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBWoOlIPnGml/QMAu9opvQ
-	(envelope-from <stable+bounces-217708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:26:58 +0100
+	id oIanDtoVnGkq/gMAu9opvQ
+	(envelope-from <stable+bounces-217709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:54:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EEB1173076
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:26:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 864C0173543
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C71C43024A4D
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 08:26:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21DB9303A6DC
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 08:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3584034D383;
-	Mon, 23 Feb 2026 08:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CF334D909;
+	Mon, 23 Feb 2026 08:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="YuCSGlnB"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="IrxT7snw";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kgm3zxxU";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="IrxT7snw";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kgm3zxxU"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C4B34C818;
-	Mon, 23 Feb 2026 08:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C26934DB78
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 08:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771835206; cv=none; b=VWI3Ac6blQSe/0h5zR/MhU+HUX4BeiIsydoNklr55GB2FYHcK0w7Te8W1ExtBQlgyAdRDPzgJqbXaVqk1SEIIiiW6REhBAhto1KDlLTiT96AvfcMiP79THjbGqyOn9mmimNlwPkdqiWaBZi+wXj4KT4ICL4suuXryabM2ZwhQxc=
+	t=1771836861; cv=none; b=OY65ZnAgSn+DF3bLEJ0rpmOehjC2Nvrh/49FxQ8u38w4ao3KXGo+fjqNvdOb6vNNyNsyn9tUPfW0Zxg119FqO9CYnQQd86voQ97SAqcnSt4OwJavbkdRXS3K/IJd+FSjEf8KGGYoHcoiJ5eH0rTtJXZ5RL+B1JQWH952mXZL7zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771835206; c=relaxed/simple;
-	bh=sm6q1+ERW/BaOcu2jshdc2Eho9GqqWDTk0xMpvA9awk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WH75nYszYLDFqvtBcTTPPqq6GP8pmBRxow43Japq5IWrWQaCc1WFj7WRG3GUwXlGcuTNdKl+PsvvHhk12mB9QhNiNUK3puMQRBzuyz+xTuur5Pu1JFcvzypPLDHw04TtErWwMgcbEgky03SWHGoKayke7fPEAEoS6KU/Wms8F4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=YuCSGlnB; arc=none smtp.client-ip=188.68.63.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay-2501.netcup.net (localhost [127.0.0.1])
-	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4fKDTt3tKQz6D9H;
-	Mon, 23 Feb 2026 09:26:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1771835202;
-	bh=sm6q1+ERW/BaOcu2jshdc2Eho9GqqWDTk0xMpvA9awk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YuCSGlnBs6uo8rYhCNuWFT1c8Nrr5ASloi7qT7mF6rEETrT6fqzQHm1PppOlqRB3X
-	 /Z1dVLkH0NnDHaSlzHB7FdKSQAwWemcUnvBA2IAHVtad4JDZ65JoU80wgT5yNU+AtR
-	 +KSwtgqRpEYlWRx+SMK+CaRrmKXQUt2eNkSvSjCVnz31bzIxkneAxxPYNhDWe8Iw2F
-	 EEmyuRfpdh3e+udFOCA5NoYmj/ROMlLX69rcUYGqvXTu/MEy95St7o41h7ZXdngRWv
-	 KGkXt5WIFJMSo0v65jT1fak9S8UFFwSde+LDO40KhyDdbql1RzAW/RwFsjncHy2Xzc
-	 cmwLen2M2f33A==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4fKDTt36vWz4xZG;
-	Mon, 23 Feb 2026 09:26:42 +0100 (CET)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	s=arc-20240116; t=1771836861; c=relaxed/simple;
+	bh=ogxN6n1ODyQcDYgeHtJSC/Pv88ShOTQ0TRwpZWHpjBA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Scm9P2Ov0nrrf2B72BLY+nCXRzikLbqqQ2xN/p97YOPCR1XK69ab/URcaz+orA6KCFgppYKcehoZynxZd/CPKSZFI+2/Bq2ok1Px1zN5oTC4ROirxdddHTFEHLNJBUzBXXqjWMk2Yj1QO8XxN+LUZtNFUut+2K2yKANOPwM526w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=IrxT7snw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kgm3zxxU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=IrxT7snw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kgm3zxxU; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fKDTp6ryqz8sWT;
-	Mon, 23 Feb 2026 09:26:38 +0100 (CET)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id E600866F46;
-	Mon, 23 Feb 2026 09:26:37 +0100 (CET)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <068a5363-de97-4d67-94a9-c9a2baed68b0@leemhuis.info>
-Date: Mon, 23 Feb 2026 09:26:37 +0100
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A13DD5BD01;
+	Mon, 23 Feb 2026 08:54:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771836858; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rl91X3IzBKeDPouMTQHRcAQhhqjeu2Pad47S/POEbDM=;
+	b=IrxT7snwZubOuD9mc8UGe9E9e/HO3BU5NzTH6+sPnjFoiLDlF0KWIKkUzZAwMdKnkUwhha
+	7mxU12T3EwAcCfrQ1bSAq3qiKwu9Vb5AMpJDVpt2OIgP9OzQ/8X36iMMngGmKvnte5FG8h
+	cGAcesANbSWEbkHbpIfU9G7CJlNW1tU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771836858;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rl91X3IzBKeDPouMTQHRcAQhhqjeu2Pad47S/POEbDM=;
+	b=kgm3zxxUib24usIRUiUKHcSteCqlWVYSyua/aeudoRdZ7rNGrElHgsZd13h4wUFD8jJSvW
+	Hgb2YCT+ACtyiwCg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IrxT7snw;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kgm3zxxU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771836858; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rl91X3IzBKeDPouMTQHRcAQhhqjeu2Pad47S/POEbDM=;
+	b=IrxT7snwZubOuD9mc8UGe9E9e/HO3BU5NzTH6+sPnjFoiLDlF0KWIKkUzZAwMdKnkUwhha
+	7mxU12T3EwAcCfrQ1bSAq3qiKwu9Vb5AMpJDVpt2OIgP9OzQ/8X36iMMngGmKvnte5FG8h
+	cGAcesANbSWEbkHbpIfU9G7CJlNW1tU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771836858;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rl91X3IzBKeDPouMTQHRcAQhhqjeu2Pad47S/POEbDM=;
+	b=kgm3zxxUib24usIRUiUKHcSteCqlWVYSyua/aeudoRdZ7rNGrElHgsZd13h4wUFD8jJSvW
+	Hgb2YCT+ACtyiwCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5D5D23EA68;
+	Mon, 23 Feb 2026 08:54:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id IXaHFboVnGlbfQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Mon, 23 Feb 2026 08:54:18 +0000
+Date: Mon, 23 Feb 2026 09:54:18 +0100
+Message-ID: <874in7n8lh.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Panagiotis Foliadis <pfoliadis@posteo.net>
+Cc: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Charalampos Mitrodimas <charmitro@posteo.net>
+Subject: Re: [PATCH] ALSA: hda/realtek: Add quirk for Acer Aspire V3-572G
+In-Reply-To: <20260221-fix-detect-mic-v1-1-b6e427b5275d@posteo.net>
+References: <20260221-fix-detect-mic-v1-1-b6e427b5275d@posteo.net>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Display freeze on VT switch back to X11 since v6.16
-To: Ricardo Ribalda <ribalda@chromium.org>,
- =?UTF-8?B?QW5kcsOpcyBQw6lyZXo=?= <andres.f.perez@gmail.com>
-Cc: stable@vger.kernel.org,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev
-References: 
- <CAD0gVBsyzYNA6ydPwg9mJ9VQzYg4zPAi24JQ13-=0KtdbQ039A@mail.gmail.com>
- <CANiDSCsMVE7qAcjcjbjhYSMoyypkR5Nq-ZA-e=CJVY5CUGAG7Q@mail.gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: 
- <CANiDSCsMVE7qAcjcjbjhYSMoyypkR5Nq-ZA-e=CJVY5CUGAG7Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: 
- <177183519851.1298619.12932841076943444255@mxe9fb.netcup.net>
-X-NC-CID: AQ3l18WOcfyVsWr3MsuKtObqMCjuDgmJUet3MF1F4RC9SMhvp/U=
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
+X-Spam-Level: 
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217708-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,leemhuis.info:mid,leemhuis.info:dkim];
-	FREEMAIL_TO(0.00)[chromium.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,ideasonboard.com,kernel.org,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,lists.freedesktop.org,lists.linux.dev];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217709-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 4EEB1173076
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:mid,suse.de:dkim]
+X-Rspamd-Queue-Id: 864C0173543
 X-Rspamd-Action: no action
 
+On Sat, 21 Feb 2026 20:40:58 +0100,
+Panagiotis Foliadis wrote:
+> 
+> The Acer Aspire V3-572G has a combo jack (ALC283) but the BIOS
+> sets pin 0x19 to 0x411111f0 (not connected), so the headset mic
+> is not detected.
+> 
+> Add a quirk to override pin 0x19 as a headset mic and enable
+> headset mode.
+> 
+> Cc: stable@vger.kernel.org
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221075
+> Suggested-by: Charalampos Mitrodimas <charmitro@posteo.net>
+> Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
+
+Thanks, applied now.
 
 
-On 2/23/26 09:10, Ricardo Ribalda wrote:
-> Hi Andrés
-> 
-> Thanks for doing the bisecting
-> 
-> On Sun, 22 Feb 2026 at 22:56, Andrés Pérez <andres.f.perez@gmail.com> wrote:
->>
->> # OVERVIEW
->>
->> Since kernel v6.16.1, switching from an X11 session to a text VT and back
->> freezes the display on a ThinkPad P15 Gen 2. The system remains responsive
->> over SSH; only the display is frozen. Bisecting identified commit
->> d1b618e7954802fe ("media: uvcvideo: Do not turn on the camera for some
->> ioctls") as the trigger. Reverting the logic change in that commit
->> fixes VT switching
->> on v6.16.1, v6.17.9, and v6.18.9, but that is not an actual solution. Wayland
->> compositors (e.g., river and sway) are not affected.
->>
->> Last good:  v6.15.9
->> First bad:  v6.16.1
->> Bisect result: d1b618e7954802fe media: uvcvideo: Do not turn on the
->> camera for some ioctls
->>
->> ## Hardware:   Lenovo ThinkPad P15 Gen 2i (20YQ0031US)
->> CPU:        Intel Core i7-11800H (Tiger Lake-H)
->> iGPU:        Intel UHD Graphics (TGL GT1)
->> dGPU:       NVIDIA T1200 (not involved in eDP output; driver: nvidia-open)
-
-Could this be caused by nvidia's own driver, even if it is not supposed
-to be involved? Might be worth ruling out with a proper vanilla kernel,
-ideally really fresh, so 7.0-rc1.
-
-Ciao, Thorsten
-
->> Display:    15.6" 1920x1080 eDP, 10 bpc capable (EDID 1.4)
->> Webcam:     Integrated Camera on PCH xHCI (Bus 003 Port 004)
->> Firmware:   LENOVO N37ET61W (1.97)
->> OS:         Arch Linux, Nix home-manager, X11 + xmonad, no display manager
->>
->> ## Symptoms and reproduction steps:
->> 1. Boot, start X11 on tty1 (startx).
->> 2. Switch to tty2 (Ctrl+Alt+F2): works.
->> 3. Switch back to tty1 (Ctrl+Alt+F1): display freezes.
->>    - Frozen on the last frame shown before switching away.
->>    - System is fully responsive over SSH.
->>    - Other VTs switch normally between each other as long as X11 is
->> not active on them.
->>    - Killing X does not recover the display. A reboot is required.
->>
->> # DEBUG ANALYSIS
->>
->> On v6.16.1, the VT switch back to X triggers a full modeset due to pipe
->> configuration mismatches detected by intel_pipe_config_compare:
->>
->> [drm:intel_pipe_config_compare] fastset requirement not met in pipe_bpp
->>   (expected 30, found 24)
->> [drm:intel_pipe_config_compare] fastset requirement not met in dp_m_n
->>   (expected link 269484/524288, found link 336855/524288)
->> [drm:intel_pipe_config_compare] fastset requirement not met in dpll_hw_state
->>   (expected cfgcr0: 0xe001a5, found cfgcr0: 0x1c2)
->> [drm:intel_pipe_config_compare] fastset requirement not met in port_clock
->>   (expected 270000, found 216000)
->> [drm:intel_atomic_check] forcing full modeset
->>
->> On v6.15.9, the same VT switch shows no such messages.
->> no pipe_config_compare runs, no modeset, no freeze.
->>
->> # BISECT AND VERIFICATION
->>
->> The bisect converged on d1b618e7954802fe in the uvcvideo driver. This
->> commit adds a switch statement to uvc_v4l2_unlocked_ioctl that allows
->> certain V4L2 IOCTLS to call video_ioctl2 directly without first calling
->> uvc_pm_get/uvc_pm_put. Prior to this commit, all ioctls called uvc_pm_get
->> before video_ioctl2.
->>
->> ## VT switching verification across kernel versions:
->>
->>   v6.12.74 arch pkg:   WORKS
->>   v6.15.9 arch pkg:    WORKS
->>   v6.15.9 from source: WORKS
->>   v6.16.1 with d1b618e reverted:     WORKS
->>   v6.17.9 with PM wrapping restored: WORKS
->>   v6.18.9 with PM wrapping restored: WORKS
->>
->>   v6.16.1 from source:  FREEZES
->>   v6.16.1 arch pkg:     FREEZES
->>   v6.17.9 arch pkg:     FREEZES
->>   v6.18.9 from source:  FREEZES
->>   v6.18.9 arch pkg:     FREEZES
->>
->> ## Things that do not eliminate the freeze
->>
->>   - module_blacklist=uvcvideo on boot
->>   - CONFIG_USB_VIDEO_CLASS=n (compiled out)
-> 
-> This is puzzling me a bit... You are saying that if you do not build
-> the uvc driver, the freeze is still happening?
-> 
-> Am I understanding this correctly?
-> 
->>   - i915.enable_psr=0
->>   - Bypassing intel_vrr_transcoder_enable/disable (no-op)
->>   - xrandr --output eDP-1 --set "max bpc" 10
->>   - Xorg config FBDepth 30 (No effect on pipe_bpp)
->>
->> ## Workaround patch
->>
->> Reverting the optimization from d1b618e to restore the unconditional
->> uvc_pm_get/put wrapping for all ioctls. This is not a proper fix.
->>
->> diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
->> index 9e4a251eca88..15057b47ec4f 100644
->> --- a/drivers/media/usb/uvc/uvc_v4l2.c
->> +++ b/drivers/media/usb/uvc/uvc_v4l2.c
->> @@ -1199,33 +1199,12 @@ static long uvc_v4l2_unlocked_ioctl(struct file *file,
->>   unsigned int converted_cmd = v4l2_translate_cmd(cmd);
->>   int ret;
->>
->> - /* The following IOCTLs need to turn on the camera. */
->> - switch (converted_cmd) {
->> - case UVCIOC_CTRL_MAP:
->> - case UVCIOC_CTRL_QUERY:
->> - case VIDIOC_G_CTRL:
->> - case VIDIOC_G_EXT_CTRLS:
->> - case VIDIOC_G_INPUT:
->> - case VIDIOC_QUERYCTRL:
->> - case VIDIOC_QUERYMENU:
->> - case VIDIOC_QUERY_EXT_CTRL:
->> - case VIDIOC_S_CTRL:
->> - case VIDIOC_S_EXT_CTRLS:
->> - case VIDIOC_S_FMT:
->> - case VIDIOC_S_INPUT:
->> - case VIDIOC_S_PARM:
->> - case VIDIOC_TRY_EXT_CTRLS:
->> - case VIDIOC_TRY_FMT:
->> - ret = uvc_pm_get(handle->stream->dev);
->> - if (ret)
->> - return ret;
->> - ret = video_ioctl2(file, cmd, arg);
->> - uvc_pm_put(handle->stream->dev);
->> + ret = uvc_pm_get(handle->stream->dev);
->> + if (ret)
->>   return ret;
->> - }
->> -
->> - /* The other IOCTLs can run with the camera off. */
->> - return video_ioctl2(file, cmd, arg);
->> + ret = video_ioctl2(file, cmd, arg);
->> + uvc_pm_put(handle->stream->dev);
->> + return ret;
->>  }
->>
->>  const struct v4l2_ioctl_ops uvc_ioctl_ops = {
->>
->> Andrés
->>
-> 
-> 
-
+Takashi
 
