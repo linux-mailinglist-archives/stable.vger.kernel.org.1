@@ -1,340 +1,260 @@
-Return-Path: <stable+bounces-217736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOSWHNc/nGlLCQQAu9opvQ
-	(envelope-from <stable+bounces-217736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:53:59 +0100
+	id 2LKBKvRDnGk7CgQAu9opvQ
+	(envelope-from <stable+bounces-217737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:11:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C92CC175BBC
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:53:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53514175EF4
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:11:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BEE903077E7D
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:52:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 64D8A305C8E4
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29ECD364E9D;
-	Mon, 23 Feb 2026 11:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88C5364EBC;
+	Mon, 23 Feb 2026 12:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SdJl8l2Q"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WBFztR0x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011055.outbound.protection.outlook.com [40.93.194.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EC33612F5
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 11:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246A935CB8C;
+	Mon, 23 Feb 2026 12:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771847549; cv=pass; b=GjsvVqTlAVlsHRuAk+NUG9nMZ7y3XVX9iktT8ZiKrsyEnxpUtB2Pkb0A+ambUk9/WRmNUb0D1sBFf9Xo2nOClKDViXpxhb3uoTDZEGC6QdzPfSwrVW+q0fGeLYQ4aqothwxHiNTni8dwZguf213GH6W8h0Q7xdowFyLUfqfTT54=
+	t=1771848478; cv=fail; b=djtO29unuffQA2P/lOLQmXhKydXyE33pyyBOWv+gz3/w4bhvCgZ1s9HTRzNHUt58lPJigPjgdnkdIp+d9b9ySeP2mAfY5Aq0WAXRn89a8sRLhxYfk0+sJKPA+kPKDMM6QRKzPI4EL0SDwMmvDcVl7l01Ip6Q+jusB39nru/IFhI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771847549; c=relaxed/simple;
-	bh=+d1Gsvyn8shZSpEx0gTkDzpXXrDC99n6t6b6nk1CH4w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UOlLV4DCL+CAV/eN97pbkO+hHPvg6p2Nij408AUyuxSjfG+/l34MkkyRwkcBGdtUofg4B2we/HkhwWLAS6ZjufbXxqAWMCdP/P5NfE74oF1gSlAy5tdM/SWd5HWh3ECeGtqUcfax3fX6rvLF97asUdwbF4sLLIHAqYdEzoSpX/o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SdJl8l2Q; arc=pass smtp.client-ip=209.85.221.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5665171836cso5092775e0c.2
-        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 03:52:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771847546; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RMCA/yMrA104UijH7tYBOVmdeetTbW4ABIFzR4AXOJanMdnCDnmv1FCtbmu1NyU6N8
-         r5ovlMDzYzUr9n9m9SDXhWuIFqAw9NnvW/AolU1cCJiPOaR0EwF0WqVWKcxqx8ZfAGL1
-         XQZLQtTffsAq0s3Gb3ZjbHrNEYRvbFUWEGIBpHKg/pDBmaZ2+HLm8/cJcvZ4T8LN0VrH
-         bbFtppyOOf6ikgII1dV/Qjl9vWQ37PQCTxKj7lP9Nxc9DQVenVZdSbFvRqp0/V5rVKpD
-         qdliAx84es69iKX3PX2lGyQzZnljvyVUely6d9hTphwE8N2oyGWIMjBoLCM98iEvTriK
-         gzaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VGP11KQ2dHKSZizL7MNew2Tz13D8uXvvu4p+lY24KEM=;
-        fh=tWjkItap8BCfuwsF0mlP6VUoAtKg7H1/t0Xm4aw5xLc=;
-        b=JTFDva+tdoCRND0b5B4qvrmcTqos9d+uJkRNqLSi5q/c3bllMlfBZMvnGiiyH8vLdt
-         zNHWUAVqa9nF8mjG9omNt1/f2eMXM3aQL1eqRLymhidD8MPGooBCyWZV3b0h42zXjKFj
-         4XOoDwfEfs2Vu9Y7nvHt6wS/Kxis36nCxvU5EKyP5CMNIj+b+zEBTSgzqb4vUEnwM8sm
-         gUxmVEYuS3DokKTx8bMQLVoSs+sC9+gmLoZvp5DNw5pnRbrBfR95cOXGpXz4cb4rp2Qa
-         mzOFipuXNSGXOD6cnWfa15o4B3s5rn/xtDyC2Z/AOXGy1pUL7zeVpRCy6Yw+98rQt2So
-         Nk0Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771847546; x=1772452346; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VGP11KQ2dHKSZizL7MNew2Tz13D8uXvvu4p+lY24KEM=;
-        b=SdJl8l2QMJn/VU+mTyUzHNxQy6JuPSh+scKd7W1IfTFQwiE3YjeJ1jbmy4gWvqCeco
-         iGVdyh/woxtkDEOZCh0qgb/vJ3O3QFq2B5tBKa8dFLhfvqUabEVfGcGJ4pK2hAsnGBOh
-         dMWS81ePtRWe5t4s1tcAuffVJ5/pzB5vONQ8nAl3Axm79NS2ScR1gh0Kjv5C/6eLtayU
-         QtJWALveyZYv2fPrBBfmRxvtSR0juoXb3j21C1SVVvwzphUMDBzuPdnJ8YI1/LPSNiPT
-         ngqOYR5LgX8IN47IlqL5q1Yjo8mjhGHENxLUfjtZTwNUV1HPWDrNPCpQ6tgO+sdh2q8Y
-         atFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771847546; x=1772452346;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VGP11KQ2dHKSZizL7MNew2Tz13D8uXvvu4p+lY24KEM=;
-        b=QT6vYL6GRW3nV3VDaPcQM8x8tK5TOrY1ZcaiY8PSg9nLvnXjfS6KzzxRPd9AOdY6v2
-         evgJOPXD3US9o0Hig6r6r5hCrA6m4c8RLnIs9BXR16bq8E/lBKyo+1ROWZ9i4KDIUNIL
-         AKXqEGyWWfmQk5h+QqWblH4L759LIZo5Eo5VWs+XqhpZ+2aODxpvq0Gg1/gJ/wQcYkC1
-         glQy0N7cUX91ApHwVVFtuqDRjqEeAyzs5Gg+y+9U8jVYKTxoSX17206ZoJjlesln7maX
-         B0Fir7EhH62IxOnnaDBacmmwQy4u498lDzETJMT+r8SAcmJ9lzCF0NUoyzSlqMlY8EyG
-         u3yg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1GKqRT3OLWDPPH+HfnaNJvxWNfmco9B2pl+It2HZb+X7LCPoCwST4bKK2z2gAD8/QmCc8B3s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxOnosvLhxmXWdbIYc6jHugDfBpKGwyS7XIzdW73w5rQEoRLgV
-	Rbld72bznFQGs4vhDPdIqjdABu8oh4JB9mGOOYoz5ORJQ52mHhcz51gzC4iavYJ5dNWBWFah96s
-	StoC4QALGzvl+D3YM2WP55mWL0PqaRxc=
-X-Gm-Gg: AZuq6aJ2zGdBmNIZeu/VjE2WY5EMillkf5OhK+kwuWLr8P2Zyc4ILikcokiy1JrodS0
-	SLvO9BYbLatPT7W337JF1lm00107GEIlpBdvaBolNShBefD+CMpkoXG8TP7U/Ie0VAHRb9N814X
-	KoLIX/RAqm64eFdQboyO8BFoHo9Ii8Z5Dgv5jE+b0ZTEke310EWqpEuvjEdKEhQy2Zgz/iq3qi0
-	ZpwCO1wmBG31D2C+tKY+mcuvvFAWYktc/L3J9iFsIBZ6mpiabfPXsTnGtQS03drcGPdZBCKYK7A
-	K5VU6d8VMT3SPb278WHfc4JSMH5jJsStKsAIVwrVim29QRzQ6aWRWEL6UTtYYng+cfiIER6gQyj
-	bpcbmS2aiag==
-X-Received: by 2002:a05:6102:4194:b0:5eb:fc32:935c with SMTP id
- ada2fe7eead31-5feb2ea40afmr3964742137.3.1771847545558; Mon, 23 Feb 2026
- 03:52:25 -0800 (PST)
+	s=arc-20240116; t=1771848478; c=relaxed/simple;
+	bh=//higwwKl1edAfwVU3hNQ3ydXfyHBmUDIsQq1mMlSsQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qUJQ35ZFLs2zV5oWOjQh9SM1XkgGrJlmejVI7hIGX4ILlguqqDZ99X6XpUZVdNtTOBuRIWm30gAirbvOk4QktjL9wqO5XdY29OOaYM6Ufmr04lhMrZTPuUA42xy03oInQKvQ8TQCnJ89gUtSZ3C/wGoLfFvkBUSWC6YXuWF2U1E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WBFztR0x; arc=fail smtp.client-ip=40.93.194.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fyDIGrjx4YilFq/ibBR6/pytWduLh7Jm4nSZQiapu1ubWXtfDD9ZbdkunrpQw95WjHHFjlXRiiK6nQljcyC9EmDTTVt8b+CNZJom5NtDjjpw8VqPP4Z50bVOCFJO/p/CiK0FSx+hNzwVLGfVWFtzx/kBz2ZxypKa399Ta+UY+/srnU0cFfdwgwurpbn9APhSQ7Gu4P2Mxht/dID5gYD1L8F47TMCAC/2DIiuckiH1dmzXr6XQGdE0BBcNisAsA6kAAHVWOs5VtFkpTzX0ETxD3WnKe+vY9XnnHNVx7rsx3pCSIT99uFtju7QqPwuRhEWQa7e5ETQ25zfG+xIDJrTxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IW1phrt9LazKc/W+sX7Yu5k9I9VcsBzq9oUaUgMTJdI=;
+ b=ta+72x6kQaYJDLRe7cPDGC8z6xdkDP8HOneiKBZAmZFQNBL9GLGBo34VO8XotaBuEGHHPOD4mUApG8g9B3zyWpTPF7p5NKpsCPQVOQfTE27HrsdHrEdcPnb1hgkiR8Ug21FB3dEiLMV4oWGz8GKVXX8KKXE2z8o+GaCxBEklac2fLS7DlFEh2OSJBQb+XiOT8zg0DDHYG/uuiSmJ8KRCWz2oCKy/znHnD8r6fShOhdlQnAWvSALPG+aJYj8TQtC7DwgorF3jAUAszBoa50/jFRZMuaSrwpWFRIwvw7UtagG3rvmLc+7s5WSPDXC5OIa0ElDFErbdMv62o1qNRIt2VQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IW1phrt9LazKc/W+sX7Yu5k9I9VcsBzq9oUaUgMTJdI=;
+ b=WBFztR0xl65kEsJbVvSkZ2viDwV84xwyhHfbLZsk6s9o7MKQeTqQxCbeamTnCSZvLAp4u2AwMi+Efe6eYFUFUY/LBorvmvnQwtUDJ3UDnTpeRaXwGWK+3R2GdGNE1yOmXELwwYCFZTMTBmds9f3vQAAeErcpWpiMT34O9bqKZQo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB2860.namprd12.prod.outlook.com (2603:10b6:5:186::11)
+ by MN2PR12MB4469.namprd12.prod.outlook.com (2603:10b6:208:268::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.14; Mon, 23 Feb
+ 2026 12:07:54 +0000
+Received: from DM6PR12MB2860.namprd12.prod.outlook.com
+ ([fe80::b2e7:252a:a896:8a19]) by DM6PR12MB2860.namprd12.prod.outlook.com
+ ([fe80::b2e7:252a:a896:8a19%6]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
+ 12:07:54 +0000
+Message-ID: <abdf4f89-90a7-84c7-af7c-f070073b399d@amd.com>
+Date: Mon, 23 Feb 2026 17:37:43 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH rc 4/4] RDMA/ionic: Fix kernel stack leak in
+ ionic_create_cq()
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Allen Hubbe <allen.hubbe@amd.com>, Andrew Boyer <andrew.boyer@amd.com>,
+ Gal Pressman <galpress@amazon.com>, Mustafa Ismail
+ <mustafa.ismail@intel.com>, patches@lists.linux.dev,
+ Roland Dreier <rolandd@cisco.com>, Shiraz Saleem <shiraz.saleem@intel.com>,
+ stable@vger.kernel.org, Steve Wise <swise@opengridcomputing.com>,
+ Gal Pressman <gal.pressman@linux.dev>,
+ Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
+ Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org,
+ Michael Margolin <mrgolin@amazon.com>, Yossi Leybovich <sleybo@amazon.com>,
+ Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+References: <4-v1-83e918d69e73+a9-rdma_udata_rc_jgg@nvidia.com>
+From: Abhijit Gangurde <abhijit.gangurde@amd.com>
+In-Reply-To: <4-v1-83e918d69e73+a9-rdma_udata_rc_jgg@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0073.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b3::6) To DM6PR12MB2860.namprd12.prod.outlook.com
+ (2603:10b6:5:186::11)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAD0gVBsyzYNA6ydPwg9mJ9VQzYg4zPAi24JQ13-=0KtdbQ039A@mail.gmail.com>
- <CANiDSCsMVE7qAcjcjbjhYSMoyypkR5Nq-ZA-e=CJVY5CUGAG7Q@mail.gmail.com> <068a5363-de97-4d67-94a9-c9a2baed68b0@leemhuis.info>
-In-Reply-To: <068a5363-de97-4d67-94a9-c9a2baed68b0@leemhuis.info>
-From: =?UTF-8?B?QW5kcsOpcyBQw6lyZXo=?= <andres.f.perez@gmail.com>
-Date: Mon, 23 Feb 2026 11:52:04 +0000
-X-Gm-Features: AaiRm53kqVqwYlk73dxvSEeN9WnimirsmxYiC5QcBDjE53JtGAA8jfNwC48NL8s
-Message-ID: <CAD0gVBs4m9FpBZ9eVcxRK5y601WPkatGE6e9fi1iK0YA=CiMHw@mail.gmail.com>
-Subject: Re: [REGRESSION] Display freeze on VT switch back to X11 since v6.16
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hansg@kernel.org>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, intel-gfx@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB2860:EE_|MN2PR12MB4469:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46c11a17-823b-4a5d-c50e-08de72d42c5b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RlNVb2FWd0xlMHZXMmVleHF3K0ZuMnovaGQ5WnEzSEVUSm1GTlc5WElTNVB1?=
+ =?utf-8?B?VTIxVnh2OU9McXN2ZWhPSjltcDhHeUgvdXF3S1Z0VFpibWxTT1crOWhSZy9X?=
+ =?utf-8?B?TlY5ZGQvZ3l2ZitKcmZENCs3QUxHazVIOEFFVXg1eXRFRVhpMFpIUnlxNWwr?=
+ =?utf-8?B?aUlmckZ3VlMwN3BUTG0vMWZjQWhXbnNlL2Zmd05xKzF3OGI4bTBvYXNpL05a?=
+ =?utf-8?B?YklDNjNKT2RYNG5jVGFUUVRaU1NLNUl1QU5xaWswb3g1ZWhLM2Zua0dKbmlE?=
+ =?utf-8?B?NkNhMnpYQmxqNHllRUYvWi9nMmgxb2lXQjZ6Tit1N2s1WHB0UVhadURpV2Jy?=
+ =?utf-8?B?WmRxQTJZL2JpU3g1NmJJbTFqL1NSdXdITnZ5WmxUNUtZUm9lNG9FK2w4aGM1?=
+ =?utf-8?B?eWVtZE9mdUJYWlYwREhUMnVaQ1pPZGpDc29laVA0SGV4VTlBZTVaSkxTR2xG?=
+ =?utf-8?B?eEFicHJjZ1dCSk02MmplK3R5V0Q5RDRMSmt5U3hMdEVqbUtvdFJ4YlBYZXpu?=
+ =?utf-8?B?cmNsazk0YUFKZUdOMnNTSzVjMGZVTnZUVHA3YjNmb2hPZGJ3V01ZaHFvbGhL?=
+ =?utf-8?B?YWdMRzJJOVJ6UW4yYUpNb2Y4eUJMdmpQYXhpbnIwZWFWQmdPemRISXpaR1BP?=
+ =?utf-8?B?ZkR0Y293cEk0cEJmaFJRRUpqdE05ZWhSVkl2UlRNampmcGQ5NE9lNjhqZVgw?=
+ =?utf-8?B?amhEKythYUFacWpFSmJPK1k0WksxbFNZcUhOOUJnUzJRbEVGUnhsYkVHaUY5?=
+ =?utf-8?B?VVFKVnAvUlFWUU00bG1ETWg2cWFFWUxZSmsrdkpUZjNxRm5RZ3N1K09xVmxl?=
+ =?utf-8?B?amhidXRIQU85cDluenZ0TzNYeVVkUDZqQzFiaEdhNC9yaTBWeEQ2bXQyYWsy?=
+ =?utf-8?B?OFhjL0pyekNkY1VGem5Ud28wemxmTTJjcUo1ZkpMa0lwV0gzREo4cEFaT0Yw?=
+ =?utf-8?B?cHlKdVRGUFBDKzFKY25FUHMvaVVMRFZXVXVRa3RuK1BkWFU1Y0ZiVEV6Yk9t?=
+ =?utf-8?B?cHhyMFgzWFF1d1dsWVUxUGt2SVlYT3NzOHVkTTlGMmx3ZUFVb2VBTit3WU4y?=
+ =?utf-8?B?cEZ6ZW9rc3Nhemc2eXFvZkw2VW9STjVTa2kwbmZDeWVqVkUvTWVHODNOOG5s?=
+ =?utf-8?B?MDZtLy9OQXBycldvS0VWNURxcG85WVp1Z3FZaTRHNXpidkJRMFdMZE5PRHpP?=
+ =?utf-8?B?RmNBRUlTa0wyU0JYbkduaGE4cFM0NjV4NmNPVlpKeWlnc1BPakNuWjBqNjVH?=
+ =?utf-8?B?M205TkxvbkZycERuQSt4WTRvM2lNV1pIQU1iSnl1NUlJbnBuaGdDYUs1cHdN?=
+ =?utf-8?B?VWtmSTFBdlZNRkg5N3pITXJBMk1MbjBOU3NxVHdaSnZNYVBFS2dhOXVrVHhP?=
+ =?utf-8?B?TXVXZHl1VGZsVXo0ZkN1WGNpRXlCVnJOREZETnM1c2JwT2sxdUZ2SW5QUzUw?=
+ =?utf-8?B?NkRKb0tBeXA1anpyblJOM3lDaThQYUFEdlRiM0dUZlhQWGptUkQwU2NaSU1t?=
+ =?utf-8?B?R0E5VlJmZ3MvTmxFR1c0aURDTFFqUk5RQU1ycEcvcFE3V3puSUdadU5xbXNw?=
+ =?utf-8?B?a2U2QWhKYXQwQURSTDNPcUdrWnRwd1ptYXVqOUFVMDloWlYweThJTmNOVGZk?=
+ =?utf-8?B?allaallnaXpZZDB3R2RNZmpNajBQMjc4dGFYMG9OM1Nqc3FmQk5xUDRUYmtG?=
+ =?utf-8?B?QXZsaHlUTTAraW5ZTEdNVVZwY212dzBNeE81R0dyZURGa3dUeG1jckFNZXZj?=
+ =?utf-8?B?L0tVQjNObVRQbEs5RzRRa0FTRGRLZlhlVFNGM28xWVNqS3ZPYk1qVlJTcjds?=
+ =?utf-8?B?djl1aUhjQ3BaTUN5Y2Z0WDg1d2FPU3o3OWhmSHlqN3RZM2FBZ1JYQ0hSeGxh?=
+ =?utf-8?B?TzM2SGVQS1dYZzloR3Q3dkU2UzFORWlYSjN4UkpnVUxhQ1hmbWJsdFMxTzds?=
+ =?utf-8?B?TkEya0N4S0tnckZVOWdOendqNVlTNDNrTUlMVkNkYmkrRmt0Qm5hcDhqdGdz?=
+ =?utf-8?B?VU5obXdlUTdqMG04eFJPbTNzZXluT2F0ZEdzN2ZHWldvckZkaFBMYk8vUW5Y?=
+ =?utf-8?B?TlpRY1JUcmNKMWttTGpmRVFMR3dSd1doVVBEZURwNFpGTWszckk2MTg3cVNz?=
+ =?utf-8?Q?WyuY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2860.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SHBPVlo2azArYWQ3MUQ4WUFRZGxLekptY0hpRzUzejdrUzU0TmFFVEJyZ05v?=
+ =?utf-8?B?ZU1OdmZsc212QzVWbHdsV21PTWFJc1J0cFhIRjI5Q0RzSk4xdHE0eXViSHhi?=
+ =?utf-8?B?aFFZdEg5YUc2WDZnc2RobDYrdi9oMC9MTWlxMnB3b3JDTm5qTndiOFpHZjRw?=
+ =?utf-8?B?S1Y5L0RWNGhYYmh2aHNXRFlxaklWN296YW1YYm53NHArODJIdnhRY21yY2g4?=
+ =?utf-8?B?YXdzNHNqTUhWY0FDSkRNUFg1UVlmTnZUU3ZRZWFSK0dGWFFvV2N1NDNPbTZw?=
+ =?utf-8?B?cHpGOFFhdzFQUFBpQUJZT0tSWGhUQmoxemhiL0FiSG1aQWZwbTNkMUROWGR1?=
+ =?utf-8?B?bGt3RktZd0NnYmFiZW5odXBwYlhqeTVZdExNYlltQzNOMEtZeEYrMzZ1M3Ry?=
+ =?utf-8?B?a0QvdnRJQ1BVVXZZZHUwbUlRd21nc0hxa2x3akZyMCt5T0R0ZCtYeEZ0MUtw?=
+ =?utf-8?B?UVlZbVc5LzJzSFpnbThtQWNJSnMwV2hoL1Q1cW1tL3AwNHIrVWUyTGt5TjBp?=
+ =?utf-8?B?S25yODEza0Jhd2RobDluNXpoYWJkZXltZjNjUDRueFVMeUN5bnN6MHRzbEd5?=
+ =?utf-8?B?dUV3R3J0NjhIWFBER2x6bmo3dmtxak10WmNjUzZtaUd4UENvOGRpdVY4TU9H?=
+ =?utf-8?B?cW92VzZCTHUzWUU1NE5oRW13OHRGTnFVOU9neGZSZkdLZTJydVZEOHlWK2dE?=
+ =?utf-8?B?bUIvWERub0M3YlJ2Ym9rMFJaOTlkV0Z1OWQ4ZndXdERFaVBuNktRRDNoNC9Q?=
+ =?utf-8?B?Z08wNnpReFdOYTNCcDZYZEJjb0NMMWRlVEVOdXJ6WkM3Vm9JTXNjaG9iQTJl?=
+ =?utf-8?B?azV0VFJiaThsNnBGZnhWaitjaEpGeGJ3QkZNSC9meFowWGxrQnI4TVN5SXV3?=
+ =?utf-8?B?N2FUUFdQc2ZWRXJTWnc2OVVWZzd1elBMTzQzUnJacmY4bWZWTnphTTRtSXdR?=
+ =?utf-8?B?dzFxOXlRTjRwVlZBUElxOWlSZUl3cGZUZU81dXhUTzg4VFBrTTQ1UW1aUTBD?=
+ =?utf-8?B?Z3Z1L3ZIMlZFU0FSN1JEQmhncmVDZW5TQ0Ftc2Ruekl3M2NlYVBNbjI3LzlK?=
+ =?utf-8?B?amlhQkFOK1Fla3RUS1BORUtzM1JBaUVJZU5BQkpWdFpUVUZjMjNqcU9Bc01t?=
+ =?utf-8?B?aTMvdkQ4MWh4V2VybjZQUHRwa1VtUWs5Q2xNWXc1NnExVkwwczl1SXdVbGMx?=
+ =?utf-8?B?cW1tYlBxWVhDd1BjM3dSVVovOUhmYXZRVmZVQnUwM2VMb003eWFocVdUU1lM?=
+ =?utf-8?B?QkRTNnc0bTdXd3NocUZIc1YzUlZ4aDNrTWgzMGJ6Mlp6UVk1NTZqcG1KOWtl?=
+ =?utf-8?B?Y2dCQWRFZGdHclQ0Y040S01ZVmpoa0ZFR2VhaG9yWVRYRUs5VE5tYThHMWE4?=
+ =?utf-8?B?RjkwajdCK0tRK0g2MlVlSEpHSVZYcG5TWUE5TmpjWktURnptL3lqZkxyZnNr?=
+ =?utf-8?B?TDNyNjFUdHRCWFE2V3NyMktqUTVQajc0aHZYaXhodm5DZnZpRDZHVUc4ZDNr?=
+ =?utf-8?B?dGk0a3lPZlVyc0tuWDV2YTYxbU5WelRmVk9ka0xWZlluekYwQ24yaGNmNEI2?=
+ =?utf-8?B?V1JXbXFNeXJKT1FSTmdWeTNKandWNEhqU2pWT3o1bVpZM0s0WDQ1cnFFMkMz?=
+ =?utf-8?B?K21CcjVYSnJPcTJQWXJCVEpCT2U3OHFRNkdKOEpJcm0xUmRVNGdscUxsUUx5?=
+ =?utf-8?B?dFVoVGovaG5FVXhRNzBjNGlZdFBVR3BkTThVSkF2Y0lOZzJmMGRKSXpub1FQ?=
+ =?utf-8?B?cnBsMGdDTDZhaUgwcTIwWUxIdEN3TCsxVU1yYzNOaXA2bGJZeURVRGZCaWFN?=
+ =?utf-8?B?Z0FlS2U5NXhXd1RMaEV2Smc5bXBJdjM0blhaZzFxUTVxME9FMDRhM2Vrekgw?=
+ =?utf-8?B?THN2VnR1bHIyUGd0bTV4Y3hOMk12Rmozb1FWZk91ZUtDTkRGZ1dmaVMyR0d2?=
+ =?utf-8?B?VEc1VUlSUFFtcFdpNXVsbEFNbTJMK0NyZjVDV3NwY29MVDRtY2hMT2E2QXp2?=
+ =?utf-8?B?bGJQeDQ4Y1hHS0pCZDZSQXhXRzkvWXVNZmwrS0hpSXMxaytUREtxcHBMOU1s?=
+ =?utf-8?B?UE1aY2FZamw1RzFLNExpcC9YMGF1TG9RT2ZucjZZUy9teEhSUkRqT0xra051?=
+ =?utf-8?B?MEU5b3ZRK1JQdGdTV2xUSWsxbXpML2RHL1VWM2hFU0RPbE45enUwbFZ6MUVY?=
+ =?utf-8?B?Wk8vTFE0elJ4R0hOcjIyYWQySTB4Sk9zQnFCaVNaMWRBM0FXWUxJSFNYQWdv?=
+ =?utf-8?B?cjJ1OGJtYWNZeWFmYStzN3ByQXF5Z0Q0aHJGNkdPOXVnYWVEblNUbVlac0Zr?=
+ =?utf-8?B?SS96N2lkdDN5U1hYTjg0cEc4ZFRSUFl6L0t3OGNIR1JoOXZCeUxhdz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46c11a17-823b-4a5d-c50e-08de72d42c5b
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2860.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 12:07:54.0227
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 28od2/5o1zWRlBMZ6y3u6nGyXdUKfajJ17m9aoNsJ+o5K2Dus9hFPUosJ/ZI4nLyAiN/fOoTXwxofX/+YN5ItA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4469
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.49 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_MIXED_CHARSET(0.67)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217737-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217736-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[chromium.org,vger.kernel.org,ideasonboard.com,kernel.org,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,lists.freedesktop.org,lists.linux.dev];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andresfperez@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DKIM_TRACE(0.00)[amd.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,leemhuis.info:email]
-X-Rspamd-Queue-Id: C92CC175BBC
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[abhijit.gangurde@amd.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,amd.com:mid,amd.com:dkim,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 53514175EF4
 X-Rspamd-Action: no action
 
-Thorsten,
+Thanks!
 
-It's worth a shot. I'll give it a try and report back.
+Acked-by: Abhijit Gangurde <abhijit.gangurde@amd.com>
 
-Andr=C3=A9s
-
-On Mon, Feb 23, 2026 at 8:26=E2=80=AFAM Thorsten Leemhuis
-<regressions@leemhuis.info> wrote:
+On 2/16/26 20:32, Jason Gunthorpe wrote:
+> struct ionic_cq_resp resp {
+>      __u32 cqid[2];         // offset 0 - PARTIALLY SET (see below)
+>      __u8  udma_mask;       // offset 8 - SET (resp.udma_mask = vcq->udma_mask)
+>      __u8  rsvd[7];         // offset 9 - NEVER SET <- LEAK
+> };
 >
+> rsvd[7]: 7 bytes of stack memory leaked unconditionally.
 >
+> cqid[2]: The loop at line 1256 iterates over udma_idx but skips indices
+> where !(vcq->udma_mask & BIT(udma_idx)). The array has 2 entries but
+> udma_count could be 1, meaning cqid[1] might never be written via
+> ionic_create_cq_common(). If udma_mask only has bit 0 set, cqid[1] (4
+> bytes) is also leaked. So potentially 11 bytes leaked.
 >
-> On 2/23/26 09:10, Ricardo Ribalda wrote:
-> > Hi Andr=C3=A9s
-> >
-> > Thanks for doing the bisecting
-> >
-> > On Sun, 22 Feb 2026 at 22:56, Andr=C3=A9s P=C3=A9rez <andres.f.perez@gm=
-ail.com> wrote:
-> >>
-> >> # OVERVIEW
-> >>
-> >> Since kernel v6.16.1, switching from an X11 session to a text VT and b=
-ack
-> >> freezes the display on a ThinkPad P15 Gen 2. The system remains respon=
-sive
-> >> over SSH; only the display is frozen. Bisecting identified commit
-> >> d1b618e7954802fe ("media: uvcvideo: Do not turn on the camera for some
-> >> ioctls") as the trigger. Reverting the logic change in that commit
-> >> fixes VT switching
-> >> on v6.16.1, v6.17.9, and v6.18.9, but that is not an actual solution. =
-Wayland
-> >> compositors (e.g., river and sway) are not affected.
-> >>
-> >> Last good:  v6.15.9
-> >> First bad:  v6.16.1
-> >> Bisect result: d1b618e7954802fe media: uvcvideo: Do not turn on the
-> >> camera for some ioctls
-> >>
-> >> ## Hardware:   Lenovo ThinkPad P15 Gen 2i (20YQ0031US)
-> >> CPU:        Intel Core i7-11800H (Tiger Lake-H)
-> >> iGPU:        Intel UHD Graphics (TGL GT1)
-> >> dGPU:       NVIDIA T1200 (not involved in eDP output; driver: nvidia-o=
-pen)
+> Cc: stable@vger.kernel.org
+> Fixes: e8521822c733 ("RDMA/ionic: Register device ops for control path")
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>   drivers/infiniband/hw/ionic/ionic_controlpath.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> Could this be caused by nvidia's own driver, even if it is not supposed
-> to be involved? Might be worth ruling out with a proper vanilla kernel,
-> ideally really fresh, so 7.0-rc1.
->
-> Ciao, Thorsten
->
-> >> Display:    15.6" 1920x1080 eDP, 10 bpc capable (EDID 1.4)
-> >> Webcam:     Integrated Camera on PCH xHCI (Bus 003 Port 004)
-> >> Firmware:   LENOVO N37ET61W (1.97)
-> >> OS:         Arch Linux, Nix home-manager, X11 + xmonad, no display man=
-ager
-> >>
-> >> ## Symptoms and reproduction steps:
-> >> 1. Boot, start X11 on tty1 (startx).
-> >> 2. Switch to tty2 (Ctrl+Alt+F2): works.
-> >> 3. Switch back to tty1 (Ctrl+Alt+F1): display freezes.
-> >>    - Frozen on the last frame shown before switching away.
-> >>    - System is fully responsive over SSH.
-> >>    - Other VTs switch normally between each other as long as X11 is
-> >> not active on them.
-> >>    - Killing X does not recover the display. A reboot is required.
-> >>
-> >> # DEBUG ANALYSIS
-> >>
-> >> On v6.16.1, the VT switch back to X triggers a full modeset due to pip=
-e
-> >> configuration mismatches detected by intel_pipe_config_compare:
-> >>
-> >> [drm:intel_pipe_config_compare] fastset requirement not met in pipe_bp=
-p
-> >>   (expected 30, found 24)
-> >> [drm:intel_pipe_config_compare] fastset requirement not met in dp_m_n
-> >>   (expected link 269484/524288, found link 336855/524288)
-> >> [drm:intel_pipe_config_compare] fastset requirement not met in dpll_hw=
-_state
-> >>   (expected cfgcr0: 0xe001a5, found cfgcr0: 0x1c2)
-> >> [drm:intel_pipe_config_compare] fastset requirement not met in port_cl=
-ock
-> >>   (expected 270000, found 216000)
-> >> [drm:intel_atomic_check] forcing full modeset
-> >>
-> >> On v6.15.9, the same VT switch shows no such messages.
-> >> no pipe_config_compare runs, no modeset, no freeze.
-> >>
-> >> # BISECT AND VERIFICATION
-> >>
-> >> The bisect converged on d1b618e7954802fe in the uvcvideo driver. This
-> >> commit adds a switch statement to uvc_v4l2_unlocked_ioctl that allows
-> >> certain V4L2 IOCTLS to call video_ioctl2 directly without first callin=
-g
-> >> uvc_pm_get/uvc_pm_put. Prior to this commit, all ioctls called uvc_pm_=
-get
-> >> before video_ioctl2.
-> >>
-> >> ## VT switching verification across kernel versions:
-> >>
-> >>   v6.12.74 arch pkg:   WORKS
-> >>   v6.15.9 arch pkg:    WORKS
-> >>   v6.15.9 from source: WORKS
-> >>   v6.16.1 with d1b618e reverted:     WORKS
-> >>   v6.17.9 with PM wrapping restored: WORKS
-> >>   v6.18.9 with PM wrapping restored: WORKS
-> >>
-> >>   v6.16.1 from source:  FREEZES
-> >>   v6.16.1 arch pkg:     FREEZES
-> >>   v6.17.9 arch pkg:     FREEZES
-> >>   v6.18.9 from source:  FREEZES
-> >>   v6.18.9 arch pkg:     FREEZES
-> >>
-> >> ## Things that do not eliminate the freeze
-> >>
-> >>   - module_blacklist=3Duvcvideo on boot
-> >>   - CONFIG_USB_VIDEO_CLASS=3Dn (compiled out)
-> >
-> > This is puzzling me a bit... You are saying that if you do not build
-> > the uvc driver, the freeze is still happening?
-> >
-> > Am I understanding this correctly?
-> >
-> >>   - i915.enable_psr=3D0
-> >>   - Bypassing intel_vrr_transcoder_enable/disable (no-op)
-> >>   - xrandr --output eDP-1 --set "max bpc" 10
-> >>   - Xorg config FBDepth 30 (No effect on pipe_bpp)
-> >>
-> >> ## Workaround patch
-> >>
-> >> Reverting the optimization from d1b618e to restore the unconditional
-> >> uvc_pm_get/put wrapping for all ioctls. This is not a proper fix.
-> >>
-> >> diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/=
-uvc_v4l2.c
-> >> index 9e4a251eca88..15057b47ec4f 100644
-> >> --- a/drivers/media/usb/uvc/uvc_v4l2.c
-> >> +++ b/drivers/media/usb/uvc/uvc_v4l2.c
-> >> @@ -1199,33 +1199,12 @@ static long uvc_v4l2_unlocked_ioctl(struct fil=
-e *file,
-> >>   unsigned int converted_cmd =3D v4l2_translate_cmd(cmd);
-> >>   int ret;
-> >>
-> >> - /* The following IOCTLs need to turn on the camera. */
-> >> - switch (converted_cmd) {
-> >> - case UVCIOC_CTRL_MAP:
-> >> - case UVCIOC_CTRL_QUERY:
-> >> - case VIDIOC_G_CTRL:
-> >> - case VIDIOC_G_EXT_CTRLS:
-> >> - case VIDIOC_G_INPUT:
-> >> - case VIDIOC_QUERYCTRL:
-> >> - case VIDIOC_QUERYMENU:
-> >> - case VIDIOC_QUERY_EXT_CTRL:
-> >> - case VIDIOC_S_CTRL:
-> >> - case VIDIOC_S_EXT_CTRLS:
-> >> - case VIDIOC_S_FMT:
-> >> - case VIDIOC_S_INPUT:
-> >> - case VIDIOC_S_PARM:
-> >> - case VIDIOC_TRY_EXT_CTRLS:
-> >> - case VIDIOC_TRY_FMT:
-> >> - ret =3D uvc_pm_get(handle->stream->dev);
-> >> - if (ret)
-> >> - return ret;
-> >> - ret =3D video_ioctl2(file, cmd, arg);
-> >> - uvc_pm_put(handle->stream->dev);
-> >> + ret =3D uvc_pm_get(handle->stream->dev);
-> >> + if (ret)
-> >>   return ret;
-> >> - }
-> >> -
-> >> - /* The other IOCTLs can run with the camera off. */
-> >> - return video_ioctl2(file, cmd, arg);
-> >> + ret =3D video_ioctl2(file, cmd, arg);
-> >> + uvc_pm_put(handle->stream->dev);
-> >> + return ret;
-> >>  }
-> >>
-> >>  const struct v4l2_ioctl_ops uvc_ioctl_ops =3D {
-> >>
-> >> Andr=C3=A9s
-> >>
-> >
-> >
->
+> diff --git a/drivers/infiniband/hw/ionic/ionic_controlpath.c b/drivers/infiniband/hw/ionic/ionic_controlpath.c
+> index ea12d9b8e125fe..83573721af2c08 100644
+> --- a/drivers/infiniband/hw/ionic/ionic_controlpath.c
+> +++ b/drivers/infiniband/hw/ionic/ionic_controlpath.c
+> @@ -1218,7 +1218,7 @@ int ionic_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
+>   		rdma_udata_to_drv_context(udata, struct ionic_ctx, ibctx);
+>   	struct ionic_vcq *vcq = to_ionic_vcq(ibcq);
+>   	struct ionic_tbl_buf buf = {};
+> -	struct ionic_cq_resp resp;
+> +	struct ionic_cq_resp resp = {};
+>   	struct ionic_cq_req req;
+>   	int udma_idx = 0, rc;
+>   
 
