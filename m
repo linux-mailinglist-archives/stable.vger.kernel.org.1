@@ -1,209 +1,162 @@
-Return-Path: <stable+bounces-217720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJOdIdAsnGmcAQQAu9opvQ
-	(envelope-from <stable+bounces-217720-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:32:48 +0100
+	id 8IxLLWswnGkKAgQAu9opvQ
+	(envelope-from <stable+bounces-217721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:48:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC113174F08
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:32:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC8B1751B7
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 26C72302642E
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:31:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 441F3302F425
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557A235C1AC;
-	Mon, 23 Feb 2026 10:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B88E35CB60;
+	Mon, 23 Feb 2026 10:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F/v57GEz";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kXHwFG81"
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="uEYmNzuJ"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D4334FF41;
-	Mon, 23 Feb 2026 10:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771842655; cv=none; b=s5AJ8htWY3Kd2ujnmPxaKC4oqFnr9aPMp5pV7EegYWaOo+st0e7H1NVCscJzi3H9bS7m2kfPYzR2pn/2/v0CB70VfuTkaz+M1crdO5AbH99oDdJFE0Mybbg+9u99mr4ryXqOBI7XiZphnfK2nAgvY9HmI5d170x0XOObHy5x9JU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771842655; c=relaxed/simple;
-	bh=qnVIFbm1j4rtKlvtvGWiRFAMyvCCAKGcDPhd1pHIJZ0=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=I8lNakdhlAz6NhNPWaNtDSWNDwNGWNr3U77QYG3B7vonRDIceVv0gletDGxyLSZ3SS4kAH5udawM+z2ZxckMWSJyXQR1dp/z3n6Qpkl9locUQS4kx9I+4Cl8ifhQrByLpTNjqUc2UI6M4VRZgo8EQt4c/seYiLeO7HAN9AjB9UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F/v57GEz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kXHwFG81; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 23 Feb 2026 10:30:51 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1771842652;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gIXnMDP6SWiGCWv6ySuJmJBgBaWkeCyUDqIL3hBumbc=;
-	b=F/v57GEzm+wu7rOrXchSlrNY8QjhPkVInUEoZ/qh+H0kxgzovqJpjtPnHKArLOgHxHpQTy
-	IAzNohXn7MS/mwhe7htqOpdZE/Vp5bw9v0ezOLao59j8ik52MKelv1UX+Ge32UJCL6ZPDR
-	RCZBjvHzmUGJSMXTyTB5jRVT/k+Gt9itlYvMW/aM55ImWZGuVDj0TBtAMC8bZs5YGAraGV
-	bUZludpg247hXORYWcb/Cf8GJEeFOVyapP+/MYKi7zsAnOd1phDG9RiLxcqXpXelA1Iby3
-	kwP/n8/kLIG4eIm7uQkgoRk14QKT9ozm7H6L2kftmKiZe8ippu/Wjuz/fbgYEw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1771842652;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gIXnMDP6SWiGCWv6ySuJmJBgBaWkeCyUDqIL3hBumbc=;
-	b=kXHwFG81uTZbWT60ptrfRvr7o33x0v6jBuMsIDZsMzEZYkKsKe6Q2+ofeZ21385GiWwESS
-	qypxjCfUIZNcEYAA==
-From: "tip-bot2 for Zide Chen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel/uncore: Add per-scheduler IMC CAS
- count events
-Cc: Reinette Chatre <reinette.chatre@intel.com>,
- Zide Chen <zide.chen@intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260210005225.20311-1-zide.chen@intel.com>
-References: <20260210005225.20311-1-zide.chen@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BB71E9B1A
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 10:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771843686; cv=pass; b=G2wzulmLg1abhaC2AoTH4O03BsAGbYyf8z8Obj+yoNyelmkyrfz2+0SJGU1YMtf3Hq6w8WYy+8Y/7HIt12egZw5XBXaxsov930lL8DVkY0WWrujnZW1NSGkjih5oqF/Gdlkymp1QuwN0l9RWwVQ2yIQ9J4fSREi3u1mElvRizyM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771843686; c=relaxed/simple;
+	bh=QeOEsVeZ9klcyMYyvytk/qdh3OHqWAZ7aYcxi8/K3XE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bOCilfWLO6qKF05Z5WnvyoS3kaxhkKK5mWoenGNzhcgcTj/rBPPo2qf0hwjkgC+YwleXMUrMiderJbGZxC9xXP2auFEyjNhqZBwKulqyUvP0P3YRp1GxZ8FfC2Z26UElBuftVxIccXxwr7SbwAuC5nRgsT+OdPFSk8Xty7dbcIA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=uEYmNzuJ; arc=pass smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-79802e2c989so35280487b3.2
+        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 02:48:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771843684; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TTURvQmBf1DW2MjaSHO7d6UZaH3F7PIdlDdtO2vwM+EpP/8RsKJUn+Oc2j7Deg5be8
+         tls2jv21dK9NPjn6gaOuBFLGOmrGPt/jGWJ2NuDDoXI8wyUNCmceZhD2iQGSsU1VAKR7
+         Fa98AiVZHu4tW0A/AXd3vndQPSmlIxmxcGtic6IBI+LShF4O+1jaE75myCVBvGIZCLtQ
+         uSquf940JOmVy49q8ceNXvSwy/mlY+nypKOpL60piy5iBrXO5SIpFObO6XiMe52qJqk9
+         /Qb4g7kID1KLIzieUnxldftqLcGNaZVQj5+p9C7+7/Pifosby8GDZ6gCz47mw5dcRfcJ
+         oaEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QeOEsVeZ9klcyMYyvytk/qdh3OHqWAZ7aYcxi8/K3XE=;
+        fh=UgMciDhuX4md55bQQnjFuqEnbbZZQO8eqWVUVfd52IQ=;
+        b=N8GeCB3y4WL9Hk9knbIZbM+YgkIx3fUATyydWVnj9siHFU8SehZK+zu+VFS4ks++jx
+         U4nSuupzBLqAaYPkfbZIsNCzm5++Ofn+/bLobtsSgavlJMm062hCyLreaWBkZ91ulzzQ
+         Y4ruucmZUUKMkD2QcNhuKb3ESgSV6CsaVQ5jsuYNrZ7LRg+9gyUXEltVD6w90FMNYrj2
+         vGHSX20D9pnW2vrfSa6dtfnDo/Lbo5t9inK9S/4gtne1NT2M+AyGTrJxD/FQC9SNBQRd
+         go8cLxYtaH6R3nLElPfNBnExRImJM7xExsGGequiIvyc77gWJZUZcZjhuazohyBqwpP7
+         Z0Uw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1771843684; x=1772448484; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QeOEsVeZ9klcyMYyvytk/qdh3OHqWAZ7aYcxi8/K3XE=;
+        b=uEYmNzuJY4E+XG0xNDwub7CZrdrz5mdQdGFj34mvZciM20yomwImwvSEvREaXl/dvF
+         MV539F98fR12mVfG9nAUq0i3SdziKJ3sXYX/pNCuXgruLrP7lDMInwpDcXSLtdb/KkNj
+         o1l90GPlEoc+ixPNF9BYHiR/ZvFCXqIVcG72MjAwqHLKPpHOAsl6Umsn1hlBMBwGp2PW
+         GcgkmS0DgycEUZARJ3WZCczfDvWNMcMIgL56Lkln5avhdmJ0ALJg6Xa5jcVOBPZ2X3tY
+         7sKFpJMc1XhOqn30q3mUE0YL3TAMzpw6aNmRWypNR1KXo7Ds4guYJJm98Ar/hmB5TmVx
+         57yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771843684; x=1772448484;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QeOEsVeZ9klcyMYyvytk/qdh3OHqWAZ7aYcxi8/K3XE=;
+        b=RXzCncfr5H3Mk80hKFPRjFIQry1o+7xRu2BuJ2RSFXoBe1UwcrHhCB6GkXS+z3Mo5x
+         R+EDLVyjIjQAvePxHKgVJ2HCR6mK5wRsCrcYUVBunvhWws6kGsDYlShA1PNcQfbBCdBv
+         2M98HZV95oX47x/YeI0H7zBBo+ggfjClyY//BDKSUxszI6rgNAxqhR5Jbw1xO13f40bi
+         UPBBGe6Mw9jps0Fgx5df2j+uY/yEtVaaRSp0nKnfwxueD0z8dEvF5RhY3thunZBybpVu
+         VEsVCJKDP3qZbIUUWf6JslzwCzkUKHJj3eZOOVnRAKtgT7O+6UiM4cXBLCCDu5qlCOPN
+         nmBw==
+X-Forwarded-Encrypted: i=1; AJvYcCUYRTawwbIa6s1uVOvbSjY0akrBfYIbVkLHu+9bO/b5qFgr6Fgq/bVDyiAyjIo8F6mS4RYbwwI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWuuk7SkxksdOcds8CsFpoUAu/ntaiNA6JnjCr1K8cE8nqimKh
+	IHXl6ipKb6UCXpT+QbumvoyXLDjsg5k+UhWiMEoutZhA7j/PX/m7mSRdg2MrCj85/rY0EjnUWXM
+	8Kj4WPpl9m1ibSO2XyUVRDYIjKrLXIXlWtt4f96Qs
+X-Gm-Gg: ATEYQzwrKDKzaJS4HJmYBHU+yVuE7ZIxkqaQdevmbwNUYKCr8ITZTROg+NhLi3KpVKV
+	QMWb1duExy/zHJCRC/9Hjbxymu6CynsATLJ+CCn6+LFjoyEP2rnPn+h5vfSFz1dUayuF1WMMR43
+	mFYyVaZrUS0yCi/xta7/ERMt4v8LP8pmCanrfZ6qlcKjP0XQehElnshkVLO0fcaEM5iJvZejuN+
+	EmWxeOGlG5pMLsC7XiT4Mq9q7Ar2SRtOT6SOAUm3YJF8abaJ5MR1yFX9+VbiFSDHQDgu8V+xUJO
+	+GjiqWE+7k5eKCcqVcloyQ==
+X-Received: by 2002:a05:690e:1384:b0:64a:e89b:d7de with SMTP id
+ 956f58d0204a3-64c78e58eaemr6997011d50.81.1771843684150; Mon, 23 Feb 2026
+ 02:48:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177184265133.1647592.517494925626141391.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+References: <20260219023151.171753-1-p@1g4.org> <20260219023151.171753-2-p@1g4.org>
+ <CA+NMeC-WmxL48X5dSqGx5+2T_dR8B_g5C2BL2Hre_HG1-UkXDg@mail.gmail.com> <TtHh0X2fAHdo4Gs6voxOjI5iFT3kt9qJkutxcHLc3nSpal0RiOTy6cXeZ4FSJMRcD2qVJy__ER-pvJhgBhbj9qucVu5yNecJfCeD44HmtBE=@1g4.org>
+In-Reply-To: <TtHh0X2fAHdo4Gs6voxOjI5iFT3kt9qJkutxcHLc3nSpal0RiOTy6cXeZ4FSJMRcD2qVJy__ER-pvJhgBhbj9qucVu5yNecJfCeD44HmtBE=@1g4.org>
+From: Victor Nogueira <victor@mojatatu.com>
+Date: Mon, 23 Feb 2026 07:47:53 -0300
+X-Gm-Features: AaiRm51lJFg7e79JKgjG7OsGqAzPtwaoRLqJDtGC59XuuJVeJI19kMnYrJ4iZt8
+Message-ID: <CA+NMeC9mYweb=uPTugHhmjK26zSgA8qmKM0OJ22jsJZHak8SwA@mail.gmail.com>
+Subject: Re: [PATCH net v7 1/1] net/sched: act_gate: snapshot parameters with
+ RCU on replace
+To: Paul Moses <p@1g4.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
+	Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[mojatatu-com.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217720-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	DMARC_NA(0.00)[mojatatu.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217721-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
+	DKIM_TRACE(0.00)[mojatatu-com.20230601.gappssmtp.com:+];
 	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[victor@mojatatu.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linutronix.de:dkim,intel.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:replyto]
-X-Rspamd-Queue-Id: AC113174F08
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[1g4.org:email,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mojatatu-com.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 2BC8B1751B7
 X-Rspamd-Action: no action
 
-The following commit has been merged into the perf/urgent branch of tip:
+On Sun, Feb 22, 2026 at 11:13=E2=80=AFAM Paul Moses <p@1g4.org> wrote:
+>
+> Yes, I only see it as unreachable code cleanup.
+>
+> While looking at cycletime, should I move that block before
+> spin_lock_bh()?
 
-Commit-ID:     6a8a48644c4b804123e59dbfc5d6cd29a0194046
-Gitweb:        https://git.kernel.org/tip/6a8a48644c4b804123e59dbfc5d6cd29a01=
-94046
-Author:        Zide Chen <zide.chen@intel.com>
-AuthorDate:    Mon, 09 Feb 2026 16:52:25 -08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 23 Feb 2026 11:19:25 +01:00
+I think it would be best to leave it as is and just do the
+unreachable code cleanup.
 
-perf/x86/intel/uncore: Add per-scheduler IMC CAS count events
-
-IMC on SPR and EMR does not support sub-channels.  In contrast, CPUs
-that use gnr_uncores[] (e.g. Granite Rapids and Sierra Forest)
-implement two command schedulers (SCH0/SCH1) per memory channel,
-providing logically independent command and data paths.
-
-Do not reuse the spr_uncore_imc[] configuration for these CPUs.
-Instead, introduce a dedicated gnr_uncore_imc[] with per-scheduler
-events, so userspace can monitor SCH0 and SCH1 independently.
-
-On these CPUs, replace cas_count_{read,write} with
-cas_count_{read,write}_sch{0,1}.  This may break existing userspace
-that relies on cas_count_{read,write}, prompting it to switch to the
-per-scheduler events, as the legacy event reports only partial
-traffic (SCH0).
-
-Fixes: 632c4bf6d007 ("perf/x86/intel/uncore: Support Granite Rapids")
-Fixes: cb4a6ccf3583 ("perf/x86/intel/uncore: Support Sierra Forest and Grand =
-Ridge")
-Reported-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Zide Chen <zide.chen@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260210005225.20311-1-zide.chen@intel.com
----
- arch/x86/events/intel/uncore_snbep.c | 28 ++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/unc=
-ore_snbep.c
-index 5ed6e0b..0a1d081 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -6497,6 +6497,32 @@ static struct intel_uncore_type gnr_uncore_ubox =3D {
- 	.attr_update		=3D uncore_alias_groups,
- };
-=20
-+static struct uncore_event_desc gnr_uncore_imc_events[] =3D {
-+	INTEL_UNCORE_EVENT_DESC(clockticks,      "event=3D0x01,umask=3D0x00"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0,  "event=3D0x05,umask=3D0xcf"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0.unit, "MiB"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1,  "event=3D0x06,umask=3D0xcf"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1.unit, "MiB"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0, "event=3D0x05,umask=3D0xf0"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0.unit, "MiB"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1, "event=3D0x06,umask=3D0xf0"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1.scale, "6.103515625e-5"),
-+	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1.unit, "MiB"),
-+	{ /* end: all zeroes */ },
-+};
-+
-+static struct intel_uncore_type gnr_uncore_imc =3D {
-+	SPR_UNCORE_MMIO_COMMON_FORMAT(),
-+	.name			=3D "imc",
-+	.fixed_ctr_bits		=3D 48,
-+	.fixed_ctr		=3D SNR_IMC_MMIO_PMON_FIXED_CTR,
-+	.fixed_ctl		=3D SNR_IMC_MMIO_PMON_FIXED_CTL,
-+	.event_descs		=3D gnr_uncore_imc_events,
-+};
-+
- static struct intel_uncore_type gnr_uncore_pciex8 =3D {
- 	SPR_UNCORE_PCI_COMMON_FORMAT(),
- 	.name			=3D "pciex8",
-@@ -6544,7 +6570,7 @@ static struct intel_uncore_type *gnr_uncores[UNCORE_GNR=
-_NUM_UNCORE_TYPES] =3D {
- 	NULL,
- 	&spr_uncore_pcu,
- 	&gnr_uncore_ubox,
--	&spr_uncore_imc,
-+	&gnr_uncore_imc,
- 	NULL,
- 	&gnr_uncore_upi,
- 	NULL,
+cheers,
+Victor
 
