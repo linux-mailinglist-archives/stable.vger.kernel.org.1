@@ -1,213 +1,197 @@
-Return-Path: <stable+bounces-217726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJHkHrg3nGlCBgQAu9opvQ
-	(envelope-from <stable+bounces-217726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:19:20 +0100
+	id 4MJKNT84nGlCBgQAu9opvQ
+	(envelope-from <stable+bounces-217727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:21:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BEE8175626
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:19:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB07175689
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:21:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D863F30630A0
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:17:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 553EB309245A
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9E83612D2;
-	Mon, 23 Feb 2026 11:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B663612EA;
+	Mon, 23 Feb 2026 11:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+ZmlUzd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C8K3+Ikc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0EB35B65F;
-	Mon, 23 Feb 2026 11:17:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DF835CB8B
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 11:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771845466; cv=none; b=UOllPdav0W/rKzoUjajSOek//SLybjp5p7i2ekfaUDCZRUOwYiHxq3pWBEi+Vps+tZRVD1dG/3Uw1w/TJ70oQgohvW88m7POjqJyD0eOCCEjr3gWza2HhJhGIfoBd+wZDdfnQonXCLJ6oE+zPD/VmLK+LqdyKhvSjv1b81M+IQw=
+	t=1771845476; cv=none; b=Ge/xefhmMtf7NIS3VjmBMwCkZJP6J+Pr/1wdXnVxUDnsyMaoP/ub9y2sHU7+jn9hby6cNoIOt33SXj9OL+uFytx86t/+JMXpcnfTgFCR2WVb9mP4B2WOJhOxf3TsGyHo/nDLjhQo62bFLBuz6lzlA/m4Yp7YvUhYR52LRH8T9TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771845466; c=relaxed/simple;
-	bh=h3K7cndj4kG1iv/vNT+K90U40QryseuSg7TrHfv0p5c=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=J8Bz90Tqo/0C5NMWCcuB/C1sVzElhLs0I+LaHegezBbExu0v5w30x/AtLjpAZ4H3RiBuTMWcQb9wHDH1efSf9y5SVfksRoprUxW8bhMs4t1BLGMUeeA9z4g4MYrnlqV8to36qoDmeIhOEHownyJMbeQ/BI0T1rCnS06nBaDuurs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+ZmlUzd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD78C2BC9E;
-	Mon, 23 Feb 2026 11:17:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771845466;
-	bh=h3K7cndj4kG1iv/vNT+K90U40QryseuSg7TrHfv0p5c=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=T+ZmlUzdf/h04LkbcDyxLGknTACoTYpcBLRrq+sOPTe6NUCPhryfL6eXp5Hn6pCsO
-	 nKNDe1r2hj4mnJ9NUrjpwNSWDTDw5jZwBlM9U2Q/6ISA+C+v2hC4Bcjz6cf9pvxBUM
-	 LXpnVd0pHPSa+la12I8raghU+w28gd9gGhov8QEX2L/8ZJGd4aiCyQnmvZABfxPUwJ
-	 VQ531qrtYP4Egn+ksVB9UpHf7XMnci4saRnPBfD73m54Mk2xNjA+80PfF++ZlmPmWy
-	 bRRscgI67Dihof6svyTtwqSk8PNXuZcLVCbhkaqftqvAPOTfchQzsL9azgDOtVXod8
-	 rXpPPAPZY+rbQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 31E4BF4006B;
-	Mon, 23 Feb 2026 06:17:45 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Mon, 23 Feb 2026 06:17:45 -0500
-X-ME-Sender: <xms:WTecaZgA8AvZpn8eSULqZP9B7hCd7CRFOEns11LlNWohktnXoMbOcA>
-    <xme:WTecaY2kZ-2lmI20rnAEUoPb7QkSU5zjaEY_sl3GTW_KcWXU5S7tgYdQw55sMX33n
-    dP1_pNudIjm1DTEWgLI0PjXNoUFeqRWy9y_hhgoYoxn7XHk8rQi3Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejtdelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
-    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
-    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
-    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
-    gurdgtohhmpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepsggvnhhhsehkvghrnhgvlh
-    drtghrrghshhhinhhgrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekie
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdho
-    rhhgpdhrtghpthhtohepihhlihgrshdrrghprghlohguihhmrghssehlihhnrghrohdroh
-    hrghdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgt
-    ohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:WTecaU4kQ0Cm_b0_Li1sUA8NmJUle7HisuUZoKxwRtcxYryS4qpbeg>
-    <xmx:WTecaVfIOmmR7JPM3JsNK75dtyEvFNW7fuTIZneToo94Sz5oRuQ2iw>
-    <xmx:WTecaXwKtaKlcxBU5OxWcGeOn6GnrikiNIKmx_O73BAxMHvQtLW2tw>
-    <xmx:WTecabpesWExFjmzzZts0Pp847SBQBpJXbYWZxD5rZt6c_m0IblPfw>
-    <xmx:WTecaVwC1NV6aDi1xwqlurWiCkmGRBHl52XU9LP7KjPnI438uye4kjw5>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 0D441700065; Mon, 23 Feb 2026 06:17:45 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1771845476; c=relaxed/simple;
+	bh=n/U3rNAxPq1dEtHVbMI+BwWu1GjFm9OiSZMZ0wMG/EU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DiICvpDYy9r97h06+w4/YbTjcWkJBygaWXVGNTmQ+iWRh847dNB7NG2Gw6gue9EZMTXh99gSacLREB2YgVsOEQ1nUkE45IRUJJC+cGUBzMyA0ati3RmI172a0HJx7tB3keqYMDBiTV7dcSI+EnqdpBsjmZiMJ2/uNwtR0VM6BVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C8K3+Ikc; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771845475; x=1803381475;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=n/U3rNAxPq1dEtHVbMI+BwWu1GjFm9OiSZMZ0wMG/EU=;
+  b=C8K3+Ikcwuvw9J5kYVHSBC1YnefpwexCLnOhnwBY8LiW5UEWESdkHZUp
+   sdenzDc2PJaflw51nwKHJmuN3LtGmQ6CfIPji0fNlv5CME0aZ3wih43t2
+   pgGBOKfJi9mICXh4zJa3CGC9EloolLTiCZgu8SX5IjL9/ZFl8sIF8vZjA
+   UjdRgq+47Q0E/FzhoUMxQ0Z1+D1oSkmU0MleEWqFUPJjEB3jGbvbxKien
+   ANlBVOpA5o5gOJlW3gIQVaUdUeL2IJVhZ5SI36zrcpfGLqobU73JaRX83
+   m7XcNqd0JJE8i3Q8I3g/H3jE0urfWIme4zOEHSdnxbcvUaW9p6u4+8VIX
+   g==;
+X-CSE-ConnectionGUID: GM7/R2ujQziMi1YcjEbFxA==
+X-CSE-MsgGUID: 6imf4ovKTAmrz33WIQ/l3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11709"; a="72876948"
+X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; 
+   d="scan'208";a="72876948"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 03:17:54 -0800
+X-CSE-ConnectionGUID: D8Ej2C7lRZmFDyd7mPYpIA==
+X-CSE-MsgGUID: xM7oQD46SDSdCDeH8/gyLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; 
+   d="scan'208";a="253253512"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO [10.245.244.13]) ([10.245.244.13])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 03:17:52 -0800
+Message-ID: <b45a50ce-de96-42ee-90c1-0a6cd7a78cc0@linux.intel.com>
+Date: Mon, 23 Feb 2026 12:17:49 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AF0NZ4OlJH_7
-Date: Mon, 23 Feb 2026 12:17:22 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Mike Rapoport" <rppt@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
- "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
- "Ingo Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- "Thomas Gleixner" <tglx@kernel.org>, linux-efi@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-Message-Id: <e2ad0845-2f87-418a-9f87-5ce619e004ef@app.fastmail.com>
-In-Reply-To: <aZwyNAbEqb8ZwLUM@kernel.org>
-References: <20260223075219.2348035-1-rppt@kernel.org>
- <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
- <aZwyNAbEqb8ZwLUM@kernel.org>
-Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] gpu/buddy: fix module_init() usage
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>,
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ Matthew Auld <matthew.auld@intel.com>, Dave Airlie <airlied@redhat.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>, stable@vger.kernel.org
+References: <DGJPMOESHINC.1NGNT8LLY8DKW@kernel.org>
+ <1771594440.99434@nvidia.com> <2026022156-citizen-shredding-5d6d@gregkh>
+ <cdc31857-c9a0-4d05-a243-780dc9819cb7@nvidia.com>
+Content-Language: en-US
+From: Koen Koning <koen.koning@linux.intel.com>
+In-Reply-To: <cdc31857-c9a0-4d05-a243-780dc9819cb7@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217726-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217727-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[koen.koning@linux.intel.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 1BEE8175626
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,linux.intel.com:mid]
+X-Rspamd-Queue-Id: 3DB07175689
 X-Rspamd-Action: no action
 
+On Mon Feb 23, 2026 at 01:49 +0100, Joel Fernandes wrote:
+> On 2/21/2026 12:44 AM, Greg KH wrote:
+>> On Fri, Feb 20, 2026 at 08:55:52AM -0500, Joel Fernandes wrote:
+>>>> On Feb 20, 2026, at 5:17 AM, Danilo Krummrich <dakr@kernel.org> wrote:
+>>>>
+>>>> ﻿On Fri Feb 20, 2026 at 7:06 AM CET, Greg KH wrote:
+>>>>>> On Thu, Feb 19, 2026 at 10:38:56PM +0100, Koen Koning wrote:
+>>>>>> Use subsys_initcall() instead of module_init() (which compiles to
+>>>>>> device_initcall() for built-ins) for buddy, so its initialization code
+>>>>>> always runs before any (built-in) drivers.
+>>>>>> This happened to work correctly so far due to the order of linking in
+>>>>>> the Makefiles, but this should not be relied upon.
+>>>>>
+>>>>> Same here, Makefile order can always be relied on.
+>>>>
+>>>> I want to point out that Koen's original patch fixed the Makefile order:
+>>>>
+>>>> diff --git a/drivers/gpu/Makefile b/drivers/gpu/Makefile
+>>>> index 5cd54d06e262..b4e5e338efa2 100644
+>>>> --- a/drivers/gpu/Makefile
+>>>> +++ b/drivers/gpu/Makefile
+>>>> @@ -2,8 +2,9 @@
+>>>> # drm/tegra depends on host1x, so if both drivers are built-in care must be
+>>>> # taken to initialize them in the correct order. Link order is the only way
+>>>> # to ensure this currently.
+>>>> +# Similarly, buddy must come first since it is used by other drivers.
+>>>> +obj-$(CONFIG_GPU_BUDDY)    += buddy.o
+>>>> obj-y            += host1x/ drm/ vga/ tests/
+>>>> obj-$(CONFIG_IMX_IPUV3_CORE)    += ipu-v3/
+>>>> obj-$(CONFIG_TRACE_GPU_MEM)        += trace/
+>>>> obj-$(CONFIG_NOVA_CORE)        += nova-core/
+>>>> -obj-$(CONFIG_GPU_BUDDY)        += buddy.o
+>>>>
+>>>> He was then suggested to not rely on this and rather use subsys_initcall().
+>>>
+>>> I take the blame for the suggestion; however, I am not yet convinced it is a bad
+>>> idea.
+>>>>
+>>>> When I then came across the new patch using subsys_initcall() I made it worse; I
+>>>> badly confused this with something else and gave a wrong advise -- sorry Koen!
+>>>>
+>>>> (Of course, since this is all within the same subsystem, without any external
+>>>> ordering contraints, Makefile order is sufficient.)
+>>>
+>>> If we are still going to do the link ordering by reordering in the Makefile,
+>>> may I ask what is the drawback of doing the alternative - that is, not
+>>> relying on that (and its associated potential for breakage)?
+>>>
+>>> Even if Makefile ordering can be relied on, why do we want to rely on it if
+>>> there is an alternative? Also module_init() compiles to device_initcall() for
+>>> built-ins and this is shared infra.
+>>>
+>>> We use this technique in other code paths too, no? See
+>>> drivers/i2c/i2c-core-base.c:
+>>>
+>>>    /* We must initialize early, because some subsystems register i2c drivers
+>>>     * in subsys_initcall() code, but are linked (and initialized) before i2c.
+>>>     */
+>>>    postcore_initcall(i2c_init);
+>>>
+>>> If there is a drawback I am all ears but otherwise I would prefer the new
+>>> patch tbh.
+>>
+>> The "problem" is that the init levels are very "coarse", and the link
+>> order is very specific.  You can play with init levels a lot, but what
+>> happens if another driver also sets to the same init level, or an
+>> earlier one to try to solve something that way?
+>>
+>> So it can be a loosing battle for many things, choose the best and
+>> simplest solution, but always remember, Makefile order matters, which is
+>> what I was wanting to correct here.
+> Fair enough, the solution you are suggesting also sounds good to me.
 
+Thanks that makes sense, then let's just stick to addressing the current 
+regression with gpu/buddy in the drm-tip tree.
 
-On Mon, 23 Feb 2026, at 11:55, Mike Rapoport wrote:
-> Hi Ard,
->
-> On Mon, Feb 23, 2026 at 09:08:29AM +0100, Ard Biesheuvel wrote:
->> Hi Mike,
->> 
->> On Mon, 23 Feb 2026, at 08:52, Mike Rapoport wrote:
->> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->> >
->> > efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
->> > and EFI_BOOT_SERVICES_DATA using memblock_free_late().
->> >
->> > There are two issue with that: memblock_free_late() should be used for
->> > memory allocated with memblock_alloc() while the memory reserved with
->> > memblock_reserve() should be freed with free_reserved_area().
->> >
->> > More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
->> > efi_free_boot_services() is called before deferred initialization of the
->> > memory map is complete.
->> >
->> > Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
->> > RAM on EC2 t3a.nano instances which only have 512MB or RAM.
->> >
->> > If the freed memory resides in the areas that memory map for them is
->> > still uninitialized, they won't be actually freed because
->> > memblock_free_late() calls memblock_free_pages() and the latter skips
->> > uninitialized pages.
->> >
->> > Using free_reserved_area() at this point is also problematic because
->> > __free_page() accesses the buddy of the freed page and that again might
->> > end up in uninitialized part of the memory map.
->> >
->> > Delaying the entire efi_free_boot_services() could be problematic
->> > because in addition to freeing boot services memory it updates
->> > efi.memmap without any synchronization and that's undesirable late in
->> > boot when there is concurrency.
->> >
->> > More robust approach is to only defer freeing of the EFI boot services
->> > memory.
->> >
->> > Make efi_free_boot_services() collect ranges that should be freed into
->> > an array and add an initcall efi_free_boot_services_memory() that walks
->> > that array and actually frees the memory using free_reserved_area().
->> >
->> 
->> Instead of creating another table, could we just traverse the EFI memory
->> map again in the arch_initcall(), and free all boot services code/data
->> above 1M with EFI_MEMORY_RUNTIME cleared ?
-> 
-> Currently efi_free_boot_services() unmaps all boot services code/data with
-> EFI_MEMORY_RUNTIME cleared and removes them from the efi.memmap.
->
-
-Ah yes, I failed to spot that those entries are long gone by initcall time. Other architectures don't touch the EFI memory map at all, but x86 mangles it beyond recognition :-)
-
-> I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
-> why I didn't use the existing EFI memory map.
->
-> Now thinking about it, if the unmapping can happen later, maybe we'll just
-> move the entire efi_free_boot_services() to an initcall?
->
-
-As long as it is pre-SMP, as that code also contains a quirk to allocate the real mode trampoline if all memory below 1 MB is used for boot services.
-
-But actually, that should be a separate quirk to begin with, rather than being integrated into an unrelated function that happens to iterate over the boot services regions. The only problem, I guess, is that memblock_reserve()'ing that sub-1MB region in the old location in the ordinary way would cause it to be freed again in the initcall?
-
-But yes, in general I think it is fine to unmap those regions from the EFI page tables during an initcall.
-
-
-
-
-
-
+Joel, could you grab the v1 of this patchset (or the v2 with with 
+subsys_initcall, either works) and try to get it applied to drm-tip? 
+Since this is my first time submitting patches, I'm not really sure how 
+to proceed from here, and it will probably be faster if you have a look.
 
 
