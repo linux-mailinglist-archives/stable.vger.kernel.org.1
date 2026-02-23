@@ -1,337 +1,301 @@
-Return-Path: <stable+bounces-217705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAvTMx0LnGn8/AMAu9opvQ
-	(envelope-from <stable+bounces-217705-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:09:01 +0100
+	id AIm0NaMLnGlL/QMAu9opvQ
+	(envelope-from <stable+bounces-217706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:11:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6E2172F22
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:09:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8A3172F41
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68B0E3009F9D
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 08:08:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0A74300A605
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 08:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CC334CFC2;
-	Mon, 23 Feb 2026 08:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E4B34CFC6;
+	Mon, 23 Feb 2026 08:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PcI+fGf/"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="gN5sxjFt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C1834AAEA;
-	Mon, 23 Feb 2026 08:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C05634CFAD
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 08:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771834132; cv=none; b=K3OSQOvQkO0HT/EX2EnW1ctZuIRgORLCpIM8QXm5lhcRXIlFt1nzaTusFMZSZY1iBk1B6EXjl4EjusAo//cUsS+XxHTIz5DOhwGpIGHW/UeRtLZxUtXWpOiz69tHKz06ls91JxAtUJyXLc9Ci2TyZXQ9DLYvcOqtWdQXsheSbiQ=
+	t=1771834267; cv=none; b=h+0JRQGLZGZPQEWRWm+bwXWXmkRpyyU/afaAg9T1B/ZYbJz6JSiF32BuosORsQHrVXJYecJatcWLq+t9UqnvvxuxnE/XKwivg8SxwlG+o/0w1hlD5dVPp/sO34b95g4MgWy0B5MUxNepd3L2TjDBvhNoYpsHh6kyZIYPsPEZtGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771834132; c=relaxed/simple;
-	bh=4jL6dEH0dwKlTrgzY8EtdsryVX+Azgl/T/uP3QlbNho=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=WhDh3+C4yNnmIfY17GbjyosTTVg1To8qfXMwqFqr+zKoOQ6gtWPMC76eMrMqMNWOSRqyj+xNbuWhQOQ+TtwHfhbnO7Ple4KJ1IAF6OHXeH3APQ/BwlgqcBPcxvhIIkhOv1o2BkG8V8SCGU+kngfq8y8WppoVzedZ/Cj/GDa+rOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PcI+fGf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B55C116C6;
-	Mon, 23 Feb 2026 08:08:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771834132;
-	bh=4jL6dEH0dwKlTrgzY8EtdsryVX+Azgl/T/uP3QlbNho=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=PcI+fGf/X7UektckLzUyJ3OUBwg2imCsLiS1wHGtRhG/NQ2hAggCwPXMs6NHvki/r
-	 lqCUPjOLIv4lDRPmmPCiEvvRs3pVq4Bx6EjGEPQ/WfvxNEPz9rhyNedurS5OpUFccO
-	 APInVcr5XD9jRc018hXIwo7sHFPM7hv+mdL8QGiIjtVuFLcLSw2eKIBFBu9RGL/EpA
-	 DewJLN0psJ6eTpAfs2ECvTwmX6gb4pcXWsux9dnyuwhOy4lLYqoXga9t62kCHSSM49
-	 yPblnT+hPKU3DffkbqorTeXjyIVHwaIb/T/jqu66M62iUpXL/0RHhPApR+oXJngtTe
-	 z1v/quHYKRobQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 573A8F40068;
-	Mon, 23 Feb 2026 03:08:50 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Mon, 23 Feb 2026 03:08:50 -0500
-X-ME-Sender: <xms:EgucaUnfN7oRRb0lzyLtC6vgYQG0RgaRAqVk97QjYtYql-jRF7_ZoQ>
-    <xme:Egucaep7QH1SqanEdtDTSAPrGjJFMSeuTokvM6461v6quQG_RBQcVslrc2tyBP-Wu
-    7cSJr-ntR63vN2ufZdHtTjAJi0tvDpGnSfGEVvfY5G5X2aU_D2jwHE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeeijedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
-    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeeftddthefgvdehteehhfeludfgfffhffelfeefvddthfekffdvgefgveet
-    ieffveenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhmvghmmhgrphdrnhhrnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrugdomhgv
-    shhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeijedthedttdejledqfeefvdduie
-    egudehqdgrrhgusgeppehkvghrnhgvlhdrohhrghesfihorhhkohhfrghrugdrtghomhdp
-    nhgspghrtghpthhtohepudefpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsph
-    esrghlihgvnhekrdguvgdprhgtphhtthhopegsvghnhheskhgvrhhnvghlrdgtrhgrshhh
-    ihhnghdrohhrghdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepthhglhigsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtph
-    htthhopehilhhirghsrdgrphgrlhhoughimhgrsheslhhinhgrrhhordhorhhgpdhrtghp
-    thhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtph
-    htthhopehmihhnghhosehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:EgucaUfAksPMlidh_hv9oZFsn-UeFkN2lMeVsmn8V6UwRikzeQj0DQ>
-    <xmx:EgucaVznzY-nYogE-pa0WH2LAlII1jjIUaU7QGBuKc-6KhL_VZSJrA>
-    <xmx:EgucaZ290ysiPNfrowKJgrtF3ViPcjFy3YRECAnKVuz980PMc_W7LA>
-    <xmx:EgucacdJHxnwohK1Bwfrauv3gClLu9Nsg2GPoJ4qqfOrsbZ5XTRYbQ>
-    <xmx:EgucaeXEyqZ4ZBPz-Sx5p0q-1a_D01KjTdUStKxa0BQWHpVNBSFW00eq>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 32331700065; Mon, 23 Feb 2026 03:08:50 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1771834267; c=relaxed/simple;
+	bh=QLIG/cvAGKHL/QsPZAk+8/0vWlzhWoHy3RyVHMRjPY8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LYN3lbIaivsTjSEoTHcIX0JTDPDBAZ2vz+z6yRd+jN9hhS9JaAOSbHtkdxtUIeKVI3NsoKG0SSWVt5cMM8hhL8VydoYW6pWk4VEScF53xnwLmm9wS1L8ZBatiPmUY/KqUi4b41G+OVkiIifSqxT9gQZl7wBa9r+xou7Rfrx4p40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=gN5sxjFt; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-65c0891f4e9so7020557a12.1
+        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 00:11:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1771834264; x=1772439064; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fPcLFGqvXQ/TrcZMbc9zEuLscnPpwUEKK1FNGlp3euE=;
+        b=gN5sxjFtWbIVi2Q5Q11QttZo1KKAjedKe32bHdDSHtJ/zHm/tuJoblxJfJEPw6EX6+
+         BZ9uXHWwqXezbueEWS57r5cRpc4rjDW1l+ByLKKYri3Vd5NJdv625IfIC7WTogoph03b
+         tCkZBIQwUCz5GDpuRmU/vuI91YzUtJw+l1miY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771834264; x=1772439064;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fPcLFGqvXQ/TrcZMbc9zEuLscnPpwUEKK1FNGlp3euE=;
+        b=ZS1+LJo5d7n2dA6XeVLZCtpUon8Y9t+gNWH1dE/h1lVDPFdJvbq0v3kMrLB6yTD1ru
+         LIROfeAGZuUTTWsRcM2GnmgoRqWkuPhCCN+fAVdhwJjovebwWg2oRQPAxMtfbWrdEXsL
+         WdOKfBh9J/o7E4zJJuO/Du6S0W5+AVUxe22zF4kicx5ayN1o9/TB791jNHaAc9pq9+Rg
+         OULBW0uD5FhJHVj7sFOCqmugqpNUEzcVwztkXqkk+iWmMBgeS9hplG7QrjQ9PDXzaNxz
+         zJwRX7+T+0gR8+goqjaf9uyHhklGuH5plQnVdS+RGedpUouY/JyUXA3C3Az13A/f52QK
+         UDEw==
+X-Gm-Message-State: AOJu0YwwkA7FZEAHbAMuIn9aiJonphywR9VsAbExbOXPUatcWO7nOvqc
+	3VDgSbS6M27GN0gJBpYBbPIlPJp+OI0mPpxF6+T+t/LbaKXCynlZjoQ/QPsUD/39ljXr3CTeWPT
+	v1vIHBg==
+X-Gm-Gg: AZuq6aJkSnb0sBN+mJEMst9MoRqaAKE+sl15NhdQ3w2XkkNBQ36PM/GoFCkAHz13aMd
+	80C0h5h5m6nQ0bhj6/tNFgn/GVIFxsOHqlxN/YQ1FBS6BqbnWMIc7vGZjDgFBLjefxC2lJ/ESSb
+	MUz+sV8eF13W3mCh6hFF5ySYwvhvFZmpw+QFZDK+SsM1tdpCa8ogn9+o5M8fyCln3CZToi/paOP
+	64ZTPJauB5N5mTPq7g7qJ05mRjV5wNgH+2MvlZ6ys7vY9wOrX0KqNhe7Gf0Nj0ElXhTqM2FXykT
+	/jDFFhnurOZ7/jhwQDdkqAuDS4cEk0IWk5XTBMNLbdpEDuZy/FmgQxnitfXE31QTYDGHk5tgVjm
+	ScGkM2gcKWqsBFMZsQCPcMr0X0gzYEWrPpixEF4cfqH6kXcO+2iC9wAzoc4fjsK//6Xu4WtGUZV
+	vE/JinSVHymjph0ZZq1IeiSO7e3mx8lVKCbOEx9WCCXg4z5uDChEI1Rkigo8t61LP1SaAdvd0=
+X-Received: by 2002:a05:6402:f18:b0:64b:7b73:7d50 with SMTP id 4fb4d7f45d1cf-65ea4ed94a5mr2530823a12.1.1771834264303;
+        Mon, 23 Feb 2026 00:11:04 -0800 (PST)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65eab9aabb2sm2342431a12.8.2026.02.23.00.11.03
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Feb 2026 00:11:03 -0800 (PST)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-65bfc858561so7777807a12.2
+        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 00:11:03 -0800 (PST)
+X-Received: by 2002:a17:907:94cc:b0:b87:12d2:fa1a with SMTP id
+ a640c23a62f3a-b908191f1d6mr445251466b.12.1771834262096; Mon, 23 Feb 2026
+ 00:11:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AF0NZ4OlJH_7
-Date: Mon, 23 Feb 2026 09:08:29 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Mike Rapoport" <rppt@kernel.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-Cc: "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
- "Ingo Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- "Thomas Gleixner" <tglx@kernel.org>, linux-efi@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-Message-Id: <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
-In-Reply-To: <20260223075219.2348035-1-rppt@kernel.org>
-References: <20260223075219.2348035-1-rppt@kernel.org>
-Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <CAD0gVBsyzYNA6ydPwg9mJ9VQzYg4zPAi24JQ13-=0KtdbQ039A@mail.gmail.com>
+In-Reply-To: <CAD0gVBsyzYNA6ydPwg9mJ9VQzYg4zPAi24JQ13-=0KtdbQ039A@mail.gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Mon, 23 Feb 2026 09:10:49 +0100
+X-Gmail-Original-Message-ID: <CANiDSCsMVE7qAcjcjbjhYSMoyypkR5Nq-ZA-e=CJVY5CUGAG7Q@mail.gmail.com>
+X-Gm-Features: AaiRm53F0LIMOe6xezXE30KkDM_p2uBY1AB8eOErFcvfTTb2PhOgsWveImx1C0M
+Message-ID: <CANiDSCsMVE7qAcjcjbjhYSMoyypkR5Nq-ZA-e=CJVY5CUGAG7Q@mail.gmail.com>
+Subject: Re: [REGRESSION] Display freeze on VT switch back to X11 since v6.16
+To: =?UTF-8?B?QW5kcsOpcyBQw6lyZXo=?= <andres.f.perez@gmail.com>
+Cc: stable@vger.kernel.org, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hansg@kernel.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, intel-gfx@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217706-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217705-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,app.fastmail.com:mid];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,ideasonboard.com,kernel.org,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,lists.freedesktop.org,lists.linux.dev];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[chromium.org:+];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 2A6E2172F22
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:dkim]
+X-Rspamd-Queue-Id: 3C8A3172F41
 X-Rspamd-Action: no action
 
-Hi Mike,
+Hi Andr=C3=A9s
 
-On Mon, 23 Feb 2026, at 08:52, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
-> and EFI_BOOT_SERVICES_DATA using memblock_free_late().
->
-> There are two issue with that: memblock_free_late() should be used for
-> memory allocated with memblock_alloc() while the memory reserved with
-> memblock_reserve() should be freed with free_reserved_area().
->
-> More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
-> efi_free_boot_services() is called before deferred initialization of the
-> memory map is complete.
->
-> Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
-> RAM on EC2 t3a.nano instances which only have 512MB or RAM.
->
-> If the freed memory resides in the areas that memory map for them is
-> still uninitialized, they won't be actually freed because
-> memblock_free_late() calls memblock_free_pages() and the latter skips
-> uninitialized pages.
->
-> Using free_reserved_area() at this point is also problematic because
-> __free_page() accesses the buddy of the freed page and that again might
-> end up in uninitialized part of the memory map.
->
-> Delaying the entire efi_free_boot_services() could be problematic
-> because in addition to freeing boot services memory it updates
-> efi.memmap without any synchronization and that's undesirable late in
-> boot when there is concurrency.
->
-> More robust approach is to only defer freeing of the EFI boot services
-> memory.
->
-> Make efi_free_boot_services() collect ranges that should be freed into
-> an array and add an initcall efi_free_boot_services_memory() that walks
-> that array and actually frees the memory using free_reserved_area().
->
+Thanks for doing the bisecting
 
-Instead of creating another table, could we just traverse the EFI memory map again in the arch_initcall(), and free all boot services code/data above 1M with EFI_MEMORY_RUNTIME cleared ?
-
-
-> Link: 
-> https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
-> Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after 
-> switching to virtual mode")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  arch/x86/include/asm/efi.h          |  2 +-
->  arch/x86/platform/efi/efi.c         |  2 +-
->  arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
->  drivers/firmware/efi/mokvar-table.c |  2 +-
->  4 files changed, 55 insertions(+), 6 deletions(-)
+On Sun, 22 Feb 2026 at 22:56, Andr=C3=A9s P=C3=A9rez <andres.f.perez@gmail.=
+com> wrote:
 >
-> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-> index f227a70ac91f..51b4cdbea061 100644
-> --- a/arch/x86/include/asm/efi.h
-> +++ b/arch/x86/include/asm/efi.h
-> @@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
->  extern int __init efi_reuse_config(u64 tables, int nr_tables);
->  extern void efi_delete_dummy_variable(void);
->  extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
-> -extern void efi_free_boot_services(void);
-> +extern void efi_unmap_boot_services(void);
-> 
->  void arch_efi_call_virt_setup(void);
->  void arch_efi_call_virt_teardown(void);
-> diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-> index d00c6de7f3b7..d84c6020dda1 100644
-> --- a/arch/x86/platform/efi/efi.c
-> +++ b/arch/x86/platform/efi/efi.c
-> @@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
->  	}
-> 
->  	efi_check_for_embedded_firmwares();
-> -	efi_free_boot_services();
-> +	efi_unmap_boot_services();
-> 
->  	if (!efi_is_mixed())
->  		efi_native_runtime_setup();
-> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> index 553f330198f2..35caa5746115 100644
-> --- a/arch/x86/platform/efi/quirks.c
-> +++ b/arch/x86/platform/efi/quirks.c
-> @@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
-> 
->  		/*
->  		 * Because the following memblock_reserve() is paired
-> -		 * with memblock_free_late() for this region in
-> +		 * with free_reserved_area() for this region in
->  		 * efi_free_boot_services(), we must be extremely
->  		 * careful not to reserve, and subsequently free,
->  		 * critical regions of memory (like the kernel image) or
-> @@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
->  		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
+> # OVERVIEW
+>
+> Since kernel v6.16.1, switching from an X11 session to a text VT and back
+> freezes the display on a ThinkPad P15 Gen 2. The system remains responsiv=
+e
+> over SSH; only the display is frozen. Bisecting identified commit
+> d1b618e7954802fe ("media: uvcvideo: Do not turn on the camera for some
+> ioctls") as the trigger. Reverting the logic change in that commit
+> fixes VT switching
+> on v6.16.1, v6.17.9, and v6.18.9, but that is not an actual solution. Way=
+land
+> compositors (e.g., river and sway) are not affected.
+>
+> Last good:  v6.15.9
+> First bad:  v6.16.1
+> Bisect result: d1b618e7954802fe media: uvcvideo: Do not turn on the
+> camera for some ioctls
+>
+> ## Hardware:   Lenovo ThinkPad P15 Gen 2i (20YQ0031US)
+> CPU:        Intel Core i7-11800H (Tiger Lake-H)
+> iGPU:        Intel UHD Graphics (TGL GT1)
+> dGPU:       NVIDIA T1200 (not involved in eDP output; driver: nvidia-open=
+)
+> Display:    15.6" 1920x1080 eDP, 10 bpc capable (EDID 1.4)
+> Webcam:     Integrated Camera on PCH xHCI (Bus 003 Port 004)
+> Firmware:   LENOVO N37ET61W (1.97)
+> OS:         Arch Linux, Nix home-manager, X11 + xmonad, no display manage=
+r
+>
+> ## Symptoms and reproduction steps:
+> 1. Boot, start X11 on tty1 (startx).
+> 2. Switch to tty2 (Ctrl+Alt+F2): works.
+> 3. Switch back to tty1 (Ctrl+Alt+F1): display freezes.
+>    - Frozen on the last frame shown before switching away.
+>    - System is fully responsive over SSH.
+>    - Other VTs switch normally between each other as long as X11 is
+> not active on them.
+>    - Killing X does not recover the display. A reboot is required.
+>
+> # DEBUG ANALYSIS
+>
+> On v6.16.1, the VT switch back to X triggers a full modeset due to pipe
+> configuration mismatches detected by intel_pipe_config_compare:
+>
+> [drm:intel_pipe_config_compare] fastset requirement not met in pipe_bpp
+>   (expected 30, found 24)
+> [drm:intel_pipe_config_compare] fastset requirement not met in dp_m_n
+>   (expected link 269484/524288, found link 336855/524288)
+> [drm:intel_pipe_config_compare] fastset requirement not met in dpll_hw_st=
+ate
+>   (expected cfgcr0: 0xe001a5, found cfgcr0: 0x1c2)
+> [drm:intel_pipe_config_compare] fastset requirement not met in port_clock
+>   (expected 270000, found 216000)
+> [drm:intel_atomic_check] forcing full modeset
+>
+> On v6.15.9, the same VT switch shows no such messages.
+> no pipe_config_compare runs, no modeset, no freeze.
+>
+> # BISECT AND VERIFICATION
+>
+> The bisect converged on d1b618e7954802fe in the uvcvideo driver. This
+> commit adds a switch statement to uvc_v4l2_unlocked_ioctl that allows
+> certain V4L2 IOCTLS to call video_ioctl2 directly without first calling
+> uvc_pm_get/uvc_pm_put. Prior to this commit, all ioctls called uvc_pm_get
+> before video_ioctl2.
+>
+> ## VT switching verification across kernel versions:
+>
+>   v6.12.74 arch pkg:   WORKS
+>   v6.15.9 arch pkg:    WORKS
+>   v6.15.9 from source: WORKS
+>   v6.16.1 with d1b618e reverted:     WORKS
+>   v6.17.9 with PM wrapping restored: WORKS
+>   v6.18.9 with PM wrapping restored: WORKS
+>
+>   v6.16.1 from source:  FREEZES
+>   v6.16.1 arch pkg:     FREEZES
+>   v6.17.9 arch pkg:     FREEZES
+>   v6.18.9 from source:  FREEZES
+>   v6.18.9 arch pkg:     FREEZES
+>
+> ## Things that do not eliminate the freeze
+>
+>   - module_blacklist=3Duvcvideo on boot
+>   - CONFIG_USB_VIDEO_CLASS=3Dn (compiled out)
+
+This is puzzling me a bit... You are saying that if you do not build
+the uvc driver, the freeze is still happening?
+
+Am I understanding this correctly?
+
+>   - i915.enable_psr=3D0
+>   - Bypassing intel_vrr_transcoder_enable/disable (no-op)
+>   - xrandr --output eDP-1 --set "max bpc" 10
+>   - Xorg config FBDepth 30 (No effect on pipe_bpp)
+>
+> ## Workaround patch
+>
+> Reverting the optimization from d1b618e to restore the unconditional
+> uvc_pm_get/put wrapping for all ioctls. This is not a proper fix.
+>
+> diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc=
+_v4l2.c
+> index 9e4a251eca88..15057b47ec4f 100644
+> --- a/drivers/media/usb/uvc/uvc_v4l2.c
+> +++ b/drivers/media/usb/uvc/uvc_v4l2.c
+> @@ -1199,33 +1199,12 @@ static long uvc_v4l2_unlocked_ioctl(struct file *=
+file,
+>   unsigned int converted_cmd =3D v4l2_translate_cmd(cmd);
+>   int ret;
+>
+> - /* The following IOCTLs need to turn on the camera. */
+> - switch (converted_cmd) {
+> - case UVCIOC_CTRL_MAP:
+> - case UVCIOC_CTRL_QUERY:
+> - case VIDIOC_G_CTRL:
+> - case VIDIOC_G_EXT_CTRLS:
+> - case VIDIOC_G_INPUT:
+> - case VIDIOC_QUERYCTRL:
+> - case VIDIOC_QUERYMENU:
+> - case VIDIOC_QUERY_EXT_CTRL:
+> - case VIDIOC_S_CTRL:
+> - case VIDIOC_S_EXT_CTRLS:
+> - case VIDIOC_S_FMT:
+> - case VIDIOC_S_INPUT:
+> - case VIDIOC_S_PARM:
+> - case VIDIOC_TRY_EXT_CTRLS:
+> - case VIDIOC_TRY_FMT:
+> - ret =3D uvc_pm_get(handle->stream->dev);
+> - if (ret)
+> - return ret;
+> - ret =3D video_ioctl2(file, cmd, arg);
+> - uvc_pm_put(handle->stream->dev);
+> + ret =3D uvc_pm_get(handle->stream->dev);
+> + if (ret)
+>   return ret;
+> - }
+> -
+> - /* The other IOCTLs can run with the camera off. */
+> - return video_ioctl2(file, cmd, arg);
+> + ret =3D video_ioctl2(file, cmd, arg);
+> + uvc_pm_put(handle->stream->dev);
+> + return ret;
 >  }
-> 
-> -void __init efi_free_boot_services(void)
-> +struct efi_freeable_range {
-> +	u64 start;
-> +	u64 end;
-> +};
-> +
-> +static struct efi_freeable_range *ranges_to_free;
-> +
-> +void __init efi_unmap_boot_services(void)
->  {
->  	struct efi_memory_map_data data = { 0 };
->  	efi_memory_desc_t *md;
->  	int num_entries = 0;
-> +	int idx = 0;
-> +	size_t sz;
->  	void *new, *new_md;
-> 
->  	/* Keep all regions for /sys/kernel/debug/efi */
->  	if (efi_enabled(EFI_DBG))
->  		return;
-> 
-> +	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
-> +	ranges_to_free = kzalloc(sz, GFP_KERNEL);
-> +	if (!ranges_to_free) {
-> +		pr_err("Failed to allocate storage for freeable EFI regions\n");
-> +		return;
-> +	}
-> +
->  	for_each_efi_memory_desc(md) {
->  		unsigned long long start = md->phys_addr;
->  		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
-> @@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
->  			start = SZ_1M;
->  		}
-> 
-> -		memblock_free_late(start, size);
-> +		/*
-> +		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
-> +		 * map are still not initialized and we can't reliably free
-> +		 * memory here.
-> +		 * Queue the ranges to free at a later point.
-> +		 */
-> +		ranges_to_free[idx].start = start;
-> +		ranges_to_free[idx].end = start + size;
-> +		idx++;
->  	}
-> 
->  	if (!num_entries)
-> @@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
->  	}
->  }
-> 
-> +static int __init efi_free_boot_services(void)
-> +{
-> +	struct efi_freeable_range *range = ranges_to_free;
-> +	unsigned long freed = 0;
-> +
-> +	if (!ranges_to_free)
-> +		return 0;
-> +
-> +	while (range->start) {
-> +		void *start = phys_to_virt(range->start);
-> +		void *end = phys_to_virt(range->end);
-> +
-> +		free_reserved_area(start, end, -1, NULL);
-> +		freed += (end - start);
-> +		range++;
-> +	}
-> +	kfree(ranges_to_free);
-> +
-> +	if (freed)
-> +		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
-> +
-> +	return 0;
-> +}
-> +arch_initcall(efi_free_boot_services);
-> +
->  /*
->   * A number of config table entries get remapped to virtual addresses
->   * after entering EFI virtual mode. However, the kexec kernel requires
-> diff --git a/drivers/firmware/efi/mokvar-table.c 
-> b/drivers/firmware/efi/mokvar-table.c
-> index 4ff0c2926097..6842aa96d704 100644
-> --- a/drivers/firmware/efi/mokvar-table.c
-> +++ b/drivers/firmware/efi/mokvar-table.c
-> @@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
->   * as an alternative to ordinary EFI variables, due to 
-> platform-dependent
->   * limitations. The memory occupied by this table is marked as 
-> reserved.
->   *
-> - * This routine must be called before efi_free_boot_services() in order
-> + * This routine must be called before efi_unmap_boot_services() in 
-> order
->   * to guarantee that it can mark the table as reserved.
->   *
->   * Implicit inputs:
 >
-> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-> -- 
-> 2.51.0
+>  const struct v4l2_ioctl_ops uvc_ioctl_ops =3D {
+>
+> Andr=C3=A9s
+>
+
+
+--=20
+Ricardo Ribalda
 
