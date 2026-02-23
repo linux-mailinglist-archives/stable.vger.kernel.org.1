@@ -1,254 +1,213 @@
-Return-Path: <stable+bounces-217725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEzBJSM3nGnsBQQAu9opvQ
-	(envelope-from <stable+bounces-217725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:16:51 +0100
+	id wJHkHrg3nGlCBgQAu9opvQ
+	(envelope-from <stable+bounces-217726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:19:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C6A17559F
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:16:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BEE8175626
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:19:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8F95302FA81
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:16:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D863F30630A0
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E653596E1;
-	Mon, 23 Feb 2026 11:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9E83612D2;
+	Mon, 23 Feb 2026 11:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+ZmlUzd"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B70E2DB78E
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 11:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0EB35B65F;
+	Mon, 23 Feb 2026 11:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771845406; cv=none; b=bLGsikvtp9bHOEheWqBajTkH6Q7ZvY3XZhozsBnH7jm7kFQEe+2ww+WNdnXRq0GVDJW4GREbskrRebMd9E6etfpnEFP+xYvkYtZ/2f/h0W++tuQRhs2Z7nrErW6Huy3lG2Vjih8ttBdHiUZP9CqYn7o3fxyq0xXD8yJaL7qQACM=
+	t=1771845466; cv=none; b=UOllPdav0W/rKzoUjajSOek//SLybjp5p7i2ekfaUDCZRUOwYiHxq3pWBEi+Vps+tZRVD1dG/3Uw1w/TJ70oQgohvW88m7POjqJyD0eOCCEjr3gWza2HhJhGIfoBd+wZDdfnQonXCLJ6oE+zPD/VmLK+LqdyKhvSjv1b81M+IQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771845406; c=relaxed/simple;
-	bh=hIK2Fxq+MLs/D4s8eOraSGXje53f7uNucqYvOT88gTo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P33EYbOKHN2wWj7QtPFk0s634IlmEdEOiflfNjKwma0P+4TNYtK89LTnZsnhX5+wjC5gG3vhjTMr4r7JyhvwWJBy7mwdR5+CJppwtQ1ALbFmYuuZF1OC1/PcmwEC86xAi+MkZDaEHAmlE80Q8lw/o3asolYLAFhXS0qB2lq7yOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 67E3E339;
-	Mon, 23 Feb 2026 03:16:37 -0800 (PST)
-Received: from e134344.arm.com (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 837F03F62B;
-	Mon, 23 Feb 2026 03:16:41 -0800 (PST)
-Date: Mon, 23 Feb 2026 11:16:32 +0000
-From: Ben Horgan <ben.horgan@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Hyesoo Yu <hyesoo.yu@samsung.com>,
-	Quentin Perret <qperret@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: Force the use of CNTVCT_EL0 in __delay()
-Message-ID: <aZw3EGs4rbQvbAzV@e134344.arm.com>
-References: <20260213141619.1791283-1-maz@kernel.org>
+	s=arc-20240116; t=1771845466; c=relaxed/simple;
+	bh=h3K7cndj4kG1iv/vNT+K90U40QryseuSg7TrHfv0p5c=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=J8Bz90Tqo/0C5NMWCcuB/C1sVzElhLs0I+LaHegezBbExu0v5w30x/AtLjpAZ4H3RiBuTMWcQb9wHDH1efSf9y5SVfksRoprUxW8bhMs4t1BLGMUeeA9z4g4MYrnlqV8to36qoDmeIhOEHownyJMbeQ/BI0T1rCnS06nBaDuurs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+ZmlUzd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD78C2BC9E;
+	Mon, 23 Feb 2026 11:17:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771845466;
+	bh=h3K7cndj4kG1iv/vNT+K90U40QryseuSg7TrHfv0p5c=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=T+ZmlUzdf/h04LkbcDyxLGknTACoTYpcBLRrq+sOPTe6NUCPhryfL6eXp5Hn6pCsO
+	 nKNDe1r2hj4mnJ9NUrjpwNSWDTDw5jZwBlM9U2Q/6ISA+C+v2hC4Bcjz6cf9pvxBUM
+	 LXpnVd0pHPSa+la12I8raghU+w28gd9gGhov8QEX2L/8ZJGd4aiCyQnmvZABfxPUwJ
+	 VQ531qrtYP4Egn+ksVB9UpHf7XMnci4saRnPBfD73m54Mk2xNjA+80PfF++ZlmPmWy
+	 bRRscgI67Dihof6svyTtwqSk8PNXuZcLVCbhkaqftqvAPOTfchQzsL9azgDOtVXod8
+	 rXpPPAPZY+rbQ==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 31E4BF4006B;
+	Mon, 23 Feb 2026 06:17:45 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-01.internal (MEProxy); Mon, 23 Feb 2026 06:17:45 -0500
+X-ME-Sender: <xms:WTecaZgA8AvZpn8eSULqZP9B7hCd7CRFOEns11LlNWohktnXoMbOcA>
+    <xme:WTecaY2kZ-2lmI20rnAEUoPb7QkSU5zjaEY_sl3GTW_KcWXU5S7tgYdQw55sMX33n
+    dP1_pNudIjm1DTEWgLI0PjXNoUFeqRWy9y_hhgoYoxn7XHk8rQi3Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejtdelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
+    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
+    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
+    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
+    gurdgtohhmpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepsggvnhhhsehkvghrnhgvlh
+    drtghrrghshhhinhhgrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekie
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdho
+    rhhgpdhrtghpthhtohepihhlihgrshdrrghprghlohguihhmrghssehlihhnrghrohdroh
+    hrghdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgt
+    ohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:WTecaU4kQ0Cm_b0_Li1sUA8NmJUle7HisuUZoKxwRtcxYryS4qpbeg>
+    <xmx:WTecaVfIOmmR7JPM3JsNK75dtyEvFNW7fuTIZneToo94Sz5oRuQ2iw>
+    <xmx:WTecaXwKtaKlcxBU5OxWcGeOn6GnrikiNIKmx_O73BAxMHvQtLW2tw>
+    <xmx:WTecabpesWExFjmzzZts0Pp847SBQBpJXbYWZxD5rZt6c_m0IblPfw>
+    <xmx:WTecaVwC1NV6aDi1xwqlurWiCkmGRBHl52XU9LP7KjPnI438uye4kjw5>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 0D441700065; Mon, 23 Feb 2026 06:17:45 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260213141619.1791283-1-maz@kernel.org>
+X-ThreadId: AF0NZ4OlJH_7
+Date: Mon, 23 Feb 2026 12:17:22 +0100
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "Mike Rapoport" <rppt@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+ "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
+ "Ingo Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ "Thomas Gleixner" <tglx@kernel.org>, linux-efi@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+Message-Id: <e2ad0845-2f87-418a-9f87-5ce619e004ef@app.fastmail.com>
+In-Reply-To: <aZwyNAbEqb8ZwLUM@kernel.org>
+References: <20260223075219.2348035-1-rppt@kernel.org>
+ <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
+ <aZwyNAbEqb8ZwLUM@kernel.org>
+Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-2.15 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217725-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-217726-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben.horgan@arm.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.972];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,e134344.arm.com:mid]
-X-Rspamd-Queue-Id: E2C6A17559F
+	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 1BEE8175626
 X-Rspamd-Action: no action
 
-Hi Marc,
 
-On Fri, Feb 13, 2026 at 02:16:19PM +0000, Marc Zyngier wrote:
-> Quentin forwards a report from Hyesoo Yu, describing an interesting
-> problem with the use of WFxT in __delay() when a vcpu is loaded and
-> that KVM is *not* in VHE mode (either nVHE or hVHE).
+
+On Mon, 23 Feb 2026, at 11:55, Mike Rapoport wrote:
+> Hi Ard,
+>
+> On Mon, Feb 23, 2026 at 09:08:29AM +0100, Ard Biesheuvel wrote:
+>> Hi Mike,
+>> 
+>> On Mon, 23 Feb 2026, at 08:52, Mike Rapoport wrote:
+>> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>> >
+>> > efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
+>> > and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+>> >
+>> > There are two issue with that: memblock_free_late() should be used for
+>> > memory allocated with memblock_alloc() while the memory reserved with
+>> > memblock_reserve() should be freed with free_reserved_area().
+>> >
+>> > More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+>> > efi_free_boot_services() is called before deferred initialization of the
+>> > memory map is complete.
+>> >
+>> > Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
+>> > RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+>> >
+>> > If the freed memory resides in the areas that memory map for them is
+>> > still uninitialized, they won't be actually freed because
+>> > memblock_free_late() calls memblock_free_pages() and the latter skips
+>> > uninitialized pages.
+>> >
+>> > Using free_reserved_area() at this point is also problematic because
+>> > __free_page() accesses the buddy of the freed page and that again might
+>> > end up in uninitialized part of the memory map.
+>> >
+>> > Delaying the entire efi_free_boot_services() could be problematic
+>> > because in addition to freeing boot services memory it updates
+>> > efi.memmap without any synchronization and that's undesirable late in
+>> > boot when there is concurrency.
+>> >
+>> > More robust approach is to only defer freeing of the EFI boot services
+>> > memory.
+>> >
+>> > Make efi_free_boot_services() collect ranges that should be freed into
+>> > an array and add an initcall efi_free_boot_services_memory() that walks
+>> > that array and actually frees the memory using free_reserved_area().
+>> >
+>> 
+>> Instead of creating another table, could we just traverse the EFI memory
+>> map again in the arch_initcall(), and free all boot services code/data
+>> above 1M with EFI_MEMORY_RUNTIME cleared ?
 > 
-> In this case, CNTVOFF_EL2 is set to a non-zero value to reflect the
-> state of the guest virtual counter. At the same time, __delay() is
-> using get_cycles() to read the counter value, which is indirected to
-> reading CNTPCT_EL0.
-> 
-> The core of the issue is that WFxT is using the *virtual* counter,
-> while the kernel is using the physical counter, and that the offset
-> introduces a really bad discrepancy between the two.
-> 
-> Fix this by forcing the use of CNTVCT_EL0, making __delay() consistent
-> irrespective of the value of CNTVOFF_EL2.
-> 
-> Reported-by: Hyesoo Yu <hyesoo.yu@samsung.com>
-> Reported-by: Quentin Perret <qperret@google.com>
-> Reviewed-by: Quentin Perret <qperret@google.com>
-> Fixes: 7d26b0516a0df ("arm64: Use WFxT for __delay() when possible")
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Link: https://lore.kernel.org/r/ktosachvft2cgqd5qkukn275ugmhy6xrhxur4zqpdxlfr3qh5h@o3zrfnsq63od
-> Cc: stable@vger.kernel.org
-> ---
->  arch/arm64/lib/delay.c | 19 +++++++++++++++----
->  1 file changed, 15 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm64/lib/delay.c b/arch/arm64/lib/delay.c
-> index cb2062e7e2340..d02341303899e 100644
-> --- a/arch/arm64/lib/delay.c
-> +++ b/arch/arm64/lib/delay.c
-> @@ -23,9 +23,20 @@ static inline unsigned long xloops_to_cycles(unsigned long xloops)
->  	return (xloops * loops_per_jiffy * HZ) >> 32;
->  }
->  
-> +/*
-> + * Force the use of CNTVCT_EL0 in order to have the same base as WFxT.
-> + * This avoids some annoying issues when CNTVOFF_EL2 is not reset 0 on a
-> + * KVM host running at EL1 until we do a vcpu_put() on the vcpu. When
-> + * running at EL2, the effective offset is always 0.
-> + *
-> + * Note that userspace cannot change the offset behind our back either,
-> + * as the vcpu mutex is held as long as KVM_RUN is in progress.
-> + */
-> +#define __delay_cycles()	__arch_counter_get_cntvct_stable()
+> Currently efi_free_boot_services() unmaps all boot services code/data with
+> EFI_MEMORY_RUNTIME cleared and removes them from the efi.memmap.
+>
 
-I'm seeing this CONFIG_DEBUG_PREEMPT warning, see below, when running 7.0-rc1 on
-FVP Base RevC. I haven't tried bisecting but it looks to be introduced by this
-change.
+Ah yes, I failed to spot that those entries are long gone by initcall time. Other architectures don't touch the EFI memory map at all, but x86 mangles it beyond recognition :-)
 
-The calls are:
+> I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
+> why I didn't use the existing EFI memory map.
+>
+> Now thinking about it, if the unmapping can happen later, maybe we'll just
+> move the entire efi_free_boot_services() to an initcall?
+>
 
-__this_cpu_read()
-erratum_handler()
-arch_timer_reg_read_stable()
-__arch_counter_get_cntvct_stable()
-__delay()
+As long as it is pre-SMP, as that code also contains a quirk to allocate the real mode trampoline if all memory below 1 MB is used for boot services.
 
-This silences the warning:
+But actually, that should be a separate quirk to begin with, rather than being integrated into an unrelated function that happens to iterate over the boot services regions. The only problem, I guess, is that memblock_reserve()'ing that sub-1MB region in the old location in the ordinary way would cause it to be freed again in the initcall?
 
-diff --git a/arch/arm64/include/asm/arch_timer.h b/arch/arm64/include/asm/arch_timer.h
-index f5794d50f51d..f07e4efa0d2b 100644
---- a/arch/arm64/include/asm/arch_timer.h
-+++ b/arch/arm64/include/asm/arch_timer.h
-@@ -24,14 +24,14 @@
- #define has_erratum_handler(h)                                         \
-        ({                                                              \
-                const struct arch_timer_erratum_workaround *__wa;       \
--               __wa = __this_cpu_read(timer_unstable_counter_workaround); \
-+               __wa = raw_cpu_read(timer_unstable_counter_workaround); \
-                (__wa && __wa->h);                                      \
-        })
- 
- #define erratum_handler(h)                                             \
-        ({                                                              \
-                const struct arch_timer_erratum_workaround *__wa;       \
--               __wa = __this_cpu_read(timer_unstable_counter_workaround); \
-+               __wa = raw_cpu_read(timer_unstable_counter_workaround); \
-                (__wa && __wa->h) ? ({ isb(); __wa->h;}) : arch_timer_##h; \
-        })
-
-
-[    0.116471] CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.0.0-rc1 #787 PREEMPT
-[    0.116475] Hardware name: FVP Base RevC (DT)
-[    0.116476] Call trace:
-[    0.116477]  show_stack+0x18/0x24 (C)
-[    0.116481]  dump_stack_lvl+0x74/0x8c
-[    0.116486]  dump_stack+0x18/0x24
-[    0.116490]  check_preemption_disabled+0xd8/0xf8
-[    0.116496]  __this_cpu_preempt_check+0x1c/0x28
-[    0.116501]  __delay+0x114/0x1d4
-[    0.116507]  __const_udelay+0x2c/0x38
-[    0.116513]  its_wait_for_range_completion+0x54/0xe4
-[    0.116518]  its_send_single_command+0xd0/0x150
-[    0.116525]  its_create_device+0x260/0x3a4
-[    0.116528]  its_msi_prepare+0x100/0x168
-[    0.116532]  its_pci_msi_prepare+0x120/0x168
-[    0.116538]  msi_create_device_irq_domain+0x224/0x290
-[    0.116542]  pci_setup_msix_device_domain+0x90/0xcc
-[    0.116548]  __pci_enable_msix_range+0x1b8/0x620
-[    0.116554]  pci_alloc_irq_vectors_affinity+0xc4/0x144
-[    0.116559]  pci_alloc_irq_vectors+0x14/0x20
-[    0.116564]  ahci_init_one+0x568/0xea8
-[    0.116568]  local_pci_probe+0x40/0xa8
-[    0.116574]  pci_device_probe+0xd4/0x208
-[    0.116580]  really_probe+0xbc/0x29c
-[    0.116584]  __driver_probe_device+0x78/0x12c
-[    0.116588]  driver_probe_device+0x3c/0x15c
-[    0.116592]  __driver_attach+0xc8/0x1d4
-[    0.116597]  bus_for_each_dev+0x7c/0xe0
-[    0.116602]  driver_attach+0x24/0x30
-[    0.116606]  bus_add_driver+0xe4/0x208
-[    0.116610]  driver_register+0x5c/0x124
-[    0.116614]  __pci_register_driver+0x4c/0x58
-[    0.116619]  ahci_pci_driver_init+0x24/0x30
-[    0.116624]  do_one_initcall+0x58/0x3e8
-[    0.116629]  kernel_init_freeable+0x1e4/0x530
-[    0.116634]  kernel_init+0x24/0x1e4
-[    0.116640]  ret_from_fork+0x10/0x20
+But yes, in general I think it is fine to unmap those regions from the EFI page tables during an initcall.
 
 
 
-> +
->  void __delay(unsigned long cycles)
->  {
-> -	cycles_t start = get_cycles();
-> +	cycles_t start = __delay_cycles();
->  
->  	if (alternative_has_cap_unlikely(ARM64_HAS_WFXT)) {
->  		u64 end = start + cycles;
-> @@ -35,17 +46,17 @@ void __delay(unsigned long cycles)
->  		 * early, use a WFET loop to complete the delay.
->  		 */
->  		wfit(end);
-> -		while ((get_cycles() - start) < cycles)
-> +		while ((__delay_cycles() - start) < cycles)
->  			wfet(end);
->  	} else 	if (arch_timer_evtstrm_available()) {
->  		const cycles_t timer_evt_period =
->  			USECS_TO_CYCLES(ARCH_TIMER_EVT_STREAM_PERIOD_US);
->  
-> -		while ((get_cycles() - start + timer_evt_period) < cycles)
-> +		while ((__delay_cycles() - start + timer_evt_period) < cycles)
->  			wfe();
->  	}
->  
-> -	while ((get_cycles() - start) < cycles)
-> +	while ((__delay_cycles() - start) < cycles)
->  		cpu_relax();
->  }
->  EXPORT_SYMBOL(__delay);
-> -- 
-> 2.47.3
-> 
-> 
 
-Thanks,
 
-Ben
+
+
 
