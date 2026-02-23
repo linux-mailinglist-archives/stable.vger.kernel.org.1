@@ -1,193 +1,320 @@
-Return-Path: <stable+bounces-217722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DMkGdIwnGkKAgQAu9opvQ
-	(envelope-from <stable+bounces-217722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:49:54 +0100
+	id gIdsJ2EynGkKAgQAu9opvQ
+	(envelope-from <stable+bounces-217723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:56:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AA217521A
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:49:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 493C417530B
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8041F303A25E
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:49:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 270CE3037150
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB5E35F8B2;
-	Mon, 23 Feb 2026 10:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BFE35CBDD;
+	Mon, 23 Feb 2026 10:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gFqyrSGr";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kA0rgQmZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PhToeSxe"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15B335C1B6
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 10:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C431E49F;
+	Mon, 23 Feb 2026 10:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771843780; cv=none; b=E7UXE7lxXnWzqYMotDA6zBf3JU+r+3s73t9ofkM6iOsKPLBtRLCtpf3PbmTyAcCOTsr9tDqJKlb36hUSaCpq9G2jRJheQTLH1h8/DnRG/6UwpFI/uHL1JEyR8ctbFqNoJIUnD9Sn9aq5WgpmZzQ1hLvfu0KNpLpJN2RRJE9x3Ig=
+	t=1771844157; cv=none; b=MxM8m/rG3WEmupOHYMYRa8RQTEZbWXA4h361dXsVKO4NvfMHbZOFwXWMJSkngnYloLDmuRIZCLhyHy6BXFtQHH+6Lswwqb7X2HmQuy4lECAaCtLc0T9dzQjIKmSkAuio3fAVRpmXyjrwz9Wjfv1q3iLJdpX/XArmEmx7MeKZL8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771843780; c=relaxed/simple;
-	bh=GC0VfP4esaZr5rSCEvFooS80d2grlfnSp82KksiJ5tA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ClVzAI9LfKsfPtN+t5SyuSCjCtsjI/YF5cFkt4TvVdpC02RyfXvJ1ygP9YgZKg0DUDkOiy02plDoh0p8r+IpP5yX9vMXg/zv0QEE4Kd5JyaajGCWo7HY8+6kvHdkTxgHvvD7y4ZuBfLOLlGsiANA3dcHN7ddUnvrY4vMziJxsZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gFqyrSGr; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kA0rgQmZ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NAYRnB561785
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 10:49:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4v89inTDZEXdrd9RJRHgT2h0ptcHr+emdXUC5U1ttwU=; b=gFqyrSGrAA7DWawB
-	AtkoMH1AuGUJOODq8G7Ie9sJUrZVYRx/Je66oqCbPXZEoRJ70OhG6eFaG4LhSTOh
-	m+Ng8YsHQMRFm8z2N7ejmcrrWQLSFpLq/92nfOkPiT0aV6qYgsY2hr6zKZxkVsmB
-	Rg25/QMueG9G51qMZSZYOPzih+duvqeg3dqU82arIdM7KPljGKo9Ls7CfFiE8ukn
-	IwLh07RJIK/qjVapYMgTcw1OGdJcbu6baNjqo41XAZEIeV31jJiHpIiiIXgweUdy
-	/wJIozGSaPnJxFdcaD7KyaZ1SMOVAYKGsReBrC9h8nw9pCqH/yMwK8uv/07G3IRc
-	Q9tOeQ==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cgn8r81ge-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 10:49:36 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8c71500f274so467495585a.1
-        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 02:49:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771843776; x=1772448576; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4v89inTDZEXdrd9RJRHgT2h0ptcHr+emdXUC5U1ttwU=;
-        b=kA0rgQmZjR0hzoW7IBo6AO7sCIhrS2qDEPlWC8O+NZS9VNDcldtIDyUYE6om8WDMbE
-         D7AcjNAHhuzdQFcPymgKO7idr+jAc3A0xioSWSPwxhEktB+DwhDnI8+qOwQlVBxVA70A
-         sjvp5ckkcO+Q/pnn5ou72lVimcRMfnQP6HVJKGPWJjFScTQ0En9zUm/ZFKQKeV5wPfsp
-         1yVVHznn0yAg/AOMiW0GFG4AO2reWuFAclfvOipxwfsL0B1XkZOeN0o18bWCrracPIKF
-         7nGAGAXdtBPRD2pZYsIaJERy+bip/ly8+u6f8ABjAxcrIl9fH3z6KPs091K8MsTwCk4B
-         hHKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771843776; x=1772448576;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4v89inTDZEXdrd9RJRHgT2h0ptcHr+emdXUC5U1ttwU=;
-        b=L1As2xvjs9j2+ZKypl4JiSZtEMREHgN3Kcc0AqhaIbYUwncOtmAPxjdn9iGjcBGYwb
-         GTE+U1A0/BcsDE924fkGWpP2oa2t791FUc1fqvuPJdqgLB5PNi473i2iyvzTTK0BQR0i
-         2IWzAqbVtsx2uykHvjKQPtgLeTynd05+j+biJ2FVKS5s7etGor+8cgJmpiQB6jLSeQn7
-         BgBaJWdRIzkrj8SDfdJbDjOib3/PmtwEICT/9891khFr4b0MdH2BuJX1GLxGScxnwGEP
-         94needTzAk4llakN3VjI8d8m4spIJVjt+T8lkQ4Y8VGTMcBaBQuCitgq4K0ZUz/zbnKz
-         vhbw==
-X-Forwarded-Encrypted: i=1; AJvYcCVKvL619RiB/JTGGhHzUAbz6ruBwxNYEdc+sB/H/CfiyMxW3TxiJ5Rc9BOkVoC5GgZaz+2V1FU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAPP9Lx3MniTzYAfuDm8Ef6BRzsZbTooXYIXtod+3BK3ksB9Ip
-	CuB8oN1VEKoErNXP+ZqtxYnU6OM7Q0jfVaLyCEpP5YAr0t8RrJfq8kmuTVwU8Nh83Wgf/JayaNq
-	0mWEn32yF5Fa4tjK1pRRcmGbJx9Evu7M8omUknPX4q5bgp+LrJ3JyjtkF3jQ=
-X-Gm-Gg: AZuq6aIEDd88LzrymqvSERZMcIh0xlhh9TCuMweM0+nUn7wbA3A/kUFyFyteXWPVirq
-	MViMJxSMlHv0zKqBxBnCVqWSDGYGlvjqEcR0/UEz446bAhIyMbp8bdyFLTJGhNOCLBXOz8PZcUl
-	pBXKZTOBtq04dcUPwTYULDaDu9k+TIAu7YNJN312S8vsGlH3LYzQ42/xdx6T1dYnkj5fwkj3WMq
-	kKF2DJLsGEDTTzqfEchdBHqd0s5pAMdY8WR6oHuFKnN+14XccY54iENN8A9lluQotOPAIuSpEo/
-	OpSW3tByiGQYqsM+1tjzMF1C1UbtPlvWpXfdGlcvv0zx8sqRvVj2/En1v+sMp89B+tDTWCX3bgZ
-	s38UaAgYuiE/yddsfFp+X8HPdPdJgjiwIu1fRWXM+I+9loeazo68=
-X-Received: by 2002:a05:620a:4085:b0:8c6:ac29:70ff with SMTP id af79cd13be357-8cb8ca65e96mr996535585a.52.1771843775951;
-        Mon, 23 Feb 2026 02:49:35 -0800 (PST)
-X-Received: by 2002:a05:620a:4085:b0:8c6:ac29:70ff with SMTP id af79cd13be357-8cb8ca65e96mr996533385a.52.1771843775432;
-        Mon, 23 Feb 2026 02:49:35 -0800 (PST)
-Received: from brgl-qcom.home ([2a01:cb1d:dc:7e00:bd71:422c:5e83:8b37])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d54c5csm17969876f8f.38.2026.02.23.02.49.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 02:49:34 -0800 (PST)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] gpiolib: normalize the return value of gc->get() on behalf of buggy drivers
-Date: Mon, 23 Feb 2026 11:49:33 +0100
-Message-ID: <177184377034.141773.496278586164543775.b4-ty@oss.qualcomm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260219-gpiolib-set-normalize-v2-1-f84630e45796@oss.qualcomm.com>
-References: <20260219-gpiolib-set-normalize-v2-1-f84630e45796@oss.qualcomm.com>
+	s=arc-20240116; t=1771844157; c=relaxed/simple;
+	bh=Hp/G5bM2cfDXr9AvMTGry72qv+5k5dlSxt17AJXUjBQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T4QYKx1KH5wKle4yZD8E5dXtPgFueVh01+O6Pc/CKrAttCosRKWeu69zDaltY9+9AHX9A2y9jFKaaJ6R26bfdTS8IazP8PlQiOkK8rnDCrUGYlad7W1lbb6CNtgoyfwJBp3l//ft6m7IJCLqw1vwDT1de3AVuoeK6A1hbsniD20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PhToeSxe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAF1C116C6;
+	Mon, 23 Feb 2026 10:55:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771844156;
+	bh=Hp/G5bM2cfDXr9AvMTGry72qv+5k5dlSxt17AJXUjBQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PhToeSxeGI/AfzEciOrUYiCwaquvOzKdmUQQxyn/pTX37XJjk0l/22SEwRHvGkA1b
+	 6uAreg1DXjppT4wPUy+qDmRPKjP8B4WBdgTHA1h05TaDiOCb1/SqAFGapOfBitjYmR
+	 /u+Mtmwr2YJkjAAv069cIgmvOoOoDdxoH6CAxdp982qevVQGunRNTkmCBidYz3Nce/
+	 plSnr8T+21sxGn33f3cEo3D2I+LEldHT4G+nbYUIWh3iAuvttW73gnBvbwKwCIllvK
+	 FzoDZHO5onuHwH5vGcqU+1EjxesnP78VJ2b5nfK8+6sSaaBCPcDjf550/imijYvFCB
+	 I3HhD7AwiozWQ==
+Date: Mon, 23 Feb 2026 12:55:48 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@kernel.org>, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
+Message-ID: <aZwyNAbEqb8ZwLUM@kernel.org>
+References: <20260223075219.2348035-1-rppt@kernel.org>
+ <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: h4DFga4r3q-LURSfIOHUgczkoPoueZeC
-X-Authority-Analysis: v=2.4 cv=V7twEOni c=1 sm=1 tr=0 ts=699c30c1 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=67SJ3es6nUsVzo6b:21 a=xqWC_Br6kY4A:10
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=qavmD5TIkVLpn3QFz_0A:9 a=QEXdDO2ut3YA:10
- a=zgiPjhLxNE0A:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDA5MyBTYWx0ZWRfX7XJb3XilBnZY
- 7TtTA7gONMBKY1IoQN3zwG0HfgVqTwp+/HQmU9e3XiB4Y/5wpsMuUdcfSDmT3ais5jwCaLC4Mzr
- I57H1WAPlvEhsi2vPEv/tueOIO9l2INbrx0T24CY3+yq6wvOtgyQ7+J1cOAsGgo6dHMDzs41I5T
- AgdmtbcQr2NkXmne+ifE3LTaAzRltDJ8oKa3Xj9wUcEJEu7zcQh09B93yQ61NoIXLwGPRSIBpOV
- B49E+MLd5+SFxh9jQlPFz4A3NJacd/UwDgIItZdKDZb1pnaX52HWq6xyCrOm4y0U0d3mEtq1swW
- ZYlHDYnCaK4ex40cLxe96W41FV5Of8CyV4sX+mVPyKhhaK513UyhD9iN0gc0mFwp+5wDi4LfKl6
- uPDxqDdoPM7hHnOIVPuX0A7zx3gNugohRdvphhxIFWZbDnQ9eybSoAOtru4R5fpvk2pk7zDsxIi
- MCvuczDZas+XMPFZqHQ==
-X-Proofpoint-GUID: h4DFga4r3q-LURSfIOHUgczkoPoueZeC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-23_02,2026-02-20_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
- impostorscore=0 bulkscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602230093
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	TAGGED_FROM(0.00)[bounces-217722-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,oss.qualcomm.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217723-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bartosz.golaszewski@oss.qualcomm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 03AA217521A
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 493C417530B
 X-Rspamd-Action: no action
 
+Hi Ard,
 
-On Thu, 19 Feb 2026 10:51:33 +0100, Bartosz Golaszewski wrote:
-> Commit 86ef402d805d ("gpiolib: sanitize the return value of
-> gpio_chip::get()") started checking the return value of the .get()
-> callback in struct gpio_chip. Now - almost a year later - it turns out
-> that there are quite a few drivers in tree that can break with this
-> change. Partially revert it: normalize the return value in GPIO core but
-> also emit a warning.
+On Mon, Feb 23, 2026 at 09:08:29AM +0100, Ard Biesheuvel wrote:
+> Hi Mike,
 > 
-> [...]
+> On Mon, 23 Feb 2026, at 08:52, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> >
+> > efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
+> > and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+> >
+> > There are two issue with that: memblock_free_late() should be used for
+> > memory allocated with memblock_alloc() while the memory reserved with
+> > memblock_reserve() should be freed with free_reserved_area().
+> >
+> > More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+> > efi_free_boot_services() is called before deferred initialization of the
+> > memory map is complete.
+> >
+> > Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
+> > RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+> >
+> > If the freed memory resides in the areas that memory map for them is
+> > still uninitialized, they won't be actually freed because
+> > memblock_free_late() calls memblock_free_pages() and the latter skips
+> > uninitialized pages.
+> >
+> > Using free_reserved_area() at this point is also problematic because
+> > __free_page() accesses the buddy of the freed page and that again might
+> > end up in uninitialized part of the memory map.
+> >
+> > Delaying the entire efi_free_boot_services() could be problematic
+> > because in addition to freeing boot services memory it updates
+> > efi.memmap without any synchronization and that's undesirable late in
+> > boot when there is concurrency.
+> >
+> > More robust approach is to only defer freeing of the EFI boot services
+> > memory.
+> >
+> > Make efi_free_boot_services() collect ranges that should be freed into
+> > an array and add an initcall efi_free_boot_services_memory() that walks
+> > that array and actually frees the memory using free_reserved_area().
+> >
+> 
+> Instead of creating another table, could we just traverse the EFI memory
+> map again in the arch_initcall(), and free all boot services code/data
+> above 1M with EFI_MEMORY_RUNTIME cleared ?
+ 
+Currently efi_free_boot_services() unmaps all boot services code/data with
+EFI_MEMORY_RUNTIME cleared and removes them from the efi.memmap.
 
-Applied, thanks!
+I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
+why I didn't use the existing EFI memory map.
 
-[1/1] gpiolib: normalize the return value of gc->get() on behalf of buggy drivers
-      https://git.kernel.org/brgl/c/ec2cceadfae72304ca19650f9cac4b2a97b8a2fc
+Now thinking about it, if the unmapping can happen later, maybe we'll just
+move the entire efi_free_boot_services() to an initcall?
 
-Best regards,
+> > Link: 
+> > https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
+> > Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after 
+> > switching to virtual mode")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  arch/x86/include/asm/efi.h          |  2 +-
+> >  arch/x86/platform/efi/efi.c         |  2 +-
+> >  arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
+> >  drivers/firmware/efi/mokvar-table.c |  2 +-
+> >  4 files changed, 55 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+> > index f227a70ac91f..51b4cdbea061 100644
+> > --- a/arch/x86/include/asm/efi.h
+> > +++ b/arch/x86/include/asm/efi.h
+> > @@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
+> >  extern int __init efi_reuse_config(u64 tables, int nr_tables);
+> >  extern void efi_delete_dummy_variable(void);
+> >  extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
+> > -extern void efi_free_boot_services(void);
+> > +extern void efi_unmap_boot_services(void);
+> > 
+> >  void arch_efi_call_virt_setup(void);
+> >  void arch_efi_call_virt_teardown(void);
+> > diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+> > index d00c6de7f3b7..d84c6020dda1 100644
+> > --- a/arch/x86/platform/efi/efi.c
+> > +++ b/arch/x86/platform/efi/efi.c
+> > @@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
+> >  	}
+> > 
+> >  	efi_check_for_embedded_firmwares();
+> > -	efi_free_boot_services();
+> > +	efi_unmap_boot_services();
+> > 
+> >  	if (!efi_is_mixed())
+> >  		efi_native_runtime_setup();
+> > diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
+> > index 553f330198f2..35caa5746115 100644
+> > --- a/arch/x86/platform/efi/quirks.c
+> > +++ b/arch/x86/platform/efi/quirks.c
+> > @@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
+> > 
+> >  		/*
+> >  		 * Because the following memblock_reserve() is paired
+> > -		 * with memblock_free_late() for this region in
+> > +		 * with free_reserved_area() for this region in
+> >  		 * efi_free_boot_services(), we must be extremely
+> >  		 * careful not to reserve, and subsequently free,
+> >  		 * critical regions of memory (like the kernel image) or
+> > @@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
+> >  		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
+> >  }
+> > 
+> > -void __init efi_free_boot_services(void)
+> > +struct efi_freeable_range {
+> > +	u64 start;
+> > +	u64 end;
+> > +};
+> > +
+> > +static struct efi_freeable_range *ranges_to_free;
+> > +
+> > +void __init efi_unmap_boot_services(void)
+> >  {
+> >  	struct efi_memory_map_data data = { 0 };
+> >  	efi_memory_desc_t *md;
+> >  	int num_entries = 0;
+> > +	int idx = 0;
+> > +	size_t sz;
+> >  	void *new, *new_md;
+> > 
+> >  	/* Keep all regions for /sys/kernel/debug/efi */
+> >  	if (efi_enabled(EFI_DBG))
+> >  		return;
+> > 
+> > +	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
+> > +	ranges_to_free = kzalloc(sz, GFP_KERNEL);
+> > +	if (!ranges_to_free) {
+> > +		pr_err("Failed to allocate storage for freeable EFI regions\n");
+> > +		return;
+> > +	}
+> > +
+> >  	for_each_efi_memory_desc(md) {
+> >  		unsigned long long start = md->phys_addr;
+> >  		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
+> > @@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
+> >  			start = SZ_1M;
+> >  		}
+> > 
+> > -		memblock_free_late(start, size);
+> > +		/*
+> > +		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
+> > +		 * map are still not initialized and we can't reliably free
+> > +		 * memory here.
+> > +		 * Queue the ranges to free at a later point.
+> > +		 */
+> > +		ranges_to_free[idx].start = start;
+> > +		ranges_to_free[idx].end = start + size;
+> > +		idx++;
+> >  	}
+> > 
+> >  	if (!num_entries)
+> > @@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
+> >  	}
+> >  }
+> > 
+> > +static int __init efi_free_boot_services(void)
+> > +{
+> > +	struct efi_freeable_range *range = ranges_to_free;
+> > +	unsigned long freed = 0;
+> > +
+> > +	if (!ranges_to_free)
+> > +		return 0;
+> > +
+> > +	while (range->start) {
+> > +		void *start = phys_to_virt(range->start);
+> > +		void *end = phys_to_virt(range->end);
+> > +
+> > +		free_reserved_area(start, end, -1, NULL);
+> > +		freed += (end - start);
+> > +		range++;
+> > +	}
+> > +	kfree(ranges_to_free);
+> > +
+> > +	if (freed)
+> > +		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
+> > +
+> > +	return 0;
+> > +}
+> > +arch_initcall(efi_free_boot_services);
+> > +
+> >  /*
+> >   * A number of config table entries get remapped to virtual addresses
+> >   * after entering EFI virtual mode. However, the kexec kernel requires
+> > diff --git a/drivers/firmware/efi/mokvar-table.c 
+> > b/drivers/firmware/efi/mokvar-table.c
+> > index 4ff0c2926097..6842aa96d704 100644
+> > --- a/drivers/firmware/efi/mokvar-table.c
+> > +++ b/drivers/firmware/efi/mokvar-table.c
+> > @@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
+> >   * as an alternative to ordinary EFI variables, due to 
+> > platform-dependent
+> >   * limitations. The memory occupied by this table is marked as 
+> > reserved.
+> >   *
+> > - * This routine must be called before efi_free_boot_services() in order
+> > + * This routine must be called before efi_unmap_boot_services() in 
+> > order
+> >   * to guarantee that it can mark the table as reserved.
+> >   *
+> >   * Implicit inputs:
+> >
+> > base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+> > -- 
+> > 2.51.0
+
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Sincerely yours,
+Mike.
 
