@@ -1,164 +1,215 @@
-Return-Path: <stable+bounces-217818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217819-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AazOfmfnGnqJgQAu9opvQ
-	(envelope-from <stable+bounces-217818-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 19:44:09 +0100
+	id wPj6FJuhnGnqJgQAu9opvQ
+	(envelope-from <stable+bounces-217819-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 19:51:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD4317BABD
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 19:44:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74BB317BD72
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 19:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AE85D30185CB
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 18:43:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 422023017AAB
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 18:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79258368284;
-	Mon, 23 Feb 2026 18:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E76A36922F;
+	Mon, 23 Feb 2026 18:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Bb72rv7b"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E684D36829D
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 18:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184F1340A70;
+	Mon, 23 Feb 2026 18:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771872212; cv=none; b=nL76X5G62taOpJtE9evaq5fdrBmb1DME6ptLUHmE3EfwyesNMUwpY5m4Wg1KO92U9xeEVOfWeA0aTlXXMvowhcEqiAo0/XLi5UsnSzziu8ewtcqMYFmyg+/tsZ42eMywVBP76tbk1ukR4TwqbqminJz7sxbk9ctWf9QQw9aq0QQ=
+	t=1771872609; cv=none; b=eiDTBvcwHnEqz/Md87qUkM5WH70fgEM6ZRhwhTcZZr2cSj083+c7wvxCHhYfB7cwIwpLZkp47Z+kQUP5uIZ2wflw2ORXBQR4BcEahpXcBgAIQqDrA5nC31YYnG8APPBww2G6MBbVkF0OKYgnT0e0Z7y9ZD/AO3wDgRx98m5O4Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771872212; c=relaxed/simple;
-	bh=Tej2+XcjHlmhmrvEYue7AvT5ddM3d0Y6+7rrLYarivU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=V83KIsUKB0xpCePkykGQlog++R5eizbb5da+oqR9PUs1Kuqn8fLdvRVT9Md/szhaEKIW9tMdv2EVWg3HyMfSurzwMS7l1IJODGDGaKHdICnMqPKKEW1TNasFQfWG2X0JfS6Ombv/ad/AJcH94PYLGDMMGmXu4YS0c4f9q8/3rDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vuats-002Xx6-1Z;
-	Mon, 23 Feb 2026 18:43:19 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vuatq-00000001lQV-26yi;
-	Mon, 23 Feb 2026 19:43:18 +0100
-Date: Mon, 23 Feb 2026 19:43:18 +0100
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Hostinger NOC <noc@hostinger.com>, stable <stable@vger.kernel.org>,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10,5.15] ip6_tunnel: Fix usage of skb_vlan_inet_prepare()
-Message-ID: <aZyfxkHromvUPszw@decadent.org.uk>
+	s=arc-20240116; t=1771872609; c=relaxed/simple;
+	bh=ukyuMxUgLxto9SzZ68PU/qK5aUnk+AhNYMr3Eyt2U10=;
+	h=Date:To:From:Subject:Message-Id; b=g7MPE6fyACrkCBjU2sZu6EJBMl0ilTAWEb+FZUngedG3WT+BiZrPJwa82S/AtwbtenJc/NqpF2NJJkDOusOs7zoY0JhXa6bU2S729+Bi1ONSSLKbJ8Ay2/0mb0QG0dz9zOJ9Kn6kxLkMCJMEmchHr3U0c1TIFq/wGU0nXW2xiVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Bb72rv7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83943C116C6;
+	Mon, 23 Feb 2026 18:50:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1771872608;
+	bh=ukyuMxUgLxto9SzZ68PU/qK5aUnk+AhNYMr3Eyt2U10=;
+	h=Date:To:From:Subject:From;
+	b=Bb72rv7byrBhriXJ78AmVcoY240FQ9SBsN+GksGRwrUmJSnk7r4Tqd2nvoYnHQ7c4
+	 SSFAO0UAhCBuTatTb/yGZ3gar3eb5KZpS8K79BG2pqCAQ8FgVNPnKo3Y19UdLynJ+P
+	 lhHOXs/oP+uou4ZxOk4dA/gNdW3S4qkeolbG0jeI=
+Date: Mon, 23 Feb 2026 10:50:07 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,pasha.tatashin@soleen.com,pratyush@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-memfd_luo-always-make-all-folios-uptodate.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260223185008.83943C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CwB8eHwIUUXgJXAw"
-Content-Disposition: inline
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.06 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[debian.org,linuxfoundation.org,hostinger.com,vger.kernel.org,gmail.com,kernel.org,davemloft.net];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217819-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217818-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[decadent.org.uk];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	NEURAL_HAM(-0.00)[-0.982];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EFD4317BABD
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,soleen.com:email]
+X-Rspamd-Queue-Id: 74BB317BD72
 X-Rspamd-Action: no action
 
 
---CwB8eHwIUUXgJXAw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The patch titled
+     Subject: mm: memfd_luo: always make all folios uptodate
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-memfd_luo-always-make-all-folios-uptodate.patch
 
-Backports of commit 81c734dae203 "ip6_tunnel: use
-skb_vlan_inet_prepare() in __ip6_tnl_rcv()" broke IPv6 tunnelling in
-stable branches 5.10-6.12 inclusive.  This is because the return value
-of skb_vlan_inet_prepare() had the opposite sense (0 for error rather
-than for success) before commit 9990ddf47d416 "net: tunnel: make
-skb_vlan_inet_prepare() return drop reasons".
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memfd_luo-always-make-all-folios-uptodate.patch
 
-For branches including commit c504e5c2f964 "net: skb: introduce
-kfree_skb_reason()" etc. (i.e. 6.1 and newer) it was simple to
-backport commit 9990ddf47d416, but for 5.10 and 5.15 that doesn't seem
-to be practical.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-So just reverse the sense of the return value test here.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Fixes: f9c5c5b791d3 ("ip6_tunnel: use skb_vlan_inet_prepare() in __ip6_tnl_=
-rcv()")
-Fixes: 64c71d60a21a ("ip6_tunnel: use skb_vlan_inet_prepare() in __ip6_tnl_=
-rcv()")
-Signed-off-by: Ben Hutchings <benh@debian.org>
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+Subject: mm: memfd_luo: always make all folios uptodate
+Date: Mon, 23 Feb 2026 18:39:28 +0100
+
+Patch series "mm: memfd_luo: fixes for folio flag preservation".
+
+This series contains a couple fixes for flag preservation for memfd live
+update.
+
+The first patch fixes memfd preservation when fallocate() was used to
+pre-allocate some pages.  For these memfds, all the writes to fallocated
+pages touched after preserve were lost.
+
+The second patch fixes dirty flag tracking.  If the dirty flag is not
+tracked correctly, the next kernel might incorrectly reclaim some folios
+under memory pressure, losing user data.  This is a theoretical bug that I
+observed when reading the code, and haven't been able to reproduce it.
+
+
+This patch (of 2):
+
+When a folio is added to a shmem file via fallocate, it is not zeroed on
+allocation.  This is done as a performance optimization since it is
+possible the folio will never end up being used at all.  When the folio is
+used, shmem checks for the uptodate flag, and if absent, zeroes the folio
+(and sets the flag) before returning to user.
+
+With LUO, the flags of each folio are saved at preserve time.  It is
+possible to have a memfd with some folios fallocated but not uptodate. 
+For those, the uptodate flag doesn't get saved.  The folios might later
+end up being used and become uptodate.  They would get passed to the next
+kernel via KHO correctly since they did get preserved.  But they won't
+have the MEMFD_LUO_FOLIO_UPTODATE flag.
+
+This means that when the memfd is retrieved, the folios will be added to
+the shmem file without the uptodate flag.  They will be zeroed before
+first use, losing the data in those folios.
+
+Since we take a big performance hit in allocating, zeroing, and pinning
+all folios at prepare time anyway, take some more and zero all
+non-uptodate ones too.
+
+Later when there is a stronger need to make prepare faster, this can be
+optimized.
+
+To avoid racing with another uptodate operation, take the folio lock.
+
+Link: https://lkml.kernel.org/r/20260223173931.2221759-2-pratyush@kernel.org
+Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-I built and tested 5.10.251 with this on top, but have not tested it
-with the 5.15 branch.
 
-Ben.
+ mm/memfd_luo.c |   25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -876,7 +876,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl
-=20
- 	skb_reset_network_header(skb);
-=20
--	if (skb_vlan_inet_prepare(skb, true)) {
-+	if (!skb_vlan_inet_prepare(skb, true)) {
- 		DEV_STATS_INC(tunnel->dev, rx_length_errors);
- 		DEV_STATS_INC(tunnel->dev, rx_errors);
- 		goto drop;
+--- a/mm/memfd_luo.c~mm-memfd_luo-always-make-all-folios-uptodate
++++ a/mm/memfd_luo.c
+@@ -152,10 +152,31 @@ static int memfd_luo_preserve_folios(str
+ 		if (err)
+ 			goto err_unpreserve;
+ 
++		folio_lock(folio);
++
+ 		if (folio_test_dirty(folio))
+ 			flags |= MEMFD_LUO_FOLIO_DIRTY;
+-		if (folio_test_uptodate(folio))
+-			flags |= MEMFD_LUO_FOLIO_UPTODATE;
++
++		/*
++		 * If the folio is not uptodate, it was fallocated but never
++		 * used. Saving this flag at prepare() doesn't work since it
++		 * might change later when someone uses the folio.
++		 *
++		 * Since we have taken the performance penalty of allocating,
++		 * zeroing, and pinning all the folios in the holes, take a bit
++		 * more and zero all non-uptodate folios too.
++		 *
++		 * NOTE: For someone looking to improve preserve performance,
++		 * this is a good place to look.
++		 */
++		if (!folio_test_uptodate(folio)) {
++			folio_zero_range(folio, 0, folio_size(folio));
++			flush_dcache_folio(folio);
++			folio_mark_uptodate(folio);
++		}
++		flags |= MEMFD_LUO_FOLIO_UPTODATE;
++
++		folio_unlock(folio);
+ 
+ 		pfolio->pfn = folio_pfn(folio);
+ 		pfolio->flags = flags;
+_
 
---CwB8eHwIUUXgJXAw
-Content-Type: application/pgp-signature; name="signature.asc"
+Patches currently in -mm which might be from pratyush@kernel.org are
 
------BEGIN PGP SIGNATURE-----
+liveupdate-luo_file-remember-retrieve-status.patch
+mm-memfd_luo-always-make-all-folios-uptodate.patch
+mm-memfd_luo-always-dirty-all-folios.patch
+memfd-export-memfd_addget_seals.patch
+mm-memfd_luo-preserve-file-seals.patch
+kho-move-alloc-tag-init-to-kho_init_foliopages.patch
 
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmmcn8EACgkQ57/I7JWG
-EQnWhA//W/76Dz1r4w04CBI0c/g8/Oo9crdGHyQbUwSQMu/YsvUBa0/Xfy/92g7k
-kCLYoZ1hYTIZkDslC+06fHZkk8aVqqBxOE3yR1/8dH9r0cJxgTD+JXCvwMw5Y6k+
-itQ0O1dPI/dr3EgZJ5s0PHMcUw4nFigQUYouXyR5lezZfTf1iHQCTPSH0DEBilsJ
-Lx4Npr6+BhI0zLDrVzV6cq5qJFhg5yLS9YyyNSAie3ZxbDjYltaU1l4psxVHkWM+
-ZBNJIbcKFuuAkuUq+FpNb0YypZBeMkMz8IKyh6OkeZeThReK1mcf5e0I5vR0vKXa
-yUvk6NEF/gb3cUmfkS9nPDJbG8JYvnxTXobvWxRc88Wid7izWA+KULvIUehH/Zey
-OXysq/c5m8ksZhxhfFB6VOYxedaKQ1W3Hb2Amb06imtXnqZyPUvx5YCCETb0GBPv
-A130KdckpxtzAQ1Yxbn5kja0veCOrJ13CeqUA48+VZZ/tNFLXwlnJb6EB/xU2ssE
-rpsWOiXm4gF5mufuUzpNBSRb4/NILl3WnUKZuMO/IZJz9VuOiTF+JPQDbdunVi9Q
-HzI6jc+vWQ1eh/6ddIgubJsUYbJDrk8keV661wqfwYUIm4y52LfZyY1I3Ke82bys
-Wc4dpO/J5aObNfQ6B7zUaX0yRcUafFsxlrmysSKNcbzY+odfT28=
-=JhGv
------END PGP SIGNATURE-----
-
---CwB8eHwIUUXgJXAw--
 
