@@ -1,157 +1,155 @@
-Return-Path: <stable+bounces-217796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217797-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJsaK+2MnGmdJQQAu9opvQ
-	(envelope-from <stable+bounces-217796-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 18:22:53 +0100
+	id OFDbBZaOnGmdJQQAu9opvQ
+	(envelope-from <stable+bounces-217797-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 18:29:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A9C17AB70
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 18:22:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E7817AD65
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 18:29:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C985E30101F8
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 17:22:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C846D30FEE76
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 17:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23708331226;
-	Mon, 23 Feb 2026 17:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006F6331217;
+	Mon, 23 Feb 2026 17:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qr+WzQzQ"
+	dkim=pass (2048-bit key) header.d=cloudlinux.com header.i=@cloudlinux.com header.b="Ej/gVug5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E902F60CC
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 17:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCFD329C60
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 17:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771867327; cv=none; b=mQsRyPg00ciwGGpb8+gvhgtVFCA/bF9KsSw0f4aEpKnevoJu7rCdYA2e2vxaSz6KB4CAWfg4h3u13KFD9hgYc4+dYl4hh4LGSFHLhlvVM9MZBYQHWMUjypeaJRoSIAOinFYBT9Dx4QML2tGPKSz6cwY5tay+MAzkB0RhFFME/Ao=
+	t=1771867371; cv=none; b=sTKNMVr4u1Mu96CCehFw7hIViFHK2rQGzniCj4GPOW1fZbd5smbpZwrD2pncL9erCfP5vANq95NOtXDXN2ShcLBASrst5vp3UT7wQxaAJr+MKB3rjxvtPDYJpSpnstxD/UMRrX4Y4YA9DZMcI9Kmrww+mJ28rtm9/Tqdym+u/GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771867327; c=relaxed/simple;
-	bh=9OOWpG0ivjp12xj5kOLDESJOJ/tOXEg8NufUZP4qUn0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A37JDcaP1R7jM+pnMobsUa3kZ+Q1XP2N8JfAOtUvseRNxRelHPiYyopMBgVUBr9uKYCW8O7rvHQ7tsavzQQe8FmGrWI0M3j0qVRghedRc55CSG6ztgSjmYLVEyDsqxdSgNR6dfVrWI3qkLjXF0EFRsR+FyZ0nylN6b5BvpSgh/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qr+WzQzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6C6C19423
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 17:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771867327;
-	bh=9OOWpG0ivjp12xj5kOLDESJOJ/tOXEg8NufUZP4qUn0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qr+WzQzQAvr8gmJYJXvgYtfD3T8fjlhPvTPLTalFuGeBdPFV/WGkuvBe/kgNuKYuQ
-	 6RCjSx6CGQqTspwjCvcQs1TtA2gfJGxby4FIv20Zf7mIJ5STSKmwVbbfrbIsHH/iyI
-	 snP3JZIi0OLobAWtKX8fqPRqxJXWyincafISFffeX/OmgvxQ0NmO7zkJYueGz2IHRP
-	 P0TVrHGSmYGz0JPtoBxePYlFuL0cxuYsBdofeywQF9avmGnJ3WezA4jR9EWmJHjBEp
-	 3V48o8Y9WPwJpm3jbPKnAxczj7sWWwhiwogd8kP81xxBHVvTmtcWsDmZVOhvQjYIGM
-	 v7AYHKcU/fFvA==
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b885e8c6727so809831766b.1
-        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 09:22:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWaaYMmUwzdxyv/m3jPXmouIaSSE25tgYHenM6OajjhtBvqg2sgQq0ag8y7UtCpSvywTHHwHGk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyE6XDsemeXlYP+fQebRyIiFVQkohnzB5FU2GU3cmwzcFGldRUJ
-	dehi+tDziydmIVQL8K3JBuptxzrPVdi5S69/Fi68eE3GzxECKdqysI98qk6SZ6bcKqXZlqfwzgn
-	9MuH37lY0Q3QsAJlQnG57CfPJD0St994=
-X-Received: by 2002:a17:907:9405:b0:b8f:c684:db28 with SMTP id
- a640c23a62f3a-b9080f5081emr529638766b.12.1771867326496; Mon, 23 Feb 2026
- 09:22:06 -0800 (PST)
+	s=arc-20240116; t=1771867371; c=relaxed/simple;
+	bh=GsdWTmHfrACFFCRPfF/itkGs3OnYV74Af92jjZQ9U54=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LEysFlc76V2ReK+XpIOja9zU6m1thcR24whnByBGpDfMQdnLaDOLDz8u/jaFId7xAZQxOiFBa7/7ZyMQ0W0fZWcxY4Itq1rVYjI/Qo2Y54fpK313TEps/O827GjhOmia6I0+T4EOvG/KEb0swOcNIRsuKEkcCDL921cMv7F97gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cloudlinux.com; spf=pass smtp.mailfrom=cloudlinux.com; dkim=pass (2048-bit key) header.d=cloudlinux.com header.i=@cloudlinux.com header.b=Ej/gVug5; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cloudlinux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudlinux.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-824ba8f0acaso2670134b3a.1
+        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 09:22:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudlinux.com; s=google; t=1771867370; x=1772472170; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Zl7Z+OaO89snmKUAHrxKVDI5oM0jK/483ZZ+xANRJw=;
+        b=Ej/gVug5TKN+EIOLMKH9J37NucO3yyl6ElKL7o18x0pSXBhZCooPAUFKx/wH7Qp79O
+         nZJHVxwMm4k4emif9FhHhzMfE1fq+hCV9Vosb0sd0KmC9tpgMadlIdDMnTpvbjQmzz6x
+         TmuFZPpjqNA90IymZ56Z7Qq58pO795kwhxa/V4Z8zs7dSaxrAC2pB6Hr4OYO5k62kHbZ
+         aIFCAyjpMG4cJ7VyBo5x2VAGqkpUrPwLBn2PfdedOO/U4/y7g95py/elU307W+G65M28
+         m3mnv7jIdB1EZeDjrGJRyTijV3+gAo0TjzKYHnq38RZGqxSlHQab/eBof6aHxqEGnWTa
+         niUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771867370; x=1772472170;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Zl7Z+OaO89snmKUAHrxKVDI5oM0jK/483ZZ+xANRJw=;
+        b=N5JD6uuvNBsnHMgcHD7pH+5yF/xZVU7kYJOyhh18xZsJVtGVt/71ubDHZ0gINYb/Y/
+         1ILhkem19bm1iZrnwUqFEh+R9AP3Sl6f+5fzuDGl0Za5HMlS7kTR8ax9oOlXtSvs3T3n
+         CVyo64PHvrBE+EN9MSM8BEIFZI6nbV31X7UEnCi2sy7aJY+LnSGlf4Y0xCVvnPVGSVpn
+         eWhGnLRbZe+W459nlcj3aNEF4KeifXGWDH76tTf8vOTMkYdNkPlvM6TkYRt8E0rIbogN
+         ooBjun/VKobEORe7UkfPkQVnuY7UpTwSAbEo0QQXK5KrDsqUXMHen6HSDBpGWI73Po0m
+         k5xA==
+X-Gm-Message-State: AOJu0YzZWZXh4VQbdimuS7tui2fHmmoyxgEARX7jTr0jRyS3CpnzADUJ
+	AC6m4MqCzuTFNiw1w6S3kK/JeX06KbGMGOCCDGI3MF2GOuvKQPUtmmaJOfR7GsM1Qu+NN9G1jhk
+	j17n+
+X-Gm-Gg: AZuq6aLl475nT+ZvcO3hK81WE1aa+Tr0vCSzw81LfXNwg4qE/zWFF2hPsK9PRaXv8rO
+	ZlwAOfxYEXeJW+milCSl03pFy3Ot6R9ErQYhJXbvvT0OUaHLOZmIOWrW5c7OTKKu1vJFx7WqOHr
+	gVB8dKEkU6may6Uq2b3juL1vv3V3oC49tdreALH3b1QXXBzAqQyjRunfs+r3JytzqLnETUOI0H8
+	osFXxRPwzWcEhTJ3tZ6O5Y9HsmAeE6mitEpldnm00mFMKuje69Txuny+E01GqwoyD2jvlX74fnW
+	5dtv08qLjC6WXDMrtYW1KCmWQAT1qNeYXAZdA1ZJ03WzLNSImoG4S73ZNyoNtTSpJUsttUBhLrD
+	BSrOe0Sh2+escxj19BFz3x8vo0dOsuNg8GarI8jeZmknyEYmtdW67nDGAEt/qEs7WJL+LXjNZiJ
+	kYRq0BLsrYQk6YA9Iydl7cGFsK8NBFy24=
+X-Received: by 2002:a05:6a21:512:b0:38b:e750:bc31 with SMTP id adf61e73a8af0-39545eeb17fmr7900675637.32.1771867369604;
+        Mon, 23 Feb 2026 09:22:49 -0800 (PST)
+Received: from outpost.localdomain ([110.44.9.85])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70b7269771sm7942918a12.30.2026.02.23.09.22.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 09:22:49 -0800 (PST)
+From: Jaskaran Singh <jsingh@cloudlinux.com>
+To: stable@vger.kernel.org,
+	james.smart@broadcom.com,
+	kbusch@kernel.org,
+	axboe@fb.com,
+	hch@lst.de,
+	sagi@grimberg.me
+Cc: linux-nvme@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	Jaskaran Singh <jsingh@cloudlinux.com>
+Subject: [PATCH 5.10.y 0/2] Fix incorrect backport of nvme-fc ioerr_work cancel_work_sync()
+Date: Mon, 23 Feb 2026 22:52:39 +0530
+Message-Id: <20260223172241.291649-1-jsingh@cloudlinux.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aYqOkvHs3L-AX-CG@google.com> <4g25s35ty23lx2je4aknn6dg4ohviqhkbvvel4wkc4chhgp6af@kbqz3lnezo3j>
- <aYuE8xQdE5pQrmUs@google.com> <ck57mmdt5phh64cadoqxylw5q2b72ffmabmlzmpphaf27lbtxw@4kscovf6ahve>
- <aYvIpwjsJ50Ns4ho@google.com> <mxn6y6og34ejncnsvdapcoep4ewcnwnheszhwkp2undkqcu5zv@bpmseexuug5z>
- <aYvPwH8JcRItaQRI@google.com> <smsla7jgdncodh57uh7dihumnteu5sgxyzby2jc6lcp3moayzf@ixqj4ivmlgb2>
- <aZj2V9-noq10b5CM@google.com> <ftjb625b4wsz5vdty3fcxqanuxriiqcewqkzp2ml2hc4eojuoc@ewhboiiqmcd4>
- <aZyHeKp2Dzzrjb5C@google.com>
-In-Reply-To: <aZyHeKp2Dzzrjb5C@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 23 Feb 2026 09:21:55 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zMm185sTzhSZL4pfi5GAT2z33W-nPOaxDVq+AF-wePHUA@mail.gmail.com>
-X-Gm-Features: AaiRm51k__3TarTHRw4JVSUnX05rOFmwAWLHi27G3uT1pXKuAO74W1BQd9t7tZI
-Message-ID: <CAO9r8zMm185sTzhSZL4pfi5GAT2z33W-nPOaxDVq+AF-wePHUA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] KVM: nSVM: Sync next_rip to cached vmcb12 after VMRUN
- of L2
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yosry Ahmed <yosry.ahmed@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[cloudlinux.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[cloudlinux.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217796-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[cloudlinux.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217797-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 51A9C17AB70
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jsingh@cloudlinux.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cloudlinux.com:mid,cloudlinux.com:dkim]
+X-Rspamd-Queue-Id: 69E7817AD65
 X-Rspamd-Action: no action
 
-> > > > > Oh, good point.  In that case, I think it makes sense to add the flag asap, so
-> > > > > that _if_ it turns out that KVM needs to consume a field that isn't currently
-> > > > > saved/restored, we'll at least have a better story for KVM's that save/restore
-> > > > > everything.
-> > > >
-> > > > Not sure I follow. Do you mean start serializing everything and setting
-> > > > the flag ASAP (which IIUC would be after the rework we discussed),
-> > >
-> > > Yep.
-> >
-> > I don't think it matters that much when we start doing this. In all
-> > cases:
-> >
-> > 1. KVM will need to be backward-compatible.
-> >
-> > 2. Any new features that depend on save+restore of those fields will be
-> > a in a new KVM that does the 'full' save+restore (assuming we don't let
-> > people add per-field flags).
-> >
-> > The only scenario that I can think of is if a feature can be enabled at
-> > runtime, and we want to be able to enable it for a running VM after
-> > migrating from an old KVM to a new KVM. Not sure how likely this is.
->
-> The scenario I'm thinking of is where we belatedly realize we should have been
-> saving+restoring a field for a feature that is already supported, e.g. gpat.  If
-> KVM saves+restores everything, then we don't have to come up with a hacky solution
-> for older KVM, because it already provides the desired behavior for the "save",
-> only the "restore" for the older KVM is broken.
->
-> Does that make sense?  It makes sense in my head, but I'm not sure I communicated
-> the idea very well...
+The backport of upstream commit 0a2c5495b6d1 ("nvme: nvme-fc: Ensure
+->ioerr_work is cancelled in nvme_fc_delete_ctrl()") to linux-5.10.y
+was incorrectly applied as commit 3d78e8e01251.
 
-Kinda? What I am getting at is that we'll always have an old KVM that
-doesn't save everything that we'll need to handle. I think the
-scenario you have in mind is where we introduce a feature *after* we
-start saving everything, and at a later point realize we didn't add
-proper "restore" support, but the "save" support must have always been
-there.
+The original upstream fix moves the cancel_work_sync(&ctrl->ioerr_work)
+call within nvme_fc_delete_ctrl() to after nvme_fc_delete_association(),
+so that ->ioerr_work is not running when the nvme_fc_ctrl object is
+freed. However, the stable backport mistakenly placed the
+cancel_work_sync() call in nvme_fc_reset_ctrl_work() instead of
+nvme_fc_delete_ctrl(), leaving the original bug unfixed while
+introducing an unnecessary change to the reset path.
 
-gPAT is not a good example because it's in the "save" area :P
+This series reverts the broken backport and then applies the fix
+correctly.
 
-But yeah, I see your point. It's not very straightforward now because
-what we save comes from the cache, and we only cache what we need for
-the current set of features. So this will need to be done on top of
-the rework we've been discussing, where vmcb02 starts being the source
-of truth instead of the cache, then we just (mostly) save vmcb02's
-control area as-is.
+Jaskaran Singh (2):
+  Revert "nvme: nvme-fc: Ensure ->ioerr_work is cancelled in nvme_fc_delete_ctrl()"
+  nvme: nvme-fc: Ensure ->ioerr_work is cancelled in nvme_fc_delete_ctrl()
+
+ drivers/nvme/host/fc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.43.7
+
 
