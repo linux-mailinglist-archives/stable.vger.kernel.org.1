@@ -1,220 +1,142 @@
-Return-Path: <stable+bounces-217768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AnqHGVLnGmODAQAu9opvQ
-	(envelope-from <stable+bounces-217768-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:43:17 +0100
+	id aOyQBoBMnGnYDQQAu9opvQ
+	(envelope-from <stable+bounces-217769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:48:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40DE7176559
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:43:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 713C11766A4
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3E4483047611
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:39:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DE2731343F0
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF0A36AB79;
-	Mon, 23 Feb 2026 12:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CB1362137;
+	Mon, 23 Feb 2026 12:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eJFmMZGP"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="RVLlK+FU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF5C36AB69;
-	Mon, 23 Feb 2026 12:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0D036604D
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 12:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771850303; cv=none; b=VzAp8+epTlfNbj3gWyqWESsmh9VBLoK+XUmzcMOyO6A1KsDDwKWsk6NdH3f5tbwzKtBJLxjL1+MLBRQc3E/j3D7ROO9wYkmG92UiUIMQGveLBr4YHq7HMctMs2v6csBjX81e+7rircgR0O3mGPQqipw9zAcpG8Y2Uy5e83xUlvI=
+	t=1771850516; cv=none; b=aLIhhpuk5slCZy43ECGi8COnxcSCZPZi5GFMG1ncUMeSj7CakzQUfjYcR5TJsJR7Z8fakWUfhC8srKPusxzhhcOCmcyAGLrX3VwrfsYZhSq8khUwFfaItmuqNBGY3oKSWco7wFb6MwdmHSU+qCQLOTNP4goDI0K5J6MtmrziNEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771850303; c=relaxed/simple;
-	bh=D4dP0LYI4VlNV2ZYxZrotI++ONdV7jpBxNahnBVB4Mo=;
+	s=arc-20240116; t=1771850516; c=relaxed/simple;
+	bh=3KeKsX/TicHeGqKjb66sFc6q/MAN5AimN9tW/3tVCDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stUoq8hywHNuR/kOYz61duS0BK1kz2KuUyDmOvyPji+GzrEFJvnxyVg7J3A0LzOqWP9FE45nlgaEK4SeTAsiJp9XffAnzqzqOdSIlR928naR/JOutIZLEPYZyP0nmjqG6P0f83VYu8PlS0Etp8wwa4AdE7W33d8Gv2MZIti4T6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eJFmMZGP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4059CC116D0;
-	Mon, 23 Feb 2026 12:38:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771850303;
-	bh=D4dP0LYI4VlNV2ZYxZrotI++ONdV7jpBxNahnBVB4Mo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eJFmMZGPERG4NA96DSa5WB12kayrTHtIBx183siOSvDAo5dWeN+KqBg7MvdBm0pxt
-	 wq5pnqxQD7WMYtR8Avg4ym7fYE7WlSFftH8Ii2V9XfkSDoGwDk33O/Ecj9LVXcqPUs
-	 RySQVmRGfS/Q4LU3KUJsl28RFDOWVEDnTn67K+eVsxb+nx+eh16qcRCK5r8JE+gU5W
-	 FOO7OjGKx9p+aS9uBNvwpKc21SjrBOx0HZaTgmk+neFi6YE52Jha45drWTmm0vrqo6
-	 wvm+sdmprmgxhfn6Lo19sq5eIYaJBU56pSVzaK4Z7/WpGt+1nBmOUI0rc/aLSkmPaW
-	 rgR4EfXTx/idA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: decce6 <decce6@proton.me>,
+	 MIME-Version:Content-Type; b=LXS/qDdX0n++ajLB9fTnHLHVG/rqpO/9pjM8GgLdqgxJc2gLSRSQB+Z8t0Rnym8k3z6T8Wi/kcnvfitpTspSWuunBxKJnarTI+pXF7T770jiPwgJseP7fc1qGYLvANphRGgCJRHVqE9yNuXO7PepNZO49igLhkXywp3Gyh4/DZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=RVLlK+FU; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=eVmCekjPBgHEFAVxRcyW3jy+HaYB2F0nv5nwT9lu+Bs=; b=RVLlK+FUOdPtbpvLwekvpxPClq
+	oPV1ZC5/UFqI5IZGWEwODJ3enu/C5urSqo9/7mOnwbDXCoriouFNk7BCvnsmYGhzGrzLwThRv8iSc
+	bwNSL4Mn55xQtQ3MfYxn5u89LscEepJP7MHOjvVk91JsKfq3jwWDzv246adZN8c2HS436lcDEPCib
+	y144JqYxdhpBmmWeFrU6je6Z6E5Skt2gH9Aut2+WaM27QV6MOxsZ2pndPQpXVQx7ce+cr1bcaBeIj
+	4sIP1tKwVdz/FxT9NLIbXd3pHuCerm8TolCTV5s8TWrxR95JvbKU8FoS0GMDbf04/NTYaGnFj75vL
+	Cm2+P7Rg==;
+Received: from [90.240.106.137] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1vuVFz-004EK9-LT; Mon, 23 Feb 2026 13:41:47 +0100
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+To: amd-gfx@lists.freedesktop.org
+Cc: Sunil Khatri <sunil.khatri@amd.com>,
+	kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kenneth.feng@amd.com,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-5.10] drm/amdgpu: Add HAINAN clock adjustment
-Date: Mon, 23 Feb 2026 07:37:34 -0500
-Message-ID: <20260223123738.1532940-29-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260223123738.1532940-1-sashal@kernel.org>
-References: <20260223123738.1532940-1-sashal@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH v2 01/12] drm/amdgpu/userq: Fix reference leak in amdgpu_userq_wait_ioctl
+Date: Mon, 23 Feb 2026 12:41:30 +0000
+Message-ID: <20260223124141.10641-2-tvrtko.ursulin@igalia.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260223124141.10641-1-tvrtko.ursulin@igalia.com>
+References: <20260223124141.10641-1-tvrtko.ursulin@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19.3
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.64 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[proton.me,amd.com,kernel.org,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-217768-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-217769-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tvrtko.ursulin@igalia.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.981];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 40DE7176559
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 713C11766A4
 X-Rspamd-Action: no action
 
-From: decce6 <decce6@proton.me>
+Drop reference to syncobj and timeline fence when aborting the ioctl due
+output array being too small.
 
-[ Upstream commit 49fe2c57bdc0acff9d2551ae337270b6fd8119d9 ]
-
-This patch limits the clock speeds of the AMD Radeon R5 M420 GPU from
-850/1000MHz (core/memory) to 800/950 MHz, making it work stably. This
-patch is for amdgpu.
-
-Signed-off-by: decce6 <decce6@proton.me>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: a292fdecd728 ("drm/amdgpu: Implement userqueue signal/wait IOCTL")
+Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: <stable@vger.kernel.org> # v6.16+
 ---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-LLM Generated explanations, may be completely bogus:
-
-## Analysis
-
-### What the commit does
-This adds a hardware-specific clock speed limitation (quirk) for the AMD
-Radeon R5 M420 GPU (PCI device 0x666f, revision 0x00, HAINAN chip
-family). It caps the core clock at 800 MHz and memory clock at 950 MHz,
-down from 850/1000 MHz defaults, to fix GPU instability.
-
-### Classification: Hardware Quirk/Workaround
-This falls squarely into the **hardware quirk** exception category for
-stable backports. The change:
-
-1. **Is small and contained**: Only 5 lines added to a single file
-2. **Follows an established pattern exactly**: The existing function
-   `si_apply_state_adjust_rules()` already contains identical quirks for
-   other HAINAN and OLAND device/revision combinations (lines
-   3454-3481). The new code is a copy of this pattern.
-3. **Fixes a real stability issue**: Without the clock cap, this
-   specific GPU is unstable at default clocks. This means crashes,
-   display corruption, or hangs for users with this hardware.
-4. **Has zero risk to other hardware**: The change is gated by
-   `adev->pdev->device == 0x666f && adev->pdev->revision == 0x00`, so it
-   only affects one specific GPU variant.
-5. **No new features or APIs**: Just limiting existing clock values.
-
-### Risk Assessment
-**Very low risk.** The change:
-- Adds a device-specific conditional inside existing well-tested
-  infrastructure
-- Cannot affect any other device (specific PCI device ID + revision
-  check)
-- The `max_sclk`/`max_mclk` capping mechanism is already used by
-  multiple other entries (lines 3575-3581)
-- Was reviewed and signed off by Alex Deucher, the AMD GPU maintainer
-
-### User Impact
-Users with the AMD Radeon R5 M420 (a budget laptop GPU) experience
-instability without this fix. This is found in many budget laptops and
-the fix makes the difference between a working and non-working GPU under
-the amdgpu driver.
-
-### Dependency Check
-No dependencies. The code being modified (`si_apply_state_adjust_rules`
-with HAINAN device checks) has been present in the kernel for years
-(since the amdgpu SI support was added). The `CHIP_HAINAN` branch and
-the `max_sclk`/`max_mclk` mechanism are well-established in all stable
-trees that support this hardware.
-
-### Verification
-- Read the diff and confirmed it adds exactly 5 lines matching the
-  existing quirk pattern in `si_apply_state_adjust_rules()` (lines
-  3454-3466 for existing HAINAN quirks)
-- Verified `max_sclk` and `max_mclk` are used at lines 3575-3581 to cap
-  performance levels - confirming the mechanism works
-- Confirmed the change is authored by an external contributor and signed
-  off by Alex Deucher (AMD GPU subsystem maintainer)
-- Confirmed via `git log` that `si_dpm.c` has a history of receiving
-  similar quirk/workaround fixes (e.g., "Workaround SI powertune issue
-  on Radeon 430")
-- lore.kernel.org search confirmed the patch went through multiple
-  review iterations (Jan-Feb 2026) before being accepted by AMD
-  maintainer
-- Could NOT verify exact stable tree versions containing the base HAINAN
-  support, but CHIP_HAINAN support in amdgpu has existed since at least
-  v4.x (unverified exact version)
-
-### Conclusion
-This is a textbook hardware quirk addition - small, safe, device-
-specific, zero risk to other hardware, fixes a real stability issue for
-users with this GPU. It follows the exact same pattern as existing
-entries in the same function. This is exactly the type of change that
-stable trees exist to deliver.
-
-**YES**
-
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index 695432d3045ff..2d8d86efe2e73 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -3464,6 +3464,11 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- 			max_sclk = 60000;
- 			max_mclk = 80000;
- 		}
-+		if ((adev->pdev->device == 0x666f) &&
-+		    (adev->pdev->revision == 0x00)) {
-+			max_sclk = 80000;
-+			max_mclk = 95000;
-+		}
- 	} else if (adev->asic_type == CHIP_OLAND) {
- 		if ((adev->pdev->revision == 0xC7) ||
- 		    (adev->pdev->revision == 0x80) ||
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+index 8013260e29dc..9b9947b94b89 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
+@@ -876,6 +876,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
+ 				dma_fence_unwrap_for_each(f, &iter, fence) {
+ 					if (WARN_ON_ONCE(num_fences >= wait_info->num_fences)) {
+ 						r = -EINVAL;
++						dma_fence_put(fence);
+ 						goto free_fences;
+ 					}
+ 
+@@ -900,6 +901,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device *dev, void *data,
+ 
+ 			if (WARN_ON_ONCE(num_fences >= wait_info->num_fences)) {
+ 				r = -EINVAL;
++				dma_fence_put(fence);
+ 				goto free_fences;
+ 			}
+ 
 -- 
-2.51.0
+2.52.0
 
 
