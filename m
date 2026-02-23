@@ -1,241 +1,257 @@
-Return-Path: <stable+bounces-217738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFrINoFGnGk7CgQAu9opvQ
-	(envelope-from <stable+bounces-217738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:22:25 +0100
+	id CFiBFJxJnGmODAQAu9opvQ
+	(envelope-from <stable+bounces-217739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:35:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F9C176106
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DBDA17627B
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 13:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1559D3042B42
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:19:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 205C230530DB
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC8C3659F3;
-	Mon, 23 Feb 2026 12:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18455364EAA;
+	Mon, 23 Feb 2026 12:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7Lwt3pP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2QhZzH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51531DE3DC;
-	Mon, 23 Feb 2026 12:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB0C29A1;
+	Mon, 23 Feb 2026 12:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771849144; cv=none; b=okRdOAqJW+f36B885Vo1oAGkpKUwNSTDVtY0bZK22R2ustgw4YNiQZMaq1Q6hL5iR6TECo1RlbujYjBEALXpJ8Wf4FBjpmxzzeUVKcYU8wYOhHPUK/mcBbgN0WVZ3ov6ggB1uLvRx8aKyVf8i6xyIEL85GNa4eyODImJwCYTNQE=
+	t=1771850122; cv=none; b=neKuELsXDvbzBmSfHzlI02oc42eOqWxY771eJaevg0wtNZ5sA4qSIAC+TyeWWtJi4jAw/a3HZQT3mxgJ2MU0d+tzwTyGnSIG0JljomGB7OWZmzs7+J+ttgcHAFdnUx/7ZbI/1U4onv6CKWCunLbZDetL/Xp+arTuEd5KVNYYCkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771849144; c=relaxed/simple;
-	bh=L4x40NTeNfhFz9DzYSHhBr5EkKnCnezdmBS5U2foQr8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=d5sRd651zyqH5CaJhVNJmOQxbeXAlB+MR/NoyOhsqGTYrFM+SY65xudmgznC3nhaQPt4hEE49xt+S7qOVGmDVp8wW8a1Jlqm09FnoTTgNQNtOQ45P5iGvEBFvOdEhxVwguj88odEaT7sGvquVPdIdgJbPuQHHKXL5/GtZNVjilU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7Lwt3pP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9B1C116D0;
-	Mon, 23 Feb 2026 12:19:03 +0000 (UTC)
+	s=arc-20240116; t=1771850122; c=relaxed/simple;
+	bh=832GzeFGpJlTvJnDTmsz3qYOtS9eEKxPa1rPEfRgb88=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H8boGf4wvTXIxUdiqrfJrQxZNybFLiz6kQEneIr42/ldG9j8F1ULj3H6i/GFM8MG5PtS1caR+ffov4V73EfRr5RVI30WTBDZlW9dqv20DeWNofowNhrMqZvBvxQ6XZekU62HcZMOaX+03RMqphONC0wzdwOUfs85hc5UfvTWYL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2QhZzH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF8AC116C6;
+	Mon, 23 Feb 2026 12:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771849143;
-	bh=L4x40NTeNfhFz9DzYSHhBr5EkKnCnezdmBS5U2foQr8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=H7Lwt3pPJjskeHHj7y1s81CQC42RHRFMxaaNdWnNjdpesYy/3mkK8bpUdv4JymznU
-	 AUFkE55CltUgHIjTnJoEZdsunwj19cT5nlR2XdWSDorj+wF9iJ8LSRyv4DrwrXBFYs
-	 m3DTBt5VP7LG1/gTvP7G0swD5K7z2XZz09gheT+/+3wypcgCEG+VlkUM9h/77EEwDf
-	 glNBBOnAPdU4L/vH8aR4wnpxsynbkOkXElbf0S7nN2CDOhHrWClGttqJtaGLCKPWAB
-	 CDXfBN29Od19fdWhgK2MJIfdHc2Kp/CtMl55HEuT1oS7wWNYeq98OvcNs2D5CEz0TY
-	 pTJlgi+OHP9BQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 58BA4F40068;
-	Mon, 23 Feb 2026 07:19:02 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Mon, 23 Feb 2026 07:19:02 -0500
-X-ME-Sender: <xms:tkWcaXSE1f82Q-t1qd4cdGAieY14BMDjvay_rpnhKBJvqtXTG5H3yg>
-    <xme:tkWcaTlxaFEd5VXic_TYXxW-OTIHxdkTBfcdn7krdBpzqIWim-PctdYiicamp7wxS
-    tptIyEqCuFKsL5QJhzF7-hijYF5UPuTu8fDQ7uHhA0I5Rc14uLdRQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejvdduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
-    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
-    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
-    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
-    gurdgtohhmpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepsggvnhhhsehkvghrnhgvlh
-    drtghrrghshhhinhhgrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekie
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdho
-    rhhgpdhrtghpthhtohepihhlihgrshdrrghprghlohguihhmrghssehlihhnrghrohdroh
-    hrghdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgt
-    ohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:tkWcaQqAeuVtoky9o6-Xnu2J8LHRL6Pq6g5NAO2-wOQpMr3HzyrpPw>
-    <xmx:tkWcaWO_hxeo9JKDIMQE6AR9_-zBhjnJYN29J3X_99V4SzfAAYXUcA>
-    <xmx:tkWcaZgCfyZa67-lDg7C8hz-eoUrTmGGwwlIWW3W9eZ5GYVr_IhdNA>
-    <xmx:tkWcaaYqafVkNhkWWtxZ9hVOMc5oHNMlFwUH7gTk6m2cmykOgzUAPA>
-    <xmx:tkWcadjd24EEtUNhXgxtCnev56ZvPCwUpPiOv8RbT4P_UI965pkvP3BL>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id F04BD700069; Mon, 23 Feb 2026 07:19:01 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20201202; t=1771850122;
+	bh=832GzeFGpJlTvJnDTmsz3qYOtS9eEKxPa1rPEfRgb88=;
+	h=From:To:Cc:Subject:Date:From;
+	b=g2QhZzH8jINChZkD3HgkJysqWC60zhlK9XJGp2hwhtKQsepGtl0QXFF4D7jQEp06w
+	 Zj97Oc0lm0oPa3NjG5q8bzFF5jigDMuEdn3Y/GdpH9BvXYkLjSJpdO6KoR3VOQviD4
+	 Kg6uGZ6107FgMLlGCX+Wt4PCug/PE7aTO71mzBKzgJJO0IiLD2CJQdTWppHyOMf1X9
+	 V2HjDXPaIaqo6PCMmEA2Wn8fNvpPBBGLVYJoX9J/OZs+K+wpMBdJXs/p8bMKX4HoRm
+	 p3UF3bHBAJ/7PagQAndQVFz/nvyUh1jbVAu2amuvff4qlfwKTRJJ2izdS0Ymvn/wBg
+	 wmrJih91N3ZoA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Phil Sutter <phil@nwl.cc>,
+	Alyssa Ross <hi@alyssa.is>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>,
+	pablo@netfilter.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-5.10] include: uapi: netfilter_bridge.h: Cover for musl libc
+Date: Mon, 23 Feb 2026 07:35:19 -0500
+Message-ID: <20260223123520.1515978-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AF0NZ4OlJH_7
-Date: Mon, 23 Feb 2026 13:18:41 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Mike Rapoport" <rppt@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
- "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
- "Ingo Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- "Thomas Gleixner" <tglx@kernel.org>, linux-efi@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-Message-Id: <bfe487fe-6868-4215-b5be-99a0360e9bd2@app.fastmail.com>
-In-Reply-To: <aZw8xSI-TM-Gz84t@kernel.org>
-References: <20260223075219.2348035-1-rppt@kernel.org>
- <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
- <aZwyNAbEqb8ZwLUM@kernel.org>
- <e2ad0845-2f87-418a-9f87-5ce619e004ef@app.fastmail.com>
- <aZw8xSI-TM-Gz84t@kernel.org>
-Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19.3
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217738-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217739-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 71F9C176106
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9DBDA17627B
 X-Rspamd-Action: no action
 
+From: Phil Sutter <phil@nwl.cc>
 
+[ Upstream commit 4edd4ba71ce0df015303dba75ea9d20d1a217546 ]
 
-On Mon, 23 Feb 2026, at 12:40, Mike Rapoport wrote:
-> On Mon, Feb 23, 2026 at 12:17:22PM +0100, Ard Biesheuvel wrote:
->> 
->> On Mon, 23 Feb 2026, at 11:55, Mike Rapoport wrote:
->> > Hi Ard,
->> >
->> > On Mon, Feb 23, 2026 at 09:08:29AM +0100, Ard Biesheuvel wrote:
->> >> Hi Mike,
->> >> 
->> >> On Mon, 23 Feb 2026, at 08:52, Mike Rapoport wrote:
->> >> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->> >> >
->> >> > efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
->> >> > and EFI_BOOT_SERVICES_DATA using memblock_free_late().
->> >> >
->> >> > There are two issue with that: memblock_free_late() should be used for
->> >> > memory allocated with memblock_alloc() while the memory reserved with
->> >> > memblock_reserve() should be freed with free_reserved_area().
->> >> >
->> >> > More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
->> >> > efi_free_boot_services() is called before deferred initialization of the
->> >> > memory map is complete.
->> >> >
->> >> > Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
->> >> > RAM on EC2 t3a.nano instances which only have 512MB or RAM.
->> >> >
->> >> > If the freed memory resides in the areas that memory map for them is
->> >> > still uninitialized, they won't be actually freed because
->> >> > memblock_free_late() calls memblock_free_pages() and the latter skips
->> >> > uninitialized pages.
->> >> >
->> >> > Using free_reserved_area() at this point is also problematic because
->> >> > __free_page() accesses the buddy of the freed page and that again might
->> >> > end up in uninitialized part of the memory map.
->> >> >
->> >> > Delaying the entire efi_free_boot_services() could be problematic
->> >> > because in addition to freeing boot services memory it updates
->> >> > efi.memmap without any synchronization and that's undesirable late in
->> >> > boot when there is concurrency.
->> >> >
->> >> > More robust approach is to only defer freeing of the EFI boot services
->> >> > memory.
->> >> >
->> >> > Make efi_free_boot_services() collect ranges that should be freed into
->> >> > an array and add an initcall efi_free_boot_services_memory() that walks
->> >> > that array and actually frees the memory using free_reserved_area().
->> >> >
->> >> 
->> >> Instead of creating another table, could we just traverse the EFI memory
->> >> map again in the arch_initcall(), and free all boot services code/data
->> >> above 1M with EFI_MEMORY_RUNTIME cleared ?
->> > 
->> > Currently efi_free_boot_services() unmaps all boot services code/data with
->> > EFI_MEMORY_RUNTIME cleared and removes them from the efi.memmap.
->> 
->> Ah yes, I failed to spot that those entries are long gone by initcall
->> time. Other architectures don't touch the EFI memory map at all, but x86
->> mangles it beyond recognition :-)
->
-> Heh, EFI on x86 does a lot of, hmm, interesting things with memory, like
-> memremaping kmalloced memory and I it really begs for cleanups :)
-> 
+Musl defines its own struct ethhdr and thus defines __UAPI_DEF_ETHHDR to
+zero. To avoid struct redefinition errors, user space is therefore
+supposed to include netinet/if_ether.h before (or instead of)
+linux/if_ether.h. To relieve them from this burden, include the libc
+header here if not building for kernel space.
 
-Yeah. Sadly, all this has become ABI for kexec, so the EFI memory map abuse is hard to fix.
+Reported-by: Alyssa Ross <hi@alyssa.is>
+Suggested-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
->> > I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
->> > why I didn't use the existing EFI memory map.
->> >
->> > Now thinking about it, if the unmapping can happen later, maybe we'll just
->> > move the entire efi_free_boot_services() to an initcall?
->> >
->> 
->> As long as it is pre-SMP, as that code also contains a quirk to allocate
->> the real mode trampoline if all memory below 1 MB is used for boot
->> services.
->
-> initcall is long after SMP. It the real mode trampoline allocation is the
-> only thing that should happen pre-SMP?
-> 
+LLM Generated explanations, may be completely bogus:
 
-early_initcall() should be early enough, those run before SMP init.
+I have enough information to make a thorough analysis.
 
->> But actually, that should be a separate quirk to begin with, rather than
->> being integrated into an unrelated function that happens to iterate over
->> the boot services regions. The only problem, I guess, is that
->> memblock_reserve()'ing that sub-1MB region in the old location in the
->> ordinary way would cause it to be freed again in the initcall?
->
-> Right now we anyway don't free anything below 1M, I don't see why it should
-> change. 
->
->> But yes, in general I think it is fine to unmap those regions from the
->> EFI page tables during an initcall.
->
-> Thanks for confirming. I'll look into extracting the allocation of the real
-> mode trampoline to a separate quirk and then making the entire
-> efi_free_boot_services() an initcall.
->
+## Analysis
 
-Thanks!
+### 1. Commit Message Analysis
+
+The commit fixes a **userspace build failure** when compiling programs
+against musl libc that include `<linux/netfilter_bridge.h>`. Musl
+defines its own `struct ethhdr` and sets `__UAPI_DEF_ETHHDR` to zero to
+tell kernel UAPI headers not to redefine it. However, this mechanism
+only works if musl's `<netinet/if_ether.h>` is included *before* the
+kernel's `<linux/if_ether.h>`. Without this fix, including
+`<linux/netfilter_bridge.h>` (which transitively includes
+`<linux/if_ether.h>`) results in struct redefinition errors.
+
+The commit has a `Reported-by:` tag from Alyssa Ross, indicating a real
+user hit this issue.
+
+### 2. Code Change Analysis
+
+The change is minimal - 3 lines added:
+```c
+#ifndef __KERNEL__
+#include <netinet/if_ether.h>   /* for __UAPI_DEF_ETHHDR if defined */
+#endif
+```
+
+This is inserted before the existing `#include <linux/if_ether.h>`, so
+that musl's `<netinet/if_ether.h>` sets `__UAPI_DEF_ETHHDR=0` before the
+kernel header checks it. The `#ifndef __KERNEL__` guard ensures this
+only affects userspace compilation - the kernel build is completely
+unaffected.
+
+### 3. Classification
+
+This is a **build fix** for UAPI headers. The stable kernel rules
+explicitly allow build fixes ("Fixes for compilation errors or
+warnings... These are critical for users who need to build the kernel").
+
+### 4. Scope and Risk Assessment
+
+- **Lines changed**: 3 lines added (plus context from moved lines in the
+  diff)
+- **Files touched**: 1 UAPI header file
+- **Risk**: Essentially zero. The added code is guarded by `#ifndef
+  __KERNEL__`, so it cannot affect kernel compilation or runtime in any
+  way. It only affects userspace programs including this header.
+- **Kernel runtime impact**: None whatsoever
+
+### 5. Precedent
+
+This follows an established pattern used in multiple other UAPI headers:
+- `include/uapi/linux/mptcp.h` - includes `<netinet/in.h>` and
+  `<sys/socket.h>` for the same reason (commit `06e445f740c1a`, which
+  had a `Fixes:` tag)
+- `include/uapi/linux/if.h` - includes `<sys/socket.h>`
+- `include/uapi/linux/vm_sockets.h` - includes `<sys/socket.h>`
+
+The original `__UAPI_DEF_ETHHDR` mechanism was added in commit
+`6926e041a8920` specifically for musl compatibility.
+
+### 6. User Impact
+
+Users compiling netfilter/ebtables userspace tools (like iptables,
+nftables, ebtables) against musl libc are affected. This is particularly
+relevant for:
+- Alpine Linux and other musl-based distributions
+- Embedded systems using musl
+- Container environments using musl-based images (e.g., Alpine Docker
+  images)
+
+Without this fix, these users must manually ensure
+`<netinet/if_ether.h>` is included before any kernel netfilter headers,
+which is fragile and error-prone.
+
+### 7. Dependencies
+
+None. The patch is completely self-contained. The `__UAPI_DEF_ETHHDR`
+mechanism in `include/uapi/linux/if_ether.h` has been present since 2018
+(commit `6926e041a8920`), so it exists in all active stable trees.
+
+### Verification
+
+- Verified the current file contents via `Read` of
+  `include/uapi/linux/netfilter_bridge.h` - confirmed it includes
+  `<linux/if_ether.h>` which defines `struct ethhdr`
+- Verified `include/uapi/linux/if_ether.h` lines 171-182 show the
+  `__UAPI_DEF_ETHHDR` guard mechanism exists and works by checking the
+  macro before defining `struct ethhdr`
+- Verified via `git log` that the `__UAPI_DEF_ETHHDR` mechanism was
+  introduced in commit `6926e041a8920` (2018) - present in all stable
+  trees
+- Verified the established pattern via Explore agent: similar musl-
+  compat fixes exist in `mptcp.h`, `if.h`, `vm_sockets.h`, `ethtool.h`
+- Verified the mptcp precedent (`06e445f740c1a`) was a similar fix with
+  a `Fixes:` tag, confirming this class of fix is considered bug-worthy
+- Verified via lore.kernel.org that the patch went through proper review
+  via the netfilter-devel list and was included in Florian Westphal's
+  netfilter patch series
+- Could NOT verify if the mptcp fix was specifically backported to
+  stable trees (unverified), but it had a Fixes: tag which would trigger
+  auto-selection
+
+### Conclusion
+
+This is a textbook build fix for a UAPI header. It:
+1. Fixes a real compilation error reported by a real user
+2. Is obviously correct - follows an established pattern used in other
+   headers
+3. Is tiny (3 lines) with zero risk to kernel runtime
+4. Has no dependencies on other commits
+5. Falls squarely within the "build fixes" exception for stable
+
+**YES**
+
+ include/uapi/linux/netfilter_bridge.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/uapi/linux/netfilter_bridge.h b/include/uapi/linux/netfilter_bridge.h
+index 1610fdbab98df..ad520d3e9df8f 100644
+--- a/include/uapi/linux/netfilter_bridge.h
++++ b/include/uapi/linux/netfilter_bridge.h
+@@ -5,6 +5,10 @@
+ /* bridge-specific defines for netfilter. 
+  */
+ 
++#ifndef __KERNEL__
++#include <netinet/if_ether.h>	/* for __UAPI_DEF_ETHHDR if defined */
++#endif
++
+ #include <linux/in.h>
+ #include <linux/netfilter.h>
+ #include <linux/if_ether.h>
+-- 
+2.51.0
+
 
