@@ -1,213 +1,132 @@
-Return-Path: <stable+bounces-217820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDm3AZ+hnGnqJgQAu9opvQ
-	(envelope-from <stable+bounces-217820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 19:51:11 +0100
+	id 0EFyHNiqnGklJwQAu9opvQ
+	(envelope-from <stable+bounces-217821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 20:30:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DDB17BD82
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 19:51:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF8517C651
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 20:30:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 846B7302BB92
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 18:50:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18CD4314F99C
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 19:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F97369967;
-	Mon, 23 Feb 2026 18:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E6836AB60;
+	Mon, 23 Feb 2026 19:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UANw2jIo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rwBFTi+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2488B36923C;
-	Mon, 23 Feb 2026 18:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67300369220;
+	Mon, 23 Feb 2026 19:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771872611; cv=none; b=hbPtzpuautEhAW24/5+WLGHKeW35pItu14eXNUcaYoZo903lMao9Uqn1RhzL/2cPpHRHxgRkZWHKGZEat3Xbk3PObdpBtBbPIq3V9SgBLsp9FIUyrdygveVligscs5eOAd7l7MlOlXnvapq15ZrWxb04WYLuY4+53Gv9DvON/Xs=
+	t=1771874568; cv=none; b=JCJKFXKQXU0KsTdNfurO+DfGR8KcJhA/ozWeRGnb/4H1J4Dxz9CLvAmvCRr/w4oj0qtcHRJISEyZn7BiHaC1fzv+Ag5Rca9mHP4y23UDHJ57TZilTyH2DJsLM02qwcCuFHG/FquwuFkKDWRXMJwDhHpu1ANimchPfxPvdu6Pr7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771872611; c=relaxed/simple;
-	bh=K4osqT7485pwBO/d9wDgPNmmazS4dQtX9H40Il6+cYU=;
-	h=Date:To:From:Subject:Message-Id; b=NNKakqyehW/TFFv0TexHX4tF+vJFs4xkWdQuZKW0UtxYNp5zcxwZSxjGyja/vdEzbOtCvRac3Jze7t3G07I+WDokjFdswP0RFQ9DvdqpFWF2UTVlezlm8qf07wKdxNf4JfqQLkIi3jgXJM3klpufE0ZcGH7VRCwR4zpPsgWAd58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UANw2jIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48EFC116C6;
-	Mon, 23 Feb 2026 18:50:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1771872610;
-	bh=K4osqT7485pwBO/d9wDgPNmmazS4dQtX9H40Il6+cYU=;
-	h=Date:To:From:Subject:From;
-	b=UANw2jIoFhMZ28VjBizoiiyFgB3lkJSuYWLzRqnxQgYXlJIXlS3PM8jQay4OVy9pz
-	 CJF7qP9pEjipVMpLVeifMN5F0/6+PTOPchv9mRwk+/RDOBbj53dEk6dnSEWmXxaAz/
-	 EWr2hzwidnvqBwNuBCF9ri9Yp6VJmvJ5TC4U+hp8=
-Date: Mon, 23 Feb 2026 10:50:10 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,pasha.tatashin@soleen.com,pratyush@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memfd_luo-always-dirty-all-folios.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260223185010.A48EFC116C6@smtp.kernel.org>
+	s=arc-20240116; t=1771874568; c=relaxed/simple;
+	bh=plKh0vhFAV1CCQloPBtJoWRXH/4QhMTAJJiapz7xUko=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aydNKxzFZg7LcJ4tyecZvxzo1ZgnIV5mVqgJnmE69En7RDtjAUJDHibZNDqOpAfFpbI+BAvRs6X2+p5T3Kg3td+e0LedFgByrRaxsD77S9BqDUmmgLLwdiWOszGAo3AAxtSmmZWWW0MsHSDTRfCQe6Goxnu1gd0dmZcWq0eDfU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rwBFTi+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843F0C116C6;
+	Mon, 23 Feb 2026 19:22:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771874567;
+	bh=plKh0vhFAV1CCQloPBtJoWRXH/4QhMTAJJiapz7xUko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rwBFTi+jI6nIYpVkv9cQlf5P2O5/P+1Tk8AMRTUDLQSOLMJfVOy2KY/998ZZFFmfz
+	 5p+CiMJ6fE4uY01XvY+UowrspICfehHGm1OkjbdKryflIvr9jkgjELzjmLnB1oMNaO
+	 b06u9UP03YaNhYOCJpgqRxyir/EpQkQQ1LUbEmjk3DYrGCCM2HIOWA+c9ieExfxEHo
+	 TvRRaQ6vrXYjEB0N2NrWFGzMV1U0UvZfTlVP5B8z3txbPU5SwNZdF/cZ/nfn94zSk2
+	 0WO2Yox0Los7yi8uTEtTN70uIIiOpPpo83w9jq22dUMVa5vKgfZu4/aPE2EVmbzfPP
+	 DwRc3ZD+MAsnw==
+Date: Mon, 23 Feb 2026 14:22:45 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>
+Subject: Re: Patch "s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP" has
+ been added to the 6.1-stable tree
+Message-ID: <aZypBeeZP3NAvQu4@laps>
+References: <20260222235114.1339059-1-sashal@kernel.org>
+ <20260223155255.41342222@thinkpad-T15>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260223155255.41342222@thinkpad-T15>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217820-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-217821-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[soleen.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 56DDB17BD82
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CDF8517C651
 X-Rspamd-Action: no action
 
+On Mon, Feb 23, 2026 at 03:52:55PM +0100, Gerald Schaefer wrote:
+>On Sun, 22 Feb 2026 18:51:14 -0500
+>Sasha Levin <sashal@kernel.org> wrote:
+>
+>> This is a note to let you know that I've just added the patch titled
+>>
+>>     s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>>
+>> to the 6.1-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>> The filename of the patch is:
+>>      s390-select-arch_want_hugetlb_page_optimize_vmemmap.patch
+>> and it can be found in the queue-6.1 subdirectory.
+>>
+>> If you, or anyone else, feels it should not be added to the stable tree,
+>> please let <stable@vger.kernel.org> know about it.
+>
+>Please don't add this to any stable tree. This feature is broken on s390,
+>and it recently was removed upstream via commit 64e2f60f355e ("s390:
+>Disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP"), which also had a Cc: stable
+>and Fixes: 00a34d5a99c0.
+>
+>So we'd rather want commit 64e2f60f355e added to stable v6.2+, than
+>adding the original commit 00a34d5a99c0 to older trees.
 
-The patch titled
-     Subject: mm: memfd_luo: always dirty all folios
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-memfd_luo-always-dirty-all-folios.patch
+I'll drop the entire series from 6.1.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memfd_luo-always-dirty-all-folios.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-Subject: mm: memfd_luo: always dirty all folios
-Date: Mon, 23 Feb 2026 18:39:29 +0100
-
-A dirty folio is one which has been written to.  A clean folio is its
-opposite.  Since a clean folio has no user data, it can be freed under
-memory pressure.
-
-memfd preservation with LUO saves the flag at preserve().  This is
-problematic.  The folio might get dirtied later.  Saving it at freeze()
-also doesn't work, since the dirty bit from PTE is normally synced at
-unmap and there might still be mappings of the file at freeze().
-
-To see why this is a problem, say a folio is clean at preserve, but gets
-dirtied later.  The serialized state of the folio will mark it as clean. 
-After retrieve, the next kernel will see the folio as clean and might try
-to reclaim it under memory pressure.  This will result in losing user
-data.
-
-Mark all folios of the file as dirty, and always set the
-MEMFD_LUO_FOLIO_DIRTY flag.  This comes with the side effect of making all
-clean folios un-reclaimable.  This is a cost that has to be paid for
-participants of live update.  It is not expected to be a common use case
-to preserve a lot of clean folios anyway.
-
-Since the value of pfolio->flags is a constant now, drop the flags
-variable and set it directly.
-
-Link: https://lkml.kernel.org/r/20260223173931.2221759-3-pratyush@kernel.org
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memfd_luo.c |   26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
-
---- a/mm/memfd_luo.c~mm-memfd_luo-always-dirty-all-folios
-+++ a/mm/memfd_luo.c
-@@ -146,7 +146,6 @@ static int memfd_luo_preserve_folios(str
- 	for (i = 0; i < nr_folios; i++) {
- 		struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
- 		struct folio *folio = folios[i];
--		unsigned int flags = 0;
- 
- 		err = kho_preserve_folio(folio);
- 		if (err)
-@@ -154,8 +153,26 @@ static int memfd_luo_preserve_folios(str
- 
- 		folio_lock(folio);
- 
--		if (folio_test_dirty(folio))
--			flags |= MEMFD_LUO_FOLIO_DIRTY;
-+		/*
-+		 * A dirty folio is one which has been written to. A clean folio
-+		 * is its opposite. Since a clean folio does not carry user
-+		 * data, it can be freed by page reclaim under memory pressure.
-+		 *
-+		 * Saving the dirty flag at prepare() time doesn't work since it
-+		 * can change later. Saving it at freeze() also won't work
-+		 * because the dirty bit is normally synced at unmap and there
-+		 * might still be a mapping of the file at freeze().
-+		 *
-+		 * To see why this is a problem, say a folio is clean at
-+		 * preserve, but gets dirtied later. The pfolio flags will mark
-+		 * it as clean. After retrieve, the next kernel might try to
-+		 * reclaim this folio under memory pressure, losing user data.
-+		 *
-+		 * Unconditionally mark it dirty to avoid this problem. This
-+		 * comes at the cost of making clean folios un-reclaimable after
-+		 * live update.
-+		 */
-+		folio_mark_dirty(folio);
- 
- 		/*
- 		 * If the folio is not uptodate, it was fallocated but never
-@@ -174,12 +191,11 @@ static int memfd_luo_preserve_folios(str
- 			flush_dcache_folio(folio);
- 			folio_mark_uptodate(folio);
- 		}
--		flags |= MEMFD_LUO_FOLIO_UPTODATE;
- 
- 		folio_unlock(folio);
- 
- 		pfolio->pfn = folio_pfn(folio);
--		pfolio->flags = flags;
-+		pfolio->flags = MEMFD_LUO_FOLIO_DIRTY | MEMFD_LUO_FOLIO_UPTODATE;
- 		pfolio->index = folio->index;
- 	}
- 
-_
-
-Patches currently in -mm which might be from pratyush@kernel.org are
-
-liveupdate-luo_file-remember-retrieve-status.patch
-mm-memfd_luo-always-make-all-folios-uptodate.patch
-mm-memfd_luo-always-dirty-all-folios.patch
-memfd-export-memfd_addget_seals.patch
-mm-memfd_luo-preserve-file-seals.patch
-kho-move-alloc-tag-init-to-kho_init_foliopages.patch
-
+-- 
+Thanks,
+Sasha
 
