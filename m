@@ -1,215 +1,179 @@
-Return-Path: <stable+bounces-217777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIoCJyFmnGmsFwQAu9opvQ
-	(envelope-from <stable+bounces-217777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 15:37:21 +0100
+	id +PZxJtRpnGlnGAQAu9opvQ
+	(envelope-from <stable+bounces-217778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 15:53:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0956217820D
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 15:37:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1152017843B
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 15:53:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1BC63033AA1
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 14:36:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE0E7304117F
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 14:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DE527E049;
-	Mon, 23 Feb 2026 14:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03B5244692;
+	Mon, 23 Feb 2026 14:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="irDxCvnq"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VReme7aL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5133C199FAB
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 14:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771857404; cv=pass; b=IRJVCuGZ4QQLQlhkIa4f74Cj0ZnKUNVRhfwOowiSGabXVCMM+fwBkRqXHCSlv11MGWxq8xP4TLzY7BmI0l3wHSDF7/qNc9vJoXO2MiST0RTT8AUcslDvlfPhCfcz4QBO694m3BVP6+9vPsTMFzsAtDl3rt7+v6as2m0clFUo7Vk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771857404; c=relaxed/simple;
-	bh=j88nzqxGDcpi5krckH7OxT+BN89QRDXkSXwvN5oduIc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HL3yueLMeAywCfVap3N0IzXVe9aww0BSiP/K12Kwge7Wulu7dSHq3qBJSGgOYP4JsC+MpldLFOqj6JNdm7OKBcxpGfGnXWBt3JnS3rLsllkDvj47La+SZpccKqh+qqT2ps6+rFvt1VHdGc3UjlyEoiFpnydDSn/czpg5YH6vSic=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=irDxCvnq; arc=pass smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3870778358aso36903031fa.1
-        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 06:36:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771857401; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SVR6+0A1eceMrTVlP2qN4SiODktvlm+ENjNWa0XJXPw79Vx6kcBdJBV2Ld7DC2tvb3
-         F/ilJkT8U9kr1yDOAJrGNhWaPUDtub7K4zOUXWQ+a8r+ITb8/jbJB46EzvgfKp7iMdWY
-         VUgFz/I0fYNA1qz8SHVN/lnrKgpfenB+/q+VL4Klg2yFXsHmedy91pxp57CKWITlD4nX
-         kPtbreG+oUwSODbwJqn/D7v5+hB8B+HiRgwyHWecCEJnWwE47JeAcGZSjuVtE2PCZA4c
-         +Vb6OAym3Y9vhb0YPARxwukclnf7fs1tlyYr1GrTrly7d5gA2LPnntmhQGazVH48/rll
-         Krtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=MM3aKteGZmW/7GayY7dRMfYL0Xw/N+1zNqCVx7UjMoM=;
-        fh=beutSEitJL8r8+KeBxS56JO6xSi9YNDF2CbBHSCLaTU=;
-        b=ibwQ/0KBDAj20Cd4XXEnFY4vpCOOvWv2i5FCIYJQyHJtuiQCB32nR41K4mn+CMEY3D
-         0pwk/JeTngani6b1Y8s5mlQf6MhtLkEIj7L02nUffDzWrHQ5Ju5N/HbCTCt82OfxCzWA
-         Z5xrieQK5exUMtyn6b4vZXMjaeoy0jNSz0dx8JGm7rpy2CnuHy5rZ+0iv6Ow3yc5Y2dj
-         XGXbVfsj0jpeTaCl8LXzb4rsdgQNBqeGbhcBgTa2+4NbVPKdt8We6B9VMfFR6Sj8uKQs
-         sa6I6UpIRhKcb5de7lifzH90p0ewke7sL+LNBnen5V1DgxRFr7TdlCftjKqZm32sQn6L
-         euXQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771857401; x=1772462201; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MM3aKteGZmW/7GayY7dRMfYL0Xw/N+1zNqCVx7UjMoM=;
-        b=irDxCvnqteNRa0c/OsNPf326YWfXHqaIRd3qVPEV1c2K6ll8KaHw2UE680KEjE+VJr
-         xsXenHQ97Zy8c44gGrHb+iOeUsY/q/QXIjLvdPjrY+oKwJ9miYyKCssGqdy44bmX2RUz
-         JSNf4+gzFDlhR9ghVm12eomvNBjBSAljVgoW/GsNj47qvfz74Ne4cPrv0bjFvHU8Da9R
-         9h365e53+BzRIBJbOytWbjX5efzSucz+ell57YV99LDzLXeJHGwoJcANwnWedVVGaYtW
-         qk73WsREdAZN2DiPQm2vXwuae6qLnqmJKE4WG6avBsK7Y1oc5xTqb1cHej/EnDI6Od76
-         nd8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771857401; x=1772462201;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MM3aKteGZmW/7GayY7dRMfYL0Xw/N+1zNqCVx7UjMoM=;
-        b=H12EKxaTjNsRvOlfEMeVOj5me+9ogp2hmByDYGJfiPIYPFiRfFcoB3Rq8RcKYtVBhO
-         GYyF3I/uHMCOxllEirD2PpkUWBtslhRQklh3BjLYB67KszduhjCtGhddnvp/6ztmuWKI
-         1vW6QRLeKGlRL9IcXLyJnNzatCCHR29KU1hDZ3bD8drQ+244eBPc91OUeJNPnD9pMHUQ
-         B6ojBqtfT4f/vSyRRsXdGatnlpP4JzvK10GkFm49tfZ7VzodJXZgbVZ5bEjNJNHxFY5R
-         50zw9tN8F7cBawgqKllOTn3hwsPKKpFLQ+lWacTWbFo/KoAAfTadU1JkNSwJk3e3Mb4f
-         60jw==
-X-Forwarded-Encrypted: i=1; AJvYcCVMPRbv23SrZhL+1U74Ul4r0EyasHX8dmAurSvyvvI7owazPcTuqmrd9F4MV3IWWOAY9olOFAg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWgOUVJSNmX/kMaxBe0D+W3XyTHZkNk+DO6dH2hkEJQCtZz6Br
-	Eww2YDQcpMvtK7ILbMOpSrrISclkpS5lt3saxJeviLhpw+hPmMwwLZeom9DQy7jgfALne1JjVAg
-	cPXg+ChTL8z7BE4SrOUPkVqfS8nNsqR/44DdQSXHg
-X-Gm-Gg: AZuq6aLBIkwDgbepP9H/pY6MwJU4eg5CAXgwWSYcFKOh2C6QjgRMRzqVhj+cyIZeBh2
-	3DVLZwRE/P7jbMLjqQj7uM2WzXm0d01ldXr1UjAXED0cfnoUwQ0SBFdMIW6G6njeoUiDEkMKKUI
-	dhbG6B8qw1ocTCF/f0FPDS6Pl09IwI4ahYbt7Asi9u3MxnfEJZ89O7JM+7+tPkutDfvq60aN8Rj
-	wk3ug95xaIhi1iBNoyMP62X2lMtYxCAbPlkKyT2nFD06PNzhQT4JAMA2YUwr5YDzdK3EfW+vpAr
-	x/zz5o6M+M1mHEHX4J+OszZ6t+VhRsgV5Apg/A==
-X-Received: by 2002:a05:651c:31ce:b0:386:fd3e:bff0 with SMTP id
- 38308e7fff4ca-389a5e94213mr23326701fa.39.1771857401229; Mon, 23 Feb 2026
- 06:36:41 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F3623909F;
+	Mon, 23 Feb 2026 14:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771858385; cv=none; b=DWi/GI7IjQu07k4f5jFtW4nUe6RN4UEXAcmgxV5RQalptuVTrbx22ahs33huNchRmy6dEfkuVyvpymCv+OKJCTWs5E822o9/bFEEagu6yfaphqq3PcmTX6I3bHEeDMhwnLWUwidAmtL3miQzylOnYPJge/bAN40gAyvUYx2vztA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771858385; c=relaxed/simple;
+	bh=dfrwWMnLPjZjB2P6toSFpppq/+Zw607TR8A6AxpIeJ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L5QZE5eYQ+HKJBkQ/v9MowOdCN8dYiMk2QY54auqtucYKRgtyh2Ipm7MvMKbqCsa8WWWzG60E9840i2n6bpsQv7lgGwUETVPA3s7QoJnJuA5821g46l9qyzwbKskxns0MgMSR+vQBP8ve5POLLP4fb6FpJ5+T8r2e+MwUyAeB2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VReme7aL; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61MMjLnE2654887;
+	Mon, 23 Feb 2026 14:53:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=OwvN+9
+	S3jF1v4nZPBQsGYYFFKJdYkb+CGdaQqbai8U8=; b=VReme7aLR9H4QNgJVkJM9N
+	gUpeelX0XExT5TmOJ6XPEYIrSW1dEQf7Cut3ypPpRe7NpMxHyiFXUuTYW9CSWqU0
+	37cCzULLl20mYXAeHHNpcYr4KPi7LIFG1SyuJ6fCYl0l++e0RqUQ5ic/qAERc40V
+	GSDidEBMAbjNq06qN3Bc2yA+VMBoURsYoE3BA2u2uqdcCT7D0OdzOokd9zqW1j6I
+	7afl+4XyBzxImInCOq34WZqkQSkoQdec+mQZ5G3Lfruhm/ZI4FGj9Rp3I6/QcqhL
+	I1h8wePKnkCNCIUGGwA7DDXnKPz/37ZmG7DH0OrdZH0agQwvyl9CNJy0ZKGqpHLA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4cqqjue-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Feb 2026 14:53:02 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61NC1RI9003821;
+	Mon, 23 Feb 2026 14:53:01 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfs8jmy46-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Feb 2026 14:53:01 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61NEqvPa53543266
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Feb 2026 14:52:57 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7C79020043;
+	Mon, 23 Feb 2026 14:52:57 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0914620040;
+	Mon, 23 Feb 2026 14:52:57 +0000 (GMT)
+Received: from thinkpad-T15 (unknown [9.111.87.188])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 23 Feb 2026 14:52:56 +0000 (GMT)
+Date: Mon, 23 Feb 2026 15:52:55 +0100
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+        Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Christian Borntraeger
+ <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>
+Subject: Re: Patch "s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP"
+ has been added to the 6.1-stable tree
+Message-ID: <20260223155255.41342222@thinkpad-T15>
+In-Reply-To: <20260222235114.1339059-1-sashal@kernel.org>
+References: <20260222235114.1339059-1-sashal@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260204092230.2540042-1-syzbot@kernel.org>
-In-Reply-To: <20260204092230.2540042-1-syzbot@kernel.org>
-From: Dmitry Vyukov <dvyukov@google.com>
-Date: Mon, 23 Feb 2026 15:36:29 +0100
-X-Gm-Features: AaiRm51tCsRBB7oayfu63tMMIZDAgJ7xHZQrvew4IJNGGTC0wVblcq8ltf71rm0
-Message-ID: <CACT4Y+YVb8+XkEg2ucfYKjw-J7uy2Om19kzrGkXvkyxa9XTzvQ@mail.gmail.com>
-Subject: Re: [PATCH] jfs: fix array-index-out-of-bounds in dbFindLeaf
-To: syzbot <syzbot@kernel.org>
-Cc: jfs-discussion@lists.sourceforge.net, shaggy@kernel.org, 
-	ghandatmanas@gmail.com, syzbot+1afe7ef2d0062e19eeb3@syzkaller.appspotmail.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: fO-mq18CAoL5tkeVQY6PoIQj_IlyO9DX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDEyNiBTYWx0ZWRfX5SZLR418r+Re
+ rzm4BGolz//TeGQuMaI056/SrpJjzKOj53oBb/deUMmmneI5SmTsshh8Bt9aGg89pdeMBjO+Ys7
+ Knk/93o9frkNXLysGCph6VpaCYwNZmkP5TP17ug8fxjP9FsX1J+w2rYYSFidKcvu/Hj8O8mY+lN
+ kXq0J8KFXMGc47I3gYOEJAE2ffhre4j1L2EF+CbF4qLXK/0k6Xw7oHc9nW8qPUALMJD6OgtcUD3
+ HJYQf6EJ83+KcG5Wv/IPHcT60eaL3H9FNfuqymAP3LOus5gKDdRJ5/FP4DthYEWe/Az0jiO47bp
+ APiNuXEkJy0NgyakJj/dBRICd6Jfy74vBqwSPgLWfNm8yC0dTetpBVsoqd/7zwdw03WAV7Kzr1K
+ oRn1NcKQf5gt+AA6X5MfGfrz86YC1M/68RHamIYJCjrFF+qtmwcMHcjrraRCqWIOoRyS8m1/amp
+ CXa90QmKfMgSA+hYRKQ==
+X-Proofpoint-GUID: fO-mq18CAoL5tkeVQY6PoIQj_IlyO9DX
+X-Authority-Analysis: v=2.4 cv=bbBmkePB c=1 sm=1 tr=0 ts=699c69ce cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=uKtpUWve3L976CWnQ48A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-23_03,2026-02-23_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 clxscore=1011 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602230126
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.sourceforge.net,kernel.org,gmail.com,syzkaller.appspotmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-217777-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217778-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dvyukov@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,1afe7ef2d0062e19eeb3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,appspotmail.com:email]
-X-Rspamd-Queue-Id: 0956217820D
+	FROM_NEQ_ENVFROM(0.00)[gerald.schaefer@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 1152017843B
 X-Rspamd-Action: no action
 
-On Wed, 4 Feb 2026 at 10:23, syzbot <syzbot@kernel.org> wrote:
->
-> UBSAN reported an array-index-out-of-bounds issue in dbFindLeaf:
->
->   index 1365 is out of range for type 's8[1365]' (aka 'signed char[1365]')
->   CPU: 0 UID: 0 PID: 6287 Comm: syz-executor268 Not tainted ...
->   Call Trace:
->    ...
->    __ubsan_handle_out_of_bounds+0x115/0x140 lib/ubsan.c:455
->    dbFindLeaf+0x308/0x520 fs/jfs/jfs_dmap.c:2976
->    dbFindCtl+0x267/0x520 fs/jfs/jfs_dmap.c:1717
->    ...
->
-> The issue is caused by an off-by-one error in the bounds check within
-> dbFindLeaf. The function traverses the dmap tree to find free blocks.
-> It uses a loop to iterate through the levels of the tree, calculating
-> the index `x + n` to access the `tp->dmt_stree` array. The variable
-> `max_size` represents the size of this array (CTLTREESIZE (1365) for
-> dmapctl or TREESIZE (341) for dmaptree).
->
-> The bounds check `if (x + n > max_size)` allows `x + n` to be equal to
-> `max_size`. However, since the array size is `max_size`, the valid
-> indices are `0` to `max_size - 1`. Accessing `tp->dmt_stree[max_size]`
-> results in an array-index-out-of-bounds access.
->
-> This can occur when the `dmt_height` field in the on-disk structure is
-> corrupted or fuzzed to be larger than the fixed height supported by the
-> `dmt_stree` array.
->
-> Fix this by changing the condition to `>=` to correctly reject indices
-> equal to or greater than the array size.
->
-> Signed-off-by: syzbot@kernel.org
-> Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
-> Fixes: 22cad8bc1d36 ("jfs: fix array-index-out-of-bounds in dbFindLeaf")
-> Reported-by: syzbot+1afe7ef2d0062e19eeb3@syzkaller.appspotmail.com
-> To: <jfs-discussion@lists.sourceforge.net>
-> To: "Dave Kleikamp" <shaggy@kernel.org>
-> To: "Manas Ghandat" <ghandatmanas@gmail.com>
-> Cc: <linux-kernel@vger.kernel.org>
-> Cc: <stable@vger.kernel.org>
-> ---
-> This patch was generated by Google Gemini LLM model.
-> It was pre-reviewed and Signed-off-by a human, but please review carefully.
->
-> Gerrit code review with full side-by-side diffs:
-> https://linux-review.git.corp.google.com/c/linux/kernel/git/torvalds/linux/+/26122
->
-> Change-Id: I92f694e86518349eafa132b2ba314d8dfff6c86e
-> ---
->
-> diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-> index cdfa699..18a7dc5 100644
-> --- a/fs/jfs/jfs_dmap.c
-> +++ b/fs/jfs/jfs_dmap.c
-> @@ -2971,7 +2971,7 @@ static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
->                         /* sufficient free space found.  move to the next
->                          * level (or quit if this is the last level).
->                          */
-> -                       if (x + n > max_size)
-> +                       if (x + n >= max_size)
->                                 return -ENOSPC;
->                         if (l2nb <= tp->dmt_stree[x + n])
->                                 break;
->
-> base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+On Sun, 22 Feb 2026 18:51:14 -0500
+Sasha Levin <sashal@kernel.org> wrote:
 
-Hello jfs maintainers,
+> This is a note to let you know that I've just added the patch titled
+> 
+>     s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+> 
+> to the 6.1-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      s390-select-arch_want_hugetlb_page_optimize_vmemmap.patch
+> and it can be found in the queue-6.1 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-Is this patch on anybody radaras? Please merge the fix.
-Or should JFS patches now be sent to a generic FS tree for merging?
+Please don't add this to any stable tree. This feature is broken on s390,
+and it recently was removed upstream via commit 64e2f60f355e ("s390:
+Disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP"), which also had a Cc: stable
+and Fixes: 00a34d5a99c0.
+
+So we'd rather want commit 64e2f60f355e added to stable v6.2+, than
+adding the original commit 00a34d5a99c0 to older trees.
+
+Thanks,
+Gerald
 
