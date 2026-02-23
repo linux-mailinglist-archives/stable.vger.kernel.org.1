@@ -1,320 +1,196 @@
-Return-Path: <stable+bounces-217723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIdsJ2EynGkKAgQAu9opvQ
-	(envelope-from <stable+bounces-217723-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:56:33 +0100
+	id YJJtE502nGnsBQQAu9opvQ
+	(envelope-from <stable+bounces-217724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:14:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493C417530B
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:56:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66A517557F
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 12:14:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 270CE3037150
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:55:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D4C4303E3A8
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BFE35CBDD;
-	Mon, 23 Feb 2026 10:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9068F35CB67;
+	Mon, 23 Feb 2026 11:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PhToeSxe"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b="JYoQi+NH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C431E49F;
-	Mon, 23 Feb 2026 10:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771844157; cv=none; b=MxM8m/rG3WEmupOHYMYRa8RQTEZbWXA4h361dXsVKO4NvfMHbZOFwXWMJSkngnYloLDmuRIZCLhyHy6BXFtQHH+6Lswwqb7X2HmQuy4lECAaCtLc0T9dzQjIKmSkAuio3fAVRpmXyjrwz9Wjfv1q3iLJdpX/XArmEmx7MeKZL8w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771844157; c=relaxed/simple;
-	bh=Hp/G5bM2cfDXr9AvMTGry72qv+5k5dlSxt17AJXUjBQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T4QYKx1KH5wKle4yZD8E5dXtPgFueVh01+O6Pc/CKrAttCosRKWeu69zDaltY9+9AHX9A2y9jFKaaJ6R26bfdTS8IazP8PlQiOkK8rnDCrUGYlad7W1lbb6CNtgoyfwJBp3l//ft6m7IJCLqw1vwDT1de3AVuoeK6A1hbsniD20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PhToeSxe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAF1C116C6;
-	Mon, 23 Feb 2026 10:55:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771844156;
-	bh=Hp/G5bM2cfDXr9AvMTGry72qv+5k5dlSxt17AJXUjBQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PhToeSxeGI/AfzEciOrUYiCwaquvOzKdmUQQxyn/pTX37XJjk0l/22SEwRHvGkA1b
-	 6uAreg1DXjppT4wPUy+qDmRPKjP8B4WBdgTHA1h05TaDiOCb1/SqAFGapOfBitjYmR
-	 /u+Mtmwr2YJkjAAv069cIgmvOoOoDdxoH6CAxdp982qevVQGunRNTkmCBidYz3Nce/
-	 plSnr8T+21sxGn33f3cEo3D2I+LEldHT4G+nbYUIWh3iAuvttW73gnBvbwKwCIllvK
-	 FzoDZHO5onuHwH5vGcqU+1EjxesnP78VJ2b5nfK8+6sSaaBCPcDjf550/imijYvFCB
-	 I3HhD7AwiozWQ==
-Date: Mon, 23 Feb 2026 12:55:48 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
-	Thomas Gleixner <tglx@kernel.org>, linux-efi@vger.kernel.org,
-	linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
-Message-ID: <aZwyNAbEqb8ZwLUM@kernel.org>
-References: <20260223075219.2348035-1-rppt@kernel.org>
- <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8B421770A;
+	Mon, 23 Feb 2026 11:14:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771845242; cv=pass; b=CyrQ7tjdZRiqgUDWSYa/qwY9Mrd49Ec/aOK+zER8zrVXn3fn24ofskC+1nlftsBw1l9dvpw/zE9LnYnPOW8KCIDjyUPrU+bk1SAyPx96LwLR4fey8ILQKiK316ka188jPOF60zRX1WJnzCMOUe1kwQ0gsZBbgxp5vB3czjONg4g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771845242; c=relaxed/simple;
+	bh=JRDaiMs2KAtrCCQY9S5E5Db1tU5X21ZS5TXgAhki0UA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XBerO1tfubqShb/VbOqwFjJ52hbXo7JqPOaLuubVqjuL/9Dgkddkb8e4sSdT0MfBlTIzejMgLV948uf4QrM0+M8DgOW35XpxcIcTHbyjDE72JM6qCahn7FNqo6HfBu0LE0u8VjwRKpk2ZssAK4D4jEvQI70ZGnwtnrfciGNCSs4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b=JYoQi+NH; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1771845234; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TAj09Vc4VeX81NdMlcRp3dZyehQygv45dcwIBlMn2gRnq/D7mKHXLN7Qq7uepvBv7/jxacJt6ag39QaXTSrmGDWBCTlX9kBEG2GSsLE2YcoZbkZcUqLlIot3wQVMd8C21PURQJvngCjqKkKEuQR+LuJRMouQ+0YT1ghpLoATxYc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1771845234; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=6rry9lc+8ppJpTcNz8LoCA93qIEyl0rEmMFF316UV/s=; 
+	b=hcvr07i6FGVQq9YKB32lwMWTYPf0VdwAdQ04+wOulfA9WEeD2NAj5cbTptyOBZ004Dl/AbzApVcuZ3vWLe6EqVF2j6OW2pTc6VXXRKE1tikrdNrnqOwtuMhzxrzDo7EefYNZdNJr/+ImV4jDSpLaDyJqeZWm/ot+Aqt9sfJfBzY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
+	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771845234;
+	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+	bh=6rry9lc+8ppJpTcNz8LoCA93qIEyl0rEmMFF316UV/s=;
+	b=JYoQi+NHDUpl2nj/Aq1yNFVzs6MhUMEJqQUyyHXSN+aYn/7Cuo47VCOW5I8A6gR8
+	JgJk0kgnHHyIgbSwAUBSaTvO9xtyWRNhvblyDY7/Mi5iOUDjMw11lcwYnMxj5LQQ2Ct
+	vFdkkAIn5C3eTZZsjJw531ntfoKNdnK44p+YIr8o=
+Received: by mx.zohomail.com with SMTPS id 1771845232254975.0000309439166;
+	Mon, 23 Feb 2026 03:13:52 -0800 (PST)
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+To: stable-commits@vger.kernel.org, stable@vger.kernel.org
+Cc: Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>
+Subject:
+ Re: Patch "clk: Respect CLK_OPS_PARENT_ENABLE during recalc" has been added
+ to the 6.19-stable tree
+Date: Mon, 23 Feb 2026 12:13:48 +0100
+Message-ID: <2819833.mvXUDI8C0e@workhorse>
+In-Reply-To: <20260221160309.4048102-1-sashal@kernel.org>
+References: <20260221160309.4048102-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	CTE_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217723-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217724-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nicolas.frattaroli@collabora.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[collabora.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 493C417530B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email,collabora.com:email,collabora.com:dkim]
+X-Rspamd-Queue-Id: A66A517557F
 X-Rspamd-Action: no action
 
-Hi Ard,
-
-On Mon, Feb 23, 2026 at 09:08:29AM +0100, Ard Biesheuvel wrote:
-> Hi Mike,
+On Saturday, 21 February 2026 17:03:09 Central European Standard Time Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
 > 
-> On Mon, 23 Feb 2026, at 08:52, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> >
-> > efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
-> > and EFI_BOOT_SERVICES_DATA using memblock_free_late().
-> >
-> > There are two issue with that: memblock_free_late() should be used for
-> > memory allocated with memblock_alloc() while the memory reserved with
-> > memblock_reserve() should be freed with free_reserved_area().
-> >
-> > More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
-> > efi_free_boot_services() is called before deferred initialization of the
-> > memory map is complete.
-> >
-> > Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
-> > RAM on EC2 t3a.nano instances which only have 512MB or RAM.
-> >
-> > If the freed memory resides in the areas that memory map for them is
-> > still uninitialized, they won't be actually freed because
-> > memblock_free_late() calls memblock_free_pages() and the latter skips
-> > uninitialized pages.
-> >
-> > Using free_reserved_area() at this point is also problematic because
-> > __free_page() accesses the buddy of the freed page and that again might
-> > end up in uninitialized part of the memory map.
-> >
-> > Delaying the entire efi_free_boot_services() could be problematic
-> > because in addition to freeing boot services memory it updates
-> > efi.memmap without any synchronization and that's undesirable late in
-> > boot when there is concurrency.
-> >
-> > More robust approach is to only defer freeing of the EFI boot services
-> > memory.
-> >
-> > Make efi_free_boot_services() collect ranges that should be freed into
-> > an array and add an initcall efi_free_boot_services_memory() that walks
-> > that array and actually frees the memory using free_reserved_area().
-> >
+>     clk: Respect CLK_OPS_PARENT_ENABLE during recalc
 > 
-> Instead of creating another table, could we just traverse the EFI memory
-> map again in the arch_initcall(), and free all boot services code/data
-> above 1M with EFI_MEMORY_RUNTIME cleared ?
- 
-Currently efi_free_boot_services() unmaps all boot services code/data with
-EFI_MEMORY_RUNTIME cleared and removes them from the efi.memmap.
+> to the 6.19-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      clk-respect-clk_ops_parent_enable-during-recalc.patch
+> and it can be found in the queue-6.19 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
-why I didn't use the existing EFI memory map.
+Drop this, it introduces a regression and has been reverted in [1]
 
-Now thinking about it, if the unmapping can happen later, maybe we'll just
-move the entire efi_free_boot_services() to an initcall?
+Link: https://lore.kernel.org/lkml/20260203002439.1223213-1-sboyd@kernel.org/ [1]
 
-> > Link: 
-> > https://lore.kernel.org/all/ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org
-> > Fixes: 916f676f8dc0 ("x86, efi: Retain boot service code until after 
-> > switching to virtual mode")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >  arch/x86/include/asm/efi.h          |  2 +-
-> >  arch/x86/platform/efi/efi.c         |  2 +-
-> >  arch/x86/platform/efi/quirks.c      | 55 +++++++++++++++++++++++++++--
-> >  drivers/firmware/efi/mokvar-table.c |  2 +-
-> >  4 files changed, 55 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-> > index f227a70ac91f..51b4cdbea061 100644
-> > --- a/arch/x86/include/asm/efi.h
-> > +++ b/arch/x86/include/asm/efi.h
-> > @@ -138,7 +138,7 @@ extern void __init efi_apply_memmap_quirks(void);
-> >  extern int __init efi_reuse_config(u64 tables, int nr_tables);
-> >  extern void efi_delete_dummy_variable(void);
-> >  extern void efi_crash_gracefully_on_page_fault(unsigned long phys_addr);
-> > -extern void efi_free_boot_services(void);
-> > +extern void efi_unmap_boot_services(void);
-> > 
-> >  void arch_efi_call_virt_setup(void);
-> >  void arch_efi_call_virt_teardown(void);
-> > diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
-> > index d00c6de7f3b7..d84c6020dda1 100644
-> > --- a/arch/x86/platform/efi/efi.c
-> > +++ b/arch/x86/platform/efi/efi.c
-> > @@ -836,7 +836,7 @@ static void __init __efi_enter_virtual_mode(void)
-> >  	}
-> > 
-> >  	efi_check_for_embedded_firmwares();
-> > -	efi_free_boot_services();
-> > +	efi_unmap_boot_services();
-> > 
-> >  	if (!efi_is_mixed())
-> >  		efi_native_runtime_setup();
-> > diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> > index 553f330198f2..35caa5746115 100644
-> > --- a/arch/x86/platform/efi/quirks.c
-> > +++ b/arch/x86/platform/efi/quirks.c
-> > @@ -341,7 +341,7 @@ void __init efi_reserve_boot_services(void)
-> > 
-> >  		/*
-> >  		 * Because the following memblock_reserve() is paired
-> > -		 * with memblock_free_late() for this region in
-> > +		 * with free_reserved_area() for this region in
-> >  		 * efi_free_boot_services(), we must be extremely
-> >  		 * careful not to reserve, and subsequently free,
-> >  		 * critical regions of memory (like the kernel image) or
-> > @@ -404,17 +404,33 @@ static void __init efi_unmap_pages(efi_memory_desc_t *md)
-> >  		pr_err("Failed to unmap VA mapping for 0x%llx\n", va);
-> >  }
-> > 
-> > -void __init efi_free_boot_services(void)
-> > +struct efi_freeable_range {
-> > +	u64 start;
-> > +	u64 end;
-> > +};
-> > +
-> > +static struct efi_freeable_range *ranges_to_free;
-> > +
-> > +void __init efi_unmap_boot_services(void)
-> >  {
-> >  	struct efi_memory_map_data data = { 0 };
-> >  	efi_memory_desc_t *md;
-> >  	int num_entries = 0;
-> > +	int idx = 0;
-> > +	size_t sz;
-> >  	void *new, *new_md;
-> > 
-> >  	/* Keep all regions for /sys/kernel/debug/efi */
-> >  	if (efi_enabled(EFI_DBG))
-> >  		return;
-> > 
-> > +	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
-> > +	ranges_to_free = kzalloc(sz, GFP_KERNEL);
-> > +	if (!ranges_to_free) {
-> > +		pr_err("Failed to allocate storage for freeable EFI regions\n");
-> > +		return;
-> > +	}
-> > +
-> >  	for_each_efi_memory_desc(md) {
-> >  		unsigned long long start = md->phys_addr;
-> >  		unsigned long long size = md->num_pages << EFI_PAGE_SHIFT;
-> > @@ -471,7 +487,15 @@ void __init efi_free_boot_services(void)
-> >  			start = SZ_1M;
-> >  		}
-> > 
-> > -		memblock_free_late(start, size);
-> > +		/*
-> > +		 * With CONFIG_DEFERRED_STRUCT_PAGE_INIT parts of the memory
-> > +		 * map are still not initialized and we can't reliably free
-> > +		 * memory here.
-> > +		 * Queue the ranges to free at a later point.
-> > +		 */
-> > +		ranges_to_free[idx].start = start;
-> > +		ranges_to_free[idx].end = start + size;
-> > +		idx++;
-> >  	}
-> > 
-> >  	if (!num_entries)
-> > @@ -512,6 +536,31 @@ void __init efi_free_boot_services(void)
-> >  	}
-> >  }
-> > 
-> > +static int __init efi_free_boot_services(void)
-> > +{
-> > +	struct efi_freeable_range *range = ranges_to_free;
-> > +	unsigned long freed = 0;
-> > +
-> > +	if (!ranges_to_free)
-> > +		return 0;
-> > +
-> > +	while (range->start) {
-> > +		void *start = phys_to_virt(range->start);
-> > +		void *end = phys_to_virt(range->end);
-> > +
-> > +		free_reserved_area(start, end, -1, NULL);
-> > +		freed += (end - start);
-> > +		range++;
-> > +	}
-> > +	kfree(ranges_to_free);
-> > +
-> > +	if (freed)
-> > +		pr_info("Freeing EFI boot services memory: %ldK\n", freed / SZ_1K);
-> > +
-> > +	return 0;
-> > +}
-> > +arch_initcall(efi_free_boot_services);
-> > +
-> >  /*
-> >   * A number of config table entries get remapped to virtual addresses
-> >   * after entering EFI virtual mode. However, the kexec kernel requires
-> > diff --git a/drivers/firmware/efi/mokvar-table.c 
-> > b/drivers/firmware/efi/mokvar-table.c
-> > index 4ff0c2926097..6842aa96d704 100644
-> > --- a/drivers/firmware/efi/mokvar-table.c
-> > +++ b/drivers/firmware/efi/mokvar-table.c
-> > @@ -85,7 +85,7 @@ static struct kobject *mokvar_kobj;
-> >   * as an alternative to ordinary EFI variables, due to 
-> > platform-dependent
-> >   * limitations. The memory occupied by this table is marked as 
-> > reserved.
-> >   *
-> > - * This routine must be called before efi_free_boot_services() in order
-> > + * This routine must be called before efi_unmap_boot_services() in 
-> > order
-> >   * to guarantee that it can mark the table as reserved.
-> >   *
-> >   * Implicit inputs:
-> >
-> > base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-> > -- 
-> > 2.51.0
+> 
+> 
+> 
+> commit 17b0f85bf6339d9e275389fa4ba8c9d2014a1bb7
+> Author: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+> Date:   Mon Dec 15 11:23:58 2025 +0100
+> 
+>     clk: Respect CLK_OPS_PARENT_ENABLE during recalc
+>     
+>     [ Upstream commit 669917676e93fca5ea3c66fc9539830312bec58e ]
+>     
+>     When CLK_OPS_PARENT_ENABLE was introduced, it guarded various clock
+>     operations, such as setting the rate or switching parents. However,
+>     another operation that can and often does touch actual hardware state is
+>     recalc_rate, which may also be affected by such a dependency.
+>     
+>     Add parent enables/disables where the recalc_rate op is called directly.
+>     
+>     Fixes: fc8726a2c021 ("clk: core: support clocks which requires parents enable (part 2)")
+>     Fixes: a4b3518d146f ("clk: core: support clocks which requires parents enable (part 1)")
+>     Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>     Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+>     Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+>     Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+> index 85d2f2481acf3..1b0f9d567f48e 100644
+> --- a/drivers/clk/clk.c
+> +++ b/drivers/clk/clk.c
+> @@ -1921,7 +1921,14 @@ static unsigned long clk_recalc(struct clk_core *core,
+>  	unsigned long rate = parent_rate;
+>  
+>  	if (core->ops->recalc_rate && !clk_pm_runtime_get(core)) {
+> +		if (core->flags & CLK_OPS_PARENT_ENABLE)
+> +			clk_core_prepare_enable(core->parent);
+> +
+>  		rate = core->ops->recalc_rate(core->hw, parent_rate);
+> +
+> +		if (core->flags & CLK_OPS_PARENT_ENABLE)
+> +			clk_core_disable_unprepare(core->parent);
+> +
+>  		clk_pm_runtime_put(core);
+>  	}
+>  	return rate;
+> @@ -4031,6 +4038,9 @@ static int __clk_core_init(struct clk_core *core)
+>  	 */
+>  	clk_core_update_duty_cycle_nolock(core);
+>  
+> +	if (core->flags & CLK_OPS_PARENT_ENABLE)
+> +		clk_core_prepare_enable(core->parent);
+> +
+>  	/*
+>  	 * Set clk's rate.  The preferred method is to use .recalc_rate.  For
+>  	 * simple clocks and lazy developers the default fallback is to use the
+> @@ -4046,6 +4056,9 @@ static int __clk_core_init(struct clk_core *core)
+>  		rate = 0;
+>  	core->rate = core->req_rate = rate;
+>  
+> +	if (core->flags & CLK_OPS_PARENT_ENABLE)
+> +		clk_core_disable_unprepare(core->parent);
+> +
+>  	/*
+>  	 * Enable CLK_IS_CRITICAL clocks so newly added critical clocks
+>  	 * don't get accidentally disabled when walking the orphan tree and
+> 
 
--- 
-Sincerely yours,
-Mike.
+
+
+
 
