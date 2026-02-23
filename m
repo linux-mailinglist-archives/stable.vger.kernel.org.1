@@ -1,81 +1,86 @@
-Return-Path: <stable+bounces-217699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJp6BRgEnGlG/AMAu9opvQ
-	(envelope-from <stable+bounces-217699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 08:39:04 +0100
+	id BAWpCUwFnGlk/AMAu9opvQ
+	(envelope-from <stable+bounces-217700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 08:44:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D9A172C26
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 08:39:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78EC6172CB4
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 08:44:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 271D33007CB5
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 07:39:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04365300574A
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 07:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50DE346FA5;
-	Mon, 23 Feb 2026 07:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C253344DA8;
+	Mon, 23 Feb 2026 07:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="HQjUeU53";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="DuoZqwgZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dnpur1T4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC641D61BC
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 07:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C861E25393B
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 07:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771832340; cv=none; b=ZM1oqbIisMhJa0X/n+G67hZggiGZ7k2Nyx+XkU7X8j4EveaIp8bfU+5A5TZdORv177hgg2yXCcRQGBUiMPLlIcgMcEYPzZhwtPsBx0TbUUtJh1eKkJ9oFa2uAJEsehSsg5U255yd1zF13QgFzGodLW0UCWCYf9dt12sfTT2ko08=
+	t=1771832648; cv=none; b=ADhmTa65dfENaElG6M4BuBGrPosldewgry/3FcY3L/Di9COqhXEjiAkYillTgjADxX6s771X30SDpWo+3iBz0ZcmOu9ZaLRTUNYefwEA8EKrgqEtSsIB3zALPx39qzceEg9ZgiTq75Si2BlXyjdvbVejaTvVr9jAtXovJtIkAGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771832340; c=relaxed/simple;
-	bh=Kn7JOTrFsX3rsRxyQrxMBbXouELu4ecR4vO1d0YCK0Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DTaoh6Caq/AJc+MHzE/XUxt5jjWSyc65IRcrO/bibEQ0VaVDZcHPqlKBOzr/dkldlV4NpUpeKrkmSwMCkHnV0/d4mK8mKPIwpdaJz1vc+F74fb8J8vccLZ1MAYgcSeDA8ZSU4Sas9MvojAdlrky3djAxG2BQfKTjesvvhDj/Ykc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=HQjUeU53; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=DuoZqwgZ; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 61DF35BD01;
-	Mon, 23 Feb 2026 07:38:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1771832337; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=W42XKhZsQhmzyK8SDjBHJLBtL7/5ESUl08FLdmhIJCk=;
-	b=HQjUeU53Jf6AQ4Nkf2yXJj1RyvcTtgCVI6tffbigMxZWy5SWMwbHuSXjvcRWhdVYXL84O2
-	DsGHTsmlIdRvrHc7dvjC7XWfEYtN925JqfjJMtPPHx33bXYzmmYJ6O2Uv/tEV06SdAErru
-	q29yKEjehYStRxyHCt9C7gbWeV6P9nI=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1771832336; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=W42XKhZsQhmzyK8SDjBHJLBtL7/5ESUl08FLdmhIJCk=;
-	b=DuoZqwgZ1eUUBUe/XRqF44JvOrHCadg30K/e3P3uNAPHR8FW9xFTuUOsaI8Cr7U7P/Hcrp
-	YJ5kBsjB1tjia/KyTkinPqqek/RbQyNnLfLUPJ0BXqkY05YQndFaOXnMMwiQYNyGrmID+x
-	a/G45IOo7LMGZmKv96hXV5T+kmo5L7E=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 885413EA68;
-	Mon, 23 Feb 2026 07:38:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id jjqyEQ4EnGn6KwAAD6G6ig
-	(envelope-from <wqu@suse.com>); Mon, 23 Feb 2026 07:38:54 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Christoph Hellwig <hch@infradead.org>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH v6.12] btrfs: always fallback to buffered write if the inode requires checksum
-Date: Mon, 23 Feb 2026 18:08:32 +1030
-Message-ID: <8419975b6281ce4d112a3a5006c8ca3bc489a41b.1771832083.git.wqu@suse.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1771832648; c=relaxed/simple;
+	bh=L8QsT2aSqZQj7qlHLJ1z5nvMQuW1ZgUvhpK6w+zUpOY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sjmK9APEfD5xIZN+pd/c+hyxdPbwRKwqBQPnXFXdY4nwvLQpcM7U0G5sODiROiKvSPnX9tg8UL/FlNOljGN/wAza1bkflGaKvWJBBUAoBnCNXYoi2cCs4xu18SavypZfOBvKS0HK1fejluRUJkWQX1h62prRwgaXaUtD7ZEoqBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dnpur1T4; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4327790c4e9so2935397f8f.2
+        for <stable@vger.kernel.org>; Sun, 22 Feb 2026 23:44:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771832645; x=1772437445; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rl9uNEPPppEML5fgEDGNwxM5o8rZw7NJ0hoq1ERXk8c=;
+        b=dnpur1T4wypDdAd9Z/zAkQagHMllzxPtnRwRhW8tprGwSbDO0itIC1fnyY3PzgSJr3
+         GiXW+kShNWdRgxHiDESmRPKSouqTa/s6HXb5alsdZbGhcCzymgmOL5Im9lVQ3tKp/LZK
+         UVfpM4gJpI+aC7XOPHjIewBs0f/1x3vhOLMgCz2LMCVl6S9XJvOVQsQYoggJ1xoN9l4C
+         MQGHCz1H1iKKvilE89FfPmOpxxpHQNjMxLp8WuVr4YKBspI6TR5SoUV4pfTdMJolDFj+
+         +xMCi7DH1cVnBkQNikLxzdgLk0Aexg+2M/B3x1Sk1dDPyznLYKm8dMtoIB8Ph1kXpHNJ
+         XV2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771832645; x=1772437445;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rl9uNEPPppEML5fgEDGNwxM5o8rZw7NJ0hoq1ERXk8c=;
+        b=h0Pspl9v7BFk22Yq3gFklmh2HPlF8yfPSho488GHfoCaJqpdtpjgpSjvU5tTTOrPP9
+         vQIL6glvoJr+o6ej6yO05fiTLsn8RsbD2aqyLX6tPCPK4lpoGUOj9KH/JS7syBRmU+jM
+         2btLR8vbRJp3RvN3pXoMHvtACn5Wq19yLzmLiy32d2ARRK5XogBQxIpT3qOlywlryCmY
+         7L5XQFl1cDrI11V1msjY1ZocCODQd/IP4h04uuaFSg7RzScg5kj/MfMPaRtJNU9bnZ/V
+         PKXX3M+ttqaLb9nuo3K6CLSgqIoA0+bi6NKVO3FaOna77cbNmEw2WrWO7koUcDfUHXQ5
+         JQHw==
+X-Gm-Message-State: AOJu0YyPWFq2U5OIO90DQzRA+5QFb4WvAR6D6uvWgsl9mZPlayEtN23v
+	vin0QeVjKVHmAsqx+o9FcnOm1179hQdO21s0k9s++IlLtdmzeIZnItaIIEVlJQ==
+X-Gm-Gg: AZuq6aLLH4zLBDMLx8LRZYq61NdyIKmHG6ftziclhYSVBSfwl5d9HyaPYybh83cGC7q
+	QVu2sHlhjlQNBL7vKQMH5aNnPzyig3eJnGEE8gcut0mfa19jnhA36XLYnPGLvvbGazCx9OOEVZJ
+	/glX3bdEkX3Qj3+741pCNaQ277S9q/TJgbKBTSTw756olrZcssMsv9csgA8XXukaI448a1IhufA
+	85Em2yzlbP++jCIaCuNcuPK5dBaLCrXySONgdmUVYLWtuOBVttQqEO4aUwfRpY8+QAuaEivqy/n
+	zIru4Zo/wTu/L2qoAXNB0+iSXslGhHEmitYjEaY6Z7cUMBSUWipLJSmPzBzjuxXXXchYH1Lx0dA
+	UCD/My5l7aG/R/KvBtbVvo+uCNrJlZbtsuIsHTwc+VyVJ7vdc1JCge4KhrTVJCVXU3bnaHAz/92
+	IO5tQQm65slKPQRQvbIX8iWLurAhG8Dcy79igN35ecXleHhWMqTsFBJMUe1hY2F9lCDncdTdpfk
+	fYAC5/0Qkico4ZSkEfgGsa3eMu11A1/CTe6TstCmmTQew==
+X-Received: by 2002:a05:6000:420c:b0:435:9d70:f299 with SMTP id ffacd0b85a97d-4396f174178mr12548396f8f.22.1771832644733;
+        Sun, 22 Feb 2026 23:44:04 -0800 (PST)
+Received: from koko-VirtualBox ([105.109.123.41])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d3ff6dsm18319251f8f.25.2026.02.22.23.44.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Feb 2026 23:44:04 -0800 (PST)
+From: Khemissi Mohammed el Amine <aminekhemissi61@gmail.com>
+To: stable@vger.kernel.org
+Cc: Khemissi Mohammed el Amine <aminekhemissi61@gmail.com>
+Subject: [PATCH] scsi: backport fix for NULL deref in scsi_queue_rq to 5.10.y
+Date: Sun, 22 Feb 2026 23:43:57 -0800
+Message-ID: <20260223074357.7507-1-aminekhemissi61@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,139 +88,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217699-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-217700-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aminekhemissi61@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[suse.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,suse.com:email,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 61D9A172C26
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 78EC6172CB4
 X-Rspamd-Action: no action
 
-commit 968f19c5b1b7d5595423b0ac0020cc18dfed8cb5 upstream.
+This backports upstream commits 35fe6fa57b99 and 6ca9818d1624 to 5.10 LTS.
 
-[BUG]
-It is a long known bug that VM image on btrfs can lead to data csum
-mismatch, if the qemu is using direct-io for the image (this is commonly
-known as cache mode 'none').
+The original fix prevents a NULL pointer dereference in scsi_queue_rq()
+when a BSG ioctl is issued with a zero-length request and a NULL cmnd
+pointer. Without this fix, a local user with access to /dev/bsg/* can
+trigger a kernel panic.
 
-[CAUSE]
-Inside the VM, if the fs is EXT4 or XFS, or even NTFS from Windows, the
-fs is allowed to dirty/modify the folio even if the folio is under
-writeback (as long as the address space doesn't have AS_STABLE_WRITES
-flag inherited from the block device).
+The crash occurs in scsi_command_size() when it dereferences a NULL
+cmnd pointer. This was confirmed on kernel 5.10.0+ with a 100%
+reproducible exploit.
 
-This is a valid optimization to improve the concurrency, and since these
-filesystems have no extra checksum on data, the content change is not a
-problem at all.
+CVE-2021-47552
 
-But the final write into the image file is handled by btrfs, which needs
-the content not to be modified during writeback, or the checksum will
-not match the data (checksum is calculated before submitting the bio).
-
-So EXT4/XFS/NTRFS assume they can modify the folio under writeback, but
-btrfs requires no modification, this leads to the false csum mismatch.
-
-This is only a controlled example, there are even cases where
-multi-thread programs can submit a direct IO write, then another thread
-modifies the direct IO buffer for whatever reason.
-
-For such cases, btrfs has no sane way to detect such cases and leads to
-false data csum mismatch.
-
-[FIX]
-I have considered the following ideas to solve the problem:
-
-- Make direct IO to always skip data checksum
-  This not only requires a new incompatible flag, as it breaks the
-  current per-inode NODATASUM flag.
-  But also requires extra handling for no csum found cases.
-
-  And this also reduces our checksum protection.
-
-- Let hardware handle all the checksum
-  AKA, just nodatasum mount option.
-  That requires trust for hardware (which is not that trustful in a lot
-  of cases), and it's not generic at all.
-
-- Always fallback to buffered write if the inode requires checksum
-  This was suggested by Christoph, and is the solution utilized by this
-  patch.
-
-  The cost is obvious, the extra buffer copying into page cache, thus it
-  reduces the performance.
-  But at least it's still user configurable, if the end user still wants
-  the zero-copy performance, just set NODATASUM flag for the inode
-  (which is a common practice for VM images on btrfs).
-
-  Since we cannot trust user space programs to keep the buffer
-  consistent during direct IO, we have no choice but always falling back
-  to buffered IO.  At least by this, we avoid the more deadly false data
-  checksum mismatch error.
-
-Cc: stable@vger.kernel.org # 6.12
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Khemissi Mohammed el Amine <aminekhemissi61@gmail.com>
 ---
- fs/btrfs/direct-io.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/scsi/scsi_lib.c    | 6 ++++++
+ include/scsi/scsi_common.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/fs/btrfs/direct-io.c b/fs/btrfs/direct-io.c
-index 71984d7db839..af68d7ba866b 100644
---- a/fs/btrfs/direct-io.c
-+++ b/fs/btrfs/direct-io.c
-@@ -856,6 +856,22 @@ ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
- 		btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
- 		goto buffered;
- 	}
-+	/*
-+	 * We can't control the folios being passed in, applications can write
-+	 * to them while a direct IO write is in progress.  This means the
-+	 * content might change after we calculated the data checksum.
-+	 * Therefore we can end up storing a checksum that doesn't match the
-+	 * persisted data.
-+	 *
-+	 * To be extra safe and avoid false data checksum mismatch, if the
-+	 * inode requires data checksum, just fallback to buffered IO.
-+	 * For buffered IO we have full control of page cache and can ensure
-+	 * no one is modifying the content during writeback.
-+	 */
-+	if (!(BTRFS_I(inode)->flags & BTRFS_INODE_NODATASUM)) {
-+		btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
-+		goto buffered;
-+	}
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 03c6d0620..4e86bfd3e 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1174,6 +1174,12 @@ static blk_status_t scsi_setup_scsi_cmnd(struct scsi_device *sdev,
+ {
+ 	struct scsi_cmnd *cmd = blk_mq_rq_to_pdu(req);
  
++	/* Check for NULL command pointer */
++	if (!cmd->cmnd) {
++		scsi_req(req)->result = DID_NO_CONNECT << 16;
++		return BLK_STS_IOERR;
++	}
++
  	/*
- 	 * The iov_iter can be mapped to the same file range we are writing to.
+ 	 * Passthrough requests may transfer data, in which case they must
+ 	 * a bio attached to them.  Or they might contain a SCSI command
+diff --git a/include/scsi/scsi_common.h b/include/scsi/scsi_common.h
+index 5b567b43e..1d9dcadb3 100644
+--- a/include/scsi/scsi_common.h
++++ b/include/scsi/scsi_common.h
+@@ -21,6 +21,8 @@ extern const unsigned char scsi_command_size_tbl[8];
+ static inline unsigned
+ scsi_command_size(const unsigned char *cmnd)
+ {
++	if (!cmnd)
++		return 0;
+ 	return (cmnd[0] == VARIABLE_LENGTH_CMD) ?
+ 		scsi_varlen_cdb_length(cmnd) : COMMAND_SIZE(cmnd[0]);
+ }
 -- 
-2.53.0
+2.51.0
 
 
