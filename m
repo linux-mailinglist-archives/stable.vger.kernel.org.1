@@ -1,164 +1,198 @@
-Return-Path: <stable+bounces-217715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eb2GKvEgnGnI/wMAu9opvQ
-	(envelope-from <stable+bounces-217715-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:42:09 +0100
+	id CJrzFD0hnGkZ/wMAu9opvQ
+	(envelope-from <stable+bounces-217716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:43:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A51174135
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:42:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EE2174180
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CAB8E30642F4
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:38:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C58630062C2
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4B3352C44;
-	Mon, 23 Feb 2026 09:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7A134FF41;
+	Mon, 23 Feb 2026 09:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCIbS6Uo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H+OVcWzP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2A034F47E;
-	Mon, 23 Feb 2026 09:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561CD1D5147;
+	Mon, 23 Feb 2026 09:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771839536; cv=none; b=CtpiTxUqdKqiEOMxX9ytbQFk51kJbvbbOUSvONnrc07chZfAuauMugJLDf1it586bpRZlJNf1ScSGehzdSf53sQXQtx+i1l9w2IbRPw7CF05rwsuJJcapCQw0nCCxQC0IXZPWPCVZ1ZdtlAeKMM0qfx859+wNGBGnK5COuxVz0g=
+	t=1771839798; cv=none; b=JAIA2AStRV/CS8QLUVJ3rZ43az4BIrK3/mqN1sg4NHfG2MIl45PLqlaoxdTS/pFrUaH1ZrMwG4ak4oXzEfk9CLR1trKWqMVCBIAXBKlxh/SShsNGCa076LPkxw+idyRQ13SC3cnCmmBcgvSrMQClEVIN4NMbweJCZRlpZJc0K3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771839536; c=relaxed/simple;
-	bh=5WaSHOyxf8o8JIkYIHNkBbYYfMUiu9f8Sn5n8UMdebE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iz0010vfHHRi2+tmUsyz+mTp8HounZcwIFpIUHB15xBDxA/treqDgPZ+OcyzTK6YP86FnfoA0tztLDh1MLLUb6PWyg4643Tc1wLFEesL+n7M1qPHRBM1Yt9eK65S22omONdZjfWzYoP/0kp1UMyhAwek8k04N9SVd5VJuQBXmAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCIbS6Uo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8289CC116C6;
-	Mon, 23 Feb 2026 09:38:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771839535;
-	bh=5WaSHOyxf8o8JIkYIHNkBbYYfMUiu9f8Sn5n8UMdebE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WCIbS6UofZDuAMyv34cd6s4hI/RdQvV9x7WgYKKNb2dhDS11pnMvTdGdZZd/I5m30
-	 Ny6CRUBEmG8iMK2Vg0sJPGpScgn6H7zOrODdBRQlMAGNm4KpETpibYDV7nP3ROin/1
-	 ZOONuE15dArk4LlkVFm3aiYdLlLc9+eyoCtqGIbuo8NWESXwFhztcHP3truTOoJIht
-	 Y2jKwsgtLGI0G+T/9KyZFrPcLEqwr3dHG1rY2Gp/1fnxUcTmtIl7WxXGLwo2KVHAvs
-	 p3Ns2RhXSYWLxI4nmB7dCTWuzIzbkRbHYTEwLqxS2ZuEcLEvSSPp7kvndFFAt95L6/
-	 H1JqsLdMXuCFQ==
-Message-ID: <efddf2e4-15b0-4fa0-b9eb-99b72c9b014f@kernel.org>
-Date: Mon, 23 Feb 2026 10:38:47 +0100
+	s=arc-20240116; t=1771839798; c=relaxed/simple;
+	bh=07uW4uvn2V15uKGNvC2oAHiIQAwX+ScRa++ryW7DWPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n0EHAgkT5REd2SC6MKvzqPyqCEWvQTgPN2SK6zlNTsY+wJNaIxdIbu2/XffXH9YfbGE+alYoOi74+YD68U6a1EMZ0TBB+MYQB9LSE0xhOBibqdcFPg7qhN/i4RYBpAKfIu8kuaAl8I7bvE26wriedGCwgAjxU6FSWbKbAyPjL+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H+OVcWzP; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771839797; x=1803375797;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=07uW4uvn2V15uKGNvC2oAHiIQAwX+ScRa++ryW7DWPs=;
+  b=H+OVcWzP/MgC/ZU+sV+XyyH3AVlSE7/BP1cRg/m0W/8fVXedCxx4i/JX
+   NRDVKo/3yTWUPMACakXL+g4KFHk+sK3XwGoyodCMp9mNiWB9QLEuvhuLG
+   bqxMNbffxBmcfNVR6A3OveD7pe/2DIHSJUlyeTn35DqXABzoFqk596FNr
+   DBtrmWq9UBrgEI0nhWkiHQW/Jc41F7bhAayaK/ln6qwJr+leXtSpjkto8
+   mMxvOZ5XfsuHyBm+pq3GlUPL7LvKZqo+MqXAPsxnnz3bp8KUlZvL6/MV3
+   lGQSh6Nnn26KapJt35J17fSw4zKnjo1T0rDDWUBcc2JvOsO8XwvDuxcBJ
+   w==;
+X-CSE-ConnectionGUID: QCOVQWq0Qz+aWawzRIfdcw==
+X-CSE-MsgGUID: /7uERX8YQEmzljT1dFQAaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11709"; a="76441932"
+X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; 
+   d="scan'208";a="76441932"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 01:43:16 -0800
+X-CSE-ConnectionGUID: wa5XkT+FTCSTd66BSc+x5Q==
+X-CSE-MsgGUID: 0SeF7ea3TPCNJA9s+303LQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; 
+   d="scan'208";a="215647941"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.225])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 01:43:14 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id E963511F908;
+	Mon, 23 Feb 2026 11:43:38 +0200 (EET)
+Date: Mon, 23 Feb 2026 11:43:38 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Cc: cy_huang@richtek.com, Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Bryan Wu <cooloney@gmail.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Jacek Anaszewski <j.anaszewski@samsung.com>,
+	roger-hy.wang@mediatek.com, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	laurent.pinchart@ideasonboard.com
+Subject: Re: [PATCH v3] media: v4l2-flash: Enter LED off state after file
+ handle closed
+Message-ID: <aZwhSj4jhEOUKZ3x@kekkonen.localdomain>
+References: <1106c60cb96786ade1f60c692e566c408d7d8174.1768209230.git.cy_huang@richtek.com>
+ <f5980192-a878-47ed-9b38-8607fb7abdc2@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] KVM: selftests: Wrap madvise() to assert success
-To: Ackerley Tng <ackerleytng@google.com>, kartikey406@gmail.com,
- seanjc@google.com, pbonzini@redhat.com, shuah@kernel.org,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: vannapurve@google.com, Liam.Howlett@oracle.com,
- akpm@linux-foundation.org, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- dev.jain@arm.com, i@maskray.me, lance.yang@linux.dev,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- shy828301@gmail.com, stable@vger.kernel.org,
- syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, ziy@nvidia.com
-References: <cover.1771630983.git.ackerleytng@google.com>
- <455483ca29a3a3042efee0cf3bbd0e2548cbeb1c.1771630983.git.ackerleytng@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <455483ca29a3a3042efee0cf3bbd0e2548cbeb1c.1771630983.git.ackerleytng@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f5980192-a878-47ed-9b38-8607fb7abdc2@gmail.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217716-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217715-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[google.com,gmail.com,redhat.com,kernel.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[google.com,oracle.com,linux-foundation.org,kernel.org,linux.alibaba.com,arm.com,maskray.me,linux.dev,vger.kernel.org,kvack.org,redhat.com,gmail.com,syzkaller.appspotmail.com,nvidia.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_CC(0.00)[richtek.com,kernel.org,gmail.com,samsung.com,mediatek.com,vger.kernel.org,ideasonboard.com];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 05A51174135
+	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,kekkonen.localdomain:mid]
+X-Rspamd-Queue-Id: 72EE2174180
 X-Rspamd-Action: no action
 
-On 2/21/26 00:54, Ackerley Tng wrote:
-> Extend kvm_syscalls.h to wrap madvise() to assert success. This will be
-> used in the next patch.
-> 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
+Hi Jacek,
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+On Sat, Feb 21, 2026 at 04:48:48PM +0100, Jacek Anaszewski wrote:
+> Hi ChiYuan,
+> 
+> On 1/12/26 10:20, cy_huang@richtek.com wrote:
+> > From: ChiYuan Huang <cy_huang@richtek.com>
+> > 
+> > To make sure LED enter off state after file handle is closed, initiatively
+> > configure LED_MODE to NONE. This can guarantee whatever the previous state
+> > is torch or strobe mode, the final state will be off.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 42bd6f59ae90 ("media: Add registration helpers for V4L2 flash sub-devices")
+> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> > ---
+> > Still cannot pass patch integration check, send v3 patch to fix all.
+> > 
+> > v3
+> > - Remove 'Reported-by' tag
+> > - Fix identation check for patch integration
+> > 
+> > v2
+> > - Fix commit message redudant space cause patch robot parsing error
+> > 
+> > Hi,
+> >    We encounter an issue. When the upper layer camera process is crashed,
+> > if the new process did not reinit the LED,  it will keeps the previous
+> > state whatever it's in torch or strobe mode
+> > 
+> > OS will handle the resource management. So when the process is crashed
+> > or terminated, the 'close' API will be called to release resources.
+> > That's why we add the initiative action to trigger LED off in file
+> > handle close is called.
+> > ---
+> >   drivers/media/v4l2-core/v4l2-flash-led-class.c | 6 ++++++
+> >   1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/drivers/media/v4l2-core/v4l2-flash-led-class.c b/drivers/media/v4l2-core/v4l2-flash-led-class.c
+> > index 355595a0fefa..46606f5cc192 100644
+> > --- a/drivers/media/v4l2-core/v4l2-flash-led-class.c
+> > +++ b/drivers/media/v4l2-core/v4l2-flash-led-class.c
+> > @@ -623,6 +623,12 @@ static int v4l2_flash_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+> >   		return 0;
+> >   	if (led_cdev) {
+> > +		/* If file handle is released, make sure LED enter off state */
+> > +		ret = v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE],
+> > +				       V4L2_FLASH_LED_MODE_NONE);
+> > +		if (ret)
+> > +			return ret;
+> > +
+> >   		mutex_lock(&led_cdev->led_access);
+> >   		if (v4l2_flash->ctrls[STROBE_SOURCE])
+> > 
+> > base-commit: 8ac28a6642d1cc8bac0632222e66add800b027fa
+> 
+> The patch itself looks good, but while at it I started wondering
+> if we shouldn't move below STROBE_SOURCE access before the lock.
+> I don't see now, why we placed it there.
+> 
+> Adding Sakari.
+
+Thanks for cc'ing me.
+
+The behaviour this patch changes has been around for a decade or so. I
+wonder what breaks if we change it now. It works the same way as the sysfs
+LED API, too, and I think common behaviour between the two APIs was the
+reasoning back then as well.
 
 -- 
-Cheers,
+Kind regards,
 
-David
+Sakari Ailus
 
