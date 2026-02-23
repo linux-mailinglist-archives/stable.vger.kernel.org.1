@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-217718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKATJJwpnGl1AAQAu9opvQ
-	(envelope-from <stable+bounces-217718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:19:08 +0100
+	id uCPFHYwpnGl1AAQAu9opvQ
+	(envelope-from <stable+bounces-217719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:18:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0534174BA1
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:19:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4603174B92
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:18:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3B20A30142AD
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:17:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D710302DB72
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E36435B64D;
-	Mon, 23 Feb 2026 10:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF9935B62E;
+	Mon, 23 Feb 2026 10:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FZ4NRp74"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LfAPOLYH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8177E34FF4A
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 10:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B436B34EF0C
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 10:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771841870; cv=none; b=JNBo6omV6oBz6roGmNHu8f3KKlEQ1rkWf3OeuEy8ThEKHgD+Bxn8bzf4jETn9UY2SRJWiVvJ8B2tXpaSXCB/Vo2UJHdkzxG2uo9y3aBZL6MgOmqhVbNaJwq9e8wQUHHKg0FcQas8zEJVLK03Xgc5g7OBY26orpoZEpZdFFz/Ags=
+	t=1771841877; cv=none; b=NaJZvh04oaXYnG9edOYZQO5I6ZG21zz/kP7+megwmAnXTIJszW8SXKIBfZxJ1SgFFlSvtpnS+X5QGiYb34hIb+JI8ql7C2ICCREfbkqmoD+SDEvdxBRN+azanpdKlMFcoPA6onEhFbcSKwd17g/H+QOqxfgQjTvtQW6B6UWySq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771841870; c=relaxed/simple;
-	bh=kPoRVNxNpO3Z50WxHXMMyqAvSb7QbpFQJukqGhW/z/A=;
+	s=arc-20240116; t=1771841877; c=relaxed/simple;
+	bh=JDc/qo7rkUOcZGNhJ0Wl/HeJIKj7/AleosrYhzqya/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DscArjNMIJ5FDyg0Wbl8bvMvcdFp60ag5OQ3+fG3JW50qwtznw7EVmYIOKYR0nbeq5fxFtQnxwPRzN1Md+Eu1Bx4SO8HnWIbemxsOA1xnw5Vx3+HWDivq4KwL117tnfO+SSl9ZukIi4BT98jHwycvBf4fjMj/OprNwv4yZyHJxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FZ4NRp74; arc=none smtp.client-ip=209.85.215.177
+	 MIME-Version; b=PTzP+/Vx/oqhfxgcP9O20+ISJiwANX3OKovTK701nMw9UmdehUTvakgDBGGiWlJXXxvpzFDw8FS9mame4yKmhqh2NWG9aO0xxZRjFfO7Uox1stLMuKhi2DWgYbbu3uNTeaowcuTlX7tp8Ha58qnHdAuU3TNK6nyvb9DeoIlx8uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LfAPOLYH; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c6e2355739dso1410338a12.2
-        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 02:17:48 -0800 (PST)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a7d98c1879so26689665ad.3
+        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 02:17:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771841868; x=1772446668; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771841876; x=1772446676; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=68kFT9M+v1YFr8fLxiUdg7OyCK95BGAep7GJPhPQZJ0=;
-        b=FZ4NRp74IAvPu8rwJR61Zyz7ImSvEqWC1Y2//oSxQMiCiMmR3Wgl67PA/aqkki7SDj
-         rgV2Fxrm1mhQgmbwPGND6P4lzglHuey/NAxCvahNFZnH4aHnl+KM1auziRe7/yrGHekF
-         MgxICmGZvzmR3ymZoVuHDWZ59wnqvIucqe3B5ZDNSLuXuCfsFO5WiPCZ5athgem+n8BT
-         mhzTwfbFYvOBCEiBlYdqekd3X2PPtG8E/CaCbpriwkuIj++IiF6hmQttoBz/AuRAlawj
-         YAJfuMWBqou6B0zv6uJb6WI1Tndxunw8T5r2SYHbJhibTdPpjj/0Z5ZdfKdNtzDHMxPa
-         kTDQ==
+        bh=ZxR8y+DDVU/sD2lLySC6/WbxsSmg5U6pRubVnyPkrSo=;
+        b=LfAPOLYH6/CYmyGD7y4Gx0nzk6YR60hu8x8bNhN9eHhmgHw8AKeWeSjbFYxfNGOF7y
+         PSLRHi7NwZMGQNxMuzaeUQ3Bk5CtRIl9J/R2KUPpuksndQKe1+67t+jG16kpqYNnUYcM
+         Vx+Mvx2zPXp7xSkGWtL121S0fuVWFkpWVJF5RBvVXbncaTyTV6EJreHK5eQpkChjKJjO
+         E15Y7c41PukhNxqe4QThS9lsby/UeqSWovmDilGFYmJ+jhD3/n6asTMFJn8k5URXiBS4
+         AMRMDX+2i8GocCiuRHrP54kNAz3UKQxG/OZK1GVSDj6hBuZFaY5prAxGvpAQZS77Kd5X
+         /lUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771841868; x=1772446668;
+        d=1e100.net; s=20230601; t=1771841876; x=1772446676;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=68kFT9M+v1YFr8fLxiUdg7OyCK95BGAep7GJPhPQZJ0=;
-        b=IeqDS7qf7nRzmyL7mZoP0m5s8dRsWsb/wd0+2kAzzTfZBymCbgQ7b9tvKwixEtTWq/
-         /hkLvqZ7of+PYl/L4i86BouhdyIIM6VLVElAQNeCGDVTcmNwhcfUaQj1Ddf2rEy/b8s5
-         91lNmJO3p4EaEW0EA7V2ws30dVR82Lq00OJDT8TuP8Y9fMWRsiQmpfN+WwZIBw8dVGwP
-         yrv+PVGdTMdmRzFnxkW36OVCbnEyrVd/qKiC4ly0mff/+uNcVnng+AaXWm9ha7K1zcXX
-         Y84Ib0fWqA2wqghc3ZNsMfl71d7zAIk5OzoZEwYHRai8fCSUzRLY+rV8qqcnd125BPOk
-         EV2g==
-X-Forwarded-Encrypted: i=1; AJvYcCWujyIS+0FsIYq+tRS9W8DW6TDWgcQAjbCCAnXUuno6ivp0j5+b1lfbxK2ZXHT0fpws6aALxI0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyC5uLThUnJxcMefG4E1fmdRBoZYMO/eyGai7dxzDivfhHoBZ3C
-	4omLLwQP8pg4SRgd+P9KAzj+7aOKlCnR75IWlMNKvyrmAq9kvPKDBKgQB6Q8DA==
-X-Gm-Gg: ATEYQzwaVS/0hbNQ9+dZiQ9XYNksN/f9VfLjZw7DMK5zFrDaCFWX6Y3XU1/y/WlYgXc
-	0rKR4YqOye0v58FJVKGmfGwGv7Gcw8vlsvkVeEoOS3pNLsNTUlVuAmqVZVs0q+BqJrjZ5iJeMFZ
-	wQq3q19NvHt+svxQc1T47+j8ZZlddyDm6Xei3zt8nxfZGmQaEd0Fam+pF/D2DpjPODbGV1BWprA
-	zzJ3+opeKq0enhTr/dN7k7VpMlIPgodIJ0PlP73YmUK9l4WhoNo+47sRk45vZ3il3FSSchQ7vQ8
-	jdpgFfcC2TufEJtDPl7w8EYnaCxf4CXDeeA+5KthmALH5G3o6i29qVTcC4oVvpzwFhYwgJEMCsC
-	kHXSXZ2Nr+4KgSUEnIdXkzBMqac46wtfiFYiPyzkQPUKCm7u3J/bzZ5p43zvYsSdIHEnxIQ+nC8
-	0uEt0aJH5SvwGwveLRHWv/E6GaqKp6IElYC5wKC49X
-X-Received: by 2002:a17:903:2c05:b0:2a7:d5c0:c661 with SMTP id d9443c01a7336-2ad7443a1c0mr70941425ad.15.1771841867797;
-        Mon, 23 Feb 2026 02:17:47 -0800 (PST)
+        bh=ZxR8y+DDVU/sD2lLySC6/WbxsSmg5U6pRubVnyPkrSo=;
+        b=eCP9OUe5m/gM8u/a9K9zXo2eEqBiMl1IntpXhJcyfyC7ea4E9kb9P5oqUczFPvETkx
+         SI7Sb4oGog1Ll9XMV5zWpGQN+ZJCVVJDA6L9jF0vwv1DY17Blsa6lXuVniLsA9+tfHu+
+         mdkwWmIwBvSgLvCx/Y6h4oYBM4fUO5eh8ViQYc6Kpfn2OjEB9zIzv8R/180UqhlKyd90
+         F88bc9umQ+9DzJ9xQk0MbOvZ2gKtV2MtAF5FFnDLAxW2GicAp4WlQwek/kKE36Dn7e6M
+         zDgSQHjt0SZGE7tvgW/N1RqvIGyf23BhwNdSygTegRNgYYuUBkAeRN2/g2OUxxlD2HY4
+         dcJA==
+X-Forwarded-Encrypted: i=1; AJvYcCUwpSaAl8tSrffoW4iDBXz9UFz3QsNpnLQDSr9fCoK13k8fGSbTo3eig7UPtRkVGpdbuSbgLjo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhYPgg5Xk6TQqzfBN3keFVxSvkokLVm9/7Kspbq7ygWaN6gkut
+	/gZPsueV7jldYbvzYpFyc60BBdPHwMmFCXx6sZen7FAgaYicureJOKYP
+X-Gm-Gg: ATEYQzyp3zv8KN1LET90y4BourOoVK+f8hVxD1pImxBamcbenJJ7Eteq5ZYUknMzaK0
+	aw12mCwfiIBsC2vdSUIEupoUT5+iLro/AkZD3HR4zUod9mGzOPSgH/V+9rrWEUWpZhJ383HOfpM
+	bDIncIeC0BI2/K8f9Me8vhHgaY8dnjZN64FcRb26dVbyZva5OJ7/qmPaYunPjOrYXxSioML8ev0
+	d4NUfbwfsbAYWL6idb37XO5c0LnKaFb5yE/DnrKeW1zekGF9uHMtqq7HQpDq55Ss0kgCoZiKmwp
+	G/EjrKCLDeZB9fQW0gyVyI/SrlbgheRyeYF1+Y+ehslnZilSWw5AYTfeNvzRB6zCnW54ZPryl5O
+	tNSfj9/zgfAX0ujYqaKMaD41Kpq7/nATUOcxOcw/ojWwe5NAGDng+ItzvhAT+HvLVnNmHeeuT2+
+	VeO2KBiT1AZyF+X+VvuPBp76oFvLa/UQ==
+X-Received: by 2002:a17:902:d4d2:b0:2a7:c2d5:bcd7 with SMTP id d9443c01a7336-2ad74464b22mr67997785ad.20.1771841876019;
+        Mon, 23 Feb 2026 02:17:56 -0800 (PST)
 Received: from c6dfb3cc7c9a ([115.245.213.202])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad74e3425dsm66574795ad.16.2026.02.23.02.17.43
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad74e3425dsm66574795ad.16.2026.02.23.02.17.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 02:17:47 -0800 (PST)
+        Mon, 23 Feb 2026 02:17:55 -0800 (PST)
 From: Sanjaikumar V S <sanjaikumarvs@gmail.com>
 To: mwalle@kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -88,9 +88,9 @@ Cc: linux-kernel@vger.kernel.org,
 	tudor.ambarus@linaro.org,
 	stable@vger.kernel.org,
 	vigneshr@ti.com
-Subject: [PATCH v3 1/2] mtd: spi-nor: sst: Fix write enable before AAI sequence
-Date: Mon, 23 Feb 2026 10:17:17 +0000
-Message-ID: <20260223101718.89-2-sanjaikumarvs@gmail.com>
+Subject: [PATCH v3 2/2] mtd: spi-nor: core: Fix AAI mode when dirmap is not available
+Date: Mon, 23 Feb 2026 10:17:18 +0000
+Message-ID: <20260223101718.89-3-sanjaikumarvs@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260223101718.89-1-sanjaikumarvs@gmail.com>
 References: <20260220094236.28-1-sanjaikumarvs@gmail.com>
@@ -108,14 +108,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-217718-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217719-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,bootlin.com,kernel.org,nod.at,gmail.com,dicortech.com,linaro.org,ti.com];
 	RCVD_TLS_LAST(0.00)[];
@@ -125,68 +125,48 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sanjaikumarvs@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dicortech.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C0534174BA1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dicortech.com:email]
+X-Rspamd-Queue-Id: C4603174B92
 X-Rspamd-Action: no action
 
 From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
 
-When writing to SST flash starting at an odd address, a single byte is
-first programmed using the byte program (BP) command. After this
-operation completes, the flash hardware automatically clears the Write
-Enable Latch (WEL) bit.
+When the SPI controller does not support direct mapping (nodirmap=true),
+spi_nor_spimem_write_data() calls spi_mem_dirmap_write() which falls
+back to spi_mem_no_dirmap_write(). This fallback uses the operation
+template created at probe time with the standard page program opcode.
 
-If an AAI (Auto Address Increment) word program sequence follows, it
-requires WEL to be set. Without re-enabling writes, the AAI sequence
-fails.
+For SST flashes using AAI mode, this fails because the template cannot
+handle the dynamic opcode and address byte changes required by AAI.
 
-Add spi_nor_write_enable() after the odd-address byte program when more
-data needs to be written. Use a local boolean for clarity.
+Fix by checking nodirmap and using spi_nor_spimem_exec_op() directly,
+which uses the runtime-built operation with correct AAI configuration.
 
-Fixes: b199489d37b2 ("mtd: spi-nor: add the framework for SPI NOR")
 Cc: stable@vger.kernel.org
 Signed-off-by: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
 ---
- drivers/mtd/spi-nor/sst.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/mtd/spi-nor/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/spi-nor/sst.c b/drivers/mtd/spi-nor/sst.c
-index 175211fe6a5e..db02c14ba16f 100644
---- a/drivers/mtd/spi-nor/sst.c
-+++ b/drivers/mtd/spi-nor/sst.c
-@@ -203,6 +203,8 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index d3f8a78efd3b..7caeb508d628 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -281,7 +281,7 @@ static ssize_t spi_nor_spimem_write_data(struct spi_nor *nor, loff_t to,
+ 	if (spi_nor_spimem_bounce(nor, &op))
+ 		memcpy(nor->bouncebuf, buf, op.data.nbytes);
  
- 	/* Start write from odd address. */
- 	if (to % 2) {
-+		bool needs_write_enable = (len > 1);
-+
- 		/* write one byte. */
- 		ret = sst_nor_write_data(nor, to, 1, buf);
- 		if (ret < 0)
-@@ -210,6 +212,17 @@ static int sst_nor_write(struct mtd_info *mtd, loff_t to, size_t len,
- 
- 		to++;
- 		actual++;
-+
-+		/*
-+		 * Byte program clears the write enable latch. If more
-+		 * data needs to be written using the AAI sequence,
-+		 * re-enable writes.
-+		 */
-+		if (needs_write_enable) {
-+			ret = spi_nor_write_enable(nor);
-+			if (ret)
-+				goto out;
-+		}
- 	}
- 
- 	/* Write out most of the data here. */
+-	if (nor->dirmap.wdesc) {
++	if (nor->dirmap.wdesc && !nor->dirmap.wdesc->nodirmap) {
+ 		nbytes = spi_mem_dirmap_write(nor->dirmap.wdesc, op.addr.val,
+ 					      op.data.nbytes, op.data.buf.out);
+ 	} else {
 -- 
 2.43.0
 
