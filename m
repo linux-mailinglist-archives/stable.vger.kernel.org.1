@@ -1,198 +1,171 @@
-Return-Path: <stable+bounces-217716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217717-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJrzFD0hnGkZ/wMAu9opvQ
-	(envelope-from <stable+bounces-217716-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:43:25 +0100
+	id yHIMGEwpnGl1AAQAu9opvQ
+	(envelope-from <stable+bounces-217717-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:17:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EE2174180
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:43:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A3D174B4E
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 11:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C58630062C2
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:43:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 927B3301F9A4
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7A134FF41;
-	Mon, 23 Feb 2026 09:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C03235B62A;
+	Mon, 23 Feb 2026 10:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H+OVcWzP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eh3iRqk1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561CD1D5147;
-	Mon, 23 Feb 2026 09:43:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5327D34EF0C
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 10:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771839798; cv=none; b=JAIA2AStRV/CS8QLUVJ3rZ43az4BIrK3/mqN1sg4NHfG2MIl45PLqlaoxdTS/pFrUaH1ZrMwG4ak4oXzEfk9CLR1trKWqMVCBIAXBKlxh/SShsNGCa076LPkxw+idyRQ13SC3cnCmmBcgvSrMQClEVIN4NMbweJCZRlpZJc0K3w=
+	t=1771841862; cv=none; b=SlRUAuPUphLn7EPsrnV+FR5PjvIJkGU/YsW/acUxzg88NYaEPreaXTl4/NO4/ONABy69rfAoMN8wxGUGn+lztEz8G1ekFFEyW6oRdx+JSe7t+idGsGTxWvnVf0dwstkBI9SauNv0RygYx2PtwYlkYT4k7CBjHRQiGkyyhYdYe/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771839798; c=relaxed/simple;
-	bh=07uW4uvn2V15uKGNvC2oAHiIQAwX+ScRa++ryW7DWPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n0EHAgkT5REd2SC6MKvzqPyqCEWvQTgPN2SK6zlNTsY+wJNaIxdIbu2/XffXH9YfbGE+alYoOi74+YD68U6a1EMZ0TBB+MYQB9LSE0xhOBibqdcFPg7qhN/i4RYBpAKfIu8kuaAl8I7bvE26wriedGCwgAjxU6FSWbKbAyPjL+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H+OVcWzP; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771839797; x=1803375797;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=07uW4uvn2V15uKGNvC2oAHiIQAwX+ScRa++ryW7DWPs=;
-  b=H+OVcWzP/MgC/ZU+sV+XyyH3AVlSE7/BP1cRg/m0W/8fVXedCxx4i/JX
-   NRDVKo/3yTWUPMACakXL+g4KFHk+sK3XwGoyodCMp9mNiWB9QLEuvhuLG
-   bqxMNbffxBmcfNVR6A3OveD7pe/2DIHSJUlyeTn35DqXABzoFqk596FNr
-   DBtrmWq9UBrgEI0nhWkiHQW/Jc41F7bhAayaK/ln6qwJr+leXtSpjkto8
-   mMxvOZ5XfsuHyBm+pq3GlUPL7LvKZqo+MqXAPsxnnz3bp8KUlZvL6/MV3
-   lGQSh6Nnn26KapJt35J17fSw4zKnjo1T0rDDWUBcc2JvOsO8XwvDuxcBJ
-   w==;
-X-CSE-ConnectionGUID: QCOVQWq0Qz+aWawzRIfdcw==
-X-CSE-MsgGUID: /7uERX8YQEmzljT1dFQAaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11709"; a="76441932"
-X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; 
-   d="scan'208";a="76441932"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 01:43:16 -0800
-X-CSE-ConnectionGUID: wa5XkT+FTCSTd66BSc+x5Q==
-X-CSE-MsgGUID: 0SeF7ea3TPCNJA9s+303LQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; 
-   d="scan'208";a="215647941"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.225])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 01:43:14 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id E963511F908;
-	Mon, 23 Feb 2026 11:43:38 +0200 (EET)
-Date: Mon, 23 Feb 2026 11:43:38 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Cc: cy_huang@richtek.com, Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Bryan Wu <cooloney@gmail.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Jacek Anaszewski <j.anaszewski@samsung.com>,
-	roger-hy.wang@mediatek.com, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	laurent.pinchart@ideasonboard.com
-Subject: Re: [PATCH v3] media: v4l2-flash: Enter LED off state after file
- handle closed
-Message-ID: <aZwhSj4jhEOUKZ3x@kekkonen.localdomain>
-References: <1106c60cb96786ade1f60c692e566c408d7d8174.1768209230.git.cy_huang@richtek.com>
- <f5980192-a878-47ed-9b38-8607fb7abdc2@gmail.com>
+	s=arc-20240116; t=1771841862; c=relaxed/simple;
+	bh=O2p17sybAuVHCdv0KD+mnYK4AM2+zGcs2jOJFiLuGDg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SAZK6yEcUya7n/uXirMU7vrp7Uq3RG8bt8wrSqJ8ePiRIMwizBLjvntAXJR4lXdj4Jx6eQdF0bn0H4cHgUpPsLAsCmEqNLNjFOD0951kaDZD7ekAnTfQNswAQGWlrMxFVP00vLCpkEFa8ubYu0IvyX72s+o/+Hyk06I+6tzG96A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eh3iRqk1; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a7d98c1879so26688825ad.3
+        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 02:17:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771841861; x=1772446661; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=48RL7VeEp2klLp0X3X13j82DHjMKhg6nQjIVmjSYm8g=;
+        b=eh3iRqk1OfRRjLJW/FjG/VngrkFCT0kXgjjOsxmEDGH3OSSr+lqlZVZGEJ2bgED90H
+         wja7lW0pGS2t5ih+7C3Cg1MpRXKiNDaToRPda9HFy5lsOF3LAWGT6SPJFr7Wh0PVmSvG
+         kJjz37JluHOSsTvR/RBv2Q4xoVnJAu2U2lt7D4gwSHLyKh3Qi29MiHjBYyqU8mMx45hi
+         ufEequ9CKx5tlxfOz8c7bZKkg5TrDukNIXSgV/Si4+xd2L2HayGf74D1DpjOGjBedpgB
+         Uwsw4+9eTXhJZPgd5QooBFuQLG3im8ISG2jP+rxJ1OP73LM5IHY1IL0iVGLV5HWDQsWj
+         Lpzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771841861; x=1772446661;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=48RL7VeEp2klLp0X3X13j82DHjMKhg6nQjIVmjSYm8g=;
+        b=h1sG2RM5kKWK0/alZDioXAElS+gK048gZqntnrJB0qUmcXxKbtT+d7qGxrTajMZ8OP
+         GLCHRSKnHtPik6wJA/3OC221Nk6AlwdCMQlPJ/9dtGftHYtgs5FnJQ0papYSmQCZiwk9
+         EAzyMrVPMfITy6BMS52vSwjFZukGiSaVrT9eAiJG2RXJKkEe7m50Lhsiy9lBGM1ADE2K
+         D0pkmGNnEKkiLPWOvJJzXM9y1QcwBEJBwkE8bkB88Yp/AqGM0K+ktLc67n8ODQrmqox+
+         hBKqBzOkh5tLLia8dQSALuvYO/cOhxYdP+7ue+kcGS+lFtqOVU1RyblUkm4QwDaxTWTV
+         0UCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXKv9oWRjrnOovSfHXD9UDLCMG9h9qa1JZcVZ/g7t/boMG2bixNB12aEaRYvepdaPFOGkMZ38=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX4TinL5caucFQNYnOGISgdeLi6xs69yGmV2/yDtP9gt8WOyxL
+	UG2wl6NVoAFv8N+sC7KNEaxD4eN0bA+dtsBoTlXecwlZtGIMaGJoqxaM
+X-Gm-Gg: ATEYQzy02vikGPzjE4O7NEoFSUbQHDWJGhOnFTAcUVIQwUgnRgcXG37695Wo0QXJeRJ
+	wmJ4OKtYAqg9w+Jv7K1p7F9fLzlLjhvgAdso77XqAzMkZM4XV+9eQt7JXGLiKKGl4czDeFHGmzo
+	spUL3M9kWV9LRfP+8f4I7+zqxoG15s+Mi3kPjtqlWBt2A/aQ4UM1ruLjc8BUApjObjbZAp/F5NN
+	R3t2oYWuZGXBkgvY7Ll8D83y5LrEJuX0Z9CByvyenJmi14LMhsdpPR3180iUNcE8njth6/X+185
+	iBAFLGoF+LCeywI3L62Fn/Y4HlZZazTykjp4Ma7UuU0sFLo8Jk9bBPTfUDqPta+rLNM1KY9sNTA
+	KSZ1y8mNnknugJ22RfhtSCbp55gG5o6YBca2swt+5IjUXg4Nta0npn/DYe5ggOw4UDuTsPjUXUl
+	kP2oO1Tr631c6NZR6uj6po7mkC3cc3FA==
+X-Received: by 2002:a17:902:cec3:b0:2a8:7814:47cc with SMTP id d9443c01a7336-2ad744649b5mr63594245ad.16.1771841860595;
+        Mon, 23 Feb 2026 02:17:40 -0800 (PST)
+Received: from c6dfb3cc7c9a ([115.245.213.202])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad74e3425dsm66574795ad.16.2026.02.23.02.17.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 02:17:39 -0800 (PST)
+From: Sanjaikumar V S <sanjaikumarvs@gmail.com>
+To: mwalle@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	miquel.raynal@bootlin.com,
+	pratyush@kernel.org,
+	richard@nod.at,
+	sanjaikumarvs@gmail.com,
+	sanjaikumar.vs@dicortech.com,
+	tudor.ambarus@linaro.org,
+	stable@vger.kernel.org,
+	vigneshr@ti.com
+Subject: [PATCH v3 0/2] mtd: spi-nor: Fix SST AAI write mode
+Date: Mon, 23 Feb 2026 10:17:16 +0000
+Message-ID: <20260223101718.89-1-sanjaikumarvs@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260220094236.28-1-sanjaikumarvs@gmail.com>
+References: <20260220094236.28-1-sanjaikumarvs@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f5980192-a878-47ed-9b38-8607fb7abdc2@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217716-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	HAS_ORG_HEADER(0.00)[];
-	FREEMAIL_CC(0.00)[richtek.com,kernel.org,gmail.com,samsung.com,mediatek.com,vger.kernel.org,ideasonboard.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-217717-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,bootlin.com,kernel.org,nod.at,gmail.com,dicortech.com,linaro.org,ti.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FROM_NEQ_ENVFROM(0.00)[sanjaikumarvs@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,kekkonen.localdomain:mid]
-X-Rspamd-Queue-Id: 72EE2174180
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dicortech.com:email]
+X-Rspamd-Queue-Id: 56A3D174B4E
 X-Rspamd-Action: no action
 
-Hi Jacek,
+From: Sanjaikumar V S <sanjaikumar.vs@dicortech.com>
 
-On Sat, Feb 21, 2026 at 04:48:48PM +0100, Jacek Anaszewski wrote:
-> Hi ChiYuan,
-> 
-> On 1/12/26 10:20, cy_huang@richtek.com wrote:
-> > From: ChiYuan Huang <cy_huang@richtek.com>
-> > 
-> > To make sure LED enter off state after file handle is closed, initiatively
-> > configure LED_MODE to NONE. This can guarantee whatever the previous state
-> > is torch or strobe mode, the final state will be off.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 42bd6f59ae90 ("media: Add registration helpers for V4L2 flash sub-devices")
-> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > ---
-> > Still cannot pass patch integration check, send v3 patch to fix all.
-> > 
-> > v3
-> > - Remove 'Reported-by' tag
-> > - Fix identation check for patch integration
-> > 
-> > v2
-> > - Fix commit message redudant space cause patch robot parsing error
-> > 
-> > Hi,
-> >    We encounter an issue. When the upper layer camera process is crashed,
-> > if the new process did not reinit the LED,  it will keeps the previous
-> > state whatever it's in torch or strobe mode
-> > 
-> > OS will handle the resource management. So when the process is crashed
-> > or terminated, the 'close' API will be called to release resources.
-> > That's why we add the initiative action to trigger LED off in file
-> > handle close is called.
-> > ---
-> >   drivers/media/v4l2-core/v4l2-flash-led-class.c | 6 ++++++
-> >   1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/drivers/media/v4l2-core/v4l2-flash-led-class.c b/drivers/media/v4l2-core/v4l2-flash-led-class.c
-> > index 355595a0fefa..46606f5cc192 100644
-> > --- a/drivers/media/v4l2-core/v4l2-flash-led-class.c
-> > +++ b/drivers/media/v4l2-core/v4l2-flash-led-class.c
-> > @@ -623,6 +623,12 @@ static int v4l2_flash_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
-> >   		return 0;
-> >   	if (led_cdev) {
-> > +		/* If file handle is released, make sure LED enter off state */
-> > +		ret = v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE],
-> > +				       V4L2_FLASH_LED_MODE_NONE);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> >   		mutex_lock(&led_cdev->led_access);
-> >   		if (v4l2_flash->ctrls[STROBE_SOURCE])
-> > 
-> > base-commit: 8ac28a6642d1cc8bac0632222e66add800b027fa
-> 
-> The patch itself looks good, but while at it I started wondering
-> if we shouldn't move below STROBE_SOURCE access before the lock.
-> I don't see now, why we placed it there.
-> 
-> Adding Sakari.
+This patch series addresses two distinct problems affecting SST flash
+Auto Address Increment write functionality:
 
-Thanks for cc'ing me.
+1. When writes begin at odd addresses, a single byte is programmed first
+   using byte program command, which clears the Write Enable Latch. The
+   driver fails to re-enable writes before the AAI sequence.
 
-The behaviour this patch changes has been around for a decade or so. I
-wonder what breaks if we change it now. It works the same way as the sysfs
-LED API, too, and I think common behaviour between the two APIs was the
-reasoning back then as well.
+2. When the SPI controller lacks direct mapping support, the fallback
+   path uses a probe-time operation template with standard page program
+   opcodes instead of AAI opcodes.
 
--- 
-Kind regards,
+Changes in v3:
+- Patch 1/2: Use local boolean 'needs_write_enable' for clarity as
+  suggested by Michael Walle
+- Patch 1/2: Improved comment explaining the fix
+- Patch 1/2: Added Fixes tag
 
-Sakari Ailus
+Changes in v2:
+- Split fixes into separate patches
+- Added detailed commit messages
+
+Sanjaikumar V S (2):
+  mtd: spi-nor: sst: Fix write enable before AAI sequence
+  mtd: spi-nor: core: Fix AAI mode when dirmap is not available
+
+ drivers/mtd/spi-nor/core.c |  2 +-
+ drivers/mtd/spi-nor/sst.c  | 13 +++++++++++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+--
+2.43.0
+
 
