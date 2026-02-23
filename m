@@ -1,201 +1,213 @@
-Return-Path: <stable+bounces-217786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0E5bHL52nGmwHwQAu9opvQ
-	(envelope-from <stable+bounces-217786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 16:48:14 +0100
+	id cJ7sCXJ+nGm6IQQAu9opvQ
+	(envelope-from <stable+bounces-217787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 17:21:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EDE179055
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 16:48:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D801799EE
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 17:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7C61C3038AD0
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 15:47:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54639303B5D1
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 16:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309403064B5;
-	Mon, 23 Feb 2026 15:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09BA307AD5;
+	Mon, 23 Feb 2026 16:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPyVv/Ar"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNuuzbEP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24CB303C93;
-	Mon, 23 Feb 2026 15:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614931F2380;
+	Mon, 23 Feb 2026 16:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771861614; cv=none; b=dogEETzlO9YiazhdD1Vgf+C/c4wIri7ddKac+l2Myasb+tcLwNjtoYDOHCTaDeD0qCMsIcSNEwEFcaO8mNyIyark1Dt/oacRPbDCzng1dcnPgDHtmLFGiGXAlOm0DXgWD0om32d9ktPkKZv2bvXOsZl1qMNA7P1beT1/2xTpK1c=
+	t=1771863430; cv=none; b=fAhNSBw9KCObuA7Z2wp1eyKkm8zYfgdNWN2G325PVkxpH9uQzWX22GUN0g+vcHV08i70zNA8O3XNJ5qEW3d2/skk4qTx/SaPJtlLLr9CIKdvMb5rn+L5BQl4fe57bya92q47RUhWPLrQ0pfHFMy0U8McG5ZT09+Xhnj40NHlXdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771861614; c=relaxed/simple;
-	bh=9Z3qvPLjIfA4xmLgP5BOB9tiL0sSsppjvHrWM3gcbrY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRafO1//Pb3h/wzRf1biafOXRY0hooS2CH7CZ3pMQnRRj82Wn85F/H3B2Hs2pr8ep3b9iAcQNOlXbt93Ml8zrzoaDZwpwxa6LC85cCqwVJRB9rBvo8wQ6+B2Pyy4uB8lrn8twC10pZZwDklllsHXEo8ie6aGw9No/V5q4pnDjR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPyVv/Ar; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B3BC19424;
-	Mon, 23 Feb 2026 15:46:53 +0000 (UTC)
+	s=arc-20240116; t=1771863430; c=relaxed/simple;
+	bh=qc/Pj+e+abFOM8hFmthyMpplEjTK0RVSw/BU/rotFUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ID0ad0ForkVD5Z7sqTWaZS7THN6zX6kq0S/frIZh7qLq0moA2iKciqiGRGHxnLpkwbMneZBRVRPU3ILWksCbsnDAPhNRD+e48+XAg97yDsnlzsMjjigl2JbQrcIISUNla+NJumEst/fiYEBpmecoGZt8+qt+0tnUVkLbZibwv8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNuuzbEP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E6FC116C6;
+	Mon, 23 Feb 2026 16:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771861613;
-	bh=9Z3qvPLjIfA4xmLgP5BOB9tiL0sSsppjvHrWM3gcbrY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPyVv/ArCOEdL8W+xcwtlqVcMNFXHAPaJQUzsijgX1PRUZUqOHlY3krVFGIl8sTeT
-	 4fjIEijq2E3w6VBg2ESbQCNafUg78DCTN39Va+NSk1ByXnif7GI0jXZ78Jh1z8Jgi1
-	 HeP6ilFsaO87FWXMZCTVOuTXNymYS9EoIVwPiSQvubwcU8nim3E2Av33cyQvQPHPGg
-	 08+wHPocsijTGFflzaXZQra+xhXVuJjiRjRBp+K7x0eI66JfwypDzAityjB04nVg9+
-	 kkB7pLNoI9MDHJqCF5eLbuqr86LBPG0aZv425g599aqrZakRiTsq0JqmRANGjPOEJh
-	 n9FOX6qCBf50Q==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>,
+	s=k20201202; t=1771863430;
+	bh=qc/Pj+e+abFOM8hFmthyMpplEjTK0RVSw/BU/rotFUo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MNuuzbEPRtdoalWzXso9OOsyrMnjIhz79YvWPajXYBZjZdFz5SGpZ60EjKgWhGtNP
+	 zhAnB/VGXpA2/2MDe6yGgh87jnikzQHmGciCbKPEAzsoHv+/iX2vyA9TzMfVoY5Z2f
+	 glGbnI0niUeINeYA7QRLzZDmnGLjmgB8dzTmOUMjpnGGRCPPhOm+3eVzg+8b7XFw+b
+	 6h7IlQ1hAWPeq7SrGr1Qy2Kmi44YUEcxsPszgWWmqALiGD5/T4m+1jsy34P5v+Q0Qm
+	 C+/4+D0QyeYJe7hYE07pmKYB0EDMwSfvm48PciA9C3VTczt4xwZJicHB4P9YMaps1B
+	 npjsBNMRpb5RQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH v1 3/4] KVM: nSVM: Delay setting soft IRQ RIP tracking fields until vCPU run
-Date: Mon, 23 Feb 2026 15:46:35 +0000
-Message-ID: <20260223154636.116671-4-yosry@kernel.org>
-X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
-In-Reply-To: <20260223154636.116671-1-yosry@kernel.org>
-References: <20260223154636.116671-1-yosry@kernel.org>
+Cc: Maciej Grochowski <Maciej.Grochowski@sony.com>,
+	Jon Mason <jdmason@kudzu.us>,
+	Sasha Levin <sashal@kernel.org>,
+	kurt.schwemmer@microsemi.com,
+	logang@deltatee.com,
+	dave.jiang@intel.com,
+	allenbh@gmail.com,
+	linux-pci@vger.kernel.org,
+	ntb@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-5.10] ntb: ntb_hw_switchtec: Fix shift-out-of-bounds for 0 mw lut
+Date: Mon, 23 Feb 2026 11:17:05 -0500
+Message-ID: <20260223161707.2714732-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19.3
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217786-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[sony.com,kudzu.us,kernel.org,microsemi.com,deltatee.com,intel.com,gmail.com,vger.kernel.org,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-217787-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 85EDE179055
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sony.com:email,kudzu.us:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 96D801799EE
 X-Rspamd-Action: no action
 
-In the save+restore path, when restoring nested state, the values of RIP
-and CS base passed into nested_vmcb02_prepare_control() are mostly
-incorrect.  They are both pulled from the vmcb02. For CS base, the value
-is only correct if system regs are restored before nested state. The
-value of RIP is whatever the vCPU had in vmcb02 before restoring nested
-state (zero on a freshly created vCPU).
+From: Maciej Grochowski <Maciej.Grochowski@sony.com>
 
-Instead, take a similar approach to NextRIP, and delay initializing the
-RIP tracking fields until shortly before the vCPU is run, to make sure
-the most up-to-date values of RIP and CS base are used regardless of
-KVM_SET_SREGS, KVM_SET_REGS, and KVM_SET_NESTED_STATE's relative
-ordering.
+[ Upstream commit 186615f8855a0be4ee7d3fcd09a8ecc10e783b08 ]
 
-Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
-CC: stable@vger.kernel.org
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Number of MW LUTs depends on NTB configuration and can be set to zero,
+in such scenario rounddown_pow_of_two will cause undefined behaviour and
+should not be performed.
+This patch ensures that rounddown_pow_of_two is called on valid value.
+
+Signed-off-by: Maciej Grochowski <Maciej.Grochowski@sony.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c | 17 ++++++++---------
- arch/x86/kvm/svm/svm.c    | 10 ++++++++++
- 2 files changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index b7c80aeaebab3..0547fd2810a3a 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -741,9 +741,7 @@ static bool is_evtinj_nmi(u32 evtinj)
- 	return type == SVM_EVTINJ_TYPE_NMI;
- }
+LLM Generated explanations, may be completely bogus:
+
+The file has been present since 2017 (v4.14 era), so it's in all stable
+trees.
+
+Now let me verify the exact nature of the bug:
+
+## Analysis
+
+### Problem
+The commit fixes undefined behavior (UB) in `switchtec_ntb_init_mw()`.
+When `nr_lut_mw` or `peer_nr_lut_mw` is read as 0 from hardware (via
+`ioread16`), calling `rounddown_pow_of_two(0)` results in:
+
+- `1UL << (fls_long(0) - 1)` = `1UL << (0 - 1)` = `1UL << -1` (unsigned
+  underflow to a huge shift value)
+
+This is explicitly documented as undefined in the kernel: the comment in
+`include/linux/log2.h` says "the result is undefined when n == 0". This
+is a **shift-out-of-bounds** bug that:
+- Triggers UBSAN warnings
+- Produces an incorrect (garbage) value for `nr_lut_mw`, which could
+  cause further issues downstream
+
+### Fix
+The fix adds a simple `if (sndev->nr_lut_mw)` guard before calling
+`rounddown_pow_of_two()` in two places — for both `self` and `peer` LUT
+MW counts. If the value is 0, it stays 0 (which is correct — no LUT
+memory windows).
+
+### Stable Criteria Assessment
+1. **Obviously correct and tested**: Yes — trivially correct. If the
+   count is 0, rounding down 0 should remain 0.
+2. **Fixes a real bug**: Yes — undefined behavior from shift-out-of-
+   bounds. This can cause UBSAN splats and potentially incorrect values.
+3. **Important issue**: Medium — UB can have unpredictable consequences
+   depending on compiler optimizations. The value 0 is a valid hardware
+   configuration.
+4. **Small and contained**: Yes — 4 lines changed (2 `if` guards added),
+   single file, single function.
+5. **No new features**: Correct — purely a bug fix.
+6. **Applies cleanly**: The code has been stable since 2017; should
+   apply to all active stable trees.
+
+### Risk Assessment
+- **Risk**: Extremely low. The guard only adds a check for zero before
+  calling a function that explicitly documents UB for zero input.
+- **Benefit**: Eliminates undefined behavior and potential UBSAN splats
+  on hardware configurations with 0 LUT memory windows.
+
+### Verification
+- Verified `rounddown_pow_of_two` is documented as "result is undefined
+  when n == 0" in `include/linux/log2.h`
+- Verified the implementation: `1UL << (fls_long(n) - 1)` with n=0
+  produces `1UL << (0-1)` = shift-out-of-bounds
+- Verified the file has existed since 2017 (commit 33dea5aae032),
+  present in all active stable trees
+- Verified the fix is minimal: 2 `if` guards added, no other behavioral
+  changes
+- Verified there's a related prior shift fix in the same file
+  (ff148d8ac53e5), showing this class of bugs has been addressed before
+
+**YES**
+
+ drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+index f15ebab138144..0536521fa6ccc 100644
+--- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
++++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
+@@ -1202,7 +1202,8 @@ static void switchtec_ntb_init_mw(struct switchtec_ntb *sndev)
+ 				       sndev->mmio_self_ctrl);
  
--static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
--					  unsigned long vmcb12_rip,
--					  unsigned long vmcb12_csbase)
-+static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
- {
- 	u32 int_ctl_vmcb01_bits = V_INTR_MASKING_MASK;
- 	u32 int_ctl_vmcb12_bits = V_TPR_MASK | V_IRQ_INJECTION_BITS_MASK;
-@@ -855,14 +853,15 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
- 		vmcb02->control.next_rip = svm->nested.ctl.next_rip;
+ 	sndev->nr_lut_mw = ioread16(&sndev->mmio_self_ctrl->lut_table_entries);
+-	sndev->nr_lut_mw = rounddown_pow_of_two(sndev->nr_lut_mw);
++	if (sndev->nr_lut_mw)
++		sndev->nr_lut_mw = rounddown_pow_of_two(sndev->nr_lut_mw);
  
- 	svm->nmi_l1_to_l2 = is_evtinj_nmi(vmcb02->control.event_inj);
-+
-+	/*
-+	 * soft_int_csbase, soft_int_old_rip, and soft_int_next_rip (if L1
-+	 * doesn't have NRIPS)  are initialized later, before the vCPU is run.
-+	 */
- 	if (is_evtinj_soft(vmcb02->control.event_inj)) {
- 		svm->soft_int_injected = true;
--		svm->soft_int_csbase = vmcb12_csbase;
--		svm->soft_int_old_rip = vmcb12_rip;
- 		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
- 			svm->soft_int_next_rip = svm->nested.ctl.next_rip;
--		else
--			svm->soft_int_next_rip = vmcb12_rip;
- 	}
+ 	dev_dbg(&sndev->stdev->dev, "MWs: %d direct, %d lut\n",
+ 		sndev->nr_direct_mw, sndev->nr_lut_mw);
+@@ -1212,7 +1213,8 @@ static void switchtec_ntb_init_mw(struct switchtec_ntb *sndev)
  
- 	/* LBR_CTL_ENABLE_MASK is controlled by svm_update_lbrv() */
-@@ -960,7 +959,7 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
- 	nested_svm_copy_common_state(svm->vmcb01.ptr, svm->nested.vmcb02.ptr);
+ 	sndev->peer_nr_lut_mw =
+ 		ioread16(&sndev->mmio_peer_ctrl->lut_table_entries);
+-	sndev->peer_nr_lut_mw = rounddown_pow_of_two(sndev->peer_nr_lut_mw);
++	if (sndev->peer_nr_lut_mw)
++		sndev->peer_nr_lut_mw = rounddown_pow_of_two(sndev->peer_nr_lut_mw);
  
- 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
--	nested_vmcb02_prepare_control(svm, vmcb12->save.rip, vmcb12->save.cs.base);
-+	nested_vmcb02_prepare_control(svm);
- 	nested_vmcb02_prepare_save(svm, vmcb12);
- 
- 	ret = nested_svm_load_cr3(&svm->vcpu, svm->nested.save.cr3,
-@@ -1905,7 +1904,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 	nested_copy_vmcb_control_to_cache(svm, ctl);
- 
- 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
--	nested_vmcb02_prepare_control(svm, svm->vmcb->save.rip, svm->vmcb->save.cs.base);
-+	nested_vmcb02_prepare_control(svm);
- 
- 	/*
- 	 * While the nested guest CR3 is already checked and set by
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e084b9688f556..37f3b031b3a76 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1424,11 +1424,21 @@ static void svm_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
- 	 * This is done here (as opposed to when preparing vmcb02) to use the
- 	 * most up-to-date value of RIP regardless of the order of restoring
- 	 * registers and nested state in the vCPU save+restore path.
-+	 *
-+	 * Simiarly, initialize svm->soft_int_* fields here to use the most
-+	 * up-to-date values of RIP and CS base, regardless of restore order.
- 	 */
- 	if (is_guest_mode(vcpu) && svm->nested.nested_run_pending) {
- 		if (boot_cpu_has(X86_FEATURE_NRIPS) &&
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
- 			svm->vmcb->control.next_rip = kvm_rip_read(vcpu);
-+
-+		if (svm->soft_int_injected) {
-+			svm->soft_int_csbase = svm->vmcb->save.cs.base;
-+			svm->soft_int_old_rip = kvm_rip_read(vcpu);
-+			if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-+				svm->soft_int_next_rip = kvm_rip_read(vcpu);
-+		}
- 	}
- 
- 	svm->guest_state_loaded = true;
+ 	dev_dbg(&sndev->stdev->dev, "Peer MWs: %d direct, %d lut\n",
+ 		sndev->peer_nr_direct_mw, sndev->peer_nr_lut_mw);
 -- 
-2.53.0.345.g96ddfc5eaa-goog
+2.51.0
 
 
