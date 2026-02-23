@@ -1,1378 +1,301 @@
-Return-Path: <stable+bounces-217827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOnpJ5+3nGkqKAQAu9opvQ
-	(envelope-from <stable+bounces-217827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 21:25:03 +0100
+	id SO/XLF26nGlHKAQAu9opvQ
+	(envelope-from <stable+bounces-217828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 21:36:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D180117CD72
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 21:25:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D86B617CFCD
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 21:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CB4E303DAA8
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 20:24:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3C9C3056D9C
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 20:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12E3369986;
-	Mon, 23 Feb 2026 20:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19918344DB5;
+	Mon, 23 Feb 2026 20:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pEaISkRz";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CidbYnM/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jyc3CEhk"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FE5377559
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 20:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771878279; cv=none; b=MnGmwz5cC9hjHN7vWez/qqOBM0/uj9GCkeFAUDgzhkhhfI80+riaNRViSKkzlgdCaskZUAYtyJxoRiTXCw9I3AK5UYQTm8U/BDq48SzkbBGzkFes4r4Qkk2JNDscgNNpBYaQ9OVB6HQRo9jN2cYQn2mo5eiS0yDcBQxi5eNvTOo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771878279; c=relaxed/simple;
-	bh=LS2WZq93ZwK0XLO2mV8L5dV30jHKCWy5W124ZQBb7So=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mzbrGiWpV/r4ZgYPDha4geuzSOBCuDn10BoRz/hep0BAaIhgmLB3fVMvw6ususcFbmK89x+BVSUr3GdILlxVaWeDjCE89iBa0go/q+4ahgWvEbcjxWgzS1Ex33r+IllqOGlZkpxHmTwyjBdDEFEfd2lSqs1Azc9WBglLFfG/F7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pEaISkRz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CidbYnM/; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NGvape3478743
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 20:24:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=QAVvFvlnmYKoMOshzis5Q0NGxHPK8qJLv+c
-	FSsKyTRs=; b=pEaISkRzAbIyFCkP9M82f0UNflGIv8gh3X2MKDipvt0AZpyrVPn
-	BGN2kmFYG+i0HUT5rWZKayuxUdXwRa1RJ3hew1qa9+AmusO56lGKr6FD0nMHAxCE
-	STJvFG0UByjXK0hBlegaH7m2tACIORqV4o9uetShHUcbpDNomarzV3b3in0hGd7a
-	vZUhZwz7ex0PUUX2eKItREkJCqGqppwiUKhawHn/QJH/iuDVdiy03nCeAjjxmMYQ
-	5ov2AlTfHD6L+tbuQRGk+ExOalzT0HcRglQXnhKOm2EIAsW57lW8bWWSJcAXItSO
-	8QQvs3fnWwFK2t2dn7YkG+4PAZqYRJoA1hA==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cgtv9rn0t-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 20:24:34 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8cb4d191ef1so690387185a.0
-        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 12:24:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771878274; x=1772483074; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QAVvFvlnmYKoMOshzis5Q0NGxHPK8qJLv+cFSsKyTRs=;
-        b=CidbYnM/JMZ/psDkzkey7q3ajBLP9B3OSuUjK05L5cmEWLTC5RlOYCGT/Lud6PwaTc
-         i4wy7Un3x5VmGuxsg/qlJBDJjhbyW435WHkYBvsTWRXntLaj4zbDDqVaMF9yGgNMGenD
-         VTmCq1SXKC6L71n7DDcBF6Tdz4bUNYdZk82uWQnlnFl5vXJONQy6mhrdj2thuWXwEc6v
-         IausHCFi2LQV2MOsMzT54vjJE9gtoKwWa3I4xazZnyrOG/1pFITsUFKP8z5JwJuMNuJo
-         WNqQK16B7q39CdKBin9kYwwuKubNtQVRtmv+LkvG41+tR9xOkJpRq0+Wqkrnq8wz1Mpu
-         FDNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771878274; x=1772483074;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QAVvFvlnmYKoMOshzis5Q0NGxHPK8qJLv+cFSsKyTRs=;
-        b=TwsOIdyGZKOT/cTFhMAHHozt1GkPY62Oyq8Tuaj/jYXLMKPcIr8wFp/zoUOmDnUhdR
-         eUws3Hf8qv5vg7qThQ1HRAbe2E8sh3zsmBISIGHHUZ409doEcEENLrgpdKe8GUfQ9lec
-         P6Cea4nKehW7AGM1Mv331BIlkLBJa5Ty7gwVM9ncfPFryYnSmZaIPK2bgTG2Hf1IGfzv
-         C9wbVj6ZIoKvRlvTRcKmaaaf6r9InACpNbJ+VIS0nr4jpgiJvu8CLYohlbP6SvMfbR2Y
-         weJUKzs5g9opCJgXQ8EPqT7SkBhG1BBurrZThnKr4svkZkRz08eelFmKgiTpT2VPGaZb
-         a48g==
-X-Forwarded-Encrypted: i=1; AJvYcCWpnojJK0b3noD7TfoJAva9qubQGNlqteMrk+gDIQEbLTcjz9pofmxwVo9Dmgm3SiexMFjM/FM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxmU5zrW1rq1UjV6wFBPJNH6P5u89zh66lgy3RGwmlvTGXr2mm
-	Yz0gJV9rOmdqDamPKt8Ik036VZunDoS1mM1avm2PvtlBcQwhL1Tk2PS+0f656JhKq4S5zlkzSMI
-	XJKOlsdLgmNgROdFl3dRZje61b8Hm106tfyPXWXUgxUXQBngSvp43dr8JOqc=
-X-Gm-Gg: AZuq6aJhaPm0VflHjnUDSenh+mg44dH+uTd8NmfbxWwLyMhcuwWOq16YMtORNtaR55L
-	ZHhtRWk8XjHkbIzgaVWsHbuYD7M7Uaw9lPUFSIo13RicAHyy/vD70OpLnXCIoMFECJmSowV80L/
-	ARy7DnUFAVQaPxy3g/ksh7G5GB1cB4JGpBVdU7V6FNpNqr1Dmcjs0fgus7y00Ppmx7fJgHhQBgu
-	yIvZdFjxy2/EJArEM0WQymxyMO7KE0MpYAEw1ggsMHHIx2kmSzbmnsM90T7gfL9ad891RCp9i/X
-	OoR0uyYZkRqEylBATmI6NRzOv/YfyoYGzJj2+a3XTwzY7DkoHh4jagbUq2ng+0atF8XN2O+uZgm
-	VynuZERiBXb7cMCvN2jYJVDEe4uj6ms4+dw5V0Q==
-X-Received: by 2002:a05:620a:40c1:b0:8c7:177f:cc17 with SMTP id af79cd13be357-8cb8ca65d3emr1164368085a.46.1771878272806;
-        Mon, 23 Feb 2026 12:24:32 -0800 (PST)
-X-Received: by 2002:a05:620a:40c1:b0:8c7:177f:cc17 with SMTP id af79cd13be357-8cb8ca65d3emr1164359485a.46.1771878271880;
-        Mon, 23 Feb 2026 12:24:31 -0800 (PST)
-Received: from quoll ([178.197.223.140])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a9b75b4dsm351139705e9.4.2026.02.23.12.24.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 12:24:31 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-To: Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-        Thomas Gleixner <tglx@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Dave Gerlach <d-gerlach@ti.com>, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-        stable@vger.kernel.org
-Subject: [PATCH] ti: sci: Drop fake 'const' on handle pointer
-Date: Mon, 23 Feb 2026 21:24:27 +0100
-Message-ID: <20260223202426.566958-2-krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7409369979
+	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 20:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771878831; cv=fail; b=ud+TukpAOcx+5feTk3+eAIgRVddzrmQe7iCE9vmMzfan/NzwitWGMa9tpzhocrtcmV03k+AvITGx4uvr0FXwv7W2yxEH7NHQRxHG5EGJsjixED0Q946RsL1lqhPMQTayRcXb0yqMaAw8woHNyCzOJDZsZCEPP8H1vz9oUpiCW/M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771878831; c=relaxed/simple;
+	bh=gb+qU7XX60mbg6mJmedUaEkeOozcTpsstZrZEvJI04U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=EVOr2WB8yi7apu5dzVEhCurwCeOHWu1LODG4ikbyVd0zaNuiVkMjmZNfD6TiCiKXQhjG2T4k/J71dk9GElRxGeSKBY6iy+WYzdlpFMId8iXpFUAobeavRLYtfLSdq+veTwAkFcthSIjY/UT9aUxEMGePiHS+qKFYCee3IRWEkz8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jyc3CEhk; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771878830; x=1803414830;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=gb+qU7XX60mbg6mJmedUaEkeOozcTpsstZrZEvJI04U=;
+  b=Jyc3CEhk0Tx2Yla1Ns4KGCVz0NhXbYqo4CEZS4uYsh0Kn2Bi0hoKO9um
+   tqJXgO2VYuw3yNq/CngxsCqGgtCi/VEqcABInBXO/NKx9+FHhAZig/ihh
+   VuhZ0V0HTqUbyjQPYKadNYFndX7q+XmN00SPsrnEmPE3ecEsTNg3vO7gc
+   R+j4RbapOWn00gBRkfS7ES9D388ErshseK9Ze4toUdXNNXeUNhawFsxMB
+   ByVe4sS6UeqB1qkO09XdB/4aWV8xeq4lZJ71sBDaLUUdXwaOPmevBqR+z
+   vgP5Km7KTMIlKFHGayAVl9z+APD9tc9ADPeA3PgCu8T2mVdNRKCGbfwER
+   w==;
+X-CSE-ConnectionGUID: BmkpFD94TJGeHIcAJtFZQQ==
+X-CSE-MsgGUID: K3Mni/OjToSuErCzbqajsg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72950885"
+X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; 
+   d="scan'208";a="72950885"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 12:33:49 -0800
+X-CSE-ConnectionGUID: qWBbl18VTUmBIlXOC+4n+Q==
+X-CSE-MsgGUID: eAmcY++qQCSaAD18Y0ftCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; 
+   d="scan'208";a="214902829"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 12:33:49 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 23 Feb 2026 12:33:48 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Mon, 23 Feb 2026 12:33:48 -0800
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.11) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 23 Feb 2026 12:33:48 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y1JZltHR8OQtmUj+SylCIp9/VCFlbfaWmqPMkAn7aqGu8rFrxf3hB3NHyEbvtuHM1BoCvkFlglbpTEA6LjJSkwO6hnEhnbjSQITQL44mFJIXIf3pigQyftCR+Kkem7f6ouURPVotNK9unrl6G6fvZRlGCxKlSYWStVglG136x06l8SinxD9c6r0wOO6gnphs0h2sQSMFwi4aUiliAVHS+J4mXNEMzRwkjftkqj0ZlEFicHaC9nMVHqxat0hpAJoANpmLwW0Tfey33/6hN9ld7gHpkZLao9ym8B04ZyEGtQ4CzTswMYB99YVfhEhWJx9BgBTTQ5pDVJNxQi1++j3Bgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jE8OpcvAIRpMndAlkjQZW0GymRrEl5npjrMHK8dS7A8=;
+ b=Hj+VS0xtVhf8N4i4QyzsaaHHCnsgbJh3I/VU9CZq7dTNAXk9E3mXL+mgqoYa0aJOanj34cdi8a4CUhysYU0xJDErZa5Td7+mEbEsvsqB1yJcWym2kIPtljyoCnK4LmuwHP1EctyCz5i22Byna5Eb/QKXzO4p8yPKFYv8n94Zz6ZlLHf8L26qwb7WxEAWkdS3Om67afqXvjzKJpZFItCi1Vk4XhiY878Lad6nUQmFkB/2QGa2P0jf7GcC3JA/CliR99pWoqhubIw73zkDYEu3XfK+43LpHvB2rtRpztBflGni6OpcWoJEn1DSecFhM0vfrnKEP7X7d9owPMddvrlIuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM4PR11MB6360.namprd11.prod.outlook.com (2603:10b6:8:bd::12) by
+ PH3PPF5AF05F6D9.namprd11.prod.outlook.com (2603:10b6:518:1::d24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Mon, 23 Feb
+ 2026 20:33:45 +0000
+Received: from DM4PR11MB6360.namprd11.prod.outlook.com
+ ([fe80::22d9:ae03:5db1:680]) by DM4PR11MB6360.namprd11.prod.outlook.com
+ ([fe80::22d9:ae03:5db1:680%5]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
+ 20:33:44 +0000
+From: "Shankar, Uma" <uma.shankar@intel.com>
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
+CC: "contact@emersion.fr" <contact@emersion.fr>, "alex.hung@amd.com"
+	<alex.hung@amd.com>, "harry.wentland@amd.com" <harry.wentland@amd.com>,
+	"daniels@collabora.com" <daniels@collabora.com>, "mwen@igalia.com"
+	<mwen@igalia.com>, "sebastian.wick@redhat.com" <sebastian.wick@redhat.com>,
+	"ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
+	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+	"Nikula, Jani" <jani.nikula@intel.com>, "louis.chauvet@bootlin.com"
+	<louis.chauvet@bootlin.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH 1/2] drm/colorop: Preserve bypass value in
+ duplicate_state()
+Thread-Topic: [PATCH 1/2] drm/colorop: Preserve bypass value in
+ duplicate_state()
+Thread-Index: AQHcoKdZieIlGOLH5EC+oZWb/6TKNLWQxccw
+Date: Mon, 23 Feb 2026 20:33:44 +0000
+Message-ID: <DM4PR11MB63601E519B7477B12642B51EF477A@DM4PR11MB6360.namprd11.prod.outlook.com>
+References: <20260218065713.326417-1-chaitanya.kumar.borah@intel.com>
+ <20260218065713.326417-2-chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20260218065713.326417-2-chaitanya.kumar.borah@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6360:EE_|PH3PPF5AF05F6D9:EE_
+x-ms-office365-filtering-correlation-id: 2f77cd20-7171-4a69-3062-08de731ad6fd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014|7053199007|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?mgriBisHZGTfgKBpNmtauzHaB/GfzIj+L20klmws1Va/EPWhp9B/ZVZfqE/w?=
+ =?us-ascii?Q?T52PU8AV+dyECFnTyDvzv29a96mtHMlSLnmuAKKPD9tm53zy/DD/sfVWqhB7?=
+ =?us-ascii?Q?ZPou4E6WxLIKchjY6t1XyQZ1+Y0xRbnT/aGd+JbVFpw8DoOPju/QKNdmhF0H?=
+ =?us-ascii?Q?WXVx0bdmPA3TnkPJll3p0S+7C3anj37cyjHhbiIVBC9zN/g6YeSkqZP9Ps9F?=
+ =?us-ascii?Q?6ILHrjbRX6Grb2VEopGjZPkXsRPVCdytDhxQHJEW3vPbVYFTCAdcj3H5dVCW?=
+ =?us-ascii?Q?CJzyJIcnE5Jf0WMnxmw0HtWrhGdQY8KrHdzBjdweoGS8xZEVS0GHBGOC9cFE?=
+ =?us-ascii?Q?V+vVVF2J815hQoVuEWtJTl8uD+e9Sy2bIcUXkb4GWAOEMzLreEvp5YsrS7dS?=
+ =?us-ascii?Q?zlVgsd1PrT0+fiYHTR8JJKewkZRvMXUepdB5Dzmu9CSdTjDkKiaupyNkYXaC?=
+ =?us-ascii?Q?NibnbCrh2rMZlhDV/8iouh37IvUYwyL7GrTRfR4INl3QAVO4ujl9LxEM7deN?=
+ =?us-ascii?Q?vgMndtXrIvSDOPT0N+zgViDOIhJh7vBtb4neHXuEhOnkpgEX6WP4e8g4V+wj?=
+ =?us-ascii?Q?OtDARvTTzB4GomXmKv+yhojdwZiVswgzbdQYK2DojC0fHj21slte2d3GitMI?=
+ =?us-ascii?Q?4QsMAKv6El/AY4zjHoeVHIDdW2/Ifuks0CaoV7vCnsQNWRmbDnw46nKJWYTY?=
+ =?us-ascii?Q?3ddY7l0AP4QUamc6Q5DHtcbAPTu0uXo6aIWNusuTPsIb2Us/PnqXRAJh5t/r?=
+ =?us-ascii?Q?KrL4snkxwnNjA8beicLX8EcaPrRt0en1j0wAqo0FOfPoV6UEz4zL3OgzE4Hr?=
+ =?us-ascii?Q?Gl/PFp/meLwvwrMBAcQDbXxN5TSNfGK8rJWsFw3MziHRLzqNuFcYF0pCDfY9?=
+ =?us-ascii?Q?zK0XSrtn4dUVWZ5lZUvP002n195CG2wtkmbxZtNpd6yTMeFau2C8D79PSfPf?=
+ =?us-ascii?Q?aWLSzgYej/D7C8sI8bb23wbpLc9XsBP3EM/ihxkQByUFOQPZNHbYPRzBNSBm?=
+ =?us-ascii?Q?94qoHHFLaDLi5dEf8AF9RweP/icuIdU6txD5hrDQUgyVQ4CEa3ncOgpNaqFG?=
+ =?us-ascii?Q?5bSjNpav4J2/nKEKQGDdIFLvMoQi4cmkNDDPsUbNZZJ/MX2vZD0BXSjTAdNM?=
+ =?us-ascii?Q?LprTmxGO0bsgiV79PPwBqqbumwh2/gZ+WR1j7BumUw75aMhtv/RVt3zIhfsu?=
+ =?us-ascii?Q?Qf/tfXVImh36iGZXtRG47bP+UnDuUgDP0ISFTZOE8VZm0KDNVTOSAJj0hUZj?=
+ =?us-ascii?Q?BYQ0+4aS3TckD8V67L6S7Io7GYmB888lUjzdGmw2qggoCbvlJUtHmkP9KJvh?=
+ =?us-ascii?Q?XTc3MkpFz0Fqv251cA2u1XSCSHFSy2zM3YUeAO8CwmnpvbDqhCZW4R/KUcTK?=
+ =?us-ascii?Q?lkU2EF+6sWzpmtcIzG/dl3viPGzFu3KeCvQqkHEnjuJKpv0utFdrhOKqRTzQ?=
+ =?us-ascii?Q?M0tMmrGyjlJGxoNmLXiaPsAF2naqTnxIuh9+EXtbOwh0EBGpJ4Z6UiSTxn+A?=
+ =?us-ascii?Q?Rs10tKOPOtwDj0kRN+O1IqfMPOCy0ZC7gZXfE/clV2D0cMXzxMNxe5kKU7uC?=
+ =?us-ascii?Q?EmX1O56XvjzLDLG1V4qP3RSLOvYr0Ak8t6fJIiifxm3hvAh+PfxaU2+XdCBq?=
+ =?us-ascii?Q?2pGthOx72UWdidzVJttoWvE=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6360.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(7053199007)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?H8OZ6N5R42a/fKRcOBdo5FmvtHhUEEP5noPqrOFK1A0CShMnbaYmgbpcKu7l?=
+ =?us-ascii?Q?NXYHm1lkTBU9dOlWo0ZOga29tcgruFTO/Ail9TptbJCm3tktXJpFYVQwtHQ0?=
+ =?us-ascii?Q?dkbuMV3IDb/6Vyo3Uqbm20i0BkT9/Uzaw769gFh7vr0uB5Zp9xDknv6QdTou?=
+ =?us-ascii?Q?4O1+4B5wrwZoY+0Q9ryZ9NnuDEypvQGlQUwkHW5jiDSv7o8g5+AVes3vzYtD?=
+ =?us-ascii?Q?j9z6v8cu38s60PwRixuxkp25D8EOoBPu5xOf5Z6XSLC/Ci4lefeNOxvFQx3b?=
+ =?us-ascii?Q?YLXnB+j73InprJc335U+/OOgkA1GoFugYAmLPOG7bJBQShI3bisyfwyFQ8Hs?=
+ =?us-ascii?Q?e9cpqAsfV1Q+FzP6/mQvvA9F1c3kbUxhbq9003fJMtfy9X6CQYq8PYd5g7ei?=
+ =?us-ascii?Q?pO8lB49iqluUeaLs4WVCSbD1iNUf24ikk2y/GN3gC3VQFV5udD3Fg6Q8WWIe?=
+ =?us-ascii?Q?eKhhIDCdgXnD0zOTGKVnoMWjhdyYotEiwl6PeVX8b3LnlAErH8xgB9Whm2T7?=
+ =?us-ascii?Q?65yfuhbZkjI0IAT9WFeSW3tln3ksaT69+qF+IryjfeYLOg3D58fcetEPWWSi?=
+ =?us-ascii?Q?rT/sCnHT8ZcTVu8XyjcXnDaDEQ+rOAoCsZy5z50vKO4eiqcFeAggPU6tZldp?=
+ =?us-ascii?Q?tuJkZZPyZXr13BU6OqLKiu5Hm5WX2IxTv05Z7R9Drf5kktaTMi3hKoNjutIh?=
+ =?us-ascii?Q?Ooyy5iNmCgDDlG98C0wzAgdiiWTkazMxtUGcqboQRmjlyftQ8nmA9FQnDE1h?=
+ =?us-ascii?Q?vKT8hg+TJ2bV/FSHgfzQSnY2E6ETJ1i1NG2bW0ayj7GKsqu+xWLuZDvsu2yd?=
+ =?us-ascii?Q?2bJcFMov+3ad2gCG2OkaPz3iMrAWWuixIT28o86P6Zt50sqcEu9/30JRqy9k?=
+ =?us-ascii?Q?yKRNhLm/qBilmALJz9ogXcNwrGZ+kC6nsKuKith1/nOgmnnRueDRPzL0miaa?=
+ =?us-ascii?Q?9/FT3OWKXNS1aR5HTRI0D/g2v1nKffTL4tKJHhwPINH/Q2wHoUF6fvAeLFaI?=
+ =?us-ascii?Q?VuqEapveoSmSkkZxvkLSMMsi7bf8tE+b0a1sd2m//vtGIPUcgqdoCnf+Ea9W?=
+ =?us-ascii?Q?0Q5ZUzh0wDllf1H+2YB95VUrHPq7bVHo4/tlt2k6ifmhFE3vJYb2+kmF/+Y5?=
+ =?us-ascii?Q?jsG/psGmqR/fGRPPgCtfGYjFg0yducWbHAlvex2EehhIpqgvObFO7kISzGok?=
+ =?us-ascii?Q?q7jOAk3q4lTMNL/BVitZRW7/JnVYWrIqV9YrwqwrjGW4Z0EELujWUKklc1JH?=
+ =?us-ascii?Q?CtnKjDrs8MCbhJMobiLlaC24NWhmFxiOQXSi+ewX04+1HxgW4FHCJsVmn1tm?=
+ =?us-ascii?Q?HAEvymhEKPuZSQ9LMDgj9dqfSJOesap/kc4Lwaxcj/gUiuKKWYnBnY9917V0?=
+ =?us-ascii?Q?HjoUt1dTido13YLaR7oYogbnkPILa8i1jKw8zL9sWvH1gOQ/IMHA05CoMW2l?=
+ =?us-ascii?Q?OZW6R02sEAiUB4Bdjt7TAWRXqMQcMMf4U/bnI31lh5B+xonb9FH1l5eA01Go?=
+ =?us-ascii?Q?xeh6a6ZWwEArkwdCM/EO2vCD14K3ML7k73etew2JYFLPLx8h+6Z0o+udSuKQ?=
+ =?us-ascii?Q?uTbAXnZ3GHLorNM+okTxxFBK8xbkI4Jct+Pkw06jLQXXlP02vxHaX+odiRIa?=
+ =?us-ascii?Q?sePJtdvqoFjHPDxGldRYjiEz5ppgI3wzRP3JDilypcfJs2yxfdKDHAvqY45G?=
+ =?us-ascii?Q?2O8397tAfWvWRhFFJ0+1fzIYo1I0RUo6gIZCHAndKXARHHrx4XR8YvLeYEeh?=
+ =?us-ascii?Q?KMY1HTBZKA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=51432; i=krzysztof.kozlowski@oss.qualcomm.com;
- h=from:subject; bh=LS2WZq93ZwK0XLO2mV8L5dV30jHKCWy5W124ZQBb7So=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpnLd6IbnG0pHjCc/YBS4T+hR17n3d35ssOoWyE
- QmvlFKQRyqJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaZy3egAKCRDBN2bmhouD
- 124zD/0ThCeJCYQr20UBD5Szy5uLisT28L/8ws+XdmJQ4eshvgPvUFRCECkky1h0WZVzTo3t9l5
- Q1ptUSN9r4fGvm86V5Aoafy4lFEVjHJu53X5F84Y1y+J+hutIcl/BHY9Xp4I/hT3oSMYeLyDfoF
- vkYp+d6ItOkql5xhig9n8fMX1sjSu3xmeP9eYLSsGe3IqZow1g6RGcgbfBETRmkIHlgJiWSj9jP
- 2muyT2ZJCZgdv2fTfj+rVG632znuQJuJNkqRGiQvatyrKAkOsfT0oDCSs2MI6jWUnf7Zwpp31Fi
- sXI+7SUaTKxOcS5+KWxuyZZ5paRipGQs3d1QNEgTSYdgR8NAltvw/4LcpgZOByThCa1JaqWo0R8
- U6J/p63M0LnWNFxiStn6ZRV8mCNmOpWYxCMF99X7ZbaomjdbUly1MOT/Zwjbt5BTBJ1zOa1A5Kw
- HgK79zgBYJSEXOXv0M2g/JyO1TcfI05Q7HAY0xfcmGN+iYIdeb2UUkMEVVPR3qq4qjz4eAplmn1
- xJntLmGR2rAU+wL989hWAUo+ThtcpWK3eIBpK+SeljKTv9rrXiDfssqKAawyFAykIv66wB3q+X2
- e1jnsOVcKiJDoAzkKihyHQHYOfXYBlG0fwXKYMtqY7xfLYNLkDlVEe0epAY8HIjEBpuxLi7w3CC 4f5sVxYLhS+VLjQ==
-X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=Vaf6/Vp9 c=1 sm=1 tr=0 ts=699cb783 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=6nO30s3o7FuWeffXwhKHTA==:17
- a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=6Q5OlI4A-U4R3g7UPBgA:9 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDE3NyBTYWx0ZWRfX0YKi2NRjNkzi
- 32pbT94THVtHnV1t0SYzD5O+U7Lo4YjwUkif8mrD4D3uo07vW//3443DX0LL0k2pFmfO1LmMDUc
- pXbYtjNDfE8Yrh9b2Xt5Y3KLetF238qaFRQYWqPxdJf5aavmIyxnJRvJKNlSzgK09ViQiM1EYM+
- YZwmMI+urb2BJAbibroxA6k0+8onYZUEYS8OqbcJIq573bv0f+F3ISSJk+XsyGdDx04v0roXdNA
- mgZGXkzJE52dzGF0xsTI0Nd3pjYxfbjp5c5mR1a2IJmdBwihuUhmRtbI0JHCsRRDoudBb7U4Yhr
- WJg06N34pt++92ekblQ3z1o5+7QyG2/pqwGtIBiPGrdJQeqWwJJv/V8iCfiPGEAMMRT/ZOXiJJe
- phKi5ilXSFXs78Xuej/Lr0TFcPtuGhMxSpH8gQz5RUpcvUKaG9xqXsXWAnMmEVRXKTZOT/9eBcX
- AdqakGUD0e4lB/Q9b6Q==
-X-Proofpoint-ORIG-GUID: -ZLN7YHjfOTLgYktueH0_6zIeCgv2j5F
-X-Proofpoint-GUID: -ZLN7YHjfOTLgYktueH0_6zIeCgv2j5F
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-23_04,2026-02-23_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 bulkscore=0 malwarescore=0 suspectscore=0
- clxscore=1015 spamscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602230177
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6360.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f77cd20-7171-4a69-3062-08de731ad6fd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Feb 2026 20:33:44.6016
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IBNPOslck1kS/BygZlQ8C3Yxf43B/YsE/c6BzlPL9cHLcNHMkdaWiez70+I7dYQ8+gC5RRbjYdbUK+e6ZRKj2A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF5AF05F6D9
+X-OriginatorOrg: intel.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[ti.com,kernel.org,baylibre.com,gmail.com,linaro.org,pengutronix.de,lists.infradead.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_FROM(0.00)[bounces-217828-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217827-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzysztof.kozlowski@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[uma.shankar@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: D180117CD72
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: D86B617CFCD
 X-Rspamd-Action: no action
 
-All the functions operating on the 'handle' pointer are claiming it is a
-pointer to const thus they should not modify the handle.  In fact that's
-a false statement, because first thing these functions do is drop the
-cast to const with container_of:
 
-  struct ti_sci_info *info = handle_to_ti_sci_info(handle);
 
-And with such cast the handle is easily writable with simple:
+> -----Original Message-----
+> From: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>
+> Sent: Wednesday, February 18, 2026 12:27 PM
+> To: dri-devel@lists.freedesktop.org; intel-gfx@lists.freedesktop.org; int=
+el-
+> xe@lists.freedesktop.org
+> Cc: contact@emersion.fr; alex.hung@amd.com; harry.wentland@amd.com;
+> daniels@collabora.com; mwen@igalia.com; sebastian.wick@redhat.com;
+> Shankar, Uma <uma.shankar@intel.com>; ville.syrjala@linux.intel.com;
+> maarten.lankhorst@linux.intel.com; Nikula, Jani <jani.nikula@intel.com>;
+> louis.chauvet@bootlin.com; stable@vger.kernel.org; Borah, Chaitanya Kumar
+> <chaitanya.kumar.borah@intel.com>
+> Subject: [PATCH 1/2] drm/colorop: Preserve bypass value in duplicate_stat=
+e()
+>=20
+> __drm_atomic_helper_colorop_duplicate_state() unconditionally sets state-
+> >bypass =3D true after copying the existing state.
+>=20
+> This override causes the new atomic state to no longer reflect the curren=
+tly
+> committed hardware state. Since the bypass property directly controls whe=
+ther the
+> colorop is active in hardware, resetting it to true can inadvertently dis=
+able an
+> active colorop during a subsequent commit, particularly for internal driv=
+er commits
+> where userspace does not touch the property.
+>=20
+> Drop the unconditional assignment and preserve the duplicated bypass valu=
+e.
 
-  info->handle.version.abi_major = 0;
+Looks Good to me.
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
 
-The code is not correct logically, either, because functions like
-ti_sci_get_handle() and ti_sci_put_handle() are meant to modify the
-handle reference counting, thus they must modify the handle.
-Modification here happens anyway, even if the reference counting is
-stored in the container which the handle is part of.
-
-The code does not have actual visible bug, but incorrect 'const'
-annotations could lead to incorrect compiler decisions.
-
-Fixes: 9e7d756da7a5 ("firmware: ti_sci: Add support for Device control")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-
----
-
-I fixed Samsung, here TI and I still think there is one more user of
-this pattern - SCMI.
----
- drivers/clk/keystone/sci-clk.c          |   4 +-
- drivers/dma/ti/k3-udma.h                |   2 +-
- drivers/firmware/ti_sci.c               | 161 ++++++++++++------------
- drivers/irqchip/irq-ti-sci-inta.c       |   2 +-
- drivers/irqchip/irq-ti-sci-intr.c       |   2 +-
- drivers/pmdomain/ti/ti_sci_pm_domains.c |  10 +-
- drivers/remoteproc/ti_k3_common.h       |   2 +-
- drivers/remoteproc/ti_sci_proc.h        |   4 +-
- drivers/reset/reset-ti-sci.c            |   6 +-
- drivers/soc/ti/k3-ringacc.c             |   2 +-
- include/linux/soc/ti/k3-ringacc.h       |   2 +-
- include/linux/soc/ti/ti_sci_protocol.h  | 131 ++++++++++---------
- 12 files changed, 163 insertions(+), 165 deletions(-)
-
-diff --git a/drivers/clk/keystone/sci-clk.c b/drivers/clk/keystone/sci-clk.c
-index 9d5071223f4c..adf87e2d63b2 100644
---- a/drivers/clk/keystone/sci-clk.c
-+++ b/drivers/clk/keystone/sci-clk.c
-@@ -29,7 +29,7 @@
-  * @num_clocks: Total number of clocks for this provider
-  */
- struct sci_clk_provider {
--	const struct ti_sci_handle *sci;
-+	struct ti_sci_handle *sci;
- 	const struct ti_sci_clk_ops *ops;
- 	struct device *dev;
- 	struct sci_clk **clocks;
-@@ -651,7 +651,7 @@ static int ti_sci_clk_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = dev->of_node;
- 	struct sci_clk_provider *provider;
--	const struct ti_sci_handle *handle;
-+	struct ti_sci_handle *handle;
- 	int ret;
- 
- 	handle = devm_ti_sci_get_handle(dev);
-diff --git a/drivers/dma/ti/k3-udma.h b/drivers/dma/ti/k3-udma.h
-index 9062a237cd16..120b6e1bd629 100644
---- a/drivers/dma/ti/k3-udma.h
-+++ b/drivers/dma/ti/k3-udma.h
-@@ -112,7 +112,7 @@ enum udma_rm_range {
- };
- 
- struct udma_tisci_rm {
--	const struct ti_sci_handle *tisci;
-+	struct ti_sci_handle *tisci;
- 	const struct ti_sci_rm_udmap_ops *tisci_udmap_ops;
- 	u32  tisci_dev_id;
- 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index e027a2bd8f26..de33893e6d26 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -511,7 +511,7 @@ static inline bool ti_sci_is_response_ack(void *r)
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_set_device_state(const struct ti_sci_handle *handle,
-+static int ti_sci_set_device_state(struct ti_sci_handle *handle,
- 				   u32 id, u32 flags, u8 state)
- {
- 	struct ti_sci_info *info;
-@@ -568,7 +568,7 @@ static int ti_sci_set_device_state(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_get_device_state(const struct ti_sci_handle *handle,
-+static int ti_sci_get_device_state(struct ti_sci_handle *handle,
- 				   u32 id,  u32 *clcnt,  u32 *resets,
- 				    u8 *p_state,  u8 *c_state)
- {
-@@ -639,7 +639,7 @@ static int ti_sci_get_device_state(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_get_device(const struct ti_sci_handle *handle, u32 id)
-+static int ti_sci_cmd_get_device(struct ti_sci_handle *handle, u32 id)
- {
- 	return ti_sci_set_device_state(handle, id, 0,
- 				       MSG_DEVICE_SW_STATE_ON);
-@@ -658,7 +658,7 @@ static int ti_sci_cmd_get_device(const struct ti_sci_handle *handle, u32 id)
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_get_device_exclusive(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_get_device_exclusive(struct ti_sci_handle *handle,
- 					   u32 id)
- {
- 	return ti_sci_set_device_state(handle, id,
-@@ -677,7 +677,7 @@ static int ti_sci_cmd_get_device_exclusive(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_idle_device(const struct ti_sci_handle *handle, u32 id)
-+static int ti_sci_cmd_idle_device(struct ti_sci_handle *handle, u32 id)
- {
- 	return ti_sci_set_device_state(handle, id, 0,
- 				       MSG_DEVICE_SW_STATE_RETENTION);
-@@ -696,7 +696,7 @@ static int ti_sci_cmd_idle_device(const struct ti_sci_handle *handle, u32 id)
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_idle_device_exclusive(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_idle_device_exclusive(struct ti_sci_handle *handle,
- 					    u32 id)
- {
- 	return ti_sci_set_device_state(handle, id,
-@@ -715,7 +715,7 @@ static int ti_sci_cmd_idle_device_exclusive(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_put_device(const struct ti_sci_handle *handle, u32 id)
-+static int ti_sci_cmd_put_device(struct ti_sci_handle *handle, u32 id)
- {
- 	return ti_sci_set_device_state(handle, id,
- 				       0, MSG_DEVICE_SW_STATE_AUTO_OFF);
-@@ -729,7 +729,7 @@ static int ti_sci_cmd_put_device(const struct ti_sci_handle *handle, u32 id)
-  * Return: 0 if all went fine and the device ID is valid, else return
-  * appropriate error.
-  */
--static int ti_sci_cmd_dev_is_valid(const struct ti_sci_handle *handle, u32 id)
-+static int ti_sci_cmd_dev_is_valid(struct ti_sci_handle *handle, u32 id)
- {
- 	u8 unused;
- 
-@@ -745,7 +745,7 @@ static int ti_sci_cmd_dev_is_valid(const struct ti_sci_handle *handle, u32 id)
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_dev_get_clcnt(const struct ti_sci_handle *handle, u32 id,
-+static int ti_sci_cmd_dev_get_clcnt(struct ti_sci_handle *handle, u32 id,
- 				    u32 *count)
- {
- 	return ti_sci_get_device_state(handle, id, count, NULL, NULL, NULL);
-@@ -759,7 +759,7 @@ static int ti_sci_cmd_dev_get_clcnt(const struct ti_sci_handle *handle, u32 id,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_dev_is_idle(const struct ti_sci_handle *handle, u32 id,
-+static int ti_sci_cmd_dev_is_idle(struct ti_sci_handle *handle, u32 id,
- 				  bool *r_state)
- {
- 	int ret;
-@@ -786,7 +786,7 @@ static int ti_sci_cmd_dev_is_idle(const struct ti_sci_handle *handle, u32 id,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_dev_is_stop(const struct ti_sci_handle *handle, u32 id,
-+static int ti_sci_cmd_dev_is_stop(struct ti_sci_handle *handle, u32 id,
- 				  bool *r_state,  bool *curr_state)
- {
- 	int ret;
-@@ -817,7 +817,7 @@ static int ti_sci_cmd_dev_is_stop(const struct ti_sci_handle *handle, u32 id,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_dev_is_on(const struct ti_sci_handle *handle, u32 id,
-+static int ti_sci_cmd_dev_is_on(struct ti_sci_handle *handle, u32 id,
- 				bool *r_state,  bool *curr_state)
- {
- 	int ret;
-@@ -847,7 +847,7 @@ static int ti_sci_cmd_dev_is_on(const struct ti_sci_handle *handle, u32 id,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_dev_is_trans(const struct ti_sci_handle *handle, u32 id,
-+static int ti_sci_cmd_dev_is_trans(struct ti_sci_handle *handle, u32 id,
- 				   bool *curr_state)
- {
- 	int ret;
-@@ -874,7 +874,7 @@ static int ti_sci_cmd_dev_is_trans(const struct ti_sci_handle *handle, u32 id,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_set_device_resets(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_set_device_resets(struct ti_sci_handle *handle,
- 					u32 id, u32 reset_state)
- {
- 	struct ti_sci_info *info;
-@@ -929,7 +929,7 @@ static int ti_sci_cmd_set_device_resets(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_get_device_resets(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_get_device_resets(struct ti_sci_handle *handle,
- 					u32 id, u32 *reset_state)
- {
- 	return ti_sci_get_device_state(handle, id, NULL, reset_state, NULL,
-@@ -948,7 +948,7 @@ static int ti_sci_cmd_get_device_resets(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_set_clock_state(const struct ti_sci_handle *handle,
-+static int ti_sci_set_clock_state(struct ti_sci_handle *handle,
- 				  u32 dev_id, u32 clk_id,
- 				  u32 flags, u8 state)
- {
-@@ -1013,7 +1013,7 @@ static int ti_sci_set_clock_state(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_get_clock_state(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_get_clock_state(struct ti_sci_handle *handle,
- 				      u32 dev_id, u32 clk_id,
- 				      u8 *programmed_state, u8 *current_state)
- {
-@@ -1089,7 +1089,7 @@ static int ti_sci_cmd_get_clock_state(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_get_clock(const struct ti_sci_handle *handle, u32 dev_id,
-+static int ti_sci_cmd_get_clock(struct ti_sci_handle *handle, u32 dev_id,
- 				u32 clk_id, bool needs_ssc,
- 				bool can_change_freq, bool enable_input_term)
- {
-@@ -1115,7 +1115,7 @@ static int ti_sci_cmd_get_clock(const struct ti_sci_handle *handle, u32 dev_id,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_idle_clock(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_idle_clock(struct ti_sci_handle *handle,
- 				 u32 dev_id, u32 clk_id)
- {
- 	return ti_sci_set_clock_state(handle, dev_id, clk_id,
-@@ -1135,8 +1135,8 @@ static int ti_sci_cmd_idle_clock(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_put_clock(const struct ti_sci_handle *handle,
--				u32 dev_id, u32 clk_id)
-+static int ti_sci_cmd_put_clock(struct ti_sci_handle *handle, u32 dev_id,
-+				u32 clk_id)
- {
- 	return ti_sci_set_clock_state(handle, dev_id, clk_id,
- 				      MSG_FLAG_CLOCK_ALLOW_FREQ_CHANGE,
-@@ -1154,8 +1154,8 @@ static int ti_sci_cmd_put_clock(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_clk_is_auto(const struct ti_sci_handle *handle,
--				  u32 dev_id, u32 clk_id, bool *req_state)
-+static int ti_sci_cmd_clk_is_auto(struct ti_sci_handle *handle, u32 dev_id,
-+				  u32 clk_id, bool *req_state)
- {
- 	u8 state = 0;
- 	int ret;
-@@ -1183,7 +1183,7 @@ static int ti_sci_cmd_clk_is_auto(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_clk_is_on(const struct ti_sci_handle *handle, u32 dev_id,
-+static int ti_sci_cmd_clk_is_on(struct ti_sci_handle *handle, u32 dev_id,
- 				u32 clk_id, bool *req_state, bool *curr_state)
- {
- 	u8 c_state = 0, r_state = 0;
-@@ -1216,7 +1216,7 @@ static int ti_sci_cmd_clk_is_on(const struct ti_sci_handle *handle, u32 dev_id,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_clk_is_off(const struct ti_sci_handle *handle, u32 dev_id,
-+static int ti_sci_cmd_clk_is_off(struct ti_sci_handle *handle, u32 dev_id,
- 				 u32 clk_id, bool *req_state, bool *curr_state)
- {
- 	u8 c_state = 0, r_state = 0;
-@@ -1248,7 +1248,7 @@ static int ti_sci_cmd_clk_is_off(const struct ti_sci_handle *handle, u32 dev_id,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_clk_set_parent(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_clk_set_parent(struct ti_sci_handle *handle,
- 				     u32 dev_id, u32 clk_id, u32 parent_id)
- {
- 	struct ti_sci_info *info;
-@@ -1316,7 +1316,7 @@ static int ti_sci_cmd_clk_set_parent(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_clk_get_parent(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_clk_get_parent(struct ti_sci_handle *handle,
- 				     u32 dev_id, u32 clk_id, u32 *parent_id)
- {
- 	struct ti_sci_info *info;
-@@ -1385,7 +1385,7 @@ static int ti_sci_cmd_clk_get_parent(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_clk_get_num_parents(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_clk_get_num_parents(struct ti_sci_handle *handle,
- 					  u32 dev_id, u32 clk_id,
- 					  u32 *num_parents)
- {
-@@ -1463,7 +1463,7 @@ static int ti_sci_cmd_clk_get_num_parents(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_clk_get_match_freq(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_clk_get_match_freq(struct ti_sci_handle *handle,
- 					 u32 dev_id, u32 clk_id, u64 min_freq,
- 					 u64 target_freq, u64 max_freq,
- 					 u64 *match_freq)
-@@ -1540,7 +1540,7 @@ static int ti_sci_cmd_clk_get_match_freq(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_clk_set_freq(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_clk_set_freq(struct ti_sci_handle *handle,
- 				   u32 dev_id, u32 clk_id, u64 min_freq,
- 				   u64 target_freq, u64 max_freq)
- {
-@@ -1606,7 +1606,7 @@ static int ti_sci_cmd_clk_set_freq(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_clk_get_freq(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_clk_get_freq(struct ti_sci_handle *handle,
- 				   u32 dev_id, u32 clk_id, u64 *freq)
- {
- 	struct ti_sci_info *info;
-@@ -1670,7 +1670,7 @@ static int ti_sci_cmd_clk_get_freq(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_prepare_sleep(const struct ti_sci_handle *handle, u8 mode,
-+static int ti_sci_cmd_prepare_sleep(struct ti_sci_handle *handle, u8 mode,
- 				    u32 ctx_lo, u32 ctx_hi, u32 debug_flags)
- {
- 	u32 msg_flags = mode == TISCI_MSG_VALUE_SLEEP_MODE_PARTIAL_IO ?
-@@ -1737,7 +1737,7 @@ static int ti_sci_cmd_prepare_sleep(const struct ti_sci_handle *handle, u8 mode,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_msg_cmd_query_fw_caps(const struct ti_sci_handle *handle,
-+static int ti_sci_msg_cmd_query_fw_caps(struct ti_sci_handle *handle,
- 					u64 *fw_caps)
- {
- 	struct ti_sci_info *info;
-@@ -1794,8 +1794,7 @@ static int ti_sci_msg_cmd_query_fw_caps(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_set_io_isolation(const struct ti_sci_handle *handle,
--				       u8 state)
-+static int ti_sci_cmd_set_io_isolation(struct ti_sci_handle *handle, u8 state)
- {
- 	struct ti_sci_info *info;
- 	struct ti_sci_msg_req_set_io_isolation *req;
-@@ -1852,7 +1851,7 @@ static int ti_sci_cmd_set_io_isolation(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_msg_cmd_lpm_wake_reason(const struct ti_sci_handle *handle,
-+static int ti_sci_msg_cmd_lpm_wake_reason(struct ti_sci_handle *handle,
- 					  u32 *source, u64 *timestamp, u8 *pin, u8 *mode)
- {
- 	struct ti_sci_info *info;
-@@ -1916,7 +1915,7 @@ static int ti_sci_msg_cmd_lpm_wake_reason(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_set_device_constraint(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_set_device_constraint(struct ti_sci_handle *handle,
- 					    u32 id, u8 state)
- {
- 	struct ti_sci_info *info;
-@@ -1973,7 +1972,7 @@ static int ti_sci_cmd_set_device_constraint(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_set_latency_constraint(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_set_latency_constraint(struct ti_sci_handle *handle,
- 					     u16 latency, u8 state)
- {
- 	struct ti_sci_info *info;
-@@ -2063,7 +2062,7 @@ static int ti_sci_cmd_lpm_abort(struct device *dev)
- 	return ret;
- }
- 
--static int ti_sci_cmd_core_reboot(const struct ti_sci_handle *handle)
-+static int ti_sci_cmd_core_reboot(struct ti_sci_handle *handle)
- {
- 	struct ti_sci_info *info;
- 	struct ti_sci_msg_req_reboot *req;
-@@ -2123,7 +2122,7 @@ static int ti_sci_cmd_core_reboot(const struct ti_sci_handle *handle)
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_get_resource_range(const struct ti_sci_handle *handle,
-+static int ti_sci_get_resource_range(struct ti_sci_handle *handle,
- 				     u32 dev_id, u8 subtype, u8 s_host,
- 				     struct ti_sci_resource_desc *desc)
- {
-@@ -2194,7 +2193,7 @@ static int ti_sci_get_resource_range(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_get_resource_range(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_get_resource_range(struct ti_sci_handle *handle,
- 					 u32 dev_id, u8 subtype,
- 					 struct ti_sci_resource_desc *desc)
- {
-@@ -2217,7 +2216,7 @@ static int ti_sci_cmd_get_resource_range(const struct ti_sci_handle *handle,
-  * Return: 0 if all went fine, else return appropriate error.
-  */
- static
--int ti_sci_cmd_get_resource_range_from_shost(const struct ti_sci_handle *handle,
-+int ti_sci_cmd_get_resource_range_from_shost(struct ti_sci_handle *handle,
- 					     u32 dev_id, u8 subtype, u8 s_host,
- 					     struct ti_sci_resource_desc *desc)
- {
-@@ -2243,7 +2242,7 @@ int ti_sci_cmd_get_resource_range_from_shost(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_manage_irq(const struct ti_sci_handle *handle,
-+static int ti_sci_manage_irq(struct ti_sci_handle *handle,
- 			     u32 valid_params, u16 src_id, u16 src_index,
- 			     u16 dst_id, u16 dst_host_irq, u16 ia_id, u16 vint,
- 			     u16 global_event, u8 vint_status_bit, u8 s_host,
-@@ -2317,7 +2316,7 @@ static int ti_sci_manage_irq(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_set_irq(const struct ti_sci_handle *handle, u32 valid_params,
-+static int ti_sci_set_irq(struct ti_sci_handle *handle, u32 valid_params,
- 			  u16 src_id, u16 src_index, u16 dst_id,
- 			  u16 dst_host_irq, u16 ia_id, u16 vint,
- 			  u16 global_event, u8 vint_status_bit, u8 s_host)
-@@ -2351,7 +2350,7 @@ static int ti_sci_set_irq(const struct ti_sci_handle *handle, u32 valid_params,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_free_irq(const struct ti_sci_handle *handle, u32 valid_params,
-+static int ti_sci_free_irq(struct ti_sci_handle *handle, u32 valid_params,
- 			   u16 src_id, u16 src_index, u16 dst_id,
- 			   u16 dst_host_irq, u16 ia_id, u16 vint,
- 			   u16 global_event, u8 vint_status_bit, u8 s_host)
-@@ -2378,7 +2377,7 @@ static int ti_sci_free_irq(const struct ti_sci_handle *handle, u32 valid_params,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_set_irq(const struct ti_sci_handle *handle, u16 src_id,
-+static int ti_sci_cmd_set_irq(struct ti_sci_handle *handle, u16 src_id,
- 			      u16 src_index, u16 dst_id, u16 dst_host_irq)
- {
- 	u32 valid_params = MSG_FLAG_DST_ID_VALID | MSG_FLAG_DST_HOST_IRQ_VALID;
-@@ -2400,7 +2399,7 @@ static int ti_sci_cmd_set_irq(const struct ti_sci_handle *handle, u16 src_id,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_set_event_map(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_set_event_map(struct ti_sci_handle *handle,
- 				    u16 src_id, u16 src_index, u16 ia_id,
- 				    u16 vint, u16 global_event,
- 				    u8 vint_status_bit)
-@@ -2424,7 +2423,7 @@ static int ti_sci_cmd_set_event_map(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_free_irq(const struct ti_sci_handle *handle, u16 src_id,
-+static int ti_sci_cmd_free_irq(struct ti_sci_handle *handle, u16 src_id,
- 			       u16 src_index, u16 dst_id, u16 dst_host_irq)
- {
- 	u32 valid_params = MSG_FLAG_DST_ID_VALID | MSG_FLAG_DST_HOST_IRQ_VALID;
-@@ -2446,7 +2445,7 @@ static int ti_sci_cmd_free_irq(const struct ti_sci_handle *handle, u16 src_id,
-  *
-  * Return: 0 if all went fine, else return appropriate error.
-  */
--static int ti_sci_cmd_free_event_map(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_free_event_map(struct ti_sci_handle *handle,
- 				     u16 src_id, u16 src_index, u16 ia_id,
- 				     u16 vint, u16 global_event,
- 				     u8 vint_status_bit)
-@@ -2469,7 +2468,7 @@ static int ti_sci_cmd_free_event_map(const struct ti_sci_handle *handle,
-  * See @ti_sci_msg_rm_ring_cfg and @ti_sci_msg_rm_ring_cfg_req for
-  * more info.
-  */
--static int ti_sci_cmd_rm_ring_cfg(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_rm_ring_cfg(struct ti_sci_handle *handle,
- 				  const struct ti_sci_msg_rm_ring_cfg *params)
- {
- 	struct ti_sci_msg_rm_ring_cfg_req *req;
-@@ -2531,7 +2530,7 @@ static int ti_sci_cmd_rm_ring_cfg(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_rm_psil_pair(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_rm_psil_pair(struct ti_sci_handle *handle,
- 				   u32 nav_id, u32 src_thread, u32 dst_thread)
- {
- 	struct ti_sci_msg_psil_pair *req;
-@@ -2587,7 +2586,7 @@ static int ti_sci_cmd_rm_psil_pair(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_rm_psil_unpair(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_rm_psil_unpair(struct ti_sci_handle *handle,
- 				     u32 nav_id, u32 src_thread, u32 dst_thread)
- {
- 	struct ti_sci_msg_psil_unpair *req;
-@@ -2644,7 +2643,7 @@ static int ti_sci_cmd_rm_psil_unpair(const struct ti_sci_handle *handle,
-  * See @ti_sci_msg_rm_udmap_tx_ch_cfg and @ti_sci_msg_rm_udmap_tx_ch_cfg_req for
-  * more info.
-  */
--static int ti_sci_cmd_rm_udmap_tx_ch_cfg(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_rm_udmap_tx_ch_cfg(struct ti_sci_handle *handle,
- 			const struct ti_sci_msg_rm_udmap_tx_ch_cfg *params)
- {
- 	struct ti_sci_msg_rm_udmap_tx_ch_cfg_req *req;
-@@ -2716,7 +2715,7 @@ static int ti_sci_cmd_rm_udmap_tx_ch_cfg(const struct ti_sci_handle *handle,
-  * See @ti_sci_msg_rm_udmap_rx_ch_cfg and @ti_sci_msg_rm_udmap_rx_ch_cfg_req for
-  * more info.
-  */
--static int ti_sci_cmd_rm_udmap_rx_ch_cfg(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_rm_udmap_rx_ch_cfg(struct ti_sci_handle *handle,
- 			const struct ti_sci_msg_rm_udmap_rx_ch_cfg *params)
- {
- 	struct ti_sci_msg_rm_udmap_rx_ch_cfg_req *req;
-@@ -2785,7 +2784,7 @@ static int ti_sci_cmd_rm_udmap_rx_ch_cfg(const struct ti_sci_handle *handle,
-  * See @ti_sci_msg_rm_udmap_flow_cfg and @ti_sci_msg_rm_udmap_flow_cfg_req for
-  * more info.
-  */
--static int ti_sci_cmd_rm_udmap_rx_flow_cfg(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_rm_udmap_rx_flow_cfg(struct ti_sci_handle *handle,
- 			const struct ti_sci_msg_rm_udmap_flow_cfg *params)
- {
- 	struct ti_sci_msg_rm_udmap_flow_cfg_req *req;
-@@ -2855,8 +2854,7 @@ static int ti_sci_cmd_rm_udmap_rx_flow_cfg(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_proc_request(const struct ti_sci_handle *handle,
--				   u8 proc_id)
-+static int ti_sci_cmd_proc_request(struct ti_sci_handle *handle, u8 proc_id)
- {
- 	struct ti_sci_msg_req_proc_request *req;
- 	struct ti_sci_msg_hdr *resp;
-@@ -2907,8 +2905,7 @@ static int ti_sci_cmd_proc_request(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_proc_release(const struct ti_sci_handle *handle,
--				   u8 proc_id)
-+static int ti_sci_cmd_proc_release(struct ti_sci_handle *handle, u8 proc_id)
- {
- 	struct ti_sci_msg_req_proc_release *req;
- 	struct ti_sci_msg_hdr *resp;
-@@ -2962,8 +2959,8 @@ static int ti_sci_cmd_proc_release(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_proc_handover(const struct ti_sci_handle *handle,
--				    u8 proc_id, u8 host_id)
-+static int ti_sci_cmd_proc_handover(struct ti_sci_handle *handle, u8 proc_id,
-+				    u8 host_id)
- {
- 	struct ti_sci_msg_req_proc_handover *req;
- 	struct ti_sci_msg_hdr *resp;
-@@ -3019,7 +3016,7 @@ static int ti_sci_cmd_proc_handover(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_proc_set_config(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_proc_set_config(struct ti_sci_handle *handle,
- 				      u8 proc_id, u64 bootvector,
- 				      u32 config_flags_set,
- 				      u32 config_flags_clear)
-@@ -3081,7 +3078,7 @@ static int ti_sci_cmd_proc_set_config(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_proc_set_control(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_proc_set_control(struct ti_sci_handle *handle,
- 				       u8 proc_id, u32 control_flags_set,
- 				       u32 control_flags_clear)
- {
-@@ -3140,7 +3137,7 @@ static int ti_sci_cmd_proc_set_control(const struct ti_sci_handle *handle,
-  *
-  * Return: 0 if all went well, else returns appropriate error value.
-  */
--static int ti_sci_cmd_proc_get_status(const struct ti_sci_handle *handle,
-+static int ti_sci_cmd_proc_get_status(struct ti_sci_handle *handle,
- 				      u8 proc_id, u64 *bv, u32 *cfg_flags,
- 				      u32 *ctrl_flags, u32 *sts_flags)
- {
-@@ -3290,7 +3287,7 @@ static void ti_sci_setup_ops(struct ti_sci_info *info)
-  * -ENODEV if the required node handler is missing
-  * -EINVAL if invalid conditions are encountered.
-  */
--const struct ti_sci_handle *ti_sci_get_handle(struct device *dev)
-+struct ti_sci_handle *ti_sci_get_handle(struct device *dev)
- {
- 	struct device_node *ti_sci_np;
- 	struct ti_sci_handle *handle = NULL;
-@@ -3336,7 +3333,7 @@ EXPORT_SYMBOL_GPL(ti_sci_get_handle);
-  * if an error pointer was passed, it returns the error value back,
-  * if null was passed, it returns -EINVAL;
-  */
--int ti_sci_put_handle(const struct ti_sci_handle *handle)
-+int ti_sci_put_handle(struct ti_sci_handle *handle)
- {
- 	struct ti_sci_info *info;
- 
-@@ -3357,8 +3354,8 @@ EXPORT_SYMBOL_GPL(ti_sci_put_handle);
- 
- static void devm_ti_sci_release(struct device *dev, void *res)
- {
--	const struct ti_sci_handle **ptr = res;
--	const struct ti_sci_handle *handle = *ptr;
-+	struct ti_sci_handle **ptr = res;
-+	struct ti_sci_handle *handle = *ptr;
- 	int ret;
- 
- 	ret = ti_sci_put_handle(handle);
-@@ -3375,12 +3372,14 @@ static void devm_ti_sci_release(struct device *dev, void *res)
-  * The function does not track individual clients of the framework
-  * and is expected to be maintained by caller of TI SCI protocol library.
-  *
-+ * Do not change handle pointer to pointer to const.
-+ *
-  * Return: 0 if all went fine, else corresponding error.
-  */
--const struct ti_sci_handle *devm_ti_sci_get_handle(struct device *dev)
-+struct ti_sci_handle *devm_ti_sci_get_handle(struct device *dev)
- {
--	const struct ti_sci_handle **ptr;
--	const struct ti_sci_handle *handle;
-+	struct ti_sci_handle **ptr;
-+	struct ti_sci_handle *handle;
- 
- 	ptr = devres_alloc(devm_ti_sci_release, sizeof(*ptr), GFP_KERNEL);
- 	if (!ptr)
-@@ -3411,8 +3410,8 @@ EXPORT_SYMBOL_GPL(devm_ti_sci_get_handle);
-  * -ENODEV if the required node handler is missing
-  * -EINVAL if invalid conditions are encountered.
-  */
--const struct ti_sci_handle *ti_sci_get_by_phandle(struct device_node *np,
--						  const char *property)
-+struct ti_sci_handle *ti_sci_get_by_phandle(struct device_node *np,
-+					    const char *property)
- {
- 	struct ti_sci_handle *handle = NULL;
- 	struct device_node *ti_sci_np;
-@@ -3457,10 +3456,10 @@ EXPORT_SYMBOL_GPL(ti_sci_get_by_phandle);
-  *
-  * Return: 0 if all went fine, else corresponding error.
-  */
--const struct ti_sci_handle *devm_ti_sci_get_by_phandle(struct device *dev,
--						       const char *property)
-+struct ti_sci_handle *devm_ti_sci_get_by_phandle(struct device *dev,
-+						 const char *property)
- {
--	const struct ti_sci_handle *handle;
-+	struct ti_sci_handle *handle;
- 	const struct ti_sci_handle **ptr;
- 
- 	ptr = devres_alloc(devm_ti_sci_release, sizeof(*ptr), GFP_KERNEL);
-@@ -3566,7 +3565,7 @@ EXPORT_SYMBOL_GPL(ti_sci_get_num_resources);
-  *	   error pointer.
-  */
- static struct ti_sci_resource *
--devm_ti_sci_get_resource_sets(const struct ti_sci_handle *handle,
-+devm_ti_sci_get_resource_sets(struct ti_sci_handle *handle,
- 			      struct device *dev, u32 dev_id, u32 *sub_types,
- 			      u32 sets)
- {
-@@ -3626,7 +3625,7 @@ devm_ti_sci_get_resource_sets(const struct ti_sci_handle *handle,
-  *	   error pointer.
-  */
- struct ti_sci_resource *
--devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
-+devm_ti_sci_get_of_resource(struct ti_sci_handle *handle,
- 			    struct device *dev, u32 dev_id, char *of_prop)
- {
- 	struct ti_sci_resource *res;
-@@ -3664,7 +3663,7 @@ EXPORT_SYMBOL_GPL(devm_ti_sci_get_of_resource);
-  *	   error pointer.
-  */
- struct ti_sci_resource *
--devm_ti_sci_get_resource(const struct ti_sci_handle *handle, struct device *dev,
-+devm_ti_sci_get_resource(struct ti_sci_handle *handle, struct device *dev,
- 			 u32 dev_id, u32 sub_type)
- {
- 	return devm_ti_sci_get_resource_sets(handle, dev, dev_id, &sub_type, 1);
-@@ -3720,7 +3719,7 @@ static bool ti_sci_partial_io_wakeup_enabled(struct ti_sci_info *info)
- static int ti_sci_sys_off_handler(struct sys_off_data *data)
- {
- 	struct ti_sci_info *info = data->cb_data;
--	const struct ti_sci_handle *handle = &info->handle;
-+	struct ti_sci_handle *handle = &info->handle;
- 	bool enter_partial_io = ti_sci_partial_io_wakeup_enabled(info);
- 	int ret;
- 
-@@ -3746,7 +3745,7 @@ static int ti_sci_sys_off_handler(struct sys_off_data *data)
- static int tisci_reboot_handler(struct sys_off_data *data)
- {
- 	struct ti_sci_info *info = data->cb_data;
--	const struct ti_sci_handle *handle = &info->handle;
-+	struct ti_sci_handle *handle = &info->handle;
- 
- 	ti_sci_cmd_core_reboot(handle);
- 
-diff --git a/drivers/irqchip/irq-ti-sci-inta.c b/drivers/irqchip/irq-ti-sci-inta.c
-index 01963d36cfaf..88617a0ce794 100644
---- a/drivers/irqchip/irq-ti-sci-inta.c
-+++ b/drivers/irqchip/irq-ti-sci-inta.c
-@@ -98,7 +98,7 @@ struct ti_sci_inta_vint_desc {
-  *			Global Event number.
-  */
- struct ti_sci_inta_irq_domain {
--	const struct ti_sci_handle *sci;
-+	struct ti_sci_handle *sci;
- 	struct ti_sci_resource *vint;
- 	struct ti_sci_resource *global_event;
- 	struct list_head vint_list;
-diff --git a/drivers/irqchip/irq-ti-sci-intr.c b/drivers/irqchip/irq-ti-sci-intr.c
-index 0ea17040e934..9a13adbdac48 100644
---- a/drivers/irqchip/irq-ti-sci-intr.c
-+++ b/drivers/irqchip/irq-ti-sci-intr.c
-@@ -27,7 +27,7 @@
-  * @type:	Specifies the trigger type supported by this Interrupt Router
-  */
- struct ti_sci_intr_irq_domain {
--	const struct ti_sci_handle *sci;
-+	struct ti_sci_handle *sci;
- 	struct ti_sci_resource *out_irqs;
- 	struct device *dev;
- 	u32 ti_sci_id;
-diff --git a/drivers/pmdomain/ti/ti_sci_pm_domains.c b/drivers/pmdomain/ti/ti_sci_pm_domains.c
-index 18d33bc35dee..913373a0b096 100644
---- a/drivers/pmdomain/ti/ti_sci_pm_domains.c
-+++ b/drivers/pmdomain/ti/ti_sci_pm_domains.c
-@@ -27,7 +27,7 @@
-  * @data: onecell data for genpd core
-  */
- struct ti_sci_genpd_provider {
--	const struct ti_sci_handle *ti_sci;
-+	struct ti_sci_handle *ti_sci;
- 	struct device *dev;
- 	struct list_head pd_list;
- 	struct genpd_onecell_data data;
-@@ -63,7 +63,7 @@ static void ti_sci_pd_set_lat_constraint(struct device *dev, s32 val)
- {
- 	struct generic_pm_domain *genpd = pd_to_genpd(dev->pm_domain);
- 	struct ti_sci_pm_domain *pd = genpd_to_ti_sci_pd(genpd);
--	const struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
-+	struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
- 	u16 val_ms;
- 	int ret;
- 
-@@ -83,7 +83,7 @@ static inline void ti_sci_pd_set_wkup_constraint(struct device *dev)
- {
- 	struct generic_pm_domain *genpd = pd_to_genpd(dev->pm_domain);
- 	struct ti_sci_pm_domain *pd = genpd_to_ti_sci_pd(genpd);
--	const struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
-+	struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
- 	int ret;
- 
- 	if (device_may_wakeup(dev)) {
-@@ -111,7 +111,7 @@ static inline void ti_sci_pd_set_wkup_constraint(struct device *dev)
- static int ti_sci_pd_power_off(struct generic_pm_domain *domain)
- {
- 	struct ti_sci_pm_domain *pd = genpd_to_ti_sci_pd(domain);
--	const struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
-+	struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
- 
- 	return ti_sci->ops.dev_ops.put_device(ti_sci, pd->idx);
- }
-@@ -123,7 +123,7 @@ static int ti_sci_pd_power_off(struct generic_pm_domain *domain)
- static int ti_sci_pd_power_on(struct generic_pm_domain *domain)
- {
- 	struct ti_sci_pm_domain *pd = genpd_to_ti_sci_pd(domain);
--	const struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
-+	struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
- 
- 	if (pd->exclusive)
- 		return ti_sci->ops.dev_ops.get_device_exclusive(ti_sci,
-diff --git a/drivers/remoteproc/ti_k3_common.h b/drivers/remoteproc/ti_k3_common.h
-index aee3c28dbe51..3906d006081d 100644
---- a/drivers/remoteproc/ti_k3_common.h
-+++ b/drivers/remoteproc/ti_k3_common.h
-@@ -88,7 +88,7 @@ struct k3_rproc {
- 	struct reset_control *reset;
- 	const struct k3_rproc_dev_data *data;
- 	struct ti_sci_proc *tsp;
--	const struct ti_sci_handle *ti_sci;
-+	struct ti_sci_handle *ti_sci;
- 	u32 ti_sci_id;
- 	struct mbox_chan *mbox;
- 	struct mbox_client client;
-diff --git a/drivers/remoteproc/ti_sci_proc.h b/drivers/remoteproc/ti_sci_proc.h
-index f3911ce75252..d20859a9fb13 100644
---- a/drivers/remoteproc/ti_sci_proc.h
-+++ b/drivers/remoteproc/ti_sci_proc.h
-@@ -21,7 +21,7 @@
-  *	     device
-  */
- struct ti_sci_proc {
--	const struct ti_sci_handle *sci;
-+	struct ti_sci_handle *sci;
- 	const struct ti_sci_proc_ops *ops;
- 	struct device *dev;
- 	u8 proc_id;
-@@ -30,7 +30,7 @@ struct ti_sci_proc {
- 
- static inline
- struct ti_sci_proc *ti_sci_proc_of_get_tsp(struct device *dev,
--					   const struct ti_sci_handle *sci)
-+					   struct ti_sci_handle *sci)
- {
- 	struct ti_sci_proc *tsp;
- 	u32 temp[2];
-diff --git a/drivers/reset/reset-ti-sci.c b/drivers/reset/reset-ti-sci.c
-index 1dc5b766aac1..7fea18eb350e 100644
---- a/drivers/reset/reset-ti-sci.c
-+++ b/drivers/reset/reset-ti-sci.c
-@@ -36,7 +36,7 @@ struct ti_sci_reset_control {
- struct ti_sci_reset_data {
- 	struct reset_controller_dev rcdev;
- 	struct device *dev;
--	const struct ti_sci_handle *sci;
-+	struct ti_sci_handle *sci;
- 	struct idr idr;
- };
- 
-@@ -63,7 +63,7 @@ static int ti_sci_reset_set(struct reset_controller_dev *rcdev,
- 			    unsigned long id, bool assert)
- {
- 	struct ti_sci_reset_data *data = to_ti_sci_reset_data(rcdev);
--	const struct ti_sci_handle *sci = data->sci;
-+	struct ti_sci_handle *sci = data->sci;
- 	const struct ti_sci_dev_ops *dev_ops = &sci->ops.dev_ops;
- 	struct ti_sci_reset_control *control;
- 	u32 reset_state;
-@@ -144,7 +144,7 @@ static int ti_sci_reset_status(struct reset_controller_dev *rcdev,
- 			       unsigned long id)
- {
- 	struct ti_sci_reset_data *data = to_ti_sci_reset_data(rcdev);
--	const struct ti_sci_handle *sci = data->sci;
-+	struct ti_sci_handle *sci = data->sci;
- 	const struct ti_sci_dev_ops *dev_ops = &sci->ops.dev_ops;
- 	struct ti_sci_reset_control *control;
- 	u32 reset_state;
-diff --git a/drivers/soc/ti/k3-ringacc.c b/drivers/soc/ti/k3-ringacc.c
-index 7602b8a909b0..5bc41b838ba4 100644
---- a/drivers/soc/ti/k3-ringacc.c
-+++ b/drivers/soc/ti/k3-ringacc.c
-@@ -220,7 +220,7 @@ struct k3_ringacc {
- 	struct list_head list;
- 	struct mutex req_lock; /* protect rings allocation */
- 
--	const struct ti_sci_handle *tisci;
-+	struct ti_sci_handle *tisci;
- 	const struct ti_sci_rm_ringacc_ops *tisci_ring_ops;
- 	u32 tisci_dev_id;
- 
-diff --git a/include/linux/soc/ti/k3-ringacc.h b/include/linux/soc/ti/k3-ringacc.h
-index 39b022b92598..a254b4243c21 100644
---- a/include/linux/soc/ti/k3-ringacc.h
-+++ b/include/linux/soc/ti/k3-ringacc.h
-@@ -259,7 +259,7 @@ struct ti_sci_handle;
-  * struct struct k3_ringacc_init_data - Initialization data for DMA rings
-  */
- struct k3_ringacc_init_data {
--	const struct ti_sci_handle *tisci;
-+	struct ti_sci_handle *tisci;
- 	u32 tisci_dev_id;
- 	u32 num_rings;
- };
-diff --git a/include/linux/soc/ti/ti_sci_protocol.h b/include/linux/soc/ti/ti_sci_protocol.h
-index fd104b666836..2c07c0545673 100644
---- a/include/linux/soc/ti/ti_sci_protocol.h
-+++ b/include/linux/soc/ti/ti_sci_protocol.h
-@@ -34,7 +34,7 @@ struct ti_sci_handle;
-  *		else returns corresponding error value.
-  */
- struct ti_sci_core_ops {
--	int (*reboot_device)(const struct ti_sci_handle *handle);
-+	int (*reboot_device)(struct ti_sci_handle *handle);
- };
- 
- /**
-@@ -96,26 +96,25 @@ struct ti_sci_core_ops {
-  * managed by driver for that purpose.
-  */
- struct ti_sci_dev_ops {
--	int (*get_device)(const struct ti_sci_handle *handle, u32 id);
--	int (*get_device_exclusive)(const struct ti_sci_handle *handle, u32 id);
--	int (*idle_device)(const struct ti_sci_handle *handle, u32 id);
--	int (*idle_device_exclusive)(const struct ti_sci_handle *handle,
--				     u32 id);
--	int (*put_device)(const struct ti_sci_handle *handle, u32 id);
--	int (*is_valid)(const struct ti_sci_handle *handle, u32 id);
--	int (*get_context_loss_count)(const struct ti_sci_handle *handle,
-+	int (*get_device)(struct ti_sci_handle *handle, u32 id);
-+	int (*get_device_exclusive)(struct ti_sci_handle *handle, u32 id);
-+	int (*idle_device)(struct ti_sci_handle *handle, u32 id);
-+	int (*idle_device_exclusive)(struct ti_sci_handle *handle, u32 id);
-+	int (*put_device)(struct ti_sci_handle *handle, u32 id);
-+	int (*is_valid)(struct ti_sci_handle *handle, u32 id);
-+	int (*get_context_loss_count)(struct ti_sci_handle *handle,
- 				      u32 id, u32 *count);
--	int (*is_idle)(const struct ti_sci_handle *handle, u32 id,
-+	int (*is_idle)(struct ti_sci_handle *handle, u32 id,
- 		       bool *requested_state);
--	int (*is_stop)(const struct ti_sci_handle *handle, u32 id,
-+	int (*is_stop)(struct ti_sci_handle *handle, u32 id,
- 		       bool *req_state, bool *current_state);
--	int (*is_on)(const struct ti_sci_handle *handle, u32 id,
-+	int (*is_on)(struct ti_sci_handle *handle, u32 id,
- 		     bool *req_state, bool *current_state);
--	int (*is_transitioning)(const struct ti_sci_handle *handle, u32 id,
-+	int (*is_transitioning)(struct ti_sci_handle *handle, u32 id,
- 				bool *current_state);
--	int (*set_device_resets)(const struct ti_sci_handle *handle, u32 id,
-+	int (*set_device_resets)(struct ti_sci_handle *handle, u32 id,
- 				 u32 reset_state);
--	int (*get_device_resets)(const struct ti_sci_handle *handle, u32 id,
-+	int (*get_device_resets)(struct ti_sci_handle *handle, u32 id,
- 				 u32 *reset_state);
- };
- 
-@@ -169,29 +168,29 @@ struct ti_sci_dev_ops {
-  * managed by driver for that purpose.
-  */
- struct ti_sci_clk_ops {
--	int (*get_clock)(const struct ti_sci_handle *handle, u32 did, u32 cid,
-+	int (*get_clock)(struct ti_sci_handle *handle, u32 did, u32 cid,
- 			 bool needs_ssc, bool can_change_freq,
- 			 bool enable_input_term);
--	int (*idle_clock)(const struct ti_sci_handle *handle, u32 did, u32 cid);
--	int (*put_clock)(const struct ti_sci_handle *handle, u32 did, u32 cid);
--	int (*is_auto)(const struct ti_sci_handle *handle, u32 did, u32 cid,
-+	int (*idle_clock)(struct ti_sci_handle *handle, u32 did, u32 cid);
-+	int (*put_clock)(struct ti_sci_handle *handle, u32 did, u32 cid);
-+	int (*is_auto)(struct ti_sci_handle *handle, u32 did, u32 cid,
- 		       bool *req_state);
--	int (*is_on)(const struct ti_sci_handle *handle, u32 did, u32 cid,
-+	int (*is_on)(struct ti_sci_handle *handle, u32 did, u32 cid,
- 		     bool *req_state, bool *current_state);
--	int (*is_off)(const struct ti_sci_handle *handle, u32 did, u32 cid,
-+	int (*is_off)(struct ti_sci_handle *handle, u32 did, u32 cid,
- 		      bool *req_state, bool *current_state);
--	int (*set_parent)(const struct ti_sci_handle *handle, u32 did, u32 cid,
-+	int (*set_parent)(struct ti_sci_handle *handle, u32 did, u32 cid,
- 			  u32 parent_id);
--	int (*get_parent)(const struct ti_sci_handle *handle, u32 did, u32 cid,
-+	int (*get_parent)(struct ti_sci_handle *handle, u32 did, u32 cid,
- 			  u32 *parent_id);
--	int (*get_num_parents)(const struct ti_sci_handle *handle, u32 did,
-+	int (*get_num_parents)(struct ti_sci_handle *handle, u32 did,
- 			       u32 cid, u32 *num_parents);
--	int (*get_best_match_freq)(const struct ti_sci_handle *handle, u32 did,
-+	int (*get_best_match_freq)(struct ti_sci_handle *handle, u32 did,
- 				   u32 cid, u64 min_freq, u64 target_freq,
- 				   u64 max_freq, u64 *match_freq);
--	int (*set_freq)(const struct ti_sci_handle *handle, u32 did, u32 cid,
-+	int (*set_freq)(struct ti_sci_handle *handle, u32 did, u32 cid,
- 			u64 min_freq, u64 target_freq, u64 max_freq);
--	int (*get_freq)(const struct ti_sci_handle *handle, u32 did, u32 cid,
-+	int (*get_freq)(struct ti_sci_handle *handle, u32 did, u32 cid,
- 			u64 *current_freq);
- };
- 
-@@ -216,11 +215,11 @@ struct ti_sci_clk_ops {
-  *		- state: The desired state of latency constraint: set or clear.
-  */
- struct ti_sci_pm_ops {
--	int (*lpm_wake_reason)(const struct ti_sci_handle *handle,
-+	int (*lpm_wake_reason)(struct ti_sci_handle *handle,
- 			       u32 *source, u64 *timestamp, u8 *pin, u8 *mode);
--	int (*set_device_constraint)(const struct ti_sci_handle *handle,
-+	int (*set_device_constraint)(struct ti_sci_handle *handle,
- 				     u32 id, u8 state);
--	int (*set_latency_constraint)(const struct ti_sci_handle *handle,
-+	int (*set_latency_constraint)(struct ti_sci_handle *handle,
- 				      u16 latency, u8 state);
- };
- 
-@@ -258,9 +257,9 @@ struct ti_sci_resource_desc {
-  *		range start index and number of resources
-  */
- struct ti_sci_rm_core_ops {
--	int (*get_range)(const struct ti_sci_handle *handle, u32 dev_id,
-+	int (*get_range)(struct ti_sci_handle *handle, u32 dev_id,
- 			 u8 subtype, struct ti_sci_resource_desc *desc);
--	int (*get_range_from_shost)(const struct ti_sci_handle *handle,
-+	int (*get_range_from_shost)(struct ti_sci_handle *handle,
- 				    u32 dev_id, u8 subtype, u8 s_host,
- 				    struct ti_sci_resource_desc *desc);
- };
-@@ -280,14 +279,14 @@ struct ti_sci_rm_core_ops {
-  *			Aggregator.
-  */
- struct ti_sci_rm_irq_ops {
--	int (*set_irq)(const struct ti_sci_handle *handle, u16 src_id,
-+	int (*set_irq)(struct ti_sci_handle *handle, u16 src_id,
- 		       u16 src_index, u16 dst_id, u16 dst_host_irq);
--	int (*set_event_map)(const struct ti_sci_handle *handle, u16 src_id,
-+	int (*set_event_map)(struct ti_sci_handle *handle, u16 src_id,
- 			     u16 src_index, u16 ia_id, u16 vint,
- 			     u16 global_event, u8 vint_status_bit);
--	int (*free_irq)(const struct ti_sci_handle *handle, u16 src_id,
-+	int (*free_irq)(struct ti_sci_handle *handle, u16 src_id,
- 			u16 src_index, u16 dst_id, u16 dst_host_irq);
--	int (*free_event_map)(const struct ti_sci_handle *handle, u16 src_id,
-+	int (*free_event_map)(struct ti_sci_handle *handle, u16 src_id,
- 			      u16 src_index, u16 ia_id, u16 vint,
- 			      u16 global_event, u8 vint_status_bit);
- };
-@@ -342,7 +341,7 @@ struct ti_sci_msg_rm_ring_cfg {
-  * @set_cfg: configure the SoC Navigator Subsystem Ring Accelerator ring
-  */
- struct ti_sci_rm_ringacc_ops {
--	int (*set_cfg)(const struct ti_sci_handle *handle,
-+	int (*set_cfg)(struct ti_sci_handle *handle,
- 		       const struct ti_sci_msg_rm_ring_cfg *params);
- };
- 
-@@ -360,9 +359,9 @@ struct ti_sci_rm_ringacc_ops {
-  *	RCHAN_THRD_ID register is cleared.
-  */
- struct ti_sci_rm_psil_ops {
--	int (*pair)(const struct ti_sci_handle *handle, u32 nav_id,
-+	int (*pair)(struct ti_sci_handle *handle, u32 nav_id,
- 		    u32 src_thread, u32 dst_thread);
--	int (*unpair)(const struct ti_sci_handle *handle, u32 nav_id,
-+	int (*unpair)(struct ti_sci_handle *handle, u32 nav_id,
- 		      u32 src_thread, u32 dst_thread);
- };
- 
-@@ -519,11 +518,11 @@ struct ti_sci_msg_rm_udmap_flow_cfg {
-  * @rx_flow_cfg1: configure SoC Navigator Subsystem UDMA receive flow.
-  */
- struct ti_sci_rm_udmap_ops {
--	int (*tx_ch_cfg)(const struct ti_sci_handle *handle,
-+	int (*tx_ch_cfg)(struct ti_sci_handle *handle,
- 			 const struct ti_sci_msg_rm_udmap_tx_ch_cfg *params);
--	int (*rx_ch_cfg)(const struct ti_sci_handle *handle,
-+	int (*rx_ch_cfg)(struct ti_sci_handle *handle,
- 			 const struct ti_sci_msg_rm_udmap_rx_ch_cfg *params);
--	int (*rx_flow_cfg)(const struct ti_sci_handle *handle,
-+	int (*rx_flow_cfg)(struct ti_sci_handle *handle,
- 			   const struct ti_sci_msg_rm_udmap_flow_cfg *params);
- };
- 
-@@ -544,14 +543,14 @@ struct ti_sci_rm_udmap_ops {
-  * -hid:	Host ID
-  */
- struct ti_sci_proc_ops {
--	int (*request)(const struct ti_sci_handle *handle, u8 pid);
--	int (*release)(const struct ti_sci_handle *handle, u8 pid);
--	int (*handover)(const struct ti_sci_handle *handle, u8 pid, u8 hid);
--	int (*set_config)(const struct ti_sci_handle *handle, u8 pid,
-+	int (*request)(struct ti_sci_handle *handle, u8 pid);
-+	int (*release)(struct ti_sci_handle *handle, u8 pid);
-+	int (*handover)(struct ti_sci_handle *handle, u8 pid, u8 hid);
-+	int (*set_config)(struct ti_sci_handle *handle, u8 pid,
- 			  u64 boot_vector, u32 cfg_set, u32 cfg_clr);
--	int (*set_control)(const struct ti_sci_handle *handle, u8 pid,
-+	int (*set_control)(struct ti_sci_handle *handle, u8 pid,
- 			   u32 ctrl_set, u32 ctrl_clr);
--	int (*get_status)(const struct ti_sci_handle *handle, u8 pid,
-+	int (*get_status)(struct ti_sci_handle *handle, u8 pid,
- 			  u64 *boot_vector, u32 *cfg_flags, u32 *ctrl_flags,
- 			  u32 *status_flags);
- };
-@@ -603,51 +602,51 @@ struct ti_sci_resource {
- };
- 
- #if IS_ENABLED(CONFIG_TI_SCI_PROTOCOL)
--const struct ti_sci_handle *ti_sci_get_handle(struct device *dev);
--int ti_sci_put_handle(const struct ti_sci_handle *handle);
--const struct ti_sci_handle *devm_ti_sci_get_handle(struct device *dev);
--const struct ti_sci_handle *ti_sci_get_by_phandle(struct device_node *np,
--						  const char *property);
--const struct ti_sci_handle *devm_ti_sci_get_by_phandle(struct device *dev,
--						       const char *property);
-+struct ti_sci_handle *ti_sci_get_handle(struct device *dev);
-+int ti_sci_put_handle(struct ti_sci_handle *handle);
-+struct ti_sci_handle *devm_ti_sci_get_handle(struct device *dev);
-+struct ti_sci_handle *ti_sci_get_by_phandle(struct device_node *np,
-+					    const char *property);
-+struct ti_sci_handle *devm_ti_sci_get_by_phandle(struct device *dev,
-+						 const char *property);
- u16 ti_sci_get_free_resource(struct ti_sci_resource *res);
- void ti_sci_release_resource(struct ti_sci_resource *res, u16 id);
- u32 ti_sci_get_num_resources(struct ti_sci_resource *res);
- struct ti_sci_resource *
--devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
-+devm_ti_sci_get_of_resource(struct ti_sci_handle *handle,
- 			    struct device *dev, u32 dev_id, char *of_prop);
- struct ti_sci_resource *
--devm_ti_sci_get_resource(const struct ti_sci_handle *handle, struct device *dev,
-+devm_ti_sci_get_resource(struct ti_sci_handle *handle, struct device *dev,
- 			 u32 dev_id, u32 sub_type);
- 
- #else	/* CONFIG_TI_SCI_PROTOCOL */
- 
--static inline const struct ti_sci_handle *ti_sci_get_handle(struct device *dev)
-+static inline struct ti_sci_handle *ti_sci_get_handle(struct device *dev)
- {
- 	return ERR_PTR(-EINVAL);
- }
- 
--static inline int ti_sci_put_handle(const struct ti_sci_handle *handle)
-+static inline int ti_sci_put_handle(struct ti_sci_handle *handle)
- {
- 	return -EINVAL;
- }
- 
- static inline
--const struct ti_sci_handle *devm_ti_sci_get_handle(struct device *dev)
-+struct ti_sci_handle *devm_ti_sci_get_handle(struct device *dev)
- {
- 	return ERR_PTR(-EINVAL);
- }
- 
- static inline
--const struct ti_sci_handle *ti_sci_get_by_phandle(struct device_node *np,
--						  const char *property)
-+struct ti_sci_handle *ti_sci_get_by_phandle(struct device_node *np,
-+					    const char *property)
- {
- 	return ERR_PTR(-EINVAL);
- }
- 
- static inline
--const struct ti_sci_handle *devm_ti_sci_get_by_phandle(struct device *dev,
--						       const char *property)
-+struct ti_sci_handle *devm_ti_sci_get_by_phandle(struct device *dev,
-+						 const char *property)
- {
- 	return ERR_PTR(-EINVAL);
- }
-@@ -667,14 +666,14 @@ static inline u32 ti_sci_get_num_resources(struct ti_sci_resource *res)
- }
- 
- static inline struct ti_sci_resource *
--devm_ti_sci_get_of_resource(const struct ti_sci_handle *handle,
-+devm_ti_sci_get_of_resource(struct ti_sci_handle *handle,
- 			    struct device *dev, u32 dev_id, char *of_prop)
- {
- 	return ERR_PTR(-EINVAL);
- }
- 
- static inline struct ti_sci_resource *
--devm_ti_sci_get_resource(const struct ti_sci_handle *handle, struct device *dev,
-+devm_ti_sci_get_resource(struct ti_sci_handle *handle, struct device *dev,
- 			 u32 dev_id, u32 sub_type)
- {
- 	return ERR_PTR(-EINVAL);
--- 
-2.51.0
+> Fixes: 8c5ea1745f4c ("drm/colorop: Add BYPASS property")
+> Cc: <stable@vger.kernel.org> #v6.19+
+> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+> ---
+>  drivers/gpu/drm/drm_colorop.c | 2 --
+>  1 file changed, 2 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/drm_colorop.c b/drivers/gpu/drm/drm_colorop.=
+c index
+> aa19de769eb2..5037efcc3497 100644
+> --- a/drivers/gpu/drm/drm_colorop.c
+> +++ b/drivers/gpu/drm/drm_colorop.c
+> @@ -466,8 +466,6 @@ static void
+> __drm_atomic_helper_colorop_duplicate_state(struct drm_colorop *colo
+>=20
+>  	if (state->data)
+>  		drm_property_blob_get(state->data);
+> -
+> -	state->bypass =3D true;
+>  }
+>=20
+>  struct drm_colorop_state *
+> --
+> 2.25.1
 
 
