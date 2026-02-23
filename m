@@ -1,167 +1,173 @@
-Return-Path: <stable+bounces-217713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMSYNJUcnGkZ/wMAu9opvQ
-	(envelope-from <stable+bounces-217713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:23:33 +0100
+	id EOqPAl8enGkZ/wMAu9opvQ
+	(envelope-from <stable+bounces-217714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:31:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B68173D60
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:23:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81633173EE9
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 10:31:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F153F30045B9
-	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:17:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C9783053A86
+	for <lists+stable@lfdr.de>; Mon, 23 Feb 2026 09:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1CE34E74E;
-	Mon, 23 Feb 2026 09:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6AC34DCC4;
+	Mon, 23 Feb 2026 09:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nYVdD+vV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fp7TxbYf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D2828E0
-	for <stable@vger.kernel.org>; Mon, 23 Feb 2026 09:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAE134E777;
+	Mon, 23 Feb 2026 09:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771838274; cv=none; b=TvIfv9fizmNY3oT3q+H2f2Iu8cGtzjV683oL65ue3F3ao08VHFG4WVKQO1n66qEClZPmv09XEu++AA92r0Xx4B+opi4g9oKiyTIDHZ5nAgW8m6Le13Ird6sJtPox5LVO3ipTmmwa2knPZuWex/ho6NhIt88Ucy9sjuByL4Sd+/I=
+	t=1771838964; cv=none; b=YzECHcRW9QPAmhByDnUufqNNDqEK7hn/RyCNqe72jeDBWMcyeicbMTFNfqqUAJLsChIFGO7YX+d8y+KakZtHA8el8P9DRzSJr75XoEH/ZhvQcVK+e9hnafhJBDiwyswfaPduflRufrrxDgEmIw0QdKHjJOeth9+zNjiwlkD5zvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771838274; c=relaxed/simple;
-	bh=4PioQTE1/pn/cSvWasq9vsu4M69jf5y8EpRedJOKuQM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRhApxltp2YenSad8ynkIaeuO5OzbQHOCOBs+4dHSja7YcPCkjjzuDLqs83A60hueFeH3wpItjKpUOzhbZmutBH0mvwUg+rYq2gOoTeYjj2Xh9mMogP+vtQEY/aywGgWswk3w1vs45umpnMLknvtRt7nWZJyi82E4H4j4J2Szoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nYVdD+vV; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82361bcbd8fso2033686b3a.0
-        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 01:17:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771838273; x=1772443073; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vsAzAZV+vDh9kg6mWOSA63o6/YiuK/GmIL99VmqCAg8=;
-        b=nYVdD+vVJtvQ5Zpq7TUYNiy1J7DlojfNhE5/z169rvyAVE7LJpDVEsY0PFwTlRQ0H+
-         mWhY3q442sHNntSG00C2nwCb6ep86Ip4c2BFpf4+MNzK8488LJeLCqoB+rkVuCBkdWYX
-         4lW85RcX2ZXQacQwFbAmHSX7Ax6m4XLbqEvCr+hfy9qGDAIQbX/dX9GxXR25LcIE1P+Q
-         ybWamskq2BKAEE6WjmQbPdsphBPQs+NwGk4EnMvigej7A37MkNqxp90lmyqJiPv8OBPp
-         i4XpZzjYLWzCWjfQ5XZlmizeaJqwpRJdxbe7AytDrdXRLzqXt8wUCClN5a+V2T4sm6uY
-         jFOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771838273; x=1772443073;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vsAzAZV+vDh9kg6mWOSA63o6/YiuK/GmIL99VmqCAg8=;
-        b=dKZMqu7ksLc61utT+Qmk9i8By5myJz2+LwRsrHhJGTkWtuwYmfcbXe2EfgjihB5Gl6
-         vmGJbKWB3fDj9CnWun9c7PAXQHmiNGgZa5VVpBBL4SqDFsLSBQ8j9SCk6+Dw4j+3K7JW
-         bA5PRGxNcN6no83xgDJz3w4llrJScQ72Vl6XuE6PXw+fZughbhKo5JA4GdRlb8OeNT78
-         mUZHMuWNHREj9nkfGv8ERQS9DfJv9cXv2X2Xt93WUbhy4qd4Ll3sDgSHaseTp+93vU0Q
-         edSxgU4fLh/JsKKl8NBShSLf/6ExokvS9buDzvA+u/NzXE8B0ThRtANIxrmy69COaY66
-         L6pw==
-X-Forwarded-Encrypted: i=1; AJvYcCUc6yRR2gh27MC+1ywtgbz3sBdRsBo3CXg3xbsBCspKb168rtKB2zD1egljaQUxbMKz1RjMhL8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPeb5rMPvj5DHnhYA2QbiYwirJkODQ9AdkhB/DNfBukgghsTpb
-	2SVRxwQchzmv8tlmaXoZFJutBms7MqMerxwYHg+/NKEkZ/79LYYV78+8
-X-Gm-Gg: AZuq6aJfdSbhsLTz5hQjsNrr54MOvQHxwxQGqLU47K5/pG5rpM4peQKvom09sk03MNo
-	pJr/011byteoPBJ4KlQ2I+16UIQ/sQXL/CCGM2bBhp/GhP2gAwMQsRcVNCBs9vTri2EH3jrMdLR
-	neMknVyPp8tAC1+Jk/fKb5ljlvrjthamiI3v2cVEsElh/TsVkYAb1ByGHvY0XFjNJhY9C/yD3jV
-	7MAI3vdkY5AtCdSeABH4py+9S6QvT7l+tuistyV5DxwQ0XAmYnB92NYaV4Y8rt+OLlAovsLDgo+
-	GHqAX7Kr0ZnZE7cGUfL6KC1NDnmI4DWuj7kHjenNGWgDBaPYjE1prUn7xOsIpD4inQmwACpG/Uh
-	i4UGitLmZS5fKabgkChF48AVpwnOmOGQHCZGWpPu33kD8Si95pnSsn9BdxaOu0clxOy/Wzz9vfu
-	fSND4L/r7TYzx4P9dowy62k3XR1KemPrZuHJ/plQSd
-X-Received: by 2002:a05:6a00:2389:b0:81f:3f03:6832 with SMTP id d2e1a72fcca58-826daa62853mr6926447b3a.44.1771838272905;
-        Mon, 23 Feb 2026 01:17:52 -0800 (PST)
-Received: from e50dbb8e4021 ([115.245.213.202])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd689474sm6353180b3a.15.2026.02.23.01.17.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 01:17:52 -0800 (PST)
-From: Sanjaikumar V S <sanjaikumarvs@gmail.com>
-To: mwalle@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	miquel.raynal@bootlin.com,
-	pratyush@kernel.org,
-	richard@nod.at,
-	sanjaikumar.vs@dicortech.com,
-	sanjaikumarvs@gmail.com,
-	stable@vger.kernel.org,
-	tudor.ambarus@linaro.org,
-	vigneshr@ti.com
-Subject: Re: [PATCH v2 1/2] mtd: spi-nor: sst: Fix write enable before AAI sequence 
-Date: Mon, 23 Feb 2026 09:17:33 +0000
-Message-ID: <20260223091733.47-1-sanjaikumarvs@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <DGM6ZPOT1WCR.157JI0LW4W3E8@kernel.org>
-References: <DGM6ZPOT1WCR.157JI0LW4W3E8@kernel.org>
+	s=arc-20240116; t=1771838964; c=relaxed/simple;
+	bh=qSc8GpjmV8N4ESmmtoyex8meT32NYtvc0z27Ol22oBY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
+	 References:In-Reply-To; b=uFNjQ2Jf5JQdfxb4Qr+yZinGjCHUKToav0m3UG+bJz9b66GDNsNaNigmo7uO2iAytGSd0d/4HXB3Lz5bMxBX6Uk4pDZTTKejOVhYSYQlxHukRlAu5MWefj2R08q4Y7S9c9RODNTNe2fLwBgqowdz1xZivaKitak5EM0o/B/tJ1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fp7TxbYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE1BC19421;
+	Mon, 23 Feb 2026 09:29:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771838964;
+	bh=qSc8GpjmV8N4ESmmtoyex8meT32NYtvc0z27Ol22oBY=;
+	h=Date:Subject:Cc:From:To:References:In-Reply-To:From;
+	b=Fp7TxbYfRJ5481Vdo9QJM9dPqJgvg1E1O1mnF6BNpUF6Xdoi1VVrNAhpVPa3L6sEQ
+	 n0cfQ5fmYCAyikDxWMi/lniSdpOLEwjm55C3nzOL108Tbumr6RYbrhrJ9zeMyk+5aJ
+	 xDJy4f2dOxPBFrb8sOQiLdEZU3H0kvkWMbOkMPckE3KUCQv7wL0PSRti3ALWjYOevn
+	 5x4c/Fqups+tmKAqPX3YiW0iDo68lJuwdB+Yk/1L62wGy8MCI1X+JCo254VaGzv0YE
+	 E/tzJQun95dLQEY1qjDYxshd9wmfgNUcEavoK/Uep1X42CJ4XN1P8YEu/H8XlpOf/0
+	 1vcXj3Wz5+Q9Q==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=adf5d6bf2817c52630721166249761492ef851abe98547b5f7470d47818c;
+ micalg=pgp-sha384; protocol="application/pgp-signature"
+Date: Mon, 23 Feb 2026 10:29:20 +0100
+Message-Id: <DGM8HPC181AF.3FCCS4MIE4A43@kernel.org>
+Subject: Re: [PATCH v2 1/2] mtd: spi-nor: sst: Fix write enable before AAI
+ sequence
+Cc: <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+ <miquel.raynal@bootlin.com>, <pratyush@kernel.org>, <richard@nod.at>,
+ <sanjaikumar.vs@dicortech.com>, <stable@vger.kernel.org>,
+ <tudor.ambarus@linaro.org>, <vigneshr@ti.com>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Sanjaikumar V S" <sanjaikumarvs@gmail.com>
+X-Mailer: aerc 0.20.0
+References: <DGM6ZPOT1WCR.157JI0LW4W3E8@kernel.org>
+ <20260223091733.47-1-sanjaikumarvs@gmail.com>
+In-Reply-To: <20260223091733.47-1-sanjaikumarvs@gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-3.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	SUBJECT_ENDS_SPACES(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-217713-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,bootlin.com,kernel.org,nod.at,dicortech.com,gmail.com,linaro.org,ti.com];
+	TAGGED_FROM(0.00)[bounces-217714-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sanjaikumarvs@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mwalle@kernel.org,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 52B68173D60
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 81633173EE9
 X-Rspamd-Action: no action
 
-Hi Michael,
+--adf5d6bf2817c52630721166249761492ef851abe98547b5f7470d47818c
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Thank you for the review.
+Hi,
 
-> Raises concern about writes ending at odd offsets potentially having the same issue
+On Mon Feb 23, 2026 at 10:17 AM CET, Sanjaikumar V S wrote:
+>> Raises concern about writes ending at odd offsets potentially
+>> having the same issue
+>
+> The odd end address case (trailing byte) is already handled in the
+> existing code at lines 243-255:
+>
+> /* Write out trailing byte if it exists. */
+> if (actual !=3D len) {
+>     ret =3D spi_nor_write_enable(nor);
+>     ...
+>     ret =3D sst_nor_write_data(nor, to, 1, buf + actual);
+> }
 
-The odd end address case (trailing byte) is already handled in the existing code at lines 243-255:
+Ah, I must be blind. I stopped reading at the write_disable.
 
-/* Write out trailing byte if it exists. */
-if (actual != len) {
-    ret = spi_nor_write_enable(nor);
-    ...
-    ret = sst_nor_write_data(nor, to, 1, buf + actual);
-}
+> So write_enable is already called before writing the trailing
+> byte. My patch only addresses the odd start case where BP clears
+> WEL before the AAI sequence begins.
+>
+>> Suggests simplifying the conditional logic by removing the length
+>> check
+>
+> The condition `if (actual < len - 1)` avoids an unnecessary
+> write_enable when len =3D=3D 1 (single byte write at odd address, no
+> AAI follows). But if you prefer unconditional write_enable for
+> simplicity, I can change it in v3.
 
-So write_enable is already called before writing the trailing byte. My patch only addresses the odd start case where BP clears WEL before the AAI sequence begins.
+I know, but I actually don't like repeating the condition in the for
+loop. So I'd prefer to have a local "needs_write_enable" boolean
+which will be set to true. But then, I wouldn't care too much if
+there is a write enable followed by a write disable for a rare case.
 
-> Suggests simplifying the conditional logic by removing the length check
+>> Notes the patch lacks runtime testing
+>
+> I don't have the hardware setup to test odd-address writes at the
+> moment. The fix is based on code analysis. I have tested patch 2/2
+> (dirmap fallback) on hardware.
 
-The condition `if (actual < len - 1)` avoids an unnecessary write_enable when len == 1 (single byte write at odd address, no AAI follows). But if you prefer unconditional write_enable for simplicity, I can change it in v3.
+I'm hesitant - because like I said, if there is really a bug - it
+would have never worked correctly, since day 1. But yeah, I've also
+read the datasheet and it clearly states that the byte write will
+clear the write enable latch.
 
-> Notes the patch lacks runtime testing
+> Please let me know if you'd like me to send a v3 with the
+> simplified unconditional write_enable.
 
-I don't have the hardware setup to test odd-address writes at the moment. The fix is based on code analysis. I have tested patch 2/2 (dirmap fallback) on hardware.
+Please see above.
 
-Please let me know if you'd like me to send a v3 with the simplified unconditional write_enable.
+-michael
 
-Thanks,
-Sanjaikumar
+--adf5d6bf2817c52630721166249761492ef851abe98547b5f7470d47818c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCaZwd8BIcbXdhbGxlQGtl
+cm5lbC5vcmcACgkQEic87j4CH/gD+AF+PMpnOIUXZU15ZBDAvkgvNBLt4H5g2WC7
+aDt3o03I0g2/SHw0sv84Dd1FQiMqqAVxAYCjWOam711N/Ut6j2f+6MXK9h9dIcwO
+dmEauy79oSIIyC7Q8J0sTI1nFnBaJSKRk+k=
+=CCQO
+-----END PGP SIGNATURE-----
+
+--adf5d6bf2817c52630721166249761492ef851abe98547b5f7470d47818c--
 
