@@ -1,117 +1,146 @@
-Return-Path: <stable+bounces-217924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIy0Gv3NnWn4SAQAu9opvQ
-	(envelope-from <stable+bounces-217924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 17:12:45 +0100
+	id YM5iKHvUnWk0SQQAu9opvQ
+	(envelope-from <stable+bounces-217925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 17:40:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 529051899F3
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 17:12:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB20A189E67
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 17:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7150E303AA8F
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 16:12:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B96F731DB6DD
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 16:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91953A7845;
-	Tue, 24 Feb 2026 16:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C023A9605;
+	Tue, 24 Feb 2026 16:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmxnEmZp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gRu4+aRL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9CF3806B8;
-	Tue, 24 Feb 2026 16:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998DC3A9601
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 16:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771949560; cv=none; b=m841RuiKYULhHPc6E+7SgPlDdb6NM01jiN08h/QghpbPgGXpkiSgGVIG2ND+QvDCZ3DdIU9llMcMfTR3XueHpziH5Ztd8Y6ds/7VaTjqlHc4Dp3Doh18JyJLgLGs16YabO9UY2pdL4jnFqznTiw9tanl5oGzt+PDfnhq2DN6X0c=
+	t=1771950960; cv=none; b=qdERTvaZJvpzOyULqZ2FQ7o/dT6PaDZ3s1cKxE+1tR6W9aDrw65pOIYsvFK523AsB/znL6ryqSsjXHk45a69y4eIODWuBclNO2uxag5zcDkoa8jwLyib8Q3F41mdHYz0s6vi6C9M3Aka8gFjGlUTqQ+gP0Z53rFc7l7CBbsYa1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771949560; c=relaxed/simple;
-	bh=5E0qT8mDGaw2I+EpER6p5r5QiqwYmfMaK2tnZ5m34mk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=iV7mnNNmK1Jgvx29LElBIdV4ho5AFhJK+hWIAC/IMyWVz4mAiG95MnQgGJ1IUzxro2C/9NjZTHv2XSGqsWpreH0L6u5OytiVhV+HIT3KHE9ZR8JJb3aI2QZJYVTZxRLCW/MP6kWHTIOnLcJlDrO9qshWQm1q97wqu5qeaF6RXOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmxnEmZp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63E2C116D0;
-	Tue, 24 Feb 2026 16:12:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771949560;
-	bh=5E0qT8mDGaw2I+EpER6p5r5QiqwYmfMaK2tnZ5m34mk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=NmxnEmZpsr7UbZ6DjMLih5uSxezCzyRPBQW+nZgj85AGoG1/KuYj59d1esgvsO2gn
-	 1ayFQKWXt1YpJGILrmQP7F2Tg8evgiiyYl0h/JYA7L+bG6EPJP0xaNkMBvnUzwEd1w
-	 xzWI7ffsnn5ZfwiFPtEWwkF0aLEcZx6J/7Ng+WNLiUFLDkQjH+srDnD2/xfLB3HntU
-	 Sa4vwkK+C7+n8y6lcVNAADF+QdGBxZrzdUuGq+U68HoaGSAy2OEoqXPTh14ZmWXoQf
-	 6Xj01ez9Wu16vqT9xjALHhCpgcdDjGIxWTigYVErTfQdUMXhr8GQ+Ncwp6POXIXosW
-	 Ywvn3pMsS8LrA==
-Date: Tue, 24 Feb 2026 17:12:37 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Benjamin Tissoires <bentiss@kernel.org>
-cc: Lee Jones <lee@kernel.org>, David Rheinsberg <david@readahead.eu>, 
-    linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] HID: uhid: Fix out-of-bounds write caused by raw
- events mismanagement
-In-Reply-To: <aZ3IKiL91Ya7_iIM@plouf>
-Message-ID: <r6574n79-563r-9rrp-0n92-784532r67o63@xreary.bet>
-References: <20260211164025.171242-1-lee@kernel.org> <aZmsTQeeGf26FqvY@plouf> <172q4775-616s-p7s4-7n80-p8579n0r3516@xreary.bet> <47ro00po-r74n-870q-q178-67s8rpsss12q@xreary.bet> <aZ3IKiL91Ya7_iIM@plouf>
+	s=arc-20240116; t=1771950960; c=relaxed/simple;
+	bh=QIdzlmeRuW02yxleV9RXkd4SZV/3Vp/4Ei7AIjsUXLo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=TNaA+hHdQbu1OqWdr7MSJkGa0Hhxm2+6tVVkn616297KKvkSFoIeDbIW1Yays4tdKLEnHgJ1jaOvsMWx9gQKH2WZEqwEaExMaRTAewrlZ/NBIx5TyV/IZ/UOPTwqJatpXVqbRpV5E1YSXt4bO4EAxnZYniuQRkcZhu1WasKHNsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gRu4+aRL; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771950959; x=1803486959;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=QIdzlmeRuW02yxleV9RXkd4SZV/3Vp/4Ei7AIjsUXLo=;
+  b=gRu4+aRLiuO4BgMLywNuLNZPbduM8rnEhRbHir2EbEoQ4u0NkjVSyYS1
+   oLli3zi+5z5BFZ+IgoYc556dt26belHJuavW6+WP8wfwd0y7wTn2Ls5Ck
+   Fcgq/EPtf5261nNvGMzi2k89i1ENB1sx+jYVTACH4v9GgBLu6/l8w1VFp
+   N0oZwDggyb89MKfqPQm+y66dgW68KPPKMEuHFDTltX9MKZiewdd+qGg+u
+   +BUJvjvjgSTD8Qd6ZnJ8HUGrc6ras9FLCYgDlKv8pVoHm+84X29iseouI
+   8MAhHjQPngJKkPs8mQn4i74ADcebMokQ1Of9dI22e4/6flp8GO0LhjIeG
+   g==;
+X-CSE-ConnectionGUID: zTTWfXueTG2TQBOhpCpHBA==
+X-CSE-MsgGUID: qMYvEVcKQ6mKyo6iW1Ymrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="73040140"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
+   d="scan'208";a="73040140"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 08:35:58 -0800
+X-CSE-ConnectionGUID: D9tES4ESQF+bKfsYQROrqg==
+X-CSE-MsgGUID: z/V3sXsKTrWHrT/UAXTMGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
+   d="scan'208";a="220555619"
+Received: from guc-pnp-dev-box-1.fm.intel.com ([10.1.39.24])
+  by fmviesa005.fm.intel.com with ESMTP; 24 Feb 2026 08:35:58 -0800
+From: Zhanjun Dong <zhanjun.dong@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org,
+	Zhanjun Dong <zhanjun.dong@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>
+Subject: [PATCH v8 1/7] drm/xe: Always kill exec queues in xe_guc_submit_pause_abort
+Date: Tue, 24 Feb 2026 11:35:49 -0500
+Message-Id: <20260224163555.218750-2-zhanjun.dong@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260224163555.218750-1-zhanjun.dong@intel.com>
+References: <20260224163555.218750-1-zhanjun.dong@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217924-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jikos@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217925-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[zhanjun.dong@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 529051899F3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email]
+X-Rspamd-Queue-Id: EB20A189E67
 X-Rspamd-Action: no action
 
-On Tue, 24 Feb 2026, Benjamin Tissoires wrote:
+From: Matthew Brost <matthew.brost@intel.com>
 
-> Long story short: that patch is too intrusive as it makes assumption on
-> the behavior of the device. We need to understand where/if the bug was
-> spotted and fix the caller of hid_hw_raw_request, not the uhid
-> implementation.
+xe_guc_submit_pause_abort is intended to be called after something
+disastrous occurs (e.g., VF migration fails, device wedging, or driver
+unload) and should immediately trigger the teardown of remaining
+submission state. With that, kill any remaining queues in this function.
 
-Thanks a lot for the analysis, Benjamin!
+Fixes: 7c4b7e34c83b ("drm/xe/vf: Abort VF post migration recovery on failure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+---
+ drivers/gpu/drm/xe/xe_guc_submit.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-I asked about that here:
-
-	https://lore.kernel.org/all/172q4775-616s-p7s4-7n80-p8579n0r3516@xreary.bet/
-
-So let's wait for Lee to clarify. Until that, the patch stays out of the 
-branch.
-
-Thanks,
-
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index de716c1fb18e..42712acf2ec2 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -2763,8 +2763,7 @@ void xe_guc_submit_pause_abort(struct xe_guc *guc)
+ 			continue;
+ 
+ 		xe_sched_submission_start(sched);
+-		if (exec_queue_killed_or_banned_or_wedged(q))
+-			xe_guc_exec_queue_trigger_cleanup(q);
++		guc_exec_queue_kill(q);
+ 	}
+ 	mutex_unlock(&guc->submission_state.lock);
+ }
 -- 
-Jiri Kosina
-SUSE Labs
+2.34.1
 
 
