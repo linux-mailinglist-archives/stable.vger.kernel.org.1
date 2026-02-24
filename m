@@ -1,368 +1,256 @@
-Return-Path: <stable+bounces-217861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217862-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCkODTo8nWkGNwQAu9opvQ
-	(envelope-from <stable+bounces-217861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 06:50:50 +0100
+	id 2IoGD4RDnWkMOAQAu9opvQ
+	(envelope-from <stable+bounces-217862-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 07:21:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E5C18233D
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 06:50:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 365FB182618
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 07:21:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AEEAC302B1B2
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 05:50:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E1B383052442
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 06:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C85B2C326D;
-	Tue, 24 Feb 2026 05:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F622D29C8;
+	Tue, 24 Feb 2026 06:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="oQyXepRe"
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="b4JC46B5"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FDD2C3256;
-	Tue, 24 Feb 2026 05:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771912244; cv=none; b=FzPu8fgCHHzanVPw/PnlWt6coqSHXGo0/miDpgMGXoWuJdY+r8e5JNgZyxUAF605c3yx0kb7F+PD+0LdPtPpqkzX+Bo8i3bFcri/CV4B3uMd6TKm3MYLJa4pErt59MpLivXxDUOEdf9oFHOZGDXbZqfPSG5s4HOyXu/MaegiJRc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771912244; c=relaxed/simple;
-	bh=1xoHKza8D9qbpBu77QMbUCKoksai5zG0Vqlhugga9bc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BHdrmEmTY2JhDuECRqWWOCtzYGvK7AxsUcVG2z4ugIECdvt7lPuQ9s5/VuF2Q3zm+YTDYU507npkZjHBeR/arr7w5+oBFiIBorjZMQAMyI38pOHOcofUikbFWw9VBadZIlnrPoSfyu8xDSzZag81OBlWt5F16FLuSg1vsz2k/qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=oQyXepRe; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=8X
-	HdgUxzGg4cYygXrKsfiEyU8WflBm67ZhCwzxUsvwQ=; b=oQyXepReo/JUpKF/Bq
-	cpTnM8X+gP2HxlGwsBx/g+WA6daUgeNZFhrMEZEHKM8kKX9LfjbzQzSVe6ctv3b1
-	X6uTfM1jExjFSbwB1mruRTkjIUTPuuIs7QjNnfRM58gO7rxNbgLuHjK2+v0FMMyR
-	hpFkHOT0uYzesWyIR7A59kpSs=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wBXv3P4O51pjHizOg--.39411S2;
-	Tue, 24 Feb 2026 13:49:46 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot+179fc225724092b8b2b2@syzkaller.appspotmail.com,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.6.y] dst: fix races in rt6_uncached_list_del() and rt_del_uncached_list()
-Date: Tue, 24 Feb 2026 13:49:43 +0800
-Message-Id: <20260224054943.3324184-1-black.hawk@163.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD2F287257;
+	Tue, 24 Feb 2026 06:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771914109; cv=fail; b=lbTes1KreZ8WVZS2SJWEYLFekPxp20wieW1jz0OrC+F2b2qk5qcQyx8ZXtmCKzWK1hFylr6s1R/yQYUgxIuyYW3JL6QyyV9NdgzTCprgadapQV+b0nUKE3TeXfih/pHtucVm0R/LqTOtOCHYbv8uTtpOwIDDs+sOKGpF7yLP1w0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771914109; c=relaxed/simple;
+	bh=zyNS13PeIxli1TmMC2CS/HoD6tGJUHaaKgFlgDT570o=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=pkPm6ff+xCZtFZi80A+0qO9d5SKwYhZ/Kq/YJ39hqhHR2Mylr39VdY0hpwn9nPhvCAUn78EpKc+OW5Ej5pHMPevdwVWWk5e7ks6+bv7yqBFv1Bn6ajrhycBula5YENBIpViuzB7eUMqDkZ1pps/Ac3uH4MyiwLy4tMM7LstKXwY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=fail smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=b4JC46B5; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61O5V6Ig3327197;
+	Mon, 23 Feb 2026 22:21:22 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=cXJoSxeRT
+	KkDbT6BmGww5MirOhjEz1It1lxyiSLGadE=; b=b4JC46B5GlHQOU/fM/XKsYr5z
+	Dfh7GzbQjnquj9q6a1wZFWMz/HW92fWjfboj4nhjttwxvSGXcwf4UoldiFdyELEh
+	+4qeQ/fji6E7gf/Z6CDfdXLcZFQIhLiiOgk17vse3TfURqI/mD4pOORt4E2KQlRy
+	4B7I8dI1Zw9Ercle4mws8nDrteBlrVjugOp87QHYX5rwH0rbm1H2ENdCHqDzvBw6
+	ijJn6Xzni7M4ZnRfdOFXQQtZ1xwWqjbL0NA+IZ17+sVfQPJPEJqMJcv0AoEWD/nQ
+	9UGjC7rbmxE2aNJ2hpJMSMxxVFhIjyc6okEb/5M9y4nIjadlqUUAr1PYCEf/A==
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010065.outbound.protection.outlook.com [52.101.61.65])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4cfd3k2gny-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 23 Feb 2026 22:21:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qNcb6YT+mpNq7f9U4PGYV0eUiR4zFVomna9DagccUXBAdIt0o0uwckRmFLGBiwHkSr/WYEEgXAT7v3hJ9DGnNtrgJD/+N+4ZFn0dIDSDiZcTOGL/w/rmaFJzoEKBDaVs8J3veLITZtsNnSmFJAgJHR0WQI7/83u9TlwCjWGXogoKtW3bl6+PxvKZV62RJy2sAbOuDeCyT7SSAL7Gz1FYar/7+JLHFGWLNXzafPRF+ZbKVZj2z6dI0Uotx/lFb0Qm0UpZMmsXYV6WL1Hueo/Kd/oSxPklxFXIuQdsKK+ZZiQzmLhTBH6iQqmRsaNibfDbDwSAkkDmdKmTldjLIyvldg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cXJoSxeRTKkDbT6BmGww5MirOhjEz1It1lxyiSLGadE=;
+ b=DKqiBUiEgIlXPnA6NEMltngp4tAzvn6g1QO2bzKrIOCmXQypzUMmuzP4QadUnYzOch1REHbljYilpk08lRu6IW8mdqmA2xaZK0GDyg03aneG3XE08yiYIDdZEFrf4yQvDELN1z8mzGqVKsDd8Qf0feVeD0/AtHJJNEngtGA5RdHGI2Cn13KlZBRQkr1jL2bW7EhB2JUl85MyXsYu+CbLrMzWNH6FJM7A1n3Wu2sVjxjR5bZ0a8lNlMRu7YG8lDuZcXjeAEZWhLbkGQlxUd//+Q2YblC/Y+pcWoYrDxBoZxiRCiM9rTK9ize09NoSBtV5DX9QAfa1qm7I0j2DOyqmQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from DM4PR11MB6214.namprd11.prod.outlook.com (2603:10b6:8:ac::7) by
+ CO1PR11MB5156.namprd11.prod.outlook.com (2603:10b6:303:94::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.20; Tue, 24 Feb 2026 06:21:20 +0000
+Received: from DM4PR11MB6214.namprd11.prod.outlook.com
+ ([fe80::2896:ebe:3c3:8584]) by DM4PR11MB6214.namprd11.prod.outlook.com
+ ([fe80::2896:ebe:3c3:8584%5]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
+ 06:21:19 +0000
+From: Bo Sun <bo.sun.cn@windriver.com>
+To: linux-pci@vger.kernel.org
+Cc: Bo Sun <bo.sun.cn@windriver.com>, stable@vger.kernel.org,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, Rob Herring <robh@kernel.org>,
+        Lizhi Hou <lizhi.hou@amd.com>, linux-kernel@vger.kernel.org
+Subject: [PATCH] PCI: of_property: Omit 'bus-range' property if no secondary bus
+Date: Tue, 24 Feb 2026 14:21:03 +0800
+Message-ID: <20260224062104.140453-1-bo.sun.cn@windriver.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCP286CA0338.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:38e::17) To DM4PR11MB6214.namprd11.prod.outlook.com
+ (2603:10b6:8:ac::7)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBXv3P4O51pjHizOg--.39411S2
-X-Coremail-Antispam: 1Uf129KBjvAXoWfGF1kWFW3Jw4xZF43Zr1kXwb_yoW8JF1fGo
-	WFvws5Xr4xKa45t3WfAr12ga1FgF97XF17Zrsrur4FvF42v3s8ArySga15ZryxXa4fGa93
-	XFy2qr18Ga4UJr93n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTR3KsjDUUUU
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+hrOaGmdO-ooxAAA3f
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB6214:EE_|CO1PR11MB5156:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1ca6477f-939a-44a7-dad2-08de736cec8f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?N6Okru0LXPPiydIMUuDHZes9ZjIB9cKl1v3Brw27+6XW9XG72AYagBEA7081?=
+ =?us-ascii?Q?jBUA1SyEa6tsgsKu9JcNq4iSiw9XrJ/kvnaNUBsydzVbFFnsgEbLm/Yokuyj?=
+ =?us-ascii?Q?2KR+k50WX0WqVndm3pK8C/dGpo9OsyyXVJg/nOyNbvF+Wa1BGyXBqfSpt/VS?=
+ =?us-ascii?Q?ZTWPamWlvDoFVyIwSafajUgwNjxRoi8fUCLWfUCGysnYFEFcFRkk0/VuZ89j?=
+ =?us-ascii?Q?PTFHXP6+aSqhHimipQanVnxN1n6aYPh34JvWiKVmHrxeqZ1Fs1paZ5JhrnXS?=
+ =?us-ascii?Q?Er7MrlgkTHFx7vzptqtkP9qdT2UvA+2O1hjdOnLjuNfC72g8A6qqCkDBDkGw?=
+ =?us-ascii?Q?XAJFQg9VBs6OLSDe+jccpEfal79szV33paOUlGe9BhL9T8vcGYlvMxkvn5Oo?=
+ =?us-ascii?Q?VS3PDb/NWOt1rcop3HCtYdib0HwYvleC1P7rbXO2BNdnW+eTaVeHSxrQrj8z?=
+ =?us-ascii?Q?q6BiJ1CWV9V5zWFfIeSATQKhN8CpYoE1bafzW+rrjh4WgnAc7FAkjFwX3yBo?=
+ =?us-ascii?Q?cIqUtclvjpm7CM8Wwsii3krZ+Ctajtqk6B7ffDO7X5ZnWdZRZ4Am6UUNbd6S?=
+ =?us-ascii?Q?nkAfmEEaxtGr9awZhVN9pOA56ZkXR46SgK+PKo5Ggi/zAk2SjQks3Q3YoeCf?=
+ =?us-ascii?Q?94V3NvshCblDaxKplgs2qPFGEHiYHlFMfB8D192lHd0lr3i/ottkcKSGpaK1?=
+ =?us-ascii?Q?HJkP3Rijysd2aetzEgvu85JbbYG8IeVrlG+F4QwnGmTUWHh2HyHURZOb+x9R?=
+ =?us-ascii?Q?yw2vITlS8T2rkpF/jgtTfQKTLpm76HFBiLvBIeKlzRYr6jhKH7xmINSzYXVj?=
+ =?us-ascii?Q?5Z3gx4hPA+mMe0KjxlB7ZfhwRejCaKiWhBqsGTreVlajMi09ZzUQ4Wk2jxCG?=
+ =?us-ascii?Q?2bL50gL2wA4QaZP0p99ITA3NzytWQ7akcWQbiDd5VnmAd0xqpSY/zPkjCGsH?=
+ =?us-ascii?Q?tOnuB7LGmt/eZ/HMBFeo9oTGroZhz30uMQK89nklouzjHyYQngWXLukxMhgP?=
+ =?us-ascii?Q?1XRT0MUO/DBmlQ17vVak5GufiB32Ak6L9OTKd2s5i8+dQFzcOcqO63+edD92?=
+ =?us-ascii?Q?JmPKgPMJq+hZKiTfjySS440KuDC5adU5pB4fKvVTOLey8/IvkJ8Or+0c1MhR?=
+ =?us-ascii?Q?Xh36npfkrluCBQe4N8WSEAjeOwg6i0LYwH5EwgVkf+P8L8Suvv1DzBXVsMwz?=
+ =?us-ascii?Q?Nwaho7bHguxqCJPUcUAjGafZrb1D5yeYZTiiuXGrPF5JvuIZJRK/MKB/sPrF?=
+ =?us-ascii?Q?f3rxbbS+g+th+J+CdqADuf0irYL4NkO/WkN43Ji/hWWl9w2Rpnfy6nbQMHFb?=
+ =?us-ascii?Q?i8cteMG00T2Fy6DH89xJb+agetE5cFwUFC9PMtuhwPjGTOzJdkzIQoMPXai5?=
+ =?us-ascii?Q?tvFMqrBTkcE8VqNdwtSnEqSdWzwxL1hbZHWX5g/PFohU1t9FG2E1F8l1TU+W?=
+ =?us-ascii?Q?4Ck8pT4NAWmZFlHLfyBqQhRVkKGNnguBcSDt6FRpDxNJsgfUA4Wm4m7+3/zo?=
+ =?us-ascii?Q?WV2JQFXkAwcSB0SL4hQow2qZfLTzNfKHq8kF0hKgWipO8i3TELXKAB2MiKae?=
+ =?us-ascii?Q?7YvOZW365I27rA6tXPJcPlbNVGLKQFSlM3FyfuqkrJ1Y/8mTTbvMW9mi5o47?=
+ =?us-ascii?Q?N5Nxxq9y04CZBfKs4XrT35M=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6214.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0EpbP5FtYJu89k9mHjpEnF7nshbhmRJMV5g/8SX6vYwn01AkBoEdvmrEXoer?=
+ =?us-ascii?Q?Y7ck+R/FRyVujr/0zh2Y2zSbe/marPRT+DP3j2Fqo/qfjQOufzTK+rQhE5C6?=
+ =?us-ascii?Q?tZ7kBWUFvXFYkjpf5D5Z7wyK1umefOO06j7+d1EA3P7YHO3dYnGxSQ/NfDGu?=
+ =?us-ascii?Q?h4wXldCYKdUPlqhIx/Flmg3+sBtQeZYCYl1LK4kktPTi4IxRUOZyH0J/fpy0?=
+ =?us-ascii?Q?8wyP8Y7omjYnLdr5TUX2kdwZJj22NgPuveXg2t+6OYDqwVlbpV1m+e3ARQKY?=
+ =?us-ascii?Q?GcFt3A+iih89iG3GqY0mSaUuoJk8I+ufDeAbbXdnnImEHGILW11F+fhesc/i?=
+ =?us-ascii?Q?/ztNyoQrgtsBaJHThWDvphYjQ3mAjI8Awm+yj1rwPRPSzSfvCtxHxjOiQBAT?=
+ =?us-ascii?Q?JKY985vPS2Rct9Pdb1fv6C0NAtQfzob1BQpm+1Pp0eGvgq87wkJugs9DKI5o?=
+ =?us-ascii?Q?+ZcrZzaWBghV6GuymFiZvlrJE0P9Sd+q+QxM1eQHpGvc67Bhf/Zm+gxE11a0?=
+ =?us-ascii?Q?03ZTxkvRR/uVtB3gKIlZ/xdOkR8v8B9dIu8mYlfmb3bcgtg+5fK7tlmAAszR?=
+ =?us-ascii?Q?fVKMHDjipmDC5aueCzdPk41lVJQg4KRGD6pzZhOQu7kCdt3Qwp/atFgji9h6?=
+ =?us-ascii?Q?Jx10IZR7WmMH3weLG8EPUexc9g9kUz5eG9jvzuvgOUQcMeb7XmImKPBl2R4E?=
+ =?us-ascii?Q?W3qsFLZF0QoRUTAGoealxsyXfHb5vHUYP59HLymWcKmxwdPdrzGBmwNoO1mb?=
+ =?us-ascii?Q?Ohie/OfdK5L/1FxAUYvpBEs00RtEhoYoEoue7km6sDDKrB2q49aFqHvN3XxY?=
+ =?us-ascii?Q?CAjyChY0iXHW2Ap4MZKOVDpytUhcpkys2BeTf71pDmacQpmfb6EkxZfsp4Bg?=
+ =?us-ascii?Q?/cQB+NP9H/C1zZ4Jqvk6cqCS7JWPbO8X3W7tZJycL2wowVdXqoKP12YXgumU?=
+ =?us-ascii?Q?YzKmprRYVULG76lI1xHFaEyiUOzssPzNV4Ewrj4jOAe3CuhX5X9FladZ3Pcb?=
+ =?us-ascii?Q?FK29p/ok4/W7P2fGKr+82hTpbLAJ6GhUt0jiLCFoNrXnYnlgweBS4OcCoU50?=
+ =?us-ascii?Q?9PxBSVy5jffzVSZ+t35jVNYm4OIHVg7qxNAQd65c2rGREdLHOo9SZlFfk4Dh?=
+ =?us-ascii?Q?SnockeqNZyoXIEkmiXOyIwTPsinB1AXwQ3X8r1gP2Rvb8RU6nbe71TuG0GSd?=
+ =?us-ascii?Q?r8+pSvUZgFH2N25bjEnnLil2aAwyOnT25gXbwZF/cCxdxdYw0hvzQ4f8jkYg?=
+ =?us-ascii?Q?CDB2A2YgjAFmr21cdbzxTJLXRSi2CrcH/xKsrlBuA4HhZnEhs3PHw7GKRAmU?=
+ =?us-ascii?Q?XB+F7D4PgR7o9dBu9aA91YnhIrzmHAwoB1pGLFGOW6K3OoHNjRsBFp6pcj0x?=
+ =?us-ascii?Q?wSeWKnimtmvXnfdGqiBCDEqhrTb97Xdidaaa7xYfsS8SCpUkuVFGd6dHSGpk?=
+ =?us-ascii?Q?u/yM2yYgXDFoPwtdc90SCBepzOFJ+OlmYH8Fj3rZfYUzzvGWpXZdp/NSK3W1?=
+ =?us-ascii?Q?nMq//sgYBwwdlIwaUeYb9dwbtDGMtOus5qJnctff9rvtgvnDXS3cMDMPSSq2?=
+ =?us-ascii?Q?gNDvQ2VAWQ2Q0hJzui1OFvWHLbjuMO6VveW3iQkSGuHd/FuBWBjnPET0glA7?=
+ =?us-ascii?Q?kcHJIB/PF/1tsDUz+ApDpy7LUjdfhKOF15zH0J5HJaqQkmhRfCCnYF6l6Fsg?=
+ =?us-ascii?Q?Yli7JLMKXqd8Uc1eBIvWVawnpBEZph3hluLHZAwF7SbgG5tICKo40/1migWv?=
+ =?us-ascii?Q?rDJy9IFKAQ=3D=3D?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1ca6477f-939a-44a7-dad2-08de736cec8f
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6214.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 06:21:19.9121
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: p96qY/z4zMWS8vDORbPRubxs3ebgBTWbbuVsQQBgnF9YAy2WRlzFICsMSP9igWkkOxipmAnq/+k7hSdXADTHTA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5156
+X-Proofpoint-GUID: OmBxK8jdZeVF2JoCO1pjN8L-X8eIlCDU
+X-Authority-Analysis: v=2.4 cv=Bo2QAIX5 c=1 sm=1 tr=0 ts=699d4362 cx=c_pps
+ a=mfnpAPd2LV9TTO/yo6PAYA==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=bi6dqmuHe4P4UrxVR6um:22 a=iKiJcTA2PjBS6x5JeXcw:22 a=VwQbUJbxAAAA:8
+ a=t7CeM3EgAAAA:8 a=UaaBw9Nihny3kgCARB4A:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-ORIG-GUID: OmBxK8jdZeVF2JoCO1pjN8L-X8eIlCDU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDA1MiBTYWx0ZWRfX2XxvuEA1r0GX
+ W0eV5VSxarlxot7LsB3yPd8NO4axbLrSHmp4obGznquboBLWJnnlRWhiET0Qv7ryrguDx4mV5iE
+ 5IvPLJRuYpCwtd19r0fxJQpcGgPGF3tNtSf7SsCmx25rOtHXI2BdBVfPXLboecnNnjr8H6IWV9o
+ yc2wKpOEj1QSqg2t2HRl7S0ZwNSqqRHwwd9UYYFr6AUOTzvy1dsOSX63/+jpYZ4NKH3SLd+NId4
+ s60Yz2wbJ4vfQgipC7+2+1E6tQniHrlVSZdAH4iSWxM4GNowjK7+GFl7E2SL/pnBVNY9tkRU7Hn
+ zOxoFUyf/qOmDuvZbbuunZQHIzPuPlgAa4R9Uxi4dsg7SzpvEr0FZyHr8MnmUEMqShmuu9Flw8I
+ 5EQHLlj7olSI8inxC4KQNcCBGoxfMEzCKV5GNVYtyvzwVDSMLZZrYEgRGpVIttOcxftZQ8f/0fc
+ RP4R4+9tgJlLMgMKyjA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-23_06,2026-02-23_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 bulkscore=0 clxscore=1011 suspectscore=0
+ malwarescore=0 adultscore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
+ definitions=main-2602240052
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [1.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[windriver.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[windriver.com:s=PPS06212021];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,syzkaller.appspotmail.com,kernel.org,163.com];
-	TAGGED_FROM(0.00)[bounces-217861-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217862-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
+	DKIM_TRACE(0.00)[windriver.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[bo.sun.cn@windriver.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,179fc225724092b8b2b2];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: 47E5C18233D
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 365FB182618
 X-Rspamd-Action: no action
 
-From: Eric Dumazet <edumazet@google.com>
+The previous implementation of of_pci_add_properties() and
+of_pci_prop_bus_range() assumed that a valid secondary bus is always
+present, which can be problematic in cases where no bus numbers are
+assigned for a secondary bus. This patch introduces a check for a valid
+secondary bus and omits the 'bus-range' property if it is not available,
+preventing dereferencing the NULL pointer.
 
-[ Upstream commit 9a6f0c4d5796ab89b5a28a890ce542344d58bd69 ]
-
-syzbot was able to crash the kernel in rt6_uncached_list_flush_dev()
-in an interesting way [1]
-
-Crash happens in list_del_init()/INIT_LIST_HEAD() while writing
-list->prev, while the prior write on list->next went well.
-
-static inline void INIT_LIST_HEAD(struct list_head *list)
-{
-	WRITE_ONCE(list->next, list); // This went well
-	WRITE_ONCE(list->prev, list); // Crash, @list has been freed.
-}
-
-Issue here is that rt6_uncached_list_del() did not attempt to lock
-ul->lock, as list_empty(&rt->dst.rt_uncached) returned
-true because the WRITE_ONCE(list->next, list) happened on the other CPU.
-
-We might use list_del_init_careful() and list_empty_careful(),
-or make sure rt6_uncached_list_del() always grabs the spinlock
-whenever rt->dst.rt_uncached_list has been set.
-
-A similar fix is neeed for IPv4.
-
-[1]
-
- BUG: KASAN: slab-use-after-free in INIT_LIST_HEAD include/linux/list.h:46 [inline]
- BUG: KASAN: slab-use-after-free in list_del_init include/linux/list.h:296 [inline]
- BUG: KASAN: slab-use-after-free in rt6_uncached_list_flush_dev net/ipv6/route.c:191 [inline]
- BUG: KASAN: slab-use-after-free in rt6_disable_ip+0x633/0x730 net/ipv6/route.c:5020
-Write of size 8 at addr ffff8880294cfa78 by task kworker/u8:14/3450
-
-CPU: 0 UID: 0 PID: 3450 Comm: kworker/u8:14 Tainted: G             L      syzkaller #0 PREEMPT_{RT,(full)}
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Workqueue: netns cleanup_net
-Call Trace:
- <TASK>
-  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0xca/0x240 mm/kasan/report.c:482
-  kasan_report+0x118/0x150 mm/kasan/report.c:595
-  INIT_LIST_HEAD include/linux/list.h:46 [inline]
-  list_del_init include/linux/list.h:296 [inline]
-  rt6_uncached_list_flush_dev net/ipv6/route.c:191 [inline]
-  rt6_disable_ip+0x633/0x730 net/ipv6/route.c:5020
-  addrconf_ifdown+0x143/0x18a0 net/ipv6/addrconf.c:3853
- addrconf_notify+0x1bc/0x1050 net/ipv6/addrconf.c:-1
-  notifier_call_chain+0x19d/0x3a0 kernel/notifier.c:85
-  call_netdevice_notifiers_extack net/core/dev.c:2268 [inline]
-  call_netdevice_notifiers net/core/dev.c:2282 [inline]
-  netif_close_many+0x29c/0x410 net/core/dev.c:1785
-  unregister_netdevice_many_notify+0xb50/0x2330 net/core/dev.c:12353
-  ops_exit_rtnl_list net/core/net_namespace.c:187 [inline]
-  ops_undo_list+0x3dc/0x990 net/core/net_namespace.c:248
-  cleanup_net+0x4de/0x7b0 net/core/net_namespace.c:696
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-
-Allocated by task 803:
-  kasan_save_stack mm/kasan/common.c:57 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
-  unpoison_slab_object mm/kasan/common.c:340 [inline]
-  __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:366
-  kasan_slab_alloc include/linux/kasan.h:253 [inline]
-  slab_post_alloc_hook mm/slub.c:4953 [inline]
-  slab_alloc_node mm/slub.c:5263 [inline]
-  kmem_cache_alloc_noprof+0x18d/0x6c0 mm/slub.c:5270
-  dst_alloc+0x105/0x170 net/core/dst.c:89
-  ip6_dst_alloc net/ipv6/route.c:342 [inline]
-  icmp6_dst_alloc+0x75/0x460 net/ipv6/route.c:3333
-  mld_sendpack+0x683/0xe60 net/ipv6/mcast.c:1844
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-Freed by task 20:
-  kasan_save_stack mm/kasan/common.c:57 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
-  kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
-  poison_slab_object mm/kasan/common.c:253 [inline]
-  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
-  kasan_slab_free include/linux/kasan.h:235 [inline]
-  slab_free_hook mm/slub.c:2540 [inline]
-  slab_free mm/slub.c:6670 [inline]
-  kmem_cache_free+0x18f/0x8d0 mm/slub.c:6781
-  dst_destroy+0x235/0x350 net/core/dst.c:121
-  rcu_do_batch kernel/rcu/tree.c:2605 [inline]
-  rcu_core kernel/rcu/tree.c:2857 [inline]
-  rcu_cpu_kthread+0xba5/0x1af0 kernel/rcu/tree.c:2945
-  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-Last potentially related work creation:
-  kasan_save_stack+0x3e/0x60 mm/kasan/common.c:57
-  kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:556
-  __call_rcu_common kernel/rcu/tree.c:3119 [inline]
-  call_rcu+0xee/0x890 kernel/rcu/tree.c:3239
-  refdst_drop include/net/dst.h:266 [inline]
-  skb_dst_drop include/net/dst.h:278 [inline]
-  skb_release_head_state+0x71/0x360 net/core/skbuff.c:1156
-  skb_release_all net/core/skbuff.c:1180 [inline]
-  __kfree_skb net/core/skbuff.c:1196 [inline]
-  sk_skb_reason_drop+0xe9/0x170 net/core/skbuff.c:1234
-  kfree_skb_reason include/linux/skbuff.h:1322 [inline]
-  tcf_kfree_skb_list include/net/sch_generic.h:1127 [inline]
-  __dev_xmit_skb net/core/dev.c:4260 [inline]
-  __dev_queue_xmit+0x26aa/0x3210 net/core/dev.c:4785
-  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
-  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
-  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
-  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-The buggy address belongs to the object at ffff8880294cfa00
- which belongs to the cache ip6_dst_cache of size 232
-The buggy address is located 120 bytes inside of
- freed 232-byte region [ffff8880294cfa00, ffff8880294cfae8)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x294cf
-memcg:ffff88803536b781
-flags: 0x80000000000000(node=0|zone=1)
-page_type: f5(slab)
-raw: 0080000000000000 ffff88802ff1c8c0 ffffea0000bf2bc0 dead000000000006
-raw: 0000000000000000 00000000800c000c 00000000f5000000 ffff88803536b781
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52820(GFP_ATOMIC|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 9, tgid 9 (kworker/0:0), ts 91119585830, free_ts 91088628818
-  set_page_owner include/linux/page_owner.h:32 [inline]
-  post_alloc_hook+0x234/0x290 mm/page_alloc.c:1857
-  prep_new_page mm/page_alloc.c:1865 [inline]
-  get_page_from_freelist+0x28c0/0x2960 mm/page_alloc.c:3915
-  __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5210
-  alloc_pages_mpol+0xd1/0x380 mm/mempolicy.c:2486
-  alloc_slab_page mm/slub.c:3075 [inline]
-  allocate_slab+0x86/0x3b0 mm/slub.c:3248
-  new_slab mm/slub.c:3302 [inline]
-  ___slab_alloc+0xb10/0x13e0 mm/slub.c:4656
-  __slab_alloc+0xc6/0x1f0 mm/slub.c:4779
-  __slab_alloc_node mm/slub.c:4855 [inline]
-  slab_alloc_node mm/slub.c:5251 [inline]
-  kmem_cache_alloc_noprof+0x101/0x6c0 mm/slub.c:5270
-  dst_alloc+0x105/0x170 net/core/dst.c:89
-  ip6_dst_alloc net/ipv6/route.c:342 [inline]
-  icmp6_dst_alloc+0x75/0x460 net/ipv6/route.c:3333
-  mld_sendpack+0x683/0xe60 net/ipv6/mcast.c:1844
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-page last free pid 5859 tgid 5859 stack trace:
-  reset_page_owner include/linux/page_owner.h:25 [inline]
-  free_pages_prepare mm/page_alloc.c:1406 [inline]
-  __free_frozen_pages+0xfe1/0x1170 mm/page_alloc.c:2943
-  discard_slab mm/slub.c:3346 [inline]
-  __put_partials+0x149/0x170 mm/slub.c:3886
-  __slab_free+0x2af/0x330 mm/slub.c:5952
-  qlink_free mm/kasan/quarantine.c:163 [inline]
-  qlist_free_all+0x97/0x100 mm/kasan/quarantine.c:179
-  kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
-  __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:350
-  kasan_slab_alloc include/linux/kasan.h:253 [inline]
-  slab_post_alloc_hook mm/slub.c:4953 [inline]
-  slab_alloc_node mm/slub.c:5263 [inline]
-  kmem_cache_alloc_noprof+0x18d/0x6c0 mm/slub.c:5270
-  getname_flags+0xb8/0x540 fs/namei.c:146
-  getname include/linux/fs.h:2498 [inline]
-  do_sys_openat2+0xbc/0x200 fs/open.c:1426
-  do_sys_open fs/open.c:1436 [inline]
-  __do_sys_openat fs/open.c:1452 [inline]
-  __se_sys_openat fs/open.c:1447 [inline]
-  __x64_sys_openat+0x138/0x170 fs/open.c:1447
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xec/0xf80 arch/x86/entry/syscall_64.c:94
-
-Fixes: 8d0b94afdca8 ("ipv6: Keep track of DST_NOCACHE routes in case of iface down/unregister")
-Fixes: 78df76a065ae ("ipv4: take rt_uncached_lock only if needed")
-Reported-by: syzbot+179fc225724092b8b2b2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6964cdf2.050a0220.eaf7.009d.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260112103825.3810713-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Cc: stable@vger.kernel.org
+Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Bo Sun <bo.sun.cn@windriver.com>
 ---
- net/core/dst.c   | 1 +
- net/ipv4/route.c | 4 ++--
- net/ipv6/route.c | 4 ++--
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/pci/of_property.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/dst.c b/net/core/dst.c
-index 2513665696f6..5ed8cb10748f 100644
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -68,6 +68,7 @@ void dst_init(struct dst_entry *dst, struct dst_ops *ops,
- 	dst->lwtstate = NULL;
- 	rcuref_init(&dst->__rcuref, initial_ref);
- 	INIT_LIST_HEAD(&dst->rt_uncached);
-+	dst->rt_uncached_list = NULL;
- 	dst->__use = 0;
- 	dst->lastuse = jiffies;
- 	dst->flags = flags;
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index fcabacec89c7..55ea367f95b3 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1546,9 +1546,9 @@ void rt_add_uncached_list(struct rtable *rt)
- 
- void rt_del_uncached_list(struct rtable *rt)
+diff --git a/drivers/pci/of_property.c b/drivers/pci/of_property.c
+index 75a358f73e69..cade01ea6e68 100644
+--- a/drivers/pci/of_property.c
++++ b/drivers/pci/of_property.c
+@@ -95,6 +95,9 @@ static int of_pci_prop_bus_range(struct pci_dev *pdev,
+ 				 struct of_changeset *ocs,
+ 				 struct device_node *np)
  {
--	if (!list_empty(&rt->dst.rt_uncached)) {
--		struct uncached_list *ul = rt->dst.rt_uncached_list;
-+	struct uncached_list *ul = rt->dst.rt_uncached_list;
++	if (!pdev->subordinate)
++		return -EINVAL;
++
+ 	u32 bus_range[] = { pdev->subordinate->busn_res.start,
+ 			    pdev->subordinate->busn_res.end };
  
-+	if (ul) {
- 		spin_lock_bh(&ul->lock);
- 		list_del_init(&rt->dst.rt_uncached);
- 		spin_unlock_bh(&ul->lock);
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index ad452a04d729..5f7238f6a2dc 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -149,9 +149,9 @@ void rt6_uncached_list_add(struct rt6_info *rt)
- 
- void rt6_uncached_list_del(struct rt6_info *rt)
- {
--	if (!list_empty(&rt->dst.rt_uncached)) {
--		struct uncached_list *ul = rt->dst.rt_uncached_list;
-+	struct uncached_list *ul = rt->dst.rt_uncached_list;
- 
-+	if (ul) {
- 		spin_lock_bh(&ul->lock);
- 		list_del_init(&rt->dst.rt_uncached);
- 		spin_unlock_bh(&ul->lock);
--- 
-2.34.1
-
 
