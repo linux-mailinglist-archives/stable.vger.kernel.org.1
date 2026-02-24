@@ -1,169 +1,140 @@
-Return-Path: <stable+bounces-217894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEABCbVvnWlyQAQAu9opvQ
-	(envelope-from <stable+bounces-217894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:30:29 +0100
+	id uLREKytznWmAQAQAu9opvQ
+	(envelope-from <stable+bounces-217896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:45:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942BD1849EB
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:30:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE20184DEF
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A86813028F4C
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:30:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5FA1C30E82D8
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75E136C0B6;
-	Tue, 24 Feb 2026 09:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D977836E478;
+	Tue, 24 Feb 2026 09:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="knq0yBl/"
+	dkim=pass (1024-bit key) header.d=synology.com header.i=@synology.com header.b="Ehr8TQsq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.synology.com (mail.synology.com [211.23.38.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4FE36C0AF
-	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 09:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B0236D51A;
+	Tue, 24 Feb 2026 09:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.23.38.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771925422; cv=none; b=oFuCw0DOJmdmFHTNFHjRa6d9W1iUCajyt7nPjMwbDDApZJs6kt5z+BvSNH4lGSLvNIHB4r5n/DFsgRFTXCAjZD7qf+e1A137AlZacm8W/iAvRrC2O4BW9bPUPLgfIfCX5dWFAOr4ohgo7pCIy0rXlqQBnZG5jCTNhbsQSZ+FMYg=
+	t=1771926264; cv=none; b=CLdaq3ovcBrmb1nVFiFXe/SGvRrl0oGtzaR/FK2sdM8lWMDoZWwnXmdQuNAb5vQOo+49Mq/CYs6w2uPyZF2cAH9VGnIj7caui7JeQGY36GOax65TV8FJQN+6tDEIaO9ISqoTrDdMTN2XacFgaGmeKTVOXJaqkRp26UuCecIF0Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771925422; c=relaxed/simple;
-	bh=jbUHpcYlvb7oVyQJFkV28djZCHiGr4saQLNVfd4W5R4=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=tkPXjFvldvi3Jic8ycJ+U5uMwMh7IO5+U7mOYLuzxNqOm25Gukm84LTfr1y32fZP/CN+1NGZWGwSghR3CHJ9tjK1j+xqNqPEQ9XKTSvJ13G3yCrbOS7o3WQqSHOhLEkxK//AyKZZ+kzorZmc+v4LABgEgyJrMCaBn5jIcs1Fa3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=knq0yBl/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8E0C116D0;
-	Tue, 24 Feb 2026 09:30:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771925422;
-	bh=jbUHpcYlvb7oVyQJFkV28djZCHiGr4saQLNVfd4W5R4=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=knq0yBl/b9+RxkrojcdaA400AQwDSi0RQp8m5WGlP44MhqbXdgnq5RV3Nd2eIbHQW
-	 rEQzqLCM0VPOIvbi6Xhr2tufGlvFZ4G8PEXiOa3TkW+gvG03Rc7nnoqKoasYz7uI7n
-	 YrqgxN4M5a691hH87KsXMvtmVQGgYr93i2wQfC/0lVxM+Fb/lvNGo96reCTrlloPIQ
-	 7L41Yj/Ji08V9vEcl7uIxBaZiTlJkPWprFudC+MOXErGreyIej5GqcEpKr8UeitJdl
-	 qUTtnuX38jOXmeTCTZT9Tsbas/wW50e0FnijMfB1cdwNOp8sCzP0+TBivDjJj4h1WY
-	 1abvZ9nYLO3rA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C6939F4006B;
-	Tue, 24 Feb 2026 04:30:20 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Tue, 24 Feb 2026 04:30:20 -0500
-X-ME-Sender: <xms:rG-dac5Eldop4hd5g1rcFphVyAwAIuwE_Nt6AohZkkYhGCz3pw8ppg>
-    <xme:rG-daYsz1hog2P-R8OAx-d1AmpL1wdDZBWAy04ov663SMDYfytyzwb1iHS7pTVWhu
-    e_IA1HhlKpt-ol2mp9Vz9Os1D3dnEK_JnzX88cowDVQWXfGXimdLwE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeelkedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
-    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
-    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
-    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
-    gurdgtohhmpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepsggvnhhhsehkvghrnhgvlh
-    drtghrrghshhhinhhgrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekie
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdho
-    rhhgpdhrtghpthhtohepihhlihgrshdrrghprghlohguihhmrghssehlihhnrghrohdroh
-    hrghdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgt
-    ohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:rG-dabR0f8a3bHnCzMDUtGobFjlTOLKiX67HAt5j3GLFERUelBzv_A>
-    <xmx:rG-dacWnLFN1wrnpaEXZ2hPKAPWX-V7nl8t1-OeUPvse692Cqi4geA>
-    <xmx:rG-daVIA1upta-g1_ksje9mFW6cZChSXuJ_E3O3ilJAXiJq_uPfgXA>
-    <xmx:rG-dadhO4OkjdezzAe3izOmbzXMjDXfWTqn_MpQrG46sxbwTTeshwg>
-    <xmx:rG-daSIzM11vfacGtEVN3K-V5PqLX7fKIi7uQvQAXwoiaYUdW35z26-k>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id A1156700065; Tue, 24 Feb 2026 04:30:20 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1771926264; c=relaxed/simple;
+	bh=OmPphWIswswzkb8ygwgtW6VZUdzTMmZz7ARHmGWQNwI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=LdgABJmt56dZUo2YLt3TeHgKCrcP2CaEMovp4OD+kukXQThsbR+V/2whD1+8rcVtkRVVNnJiBHRg+iPzC3CA1TEwocVibguK5xUyCKvVIqAdCMUfIFQnNiPrLWdmaUu23SMaJjU+IFPL+SowehfJMQ/ZfuNq0y5UjrWfJbvq7do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synology.com; spf=pass smtp.mailfrom=synology.com; dkim=pass (1024-bit key) header.d=synology.com header.i=@synology.com header.b=Ehr8TQsq; arc=none smtp.client-ip=211.23.38.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=synology.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=synology.com
+From: Chia-Ming Chang <chiamingc@synology.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synology.com; s=123;
+	t=1771925697; bh=OmPphWIswswzkb8ygwgtW6VZUdzTMmZz7ARHmGWQNwI=;
+	h=From:To:Cc:Subject:Date;
+	b=Ehr8TQsqdHuX5XfMp3dWLA2nvxJCM8zgTT2LbIkd3ou4gcEqqWDIrBHxWNryXiE1M
+	 J0NLsXEDyzgfIcUQvqvpnEhjJh6n9AhqswFgFHbbbWB8KBUBlVZkH7pNPtpN1PnYTc
+	 0Tvro0YBq3fZf/wFBkxyhlpIE+5WpMPSUCvvwcDE=
+To: jack@suse.cz
+Cc: amir73il@gmail.com,
+	serge@hallyn.com,
+	ebiederm@xmission.com,
+	n.borisov.lkml@gmail.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chia-Ming Chang <chiamingc@synology.com>,
+	stable@vger.kernel.org,
+	robbieko <robbieko@synology.com>
+Subject: [PATCH] inotify: fix watch count leak when fsnotify_add_inode_mark_locked() fails
+Date: Tue, 24 Feb 2026 17:34:42 +0800
+Message-Id: <20260224093442.3076294-1-chiamingc@synology.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AF0NZ4OlJH_7
-Date: Tue, 24 Feb 2026 10:29:59 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Mike Rapoport" <rppt@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
- "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
- "Ingo Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
- "Thomas Gleixner" <tglx@kernel.org>, linux-efi@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-Message-Id: <3a01d817-e08c-45ec-b5a7-4a8d9ecd0fc6@app.fastmail.com>
-In-Reply-To: <aZ1vWEgJNwc2nrrA@kernel.org>
-References: <20260223075219.2348035-1-rppt@kernel.org>
- <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
- <aZwyNAbEqb8ZwLUM@kernel.org>
- <e2ad0845-2f87-418a-9f87-5ce619e004ef@app.fastmail.com>
- <aZw8xSI-TM-Gz84t@kernel.org>
- <bfe487fe-6868-4215-b5be-99a0360e9bd2@app.fastmail.com>
- <aZ1vWEgJNwc2nrrA@kernel.org>
-Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
+Content-Transfer-Encoding: 8bit
+X-Synology-Virus-Status: no
+X-Synology-MCP-Status: no
+X-Synology-Spam-Status: score=0, required 6, WHITELIST_FROM_ADDRESS 0
+X-Synology-Spam-Flag: no
 Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.15 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[synology.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[synology.com:s=123];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217894-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,app.fastmail.com:mid];
+	FREEMAIL_CC(0.00)[gmail.com,hallyn.com,xmission.com,vger.kernel.org,synology.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217896-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[chiamingc@synology.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[synology.com:+];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 942BD1849EB
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1AE20184DEF
 X-Rspamd-Action: no action
 
+When fsnotify_add_inode_mark_locked() fails in inotify_new_watch(),
+the error path calls inotify_remove_from_idr() but does not call
+dec_inotify_watches() to undo the preceding inc_inotify_watches().
+This leaks a watch count, and repeated failures can exhaust the
+max_user_watches limit with -ENOSPC even when no watches are active.
+
+Prior to commit 1cce1eea0aff ("inotify: Convert to using per-namespace
+limits"), the watch count was incremented after fsnotify_add_mark_locked()
+succeeded, so this path was not affected. The conversion moved
+inc_inotify_watches() before the mark insertion without adding the
+corresponding rollback.
+
+Add the missing dec_inotify_watches() call in the error path.
+
+Fixes: 1cce1eea0aff ("inotify: Convert to using per-namespace limits")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chia-Ming Chang <chiamingc@synology.com>
+Signed-off-by: robbieko <robbieko@synology.com>
+---
+ fs/notify/inotify/inotify_user.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/notify/inotify/inotify_user.c b/fs/notify/inotify/inotify_user.c
+index b372fb2c56bd..0d813c52ff9c 100644
+--- a/fs/notify/inotify/inotify_user.c
++++ b/fs/notify/inotify/inotify_user.c
+@@ -621,6 +621,7 @@ static int inotify_new_watch(struct fsnotify_group *group,
+ 	if (ret) {
+ 		/* we failed to get on the inode, get off the idr */
+ 		inotify_remove_from_idr(group, tmp_i_mark);
++		dec_inotify_watches(group->inotify_data.ucounts);
+ 		goto out_err;
+ 	}
+ 
+-- 
+2.34.1
 
 
-On Tue, 24 Feb 2026, at 10:28, Mike Rapoport wrote:
-> On Mon, Feb 23, 2026 at 01:18:41PM +0100, Ard Biesheuvel wrote:
->> On Mon, 23 Feb 2026, at 12:40, Mike Rapoport wrote:
->> > On Mon, Feb 23, 2026 at 12:17:22PM +0100, Ard Biesheuvel wrote:
->> >>
->> >> > I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
->> >> > why I didn't use the existing EFI memory map.
->> >> >
->> >> > Now thinking about it, if the unmapping can happen later, maybe we'll just
->> >> > move the entire efi_free_boot_services() to an initcall?
->> >> 
->> >> As long as it is pre-SMP, as that code also contains a quirk to allocate
->> >> the real mode trampoline if all memory below 1 MB is used for boot
->> >> services.
->> >
->> > initcall is long after SMP. It the real mode trampoline allocation is the
->> > only thing that should happen pre-SMP?
->> 
->> early_initcall() should be early enough, those run before SMP init.
->
-> I don't think so. All initcalls run quite late in boot, early ones just run
-> before the others.
-> 
-
-It is documented as running before SMP. If that is no longer true, we should fix the documentation.
-
+Disclaimer: The contents of this e-mail message and any attachments are confidential and are intended solely for addressee. The information may also be legally privileged. This transmission is sent in trust, for the sole purpose of delivery to the intended recipient. If you have received this transmission in error, any use, reproduction or dissemination of this transmission is strictly prohibited. If you are not the intended recipient, please immediately notify the sender by reply e-mail or phone and delete this message and its attachments, if any.
 
