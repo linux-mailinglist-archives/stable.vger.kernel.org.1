@@ -1,173 +1,170 @@
-Return-Path: <stable+bounces-217940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NPxI7v4nWlzSwQAu9opvQ
-	(envelope-from <stable+bounces-217940-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 20:15:07 +0100
+	id mEzRMHz6nWmeSwQAu9opvQ
+	(envelope-from <stable+bounces-217941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 20:22:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E270018BBF2
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 20:15:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F6618BFD4
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 20:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D3B930FE629
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 19:14:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4CADD30F993F
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 19:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB3733D6C9;
-	Tue, 24 Feb 2026 19:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABD53ACA57;
+	Tue, 24 Feb 2026 19:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="z1mcGY/W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XnG6yk4i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A8A301474;
-	Tue, 24 Feb 2026 19:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0B528643A;
+	Tue, 24 Feb 2026 19:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771960449; cv=none; b=t1L7PioGkv8YOh+aDM60aN6DcWABf5grsCTH6PMuB0kjBo5y/OSf9D7SHLMRuczisf4+5nRSMuOlRogIIX56pGy8nhDJ+KqR/UpBN+cdYndja3EnS+Ky55skJbp65x2w/yihEaYhNXiP17fzLk9Tkq4TrV73U0vYnXPPBJRcwWY=
+	t=1771960666; cv=none; b=qgtQeMGkzWBqji3q29/wUB+101W1WAMTCqPHjRszUY/lY2m0obBvcv7SLIK9cq5oGTl1rOZ+np5aAFtnnu1f2K+XHsZGaR1GgbumBK0nuQGSXjL7U0V2d3YUcxoYNeuWmY7zm7ZIy29PfaVRnk3YzSaS0pPPLKwwqn5JE/08Wuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771960449; c=relaxed/simple;
-	bh=zkdm2ryg0cgVtXUMHIvYuUUc5ml0Y7O4CvflgM8vJuU=;
-	h=Date:To:From:Subject:Message-Id; b=H55aU5L3+AkpmfPZHMNgoy8/hk4R6yAa1/2wzBpOVzz+J1yK6ZhCkOnPzzP46hxVoYF2FcmInArSzipWQmPKKsLoWNAC7w5YiqgCllxUlEj0yiewgnDL2z0rifvigZZHwnKYvHlYydqdW7H1MebdsE20QxrLBU3ZHqZN+c3uPgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=z1mcGY/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E420AC116D0;
-	Tue, 24 Feb 2026 19:14:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1771960449;
-	bh=zkdm2ryg0cgVtXUMHIvYuUUc5ml0Y7O4CvflgM8vJuU=;
-	h=Date:To:From:Subject:From;
-	b=z1mcGY/Wy88y1S4VBC3ycdrHIo0Xg344zQbnblg0JXYNnQwo2Sc5LWpxT+NmXcLmQ
-	 0NbXyYNagXfs0OQKgpyfBCuNuL2bh/5qIhVckbCOlH9pwSZUK0kytXxmtWDLi5Tfcg
-	 yr/dfVwlyDAr5X8g6bwXZXjckb4P9zIsbPmg0W6Q=
-Date: Tue, 24 Feb 2026 11:14:08 -0800
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,surenb@google.com,stable@vger.kernel.org,sj@kernel.org,rostedt@goodmis.org,pfalcato@suse.de,minchan@kernel.org,lorenzo.stoakes@oracle.com,joel@joelfernandes.org,david@kernel.org,kaleshsingh@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-tracing-rss_stat-ensure-curr-is-false-from-kthread-context.patch removed from -mm tree
-Message-Id: <20260224191408.E420AC116D0@smtp.kernel.org>
+	s=arc-20240116; t=1771960666; c=relaxed/simple;
+	bh=yZo3aV05MfTY9I1xb/ZlO4ur0zlxYGJ0xQv68/z5aQ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jy2q6H5lbcjk+Dnal1BmcAhAzXXchnKWy66gP4RBsOc6SY6wBnF2st7h0JoOWWS9gzuLqnpguNm46YOkxe2SfyrmWnCfIlDPahbz4GgfcYpaIl3Ga6OPe37TU6TmJGGgBhPWOYWHvQeGq2nw2L1c3xG1OECNpDGEMbHAAsMxoRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XnG6yk4i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FFEC116D0;
+	Tue, 24 Feb 2026 19:17:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771960665;
+	bh=yZo3aV05MfTY9I1xb/ZlO4ur0zlxYGJ0xQv68/z5aQ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XnG6yk4iLPe4fN3FpI287hQfCMNe5M5oK7n99UbvOzMZimXZ5TOABXRHeb/svAzJC
+	 AVOnHuXIChrXUgH8t9nhCDguZFHz/1+jkrQt54iWhcCDrc8+HOP/M/s9VxDitpuQeI
+	 VqSwNAnjcVeWcvG1eNXOgKmZo39KZQ1FC8mi6xX1Z9EUhCt86Mbb87xXI5V0ucKwSW
+	 Mr8ZAxtgO0ap/vCSeJMWtGVL1kd4fUX8G6xMe57ahxIqjc1hpWVAT8rIQp5KA0dcM3
+	 ltkf36h0CAvABv6agxpHVnpXtSZvTIqbu1zCZHfY8/M4pydheqyr5q/sK4DQ497WjV
+	 10DpbLBepnadA==
+Date: Tue, 24 Feb 2026 11:17:45 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Horst Birthelmer <horst@birthelmer.de>
+Cc: miklos@szeredi.hu, stable@vger.kernel.org, joannelkoong@gmail.com,
+	bpf@vger.kernel.org, bernd@bsbernd.com, neal@gompa.dev,
+	linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org
+Subject: Re: [PATCH 2/5] fuse: quiet down complaints in fuse_conn_limit_write
+Message-ID: <20260224191745.GB13829@frogsfrogsfrogs>
+References: <177188733084.3935219.10400570136529869673.stgit@frogsfrogsfrogs>
+ <177188733154.3935219.17731267668265272256.stgit@frogsfrogsfrogs>
+ <aZ1iT-KBp8Vt002k@fedora.fritz.box>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aZ1iT-KBp8Vt002k@fedora.fritz.box>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217940-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	URIBL_MULTI_FAIL(0.00)[ddn.com:server fail,tor.lore.kernel.org:server fail];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217941-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[szeredi.hu,vger.kernel.org,gmail.com,bsbernd.com,gompa.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,joelfernandes.org:email]
-X-Rspamd-Queue-Id: E270018BBF2
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ddn.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 59F6618BFD4
 X-Rspamd-Action: no action
 
+On Tue, Feb 24, 2026 at 09:36:38AM +0100, Horst Birthelmer wrote:
+> On Mon, Feb 23, 2026 at 03:06:50PM -0800, Darrick J. Wong wrote:
+> > From: Darrick J. Wong <djwong@kernel.org>
+> > 
+> > gcc 15 complains about an uninitialized variable val that is passed by
+> > reference into fuse_conn_limit_write:
+> > 
+> >  control.c: In function ‘fuse_conn_congestion_threshold_write’:
+> >  include/asm-generic/rwonce.h:55:37: warning: ‘val’ may be used uninitialized [-Wmaybe-uninitialized]
+> >     55 |         *(volatile typeof(x) *)&(x) = (val);                            \
+> >        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+> >  include/asm-generic/rwonce.h:61:9: note: in expansion of macro ‘__WRITE_ONCE’
+> >     61 |         __WRITE_ONCE(x, val);                                           \
+> >        |         ^~~~~~~~~~~~
+> >  control.c:178:9: note: in expansion of macro ‘WRITE_ONCE’
+> >    178 |         WRITE_ONCE(fc->congestion_threshold, val);
+> >        |         ^~~~~~~~~~
+> >  control.c:166:18: note: ‘val’ was declared here
+> >    166 |         unsigned val;
+> >        |                  ^~~
+> > 
+> > Unfortunately there's enough macro spew involved in kstrtoul_from_user
+> > that I think gcc gives up on its analysis and sprays the above warning.
+> > AFAICT it's not actually a bug, but we could just zero-initialize the
+> > variable to enable using -Wmaybe-uninitialized to find real problems.
+> > 
+> > Previously we would use some weird uninitialized_var annotation to quiet
+> > down the warnings, so clearly this code has been like this for quite
+> > some time.
+> > 
+> > Cc: <stable@vger.kernel.org> # v5.9
+> > Fixes: 3f649ab728cda8 ("treewide: Remove uninitialized_var() usage")
+> > Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+> > ---
+> >  fs/fuse/control.c |    4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > 
+> > diff --git a/fs/fuse/control.c b/fs/fuse/control.c
+> > index 140bd5730d9984..073c2d8e4dfc7c 100644
+> > --- a/fs/fuse/control.c
+> > +++ b/fs/fuse/control.c
+> > @@ -121,7 +121,7 @@ static ssize_t fuse_conn_max_background_write(struct file *file,
+> >  					      const char __user *buf,
+> >  					      size_t count, loff_t *ppos)
+> >  {
+> > -	unsigned val;
+> > +	unsigned val = 0;
+> >  	ssize_t ret;
+> >  
+> >  	ret = fuse_conn_limit_write(file, buf, count, ppos, &val,
+> > @@ -163,7 +163,7 @@ static ssize_t fuse_conn_congestion_threshold_write(struct file *file,
+> >  						    const char __user *buf,
+> >  						    size_t count, loff_t *ppos)
+> >  {
+> > -	unsigned val;
+> > +	unsigned val = 0;
+> >  	struct fuse_conn *fc;
+> >  	ssize_t ret;
+> >  
+> > 
+> > 
+> 
+> This looks good to me. Trivial fix for an annoying problem.
+> Reviewed-by: Horst Birthelmer <hbirthelmer@ddn.com>
 
-The quilt patch titled
-     Subject: mm/tracing: rss_stat: ensure curr is false from kthread context
-has been removed from the -mm tree.  Its filename was
-     mm-tracing-rss_stat-ensure-curr-is-false-from-kthread-context.patch
+Thanks for the review!
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Kalesh Singh <kaleshsingh@google.com>
-Subject: mm/tracing: rss_stat: ensure curr is false from kthread context
-Date: Thu, 19 Feb 2026 15:36:56 -0800
-
-The rss_stat trace event allows userspace tools, like Perfetto [1], to
-inspect per-process RSS metric changes over time.
-
-The curr field was introduced to rss_stat in commit e4dcad204d3a
-("rss_stat: add support to detect RSS updates of external mm").  Its
-intent is to indicate whether the RSS update is for the mm_struct of the
-current execution context; and is set to false when operating on a remote
-mm_struct (e.g., via kswapd or a direct reclaimer).
-
-However, an issue arises when a kernel thread temporarily adopts a user
-process's mm_struct.  Kernel threads do not have their own mm_struct and
-normally have current->mm set to NULL.  To operate on user memory, they
-can "borrow" a memory context using kthread_use_mm(), which sets
-current->mm to the user process's mm.
-
-This can be observed, for example, in the USB Function Filesystem (FFS)
-driver.  The ffs_user_copy_worker() handles AIO completions and uses
-kthread_use_mm() to copy data to a user-space buffer.  If a page fault
-occurs during this copy, the fault handler executes in the kthread's
-context.
-
-At this point, current is the kthread, but current->mm points to the user
-process's mm.  Since the rss_stat event (from the page fault) is for that
-same mm, the condition current->mm == mm becomes true, causing curr to be
-incorrectly set to true when the trace event is emitted.
-
-This is misleading because it suggests the mm belongs to the kthread,
-confusing userspace tools that track per-process RSS changes and
-corrupting their mm_id-to-process association.
-
-Fix this by ensuring curr is always false when the trace event is emitted
-from a kthread context by checking for the PF_KTHREAD flag.
-
-Link: https://lkml.kernel.org/r/20260219233708.1971199-1-kaleshsingh@google.com
-Link: https://perfetto.dev/ [1]
-Fixes: e4dcad204d3a ("rss_stat: add support to detect RSS updates of external mm")
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>	[5.10+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/trace/events/kmem.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
---- a/include/trace/events/kmem.h~mm-tracing-rss_stat-ensure-curr-is-false-from-kthread-context
-+++ a/include/trace/events/kmem.h
-@@ -440,7 +440,13 @@ TRACE_EVENT(rss_stat,
- 
- 	TP_fast_assign(
- 		__entry->mm_id = mm_ptr_to_hash(mm);
--		__entry->curr = !!(current->mm == mm);
-+		/*
-+		 * curr is true if the mm matches the current task's mm_struct.
-+		 * Since kthreads (PF_KTHREAD) have no mm_struct of their own
-+		 * but can borrow one via kthread_use_mm(), we must filter them
-+		 * out to avoid incorrectly attributing the RSS update to them.
-+		 */
-+		__entry->curr = current->mm == mm && !(current->flags & PF_KTHREAD);
- 		__entry->member = member;
- 		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
- 							    << PAGE_SHIFT);
-_
-
-Patches currently in -mm which might be from kaleshsingh@google.com are
-
-
+--D
 
