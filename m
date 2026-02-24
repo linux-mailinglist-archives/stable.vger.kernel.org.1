@@ -1,271 +1,131 @@
-Return-Path: <stable+bounces-217891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNIQHtJpnWnYPwQAu9opvQ
-	(envelope-from <stable+bounces-217891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:05:22 +0100
+	id WDY4KrttnWk9QAQAu9opvQ
+	(envelope-from <stable+bounces-217892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:22:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930A118438B
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:05:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4FF1847B6
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EF82830F2869
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:01:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 71041306B784
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21270369970;
-	Tue, 24 Feb 2026 09:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0282936A030;
+	Tue, 24 Feb 2026 09:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b="lRgv4bTZ";
-	dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b="fNwipv6W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bUxd6dFR"
 X-Original-To: stable@vger.kernel.org
-Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4644C190462;
-	Tue, 24 Feb 2026 09:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B804718C933;
+	Tue, 24 Feb 2026 09:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771923696; cv=none; b=OkbzoE60Qp/hjh8PGoiWuz6Sl/vCfA/87jCE8QiWvMaEZHKGJ6w9uRu6XmSQ/Tk4Fy+7ojYluZbCJVBzTqqgWnDYixgcbQBzO/MS869FTtR/xONip58LTTyVCkshXoqDOu21MdPZbcfLjMBpkGnCGuI3GyeIna9IebkhPwan+fo=
+	t=1771924917; cv=none; b=V16HcvLEsl1kd8OGA9h7fb7Rfy+atO6ocfS1zXpZ1Kgvesg269hDm5O8guTkcLx+J7Wie0Yrn2Vo3RbH5MPVaz/5EaMf4VF6aF/bvvaRWlJhyXDGOa11MBUsswC0Gvxt9PJucl1VihEyy4xLWbkYZl1tt6K/Qn79Opa6awh1qmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771923696; c=relaxed/simple;
-	bh=pty0p3EkgQsMv5GqCnhpOyx0EMZJ0zKmu+67M/tExE8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CDlJJYTaDItA184u9wd5m0pAwhgy+JFCQ4EFFpm7Ky05l9qmYz8c1eXlntvRn35CD/HZPPHCAf1uvrjbu+Dbxyj6VXNgbQgrJkGhFdigXftgk27mwnSxhomzLdnBP1eCT9tWF2k5KPkihFqHrMQpK++QmL85u/hiJoCzB2PJk1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b=lRgv4bTZ; dkim=pass (4096-bit key) header.d=davidgow.net header.i=@davidgow.net header.b=fNwipv6W; arc=none smtp.client-ip=203.29.242.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
-	s=201606; t=1771923692;
-	bh=pty0p3EkgQsMv5GqCnhpOyx0EMZJ0zKmu+67M/tExE8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lRgv4bTZvMupZejdLNOAfeW0fBmESQk+nEFcPSNeLSrRdXJhrQXjA8Xs+lSQ2VkDO
-	 3MfmZeOSHAiHHg873mXQxwuB341Wbi+vjyCyWNi4//fE0ProOs1OGqfZxxKvqDPlTn
-	 IYZLWjNBW21Xik23q8sKK8757dwyO746aCN/2MTDs23GD2SB9EzWURpjLdz8kQBkFw
-	 47chRRLeW7g8HpRJVJYr7mnHWBAHfn25JznTiRPwpXjrUvmkzjtlyX/XTja8nKTXxJ
-	 UeXXEKd2bCL9W59TZJ1OtAUjU48PcciruooIGABirXMURFFI1NONFzOHIPYoBZudT7
-	 pYIVsFU+8a5scBsIxbNbSOHM5Q1R8L8BSY48plYUZIHBuMUZRV2qngODj23YiTns1V
-	 PWHLsLfpjAolh7puAFpgwKVZ73Viu5LHYU+aDEeO3kIX95Ca1iSKOwRfm2DlorC5v8
-	 0GbzveJhMS7Kmqw4yEoZK46/gia173kivtwPQhyQEafO3EnuQcJ2vK5cf7IO7w7m9+
-	 dHxI64KttFO+oq8IDufh2r+qcd6I5vRTCM2N8vRAJ9hPvmuBfWOBLrk8obx2seO1hz
-	 6W+IQtBlJj26600g3UzUgmwGOeu6CWjtLQXz2/3vWiLMIsK+JDbQJkQiw/VNHdkbW0
-	 44YjVbXjg42Z5xikNo5sdPuo=
-Received: by sphereful.davidgow.net (Postfix, from userid 119)
-	id E5AD41E78B6; Tue, 24 Feb 2026 17:01:32 +0800 (AWST)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=davidgow.net;
-	s=201606; t=1771923691;
-	bh=pty0p3EkgQsMv5GqCnhpOyx0EMZJ0zKmu+67M/tExE8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fNwipv6WKQoKAH3qAW1VgWlotPhOh0t6cMqzyD6DoT501nVeQXwe6ZgiE63OwBoUK
-	 xcyncTsZ51ymNreqaqMczKtuCSC9+AhWdsp0ql+nwu54HvG9ekv5pzpmI0SGTkqtvZ
-	 YcJJJUq420QzdXewAGcnBRUng+3+I4ytWTWZLHeJQnA8Xj3XC3GVU1hKPr/sDgbJbe
-	 ls07JJ9kfex+fBI4YK8wUI4gn7A+ACpEWhlRdyYuUSxNeTVvADd1iRM7BOgRxQ1QXC
-	 zQ0vv9/tpnMwEJ3x8RS+zm5L4FaYEA/wqQZ8WQvMx7yk9s2Gwf0M9/UpF5QwXNE68t
-	 TY0Pq9PnWobllMdGbUZCxVh88INHi+YBFUsJubwP6+MKVznfLUXPYMQHOEcBMhRZuQ
-	 MUlWbT/PC/F2R0o1hq9enC31RzqqoJRuEpFCxaacQb8zFHqCPPCQuyJVaruCalQmS6
-	 zVTmspdVK7gmVee9/uEiCn6Odd93EDHiIDy/TA2twKzZdatQ02HXUyszaYKIKT4XzA
-	 ZN1A/XcOjeYunz8im7COIJOdF9UtunKQc5xIEjUgJQscQvrwwAm4qGGibEdHoS4inM
-	 +PUr0BWha5zOnRCdtgJYulUjX58Wr1PLJ1MqFSbPQ2ldfi/gQdnuk0tvW7tdAw1rT6
-	 7TBIwPRifKCJkZgvOvXUz/uI=
-Received: from [IPV6:2001:8003:8824:9e00::744] (unknown [IPv6:2001:8003:8824:9e00::744])
-	by sphereful.davidgow.net (Postfix) with ESMTPSA id ABF171E778A;
-	Tue, 24 Feb 2026 17:01:30 +0800 (AWST)
-Message-ID: <75ea0056-605d-4f1c-ac49-76fb094744d1@davidgow.net>
-Date: Tue, 24 Feb 2026 17:01:27 +0800
+	s=arc-20240116; t=1771924917; c=relaxed/simple;
+	bh=+ZgRL78h59vYKmP3VyntioFtrGYkFQJZf4vOZNcd73Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mq8Hw6R79NGtWJp+M86WKiI7iPp9wUZ4pnHUVc+0SM11e7xgOjTgDkRV3lPoKt7cH7hZvDnf1vl0p74SfxzBFLWMKHcO8jsfa4xmL3HMY4BbUAPus7S2xLDYGZ/OwAMyHbeKa4RcQvnbSLKfXRNcmnJGguVujrrd4AQ+Mc8OL9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bUxd6dFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D05AC116D0;
+	Tue, 24 Feb 2026 09:21:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771924917;
+	bh=+ZgRL78h59vYKmP3VyntioFtrGYkFQJZf4vOZNcd73Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bUxd6dFRYF5CjDz33X1r/UnQKXjKmMF9dEuf62vIwFLdnNkcY0OyWYHxXbXD54A/F
+	 vTh3dnkEceRvQUFpvZOjTh5DW4S+lpZOjtNfCA3+jrdIX9aMT+rlcXZxQy7oXuHFku
+	 NSJ3BAYqLoSiZaCXJoOxiMkJRv1fhK1V2F++TLbemTHMxfN3gsEQTMH8GlokVIYkBc
+	 eIKTmX1tuKPFWX/kB+ot2Cq6oFrjXVonHmwylG0cRCHj2Q5LpQym3QdW1b/7ChBosW
+	 vk/vHOwrp8rL+nEoTlulg8VWi3v7fg/GKnskb0x5tTt2ir0In5D25MduK33aCMTev3
+	 zRtbD92kfWgxQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Guenter Roeck <linux@roeck-us.net>,
+	stable@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH] eventpoll: Fix integer overflow in ep_loop_check_proc()
+Date: Tue, 24 Feb 2026 10:21:45 +0100
+Message-ID: <20260224-flutwelle-gelernt-a94c18edb860@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260223-epoll-int-overflow-v1-1-452f35132224@google.com>
+References: <20260223-epoll-int-overflow-v1-1-452f35132224@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kunit: irq: Ensure timer doesn't fire too frequently
-To: Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
- "Jason A . Donenfeld" <Jason@zx2c4.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, kunit-dev@googlegroups.com,
- Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>,
- stable@vger.kernel.org
-References: <20260224033751.97615-1-ebiggers@kernel.org>
-Content-Language: en-US
-From: David Gow <david@davidgow.net>
-In-Reply-To: <20260224033751.97615-1-ebiggers@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1187; i=brauner@kernel.org; h=from:subject:message-id; bh=+ZgRL78h59vYKmP3VyntioFtrGYkFQJZf4vOZNcd73Y=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTOzd2wKiDhzaHSZ7cuMcs/fCq04fuzlbUzztZ5zV1ro bVBvvuYZEcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBE9t9hZGj0XxpzxPWh/PkO s1t9zHNnLrBvXXdm0rP1abm6bAt2yOxlZHhWbrrj367u36v8bTUeOajX25S5SmqwTNl//1imyw4 bVT4A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[davidgow.net,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[davidgow.net:s=201606];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[davidgow.net:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,zx2c4.com,gondor.apana.org.au,googlegroups.com,linux.dev,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217891-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217892-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@davidgow.net,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,davidgow.net:mid,davidgow.net:dkim,davidgow.net:email]
-X-Rspamd-Queue-Id: 930A118438B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3D4FF1847B6
 X-Rspamd-Action: no action
 
-Le 24/02/2026 à 11:37, 'Eric Biggers' via KUnit Development a écrit :
-> Fix a bug where kunit_run_irq_test() could hang if the system is too
-> slow.  This was noticed with the crypto library tests in certain VMs.
+On Mon, 23 Feb 2026 20:59:33 +0100, Jann Horn wrote:
+> If a recursive call to ep_loop_check_proc() hits the `result = INT_MAX`,
+> an integer overflow will occur in the calling ep_loop_check_proc() at
+> `result = max(result, ep_loop_check_proc(ep_tovisit, depth + 1) + 1)`,
+> breaking the recursion depth check.
 > 
-> Specifically, if kunit_irq_test_timer_func() and the associated hrtimer
-> code took over 5us to run, then the CPU would spend all its time
-> executing that code in hardirq context.  As a result, the task executing
-> kunit_run_irq_test() never had a chance to run, exit the loop, and
-> cancel the timer.
+> Fix it by using a different placeholder value that can't lead to an
+> overflow.
 > 
-> To fix it, make kunit_irq_test_timer_func() increase the timer interval
-> when the other contexts aren't having a chance to run.
-> 
-> Fixes: 950a81224e8b ("lib/crypto: tests: Add hash-test-template.h and gen-hash-testvecs.py")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> ---
+> [...]
 
-Looks good to me, thanks!
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Reviewed-by: David Gow <david@davidgow.net>
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Cheers,
--- David
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-> 
-> This patch applies to v7.0-rc1 and is targeting libcrypto-fixes
-> 
->   include/kunit/run-in-irq-context.h | 44 +++++++++++++++++++-----------
->   1 file changed, 28 insertions(+), 16 deletions(-)
-> 
-> diff --git a/include/kunit/run-in-irq-context.h b/include/kunit/run-in-irq-context.h
-> index c89b1b1b12dd5..bfe60d6cf28d8 100644
-> --- a/include/kunit/run-in-irq-context.h
-> +++ b/include/kunit/run-in-irq-context.h
-> @@ -10,36 +10,47 @@
->   #include <kunit/test.h>
->   #include <linux/timekeeping.h>
->   #include <linux/hrtimer.h>
->   #include <linux/workqueue.h>
->   
-> -#define KUNIT_IRQ_TEST_HRTIMER_INTERVAL us_to_ktime(5)
-> -
->   struct kunit_irq_test_state {
->   	bool (*func)(void *test_specific_state);
->   	void *test_specific_state;
->   	bool task_func_reported_failure;
->   	bool hardirq_func_reported_failure;
->   	bool softirq_func_reported_failure;
-> +	atomic_t task_func_calls;
->   	atomic_t hardirq_func_calls;
->   	atomic_t softirq_func_calls;
-> +	ktime_t interval;
->   	struct hrtimer timer;
->   	struct work_struct bh_work;
->   };
->   
->   static enum hrtimer_restart kunit_irq_test_timer_func(struct hrtimer *timer)
->   {
->   	struct kunit_irq_test_state *state =
->   		container_of(timer, typeof(*state), timer);
-> +	int task_calls, hardirq_calls, softirq_calls;
->   
->   	WARN_ON_ONCE(!in_hardirq());
-> -	atomic_inc(&state->hardirq_func_calls);
-> +	task_calls = atomic_read(&state->task_func_calls);
-> +	hardirq_calls = atomic_inc_return(&state->hardirq_func_calls);
-> +	softirq_calls = atomic_read(&state->softirq_func_calls);
-> +
-> +	/*
-> +	 * If the timer is firing too often for the softirq or task to ever have
-> +	 * a chance to run, increase the timer interval.  This is needed on very
-> +	 * slow systems.
-> +	 */
-> +	if (hardirq_calls >= 20 && (softirq_calls == 0 || task_calls == 0))
-> +		state->interval = ktime_add_ns(state->interval, 250);
->   
->   	if (!state->func(state->test_specific_state))
->   		state->hardirq_func_reported_failure = true;
->   
-> -	hrtimer_forward_now(&state->timer, KUNIT_IRQ_TEST_HRTIMER_INTERVAL);
-> +	hrtimer_forward_now(&state->timer, state->interval);
->   	queue_work(system_bh_wq, &state->bh_work);
->   	return HRTIMER_RESTART;
->   }
->   
->   static void kunit_irq_test_bh_work_func(struct work_struct *work)
-> @@ -84,14 +95,18 @@ static inline void kunit_run_irq_test(struct kunit *test, bool (*func)(void *),
->   				      void *test_specific_state)
->   {
->   	struct kunit_irq_test_state state = {
->   		.func = func,
->   		.test_specific_state = test_specific_state,
-> +		/*
-> +		 * Start with a 5us timer interval.  If the system can't keep
-> +		 * up, kunit_irq_test_timer_func() will increase it.
-> +		 */
-> +		.interval = us_to_ktime(5),
->   	};
->   	unsigned long end_jiffies;
-> -	int hardirq_calls, softirq_calls;
-> -	bool allctx = false;
-> +	int task_calls, hardirq_calls, softirq_calls;
->   
->   	/*
->   	 * Set up a hrtimer (the way we access hardirq context) and a work
->   	 * struct for the BH workqueue (the way we access softirq context).
->   	 */
-> @@ -102,25 +117,22 @@ static inline void kunit_run_irq_test(struct kunit *test, bool (*func)(void *),
->   	/*
->   	 * Run for up to max_iterations (including at least one task, softirq,
->   	 * and hardirq), or 1 second, whichever comes first.
->   	 */
->   	end_jiffies = jiffies + HZ;
-> -	hrtimer_start(&state.timer, KUNIT_IRQ_TEST_HRTIMER_INTERVAL,
-> -		      HRTIMER_MODE_REL_HARD);
-> -	for (int task_calls = 0, calls = 0;
-> -	     ((calls < max_iterations) || !allctx) &&
-> -	     !time_after(jiffies, end_jiffies);
-> -	     task_calls++) {
-> +	hrtimer_start(&state.timer, state.interval, HRTIMER_MODE_REL_HARD);
-> +	do {
->   		if (!func(test_specific_state))
->   			state.task_func_reported_failure = true;
->   
-> +		task_calls = atomic_inc_return(&state.task_func_calls);
->   		hardirq_calls = atomic_read(&state.hardirq_func_calls);
->   		softirq_calls = atomic_read(&state.softirq_func_calls);
-> -		calls = task_calls + hardirq_calls + softirq_calls;
-> -		allctx = (task_calls > 0) && (hardirq_calls > 0) &&
-> -			 (softirq_calls > 0);
-> -	}
-> +	} while ((task_calls + hardirq_calls + softirq_calls < max_iterations ||
-> +		  (task_calls == 0 || hardirq_calls == 0 ||
-> +		   softirq_calls == 0)) &&
-> +		 !time_after(jiffies, end_jiffies));
->   
->   	/* Cancel the timer and work. */
->   	hrtimer_cancel(&state.timer);
->   	flush_work(&state.bh_work);
->   
-> 
-> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] eventpoll: Fix integer overflow in ep_loop_check_proc()
+      https://git.kernel.org/vfs/vfs/c/fdcfce93073d
 
