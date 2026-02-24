@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-217911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217912-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEWQL5OcnWnwQgQAu9opvQ
-	(envelope-from <stable+bounces-217911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:41:55 +0100
+	id CALLEdCenWnwQgQAu9opvQ
+	(envelope-from <stable+bounces-217912-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:51:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E3D1871AD
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:41:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A05AC1873B6
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 93DD0304BEAD
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 12:40:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28EB7304DF3C
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 12:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354ED396D05;
-	Tue, 24 Feb 2026 12:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39A6389473;
+	Tue, 24 Feb 2026 12:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="q+59N3Gg"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NqRxNtcU"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCD1396B7F
-	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 12:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6807E555;
+	Tue, 24 Feb 2026 12:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771936833; cv=none; b=epQlYXjaPOaKYg8rMXFwnuutj5zGvIcdKDwSfeGh2arlgSnar9A8x0BG3hWiCB9HseJEzwSDb48y/6BztDcM7/Qm/YTFsU5rI2PH8ZUja/pIGVZMdhs5YcfIXC15VrB31rpwk0EEQLBT9bK+uzDvstYVZSlvqpffcfn6XDYMThc=
+	t=1771937434; cv=none; b=KKqabtH1nwirj96lba+Q4JfrZVdzSsJUnmnxclq9KSMeWKIKEfwWS3WVoXWCNSSTuYwqNF95+8YNukLz8MdpG7GbEHqJFDWRbTLPb9LhMOZMMb1L9PDB60lDyFcoIeGdEpZr73DT0W4MMrVFl5dUoCY3nA8KUS9TfpzNVa0vGsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771936833; c=relaxed/simple;
-	bh=6YiO3aEEMJaPzYYMxUMPBSbOzfWX3uI2ARHdUHzLVj4=;
+	s=arc-20240116; t=1771937434; c=relaxed/simple;
+	bh=4ZpgPKN7lBYy9RyuYxqbYlZFbJqbOUMbCPnhg0scku4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NloW1Vl8vnLvc3H6CtUrcJW30myHBxKeQsaTE4IA4fN88bdJcVVl/VD5toB+gE4Kv9XB3ukxepR8wcMqC6alZlrya/ymzyI3tTmzbhExbO7b/gpujocPrVTaV8MWRH9OnW4CHkm8fX2S7+HlNl22J7gG7qomwXxN4wBRg+91naI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=q+59N3Gg; arc=none smtp.client-ip=109.224.244.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1771936822; x=1772196022;
-	bh=QrkeH5U9fQQelEPd+SKbWGI2+T7gqRMRbmw70mxyA5Q=;
+	 MIME-Version:Content-Type; b=NompXfohBXEzRrMfa9MOlerpZvUrskC8Y1qoCdh4y211OMppt2sK7jdPVgG1rvXDC2CKvlsPhy/HvTNW6LPU0MdjEc4xh/WaXL/PTTBk+QlC4bdTNeRJrlxiEhTqFPflnS86wHHrwmRXNp+/L5UXqM+Jnqxx635+KKRlcAn1njY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NqRxNtcU; arc=none smtp.client-ip=109.224.244.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1771937428; x=1772196628;
+	bh=4ZpgPKN7lBYy9RyuYxqbYlZFbJqbOUMbCPnhg0scku4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=q+59N3GgOl54tAWVfCvfaLW8whmNB1jhv5DdMNbd3v6kD1OLwB3YL+fqxJbW2wynq
-	 gAmf6UAccX4ANWaLqPh5U3Xll9CbmENh54yag8jZM2FtMQOsX+IudP9RrCvvD4qYB4
-	 RQUvlNS7a2bm7x7zXKi4HZtKkBK/zgVrci1ed6OFQKSp7Dl7VFMWunn1MhiKjWHIZ1
-	 8mi2N3qmV3Sl9dxHMWOnS3Pcy4O2yUOOrqXFB8wpuI/0hb7Dkdk43uCvwDvqZ3bA45
-	 UmYJ1oaMeCSzRN81hW7mZwEOw5wvTOtkTLkgccWxl9afRe6LbouLplJvugJMqjVuDu
-	 +H3k+P92DBI+w==
-Date: Tue, 24 Feb 2026 12:40:18 +0000
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: m.wieczorretman@pm.me, Farrah Chen <farrah.chen@intel.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v7 1/3] x86/cpu: Clear feature bits disabled at compile-time
-Message-ID: <6b042d059be8341a7122c9d7c72fd8204211de44.1771936214.git.m.wieczorretman@pm.me>
-In-Reply-To: <cover.1771936214.git.m.wieczorretman@pm.me>
-References: <cover.1771936214.git.m.wieczorretman@pm.me>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: d63de67c71f23d9947820f0484b3848053389134
+	b=NqRxNtcU2xQk6aOoNjHhk68K4r8sZnjT2ZGUp5XIf7DYPWYLG5RPH2ljTRwTMwlaA
+	 5HaWaoDqk5EHm20hzI4dEh8CH4x1qOPGWn8DoJiORf/Uhh8TM3R0RrgkrNc4BfGzxQ
+	 JItc+R6tPVqbWCpD4byLpIB/xPP4GIXtAXDrYSB7oKkAACuYKSS6H/Qck/mqmsQqKS
+	 i9J28bG10VePn8LaTceFabPQ+ZWbuk2kPPgY73zCsoc2lvRIAG2uN00t5eE7j5TNem
+	 eHIeDWdaQ5SxzB0G3jp6JaaNNiZR7bR6ApCWJZDooSqwEVKFCR6kzI+/nNQqnzC1lk
+	 iqy1HWigED+SQ==
+Date: Tue, 24 Feb 2026 12:50:22 +0000
+To: 1128861@bugs.debian.org, Neil Brown <neilb@suse.de>
+From: Tj <tj.iam.tj@proton.me>
+Cc: linux-nfs@vger.kernel.org, Olga Kornievskaia <okorniev@redhat.com>, stable@vger.kernel.org
+Subject: Re: Regression: Missing check in nfsd_permission() causes -ENOLCK No locks available
+Message-ID: <7945477d-f6f9-4311-9ef3-73a92f0e8ea2@proton.me>
+In-Reply-To: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
+References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
+Feedback-ID: 113488376:user:proton
+X-Pm-Message-ID: 29d15f7aae71bfa311d3102de9afc722df094a18
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,101 +65,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pm.me,quarantine];
-	R_DKIM_ALLOW(-0.20)[pm.me:s=protonmail3];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217911-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217912-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[pm.me:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[proton.me:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[m.wieczorretman@pm.me,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[tj.iam.tj@proton.me,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,pm.me:mid,pm.me:dkim]
-X-Rspamd-Queue-Id: E4E3D1871AD
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:mid,proton.me:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A05AC1873B6
 X-Rspamd-Action: no action
 
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Follow-up with results of adding dump_stack() to nfsd_permission()=20
+revealing the paths that trigger the issue.
 
-If some config options are disabled during compile time, they still are
-enumerated in macros that use the x86_capability bitmask - cpu_has() or
-this_cpu_has().
+[=C2=A0 133.185579] Call Trace:
+[=C2=A0 133.185580]=C2=A0 <TASK>
+[=C2=A0 133.185580]=C2=A0 dump_stack_lvl+0x64/0x80
+[=C2=A0 133.185582]=C2=A0 nfsd_permission+0x20/0x100 [nfsd]
+[=C2=A0 133.185612]=C2=A0 nfsd_access+0xc8/0x140 [nfsd]
+[=C2=A0 133.185639]=C2=A0 nfsd4_proc_compound+0x350/0x670 [nfsd]
+[=C2=A0 133.185670]=C2=A0 nfsd_dispatch+0x100/0x220 [nfsd]
+[=C2=A0 133.185698]=C2=A0 svc_process_common+0x314/0x700 [sunrpc]
+[=C2=A0 133.185733]=C2=A0 ? __pfx_nfsd_dispatch+0x10/0x10 [nfsd]
+[=C2=A0 133.185762]=C2=A0 svc_process+0x131/0x1c0 [sunrpc]
+[=C2=A0 133.185795]=C2=A0 svc_recv+0x80a/0x9e0 [sunrpc]
+[=C2=A0 133.185827]=C2=A0 ? __pfx_nfsd+0x10/0x10 [nfsd]
+[=C2=A0 133.185856]=C2=A0 nfsd+0xa3/0x100 [nfsd]
+[=C2=A0 133.185882]=C2=A0 kthread+0xd2/0x100
+[=C2=A0 133.185884]=C2=A0 ? __pfx_kthread+0x10/0x10
+[=C2=A0 133.185885]=C2=A0 ret_from_fork+0x34/0x50
+[=C2=A0 133.185886]=C2=A0 ? __pfx_kthread+0x10/0x10
+[=C2=A0 133.185887]=C2=A0 ret_from_fork_asm+0x1a/0x30
+[=C2=A0 133.185890]=C2=A0 </TASK>
 
-The features are also visible in /proc/cpuinfo even though they are not
-enabled - which is contrary to what the documentation states about the
-file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
-split_lock_detect, user_shstk, avx_vnni and enqcmd.
-
-Once the cpu_caps_cleared array is initialized with the autogenerated
-disabled bitmask apply_forced_caps() will clear the corresponding bits
-in boot_cpu_data.x86_capability[] and other secondary cpus'
-cpu_data.x86_capability[]. Thus features disabled at compile time won't
-show up in /proc/cpuinfo.
-
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220348
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Cc: <stable@vger.kernel.org> # 6.18.x
----
-Changelog v6:
-- Remove patch message portions that are not just describing the diff.
-
- arch/x86/kernel/cpu/common.c       | 3 ++-
- arch/x86/tools/cpufeaturemasks.awk | 6 ++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 1c3261cae40c..9aa11224a038 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -732,7 +732,8 @@ static const char *table_lookup_model(struct cpuinfo_x8=
-6 *c)
- }
-=20
- /* Aligned to unsigned long to avoid split lock in atomic bitmap ops */
--__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
-));
-+__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
-)) =3D
-+=09DISABLED_MASK_INITIALIZER;
- __u32 cpu_caps_set[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long));
-=20
- #ifdef CONFIG_X86_32
-diff --git a/arch/x86/tools/cpufeaturemasks.awk b/arch/x86/tools/cpufeature=
-masks.awk
-index 173d5bf2d999..b7f4e775a365 100755
---- a/arch/x86/tools/cpufeaturemasks.awk
-+++ b/arch/x86/tools/cpufeaturemasks.awk
-@@ -82,6 +82,12 @@ END {
- =09=09}
- =09=09printf " 0\t\\\n";
- =09=09printf "\t) & (1U << ((x) & 31)))\n\n";
-+
-+=09=09printf "\n#define %s_MASK_INITIALIZER\t\t\t\\", s;
-+=09=09printf "\n\t{\t\t\t\t\t\t\\";
-+=09=09for (i =3D 0; i < ncapints; i++)
-+=09=09=09printf "\n\t\t%s_MASK%d,\t\t\t\\", s, i;
-+=09=09printf "\n\t}\n\n";
- =09}
-=20
- =09printf "#endif /* _ASM_X86_CPUFEATUREMASKS_H */\n";
---=20
-2.53.0
+[=C2=A0 144.020165] Call Trace:
+[=C2=A0 144.020165]=C2=A0 <TASK>
+[=C2=A0 144.020166]=C2=A0 dump_stack_lvl+0x64/0x80
+[=C2=A0 144.020168]=C2=A0 nfsd_permission+0x20/0x100 [nfsd]
+[=C2=A0 144.020201]=C2=A0 nfsd_access+0xc8/0x140 [nfsd]
+[=C2=A0 144.020228]=C2=A0 nfsd3_proc_access+0x6c/0x110 [nfsd]
+[=C2=A0 144.020257]=C2=A0 nfsd_dispatch+0x100/0x220 [nfsd]
+[=C2=A0 144.020286]=C2=A0 svc_process_common+0x314/0x700 [sunrpc]
+[=C2=A0 144.020321]=C2=A0 ? __pfx_nfsd_dispatch+0x10/0x10 [nfsd]
+[=C2=A0 144.020350]=C2=A0 svc_process+0x131/0x1c0 [sunrpc]
+[=C2=A0 144.020383]=C2=A0 svc_recv+0x80a/0x9e0 [sunrpc]
+[=C2=A0 144.020415]=C2=A0 ? __pfx_nfsd+0x10/0x10 [nfsd]
+[=C2=A0 144.020445]=C2=A0 nfsd+0xa3/0x100 [nfsd]
+[=C2=A0 144.020471]=C2=A0 kthread+0xd2/0x100
+[=C2=A0 144.020472]=C2=A0 ? __pfx_kthread+0x10/0x10
+[=C2=A0 144.020473]=C2=A0 ret_from_fork+0x34/0x50
+[=C2=A0 144.020475]=C2=A0 ? __pfx_kthread+0x10/0x10
+[=C2=A0 144.020476]=C2=A0 ret_from_fork_asm+0x1a/0x30
+[=C2=A0 144.020478]=C2=A0 </TASK>
 
 
 
