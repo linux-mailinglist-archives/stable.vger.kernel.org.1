@@ -1,161 +1,138 @@
-Return-Path: <stable+bounces-217930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJvkHOrYnWk0SQQAu9opvQ
-	(envelope-from <stable+bounces-217930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 17:59:22 +0100
+	id qBV7OgPbnWmuSQQAu9opvQ
+	(envelope-from <stable+bounces-217931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 18:08:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF3118A343
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 17:59:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 078DB18A4E5
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 18:08:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 197CC3086C11
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 16:48:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 16A5F305454B
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 16:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383723A9D9F;
-	Tue, 24 Feb 2026 16:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C4D3A9611;
+	Tue, 24 Feb 2026 16:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="bpR66Fl8"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4Jzs25VX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WOQBS7u/"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CB53A9D8E;
-	Tue, 24 Feb 2026 16:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79D73A7F57;
+	Tue, 24 Feb 2026 16:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771951691; cv=none; b=HvAVbbZcXZlLNW+6kahgWWbuHjfCTI7Yx8bykyyd1JeWIsLWQrD5WhBa6LKwClk2JY1AIOGqtIEEWtSmJSRK8uyVDdEvyprM/hOmsoHa4YZ2Kl1g1E6sZdwRHq7SfSjenTTY7veFEQ9ciUfmhfF2GAcqQROlBs4cs7BfYzLEHxQ=
+	t=1771952166; cv=none; b=JnzUPSCltpF0jZYu30tYB+KnXyYGqXDrAPl4Pq3A2zQdDmPDhC05+d1CUa6++ppb3cc3e6GEvbViJz8Yap6prde6kiLu/8bRdBh+V5Ux7lUEFzFc+8bMtZqRcc0UrP8fV88XJyJbAGrB+j396rbDkom/428wdIOt4sXn7nI9s98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771951691; c=relaxed/simple;
-	bh=Drcpfxi2W/uFtI1HUq88rybKzuTYyfxEXhCD/AqKnBI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PMS+vHbuTHGDMZwiK83yZd2O9pQbf0Kst3T2FCI+GW4YckHrKFCjhlpr7NqwaMJ0YkDv5DxOEvs/KP+iigrShPnmPo16Ip1zFMQVS+RZ7y+R4skDrjURY7Bn+2kDIZEN2W1cX4dzCMtGaHuYQxgcPZZGdpwVKqUZxdwrffNH2Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=bpR66Fl8; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OEMrF6087200;
-	Tue, 24 Feb 2026 16:47:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=aerDdRzNTwzTKGdx6j+kihSNk+XITPeccx8fqrE5OKY=; b=
-	bpR66Fl8LuTy9EbOhnv08VkTnFN27KXHt1arjD68hgHGCD04b4czfb51xRmwlS/H
-	FT+MqTamEKjjDc4bnRxBuDn06Rqc1JQm+mgBgpVM5G8prx2KMDUVnPMTLzQeYsQX
-	LEo1oJIf6dA4LTb4GbosuEVnStJEVEx1/5R5anW3PL1aU0ImgHWQp1xlcSPYmJCq
-	W8SLWf4B3/2J3GkAk7Ho33ox7rfYTYhr7SlSJTOK6mIUGW+HJPMNW4jaIZyL0mOU
-	5nXJfJRhFLzra0V34wrTDy91Xka63OG08akha+LiK+tEwQ7qrdSAj6/Qlf1tQWhm
-	RH4F0PU9g2WTkYBu1xDf7Q==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cf3g3mn4y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Feb 2026 16:47:56 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61OFxGVb015689;
-	Tue, 24 Feb 2026 16:47:55 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4cf35a6kk9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Feb 2026 16:47:55 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 61OGlt4d012936;
-	Tue, 24 Feb 2026 16:47:55 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4cf35a6kjb-1;
-	Tue, 24 Feb 2026 16:47:54 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Bean Huo <beanhuo@micron.com>, Can Guo <can.guo@oss.qualcomm.com>,
-        Alexey Charkov <alchark@flipper.net>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v3] scsi: ufs: core: Fix RPMB region size detection for UFS 2.2
-Date: Tue, 24 Feb 2026 11:47:40 -0500
-Message-ID: <177195161175.1154639.14825050984153004588.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260209-ufs-rpmb-v3-1-b1804e71bd38@flipper.net>
-References: <20260209-ufs-rpmb-v3-1-b1804e71bd38@flipper.net>
+	s=arc-20240116; t=1771952166; c=relaxed/simple;
+	bh=YnKc/WluycibeLq6Y15TT/1JA6ENKA+AQby6cau1V9A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BmLO2Vsc119PgPIO52qUoC1Q6RrvcFa5BxSNq8GzbqTVxOmRRLgznh+jMLfLJu+aMg0/6KQamGf/Ve8Gqy5dl6LUaAiYuNCFtfaFzasuJOFpp/jXzB69YlfDBRjXEYwgqHywu0qLLkGpm/afvnU/6OdrDZIL/TTo98EnyXeccTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4Jzs25VX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WOQBS7u/; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 24 Feb 2026 17:56:01 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1771952163;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YnKc/WluycibeLq6Y15TT/1JA6ENKA+AQby6cau1V9A=;
+	b=4Jzs25VXu1kEN8UxB8Z7BmYLYkq3DtcWsqGrU1/kFBsnhRDjGjTSLZbxkk6RLjQbw1tG+E
+	XTg++P4bjQzhrk98q4/pcnOOKSctylSCC2gGAaOYRMm4VlVh9s334VJe5Ut3VDysEizpc4
+	4ZUzTHHwZ54KOrB6Sj8I+CHB+2ZBl0kvAQdl0pnR935oKDcjnJnrO2KXyRpLmfqGU+RDON
+	exjGwpC56+9p3cGOEeayYwsAA86CMtn6WeILtTNQScCQ8yUgnBEaO1jSDSJwIW7rvpqwyC
+	zN0DHRy/4XpPHZyqOKeCVDcVlDTMthh+dgbd6SEL3C5NQ2tnlBoyUMnsV/SdxA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1771952163;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YnKc/WluycibeLq6Y15TT/1JA6ENKA+AQby6cau1V9A=;
+	b=WOQBS7u/7Va+ws965qmqWt1cfJAGxi71SxSsEW+dWIt5c5njp9F/oO3xYh8c5IwIwN1n7q
+	4xn8kvravf/WUgCA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: Patch "printk, vt, fbcon: Remove console_conditional_schedule()"
+ has been added to the 6.12-stable tree
+Message-ID: <20260224165601.2GtTLfmh@linutronix.de>
+References: <20260221163924.4117536-1-sashal@kernel.org>
+ <40d3252f-22c1-4a24-83ae-68de825807d4@gmx.de>
+ <20260223065448.xshEaalA@linutronix.de>
+ <ba3c30bd-5fe3-4774-b7ad-5c8335893fa7@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-24_02,2026-02-23_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 malwarescore=0
- spamscore=0 bulkscore=0 mlxlogscore=676 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
- definitions=main-2602240139
-X-Authority-Analysis: v=2.4 cv=Y6r1cxeN c=1 sm=1 tr=0 ts=699dd63c cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=WpOT6c3oHlBwd_VzIKoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: OAI26Lfgsre45pj7kprhQoHFlNqMmHyy
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDE0MCBTYWx0ZWRfXw74xnOpNU3c+
- owGvCl1NxBZo5EYqbBmEKErYOAY7ycCOwVaQSgLVdso9taR3o3o4HtJGTtWaf3iCt0k73NJw4wi
- c1g5f8qAuYOP1SzsLK04TX/q3Nmrmw1eeEkEoFv1ObrRXwiGGARGVk6IR/NQfvcIcu1cN+9FEAA
- 52JALmdKIS8SBQw+FFkRpeqQsIcpAnr23vE64jNmVD/yhA49Zr1gza4nkRSo3m67jzfEAgyE4ld
- h5Hb1FB58Ua7bqRzADzweGl4+No0BptAjBZ+5MmBv4GXus9rH8mscJ4lkE6vaN3yzH6bRf4ETkU
- Fzo8+qLLmPkOLIS3B5YTWFUR4O4VVCNg71oelSb8OaL3DlqZiPRj0mmPbLbt0jcGy5rTvpNK7YM
- zvBVkK5l34bPhjtW6sIR0HXBuWMRDEfM4rqlVcZzPwoZvFfUYgI4cLigW0bm5tKIXtF38LCkww2
- MHFUmob0l+meb0hBhvA==
-X-Proofpoint-GUID: OAI26Lfgsre45pj7kprhQoHFlNqMmHyy
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ba3c30bd-5fe3-4774-b7ad-5c8335893fa7@gmx.de>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[oracle.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217930-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[gmx.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:mid,oracle.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217931-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 8DF3118A343
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 078DB18A4E5
 X-Rspamd-Action: no action
 
-On Mon, 09 Feb 2026 19:17:34 +0400, Alexey Charkov wrote:
+On 2026-02-23 10:01:23 [+0100], Helge Deller wrote:
+> Hello Sebastian,
+Hi Helge,
 
-> Older UFS spec devices (2.2 and earlier) do not expose per-region RPMB
-> sizes, as only one RPMB region is supported. In such cases, the size of
-> the single RPMB region can be deduced from the Logical Block Count and
-> Logical Block Size fields in the RPMB Unit Descriptor.
-> 
-> Add a fallback mechanism to calculate the RPMB region size from these
-> fields if the device implements an older spec, so that the RPMB driver
-> can work with such devices - otherwise it silently skips the whole RPMB.
-> 
-> [...]
+> Just to be sure: I assume you want this patch backported:
+> 8e9bf8b9e8c0 ("printk, vt, fbcon: Remove console_conditional_schedule()")
+> Not the other ones starting with "fbcon". Right?
+> So, we talk about one patch only.
 
-Applied to 7.0/scsi-fixes, thanks!
+Correct, only this one.
 
-[1/1] scsi: ufs: core: Fix RPMB region size detection for UFS 2.2
-      https://git.kernel.org/mkp/scsi/c/2e6b5cd6a4b3
+> > One idea would be to make the removed functions a NOP in the PREEMPT_RT
+> > case if you prefer not to backport it at all.
+> I'm not generally against backporting the patch above.
+> I'm only hesitant, because can we really be sure it will not produce
+> any lockups in the older kernel either?
 
--- 
-Martin K. Petersen
+Not without trying. There is this scheduling point since v4.5-rc1 and
+this should go to v6.12+ and based on this I don't see any problem with
+it. Older kernel will be v6.12, v6.18 and v6.19.
+
+> If you think it's safe, I too prefer to backport it as is.
+
+Okay. Then a backport as is it is :)
+
+> Helge
+
+Sebastian
 
