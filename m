@@ -1,172 +1,165 @@
-Return-Path: <stable+bounces-217910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHESGdqanWnwQgQAu9opvQ
-	(envelope-from <stable+bounces-217910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:34:34 +0100
+	id AEWQL5OcnWnwQgQAu9opvQ
+	(envelope-from <stable+bounces-217911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:41:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBED218702C
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:34:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E3D1871AD
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:41:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 853F8318081D
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 12:31:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 93DD0304BEAD
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 12:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A52395DAA;
-	Tue, 24 Feb 2026 12:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354ED396D05;
+	Tue, 24 Feb 2026 12:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="q+59N3Gg"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC24D37417A;
-	Tue, 24 Feb 2026 12:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCD1396B7F
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 12:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771936295; cv=none; b=geUh+NfsgQGDZp7ILGsex4ZFsdLjxOcx7+e5zYcGBXopi7/ATSzlKsLb3OTOgD3CwdXLT2izICS+MC1xqNkR8zsRnxqIcMZV8nEP+mFQZqB44+soWTPtZGkY5vTdi609vKp5Dep8wWzRLNClXAvmvrJoy+H3KrHvgaSQMVhh8GY=
+	t=1771936833; cv=none; b=epQlYXjaPOaKYg8rMXFwnuutj5zGvIcdKDwSfeGh2arlgSnar9A8x0BG3hWiCB9HseJEzwSDb48y/6BztDcM7/Qm/YTFsU5rI2PH8ZUja/pIGVZMdhs5YcfIXC15VrB31rpwk0EEQLBT9bK+uzDvstYVZSlvqpffcfn6XDYMThc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771936295; c=relaxed/simple;
-	bh=6X4d+FM70GZbM3qSklXp7wBJbDEltBSEINeL//XhXok=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W2RNt2s/wzjTB/yO6NkYnOwt+JIJnITFeQQSwelSzFxCXjLmQzqbnBEpP2OXmwomVC3b3xzy22Ri32oxjjTek/vs7ztM2eSDnpfDryhkj9kb3cwUedVUFlDVw223WhJ8lQwEN8If4pTFUuQM/baXQkT3I1u1SaOZ05hn/tniw9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DC1F2339;
-	Tue, 24 Feb 2026 04:31:26 -0800 (PST)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BD6553F62B;
-	Tue, 24 Feb 2026 04:31:29 -0800 (PST)
-Date: Tue, 24 Feb 2026 12:31:21 +0000
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Sudeep Holla <sudeep.holla@kernel.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 0/4] firmware: arm_scmi: Drop fake 'const' on scmi_handle
-Message-ID: <aZ2aBD_u_RVhgsei@pluto>
-References: <20260224-handle-not-const-v1-0-90bf93b53e27@oss.qualcomm.com>
+	s=arc-20240116; t=1771936833; c=relaxed/simple;
+	bh=6YiO3aEEMJaPzYYMxUMPBSbOzfWX3uI2ARHdUHzLVj4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NloW1Vl8vnLvc3H6CtUrcJW30myHBxKeQsaTE4IA4fN88bdJcVVl/VD5toB+gE4Kv9XB3ukxepR8wcMqC6alZlrya/ymzyI3tTmzbhExbO7b/gpujocPrVTaV8MWRH9OnW4CHkm8fX2S7+HlNl22J7gG7qomwXxN4wBRg+91naI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=q+59N3Gg; arc=none smtp.client-ip=109.224.244.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1771936822; x=1772196022;
+	bh=QrkeH5U9fQQelEPd+SKbWGI2+T7gqRMRbmw70mxyA5Q=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=q+59N3GgOl54tAWVfCvfaLW8whmNB1jhv5DdMNbd3v6kD1OLwB3YL+fqxJbW2wynq
+	 gAmf6UAccX4ANWaLqPh5U3Xll9CbmENh54yag8jZM2FtMQOsX+IudP9RrCvvD4qYB4
+	 RQUvlNS7a2bm7x7zXKi4HZtKkBK/zgVrci1ed6OFQKSp7Dl7VFMWunn1MhiKjWHIZ1
+	 8mi2N3qmV3Sl9dxHMWOnS3Pcy4O2yUOOrqXFB8wpuI/0hb7Dkdk43uCvwDvqZ3bA45
+	 UmYJ1oaMeCSzRN81hW7mZwEOw5wvTOtkTLkgccWxl9afRe6LbouLplJvugJMqjVuDu
+	 +H3k+P92DBI+w==
+Date: Tue, 24 Feb 2026 12:40:18 +0000
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: m.wieczorretman@pm.me, Farrah Chen <farrah.chen@intel.com>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v7 1/3] x86/cpu: Clear feature bits disabled at compile-time
+Message-ID: <6b042d059be8341a7122c9d7c72fd8204211de44.1771936214.git.m.wieczorretman@pm.me>
+In-Reply-To: <cover.1771936214.git.m.wieczorretman@pm.me>
+References: <cover.1771936214.git.m.wieczorretman@pm.me>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: d63de67c71f23d9947820f0484b3848053389134
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260224-handle-not-const-v1-0-90bf93b53e27@oss.qualcomm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.86 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[pm.me,quarantine];
+	R_DKIM_ALLOW(-0.20)[pm.me:s=protonmail3];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217910-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,arm.com,baylibre.com,nxp.com,pengutronix.de,gmail.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217911-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[pm.me:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cristian.marussi@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[m.wieczorretman@pm.me,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BBED218702C
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,pm.me:mid,pm.me:dkim]
+X-Rspamd-Queue-Id: E4E3D1871AD
 X-Rspamd-Action: no action
 
-On Tue, Feb 24, 2026 at 11:43:38AM +0100, Krzysztof Kozlowski wrote:
-> Severale functions operating on the 'handle' pointer, like
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-Hi Krzysztof,
+If some config options are disabled during compile time, they still are
+enumerated in macros that use the x86_capability bitmask - cpu_has() or
+this_cpu_has().
 
-> scmi_handle_put() or scmi_xfer_raw_get(), are claiming it is a pointer
-> to const thus they should not modify the handle.  In fact that's a false
-> statement, because first thing these functions do is drop the cast to
-> const with container_of:
+The features are also visible in /proc/cpuinfo even though they are not
+enabled - which is contrary to what the documentation states about the
+file. Examples of such feature flags are lam, fred, sgx, ibrs_enhanced,
+split_lock_detect, user_shstk, avx_vnni and enqcmd.
 
-Thanks for this first of all...
+Once the cpu_caps_cleared array is initialized with the autogenerated
+disabled bitmask apply_forced_caps() will clear the corresponding bits
+in boot_cpu_data.x86_capability[] and other secondary cpus'
+cpu_data.x86_capability[]. Thus features disabled at compile time won't
+show up in /proc/cpuinfo.
 
-...but :D
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220348
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: <stable@vger.kernel.org> # 6.18.x
+---
+Changelog v6:
+- Remove patch message portions that are not just describing the diff.
 
-... the SCMI stack attempts to follow a sort of layered design, so roughly
-we have transport, core, protocols and finally SCMI Drivers.
+ arch/x86/kernel/cpu/common.c       | 3 ++-
+ arch/x86/tools/cpufeaturemasks.awk | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-Each of these layers has its own responsabilities and the aim was to
-enforce some sort of isolation between these layers, OR even between
-different disjoint features within the same layer, if it made sense,
-like with the notification subsystem within the core...
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 1c3261cae40c..9aa11224a038 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -732,7 +732,8 @@ static const char *table_lookup_model(struct cpuinfo_x8=
+6 *c)
+ }
+=20
+ /* Aligned to unsigned long to avoid split lock in atomic bitmap ops */
+-__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
+));
++__u32 cpu_caps_cleared[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long=
+)) =3D
++=09DISABLED_MASK_INITIALIZER;
+ __u32 cpu_caps_set[NCAPINTS + NBUGINTS] __aligned(sizeof(unsigned long));
+=20
+ #ifdef CONFIG_X86_32
+diff --git a/arch/x86/tools/cpufeaturemasks.awk b/arch/x86/tools/cpufeature=
+masks.awk
+index 173d5bf2d999..b7f4e775a365 100755
+--- a/arch/x86/tools/cpufeaturemasks.awk
++++ b/arch/x86/tools/cpufeaturemasks.awk
+@@ -82,6 +82,12 @@ END {
+ =09=09}
+ =09=09printf " 0\t\\\n";
+ =09=09printf "\t) & (1U << ((x) & 31)))\n\n";
++
++=09=09printf "\n#define %s_MASK_INITIALIZER\t\t\t\\", s;
++=09=09printf "\n\t{\t\t\t\t\t\t\\";
++=09=09for (i =3D 0; i < ncapints; i++)
++=09=09=09printf "\n\t\t%s_MASK%d,\t\t\t\\", s, i;
++=09=09printf "\n\t}\n\n";
+ =09}
+=20
+ =09printf "#endif /* _ASM_X86_CPUFEATUREMASKS_H */\n";
+--=20
+2.53.0
 
-Now, given that all of the above must be attained using our beloved C
-language, such attempt to enforce isolation between such 'islands' with
-different responsibilities is based on:
-
- - fully opaque pointers/handles...like the ph protocol handels within
-   SCMI drivers...best way to do it..if you cannot even peek into an
-   object you certainly cannot mess with it...
-
- - some 'constification' when passing around some nonm-opaque references
-   across such boundaries
-
-So, when you say that some of these functions sports a fake const
-reference, is certainly true to some extent, BUT you miss the fact that
-usually the const is meant to stop the CALLER from messing freely with
-the handle and instead enforce the usage of a dedicated helper that sits
-in another layer...
-
-As an example, when you say that the scmi_protocol_handle *ph is indeed
-manipulated by scmi_protocol_set_priv() and so it is NOT const, you are
-certainly right, BUT the above function and the protocol handle itself
-lives in the core, a different layer from the protocols, and indeed the
-protocol_init function cannot change directly the protocol priv value
-but instead has to pass through the helper ph->set_priv() which is the
-only helper that can touch the ph content...
-...IOW you are forced to respect the isolation boundary (as much as
-possible) by the constification of ph...if you drop the const in the
-protocol_init protoypes you end opening the stack to all sort of
-cross-boundary manipulations annd hacks: helpers like set_priv were
-added to be able to manipulate the bits that needed to be modifiable
-while maintaining separation of resposibilities between latyers.
-
-Similarly for notifications, they are kept isolated as much as possible
-from the core.
-
-So, I still have definitely to properly go through all of your
-series, but while the usage of container_of_const() is certainly a
-welcome addition, because it raises the isolation factor, dropping the
-'fake' const seems to me a step back in the enforcement of isolation
-boundaries between different layers or different subsystems within the
-same layer.
-
-IOW, the last that we want is to be able to freely change the content
-of such const handles from outside the 'island' they live in...
-
-Any improvement on such isolation with more modern C tricks, if
-possible, is pretty much welcome, i.e. I am not saying that the current
-system is perfect and not improvable...but just dropping all of this in
-name of some better possible compilation optimization seems not worth in
-terms of maintainability...
-
-Does any of the above blabbing of mine makes sense :P ?
-
-Thanks,
-Cristian
 
 
