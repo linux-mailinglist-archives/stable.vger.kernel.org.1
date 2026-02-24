@@ -1,72 +1,110 @@
-Return-Path: <stable+bounces-217883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WB3VFFJcnWmxOgQAu9opvQ
-	(envelope-from <stable+bounces-217883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:07:46 +0100
+	id +IWBI/tgnWksPQQAu9opvQ
+	(envelope-from <stable+bounces-217884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:27:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F1B1836C5
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:07:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE490183A8C
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:27:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A298F301C6AD
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 08:07:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BB8D43028C2A
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 08:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D904136604B;
-	Tue, 24 Feb 2026 08:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11863375DF;
+	Tue, 24 Feb 2026 08:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="tIT7I0LU"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="P8j7SPfw";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="T6zislNU";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wNSN+JSW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="beivu7ur"
 X-Original-To: stable@vger.kernel.org
-Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8086B3375DF;
-	Tue, 24 Feb 2026 08:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.130.44.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D6936683A
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 08:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771920459; cv=none; b=inZcjPJi6bU+TsG/xVK5bAmT0Bj3CXfGOWkRnVEr+JpHMrzzo8US3QkOC/Lu/w1BQIxJAUCTQjts+HvRa8FjEUsQzMTxXwvUmAuf4tIhnVtTktQRm2bbY9b19X1tuxz0df5diERI7RiD/b4LkuajZ9jTIQ7pvx/lI/Ia1HpW1uY=
+	t=1771921633; cv=none; b=lm9F1xqz4Q6CSeCBUI7CXwy/TL2NXISoOO5FJtG6XmSxT89eSs713+uEL+Gr/8xj0YEYfQ7aDseRsT8/Oy1CX2zJDo+sBrM2znZBpSCl20ZwcxWvXWwwP6C+WO3ENPYxT8Z8xdmyiAH3LVOLjsCHdH7H69hpBZkoC9d5bP8xmPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771920459; c=relaxed/simple;
-	bh=cg/3+vQXW36JdAEnn6LV5WbWoKtLOw3t6ZhwfyETReU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rWnPdaQKZmejfYePTacMgrA/8KgoUlVqt9Ng1qyoxRwnuyxRxxVrwQk0/g8W6f2emlSdUkGzvC556iVzwDrTJ9EKKsDHaT4LYA0J6qhmmn/kBkQl4rcMKtAMa3IDkB40yxseqg3EUfXxA8uq0LP1fgmK3C7lMiTaAV8oHofMhOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com; spf=pass smtp.mailfrom=richtek.com; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=tIT7I0LU; arc=none smtp.client-ip=220.130.44.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
-X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
-	s=richtek; t=1771920448;
-	bh=0aA3GOQjKuLjmzfwgQIDqro2LKFlQeZoo1K4N69XWZA=; l=2317;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=tIT7I0LU3jzOWxnHcjMKSq8AgPp5fbDlkseur0Ci5BBlvBGp8rGVnrZhbfnRA3fJ6
-	 f2VZ52Y9WAUROWmUd/l6J9dj5R8yCH5Jx1CKU/Gz8LlNj6mXvmWgAm9nfmN5ARHIGv
-	 60Vw1z0i47M2oAngt7EmhGiTiUcqj/bWRFfJeimrBjJHmJ8S5xvHusYW0S6YVgL5E8
-	 i+b3jqXEn7P3I/SuSvGwFDQcV9UJwBViqmY5SePPHL71lw7LDDhJQwJbFJzU+7ARpn
-	 K8BUBPU4w0S2twclLOjqwp3llypacXiL8bXWlCg+R7qBVhZHBY3oHxe5/4HhGBzv0f
-	 1BBAO2V7YucTg==
-Received: from 192.168.10.46
-	by mg.richtek.com with MailGates ESMTPS Server V6.0(2285640:0:AUTH_RELAY)
-	(envelope-from <cy_huang@richtek.com>)
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Tue, 24 Feb 2026 16:06:51 +0800 (CST)
-Received: from ex3.rt.l (192.168.10.46) by ex3.rt.l (192.168.10.46) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Tue, 24 Feb
- 2026 16:06:51 +0800
-Received: from git-send.richtek.com (192.168.10.154) by ex3.rt.l
- (192.168.10.45) with Microsoft SMTP Server id 15.2.1748.26 via Frontend
- Transport; Tue, 24 Feb 2026 16:06:51 +0800
-From: <cy_huang@richtek.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, Jacek Anaszewski
-	<jacek.anaszewski@gmail.com>
-CC: Bryan Wu <cooloney@gmail.com>, Jacek Anaszewski
-	<j.anaszewski@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
-	"Sakari Ailus" <sakari.ailus@linux.intel.com>, <roger-hy.wang@mediatek.com>,
-	"ChiYuan Huang" <cy_huang@richtek.com>, <linux-media@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH v4] media: v4l2-flash: Enter LED off state after file handle closed
-Date: Tue, 24 Feb 2026 16:06:42 +0800
-Message-ID: <3f5e98addcedf0f425b63608b0ca694129fb31a5.1771916686.git.cy_huang@richtek.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1771921633; c=relaxed/simple;
+	bh=bWOd/0RGljx0Qd0DKZ4PLGLuukggTJ2N04jWI/zYLF4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TDzNIsGNpY09SYFYkFHDZoIu3AoQLa2+7fv0/IWcGpiOPqV5byel+lmqWhPGFq/jrq5+iJC/QNS49WXKxttQMvfocRlTQ/CxMfq0GvK+NhvUWdYPbDgWhv1OR2p4mRrvKHD2sntUDIbYGhhtmMCYIqJ3960au6aKJxBc/yr2DwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=P8j7SPfw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=T6zislNU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wNSN+JSW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=beivu7ur; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6BB785BCD6;
+	Tue, 24 Feb 2026 08:27:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771921623; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZEJvkmg44lJ3ZuZwLIsYWxGbbgRv72rWRKmIBKXOmQc=;
+	b=P8j7SPfwvilJvUvQA78ilvKP9xyMS+FugjH8p78/Ai7Skacq285pUoz1Lg6IApCzfuMjhe
+	xvM07Dfys69C0D0gg6FjaXsPkg0dBgQpGSyxaE4PGb/lgbf6ikFrbWf0rDSGBQGQqnxqAc
+	eg9cMOVX4wb411ON+JD0tJEfDNO6RSA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771921623;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZEJvkmg44lJ3ZuZwLIsYWxGbbgRv72rWRKmIBKXOmQc=;
+	b=T6zislNU86Wmg9aRkb64GyoaB3Cf1dFQX26kXAgS0bIqjBGFYCJQKkTFMPeOfjGis0QyGC
+	HE3Q3mleJMAnYoDQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771921622; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZEJvkmg44lJ3ZuZwLIsYWxGbbgRv72rWRKmIBKXOmQc=;
+	b=wNSN+JSWq2dhyTxlMxW2JXmv1Ghk+XrQB3767kc9ElXKTCvSirhTFxbtvcK3F0sfz6AwxL
+	hhuFmSHkKA+buNe6MnDKql/zj6+Yym0CG1D1hLd4v39SoZJ+ovqMoupvtPVxReUPlS8fxz
+	8J07+C/IqSZN/DCOJJqcO6LY/Utrjck=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771921622;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZEJvkmg44lJ3ZuZwLIsYWxGbbgRv72rWRKmIBKXOmQc=;
+	b=beivu7urdntyuvgOmLcHeg3zLlgGtKq0d8p+OJMy0h39Apqi48zzXDb3Dx+VP93Ydl0URd
+	c0nNME/L3/oW2XCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2C8103EA69;
+	Tue, 24 Feb 2026 08:27:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WC6sCdZgnWnVQAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 24 Feb 2026 08:27:02 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: deller@gmx.de,
+	simona@ffwll.ch,
+	jayalk@intworks.biz
+Cc: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/4] fbdev: defio: Disconnect deferred I/O from the lifetime of struct fb_info
+Date: Tue, 24 Feb 2026 09:25:54 +0100
+Message-ID: <20260224082657.207284-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260224082657.207284-1-tzimmermann@suse.de>
+References: <20260224082657.207284-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,105 +112,404 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spam-Flag: NO
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[richtek.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[richtek.com:s=richtek];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,samsung.com,linux.intel.com,mediatek.com,richtek.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217883-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
-	FROM_NO_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217884-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[6];
+	FREEMAIL_TO(0.00)[gmx.de,ffwll.ch,intworks.biz];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cy_huang@richtek.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[richtek.com:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[suse.de:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 50F1B1836C5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,suse.de:mid,suse.de:dkim,suse.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lists.freedesktop.org:email,fb_deferred_io_state.info:url]
+X-Rspamd-Queue-Id: BE490183A8C
 X-Rspamd-Action: no action
 
-From: ChiYuan Huang <cy_huang@richtek.com>
+Hold state of deferred I/O in struct fb_deferred_io_state. Allocate an
+instance as part of initializing deferred I/O and remove it only after
+the final mapping has been closed. If the fb_info and the contained
+deferred I/O meanwhile goes away, clear struct fb_deferred_io_state.info
+to invalidate the mapping. Any access will then result in a SIGBUS
+signal.
 
-To make sure LED enter off state after file handle is closed, initiatively
-configure LED_MODE to NONE. This can guarantee whatever the previous state
-is torch or strobe mode, the final state will be off.
+Fixes a long-standing problem, where a device hot-unplug happens while
+user space still has an active mapping of the graphics memory. The hot-
+unplug frees the instance of struct fb_info. Accessing the memory will
+operate on undefined state.
 
-Cc: stable@vger.kernel.org
-Fixes: 42bd6f59ae90 ("media: Add registration helpers for V4L2 flash sub-devices")
-Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+v2:
+- use kzalloc_obj()
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 60b59beafba8 ("fbdev: mm: Deferred IO support")
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v2.6.22+
 ---
-v4:
-- Refine the led close into lock guarantee.
+ drivers/video/fbdev/core/fb_defio.c | 178 ++++++++++++++++++++++------
+ include/linux/fb.h                  |   4 +-
+ 2 files changed, 145 insertions(+), 37 deletions(-)
 
-v3
-- Remove 'Reported-by' tag
-- Fix identation check for patch integration
-
-v2
-- Fix commit message redudant space cause patch robot parsing error
-
-Hi,
-
-Since the original 'direcly return' is bad, the below lines cannot be
-called like as restroing led/iled to sysfs control. Therefore I refine
-the code writing. 'goto' may be a bad coding. But to minimize changes,
-this could be tradeoff.
-
-Open discussion if there's the better solution.
-
-[Preface]
-We encounter an issue. When the upper layer camera process is crashed,
-if the new process did not reinit the LED,  it will keeps the previous
-state whatever it's in torch or strobe mode
-
-OS will handle the resource management. So when the process is crashed
-or terminated, the 'close' API will be called to release resources.
-That's why we add the initiative action to trigger LED off in file
-handle close is called.
----
- drivers/media/v4l2-core/v4l2-flash-led-class.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/media/v4l2-core/v4l2-flash-led-class.c b/drivers/media/v4l2-core/v4l2-flash-led-class.c
-index 163badeef76f..259fe014db26 100644
---- a/drivers/media/v4l2-core/v4l2-flash-led-class.c
-+++ b/drivers/media/v4l2-core/v4l2-flash-led-class.c
-@@ -624,10 +624,17 @@ static int v4l2_flash_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
- 	if (led_cdev) {
- 		mutex_lock(&led_cdev->led_access);
+diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
+index ca48b89a323d..93bd2f696fa4 100644
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -24,6 +24,75 @@
+ #include <linux/rmap.h>
+ #include <linux/pagemap.h>
  
-+		/* If file handle is released, make sure LED enter off state */
-+		ret = v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE],
-+				       V4L2_FLASH_LED_MODE_NONE);
-+		if (ret)
-+			goto out_led_close;
++/*
++ * struct fb_deferred_io_state
++ */
 +
- 		if (v4l2_flash->ctrls[STROBE_SOURCE])
- 			ret = v4l2_ctrl_s_ctrl(
- 				v4l2_flash->ctrls[STROBE_SOURCE],
- 				V4L2_FLASH_STROBE_SOURCE_SOFTWARE);
-+out_led_close:
- 		led_sysfs_enable(led_cdev);
++struct fb_deferred_io_state {
++	struct kref ref;
++
++	struct mutex lock; /* mutex that protects the pageref list */
++	/* fields protected by lock */
++	struct fb_info *info;
++};
++
++static struct fb_deferred_io_state *fb_deferred_io_state_alloc(void)
++{
++	struct fb_deferred_io_state *fbdefio_state;
++
++	fbdefio_state = kzalloc_obj(*fbdefio_state);
++	if (!fbdefio_state)
++		return NULL;
++
++	kref_init(&fbdefio_state->ref);
++	mutex_init(&fbdefio_state->lock);
++
++	return fbdefio_state;
++}
++
++static void fb_deferred_io_state_release(struct fb_deferred_io_state *fbdefio_state)
++{
++	mutex_destroy(&fbdefio_state->lock);
++
++	kfree(fbdefio_state);
++}
++
++static void fb_deferred_io_state_get(struct fb_deferred_io_state *fbdefio_state)
++{
++	kref_get(&fbdefio_state->ref);
++}
++
++static void __fb_deferred_io_state_release(struct kref *ref)
++{
++	struct fb_deferred_io_state *fbdefio_state =
++		container_of(ref, struct fb_deferred_io_state, ref);
++
++	fb_deferred_io_state_release(fbdefio_state);
++}
++
++static void fb_deferred_io_state_put(struct fb_deferred_io_state *fbdefio_state)
++{
++	kref_put(&fbdefio_state->ref, __fb_deferred_io_state_release);
++}
++
++/*
++ * struct vm_operations_struct
++ */
++
++static void fb_deferred_io_vm_open(struct vm_area_struct *vma)
++{
++	struct fb_deferred_io_state *fbdefio_state = vma->vm_private_data;
++
++	fb_deferred_io_state_get(fbdefio_state);
++}
++
++static void fb_deferred_io_vm_close(struct vm_area_struct *vma)
++{
++	struct fb_deferred_io_state *fbdefio_state = vma->vm_private_data;
++
++	fb_deferred_io_state_put(fbdefio_state);
++}
++
+ static struct page *fb_deferred_io_get_page(struct fb_info *info, unsigned long offs)
+ {
+ 	struct fb_deferred_io *fbdefio = info->fbdefio;
+@@ -121,25 +190,46 @@ static void fb_deferred_io_pageref_put(struct fb_deferred_io_pageref *pageref,
+ /* this is to find and return the vmalloc-ed fb pages */
+ static vm_fault_t fb_deferred_io_fault(struct vm_fault *vmf)
+ {
++	struct fb_info *info;
+ 	unsigned long offset;
+ 	struct page *page;
+-	struct fb_info *info = vmf->vma->vm_private_data;
++	vm_fault_t ret;
++	struct fb_deferred_io_state *fbdefio_state = vmf->vma->vm_private_data;
++
++	mutex_lock(&fbdefio_state->lock);
++
++	info = fbdefio_state->info;
++	if (!info) {
++		ret = VM_FAULT_SIGBUS; /* our device is gone */
++		goto err_mutex_unlock;
++	}
  
- 		mutex_unlock(&led_cdev->led_access);
+ 	offset = vmf->pgoff << PAGE_SHIFT;
+-	if (offset >= info->fix.smem_len)
+-		return VM_FAULT_SIGBUS;
++	if (offset >= info->fix.smem_len) {
++		ret = VM_FAULT_SIGBUS;
++		goto err_mutex_unlock;
++	}
+ 
+ 	page = fb_deferred_io_get_page(info, offset);
+-	if (!page)
+-		return VM_FAULT_SIGBUS;
++	if (!page) {
++		ret = VM_FAULT_SIGBUS;
++		goto err_mutex_unlock;
++	}
+ 
+ 	if (!vmf->vma->vm_file)
+ 		fb_err(info, "no mapping available\n");
+ 
+ 	BUG_ON(!info->fbdefio->mapping);
+ 
++	mutex_unlock(&fbdefio_state->lock);
++
+ 	vmf->page = page;
++
+ 	return 0;
++
++err_mutex_unlock:
++	mutex_unlock(&fbdefio_state->lock);
++	return ret;
+ }
+ 
+ int fb_deferred_io_fsync(struct file *file, loff_t start, loff_t end, int datasync)
+@@ -166,15 +256,24 @@ EXPORT_SYMBOL_GPL(fb_deferred_io_fsync);
+  * Adds a page to the dirty list. Call this from struct
+  * vm_operations_struct.page_mkwrite.
+  */
+-static vm_fault_t fb_deferred_io_track_page(struct fb_info *info, unsigned long offset,
+-					    struct page *page)
++static vm_fault_t fb_deferred_io_track_page(struct fb_deferred_io_state *fbdefio_state,
++					    unsigned long offset, struct page *page)
+ {
+-	struct fb_deferred_io *fbdefio = info->fbdefio;
++	struct fb_info *info;
++	struct fb_deferred_io *fbdefio;
+ 	struct fb_deferred_io_pageref *pageref;
+ 	vm_fault_t ret;
+ 
+ 	/* protect against the workqueue changing the page list */
+-	mutex_lock(&fbdefio->lock);
++	mutex_lock(&fbdefio_state->lock);
++
++	info = fbdefio_state->info;
++	if (!info) {
++		ret = VM_FAULT_SIGBUS; /* our device is gone */
++		goto err_mutex_unlock;
++	}
++
++	fbdefio = info->fbdefio;
+ 
+ 	pageref = fb_deferred_io_pageref_get(info, offset, page);
+ 	if (WARN_ON_ONCE(!pageref)) {
+@@ -192,50 +291,38 @@ static vm_fault_t fb_deferred_io_track_page(struct fb_info *info, unsigned long
+ 	 */
+ 	lock_page(pageref->page);
+ 
+-	mutex_unlock(&fbdefio->lock);
++	mutex_unlock(&fbdefio_state->lock);
+ 
+ 	/* come back after delay to process the deferred IO */
+ 	schedule_delayed_work(&info->deferred_work, fbdefio->delay);
+ 	return VM_FAULT_LOCKED;
+ 
+ err_mutex_unlock:
+-	mutex_unlock(&fbdefio->lock);
++	mutex_unlock(&fbdefio_state->lock);
+ 	return ret;
+ }
+ 
+-/*
+- * fb_deferred_io_page_mkwrite - Mark a page as written for deferred I/O
+- * @fb_info: The fbdev info structure
+- * @vmf: The VM fault
+- *
+- * This is a callback we get when userspace first tries to
+- * write to the page. We schedule a workqueue. That workqueue
+- * will eventually mkclean the touched pages and execute the
+- * deferred framebuffer IO. Then if userspace touches a page
+- * again, we repeat the same scheme.
+- *
+- * Returns:
+- * VM_FAULT_LOCKED on success, or a VM_FAULT error otherwise.
+- */
+-static vm_fault_t fb_deferred_io_page_mkwrite(struct fb_info *info, struct vm_fault *vmf)
++static vm_fault_t fb_deferred_io_page_mkwrite(struct fb_deferred_io_state *fbdefio_state,
++					      struct vm_fault *vmf)
+ {
+ 	unsigned long offset = vmf->pgoff << PAGE_SHIFT;
+ 	struct page *page = vmf->page;
+ 
+ 	file_update_time(vmf->vma->vm_file);
+ 
+-	return fb_deferred_io_track_page(info, offset, page);
++	return fb_deferred_io_track_page(fbdefio_state, offset, page);
+ }
+ 
+-/* vm_ops->page_mkwrite handler */
+ static vm_fault_t fb_deferred_io_mkwrite(struct vm_fault *vmf)
+ {
+-	struct fb_info *info = vmf->vma->vm_private_data;
++	struct fb_deferred_io_state *fbdefio_state = vmf->vma->vm_private_data;
+ 
+-	return fb_deferred_io_page_mkwrite(info, vmf);
++	return fb_deferred_io_page_mkwrite(fbdefio_state, vmf);
+ }
+ 
+ static const struct vm_operations_struct fb_deferred_io_vm_ops = {
++	.open		= fb_deferred_io_vm_open,
++	.close		= fb_deferred_io_vm_close,
+ 	.fault		= fb_deferred_io_fault,
+ 	.page_mkwrite	= fb_deferred_io_mkwrite,
+ };
+@@ -252,7 +339,10 @@ int fb_deferred_io_mmap(struct fb_info *info, struct vm_area_struct *vma)
+ 	vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+ 	if (!(info->flags & FBINFO_VIRTFB))
+ 		vm_flags_set(vma, VM_IO);
+-	vma->vm_private_data = info;
++	vma->vm_private_data = info->fbdefio_state;
++
++	fb_deferred_io_state_get(info->fbdefio_state); /* released in vma->vm_ops->close() */
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(fb_deferred_io_mmap);
+@@ -263,9 +353,10 @@ static void fb_deferred_io_work(struct work_struct *work)
+ 	struct fb_info *info = container_of(work, struct fb_info, deferred_work.work);
+ 	struct fb_deferred_io_pageref *pageref, *next;
+ 	struct fb_deferred_io *fbdefio = info->fbdefio;
++	struct fb_deferred_io_state *fbdefio_state = info->fbdefio_state;
+ 
+ 	/* here we wrprotect the page's mappings, then do all deferred IO. */
+-	mutex_lock(&fbdefio->lock);
++	mutex_lock(&fbdefio_state->lock);
+ #ifdef CONFIG_MMU
+ 	list_for_each_entry(pageref, &fbdefio->pagereflist, list) {
+ 		struct page *page = pageref->page;
+@@ -283,12 +374,13 @@ static void fb_deferred_io_work(struct work_struct *work)
+ 	list_for_each_entry_safe(pageref, next, &fbdefio->pagereflist, list)
+ 		fb_deferred_io_pageref_put(pageref, info);
+ 
+-	mutex_unlock(&fbdefio->lock);
++	mutex_unlock(&fbdefio_state->lock);
+ }
+ 
+ int fb_deferred_io_init(struct fb_info *info)
+ {
+ 	struct fb_deferred_io *fbdefio = info->fbdefio;
++	struct fb_deferred_io_state *fbdefio_state;
+ 	struct fb_deferred_io_pageref *pagerefs;
+ 	unsigned long npagerefs;
+ 	int ret;
+@@ -298,7 +390,11 @@ int fb_deferred_io_init(struct fb_info *info)
+ 	if (WARN_ON(!info->fix.smem_len))
+ 		return -EINVAL;
+ 
+-	mutex_init(&fbdefio->lock);
++	fbdefio_state = fb_deferred_io_state_alloc();
++	if (!fbdefio_state)
++		return -ENOMEM;
++	fbdefio_state->info = info;
++
+ 	INIT_DELAYED_WORK(&info->deferred_work, fb_deferred_io_work);
+ 	INIT_LIST_HEAD(&fbdefio->pagereflist);
+ 	if (fbdefio->delay == 0) /* set a default of 1 s */
+@@ -315,10 +411,12 @@ int fb_deferred_io_init(struct fb_info *info)
+ 	info->npagerefs = npagerefs;
+ 	info->pagerefs = pagerefs;
+ 
++	info->fbdefio_state = fbdefio_state;
++
+ 	return 0;
+ 
+ err:
+-	mutex_destroy(&fbdefio->lock);
++	fb_deferred_io_state_release(fbdefio_state);
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(fb_deferred_io_init);
+@@ -352,11 +450,19 @@ EXPORT_SYMBOL_GPL(fb_deferred_io_release);
+ void fb_deferred_io_cleanup(struct fb_info *info)
+ {
+ 	struct fb_deferred_io *fbdefio = info->fbdefio;
++	struct fb_deferred_io_state *fbdefio_state = info->fbdefio_state;
+ 
+ 	fb_deferred_io_lastclose(info);
+ 
++	info->fbdefio_state = NULL;
++
++	mutex_lock(&fbdefio_state->lock);
++	fbdefio_state->info = NULL;
++	mutex_unlock(&fbdefio_state->lock);
++
++	fb_deferred_io_state_put(fbdefio_state);
++
+ 	kvfree(info->pagerefs);
+-	mutex_destroy(&fbdefio->lock);
+ 	fbdefio->mapping = NULL;
+ }
+ EXPORT_SYMBOL_GPL(fb_deferred_io_cleanup);
+diff --git a/include/linux/fb.h b/include/linux/fb.h
+index 6d4a58084fd5..aed17567fe50 100644
+--- a/include/linux/fb.h
++++ b/include/linux/fb.h
+@@ -218,13 +218,14 @@ struct fb_deferred_io {
+ 	unsigned long delay;
+ 	bool sort_pagereflist; /* sort pagelist by offset */
+ 	int open_count; /* number of opened files; protected by fb_info lock */
+-	struct mutex lock; /* mutex that protects the pageref list */
+ 	struct list_head pagereflist; /* list of pagerefs for touched pages */
+ 	struct address_space *mapping; /* page cache object for fb device */
+ 	/* callback */
+ 	struct page *(*get_page)(struct fb_info *info, unsigned long offset);
+ 	void (*deferred_io)(struct fb_info *info, struct list_head *pagelist);
+ };
++
++struct fb_deferred_io_state;
+ #endif
+ 
+ /*
+@@ -487,6 +488,7 @@ struct fb_info {
+ 	unsigned long npagerefs;
+ 	struct fb_deferred_io_pageref *pagerefs;
+ 	struct fb_deferred_io *fbdefio;
++	struct fb_deferred_io_state *fbdefio_state;
+ #endif
+ 
+ 	const struct fb_ops *fbops;
 -- 
-2.34.1
+2.52.0
 
 
