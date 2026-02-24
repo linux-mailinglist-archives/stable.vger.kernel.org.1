@@ -1,112 +1,129 @@
-Return-Path: <stable+bounces-217845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id c4PWB7D6nGmgMQQAu9opvQ
-	(envelope-from <stable+bounces-217845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 02:11:12 +0100
+	id mDh1Mq37nGmtMQQAu9opvQ
+	(envelope-from <stable+bounces-217846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 02:15:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80EF71806AB
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 02:11:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5D41806F2
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 02:15:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A122B30614C6
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 01:11:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A60573034256
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 01:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1FC238C3B;
-	Tue, 24 Feb 2026 01:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2AE4233723;
+	Tue, 24 Feb 2026 01:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBFe1Nbk"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZuHhu+5B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29BD145A05;
-	Tue, 24 Feb 2026 01:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF8721ABAA;
+	Tue, 24 Feb 2026 01:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771895465; cv=none; b=Sh/COD2N0KtN8NSoGTJ1G0WY7oOr+CNLagh976tKSXinQyjPjKrVV3VjcozzOHhrpcdM2Nson6RJX2NRoF9x5SXbquxuK/JiwmWy0DsZ3AX0CWihi4w+r66mfULahqeJNyOnSBVPYK96y0PuTsoR+iZifNURAbE56FeW2fWJBRg=
+	t=1771895721; cv=none; b=M12QPVqGUAmGdRcybR0CLBGK8F+DQfysHIPwmTICfGx2dnSZR4WKWrycNSskZk0lE5fidWPXJU/vsBEdAvVYRh3RQStB2pj9jw/su+4QoTpC/pr9DBdrPxx0Oc8mg5Yw3qpr+PcITez16R0+qYVBIs72r1rP+7ZUH6FBCqLyjXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771895465; c=relaxed/simple;
-	bh=pGqupyrZkQnB2v5wYbkX7u71u2AJYUynj+S6P+vLWew=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lKJ8/prLaQGCgVqjcFkeJvL0r7+FE0fP/Is7XcL+KVEEeJhI8BiwF687MOu8cw6AuhXNC/k6fR4C1yDyqwKVmwq4CROGNOXUE1tM3meUcNAdNPSdopmyKFAi5stCTZxEq1FV3N4NetEyFgu8T0kfloqZmh3idAUTjMwG1oa7jag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBFe1Nbk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B221C116C6;
-	Tue, 24 Feb 2026 01:11:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771895464;
-	bh=pGqupyrZkQnB2v5wYbkX7u71u2AJYUynj+S6P+vLWew=;
-	h=From:To:Cc:Subject:Date:From;
-	b=CBFe1Nbk9AM8YhBVdghjlxim5aur6yj0JF82zynSCGe2OEvY1/yYz3R8XejaDKB9Y
-	 S8ugX+IHHyXJKcBNNPkt15M3PWSh67XxOrVXHZO9Ycu1tryAdsPaS80+tAEEL0KXdV
-	 Yjie6LVSQcY8us6CbdxUHp442OU4gl7jVTcev7gwykoqRzjDljLELDJhbJg7pPnDNR
-	 QGxgPO4wW1zsYTGca1Yn5pM3xCX1Rm1zSYkFrKEQK7HHq3LJpL7tMJtZKr5L3NQUYR
-	 knUjeHOstMbS7HtfEHNthIL/fcyw5CgdiOVyHwMNwb88I48KMlAIdnCQoeMJbfelUV
-	 2+srb6kvI553g==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/damon/core: clear walk_control on inactive context in damos_walk()
-Date: Mon, 23 Feb 2026 17:10:59 -0800
-Message-ID: <20260224011102.56033-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1771895721; c=relaxed/simple;
+	bh=hSzy76o+yEL+1VjbZL6wlJpOTnTwzfUKbYy9KwvbEsE=;
+	h=Date:To:From:Subject:Message-Id; b=CFzk5zOsFjGBm+dHpDouoQ+B+nXYl5x93FHEa6G38DH2xeZG3Wzwi8Oc4HSktEep5QMFLJui6HCo7yI2EL/GGbKgXt19g16JIdYDxXP0jLwZZnI7KaqyovQGc177C4Nh778SgfVKMkIRolRVqFIzpO1QJcIPbDdb4VpE5aH0wxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZuHhu+5B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F3AC116C6;
+	Tue, 24 Feb 2026 01:15:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1771895721;
+	bh=hSzy76o+yEL+1VjbZL6wlJpOTnTwzfUKbYy9KwvbEsE=;
+	h=Date:To:From:Subject:From;
+	b=ZuHhu+5BKPeYphC1eSolUK3BOiu1Bq6U3F8p4MTDMGMEMLabOIrVTFAHvT1/wwwDn
+	 jP1ARQzLzeOFEc8U2mJA6SozhI4Kgi88kl3KGzEhW+xGgBEbuCHGWnayCNyYq6dUEO
+	 Mybkt3mKM5GEA8xT/ap6snjUMnvPIL4WTe74bKfM=
+Date: Mon, 23 Feb 2026 17:15:20 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,raul_pazemecxas@hotmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-core-clear-walk_control-on-inactive-context-in-damos_walk.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260224011521.15F3AC116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	R_BAD_CTE_7BIT(3.50)[unknown];
+	BROKEN_CONTENT_TYPE(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[hotmail.com,kernel.org,lists.linux.dev,vger.kernel.org,kvack.org];
-	TAGGED_FROM(0.00)[bounces-217845-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-217846-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,hotmail.com,linux-foundation.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 80EF71806AB
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,smtp.kernel.org:mid]
+X-Rspamd-Queue-Id: 6E5D41806F2
 X-Rspamd-Action: no action
 
+
+The patch titled
+     Subject: mm/damon/core: clear walk_control on inactive context in damos_walk()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-core-clear-walk_control-on-inactive-context-in-damos_walk.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-clear-walk_control-on-inactive-context-in-damos_walk.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
 From: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
+Subject: mm/damon/core: clear walk_control on inactive context in damos_walk()
+Date: Mon, 23 Feb 2026 17:10:59 -0800
 
 damos_walk() sets ctx->walk_control to the caller-provided control
-structure before checking whether the context is running. If the context
+structure before checking whether the context is running.  If the context
 is inactive (damon_is_running() returns false), the function returns
--EINVAL without clearing ctx->walk_control. This leaves a dangling
-pointer to a stack-allocated structure that will be freed when the
-caller returns.
+-EINVAL without clearing ctx->walk_control.  This leaves a dangling
+pointer to a stack-allocated structure that will be freed when the caller
+returns.
 
 This is structurally identical to the bug fixed in commit f9132fbc2e83
 ("mm/damon/core: remove call_control in inactive contexts") for
-damon_call(), which had the same pattern of linking a control object
-and returning an error without unlinking it.
+damon_call(), which had the same pattern of linking a control object and
+returning an error without unlinking it.
 
 The dangling walk_control pointer can cause:
 1. Use-after-free if the context is later started and kdamond
@@ -116,8 +133,8 @@ The dangling walk_control pointer can cause:
    stale pointer is non-NULL
 
 Nonetheless, the real user impact is quite restrictive.  The
-use-after-free is impossible because there is no damos_walk() callers
-who starts the context later.  The permanent -EBUSY can actually confuse
+use-after-free is impossible because there is no damos_walk() callers who
+starts the context later.  The permanent -EBUSY can actually confuse
 users, as DAMON is not running.  But the symptom is kept only while the
 context is turned off.  Turning it on again will make DAMON internally
 uses a newly generated damon_ctx object that doesn't have the invalid
@@ -126,27 +143,23 @@ damos_walk_control pointer, so everything will work fine again.
 Fix this by clearing ctx->walk_control under walk_control_lock before
 returning -EINVAL, mirroring the fix pattern from f9132fbc2e83.
 
+Link: https://lkml.kernel.org/r/20260224011102.56033-1-sj@kernel.org
 Reported-by: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
 Closes: https://lore.kernel.org/CPUPR80MB8171025468965E583EF2490F956CA@CPUPR80MB8171.lamprd80.prod.outlook.com
 Fixes: bf0eaba0ff9c ("mm/damon/core: implement damos_walk()")
-Cc: stable@vger.kernel.org # 6.14.x
 Signed-off-by: Raul Pazemecxas De Andrade <raul_pazemecxas@hotmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.14+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-Changes from v1
-(https://lore.kernel.org/all/CPUPR80MB81718B12798BCF9959535B05956CA@CPUPR80MB8171.lamprd80.prod.outlook.com/)
-- Rebase to latest mm-new
-- Add notes about real user impacts
 
- mm/damon/core.c | 7 ++++++-
+ mm/damon/core.c |    7 ++++++-
  1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 6be8c4cc14162..eae387d4e0786 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1562,8 +1562,13 @@ int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control)
+--- a/mm/damon/core.c~mm-damon-core-clear-walk_control-on-inactive-context-in-damos_walk
++++ a/mm/damon/core.c
+@@ -1562,8 +1562,13 @@ int damos_walk(struct damon_ctx *ctx, st
  	}
  	ctx->walk_control = control;
  	mutex_unlock(&ctx->walk_control_lock);
@@ -161,8 +174,10 @@ index 6be8c4cc14162..eae387d4e0786 100644
  	wait_for_completion(&control->completion);
  	if (control->canceled)
  		return -ECANCELED;
+_
 
-base-commit: 252ff65aa9536c88ef66dedfbdafe63a479a4b3d
--- 
-2.47.3
+Patches currently in -mm which might be from raul_pazemecxas@hotmail.com are
+
+mm-damon-core-clear-walk_control-on-inactive-context-in-damos_walk.patch
+
 
