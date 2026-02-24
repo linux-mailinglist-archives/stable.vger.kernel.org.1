@@ -1,141 +1,131 @@
-Return-Path: <stable+bounces-217839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOgqLm/rnGnlMAQAu9opvQ
-	(envelope-from <stable+bounces-217839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 01:06:07 +0100
+	id +NMtGg3xnGkaMQQAu9opvQ
+	(envelope-from <stable+bounces-217840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 01:30:05 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D14180204
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 01:06:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B654B1803BF
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 01:30:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 986D2305B2BD
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 00:06:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0141F30A1558
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 00:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544D7288D2;
-	Tue, 24 Feb 2026 00:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F2F21CC71;
+	Tue, 24 Feb 2026 00:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXTPVKrP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjKLQwPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A711548C;
-	Tue, 24 Feb 2026 00:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C2E57C9F
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 00:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771891561; cv=none; b=oQVViaAyTTatDys5EpqfEmdp5sAdngBXYkchUWhU10tgBPDoH5ocYCf3GvlrFdAMHq62h9MCLVBX3h9HQBy7EdjZnTFH22tvTWUUYnd8K7Xqpv2pJeSg1ALrM48bSNF140dBzbvaiVc+wdqkD0ac6Lu7hu9kAw49WhVY8H/U20I=
+	t=1771893001; cv=none; b=exPAWe4H1w8NWvQX4jGeP34a7Gmhb8RXLTcvKt7KZlrZ5CLcmOJdkcLIfNK2iwCE60bemAs237Tpfo1jdUi/4Oq00meuwsVNsyk+myB9Mz4UXbc2BB8luic6OPUr8KSzg6BKBBqR6aK7vpej5cp4BB5VtBCgJlMbsFOUaoUDH2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771891561; c=relaxed/simple;
-	bh=vbtJlevPu/mxmmVLr9WGyz7+zRTlLOTF04Qgffk3L+Q=;
-	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:Content-Type; b=kpR6wKREvtHpH5SNzSoB5catJTplAfsQ8dvCYE7PWcVmiA3s/IOKZXdgeAgqrUNtjR569QUJ7gJSLv2ZtxwKGyBrSyCkWSyjJzWovJtQRnDDfHmfZnZp5HYEO4BpKI/yjro764nAfDLic6Q20+h+HdGCEMNAT3sKHVkN+6ObGTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXTPVKrP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E73C116C6;
-	Tue, 24 Feb 2026 00:06:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771891561;
-	bh=vbtJlevPu/mxmmVLr9WGyz7+zRTlLOTF04Qgffk3L+Q=;
-	h=Date:Subject:From:To:Cc:From;
-	b=eXTPVKrPopkG0oG9jCUnWzkKWwuslMXku9M8GHj72pQoa4+OHOd1NCwvbonfA8cEL
-	 D1S4qw5Sfa7WEArL8YNMH2f/RwsmKE4cOzUYGCHyns8WDk+dUm9xdBLiHDdAwhywwd
-	 ZqFjPNG8Ez9Z6z86mloHpayDBSClxzmyzj79BSGP9W2UTu0NDZ4CvmhCvJIij2G9bR
-	 g5vZfYkMHSAuui7RcMsF70Wq8OH3vqVxj5P7XAFWm7ekA7QKnbZYO1QFL9v2NwbTOW
-	 6AaY9bn07k3tkotnZT8c4nyETscIc9t/Wo6UA3CvOL9QnD5NmY++lk9o9gLuoXKOAD
-	 XFNnPIvVBv1Aw==
-Date: Mon, 23 Feb 2026 16:06:00 -0800
-Subject: [GIT PULL] xfs: bug fixes for 7.0
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: cem@kernel.org, djwong@kernel.org
-Cc: clm@meta.com, cmaiolino@redhat.com, hch@lst.de, linux-xfs@vger.kernel.org, p.raghav@samsung.com, pankaj.raghav@linux.dev, samsun1006219@gmail.com, stable@vger.kernel.org
-Message-ID: <177189148163.4009522.17296873599093337410.stg-ugh@frogsfrogsfrogs>
+	s=arc-20240116; t=1771893001; c=relaxed/simple;
+	bh=Ss6ZTxrHbYOCDB4mcE0GCmvCSZZwZI9YPzMMbU+BLKk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CqEunXDkeZVosM+3hq+KcI3owQRk/l3y8uCZf4qJ6z5c0i+0ICjypgRr+XvfJYH1f03/Mo/JlNPqi2CriprpVHpAGjUR2/VHIRzzrZOZV+5bARGwaOfzTiFDhq8BaR8Bq8RjDB9HWL2GpeNmJCB/3o9kwEiKSXYgaugJ3Th2SIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjKLQwPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0008C116C6;
+	Tue, 24 Feb 2026 00:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771893000;
+	bh=Ss6ZTxrHbYOCDB4mcE0GCmvCSZZwZI9YPzMMbU+BLKk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xjKLQwPD29T+tGQuSvtYtD+2OkHxMLdWau/HCWIw0KxPR3sI1sOMOQWjztNAPl3lP
+	 zO/pzEEXRjeUdh+zu2Zu17s4kcPy2Wiu93Me1ThRua1/MA1mNtw0gms6cWrdc+QZ7Q
+	 TOVszwv7As++xBqZWA/B9FpPPMHgLfjlgKUNQMoE=
+Date: Tue, 24 Feb 2026 01:29:58 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Khemissi Mohammed el Amine <aminekhemissi61@gmail.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] scsi: Fix NULL pointer dereference in
+ scsi_setup_scsi_cmnd()
+Message-ID: <2026022446-grape-harpist-90c5@gregkh>
+References: <20260223231403.14069-1-aminekhemissi61@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260223231403.14069-1-aminekhemissi61@gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[meta.com,redhat.com,lst.de,vger.kernel.org,samsung.com,linux.dev,gmail.com];
-	TAGGED_FROM(0.00)[bounces-217839-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-217840-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 13D14180204
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B654B1803BF
 X-Rspamd-Action: no action
 
-Hi Carlos,
+On Mon, Feb 23, 2026 at 03:14:03PM -0800, Khemissi Mohammed el Amine wrote:
+> A NULL pointer dereference can occur in scsi_setup_scsi_cmnd() when handling
+> BSG ioctls with zero-length requests. The function calls scsi_command_size()
+> before cmd->cmnd is initialized, leading to a kernel oops when the pointer
+> is dereferenced.
+> 
+> The crash occurs in the following sequence:
+> 1. BSG ioctl issued with sg_io_v4.request = NULL, request_len = 0
+> 2. scsi_setup_scsi_cmnd() invoked via scsi_queue_rq()
+> 3. If scsi_req(req)->cmd_len == 0, code calls scsi_command_size(cmd->cmnd)
+> 4. cmd->cmnd has not been set yet (still NULL or uninitialized)
+> 5. scsi_command_size() dereferences the NULL pointer without checking
+> 6. Kernel NULL pointer dereference oops
+> 
+> This issue affects Linux 5.10 LTS . Local users with access to
+> /dev/bsg/* device nodes can trigger this crash.
+> 
+> Fix this by:
+> 1. Adding a NULL check in scsi_command_size() to handle NULL input gracefully
+> 2. Adding a NULL check in scsi_setup_scsi_cmnd() before calling
+>    scsi_command_size()
+> 
+> Signed-off-by: Khemissi Mohammed el Amine <aminekhemissi61@gmail.com>
+> ---
+>  drivers/scsi/scsi_lib.c    | 6 ++++++
+>  include/scsi/scsi_common.h | 2 ++
+>  2 files changed, 8 insertions(+)
 
-Please pull this branch with changes for xfs for 7.0-rc2.
 
-As usual, I did a test-merge with the main upstream branch as of a few
-minutes ago, and didn't see any conflicts.  Please let me know if you
-encounter any problems.
+<formletter>
 
---D
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
-
-Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
-
-are available in the Git repository at:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git tags/xfs-fixes-7.0_2026-02-23
-
-for you to fetch changes up to 0e9b4455c7a3765cb16f6ab6dc6f75fd1b71f24f:
-
-xfs: don't report half-built inodes to fserror (2026-02-23 16:03:41 -0800)
-
-----------------------------------------------------------------
-xfs: bug fixes for 7.0 [1/2]
-
-Bug fixes for 7.0.
-
-With a bit of luck, this should all go splendidly.
-
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-
-----------------------------------------------------------------
-Darrick J. Wong (6):
-xfs: fix copy-paste error in previous fix
-xfs: fix xfs_group release bug in xfs_verify_report_losses
-xfs: fix xfs_group release bug in xfs_dax_notify_dev_failure
-xfs: fix potential pointer access race in xfs_healthmon_get
-xfs: don't report metadata inodes to fserror
-xfs: don't report half-built inodes to fserror
-
-fs/xfs/xfs_mount.h          |  2 +-
-fs/xfs/scrub/dir_repair.c   |  2 +-
-fs/xfs/xfs_health.c         | 20 ++++++++++++++++++--
-fs/xfs/xfs_healthmon.c      | 11 +++++++----
-fs/xfs/xfs_icache.c         |  9 ++++++++-
-fs/xfs/xfs_notify_failure.c |  4 ++--
-fs/xfs/xfs_verify_media.c   |  4 ++--
-7 files changed, 39 insertions(+), 13 deletions(-)
-
+</formletter>
 
