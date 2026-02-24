@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-218017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218018-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WB+NGVIsnmmkTwQAu9opvQ
-	(envelope-from <stable+bounces-218017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 23:55:14 +0100
+	id 4FPHBBUvnmmkTwQAu9opvQ
+	(envelope-from <stable+bounces-218018-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 00:07:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1051318DE16
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 23:55:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A31218E0C1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 00:06:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21A3030D2D5C
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 22:50:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A83233080662
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 22:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB1534EF04;
-	Tue, 24 Feb 2026 22:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B219334D917;
+	Tue, 24 Feb 2026 22:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+sM/rec"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jcELf9x7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E476B34DB60;
-	Tue, 24 Feb 2026 22:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024B32BDC13
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 22:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771973428; cv=none; b=cduAmn20G4FSLhrTfSiKeZWVusN78dOVnbdE36VirG0rAAcTUye9VNtUvm3SGVugZYoXcAtzos6ZXNsMYyaNBvKuuoIHveL5yAvofUkwlYPdbzC6Zz3oplJlIpGqplTgD9ns3dZM8m7BBV6uwCAjy/n1+EYW0Fq4TC6BPYq63MU=
+	t=1771973876; cv=none; b=hKeqDq3/RnHM2vO0t0AKwT79miEjQZBk8TtPR0IzelOx1A5LJ0FnbSADy7Vz61oPpz3B2GITFJzpU604tDXcilFHdoNjyNOOhfzufe23QSxZNIfBY6KEiJ1zEG2MXqW0kC7gz7dn2JFH4vo6a/v4Iqz8tL645kOK7UtP4Ov9GkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771973428; c=relaxed/simple;
-	bh=ggf02o+1BEEp+mtG1llL7HH/O1Y6wBhPLia21wJcg6Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tANS3lPOfJRIIxkJYWhDQb1LNohQ8G59dYjKZeaoVydEJS3qk4d/zRI/D74/9jm1+8NgwnsyND4HNpMFK0GXMKOr8jikZyyPXIgRUaCNKYj+7iqs9RkTPzRYOAGPE20JBk7jEBOuSvNuH+e28N6QxdSApkyzVR8ROoatj0fgG/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+sM/rec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373CCC19423;
-	Tue, 24 Feb 2026 22:50:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771973427;
-	bh=ggf02o+1BEEp+mtG1llL7HH/O1Y6wBhPLia21wJcg6Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=T+sM/recuVnjx69He5RiMjDlxqWtkqs5/HdE8QmCblqDY1bbA+IFm9Yp6IYfbtOdB
-	 H1oS2WL/uoCAgFp3JGIN97UDk+FvYjMDNWJzxUEAgpryCQwxNWKdIiGPTFuw8npTWb
-	 F2tCQcApI6vttuQyf4VEIl0UU6s91Evi86RrysSlH2WjrvDR1g+fKD7OWNsyBNKPVf
-	 P8o1DMFR+vMV7LbeNI7c/HNu1sJN5qtfg9S7K+9W2RpdDRwpWnn1e+i7tedz3TBplQ
-	 MoovKkentXwRxnH5lLRnPMVW6EdzgcUbdUfhfqgOomdIK8pkBPKl8DXkvh6PJ0Lfrh
-	 dDaOWelJx6ECw==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: nSVM: Ensure AVIC is inhibited when restoring a vCPU to guest mode
-Date: Tue, 24 Feb 2026 22:50:17 +0000
-Message-ID: <20260224225017.3303870-1-yosry@kernel.org>
-X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
+	s=arc-20240116; t=1771973876; c=relaxed/simple;
+	bh=3dLKrnQBENwZevGLnguA06EvPdRwmV8bjOJlsLNMa6c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RJH9NkoRG36XsTZGntb2MWlxvDA2xLJtn3xPZcOGuNusyCEq/k+hmFRGGCDT3huauuyP+BvNbVEPB0B1ZG2DIZNgJ5x1akF06ZgesPmWv1VZaa1RoGXELhPICpkGY0/2ADzwnwbgIR7eKubPyxRX0Xiq6MP+S/Wte6U5qOFldNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jcELf9x7; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1771973862;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NGJ4m6uSFJeo4IGOp1CFoC2THWgwdRgpjYr/fElumKk=;
+	b=jcELf9x7tzrjzQfZEk71ZhmHikjCeZn8fjx0cJxXz4IG1YiBtZeljCqJsWJlzSMxtCD+Ui
+	KunCXjvojxynhaE5IelD3bzUBZuO7UrJIjM9y1eRh9ybDoXsX9vQdCZptQZWCaMH+5m7bw
+	GfwdBiIXC3mbRoNKqGLMUPx1UiLgxKo=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Lothar Rubusch <l.rubusch@gmail.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	stable@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: atmel-sha204a - Fix OTP address check and uninitialized data access
+Date: Tue, 24 Feb 2026 23:55:47 +0100
+Message-ID: <20260224225547.683713-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,91 +65,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218017-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gondor.apana.org.au,davemloft.net,microchip.com,bootlin.com,tuxon.dev,gmail.com];
+	TAGGED_FROM(0.00)[bounces-218018-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1051318DE16
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,cmd.data:url]
+X-Rspamd-Queue-Id: 3A31218E0C1
 X-Rspamd-Action: no action
 
-On nested VMRUN, KVM ensures AVIC is inhibited by requesting
-KVM_REQ_APICV_UPDATE, triggering a check of inhibit reasons, finding
-APICV_INHIBIT_REASON_NESTED, and disabling AVIC.
+Return -EINVAL from atmel_i2c_init_read_otp_cmd() on invalid addresses
+instead of -1. Since the OTP zone is accessed in 4-byte blocks, valid
+addresses range from 0 to OTP_ZONE_SIZE / 4 - 1. Fix the bounds check
+accordingly.
 
-However, when KVM_SET_NESTED_STATE is performed on a vCPU not in guest
-mode with AVIC enabled, KVM_REQ_APICV_UPDATE is not requested, and AVIC
-is not inhibited.
+In atmel_sha204a_otp_read(), propagate the actual error code from
+atmel_i2c_init_read_otp_cmd() instead of -1, and return early if
+atmel_i2c_send_receive() fails to avoid checking potentially
+uninitialized data in 'cmd.data'.
 
-Request KVM_REQ_APICV_UPDATE in the KVM_SET_NESTED_STATE path if AVIC is
-active, similar to the nested VMRUN path.
+Also, return -EIO instead of -EINVAL when the device is not ready.
 
-Fixes: f44509f849fe ("KVM: x86: SVM: allow AVIC to co-exist with a nested guest running")
+Fixes: e05ce444e9e5 ("crypto: atmel-sha204a - add reading from otp zone")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+Reviewed-by: Lothar Rubusch <l.rubusch@gmail.com>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
+Compile-tested only.
 
-After the dust settles from all the inflight changes touching this area,
-we really need to reuse enter_svm_guest_mode() in svm_set_nested_state()
-imo. There are a few differences that will need to be addressed:
+This patch combines [1] and [2], as suggested by Lothar in [2].
 
-1. nested_vmcb02_prepare_save() needs to be skipped.
+Lothar's Reviewed-by: for [1] has been preserved.
 
-2. nested_svm_copy_common_state() may need to be skipped (or honestly,
-just folded into nested_vmcb02_prepare_save()?).
+In [2], Lothar questioned whether returning -EIO is appropriate; the
+exact error code can be adjusted if needed. The errno is currently not
+propagated to userspace, but [3] changes this.
 
-2. The CR3 value passed to nested_svm_load_cr3() needs to change.
-
-3. Need to check if calling nested_svm_hv_update_vm_vp_ids() is
-okay/needed (might be another bug actually).
-
-I think mostly likely we'll pass a boolean arg to
-enter_svm_guest_mode(), something like use_cached_save, and key 1 to 3
-off of it. I don't like it (smells like from_vmrun), but it's the
-simplest way to avoid bugs like this in the future.
-
+[1] https://lore.kernel.org/lkml/20260215205152.518472-3-thorsten.blum@linux.dev/
+[2] https://lore.kernel.org/lkml/20260220133135.1122081-2-thorsten.blum@linux.dev/
+[3] https://lore.kernel.org/lkml/20260216074552.656814-1-thorsten.blum@linux.dev/
 ---
- arch/x86/kvm/svm/nested.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/crypto/atmel-i2c.c     |  4 ++--
+ drivers/crypto/atmel-sha204a.c | 11 ++++++++---
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index de90b104a0dd5..82e512631e514 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1922,6 +1922,9 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+diff --git a/drivers/crypto/atmel-i2c.c b/drivers/crypto/atmel-i2c.c
+index da3cd986b1eb..59d11fa5caeb 100644
+--- a/drivers/crypto/atmel-i2c.c
++++ b/drivers/crypto/atmel-i2c.c
+@@ -72,8 +72,8 @@ EXPORT_SYMBOL(atmel_i2c_init_read_config_cmd);
  
- 	svm->nested.force_msr_bitmap_recalc = true;
+ int atmel_i2c_init_read_otp_cmd(struct atmel_i2c_cmd *cmd, u16 addr)
+ {
+-	if (addr < 0 || addr > OTP_ZONE_SIZE)
+-		return -1;
++	if (addr >= OTP_ZONE_SIZE / 4)
++		return -EINVAL;
  
-+	if (kvm_vcpu_apicv_active(vcpu))
-+		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
-+
- 	kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
- 	ret = 0;
- out_free:
+ 	cmd->word_addr = COMMAND;
+ 	cmd->opcode = OPCODE_READ;
+diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204a.c
+index 8adc7fe71c04..b0480d3bec70 100644
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -94,19 +94,24 @@ static int atmel_sha204a_rng_read(struct hwrng *rng, void *data, size_t max,
+ static int atmel_sha204a_otp_read(struct i2c_client *client, u16 addr, u8 *otp)
+ {
+ 	struct atmel_i2c_cmd cmd;
+-	int ret = -1;
++	int ret;
+ 
+-	if (atmel_i2c_init_read_otp_cmd(&cmd, addr) < 0) {
++	ret = atmel_i2c_init_read_otp_cmd(&cmd, addr);
++	if (ret < 0) {
+ 		dev_err(&client->dev, "failed, invalid otp address %04X\n",
+ 			addr);
+ 		return ret;
+ 	}
+ 
+ 	ret = atmel_i2c_send_receive(client, &cmd);
++	if (ret < 0) {
++		dev_err(&client->dev, "failed to read otp at %04X\n", addr);
++		return ret;
++	}
+ 
+ 	if (cmd.data[0] == 0xff) {
+ 		dev_err(&client->dev, "failed, device not ready\n");
+-		return -EINVAL;
++		return -EIO;
+ 	}
+ 
+ 	memcpy(otp, cmd.data+1, 4);
 -- 
-2.53.0.414.gf7e9f6c205-goog
+Thorsten Blum <thorsten.blum@linux.dev>
+GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
 
 
