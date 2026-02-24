@@ -1,138 +1,194 @@
-Return-Path: <stable+bounces-217931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBV7OgPbnWmuSQQAu9opvQ
-	(envelope-from <stable+bounces-217931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 18:08:19 +0100
+	id GLFIKp3snWncSgQAu9opvQ
+	(envelope-from <stable+bounces-217932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 19:23:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078DB18A4E5
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 18:08:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA3C18B4DC
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 19:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 16A5F305454B
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 16:56:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D51C530E4F55
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 18:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C4D3A9611;
-	Tue, 24 Feb 2026 16:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4542C11E8;
+	Tue, 24 Feb 2026 18:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4Jzs25VX";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WOQBS7u/"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K7nJ35jY"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79D73A7F57;
-	Tue, 24 Feb 2026 16:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043302C027C
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 18:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771952166; cv=none; b=JnzUPSCltpF0jZYu30tYB+KnXyYGqXDrAPl4Pq3A2zQdDmPDhC05+d1CUa6++ppb3cc3e6GEvbViJz8Yap6prde6kiLu/8bRdBh+V5Ux7lUEFzFc+8bMtZqRcc0UrP8fV88XJyJbAGrB+j396rbDkom/428wdIOt4sXn7nI9s98=
+	t=1771957013; cv=none; b=TT+0enbNK5HSUXMJlKwWY0RRW5JGRhdVIcPaBDJcbzaZDzxELyAQutwJNBOeT/V0Q/loKUBWCROvsuoo1qFNr7WCMNzxElpOXN8aLphTf43UF9aeYuVdsQz5337JCS3u0a9xd2P6oSF++dgo7WcN0ysGVJRPnhLinkwdAfz1GFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771952166; c=relaxed/simple;
-	bh=YnKc/WluycibeLq6Y15TT/1JA6ENKA+AQby6cau1V9A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BmLO2Vsc119PgPIO52qUoC1Q6RrvcFa5BxSNq8GzbqTVxOmRRLgznh+jMLfLJu+aMg0/6KQamGf/Ve8Gqy5dl6LUaAiYuNCFtfaFzasuJOFpp/jXzB69YlfDBRjXEYwgqHywu0qLLkGpm/afvnU/6OdrDZIL/TTo98EnyXeccTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4Jzs25VX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WOQBS7u/; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 24 Feb 2026 17:56:01 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1771952163;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YnKc/WluycibeLq6Y15TT/1JA6ENKA+AQby6cau1V9A=;
-	b=4Jzs25VXu1kEN8UxB8Z7BmYLYkq3DtcWsqGrU1/kFBsnhRDjGjTSLZbxkk6RLjQbw1tG+E
-	XTg++P4bjQzhrk98q4/pcnOOKSctylSCC2gGAaOYRMm4VlVh9s334VJe5Ut3VDysEizpc4
-	4ZUzTHHwZ54KOrB6Sj8I+CHB+2ZBl0kvAQdl0pnR935oKDcjnJnrO2KXyRpLmfqGU+RDON
-	exjGwpC56+9p3cGOEeayYwsAA86CMtn6WeILtTNQScCQ8yUgnBEaO1jSDSJwIW7rvpqwyC
-	zN0DHRy/4XpPHZyqOKeCVDcVlDTMthh+dgbd6SEL3C5NQ2tnlBoyUMnsV/SdxA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1771952163;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YnKc/WluycibeLq6Y15TT/1JA6ENKA+AQby6cau1V9A=;
-	b=WOQBS7u/7Va+ws965qmqWt1cfJAGxi71SxSsEW+dWIt5c5njp9F/oO3xYh8c5IwIwN1n7q
-	4xn8kvravf/WUgCA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Patch "printk, vt, fbcon: Remove console_conditional_schedule()"
- has been added to the 6.12-stable tree
-Message-ID: <20260224165601.2GtTLfmh@linutronix.de>
-References: <20260221163924.4117536-1-sashal@kernel.org>
- <40d3252f-22c1-4a24-83ae-68de825807d4@gmx.de>
- <20260223065448.xshEaalA@linutronix.de>
- <ba3c30bd-5fe3-4774-b7ad-5c8335893fa7@gmx.de>
+	s=arc-20240116; t=1771957013; c=relaxed/simple;
+	bh=1tkVRXlNkR9Fmy1nO0DHn37Is2OgEtPJWOq31cgnHx8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Forqc6jX9h5xuAR5vF26vT3DiFNj8t04cqbmHBeOJaedsSm5+WBtavbbMOvNEDrxsZHiOpQtwk1xqqgkPRasLnyrNs6g/TgPmaHnV0sZgTb2vYyyQ1CEQvEg5ktrrgzuZgv0gZQcsc+L0Hmpd8B6HB58YUACV5xCSw2dCRIiZSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K7nJ35jY; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b88622fbe54so138780866b.0
+        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 10:16:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771957010; x=1772561810; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=aWRna/o7J6EKgHI9SPvVfoppVmpzZKMT5lNJXeS/XVM=;
+        b=K7nJ35jYwW6QSefvIXFHZ/w0StHGqePyGy4CB+e1tzVTfvrrzcudp5CfOH9k1xBpEw
+         A70536GTviy7BZ623hSZHh01+9ZEL7Yv7tdf7Iuw827lR3D8qTe+xXEtZYdt2U4G+2NF
+         PcvwRfVErv3B3rWYC+6XwjRNAsaN9DJy2DRovK+JfZ6vRdMtJ2WqR/PS3Jr2EjDvDcN2
+         1yt0GgZAxZYudutNA/59hhhF7R5bZvN3sk0gYnFOEVuPwaKoLA2kCkln8ZYiKMy1RhBj
+         RrUrRo8ZwQcxCIBzYuLH4qwDR7abX5h9CxcEcz5/R56pNFZaFRUcwANFVcdj3p1rPM/V
+         oUvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771957010; x=1772561810;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aWRna/o7J6EKgHI9SPvVfoppVmpzZKMT5lNJXeS/XVM=;
+        b=XSDg1/LigLlq9xruacnA3sjfdzIY2zpLDj5hSy0McWHyXirOOQz6mgYps8PAHJwzeH
+         J8/wj0eth05jARM4Y+JWeX67P/YhZVmEaw2zfR02S3vO2dD0DL04u/Mc6VSx4EQ+V59p
+         e4l4vwFmBVLQoIqimlv10/Q4TpqHb53ssvMARfLS0ehG3UKLE9YYMlgXACaosDrVWVsx
+         CQt7r5gekCR4TR6R0lYNr8Ivjbtn3/m4gtWtUkuKW9Jg9ynTSX0mwxu7CzD6+NQcOfN1
+         vAv9HvkrKQ1Ym2khKyaY49nvksLdemAurV8wIVNkn1Q63rISQ9h02VAycQVx9aElZUBU
+         PkJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUdna4lpIymF4MGRyXr1ilunUmuBCoBgCGWPfe5mkZZiQkBlCwdOYLDt34X/zdnTESWMMzQHM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMSgPRBwQq4SnhuX5Xvxvr0n5T5SaaUnUYU8VV0pDp5O/NyFyF
+	459XNwwzh6AWRqR23xKt5Qx4sLfOvaNLWB3E86YBK1qUWKEyX+KH6QJ0jeVseiCIBto/IypNIPe
+	rD4vVuDWTpmDTwsIg6w==
+X-Received: from edya24.prod.google.com ([2002:aa7:cf18:0:b0:658:143:cbdb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:9308:b0:b90:47e6:e0ad with SMTP id a640c23a62f3a-b9081b6dc76mr879570166b.56.1771957009985;
+ Tue, 24 Feb 2026 10:16:49 -0800 (PST)
+Date: Tue, 24 Feb 2026 18:16:39 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ba3c30bd-5fe3-4774-b7ad-5c8335893fa7@gmx.de>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAAbrnWkC/z2NwQqDQAwFf0VybsAGFe2vlB5081qDZVeyIAXx3
+ 7t48DZzmdkpww2ZHtVOjs2ypVjkfqsozGP8gE2Lk9TS1SINTxYVzopRL04RvHoK/E1hYYg2vbS TDF1LpbM63vY7H8/XcfwBuOaJD3MAAAA=
+X-Change-Id: 20260224-binder-dead-binder-done-proc-lock-e2d4825b2965
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2651; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=1tkVRXlNkR9Fmy1nO0DHn37Is2OgEtPJWOq31cgnHx8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpnesK7Fm0Sl+mGuKgqGOVK8Oy8n4pDAOTIp/Zp
+ +CO0DK71pmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaZ3rCgAKCRAEWL7uWMY5
+ RqGID/9T3kWXlSFd9MQx732cdnl8ctymu3Br4l8pGx9Bf9S1XAgLb/WQhisXY2j5d+dfWNZvrZX
+ uq/mUzgzfZdwiQcIng+XyT6bsZnyN4Q74Z3sjsgqsd+inEwf3f4OlQi9vzLqIMtHPuWTORDp9SF
+ suvPnCik9X5er95WBsJ1UnBSWjmZ8HRcHIcfjMQD7OKMIdMUr3lybpmu0F+aeFPReD2ImQJO52L
+ 9xPgMRZnwL8uy7lVJs87EgyzNvpkcLNjeCj9vXHZs6F26aNUofX7OFeDsdXil91VKRsyiMxXA1p
+ PKVIbsKNpRVxbhJaHQX3TgLu+8P2eSGuOLutwuTUaD1zkrSeqza3S4z5NBu8gZwJFwiG+hWASUK
+ FCQjBFjx3EoXipnl5tqjVL430AOGZsJ6z06eaH7j0tBsjze9OzmeR3YbzescZEJuLZM8dCcUXBL
+ st6on8qGd1nTQdSN28cmrKHhTo120jv8mtdEnTlurteGM8kDtCC55eEDNHaOCntzsxu41LEabId
+ PHMu6GnuggsLk5uOE9Zp1cKdk2Il4NabO/5aKAxImfNJAkgWwk8caC0nEKy4N/nFNHV9Uw9HOB4
+ lmtqD1syRclXcEnv/4MQO1wCoaf48SW8O+9YJGEM1jVOZcO25hMu5J8OhyI9MleD2t1cOW+9r1x 2/6f+19Nv0foVqA==
+X-Mailer: b4 0.14.3
+Message-ID: <20260224-binder-dead-binder-done-proc-lock-v1-1-bbe1b8a6e74a@google.com>
+Subject: [PATCH] rust_binder: call set_notification_done() without proc lock
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	syzbot+c8287e65a57a89e7fb72@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="utf-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_TO(0.00)[gmx.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217931-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217932-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,syzkaller.appspotmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
+	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 078DB18A4E5
+	TAGGED_RCPT(0.00)[stable,c8287e65a57a89e7fb72];
+	NEURAL_HAM(-0.00)[-0.964];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: 2FA3C18B4DC
 X-Rspamd-Action: no action
 
-On 2026-02-23 10:01:23 [+0100], Helge Deller wrote:
-> Hello Sebastian,
-Hi Helge,
+Consider the following sequence of events on a death listener:
+1. The remote process dies and sends a BR_DEAD_BINDER message.
+2. The local process invokes the BC_CLEAR_DEATH_NOTIFICATION command.
+3. The local process then invokes the BC_DEAD_BINDER_DONE.
+Then, the kernel will reply to the BC_DEAD_BINDER_DONE command with a
+BR_CLEAR_DEATH_NOTIFICATION_DONE reply using push_work_if_looper().
 
-> Just to be sure: I assume you want this patch backported:
-> 8e9bf8b9e8c0 ("printk, vt, fbcon: Remove console_conditional_schedule()")
-> Not the other ones starting with "fbcon". Right?
-> So, we talk about one patch only.
+However, this can result in a deadlock if the current thread is not a
+looper. This is because dead_binder_done() still holds the proc lock
+during set_notification_done(), which called push_work_if_looper().
+Normally, push_work_if_looper() takes the thread lock, which is fine to
+take under the proc lock. But if the current thread is not a looper,
+then it falls back to delivering the reply to the process work queue,
+which involves taking the proc lock. Since the proc lock is already
+held, this is a deadlock.
 
-Correct, only this one.
+Fix this by releasing the proc lock during set_notification_done(). It
+was not intentional that it was held during that function to begin with.
 
-> > One idea would be to make the removed functions a NOP in the PREEMPT_RT
-> > case if you prefer not to backport it at all.
-> I'm not generally against backporting the patch above.
-> I'm only hesitant, because can we really be sure it will not produce
-> any lockups in the older kernel either?
+I don't think this ever happens in Android because BC_DEAD_BINDER_DONE
+is only invoked in response to BR_DEAD_BINDER messages, and the kernel
+always delivers BR_DEAD_BINDER to a looper. So there's no scenario where
+Android userspace will call BC_DEAD_BINDER_DONE on a non-looper thread.
 
-Not without trying. There is this scheduling point since v4.5-rc1 and
-this should go to v6.12+ and based on this I don't see any problem with
-it. Older kernel will be v6.12, v6.18 and v6.19.
+Cc: stable@vger.kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Reported-by: syzbot+c8287e65a57a89e7fb72@syzkaller.appspotmail.com
+Tested-by: syzbot+c8287e65a57a89e7fb72@syzkaller.appspotmail.com
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Sorry, no report link. Was reported via internal issue tracker.
+---
+ drivers/android/binder/process.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> If you think it's safe, I too prefer to backport it as is.
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 41de5593197c..f06498129aa9 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -1295,7 +1295,8 @@ pub(crate) fn clear_death(&self, reader: &mut UserSliceReader, thread: &Thread)
+     }
+ 
+     pub(crate) fn dead_binder_done(&self, cookie: u64, thread: &Thread) {
+-        if let Some(death) = self.inner.lock().pull_delivered_death(cookie) {
++        let death = self.inner.lock().pull_delivered_death(cookie);
++        if let Some(death) = death {
+             death.set_notification_done(thread);
+         }
+     }
 
-Okay. Then a backport as is it is :)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260224-binder-dead-binder-done-proc-lock-e2d4825b2965
 
-> Helge
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-Sebastian
 
