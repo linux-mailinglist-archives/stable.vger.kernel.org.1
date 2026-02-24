@@ -1,165 +1,366 @@
-Return-Path: <stable+bounces-217870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPPtI1FUnWk2OgQAu9opvQ
-	(envelope-from <stable+bounces-217870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 08:33:37 +0100
+	id AKSPMJZUnWk2OgQAu9opvQ
+	(envelope-from <stable+bounces-217871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 08:34:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92D2183111
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 08:33:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E71518314E
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 08:34:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 875E4301B721
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 07:31:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32F11309136E
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 07:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF68C33AD94;
-	Tue, 24 Feb 2026 07:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C9B364E83;
+	Tue, 24 Feb 2026 07:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aOxpnb9D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U4hTPw3p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2E321ABAA
-	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 07:31:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771918315; cv=pass; b=e9vkO7O9V3n39zyP+3d4080zAip/CDz7A/at6YGBUY1alsuqzxgu0spBqsIK39HhzNGtP9CWBdOTt+DTAcKJr7BOWEvaAWjeQzJx9K+ZrE8qk3+3vFkzMHRkpKVbnCz8u5RVZyNi0fUbW/JaXbzg1mX5zMvq24D7+A/k3hWNS7E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771918315; c=relaxed/simple;
-	bh=z43Cp/+0b+DQ/UmystyDX/o54828M+JOLwEhgYAzil0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qc7QzJlqVY8EJqBDdSK1NQXDfgYLq66HZ3WQ7QM691VwUFWnjyAKVf2BRHhe4R9ICJ1T+nSIAkooPLYc+g5/El5RgCWPmGcT6OnpRAJGUHN0W3LfYQC4fI9zVl7Fy+9iK1Y2Ik1QTbGS4Dxe/rCIjO/Hl3Ej+/MWlgWG0u/uvgU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aOxpnb9D; arc=pass smtp.client-ip=74.125.82.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29C73346A0
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 07:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.67
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771918343; cv=none; b=DPAUrNoEJ3rXyKYobL1LkhRW2HRq5rYp6QvFPsGyrVUrouge5D90z10mwUb3LixnEFh+kn+w4W/xN4VgUUye3BkpdtxJA8l/iuNNJY8gh6PLJmTVN1EG11zH2ZtiHCTnsC7hXbqLk959JPV/C3RBihU/UzC7QoMjODz0185X+wc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771918343; c=relaxed/simple;
+	bh=d0Q2rSgRuUEkQvpLjuXStow5++oAw5YGa+WZhF3+6II=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W/SpDALM2jyiUm640OTkyetHo/KCfTNI/SsTYopOFJ8bUoJ83p/RiPhTrBYbQVsQQVFp4R9RLnRr6ih/m9N7xcXDY4t528ZKxMsAd/uyUgfsA1yPVreNUWqeTjzQJMhHRpPKDZmJ+Slm5VC4sn/slXMGts1sChP4bbOXg5tgnbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U4hTPw3p; arc=none smtp.client-ip=209.85.128.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1271257ae53so4883731c88.1
-        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 23:31:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771918313; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cXtLTDkQCP6LGM9sj+aCu1oqtbhFXt+ZS1nREpsuDygLbu+qnmF5HnJkfZWM8Nu1qc
-         MasgT7B0+RCkpSMDmyyn4NvXXpRYvBP48ds0sKRofqpSM4yG3hm6vnstHQAN65/7hWRX
-         9Y5GcmyEcG/QkCrJycY5QHkTwy4tZ1+NX9vVJQUb88S0q80ytWE+0Tf+7msCtu3hcRRI
-         LU6KnTf1jSafhD7dTYlXIjWY0HcyweeYsyd5ldcQ+ADs6zstpi+63HwVITqbmSMfWuNt
-         HrUk6/sW6XWZzMYkW36My79TP+/XP+9zSrBS8O+D+9XUkkHcFr9Qia9FKBrwXTuDKVaG
-         CSrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=P7O5brEuc4hHOUqgF7dos1OUBEpYGd7q0nwtKnTvzkg=;
-        fh=iKkeKbJxw9CBmTT8ZzX6fsDftNSlJfJZKA3iiatzzSI=;
-        b=VxI28Vq5fhW+UO36H8MCWm4qcFIh/35nARWVb11P/CirBksiznjCpz63EhDm9sm/ze
-         1x4VsVoyCoVGUZa5pIlxWlX9Mp+kyMkOMEIT7HfCyccZq+OMah2xc92KeewEd2EoCGDm
-         5eOFY1F1LJU1HcpXC5HTHXJDZFuW/SDQ1/VsBtrtBAhxmPDu0zkGQ6Gaa48Qd4G9hAXJ
-         fTqx46R53tdX478FGdZjTLxHXuGHd9ECqy9CVGJS8ReLjv9OHy/qihrUKY/tGACF60S9
-         tO8Fl2q0UHfG2G8lFV1gJIkqpd+ENLvX5xKHbrKAyT7LRfmf+I2LvSG7BzYlh6zLsgyi
-         s88Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-483a233819aso49931735e9.3
+        for <stable@vger.kernel.org>; Mon, 23 Feb 2026 23:32:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771918313; x=1772523113; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P7O5brEuc4hHOUqgF7dos1OUBEpYGd7q0nwtKnTvzkg=;
-        b=aOxpnb9D7esJI5Rrz3rf8MSQV137M0FnCoUiVci2bhxlaOHsaoCtC6LIImHXBTOm1l
-         XS4II5dW2lkAOJnDd0kUPARRpL1j/PQIQduVL+FuLa41fGQcvq0v+jEz++/ti1MmsJz4
-         MhhKfCtZMTslkNC0Kvj5Re4CufddZtapVjmFTE26p41gIuR8boDS07IZDFdvAGupGh3z
-         biScGqxXyKkE4kbg7gL3WIR/n54789se9Y1Aka6rB0rfYDzpSx/cQLN19pue5fS6CggP
-         4Y3ILe0x2Han4Uzm6OjekRSQASGv6K3UcUyKLEgJ6ZWHoBB5KN+HVONK+le0kDRpzQ+8
-         h+5w==
+        d=gmail.com; s=20230601; t=1771918339; x=1772523139; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=C2b+TtUL0OeelBHcO+Aq8hOabke3OUGf+iwRcVyhE8I=;
+        b=U4hTPw3phpiZ9GZQt2bQsCi7zVuq7JqO0QFtDdjqv3dJXLTPDZyHz92A734kRGVnH3
+         w7gEeIzBV32iVzefjZnbIVDfPsAHYG61vFujy63fpyBmEjGXJ3lIN92BBTGU0pUBOX/B
+         nHyv1jXe9bH0cwN++MRKDUwnEY/+dW2Mcv7gtVStTIm/K1kgFeK1E2Pt1M1K6v1IKVWI
+         y99opWWl8z1qo9yEvD+U4sqqziDDHmSgAokQoJJaKBBPqYhiwWJM2PpIYaV4rZ4jKfbC
+         /Ofdzd+BRKa6E8rvDnXJGI+VUEpmLUYdui68DIEQwhTGsKlIGkuFyF2vfd3cWyFEba6n
+         9wdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771918313; x=1772523113;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=P7O5brEuc4hHOUqgF7dos1OUBEpYGd7q0nwtKnTvzkg=;
-        b=hxLcJhI2RgXt+dWz+GVHioFJq3s6A8NA8xEH8C/wQHrkzYTSV0I1y3BrNSuudn3oNx
-         ZvJL9GXMEYhDJKzTSC+GuO/wbjex+tzd01eSj9WR7pFpaD/7FziyPL6gNjV0SxR2gRzk
-         s/9lnuFm2FICwKqhpniIeq6NIeTguiSnA4DxRMybB2dlcHptS1IbJS6jcFdoKepmXy5b
-         K8UqO3SEEMEglW3YPeWTxGE99EC3w7EwEyVHqpTePJr7Je5QebqXx8QUA99gWrTQTPIg
-         G/bme9Kx4nyqthK5jZRC5yvlMI18F2N6S1CVsN5g+M2HRqTXtoNo2tE6b3Fx2z2+ZDq0
-         5b3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU0unfuHjimZEZz4IGvLKEAYXQjaZDNpIeJE+1nXlPgGIR8ADzbBpHLtVEAtrA6UUY1cDb86HY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBMEggIWpeHbBtpNSBukTyws9Iz/sfMQeUndq71yYvDuDRkurq
-	VjYiFWPJryzZXystxHcxvJkGMiwYXHb7VQ70VZ0/li5PxtOnyEmhck++D/bhVIZD5E8/5AKREj5
-	9BaavRnjAAWq4udpqGDkPM2nONbhZEQM=
-X-Gm-Gg: AZuq6aLSUs4Tcc2zb1DeZJcLQ6FAQnokV8YpM5UUHtFAgGnVRE/Xh7nqYboqydSt0kS
-	BFwojaD8wP5Fc/1OXbYPDQOWwQhEV6Y3AVBF00+3S7AqYVO+jCkSCTBK8wmopmyBhlqO0yrXq8d
-	u5CT6blsHNACGloURfSz8+3KTF5b1GIPXuJ77N+gXeMC9S2NV1lcLJs42dr5YrCgVbkFN4PGzhu
-	TwyJHegWoUxsEQ2R6UhNVB12ht2F1H532cyy75ClvYmFUqSLhGtaoQnTPMwlmR59DbVSeg7Ksbz
-	WOEPz2ma5wOxRu6M
-X-Received: by 2002:a05:7022:2383:b0:11b:9d52:9102 with SMTP id
- a92af1059eb24-1276acb1c8cmr5486833c88.6.1771918313381; Mon, 23 Feb 2026
- 23:31:53 -0800 (PST)
+        d=1e100.net; s=20230601; t=1771918339; x=1772523139;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C2b+TtUL0OeelBHcO+Aq8hOabke3OUGf+iwRcVyhE8I=;
+        b=H2C+at7xyRLzNj6Cz8tnG+rYGPWr++au60pYZQDHVBH8gtR+mkjsQOQAd9bdEWrYlX
+         njwZEEz8ENWK8LXuqFr804I6fAIF0ZoOiprKkzE5ZIv4/MTOzCfXh6OB7X4oRIilAJp5
+         B8gEc5DFaJqGTCakfKEAO+Vg5lN6qCF1vvROp0T5zQpZEOmjUmwN805sKJdLkeXyzpJi
+         16gYi3auOLreFa76BIHBzk3yVNS6Oe4Z6xDdR58pKJZPF+4tkVO+ghiDN5A8ig7I/lca
+         syeHid9a+FSilul7rEh4feiyA8xFVsWNU/fWumB7jtz2L5OmQRpgeHoirRS6ou1OH3Nl
+         ATYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUyIun1HlAtbdbQJU1EZoT9tDwJo+ZbQdJTwuyoFSl5sMVi+vZ/rPJPULj3EZ5ueekWyTFhq1k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzP4mFykIJCUZOyuKnaWXoi9PFXXSeIKgAyJAnZhxttMv3sPfzl
+	bmCoXogbdaOKQPL0AHSBjf/9dD6a5Ap/SpnmQ1mY4uE7bW4v53wmOp5v
+X-Gm-Gg: ATEYQzwKRaBR35sTAsmDCupP1RJMGeMHDyAbtNS0+MxZPGMgvcM1LqvYvdaT5YBS6PX
+	9j8IKnfItptytUMh5mZoFUvb9RN8xYKcJcMc89y/DMQEEtTpS9l2fWYSnnfodr9q4+noVUmscXQ
+	np219kR66KBue9Bta3N458kqnVGR4M3GquQNR/zzByKf5Z4Q9CP0iLW+nW0zO8Yb7N19BOtirvS
+	uYGxMHQ423kVC2aa/V7B8qFIAhQA/sKHX7XismcEIAanaWs/nsBa18nj00s/epdzHuqp8rfnNuH
+	317x+L5Mp7b7Zpzm+0oTnt4EM6u5FRFFN8WO9zjgGEAj0UuzFfg9Mfic7UwyOCMebbFcwcKkV4j
+	o1l+MPBLcW91tGphjR2wUQXx6tPFFOwb9wYvbcKrHMgZMrME/2oH9CA+JVWfEj6bGVbazGsKYuU
+	lST1pw4NjYwyEcbmnvDCBoKPnsHBKoja6E6LMe1tyQGvDf+ys=
+X-Received: by 2002:a05:6000:2408:b0:437:6b73:ffa9 with SMTP id ffacd0b85a97d-4396f14c9b4mr20895527f8f.5.1771918339056;
+        Mon, 23 Feb 2026 23:32:19 -0800 (PST)
+Received: from [10.221.199.249] ([165.85.126.46])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d54c5csm24737157f8f.38.2026.02.23.23.32.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Feb 2026 23:32:18 -0800 (PST)
+Message-ID: <5359a23e-972a-4f88-b697-6b76334231a8@gmail.com>
+Date: Tue, 24 Feb 2026 09:32:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <OS7PR01MB136024C7662EB4DEC04ABC648BC74A@OS7PR01MB13602.jpnprd01.prod.outlook.com>
-In-Reply-To: <OS7PR01MB136024C7662EB4DEC04ABC648BC74A@OS7PR01MB13602.jpnprd01.prod.outlook.com>
-From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Date: Tue, 24 Feb 2026 08:31:40 +0100
-X-Gm-Features: AaiRm50v7zX3ShhjxV09DUlZf9T9Gg4X06P-eS7knGjPR37Dt2Jm4TGUUT0baIA
-Message-ID: <CAMhs-H_7O-751=gypxHUUdBp01E4HqqWYVh2GUJO32wixQiUyw@mail.gmail.com>
-Subject: Re: [PATCH] mips: ralink: update CPU clock index
-To: Shiji Yang <yangshiji66@outlook.com>
-Cc: linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	John Crispin <john@phrozen.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, stable@vger.kernel.org, 
-	Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/mlx5e: Precompute xdpsq assignments for
+ mlx5e_xdp_xmit()
+To: Finn Dayton <Finnius.Dayton@spacex.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc: "Alexei Starovoitov ," <ast@kernel.org>,
+ "Daniel Borkmann ," <daniel@iogearbox.net>,
+ "David S. Miller ," <davem@davemloft.net>, "Jakub Kicinski ,"
+ <kuba@kernel.org>, "Jesper Dangaard Brouer ," <hawk@kernel.org>,
+ "John Fastabend ," <john.fastabend@gmail.com>,
+ "Stanislav Fomichev ," <sdf@fomichev.me>,
+ "Saeed Mahameed ," <saeedm@nvidia.com>, "Leon Romanovsky ,"
+ <leon@kernel.org>, "Tariq Toukan ," <tariqt@nvidia.com>,
+ "Mark Bloch ," <mbloch@nvidia.com>, "Andrew Lunn ," <andrew+netdev@lunn.ch>,
+ "Eric Dumazet ," <edumazet@google.com>, "Paolo Abeni ," <pabeni@redhat.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <610D8F9E-0038-46D9-AD8A-1D596236B1EF@spacex.com>
+Content-Language: en-US
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <610D8F9E-0038-46D9-AD8A-1D596236B1EF@spacex.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-217870-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,phrozen.org,alpha.franken.de,yahoo.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,davemloft.net,gmail.com,fomichev.me,nvidia.com,lunn.ch,google.com,redhat.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-217871-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sergioparacuellos@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,outlook.com:email]
-X-Rspamd-Queue-Id: E92D2183111
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ttoukanlinux@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,spacex.com:email]
+X-Rspamd-Queue-Id: 2E71518314E
 X-Rspamd-Action: no action
 
-On Tue, Feb 24, 2026 at 3:23=E2=80=AFAM Shiji Yang <yangshiji66@outlook.com=
-> wrote:
->
-> Update CPU clock index to match the clock driver changes.
->
-> Fixes: d34db686a3d7 ("clk: ralink: mtmips: fix clocks probe order in olde=
-st ralink SoCs")
-> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-> Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+
+
+On 23/02/2026 2:05, Finn Dayton wrote:
+> mlx5e_xdp_xmit() selects an XDP SQ (Send Queue) using smp_processor_id()
+> (CPU ID). When doing XDP_REDIRECT from a CPU whose ID is
+>> = priv->channels.num, mlx5e_xdp_xmit() returns -ENXIO and the
+> redirect fails.
+> 
+> Previous discussion proposed using modulo in mlx5e_xdp_xmit() to map
+> CPU IDs into the channel range, but modulo/division is too costly in
+> the hot path.
+> 
+> Instead, this solution precomputes per-cpu priv->xdpsq assignments when
+> channels are (re)configured and does a single lookup in  mlx5e_xdp_xmit().
+> 
+> Because multiple CPUs map to the same xdpsq when CPU count exceeds
+> channel count, serialize xdp_xmit on the ring with xdp_tx_lock.
+> 
+> Fixes: 58b99ee3e3eb ("net/mlx5e: Add support for XDP_REDIRECT in device-out side")
+> Link: https://lore.kernel.org/netdev/20251031231038.1092673-1-zijianzhang@bytedance.com/
+> Link: https://lore.kernel.org/netdev/44f69955-b566-4fb1-904d-f551046ff2d4@gmail.com
+> Cc: stable@vger.kernel.org # 6.12+
+
+Do not introduce it as a fix. No bug here.
+
+> Signed-off-by: Finn Dayton <finnius.dayton@spacex.com>
 > ---
->  arch/mips/ralink/clk.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> Testing:
+>   - XDP forwarding / XDP_REDIRECT verified with both low CPU ids and
+>     CPU ids > than number of send queues.
+>   - No -ENXIO observed, successful forwarding.
+> 
+>   drivers/net/ethernet/mellanox/mlx5/core/en.h  |  4 +++
+>   .../net/ethernet/mellanox/mlx5/core/en/xdp.c  | 16 +++++++----
+>   .../net/ethernet/mellanox/mlx5/core/en_main.c | 28 +++++++++++++++++++
+>   3 files changed, 43 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> index ea2cd1f5d1d0..387954201640 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> @@ -519,6 +519,8 @@ struct mlx5e_xdpsq {
+>   	/* control path */
+>   	struct mlx5_wq_ctrl        wq_ctrl;
+>   	struct mlx5e_channel      *channel;
+> +	/* serialize writes by multiple CPUs to this send queue */
+> +	spinlock_t xdp_tx_lock;
 
-Reviewed-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+You're already inside xdpsq, no need to repeat xdp_tx in field name.
+Move field to the section with /* dirtied @xmit */.
+Try to find a proper placement with minimal cacheline impact.
 
-Thanks,
-    Sergio Paracuellos
+>   } ____cacheline_aligned_in_smp;
+>   
+>   struct mlx5e_xdp_buff {
+> @@ -909,6 +911,8 @@ struct mlx5e_priv {
+>   	struct mlx5e_rq            drop_rq;
+>   
+>   	struct mlx5e_channels      channels;
+> +	/* selects the xdpsq during mlx5e_xdp_xmit() */
+> +	int __percpu              *send_queue_idx_ptr;
+
+Move to section with /* priv data path fields - start */.
+Similarly to txq2sq, I'd switch the mapping to give xdpsq pointer, 
+rather than index.
+
+>   	struct mlx5e_rx_res       *rx_res;
+>   	u32                       *tx_rates;
+>   
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> index 80f9fc10877a..2dd44ad873a1 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> @@ -845,7 +845,7 @@ int mlx5e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+>   	struct mlx5e_priv *priv = netdev_priv(dev);
+>   	struct mlx5e_xdpsq *sq;
+>   	int nxmit = 0;
+> -	int sq_num;
+> +	int send_queue_idx = 0;
+
+Do not break RCT.
+
+>   	int i;
+>   
+>   	/* this flag is sufficient, no need to test internal sq state */
+> @@ -855,13 +855,19 @@ int mlx5e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+>   	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
+>   		return -EINVAL;
+>   
+> -	sq_num = smp_processor_id();
+>   
+> -	if (unlikely(sq_num >= priv->channels.num))
+> +	if (unlikely(!priv->send_queue_idx_ptr))
+
+Should be guaranteed by the safety mechanisms.
+Not needed.
+
+>   		return -ENXIO;
+>   
+> -	sq = priv->channels.c[sq_num]->xdpsq;
+> +	send_queue_idx = *this_cpu_ptr(priv->send_queue_idx_ptr);
+> +	if (unlikely(send_queue_idx >= priv->channels.num || send_queue_idx < 0))
+> +		return -ENXIO;
+
+Should be guaranteed by the safety mechanisms.
+Not needed.
+
+>   
+> +	sq = priv->channels.c[send_queue_idx]->xdpsq;
+> +	/* The number of queues configured on a netdev may be smaller than the
+> +	 * CPU pool, so two CPUs might map to this queue. We must serialize writes.
+> +	 */
+> +	spin_lock(&sq->xdp_tx_lock);
+>   	for (i = 0; i < n; i++) {
+>   		struct mlx5e_xmit_data_frags xdptxdf = {};
+>   		struct xdp_frame *xdpf = frames[i];
+> @@ -941,7 +947,7 @@ int mlx5e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+>   
+>   	if (flags & XDP_XMIT_FLUSH)
+>   		mlx5e_xmit_xdp_doorbell(sq);
+> -
+> +	spin_unlock(&sq->xdp_tx_lock);
+>   	return nxmit;
+>   }
+>   
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> index 7eb691c2a1bd..adef35d06b89 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> @@ -1492,6 +1492,7 @@ static int mlx5e_alloc_xdpsq(struct mlx5e_channel *c,
+>   	sq->pdev      = c->pdev;
+>   	sq->mkey_be   = c->mkey_be;
+>   	sq->channel   = c;
+> +	spin_lock_init(&sq->xdp_tx_lock);
+
+placement looks arbitrary.
+move it so it doesn't interfere the fields assignments/inits.
+
+>   	sq->uar_map   = c->bfreg->map;
+>   	sq->min_inline_mode = params->tx_min_inline_mode;
+>   	sq->hw_mtu    = MLX5E_SW2HW_MTU(params, params->sw_mtu) - ETH_FCS_LEN;
+> @@ -3283,10 +3284,30 @@ static void mlx5e_build_txq_maps(struct mlx5e_priv *priv)
+>   	smp_wmb();
+>   }
+>   
+> +static void build_priv_to_xdpsq_associations(struct mlx5e_priv *priv)
+
+Rename. How about mlx5e_build_xdpsq_maps? Similar to mlx5e_build_txq_maps.
+
+> +{
+> +	/*
+
+Start comment here, don't keep an empty comment line.
+
+> +	 * Build the mapping from CPU to XDP send queue index for priv.
+> +	 * This is used by mlx5e_xdp_xmit() to determine which xdpsq (send queue)
+> +	 * should handle the xdptx data, based on the CPU running mlx5e_xdp_xmit()
+> +	 * and the target priv (netdev).
+> +	 */
+
+Comment is too long. Can be short and to the point.
+
+> +	int send_queue_idx, cpu;
+> +
+> +	if (unlikely(priv->channels.num == 0))
+> +		return;
+> +
+
+Shouldn't be possible.
+This will just hide bugs. Remove it.
+
+> +	for_each_possible_cpu(cpu) {
+> +		send_queue_idx = cpu % priv->channels.num;
+
+Not sure this deserves a local var..
+
+> +		*per_cpu_ptr(priv->send_queue_idx_ptr, cpu) = send_queue_idx;
+> +	}
+
+We probably need smp_wmb(); here.
+Need to think about it...
+
+> +}
+> +
+>   void mlx5e_activate_priv_channels(struct mlx5e_priv *priv)
+>   {
+>   	mlx5e_build_txq_maps(priv);
+>   	mlx5e_activate_channels(priv, &priv->channels);
+> +	build_priv_to_xdpsq_associations(priv);
+>   	mlx5e_xdp_tx_enable(priv);
+>   
+>   	/* dev_watchdog() wants all TX queues to be started when the carrier is
+> @@ -6263,8 +6284,14 @@ int mlx5e_priv_init(struct mlx5e_priv *priv,
+>   	if (!priv->fec_ranges)
+>   		goto err_free_channel_stats;
+>   
+> +	priv->send_queue_idx_ptr = alloc_percpu(int);
+> +	if (!priv->send_queue_idx_ptr)
+> +		goto err_free_fec_ranges;
+> +
+>   	return 0;
+>   
+> +err_free_fec_ranges:
+> +	kfree(priv->fec_ranges);
+>   err_free_channel_stats:
+>   	kfree(priv->channel_stats);
+>   err_free_tx_rates:
+> @@ -6295,6 +6322,7 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
+>   	for (i = 0; i < priv->stats_nch; i++)
+>   		kvfree(priv->channel_stats[i]);
+>   	kfree(priv->channel_stats);
+> +	free_percpu(priv->send_queue_idx_ptr);
+
+Keep order symmetric to the priv_init calls.
+
+>   	kfree(priv->tx_rates);
+>   	kfree(priv->txq2sq_stats);
+>   	kfree(priv->txq2sq);
+
 
