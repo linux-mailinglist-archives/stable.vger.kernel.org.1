@@ -1,169 +1,218 @@
-Return-Path: <stable+bounces-217857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAJvDi4tnWnENAQAu9opvQ
-	(envelope-from <stable+bounces-217857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 05:46:38 +0100
+	id WEPNN48znWlINQQAu9opvQ
+	(envelope-from <stable+bounces-217860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 06:13:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653DB181B79
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 05:46:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179B5181D3C
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 06:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A51AB30518D0
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 04:46:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DD5EB3016B38
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 05:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F1E219303;
-	Tue, 24 Feb 2026 04:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9846428505E;
+	Tue, 24 Feb 2026 05:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iwQhHsdP"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="HZfxlm7h"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8081233EC;
-	Tue, 24 Feb 2026 04:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293E81607A4;
+	Tue, 24 Feb 2026 05:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771908393; cv=none; b=UJWGx++ccsmcrvO9rxl6FNiBrezOEpCEmMxZBLFFPaw97I/ovf+a2ReCYo5meF+MLqG7k3smzywlmEZBu4vwmGCgYeFeoBB/CG17Ne+enfTTjDwEeqHjL+KTGtewD4h1X0fBPRMXCpwBkzhVBdRrcQwTlCxte/agd+pofcS5cuw=
+	t=1771910017; cv=none; b=dhIIetL9hL47COdjVCoo03vF+B5qkImYM3VrMjsnoRj5+sxXxxiIWCU6Y4wC2e3ERs1bRnbc94eAyvjcmYK7Sx1dYE9c+PblaQHhpwngvexlI6tWzn63H92nP8VpzvjRrRod2j/XwR5L1yUv1Oqp2zE6VLKyRqSO+qD4+FOuxk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771908393; c=relaxed/simple;
-	bh=LxuIlz3HZc/RntD/QzDM0Oh/00bVByZlpuigNwz+R3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HFDj1JIioc3d8Fa6Cy+FOJgJqEfD86ke9740KPohhLtkZqzDLjZioMF0oz+WNIEWtgUVYBKZC7D2kqe2BH/dZ8dHtec94unITVXcNxK2XVnswEpKH5ahXoZfdC3f7C2I5YT6kxZ2SWL8MQp9nnXopjL8GmFWzU8qVLvD8ox0C3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iwQhHsdP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F45FC116D0;
-	Tue, 24 Feb 2026 04:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771908393;
-	bh=LxuIlz3HZc/RntD/QzDM0Oh/00bVByZlpuigNwz+R3Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iwQhHsdP3BJXMWiqNuLzvRrGBmueJ7HrnoW/nLnlModqWiCBQ/Z5t/7UibxamrjzY
-	 7sFLmp0HPVQywSarne+hZ6jiYWeFNmLi5USEH9y7D9zAGjBUW+e1Ma1CO7wTTJb39I
-	 PDRMGJLwddlbjz8mWEx8vvYPQl1yXPouIBavj+CxItKc6SfTj5XLKqgoOcG++Z7/7k
-	 KgPvkYDcdOwnownk+XX+dRLBt3EBIFcd3x9A4JeR7So9PArFDPfDlZZXcodZBKZRgy
-	 XnWP6YwKiOBt94f0mEOh8QBbOJfjxJtYRj+pI88ooT+64y/16i2KWrHT95PWQ/03Kb
-	 gThV3bg5gGUjw==
-Date: Tue, 24 Feb 2026 10:16:24 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
-	Neeraj Soni <neeraj.soni@oss.qualcomm.com>
-Cc: manivannan.sadhasivam@oss.qualcomm.com, 
-	Konrad Dybcio <konradybcio@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Abel Vesa <abelvesa@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] soc: qcom: ice: Fix race between qcom_ice_probe()
- and of_qcom_ice_get()
-Message-ID: <lrhali5ukotcmxqp4yb2g2jvbrhlanpqc67cpvluex4l63skne@ln3j4xn6qfvx>
-References: <20260223-qcom-ice-fix-v3-0-6ca5846329f7@oss.qualcomm.com>
- <20260223-qcom-ice-fix-v3-1-6ca5846329f7@oss.qualcomm.com>
- <h2uhrsjlvovjcj7k2ckpkgrhpuwm6biun4ueq7kyzcm4hqcsjr@y3iiqx2vo6s2>
+	s=arc-20240116; t=1771910017; c=relaxed/simple;
+	bh=J3Z45TFc8/iUFPhe7JBqb6mewr1IvDu0lwyrWmiCk24=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MzfNCvDVP4Aut8n9p4Vdn06H07qI2eViGGyzv62W3UrARdZSwoIlgCWdUxpIbVYdw+sJXcyyD452UanG2lOM0ed4XIox25GWtFx5MJycehsP1QCm/sga3AShPaKmd23q8PqmsnoDJUTRUpNXy5f1UoeAHpHD50vxiAGNHW5tSYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=HZfxlm7h; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NEpT8m1503389;
+	Mon, 23 Feb 2026 20:52:55 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=kEKfqNeAM2sDPck+EYSB9j5
+	92HYqcFpZpunmGD4OmR8=; b=HZfxlm7huhTpMce6I7xxTiicNi+YeIWfUFX9++b
+	NEUSv43SmWuN4knHhsnkL4uneE884Sqp0sO5D4SCnikFYWFX3QqeAHHXTU5FFhJB
+	5GCh922/APuWm0K3eFyiZgp7tsZnMf19Rl9awgoi+qwwGfC7qVPS1N/0T6AENNrl
+	DpL14OwmNvhV7cxB4rIKR8LyOgRD+IhHnpXGUalYIXROZ8bUfgOl4L0jo4hQt0aU
+	7ZiRzXTawExPJT4ZNX1OmiYfCxw9g6JPHDnpjTZJxCmoKnsrlhhwHNCQix3gOCUE
+	fDNzb/BPlMMJebQwmoWRzO5nZB8AW5MOu5bQJB4Ey0clLyg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4cg1ubbtk6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Feb 2026 20:52:55 -0800 (PST)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 23 Feb 2026 20:52:53 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 23 Feb 2026 20:52:53 -0800
+Received: from localhost.localdomain (unknown [10.28.36.175])
+	by maili.marvell.com (Postfix) with ESMTP id 3E0273F70C4;
+	Mon, 23 Feb 2026 20:52:50 -0800 (PST)
+From: Srujana Challa <schalla@marvell.com>
+To: <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>
+CC: <pabeni@redhat.com>, <mst@redhat.com>, <jasowang@redhat.com>,
+        <xuanzhuo@linux.alibaba.com>, <eperezma@redhat.com>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <ndabilpuram@marvell.com>, <kshankar@marvell.com>,
+        <schalla@marvell.com>, <stable@vger.kernel.org>
+Subject: [PATCH net,v4,1/2] virtio_net: Improve RSS key size validation and use NETDEV_RSS_KEY_LEN
+Date: Tue, 24 Feb 2026 10:22:48 +0530
+Message-ID: <20260224045249.933178-1-schalla@marvell.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <h2uhrsjlvovjcj7k2ckpkgrhpuwm6biun4ueq7kyzcm4hqcsjr@y3iiqx2vo6s2>
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=P7Y3RyAu c=1 sm=1 tr=0 ts=699d2ea7 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=TtqV-g6YmW1Jfm2GSLaY:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
+ a=WvS6aQ_piSL3sVsHHQ4A:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: zri5ZNkkPnbjVj6E_0jTIhWJb2r3Is--
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDAzOCBTYWx0ZWRfXypwqFyEcXtCI
+ qImKS2tuOS1rMV/GbP7RiaDrjHuuNaxp9T0UvPBNaP2OVtlpk9KexK4A3J01pgikdLPRBJqNL6P
+ xJFUkLOXHtyR5OcJt5aZjWTuVCvCHbE7vX8/iMOo5Ewc8a+kFvQu5TD2X0Z4DeYKjzYqwJ1BUbl
+ KHCKUL6j8DoYRULfAoTCbP12xHawdjCLkkYMFzxHYDSR44bYGjmLPArTcWNj8+ACdUiumQh8zOx
+ KY/7KE2cog5oowZM+TgG2xPNuQ5wZoFlXl/7R9B5KY+ehbo3/i8ohXy3tWIgx5VZKsguNg/QaCN
+ EjYef43KKHXWaZeWT6PKyqrxRp008apMTfd3/FlUZDYT1HnYFKRbygPArOvvRbbdytwpxXOvkto
+ 6UquCvq4rQPWTyn6DSwRoeV/zBOCSA3YwKtu9x9MW84m1hJ0gywRc9Zyk7/JaMk00YVeBTuNnAJ
+ XY+8yWUcBCAhQH/9Rng==
+X-Proofpoint-GUID: zri5ZNkkPnbjVj6E_0jTIhWJb2r3Is--
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-23_06,2026-02-23_03,2025-10-01_01
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[marvell.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[marvell.com:s=pfpt0220];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217860-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_NONE(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217857-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[schalla@marvell.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,marvell.com:mid,marvell.com:dkim,marvell.com:email];
+	DKIM_TRACE(0.00)[marvell.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 653DB181B79
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_COUNT_SEVEN(0.00)[8]
+X-Rspamd-Queue-Id: 179B5181D3C
 X-Rspamd-Action: no action
 
-+ Neeraj
+Replace hardcoded RSS max key size limit with NETDEV_RSS_KEY_LEN to
+align with kernel's standard RSS key length. Add validation for RSS
+key size against spec minimum (40 bytes) and driver maximum. When
+validation fails, gracefully disable RSS features and continue
+initialization rather than failing completely.
 
-On Mon, Feb 23, 2026 at 02:35:04PM -0600, Bjorn Andersson wrote:
-> On Mon, Feb 23, 2026 at 01:32:52PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> > From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > 
-> > The current platform driver design causes probe ordering races with
-> > consumers (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE
-> > probe fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops
-> > with -EPROBE_DEFER, leaving consumers non-functional even when ICE should
-> > be gracefully disabled. devm_of_qcom_ice_get() doesn't know if the ICE
-> > driver probe has failed due to above reasons or it is waiting for the SCM
-> > driver.
-> > 
-> > Moreover, there is no devlink dependency between ICE and consumer drivers
-> > as 'qcom,ice' is not considered as a DT 'supplier'. So the consumer drivers
-> > have no idea of when the ICE driver is going to probe.
-> > 
-> > To address these issues, introduce a global ice_handle to store the valid
-> > ICE handle pointer, and set during successful ICE driver probe. On probe
-> > failure, set it to an error pointer and propagate the error from
-> > of_qcom_ice_get().
-> > 
-> > Additionally, add a global ice_mutex to synchronize qcom_ice_probe() and
-> > of_qcom_ice_get().
-> > 
-> > Note that this change only fixes the standalone ICE DT node bindings and
-> > not the ones with 'ice' range embedded in the consumer nodes, where there
-> > is no issue.
-> > 
-> > Cc: <stable@vger.kernel.org> # 6.4
-> > Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
-> > Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> > ---
-> >  drivers/soc/qcom/ice.c | 44 +++++++++++++++++++++++++++-----------------
-> >  1 file changed, 27 insertions(+), 17 deletions(-)
-> > 
-> > diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
-> > index b203bc685cad..3c3c189e24f9 100644
-> > --- a/drivers/soc/qcom/ice.c
-> > +++ b/drivers/soc/qcom/ice.c
-> > @@ -113,6 +113,9 @@ struct qcom_ice {
-> >  	u8 hwkm_version;
-> >  };
-> >  
-> > +static DEFINE_MUTEX(ice_mutex);
-> > +static struct qcom_ice *ice_handle;
-> 
-> Did we get confirmation that in the UFS + SDCC case, there's only a
-> single ICE instance per SoC?
-> 
+Cc: stable@vger.kernel.org
+Fixes: 3f7d9c1964fc ("virtio_net: Add hash_key_length check")
+Signed-off-by: Srujana Challa <schalla@marvell.com>
 
-Right now there is only a single instance per SoC. But Neeraj told me that
-upcoming SoCs are going to have multiple instances. But I don't want to spend
-too much time on *upcoming* support, but rather fix the current
-implementations.
+v3:
+- Moved RSS key validation checks to virtnet_validate.
+- Add fixes: tag and CC -stable
+v4:
+- Use NETDEV_RSS_KEY_LEN instead of type_max for the maximum rss key size.
 
-Extending this to multiple instances would just require storing the ice_handle
-with node name/address pair in xarray or in some other data structures.
+---
+ drivers/net/virtio_net.c | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
 
-- Mani
-
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index db88dcaefb20..eeefe8abc122 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -381,8 +381,6 @@ struct receive_queue {
+ 	struct xdp_buff **xsk_buffs;
+ };
+ 
+-#define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
+-
+ /* Control VQ buffers: protected by the rtnl lock */
+ struct control_buf {
+ 	struct virtio_net_ctrl_hdr hdr;
+@@ -486,7 +484,7 @@ struct virtnet_info {
+ 
+ 	/* Must be last as it ends in a flexible-array member. */
+ 	TRAILING_OVERLAP(struct virtio_net_rss_config_trailer, rss_trailer, hash_key_data,
+-		u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
++		u8 rss_hash_key_data[NETDEV_RSS_KEY_LEN];
+ 	);
+ };
+ static_assert(offsetof(struct virtnet_info, rss_trailer.hash_key_data) ==
+@@ -6627,6 +6625,29 @@ static int virtnet_validate(struct virtio_device *vdev)
+ 		__virtio_clear_bit(vdev, VIRTIO_NET_F_STANDBY);
+ 	}
+ 
++	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS) ||
++	    virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT)) {
++		u8 key_sz = virtio_cread8(vdev,
++					  offsetof(struct virtio_net_config,
++						   rss_max_key_size));
++		/* Spec requires at least 40 bytes */
++#define VIRTIO_NET_RSS_MIN_KEY_SIZE 40
++		if (key_sz < VIRTIO_NET_RSS_MIN_KEY_SIZE) {
++			dev_warn(&vdev->dev,
++				 "rss_max_key_size=%u is less than spec minimum %u, disabling RSS\n",
++				 key_sz, VIRTIO_NET_RSS_MIN_KEY_SIZE);
++			__virtio_clear_bit(vdev, VIRTIO_NET_F_RSS);
++			__virtio_clear_bit(vdev, VIRTIO_NET_F_HASH_REPORT);
++		}
++		if (key_sz > NETDEV_RSS_KEY_LEN) {
++			dev_warn(&vdev->dev,
++				 "rss_max_key_size=%u exceeds driver limit %u, disabling RSS\n",
++				 key_sz, NETDEV_RSS_KEY_LEN);
++			__virtio_clear_bit(vdev, VIRTIO_NET_F_RSS);
++			__virtio_clear_bit(vdev, VIRTIO_NET_F_HASH_REPORT);
++		}
++	}
++
+ 	return 0;
+ }
+ 
+@@ -6839,13 +6860,6 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_key_size =
+ 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+-		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
+-			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
+-				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
+-			err = -EINVAL;
+-			goto free;
+-		}
+-
+ 		vi->rss_hash_types_supported =
+ 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
+ 		vi->rss_hash_types_supported &=
 -- 
-மணிவண்ணன் சதாசிவம்
+2.25.1
+
 
