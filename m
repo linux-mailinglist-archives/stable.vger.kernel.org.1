@@ -1,146 +1,221 @@
-Return-Path: <stable+bounces-217849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EI12KGIInWk7MgQAu9opvQ
-	(envelope-from <stable+bounces-217849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 03:09:38 +0100
+	id qNgGFKILnWnLMgQAu9opvQ
+	(envelope-from <stable+bounces-217850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 03:23:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5DB180DC0
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 03:09:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE757180F97
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 03:23:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 962B73080C19
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 02:09:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 352923051479
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 02:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C098E241686;
-	Tue, 24 Feb 2026 02:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97B5257844;
+	Tue, 24 Feb 2026 02:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="R26zEOeq"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="DFjmn41e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazolkn19011010.outbound.protection.outlook.com [52.103.66.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1CA207A20
-	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 02:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771898972; cv=none; b=trJHkC8WKNbjBDCRRmqZb0ybQGOHUABhwUYnm7K+S/FAOEXMy79TF/FU/ISc7C/0jYAz032ruQMqvmBLC80m/jTqc4D5CIlFfrZma0pXvFzlSJ2talPwKyAKNh3uGZ1824jzFeyeqptvw9+QcPnD1rFK66jae3Ie5rDqNyQNH0I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771898972; c=relaxed/simple;
-	bh=xm6jH84Xqhv4PsVB+ToFxuPD5b/FmDOyr90R6DBa11g=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=K9jJRy0oztxyeF33Uv7ZNQqZ73t5w5H4z7TA+qZzQOIWi6NFiOtLdBoQeoY7b20UFMgHihxn7+1PFQi8XftXKo1UsudR1vHl8hiaoXtnNGKU8DDK1kb5a93ekW0X+Ao6+NEDgdP5FT13MXqVV+gSEbf8uXXapbQ6nhqakh85v94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=R26zEOeq; arc=none smtp.client-ip=79.135.106.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1771898960; x=1772158160;
-	bh=xm6jH84Xqhv4PsVB+ToFxuPD5b/FmDOyr90R6DBa11g=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=R26zEOeqeDzeraIswDxw0NQCWO8iJlvKX2QGb0vJRrAdLJWvkFwg0R/yHe8KvHR4o
-	 hYV9+LPZq4LHVE+MPxVXWYclOZKLuMxzQ3f77HgNytU97wKrmYXKPEAox4e1t9sp4r
-	 KpUInOqUZWkkiagnzWVQ4wqRYxm/GhvqQjx0POghRkqtPVyN54lzBXfC8plb+mbPpl
-	 Vd7x9La6mdbEtoLbsHZvFqqVuMMMwlTZaYNVAqxdo0WYcE8dYKiO5HzRakmGVVkvBL
-	 wpodRAChvyceZsInNJHFEYh0F+eca0r1DDnv81Jk0KLVclIKHMWdNYzuRH8XabWpeT
-	 u7AMZXbHYoAvA==
-Date: Tue, 24 Feb 2026 02:09:15 +0000
-To: 1128861@bugs.debian.org, Neil Brown <neilb@suse.de>
-From: Tj <tj.iam.tj@proton.me>
-Cc: linux-nfs@vger.kernel.org, Olga Kornievskaia <okorniev@redhat.com>, stable@vger.kernel.org
-Subject: Regression: Missing check in nfsd_permission() causes -ENOLCK No locks available
-Message-ID: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
-Feedback-ID: 113488376:user:proton
-X-Pm-Message-ID: 070dfc1e520590817ffbb2e91b91c20970ddd6d0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527391A9FBC;
+	Tue, 24 Feb 2026 02:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771899804; cv=fail; b=Y35XD8KbSBrH8z0obLMOYCUYQGLHe+JVhpB2zafZlWzR9PxG5kbrcy2UOrT2dHvpSYQYTYXS+Co6ScJqUmTYMCPvczqaKJkYzKZTfTUMep9+PVQ6FMkrl4kAn/WfKCtKObUomOaYW/Em5x7KppS9tjrOZ1Pjwa/7zAoiMhWIBiI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771899804; c=relaxed/simple;
+	bh=BDW0djVBFUNPVPIDmunMQkap6g1qoAk6BB6lFbCZP5g=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=E1OzK8W5/QuW7YuuHcv8a7L7GcoXtdj13oKJabLk5kbwulbj4SVrm6je4DIb9+1xm55F5cG06X6jdTbF/NIMznK+Qf1RThRQMhNbvXLOtaCIQPxLtFbl3ceQP0cE1j+NK2unlrwMRRyQR65Y6VjpQrBdGN8B0EklBIiTLdeSnT4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=DFjmn41e; arc=fail smtp.client-ip=52.103.66.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v3rxheDc4Ai6tpFRf3/HfQfImjGgiOLipOkCOgrmJeoJ8sAAw0zHj44U/JwLiLet+0khaGs+33VQMqCc6OhfpGLOC8oi8UTgCBNuPTd3k9gmMW3KsXIOQX7fc/pCGy6kmJjJricEDrI4oseWKST+fVQHBUJTFTo9fCCerc0y6uwB98wexb9+LD3T2vJO1xoharIbusxXhBjCwYMW/hRUt7QSHYFx7L4jh0xLVmlycSqVQMu3gps7+OcubOtB2fpIhXPhu8ys1p7U8Si2W2hKO9QvCezzlTcOeR79W1CmRsYeNIk9I0JkK09ad0GvoNn2f/+hQFvv9J2wvNjV95pIVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OnKocjp10SXwUG3DkdlhcG9ILxIjbt+cksEXCV0IyI4=;
+ b=NtG7bR7LmpeCMBu1CNXusxmdGLDioCJ05TVQHHs7wuIM4ZKoOZcrHsohzgymW05ZupaVEvDG71s2cmEWOr0/jllsQK6axXV3rkgj79IDT4yxwwQi3TRsHhiqG3K7BbwKDoApaAK0PCTqxFWLdXjUr6Kby+IHKhju9+tlbmV651FaMEQjrVnql5uM1ImQBbsI7oZn6aMaw6/LaxlsfB1TvZyrTiqcq20m2AzUJjCR2l81wDZPucdMdLXsxU7W49kjIBL/H5A0HSy9x35VGpyMUw+3kOrb5zrEIF2nA9A2ipMGxW/WyGig/vpssmipv+Zm3twU31qz9thOJN27EDreKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OnKocjp10SXwUG3DkdlhcG9ILxIjbt+cksEXCV0IyI4=;
+ b=DFjmn41eil3F/oZ2SZi/pFWExTK6mvnTZWbyNEK5qi6d0GffST9CRTNYSYPByhM+qx8Bo1iedk7OmZ4/EXNMPc+Ip4O8PTrNHQZMxSDqHYSoO7Y0ZsnaVryDH3uMDJS+2F5dVSHnogQ+e4xPAaJGKAtGE+zAX0PRJwnI5JHAokB5lzp22E8fWcXgRKjHxaojbC9NrOeLLzYGQU0jh5g8HmV3ZLv5CiTEFsoGG3EQIM6evfEO2FVrbTK8IAweQ8hfWm3FG47P2aOr+d9Vm8FN/xKNGXQSPrCcC5Wvt4wWEDm7baIO2jcA/DZbmk8aVaI2j0uS9j1ZtXS1tGZnAK4Qjw==
+Received: from OS7PR01MB13602.jpnprd01.prod.outlook.com (2603:1096:604:359::9)
+ by OSCPR01MB15557.jpnprd01.prod.outlook.com (2603:1096:604:3c1::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Tue, 24 Feb
+ 2026 02:23:18 +0000
+Received: from OS7PR01MB13602.jpnprd01.prod.outlook.com
+ ([fe80::7a94:8782:9191:8d50]) by OS7PR01MB13602.jpnprd01.prod.outlook.com
+ ([fe80::7a94:8782:9191:8d50%6]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
+ 02:23:18 +0000
+From: Shiji Yang <yangshiji66@outlook.com>
+To: linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: John Crispin <john@phrozen.org>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	stable@vger.kernel.org,
+	Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Subject: [PATCH] mips: ralink: update CPU clock index
+Date: Tue, 24 Feb 2026 10:22:50 +0800
+Message-ID:
+ <OS7PR01MB136024C7662EB4DEC04ABC648BC74A@OS7PR01MB13602.jpnprd01.prod.outlook.com>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0013.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::9) To OS7PR01MB13602.jpnprd01.prod.outlook.com
+ (2603:1096:604:359::9)
+X-Microsoft-Original-Message-ID:
+ <20260224022250.31169-1-yangshiji66@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OS7PR01MB13602:EE_|OSCPR01MB15557:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5b246894-17df-4bf7-19e1-08de734babf6
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199028|41001999006|21061999006|8060799015|19110799012|23021999003|15080799012|5072599009|5062599005|53005399003|40105399003|3412199025|440099028;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?kXfgW8hC5Q41qnHSMln7WDc2EJvW9kWgwLCM/zHG/0XVt6kk5HKm/lwz41sP?=
+ =?us-ascii?Q?/3JgzLn1s9imQulbmMA6cspMOCLRSWYRSvJ3uyzZGWDH99tvRdzn+g3HcYZ1?=
+ =?us-ascii?Q?zPjlHf/mzZ+F28tiFNhGrFGEcD1/tqYGV6NAApEcEfua2YJGHDhyteXIgAwy?=
+ =?us-ascii?Q?lVyE9DqT03epWGtcPe98/9kNhep70ofy+zDizXV9PG8FD06r00NRVBgnNUKj?=
+ =?us-ascii?Q?HOegX8TGQLfhjjmj8pcQPNab7FAy936Y/AcYXaZ2eyzfF1DLgWkiVUFZPufH?=
+ =?us-ascii?Q?JY3L9/pb9eD7H13WoIacM1G9+9eVolQkNXWocX4hYSm/DT8hxbAmWm4sMsI0?=
+ =?us-ascii?Q?JCQWeMXYndu6HmqfiznIptyxpPyYpFK1v6Kwlf6DAcWudTNUZ4OfIdeyWmHi?=
+ =?us-ascii?Q?e7YDgt09wzk36sltdpMH3F1ExpHOw+OSb0nsV2fdhcWZRMAPn8Oa54n63q6y?=
+ =?us-ascii?Q?gA9oxWgVcxmn1ioyOyRfdZKvVitgigZBRg2b85j1bRGbYBoFzD6K42CPnafI?=
+ =?us-ascii?Q?u4duWxe7WCjI2hMtuijNawAZO2Urd9XHmOai8f8leYQyEQt51RAfRLD0lvNA?=
+ =?us-ascii?Q?k2rvfkGM2Xy9ThDMLMKySNKNKraxYsHsGgROW/WZ3wbdowxS9yRZh6SPeH92?=
+ =?us-ascii?Q?kUw8zZJIFHRFu58lB5ZGpH7gCVXMAZzjJGVDek0ORZYfFm8FcBKFF8O8Pzww?=
+ =?us-ascii?Q?XC3/s7UESgpVxFxmXEXLiU/6fOsHO4EbJBUvCtezjoOeauAIDXIov7eHv1gf?=
+ =?us-ascii?Q?ZdUT/NupsdCSiH7QANazyZh2M2sPoLD22fDEuLPDSimooHjMq+rayWzXi89P?=
+ =?us-ascii?Q?fMS+qEvKAtPeQ3vkbTutoNLEqoDzJA4zXLEQQixiEkcXeYh9saajYJRTa+7S?=
+ =?us-ascii?Q?TPeEQKE6b4W/BFp5XRuIRG1InioiIH5KBiP2luvmq3WDK0uTUc47ZVlTIAnd?=
+ =?us-ascii?Q?hJ4Mp5Q/YWBJlfdW4vQ8shQaLbcUf4jMHtOBQkFMLpREi0ZkfkUx7CITrugd?=
+ =?us-ascii?Q?JP2iUVcQCoPWmqEJ+C3rZHlUVVjVA44mdgSxRnsLE2NGEHcYrPGjb8itfJvT?=
+ =?us-ascii?Q?ug/5167TIeuGVUvgpKWtqXI5bMvwc1Er+oEw+qBHeq6U5lGQe8LGmVCTJStp?=
+ =?us-ascii?Q?VNhONshZF3zVDrYulwrYCz4kDFP4qhfxK6CkFK9JVMftq+OhjskTQZLl7uOu?=
+ =?us-ascii?Q?tdZI7WIYywvGl1fYhyYSJZngQ7/VE3lJNSwMTVWlcQIFA3Vx5wEahT6yo3qm?=
+ =?us-ascii?Q?xU/BblHIaJ9FssNdGky+ePkxShnKEnJ528hGjEDDOg=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?S3+JZwK/Y6oBUhYiq+JeB/LHy+1jlfZxV+MoO66jhIGEryl9GXNU2qtKM4qi?=
+ =?us-ascii?Q?IQ36dx6PizwzFrcoVQCwGHkzGwTVf9C5ND5rkB9j1dgtgrKRx8bguXRoFQ3G?=
+ =?us-ascii?Q?hrp43I0vdecaD+csJLERgg94EDN6wb9AZxjS5ddNDgtRJ0xQU4Vu+ZJN1hf3?=
+ =?us-ascii?Q?6e1c666ffVYUibqS10SHA75kcBiyR/jpfxepXoaaCykmZfs2UGRegsiVSiI1?=
+ =?us-ascii?Q?h/nY90ZFu29HXS6V8SptMg0+KlEdNNFFg2ej479QY1mlFjfS6UdOmRc6Owjl?=
+ =?us-ascii?Q?5Q1Wz2EXPct4aevodvrMgRtEmnrEJbMh6cCSdQNO9xdHBtHjcr5q0bpyR8gW?=
+ =?us-ascii?Q?V8eic5HxU8Mas6QnxOmu2cH8UtTJsbgUYWErtWIOHalhxt+IdK7+mL29n5DE?=
+ =?us-ascii?Q?JtBIsr5lYmRLOPfCAhf/W/m6+5lMks6EKkbsBdLuoOkwAiD8whZgz3jIw3kG?=
+ =?us-ascii?Q?5UZ1vXfrMX85EZHPSbxEAbwpatRWshPYIAfeF0/FSByus1W+tvbXwk79lmY9?=
+ =?us-ascii?Q?HGyHpYsrvpIWYYiv3utD1KkECWeGdGaK/hxy+VkEk167p3I1y/5wKWbKrBvR?=
+ =?us-ascii?Q?UWeEg9xRQtj8KrudLwnIgmuJTUhGEWbc9mmEGJoPxp+jSSH85U7TmCjHSQXZ?=
+ =?us-ascii?Q?8ctF9oQB0vSHpnVKgNXGe+EKMJjKiAGUvxyltiYuysfj7hTPSlNbtRB99hnE?=
+ =?us-ascii?Q?gWYBFmqb02WhzNNFEkqJY4Z05SBnLJ8nV5l90yQaXwC/Pg7FhCq8hBt55Ppc?=
+ =?us-ascii?Q?HTlxqnP1d6yvJ0PL9+zpU8RcggWqtloY12x9P0l67R45wuGNY7/mk+Gjh5U6?=
+ =?us-ascii?Q?Ab8Zq0rpK9d4YOfO/tdAt+rikgF+Z48/n+loyYVv6cm4oT82PC6Q9L41Sdcp?=
+ =?us-ascii?Q?A0MtduIN9G7PKcmeiyHfm5tW8a4U6IuJY/bVT9K/SLF/4n2WlbbUcGgj6KVW?=
+ =?us-ascii?Q?B+GQwyuqjvtdYwaV/I75jLmbNIKJvPwSU5VOgLCyfgby1AF0tAPiux+fCQCf?=
+ =?us-ascii?Q?edhTJIlJ/eCI6ST0+5Awv3dX5JjC/uidItr/bAxkA27/vJjxMO8FaKgRweVv?=
+ =?us-ascii?Q?QGYtOYfTR5twIK+imRVXAIIvcUQrAFaBC7TB1D0cs/zP3Bwo3pxUXeFjvYA/?=
+ =?us-ascii?Q?x680YcBXBV+oi3ZsVtVReWjG3o5rbb1t8OeH0YGqeDvzl53EP1jjcR/wc4a8?=
+ =?us-ascii?Q?wY9udWPC439H+K6xsgl1gtbu+/yquWA97vNHZSwGrNCxZRC4WmzQaA5FUuz6?=
+ =?us-ascii?Q?1SKW45qLiB5WGEa4e2/QoRkxIzUdNvHVdxFakC8wcgjrXGIpOb+3RU9RGKVJ?=
+ =?us-ascii?Q?E1bN0zQpBsBDqVZVaxHFMQHCBrTnYJ8Uqg4Lf08cpLBa5ZeHNsvV+HGc9RZW?=
+ =?us-ascii?Q?KDr9OZ+GXXVdzHrL+HLsSgp29cxI?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b246894-17df-4bf7-19e1-08de734babf6
+X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB13602.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 02:23:18.0814
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSCPR01MB15557
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
+X-Spamd-Result: default: False [1.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217849-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[proton.me:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[phrozen.org,gmail.com,alpha.franken.de,vger.kernel.org,yahoo.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-217850-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[outlook.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tj.iam.tj@proton.me,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[yangshiji66@outlook.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:mid,proton.me:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1A5DB180DC0
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,OS7PR01MB13602.jpnprd01.prod.outlook.com:mid,outlook.com:email,outlook.com:dkim]
+X-Rspamd-Queue-Id: EE757180F97
 X-Rspamd-Action: no action
 
-Upstream commit 4cc9b9f2bf4dfe13fe573 "nfsd: refine and rename=20
-NFSD_MAY_LOCK" and
- =C2=A0stable v6.12.54 commit 18744bc56b0ec=C2=A0 (re)moves checks from=20
-fs/nfsd/vfs.c::nfsd_permission().
+Update CPU clock index to match the clock driver changes.
 
- =C2=A0This causes NFS clients to see
+Fixes: d34db686a3d7 ("clk: ralink: mtmips: fix clocks probe order in oldest ralink SoCs")
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+---
+ arch/mips/ralink/clk.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-$ flock -e -w 4 /srv/NAS/test/debian-13.3.0-amd64-netinst.iso sleep 1
-flock: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso: No locks available
-
-Keeping the check in nfsd_permission() whilst also copying it to=20
-fs/nfsd/nfsfh.c::__fh_verify() resolves the issue.
-
-This was discovered on the Debian openQA infrastructure server when=20
-upgrading kernel from v6.12.48 to later v6.12.y where worker hosts (with=20
-any earlier or later kernel version) pass NFSv3 mounted ISO images to=20
-qemu-system-x86_64 and it reports:
-
-!!! : qemu-system-x86_64: -device=20
-scsi-cd,id=3Dcd0-device,drive=3Dcd0-overlay0,serial=3Dcd0: Failed to get=20
-"consistent read" lock: No locks available
-QEMU: Is another process using the image=20
-[/var/lib/openqa/pool/2/20260223-1-debian-testing-amd64-netinst.iso]?
-
-A simple reproducer with the server using:
-
-# cat /etc/exports.d/test.exports
-/srv/NAS/test=20
-fdff::/64(fsid=3D0,rw,no_root_squash,sync,no_subtree_check,auth_nlm)
-
-and clients using:
-
-# mount -t nfs [fdff::2]:/srv/NAS/test /srv/NAS/test -o=20
-proto=3Dtcp6,ro,fsc,soft
-
-will trigger the error as shown above:
-
-$ flock -e -w 4 /srv/NAS/test/debian-13.3.0-amd64-netinst.iso sleep 1
-flock: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso: No locks available
-
-A simple test program calling fcntl() with the same arguments QEMU uses=20
-also fails in the same way.
-
-$ ./nfs3_range_lock_test=20
-/srv/NAS/test/debian-13.3.0-amd64-netinst.{iso,overlay}
-Opened base file: /srv/NAS/test/debian-13.3.0-amd64-netinst.iso
-Opened overlay file: /srv/NAS/test/debian-13.3.0-amd64-netinst.overlay
-Attempting lock at 4 on /srv/NAS/test/debian-13.3.0-amd64-netinst.iso
-fcntl(fd, F_GETLK, &fl) failed on base: No locks available
-Attempting lock at 8 on /srv/NAS/test/debian-13.3.0-amd64-netinst.overlay
-fcntl(fd, F_GETLK, &fl) failed on overlay: No locks available
-
+diff --git a/arch/mips/ralink/clk.c b/arch/mips/ralink/clk.c
+index 9db73fcac..5c1eb46ef 100644
+--- a/arch/mips/ralink/clk.c
++++ b/arch/mips/ralink/clk.c
+@@ -21,16 +21,16 @@ static const char *clk_cpu(int *idx)
+ {
+ 	switch (ralink_soc) {
+ 	case RT2880_SOC:
+-		*idx = 0;
++		*idx = 1;
+ 		return "ralink,rt2880-sysc";
+ 	case RT3883_SOC:
+-		*idx = 0;
++		*idx = 1;
+ 		return "ralink,rt3883-sysc";
+ 	case RT305X_SOC_RT3050:
+-		*idx = 0;
++		*idx = 1;
+ 		return "ralink,rt3050-sysc";
+ 	case RT305X_SOC_RT3052:
+-		*idx = 0;
++		*idx = 1;
+ 		return "ralink,rt3052-sysc";
+ 	case RT305X_SOC_RT3350:
+ 		*idx = 1;
+-- 
+2.51.0
 
 
