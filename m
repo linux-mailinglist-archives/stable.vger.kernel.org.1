@@ -1,179 +1,139 @@
-Return-Path: <stable+bounces-217905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKcaGAyXnWnwQgQAu9opvQ
-	(envelope-from <stable+bounces-217905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:18:20 +0100
+	id oAQUOFeXnWnwQgQAu9opvQ
+	(envelope-from <stable+bounces-217906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:19:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D79186D1E
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:18:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E03186D3D
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:19:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29461304483E
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 12:18:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33F6F305A42F
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 12:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C6B396D0D;
-	Tue, 24 Feb 2026 12:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C122DB789;
+	Tue, 24 Feb 2026 12:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="M4IZx3ZA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qJPMNiah"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3645396B8D
-	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 12:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA59B25A2C9;
+	Tue, 24 Feb 2026 12:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771935495; cv=none; b=BIJR4MIVrb1HTErIzB/XVlOP/mAsY5lJzRtBbwVrDYA7MifN0op4x4RPnGfN5riuDJTxfNv5c6g4h7NWgKT1oVJNf5Qcv7sjAhRtRJ8t3FHHvjQcrPE0InKyr15bbYJ+BoFzSEIjfeyCysSvlpeGRff9tCrWQdUKhRHRlHbDXqY=
+	t=1771935572; cv=none; b=Amak41/zjzjiYJ719wuNSiuFd6A/Z/cup6bp9r+2/zN1XONnkoDXg9MvVPv9ddWZLB7QmbEw2e+iwSo21OIsF9OU0geR56Gm9azWMJA0RuZ5jUw9/Jz7xtK/H6Id4jhIH3tE6KShkoLPuBHSsauXLea7hDzsjhLVVlcMNWvaSOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771935495; c=relaxed/simple;
-	bh=mGFDCB6zIv5f/4lsb2IncY3zWh7oM4on0XtIB/lD4Ww=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=CPnytVgxsI16ur6Ydg1LiBQw5LU5geuKVAnIcgzM0upBLGNpE9VBjDJZ3JHVYKw4d0NFOoD57cDbWw3SactgNOewAXKsCY9h5R3iU/aBOHMBJkR6OeVLjJqMZvXljiKzeo++tMYBseVOPr+HFkb7b/Zrd5owEHrwZDKk30m5jig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=M4IZx3ZA; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4376de3f128so3885339f8f.0
-        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 04:18:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1771935488; x=1772540288; darn=vger.kernel.org;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7VcA092cXLqsFEZwXz9GnwUVN7DiPeez0PcJ7v+ltPI=;
-        b=M4IZx3ZAr0KT0TRy2oRZhcRLmom6Xrl2UGYTOH4PxMV/+HCK+QUJgERjwao7ItS8SG
-         dflLBfYVNyVS62qrwCztAQ9YiK9cqZBThhZ3dEOX72u8U0hCfEf5DpuNcbD1ULrKMLza
-         p7PZpHG94EcjjibJJtRyzRTtqAc/Z0pDQvFpBQG2epO3kDJZPcJGgUKFSvn2LbXl7/MM
-         JZ+TBaJiPjWkgNf/Q5HQSG1/CAaX4TrxXWyFTK9pwVbCrjsiGycoC/lpaf/qzqNiaaSQ
-         7TJPzwmFJYnWTepIlG94U1ZMu1dCY/I4BYBlvzx5/zWCrOXTabCvHFwcaOv9v+Rtw6DP
-         yn0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771935488; x=1772540288;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7VcA092cXLqsFEZwXz9GnwUVN7DiPeez0PcJ7v+ltPI=;
-        b=UtWWzLml1lr86afnCTaZl0i//GQDCUc/Q+LJL7kMQTi8EYDM2ApgyOFmpJvuAYQn5h
-         kBfi7qcg1l0i1ky3piGmAa6DSCzegI+Xqt8K3hHA8pYocfnzwxIyADyEIExZcM71Tf1W
-         cH/uVkLmcfcBoPxBREFnCEWleaLlM0fTOs9v2sRnymgvfX2D8jC6LdUk1xDiFeYDWQsw
-         9ktLz8nlYMGNSvqHW62cauecMf7cFU6+wIdFHbPWynMiqaltZlBumOD492rslEnN+SuL
-         kc7euZUtfdTPwTfvqRhHmLpRk+auGW/RjQM/kcGNzVriBOeBM+GTcIkh8DwFKK/UUQ3l
-         uKug==
-X-Forwarded-Encrypted: i=1; AJvYcCUdYg2k6pF0mkxnRw6rUpV9khN9GdCOFFovFrfCU5Ipw0xnfZpOCZGe95KZM4hjDhX+wk0Bl5A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQ37qeEnKbN6KWdgTK4YzNGMrEYUxaFwNm5wDhV++I1rlsiD1e
-	KHKzGjFbpj90WVYldFfJaqGBmlvNTLJO2+0OkykJ5vJ/OOoCh5cTj74v/GYAxdj03X8=
-X-Gm-Gg: AZuq6aLSHtowTdybPZfU4kt3c3aZ0jBb4c0H1dnotAWGBhcSUyxS59ZVoNeX84OAk+P
-	xBIBwJmnIRz+GH66Yr2rEgbPM3rQe/owaxKyOf6dReDWg9Q8LBzfpN0iZw9mNgu+E8NFMUN1q2M
-	FtHRcr4xsovMDt0qMDneoUd4e3BgzlhM0A1m9A2ITrT3TrIDdrVlIudGfNmrYRUcdvg5Bi8abyo
-	QQgZSVIOVrhMCnHgADqWJAcTPR+BM8F+NcgdVpxextgRP/iaqPdxmirN2l5qDe/4sKoiKRmPko2
-	zt1dhxF+yG15ahS1q4vVCqULBBrikmhSE4cpT5RlrBE8QojcLgtQu44axo6dhe6hfvFCe1hz+ov
-	X34QQTpfq0e9rzwcTd1/K7IHYz/qmbsGQMCetA7m4Auh8Ck4jjHym2N8S9kezbO0bjpvfLUUCBC
-	JWb7Oe+J8gkIsL/F3k
-X-Received: by 2002:a05:600c:1e1d:b0:483:702f:4633 with SMTP id 5b1f17b1804b1-483a95bd8fdmr210996605e9.4.1771935487969;
-        Tue, 24 Feb 2026 04:18:07 -0800 (PST)
-Received: from localhost ([177.95.18.0])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-568e58f9aeasm12352785e0c.11.2026.02.24.04.18.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 04:18:06 -0800 (PST)
+	s=arc-20240116; t=1771935572; c=relaxed/simple;
+	bh=PcJ8nkbO1UGzuf5J5H47QPdDNyslM/4MgHQeOSVKCEA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=nnOp0ykvtG4ttEBJnA6HPiNjwLRW690ExBZJmStLVdmMGv4udqFcxIPjzwSQOOwxldGAFaLdZtB//0Wfdzry9YmFzvRFnqqoNGH+u5dnBZu9JTzEix6d9f035aL+6GdKeT9heZcvnMt+ioC4ugTpLiPRepL6//0R5hKS82fULeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qJPMNiah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC64C116D0;
+	Tue, 24 Feb 2026 12:19:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771935571;
+	bh=PcJ8nkbO1UGzuf5J5H47QPdDNyslM/4MgHQeOSVKCEA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=qJPMNiahLN+ZuWftld898lLuYjdTF+OH21dVf3i3om/49ZnNkAO02xjUpomDpoRbW
+	 mawNBYJNCdqU76I2x2W3zLbq1lqJ6i8caHPSGeN0M+JzYeQIFMO2KeO0SOROUE9wan
+	 lwXSiqqqBQg9Eusc9QRdKXITmVfBM2K/mnFFLaGyxUFtOOT/qk2lFBvTwBltV2LrBc
+	 VAEekm4G4hHgIHd7apK6PnfxTYOKDXacrTe0gHZ/Z+q144rQixJwNjkZHh2IQmi6Bb
+	 0LZEiCFvqq9AQcG4V3XbOgbTfJ2EumYsRWYjrzKcElmJbniKb6bcrSpfuq5d75omgT
+	 FP5vz8Euwkb/g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0853808200;
+	Tue, 24 Feb 2026 12:19:38 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Feb 2026 09:18:04 -0300
-Message-Id: <DGN6PFT94YHU.3S3UXTP82975E@suse.com>
-Subject: Re: [PATCH stable 6.12 0/5] Backport selftest for "bpf: Check
- skb->transport_header is set in bpf_skb_check_mtu"
-Cc: =?utf-8?b?UmljYXJkbyBCLiBNYXJsacOocmU=?= <rbm@suse.com>
-To: "Harshit Mogalapalli" <harshit.m.mogalapalli@oracle.com>, "Shung-Hsi Yu"
- <shung-hsi.yu@suse.com>, <stable@vger.kernel.org>
-From: =?utf-8?b?UmljYXJkbyBCLiBNYXJsacOocmU=?= <rbm@suse.com>
-X-Mailer: aerc 0.21.0-120-ge2f19458bd3f
-References: <20260224073810.85945-1-shung-hsi.yu@suse.com>
- <bd0277b7-4a19-46a4-9f06-96d48cbc89d8@oracle.com>
-In-Reply-To: <bd0277b7-4a19-46a4-9f06-96d48cbc89d8@oracle.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [patch net] net: phy: register phy led_triggers during probe to
+ avoid
+ AB-BA deadlock
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177193557703.3453706.12559659267751211027.git-patchwork-notify@kernel.org>
+Date: Tue, 24 Feb 2026 12:19:37 +0000
+References: <20260222152601.1978655-1-andrew@lunn.ch>
+In-Reply-To: <20260222152601.1978655-1-andrew@lunn.ch>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ davem@davemloft.net, netdev@vger.kernel.org, rmk+kernel@armlinux.org.uk,
+ hkallweit1@gmail.com, pavel@ucw.cz, jacek.anaszewski@gmail.com,
+ ben.whitten@gmail.com, yangshiji66@outlook.com, stable@vger.kernel.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217905-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217906-lists,stable=lfdr.de,netdevbpf];
+	FREEMAIL_CC(0.00)[google.com,kernel.org,redhat.com,davemloft.net,vger.kernel.org,armlinux.org.uk,gmail.com,ucw.cz,outlook.com];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rbm@suse.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: B5D79186D1E
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 90E03186D3D
 X-Rspamd-Action: no action
 
-On Tue Feb 24, 2026 at 4:53 AM -03, Harshit Mogalapalli wrote:
-> Hi,
->
-> On 24/02/26 13:08, Shung-Hsi Yu wrote:
->> This patchset backport the corresponding BPF selftests for commit
->> d946f3c98328 ("bpf: Check skb->transport_header is set in
->> bpf_skb_check_mtu"), which has already been included since 6.12.63.
->>=20
->> The BPF selftest added in commit 6cc73f35406c ("selftests/bpf: Test
->> bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) when transport_header is not set")
->> additionally depends on network namespace support for BPF selftests
->> added by Bastien, otherwise the MTU in root networking namespace will be
->> set to 10, causing other BPF selftests to fail. Credit goes to Ricardo
->> Marli=C3=A8re for figuring out the dependency.
->>=20
->
-> Note:
-> I have recently learnt that ideally we are supposed to run upstream=20
-> latest kselftests on stable kernels as well. If a feature is not=20
-> supported the kselftests are meant to be skipped.
+Hello:
 
-That is not true for BPF, from my (limited) experience.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
->
-> https://lore.kernel.org/all/a45eaddb-9e17-4e82-8a78-a1d1f6e3d735@linuxfou=
-ndation.org/
->
-> Thanks,
-> Harshit
->> Bastien Curutchet (eBPF Foundation) (4):
->>    selftests/bpf: ns_current_pid_tgid: Rename the test function
->>    selftests/bpf: Optionally open a dedicated namespace to run test in i=
-t
->>    selftests/bpf: tc_links/tc_opts: Unserialize tests
->>    selftests/bpf: ns_current_pid_tgid: Use test_progs's ns_ feature
->>=20
->> Martin KaFai Lau (1):
->>    selftests/bpf: Test bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) when
->>      transport_header is not set
->>=20
->>   .../selftests/bpf/prog_tests/check_mtu.c      | 23 ++++++++-
->>   .../bpf/prog_tests/ns_current_pid_tgid.c      | 49 +++++++------------
->>   .../selftests/bpf/prog_tests/tc_links.c       | 28 +++++------
->>   .../selftests/bpf/prog_tests/tc_opts.c        | 40 +++++++--------
->>   .../selftests/bpf/progs/test_check_mtu.c      | 12 +++++
->>   tools/testing/selftests/bpf/test_progs.c      | 12 +++++
->>   6 files changed, 98 insertions(+), 66 deletions(-)
->>=20
+On Sun, 22 Feb 2026 16:26:01 +0100 you wrote:
+> There is an AB-BA deadlock when both LEDS_TRIGGER_NETDEV and
+> LED_TRIGGER_PHY are enabled:
+> 
+> [ 1362.049207] [<8054e4b8>] led_trigger_register+0x5c/0x1fc             <-- Trying to get lock "triggers_list_lock" via down_write(&triggers_list_lock);
+> [ 1362.054536] [<80662830>] phy_led_triggers_register+0xd0/0x234
+> [ 1362.060329] [<8065e200>] phy_attach_direct+0x33c/0x40c
+> [ 1362.065489] [<80651fc4>] phylink_fwnode_phy_connect+0x15c/0x23c
+> [ 1362.071480] [<8066ee18>] mtk_open+0x7c/0xba0
+> [ 1362.075849] [<806d714c>] __dev_open+0x280/0x2b0
+> [ 1362.080384] [<806d7668>] __dev_change_flags+0x244/0x24c
+> [ 1362.085598] [<806d7698>] dev_change_flags+0x28/0x78
+> [ 1362.090528] [<807150e4>] dev_ioctl+0x4c0/0x654                       <-- Hold lock "rtnl_mutex" by calling rtnl_lock();
+> [ 1362.094985] [<80694360>] sock_ioctl+0x2f4/0x4e0
+> [ 1362.099567] [<802e9c4c>] sys_ioctl+0x32c/0xd8c
+> [ 1362.104022] [<80014504>] syscall_common+0x34/0x58
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: phy: register phy led_triggers during probe to avoid AB-BA deadlock
+    https://git.kernel.org/netdev/net/c/c8dbdc6e380e
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
