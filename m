@@ -1,129 +1,153 @@
-Return-Path: <stable+bounces-218016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218017-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CODnG2crnmn5TgQAu9opvQ
-	(envelope-from <stable+bounces-218016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 23:51:19 +0100
+	id WB+NGVIsnmmkTwQAu9opvQ
+	(envelope-from <stable+bounces-218017-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 23:55:14 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F2B18DAFD
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 23:51:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1051318DE16
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 23:55:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1065E30E438E
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 22:46:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21A3030D2D5C
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 22:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE7034B1A1;
-	Tue, 24 Feb 2026 22:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB1534EF04;
+	Tue, 24 Feb 2026 22:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKAXHjkv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+sM/rec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD172E11BC;
-	Tue, 24 Feb 2026 22:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E476B34DB60;
+	Tue, 24 Feb 2026 22:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771973194; cv=none; b=P41oL40S7OEQuW36hlR2OLnplf6/S++iA0bICWnoXVyd+ganfSUu8IQqnBdJEScWC+9SmF7muR0nAR4N4kB0HF42hzOz+eQ5bSJlzRKnE+JGg41eLWWci+sYIm7heIz3WuPUVagbvqe8uFbX9ZFzvkWH0L+xJtT+KYgumQisatM=
+	t=1771973428; cv=none; b=cduAmn20G4FSLhrTfSiKeZWVusN78dOVnbdE36VirG0rAAcTUye9VNtUvm3SGVugZYoXcAtzos6ZXNsMYyaNBvKuuoIHveL5yAvofUkwlYPdbzC6Zz3oplJlIpGqplTgD9ns3dZM8m7BBV6uwCAjy/n1+EYW0Fq4TC6BPYq63MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771973194; c=relaxed/simple;
-	bh=wNnBRKiUyzl5Cmv0v7Bl0Ai1gu0Y0qy78dEbkvy/OPI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ND/jtAzPsXDx+L9kzKBEvQNrbuCHWh88HnhG/fRAGgIGSYMuADJSbC0mi0Qx07kdeO78lv80Vs4oZBXD4l0xC+Gbp+NpjSpFbw4wUEdXZuCbrLszfuzU/1HgzGsoNOefcsdaS5gys714cj1QSybtAnX+jvand5NxmEt35Ptfmzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKAXHjkv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2DBC116D0;
-	Tue, 24 Feb 2026 22:46:33 +0000 (UTC)
+	s=arc-20240116; t=1771973428; c=relaxed/simple;
+	bh=ggf02o+1BEEp+mtG1llL7HH/O1Y6wBhPLia21wJcg6Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tANS3lPOfJRIIxkJYWhDQb1LNohQ8G59dYjKZeaoVydEJS3qk4d/zRI/D74/9jm1+8NgwnsyND4HNpMFK0GXMKOr8jikZyyPXIgRUaCNKYj+7iqs9RkTPzRYOAGPE20JBk7jEBOuSvNuH+e28N6QxdSApkyzVR8ROoatj0fgG/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+sM/rec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373CCC19423;
+	Tue, 24 Feb 2026 22:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771973194;
-	bh=wNnBRKiUyzl5Cmv0v7Bl0Ai1gu0Y0qy78dEbkvy/OPI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jKAXHjkvpuXhzvepBGUSZvashkoupFy/RPadV6MaAh3245M/tI7n/qUoSVL5qtLLq
-	 uzXm7bKbKk4+e/r2NMNlWEUbCSj35LydKkMK6pzfp5QHWIxhKA+lKCPVLo7b8OONYO
-	 xMpvz7tBSf0OaLteCHkEZ2vupf8PK+AcOTKh8tJff/hDnqa4u8Ie2E402eavC7rmA5
-	 cIuebh2KMhE66Bi2g/1mL9hLQ6i91kalKcDUAK+V5kYyRBP3nF5t9h9XcIa6zhwZAs
-	 TbPc/ubJYrFVNZJA9+LrDjjjs873hlyAlLdCranIx2o6bDHHuD2GhUlddklk4Qwm5G
-	 /Rq3yoxHyAgLA==
-Date: Tue, 24 Feb 2026 14:46:30 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	kunit-dev@googlegroups.com,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>, Rae Moar <raemoar63@gmail.com>,
+	s=k20201202; t=1771973427;
+	bh=ggf02o+1BEEp+mtG1llL7HH/O1Y6wBhPLia21wJcg6Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=T+sM/recuVnjx69He5RiMjDlxqWtkqs5/HdE8QmCblqDY1bbA+IFm9Yp6IYfbtOdB
+	 H1oS2WL/uoCAgFp3JGIN97UDk+FvYjMDNWJzxUEAgpryCQwxNWKdIiGPTFuw8npTWb
+	 F2tCQcApI6vttuQyf4VEIl0UU6s91Evi86RrysSlH2WjrvDR1g+fKD7OWNsyBNKPVf
+	 P8o1DMFR+vMV7LbeNI7c/HNu1sJN5qtfg9S7K+9W2RpdDRwpWnn1e+i7tedz3TBplQ
+	 MoovKkentXwRxnH5lLRnPMVW6EdzgcUbdUfhfqgOomdIK8pkBPKl8DXkvh6PJ0Lfrh
+	 dDaOWelJx6ECw==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] kunit: irq: Ensure timer doesn't fire too frequently
-Message-ID: <20260224224630.GA130365@quark>
-References: <20260224033751.97615-1-ebiggers@kernel.org>
+Subject: [PATCH] KVM: nSVM: Ensure AVIC is inhibited when restoring a vCPU to guest mode
+Date: Tue, 24 Feb 2026 22:50:17 +0000
+Message-ID: <20260224225017.3303870-1-yosry@kernel.org>
+X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260224033751.97615-1-ebiggers@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,zx2c4.com,gondor.apana.org.au,googlegroups.com,linux.dev,google.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-218016-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218017-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 94F2B18DAFD
+X-Rspamd-Queue-Id: 1051318DE16
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 07:37:51PM -0800, Eric Biggers wrote:
-> Fix a bug where kunit_run_irq_test() could hang if the system is too
-> slow.  This was noticed with the crypto library tests in certain VMs.
-> 
-> Specifically, if kunit_irq_test_timer_func() and the associated hrtimer
-> code took over 5us to run, then the CPU would spend all its time
-> executing that code in hardirq context.  As a result, the task executing
-> kunit_run_irq_test() never had a chance to run, exit the loop, and
-> cancel the timer.
-> 
-> To fix it, make kunit_irq_test_timer_func() increase the timer interval
-> when the other contexts aren't having a chance to run.
-> 
-> Fixes: 950a81224e8b ("lib/crypto: tests: Add hash-test-template.h and gen-hash-testvecs.py")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> ---
-> 
-> This patch applies to v7.0-rc1 and is targeting libcrypto-fixes
-> 
->  include/kunit/run-in-irq-context.h | 44 +++++++++++++++++++-----------
->  1 file changed, 28 insertions(+), 16 deletions(-)
+On nested VMRUN, KVM ensures AVIC is inhibited by requesting
+KVM_REQ_APICV_UPDATE, triggering a check of inhibit reasons, finding
+APICV_INHIBIT_REASON_NESTED, and disabling AVIC.
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git/log/?h=libcrypto-fixes
+However, when KVM_SET_NESTED_STATE is performed on a vCPU not in guest
+mode with AVIC enabled, KVM_REQ_APICV_UPDATE is not requested, and AVIC
+is not inhibited.
 
-(Additional reviews always appreciated, of course)
+Request KVM_REQ_APICV_UPDATE in the KVM_SET_NESTED_STATE path if AVIC is
+active, similar to the nested VMRUN path.
 
-- Eric
+Fixes: f44509f849fe ("KVM: x86: SVM: allow AVIC to co-exist with a nested guest running")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+---
+
+After the dust settles from all the inflight changes touching this area,
+we really need to reuse enter_svm_guest_mode() in svm_set_nested_state()
+imo. There are a few differences that will need to be addressed:
+
+1. nested_vmcb02_prepare_save() needs to be skipped.
+
+2. nested_svm_copy_common_state() may need to be skipped (or honestly,
+just folded into nested_vmcb02_prepare_save()?).
+
+2. The CR3 value passed to nested_svm_load_cr3() needs to change.
+
+3. Need to check if calling nested_svm_hv_update_vm_vp_ids() is
+okay/needed (might be another bug actually).
+
+I think mostly likely we'll pass a boolean arg to
+enter_svm_guest_mode(), something like use_cached_save, and key 1 to 3
+off of it. I don't like it (smells like from_vmrun), but it's the
+simplest way to avoid bugs like this in the future.
+
+---
+ arch/x86/kvm/svm/nested.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index de90b104a0dd5..82e512631e514 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1922,6 +1922,9 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+ 
+ 	svm->nested.force_msr_bitmap_recalc = true;
+ 
++	if (kvm_vcpu_apicv_active(vcpu))
++		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
++
+ 	kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
+ 	ret = 0;
+ out_free:
+-- 
+2.53.0.414.gf7e9f6c205-goog
+
 
