@@ -1,154 +1,142 @@
-Return-Path: <stable+bounces-217895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCdGOQ9ynWmAQAQAu9opvQ
-	(envelope-from <stable+bounces-217895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:40:31 +0100
+	id YC7oJG51nWmAQAQAu9opvQ
+	(envelope-from <stable+bounces-217897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:54:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B09D184CA3
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:40:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11118184FC2
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:54:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C29A317EF53
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:36:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B6F4E301D4C2
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BEB36CDE6;
-	Tue, 24 Feb 2026 09:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E65372B20;
+	Tue, 24 Feb 2026 09:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="aixx+ocT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhbfiEy6"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DF236C5A6;
-	Tue, 24 Feb 2026 09:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF7336F412;
+	Tue, 24 Feb 2026 09:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771925795; cv=none; b=Qv31RYM1t6ryZ0zBYWmeQgitkOZckSUPx8y7NvfITSsz37JEUGTj7lwXoiqJkwHT5ytzyoHWi6N1491O+hoaqi/J8WCzu3sB3iKuUJfTeTsPu0ANvdiXmXoPxpAkx0Ny6JNkhHBI4bMXsGSLD3fNZyxXBnvobnoxxG361xZ8L7w=
+	t=1771926830; cv=none; b=rwukth2T64Co4rtAxG/2jpxgTIe+j95n0azDI9+bI+EzMnOn26W8vDaOYk1NbsR0Rh/4atDy0EcagFhjf1TDQvEi9gax5ZH59zT9lQPfXqkeUbz5PPDOzZA9nS1Xj8jjxAhtR/LwP0Y+Nvb9DbdSkp2WeS/iBMgqBADOSsfVqLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771925795; c=relaxed/simple;
-	bh=iSe8V6XyfiQWAbZuq2LAZaMK748jdNxnXDIx3HLR36s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u3yfUEZo14Ke3z3UO59e7SEdgng585Mdrgr3j9FvHWfMYcyQ3nf9pQRTY+f72W0u1bdFtdQZzeCnnhlOKGQu/B4qR3WV09y34rBG2YWuTUAcWe7LFWbMTdVS9DRf4d2GNO1E2i7uRDUKri744JCfskXX45+/sBX0cq96szvQgn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=aixx+ocT; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1771925791; x=1803461791;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=iSe8V6XyfiQWAbZuq2LAZaMK748jdNxnXDIx3HLR36s=;
-  b=aixx+ocTr9Ar9FLaVtdj5Wddp5Q346yvRzCU3RjCa6+SQat9lkpzvdJS
-   7NWZmDmciofNknsn0r2YGPoYmXNxP/hASZZLz2w8tMN5cFeX0WTvwsy0W
-   SFF3WtaRvtp3CctqmxUj8MQq/cmvJG2zC/Dhcez/yZx9ssTN54pddSAwR
-   hooXwgpiEQhKwiPYHtYCh9e0zdzI8101qiw9kP3JdWwUD5Sc3XAubhXk9
-   HBZZnUZ/5judnu7rYWK1Ub0mAM81AIVFxEalsTEFtCNOx5riP9nV9i3fE
-   mhVBWng8kptC5ux0R6R4QWz84udgQUxjHimxaTz++EaNvlpBtgp419jpB
-   w==;
-X-CSE-ConnectionGUID: q+wjTlEOTWe2iGgzOhxVFA==
-X-CSE-MsgGUID: D/CSFvWoRlePx4NNJMu55w==
-X-IronPort-AV: E=Sophos;i="6.21,308,1763449200"; 
-   d="scan'208";a="221050262"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 02:36:30 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Tue, 24 Feb 2026 02:35:55 -0700
-Received: from wendy.microchip.com (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Tue, 24 Feb 2026 02:35:53 -0700
-From: Conor Dooley <conor.dooley@microchip.com>
-To: <linux-clk@vger.kernel.org>
-CC: Conor Dooley <conor.dooley@microchip.com>, <stable@vger.kernel.org>,
-	"Daire McNamara" <daire.mcnamara@microchip.com>, Michael Turquette
-	<mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Claudiu Beznea
-	<claudiu.beznea@tuxon.dev>, <linux-riscv@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH v1] clk: microchip: mpfs-ccc: fix out of bounds access during output registration
-Date: Tue, 24 Feb 2026 09:35:25 +0000
-Message-ID: <20260224-briskly-scholar-294d13464721@wendy>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1771926830; c=relaxed/simple;
+	bh=r7eHhH2PfG5WZuFexz3hpA8FZFXdMilcr/EoFqc7eI4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PPh7X6sZJ22GbVkIxSGwoKik1GkRLFJ43MsxrQZOyYWkFxeKt011LNTB2z5wro8FpE0QSwiTbcCtkz4uP9PsL7I4ohUSsi8QvdpKazqOVWvNbzzFPnrvMs1ABBiELlLHlGADalZl+G056NiZRumGN+/cUOR5QyH/y9NmS7mb/ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZhbfiEy6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292E7C116D0;
+	Tue, 24 Feb 2026 09:53:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771926830;
+	bh=r7eHhH2PfG5WZuFexz3hpA8FZFXdMilcr/EoFqc7eI4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZhbfiEy6gxAbMMC5gQAl8nQMiG1ZfhDqZvjCWmBDhYebQHskLcLix/joSge4RXZbK
+	 TlruXp01XKOQKUi7btZZj6jI4t7TivvALbCIwgmiSfVsiKDiOeaLF2RCG+WMVEzVx0
+	 ehCsE+SR2qKI1icKwegdje4HpM326V61a0vODhnm+5oS/dO/fUgLQZP0XK92xOmeDr
+	 Sh/oUd24MLkkHgCGgcqvCicXygmoZT/LLNHxZe2anEfjfJNJgz3KTNGWhinOigT7Lf
+	 /Y84R4XjZXxVAIEQxX336X6niiGiVFR1eZNg2Vv/uhLmHzYJJjni3g37pjOHHqa7P7
+	 7USnqOtLdchJg==
+Date: Tue, 24 Feb 2026 11:53:43 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@kernel.org>, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
+Message-ID: <aZ11J7D_iBuG_qjC@kernel.org>
+References: <20260223075219.2348035-1-rppt@kernel.org>
+ <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
+ <aZwyNAbEqb8ZwLUM@kernel.org>
+ <e2ad0845-2f87-418a-9f87-5ce619e004ef@app.fastmail.com>
+ <aZw8xSI-TM-Gz84t@kernel.org>
+ <bfe487fe-6868-4215-b5be-99a0360e9bd2@app.fastmail.com>
+ <aZ1vWEgJNwc2nrrA@kernel.org>
+ <3a01d817-e08c-45ec-b5a7-4a8d9ecd0fc6@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1666; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=iSe8V6XyfiQWAbZuq2LAZaMK748jdNxnXDIx3HLR36s=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDJlzC+4f9/1tcWCXxMfJZysO3ll1oPXkIYntIsnzWC6mmj2f JJWX1FHKwiDGwSArpsiSeLuvRWr9H5cdzj1vYeawMoEMYeDiFICJZHszMlz89CPnlFGJB1NfW8x3xq 27liqId/Smnt0Qax2tOdXT/gQjQ3uvyN/n4aZ3XZs7P+0uKTfZpxO/883EpsT5jLys87nf8wIA
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3a01d817-e08c-45ec-b5a7-4a8d9ecd0fc6@app.fastmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[microchip.com,reject];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[microchip.com:s=mchp];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217897-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-217895-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[conor.dooley@microchip.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[microchip.com:+];
+	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email]
-X-Rspamd-Queue-Id: 4B09D184CA3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 11118184FC2
 X-Rspamd-Action: no action
 
-UBSAN reported an out of bounds access during registration of the last
-two outputs. This out of bounds access occurs because space is only
-allocated in the hws array for two PLLs and the four output dividers
-that each has, but the defined IDs contain two DLLS and their two
-outputs each, which are not supported by the driver. The ID order is
-PLLs -> DLLs -> PLL outputs -> DLL outputs. Decrement the PLL output IDs
-by two while adding them to the array to avoid the problem.
+On Tue, Feb 24, 2026 at 10:29:59AM +0100, Ard Biesheuvel wrote:
+> 
+> 
+> On Tue, 24 Feb 2026, at 10:28, Mike Rapoport wrote:
+> > On Mon, Feb 23, 2026 at 01:18:41PM +0100, Ard Biesheuvel wrote:
+> >> On Mon, 23 Feb 2026, at 12:40, Mike Rapoport wrote:
+> >> > On Mon, Feb 23, 2026 at 12:17:22PM +0100, Ard Biesheuvel wrote:
+> >> >>
+> >> >> > I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
+> >> >> > why I didn't use the existing EFI memory map.
+> >> >> >
+> >> >> > Now thinking about it, if the unmapping can happen later, maybe we'll just
+> >> >> > move the entire efi_free_boot_services() to an initcall?
+> >> >> 
+> >> >> As long as it is pre-SMP, as that code also contains a quirk to allocate
+> >> >> the real mode trampoline if all memory below 1 MB is used for boot
+> >> >> services.
+> >> >
+> >> > initcall is long after SMP. It the real mode trampoline allocation is the
+> >> > only thing that should happen pre-SMP?
+> >> 
+> >> early_initcall() should be early enough, those run before SMP init.
+> >
+> > I don't think so. All initcalls run quite late in boot, early ones just run
+> > before the others.
+> > 
+> 
+> It is documented as running before SMP. If that is no longer true, we should fix the documentation.
 
-Fixes: d39fb172760e ("clk: microchip: add PolarFire SoC fabric clock support")
-CC: stable@vger.kernel.org
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
----
-CC: Conor Dooley <conor.dooley@microchip.com>
-CC: Daire McNamara <daire.mcnamara@microchip.com>
-CC: Michael Turquette <mturquette@baylibre.com>
-CC: Stephen Boyd <sboyd@kernel.org>
-CC: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-CC: linux-riscv@lists.infradead.org
-CC: linux-clk@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
----
- drivers/clk/microchip/clk-mpfs-ccc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ah, my bad, it is running before SMP. 
 
-diff --git a/drivers/clk/microchip/clk-mpfs-ccc.c b/drivers/clk/microchip/clk-mpfs-ccc.c
-index 3a3ea2d142f8a..54cfbb8be8ab5 100644
---- a/drivers/clk/microchip/clk-mpfs-ccc.c
-+++ b/drivers/clk/microchip/clk-mpfs-ccc.c
-@@ -178,7 +178,7 @@ static int mpfs_ccc_register_outputs(struct device *dev, struct mpfs_ccc_out_hw_
- 			return dev_err_probe(dev, ret, "failed to register clock id: %d\n",
- 					     out_hw->id);
- 
--		data->hw_data.hws[out_hw->id] = &out_hw->divider.hw;
-+		data->hw_data.hws[out_hw->id - 2] = &out_hw->divider.hw;
- 	}
- 
- 	return 0;
 -- 
-2.51.0
-
+Sincerely yours,
+Mike.
 
