@@ -1,131 +1,156 @@
-Return-Path: <stable+bounces-217892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217893-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDY4KrttnWk9QAQAu9opvQ
-	(envelope-from <stable+bounces-217892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:22:03 +0100
+	id cPNMCVRwnWk9QAQAu9opvQ
+	(envelope-from <stable+bounces-217893-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:33:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4FF1847B6
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:22:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5214F184A8D
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 10:33:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 71041306B784
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:22:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 590953049AF8
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0282936A030;
-	Tue, 24 Feb 2026 09:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7435436BCE3;
+	Tue, 24 Feb 2026 09:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bUxd6dFR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YkzACdBF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B804718C933;
-	Tue, 24 Feb 2026 09:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36105274B43;
+	Tue, 24 Feb 2026 09:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771924917; cv=none; b=V16HcvLEsl1kd8OGA9h7fb7Rfy+atO6ocfS1zXpZ1Kgvesg269hDm5O8guTkcLx+J7Wie0Yrn2Vo3RbH5MPVaz/5EaMf4VF6aF/bvvaRWlJhyXDGOa11MBUsswC0Gvxt9PJucl1VihEyy4xLWbkYZl1tt6K/Qn79Opa6awh1qmk=
+	t=1771925345; cv=none; b=FQU+NLoyv6HKFFN7gDSeIiVLdrg2PMx9Q6Ti9benEee6u0Sc54nOedwWUgFgpCxFBCMwQc0FGPnLHFGyq3gu9bOMEqbBKuUmcR5YUFhkaeDwk3sgEp0QDK7pVdVAmS8qweYYIYnm/GBRmoIUSLHympFA8/ytK+i6ilFNQg+io2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771924917; c=relaxed/simple;
-	bh=+ZgRL78h59vYKmP3VyntioFtrGYkFQJZf4vOZNcd73Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mq8Hw6R79NGtWJp+M86WKiI7iPp9wUZ4pnHUVc+0SM11e7xgOjTgDkRV3lPoKt7cH7hZvDnf1vl0p74SfxzBFLWMKHcO8jsfa4xmL3HMY4BbUAPus7S2xLDYGZ/OwAMyHbeKa4RcQvnbSLKfXRNcmnJGguVujrrd4AQ+Mc8OL9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bUxd6dFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D05AC116D0;
-	Tue, 24 Feb 2026 09:21:55 +0000 (UTC)
+	s=arc-20240116; t=1771925345; c=relaxed/simple;
+	bh=MhPzZ6IPkSbMVpSdEXmyDg4879I8IIzPI0L+1oFc8Dc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dZW72Z362mLencvDQnxJL8XdhrBQagvvpGOGb5aLQywqOqRdhlvma4Mq8T+7xMXQX14wv96OrNTXcYAnf617xXKIzpHh16JdPXya3U7rY7IX7MQeGbtcgNNAsG263JEbOLSQ9Q7iQKDkBUU9gl1NnK1z9QvHn617Q22BkN3Ez9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YkzACdBF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF73C116D0;
+	Tue, 24 Feb 2026 09:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771924917;
-	bh=+ZgRL78h59vYKmP3VyntioFtrGYkFQJZf4vOZNcd73Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUxd6dFRYF5CjDz33X1r/UnQKXjKmMF9dEuf62vIwFLdnNkcY0OyWYHxXbXD54A/F
-	 vTh3dnkEceRvQUFpvZOjTh5DW4S+lpZOjtNfCA3+jrdIX9aMT+rlcXZxQy7oXuHFku
-	 NSJ3BAYqLoSiZaCXJoOxiMkJRv1fhK1V2F++TLbemTHMxfN3gsEQTMH8GlokVIYkBc
-	 eIKTmX1tuKPFWX/kB+ot2Cq6oFrjXVonHmwylG0cRCHj2Q5LpQym3QdW1b/7ChBosW
-	 vk/vHOwrp8rL+nEoTlulg8VWi3v7fg/GKnskb0x5tTt2ir0In5D25MduK33aCMTev3
-	 zRtbD92kfWgxQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Guenter Roeck <linux@roeck-us.net>,
-	stable@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH] eventpoll: Fix integer overflow in ep_loop_check_proc()
-Date: Tue, 24 Feb 2026 10:21:45 +0100
-Message-ID: <20260224-flutwelle-gelernt-a94c18edb860@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260223-epoll-int-overflow-v1-1-452f35132224@google.com>
-References: <20260223-epoll-int-overflow-v1-1-452f35132224@google.com>
+	s=k20201202; t=1771925344;
+	bh=MhPzZ6IPkSbMVpSdEXmyDg4879I8IIzPI0L+1oFc8Dc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YkzACdBFp7Gi1bnBPNqe9LdepLVyLwAAcTSbPhiPpUZYejSmpDirUB1dyQyFN7v1R
+	 VtxoXczDGrNDIuMJzgkg4eiFkmxh+KKy4arwOP4JJyYEK26D7pIP8oa1xZKM/p6flD
+	 htHhB/tY8naYuXrFPIzmvCAKyZQsv3RwrdGLjWwhqaVvIzdQotM2XZeMTJctTkYtL6
+	 G3zngKA/5wIYmxRW4pRcUWe/l6tW3FC2yFd3jzmgWqoTEybQ7WeV+0euuGYRWDwn2t
+	 gBiCvKLfTKhOipiCn5L/znakrpHser+tjPWF4dYmH1C8KwRESW/XMWtEHKXgYBQKIX
+	 n2QkFK9Y0dFLw==
+Date: Tue, 24 Feb 2026 11:28:56 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@kernel.org>, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/efi: defer freeing of boot services memory
+Message-ID: <aZ1vWEgJNwc2nrrA@kernel.org>
+References: <20260223075219.2348035-1-rppt@kernel.org>
+ <b6f4edf5-7587-45d7-b81a-590d4f3d1ddd@app.fastmail.com>
+ <aZwyNAbEqb8ZwLUM@kernel.org>
+ <e2ad0845-2f87-418a-9f87-5ce619e004ef@app.fastmail.com>
+ <aZw8xSI-TM-Gz84t@kernel.org>
+ <bfe487fe-6868-4215-b5be-99a0360e9bd2@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1187; i=brauner@kernel.org; h=from:subject:message-id; bh=+ZgRL78h59vYKmP3VyntioFtrGYkFQJZf4vOZNcd73Y=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTOzd2wKiDhzaHSZ7cuMcs/fCq04fuzlbUzztZ5zV1ro bVBvvuYZEcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBE9t9hZGj0XxpzxPWh/PkO s1t9zHNnLrBvXXdm0rP1abm6bAt2yOxlZHhWbrrj367u36v8bTUeOajX25S5SmqwTNl//1imyw4 bVT4A
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bfe487fe-6868-4215-b5be-99a0360e9bd2@app.fastmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217892-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217893-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3D4FF1847B6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5214F184A8D
 X-Rspamd-Action: no action
 
-On Mon, 23 Feb 2026 20:59:33 +0100, Jann Horn wrote:
-> If a recursive call to ep_loop_check_proc() hits the `result = INT_MAX`,
-> an integer overflow will occur in the calling ep_loop_check_proc() at
-> `result = max(result, ep_loop_check_proc(ep_tovisit, depth + 1) + 1)`,
-> breaking the recursion depth check.
+On Mon, Feb 23, 2026 at 01:18:41PM +0100, Ard Biesheuvel wrote:
+> On Mon, 23 Feb 2026, at 12:40, Mike Rapoport wrote:
+> > On Mon, Feb 23, 2026 at 12:17:22PM +0100, Ard Biesheuvel wrote:
+> >>
+> >> > I wasn't sure it's Ok to only unmap them, but leave in efi.memmap, that's
+> >> > why I didn't use the existing EFI memory map.
+> >> >
+> >> > Now thinking about it, if the unmapping can happen later, maybe we'll just
+> >> > move the entire efi_free_boot_services() to an initcall?
+> >> 
+> >> As long as it is pre-SMP, as that code also contains a quirk to allocate
+> >> the real mode trampoline if all memory below 1 MB is used for boot
+> >> services.
+> >
+> > initcall is long after SMP. It the real mode trampoline allocation is the
+> > only thing that should happen pre-SMP?
 > 
-> Fix it by using a different placeholder value that can't lead to an
-> overflow.
-> 
-> [...]
+> early_initcall() should be early enough, those run before SMP init.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+I don't think so. All initcalls run quite late in boot, early ones just run
+before the others.
+ 
+> >> But actually, that should be a separate quirk to begin with, rather than
+> >> being integrated into an unrelated function that happens to iterate over
+> >> the boot services regions. The only problem, I guess, is that
+> >> memblock_reserve()'ing that sub-1MB region in the old location in the
+> >> ordinary way would cause it to be freed again in the initcall?
+> >
+> > Right now we anyway don't free anything below 1M, I don't see why it should
+> > change. 
+> >
+> >> But yes, in general I think it is fine to unmap those regions from the
+> >> EFI page tables during an initcall.
+> >
+> > Thanks for confirming. I'll look into extracting the allocation of the real
+> > mode trampoline to a separate quirk and then making the entire
+> > efi_free_boot_services() an initcall.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+There's another issue with making the entire efi_free_boot_services() an
+initcall. It updates efi.memmap without any synchronization and if it'll
+run after SMP init, there might be a concurrent access to the efi.memmap.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+It seems to me that to be on the safe side the simplest and easiest for
+backporting is to stick with my original version. 
+ 
+> Thanks!
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] eventpoll: Fix integer overflow in ep_loop_check_proc()
-      https://git.kernel.org/vfs/vfs/c/fdcfce93073d
+-- 
+Sincerely yours,
+Mike.
 
