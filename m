@@ -1,141 +1,189 @@
-Return-Path: <stable+bounces-217912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CALLEdCenWnwQgQAu9opvQ
-	(envelope-from <stable+bounces-217912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:51:28 +0100
+	id OPbPMyqgnWlrQwQAu9opvQ
+	(envelope-from <stable+bounces-217913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:57:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05AC1873B6
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:51:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098491874D5
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:57:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28EB7304DF3C
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 12:50:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E777B301617B
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 12:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39A6389473;
-	Tue, 24 Feb 2026 12:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF5539A806;
+	Tue, 24 Feb 2026 12:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NqRxNtcU"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="z3AsRqnL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6807E555;
-	Tue, 24 Feb 2026 12:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7707339A7F0
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 12:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771937434; cv=none; b=KKqabtH1nwirj96lba+Q4JfrZVdzSsJUnmnxclq9KSMeWKIKEfwWS3WVoXWCNSSTuYwqNF95+8YNukLz8MdpG7GbEHqJFDWRbTLPb9LhMOZMMb1L9PDB60lDyFcoIeGdEpZr73DT0W4MMrVFl5dUoCY3nA8KUS9TfpzNVa0vGsk=
+	t=1771937825; cv=none; b=G92CEueMVaqWV67RhXiJya6wZZWN8wz9ulCQKazCHoNIu3B43Rhmv7Xh5bX2MJpEjhZEncvVZFYTSqxf+g6TwiF4ID2irf/MmE+FZgT9fUe01ntKABsHB/Ti/1r8h4xMRVTnIySyofXBAvqnvhZkLOOZmpaaBPPCieu0XcdmwYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771937434; c=relaxed/simple;
-	bh=4ZpgPKN7lBYy9RyuYxqbYlZFbJqbOUMbCPnhg0scku4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NompXfohBXEzRrMfa9MOlerpZvUrskC8Y1qoCdh4y211OMppt2sK7jdPVgG1rvXDC2CKvlsPhy/HvTNW6LPU0MdjEc4xh/WaXL/PTTBk+QlC4bdTNeRJrlxiEhTqFPflnS86wHHrwmRXNp+/L5UXqM+Jnqxx635+KKRlcAn1njY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NqRxNtcU; arc=none smtp.client-ip=109.224.244.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1771937428; x=1772196628;
-	bh=4ZpgPKN7lBYy9RyuYxqbYlZFbJqbOUMbCPnhg0scku4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=NqRxNtcU2xQk6aOoNjHhk68K4r8sZnjT2ZGUp5XIf7DYPWYLG5RPH2ljTRwTMwlaA
-	 5HaWaoDqk5EHm20hzI4dEh8CH4x1qOPGWn8DoJiORf/Uhh8TM3R0RrgkrNc4BfGzxQ
-	 JItc+R6tPVqbWCpD4byLpIB/xPP4GIXtAXDrYSB7oKkAACuYKSS6H/Qck/mqmsQqKS
-	 i9J28bG10VePn8LaTceFabPQ+ZWbuk2kPPgY73zCsoc2lvRIAG2uN00t5eE7j5TNem
-	 eHIeDWdaQ5SxzB0G3jp6JaaNNiZR7bR6ApCWJZDooSqwEVKFCR6kzI+/nNQqnzC1lk
-	 iqy1HWigED+SQ==
-Date: Tue, 24 Feb 2026 12:50:22 +0000
-To: 1128861@bugs.debian.org, Neil Brown <neilb@suse.de>
-From: Tj <tj.iam.tj@proton.me>
-Cc: linux-nfs@vger.kernel.org, Olga Kornievskaia <okorniev@redhat.com>, stable@vger.kernel.org
-Subject: Re: Regression: Missing check in nfsd_permission() causes -ENOLCK No locks available
-Message-ID: <7945477d-f6f9-4311-9ef3-73a92f0e8ea2@proton.me>
-In-Reply-To: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
-References: <c0f15088-3fc0-487a-9f24-cf89c158420d@proton.me>
-Feedback-ID: 113488376:user:proton
-X-Pm-Message-ID: 29d15f7aae71bfa311d3102de9afc722df094a18
+	s=arc-20240116; t=1771937825; c=relaxed/simple;
+	bh=cMsxTLX7mj6pDb8n0Mf1TuapNZXLi4VS8lS3vHRnAjo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cwIP31fRS3WvLDa/MnMFXVB+vP1gUOZHi8kVmRLpSXE4mwcJ775WNZLijV76VZmLsRIH4p3QY9YXdIQt+IHTYnSMz4Akk/gMcIA+3aeFr1jjgE0BhAnrT0hJcFplMSkqsTL/RmxRKdBjuKknRfVAoC/S9kYCOI839SvPTm/LC20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=z3AsRqnL; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-436e8758b91so3780068f8f.0
+        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 04:57:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1771937823; x=1772542623; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P+4mGVj3G+psOD6BQM4z8xFWUBs0ualVLWXw/Lw/cGE=;
+        b=z3AsRqnLxLYs5fN3g87J/g9lf+DVPFX0mvgmdvy5FP8/wwg4XJyWPK8cHHkZ7rKD3Z
+         Z/6VUFpdla7FqxB66k4GF8uoFBNnfrVJyPhrheOzrFHqXPGWUCQfqrZyxjy3dEZhWrlj
+         DcCsvQFHRNKQLKYhf0JwtH+IA28atLUDBm3UQs9FyxC28b7cvirooB9azd4NKrZe6c1G
+         Wt6hvnBpibqrrWbZU+QHpjFezEXc+bfj0tis0auwG+U0xZzxtHNylWGcPoxTI2Nbxjpt
+         Azvg5cqm8NIYaISWSyXNNZHxOVBFpWhTEDJy7G8ZJfzQMFRUq88cOUU1sRoXTVbVZaYD
+         eTbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771937823; x=1772542623;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P+4mGVj3G+psOD6BQM4z8xFWUBs0ualVLWXw/Lw/cGE=;
+        b=xNiGhYPhBbfcX4DOfhaegeMKvKEC3P3lAecja7B8+Z60mH29iUtvseC7dRT9GHQcuO
+         DAgvILAHeVF8xNka0wPA1ZMdzAx8kwh9YukCXxnU0KZ+nBSIcZw61vMagGm/NykIvCgz
+         h5Sy5dmF98dbZT7330Q/X3azIk3pvMa40qNn1Pa4katT0cxMdQ2dKRVXPY1LQwOnJzsI
+         atmihFI4GVG8md8VrNr3wydRD/6G5UiGzBX3nCozh7VxoP1s24z5DasA6mtXwRy75mfJ
+         YElXRdqo3wUMfy06JPZ9IQn5YDw0/8gYDCXZ4FIrjq21nPdVIeexGMHoJ+HimU25loT6
+         mj/Q==
+X-Gm-Message-State: AOJu0Yw6NRQXJjVRV+CiS4XUbwT9wmrMakigQBWPeGDb16p5ATPu0Y1R
+	9K3Kt1dC0zvec5UQypCi5+klkD3tR3EKbd1cVP+UUvvfgQkZhWavB1iYAOlABts1+3M=
+X-Gm-Gg: ATEYQzwRroJA1O0zDKJcA1ohnUfqCESpM1EDrguKbM80igk9IUAnhqH/bPQzq7rX+d/
+	KdR0RkNHeLHYODfRNV2WkAEUuj5JuFKNgqqfzgndFGnUGOln0L5mTx7NJRHYg9HtFDtkNtoRTYx
+	GHIQF4DTB+2GuEQhx6PXz5OB91W5pRdXLoLe4h0/qziWuDMtl9/cyM67PWZ/FW8s9kdSUZza77d
+	YpZg5v32uIrRO5Zc1N3yQ48YAhl+SZYtZB83lKBLZds2eLJHUn2IMpABVFHbsgWnR6jlK27ggDX
+	hOHwEzQoPz5TEhTtvpNoEipZ5KBXWlR03RZWqxCgtU9Jh3X2JqPsh149HyYnoOl4hP16X1ik5ZO
+	mqouygRLr5V34Z8o4Xi85BiZIbQ1FWMVbZsVEXsP0LMiKPDv4Ed+0hRN0fU2PCmm0p/aB+ZvJzu
+	8fxcZghopOxpAVyt1I9AUXqG+azjVvq7z6
+X-Received: by 2002:a05:6000:230b:b0:437:71cc:a246 with SMTP id ffacd0b85a97d-4396f153cd2mr24591474f8f.10.1771937822763;
+        Tue, 24 Feb 2026 04:57:02 -0800 (PST)
+Received: from [10.11.12.108] ([79.115.63.134])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d4bf89sm25284611f8f.29.2026.02.24.04.57.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Feb 2026 04:57:02 -0800 (PST)
+Message-ID: <b083e950-f54a-44aa-b587-eec2cc10460b@linaro.org>
+Date: Tue, 24 Feb 2026 14:57:01 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] firmware: exynos-acpm: Drop fake 'const' on handle
+ pointer
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, =?UTF-8?Q?Andr=C3=A9_Draszik?=
+ <andre.draszik@linaro.org>, Lee Jones <lee@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: stable@vger.kernel.org
+References: <20260224104203.42950-2-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Language: en-US
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <20260224104203.42950-2-krzysztof.kozlowski@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217912-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-217913-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[proton.me:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tj.iam.tj@proton.me,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tudor.ambarus@linaro.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:mid,proton.me:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A05AC1873B6
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:mid,linaro.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 098491874D5
 X-Rspamd-Action: no action
 
-Follow-up with results of adding dump_stack() to nfsd_permission()=20
-revealing the paths that trigger the issue.
+Hi Krzysztof,
 
-[=C2=A0 133.185579] Call Trace:
-[=C2=A0 133.185580]=C2=A0 <TASK>
-[=C2=A0 133.185580]=C2=A0 dump_stack_lvl+0x64/0x80
-[=C2=A0 133.185582]=C2=A0 nfsd_permission+0x20/0x100 [nfsd]
-[=C2=A0 133.185612]=C2=A0 nfsd_access+0xc8/0x140 [nfsd]
-[=C2=A0 133.185639]=C2=A0 nfsd4_proc_compound+0x350/0x670 [nfsd]
-[=C2=A0 133.185670]=C2=A0 nfsd_dispatch+0x100/0x220 [nfsd]
-[=C2=A0 133.185698]=C2=A0 svc_process_common+0x314/0x700 [sunrpc]
-[=C2=A0 133.185733]=C2=A0 ? __pfx_nfsd_dispatch+0x10/0x10 [nfsd]
-[=C2=A0 133.185762]=C2=A0 svc_process+0x131/0x1c0 [sunrpc]
-[=C2=A0 133.185795]=C2=A0 svc_recv+0x80a/0x9e0 [sunrpc]
-[=C2=A0 133.185827]=C2=A0 ? __pfx_nfsd+0x10/0x10 [nfsd]
-[=C2=A0 133.185856]=C2=A0 nfsd+0xa3/0x100 [nfsd]
-[=C2=A0 133.185882]=C2=A0 kthread+0xd2/0x100
-[=C2=A0 133.185884]=C2=A0 ? __pfx_kthread+0x10/0x10
-[=C2=A0 133.185885]=C2=A0 ret_from_fork+0x34/0x50
-[=C2=A0 133.185886]=C2=A0 ? __pfx_kthread+0x10/0x10
-[=C2=A0 133.185887]=C2=A0 ret_from_fork_asm+0x1a/0x30
-[=C2=A0 133.185890]=C2=A0 </TASK>
+On 2/24/26 12:42 PM, Krzysztof Kozlowski wrote:
+> All the functions operating on the 'handle' pointer are claiming it is a
+> pointer to const thus they should not modify the handle.  In fact that's
+> a false statement, because first thing these functions do is drop the
+> cast to const with container_of:
+> 
+>   struct acpm_info *acpm = handle_to_acpm_info(handle);
+> 
+> And with such cast the handle is easily writable with simple:
+> 
+>   acpm->handle.ops.pmic_ops.read_reg = NULL;
+>> The code is not correct logically, either, because functions like
+> acpm_get_by_node() and acpm_handle_put() are meant to modify the handle
+> reference counting, thus they must modify the handle.  Modification here
 
-[=C2=A0 144.020165] Call Trace:
-[=C2=A0 144.020165]=C2=A0 <TASK>
-[=C2=A0 144.020166]=C2=A0 dump_stack_lvl+0x64/0x80
-[=C2=A0 144.020168]=C2=A0 nfsd_permission+0x20/0x100 [nfsd]
-[=C2=A0 144.020201]=C2=A0 nfsd_access+0xc8/0x140 [nfsd]
-[=C2=A0 144.020228]=C2=A0 nfsd3_proc_access+0x6c/0x110 [nfsd]
-[=C2=A0 144.020257]=C2=A0 nfsd_dispatch+0x100/0x220 [nfsd]
-[=C2=A0 144.020286]=C2=A0 svc_process_common+0x314/0x700 [sunrpc]
-[=C2=A0 144.020321]=C2=A0 ? __pfx_nfsd_dispatch+0x10/0x10 [nfsd]
-[=C2=A0 144.020350]=C2=A0 svc_process+0x131/0x1c0 [sunrpc]
-[=C2=A0 144.020383]=C2=A0 svc_recv+0x80a/0x9e0 [sunrpc]
-[=C2=A0 144.020415]=C2=A0 ? __pfx_nfsd+0x10/0x10 [nfsd]
-[=C2=A0 144.020445]=C2=A0 nfsd+0xa3/0x100 [nfsd]
-[=C2=A0 144.020471]=C2=A0 kthread+0xd2/0x100
-[=C2=A0 144.020472]=C2=A0 ? __pfx_kthread+0x10/0x10
-[=C2=A0 144.020473]=C2=A0 ret_from_fork+0x34/0x50
-[=C2=A0 144.020475]=C2=A0 ? __pfx_kthread+0x10/0x10
-[=C2=A0 144.020476]=C2=A0 ret_from_fork_asm+0x1a/0x30
-[=C2=A0 144.020478]=C2=A0 </TASK>
+You are right that casting away const via container_of to modify the
+parent's reference count is incorrect, so dropping the const from the
+handle argument makes sense.
 
+However, to address the underlying issue of the operations being
+writable (e.g., acpm->handle.ops.pmic_ops.read_reg = NULL), I think we
+should also decouple the ops from the handle struct and keep them strictly
+constant in .rodata.
 
+How about we apply your fix for the signatures, and I follow up with
+(or we include) a patch to do the following:
+
+struct acpm_handle {
+        const struct acpm_ops *ops; // Changed from embedded struct to pointer
+};
+
+static const struct acpm_ops exynos_acpm_driver_ops = {
+        .dvfs_ops = {
+                .set_rate = acpm_dvfs_set_rate,
+                .get_rate = acpm_dvfs_get_rate,
+        },
+        .pmic_ops = {
+                .read_reg = acpm_pmic_read_reg,
+                .write_reg = acpm_pmic_write_reg,
+                // ... other ops
+        },
+};
+
+and in probe:
+acpm->handle.ops = &exynos_acpm_driver_ops;
+
+This way, the handle safely reflects the mutability of its container,
+but our function pointers remain fully protected.
+
+Cheers,
+ta
 
