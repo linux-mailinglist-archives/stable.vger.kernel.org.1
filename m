@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-217949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cM7cNNkanmntTQQAu9opvQ
-	(envelope-from <stable+bounces-217949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 22:40:41 +0100
+	id cCFVNyAbnmntTQQAu9opvQ
+	(envelope-from <stable+bounces-217950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 22:41:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4432918CD2D
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 22:40:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 447D118CD45
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 22:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B10AA3033AAC
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 21:40:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8206C3038AE7
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 21:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CB633DEDD;
-	Tue, 24 Feb 2026 21:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7409330D5E;
+	Tue, 24 Feb 2026 21:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpW346vY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Han1NQJx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98A1330D5E
-	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 21:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A33033EAF9
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 21:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771969236; cv=none; b=tUyHVwWuEiwp8E91a2eATAx4qLlIXw1HBs/g8vPfsKi26iL48qeyrM1pEWTGcmLEQmIVsC8gjHaBThL+06AvpZMGGaNKm5jlxqA8hIWOz7GprbS3Vnf/7ixennH43WZi8z+whkRYrQCnsxXUX278h/5ly1nvicZx7dMRgiFblS0=
+	t=1771969307; cv=none; b=ogZxaXQp23tc0X/8csY3LQFU3YD2NsfQLsH0PGVPpeg1eTTf39pcQB5ZnzGPlPEnX6cTQGDhHVAfZ3c7yRkY15ur/gn9pYK2lRcbKSoEC5DPATYNLrwFmJIeaJ+xlvT87sfwKQa/hH95Jgee1I1PLUoVe2pLHIZMiNKn+dxzZYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771969236; c=relaxed/simple;
-	bh=o9u+fqijSVHxtegruvufZy5n3nSFRk8ospyGdRbZ1yE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=suQ1//S6HV8Z1/iusBIn6vR0Us8V1LuGGiNayKBVq9A4ZtCAl/rfmBqRkwNDpu6MfZM3n3YqFjTZtMHoo3EdtuTJ/vsvA1DxCU381anOxwWiNXBCCaz3ZOSdxitrhIbpAgDisyMgsK+7FkwMtRwfBec06cBDngnRGzG+RaM/GwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpW346vY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B95C116D0;
-	Tue, 24 Feb 2026 21:40:36 +0000 (UTC)
+	s=arc-20240116; t=1771969307; c=relaxed/simple;
+	bh=UvXbljIEqbzZDxPOCvuVmoXtkuBNpKUM65crWjDrvQs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=H6WSNQCc2ZX6bEtMP6nY7CP8q4SJjjZoWUl3zGxi3SL/S+MecgnF+xdZDecAc5QjtpiXOpzK0mZIn7WBSgBvPRkHT6rWqf9K0VYvZQvdrPp3GMGSVdQ+Kb+FymLkmu1MoGkg9dPP0aOUsi6+OLA5Q0sZbp+/GmhciqNVnyOWT5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Han1NQJx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EC1C116D0;
+	Tue, 24 Feb 2026 21:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771969236;
-	bh=o9u+fqijSVHxtegruvufZy5n3nSFRk8ospyGdRbZ1yE=;
+	s=korg; t=1771969307;
+	bh=UvXbljIEqbzZDxPOCvuVmoXtkuBNpKUM65crWjDrvQs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DpW346vYGXSm8ldYS3XUTBVF3zIBbrSUCpeeaGAL8DGiobxda0qxy79QGcVGNfp8C
-	 7pleg5Qsc6Wua9x0MMM4FJIs8hcSv+nP1KcuLs5R7tOZvQ8X2IGDSDnevJ/3vZtv3e
-	 6fQ0rJNVeawZMzzOdfZdL/zmONpIKYxK6Nl65Mw0=
-Subject: FAILED: patch "[PATCH] usb: cdns3: fix role switching during resume" failed to apply to 5.15-stable tree
-To: thomas.richard@bootlin.com,gregkh@linuxfoundation.org,peter.chen@kernel.org,stable@kernel.org
+	b=Han1NQJx/PzmvzfjZCffypxOjxEZ13A1fWznebQnFv3p9uToDUBHWTb2fODuW/UAE
+	 CxV+Tm7mon8mcxwBNzahY6meoRXjIazMZXlfl9r8IrmSRt4NtYrry9Ttasj5y3HnVJ
+	 ZBMTll58hte4LFtYE7SLLEmCtmyww0sKPVpJv0eY=
+Subject: FAILED: patch "[PATCH] ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error" failed to apply to 6.18-stable tree
+To: pchelkin@ispras.ru,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 24 Feb 2026 13:40:24 -0800
-Message-ID: <2026022424-backshift-doily-d162@gregkh>
+Date: Tue, 24 Feb 2026 13:41:40 -0800
+Message-ID: <2026022440-hypnosis-wriggle-2ec2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,46 +60,46 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217949-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-217950-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,gregkh:email,bootlin.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 4432918CD2D
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 447D118CD45
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 87e4b043b98a1d269be0b812f383881abee0ca45
+git cherry-pick -x a09dc10d1353f0e92c21eae2a79af1c2b1ddcde8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026022424-backshift-doily-d162@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026022440-hypnosis-wriggle-2ec2@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,87 +111,63 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 87e4b043b98a1d269be0b812f383881abee0ca45 Mon Sep 17 00:00:00 2001
-From: "Thomas Richard (TI)" <thomas.richard@bootlin.com>
-Date: Fri, 30 Jan 2026 11:05:45 +0100
-Subject: [PATCH] usb: cdns3: fix role switching during resume
+From a09dc10d1353f0e92c21eae2a79af1c2b1ddcde8 Mon Sep 17 00:00:00 2001
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+Date: Sat, 14 Feb 2026 18:45:14 +0300
+Subject: [PATCH] ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error
+ paths
 
-If the role change while we are suspended, the cdns3 driver switches to the
-new mode during resume. However, switching to host mode in this context
-causes a NULL pointer dereference.
+There are two places where ksmbd_vfs_kern_path_end_removing() needs to be
+called in order to balance what the corresponding successful call to
+ksmbd_vfs_kern_path_start_removing() has done, i.e. drop inode locks and
+put the taken references.  Otherwise there might be potential deadlocks
+and unbalanced locks which are caught like:
 
-The host role's start() operation registers a xhci-hcd device, but its
-probe is deferred while we are in the resume path. The host role's resume()
-operation assumes the xhci-hcd device is already probed, which is not the
-case, leading to the dereference. Since the start() operation of the new
-role is already called, the resume operation can be skipped.
+BUG: workqueue leaked lock or atomic: kworker/5:21/0x00000000/7596
+     last function: handle_ksmbd_work
+2 locks held by kworker/5:21/7596:
+ #0: ffff8881051ae448 (sb_writers#3){.+.+}-{0:0}, at: ksmbd_vfs_kern_path_locked+0x142/0x660
+ #1: ffff888130e966c0 (&type->i_mutex_dir_key#3/1){+.+.}-{4:4}, at: ksmbd_vfs_kern_path_locked+0x17d/0x660
+CPU: 5 PID: 7596 Comm: kworker/5:21 Not tainted 6.1.162-00456-gc29b353f383b #138
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+Workqueue: ksmbd-io handle_ksmbd_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x44/0x5b
+ process_one_work.cold+0x57/0x5c
+ worker_thread+0x82/0x600
+ kthread+0x153/0x190
+ ret_from_fork+0x22/0x30
+ </TASK>
 
-So skip the resume operation for the new role if a role switch occurs
-during resume. Once the resume sequence is complete, the xhci-hcd device
-can be probed in case of host mode.
+Found by Linux Verification Center (linuxtesting.org).
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000208
-Mem abort info:
-...
-Data abort info:
-...
-[0000000000000208] pgd=0000000000000000, p4d=0000000000000000
-Internal error: Oops: 0000000096000004 [#1]  SMP
-Modules linked in:
-CPU: 0 UID: 0 PID: 146 Comm: sh Not tainted
-6.19.0-rc7-00013-g6e64f4aabfae-dirty #135 PREEMPT
-Hardware name: Texas Instruments J7200 EVM (DT)
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : usb_hcd_is_primary_hcd+0x0/0x1c
-lr : cdns_host_resume+0x24/0x5c
-...
-Call trace:
- usb_hcd_is_primary_hcd+0x0/0x1c (P)
- cdns_resume+0x6c/0xbc
- cdns3_controller_resume.isra.0+0xe8/0x17c
- cdns3_plat_resume+0x18/0x24
- platform_pm_resume+0x2c/0x68
- dpm_run_callback+0x90/0x248
- device_resume+0x100/0x24c
- dpm_resume+0x190/0x2ec
- dpm_resume_end+0x18/0x34
- suspend_devices_and_enter+0x2b0/0xa44
- pm_suspend+0x16c/0x5fc
- state_store+0x80/0xec
- kobj_attr_store+0x18/0x2c
- sysfs_kf_write+0x7c/0x94
- kernfs_fop_write_iter+0x130/0x1dc
- vfs_write+0x240/0x370
- ksys_write+0x70/0x108
- __arm64_sys_write+0x1c/0x28
- invoke_syscall+0x48/0x10c
- el0_svc_common.constprop.0+0x40/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x34/0x108
- el0t_64_sync_handler+0xa0/0xe4
- el0t_64_sync+0x198/0x19c
-Code: 52800003 f9407ca5 d63f00a0 17ffffe4 (f9410401)
----[ end trace 0000000000000000 ]---
+Fixes: d5fc1400a34b ("smb/server: avoid deadlock when linking with ReplaceIfExists")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-Cc: stable <stable@kernel.org>
-Fixes: 2cf2581cd229 ("usb: cdns3: add power lost support for system resume")
-Signed-off-by: Thomas Richard (TI) <thomas.richard@bootlin.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://patch.msgid.link/20260130-usb-cdns3-fix-role-switching-during-resume-v1-1-44c456852b52@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index 1243a5cea91b..f0e32227c0b7 100644
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -551,7 +551,7 @@ int cdns_resume(struct cdns *cdns)
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index cbb31efdbaa2..2782eea214d0 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6115,14 +6115,14 @@ static int smb2_create_link(struct ksmbd_work *work,
+ 				rc = -EINVAL;
+ 				ksmbd_debug(SMB, "cannot delete %s\n",
+ 					    link_name);
+-				goto out;
+ 			}
+ 		} else {
+ 			rc = -EEXIST;
+ 			ksmbd_debug(SMB, "link already exists\n");
+-			goto out;
  		}
+ 		ksmbd_vfs_kern_path_end_removing(&path);
++		if (rc)
++			goto out;
  	}
- 
--	if (cdns->roles[cdns->role]->resume)
-+	if (!role_changed && cdns->roles[cdns->role]->resume)
- 		cdns->roles[cdns->role]->resume(cdns, power_lost);
- 
- 	return 0;
+ 	rc = ksmbd_vfs_link(work, target_name, link_name);
+ 	if (rc)
 
 
