@@ -1,122 +1,190 @@
-Return-Path: <stable+bounces-218023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDh3DT06nmncUAQAu9opvQ
-	(envelope-from <stable+bounces-218023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 00:54:37 +0100
+	id aGMnA2I7nmkZUQQAu9opvQ
+	(envelope-from <stable+bounces-218024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 00:59:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBC818E33D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 00:54:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD1218E36A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 00:59:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 62202301A7CF
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 23:54:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65F9E3053745
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 23:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA71363C67;
-	Tue, 24 Feb 2026 23:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B98363C61;
+	Tue, 24 Feb 2026 23:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oYEB647E"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="LhNIEySS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBE61F09B3;
-	Tue, 24 Feb 2026 23:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFEF1D9A66
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 23:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771977274; cv=none; b=WI1cVV4j7Ue0fUg8CcDUsKQ9lbESMDohEHHbLaLzRQddEZRaf8vvDXrhbEPPom5uOlqxwSjk/Qy2B5G024/3pz+9frCG1xle45agPQIwuTNTRwvMfnB3n4+UL0eMgqVTOW0LFjZFscfDYdBPmOETFHZf4viWxBqL4Ypp1B8DoIQ=
+	t=1771977546; cv=none; b=NqaAHV5j5dI6yfO9kDF3y+nzf2jEh7UT/XFCT6Mqgt5149W6b3mYdyyKdqr7bvD3rxtH1Y/rmj/6ruWn8Ecu8jK1yZad8T4B6mI5plaoI5EaLtRL5UpUXlOCKsj+mmwDe1VqGjwqcc8gcXNkhf3DRdV7dhFsAC1tm7SfyYwM6wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771977274; c=relaxed/simple;
-	bh=qexNreA3noaNpoPwWdD70RuBwyt5EeVZfegYyF8m7cc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=krmPNeJD1azk0Fdxqf4AjMCZYmE2ZkV2yoU/ZwD8Bt7nSdEqFt64qp1vdPDd+QAI6/eWOKK2XXSYt6mHzQ/mqhtBVH8SCpmsQhzaIZSb5yRdE/sbcY8OxkmtmT06G/+UxwLV7LxH83Xw/CmfCQvSuzJoesSQB5KjdECKhoCj8VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oYEB647E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04A3C116D0;
-	Tue, 24 Feb 2026 23:54:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771977273;
-	bh=qexNreA3noaNpoPwWdD70RuBwyt5EeVZfegYyF8m7cc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oYEB647EzJmppp/2RB2bNjz4U0zSLzPjLUfECABrKnqfFxl+OI7hqQFEcBtVo9iGy
-	 Idk9r8iZ+MvGV0MybLailS6CIxs+/gpyO0kpcx3H10OyQLE+xCA8YRRMCBXQaShI3D
-	 l1cTz7x1yqwpoiFcS0MOLS1s56hTRM5u5hUYf4wxv733xFiJJayQ9Rt72FeuUxpaD8
-	 EvAO92aDeQmyq/dRGZfDsT0CCqH/nYSmuwGj8ZcR8eG1uP235JgGTURChoN+K52SxF
-	 ATa7KpKdkHeN4IVT23VYAh9l1qkyeqQjwrwkeDEhFUuDtraPFBwIuZ/ye62yniLf3v
-	 /dPrkRzEjGJhw==
-Date: Tue, 24 Feb 2026 15:54:32 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
- <pabeni@redhat.com>, <danishanwar@ti.com>, <rogerq@kernel.org>,
- <horms@kernel.org>, <mwalle@kernel.org>, <nm@ti.com>, <v-singh1@ti.com>,
- <vadim.fedorenko@linux.dev>, <matthias.schiffer@ew.tq-group.com>,
- <vigneshr@ti.com>, <m-malladi@ti.com>, <jacob.e.keller@intel.com>,
- <stable@vger.kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <srk@ti.com>
-Subject: Re: [PATCH net 1/3] net: ethernet: ti: am65-cpsw-nuss: set
- irq_disabled after disabling RX IRQ
-Message-ID: <20260224155432.15ded392@kernel.org>
-In-Reply-To: <c9b1c5c2c5f9587c31132586fddb1921ff6824a8.camel@ti.com>
-References: <20260220041431.372610-1-s-vadapalli@ti.com>
-	<20260220041431.372610-2-s-vadapalli@ti.com>
-	<20260223184803.739c17a7@kernel.org>
-	<c9b1c5c2c5f9587c31132586fddb1921ff6824a8.camel@ti.com>
+	s=arc-20240116; t=1771977546; c=relaxed/simple;
+	bh=daIX2VAUeRvn1OxzAySUTWbnWrbb6Tut/j724/LejkI=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=MkPIdLSjCXpDwT1GwZc6o0XlPoBh05gkWtl2sPTQ7hzummZom8cRVicM7F1DBBOGbAHNjFD92kezp0JWsk+C0bxas03+Fn99l9v/HE25TC+aM0wv9uwzOZlGXnQHVsbYsAODg42jp0vwmh0MXk+VFrdZdsZJwiaiEvq3dIUUHC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=LhNIEySS; arc=none smtp.client-ip=74.125.82.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-126ea4e9694so1568401c88.1
+        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 15:59:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1771977544; x=1772582344; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ORsz5ou42GbZNiLRo0CYmLp/TuavSZ04yxwmVatFsS4=;
+        b=LhNIEySSyxniBOT34E+y/4JbpUJWW3pdRNepHVAVp7ktKrJMMLMUf2uhXGRIAcFmxO
+         I14dSbfyNVy5siJXEPsCX+L633XHhnNb3zaUuiYmBcSw0sZougqBR/ulSNrsE0K6kcLT
+         Rbb7LCEacf1Di+jYOIQsyO2D2/7Ks0xdkPCH1Q6EQlDoYU6shC6lUL4qLZxycwNz4UbX
+         hh1aK2tb2GcQb0jE+vDmcPUozSpsibkqr04mQttygZHayHyyV6l4eGtXtEvo1ob/MtPH
+         4jhLLfbqI2Axb/5DT2rrVoKVfpoKM4Pgv+fzcD/Xo8p1QLszyBpFbgT2U+KJVbBXfYz0
+         spSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771977544; x=1772582344;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ORsz5ou42GbZNiLRo0CYmLp/TuavSZ04yxwmVatFsS4=;
+        b=AQvb5ACokXdkh7tXLHktPbtHvl3RgS3GvO6IdI/+ckhYB/hGkrLQGaQunBsnJmfGSk
+         8klFcNC+0MI65m2IISz7p02FcCBdjydx++ykuFazW2CuQQBbaBNQKZW8YGTyKsf/qT4k
+         V2X+XNSDJyBerkJf/2pW1TTgMtEs6ObbVWuHpKDEdHJcjTJAucO8xXmIKxEzhzhAxiKC
+         K6tLVrAg3ddLCfgJwXzSu9iPPg7bzjW6zxK6yLbf78ARggBdURZc51szENmb6JiymMEP
+         bsJP/BsItHjhdL5TXM0Xjo27xKY+M9pqManioIVyqdSN7gWlQsLVn4a4JgA2ig/txkJr
+         mzBg==
+X-Forwarded-Encrypted: i=1; AJvYcCX5VkhEU7iSBPv9AaNDJFFZwdwcXOKZCkp5T29LGPYnrMmtayPMBUdaSqet+UlXSyXPOcOQFW8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQSkiHMkRatrZYnbp4SkQUUZSG1V727OVqWTJssEiy0tUZmCEy
+	F/7jv2kgzXo6em+7ioEEMtmExjjFOEH5uye2FTdicKImJJyzESqKG78j6kB9SrOEn1U=
+X-Gm-Gg: ATEYQzzbTeFJ7Oz6NhJqQMUFLN4UT1JyfcupIHIh3mBMvF/3OC7as+dTaMH3T2zNAOp
+	AYQ8J61jlc3sb94lcyzom6Jy6ZRAgQLLKajMSHfKqWe/H4K9+C2dsU6s125lal70UpjqtzTZlik
+	Bqqj9m7woqmcCo+u7/ccF2kxqdn9S62BI7QLhoEAMyRYDxo+3GmJf3oznQipvAYeV8jtM7aw4UD
+	lSbDGfV7zeK4//S3/Of70qfnGH8lnBi77s+MXfEeILPaxN2/+/gELRPBoqhCfpI4X+gg1msr/Y6
+	FoFz0vJLKFPfRRAwRMU4w5QcyTSUWuLQ0tCGAsrLOGOnXa49s0/i0vWPVq+DD+H8Fy83J5dhiRD
+	m7mRdTFpiPOl81x2w3UTBBX/qBJKgY1i8i1szQt/4kITpu5rxxMh48OY3u2wpN8XKqKFTCuyoy2
+	zfL0hkICo5Q7VYucgZ
+X-Received: by 2002:a05:7022:310:b0:119:e56b:957d with SMTP id a92af1059eb24-1276acb20ffmr4932821c88.2.1771977544071;
+        Tue, 24 Feb 2026 15:59:04 -0800 (PST)
+Received: from d14e337afe00 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bd7da3eefasm7689666eec.5.2026.02.24.15.59.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 15:59:03 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable-rc/linux-6.12.y: (build) call to undeclared
+ function
+ 'ata_port_eh_scheduled'; ISO C99 and l...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Tue, 24 Feb 2026 23:59:03 -0000
+Message-ID: <177197754281.2557.16813344451558204900@d14e337afe00>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-clang-21-arm64-kselftest-699e306d1f24bb694637788c/.config];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218023-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-218024-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[lists.linux.dev:server fail,kernelci-org.20230601.gappssmtp.com:server fail,sea.lore.kernel.org:server fail,kernelci.org:server fail,linux.dev:server fail];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kernelci.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 8FBC818E33D
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernelci.org:url,kernelci.org:email,linux.dev:email,lists.linux.dev:replyto]
+X-Rspamd-Queue-Id: 5AD1218E36A
 X-Rspamd-Action: no action
 
-On Tue, 24 Feb 2026 10:40:05 +0530 Siddharth Vadapalli wrote:
-> CPU1 sees irq_disabled being 'true' and before it updates it to 'false', if
-> CPU2 also sees irq_disabled
-> being 'true', both CPU1 and CPU2 will enter the IF-condition and eventually
-> invoke enable_irq().
 
-I think the races are just between NAPI and the HARD IRQ context.
-There can only be one NAPI scheduled for a queue, I assume.
 
-> Please let me know if this is what you were referring to. I will use atomic
-> APIs at all places to update
-> 'irq_disabled'.
 
-I recommend a spin lock, unless you can measure as significant
-difference. Locks and atomics have similar cost on many CPUs.
-And juggling local state, IRQ state, and NAPI state atomically
-will get tricky.
+
+Hello,
+
+New build issue found on stable-rc/linux-6.12.y:
+
+---
+ call to undeclared function 'ata_port_eh_scheduled'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration] in drivers/ata/libata-scsi.o (drivers/ata/libata-scsi.c) [logspec:kbuild,kbuild.compiler.error]
+---
+
+- dashboard: https://d.kernelci.org/i/maestro:fede1461e236b5d7cdde3654090df9779fdff018
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  10fde7454a72064486a5b75cbb1635da42004473
+
+
+Please include the KernelCI tag when submitting a fix:
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+
+Log excerpt:
+=====================================================
+drivers/ata/libata-scsi.c:1689:13: error: call to undeclared function 'ata_port_eh_scheduled'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+ 1689 |         if (qc && !ata_port_eh_scheduled(ap)) {
+      |                    ^
+drivers/ata/libata-scsi.c:1689:13: note: did you mean 'ata_port_schedule_eh'?
+./include/linux/libata.h:1407:13: note: 'ata_port_schedule_eh' declared here
+ 1407 | extern void ata_port_schedule_eh(struct ata_port *ap);
+      |             ^
+drivers/ata/libata-scsi.c:1734:6: error: call to undeclared function 'ata_port_eh_scheduled'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+ 1734 |         if (ata_port_eh_scheduled(ap)) {
+      |             ^
+2 errors generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## defconfig+arm64-chromebook+kselftest on (arm64):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-arm64-kselftest-699e306d1f24bb694637788c/.config
+- dashboard: https://d.kernelci.org/build/maestro:699e306d1f24bb694637788c
+
+## multi_v7_defconfig on (arm):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-arm-699e305e1f24bb6946377877/.config
+- dashboard: https://d.kernelci.org/build/maestro:699e305e1f24bb6946377877
+
+
+#kernelci issue maestro:fede1461e236b5d7cdde3654090df9779fdff018
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
