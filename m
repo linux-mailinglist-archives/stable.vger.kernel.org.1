@@ -1,66 +1,79 @@
-Return-Path: <stable+bounces-217868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217885-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OwJFTVSnWkoOgQAu9opvQ
-	(envelope-from <stable+bounces-217868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 08:24:37 +0100
+	id aPSkOs5hnWksPQQAu9opvQ
+	(envelope-from <stable+bounces-217885-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:31:10 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C765A182FD5
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 08:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8820D183B41
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 09:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7397303EEA1
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 07:22:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 35F713034A04
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 08:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A3B32E720;
-	Tue, 24 Feb 2026 07:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD2D1624C5;
+	Tue, 24 Feb 2026 08:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="vssCnZvc"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="ZtjWJuRE"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC63B24E4A8;
-	Tue, 24 Feb 2026 07:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803D013DBA0
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 08:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771917729; cv=none; b=iREUffL8JKJxTid4lyRCgLnUGonqdJ8dqQx3RrylizwdkUcnr9Hc439/OFsQUIRqgT/dhWlO728Mv+bivtpoQhxZ/ReiJlwHEARuClafStu7yM5YmYyGtYcW92PP/c6Cmm5kDdl8Bc+yBmoyCZl20Tpv3Q0xVuwxPZF0PJxkc9w=
+	t=1771921861; cv=none; b=eSLyKsN22/DlsfrWLMRwCXCICBrzyUiPZZrbxfnK0CTZnUuRShFZ3mxUExZENDTn9C+AVrU5LLtUzxhY8VdRhoxmN1o499NttPdljvFTk42X0o50oZsp93g5Q6VAvyt8lGvRZaPJx8ymxSYtYNIFASnZgrStH9oAyGISdabD2Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771917729; c=relaxed/simple;
-	bh=hhuDUjEPGphqCg9CRGJxIhbOh/Xkc56H4lbpmiOM8sM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gC8wm5ZJSsCy3OPOtn1Bki4ciH2+jGkpboowz2U55x428UWvamiuFitMvLy8I6o4wXC4zh5rTBc9Sr9Y2LaSJOii90xjdvRQbq/7ifyNilgPOzb+AsHO+Bo3jliQCXnv+yuN5a4gONjbGPsGY7tRIrJay0VQjaLg2xG0VU4bD9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=vssCnZvc; arc=none smtp.client-ip=120.232.169.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=vssCnZvc4BsBodqdf7MnVWmKT17b9tlhNrv/Lr8mCZXe0q4oyE1p4fkN4QgGvdEkF0/YIpHzx07qC
-	 nxuMKFUX1cGbeASiKvq/nG3l4zjMg/Gb+Qc/GBw1bBofeTDXBhCbN2HKVScP8ZDjuBxg8HZmXFf44e
-	 tnCSMlY0ncWXQheA=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-14-12003 (RichMail) with SMTP id 2ee3699d519a731-0073a;
-	Tue, 24 Feb 2026 15:22:03 +0800 (CST)
-X-RM-TRANSID:2ee3699d519a731-0073a
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	trond.myklebust@hammerspace.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	bcodding@hammerspace.com,
-	anna@kernel.org,
-	linux-nfs@vger.kernel.org,
-	wangzhaolong@huaweicloud.com
-Subject: [PATCH 6.6.y] pNFS: Fix a deadlock when returning a delegation during open()
-Date: Tue, 24 Feb 2026 15:22:02 +0800
-Message-Id: <20260224072202.2940831-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1771921861; c=relaxed/simple;
+	bh=WADcdGXCoslAaneV5m2SgHVCPXT/9Ed7MDtsogC7iBM=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=Lr06BgxFj6j7IC3V6j4I0mmk6Nb1QmoMhMT2IpuVstZnZeqSpBfDir7M5f5D5dpIQEjiO8bQliEbmyPOkPSgBmU4uc5RkbQhtmcc77VJWngJFb/CLH+UljZoJvxpcXsCjUPdILhFAc2zRFexHsZxfRT5PM65eZV1Lc3g2tfbWkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=ZtjWJuRE; arc=none smtp.client-ip=162.62.57.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1771921845;
+	bh=Eign7jUK1zEqGWwqMuCmgxU7FIGP40VhdHOKRcXbIxc=;
+	h=From:To:Cc:Subject:Date;
+	b=ZtjWJuREpvjZZLvIglHQx91CHeysIRU8SUUCfGB0FrY8WcPmlRW64rcVk3D4q4Qe7
+	 Jz2iATUAbsUNr4RtKzalzRcnpG4IABeZZ72AAodB9yDqhAsgFF+fAQC7YaL3YIllSf
+	 9pHjqLuq7yBVKDZ2uSVKLs/tltc9aF4p0WMyf6EI=
+Received: from ubuntu24.corp.ad.wrs.com ([120.244.194.215])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id 6A3B6442; Tue, 24 Feb 2026 15:26:35 +0800
+X-QQ-mid: xmsmtpt1771917995t5oyc3vzs
+Message-ID: <tencent_3FBE2535ACAD7066608E1AB4691F6A5E3F09@qq.com>
+X-QQ-XMAILINFO: MiBwBRx9btb5UID/33LMZq1i8RPYpjDJjyvtEoJ4L5ElFxdFk5mMcjfUnrRyiG
+	 c4Q9zYdRs9ekP0lw1yCMXQHjWkLNkI7G+DHCer38crdUBnglV3g9SNph36ff+hHT765bxIY7CKyr
+	 fExXJkY2/pyG2mWkTaz9B5iaCCak9ewgHo/mlaq2FAiuzydTSEe2exNmXnCi1YhMYllTvK1c0cEO
+	 /3zZcKHUQkUpeKgou7mHUJMLpa9ueKQ/VymlTRJfDeoUFrkEf85nhizekldRFWJMIcqU3xFVojYK
+	 299x3V9sEm17GiM/2WLBIbozHCblkm49ue7V9mzga+YLUdGycA4qGlsv39GdT4tuA4Odk3WoVYQ2
+	 6F200OSiX+Ra+/y71nMJlpBu4HthNJJXAfc2/t7T6OvNxISALAuiWYTK5IRb2t8KlxJlP6n42su5
+	 h1r+LmmvjjYlhfDzRxLQozHEcJDlydZ9Gyi6FhoKHAt5p0a5YnHtGFBZPgGjIwanOOcWxZNyJohc
+	 GxD1+UuwOxxjJtpzPoEOMgAlT4Z6uiS46TEeKkxDr/1I2QGtlJYP2UbXkMMHiwDTZPArGJYPz93A
+	 GPNBx6BPwa60EbOdmudDirSAYgaBj+IqGtvIMkbdvGnj20Z13yGHSPR3SMBPbgixM+bkVXiVnCvz
+	 cyV8yIq/K1sfL+ZPwQaxzg6i7u5Y8z7tNUSLKZKVnhFW1S6hOEetfuxFFsh0+B9LG6ZLUnTSqsAQ
+	 zy4Ye/6K5N4wfr8NnlpDHb5XjxHse9LbF6T98X+NL40G2nB5dwDz1zAL0JYa8j8YRX9nihCIzSx4
+	 LKGuDeEe77oQlG3gHOmWyAd8qpjjiETYOMrB69J6290ts74/cFhg4fVi4PSieWJ5M8KuTX5PAxl2
+	 2ahSPL3ycYBcjBczRGyS53z8ATDWvLAby4reMu+hX/8O16o6louEr5uj9GsSwgUWWtVZdnLTd7wq
+	 gUoisUpTE7fh4dT2Y/9JLAxgEdeY5DvKzMzUDtjmc6DsA4k6KjX7zBEAcs6G9xosoXdVerDlzQey
+	 ClUP9km1OqugoqFqpmS7V1zywwXtq7aWnOI0iedzsejtmHVfHz65GlesIH8onerHOv7RQDlzmFOk
+	 ZoWdTf
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: alvalan9@foxmail.com
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: Keith Busch <kbusch@kernel.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 5.15.y] blk-mq: use quiesced elevator switch when reinitializing queues
+Date: Tue, 24 Feb 2026 07:26:24 +0000
+X-OQ-MSGID: <20260224072624.4519-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,249 +82,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
+X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-217885-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,lst.de,kernel.dk,foxmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217868-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[139.com];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[foxmail.com:?];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.997];
-	DKIM_TRACE(0.00)[139.com:-];
-	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FREEMAIL_FROM(0.00)[139.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,139.com:mid,139.com:email,hammerspace.com:email]
-X-Rspamd-Queue-Id: C765A182FD5
+	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DMARC_DNSFAIL(0.00)[foxmail.com : SPF/DKIM temp error,none];
+	FROM_NO_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.460];
+	R_DKIM_TEMPFAIL(0.00)[foxmail.com:s=s201512];
+	FREEMAIL_FROM(0.00)[foxmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qq.com:mid]
+X-Rspamd-Queue-Id: 8820D183B41
 X-Rspamd-Action: no action
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 857bf9056291a16785ae3be1d291026b2437fc48 ]
+[ Upstream commit 8237c01f1696bc53c470493bf1fe092a107648a6 ]
 
-Ben Coddington reports seeing a hang in the following stack trace:
-  0 [ffffd0b50e1774e0] __schedule at ffffffff9ca05415
-  1 [ffffd0b50e177548] schedule at ffffffff9ca05717
-  2 [ffffd0b50e177558] bit_wait at ffffffff9ca061e1
-  3 [ffffd0b50e177568] __wait_on_bit at ffffffff9ca05cfb
-  4 [ffffd0b50e1775c8] out_of_line_wait_on_bit at ffffffff9ca05ea5
-  5 [ffffd0b50e177618] pnfs_roc at ffffffffc154207b [nfsv4]
-  6 [ffffd0b50e1776b8] _nfs4_proc_delegreturn at ffffffffc1506586 [nfsv4]
-  7 [ffffd0b50e177788] nfs4_proc_delegreturn at ffffffffc1507480 [nfsv4]
-  8 [ffffd0b50e1777f8] nfs_do_return_delegation at ffffffffc1523e41 [nfsv4]
-  9 [ffffd0b50e177838] nfs_inode_set_delegation at ffffffffc1524a75 [nfsv4]
- 10 [ffffd0b50e177888] nfs4_process_delegation at ffffffffc14f41dd [nfsv4]
- 11 [ffffd0b50e1778a0] _nfs4_opendata_to_nfs4_state at ffffffffc1503edf [nfsv4]
- 12 [ffffd0b50e1778c0] _nfs4_open_and_get_state at ffffffffc1504e56 [nfsv4]
- 13 [ffffd0b50e177978] _nfs4_do_open at ffffffffc15051b8 [nfsv4]
- 14 [ffffd0b50e1779f8] nfs4_do_open at ffffffffc150559c [nfsv4]
- 15 [ffffd0b50e177a80] nfs4_atomic_open at ffffffffc15057fb [nfsv4]
- 16 [ffffd0b50e177ad0] nfs4_file_open at ffffffffc15219be [nfsv4]
- 17 [ffffd0b50e177b78] do_dentry_open at ffffffff9c09e6ea
- 18 [ffffd0b50e177ba8] vfs_open at ffffffff9c0a082e
- 19 [ffffd0b50e177bd0] dentry_open at ffffffff9c0a0935
+The hctx's run_work may be racing with the elevator switch when
+reinitializing hardware queues. The queue is merely frozen in this
+context, but that only prevents requests from allocating and doesn't
+stop the hctx work from running. The work may get an elevator pointer
+that's being torn down, and can result in use-after-free errors and
+kernel panics (example below). Use the quiesced elevator switch instead,
+and make the previous one static since it is now only used locally.
 
-The issue is that the delegreturn is being asked to wait for a layout
-return that cannot complete because a state recovery was initiated. The
-state recovery cannot complete until the open() finishes processing the
-delegations it was given.
+  nvme nvme0: resetting controller
+  nvme nvme0: 32/0/0 default/read/poll queues
+  BUG: kernel NULL pointer dereference, address: 0000000000000008
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 80000020c8861067 P4D 80000020c8861067 PUD 250f8c8067 PMD 0
+  Oops: 0000 [#1] SMP PTI
+  Workqueue: kblockd blk_mq_run_work_fn
+  RIP: 0010:kyber_has_work+0x29/0x70
 
-The solution is to propagate the existing flags that indicate a
-non-blocking call to the function pnfs_roc(), so that it knows not to
-wait in this situation.
+...
 
-Reported-by: Benjamin Coddington <bcodding@hammerspace.com>
-Fixes: 29ade5db1293 ("pNFS: Wait on outstanding layoutreturns to complete in pnfs_roc()")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+  Call Trace:
+   __blk_mq_do_dispatch_sched+0x83/0x2b0
+   __blk_mq_sched_dispatch_requests+0x12e/0x170
+   blk_mq_sched_dispatch_requests+0x30/0x60
+   __blk_mq_run_hw_queue+0x2b/0x50
+   process_one_work+0x1ef/0x380
+   worker_thread+0x2d/0x3e0
+
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20220927155652.3260724-1-kbusch@fb.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ Adjust context ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 ---
- fs/nfs/nfs4proc.c |  6 ++---
- fs/nfs/pnfs.c     | 58 +++++++++++++++++++++++++++++++++--------------
- fs/nfs/pnfs.h     | 17 ++++++--------
- 3 files changed, 51 insertions(+), 30 deletions(-)
+ block/blk-mq.c   | 6 +++---
+ block/blk.h      | 3 +--
+ block/elevator.c | 4 ++--
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index fe6986939bc9..42fa7c915e29 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3792,8 +3792,8 @@ int nfs4_do_close(struct nfs4_state *state, gfp_t gfp_mask, int wait)
- 	calldata->res.seqid = calldata->arg.seqid;
- 	calldata->res.server = server;
- 	calldata->res.lr_ret = -NFS4ERR_NOMATCHING_LAYOUT;
--	calldata->lr.roc = pnfs_roc(state->inode,
--			&calldata->lr.arg, &calldata->lr.res, msg.rpc_cred);
-+	calldata->lr.roc = pnfs_roc(state->inode, &calldata->lr.arg,
-+				    &calldata->lr.res, msg.rpc_cred, wait);
- 	if (calldata->lr.roc) {
- 		calldata->arg.lr_args = &calldata->lr.arg;
- 		calldata->res.lr_res = &calldata->lr.res;
-@@ -6742,7 +6742,7 @@ static int _nfs4_proc_delegreturn(struct inode *inode, const struct cred *cred,
- 	data->inode = nfs_igrab_and_active(inode);
- 	if (data->inode || issync) {
- 		data->lr.roc = pnfs_roc(inode, &data->lr.arg, &data->lr.res,
--					cred);
-+					cred, issync);
- 		if (data->lr.roc) {
- 			data->args.lr_args = &data->lr.arg;
- 			data->res.lr_res = &data->lr.res;
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 0737d9a15d86..6dbfae295f76 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -1426,10 +1426,9 @@ pnfs_commit_and_return_layout(struct inode *inode)
- 	return ret;
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 48827708200b..17795b3ae7f3 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -3732,14 +3732,14 @@ static bool blk_mq_elv_switch_none(struct list_head *head,
+ 
+ 	mutex_lock(&q->sysfs_lock);
+ 	/*
+-	 * After elevator_switch_mq, the previous elevator_queue will be
++	 * After elevator_switch, the previous elevator_queue will be
+ 	 * released by elevator_release. The reference of the io scheduler
+ 	 * module get by elevator_get will also be put. So we need to get
+ 	 * a reference of the io scheduler module here to prevent it to be
+ 	 * removed.
+ 	 */
+ 	__module_get(qe->type->elevator_owner);
+-	elevator_switch_mq(q, NULL);
++	elevator_switch(q, NULL);
+ 	mutex_unlock(&q->sysfs_lock);
+ 
+ 	return true;
+@@ -3764,7 +3764,7 @@ static void blk_mq_elv_switch_back(struct list_head *head,
+ 	kfree(qe);
+ 
+ 	mutex_lock(&q->sysfs_lock);
+-	elevator_switch_mq(q, t);
++	elevator_switch(q, t);
+ 	mutex_unlock(&q->sysfs_lock);
  }
  
--bool pnfs_roc(struct inode *ino,
--		struct nfs4_layoutreturn_args *args,
--		struct nfs4_layoutreturn_res *res,
--		const struct cred *cred)
-+bool pnfs_roc(struct inode *ino, struct nfs4_layoutreturn_args *args,
-+	      struct nfs4_layoutreturn_res *res, const struct cred *cred,
-+	      bool sync)
+diff --git a/block/blk.h b/block/blk.h
+index e90a5e348512..07f571e1ece0 100644
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -189,8 +189,7 @@ void blk_account_io_done(struct request *req, u64 now);
+ 
+ void blk_insert_flush(struct request *rq);
+ 
+-int elevator_switch_mq(struct request_queue *q,
+-			      struct elevator_type *new_e);
++int elevator_switch(struct request_queue *q, struct elevator_type *new_e);
+ void __elevator_exit(struct request_queue *, struct elevator_queue *);
+ int elv_register_queue(struct request_queue *q, bool uevent);
+ void elv_unregister_queue(struct request_queue *q);
+diff --git a/block/elevator.c b/block/elevator.c
+index a98e8356f1b8..0d1edf1f0503 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -581,7 +581,7 @@ void elv_unregister(struct elevator_type *e)
+ }
+ EXPORT_SYMBOL_GPL(elv_unregister);
+ 
+-int elevator_switch_mq(struct request_queue *q,
++static int elevator_switch_mq(struct request_queue *q,
+ 			      struct elevator_type *new_e)
  {
- 	struct nfs_inode *nfsi = NFS_I(ino);
- 	struct nfs_open_context *ctx;
-@@ -1440,7 +1439,7 @@ bool pnfs_roc(struct inode *ino,
- 	nfs4_stateid stateid;
- 	enum pnfs_iomode iomode = 0;
- 	bool layoutreturn = false, roc = false;
--	bool skip_read = false;
-+	bool skip_read;
- 
- 	if (!nfs_have_layout(ino))
- 		return false;
-@@ -1453,20 +1452,14 @@ bool pnfs_roc(struct inode *ino,
- 		lo = NULL;
- 		goto out_noroc;
- 	}
--	pnfs_get_layout_hdr(lo);
--	if (test_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags)) {
--		spin_unlock(&ino->i_lock);
--		rcu_read_unlock();
--		wait_on_bit(&lo->plh_flags, NFS_LAYOUT_RETURN,
--				TASK_UNINTERRUPTIBLE);
--		pnfs_put_layout_hdr(lo);
--		goto retry;
--	}
- 
- 	/* no roc if we hold a delegation */
-+	skip_read = false;
- 	if (nfs4_check_delegation(ino, FMODE_READ)) {
--		if (nfs4_check_delegation(ino, FMODE_WRITE))
-+		if (nfs4_check_delegation(ino, FMODE_WRITE)) {
-+			lo = NULL;
- 			goto out_noroc;
-+		}
- 		skip_read = true;
- 	}
- 
-@@ -1475,12 +1468,43 @@ bool pnfs_roc(struct inode *ino,
- 		if (state == NULL)
- 			continue;
- 		/* Don't return layout if there is open file state */
--		if (state->state & FMODE_WRITE)
-+		if (state->state & FMODE_WRITE) {
-+			lo = NULL;
- 			goto out_noroc;
-+		}
- 		if (state->state & FMODE_READ)
- 			skip_read = true;
- 	}
- 
-+	if (skip_read) {
-+		bool writes = false;
-+
-+		list_for_each_entry(lseg, &lo->plh_segs, pls_list) {
-+			if (lseg->pls_range.iomode != IOMODE_READ) {
-+				writes = true;
-+				break;
-+			}
-+		}
-+		if (!writes) {
-+			lo = NULL;
-+			goto out_noroc;
-+		}
-+	}
-+
-+	pnfs_get_layout_hdr(lo);
-+	if (test_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags)) {
-+		if (!sync) {
-+			pnfs_set_plh_return_info(
-+				lo, skip_read ? IOMODE_RW : IOMODE_ANY, 0);
-+			goto out_noroc;
-+		}
-+		spin_unlock(&ino->i_lock);
-+		rcu_read_unlock();
-+		wait_on_bit(&lo->plh_flags, NFS_LAYOUT_RETURN,
-+			    TASK_UNINTERRUPTIBLE);
-+		pnfs_put_layout_hdr(lo);
-+		goto retry;
-+	}
- 
- 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list) {
- 		if (skip_read && lseg->pls_range.iomode == IOMODE_READ)
-@@ -1520,7 +1544,7 @@ bool pnfs_roc(struct inode *ino,
- out_noroc:
- 	spin_unlock(&ino->i_lock);
- 	rcu_read_unlock();
--	pnfs_layoutcommit_inode(ino, true);
-+	pnfs_layoutcommit_inode(ino, sync);
- 	if (roc) {
- 		struct pnfs_layoutdriver_type *ld = NFS_SERVER(ino)->pnfs_curr_ld;
- 		if (ld->prepare_layoutreturn)
-diff --git a/fs/nfs/pnfs.h b/fs/nfs/pnfs.h
-index 79996d7dad0f..a613466f6f22 100644
---- a/fs/nfs/pnfs.h
-+++ b/fs/nfs/pnfs.h
-@@ -295,10 +295,9 @@ int pnfs_mark_matching_lsegs_return(struct pnfs_layout_hdr *lo,
- 				u32 seq);
- int pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
- 		struct list_head *lseg_list);
--bool pnfs_roc(struct inode *ino,
--		struct nfs4_layoutreturn_args *args,
--		struct nfs4_layoutreturn_res *res,
--		const struct cred *cred);
-+bool pnfs_roc(struct inode *ino, struct nfs4_layoutreturn_args *args,
-+	      struct nfs4_layoutreturn_res *res, const struct cred *cred,
-+	      bool sync);
- int pnfs_roc_done(struct rpc_task *task, struct nfs4_layoutreturn_args **argpp,
- 		  struct nfs4_layoutreturn_res **respp, int *ret);
- void pnfs_roc_release(struct nfs4_layoutreturn_args *args,
-@@ -769,12 +768,10 @@ pnfs_layoutcommit_outstanding(struct inode *inode)
- 	return false;
- }
- 
--
--static inline bool
--pnfs_roc(struct inode *ino,
--		struct nfs4_layoutreturn_args *args,
--		struct nfs4_layoutreturn_res *res,
--		const struct cred *cred)
-+static inline bool pnfs_roc(struct inode *ino,
-+			    struct nfs4_layoutreturn_args *args,
-+			    struct nfs4_layoutreturn_res *res,
-+			    const struct cred *cred, bool sync)
+ 	int ret;
+@@ -719,7 +719,7 @@ void elevator_init_mq(struct request_queue *q)
+  * need for the new one. this way we have a chance of going back to the old
+  * one, if the new one fails init for some reason.
+  */
+-static int elevator_switch(struct request_queue *q, struct elevator_type *new_e)
++int elevator_switch(struct request_queue *q, struct elevator_type *new_e)
  {
- 	return false;
- }
+ 	int err;
+ 
 -- 
-2.34.1
-
+2.43.0
 
 
