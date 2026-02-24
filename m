@@ -1,175 +1,179 @@
-Return-Path: <stable+bounces-217908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MznCNWYnWnwQgQAu9opvQ
-	(envelope-from <stable+bounces-217908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:25:57 +0100
+	id gKcaGAyXnWnwQgQAu9opvQ
+	(envelope-from <stable+bounces-217905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:18:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8BC186ED5
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:25:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D79186D1E
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 13:18:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A2F930B6F19
-	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 12:23:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29461304483E
+	for <lists+stable@lfdr.de>; Tue, 24 Feb 2026 12:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4023396D25;
-	Tue, 24 Feb 2026 12:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C6B396D0D;
+	Tue, 24 Feb 2026 12:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="M4IZx3ZA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpfb1-g21.free.fr (smtpfb1-g21.free.fr [212.27.42.9])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D431396D03;
-	Tue, 24 Feb 2026 12:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.9
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3645396B8D
+	for <stable@vger.kernel.org>; Tue, 24 Feb 2026 12:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771935781; cv=none; b=XhFoJxk6ERf4m9wezQ2/IqWEL9kjlc8J/R1tSvHtIIenr6ikwjqG/YawH3utSBp3slCLpRk4SMO+iArm7vptYrY9dN+BRgjhGXq08Z0Adjc4L3SHQr7xbA1wyCsukU41BizI93XvNxJjCGDly2U2phTUAHcIOstwSVDURplsAp0=
+	t=1771935495; cv=none; b=BIJR4MIVrb1HTErIzB/XVlOP/mAsY5lJzRtBbwVrDYA7MifN0op4x4RPnGfN5riuDJTxfNv5c6g4h7NWgKT1oVJNf5Qcv7sjAhRtRJ8t3FHHvjQcrPE0InKyr15bbYJ+BoFzSEIjfeyCysSvlpeGRff9tCrWQdUKhRHRlHbDXqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771935781; c=relaxed/simple;
-	bh=TXKJIKiEPtHfcGEJx/r052JjVn3m4tuf41dI1DM7msk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CiC/HaFcpOECUwxSUQGu82gGIQS3rE2g9VQVFuDkJoq4b0A2ZkKvWBtgGutUkuEko1+xVt4TSsJTZLeHiBCGUElQQVvmu5mFZvORW6+ZzbHhfViq5KKR9NdrepBxacwfjYGCYYTAYWY/XYm1Y2lVrwW+VwmTTDB1MHxUPg3kc5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=lht.dlh.de; spf=pass smtp.mailfrom=free.fr; arc=none smtp.client-ip=212.27.42.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=lht.dlh.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
-Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
-	by smtpfb1-g21.free.fr (Postfix) with ESMTP id C56BCDF9503;
-	Tue, 24 Feb 2026 13:17:18 +0100 (CET)
-Received: from albans-vm.. (unknown [213.61.141.186])
-	(Authenticated sender: albeu@free.fr)
-	by smtp2-g21.free.fr (Postfix) with ESMTPSA id 9DB3420039E;
-	Tue, 24 Feb 2026 13:16:58 +0100 (CET)
-From: Alban Bedel <alban.bedel@lht.dlh.de>
-To: linux-serial@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Peng Zhang <zhangpeng.00@bytedance.com>,
-	stable@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	Alban Bedel <alban.bedel@lht.dlh.de>,
-	Maximilian Lueer <maximilian.lueer@lht.dlh.de>
-Subject: [PATCH v4] serial: 8250: always disable IRQ during THRE test
-Date: Tue, 24 Feb 2026 13:16:39 +0100
-Message-Id: <20260224121639.579404-1-alban.bedel@lht.dlh.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1771935495; c=relaxed/simple;
+	bh=mGFDCB6zIv5f/4lsb2IncY3zWh7oM4on0XtIB/lD4Ww=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=CPnytVgxsI16ur6Ydg1LiBQw5LU5geuKVAnIcgzM0upBLGNpE9VBjDJZ3JHVYKw4d0NFOoD57cDbWw3SactgNOewAXKsCY9h5R3iU/aBOHMBJkR6OeVLjJqMZvXljiKzeo++tMYBseVOPr+HFkb7b/Zrd5owEHrwZDKk30m5jig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=M4IZx3ZA; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4376de3f128so3885339f8f.0
+        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 04:18:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1771935488; x=1772540288; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7VcA092cXLqsFEZwXz9GnwUVN7DiPeez0PcJ7v+ltPI=;
+        b=M4IZx3ZAr0KT0TRy2oRZhcRLmom6Xrl2UGYTOH4PxMV/+HCK+QUJgERjwao7ItS8SG
+         dflLBfYVNyVS62qrwCztAQ9YiK9cqZBThhZ3dEOX72u8U0hCfEf5DpuNcbD1ULrKMLza
+         p7PZpHG94EcjjibJJtRyzRTtqAc/Z0pDQvFpBQG2epO3kDJZPcJGgUKFSvn2LbXl7/MM
+         JZ+TBaJiPjWkgNf/Q5HQSG1/CAaX4TrxXWyFTK9pwVbCrjsiGycoC/lpaf/qzqNiaaSQ
+         7TJPzwmFJYnWTepIlG94U1ZMu1dCY/I4BYBlvzx5/zWCrOXTabCvHFwcaOv9v+Rtw6DP
+         yn0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771935488; x=1772540288;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7VcA092cXLqsFEZwXz9GnwUVN7DiPeez0PcJ7v+ltPI=;
+        b=UtWWzLml1lr86afnCTaZl0i//GQDCUc/Q+LJL7kMQTi8EYDM2ApgyOFmpJvuAYQn5h
+         kBfi7qcg1l0i1ky3piGmAa6DSCzegI+Xqt8K3hHA8pYocfnzwxIyADyEIExZcM71Tf1W
+         cH/uVkLmcfcBoPxBREFnCEWleaLlM0fTOs9v2sRnymgvfX2D8jC6LdUk1xDiFeYDWQsw
+         9ktLz8nlYMGNSvqHW62cauecMf7cFU6+wIdFHbPWynMiqaltZlBumOD492rslEnN+SuL
+         kc7euZUtfdTPwTfvqRhHmLpRk+auGW/RjQM/kcGNzVriBOeBM+GTcIkh8DwFKK/UUQ3l
+         uKug==
+X-Forwarded-Encrypted: i=1; AJvYcCUdYg2k6pF0mkxnRw6rUpV9khN9GdCOFFovFrfCU5Ipw0xnfZpOCZGe95KZM4hjDhX+wk0Bl5A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ37qeEnKbN6KWdgTK4YzNGMrEYUxaFwNm5wDhV++I1rlsiD1e
+	KHKzGjFbpj90WVYldFfJaqGBmlvNTLJO2+0OkykJ5vJ/OOoCh5cTj74v/GYAxdj03X8=
+X-Gm-Gg: AZuq6aLSHtowTdybPZfU4kt3c3aZ0jBb4c0H1dnotAWGBhcSUyxS59ZVoNeX84OAk+P
+	xBIBwJmnIRz+GH66Yr2rEgbPM3rQe/owaxKyOf6dReDWg9Q8LBzfpN0iZw9mNgu+E8NFMUN1q2M
+	FtHRcr4xsovMDt0qMDneoUd4e3BgzlhM0A1m9A2ITrT3TrIDdrVlIudGfNmrYRUcdvg5Bi8abyo
+	QQgZSVIOVrhMCnHgADqWJAcTPR+BM8F+NcgdVpxextgRP/iaqPdxmirN2l5qDe/4sKoiKRmPko2
+	zt1dhxF+yG15ahS1q4vVCqULBBrikmhSE4cpT5RlrBE8QojcLgtQu44axo6dhe6hfvFCe1hz+ov
+	X34QQTpfq0e9rzwcTd1/K7IHYz/qmbsGQMCetA7m4Auh8Ck4jjHym2N8S9kezbO0bjpvfLUUCBC
+	JWb7Oe+J8gkIsL/F3k
+X-Received: by 2002:a05:600c:1e1d:b0:483:702f:4633 with SMTP id 5b1f17b1804b1-483a95bd8fdmr210996605e9.4.1771935487969;
+        Tue, 24 Feb 2026 04:18:07 -0800 (PST)
+Received: from localhost ([177.95.18.0])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-568e58f9aeasm12352785e0c.11.2026.02.24.04.18.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 04:18:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 24 Feb 2026 09:18:04 -0300
+Message-Id: <DGN6PFT94YHU.3S3UXTP82975E@suse.com>
+Subject: Re: [PATCH stable 6.12 0/5] Backport selftest for "bpf: Check
+ skb->transport_header is set in bpf_skb_check_mtu"
+Cc: =?utf-8?b?UmljYXJkbyBCLiBNYXJsacOocmU=?= <rbm@suse.com>
+To: "Harshit Mogalapalli" <harshit.m.mogalapalli@oracle.com>, "Shung-Hsi Yu"
+ <shung-hsi.yu@suse.com>, <stable@vger.kernel.org>
+From: =?utf-8?b?UmljYXJkbyBCLiBNYXJsacOocmU=?= <rbm@suse.com>
+X-Mailer: aerc 0.21.0-120-ge2f19458bd3f
+References: <20260224073810.85945-1-shung-hsi.yu@suse.com>
+ <bd0277b7-4a19-46a4-9f06-96d48cbc89d8@oracle.com>
+In-Reply-To: <bd0277b7-4a19-46a4-9f06-96d48cbc89d8@oracle.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[lht.dlh.de : SPF not aligned (relaxed), No valid DKIM,quarantine];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-217905-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-217908-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[suse.com:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alban.bedel@lht.dlh.de,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rbm@suse.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bytedance.com:email,lht.dlh.de:mid,dlh.de:email]
-X-Rspamd-Queue-Id: 8E8BC186ED5
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: B5D79186D1E
 X-Rspamd-Action: no action
 
-From: Peng Zhang <zhangpeng.00@bytedance.com>
+On Tue Feb 24, 2026 at 4:53 AM -03, Harshit Mogalapalli wrote:
+> Hi,
+>
+> On 24/02/26 13:08, Shung-Hsi Yu wrote:
+>> This patchset backport the corresponding BPF selftests for commit
+>> d946f3c98328 ("bpf: Check skb->transport_header is set in
+>> bpf_skb_check_mtu"), which has already been included since 6.12.63.
+>>=20
+>> The BPF selftest added in commit 6cc73f35406c ("selftests/bpf: Test
+>> bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) when transport_header is not set")
+>> additionally depends on network namespace support for BPF selftests
+>> added by Bastien, otherwise the MTU in root networking namespace will be
+>> set to 10, causing other BPF selftests to fail. Credit goes to Ricardo
+>> Marli=C3=A8re for figuring out the dependency.
+>>=20
+>
+> Note:
+> I have recently learnt that ideally we are supposed to run upstream=20
+> latest kselftests on stable kernels as well. If a feature is not=20
+> supported the kselftests are meant to be skipped.
 
-commit 039d4926379b ("serial: 8250: Toggle IER bits on only after irq
-has been set up") moved IRQ setup before the THRE test, in combination
-with commit 205d300aea75 ("serial: 8250: change lock order in
-serial8250_do_startup()") the interrupt handler can run during the
-test and race with its IIR reads. This can produce wrong THRE test
-results and cause spurious registration of the
-serial8250_backup_timeout timer. Unconditionally disable the IRQ for
-the short duration of the test and re-enable it afterwards to avoid
-the race.
+That is not true for BPF, from my (limited) experience.
 
-Cc: stable@vger.kernel.org
-Fixes: 039d4926379b ("serial: 8250: Toggle IER bits on only after irq has been set up")
-Depends-on: 205d300aea75 ("serial: 8250: change lock order in serial8250_do_startup()")
-Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
-Signed-off-by: Alban Bedel <alban.bedel@lht.dlh.de>
-Tested-by: Maximilian Lueer <maximilian.lueer@lht.dlh.de>
----
-Changelog:
-
-v2: Replaced disable_irq_nosync() with disable_irq() to prevent interrupts
-    that are currently being handled
-v3: Added changelog
-v4: Updated commit message to mention the addtional relation to commit
-    205d300aea75
----
-
-Commit 039d4926379b ("serial: 8250: Toggle IER bits on only after irq
-has been set up"), in combination with 205d300aea75 ("serial: 8250:
-change lock order in serial8250_do_startup()"), introduced a bug which
-showed in some of our devices after updating them to kernel
-5.15.169. These devices have an I2C touch screen which is behind an
-UART to I2C bridge. This bug lead to an ever growing latency on the
-bus, delaying the touch events by up to several seconds.
-
-Looking for other solutions than reverting commit 039d4926379b I found
-Peng Zhang's patch, backported it to 5.15 and could confirm that it
-solve the high delay issue.
-
-As this a quiet sever regression I'm taking the liberty to re-submit
-Peng Zhang's patch in the hope it will be considered for inclusion. I
-added the changelog requested by greg k-h's patch email bot after the
-v2 submission, as well as the mention of commit 205d300aea75 requested
-by Jiri Slaby after v3.
-
-Also please note that commit 039d4926379b was backported as far back as
-5.10, so quiet a few stable kernels are affected. This patch doesn't
-apply as-is on older kernels, I can provide a patch for 5.15 if desired.
-
-Alban Bedel
----
- drivers/tty/serial/8250/8250_port.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index cc94af2d578a6..a743964c9d227 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2147,8 +2147,7 @@ static void serial8250_THRE_test(struct uart_port *port)
- 	if (up->port.flags & UPF_NO_THRE_TEST)
- 		return;
- 
--	if (port->irqflags & IRQF_SHARED)
--		disable_irq_nosync(port->irq);
-+	disable_irq(port->irq);
- 
- 	/*
- 	 * Test for UARTs that do not reassert THRE when the transmitter is idle and the interrupt
-@@ -2170,8 +2169,7 @@ static void serial8250_THRE_test(struct uart_port *port)
- 		serial_port_out(port, UART_IER, 0);
- 	}
- 
--	if (port->irqflags & IRQF_SHARED)
--		enable_irq(port->irq);
-+	enable_irq(port->irq);
- 
- 	/*
- 	 * If the interrupt is not reasserted, or we otherwise don't trust the iir, setup a timer to
--- 
-2.39.5
+>
+> https://lore.kernel.org/all/a45eaddb-9e17-4e82-8a78-a1d1f6e3d735@linuxfou=
+ndation.org/
+>
+> Thanks,
+> Harshit
+>> Bastien Curutchet (eBPF Foundation) (4):
+>>    selftests/bpf: ns_current_pid_tgid: Rename the test function
+>>    selftests/bpf: Optionally open a dedicated namespace to run test in i=
+t
+>>    selftests/bpf: tc_links/tc_opts: Unserialize tests
+>>    selftests/bpf: ns_current_pid_tgid: Use test_progs's ns_ feature
+>>=20
+>> Martin KaFai Lau (1):
+>>    selftests/bpf: Test bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) when
+>>      transport_header is not set
+>>=20
+>>   .../selftests/bpf/prog_tests/check_mtu.c      | 23 ++++++++-
+>>   .../bpf/prog_tests/ns_current_pid_tgid.c      | 49 +++++++------------
+>>   .../selftests/bpf/prog_tests/tc_links.c       | 28 +++++------
+>>   .../selftests/bpf/prog_tests/tc_opts.c        | 40 +++++++--------
+>>   .../selftests/bpf/progs/test_check_mtu.c      | 12 +++++
+>>   tools/testing/selftests/bpf/test_progs.c      | 12 +++++
+>>   6 files changed, 98 insertions(+), 66 deletions(-)
+>>=20
 
 
