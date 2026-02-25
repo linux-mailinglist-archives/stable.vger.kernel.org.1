@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBV+EnNTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:11 +0100
+	id OIpfHyWgnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D51C18F861
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1349193078
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB6DB3076487
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCAE231C8EBF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B8C2652B7;
-	Wed, 25 Feb 2026 01:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3B2312805;
+	Wed, 25 Feb 2026 06:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anKWkLv2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9z+yJ3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAFE248881;
-	Wed, 25 Feb 2026 01:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C743115B8;
+	Wed, 25 Feb 2026 06:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983615; cv=none; b=B5o/WlXuaVyu2vquBVbem7R6/WYo8aqSHl2BcmrZKxZljK0M80ctGf6dWDJMLj4jCNzLqZ8oCL/dEezI6H8k7gDFyqTyfpPkGFGSvCDGbwtCTwqKvTebENlZVVtF2z82Ht40GQKTiAxQVnVix0ILbpTww8v21E/eil5NQuWJG6U=
+	t=1772002696; cv=none; b=P7qrsiTCidubgqeWSejkzZHI/btoZw37tEH8aPxAFlfUVXQG1UNLZGSwqaNZt2dSzycyf4tgXSq9X5BvsBakOArKmucjDVS9X+xYxkCbglwODc2jr2BIcM/Oy6BXX9B65vuX0oxQvpb6UMlp9LiY1Mv9Flk1+PQo0k2oFr+GNVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983615; c=relaxed/simple;
-	bh=LwDa6oK5stJkRqj0LqFLPCXMMh5q3jBSA0P+hm7gMEE=;
+	s=arc-20240116; t=1772002696; c=relaxed/simple;
+	bh=dIfRM7ntspt5ciRIoc0OYHkJI9pw6UcZKPs/1y7pCK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7wjPTodZg5FQuDogbP1v8AloSSiEll+R0RZ2nLYppnxpiNvb9pD3FQXssWZqyEQ+tk41F/tCbyFBcRA/1jRu3v8O3xFf8TaapYN/pZOkmG9ywk6cOiZ9kKzyjcrvn1WupmcRyv3M8aQfRynCLDGO7F2cpTAwaTURsTLtGevM6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anKWkLv2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D9CC116D0;
-	Wed, 25 Feb 2026 01:40:15 +0000 (UTC)
+	 MIME-Version; b=AlEE1CdIUVvLwpW9KXbWzdbXq82L/sd9W4leGt4G0/FGchF+hoFXCNHxmzXwwypkCM3QKJKWt15N3I8OTxB4lAqNGG//MNlgdl0jqaKih9etGdcCUpFd8pL8eBnOiui4L89YFdUdL2hq6zh2qwcUteqN9pBiIMWJHgyRnbuM2OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9z+yJ3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BB3C2BC86;
+	Wed, 25 Feb 2026 06:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983615;
-	bh=LwDa6oK5stJkRqj0LqFLPCXMMh5q3jBSA0P+hm7gMEE=;
+	s=korg; t=1772002696;
+	bh=dIfRM7ntspt5ciRIoc0OYHkJI9pw6UcZKPs/1y7pCK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=anKWkLv22a63HhGucyGEX9vZqgHfkSUon4FqgBzVnodigV0Zcy6yIFkA0e1QoGdjg
-	 VtrfFOydd9RBjcIJ90WLvEQhdKS2vr7w5IsBWN2sznd/4+VJTZ65dpTH1Vqpm8LbSN
-	 KBwh3rKNB044cWYTetVWRCBu+HjNTLoIJN0L5cAQ=
+	b=v9z+yJ3d1OyssxGfY6vJ14uMj1w0v0FVFz2sSzr5jw3N/zNBguw6ArqVgkrDPyOWI
+	 CrP0VJ+K3ediQp+w3BBAeNTzwIwSlvXJG4rt8losnz0Ae7vaug0PLf8jYk0m8qbK11
+	 9AzC+ya4SsR/942t8gymwuD4hZM42oUfazD9levE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	"Jesse.Zhang" <Jesse.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 709/781] drm/amdgpu/sdma5: enable queue resets unconditionally
-Date: Tue, 24 Feb 2026 17:23:38 -0800
-Message-ID: <20260225012417.139633530@linuxfoundation.org>
+Subject: [PATCH 6.18 493/641] leds: qcom-lpg: Check the return value of regmap_bulk_write()
+Date: Tue, 24 Feb 2026 17:23:39 -0800
+Message-ID: <20260225012400.463705832@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,77 +69,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218747-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219409-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 0D51C18F861
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: D1349193078
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 46a2cb7d24f21132e970cab52359210c3f5ea3c6 ]
+[ Upstream commit f42033b5ce8c79c5db645916c9a72ee3e10cecfa ]
 
-There is no firmware version dependency.
+The lpg_lut_store() function currently ignores the return value of
+regmap_bulk_write() and always returns 0. This can cause hardware write
+failures to go undetected, leading the caller to believe LUT programming
+succeeded when it may have failed.
 
-Fixes: 59fd50b8663b ("drm/amdgpu: Add sysfs interface for sdma reset mask")
-Cc: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Jesse.Zhang <Jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Check the return value of regmap_bulk_write() in lpg_lut_store and return
+the error to the caller on failure.
+
+Fixes: 24e2d05d1b68 ("leds: Add driver for Qualcomm LPG")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20260108175133.638-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v5_0.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ drivers/leds/rgb/leds-qcom-lpg.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v5_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v5_0.c
-index 8ddc4df06a1fd..45e2933214a80 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_0.c
-@@ -1424,18 +1424,9 @@ static int sdma_v5_0_sw_init(struct amdgpu_ip_block *ip_block)
+diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+index e197f548cddb0..a460782dadca4 100644
+--- a/drivers/leds/rgb/leds-qcom-lpg.c
++++ b/drivers/leds/rgb/leds-qcom-lpg.c
+@@ -369,7 +369,7 @@ static int lpg_lut_store(struct lpg *lpg, struct led_pattern *pattern,
+ {
+ 	unsigned int idx;
+ 	u16 val;
+-	int i;
++	int i, ret;
  
- 	adev->sdma.supported_reset =
- 		amdgpu_get_soft_full_reset_mask(&adev->sdma.instance[0].ring);
--	switch (amdgpu_ip_version(adev, SDMA0_HWIP, 0)) {
--	case IP_VERSION(5, 0, 0):
--	case IP_VERSION(5, 0, 2):
--	case IP_VERSION(5, 0, 5):
--		if ((adev->sdma.instance[0].fw_version >= 35) &&
--		    !amdgpu_sriov_vf(adev) &&
--		    !adev->debug_disable_gpu_ring_reset)
--			adev->sdma.supported_reset |= AMDGPU_RESET_TYPE_PER_QUEUE;
--		break;
--	default:
--		break;
--	}
-+	if (!amdgpu_sriov_vf(adev) &&
-+	    !adev->debug_disable_gpu_ring_reset)
-+		adev->sdma.supported_reset |= AMDGPU_RESET_TYPE_PER_QUEUE;
+ 	idx = bitmap_find_next_zero_area(lpg->lut_bitmap, lpg->lut_size,
+ 					 0, len, 0);
+@@ -379,8 +379,10 @@ static int lpg_lut_store(struct lpg *lpg, struct led_pattern *pattern,
+ 	for (i = 0; i < len; i++) {
+ 		val = pattern[i].brightness;
  
- 	/* Allocate memory for SDMA IP Dump buffer */
- 	ptr = kcalloc(adev->sdma.num_instances * reg_count, sizeof(uint32_t), GFP_KERNEL);
+-		regmap_bulk_write(lpg->map, lpg->lut_base + LPG_LUT_REG(idx + i),
+-				  &val, sizeof(val));
++		ret = regmap_bulk_write(lpg->map, lpg->lut_base + LPG_LUT_REG(idx + i),
++					&val, sizeof(val));
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	bitmap_set(lpg->lut_bitmap, idx, len);
 -- 
 2.51.0
 
