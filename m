@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-218470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id pELEDtlRnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:21 +0100
+	id uHpIJSFWnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-219036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912F018F0E0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E691901C5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22E3A305C8DD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 41F8230A0954
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3824243376;
-	Wed, 25 Feb 2026 01:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B46A2C237F;
+	Wed, 25 Feb 2026 01:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxfDcRTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUSmmX2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BE118B0A;
-	Wed, 25 Feb 2026 01:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86132C178D;
+	Wed, 25 Feb 2026 01:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983297; cv=none; b=adQ+HiBBznvhcKigohpU9l6eT/aICqMwmTPBCud6LddDk2D96E0xlsep12DSlAoK/R53JOHcMjbPx89NoPocoLi4M6ivhUF5uvNNRHAXdNSNKHj7+r3aQUfyRLkqIawhR9Bx17ujcYzpwbN4iDG1RIootZUDffF3ujk17cflERY=
+	t=1771983954; cv=none; b=Zsvs15PldqA2gWFb4zcHvOvNv9Nza5ccPazIizmFGjX48hdr+sWxP8JQYbKLac5kmpA4Bi7T2zEax/m9sbzvrYqtsi2tPXCEetshuC9kYa+RoU0v1Ko/IfHcxa8s77KoYwsKYWGDfOkbdvnsVbZj7ly/0EEePt8U4jtATptsz1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983297; c=relaxed/simple;
-	bh=/LEy7+5SgDy8E7DcgkQ8VJZrvEg6WU9h2NGdkQxOHS8=;
+	s=arc-20240116; t=1771983954; c=relaxed/simple;
+	bh=Em5vjysqGvSd61996NmG9063HzhpFyV2u/M7jIGcIJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHPhpwt9R0HJ7mchuOPMFOb2gFJr0B3otNxct7WsAm3HOnAr2wEOiLpO6N5UHluv8ocsQ4Xwxk9DLMHHTb1M8PuWmixJ0rvs84C29kiHiE478ifF7FTEpYsE1Hdl2wXME2kbEE5lSz5qngZztRZQxBSMGoXu+y0SjRRO5ZFOH/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxfDcRTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DABC116D0;
-	Wed, 25 Feb 2026 01:34:57 +0000 (UTC)
+	 MIME-Version; b=L0l2t0mb5r85jdWpx/AOiMWFv+LNCvMrD0LnspuK4xFyldU2ho9FuQz4YnyFkcO9nqMn2MGD1vrpc43rjcCs6fKSuTTw4OE6VMjRWmO/A7cawBsfLBWzNM2qfmvqfCq94d31pDdfUR1VeMbxnEodDmta91tfMOptxlNyb4i7OPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUSmmX2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E27C19423;
+	Wed, 25 Feb 2026 01:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983297;
-	bh=/LEy7+5SgDy8E7DcgkQ8VJZrvEg6WU9h2NGdkQxOHS8=;
+	s=korg; t=1771983954;
+	bh=Em5vjysqGvSd61996NmG9063HzhpFyV2u/M7jIGcIJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxfDcRTkFYhP4pX6b5dwaPBvwR3GK7H7nA5zQ9GwPAF+lxtuIWBU/vsdkWW3GVBjs
-	 UDx0clD2iRzh7bekRWVPqi6XyoEMbFmmVOHHxecFURJH4kyfNgfnSYd0h3BA8OLIIl
-	 +3sTA6uukM/7Jk6TwYWrzBs9H6SayhfuXjgF6oVA=
+	b=dUSmmX2g/xgcD20fKg/gPQmye8oXcJFuH7tJteKkjFw4dV9U12YclQGHSV7Di9ebN
+	 aGTDmzDZAsXdB9bvbkZdZjAS0wgyFeo+YqrJU0J/lZAOjcNA1XWD74aGlKjKMFhNCE
+	 DfTl+R9FNst3+F9wBCWk/AXixLiZRwVqRe/wRhh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 430/781] xfrm: fix ip_rt_bug race in icmp_route_lookup reverse path
+Subject: [PATCH 6.18 213/641] drm/msm/dp: Avoid division by zero in msm_dp_ctrl_config_msa()
 Date: Tue, 24 Feb 2026 17:18:59 -0800
-Message-ID: <20260225012410.244979086@linuxfoundation.org>
+Message-ID: <20260225012354.102203693@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,133 +67,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218470-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219036-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,e738404dcd14b620923c];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[shopee.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email]
-X-Rspamd-Queue-Id: 912F018F0E0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,intel.com:email,patchwork.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 44E691901C5
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 81b84de32bb27ae1ae2eb9acf0420e9d0d14bf00 ]
+[ Upstream commit f185076da44c774241a16a82a7773ece3c1c607b ]
 
-icmp_route_lookup() performs multiple route lookups to find a suitable
-route for sending ICMP error messages, with special handling for XFRM
-(IPsec) policies.
+An (admittedly problematic) optimization change in LLVM 20 [1] turns
+known division by zero into the equivalent of __builtin_unreachable(),
+which invokes undefined behavior if it is encountered in a control flow
+graph, destroying code generation. When compile testing for x86_64,
+objtool flags an instance of this optimization triggering in
+msm_dp_ctrl_config_msa(), inlined into msm_dp_ctrl_on_stream():
 
-The lookup sequence is:
-1. First, lookup output route for ICMP reply (dst = original src)
-2. Pass through xfrm_lookup() for policy check
-3. If blocked (-EPERM) or dst is not local, enter "reverse path"
-4. In reverse path, call xfrm_decode_session_reverse() to get fl4_dec
-   which reverses the original packet's flow (saddr<->daddr swapped)
-5. If fl4_dec.saddr is local (we are the original destination), use
-   __ip_route_output_key() for output route lookup
-6. If fl4_dec.saddr is NOT local (we are a forwarding node), use
-   ip_route_input() to simulate the reverse packet's input path
-7. Finally, pass rt2 through xfrm_lookup() with XFRM_LOOKUP_ICMP flag
+  drivers/gpu/drm/msm/msm.o: warning: objtool: msm_dp_ctrl_on_stream(): unexpected end of section .text.msm_dp_ctrl_on_stream
 
-The bug occurs in step 6: ip_route_input() is called with fl4_dec.daddr
-(original packet's source) as destination. If this address becomes local
-between the initial check and ip_route_input() call (e.g., due to
-concurrent "ip addr add"), ip_route_input() returns a LOCAL route with
-dst.output set to ip_rt_bug.
+The zero division happens if the else branch in the first if statement
+in msm_dp_ctrl_config_msa() is taken because pixel_div is initialized to
+zero and it is not possible for LLVM to eliminate the else branch since
+rate is still not known after inlining into msm_dp_ctrl_on_stream().
 
-This route is then used for ICMP output, causing dst_output() to call
-ip_rt_bug(), triggering a WARN_ON:
+Transform the if statements into a switch statement with a default case
+with the existing error print and an early return to avoid the invalid
+division. Add a comment to note this helps the compiler, even though the
+case is known to be unreachable. With this, pixel_dev's default zero
+initialization can be dropped, as it is dead with this change.
 
- ------------[ cut here ]------------
- WARNING: net/ipv4/route.c:1275 at ip_rt_bug+0x21/0x30, CPU#1
- Call Trace:
-  <TASK>
-  ip_push_pending_frames+0x202/0x240
-  icmp_push_reply+0x30d/0x430
-  __icmp_send+0x1149/0x24f0
-  ip_options_compile+0xa2/0xd0
-  ip_rcv_finish_core+0x829/0x1950
-  ip_rcv+0x2d7/0x420
-  __netif_receive_skb_one_core+0x185/0x1f0
-  netif_receive_skb+0x90/0x450
-  tun_get_user+0x3413/0x3fb0
-  tun_chr_write_iter+0xe4/0x220
-  ...
-
-Fix this by checking rt2->rt_type after ip_route_input(). If it's
-RTN_LOCAL, the route cannot be used for output, so treat it as an error.
-
-The reproducer requires kernel modification to widen the race window,
-making it unsuitable as a selftest. It is available at:
-
-  https://gist.github.com/mrpre/eae853b72ac6a750f5d45d64ddac1e81
-
-Reported-by: syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000b1060905eada8881@google.com/T/
-Closes: https://lore.kernel.org/r/20260128090523.356953-1-jiayuan.chen@linux.dev
-Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260206050220.59642-1-jiayuan.chen@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Link: https://github.com/llvm/llvm-project/commit/37932643abab699e8bb1def08b7eb4eae7ff1448 [1]
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202601081959.9UVJEOfP-lkp@intel.com/
+Suggested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/698355/
+Link: https://lore.kernel.org/r/20260113-drm-msm-dp_ctrl-avoid-zero-div-v2-1-f1aa67bf6e8e@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/icmp.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/gpu/drm/msm/dp/dp_ctrl.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 4acbbc703e798..a2cff16668d72 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -554,6 +554,21 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
- 		/* steal dst entry from skb_in, don't drop refcnt */
- 		skb_dstref_steal(skb_in);
- 		skb_dstref_restore(skb_in, orefdst);
-+
-+		/*
-+		 * At this point, fl4_dec.daddr should NOT be local (we
-+		 * checked fl4_dec.saddr above). However, a race condition
-+		 * may occur if the address is added to the interface
-+		 * concurrently. In that case, ip_route_input() returns a
-+		 * LOCAL route with dst.output=ip_rt_bug, which must not
-+		 * be used for output.
-+		 */
-+		if (!err && rt2 && rt2->rt_type == RTN_LOCAL) {
-+			net_warn_ratelimited("detected local route for %pI4 during ICMP sending, src %pI4\n",
-+					     &fl4_dec.daddr, &fl4_dec.saddr);
-+			dst_release(&rt2->dst);
-+			err = -EINVAL;
-+		}
- 	}
+diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+index c42fd2c17a328..38ed4de8313e3 100644
+--- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
++++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+@@ -2395,20 +2395,32 @@ static void msm_dp_ctrl_config_msa(struct msm_dp_ctrl_private *ctrl,
+ 			       bool is_ycbcr_420)
+ {
+ 	u32 pixel_m, pixel_n;
+-	u32 mvid, nvid, pixel_div = 0, dispcc_input_rate;
++	u32 mvid, nvid, pixel_div, dispcc_input_rate;
+ 	u32 const nvid_fixed = DP_LINK_CONSTANT_N_VALUE;
+ 	u32 const link_rate_hbr2 = 540000;
+ 	u32 const link_rate_hbr3 = 810000;
+ 	unsigned long den, num;
  
- 	if (err)
+-	if (rate == link_rate_hbr3)
++	switch (rate) {
++	case link_rate_hbr3:
+ 		pixel_div = 6;
+-	else if (rate == 162000 || rate == 270000)
+-		pixel_div = 2;
+-	else if (rate == link_rate_hbr2)
++		break;
++	case link_rate_hbr2:
+ 		pixel_div = 4;
+-	else
++		break;
++	case 162000:
++	case 270000:
++		pixel_div = 2;
++		break;
++	default:
++		/*
++		 * This cannot be reached but the compiler is not able to know
++		 * that statically so return early to avoid a possibly invalid
++		 * division.
++		 */
+ 		DRM_ERROR("Invalid pixel mux divider\n");
++		return;
++	}
+ 
+ 	dispcc_input_rate = (rate * 10) / pixel_div;
+ 
 -- 
 2.51.0
 
