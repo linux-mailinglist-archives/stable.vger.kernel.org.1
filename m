@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YK9fGK9WnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:59 +0100
+	id EJCkAehRnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2781903A1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A72F318F11B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4021E319DCAC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E98AD30A5E70
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578E8286D70;
-	Wed, 25 Feb 2026 01:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8CB1E2834;
+	Wed, 25 Feb 2026 01:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6gqwcZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQLySLLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B87C263C7F;
-	Wed, 25 Feb 2026 01:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE5718DB2A;
+	Wed, 25 Feb 2026 01:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983820; cv=none; b=nzyGCKb5TclQulI33YPFV+49DslthwhdzR++XHPvxxoygucu+yUYaCBwv7mYwyhjR9tX/R0aYlqmyhmndVCa/vJQgTAg+4L4JyUoOD2H4+eeM8E3x41shRApuyGJi2G/PY5dZCSpxbXRGkzNpkrKqm9KptuMDHbrNxisbAUHESE=
+	t=1771983170; cv=none; b=eCucX1ETlMwGXjFHBYwHbp9R7RzLiQXQzfHH+ZKIBlDUj8xeorRfzsNUcrawg1EE6Cy4NQ3erNWwguOwlBB8M6aw7QcPDd2+EaXk+aSttUjqBZc7FM7pjlS7Z0wuGUcxMaIzTBEXYWTG/tytOEwxAAwWAPrZiTGVv03/y34Zhg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983820; c=relaxed/simple;
-	bh=GIblY3GZGMcVr7UfIsfREdJJrx2MYrAlv7qxAeRqBeU=;
+	s=arc-20240116; t=1771983170; c=relaxed/simple;
+	bh=Qn5hclG+WB+ZkAxZLLjTDbsGQhiNqe0Y2UU+Bo2UnH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgL5bEVf0hmItqV5+5I+8dzlELWDFrQqL6AeWeoPegl9Ta0JIb/4j/wwaqk70bvGFr4ehTbecMYbxRAWaPgTlKC98Wm+TKsE8e4i5QyOxaiyVkDFC5aJFv2cw8N0ZVgm2NbJ+CsHfbkyDSR3TOUP7b/s0AHVKB4Et5vSol3rHCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6gqwcZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DAAC116D0;
-	Wed, 25 Feb 2026 01:43:39 +0000 (UTC)
+	 MIME-Version; b=FSxIdXXE8qJHwRzn80if+7NwqdmjJ7i6jBvE3NGcH17eszPMOdwwubAUpQBj5yAkAemg7T+hFYnG9IMQDluocjwgAdOTNx4lhJhENDOXqWV6W4nRwnKOXjK0rwWmYc6tgIYHVGKNeIHLIfPfXhJ+zBE0nWNO8X4VV7MVGMtQApY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQLySLLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E320BC116D0;
+	Wed, 25 Feb 2026 01:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983820;
-	bh=GIblY3GZGMcVr7UfIsfREdJJrx2MYrAlv7qxAeRqBeU=;
+	s=korg; t=1771983170;
+	bh=Qn5hclG+WB+ZkAxZLLjTDbsGQhiNqe0Y2UU+Bo2UnH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y6gqwcZLWAiUQ/8bimHZ89uf161ye0PiDkkX6Xiff71+xlXm0k1IEZh0EiTYkxrel
-	 0NSXlQa2PY+Jj06TwNTTywIgAegid/rK9OH+5R6RcsYRNHgTyQUixOO4VnqHM5X/ip
-	 LELwUqvY4so0//HlDcJupDZAqCZgkcUSqTGTYabo=
+	b=xQLySLLHt8E7gORhkHo2xA1h7EwkHRxCBBMKqhl8UPK2NNqhMuOSyp/reQZCF8nLj
+	 w+1qLkvLc5f7rslBqKAdYJhqzP+tKfO5l7jL8KHjutcSQZBZ879/v8Od2uPuBNtWHA
+	 sAKuEszSz9E+vgjsRN6OfL1ebw4RkQ4q6b4ef8ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Brian Norris <briannorris@google.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 104/641] bpf: Fix bpf_xdp_store_bytes proto for read-only arg
-Date: Tue, 24 Feb 2026 17:17:10 -0800
-Message-ID: <20260225012351.636125097@linuxfoundation.org>
+Subject: [PATCH 6.19 322/781] PCI/PM: Avoid redundant delays on D3hot->D3cold
+Date: Tue, 24 Feb 2026 17:17:11 -0800
+Message-ID: <20260225012407.600277934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +66,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218925-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218360-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.962];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BA2781903A1
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,chromium.org:email]
+X-Rspamd-Queue-Id: A72F318F11B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Brian Norris <briannorris@google.com>
 
-[ Upstream commit 6557f1565d779851c4db9c488c49c05a47a6e72f ]
+[ Upstream commit 4d982084507d663df160546c4c48066a8887ed89 ]
 
-While making some maps in Cilium read-only from the BPF side, we noticed
-that the bpf_xdp_store_bytes proto is incorrect. In particular, the
-verifier was throwing the following error:
+When transitioning to D3cold, __pci_set_power_state() first transitions to
+D3hot. If the device was already in D3hot, this adds excess work:
 
-  ; ret = ctx_store_bytes(ctx, l3_off + offsetof(struct iphdr, saddr),
-                          &nat->address, 4, 0);
-  635: (79) r1 = *(u64 *)(r10 -144)     ; R1=ctx() R10=fp0 fp-144=ctx()
-  636: (b4) w2 = 26                     ; R2=26
-  637: (b4) w4 = 4                      ; R4=4
-  638: (b4) w5 = 0                      ; R5=0
-  639: (85) call bpf_xdp_store_bytes#190
-  write into map forbidden, value_size=6 off=0 size=4
+  (a) read/modify/write PMCSR; and
+  (b) excess delay (pci_dev_d3_sleep()).
 
-nat comes from a BPF_F_RDONLY_PROG map, so R3 is a PTR_TO_MAP_VALUE.
-The verifier checks the helper's memory access to R3 in
-check_mem_size_reg, as it reaches ARG_CONST_SIZE argument. The third
-argument has expected type ARG_PTR_TO_UNINIT_MEM, which includes the
-MEM_WRITE flag. The verifier thus checks for a BPF_WRITE access on R3.
-Given R3 points to a read-only map, the check fails.
+For (b), we already performed the necessary delay on the previous D3hot
+entry; this was extra noticeable when evaluating runtime PM transition
+latency.
 
-Conversely, ARG_PTR_TO_UNINIT_MEM can also lead to the helper reading
-from uninitialized memory.
+Check whether we're already in the target state before continuing.
 
-This patch simply fixes the expected argument type to match that of
-bpf_skb_store_bytes.
+Note that __pci_set_power_state() already does this same check for other
+state transitions, but D3cold is special because __pci_set_power_state()
+converts it to D3hot for the purposes of PMCSR.
 
-Fixes: 3f364222d032 ("net: xdp: introduce bpf_xdp_pointer utility routine")
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/9fa3c9f72d806e82541071c4df88b8cba28ad6a9.1769875479.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+This seems to be an oversight in commit 0aacdc957401 ("PCI/PM: Clean up
+pci_set_low_power_state()").
+
+Fixes: 0aacdc957401 ("PCI/PM: Clean up pci_set_low_power_state()")
+Signed-off-by: Brian Norris <briannorris@google.com>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+[bhelgaas: reverse test to match other "dev->current_state == state" cases]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20251003154008.1.I7a21c240b30062c66471329567a96dceb6274358@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b9a51f322b655..d93f7dea828e5 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4133,7 +4133,7 @@ static const struct bpf_func_proto bpf_xdp_store_bytes_proto = {
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
- 	.arg2_type	= ARG_ANYTHING,
--	.arg3_type	= ARG_PTR_TO_UNINIT_MEM,
-+	.arg3_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
- 	.arg4_type	= ARG_CONST_SIZE,
- };
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 13dbb405dc31f..86ccbd0efb495 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1488,6 +1488,9 @@ static int pci_set_low_power_state(struct pci_dev *dev, pci_power_t state, bool
+ 	   || (state == PCI_D2 && !dev->d2_support))
+ 		return -EIO;
  
++	if (dev->current_state == state)
++		return 0;
++
+ 	pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
+ 	if (PCI_POSSIBLE_ERROR(pmcsr)) {
+ 		pci_err(dev, "Unable to change power state from %s to %s, device inaccessible\n",
 -- 
 2.51.0
 
