@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-218629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218631-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BvtDRBVnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:04 +0100
+	id yA68NfpSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218631-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EC518FEC9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 943BE18F632
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C237C3010914
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B54893084593
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B67825A642;
-	Wed, 25 Feb 2026 01:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566BC1E2834;
+	Wed, 25 Feb 2026 01:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/5El8eQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQ7K1tSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22671E2834;
-	Wed, 25 Feb 2026 01:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196DB1D5141;
+	Wed, 25 Feb 2026 01:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983477; cv=none; b=cbRq5CFe8M1GLmkOPN+AwK/F8aCCaSc9gqxYzzl2ChENvnQKTJ9yCFYLBATSioET+GuielPmgUSdNKdpZ2RbVjRoQFgTXFckokOrQ3B0ew5p3BKlop224lPmofFjozJjlvESNNRtj53zb4VwUSXTWpk2MQDZZdG4l0BGaFKilBs=
+	t=1771983480; cv=none; b=HnLfKawFAeNxtXU2CrHodyRAHcA/+6S1UKBjzyqzmpEU5aN+vjsk1YD1CbqSbtbxeiDmmBH1az+H4zJds+T7KezU3oI7yqMepRXx63Aq0nlIpVE5LINyaVn2BvG8irPr1xV+aM2yviCpJyJ9ROVxifTguJq5LwOjZkgkux46ukk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983477; c=relaxed/simple;
-	bh=P3oUGoQqf7MiaVUlycS6VvfSp6+3+yoeKfEXxchKi70=;
+	s=arc-20240116; t=1771983480; c=relaxed/simple;
+	bh=0AMItDpuyvpODM0mtGdLyzbzSK/+Lu11ObU9aicywSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LtRRtjGN616ewg09L9Jt8sfwJqbptmtm55gcTRXmQ0ULpl+LqeoEQni72An1BVBMvxYbrcvHYWpcCUirSIoO5+V7QUvLmIUwwbgPIGq8VAoh9J+UmKO2hXTkrh+3m7InGihFToxkObvpo13jMd5nUCtdobBuAmh9ABkKjqTIu8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/5El8eQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83473C116D0;
-	Wed, 25 Feb 2026 01:37:57 +0000 (UTC)
+	 MIME-Version; b=gChtQllnXogLPsKmaJrPWpdxC/QVFXWgNiY9FMeCaa59R1KJ7oMhJkqfWR1ywLlFJdP6YP2pFvjjWWRpfroc+apDpSVKLbqCdjndk+AOc95VmzueMMPNiRuHHwI3eGOprzjpGCTuhUAMQ75ZI3SZsrMIcicTuciJn44u8l7Ta8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ7K1tSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0327C116D0;
+	Wed, 25 Feb 2026 01:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983477;
-	bh=P3oUGoQqf7MiaVUlycS6VvfSp6+3+yoeKfEXxchKi70=;
+	s=korg; t=1771983480;
+	bh=0AMItDpuyvpODM0mtGdLyzbzSK/+Lu11ObU9aicywSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/5El8eQacIdw2/F5CGjLom84ijz9Q1s0mHSsgcIaGA+6ldZhIp0PygHmQMA5ycVz
-	 h7+nYWngVDnCquwrAEi1ZeD+Ifpoo+cKpI6n3+xtrjqyyHSZmDey+jEBgqQlR0vNeI
-	 qkwIsuKaCsrAlJmGGNNsnSTYsHadB9E+WVlu6edw=
+	b=CQ7K1tSLy+iKBoxKUHYCMcuScGob9nI2l9oPSpTkGlZykFMGHm3FJQ9aEpeQbsvRd
+	 VHZqq2oJLAcY6uTca+fT5kxt+OJIjzmvxLvWhHSWesNHtDiUCDN7Bqq8oC3hSc04WE
+	 HiSUzK8lDw3bPiAOVBLdhk7Xo5zFXsKVNjOj+4Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 592/781] drivers: iio: mpu3050: use dev_err_probe for regulator request
-Date: Tue, 24 Feb 2026 17:21:41 -0800
-Message-ID: <20260225012414.318077716@linuxfoundation.org>
+Subject: [PATCH 6.19 593/781] usb: bdc: fix sleep during atomic
+Date: Tue, 24 Feb 2026 17:21:42 -0800
+Message-ID: <20260225012414.342166899@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -70,71 +69,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,huawei.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218629-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-218631-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 89EC518FEC9
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 943BE18F632
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Svyatoslav Ryhel <clamor95@gmail.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit b010880b9936da14f8035585ab57577aa05be23a ]
+[ Upstream commit f1195ca3b4bbd001d3f1264dce91f83dec7777f5 ]
 
-Regulator requesting may result in deferred probing error which will
-abort driver probing. To avoid this just use dev_err_probe which handles
-deferred probing.
+bdc_run() can be ran during atomic context leading to a sleep during
+atomic warning. Fix this by replacing read_poll_timeout() with
+read_poll_timeout_atomic().
 
-Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 75ae051efc9b ("usb: gadget: bdc: use readl_poll_timeout() to simplify code")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20260120200754.2488765-1-justin.chen@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/gyro/mpu3050-core.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/udc/bdc/bdc_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
-index 67ae7d1012bc2..ee2fcd20545de 100644
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -1162,10 +1162,8 @@ int mpu3050_common_probe(struct device *dev,
- 	mpu3050->regs[1].supply = mpu3050_reg_vlogic;
- 	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(mpu3050->regs),
- 				      mpu3050->regs);
--	if (ret) {
--		dev_err(dev, "Cannot get regulators\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Cannot get regulators\n");
+diff --git a/drivers/usb/gadget/udc/bdc/bdc_core.c b/drivers/usb/gadget/udc/bdc/bdc_core.c
+index 5c3d8b64c0e76..f47aac078f6be 100644
+--- a/drivers/usb/gadget/udc/bdc/bdc_core.c
++++ b/drivers/usb/gadget/udc/bdc/bdc_core.c
+@@ -35,8 +35,8 @@ static int poll_oip(struct bdc *bdc, u32 usec)
+ 	u32 status;
+ 	int ret;
  
- 	ret = mpu3050_power_up(mpu3050);
+-	ret = readl_poll_timeout(bdc->regs + BDC_BDCSC, status,
+-				 (BDC_CSTS(status) != BDC_OIP), 10, usec);
++	ret = readl_poll_timeout_atomic(bdc->regs + BDC_BDCSC, status,
++					(BDC_CSTS(status) != BDC_OIP), 10, usec);
  	if (ret)
+ 		dev_err(bdc->dev, "operation timedout BDCSC: 0x%08x\n", status);
+ 	else
 -- 
 2.51.0
 
