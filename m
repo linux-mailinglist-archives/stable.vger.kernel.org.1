@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-218582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219250-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICxSFsdTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:35 +0100
+	id AKofBG2enmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219250-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B426C18FA07
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67638192C70
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40A35316BA83
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B31D53114909
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B72256C8B;
-	Wed, 25 Feb 2026 01:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8473E2C17A0;
+	Wed, 25 Feb 2026 06:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tQGFw8f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRrlR/sE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A081D5141;
-	Wed, 25 Feb 2026 01:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F282C0F97;
+	Wed, 25 Feb 2026 06:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983425; cv=none; b=iPUXDWFLHD55UllDNOFZa5DfVy0B0b7pQLWT1ofr3BV2GBcMdWgZ4BRI8QDnnMh9+PS0ox2GpuLPaQAKpBlAza1GTEfXmVMdyJjf/qDlaU4zbEfT6J/VWti88QiTWwqIfqfKaUsyQiG79ttAjF2VHIDVy45vjpEDOlz359lHbfU=
+	t=1772002593; cv=none; b=SwnNB2g3KHLMOgO/jirORkxxIe8KFGI/uXK85jkECbXDmlvGs1bPSDqT3nTq6V+JaCjJWVi/NPWlmlRDWzYbSkg0TY/741vAnx4CpzaZ9R6WonPuQxtTt52Fto27UfkU0zY8tJ7wPRN5hnHwyqaEsOqVQ0ve+dB1i9C+WACIgOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983425; c=relaxed/simple;
-	bh=0vrZy/EgWo7zmZCOknJq3s6cw+Y2P0ty0RUC5dd4TI8=;
+	s=arc-20240116; t=1772002593; c=relaxed/simple;
+	bh=p42xfq0UVJprT5HtP10XaYlea1B0iLDvbMGYVnl9Xyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KdTnrnWyCJq9SKwH5GrTKVFlnBdvKrh55whRS3NMD/5MygKAAa7Qr82AQn3wc878JqLJwrbRiZmBETop9VCVdc33Md+N5hqGoiZs1vGAolfgvGi9yQkRYd7QNg/1hjWLIJ174xoqL8jYFH/1JTFSU5hD6iQbcoPVFk83NdsAmAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tQGFw8f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B4FC116D0;
-	Wed, 25 Feb 2026 01:37:04 +0000 (UTC)
+	 MIME-Version; b=V0PWKXqyytimfooEgAYuel5T4dGfpLh+iWXrI/NrxUc3qx3hKCpA2D+m6L5335y1Oi7V0PFeLmgwQpxCxXAQJoB73hG8Mb+FxdG5+SyRDIDYmxSjLOvD6VJh5b9zz/kiNtu9hNF0buisNQTsd8ZZMn0EHlf+f2wQFARVb4dI+Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRrlR/sE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7113C116D0;
+	Wed, 25 Feb 2026 06:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983424;
-	bh=0vrZy/EgWo7zmZCOknJq3s6cw+Y2P0ty0RUC5dd4TI8=;
+	s=korg; t=1772002592;
+	bh=p42xfq0UVJprT5HtP10XaYlea1B0iLDvbMGYVnl9Xyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0tQGFw8fwOTzqtvxBvBWtHNK/1w33sQYXmWBhu1sMNrPD6EiaG8uPS/5mh2Q5ztfM
-	 TurLvgxIvM31VLdK0WJ2hRUkhSxgcllE3kOFLvKsizbjZj4ZMXJAsesH/T3WYPAQ3a
-	 bmOh+DsDQx6BrpmX51kPyS6UMIRPy7IWfgAYs708=
+	b=oRrlR/sEuS0sxgq8MxrAyGsNg6Pp0VPPr3CZcheWR4BWGWmeiY72MGIfVHPCRUJTq
+	 m2cdpLrpTP4Neu8oh0CWaiswCdDH085of6vmTR/072gWzsBmiUD2hOx/mNr9j4Ak/2
+	 zbdOZvNkm7LmCaItBNsUU6IZRhYoBJhh81aGPcSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
+	syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 545/781] clk: nuvoton: ma35d1-divider: convert from divider_round_rate() to divider_determine_rate()
+Subject: [PATCH 6.18 328/641] xfrm: fix ip_rt_bug race in icmp_route_lookup reverse path
 Date: Tue, 24 Feb 2026 17:20:54 -0800
-Message-ID: <20260225012413.162878571@linuxfoundation.org>
+Message-ID: <20260225012356.639686670@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +67,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218582-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219250-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B426C18FA07
+	TAGGED_RCPT(0.00)[stable,e738404dcd14b620923c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 67638192C70
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit 9329d784ca9aad03b12508128797d40fd1f2e0c1 ]
+[ Upstream commit 81b84de32bb27ae1ae2eb9acf0420e9d0d14bf00 ]
 
-The divider_round_rate() function is now deprecated, so let's migrate
-to divider_determine_rate() instead so that this deprecated API can be
-removed.
+icmp_route_lookup() performs multiple route lookups to find a suitable
+route for sending ICMP error messages, with special handling for XFRM
+(IPsec) policies.
 
-Note that when the main function itself was migrated to use
-determine_rate, this was mistakenly converted to:
+The lookup sequence is:
+1. First, lookup output route for ICMP reply (dst = original src)
+2. Pass through xfrm_lookup() for policy check
+3. If blocked (-EPERM) or dst is not local, enter "reverse path"
+4. In reverse path, call xfrm_decode_session_reverse() to get fl4_dec
+   which reverses the original packet's flow (saddr<->daddr swapped)
+5. If fl4_dec.saddr is local (we are the original destination), use
+   __ip_route_output_key() for output route lookup
+6. If fl4_dec.saddr is NOT local (we are a forwarding node), use
+   ip_route_input() to simulate the reverse packet's input path
+7. Finally, pass rt2 through xfrm_lookup() with XFRM_LOOKUP_ICMP flag
 
-    req->rate = divider_round_rate(...)
+The bug occurs in step 6: ip_route_input() is called with fl4_dec.daddr
+(original packet's source) as destination. If this address becomes local
+between the initial check and ip_route_input() call (e.g., due to
+concurrent "ip addr add"), ip_route_input() returns a LOCAL route with
+dst.output set to ip_rt_bug.
 
-This is invalid in the case when an error occurs since it can set the
-rate to a negative value.
+This route is then used for ICMP output, causing dst_output() to call
+ip_rt_bug(), triggering a WARN_ON:
 
-Fixes: 215f8aa095a1 ("clk: nuvoton: ma35d1-divider: convert from round_rate() to determine_rate()")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+ ------------[ cut here ]------------
+ WARNING: net/ipv4/route.c:1275 at ip_rt_bug+0x21/0x30, CPU#1
+ Call Trace:
+  <TASK>
+  ip_push_pending_frames+0x202/0x240
+  icmp_push_reply+0x30d/0x430
+  __icmp_send+0x1149/0x24f0
+  ip_options_compile+0xa2/0xd0
+  ip_rcv_finish_core+0x829/0x1950
+  ip_rcv+0x2d7/0x420
+  __netif_receive_skb_one_core+0x185/0x1f0
+  netif_receive_skb+0x90/0x450
+  tun_get_user+0x3413/0x3fb0
+  tun_chr_write_iter+0xe4/0x220
+  ...
+
+Fix this by checking rt2->rt_type after ip_route_input(). If it's
+RTN_LOCAL, the route cannot be used for output, so treat it as an error.
+
+The reproducer requires kernel modification to widen the race window,
+making it unsuitable as a selftest. It is available at:
+
+  https://gist.github.com/mrpre/eae853b72ac6a750f5d45d64ddac1e81
+
+Reported-by: syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000b1060905eada8881@google.com/T/
+Closes: https://lore.kernel.org/r/20260128090523.356953-1-jiayuan.chen@linux.dev
+Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260206050220.59642-1-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/nuvoton/clk-ma35d1-divider.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ net/ipv4/icmp.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/clk/nuvoton/clk-ma35d1-divider.c b/drivers/clk/nuvoton/clk-ma35d1-divider.c
-index e39f53d5bf457..e992e7c303419 100644
---- a/drivers/clk/nuvoton/clk-ma35d1-divider.c
-+++ b/drivers/clk/nuvoton/clk-ma35d1-divider.c
-@@ -44,11 +44,8 @@ static int ma35d1_clkdiv_determine_rate(struct clk_hw *hw,
- {
- 	struct ma35d1_adc_clk_div *dclk = to_ma35d1_adc_clk_div(hw);
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 8e10e9e7676c5..9323ee0a6ac48 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -554,6 +554,21 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+ 		/* steal dst entry from skb_in, don't drop refcnt */
+ 		skb_dstref_steal(skb_in);
+ 		skb_dstref_restore(skb_in, orefdst);
++
++		/*
++		 * At this point, fl4_dec.daddr should NOT be local (we
++		 * checked fl4_dec.saddr above). However, a race condition
++		 * may occur if the address is added to the interface
++		 * concurrently. In that case, ip_route_input() returns a
++		 * LOCAL route with dst.output=ip_rt_bug, which must not
++		 * be used for output.
++		 */
++		if (!err && rt2 && rt2->rt_type == RTN_LOCAL) {
++			net_warn_ratelimited("detected local route for %pI4 during ICMP sending, src %pI4\n",
++					     &fl4_dec.daddr, &fl4_dec.saddr);
++			dst_release(&rt2->dst);
++			err = -EINVAL;
++		}
+ 	}
  
--	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
--				       dclk->table, dclk->width,
--				       CLK_DIVIDER_ROUND_CLOSEST);
--
--	return 0;
-+	return divider_determine_rate(hw, req, dclk->table, dclk->width,
-+				      CLK_DIVIDER_ROUND_CLOSEST);
- }
- 
- static int ma35d1_clkdiv_set_rate(struct clk_hw *hw, unsigned long rate, unsigned long parent_rate)
+ 	if (err)
 -- 
 2.51.0
 
