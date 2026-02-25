@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KpMLGpUnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:18 +0100
+	id qGMhMvhRnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CCDF18FCAD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015D618F15B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5B8A930BF68D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 330FB306FD1D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D603248881;
-	Wed, 25 Feb 2026 01:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F5A251795;
+	Wed, 25 Feb 2026 01:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlEJQiHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CovG9P0y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0170128851F;
-	Wed, 25 Feb 2026 01:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8FD242D9B;
+	Wed, 25 Feb 2026 01:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983753; cv=none; b=snOFHFaIcsSc5pI3cP4AQzJKa05iByH6anbhadFEAD/4shWdssx2W0ED3LVNRYnTzX+Bq/rduO/u+jtk658TRhVowAZX5Qn5IajuTRm300fWGsO94Eb1QklAEhhO9nJEt0FCUTd3ZnwzCfS6U0E71YeYxLhlq1KQcWrTu9z6z4Q=
+	t=1771983061; cv=none; b=GIRpm2EWTI89IkHEoMD9IwQ7wbUNuf3xF9TgHDHeg4BhzBCLKTmG1Ee0Uc7sxB4GfR2W4eb5wP61wmkGChwVI151Of8x3d89JV/YuEKDbfYLKyWvy5ZqhRQNT5mSwgsTfA6+5B+uWowkcLC083S5lbQZ/iPt5i0U+pYESHyMpkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983753; c=relaxed/simple;
-	bh=88dZP/FQuW/wvsCe+aIuzgrjWmoR1rgac8IKIWWHBVw=;
+	s=arc-20240116; t=1771983061; c=relaxed/simple;
+	bh=HACOBU0PkeCXYIEwN0xeDGuZBQV3QuswPVk2JTSazQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVG/ZeE6h6E6dsLJ7+2fdeJIvTpB43Op7C+EFbtVFBCbE1Xqx6YYJ7tD3FaVc57845VqEdc3250Q5RWVuPmPClv64SHddcRHLdtj6Wa3nAoNOomcbzxNegugyziDqvnHMf2eN+cnX5gbjtn4DVGuFZLjPoTD+j63Tm9SlPOenGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlEJQiHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05D7C19423;
-	Wed, 25 Feb 2026 01:42:32 +0000 (UTC)
+	 MIME-Version; b=UEc/6gFWOPTKKmiad2jZM82kYHphNtt7s4gCMyxdrV84yqqdwoGiUc0hgVS//bIR26r+IaqwqjCXufX2mkUUmD6Rr2rVDkaA1+RusXjZNTOjpfMOEDUtlWMP9MeUUghy53tLVt0/Xpzc5SrwZo8HYXNCoHGYmmsjYh3Ugh4klHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CovG9P0y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6885C116D0;
+	Wed, 25 Feb 2026 01:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983752;
-	bh=88dZP/FQuW/wvsCe+aIuzgrjWmoR1rgac8IKIWWHBVw=;
+	s=korg; t=1771983060;
+	bh=HACOBU0PkeCXYIEwN0xeDGuZBQV3QuswPVk2JTSazQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JlEJQiHvEP1P/yXoNwtYTdWT7bYhDVsI73rIfiPnEEApVFVKwDf6EZ6TeZ9dcJU0L
-	 Zz2OZYgkmW0FAHiFMrjhcb/8gHtwVUYyiQZfHogCpozje/RLpzfb3OUthFcvkEtn8z
-	 7/W/NGCzzdQcsRD7/Uz+aC/5wCnZ2cfswLg772Fo=
+	b=CovG9P0yyU/Lrxrxr66j7B2RlHuJkvIt/eSQ0+IXunX4iEYsa9EgD9eKZ3Q1fLgu+
+	 Spn+wKhkxFb8MvGBw3+pghV+eITyvaJXrM+mQFszpFdZu98FH5lkSxZ8v8+FHbSFAa
+	 PGEoyHiClS5V9c/aHi+Umv7IInwyQ+b0P9O1O77I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaochen Shen <shenxiaochen@open-hieco.net>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Fenghua Yu <fenghuay@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Karunika Choo <karunika.choo@arm.com>,
+	Liviu Dudau <liviu@dudau.co.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 007/641] selftests/resctrl: Fix a division by zero error on Hygon
-Date: Tue, 24 Feb 2026 17:15:33 -0800
-Message-ID: <20260225012349.117826556@linuxfoundation.org>
+Subject: [PATCH 6.19 225/781] drm/panthor: Fix NULL pointer dereference on panthor_fw_unplug
+Date: Tue, 24 Feb 2026 17:15:34 -0800
+Message-ID: <20260225012405.231027428@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218867-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218262-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,78 +87,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,intel.com:email,nvidia.com:email]
-X-Rspamd-Queue-Id: 5CCDF18FCAD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,collabora.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,dudau.co.uk:email]
+X-Rspamd-Queue-Id: 015D618F15B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaochen Shen <shenxiaochen@open-hieco.net>
+From: Karunika Choo <karunika.choo@arm.com>
 
-[ Upstream commit 671ef08d9455f5754d1fc96f5a14e357d6b80936 ]
+[ Upstream commit 920c6af98e98e6afedf6318a75bac95af8415c6c ]
 
-Change to adjust effective L3 cache size with SNC enabled change
-introduced the snc_nodes_per_l3_cache() function to detect the Intel
-Sub-NUMA Clustering (SNC) feature by comparing #CPUs in node0 with #CPUs
-sharing LLC with CPU0. The function was designed to return:
-  (1) >1: SNC mode is enabled.
-  (2)  1: SNC mode is not enabled or not supported.
+This patch removes the MCU halt and wait for halt procedures during
+panthor_fw_unplug() as the MCU can be in a variety of states or the FW
+may not even be loaded/initialized at all, the latter of which can lead
+to a NULL pointer dereference.
 
-However, on certain Hygon CPUs, #CPUs sharing LLC with CPU0 is actually
-less than #CPUs in node0. This results in snc_nodes_per_l3_cache()
-returning 0 (calculated as cache_cpus / node_cpus).
+It should be safe on unplug to just disable the MCU without waiting for
+it to halt as it may not be able to.
 
-This leads to a division by zero error in get_cache_size():
-  *cache_size /= snc_nodes_per_l3_cache();
-
-Causing the resctrl selftest to fail with:
-  "Floating point exception (core dumped)"
-
-Fix the issue by ensuring snc_nodes_per_l3_cache() returns 1 when SNC
-mode is not supported on the platform.
-
-Updated commit log to fix commit has issues:
-Shuah Khan <skhan@linuxfoundation.org>
-
-Link: https://lore.kernel.org/r/20251217030456.3834956-2-shenxiaochen@open-hieco.net
-Fixes: a1cd99e700ec ("selftests/resctrl: Adjust effective L3 cache size with SNC enabled")
-Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 514072549865 ("drm/panthor: Support GLB_REQ.STATE field for Mali-G1 GPUs")
+Suggested-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Karunika Choo <karunika.choo@arm.com>
+Reviewed-by: Liviu Dudau <liviu@dudau.co.uk>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patch.msgid.link/20251215203312.1084182-1-karunika.choo@arm.com
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/resctrlfs.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/panthor/panthor_fw.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/tools/testing/selftests/resctrl/resctrlfs.c b/tools/testing/selftests/resctrl/resctrlfs.c
-index 195f04c4d1586..b9c1bfb6cc029 100644
---- a/tools/testing/selftests/resctrl/resctrlfs.c
-+++ b/tools/testing/selftests/resctrl/resctrlfs.c
-@@ -243,6 +243,16 @@ int snc_nodes_per_l3_cache(void)
- 		}
- 		snc_mode = cache_cpus / node_cpus;
+diff --git a/drivers/gpu/drm/panthor/panthor_fw.c b/drivers/gpu/drm/panthor/panthor_fw.c
+index 94a3cd6dfa6de..9533b1a31820e 100644
+--- a/drivers/gpu/drm/panthor/panthor_fw.c
++++ b/drivers/gpu/drm/panthor/panthor_fw.c
+@@ -1260,10 +1260,6 @@ void panthor_fw_unplug(struct panthor_device *ptdev)
+ 		if (ptdev->fw->irq.irq)
+ 			panthor_job_irq_suspend(&ptdev->fw->irq);
  
-+		/*
-+		 * On some platforms (e.g. Hygon),
-+		 * cache_cpus < node_cpus, the calculated snc_mode is 0.
-+		 *
-+		 * Set snc_mode = 1 to indicate that SNC mode is not
-+		 * supported on the platform.
-+		 */
-+		if (!snc_mode)
-+			snc_mode = 1;
-+
- 		if (snc_mode > 1)
- 			ksft_print_msg("SNC-%d mode discovered.\n", snc_mode);
+-		panthor_fw_halt_mcu(ptdev);
+-		if (!panthor_fw_wait_mcu_halted(ptdev))
+-			drm_warn(&ptdev->base, "Failed to halt MCU on unplug");
+-
+ 		panthor_fw_stop(ptdev);
  	}
+ 
 -- 
 2.51.0
 
