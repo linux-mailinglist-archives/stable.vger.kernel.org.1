@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-218465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219032-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNfADiRUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:08 +0100
+	id SEaGGO9VnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-219032-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90AAC18FBBD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2409719016D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 421EA308E641
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1157430039B1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A40B242D9B;
-	Wed, 25 Feb 2026 01:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08E428B4FD;
+	Wed, 25 Feb 2026 01:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmTNaakF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdMjaNSM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D147418B0A;
-	Wed, 25 Feb 2026 01:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CE227FD75;
+	Wed, 25 Feb 2026 01:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983291; cv=none; b=FGO73mYtF7Md9WWiz+VfaZtIMrdE0KKKFK4F0I0tj7uOC1/TycZ2Z6l8ZOmR54tFVXu/OYztk+2D78G9BEflrK+tdHzon9ximODyhpcgAdRJVdaj0D3X7gfS7ET7kpDOtzwJWrhu7S4V+ORnBtqOovbvLMd9PKPR1e3JAJqVRDw=
+	t=1771983949; cv=none; b=nfURLOXaXjh01YjpJuiOjUufmkExvVy3rDPk1sNFhvvEDJcz8AG1GBtJVgKG8cfYgGIaPNiJE6si+DtnZMKsxlAU9mDJT/pN9FZC7cQBnU3lGuooKxY2ja06ntceiB4XrZph079rxfz+ZBvxD4RwjdOghTCIfHKgTT5UQk5tR5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983291; c=relaxed/simple;
-	bh=wX1gJyuvCeAoyLndfD1dVl6zCIVhRmYkfRiquUQiDSw=;
+	s=arc-20240116; t=1771983949; c=relaxed/simple;
+	bh=PW/txOodojUfxX83ygjfG0mES+iC6Tfg/17JcLinW78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgDx2Z8Zw/YjxCyMwt/OiXPTTfiZZJbg/fa/wy+JtTf6pC0vl6NbAYi1UIWupxzNv2/clf8oG8nmIZTorLsmEBaYICAJbBIzdkPI3/Q+gwVS2m7CNOWDPIO9K+l/MfwRTOGmcKWoSDm61pyvDcw/uUe6w7oizoF4wCefhPqFwZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmTNaakF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BB1C116D0;
-	Wed, 25 Feb 2026 01:34:51 +0000 (UTC)
+	 MIME-Version; b=Xd5VHC82sXiRBcFre+WBW0SzXC5MorJ/duX2RFzL/+sz9yMO3ytaMJ8e01GE5OyVrJE9aFyWxjiWIhXmrjmypEPv/jB2G4Qb3vt3ZLRQeZwTPK//GXo5OiLrosKqbJx0ivEFz8Yo34XDcumQL9uD9tTo4omW+g+GahIWt05W4X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdMjaNSM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53C6C116D0;
+	Wed, 25 Feb 2026 01:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983291;
-	bh=wX1gJyuvCeAoyLndfD1dVl6zCIVhRmYkfRiquUQiDSw=;
+	s=korg; t=1771983949;
+	bh=PW/txOodojUfxX83ygjfG0mES+iC6Tfg/17JcLinW78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xmTNaakFVCxXQ0vn0hyrjweR9/1ufHbecqzR+TQKZB1KPlxCbW7471hkZ8t6TIuN/
-	 GLQJFjtyNTUx5x41yjwGzpBVQklhtHjZL49IFWJFVeR03zkOeWEtjMIP+O9DyEYnm2
-	 dyPV1nVpPgriN3IW5QWkq+75P1ptKDPvCjRg5Z8I=
+	b=AdMjaNSMLMt/pMjLKRwpytKpMdrkd5G7WL3m3HUwnEmOWYLfxhkr7aukJCeV+zgxd
+	 pQ5YMNkk/T9O7nlSwUt8i5v7glultT6Xv773eIvfGrDvl/AbRxWyNtVTswoa2iX1tR
+	 Sm8yixt3eiFAUHUR9fIB5Dkql9nk3Ic+b/p6ar2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinliang Zheng <alexjlzheng@tencent.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	ruippan <ruippan@tencent.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 426/781] procfs: fix missing RCU protection when reading real_parent in do_task_stat()
+Subject: [PATCH 6.18 209/641] drm/rockchip: dw_hdmi_qp: Fix RK3576 HPD interrupt handling
 Date: Tue, 24 Feb 2026 17:18:55 -0800
-Message-ID: <20260225012410.150279829@linuxfoundation.org>
+Message-ID: <20260225012354.016469758@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,89 +67,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218465-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tencent.com,redhat.com,kernel.org,oracle.com,gmail.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219032-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
-X-Rspamd-Queue-Id: 90AAC18FBBD
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,sntech.de:email]
+X-Rspamd-Queue-Id: 2409719016D
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinliang Zheng <alexjlzheng@tencent.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 76149d53502cf17ef3ae454ff384551236fba867 ]
+[ Upstream commit 5f7be8afc40c5ccf1be0410514703e50a49532c0 ]
 
-When reading /proc/[pid]/stat, do_task_stat() accesses task->real_parent
-without proper RCU protection, which leads to:
+The threaded interrupt handler on RK3576 checks HPD IRQ status before
+deciding to continue with interrupt clearing and unmasking.
 
-  cpu 0                               cpu 1
-  -----                               -----
-  do_task_stat
-    var = task->real_parent
-                                      release_task
-                                        call_rcu(delayed_put_task_struct)
-    task_tgid_nr_ns(var)
-      rcu_read_lock   <--- Too late to protect task->real_parent!
-      task_pid_ptr    <--- UAF!
-      rcu_read_unlock
+This is not only redundant, since a similar verification has been
+already performed by the hard IRQ handler before masking the interrupt,
+but is also error prone, because it might happen that hardware clears
+the status register right after the masking operation completes, and
+before the threaded handler reads its value.
 
-This patch uses task_ppid_nr_ns() instead of task_tgid_nr_ns() to add
-proper RCU protection for accessing task->real_parent.
+The consequence is that HPD IRQ gets never unmasked, which breaks
+hotplug detection until reloading the driver or rebooting the system.
 
-Link: https://lkml.kernel.org/r/20260128083007.3173016-1-alexjlzheng@tencent.com
-Fixes: 06fffb1267c9 ("do_task_stat: don't take rcu_read_lock()")
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: ruippan <ruippan@tencent.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Drop the unnecessary verification of the HPD interrupt status from the
+threaded interrupt handler.
+
+Fixes: 36439120efbd ("drm/rockchip: dw_hdmi_qp: Add basic RK3576 HDMI output support")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patch.msgid.link/20260115-dw-hdmi-qp-hpd-v1-1-e59c166eaa65@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/array.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/fs/proc/array.c b/fs/proc/array.c
-index 42932f88141a9..5571177e0435d 100644
---- a/fs/proc/array.c
-+++ b/fs/proc/array.c
-@@ -528,7 +528,7 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
- 		}
+diff --git a/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
+index 9ac45e7bc987a..409f1a1e82a06 100644
+--- a/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
++++ b/drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c
+@@ -267,12 +267,7 @@ static irqreturn_t dw_hdmi_qp_rk3576_hardirq(int irq, void *dev_id)
+ static irqreturn_t dw_hdmi_qp_rk3576_irq(int irq, void *dev_id)
+ {
+ 	struct rockchip_hdmi_qp *hdmi = dev_id;
+-	u32 intr_stat, val;
+-
+-	regmap_read(hdmi->regmap, RK3576_IOC_HDMI_HPD_STATUS, &intr_stat);
+-
+-	if (!intr_stat)
+-		return IRQ_NONE;
++	u32 val;
  
- 		sid = task_session_nr_ns(task, ns);
--		ppid = task_tgid_nr_ns(task->real_parent, ns);
-+		ppid = task_ppid_nr_ns(task, ns);
- 		pgid = task_pgrp_nr_ns(task, ns);
- 
- 		unlock_task_sighand(task, &flags);
+ 	val = FIELD_PREP_WM16(RK3576_HDMI_HPD_INT_CLR, 1);
+ 	regmap_write(hdmi->regmap, RK3576_IOC_MISC_CON0, val);
 -- 
 2.51.0
 
