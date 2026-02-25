@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-218882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBceG4NUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218882-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:43 +0100
+	id wCpjJd9SnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E927118FD07
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F1018F591
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9D01330882EB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E9D4B30AA6C2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEDA280338;
-	Wed, 25 Feb 2026 01:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB261EB5E1;
+	Wed, 25 Feb 2026 01:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DChlZnzS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2HMzuScd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15A6280331;
-	Wed, 25 Feb 2026 01:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522B218DB2A;
+	Wed, 25 Feb 2026 01:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983769; cv=none; b=EEZ0sKxfGJBbsgp729rvOUcC2910F0/XycsjUn3Gy6iSV2NHdF0o5CV3EE7fzvUa5Qa5uhICsSeLSatRMwNXWtRt7RY51mf1JIh9mhZQEBbPpt6bM+MC/llUyrVRiFkHwhCw0QgJSbL7qIkNhKnuCNTWf6Hqi3ENkqBNh+v/lVo=
+	t=1771983150; cv=none; b=jiff61Y0KyOyxJhStL345Pubqmr05nv3xnfr1M3SiyT75oZKHO40t6/LZ1V1uu36zby98z0VWd7KbyP4P17UbB8r5dYAUy1ZsgVK2A3JaQ7b8jz0sCJRpbv0EBTe380AuWmbnHHR28Q7stJ+QuPOolAosA0eg9GXGI0usZAZXB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983769; c=relaxed/simple;
-	bh=WLTePBfmfaF57PSlY74imcSkk9IS4WQG2c2vzZEnuWo=;
+	s=arc-20240116; t=1771983150; c=relaxed/simple;
+	bh=xpoXyct8HqqeXJCHPHWL63kppBuJA9PcJXA3aljJ4tA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFheupvjM7EsaO1jq8C5Mx3PK8wGSpDiPZ/QMqlbw+jOJST5Tm00TNVNye4kuo5VL1s8+PkkWG14aD3LBn7AaLVDdo1+tTQsJe6JvCDbvjlyOLoIkXtYfRy7gxw1LN83XuFnX7dFq+BhcOOTHJz77I9A+PGGO6I3JXgU8nnTRgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DChlZnzS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7236EC2BC87;
-	Wed, 25 Feb 2026 01:42:49 +0000 (UTC)
+	 MIME-Version; b=Musbb5ZCk3K0xJ3ay8FE/9P8IdWwTByFWaYRWa6vAbAtkiH3TrG+Zs4DZz3REv0r9zEQEHjoSegQuH/YI5g5ehsUWb88xcI+CtjZrxdMmYpYY1RfosLL4OrIZyxph5jFrTBi6Kt+aN8WkgeX8y7ORKl5CQy7+pca8yKFAOrv51A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2HMzuScd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF536C116D0;
+	Wed, 25 Feb 2026 01:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983769;
-	bh=WLTePBfmfaF57PSlY74imcSkk9IS4WQG2c2vzZEnuWo=;
+	s=korg; t=1771983150;
+	bh=xpoXyct8HqqeXJCHPHWL63kppBuJA9PcJXA3aljJ4tA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DChlZnzS9YcdNN/StqBRxYRAExaUgQlXoBDfZCyJQ86Wt5lfNSCaXcz//2geKpQc4
-	 2FxZJTnwV0vJyFZ8wSpCGhuAscKMbLwcU+02YaGegrWLo9epC/dNwJOfhUxeMceU1z
-	 PMybr7dQ3hD70T700aGST2aplKrTCISoYVzDjlqo=
+	b=2HMzuScd/QB6ghQzKSqQaZBNEwTPp780QHlUKFyEJsZxQTDqKuwJBn2AbGLbGK0nM
+	 8mRSlIZnwFfqmuQawYJBu+B05h0yivFBYdRgMwP/T738eJNjMRGVK7YWidxKR1hj93
+	 v/yELHVgsUDAj+K2f3tG0D7EbzqrkWcSyI+yXjiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Li Nan <linan122@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 043/641] md/raid5: fix raid5_run() to return error when log_init() fails
+Subject: [PATCH 6.19 260/781] gpu: nova-core: check for overflow to DMATRFBASE1
 Date: Tue, 24 Feb 2026 17:16:09 -0800
-Message-ID: <20260225012350.072261139@linuxfoundation.org>
+Message-ID: <20260225012406.079566490@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218882-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218342-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,58 +88,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email,fnnas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: E927118FD07
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: E8F1018F591
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Timur Tabi <ttabi@nvidia.com>
 
-[ Upstream commit 2d9f7150ac197ce79c9c917a004d4cf0b26ad7e0 ]
+[ Upstream commit 5cf76277cdec872aef9ff2e9008ae129bb303787 ]
 
-Since commit f63f17350e53 ("md/raid5: use the atomic queue limit
-update APIs"), the abort path in raid5_run() returns 'ret' instead of
--EIO. However, if log_init() fails, 'ret' is still 0 from the previous
-successful call, causing raid5_run() to return success despite the
-failure.
+The NV_PFALCON_FALCON_DMATRFBASE/1 register pair supports DMA addresses
+up to 49 bits only, but the write to DMATRFBASE1 could exceed that.
+To mitigate, check first that the DMA address will fit.
 
-Fix this by capturing the return value from log_init().
-
-Link: https://lore.kernel.org/linux-raid/20260114171241.3043364-2-yukuai@fnnas.com
-Fixes: f63f17350e53 ("md/raid5: use the atomic queue limit update APIs")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202601130531.LGfcZsa4-lkp@intel.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Xiao Ni <xni@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Fixes: 69f5cd67ce41 ("gpu: nova-core: add falcon register definitions and base code")
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+Link: https://patch.msgid.link/20260107201647.2490140-1-ttabi@nvidia.com
+[ Import ::kernel::dma::DmaMask. - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/nova-core/falcon.rs | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 41de29206402a..1041788a54c20 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -8056,7 +8056,8 @@ static int raid5_run(struct mddev *mddev)
- 			goto abort;
- 	}
+diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
+index 82c661aef594f..3ab33ea36d9c8 100644
+--- a/drivers/gpu/nova-core/falcon.rs
++++ b/drivers/gpu/nova-core/falcon.rs
+@@ -8,7 +8,10 @@
  
--	if (log_init(conf, journal_dev, raid5_has_ppl(conf)))
-+	ret = log_init(conf, journal_dev, raid5_has_ppl(conf));
-+	if (ret)
- 		goto abort;
+ use kernel::{
+     device,
+-    dma::DmaAddress,
++    dma::{
++        DmaAddress,
++        DmaMask, //
++    },
+     io::poll::read_poll_timeout,
+     prelude::*,
+     sync::aref::ARef,
+@@ -472,6 +475,12 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
+             return Err(EINVAL);
+         }
  
- 	return 0;
++        // The DMATRFBASE/1 register pair only supports a 49-bit address.
++        if dma_start > DmaMask::new::<49>().value() {
++            dev_err!(self.dev, "DMA address {:#x} exceeds 49 bits\n", dma_start);
++            return Err(ERANGE);
++        }
++
+         // DMA transfers can only be done in units of 256 bytes. Compute how many such transfers we
+         // need to perform.
+         let num_transfers = load_offsets.len.div_ceil(DMA_LEN);
 -- 
 2.51.0
 
