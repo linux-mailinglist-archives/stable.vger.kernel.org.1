@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMmlAPBUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218938-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:32 +0100
+	id OJy6ORZSnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F57018FE58
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A5A18F1CD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8AE1530A5E53
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 987A83073CD3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B9427E1DC;
-	Wed, 25 Feb 2026 01:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B87920C012;
+	Wed, 25 Feb 2026 01:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUs781aa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0+ah6hA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7250279DB3;
-	Wed, 25 Feb 2026 01:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C261D1EB5E1;
+	Wed, 25 Feb 2026 01:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983836; cv=none; b=JD7J1t2x5U+Bsjtw/XeMsUp5hcnEkk9pUdjxY6b9y3nAVT8ETORbaB0HqP8uRSfFZ773+9WRuX9+GhYyYIxtAXxJ5dKmSoF/wcTQ3DHBS+UK29r1eq3OFl0Q5XI/mN0PbsA8BoZAvIJZkIYBiW3z9Z5RLrcWK/MM8TiE+T5qD5Y=
+	t=1771983200; cv=none; b=eHsccJbHzd8GSRsKGdl3zE3Lt3T015+hW+FICwIKTwgwkWJ6876gkFokVaVDxjr7N4ZR0jShHQmLvSdWJR4DBW+wfqoJoIIZAZdtwyNCd+w19OKJ0PUOWo9fRIxW0NRKixrkDXJijn4QbtzyEQ27YEh5ueUlNonvRdRfg0pLnsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983836; c=relaxed/simple;
-	bh=Nj8YMcytXTp6sp3HzDR4Z5G8XQOnWiu9obFtk6EpfnE=;
+	s=arc-20240116; t=1771983200; c=relaxed/simple;
+	bh=HEHFbLhQXSb+3HOIMRdFH7zPjQynO3ykQO9d9CNsB+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aaD+LD9+H5weMKTzh3F+UTxdceNMSOsz40aJL5HhiX3mcyTj37uMbpup83mNXCX0+Dsvy7MpyAEnJlbs70JWQSK9NSvHMVpXLDkIwRP/J5Vx9ARf5ipA5rSc/8ubVZh4fhUfff3XHptrqkJK1DynHkcBMhKLp3f51OdWHhfTC4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUs781aa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D49CC116D0;
-	Wed, 25 Feb 2026 01:43:56 +0000 (UTC)
+	 MIME-Version; b=XX03nbmnfd7hjuulNq57+zkbwN5nxW6fHXgtW7tl3oHPdXDjFll0q6d3WKZLk3kJxSbcjR3tpa+GKa217nbAOOxPJyBsyQKWp0xiuPrZ7LsbEVGmtQ7VUcgSt+S6a2zKeaBqdfUZBZo2YwhY3w8XJUnMVyEvQAjkIc+aM/ofh0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0+ah6hA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D030C116D0;
+	Wed, 25 Feb 2026 01:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983836;
-	bh=Nj8YMcytXTp6sp3HzDR4Z5G8XQOnWiu9obFtk6EpfnE=;
+	s=korg; t=1771983200;
+	bh=HEHFbLhQXSb+3HOIMRdFH7zPjQynO3ykQO9d9CNsB+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUs781aaiTOxHpSb+cCfsExKAVV8kHtR2adI2YWX03wv1HGVGNAhXwG7IBrSTL0kd
-	 g3GOS+MPRW7cfWGcZUVbRTPjXVH355EenSrkOQI4zMJIOPL2sfLojNcd/MQ49/sTbM
-	 81O5wOd0b3jtAmmLaBc1gehXRDZvB+SZTSfmQW74=
+	b=z0+ah6hAeYHJR3q2Z1h5UWix/iaHF45NIgDwpBW/9Px7RsYB8S4tv1ijphPngGOdO
+	 sjX3rncmmuLiXqe+IGTz88il2VLuEzoX+Y6J2Na9qRjB05x67c0xgvOh733F7ah2Pz
+	 o47JtzOBqwhQky/daeOZ8MTzhhDBOEZ73n2fRBGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Tycho Andersen (AMD)" <tycho@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 089/641] crypto: ccp - Fix a case where SNP_SHUTDOWN is missed
+Subject: [PATCH 6.19 306/781] ASoC: SDCA: Still process most of the jack detect if control is missing
 Date: Tue, 24 Feb 2026 17:16:55 -0800
-Message-ID: <20260225012351.255405826@linuxfoundation.org>
+Message-ID: <20260225012407.213302765@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218938-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218387-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,118 +89,137 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email]
-X-Rspamd-Queue-Id: 8F57018FE58
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: 92A5A18F1CD
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 551120148b67e04527b405c5ec33a31593846ba4 ]
+[ Upstream commit d7730c44b7dddbc5063505ce9e0c21d8bf298368 ]
 
-If page reclaim fails in sev_ioctl_do_snp_platform_status() and SNP was
-moved from UNINIT to INIT for the function, SNP is not moved back to
-UNINIT state. Additionally, SNP is not required to be initialized in order
-to execute the SNP_PLATFORM_STATUS command, so don't attempt to move to
-INIT state and let SNP_PLATFORM_STATUS report the status as is.
+DAPM creates its controls very late in the card creation, so
+there is no call into the driver after the controls are created. This
+means the jack IRQs can't be guaranteed to be registered after the ALSA
+controls are available. If a jack IRQ is received before the controls
+are available, currently the driver does not update the Selected Mode as
+it is required by the specification to do.
 
-Fixes: ceac7fb89e8d ("crypto: ccp - Ensure implicit SEV/SNP init and shutdown in ioctls")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Tycho Andersen (AMD) <tycho@kernel.org>
-Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Tycho Andersen (AMD) <tycho@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+If the ALSA controls are not available update the Selected Mode directly
+rather than going through the ALSA control. The ALSA control should pick
+up the state once it is created.
+
+Fixes: b9ab3b618241 ("ASoC: SDCA: Add some initial IRQ handlers")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260204125944.1134011-4-ckeepax@opensource.cirrus.com
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sev-dev.c | 46 ++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+ sound/soc/sdca/sdca_jack.c | 52 ++++++++++++++++++++------------------
+ 1 file changed, 28 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index 0d13d47c164bb..3c6ee8b4e4487 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -2351,11 +2351,10 @@ static int sev_ioctl_do_pdh_export(struct sev_issue_cmd *argp, bool writable)
- static int sev_ioctl_do_snp_platform_status(struct sev_issue_cmd *argp)
- {
- 	struct sev_device *sev = psp_master->sev_data;
--	bool shutdown_required = false;
- 	struct sev_data_snp_addr buf;
- 	struct page *status_page;
--	int ret, error;
- 	void *data;
-+	int ret;
+diff --git a/sound/soc/sdca/sdca_jack.c b/sound/soc/sdca/sdca_jack.c
+index 5b9cf69cbcd6b..bfa621b744e1a 100644
+--- a/sound/soc/sdca/sdca_jack.c
++++ b/sound/soc/sdca/sdca_jack.c
+@@ -41,10 +41,11 @@ int sdca_jack_process(struct sdca_interrupt *interrupt)
+ 	struct jack_state *state = interrupt->priv;
+ 	struct snd_kcontrol *kctl = state->kctl;
+ 	struct snd_ctl_elem_value *ucontrol __free(kfree) = NULL;
+-	struct soc_enum *soc_enum;
+ 	unsigned int reg, val;
+ 	int ret;
  
- 	if (!argp->data)
- 		return -EINVAL;
-@@ -2366,31 +2365,35 @@ static int sev_ioctl_do_snp_platform_status(struct sev_issue_cmd *argp)
++	guard(rwsem_write)(rwsem);
++
+ 	if (!kctl) {
+ 		const char *name __free(kfree) = kasprintf(GFP_KERNEL, "%s %s",
+ 							   interrupt->entity->label,
+@@ -54,16 +55,12 @@ int sdca_jack_process(struct sdca_interrupt *interrupt)
+ 			return -ENOMEM;
  
- 	data = page_address(status_page);
- 
--	if (!sev->snp_initialized) {
--		ret = snp_move_to_init_state(argp, &shutdown_required);
--		if (ret)
--			goto cleanup;
--	}
+ 		kctl = snd_soc_component_get_kcontrol(component, name);
+-		if (!kctl) {
++		if (!kctl)
+ 			dev_dbg(dev, "control not found: %s\n", name);
+-			return -ENOENT;
+-		}
 -
- 	/*
--	 * Firmware expects status page to be in firmware-owned state, otherwise
--	 * it will report firmware error code INVALID_PAGE_STATE (0x1A).
-+	 * SNP_PLATFORM_STATUS can be executed in any SNP state. But if executed
-+	 * when SNP has been initialized, the status page must be firmware-owned.
- 	 */
--	if (rmp_mark_pages_firmware(__pa(data), 1, true)) {
--		ret = -EFAULT;
--		goto cleanup;
-+	if (sev->snp_initialized) {
-+		/*
-+		 * Firmware expects the status page to be in Firmware state,
-+		 * otherwise it will report an error INVALID_PAGE_STATE.
-+		 */
-+		if (rmp_mark_pages_firmware(__pa(data), 1, true)) {
-+			ret = -EFAULT;
-+			goto cleanup;
-+		}
+-		state->kctl = kctl;
++		else
++			state->kctl = kctl;
  	}
  
- 	buf.address = __psp_pa(data);
- 	ret = __sev_do_cmd_locked(SEV_CMD_SNP_PLATFORM_STATUS, &buf, &argp->error);
+-	soc_enum = (struct soc_enum *)kctl->private_value;
+-
+ 	reg = SDW_SDCA_CTL(interrupt->function->desc->adr, interrupt->entity->id,
+ 			   interrupt->control->sel, 0);
  
--	/*
--	 * Status page will be transitioned to Reclaim state upon success, or
--	 * left in Firmware state in failure. Use snp_reclaim_pages() to
--	 * transition either case back to Hypervisor-owned state.
--	 */
--	if (snp_reclaim_pages(__pa(data), 1, true))
--		return -EFAULT;
-+	if (sev->snp_initialized) {
-+		/*
-+		 * The status page will be in Reclaim state on success, or left
-+		 * in Firmware state on failure. Use snp_reclaim_pages() to
-+		 * transition either case back to Hypervisor-owned state.
-+		 */
-+		if (snp_reclaim_pages(__pa(data), 1, true)) {
-+			snp_leak_pages(__page_to_pfn(status_page), 1);
-+			return -EFAULT;
+@@ -73,13 +70,12 @@ int sdca_jack_process(struct sdca_interrupt *interrupt)
+ 		return ret;
+ 	}
+ 
++	reg = SDW_SDCA_CTL(interrupt->function->desc->adr, interrupt->entity->id,
++			   SDCA_CTL_GE_SELECTED_MODE, 0);
++
+ 	switch (val) {
+ 	case SDCA_DETECTED_MODE_DETECTION_IN_PROGRESS:
+ 	case SDCA_DETECTED_MODE_JACK_UNKNOWN:
+-		reg = SDW_SDCA_CTL(interrupt->function->desc->adr,
+-				   interrupt->entity->id,
+-				   SDCA_CTL_GE_SELECTED_MODE, 0);
+-
+ 		/*
+ 		 * Selected mode is not normally marked as volatile register
+ 		 * (RW), but here force a read from the hardware. If the
+@@ -100,21 +96,29 @@ int sdca_jack_process(struct sdca_interrupt *interrupt)
+ 
+ 	dev_dbg(dev, "%s: %#x\n", interrupt->name, val);
+ 
+-	ucontrol = kzalloc(sizeof(*ucontrol), GFP_KERNEL);
+-	if (!ucontrol)
+-		return -ENOMEM;
++	if (kctl) {
++		struct soc_enum *soc_enum = (struct soc_enum *)kctl->private_value;
++
++		ucontrol = kzalloc(sizeof(*ucontrol), GFP_KERNEL);
++		if (!ucontrol)
++			return -ENOMEM;
+ 
+-	ucontrol->value.enumerated.item[0] = snd_soc_enum_val_to_item(soc_enum, val);
++		ucontrol->value.enumerated.item[0] = snd_soc_enum_val_to_item(soc_enum, val);
+ 
+-	down_write(rwsem);
+-	ret = kctl->put(kctl, ucontrol);
+-	up_write(rwsem);
+-	if (ret < 0) {
+-		dev_err(dev, "failed to update selected mode: %d\n", ret);
+-		return ret;
+-	}
++		ret = kctl->put(kctl, ucontrol);
++		if (ret < 0) {
++			dev_err(dev, "failed to update selected mode: %d\n", ret);
++			return ret;
++		}
+ 
+-	snd_ctl_notify(card->snd_card, SNDRV_CTL_EVENT_MASK_VALUE, &kctl->id);
++		snd_ctl_notify(card->snd_card, SNDRV_CTL_EVENT_MASK_VALUE, &kctl->id);
++	} else {
++		ret = regmap_write(interrupt->function_regmap, reg, val);
++		if (ret) {
++			dev_err(dev, "failed to write selected mode: %d\n", ret);
++			return ret;
 +		}
 +	}
  
- 	if (ret)
- 		goto cleanup;
-@@ -2400,9 +2403,6 @@ static int sev_ioctl_do_snp_platform_status(struct sev_issue_cmd *argp)
- 		ret = -EFAULT;
- 
- cleanup:
--	if (shutdown_required)
--		__sev_snp_shutdown_locked(&error, false);
--
- 	__free_pages(status_page, 0);
- 	return ret;
+ 	return sdca_jack_report(interrupt);
  }
 -- 
 2.51.0
