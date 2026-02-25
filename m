@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IL1UIw9UnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:47 +0100
+	id 2DhtDuienmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1571118FB6F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A30192DD8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EFF930B07B6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24B4731499A0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DDE263C7F;
-	Wed, 25 Feb 2026 01:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B4A2D23A4;
+	Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWFZ594f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkYbWJCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF879262FE7;
-	Wed, 25 Feb 2026 01:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DA92D063E;
+	Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983466; cv=none; b=qPIAjciTKk7PTwXxjsmMh0JKV/oNJlKiPU+fRIAOXEGCyXrTG8i0FLyp3rxVBmwSnfBkf6+dR1lzNy2MTCIMcvVIaDO1etrTbfWLhzF+HzjT81UD+jZJHNsG3onz75n0ZiN3vYsqzePJVgeQt0HoDjXnAFhU47r2l50nmzuaY8M=
+	t=1772002607; cv=none; b=rYz8STGHzzue5nHmEyZidscVJJhJWJUEffldJdrUdsbSkF9jUKofocwF73+xc1sEUcI4ShZILkv0qbjcilrIpxi4CLgqRkBgdm/2s9pERsK5nABI/1T3nZXiXvLrbfaWmMLT8ceP/0B9wcjeR/1RVsuwcdA60AKOkNttoaDdIqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983466; c=relaxed/simple;
-	bh=IBexiZH8Gj4BoMsIfNUUeRRN0RvP1vWsNPkT5iQlDGA=;
+	s=arc-20240116; t=1772002607; c=relaxed/simple;
+	bh=YSrRqS3iYuIxU9Rw6Y5znOb6Gq3RzcDr8w+982bUEfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0kiL1ZqFItBJlOPmuTti39Z7/W98mg+ER8YsOozR0zpq5f8L9jw8W1Iq0VKbvCQn3S4u1SA8w7iOKn/xi5QUXJUtZAB4MINAuczCzQ6hWrXQGzPXIAxwgiFrR6yaTnejaeq0kRUkDnl4V5rpAnoIAnaMJtGCFeEt6Sr8Dtf0Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWFZ594f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF41C116D0;
-	Wed, 25 Feb 2026 01:37:46 +0000 (UTC)
+	 MIME-Version; b=p+ACjOFnUQLTb28coqTJKjiJY5JemULqRMUrDpjP5cmzMikcXtMji7jO0qdTGrpeJU5dom/R8O08GQr7I8oEgxZFkvPmRMF/TAEzgeEN+bzODeqSJekAUmkABwYF9UqwmIHbqYF0zvfNBZVSWNXVAzXqI4/Zr8MxInVL7K25eQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkYbWJCu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFABC19425;
+	Wed, 25 Feb 2026 06:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983466;
-	bh=IBexiZH8Gj4BoMsIfNUUeRRN0RvP1vWsNPkT5iQlDGA=;
+	s=korg; t=1772002607;
+	bh=YSrRqS3iYuIxU9Rw6Y5znOb6Gq3RzcDr8w+982bUEfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWFZ594f/0gsn8FaFaVbPgid0Hy+BUucLrUj0jCIWsrax6IpHrMfDsffXfO+nenDK
-	 qy4TnzjsgFP/6/dFM3kk11OYVaxz3xbKz2EqCx4nVQGu3z9gS9+EoPXNaYaC90cvWn
-	 onOX4VcszP67+G4PGWLdiFLioiPLu36kl3uvglVo=
+	b=wkYbWJCufH/PODTLng/NjthoX3+OPYprUOo+CqEeN9sO+z5GhCeaIgJO1y4OaROtr
+	 nAl1b9m9A/+uPXWUcoxb7CWxgUwWX3NFViHWCJIc065ZtwTe0VETDOp1KRkWs0qAOX
+	 8aqOBF6wDp2pDgSNfMJlC+Tx6EGtjDCu1kdwrq5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>,
-	Zilin Guan <zilin@seu.edu.cn>,
+	Roman Penyaev <r.peniaev@gmail.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 574/781] gpib: Fix memory leak in ni_usb_init()
+Subject: [PATCH 6.18 357/641] RDMA/rtrs-srv: fix SG mapping
 Date: Tue, 24 Feb 2026 17:21:23 -0800
-Message-ID: <20260225012413.879556991@linuxfoundation.org>
+Message-ID: <20260225012357.278012616@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +67,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,seu.edu.cn,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218619-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219273-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ionos.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.984];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1571118FB6F
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ionos.com:email]
+X-Rspamd-Queue-Id: 93A30192DD8
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Roman Penyaev <r.peniaev@gmail.com>
 
-[ Upstream commit b89921eed8cf2d97250bac4be38dbcfbf048b586 ]
+[ Upstream commit 83835f7c07b523c7ca2a5ad0a511670b5810539e ]
 
-In ni_usb_init(), if ni_usb_setup_init() fails, the function returns
--EFAULT without freeing the allocated writes buffer, leading to a
-memory leak.
+This fixes the following error on the server side:
 
-Additionally, ni_usb_setup_init() returns 0 on failure, which causes
-ni_usb_init() to return -EFAULT, an inappropriate error code for this
-situation.
+   RTRS server session allocation failed: -EINVAL
 
-Fix the leak by freeing writes in the error path. Modify
-ni_usb_setup_init() to return -EINVAL on failure and propagate this
-error code in ni_usb_init().
+caused by the caller of the `ib_dma_map_sg()`, which does not expect
+less mapped entries, than requested, which is in the order of things
+and can be easily reproduced on the machine with enabled IOMMU.
 
-Fixes: 4e127de14fa7 ("staging: gpib: Add National Instruments USB GPIB driver")
-Suggested-by: Greg KH <gregkh@linuxfoundation.org>
-Suggested-by: Dave Penkler <dpenkler@gmail.com>
-Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Link: https://patch.msgid.link/20251230034546.929452-1-zilin@seu.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fix is to treat any positive number of mapped sg entries as a
+successful mapping and cache DMA addresses by traversing modified
+SG table.
+
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://patch.msgid.link/20260107161517.56357-2-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpib/ni_usb/ni_usb_gpib.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpib/ni_usb/ni_usb_gpib.c b/drivers/gpib/ni_usb/ni_usb_gpib.c
-index fdcaa6c00bfea..b6fddb437f552 100644
---- a/drivers/gpib/ni_usb/ni_usb_gpib.c
-+++ b/drivers/gpib/ni_usb/ni_usb_gpib.c
-@@ -1780,7 +1780,7 @@ static int ni_usb_setup_init(struct gpib_board *board, struct ni_usb_register *w
- 	i++;
- 	if (i > NUM_INIT_WRITES) {
- 		dev_err(&usb_dev->dev, "bug!, buffer overrun, i=%i\n", i);
--		return 0;
-+		return -EINVAL;
- 	}
- 	return i;
- }
-@@ -1799,10 +1799,12 @@ static int ni_usb_init(struct gpib_board *board)
- 		return -ENOMEM;
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index 7a402eb8e0bf0..adb798e2a54ae 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -595,7 +595,7 @@ static int map_cont_bufs(struct rtrs_srv_path *srv_path)
+ 	     srv_path->mrs_num++) {
+ 		struct rtrs_srv_mr *srv_mr = &srv_path->mrs[srv_path->mrs_num];
+ 		struct scatterlist *s;
+-		int nr, nr_sgt, chunks;
++		int nr, nr_sgt, chunks, ind;
  
- 	writes_len = ni_usb_setup_init(board, writes);
--	if (writes_len)
--		retval = ni_usb_write_registers(ni_priv, writes, writes_len, &ibsta);
--	else
--		return -EFAULT;
-+	if (writes_len < 0) {
-+		kfree(writes);
-+		return writes_len;
-+	}
+ 		sgt = &srv_mr->sgt;
+ 		chunks = chunks_per_mr * srv_path->mrs_num;
+@@ -625,7 +625,7 @@ static int map_cont_bufs(struct rtrs_srv_path *srv_path)
+ 		}
+ 		nr = ib_map_mr_sg(mr, sgt->sgl, nr_sgt,
+ 				  NULL, max_chunk_size);
+-		if (nr != nr_sgt) {
++		if (nr < nr_sgt) {
+ 			err = nr < 0 ? nr : -EINVAL;
+ 			goto dereg_mr;
+ 		}
+@@ -641,9 +641,24 @@ static int map_cont_bufs(struct rtrs_srv_path *srv_path)
+ 				goto dereg_mr;
+ 			}
+ 		}
+-		/* Eventually dma addr for each chunk can be cached */
+-		for_each_sg(sgt->sgl, s, nr_sgt, i)
+-			srv_path->dma_addr[chunks + i] = sg_dma_address(s);
 +
-+	retval = ni_usb_write_registers(ni_priv, writes, writes_len, &ibsta);
- 	kfree(writes);
- 	if (retval) {
- 		dev_err(&usb_dev->dev, "register write failed, retval=%i\n", retval);
++		/*
++		 * Cache DMA addresses by traversing sg entries.  If
++		 * regions were merged, an inner loop is required to
++		 * populate the DMA address array by traversing larger
++		 * regions.
++		 */
++		ind = chunks;
++		for_each_sg(sgt->sgl, s, nr_sgt, i) {
++			unsigned int dma_len = sg_dma_len(s);
++			u64 dma_addr = sg_dma_address(s);
++			u64 dma_addr_end = dma_addr + dma_len;
++
++			do {
++				srv_path->dma_addr[ind++] = dma_addr;
++				dma_addr += max_chunk_size;
++			} while (dma_addr < dma_addr_end);
++		}
+ 
+ 		ib_update_fast_reg_key(mr, ib_inc_rkey(mr->rkey));
+ 		srv_mr->mr = mr;
 -- 
 2.51.0
 
