@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-218928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOMECLRWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:04 +0100
+	id GAtxDBBTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66A01903A8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57FDA18F694
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71FC0319FCD7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF6BC30AFD89
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D282494FE;
-	Wed, 25 Feb 2026 01:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4336420C012;
+	Wed, 25 Feb 2026 01:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVxQ+v/7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8gbkcsr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E19265CBE;
-	Wed, 25 Feb 2026 01:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062B518DB2A;
+	Wed, 25 Feb 2026 01:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983825; cv=none; b=tRxcJg5oFKwDYks8gC/TKUyScmANo8Y4DPbryM94vbmcF1UZzkwTNE0GuFfSDcoy8OmSgEjxL/xAoeGY4Iq5jpKQEGtMO/ZvPnsh0u1Be7D4MFfgH1LrNfQWyGAOIpN7uh3/20bi279/PBc0lLBf9WBaKr/LTh61gIX8EPJTDgs=
+	t=1771983171; cv=none; b=i6mrCZ2w9mO9VTe8+FX/CuEulVob7t2hFVQjNkCc33fc9mnG/3DJiGk/yc1+NMSuMfbkZoInlT2cscPiBzJsKyRLats+90Cr8mQpugvaCiwOs738kSICEQ3OS3Rmjcf74fe+ZJnob7Vh0hsqP4dC3oEEyFb2Nt8Rh/AR5U2P/5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983825; c=relaxed/simple;
-	bh=kFQMkW66agkfE/l9hhZm4QbxfFnECwdF1UTUiiB23M4=;
+	s=arc-20240116; t=1771983171; c=relaxed/simple;
+	bh=0fbi8Q6r1bZHmPbrqz9AbHnZI4a7D0L/9L0JjrpbpRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m0/A/rJV4T7Q2sCu1lMAxa7+FOwlB+5MMxuog41/qKeyPhAX/QBehGgGa61iaQmyPm9BQEc+jarPi+2KWMXHtU44mAPpwxUlvZ9iRZkElk02FoYKLayFBu1zAfrAW2EWedxigjdoSmDnyUIrnSNBU3xG+Shne82hPmgYf0lIfkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVxQ+v/7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C0CC116D0;
-	Wed, 25 Feb 2026 01:43:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ew+/UOmSP3SaVhecSZOKFYas1mEZOY72ccKvBxEGBsfRljlLmqGBB6pQWgYNyf/QvOv1ylhWTWHEjBOeIrqnKYc/9fFfh9QskAhIlYZg2u1qCKbHea023l07Ld61Ei+pHk5HWDfNByDkD3DOTCdgYLsrGZig2DIfTImdmmrMv9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8gbkcsr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FB2C116D0;
+	Wed, 25 Feb 2026 01:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983825;
-	bh=kFQMkW66agkfE/l9hhZm4QbxfFnECwdF1UTUiiB23M4=;
+	s=korg; t=1771983170;
+	bh=0fbi8Q6r1bZHmPbrqz9AbHnZI4a7D0L/9L0JjrpbpRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nVxQ+v/7Z3hzyu7xnWfM03BfcyhjJvhi9krXJ891u80iyjdS2gQkbT7PUcW9J1Xdg
-	 9UiSHeWA46gzu3vNOyPCEP6ptjB/NFRDBSrOcf/XkwKWLQzL3JQo+EWtYG0/yQPwXA
-	 ctQlbJqAxIfXxHCtDr5MvrIGVA+I1VoDgQtWyzHg=
+	b=q8gbkcsrPp3EcgGkEdW9364X1LXHtUNV8oZ3rrz8HPII4e1uhjksHOp3Bk5DsGP5N
+	 QWn2eNpWQT6/U95QoCu98iSX5S8uewDcrDSxiZUgPudqZYg7+j6LElQXiCSH+Z3CsX
+	 M0ZCWKMJVIHHFxDpZ5F6OIg8lGNPgnKAkRl14ypw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Huang Chenming <chenming.huang@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 106/641] platform/x86: int0002: Remove IRQF_ONESHOT from request_irq()
+Subject: [PATCH 6.19 323/781] wifi: cfg80211: Fix use_for flag update on BSS refresh
 Date: Tue, 24 Feb 2026 17:17:12 -0800
-Message-ID: <20260225012351.685711603@linuxfoundation.org>
+Message-ID: <20260225012407.625552045@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,82 +69,79 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218928-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218361-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email]
-X-Rspamd-Queue-Id: A66A01903A8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: 57FDA18F694
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Huang Chenming <chenming.huang@oss.qualcomm.com>
 
-[ Upstream commit f6bc712877f24dc89bdfd7bdbf1a32f3b9960b34 ]
+[ Upstream commit 4073ea516106e5f98ed0476f89cdede8baa98d37 ]
 
-Passing IRQF_ONESHOT ensures that the interrupt source is masked until the
-secondary (threaded) handler is done. If only a primary handler is used
-then the flag makes no sense because the interrupt cannot fire (again)
-while its handler is running.
+Userspace may fail to connect to certain BSS that were initially
+marked as unusable due to regulatory restrictions (use_for = 0,
+e.g., 6 GHz power type mismatch). Even after these restrictions
+are removed and the BSS becomes usable, connection attempts still
+fail.
 
-The flag also prevents force-threading of the primary handler and the
-irq-core will warn about this.
+The issue occurs in cfg80211_update_known_bss() where the use_for
+flag is updated using bitwise AND (&=) instead of direct assignment.
+Once a BSS is marked with use_for = 0, the AND operation masks out
+any subsequent non-zero values, permanently keeping the flag at 0.
+This causes __cfg80211_get_bss(), invoked by nl80211_assoc_bss(), to
+fail the check "(bss->pub.use_for & use_for) != use_for", thereby
+blocking association.
 
-The flag was added to match the flag on the shared handler which uses a
-threaded handler and therefore IRQF_ONESHOT. This is no longer needed
-because devm_request_irq() now passes IRQF_COND_ONESHOT for this case.
+Replace the bitwise AND operation with direct assignment so the use_for
+flag accurately reflects the current BSS state.
 
-Revert adding IRQF_ONESHOT to irqflags.
-
-Fixes: 8f812373d1958 ("platform/x86: intel: int0002_vgpio: Pass IRQF_ONESHOT to request_irq()")
-Reported-by: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Acked-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20260128095540.863589-3-bigeasy@linutronix.de
-Closes: https://lore.kernel.org/all/555f1c56-0f74-41bf-8bd2-6217e0aab0c6@intel.com
+Fixes: d02a12b8e4bb ("wifi: cfg80211: add BSS usage reporting")
+Signed-off-by: Huang Chenming <chenming.huang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251209025733.2098456-1-chenming.huang@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/int0002_vgpio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/int0002_vgpio.c b/drivers/platform/x86/intel/int0002_vgpio.c
-index 6f5629dc3f8db..562e880256436 100644
---- a/drivers/platform/x86/intel/int0002_vgpio.c
-+++ b/drivers/platform/x86/intel/int0002_vgpio.c
-@@ -206,8 +206,8 @@ static int int0002_probe(struct platform_device *pdev)
- 	 * FIXME: augment this if we managed to pull handling of shared
- 	 * IRQs into gpiolib.
- 	 */
--	ret = devm_request_irq(dev, irq, int0002_irq,
--			       IRQF_ONESHOT | IRQF_SHARED, "INT0002", chip);
-+	ret = devm_request_irq(dev, irq, int0002_irq, IRQF_SHARED, "INT0002",
-+			       chip);
- 	if (ret) {
- 		dev_err(dev, "Error requesting IRQ %d: %d\n", irq, ret);
- 		return ret;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 7546647752fd8..eb0e77813d466 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1959,7 +1959,7 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 	ether_addr_copy(known->parent_bssid, new->parent_bssid);
+ 	known->pub.max_bssid_indicator = new->pub.max_bssid_indicator;
+ 	known->pub.bssid_index = new->pub.bssid_index;
+-	known->pub.use_for &= new->pub.use_for;
++	known->pub.use_for = new->pub.use_for;
+ 	known->pub.cannot_use_reasons = new->pub.cannot_use_reasons;
+ 	known->bss_source = new->bss_source;
+ 
 -- 
 2.51.0
 
