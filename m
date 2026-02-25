@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCJNINlXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:00:57 +0100
+	id AF5aHxhSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D669E19061B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:00:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215F918F1E7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D444230DEFB4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1B11130B2495
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45A5243376;
-	Wed, 25 Feb 2026 01:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2505C1E2834;
+	Wed, 25 Feb 2026 01:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzX+vuVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LsTwCCae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8757822579E;
-	Wed, 25 Feb 2026 01:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7E520C012;
+	Wed, 25 Feb 2026 01:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983798; cv=none; b=MsdBlf48TD9kD5aGL3SYgUBjA3ag+NzMN0mAhVcaPXBl/a/RkdRZW1uG8yPjFpdkZP7Lloai/02ZLHG2StR74zwFgUw/VZW4ofo3PaEHvOCADBl8H5LxejUWysQOE10Jdi4xgtkRvWfS5AFOeXvNVkTg5JwGtZwZ1hPHMPxu3g8=
+	t=1771983203; cv=none; b=LUT0c5GGKQBuOwBb94SP/oxyq2zjIBgLNfxH73mzQBA3wBFvqzq9aQhntZkh2fL0qyrFoFSkmZgCackbyJ1WqYbDl0rO5K9rSH7a2E12u1GaI4KYbiFZhdk1LdH0erVX3RlGKwPlyYgJGAgnfM1/3FZXC+2h/qazhWpsQUnJVKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983798; c=relaxed/simple;
-	bh=wuw+4dkF1rJQwFLAuJARYkPOjVWdSN9Q7LMd9oyaM6k=;
+	s=arc-20240116; t=1771983203; c=relaxed/simple;
+	bh=bRtmrOf6otwwBF/UuMwrQ1+Aciv1wA9WYyDTUcIVYFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZMDUiu79+ihxitd77DplZuzgBs83bKLQBnQjsiSJj3GVAAyjostsuRSnrE8Z2beM+wbi/st0EuljESeY9KFP7QbedOaElfHcRF/LSui2OnBylbvOayrV1WpQpXoN62vSOUeZiTDmhy/gAjAlDu1KLh6v2fIwppja3NJMeRIQt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzX+vuVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40317C116D0;
-	Wed, 25 Feb 2026 01:43:18 +0000 (UTC)
+	 MIME-Version; b=I4L/gyoT7NbQFQyWMopPUfqNvxwnqMPMnazcGFTf6EwDs7v7BZ/1BwvqDEa1UwsGdoopslMj8343uCLNd/vS1dGkiLqajRRIoJYR5ZSQTWi1/7G8LjNIq/uWdEnbThcntaWVRi5rsTlmIaqPLuVYpv+gZ8IzmtMO6pFlJHpfOhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LsTwCCae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CFDC19423;
+	Wed, 25 Feb 2026 01:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983798;
-	bh=wuw+4dkF1rJQwFLAuJARYkPOjVWdSN9Q7LMd9oyaM6k=;
+	s=korg; t=1771983203;
+	bh=bRtmrOf6otwwBF/UuMwrQ1+Aciv1wA9WYyDTUcIVYFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LzX+vuVVTa0G4vLaGX/Gxh9fUYschN3i0Qqs6AW97+UkA5qzJ9MOLtNCvL2jWle3B
-	 WwHyYcnPtgze9R65UaU6wq14eOINsHOWi2VyYlo9NrONzsUni4t1LrdlC65No+Qvfy
-	 OtYquk+2XcQbj4HhD6K4zN86ow9HUZNjUNoDSpro=
+	b=LsTwCCaey7DeefpCyJ1wOTc86pkHnHMciayhnxZDiO8SQl58GcSrNxospTY9vLRwr
+	 g+YFuM6xD7yceFOiBpojYjQ2qR7gcZEEej8f2ctI+pT81bqhmXkol+EmQxl3cb8EIL
+	 H3KSaGcekqCnhEpE7HqNuTkoMoYDsluFHvYbpnJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Tao <taoqi10@huawei.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 082/641] crypto: hisilicon/sec2 - support skcipher/aead fallback for hardware queue unavailable
+Subject: [PATCH 6.19 299/781] accel/amdxdna: Enable temporal sharing only mode
 Date: Tue, 24 Feb 2026 17:16:48 -0800
-Message-ID: <20260225012351.072171787@linuxfoundation.org>
+Message-ID: <20260225012407.040281904@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,247 +69,158 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218906-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218390-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: D669E19061B
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 215F918F1E7
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tao <taoqi10@huawei.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit e7507439628052363500d717caffb5c2241854dc ]
+[ Upstream commit 7818618a09a06320f409571bf28801ccfe7e0a30 ]
 
-When all hardware queues are busy and no shareable queue,
-new processes fail to apply for queues. To avoid affecting
-tasks, support fallback mechanism when hardware queues are
-unavailable.
+Newer firmware versions prefer temporal sharing only mode. In this mode,
+the driver no longer needs to manage AIE array column allocation. Instead,
+a new field, num_unused_col, is added to the hardware context creation
+request to specify how many columns will not be used by this hardware
+context.
 
-Fixes: c16a70c1f253 ("crypto: hisilicon/sec - add new algorithm mode for AEAD")
-Signed-off-by: Qi Tao <taoqi10@huawei.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://patch.msgid.link/20251217191150.2145937-1-lizhi.hou@amd.com
+Stable-dep-of: b853007fdcdd ("accel/amdxdna: Remove hardware context status")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/sec2/sec_crypto.c | 62 ++++++++++++++++------
- 1 file changed, 47 insertions(+), 15 deletions(-)
+ drivers/accel/amdxdna/aie2_ctx.c      | 18 +++++++++++++++---
+ drivers/accel/amdxdna/aie2_message.c  |  1 +
+ drivers/accel/amdxdna/aie2_msg_priv.h |  3 ++-
+ drivers/accel/amdxdna/aie2_pci.h      |  1 +
+ drivers/accel/amdxdna/amdxdna_ctx.h   |  1 +
+ drivers/accel/amdxdna/npu4_regs.c     |  1 +
+ 6 files changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-index d09d081f42dc7..c462b58d30343 100644
---- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-@@ -663,10 +663,8 @@ static int sec_ctx_base_init(struct sec_ctx *ctx)
- 	int i, ret;
+diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
+index 2c36ed7e9639c..c4a58c00e442a 100644
+--- a/drivers/accel/amdxdna/aie2_ctx.c
++++ b/drivers/accel/amdxdna/aie2_ctx.c
+@@ -471,6 +471,12 @@ static int aie2_alloc_resource(struct amdxdna_hwctx *hwctx)
+ 	struct alloc_requests *xrs_req;
+ 	int ret;
  
- 	ctx->qps = sec_create_qps();
--	if (!ctx->qps) {
--		pr_err("Can not create sec qps!\n");
-+	if (!ctx->qps)
- 		return -ENODEV;
--	}
- 
- 	sec = container_of(ctx->qps[0]->qm, struct sec_dev, qm);
- 	ctx->sec = sec;
-@@ -702,6 +700,9 @@ static void sec_ctx_base_uninit(struct sec_ctx *ctx)
- {
- 	int i;
- 
-+	if (!ctx->qps)
-+		return;
++	if (AIE2_FEATURE_ON(xdna->dev_handle, AIE2_TEMPORAL_ONLY)) {
++		hwctx->num_unused_col = xdna->dev_handle->total_col - hwctx->num_col;
++		hwctx->num_col = xdna->dev_handle->total_col;
++		return aie2_create_context(xdna->dev_handle, hwctx);
++	}
 +
- 	for (i = 0; i < ctx->sec->ctx_q_num; i++)
- 		sec_release_qp_ctx(ctx, &ctx->qp_ctx[i]);
+ 	xrs_req = kzalloc(sizeof(*xrs_req), GFP_KERNEL);
+ 	if (!xrs_req)
+ 		return -ENOMEM;
+@@ -502,9 +508,15 @@ static void aie2_release_resource(struct amdxdna_hwctx *hwctx)
+ 	struct amdxdna_dev *xdna = hwctx->client->xdna;
+ 	int ret;
  
-@@ -713,6 +714,9 @@ static int sec_cipher_init(struct sec_ctx *ctx)
- {
- 	struct sec_cipher_ctx *c_ctx = &ctx->c_ctx;
- 
-+	if (!ctx->qps)
-+		return 0;
-+
- 	c_ctx->c_key = dma_alloc_coherent(ctx->dev, SEC_MAX_KEY_SIZE,
- 					  &c_ctx->c_key_dma, GFP_KERNEL);
- 	if (!c_ctx->c_key)
-@@ -725,6 +729,9 @@ static void sec_cipher_uninit(struct sec_ctx *ctx)
- {
- 	struct sec_cipher_ctx *c_ctx = &ctx->c_ctx;
- 
-+	if (!ctx->qps)
-+		return;
-+
- 	memzero_explicit(c_ctx->c_key, SEC_MAX_KEY_SIZE);
- 	dma_free_coherent(ctx->dev, SEC_MAX_KEY_SIZE,
- 			  c_ctx->c_key, c_ctx->c_key_dma);
-@@ -746,6 +753,9 @@ static void sec_auth_uninit(struct sec_ctx *ctx)
- {
- 	struct sec_auth_ctx *a_ctx = &ctx->a_ctx;
- 
-+	if (!ctx->qps)
-+		return;
-+
- 	memzero_explicit(a_ctx->a_key, SEC_MAX_AKEY_SIZE);
- 	dma_free_coherent(ctx->dev, SEC_MAX_AKEY_SIZE,
- 			  a_ctx->a_key, a_ctx->a_key_dma);
-@@ -783,7 +793,7 @@ static int sec_skcipher_init(struct crypto_skcipher *tfm)
- 	}
- 
- 	ret = sec_ctx_base_init(ctx);
+-	ret = xrs_release_resource(xdna->xrs_hdl, (uintptr_t)hwctx);
 -	if (ret)
-+	if (ret && ret != -ENODEV)
- 		return ret;
- 
- 	ret = sec_cipher_init(ctx);
-@@ -892,6 +902,9 @@ static int sec_skcipher_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	struct device *dev = ctx->dev;
- 	int ret;
- 
-+	if (!ctx->qps)
-+		goto set_soft_key;
-+
- 	if (c_mode == SEC_CMODE_XTS) {
- 		ret = xts_verify_key(tfm, key, keylen);
- 		if (ret) {
-@@ -922,13 +935,14 @@ static int sec_skcipher_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	}
- 
- 	memcpy(c_ctx->c_key, key, keylen);
--	if (c_ctx->fbtfm) {
--		ret = crypto_sync_skcipher_setkey(c_ctx->fbtfm, key, keylen);
--		if (ret) {
--			dev_err(dev, "failed to set fallback skcipher key!\n");
--			return ret;
--		}
-+
-+set_soft_key:
-+	ret = crypto_sync_skcipher_setkey(c_ctx->fbtfm, key, keylen);
-+	if (ret) {
-+		dev_err(dev, "failed to set fallback skcipher key!\n");
-+		return ret;
- 	}
-+
- 	return 0;
+-		XDNA_ERR(xdna, "Release AIE resource failed, ret %d", ret);
++	if (AIE2_FEATURE_ON(xdna->dev_handle, AIE2_TEMPORAL_ONLY)) {
++		ret = aie2_destroy_context(xdna->dev_handle, hwctx);
++		if (ret)
++			XDNA_ERR(xdna, "Destroy temporal only context failed, ret %d", ret);
++	} else {
++		ret = xrs_release_resource(xdna->xrs_hdl, (uintptr_t)hwctx);
++		if (ret)
++			XDNA_ERR(xdna, "Release AIE resource failed, ret %d", ret);
++	}
  }
  
-@@ -1392,6 +1406,9 @@ static int sec_aead_setkey(struct crypto_aead *tfm, const u8 *key,
- 	struct crypto_authenc_keys keys;
- 	int ret;
+ static int aie2_ctx_syncobj_create(struct amdxdna_hwctx *hwctx)
+diff --git a/drivers/accel/amdxdna/aie2_message.c b/drivers/accel/amdxdna/aie2_message.c
+index 9e55e66830ead..273d6af9f6f52 100644
+--- a/drivers/accel/amdxdna/aie2_message.c
++++ b/drivers/accel/amdxdna/aie2_message.c
+@@ -211,6 +211,7 @@ int aie2_create_context(struct amdxdna_dev_hdl *ndev, struct amdxdna_hwctx *hwct
+ 	req.aie_type = 1;
+ 	req.start_col = hwctx->start_col;
+ 	req.num_col = hwctx->num_col;
++	req.num_unused_col = hwctx->num_unused_col;
+ 	req.num_cq_pairs_requested = 1;
+ 	req.pasid = hwctx->client->pasid;
+ 	req.context_priority = 2;
+diff --git a/drivers/accel/amdxdna/aie2_msg_priv.h b/drivers/accel/amdxdna/aie2_msg_priv.h
+index 1c957a6298d39..cc912b7899ce5 100644
+--- a/drivers/accel/amdxdna/aie2_msg_priv.h
++++ b/drivers/accel/amdxdna/aie2_msg_priv.h
+@@ -112,7 +112,8 @@ struct create_ctx_req {
+ 	__u32	aie_type;
+ 	__u8	start_col;
+ 	__u8	num_col;
+-	__u16	reserved;
++	__u8    num_unused_col;
++	__u8	reserved;
+ 	__u8	num_cq_pairs_requested;
+ 	__u8	reserved1;
+ 	__u16	pasid;
+diff --git a/drivers/accel/amdxdna/aie2_pci.h b/drivers/accel/amdxdna/aie2_pci.h
+index e08ec2fd44daa..4fdc032bc171b 100644
+--- a/drivers/accel/amdxdna/aie2_pci.h
++++ b/drivers/accel/amdxdna/aie2_pci.h
+@@ -231,6 +231,7 @@ struct aie2_hw_ops {
+ enum aie2_fw_feature {
+ 	AIE2_NPU_COMMAND,
+ 	AIE2_PREEMPT,
++	AIE2_TEMPORAL_ONLY,
+ 	AIE2_FEATURE_MAX
+ };
  
-+	if (!ctx->qps)
-+		return sec_aead_fallback_setkey(a_ctx, tfm, key, keylen);
-+
- 	ctx->a_ctx.a_alg = a_alg;
- 	ctx->c_ctx.c_alg = c_alg;
- 	c_ctx->c_mode = c_mode;
-@@ -2048,6 +2065,9 @@ static int sec_skcipher_ctx_init(struct crypto_skcipher *tfm)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/accel/amdxdna/amdxdna_ctx.h b/drivers/accel/amdxdna/amdxdna_ctx.h
+index b6151244d64fe..b29449a92f607 100644
+--- a/drivers/accel/amdxdna/amdxdna_ctx.h
++++ b/drivers/accel/amdxdna/amdxdna_ctx.h
+@@ -98,6 +98,7 @@ struct amdxdna_hwctx {
+ 	u32				*col_list;
+ 	u32				start_col;
+ 	u32				num_col;
++	u32				num_unused_col;
+ #define HWCTX_STAT_INIT  0
+ #define HWCTX_STAT_READY 1
+ #define HWCTX_STAT_STOP  2
+diff --git a/drivers/accel/amdxdna/npu4_regs.c b/drivers/accel/amdxdna/npu4_regs.c
+index 986a5f28ba245..2ceedfe583a8c 100644
+--- a/drivers/accel/amdxdna/npu4_regs.c
++++ b/drivers/accel/amdxdna/npu4_regs.c
+@@ -89,6 +89,7 @@ const struct dpm_clk_freq npu4_dpm_clk_table[] = {
+ const struct aie2_fw_feature_tbl npu4_fw_feature_table[] = {
+ 	{ .feature = AIE2_NPU_COMMAND, .min_minor = 15 },
+ 	{ .feature = AIE2_PREEMPT, .min_minor = 12 },
++	{ .feature = AIE2_TEMPORAL_ONLY, .min_minor = 12 },
+ 	{ 0 }
+ };
  
-+	if (!ctx->qps)
-+		return 0;
-+
- 	if (ctx->sec->qm.ver < QM_HW_V3) {
- 		ctx->type_supported = SEC_BD_TYPE2;
- 		ctx->req_op = &sec_skcipher_req_ops;
-@@ -2056,7 +2076,7 @@ static int sec_skcipher_ctx_init(struct crypto_skcipher *tfm)
- 		ctx->req_op = &sec_skcipher_req_ops_v3;
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- static void sec_skcipher_ctx_exit(struct crypto_skcipher *tfm)
-@@ -2124,7 +2144,7 @@ static int sec_aead_ctx_init(struct crypto_aead *tfm, const char *hash_name)
- 	int ret;
- 
- 	ret = sec_aead_init(tfm);
--	if (ret) {
-+	if (ret && ret != -ENODEV) {
- 		pr_err("hisi_sec2: aead init error!\n");
- 		return ret;
- 	}
-@@ -2166,7 +2186,7 @@ static int sec_aead_xcm_ctx_init(struct crypto_aead *tfm)
- 	int ret;
- 
- 	ret = sec_aead_init(tfm);
--	if (ret) {
-+	if (ret && ret != -ENODEV) {
- 		dev_err(ctx->dev, "hisi_sec2: aead xcm init error!\n");
- 		return ret;
- 	}
-@@ -2311,6 +2331,9 @@ static int sec_skcipher_crypto(struct skcipher_request *sk_req, bool encrypt)
- 	bool need_fallback = false;
- 	int ret;
- 
-+	if (!ctx->qps)
-+		goto soft_crypto;
-+
- 	if (!sk_req->cryptlen) {
- 		if (ctx->c_ctx.c_mode == SEC_CMODE_XTS)
- 			return -EINVAL;
-@@ -2328,9 +2351,12 @@ static int sec_skcipher_crypto(struct skcipher_request *sk_req, bool encrypt)
- 		return -EINVAL;
- 
- 	if (unlikely(ctx->c_ctx.fallback || need_fallback))
--		return sec_skcipher_soft_crypto(ctx, sk_req, encrypt);
-+		goto soft_crypto;
- 
- 	return ctx->req_op->process(ctx, req);
-+
-+soft_crypto:
-+	return sec_skcipher_soft_crypto(ctx, sk_req, encrypt);
- }
- 
- static int sec_skcipher_encrypt(struct skcipher_request *sk_req)
-@@ -2538,6 +2564,9 @@ static int sec_aead_crypto(struct aead_request *a_req, bool encrypt)
- 	bool need_fallback = false;
- 	int ret;
- 
-+	if (!ctx->qps)
-+		goto soft_crypto;
-+
- 	req->flag = a_req->base.flags;
- 	req->aead_req.aead_req = a_req;
- 	req->c_req.encrypt = encrypt;
-@@ -2548,11 +2577,14 @@ static int sec_aead_crypto(struct aead_request *a_req, bool encrypt)
- 	ret = sec_aead_param_check(ctx, req, &need_fallback);
- 	if (unlikely(ret)) {
- 		if (need_fallback)
--			return sec_aead_soft_crypto(ctx, a_req, encrypt);
-+			goto soft_crypto;
- 		return -EINVAL;
- 	}
- 
- 	return ctx->req_op->process(ctx, req);
-+
-+soft_crypto:
-+	return sec_aead_soft_crypto(ctx, a_req, encrypt);
- }
- 
- static int sec_aead_encrypt(struct aead_request *a_req)
 -- 
 2.51.0
 
