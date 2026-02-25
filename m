@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-219420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PH6KtSenmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219420-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:48 +0100
+	id MJ8oDShVnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45012192D8E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C929A18FF18
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 49D5C3100973
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CACB31FBD99
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD6C2D7D42;
-	Wed, 25 Feb 2026 06:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3E92701DA;
+	Wed, 25 Feb 2026 01:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2KXi5gP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9ZhjGSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B733033CB;
-	Wed, 25 Feb 2026 06:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F721E2834;
+	Wed, 25 Feb 2026 01:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002704; cv=none; b=Ffnh8+fK/sf0423eZBOvlyyW93f2HLpDlNFsSu8QERHmSOWP/LdpbptGY7o/ayaDimF53N77QqxvX6++yqIzX3t6y0JBeWF9o7Am5Iy9+ybcS+dHgdVc8Z/QIy0WmdNLKp9t6OG3sbKyZuqmB0rkwHxrzJbJ3AiLZ2i5LNlfDas=
+	t=1771983629; cv=none; b=GgvcmpB4/JS8/LTwiXTnqhkSIgj0eY4T7ei8K2oeF012o3HM1+PNCRi3j+Suy+O70+AohfWUPpBpSURG/l3fsHdXgZha+opE96iI699uL+EjSq09BJkUtARTQVfM18WRWWK7i1MHO6w9RUw3ZLxAkOFcYl9V/owyz5O9kU9ofbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002704; c=relaxed/simple;
-	bh=cobxETChIjnBa4qFzh/aFSXR2vmyJEm/5vYnqsNqvco=;
+	s=arc-20240116; t=1771983629; c=relaxed/simple;
+	bh=cAij1+YVKbClfI1PB9TJR0KMJGkkd17Yqze00JI8E9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3nDm0N8hR/AsOQ/zRqvWupD2/yt4KbZKobU3GfJGw5beuk+pmuwH0lEJMjcG2N/oImDBX9HUKsYULJOyjbc95hfiPi3is7JgPGSWPPwwscHS7jGSfZ/At761XZG+9cz9bQsg4akr6zW/h9UqvDZC7pxCcrUPnHImk/ht0BJUaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2KXi5gP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBB4CC116D0;
-	Wed, 25 Feb 2026 06:58:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MT5CdfWpH0H8+mCEEzE8ACg6OjbAIAX2Aox5JC7P5HjlosM8QGMx+UqD8OpzQjv9AuAKiFCGWpM6H9EjGFipIATt8fZ+Jgiv3CVgysqke3CX3xEVgLguhU7Sh8ABKly722dUR9NCk+YMIxgTPceoxaGbhfZQr6qWR84sT8Qy+dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9ZhjGSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122B2C116D0;
+	Wed, 25 Feb 2026 01:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002703;
-	bh=cobxETChIjnBa4qFzh/aFSXR2vmyJEm/5vYnqsNqvco=;
+	s=korg; t=1771983629;
+	bh=cAij1+YVKbClfI1PB9TJR0KMJGkkd17Yqze00JI8E9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2KXi5gPz7QDlvQA7h/12fV2FpnKW71O1gWq8sWWhCd9Mb7DtjMfINzW3+RtU+KcC
-	 FpjGvT46QqBlT4OopGIgZLWJlPVIYNHW9MG22KTOYMc1vFxaqV7iyr58YD8DItN0aD
-	 E3o2LbdyiKRI67wCUoCgjq4UD54TCi8AsE1CII+A=
+	b=c9ZhjGSaukL5QLtCHj+m28ZJofL6aRP/RRWe1BBde+4wMZSdubxVAIsM+Z1dxQYkQ
+	 ypYc2AfB/JLJ+/umUl79Z+DTqWo4OB8YzIB/iWLJp3eIIR3VOvi4sIyanLI2V7nUgK
+	 qfh9JHqXsEfnft0lOXs26WsV8y0kl9sC+kXB+Bvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean V Kelley <skelley@nvidia.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 503/641] ACPI: CPPC: Fix remaining for_each_possible_cpu() to use online CPUs
+Subject: [PATCH 6.19 720/781] drm/amdgpu: Fix missing unwind in amdgpu_ib_schedule() error path
 Date: Tue, 24 Feb 2026 17:23:49 -0800
-Message-ID: <20260225012400.709435919@linuxfoundation.org>
+Message-ID: <20260225012417.396485080@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +65,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218759-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219420-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 45012192D8E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C929A18FF18
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean V Kelley <skelley@nvidia.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 56eb0c0ed345da7815274aa821a8546a073d7e97 ]
+[ Upstream commit ba038065655c45728be346d0b174a6da08d8a5c5 ]
 
-per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
-CPUs via acpi_soft_cpu_online() --> __acpi_processor_start() -->
-acpi_cppc_processor_probe().
+amdgpu_ib_schedule() returns early after calling amdgpu_ring_undo().
+This skips the common free_fence cleanup path.  Other error paths were
+already changed to use goto free_fence, but this one was missed.
 
-However, send_pcc_cmd() and acpi_get_psd_map() still iterate over all
-possible CPUs. In acpi_get_psd_map(), encountering an offline CPU
-returns -EFAULT, causing cppc_cpufreq initialization to fail.
+Change the early return to goto free_fence so all error paths clean up
+the same way.
 
-This breaks systems booted with "nosmt" or "nosmt=force".
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c:232 amdgpu_ib_schedule()
+warn: missing unwind goto?
 
-Fix by using for_each_online_cpu() in both functions.
+drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
+    124 int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned int num_ibs,
+    125                        struct amdgpu_ib *ibs, struct amdgpu_job *job,
+    126                        struct dma_fence **f)
+    127 {
 
-Fixes: 80b8286aeec0 ("ACPI / CPPC: support for batching CPPC requests")
-Signed-off-by: Sean V Kelley <skelley@nvidia.com>
-Link: https://patch.msgid.link/20260211212254.30190-1-skelley@nvidia.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+    ...
+
+    224
+    225         if (ring->funcs->insert_start)
+    226                 ring->funcs->insert_start(ring);
+    227
+    228         if (job) {
+    229                 r = amdgpu_vm_flush(ring, job, need_pipe_sync);
+    230                 if (r) {
+    231                         amdgpu_ring_undo(ring);
+--> 232                         return r;
+
+	The patch changed the other error paths to goto free_fence but
+	this one was accidentally skipped.
+
+    233                 }
+    234         }
+    235
+    236         amdgpu_ring_ib_begin(ring);
+
+    ...
+
+    338
+    339 free_fence:
+    340         if (!job)
+    341                 kfree(af);
+    342         return r;
+    343 }
+
+Fixes: f903b85ed0f1 ("drm/amdgpu: fix possible fence leaks from job structure")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index e66e20d1f31b7..b59b0100d03c5 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -362,7 +362,7 @@ static int send_pcc_cmd(int pcc_ss_id, u16 cmd)
- end:
- 	if (cmd == CMD_WRITE) {
- 		if (unlikely(ret)) {
--			for_each_possible_cpu(i) {
-+			for_each_online_cpu(i) {
- 				struct cpc_desc *desc = per_cpu(cpc_desc_ptr, i);
- 
- 				if (!desc)
-@@ -524,7 +524,7 @@ int acpi_get_psd_map(unsigned int cpu, struct cppc_cpudata *cpu_data)
- 	else if (pdomain->coord_type == DOMAIN_COORD_TYPE_SW_ANY)
- 		cpu_data->shared_type = CPUFREQ_SHARED_TYPE_ANY;
- 
--	for_each_possible_cpu(i) {
-+	for_each_online_cpu(i) {
- 		if (i == cpu)
- 			continue;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
+index 44f230d67da24..bfa64cd7a62d4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
+@@ -229,7 +229,7 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned int num_ibs,
+ 		r = amdgpu_vm_flush(ring, job, need_pipe_sync);
+ 		if (r) {
+ 			amdgpu_ring_undo(ring);
+-			return r;
++			goto free_fence;
+ 		}
+ 	}
  
 -- 
 2.51.0
