@@ -1,165 +1,186 @@
-Return-Path: <stable+bounces-218033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218035-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJouDbxInmnXUQQAu9opvQ
-	(envelope-from <stable+bounces-218033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:56:28 +0100
+	id mNHjEVxJnmnXUQQAu9opvQ
+	(envelope-from <stable+bounces-218035-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:59:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AED18E6D0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:56:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C53B18E70D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE556300DCCA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 00:56:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53E593033F93
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 00:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8766C1E5B63;
-	Wed, 25 Feb 2026 00:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC88323D7CF;
+	Wed, 25 Feb 2026 00:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eyc/bi5y"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="ltyUyYX0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104AC239086
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 00:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE3323AB81
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 00:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771980985; cv=none; b=IjTeJgLnLXjTwj3GaHRzxr63QtcIjvciWIMGmIR8OLyGofsArZ0Z4kumIwcYwOFE1TxLdEWYcKmntc7SIKuMWzet+nGDfsJRd0q4qrCmh1zV92K6jyIxQCvYEA40CPt2Jv0LVJ7C1nZFdwXO+iiHuPUGq8iTxQgMtTU+ALMpb7s=
+	t=1771981145; cv=none; b=iMi8V//vhCWn7TEiXWdDoTg1xYgmN0aI8uonBMySFF1F5sKpVL2T/3m5DMskpy2x3joEya0qqv9LigqpGkkOwhFrMMkdVq2R6PmyM+mQbgbOAmfYTkdbm9hsaWMmB4Uzka1WC0wI7LIefCQ3c6fd7KDI3d/scpVVFggWkoc9GlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771980985; c=relaxed/simple;
-	bh=HUsEH3vAov9bqqGGvpXRRVwKKLNpfbdx08NYR/odYGw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Gh1PaTHQRCDUaHNO9eK2zR+w1pIW4adJ0EkerwjSbpKqn2ZgqoKwoorOoy5sQpjqgudjP3vDq3+y59qzZsIgoz6d9SHf7u9UWvDlA4gUouZSGh/sIB286zosDcbb8c4m1YD6eHJmFnvIWiYQXVx0cbQleMhkP2hyj3DUcB+cE20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eyc/bi5y; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-824f7591956so22028366b3a.1
-        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 16:56:23 -0800 (PST)
+	s=arc-20240116; t=1771981145; c=relaxed/simple;
+	bh=11jQQswDgNMoKwGUbpAWL6gSmx2zBiQzUJ0BMY3f330=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=m/Uf7aXrRbmoayPY5nqIiu45HPzYvOeU+TQKbuVU0aXZdS4i+0NzIfjK8wrLo0h5o/x5eaU5VvMhhdOBIpjiFiaPTxxpT84SefmqVsdf9fuxTOJcrL7bOL41oHtgb59mXnNlDs/cWH/AHAWB1fky6r0m3jG0VoCPmVu1MJNYRJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=ltyUyYX0; arc=none smtp.client-ip=74.125.82.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-124afd03fd1so8815652c88.0
+        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 16:59:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771980983; x=1772585783; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wj9sDKWv3dHqZ+EDUSj6kle5HwXIpR1sWpYbztdJ+So=;
-        b=eyc/bi5yeuFSpipPXd/fSm/F8P0/wG9bDy+tODzdpTEFv2qHaa7t9RvVVeD0prMzxI
-         bHglwQ7EZla4Wf8weXBdwovBI3aI3kGFHoGd37fWcSTTFkah9AXUicqE1TXy2wvcrGKs
-         ANbvGdEdlkgeFh62R+8DqasDMkMNFd9sZs3jhpEu5Yu9Pa+A/yCzC9OYIEoCcU0WtNEB
-         TfpXuQHEzKbGr81eZO5MEZe5QijE8bNp2KZ66B0m6ptHL/7zqQSfV3l5oVl4repAsjqv
-         tupZyG7aSTLNUcmLUCjsRMRUI/m0bSL6NGY2olqmDVmXU7TvVyiCxPBbxS3w8Wp9x5jT
-         2Dhg==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1771981143; x=1772585943; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zYBMU+7jfne/WhsH/k6Y6v9NVX2mX26yp1FDivWJk08=;
+        b=ltyUyYX0rs0EF8WMnK5Dt4AMT+v84iPmfIm6LIuhVOS7alkwOOnBvDK9ZTi8OPWLgK
+         nv1iiC5j4+vBWPukCXeuXvGb0jBUJ6cfeQ6UWZ4FXErjF9ki88iuyWllm/R99yRcmLKh
+         LnoQn04/zeK56f0PQCnNAKE+tb45WDJf2hO6jBsAiNi1+fRi+8ODf7KK+FpZP07WpQzP
+         XUryRyezuelSD3wTyX3Ut30KCQHlZc5BH9mJivNZHB3XTCY3r3wIyukS7JQFYzJdSAfd
+         4ifzW0HGZnXksq0hWpB/4lFkAe15Ud3ObUEovC7KgtdmlGsDrTopMgD/nXrWvLqhxmLi
+         V/dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771980983; x=1772585783;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wj9sDKWv3dHqZ+EDUSj6kle5HwXIpR1sWpYbztdJ+So=;
-        b=h8vHtyZaPwmsbAFhirjRvlnSaeqylfysp6isIngproKhC/xgyLnOatjwM1ziJdE/oa
-         MO8+eXh7OgAgIu8V8nTzrd8DSHgDQ2H9KklVf0WOgrSAWRxpOq3/PPFdnsPpxk71JX04
-         fplL/Au9CPivZZTD4xk4GOG+BBA4mDUgcMa0B/1Pog4TyxEu6K7y3zsQekapcu1jEfkx
-         /rzKkemdoWGyfi4snDgwIXXDH6QAcWYjFzd1sqa6e9bk2vujNjamYjQGz5/dcuKcIzbr
-         y5VgFDOpn7Y8hhmcD++Gb5ORbWRVrX+/00/Z7wsO0FvvnOG399ocvbCnfQKz7tB67TiZ
-         EFaA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjABY+c3Iq1ktolCGMdBjVJBUJ9/zRNQ+rvkZCZ+po+6obVv8s3AZORRnfe0YeIxnkuJecj4o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8EsIz0VkKzANaMUz3zKJhHPJd6yywHrVyTitSt53lVSkmBIY4
-	POjdcbRN+gFaIlMeC6Son6mp+I/KNx7HsbyF7/XHibW8uCDiMEvODk8GxjsFS/q8Hoxjj3oh+NX
-	1e/nkDQ==
-X-Received: from pfqy30.prod.google.com ([2002:aa7:9e1e:0:b0:806:cdd:6793])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1944:b0:821:7d7e:41cd
- with SMTP id d2e1a72fcca58-827249d0e01mr404507b3a.10.1771980983105; Tue, 24
- Feb 2026 16:56:23 -0800 (PST)
-Date: Tue, 24 Feb 2026 16:56:21 -0800
-In-Reply-To: <CAO9r8zPsAMaiU794xoXDso3sdAM0_EN2PyE13vR4NqqEh9e2=g@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1771981143; x=1772585943;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zYBMU+7jfne/WhsH/k6Y6v9NVX2mX26yp1FDivWJk08=;
+        b=nwKpfOdhcp1uhYjaXJ/4+ucVVaXa4O4ECRFzXrPV/eYlT9AtPpHPgQNbojQxXFVJtF
+         ZlhY6TXwpok+gVAd/T1gmgdUS1OLljUNWWm1Va1FZdIXGzy/wkjyPk/MfA8xbXrPl+0g
+         DCTzaRvMh7sBwXdPEdQjaatF9uW/JXHtoZqpdbcPxe+kztAa+V6vEPThD7HwWpo2UVBS
+         MBmkHnaHEPBiYd4V4X21+yzeDW0PTzEGcvI7YkNTR7SycYmHxRwhGQYZNAs1BXXDK5Dr
+         On1DeUgmbpiQY/kJCYxItVv0wdwBTZmXcFxNDXsxMwKrhJsCFD0efvazsCSgjckUtE3O
+         74BQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqBxdn7BbjMNn6B0vzOBOZEcOPxq/M0KfDI85gzTyssqgmf8/A3id3Ba49nSZcrlowVnCTlwc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpALLmTJZwxj6W4HQDNUgbtgrgiJTRcQ7hsBlcmeNuyovOPVYB
+	GNY54NTmr+fo2iHECytw09b3LRSEc3BIY/u5KpDOtk2/RE5TqlVk7x2IvOwKr68QpAVnTPvg3oS
+	8Fmz+LfE=
+X-Gm-Gg: ATEYQzzEuI8beLg2nT+dDMwkK0cLmSl0Y/zPW9RhBdjrlA8LOzjSHMQIcG8GRGN3wBI
+	LW75HUdLv4TBIqkYObQKKKXMhKzYu38zQ45awaMB9rJtSCGZlKEROD72epK7mir24FqNjxo0CIk
+	t9KP7NJ/ryLRW8NzJ4zMwisknZS3yqOY6jMVPHwDRQ6b01mpusBVXeDLTAaUszLMqxvJBRP1tBI
+	OdhDL/FEhoAmmgBgUIlHAe839X742YqucAUtZrVtbWObL0yhq2argJY29h3SMFPkh7eA7ZtDem3
+	PbqMJNo3K55zgFWLUBSzJUr2cnbWtIra/vzes2IcffFBhQ6zIPQNUK48b/xQvNF7wkofY1OrPoj
+	Ntu2BMuLWF/T1XDrD5rzDRiCsr5//urJh5ApMziyLBPW06Ub+7Q4yEf4B0uwCVzaUpMKPvBFjSI
+	GuI88pibuPo9Ycl23x
+X-Received: by 2002:a05:7022:61a4:b0:11b:9386:8255 with SMTP id a92af1059eb24-12781ed0fa6mr272970c88.42.1771981143365;
+        Tue, 24 Feb 2026 16:59:03 -0800 (PST)
+Received: from d14e337afe00 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1276af20fc8sm13006374c88.6.2026.02.24.16.59.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 16:59:02 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260223154636.116671-1-yosry@kernel.org> <20260223154636.116671-3-yosry@kernel.org>
- <CAO9r8zPsAMaiU794xoXDso3sdAM0_EN2PyE13vR4NqqEh9e2=g@mail.gmail.com>
-Message-ID: <aZ5ItfEUtIlVbzuQ@google.com>
-Subject: Re: [PATCH v1 2/4] KVM: nSVM: Delay stuffing L2's current RIP into
- NextRIP until vCPU run
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable-rc/linux-5.15.y: (build) variable 'i2cdev' is
+ uninitialized when used here [-Werror,-Wunini...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Wed, 25 Feb 2026 00:59:02 -0000
+Message-ID: <177198114226.2577.15577566399399369654@d14e337afe00>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-clang-21-arm-allmodconfig-699e2e281f24bb6946377649/.config];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218033-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-218035-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kernelci.org];
+	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C7AED18E6D0
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernelci-org.20230601.gappssmtp.com:dkim,kernelci.org:url,kernelci.org:email,lists.linux.dev:replyto]
+X-Rspamd-Queue-Id: 9C53B18E70D
 X-Rspamd-Action: no action
 
-On Tue, Feb 24, 2026, Yosry Ahmed wrote:
-> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> > index 8f8bc863e2143..e084b9688f556 100644
-> > --- a/arch/x86/kvm/svm/svm.c
-> > +++ b/arch/x86/kvm/svm/svm.c
-> > @@ -1413,6 +1413,24 @@ static void svm_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
-> >                 sd->bp_spec_reduce_set = true;
-> >                 msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
-> >         }
-> > +
-> > +       /*
-> > +        * If nrips is supported in hardware but not exposed to L1, stuff the
-> > +        * actual L2 RIP to emulate what a nrips=0 CPU would do (L1 is
-> > +        * responsible for advancing RIP prior to injecting the event). Once L2
-> > +        * runs after L1 executes VMRUN, NextRIP is updated by the CPU and/or
-> > +        * KVM, and this is no longer needed.
-> > +        *
-> > +        * This is done here (as opposed to when preparing vmcb02) to use the
-> > +        * most up-to-date value of RIP regardless of the order of restoring
-> > +        * registers and nested state in the vCPU save+restore path.
-> > +        */
-> > +       if (is_guest_mode(vcpu) && svm->nested.nested_run_pending) {
-> > +               if (boot_cpu_has(X86_FEATURE_NRIPS) &&
-> > +                   !guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-> > +                       svm->vmcb->control.next_rip = kvm_rip_read(vcpu);
-> > +       }
-> > +
-> 
-> Doing this in svm_prepare_switch_to_guest() is wrong, or at least
-> after the svm->guest_state_loaded check. It's possible to emulate the
-> nested VMRUN without doing a vcpu_put(), which means
-> svm->guest_state_loaded will remain true and this code will be
-> skipped.
-> 
-> In fact, this breaks the svm_nested_soft_inject_test test. Funny
-> enough, I was only running it with my repro changes, which papered
-> over the bug because it forced an exit to userspace after VMRUN due to
-> single-stepping, so svm->guest_state_loaded got cleared and the code
-> was executed on the next KVM_RUN, before L2 runs.
-> 
-> I can move it above the svm->guest_state_loaded check, but I think I
-> will just put it in pre_svm_run() instead.
 
-I would rather not expand pre_svm_run(), and instead just open code it in
-svm_vcpu_run().  pre_svm_run() probably should never have been added, because
-it's far from a generic "pre run" API.  E.g. if we want to keep the helper around,
-it should probably be named something something ASID.
+
+
+
+Hello,
+
+New build issue found on stable-rc/linux-5.15.y:
+
+---
+ variable 'i2cdev' is uninitialized when used here [-Werror,-Wuninitialized] in drivers/i3c/master.o (drivers/i3c/master.c) [logspec:kbuild,kbuild.compiler.error]
+---
+
+- dashboard: https://d.kernelci.org/i/maestro:5094076fcbd58e00f45e150b4473740289489b80
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  7613e80fc292f4de13de5b3f362452f450db6993
+
+
+Please include the KernelCI tag when submitting a fix:
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+
+Log excerpt:
+=====================================================
+drivers/i3c/master.c:2203:3: error: variable 'i2cdev' is uninitialized when used here [-Werror,-Wuninitialized]
+ 2203 |                 i2cdev->dev = i2c_new_client_device(adap, &i2cboardinfo->base);
+      |                 ^~~~~~
+drivers/i3c/master.c:2181:29: note: initialize the variable 'i2cdev' to silence this warning
+ 2181 |         struct i2c_dev_desc *i2cdev;
+      |                                    ^
+      |                                     = NULL
+1 error generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## defconfig+allmodconfig on (arm64):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-arm64-allmodconfig-699e2e2d1f24bb694637764c/.config
+- dashboard: https://d.kernelci.org/build/maestro:699e2e2d1f24bb694637764c
+
+## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-arm-allmodconfig-699e2e281f24bb6946377649/.config
+- dashboard: https://d.kernelci.org/build/maestro:699e2e281f24bb6946377649
+
+
+#kernelci issue maestro:5094076fcbd58e00f45e150b4473740289489b80
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
