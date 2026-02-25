@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-219381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMG7OWaenmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:58 +0100
+	id cON9JKxVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:51:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5A1192C54
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D601900A8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:51:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F22330DB639
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A878A308118C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA0D2D29C2;
-	Wed, 25 Feb 2026 06:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE21265CBE;
+	Wed, 25 Feb 2026 01:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBQ7aOI0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="da7BcYVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821452D5926;
-	Wed, 25 Feb 2026 06:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E931D5141;
+	Wed, 25 Feb 2026 01:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002678; cv=none; b=no+IOjuO7gELuYtD///1lvIt4i7b/qxqaA4e8kafl2/4l8lQFicl2FyTveRqCo+yCVbEuJ7nY8A38SHftUZyykUHAFGncipaY4xS1Nk+mLxcMLR60wbjEhsc/8XutLAs4RNVVXYzYtvnjB0lHN7BWDSwNgd18iONM3jg021fCuk=
+	t=1771983580; cv=none; b=M3zL7R2UMxg3mJ8+cpQ6zTH8ptUIMuAw+z0fxiAHjnweBOOehjXiXsMxUZTT1qRoGlka6NaunjE5VNQNns4q1y0p78WMeqpzZy/ui59WLR+YD1CkFIyI75l+4FI729qyhXGMKhQFr1BbOY9VB1HjDS8IVpsTdrd42xxLikJkz/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002678; c=relaxed/simple;
-	bh=UI8CGB4ZII8rLB9XNnG8ztyvYrMDYlmuLJ1/WlGi9R4=;
+	s=arc-20240116; t=1771983580; c=relaxed/simple;
+	bh=URNlr5EEM5PytqjWMtXvBZmofAakxKvtdkncoc9Dcbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jLts5vHT5qKbEoF08JCoaK0wtzuxgBov4kKbqqTRDt4Xf8TkpyxipQjGLhfFIEOMlWpkSOaLd89H9Ha0KhJ21Z9lsa5nVFoF3kvQP3Dre7bS2FjY1B9WFH6i9LE8MhcgceV3Nk1mCs5KVh2ZQo3+/Lxg8Z6/Tg6SMbqkd7KNW1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBQ7aOI0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B92C116D0;
-	Wed, 25 Feb 2026 06:57:58 +0000 (UTC)
+	 MIME-Version; b=IPnVcFmwoGN9Izu/uPHhuzCsJFggFnscoaYO+lE7uKRR62kXUxixYQbaMW9IpBfmXD4Lr7eCyO/nE3+7Zgk/hNogwEUacWGPuhNObZzaa/BlZTfWK49CKhEQyOpsMsK0eo2OsDspa+RH5bLfMLEdeDVKfAJVkIAvMfaqyoP4aRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=da7BcYVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A539DC116D0;
+	Wed, 25 Feb 2026 01:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002678;
-	bh=UI8CGB4ZII8rLB9XNnG8ztyvYrMDYlmuLJ1/WlGi9R4=;
+	s=korg; t=1771983580;
+	bh=URNlr5EEM5PytqjWMtXvBZmofAakxKvtdkncoc9Dcbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBQ7aOI05wWKdpP8/eYi/ejR0Nz5rZ293E/38uchLVmMGa2STB1DPRRBZhbySALBF
-	 WVym6nW93h8WRO/iVsVS6Thx9LZSBYisHST21pb8/cu0Luop9vX0SO573gECwH/XkW
-	 8a//+6v2Fb1q5CYD3JYwPF5A5Od58WB1FjU2xO/8=
+	b=da7BcYVe67rioADfnDBbcyGyAVf6OAIKjz155nQa6PhOtPMKYdSF7Jhsr0TuFC9jH
+	 M+ltSmtbK+uBFDVZqNdjk+7WofHc43kvqbPYPOfvxbX/qPvcB/3uhPe+3njKEXD4Hl
+	 drd4SBQ5FvHkWf/xHg0PFXl3HWYBX/7UWHZcOCTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 463/641] gpib: Fix error code in ibonline()
-Date: Tue, 24 Feb 2026 17:23:09 -0800
-Message-ID: <20260225012359.733653635@linuxfoundation.org>
+Subject: [PATCH 6.19 681/781] octeontx2-af: Fix default entries mcam entry action
+Date: Tue, 24 Feb 2026 17:23:10 -0800
+Message-ID: <20260225012416.478569551@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,70 +70,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218719-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219381-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8E5A1192C54
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,marvell.com:email]
+X-Rspamd-Queue-Id: B4D601900A8
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 96118565d24e7691e423d73be224b3a3fffc4680 ]
+[ Upstream commit 45be47bf5d7db0f762a93e9c0ede6cb3c91edf3b ]
 
-This accidentally returns 1 on error, but it should return negative
-error codes.
+As per design, AF should update the default MCAM action only when
+mcam_index is -1. A bug in the previous patch caused default entries
+to be changed even when the request was not for them.
 
-Fixes: 9dde4559e939 ("staging: gpib: Add GPIB common core driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aSlMnaT1M104NJb2@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 570ba37898ec ("octeontx2-af: Update RSS algorithm index")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260216090338.1318976-1-hkelam@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/common/iblib.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 41 ++++++++++---------
+ 1 file changed, 22 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/staging/gpib/common/iblib.c b/drivers/staging/gpib/common/iblib.c
-index 7cbb6a467177d..b672dd6aad25f 100644
---- a/drivers/staging/gpib/common/iblib.c
-+++ b/drivers/staging/gpib/common/iblib.c
-@@ -227,11 +227,10 @@ int ibonline(struct gpib_board *board)
- #ifndef CONFIG_NIOS2
- 	board->autospoll_task = kthread_run(&autospoll_thread, board,
- 					    "gpib%d_autospoll_kthread", board->minor);
--	retval = IS_ERR(board->autospoll_task);
--	if (retval) {
-+	if (IS_ERR(board->autospoll_task)) {
- 		dev_err(board->gpib_dev, "failed to create autospoll thread\n");
- 		board->interface->detach(board);
--		return retval;
-+		return PTR_ERR(board->autospoll_task);
- 	}
- #endif
- 	board->online = 1;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index c7c70429eb6c1..8658cb2143dfc 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -1042,32 +1042,35 @@ void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
+ 	rvu_write64(rvu, blkaddr,
+ 		    NPC_AF_MCAMEX_BANKX_ACTION(index, bank), *(u64 *)&action);
+ 
+-	/* update the VF flow rule action with the VF default entry action */
+-	if (mcam_index < 0)
+-		npc_update_vf_flow_entry(rvu, mcam, blkaddr, pcifunc,
+-					 *(u64 *)&action);
+-
+ 	/* update the action change in default rule */
+ 	pfvf = rvu_get_pfvf(rvu, pcifunc);
+ 	if (pfvf->def_ucast_rule)
+ 		pfvf->def_ucast_rule->rx_action = action;
+ 
+-	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
+-					 nixlf, NIXLF_PROMISC_ENTRY);
++	if (mcam_index < 0) {
++		/* update the VF flow rule action with the VF default
++		 * entry action
++		 */
++		npc_update_vf_flow_entry(rvu, mcam, blkaddr, pcifunc,
++					 *(u64 *)&action);
+ 
+-	/* If PF's promiscuous entry is enabled,
+-	 * Set RSS action for that entry as well
+-	 */
+-	npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index, blkaddr,
+-					  alg_idx);
++		index = npc_get_nixlf_mcam_index(mcam, pcifunc,
++						 nixlf, NIXLF_PROMISC_ENTRY);
+ 
+-	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
+-					 nixlf, NIXLF_ALLMULTI_ENTRY);
+-	/* If PF's allmulti  entry is enabled,
+-	 * Set RSS action for that entry as well
+-	 */
+-	npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index, blkaddr,
+-					  alg_idx);
++		/* If PF's promiscuous  entry is enabled,
++		 * Set RSS action for that entry as well
++		 */
++		npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index,
++						  blkaddr, alg_idx);
++
++		index = npc_get_nixlf_mcam_index(mcam, pcifunc,
++						 nixlf, NIXLF_ALLMULTI_ENTRY);
++		/* If PF's allmulti  entry is enabled,
++		 * Set RSS action for that entry as well
++		 */
++		npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index,
++						  blkaddr, alg_idx);
++	}
+ }
+ 
+ void npc_enadis_default_mce_entry(struct rvu *rvu, u16 pcifunc,
 -- 
 2.51.0
 
