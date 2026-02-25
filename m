@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJOOGCJZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:26 +0100
+	id gIXZBwpSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44E61908C3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 424FB18F1A1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5EF373254EA4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DE3B0307108F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B652426CE2D;
-	Wed, 25 Feb 2026 01:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45CE243376;
+	Wed, 25 Feb 2026 01:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQdvSRlT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8MfiUIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799FB26056D;
-	Wed, 25 Feb 2026 01:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CF32BAF7;
+	Wed, 25 Feb 2026 01:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983717; cv=none; b=VFHzIrXslUsBOaQ2cXxgFn/pw/WrvTo8pv66syU4p7Ucejb6Ul5MiZm7vIXuHv18Ldx1EVm0VeovyfAUQOxy/hn8cY6dThvwJZQmdRmbc3QQAfwXLQMs5+Lw/s4EYEiVJdgzkqL+bWAiTLDZneGWKvDgVM66RPndH1/We/09ieI=
+	t=1771983069; cv=none; b=XqSGwDyuu1kYuemNowuTyUQOUkkXEpBblREM/Z2q+vGLHiXMfzlNK5Aaq02lSCbiiIKtl3crCVOKRzj+/SrS8PrZXDQHgdogKBwTsMM9+U5L9f3Epi3dcWR3Nr3Mz3s7zuZCKiYEONcT/oTR1/xKeF1xmzvWD5ITtLpxNoaVYY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983717; c=relaxed/simple;
-	bh=Bka3rrZhPMbT2lB7/ZqTJJGRenrsywcFI/01M1ahDgk=;
+	s=arc-20240116; t=1771983069; c=relaxed/simple;
+	bh=I6LqR/yXf5UINYtgi6JWjA0Kpi4TQpkBi7oX2iHx6DE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OwN6H17GzVJm7SsgQ0jc+GIA4tB465ZGB9NgmZW0gxppNPcwiz78kOyRHJ+O6jRwEzQWOjMmaPH12w/HerY6EAYMGT0TtNVzD+ALtYChP1Jwv9Ycroj2QdUaDwWR4MEzrHhdzAkg+qICi0I3r80XYKmWs7nht+GBpmcjRGL63Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQdvSRlT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D70C116D0;
-	Wed, 25 Feb 2026 01:41:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i4gpUtw8jtgCNvfIqnRHK/5I/f1xT+DP3TJAFhfBombkwQFOTtrOwQHFdSH/hzmY8GS9WUVKptDyjOwk9TG7iX8FvQjZlS7d3u/qPu5hD1l6Mf7t6uh+L4z5kAsuQzmr7Yqfj8VsVgHrJa1wbBNLoNKMwmqODAuukY9I2AVfmaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8MfiUIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8C0C116D0;
+	Wed, 25 Feb 2026 01:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983717;
-	bh=Bka3rrZhPMbT2lB7/ZqTJJGRenrsywcFI/01M1ahDgk=;
+	s=korg; t=1771983069;
+	bh=I6LqR/yXf5UINYtgi6JWjA0Kpi4TQpkBi7oX2iHx6DE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQdvSRlTEO2kU38jsgMogyJUdWTzyZK+70CD5jM5UtIMcL1k+kviXeun/ntKKdZBV
-	 /xdjwvuR487CI9MlccdDmAltYHGTZ/GDzXiKF9ZzVIHlpWBVcPQOHpW6cIpJebvA9F
-	 ZUrb/CaATlRctop+DiBIk6FTt3LPLV55bWeOVRNU=
+	b=G8MfiUIMlDPJOqCSjHoBb6Ocnm2g5xDvjcKxPzCB03LaxZZJRnJvhDTYoGUfDlrT+
+	 joRejnOjh/CsEjN1xkL87zbc/Wg0amW1a0WndvQe8DGBAitDryfy/P/eQF7rovke/p
+	 8nfthzcrY8spVEQjY13cSHYq6w2uoP2SXrdayAfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ea1cd4aa4d1e98458a55@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 015/641] gfs2: Fix use-after-free in iomap inline data write path
+Subject: [PATCH 6.19 232/781] smack: /smack/doi: accept previously used values
 Date: Tue, 24 Feb 2026 17:15:41 -0800
-Message-ID: <20260225012349.329016823@linuxfoundation.org>
+Message-ID: <20260225012405.400725030@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +63,264 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218835-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218270-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.954];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,ea1cd4aa4d1e98458a55];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,appspotmail.com:email]
-X-Rspamd-Queue-Id: C44E61908C3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,schaufler-ca.com:email]
+X-Rspamd-Queue-Id: 424FB18F1A1
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit faddeb848305e79db89ee0479bb0e33380656321 ]
+[ Upstream commit 33d589ed60ae433b483761987b85e0d24e54584e ]
 
-The inline data buffer head (dibh) is being released prematurely in
-gfs2_iomap_begin() via release_metapath() while iomap->inline_data
-still points to dibh->b_data. This causes a use-after-free when
-iomap_write_end_inline() later attempts to write to the inline data
-area.
+Writing to /smack/doi a value that has ever been
+written there in the past disables networking for
+non-ambient labels.
+E.g.
 
-The bug sequence:
-1. gfs2_iomap_begin() calls gfs2_meta_inode_buffer() to read inode
-   metadata into dibh
-2. Sets iomap->inline_data = dibh->b_data + sizeof(struct gfs2_dinode)
-3. Calls release_metapath() which calls brelse(dibh), dropping refcount
-   to 0
-4. kswapd reclaims the page (~39ms later in the syzbot report)
-5. iomap_write_end_inline() tries to memcpy() to iomap->inline_data
-6. KASAN detects use-after-free write to freed memory
+    # cat /smack/doi
+    3
+    # netlabelctl -p cipso list
+    Configured CIPSO mappings (1)
+     DOI value : 3
+       mapping type : PASS_THROUGH
+    # netlabelctl -p map list
+    Configured NetLabel domain mappings (3)
+     domain: "_" (IPv4)
+       protocol: UNLABELED
+     domain: DEFAULT (IPv4)
+       protocol: CIPSO, DOI = 3
+     domain: DEFAULT (IPv6)
+       protocol: UNLABELED
 
-Fix by storing dibh in iomap->private and incrementing its refcount
-with get_bh() in gfs2_iomap_begin(). The buffer is then properly
-released in gfs2_iomap_end() after the inline write completes,
-ensuring the page stays alive for the entire iomap operation.
+    # cat /smack/ambient
+    _
+    # cat /proc/$$/attr/smack/current
+    _
+    # ping -c1 10.1.95.12
+    64 bytes from 10.1.95.12: icmp_seq=1 ttl=64 time=0.964 ms
+    # echo foo >/proc/$$/attr/smack/current
+    # ping -c1 10.1.95.12
+    64 bytes from 10.1.95.12: icmp_seq=1 ttl=64 time=0.956 ms
+    unknown option 86
 
-Note: A C reproducer is not available for this issue. The fix is based
-on analysis of the KASAN report and code review showing the buffer head
-is freed before use.
+    # echo 4 >/smack/doi
+    # echo 3 >/smack/doi
+!>  [  214.050395] smk_cipso_doi:691 cipso add rc = -17
+    # echo 3 >/smack/doi
+!>  [  249.402261] smk_cipso_doi:678 remove rc = -2
+!>  [  249.402261] smk_cipso_doi:691 cipso add rc = -17
 
-[agruenba: Take buffer head reference in gfs2_iomap_begin() to avoid
-leaks in gfs2_iomap_get() and gfs2_iomap_alloc().]
+    # ping -c1 10.1.95.12
+!!> ping: 10.1.95.12: Address family for hostname not supported
 
-Reported-by: syzbot+ea1cd4aa4d1e98458a55@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ea1cd4aa4d1e98458a55
-Fixes: d0a22a4b03b8 ("gfs2: Fix iomap write page reclaim deadlock")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+    # echo _ >/proc/$$/attr/smack/current
+    # ping -c1 10.1.95.12
+    64 bytes from 10.1.95.12: icmp_seq=1 ttl=64 time=0.617 ms
+
+This happens because Smack keeps decommissioned DOIs,
+fails to re-add them, and consequently refuses to add
+the “default” domain map:
+
+    # netlabelctl -p cipso list
+    Configured CIPSO mappings (2)
+     DOI value : 3
+       mapping type : PASS_THROUGH
+     DOI value : 4
+       mapping type : PASS_THROUGH
+    # netlabelctl -p map list
+    Configured NetLabel domain mappings (2)
+     domain: "_" (IPv4)
+       protocol: UNLABELED
+!>  (no ipv4 map for default domain here)
+     domain: DEFAULT (IPv6)
+       protocol: UNLABELED
+
+Fix by clearing decommissioned DOI definitions and
+serializing concurrent DOI updates with a new lock.
+
+Also:
+- allow /smack/doi to live unconfigured, since
+  adding a map (netlbl_cfg_cipsov4_map_add) may fail.
+  CIPSO_V4_DOI_UNKNOWN(0) indicates the unconfigured DOI
+- add new DOI before removing the old default map,
+  so the old map remains if the add fails
+
+(2008-02-04, Casey Schaufler)
+Fixes: e114e473771c ("Smack: Simplified Mandatory Access Control Kernel")
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/bmap.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ security/smack/smackfs.c | 71 +++++++++++++++++++++++++---------------
+ 1 file changed, 45 insertions(+), 26 deletions(-)
 
-diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
-index 131091520de6b..fdcac8e3f2ba2 100644
---- a/fs/gfs2/bmap.c
-+++ b/fs/gfs2/bmap.c
-@@ -1127,10 +1127,18 @@ static int gfs2_iomap_begin(struct inode *inode, loff_t pos, loff_t length,
- 			goto out_unlock;
- 		break;
- 	default:
--		goto out_unlock;
-+		goto out;
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index e611e0fb56209..8919e330d2f60 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -70,6 +70,7 @@ enum smk_inos {
+ static DEFINE_MUTEX(smack_cipso_lock);
+ static DEFINE_MUTEX(smack_ambient_lock);
+ static DEFINE_MUTEX(smk_net4addr_lock);
++static DEFINE_MUTEX(smk_cipso_doi_lock);
+ #if IS_ENABLED(CONFIG_IPV6)
+ static DEFINE_MUTEX(smk_net6addr_lock);
+ #endif /* CONFIG_IPV6 */
+@@ -141,7 +142,7 @@ struct smack_parsed_rule {
+ 	int			smk_access2;
+ };
+ 
+-static u32 smk_cipso_doi_value = SMACK_CIPSO_DOI_DEFAULT;
++static u32 smk_cipso_doi_value = CIPSO_V4_DOI_UNKNOWN;
+ 
+ /*
+  * Values for parsing cipso rules
+@@ -663,43 +664,60 @@ static const struct file_operations smk_load_ops = {
+ };
+ 
+ /**
+- * smk_cipso_doi - initialize the CIPSO domain
++ * smk_cipso_doi - set netlabel maps
++ * @ndoi: new value for our CIPSO DOI
++ * @gfp_flags: kmalloc allocation context
+  */
+-static void smk_cipso_doi(void)
++static int
++smk_cipso_doi(u32 ndoi, gfp_t gfp_flags)
+ {
+-	int rc;
++	int rc = 0;
+ 	struct cipso_v4_doi *doip;
+ 	struct netlbl_audit nai;
+ 
+-	smk_netlabel_audit_set(&nai);
++	mutex_lock(&smk_cipso_doi_lock);
+ 
+-	rc = netlbl_cfg_map_del(NULL, PF_INET, NULL, NULL, &nai);
+-	if (rc != 0)
+-		printk(KERN_WARNING "%s:%d remove rc = %d\n",
+-		       __func__, __LINE__, rc);
++	if (smk_cipso_doi_value == ndoi)
++		goto clr_doi_lock;
++
++	smk_netlabel_audit_set(&nai);
+ 
+-	doip = kmalloc(sizeof(struct cipso_v4_doi), GFP_KERNEL | __GFP_NOFAIL);
++	doip = kmalloc(sizeof(struct cipso_v4_doi), gfp_flags);
++	if (!doip) {
++		rc = -ENOMEM;
++		goto clr_doi_lock;
++	}
+ 	doip->map.std = NULL;
+-	doip->doi = smk_cipso_doi_value;
++	doip->doi = ndoi;
+ 	doip->type = CIPSO_V4_MAP_PASS;
+ 	doip->tags[0] = CIPSO_V4_TAG_RBITMAP;
+ 	for (rc = 1; rc < CIPSO_V4_TAG_MAXCNT; rc++)
+ 		doip->tags[rc] = CIPSO_V4_TAG_INVALID;
+ 
+ 	rc = netlbl_cfg_cipsov4_add(doip, &nai);
+-	if (rc != 0) {
+-		printk(KERN_WARNING "%s:%d cipso add rc = %d\n",
+-		       __func__, __LINE__, rc);
++	if (rc) {
+ 		kfree(doip);
+-		return;
++		goto clr_doi_lock;
+ 	}
+-	rc = netlbl_cfg_cipsov4_map_add(doip->doi, NULL, NULL, NULL, &nai);
+-	if (rc != 0) {
+-		printk(KERN_WARNING "%s:%d map add rc = %d\n",
+-		       __func__, __LINE__, rc);
+-		netlbl_cfg_cipsov4_del(doip->doi, &nai);
+-		return;
++
++	if (smk_cipso_doi_value != CIPSO_V4_DOI_UNKNOWN) {
++		rc = netlbl_cfg_map_del(NULL, PF_INET, NULL, NULL, &nai);
++		if (rc && rc != -ENOENT)
++			goto clr_ndoi_def;
++
++		netlbl_cfg_cipsov4_del(smk_cipso_doi_value, &nai);
+ 	}
++
++	rc = netlbl_cfg_cipsov4_map_add(ndoi, NULL, NULL, NULL, &nai);
++	if (rc) {
++		smk_cipso_doi_value = CIPSO_V4_DOI_UNKNOWN; // no default map
++clr_ndoi_def:	netlbl_cfg_cipsov4_del(ndoi, &nai);
++	} else
++		smk_cipso_doi_value = ndoi;
++
++clr_doi_lock:
++	mutex_unlock(&smk_cipso_doi_lock);
++	return rc;
+ }
+ 
+ /**
+@@ -1599,11 +1617,8 @@ static ssize_t smk_write_doi(struct file *file, const char __user *buf,
+ 
+ 	if (u == CIPSO_V4_DOI_UNKNOWN || u > U32_MAX)
+ 		return -EINVAL;
+-	smk_cipso_doi_value = u;
+-
+-	smk_cipso_doi();
+ 
+-	return count;
++	return smk_cipso_doi(u, GFP_KERNEL) ? : count;
+ }
+ 
+ static const struct file_operations smk_doi_ops = {
+@@ -2984,6 +2999,7 @@ int __init init_smk_fs(void)
+ {
+ 	int err;
+ 	int rc;
++	struct netlbl_audit nai;
+ 
+ 	if (smack_enabled == 0)
+ 		return 0;
+@@ -3002,7 +3018,10 @@ int __init init_smk_fs(void)
+ 		}
  	}
  
- 	ret = gfs2_iomap_begin_write(inode, pos, length, flags, iomap, &mp);
-+	if (ret)
-+		goto out_unlock;
-+
-+out:
-+	if (iomap->type == IOMAP_INLINE) {
-+		iomap->private = metapath_dibh(&mp);
-+		get_bh(iomap->private);
-+	}
+-	smk_cipso_doi();
++	smk_netlabel_audit_set(&nai);
++	(void) netlbl_cfg_map_del(NULL, PF_INET, NULL, NULL, &nai);
++	(void) smk_cipso_doi(SMACK_CIPSO_DOI_DEFAULT,
++			     GFP_KERNEL | __GFP_NOFAIL);
+ 	smk_unlbl_ambient(NULL);
  
- out_unlock:
- 	release_metapath(&mp);
-@@ -1144,6 +1152,9 @@ static int gfs2_iomap_end(struct inode *inode, loff_t pos, loff_t length,
- 	struct gfs2_inode *ip = GFS2_I(inode);
- 	struct gfs2_sbd *sdp = GFS2_SB(inode);
- 
-+	if (iomap->private)
-+		brelse(iomap->private);
-+
- 	switch (flags & (IOMAP_WRITE | IOMAP_ZERO)) {
- 	case IOMAP_WRITE:
- 		if (flags & IOMAP_DIRECT)
+ 	rc = smack_populate_secattr(&smack_known_floor);
 -- 
 2.51.0
 
