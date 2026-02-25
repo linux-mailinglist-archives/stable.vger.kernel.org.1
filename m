@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-218508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219073-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCdJCI9SnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:23 +0100
+	id uPNnGWVXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219073-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8F218F3E7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2111190514
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 237C630C864C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B77CF3230D0A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814C6248881;
-	Wed, 25 Feb 2026 01:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B23C2853F7;
+	Wed, 25 Feb 2026 01:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQnuPkL9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHW9JsBy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BA018B0A;
-	Wed, 25 Feb 2026 01:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33502522A7;
+	Wed, 25 Feb 2026 01:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983340; cv=none; b=Px8DZ7rDAg2JhPvOMkguWpP7WcHZnfFGxb8x8FZZSkP1K+iTUoqlXCUH+0yxtvXZWGdpP3hrl9tJ5PE4p628eCDsKE+gNmAiJkF9tw3TDukHleW3nVNfUfRYRmEz7EJQfYIQsn+DWQmC/d0aXe3+29ZvSfFnxN2XHvz3ZoIHWGU=
+	t=1771983999; cv=none; b=GKfTfhHmcw9aA6TGPH3ftBg9/NGP/q/1DjAbzmaFrbJuBZg6UZl4nacXwNI1GUtLh7S/iQy9bQpwf/9oljKLUjFCxacW6Yp+umvWsd2Hmc1xkcMiDZqVJ4N2iW9RbXpNbG5uHp3bqVfVMSPptwwTrOI63wHAN0IOeONv6EWBOJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983340; c=relaxed/simple;
-	bh=+sCBBlUVKPO9w99KSTTPAwhFmFjgan1j6w82oNYIBs4=;
+	s=arc-20240116; t=1771983999; c=relaxed/simple;
+	bh=bv9dU9p25sD+B+Ynbr//hqPLq3wYCHBe1dAm5s2VnSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Is0emx4fTwi/eOo8KSMmy3HI+QX0vaDrB+9ETBjwEMJyffKhDyaKx2/2UFV6gWSGouaKK5i+Tx5SCVKtkgCwTh/y++8KEzBRmVsTxKmepCqm5L+vJdueHpzwAQ5QSb68MFdtNkhUJHWNmP2jYTTREikAUyhoAsHqXrWT8T4pgnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQnuPkL9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F242FC116D0;
-	Wed, 25 Feb 2026 01:35:39 +0000 (UTC)
+	 MIME-Version; b=mcpygc7BbDF3I0V55aHNjI6iorBC1xbxO6LXc16yUeEd7r9biFElL6JSljJdCm5jMItkAi0ejdHtO3mKl5OqquVmK532WEjN1TPZYEjS3rXrTY5CF+1Tvi/mGnhSMbfcN4fS2Ek6z4mHAkwdgMyOZ501e/dem+cBNIl7zJBxDsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHW9JsBy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59EFC116D0;
+	Wed, 25 Feb 2026 01:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983340;
-	bh=+sCBBlUVKPO9w99KSTTPAwhFmFjgan1j6w82oNYIBs4=;
+	s=korg; t=1771983998;
+	bh=bv9dU9p25sD+B+Ynbr//hqPLq3wYCHBe1dAm5s2VnSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQnuPkL96nq1JObaSX2Wlj5RlBoONbVv60SFiHQyn50RzhodH2W0AipgwZFCsN/8j
-	 lTon1ZryPm48JOnRA/+6yKgbCnk5987A+XklzT9+a1fJqpc4AeB37Nod0ZLJ2cxfxH
-	 7+Fa0/C89MQzfEO1XaG1bC/1W0zsu1Cu/EfGK2Gs=
+	b=tHW9JsByW6YQrvRXXt+yJOMuviWRA4V7NRz3YWa+ASpGgFpLzS8EWNvmsaLCwx5RE
+	 pD9QEtssnm0jw0wj+p7Rrfu5FmXRFxbhNdAEPuoHTG8KPttGuXY3x4evtnHA3CLZtZ
+	 pCom8WKkhyEG0EI9fVeRjjlTILRn12a5iw3rEVCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Raag Jadav <raag.jadav@intel.com>,
-	Jani Partanen <jiipee@sotapeli.fi>,
-	Lucas De Marchi <demarchi@kernel.org>,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jian Zhang <zhangjian.3032@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 469/781] mtd: intel-dg: Fix accessing regions before setting nregions
+Subject: [PATCH 6.18 252/641] net: mctp-i2c: fix duplicate reception of old data
 Date: Tue, 24 Feb 2026 17:19:38 -0800
-Message-ID: <20260225012411.323268329@linuxfoundation.org>
+Message-ID: <20260225012354.951746026@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,94 +69,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218508-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219073-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sotapeli.fi:email]
-X-Rspamd-Queue-Id: 7F8F218F3E7
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:email]
+X-Rspamd-Queue-Id: C2111190514
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Jian Zhang <zhangjian.3032@bytedance.com>
 
-[ Upstream commit 779c59274d03cc5c07237a2c845dfb71cff77705 ]
+[ Upstream commit ae4744e173fadd092c43eda4ca92dcb74645225a ]
 
-The regions array is counted by nregions, but it's set only after
-accessing it:
+The MCTP I2C slave callback did not handle I2C_SLAVE_READ_REQUESTED
+events. As a result, i2c read event will trigger repeated reception of
+old data, reset rx_pos when a read request is received.
 
-[] UBSAN: array-index-out-of-bounds in drivers/mtd/devices/mtd_intel_dg.c:750:15
-[] index 0 is out of range for type '<unknown> [*]'
-
-Fix it by also fixing an undesired behavior: the loop silently ignores
-ENOMEM and continues setting the other entries.
-
-CC: Gustavo A. R. Silva <gustavoars@kernel.org>
-CC: Raag Jadav <raag.jadav@intel.com>
-Reported-by: Jani Partanen <jiipee@sotapeli.fi>
-Closes: https://lore.kernel.org/all/caca6c67-4f1d-49f1-948f-e63b6b937b29@sotapeli.fi
-Fixes: ceb5ab3cb646 ("mtd: add driver for intel graphics non-volatile memory device")
-Signed-off-by: Lucas De Marchi <demarchi@kernel.org>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Reviewed-by: Raag Jadav <raag.jadav@intel.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
+Link: https://patch.msgid.link/20260108101829.1140448-1-zhangjian.3032@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 2a14e91b6d76 ("mctp i2c: initialise event handler read bytes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/devices/mtd_intel_dg.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/mctp/mctp-i2c.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mtd/devices/mtd_intel_dg.c b/drivers/mtd/devices/mtd_intel_dg.c
-index 2bab30dcd35fd..7f751c48a76d4 100644
---- a/drivers/mtd/devices/mtd_intel_dg.c
-+++ b/drivers/mtd/devices/mtd_intel_dg.c
-@@ -770,6 +770,7 @@ static int intel_dg_mtd_probe(struct auxiliary_device *aux_dev,
+diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+index f782d93f826ef..ecda1cc36391c 100644
+--- a/drivers/net/mctp/mctp-i2c.c
++++ b/drivers/net/mctp/mctp-i2c.c
+@@ -242,6 +242,9 @@ static int mctp_i2c_slave_cb(struct i2c_client *client,
+ 		return 0;
  
- 	kref_init(&nvm->refcnt);
- 	mutex_init(&nvm->lock);
-+	nvm->nregions = nregions;
+ 	switch (event) {
++	case I2C_SLAVE_READ_REQUESTED:
++		midev->rx_pos = 0;
++		break;
+ 	case I2C_SLAVE_WRITE_RECEIVED:
+ 		if (midev->rx_pos < MCTP_I2C_BUFSZ) {
+ 			midev->rx_buffer[midev->rx_pos] = *val;
+@@ -279,6 +282,9 @@ static int mctp_i2c_recv(struct mctp_i2c_dev *midev)
+ 	size_t recvlen;
+ 	int status;
  
- 	for (n = 0, i = 0; i < INTEL_DG_NVM_REGIONS; i++) {
- 		if (!invm->regions[i].name)
-@@ -777,13 +778,15 @@ static int intel_dg_mtd_probe(struct auxiliary_device *aux_dev,
- 
- 		char *name = kasprintf(GFP_KERNEL, "%s.%s",
- 				       dev_name(&aux_dev->dev), invm->regions[i].name);
--		if (!name)
--			continue;
-+		if (!name) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
++	if (midev->rx_pos == 0)
++		return 0;
 +
- 		nvm->regions[n].name = name;
- 		nvm->regions[n].id = i;
- 		n++;
- 	}
--	nvm->nregions = n; /* in case where kasprintf fail */
- 
- 	ret = devm_pm_runtime_enable(device);
- 	if (ret < 0) {
+ 	/* + 1 for the PEC */
+ 	if (midev->rx_pos < MCTP_I2C_MINLEN + 1) {
+ 		ndev->stats.rx_length_errors++;
 -- 
 2.51.0
 
