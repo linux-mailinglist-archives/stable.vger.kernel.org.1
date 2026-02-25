@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHVYJIGdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:09 +0100
+	id sBV+IB1UnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DE5192A15
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD43718FB92
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 817BB301CCAA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E700B30BB50F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5749E3033E7;
-	Wed, 25 Feb 2026 06:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FCA2652B7;
+	Wed, 25 Feb 2026 01:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jj47uMBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAQbEAfj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7692D8396;
-	Wed, 25 Feb 2026 06:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94C225A642;
+	Wed, 25 Feb 2026 01:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002652; cv=none; b=a/sBdWodVEuaNbJiWTBDU8c5Hz4+PODuROWu5jhCaYHX2CegTBUv6tQyB/whp7+HDW/fyKRAFZ7O6BBVikpPdrSMt6qrxDgirWpyag86hz1lU66G6zCQyvAG8dlKQUShlFO9NOQGUwwcafvgG14sAdveEQiwYDyKiCNlINmJwlg=
+	t=1771983476; cv=none; b=n79RDsYYLYrFPb+b+UT9wzHUIZ2lU8PpMZ2RXlOWMc3kR7gRxK8LNE3A5yE/B7sVntJ+nrcmmJdlHF0ewUkrCYoE4R/NP2OfC0NeWndPwO7axkre4V0PjHxe6FdWwJZLJd97dypiOX9D1a+oinccvX0wcVbeEmI/FQNAxrPCmGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002652; c=relaxed/simple;
-	bh=k7Wl108p0Czf+q75yfGreCltxC6dmcLTVIomRcy/7P8=;
+	s=arc-20240116; t=1771983476; c=relaxed/simple;
+	bh=0pxPA0WaFa+V4nTxQ1N5iQCedwB29w9kQTReKOnGxWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdj1uZGHya7sMWyOzCokoA7xHdkngHP/L9jW5zt9IGWxcldkrgCZieNz8Hj5NgV06ytmrglVrPtAsqkdAsMoAPPQtrNBAs1+J1gZ0MUl/eBC+UmjoVmNL9Dt1SO9fjD3GC+IarPGao1tYeWHlOzorBlS+tD/+Qmoqg4tRoB0S6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jj47uMBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9888C116D0;
-	Wed, 25 Feb 2026 06:57:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nCcKwZYVupC/QJgZCEfossj7cIFTWG+Rnh5NO/y//hE65D+GrWFlERcvYI6NW8eaCrJJ+VwbMc6cYUHmIpz803q94wDVVZ26fQTX95YBkj75PZs/ZGuZB3jOC3WHPAiyOxGyMP+Xsty3cCygJBfYLDbjWyA7C6ea51f5Kf85nXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAQbEAfj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E08CC116D0;
+	Wed, 25 Feb 2026 01:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002651;
-	bh=k7Wl108p0Czf+q75yfGreCltxC6dmcLTVIomRcy/7P8=;
+	s=korg; t=1771983476;
+	bh=0pxPA0WaFa+V4nTxQ1N5iQCedwB29w9kQTReKOnGxWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jj47uMBA5XSRFHGH5qrwgrFcMvFQw3zcr112Ej26AMd9H+EIpnHYOcHWedVJbL+Vf
-	 1yGkXG/71guCJTzOq+bYuQPxNNmH3OLsQs3kuqDnDcpQ23UiFX49H7Oc/gp31rI8Ka
-	 hWUk8enctiodEOELhUqh+/EqQSa49tVqRpmWSmf8=
+	b=VAQbEAfjCLeJcGcAezfL1kHHt3SQekjPrjByO9npDe0Bk2IqWtmGfaJzsmyoA0o8Y
+	 HfsOa4xupK7gx88fZihhlqGYqu0WfRI+7DYZ4btGU/OcL5kbNv+mJTkPCldR6ccbxd
+	 ooi0wjhVm/herPfhSVhSeaCtqUL5NRTo9BGYta0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 373/641] NFS/localio: Handle short writes by retrying
-Date: Tue, 24 Feb 2026 17:21:39 -0800
-Message-ID: <20260225012357.643289829@linuxfoundation.org>
+Subject: [PATCH 6.19 591/781] mfd: sec: Fix IRQ domain names duplication
+Date: Tue, 24 Feb 2026 17:21:40 -0800
+Message-ID: <20260225012414.292845161@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,155 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219341-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218628-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
-X-Rspamd-Queue-Id: 52DE5192A15
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DD43718FB92
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit 615762059d284b863f9163b53679d95b3dcdd495 ]
+[ Upstream commit b60c2dba6d3c3ad72a7c30bbd8eda07d8a49bc7f ]
 
-The current code for handling short writes in localio just truncates the
-I/O and then sets an error. While that is close to how the ordinary NFS
-code behaves, it does mean there is a chance the data that got written
-is lost because it isn't persisted.
-To fix this, change localio so that the upper layers can direct the
-behaviour to persist any unstable data by rewriting it, and then
-continuing writing until an ENOSPC is hit.
+For the S2MPG10 IRQ and chained IRQ, regmap IRQ will try to create a
+folder with the same name which is impossible and fails with:
 
-Fixes: 70ba381e1a43 ("nfs: add LOCALIO support")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+  debugfs: ':firmware:power-management:pmic' already exists in 'domains'
+
+Add domain_suffix to the chained IRQ chip driver to fix it.
+
+Fixes: ee19b52c31b3 ("mfd: sec: Use chained IRQs for s2mpg10")
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://patch.msgid.link/20260105-s2mpg10-chained-irq-domain-suffix-v1-1-01ab16204b97@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/localio.c | 64 +++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 47 insertions(+), 17 deletions(-)
+ drivers/mfd/sec-irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
-index f537bc3386bf2..ea7b35191d0af 100644
---- a/fs/nfs/localio.c
-+++ b/fs/nfs/localio.c
-@@ -58,6 +58,11 @@ struct nfs_local_fsync_ctx {
- static bool localio_enabled __read_mostly = true;
- module_param(localio_enabled, bool, 0644);
+diff --git a/drivers/mfd/sec-irq.c b/drivers/mfd/sec-irq.c
+index 74ac70002d1fc..ff2671186e89f 100644
+--- a/drivers/mfd/sec-irq.c
++++ b/drivers/mfd/sec-irq.c
+@@ -198,6 +198,7 @@ static const struct regmap_irq_chip s2mpg10_irq_chip = {
  
-+static int nfs_local_do_read(struct nfs_local_kiocb *iocb,
-+			     const struct rpc_call_ops *call_ops);
-+static int nfs_local_do_write(struct nfs_local_kiocb *iocb,
-+			      const struct rpc_call_ops *call_ops);
-+
- static inline bool nfs_client_is_local(const struct nfs_client *clp)
- {
- 	return !!rcu_access_pointer(clp->cl_uuid.net);
-@@ -542,13 +547,50 @@ nfs_local_iocb_release(struct nfs_local_kiocb *iocb)
- 	nfs_local_iocb_free(iocb);
- }
- 
--static void
--nfs_local_pgio_release(struct nfs_local_kiocb *iocb)
-+static void nfs_local_pgio_restart(struct nfs_local_kiocb *iocb,
-+				   struct nfs_pgio_header *hdr)
-+{
-+	int status = 0;
-+
-+	iocb->kiocb.ki_pos = hdr->args.offset;
-+	iocb->kiocb.ki_flags &= ~(IOCB_DSYNC | IOCB_SYNC | IOCB_DIRECT);
-+	iocb->kiocb.ki_complete = NULL;
-+	iocb->aio_complete_work = NULL;
-+	iocb->end_iter_index = -1;
-+
-+	switch (hdr->rw_mode) {
-+	case FMODE_READ:
-+		nfs_local_iters_init(iocb, ITER_DEST);
-+		status = nfs_local_do_read(iocb, hdr->task.tk_ops);
-+		break;
-+	case FMODE_WRITE:
-+		nfs_local_iters_init(iocb, ITER_SOURCE);
-+		status = nfs_local_do_write(iocb, hdr->task.tk_ops);
-+		break;
-+	default:
-+		status = -EOPNOTSUPP;
-+	}
-+
-+	if (status != 0) {
-+		nfs_local_iocb_release(iocb);
-+		hdr->task.tk_status = status;
-+		nfs_local_hdr_release(hdr, hdr->task.tk_ops);
-+	}
-+}
-+
-+static void nfs_local_pgio_release(struct nfs_local_kiocb *iocb)
- {
- 	struct nfs_pgio_header *hdr = iocb->hdr;
-+	struct rpc_task *task = &hdr->task;
-+
-+	task->tk_action = NULL;
-+	task->tk_ops->rpc_call_done(task, hdr);
- 
--	nfs_local_iocb_release(iocb);
--	nfs_local_hdr_release(hdr, hdr->task.tk_ops);
-+	if (task->tk_action == NULL) {
-+		nfs_local_iocb_release(iocb);
-+		task->tk_ops->rpc_release(hdr);
-+	} else
-+		nfs_local_pgio_restart(iocb, hdr);
- }
- 
- /*
-@@ -776,19 +818,7 @@ static void nfs_local_write_done(struct nfs_local_kiocb *iocb)
- 		pr_info_ratelimited("nfs: Unexpected direct I/O write alignment failure\n");
- 	}
- 
--	/* Handle short writes as if they are ENOSPC */
--	status = hdr->res.count;
--	if (status > 0 && status < hdr->args.count) {
--		hdr->mds_offset += status;
--		hdr->args.offset += status;
--		hdr->args.pgbase += status;
--		hdr->args.count -= status;
--		nfs_set_pgio_error(hdr, -ENOSPC, hdr->args.offset);
--		status = -ENOSPC;
--		/* record -ENOSPC in terms of nfs_local_pgio_done */
--		(void) nfs_local_pgio_done(iocb, status, true);
--	}
--	if (hdr->task.tk_status < 0)
-+	if (status < 0)
- 		nfs_reset_boot_verifier(hdr->inode);
- }
- 
+ static const struct regmap_irq_chip s2mpg10_irq_chip_pmic = {
+ 	.name = "s2mpg10-pmic",
++	.domain_suffix = "pmic",
+ 	.status_base = S2MPG10_PMIC_INT1,
+ 	.mask_base = S2MPG10_PMIC_INT1M,
+ 	.num_regs = 6,
 -- 
 2.51.0
 
