@@ -1,61 +1,71 @@
-Return-Path: <stable+bounces-218973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0IHpNwxXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218973-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:32 +0100
+	id 4CDQOEVSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F5B190459
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE98118F2D3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09C3831B4FDE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EA747307D732
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7049C242D89;
-	Wed, 25 Feb 2026 01:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937AB242D9B;
+	Wed, 25 Feb 2026 01:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRL+WPlG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgFdbqMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A712609C5;
-	Wed, 25 Feb 2026 01:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569CA18DB2A;
+	Wed, 25 Feb 2026 01:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983876; cv=none; b=PKrbuF1MnLu9gS3T4CPrY3EeAufoP02gS31YzfENCeD1Nb4OLw5qNxeZql5ooIFZKTw7SxCrRvLyULP++XPtxqb6rYlbs94RZMxkKf1gbj/jMJDq4PghRy2t+PYZLq350gFyiDpWckh54vACD1DCv73w9Zhn2DCKECwpXqXI6qE=
+	t=1771983252; cv=none; b=fT2JRsMeNdNiLcYKWp6BRJC0IUguIUuudG2+3Co15vNEdyf0vdbT6VHQGZY4TBpgvFYIx7Pfzcog4EtTBEaihDHol8yStjg+Oylm+bSI3gxH9kSmISY4Vt/YXv932K8IQHCC4g2KRdt9NUUG85j032G5fSRuZWdNAxoa9udeurs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983876; c=relaxed/simple;
-	bh=9zXjV5J9aC7Ogk1O9OcKVf9uBALM6/RxjJIJVq9OTtw=;
+	s=arc-20240116; t=1771983252; c=relaxed/simple;
+	bh=11qzRLAQEmElfthe8d+0qJBoumFtSWi3tgsgoVi5gLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bt/bCpeO/vgHCJNtlHdk5VZDZCAbQoFRGP8dHDVNy/mL3Wg57tywE8PivNc6szxINjkPcmV7oHtrsGFLgj2Q1uDj6duzm5L3ZKzGEWGU9LTgCL49JXb9LMeNvK09PQKczvId3pkaT3Mo1r9kJDZYDfJ/jj+2rpsZMIVDWc/XaYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRL+WPlG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C32C116D0;
-	Wed, 25 Feb 2026 01:44:35 +0000 (UTC)
+	 MIME-Version; b=ZVqAhQkZCJsFgsBQJrwZ7ONIyvUZlAwiraXTwC4rRi7RCi1Oh8BgYQz8gw5XPT/AlPb9cbquffrpB752kVriWHq6ZFXffsyWy56JXwzczgwZ4FhTE4M4ec5/byO5BRRxCVfm62kq+14JTMCIUWqlmEsu8lDdkaMtEqrws3AA+J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgFdbqMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1013CC116D0;
+	Wed, 25 Feb 2026 01:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983876;
-	bh=9zXjV5J9aC7Ogk1O9OcKVf9uBALM6/RxjJIJVq9OTtw=;
+	s=korg; t=1771983252;
+	bh=11qzRLAQEmElfthe8d+0qJBoumFtSWi3tgsgoVi5gLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRL+WPlGACSecf37VcdL500773KclhNe39bDED0SRUx5IFm3867hSnHPVW34dGJNS
-	 b/nyR8McQzPY7elsC3Q0OI/3KUqCqn/pUQir/COPV+mpfOx0ZjzMg4yeYD+avfOqN1
-	 3O/HLNfI25tN5QDUDLjw7oki+78ERiJL1jYurW00=
+	b=dgFdbqMbC/G5RyvkcxVOP/lU3HpkKkElN/dANoDGAzGSi4VD5RIo/QAOym0H8/rol
+	 rtdQqUalWbAFu0tPcvNvQ44mpceOGm7JjzD3sgWmz2Pnq5B4fY2xY6yohJIoxX6Jiv
+	 bXfaTKf4/P1xwYTKY2AN0QBkgSMKuIlK0rtjlRLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkman <daniel@iogearbox.net>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	Marc Rutland <mark.rutland@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 134/641] arm64: dts: qcom: sdm630: fix gpu_speed_bin size
+Subject: [PATCH 6.19 351/781] kallsyms/ftrace: set module buildid in ftrace_mod_address_lookup()
 Date: Tue, 24 Feb 2026 17:17:40 -0800
-Message-ID: <20260225012352.390380458@linuxfoundation.org>
+Message-ID: <20260225012408.299721470@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,82 +77,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-218431-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218973-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,atomlin.com,goodmis.org,kernel.org,iogearbox.net,samsung.com,gmail.com,arm.com,google.com,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_PROHIBIT(0.00)[0.0.0.240:email];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.952];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,postmarketos.org:email,41a0:email]
-X-Rspamd-Queue-Id: 44F5B190459
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AE98118F2D3
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Petr Mladek <pmladek@suse.com>
 
-[ Upstream commit e814796dfcae8905682ac3ac2dd57f512a9f6726 ]
+[ Upstream commit e8a1e7eaa19d0b757b06a2f913e3eeb4b1c002c6 ]
 
-Historically sdm630.dtsi has used 1 byte length for the gpu_speed_bin
-cell, although it spans two bytes (offset 5, size 7 bits). It was being
-accepted by the kernel because before the commit 7a06ef751077 ("nvmem:
-core: fix bit offsets of more than one byte") the kernel didn't have
-length check. After this commit nvmem core rejects QFPROM on sdm630 /
-sdm660, making GPU and USB unusable on those platforms.
+__sprint_symbol() might access an invalid pointer when
+kallsyms_lookup_buildid() returns a symbol found by
+ftrace_mod_address_lookup().
 
-Set the size of the gpu_speed_bin cell to 2 bytes, fixing the parsing
-error. While we are at it, update the length to 8 bits as pointed out by
-Alexey Minnekhanov.
+The ftrace lookup function must set both @modname and @modbuildid the same
+way as module_address_lookup().
 
-Fixes: b190fb010664 ("arm64: dts: qcom: sdm630: Add sdm630 dts file")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
-Link: https://lore.kernel.org/r/20251211-sdm630-fix-gpu-v2-1-92f0e736dba0@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lkml.kernel.org/r/20251128135920.217303-7-pmladek@suse.com
+Fixes: 9294523e3768 ("module: add printk formats to add module build ID to stacktraces")
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: Daniel Gomez <da.gomez@samsung.com>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Marc Rutland <mark.rutland@arm.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm630.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/ftrace.h | 6 ++++--
+ kernel/kallsyms.c      | 4 ++--
+ kernel/trace/ftrace.c  | 5 ++++-
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index 8b1a45a4e56ed..b383e480a394d 100644
---- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -598,8 +598,8 @@ qusb2_hstx_trim: hstx-trim@240 {
- 			};
+diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+index cc869c59c1a68..fa74ae5cc9dae 100644
+--- a/include/linux/ftrace.h
++++ b/include/linux/ftrace.h
+@@ -87,11 +87,13 @@ struct ftrace_hash;
+ 	defined(CONFIG_DYNAMIC_FTRACE)
+ int
+ ftrace_mod_address_lookup(unsigned long addr, unsigned long *size,
+-		   unsigned long *off, char **modname, char *sym);
++			  unsigned long *off, char **modname,
++			  const unsigned char **modbuildid, char *sym);
+ #else
+ static inline int
+ ftrace_mod_address_lookup(unsigned long addr, unsigned long *size,
+-		   unsigned long *off, char **modname, char *sym)
++			  unsigned long *off, char **modname,
++			  const unsigned char **modbuildid, char *sym)
+ {
+ 	return 0;
+ }
+diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
+index 7417dd5f8a796..cdd6e025935d3 100644
+--- a/kernel/kallsyms.c
++++ b/kernel/kallsyms.c
+@@ -380,8 +380,8 @@ static int kallsyms_lookup_buildid(unsigned long addr,
+ 		ret = bpf_address_lookup(addr, symbolsize, offset, namebuf);
  
- 			gpu_speed_bin: gpu-speed-bin@41a0 {
--				reg = <0x41a2 0x1>;
--				bits = <5 7>;
-+				reg = <0x41a2 0x2>;
-+				bits = <5 8>;
- 			};
- 		};
+ 	if (!ret)
+-		ret = ftrace_mod_address_lookup(addr, symbolsize,
+-						offset, modname, namebuf);
++		ret = ftrace_mod_address_lookup(addr, symbolsize, offset,
++						modname, modbuildid, namebuf);
  
+ 	return ret;
+ }
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 93f617e1f191d..e835d878038b2 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -7739,7 +7739,8 @@ ftrace_func_address_lookup(struct ftrace_mod_map *mod_map,
+ 
+ int
+ ftrace_mod_address_lookup(unsigned long addr, unsigned long *size,
+-		   unsigned long *off, char **modname, char *sym)
++			  unsigned long *off, char **modname,
++			  const unsigned char **modbuildid, char *sym)
+ {
+ 	struct ftrace_mod_map *mod_map;
+ 	int ret = 0;
+@@ -7751,6 +7752,8 @@ ftrace_mod_address_lookup(unsigned long addr, unsigned long *size,
+ 		if (ret) {
+ 			if (modname)
+ 				*modname = mod_map->mod->name;
++			if (modbuildid)
++				*modbuildid = module_buildid(mod_map->mod);
+ 			break;
+ 		}
+ 	}
 -- 
 2.51.0
 
