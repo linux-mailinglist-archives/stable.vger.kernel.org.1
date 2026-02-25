@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-218341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +CEnGdxSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:40 +0100
+	id yBceG4NUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AA118F577
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E927118FD07
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A1B813080708
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D01330882EB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462991EB5E1;
-	Wed, 25 Feb 2026 01:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEDA280338;
+	Wed, 25 Feb 2026 01:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f52+snBl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DChlZnzS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A94618DB2A;
-	Wed, 25 Feb 2026 01:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15A6280331;
+	Wed, 25 Feb 2026 01:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983149; cv=none; b=Y56h9KfscfQ4/hcGglZ9gZy0O4FOW4ocoDDIDRENu12yWpp7EPueiTc+t6KCrSJUDyFyiL3nCcplCW97ntarvXBKJ9WNxJalGr51MDtFR2aKSF75AzNE9Z6CKhdgJYLdGYbB0mu83YoCy9ndPk8U/cDcIqoIIjeRkqH+rMO8a28=
+	t=1771983769; cv=none; b=EEZ0sKxfGJBbsgp729rvOUcC2910F0/XycsjUn3Gy6iSV2NHdF0o5CV3EE7fzvUa5Qa5uhICsSeLSatRMwNXWtRt7RY51mf1JIh9mhZQEBbPpt6bM+MC/llUyrVRiFkHwhCw0QgJSbL7qIkNhKnuCNTWf6Hqi3ENkqBNh+v/lVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983149; c=relaxed/simple;
-	bh=Y4K1ifk77zBJk6jKha7U024cNxwBfoQU4VfUwDslC54=;
+	s=arc-20240116; t=1771983769; c=relaxed/simple;
+	bh=WLTePBfmfaF57PSlY74imcSkk9IS4WQG2c2vzZEnuWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eKm6Xe+fnQhZZgHdYG9zNSQxnv2lsSoXv38kxYaDGXo0TkcUTq+5UOOU0qhEkPnxEYEI+l162FhDqafBjHa4k8ksttjyIne/MS6b6VD/OnmN708nch0g+0RDFeNHOSCYsSvUwX8QjBCasS0gBYThTwr4phbyRVHqgGK5ABiVpLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f52+snBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903E5C116D0;
-	Wed, 25 Feb 2026 01:32:28 +0000 (UTC)
+	 MIME-Version; b=kFheupvjM7EsaO1jq8C5Mx3PK8wGSpDiPZ/QMqlbw+jOJST5Tm00TNVNye4kuo5VL1s8+PkkWG14aD3LBn7AaLVDdo1+tTQsJe6JvCDbvjlyOLoIkXtYfRy7gxw1LN83XuFnX7dFq+BhcOOTHJz77I9A+PGGO6I3JXgU8nnTRgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DChlZnzS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7236EC2BC87;
+	Wed, 25 Feb 2026 01:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983148;
-	bh=Y4K1ifk77zBJk6jKha7U024cNxwBfoQU4VfUwDslC54=;
+	s=korg; t=1771983769;
+	bh=WLTePBfmfaF57PSlY74imcSkk9IS4WQG2c2vzZEnuWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f52+snBldCQ2/Id7ROG8PFXEw0Eml95qCEPi2ZoDm3942oGE+tnG+PnQ/Rec7mLIC
-	 NczVKmDfhh0BptxplWHXP+PB0C5WyrSFW3swQJei2vuHjB5jEC5zDgD/l/+j3wRVWs
-	 Z2DKdhyDi4+8x+zbTcYJW5U2HTnyof7+NJIuZCYQ=
+	b=DChlZnzS9YcdNN/StqBRxYRAExaUgQlXoBDfZCyJQ86Wt5lfNSCaXcz//2geKpQc4
+	 2FxZJTnwV0vJyFZ8wSpCGhuAscKMbLwcU+02YaGegrWLo9epC/dNwJOfhUxeMceU1z
+	 PMybr7dQ3hD70T700aGST2aplKrTCISoYVzDjlqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Li Nan <linan122@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 259/781] drm/amdgpu: Drop MMIO_REMAP domain bit and keep it Internal
-Date: Tue, 24 Feb 2026 17:16:08 -0800
-Message-ID: <20260225012406.056609994@linuxfoundation.org>
+Subject: [PATCH 6.18 043/641] md/raid5: fix raid5_run() to return error when log_init() fails
+Date: Tue, 24 Feb 2026 17:16:09 -0800
+Message-ID: <20260225012350.072261139@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,353 +66,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218341-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218882-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: B3AA118F577
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lst.de:email,fnnas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
+X-Rspamd-Queue-Id: E927118FD07
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit 96e97a562d067a6d867862db79864cc66aae99c2 ]
+[ Upstream commit 2d9f7150ac197ce79c9c917a004d4cf0b26ad7e0 ]
 
-"AMDGPU_GEM_DOMAIN_MMIO_REMAP" - Never activated as UAPI and it turned
-out that this was to inflexible.
+Since commit f63f17350e53 ("md/raid5: use the atomic queue limit
+update APIs"), the abort path in raid5_run() returns 'ret' instead of
+-EIO. However, if log_init() fails, 'ret' is still 0 from the previous
+successful call, causing raid5_run() to return success despite the
+failure.
 
-Allocate the MMIO_REMAP buffer object as a regular GEM BO and explicitly
-move it into the fixed AMDGPU_PL_MMIO_REMAP placement at the TTM level.
+Fix this by capturing the return value from log_init().
 
-This avoids relying on GEM domain bits for MMIO_REMAP, keeps the
-placement purely internal, and makes the lifetime and pinning of the
-global MMIO_REMAP BO explicit. The BO is pinned in TTM so it cannot be
-migrated or evicted.
-
-The corresponding free path relies on normal DRM teardown ordering,
-where no further user ioctls can access the global BO once TTM teardown
-begins.
-
-v2 (Srini):
-- Updated patch title.
-- Drop use of AMDGPU_GEM_DOMAIN_MMIO_REMAP in amdgpu_ttm.c. The
-  MMIO_REMAP domain bit is removed from UAPI, so keep the MMIO_REMAP BO
-  allocation domain-less (bp.domain = 0) and rely on the TTM placement
-  (AMDGPU_PL_MMIO_REMAP) for backing/pinning.
-- Keep fdinfo/mem-stats visibility for MMIO_REMAP by classifying BOs
-  based on bo->tbo.resource->mem_type == AMDGPU_PL_MMIO_REMAP, since the
-  domain bit is removed.
-
-v3: Squash patches #1 & #3
-
-Fixes: 056132483724 ("drm/amdgpu/uapi: Introduce AMDGPU_GEM_DOMAIN_MMIO_REMAP")
-Fixes: 2a7a794eb82c ("drm/amdgpu/ttm: Allocate/Free 4K MMIO_REMAP Singleton")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Leo Liu <leo.liu@amd.com>
-Cc: Ruijing Dong <ruijing.dong@amd.com>
-Cc: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/linux-raid/20260114171241.3043364-2-yukuai@fnnas.com
+Fixes: f63f17350e53 ("md/raid5: use the atomic queue limit update APIs")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202601130531.LGfcZsa4-lkp@intel.com/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Xiao Ni <xni@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gem.c    |  3 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 21 +++---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |  2 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c    | 77 ++++++++++++++--------
- include/uapi/drm/amdgpu_drm.h              |  6 +-
- 5 files changed, 60 insertions(+), 49 deletions(-)
+ drivers/md/raid5.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gem.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gem.c
-index 3e38c5db29871..5a93cbadc4f44 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gem.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gem.c
-@@ -458,9 +458,6 @@ int amdgpu_gem_create_ioctl(struct drm_device *dev, void *data,
- 	/* always clear VRAM */
- 	flags |= AMDGPU_GEM_CREATE_VRAM_CLEARED;
- 
--	if (args->in.domains & AMDGPU_GEM_DOMAIN_MMIO_REMAP)
--		return -EINVAL;
--
- 	/* create a gem object to contain this object in */
- 	if (args->in.domains & (AMDGPU_GEM_DOMAIN_GDS |
- 	    AMDGPU_GEM_DOMAIN_GWS | AMDGPU_GEM_DOMAIN_OA)) {
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-index e08f58de4b17f..f51ad28d0cbd5 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -153,14 +153,6 @@ void amdgpu_bo_placement_from_domain(struct amdgpu_bo *abo, u32 domain)
- 		c++;
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 41de29206402a..1041788a54c20 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -8056,7 +8056,8 @@ static int raid5_run(struct mddev *mddev)
+ 			goto abort;
  	}
  
--	if (domain & AMDGPU_GEM_DOMAIN_MMIO_REMAP) {
--		places[c].fpfn = 0;
--		places[c].lpfn = 0;
--		places[c].mem_type = AMDGPU_PL_MMIO_REMAP;
--		places[c].flags = 0;
--		c++;
--	}
--
- 	if (domain & AMDGPU_GEM_DOMAIN_GTT) {
- 		places[c].fpfn = 0;
- 		places[c].lpfn = 0;
-@@ -1534,8 +1526,17 @@ u64 amdgpu_bo_gpu_offset_no_check(struct amdgpu_bo *bo)
-  */
- uint32_t amdgpu_bo_mem_stats_placement(struct amdgpu_bo *bo)
- {
--	uint32_t domain = bo->preferred_domains & AMDGPU_GEM_DOMAIN_MASK;
-+	u32 domain;
+-	if (log_init(conf, journal_dev, raid5_has_ppl(conf)))
++	ret = log_init(conf, journal_dev, raid5_has_ppl(conf));
++	if (ret)
+ 		goto abort;
  
-+	/*
-+	 * MMIO_REMAP is internal now, so it no longer maps from a userspace
-+	 * domain bit. Keep fdinfo/mem-stats visibility by checking the actual
-+	 * TTM placement.
-+	 */
-+	if (bo->tbo.resource && bo->tbo.resource->mem_type == AMDGPU_PL_MMIO_REMAP)
-+		return AMDGPU_PL_MMIO_REMAP;
-+
-+	domain = bo->preferred_domains & AMDGPU_GEM_DOMAIN_MASK;
- 	if (!domain)
- 		return TTM_PL_SYSTEM;
- 
-@@ -1554,8 +1555,6 @@ uint32_t amdgpu_bo_mem_stats_placement(struct amdgpu_bo *bo)
- 		return AMDGPU_PL_OA;
- 	case AMDGPU_GEM_DOMAIN_DOORBELL:
- 		return AMDGPU_PL_DOORBELL;
--	case AMDGPU_GEM_DOMAIN_MMIO_REMAP:
--		return AMDGPU_PL_MMIO_REMAP;
- 	default:
- 		return TTM_PL_SYSTEM;
- 	}
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-index 52c2d1731aabf..912c9afaf9e11 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-@@ -168,8 +168,6 @@ static inline unsigned amdgpu_mem_type_to_domain(u32 mem_type)
- 		return AMDGPU_GEM_DOMAIN_OA;
- 	case AMDGPU_PL_DOORBELL:
- 		return AMDGPU_GEM_DOMAIN_DOORBELL;
--	case AMDGPU_PL_MMIO_REMAP:
--		return AMDGPU_GEM_DOMAIN_MMIO_REMAP;
- 	default:
- 		break;
- 	}
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index ac67886acaa24..c200d5dc7b6bd 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -1812,42 +1812,45 @@ static void amdgpu_ttm_pools_fini(struct amdgpu_device *adev)
- }
- 
- /**
-- * amdgpu_ttm_mmio_remap_bo_init - Allocate the singleton 4K MMIO_REMAP BO
-+ * amdgpu_ttm_mmio_remap_bo_init - Allocate the singleton MMIO_REMAP BO
-  * @adev: amdgpu device
-  *
-- * Allocates a one-page (4K) GEM BO in AMDGPU_GEM_DOMAIN_MMIO_REMAP when the
-+ * Allocates a global BO with backing AMDGPU_PL_MMIO_REMAP when the
-  * hardware exposes a remap base (adev->rmmio_remap.bus_addr) and the host
-  * PAGE_SIZE is <= AMDGPU_GPU_PAGE_SIZE (4K). The BO is created as a regular
-  * GEM object (amdgpu_bo_create).
-  *
-- * The BO is created as a normal GEM object via amdgpu_bo_create(), then
-- * reserved and pinned at the TTM level (ttm_bo_pin()) so it can never be
-- * migrated or evicted. No CPU mapping is established here.
-- *
-  * Return:
-  *  * 0 on success or intentional skip (feature not present/unsupported)
-  *  * negative errno on allocation failure
-  */
--static int amdgpu_ttm_mmio_remap_bo_init(struct amdgpu_device *adev)
-+static int amdgpu_ttm_alloc_mmio_remap_bo(struct amdgpu_device *adev)
- {
-+	struct ttm_operation_ctx ctx = { false, false };
-+	struct ttm_placement placement;
-+	struct ttm_buffer_object *tbo;
-+	struct ttm_place placements;
- 	struct amdgpu_bo_param bp;
-+	struct ttm_resource *tmp;
- 	int r;
- 
- 	/* Skip if HW doesn't expose remap, or if PAGE_SIZE > AMDGPU_GPU_PAGE_SIZE (4K). */
- 	if (!adev->rmmio_remap.bus_addr || PAGE_SIZE > AMDGPU_GPU_PAGE_SIZE)
- 		return 0;
- 
-+	/*
-+	 * Allocate a BO first and then move it to AMDGPU_PL_MMIO_REMAP.
-+	 * The initial TTM resource assigned by amdgpu_bo_create() is
-+	 * replaced below with a fixed MMIO_REMAP placement.
-+	 */
- 	memset(&bp, 0, sizeof(bp));
--
--	/* Create exactly one GEM BO in the MMIO_REMAP domain. */
--	bp.type        = ttm_bo_type_device;          /* userspace-mappable GEM */
--	bp.size        = AMDGPU_GPU_PAGE_SIZE;        /* 4K */
-+	bp.type        = ttm_bo_type_device;
-+	bp.size        = AMDGPU_GPU_PAGE_SIZE;
- 	bp.byte_align  = AMDGPU_GPU_PAGE_SIZE;
--	bp.domain      = AMDGPU_GEM_DOMAIN_MMIO_REMAP;
-+	bp.domain      = 0;
- 	bp.flags       = 0;
- 	bp.resv        = NULL;
- 	bp.bo_ptr_size = sizeof(struct amdgpu_bo);
--
- 	r = amdgpu_bo_create(adev, &bp, &adev->rmmio_remap.bo);
- 	if (r)
- 		return r;
-@@ -1856,42 +1859,60 @@ static int amdgpu_ttm_mmio_remap_bo_init(struct amdgpu_device *adev)
- 	if (r)
- 		goto err_unref;
- 
-+	tbo = &adev->rmmio_remap.bo->tbo;
-+
- 	/*
- 	 * MMIO_REMAP is a fixed I/O placement (AMDGPU_PL_MMIO_REMAP).
--	 * Use TTM-level pin so the BO cannot be evicted/migrated,
--	 * independent of GEM domains. This
--	 * enforces the “fixed I/O window”
- 	 */
--	ttm_bo_pin(&adev->rmmio_remap.bo->tbo);
-+	placement.num_placement = 1;
-+	placement.placement = &placements;
-+	placements.fpfn = 0;
-+	placements.lpfn = 0;
-+	placements.mem_type = AMDGPU_PL_MMIO_REMAP;
-+	placements.flags = 0;
-+	/* Force the BO into the fixed MMIO_REMAP placement */
-+	r = ttm_bo_mem_space(tbo, &placement, &tmp, &ctx);
-+	if (unlikely(r))
-+		goto err_unlock;
-+
-+	ttm_resource_free(tbo, &tbo->resource);
-+	ttm_bo_assign_mem(tbo, tmp);
-+	ttm_bo_pin(tbo);
- 
- 	amdgpu_bo_unreserve(adev->rmmio_remap.bo);
  	return 0;
- 
-+err_unlock:
-+	amdgpu_bo_unreserve(adev->rmmio_remap.bo);
-+
- err_unref:
--	if (adev->rmmio_remap.bo)
--		amdgpu_bo_unref(&adev->rmmio_remap.bo);
-+	amdgpu_bo_unref(&adev->rmmio_remap.bo);
- 	adev->rmmio_remap.bo = NULL;
- 	return r;
- }
- 
- /**
-- * amdgpu_ttm_mmio_remap_bo_fini - Free the singleton MMIO_REMAP BO
-+ * amdgpu_ttm_free_mmio_remap_bo - Free the singleton MMIO_REMAP BO
-  * @adev: amdgpu device
-  *
-  * Frees the kernel-owned MMIO_REMAP BO if it was allocated by
-  * amdgpu_ttm_mmio_remap_bo_init().
-  */
--static void amdgpu_ttm_mmio_remap_bo_fini(struct amdgpu_device *adev)
-+static void amdgpu_ttm_free_mmio_remap_bo(struct amdgpu_device *adev)
- {
--	struct amdgpu_bo *bo = adev->rmmio_remap.bo;
--
--	if (!bo)
--		return;   /* <-- safest early exit */
-+	if (!adev->rmmio_remap.bo)
-+		return;
- 
- 	if (!amdgpu_bo_reserve(adev->rmmio_remap.bo, true)) {
- 		ttm_bo_unpin(&adev->rmmio_remap.bo->tbo);
- 		amdgpu_bo_unreserve(adev->rmmio_remap.bo);
- 	}
-+
-+    /*
-+     * At this point we rely on normal DRM teardown ordering:
-+     * no new user ioctls can access the global MMIO_REMAP BO
-+     * once TTM teardown begins.
-+     */
- 	amdgpu_bo_unref(&adev->rmmio_remap.bo);
- 	adev->rmmio_remap.bo = NULL;
- }
-@@ -2075,8 +2096,8 @@ int amdgpu_ttm_init(struct amdgpu_device *adev)
- 		return r;
- 	}
- 
--	/* Allocate the singleton MMIO_REMAP BO (4K) if supported */
--	r = amdgpu_ttm_mmio_remap_bo_init(adev);
-+	/* Allocate the singleton MMIO_REMAP BO if supported */
-+	r = amdgpu_ttm_alloc_mmio_remap_bo(adev);
- 	if (r)
- 		return r;
- 
-@@ -2143,7 +2164,7 @@ void amdgpu_ttm_fini(struct amdgpu_device *adev)
- 	amdgpu_bo_free_kernel(&adev->mman.sdma_access_bo, NULL,
- 					&adev->mman.sdma_access_ptr);
- 
--	amdgpu_ttm_mmio_remap_bo_fini(adev);
-+	amdgpu_ttm_free_mmio_remap_bo(adev);
- 	amdgpu_ttm_fw_reserve_vram_fini(adev);
- 	amdgpu_ttm_drv_reserve_vram_fini(adev);
- 
-diff --git a/include/uapi/drm/amdgpu_drm.h b/include/uapi/drm/amdgpu_drm.h
-index f80aa4c9d88fd..ba82810866297 100644
---- a/include/uapi/drm/amdgpu_drm.h
-+++ b/include/uapi/drm/amdgpu_drm.h
-@@ -105,8 +105,6 @@ extern "C" {
-  *
-  * %AMDGPU_GEM_DOMAIN_DOORBELL	Doorbell. It is an MMIO region for
-  * signalling user mode queues.
-- *
-- * %AMDGPU_GEM_DOMAIN_MMIO_REMAP	MMIO remap page (special mapping for HDP flushing).
-  */
- #define AMDGPU_GEM_DOMAIN_CPU		0x1
- #define AMDGPU_GEM_DOMAIN_GTT		0x2
-@@ -115,15 +113,13 @@ extern "C" {
- #define AMDGPU_GEM_DOMAIN_GWS		0x10
- #define AMDGPU_GEM_DOMAIN_OA		0x20
- #define AMDGPU_GEM_DOMAIN_DOORBELL	0x40
--#define AMDGPU_GEM_DOMAIN_MMIO_REMAP	0x80
- #define AMDGPU_GEM_DOMAIN_MASK		(AMDGPU_GEM_DOMAIN_CPU | \
- 					 AMDGPU_GEM_DOMAIN_GTT | \
- 					 AMDGPU_GEM_DOMAIN_VRAM | \
- 					 AMDGPU_GEM_DOMAIN_GDS | \
- 					 AMDGPU_GEM_DOMAIN_GWS | \
- 					 AMDGPU_GEM_DOMAIN_OA |	\
--					 AMDGPU_GEM_DOMAIN_DOORBELL | \
--					 AMDGPU_GEM_DOMAIN_MMIO_REMAP)
-+					 AMDGPU_GEM_DOMAIN_DOORBELL)
- 
- /* Flag that CPU access will be required for the case of VRAM domain */
- #define AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED	(1 << 0)
 -- 
 2.51.0
 
