@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OA2nE79ZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218923-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:09:03 +0100
+	id IPTvGbZSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9827A1909AA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:09:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF78018F4BA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 791AD3025650
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE4613134C3D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56624268690;
-	Wed, 25 Feb 2026 01:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401291F03DE;
+	Wed, 25 Feb 2026 01:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0lkcN13"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIPGEE3j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A2A1E2834;
-	Wed, 25 Feb 2026 01:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040FD18DB2A;
+	Wed, 25 Feb 2026 01:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983818; cv=none; b=t+0+nvfq409wxaPDTeiKm+bwO/gdsh8KcdIiRUNvUKJeBY+by8mL3rdRpTjHGUjdcJywyHDkz/aXZLCJ7wl3lVNzt70l1yM8TdqIMoV6FOdUkdO+BmOwIv0LS36alKUQ0e4KrTxMZodw1YPJDCBD9XDGbEIPw1PGkIelBdK86Ng=
+	t=1771983168; cv=none; b=NoSS9Ft5C24/aQvLW1IV1OkmNCEs/3ZbyU7ZkiEtrsMZ0To/CuqQrqqwjBnWSihbBPOmGtrsAxb29FBYlk8vK/15eYnIkBUiVjduHi+T44yqXdA0yGwGPdojy9KXALaCvfat1BqemmwD0kRzb6357F0hqnsZvgqevyfp8rLHDOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983818; c=relaxed/simple;
-	bh=h6Wc9apiXU5RbHuUrciq+zAVq+X/r5/UatItpOQGhD4=;
+	s=arc-20240116; t=1771983168; c=relaxed/simple;
+	bh=OPFCtROldQArhvKaVx4dlJWtzG6d8CnWnymoakqZkS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oeb+KKJsGiunzTELvq2lAx6/EFe5q31rFCRGYMqL+o8Rdv2UF/cFRNJm7vX6PHfqJPPo+Ve2PeI4LbI+vuup5WA5WHXYdr8xaSwxSHApVZzR3/sFfl8fEoKl5HMTCSrk0z0cLExNCLvBf9PHOaXj67f+UmEiMIw5hhKYfHJQ01Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0lkcN13; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA06C116D0;
-	Wed, 25 Feb 2026 01:43:37 +0000 (UTC)
+	 MIME-Version; b=IIYovi3us/EBbBPLoaZ7VejoAy/YVKQprKGoh8ZnvmaKORqMT58tvft++1vG0NTOmmeol1lXqlUqbYmoZ8ptPEwIH4j+TDSrgXoiQ76tgnWfOqu3EpBPGgoNsNwnsIPRr8yiu40FTShRIbu6JWTkopWFKTrosQbCBxSt8CEwKtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIPGEE3j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4188C116D0;
+	Wed, 25 Feb 2026 01:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983818;
-	bh=h6Wc9apiXU5RbHuUrciq+zAVq+X/r5/UatItpOQGhD4=;
+	s=korg; t=1771983167;
+	bh=OPFCtROldQArhvKaVx4dlJWtzG6d8CnWnymoakqZkS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0lkcN13WMdPV6Sgsinug9vJOa4/YlsqSIXj49ke+m+UF3mNhHJSMXwFaxihAHi31
-	 7nrBOSZBS0Rg/hQvnTxwuzu5rMo3FG4XnsbziCqA50VGiv1xCJqsO6Hy+qv5grCp1s
-	 YZnS+1IyNXxWarWz+aKCyzwzQZNVY1hY8iZRihAs=
+	b=AIPGEE3jNtGxRaVvJKH04ESqOLQFVBt8/h5ngHRPJI7ZPEVa2EI70ZXNt9/VJ8QMj
+	 xlt+fjD+D/6mov8x21KLXo5sFSwa05OL25Jvd31B++sUH75ON7/vLViv5TBDK6HxA8
+	 9+f6eEREAjvSmNwQIbIJKDJgtdiJTwYMcUdzYSQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weili Qian <qianweili@huawei.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 102/641] crypto: hisilicon/trng - support tfms sharing the device
-Date: Tue, 24 Feb 2026 17:17:08 -0800
-Message-ID: <20260225012351.583218892@linuxfoundation.org>
+Subject: [PATCH 6.19 320/781] PCI: endpoint: Add missing NULL check for alloc_workqueue()
+Date: Tue, 24 Feb 2026 17:17:09 -0800
+Message-ID: <20260225012407.548836861@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218923-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218358-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,269 +87,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9827A1909AA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: CF78018F4BA
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weili Qian <qianweili@huawei.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 3d3135057ff567d5c09fff4c9ef6391a684e8042 ]
+[ Upstream commit 03f336a869b3a3f119d3ae52ac9723739c7fb7b6 ]
 
-Since the number of devices is limited, and the number
-of tfms may exceed the number of devices, to ensure that
-tfms can be successfully allocated, support tfms
-sharing the same device.
+alloc_workqueue() can return NULL on memory allocation failure. Without
+proper error checking, this may lead to a NULL pointer dereference when
+queue_work() is later called with the NULL workqueue pointer in
+epf_ntb_epc_init().
 
-Fixes: e4d9d10ef4be ("crypto: hisilicon/trng - add support for PRNG")
-Signed-off-by: Weili Qian <qianweili@huawei.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Add a NULL check immediately after alloc_workqueue() and return -ENOMEM on
+failure to prevent the driver from loading with an invalid workqueue
+pointer.
+
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Fixes: 8b821cf76150 ("PCI: endpoint: Add EP function driver to provide NTB functionality")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20251110040446.2065-1-vulab@iscas.ac.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/trng/trng.c | 121 +++++++++++++++++++--------
- 1 file changed, 86 insertions(+), 35 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-ntb.c  | 5 +++++
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 5 +++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/drivers/crypto/hisilicon/trng/trng.c b/drivers/crypto/hisilicon/trng/trng.c
-index ac74df4a94712..5ca0b90859a81 100644
---- a/drivers/crypto/hisilicon/trng/trng.c
-+++ b/drivers/crypto/hisilicon/trng/trng.c
-@@ -40,6 +40,7 @@
- #define SEED_SHIFT_24		24
- #define SEED_SHIFT_16		16
- #define SEED_SHIFT_8		8
-+#define SW_MAX_RANDOM_BYTES	65520
+diff --git a/drivers/pci/endpoint/functions/pci-epf-ntb.c b/drivers/pci/endpoint/functions/pci-epf-ntb.c
+index 9ea8b57d69d79..a3a588e522e71 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-ntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-ntb.c
+@@ -2126,6 +2126,11 @@ static int __init epf_ntb_init(void)
  
- struct hisi_trng_list {
- 	struct mutex lock;
-@@ -53,8 +54,10 @@ struct hisi_trng {
- 	struct list_head list;
- 	struct hwrng rng;
- 	u32 ver;
--	bool is_used;
--	struct mutex mutex;
-+	u32 ctx_num;
-+	/* The bytes of the random number generated since the last seeding. */
-+	u32 random_bytes;
-+	struct mutex lock;
- };
- 
- struct hisi_trng_ctx {
-@@ -63,10 +66,14 @@ struct hisi_trng_ctx {
- 
- static atomic_t trng_active_devs;
- static struct hisi_trng_list trng_devices;
-+static int hisi_trng_read(struct hwrng *rng, void *buf, size_t max, bool wait);
- 
--static void hisi_trng_set_seed(struct hisi_trng *trng, const u8 *seed)
-+static int hisi_trng_set_seed(struct hisi_trng *trng, const u8 *seed)
- {
- 	u32 val, seed_reg, i;
-+	int ret;
-+
-+	writel(0x0, trng->base + SW_DRBG_BLOCKS);
- 
- 	for (i = 0; i < SW_DRBG_SEED_SIZE;
- 	     i += SW_DRBG_SEED_SIZE / SW_DRBG_SEED_REGS_NUM) {
-@@ -78,6 +85,20 @@ static void hisi_trng_set_seed(struct hisi_trng *trng, const u8 *seed)
- 		seed_reg = (i >> SW_DRBG_NUM_SHIFT) % SW_DRBG_SEED_REGS_NUM;
- 		writel(val, trng->base + SW_DRBG_SEED(seed_reg));
- 	}
-+
-+	writel(SW_DRBG_BLOCKS_NUM | (0x1 << SW_DRBG_ENABLE_SHIFT),
-+	       trng->base + SW_DRBG_BLOCKS);
-+	writel(0x1, trng->base + SW_DRBG_INIT);
-+	ret = readl_relaxed_poll_timeout(trng->base + SW_DRBG_STATUS,
-+					 val, val & BIT(0), SLEEP_US, TIMEOUT_US);
-+	if (ret) {
-+		pr_err("failed to init trng(%d)\n", ret);
-+		return -EIO;
+ 	kpcintb_workqueue = alloc_workqueue("kpcintb",
+ 				    WQ_MEM_RECLAIM | WQ_HIGHPRI | WQ_PERCPU, 0);
++	if (!kpcintb_workqueue) {
++		pr_err("Failed to allocate kpcintb workqueue\n");
++		return -ENOMEM;
 +	}
 +
-+	trng->random_bytes = 0;
-+
-+	return 0;
- }
+ 	ret = pci_epf_register_driver(&epf_ntb_driver);
+ 	if (ret) {
+ 		destroy_workqueue(kpcintb_workqueue);
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index a098727f784bd..20a400e834392 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -1653,6 +1653,11 @@ static int __init epf_ntb_init(void)
  
- static int hisi_trng_seed(struct crypto_rng *tfm, const u8 *seed,
-@@ -85,8 +106,7 @@ static int hisi_trng_seed(struct crypto_rng *tfm, const u8 *seed,
- {
- 	struct hisi_trng_ctx *ctx = crypto_rng_ctx(tfm);
- 	struct hisi_trng *trng = ctx->trng;
--	u32 val = 0;
--	int ret = 0;
-+	int ret;
- 
- 	if (slen < SW_DRBG_SEED_SIZE) {
- 		pr_err("slen(%u) is not matched with trng(%d)\n", slen,
-@@ -94,43 +114,45 @@ static int hisi_trng_seed(struct crypto_rng *tfm, const u8 *seed,
- 		return -EINVAL;
- 	}
- 
--	writel(0x0, trng->base + SW_DRBG_BLOCKS);
--	hisi_trng_set_seed(trng, seed);
-+	mutex_lock(&trng->lock);
-+	ret = hisi_trng_set_seed(trng, seed);
-+	mutex_unlock(&trng->lock);
- 
--	writel(SW_DRBG_BLOCKS_NUM | (0x1 << SW_DRBG_ENABLE_SHIFT),
--	       trng->base + SW_DRBG_BLOCKS);
--	writel(0x1, trng->base + SW_DRBG_INIT);
-+	return ret;
-+}
- 
--	ret = readl_relaxed_poll_timeout(trng->base + SW_DRBG_STATUS,
--					val, val & BIT(0), SLEEP_US, TIMEOUT_US);
--	if (ret)
--		pr_err("fail to init trng(%d)\n", ret);
-+static int hisi_trng_reseed(struct hisi_trng *trng)
-+{
-+	u8 seed[SW_DRBG_SEED_SIZE];
-+	int size;
- 
--	return ret;
-+	if (!trng->random_bytes)
-+		return 0;
-+
-+	size = hisi_trng_read(&trng->rng, seed, SW_DRBG_SEED_SIZE, false);
-+	if (size != SW_DRBG_SEED_SIZE)
-+		return -EIO;
-+
-+	return hisi_trng_set_seed(trng, seed);
- }
- 
--static int hisi_trng_generate(struct crypto_rng *tfm, const u8 *src,
--			      unsigned int slen, u8 *dstn, unsigned int dlen)
-+static int hisi_trng_get_bytes(struct hisi_trng *trng, u8 *dstn, unsigned int dlen)
- {
--	struct hisi_trng_ctx *ctx = crypto_rng_ctx(tfm);
--	struct hisi_trng *trng = ctx->trng;
- 	u32 data[SW_DRBG_DATA_NUM];
- 	u32 currsize = 0;
- 	u32 val = 0;
- 	int ret;
- 	u32 i;
- 
--	if (dlen > SW_DRBG_BLOCKS_NUM * SW_DRBG_BYTES || dlen == 0) {
--		pr_err("dlen(%u) exceeds limit(%d)!\n", dlen,
--			SW_DRBG_BLOCKS_NUM * SW_DRBG_BYTES);
--		return -EINVAL;
--	}
-+	ret = hisi_trng_reseed(trng);
-+	if (ret)
-+		return ret;
- 
- 	do {
- 		ret = readl_relaxed_poll_timeout(trng->base + SW_DRBG_STATUS,
--		     val, val & BIT(1), SLEEP_US, TIMEOUT_US);
-+						 val, val & BIT(1), SLEEP_US, TIMEOUT_US);
- 		if (ret) {
--			pr_err("fail to generate random number(%d)!\n", ret);
-+			pr_err("failed to generate random number(%d)!\n", ret);
- 			break;
- 		}
- 
-@@ -145,30 +167,57 @@ static int hisi_trng_generate(struct crypto_rng *tfm, const u8 *src,
- 			currsize = dlen;
- 		}
- 
-+		trng->random_bytes += SW_DRBG_BYTES;
- 		writel(0x1, trng->base + SW_DRBG_GEN);
- 	} while (currsize < dlen);
- 
- 	return ret;
- }
- 
-+static int hisi_trng_generate(struct crypto_rng *tfm, const u8 *src,
-+			      unsigned int slen, u8 *dstn, unsigned int dlen)
-+{
-+	struct hisi_trng_ctx *ctx = crypto_rng_ctx(tfm);
-+	struct hisi_trng *trng = ctx->trng;
-+	unsigned int currsize = 0;
-+	unsigned int block_size;
-+	int ret;
-+
-+	if (!dstn || !dlen) {
-+		pr_err("output is error, dlen %u!\n", dlen);
-+		return -EINVAL;
+ 	kpcintb_workqueue = alloc_workqueue("kpcintb",
+ 				    WQ_MEM_RECLAIM | WQ_HIGHPRI | WQ_PERCPU, 0);
++	if (!kpcintb_workqueue) {
++		pr_err("Failed to allocate kpcintb workqueue\n");
++		return -ENOMEM;
 +	}
 +
-+	do {
-+		block_size = min_t(unsigned int, dlen - currsize, SW_MAX_RANDOM_BYTES);
-+		mutex_lock(&trng->lock);
-+		ret = hisi_trng_get_bytes(trng, dstn + currsize, block_size);
-+		mutex_unlock(&trng->lock);
-+		if (ret)
-+			return ret;
-+		currsize += block_size;
-+	} while (currsize < dlen);
-+
-+	return 0;
-+}
-+
- static int hisi_trng_init(struct crypto_tfm *tfm)
- {
- 	struct hisi_trng_ctx *ctx = crypto_tfm_ctx(tfm);
- 	struct hisi_trng *trng;
--	int ret = -EBUSY;
-+	u32 ctx_num = ~0;
- 
- 	mutex_lock(&trng_devices.lock);
- 	list_for_each_entry(trng, &trng_devices.list, list) {
--		if (!trng->is_used) {
--			trng->is_used = true;
-+		if (trng->ctx_num < ctx_num) {
-+			ctx_num = trng->ctx_num;
- 			ctx->trng = trng;
--			ret = 0;
--			break;
- 		}
- 	}
-+	ctx->trng->ctx_num++;
- 	mutex_unlock(&trng_devices.lock);
- 
--	return ret;
-+	return 0;
- }
- 
- static void hisi_trng_exit(struct crypto_tfm *tfm)
-@@ -176,7 +225,7 @@ static void hisi_trng_exit(struct crypto_tfm *tfm)
- 	struct hisi_trng_ctx *ctx = crypto_tfm_ctx(tfm);
- 
- 	mutex_lock(&trng_devices.lock);
--	ctx->trng->is_used = false;
-+	ctx->trng->ctx_num--;
- 	mutex_unlock(&trng_devices.lock);
- }
- 
-@@ -238,7 +287,7 @@ static int hisi_trng_del_from_list(struct hisi_trng *trng)
- 	int ret = -EBUSY;
- 
- 	mutex_lock(&trng_devices.lock);
--	if (!trng->is_used) {
-+	if (!trng->ctx_num) {
- 		list_del(&trng->list);
- 		ret = 0;
- 	}
-@@ -262,7 +311,9 @@ static int hisi_trng_probe(struct platform_device *pdev)
- 	if (IS_ERR(trng->base))
- 		return PTR_ERR(trng->base);
- 
--	trng->is_used = false;
-+	trng->ctx_num = 0;
-+	trng->random_bytes = SW_MAX_RANDOM_BYTES;
-+	mutex_init(&trng->lock);
- 	trng->ver = readl(trng->base + HISI_TRNG_VERSION);
- 	if (!trng_devices.is_init) {
- 		INIT_LIST_HEAD(&trng_devices.list);
+ 	ret = pci_epf_register_driver(&epf_ntb_driver);
+ 	if (ret) {
+ 		destroy_workqueue(kpcintb_workqueue);
 -- 
 2.51.0
 
