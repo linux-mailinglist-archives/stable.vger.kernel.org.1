@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-219292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBELOxWfnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219292-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:53 +0100
+	id 8J//C9VSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514C1192E47
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDA718F54C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F57C315F217
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 35D39306AF6F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BFB2D94AF;
-	Wed, 25 Feb 2026 06:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4197F26056D;
+	Wed, 25 Feb 2026 01:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BisftjRv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8OtxxCy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6E82D77EA;
-	Wed, 25 Feb 2026 06:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0388124A05D;
+	Wed, 25 Feb 2026 01:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002620; cv=none; b=PPFBkPWhZnbyvKNvKjOTo5mpFRO3EbRhpx9GPof9h1Sc2TzWwsPclmNmtjbsfy9uksii/MNEvpqzABpV3b8LZdsZ8D2ygI8CSPFOzhUlRJi67eN6wdPb7NiY1lW9XfGt9fKcMmmavfGM71dlrFyW3HiKOJjPZWoaapkJNUogQmA=
+	t=1771983434; cv=none; b=pzGAbDK09yI/65eMlaFTdKidw9GueD8SBV4pIDI1RGdTrVU8RExAn9s/aFd4Dmr2kqzN/LeLEiMdLgUR3jjGOKCTNRy7Fx1ItOoNmdZfysvA2AeWxXcnraW82OrN5gw9dwglhx5H+rLG1n6lsiEahpGSxuzuIFl2nDO0IXmQS1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002620; c=relaxed/simple;
-	bh=bBAfxyNQyPxGyBvC4W23u+KL7K9XdiqCdVSEwUV95Tw=;
+	s=arc-20240116; t=1771983434; c=relaxed/simple;
+	bh=jwn0fuXTG5Ajyo41D6Wmdc17ZEmZIyPjd43Q0CmYpII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aFC9ygYLGyof9XifLZNhL8+1Aujl+Jsn7e8XhQd1hFrikX6lR0Abt/oTaXo26ph2YsYB6aIUBcDqVYdpqQr+oc+CZTibDaQb0/dMBLOgAL3GG3gZ6zJ6H2o7GNOLwPQIVJPYCyu9Trpa2mQBOcEuJm7j29uWbBePV1iY2KHoW9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BisftjRv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE55C116D0;
-	Wed, 25 Feb 2026 06:57:00 +0000 (UTC)
+	 MIME-Version; b=qFqVq0s9g6gzJCQXjoacAyvepd2gpj/eO1jhZiYrUVq6wcSQgZ/1XoMlZGXS3WIMU66H5WSIzZhkIP7r0CYCiICBdpTkxta5kip9Lj4Zl3YGOxB65YC8G++sgPfZA5s/v5/L95IKRXHN3W+Q0Dzru78BEzRTH4XruT7SA5z95mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8OtxxCy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B005FC116D0;
+	Wed, 25 Feb 2026 01:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002620;
-	bh=bBAfxyNQyPxGyBvC4W23u+KL7K9XdiqCdVSEwUV95Tw=;
+	s=korg; t=1771983433;
+	bh=jwn0fuXTG5Ajyo41D6Wmdc17ZEmZIyPjd43Q0CmYpII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BisftjRvXL1VUgbANMq2qPcBVg5j9x1ojabpbBvujsRvDAUdfAgnBIfDOpiXdgd+g
-	 H1rl3FPJQQuXq/A1UeKmRlioJHAKJpxPxPvISKq8+yWqWh8uifUKV3MvmjxIt3emy5
-	 Wb1xgQam4YFki07E4QpAjSApSmMvYOyHvwbsT+RQ=
+	b=Y8OtxxCyU/5NCEktEksqR4I1aK8OhINbJbNoyjO2Fq/lZdDTY29BY0+9cVzMi6jDb
+	 b3E/NrwvhhiDagYTiV8DctyPvGehM8tzXQU0a9M1BRxMn8v/7P/CNXNktgjoKCWD4z
+	 E4sK0F5BcCc+oLnm5JRgfrEcmOleIwoXyZXNFeMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Dege <michael.dege@renesas.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Brian Masney <bmasney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 334/641] net: renesas: rswitch: fix forwarding offload statemachine
-Date: Tue, 24 Feb 2026 17:21:00 -0800
-Message-ID: <20260225012356.774351720@linuxfoundation.org>
+Subject: [PATCH 6.19 552/781] clk: x86: cgu: convert from divider_round_rate() to divider_determine_rate()
+Date: Tue, 24 Feb 2026 17:21:01 -0800
+Message-ID: <20260225012413.342449781@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,91 +78,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219292-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218590-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,renesas.com:email]
-X-Rspamd-Queue-Id: 514C1192E47
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DEDA718F54C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Dege <michael.dege@renesas.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit e9a5073a98d940837cbb95e71eed1f28f48e7b30 ]
+[ Upstream commit bb1b0e63dbbd7150324cb4d6aef7854dbe26a617 ]
 
-A change of the port state of one port, caused the state of another
-port to change. This behvior was unintended.
+The divider_round_rate() function is now deprecated, so let's migrate
+to divider_determine_rate() instead so that this deprecated API can be
+removed.
 
-Fixes: b7502b1043de ("net: renesas: rswitch: add offloading for L2 switching")
-Signed-off-by: Michael Dege <michael.dege@renesas.com>
-Link: https://patch.msgid.link/20260206-fix-offloading-statemachine-v3-1-07bfba07d03e@renesas.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
+
+    req->rate = divider_round_rate(...)
+
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
+
+Fixes: f7a6bed91a19 ("clk: x86: cgu: convert from round_rate() to determine_rate()")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/rswitch_l2.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/clk/x86/clk-cgu.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/rswitch_l2.c b/drivers/net/ethernet/renesas/rswitch_l2.c
-index 4a69ec77d69c6..9433cd8adced9 100644
---- a/drivers/net/ethernet/renesas/rswitch_l2.c
-+++ b/drivers/net/ethernet/renesas/rswitch_l2.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Renesas Ethernet Switch device driver
-  *
-- * Copyright (C) 2025 Renesas Electronics Corporation
-+ * Copyright (C) 2025 - 2026 Renesas Electronics Corporation
-  */
- 
- #include <linux/err.h>
-@@ -60,6 +60,7 @@ static void rswitch_update_l2_hw_learning(struct rswitch_private *priv)
- static void rswitch_update_l2_hw_forwarding(struct rswitch_private *priv)
+diff --git a/drivers/clk/x86/clk-cgu.c b/drivers/clk/x86/clk-cgu.c
+index d099667355f8d..92ee05d75af2b 100644
+--- a/drivers/clk/x86/clk-cgu.c
++++ b/drivers/clk/x86/clk-cgu.c
+@@ -137,10 +137,8 @@ static int lgm_clk_divider_determine_rate(struct clk_hw *hw,
  {
- 	struct rswitch_device *rdev;
-+	bool new_forwarding_offload;
- 	unsigned int fwd_mask;
+ 	struct lgm_clk_divider *divider = to_lgm_clk_divider(hw);
  
- 	/* calculate fwd_mask with zeroes in bits corresponding to ports that
-@@ -73,8 +74,9 @@ static void rswitch_update_l2_hw_forwarding(struct rswitch_private *priv)
- 	}
- 
- 	rswitch_for_all_ports(priv, rdev) {
--		if ((rdev_for_l2_offload(rdev) && rdev->forwarding_requested) ||
--		    rdev->forwarding_offloaded) {
-+		new_forwarding_offload = (rdev_for_l2_offload(rdev) && rdev->forwarding_requested);
-+
-+		if (new_forwarding_offload || rdev->forwarding_offloaded) {
- 			/* Update allowed offload destinations even for ports
- 			 * with L2 offload enabled earlier.
- 			 *
-@@ -84,13 +86,10 @@ static void rswitch_update_l2_hw_forwarding(struct rswitch_private *priv)
- 				  priv->addr + FWPC2(rdev->port));
- 		}
- 
--		if (rdev_for_l2_offload(rdev) &&
--		    rdev->forwarding_requested &&
--		    !rdev->forwarding_offloaded) {
-+		if (new_forwarding_offload && !rdev->forwarding_offloaded)
- 			rswitch_change_l2_hw_offloading(rdev, true, false);
--		} else if (rdev->forwarding_offloaded) {
-+		else if (!new_forwarding_offload && rdev->forwarding_offloaded)
- 			rswitch_change_l2_hw_offloading(rdev, false, false);
--		}
- 	}
+-	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate, divider->table,
+-				       divider->width, divider->flags);
+-
+-	return 0;
++	return divider_determine_rate(hw, req, divider->table, divider->width,
++				      divider->flags);
  }
  
+ static int
 -- 
 2.51.0
 
