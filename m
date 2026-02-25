@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAtWEvdSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:07 +0100
+	id GAQoB6ZWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB91E18F62A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB5019038E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54E583103BA2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 14B6530B50BE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B53C20C012;
-	Wed, 25 Feb 2026 01:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B1727FD72;
+	Wed, 25 Feb 2026 01:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19bApyUQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lI3Movaf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E415E1EB5E1;
-	Wed, 25 Feb 2026 01:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0720F27B34F;
+	Wed, 25 Feb 2026 01:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983372; cv=none; b=F0pP14pXX0hF/p9WBV6yIR305DsaJYz9Swm14RpQ1Xsgmmb5ywKoGjvPPRfyAcC9d7a2ylnHNGpZ3Cy1CbAxPBmjnQZsTMb1XlLuP45c8nnTIRXqGKiLm0Z8QtsBcrvja/gaPsp83Kpe7b9HL3D/r4V40B7RvtVyHMn4X17+BFQ=
+	t=1771984037; cv=none; b=Z6slhFaZIg3AyAVC9DbcciZ7W5bjwpCD+qiOgQoIm/7/9mb42/dm4FnSSoOqOS6hsoHZhsBTZZfh3XgbODHAWPbgTzyL4WczgRMBbVnUNY7QzgwmUjajud9DmWkZtctYeCxsbMAeIFBbbUuQDTT4A+2Yv8iwFnvveOYCl6PvZDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983372; c=relaxed/simple;
-	bh=/cJFzM6aRijBpKBOt1K8PtmnyDkb54MlE7zxJYgn+n4=;
+	s=arc-20240116; t=1771984037; c=relaxed/simple;
+	bh=XKfqUH6jzYKjDNoOfORSf6/82Xf5RFMRzs/2CM8MXXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NogGrvvSUJ1pIA4nOx1XGCDyb4WEYkqhnHNgL4r8mwCA59rS+QLc0qRn0XSd4U/yEypjBy3KCcGU9aapbJSO6Gtwc1LtzABSFXvFLYujwkDxwWiX5e9lY/+EeA0+EqY1VPAI+5YrhzTpcrUlVr1UV7OTZZxCdFCT3yWFo8nHekg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19bApyUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A479AC19424;
-	Wed, 25 Feb 2026 01:36:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JjDMQsKf7JYWccppB8t8GnjYKKdE5zY6n1jRzDTFTSHUq7g06tM7UXmEVlFOD8tz5ETEIzWVQDVt9X2VXP7kYXzlgfv7qPIuk7pSd5ybtBk4oiZyqxS+/tsAbAYNiyNPH83vbW5JPa6bCawo/GpHIH7NALbT+ynQc5tOMWJercY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lI3Movaf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF619C116D0;
+	Wed, 25 Feb 2026 01:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983371;
-	bh=/cJFzM6aRijBpKBOt1K8PtmnyDkb54MlE7zxJYgn+n4=;
+	s=korg; t=1771984036;
+	bh=XKfqUH6jzYKjDNoOfORSf6/82Xf5RFMRzs/2CM8MXXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=19bApyUQMwpb1DMDB5c6HbsJjpCJ4m5HqWo1Bm+lsDw8FFmiBm2yjZt76EasjqRmO
-	 5PUiUmpOHqCfZQygRMgGchILEnacbEDpQ+mO1gwEAjygXtAppy7hi+uMcnhmmGXElQ
-	 caxbYgpU9l8oVVXfkg0mq/CEFoB7kSTgg5tcTYiI=
+	b=lI3Movaf7huo8JA+wMbQMXbsPJIyO+pW3VpgxI3Ez7dHxJNe/X+ygmeO3tqcVSKZj
+	 Te1Ct1mglUNAiPIijCwOH702D/DGH3otlFutKLlu3Wyh9u5QWSxG60IPE3iATy0lJN
+	 2AJhDFVSE26BqnmQYnzT542zkYnjoJ7ptaTtT6D4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Simon Richter <Simon.Richter@hogyros.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 497/781] pNFS: fix a missing wake up while waiting on NFS_LAYOUT_DRAIN
+Subject: [PATCH 6.18 280/641] PCI: Remove old_size limit from bridge window sizing
 Date: Tue, 24 Feb 2026 17:20:06 -0800
-Message-ID: <20260225012411.995709041@linuxfoundation.org>
+Message-ID: <20260225012355.564036800@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +64,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218534-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-219104-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,hammerspace.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CB91E18F62A
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,hogyros.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: DBB5019038E
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 5248d8474e594d156bee1ed10339cc16e207a28b ]
+[ Upstream commit f909e3ee3ed1a44202f09ac7e637a0f9ec372225 ]
 
-It is possible to have a task get stuck on waiting on the
-NFS_LAYOUT_DRAIN in the following scenario
+calculate_memsize() applies lower bound to the resource size before
+aligning the resource size making it impossible to shrink bridge window
+resources. I've not found any justification for this lower bound and
+nothing indicated it was to work around some HW issue.
 
-1. cpu a: waiter test NFS_LAYOUT_DRAIN (1) and plh_outstanding (1)
-2. cpu b: atomic_dec_and_test() -> clear bit -> wake up
-3. cpu c: sets NFS_LAYOUT_DRAIN again
-4. cpu a: calls wait_on_bit() sleeps forever.
+Prior to the commit 3baeae36039a ("PCI: Use pci_release_resource() instead
+of release_resource()"), releasing a bridge window during BAR resize
+resulted in clearing start and end address of the resource.  Clearing
+addresses destroys the resource size as a side-effect, therefore nullifying
+the effect of the old size lower bound.
 
-To expand on this we have say 2 outstanding pnfs write IO that get
-ESTALE which causes both to call pnfs_destroy_layout() and set the
-NFS_LAYOUT_DRAIN bit but the 1st one doesn't call the
-pnfs_put_layout_hdr() yet (as that would prevent the 2nd ESTALE write
-from trying to call pnfs_destroy_layout()). If the 1st ESTALE write
-is the one that initially sets the NFS_LAYOUT_DRAIN so that new IO
-on this file initiates new LAYOUTGET. Another new write would find
-NFS_LAYOUT_DRAIN set and phl_outstanding>0 (step 1) and would
-wait_on_bit(). LAYOUTGET completes doing step 2. Now, the 2nd of
-ESTALE writes is calling pnfs_destory_layout() and set the
-NFS_LAYOUT_DRAIN bit (step 3). Finally, the waiting write wakes up
-to check the bit and goes back to sleep.
+After the commit 3baeae36039a ("PCI: Use pci_release_resource() instead of
+release_resource()"), BAR resize uses the aligned old size, which results
+in exceeding what fits into the parent window in some cases:
 
-The problem revolves around the fact that if NFS_LAYOUT_INVALID_STID
-was already set, it should not do the work of
-pnfs_mark_layout_stateid_invalid(), thus NFS_LAYOUT_DRAIN will not
-be set more than once for an invalid layout.
+  xe 0030:03:00.0: [drm] Attempting to resize bar from 256MiB -> 16384MiB
+  xe 0030:03:00.0: BAR 0 [mem 0x620c000000000-0x620c000ffffff 64bit]: releasing
+  xe 0030:03:00.0: BAR 2 [mem 0x6200000000000-0x620000fffffff 64bit pref]: releasing
+  pci 0030:02:01.0: bridge window [mem 0x6200000000000-0x620001fffffff 64bit pref]: releasing
+  pci 0030:01:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref]: releasing
+  pci 0030:00:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref]: was not released (still contains assigned resources)
+  pci 0030:00:00.0: Assigned bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref] to [bus 01-04] free space at [mem 0x6200400000000-0x62007ffffffff 64bit pref]
+  pci 0030:00:00.0: Assigned bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref] to [bus 01-04] cannot fit 0x4000000000 required for 0030:01:00.0 bridging to [bus 02-04]
 
-Suggested-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Fixes: 880265c77ac4 ("pNFS: Avoid a live lock condition in pnfs_update_layout()")
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+The old size of 0x6200000000000-0x6203fbff0ffff resource was used as the
+lower bound which results in 0x4000000000 size request due to alignment.
+That exceeds what can fit into the parent window.
+
+Since the lower bound never even was enforced fully because the resource
+addresses were cleared when the bridge window is released, remove the
+old_size lower bound entirely and trust the calculated bridge window size
+is enough.
+
+This same problem may occur on io window side but seems less likely to
+cause issues due to general difference in alignment. Removing the lower
+bound may have other unforeseen consequences in case of io window so it's
+better to leave it as -next material if no problem is reported related to
+io window sizing (BAR resize shouldn't touch io windows anyway).
+
+Fixes: 3baeae36039a ("PCI: Use pci_release_resource() instead of release_resource()")
+Reported-by: Simon Richter <Simon.Richter@hogyros.de>
+Link: https://lore.kernel.org/r/f9a8c975-f5d3-4dd2-988e-4371a1433a60@hogyros.de/
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20251219174036.16738-6-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/setup-bus.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index cff225721d1ce..ff8483d3373a8 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -463,7 +463,8 @@ pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
- 	};
- 	struct pnfs_layout_segment *lseg, *next;
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 25d6d4d3afc14..4f4890196e63e 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -1066,16 +1066,13 @@ static resource_size_t calculate_memsize(resource_size_t size,
+ 					 resource_size_t min_size,
+ 					 resource_size_t add_size,
+ 					 resource_size_t children_add_size,
+-					 resource_size_t old_size,
+ 					 resource_size_t align)
+ {
+ 	if (size < min_size)
+ 		size = min_size;
+-	if (old_size == 1)
+-		old_size = 0;
  
--	set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags);
-+	if (test_and_set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags))
-+		return !list_empty(&lo->plh_segs);
- 	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(lo->plh_inode)->flags);
- 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list)
- 		pnfs_clear_lseg_state(lseg, lseg_list);
+ 	size = max(size, add_size) + children_add_size;
+-	return ALIGN(max(size, old_size), align);
++	return ALIGN(size, align);
+ }
+ 
+ resource_size_t __weak pcibios_window_alignment(struct pci_bus *bus,
+@@ -1293,7 +1290,6 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+ 	resource_size_t children_add_size = 0;
+ 	resource_size_t children_add_align = 0;
+ 	resource_size_t add_align = 0;
+-	resource_size_t old_size;
+ 
+ 	if (!b_res)
+ 		return;
+@@ -1359,11 +1355,10 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+ 		}
+ 	}
+ 
+-	old_size = resource_size(b_res);
+ 	win_align = window_alignment(bus, b_res->flags);
+ 	min_align = calculate_head_align(aligns, max_order);
+ 	min_align = max(min_align, win_align);
+-	size0 = calculate_memsize(size, min_size, 0, 0, old_size, win_align);
++	size0 = calculate_memsize(size, min_size, 0, 0, win_align);
+ 
+ 	if (size0) {
+ 		resource_set_range(b_res, min_align, size0);
+@@ -1373,7 +1368,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
+ 	if (realloc_head && (add_size > 0 || children_add_size > 0)) {
+ 		add_align = max(min_align, add_align);
+ 		size1 = calculate_memsize(size, min_size, add_size, children_add_size,
+-					  old_size, win_align);
++					  win_align);
+ 	}
+ 
+ 	if (!size0 && !size1) {
 -- 
 2.51.0
 
