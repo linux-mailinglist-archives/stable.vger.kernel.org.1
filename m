@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLkdF1xWnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-219061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:36 +0100
+	id aLGcF91Tnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE37190288
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D684F18FA83
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BA109308EF26
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 64F1631D56F1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6A21F03DE;
-	Wed, 25 Feb 2026 01:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05C9243376;
+	Wed, 25 Feb 2026 01:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IU+u8B+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfRg95KE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D194A299937;
-	Wed, 25 Feb 2026 01:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49E518B0A;
+	Wed, 25 Feb 2026 01:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983984; cv=none; b=MNCKRLZZe8TJMa12en4/kTNDx4XzB/XDumzejFCQ3Xau4LBZLlV0SMMmYI+6S+MnXX7QbRuN472gaMJvDBCFoO/3X5QdI0uersST4LVSOSfe3PUa4MEffz6PpUK2FzUkDf/iyZduthAAmvbxOf115XZQ+IcmsB0FF1RerKiU0Vw=
+	t=1771983261; cv=none; b=iXHmOj47h3Zhas1yK2x3B2LiI+BTiqBOBrMD1WncMghFnfavjaLL7MWEp1hzTbiJcJC4O4IfJZM9ofZAw3msNaAvekie2FAdkZkPTM8N+c9wC14f4y2CLMuQFVCUUPpVX3vvBG2u5vh38WOJve1XziNY5m06GXzfp47B2sGoy7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983984; c=relaxed/simple;
-	bh=eG+IW9zlOdGff5q5fePB+P7xVsodkVzNArSJ8hHU2OU=;
+	s=arc-20240116; t=1771983261; c=relaxed/simple;
+	bh=M2jzVvPnF3W8ryqc3DgYDwZUeo9bwKpKmYxOJyHBKmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aG0ASbgsLIwuFoP8lOBNuHpbefpcC+xtjYf80o+Tamc8Y2Q4eqsO84VEKfRsFgMYszIogXncvOPdkJjG5NlYGwVZA4vm6dhA+fvDUUq5hk7/4gFR2X/rr3ouePgmtIRSYUxu6XwlLkpnuJk0dZZZ2OXCv21YppiATnY5Mj+YpBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IU+u8B+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926FCC116D0;
-	Wed, 25 Feb 2026 01:46:24 +0000 (UTC)
+	 MIME-Version; b=RGCiVNID+iaWLPgO9rYZTSyQo+wlssNkfBPpO8KZ8hJe9yFVGAp7g6vhks9TqW6Ho2IIz0yhlk3KJvDhFhREcFAysPWITR5xi42KLssksboHJVKbTUFwFyJsfM4WCK1Zh7XED17ayVqq+5slAvHFAlRKtOZcZxsXUic0Wf3yupE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfRg95KE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED16C116D0;
+	Wed, 25 Feb 2026 01:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983984;
-	bh=eG+IW9zlOdGff5q5fePB+P7xVsodkVzNArSJ8hHU2OU=;
+	s=korg; t=1771983261;
+	bh=M2jzVvPnF3W8ryqc3DgYDwZUeo9bwKpKmYxOJyHBKmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IU+u8B+us0py1TNYAAi18PapSa7PXgy5eARS7sUv4DVz+TMHBWdWIOTfIM7tyW1zl
-	 rL5idb47w5GXIb82ltrU3gB0ONZiFBEe/QhhGvQAYY7hm5OuzfdiZE6nO9ibDDoHeR
-	 uqNtnawvNNW9wzGVlrglwlElIu1SNr1oHRZaCn70=
+	b=HfRg95KEU38bebrjf6cJXqJ2WEmDdANneteOoQU69XIpNull9Gyej0KA69n5OLHuW
+	 vh5cxoNVLEL5UJhJzatV4VAcp+BgFQUFgCpryGqP7iG1bQ5rOgf8gbxZ1mfpPr3U1W
+	 3hhwmvVD1kRgWpR1W9OERGarU+svTYFPjB9gTQ+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Anshumali Gaur <agaur@marvell.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 186/641] ASoC: nau8821: Fixup nau8821_enable_jack_detect()
+Subject: [PATCH 6.19 403/781] octeontx2-af: Fix PF driver crash with kexec kernel booting
 Date: Tue, 24 Feb 2026 17:18:32 -0800
-Message-ID: <20260225012353.518372563@linuxfoundation.org>
+Message-ID: <20260225012409.589609411@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,112 +70,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218440-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219061-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,collabora.com:email]
-X-Rspamd-Queue-Id: 1CE37190288
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,marvell.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D684F18FA83
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Anshumali Gaur <agaur@marvell.com>
 
-[ Upstream commit 70237853edf0a69773a7370eb74ea2a44dfe3050 ]
+[ Upstream commit 2d2d574309e3ae84ee794869a5da8b4c38753a94 ]
 
-The nau8821_enable_jack_detect() function was supposed to allow enabling
-or disabling jack events reporting.  However, once enabled, any
-subsequent invocation would fail and the following splat is shown:
+During a kexec reboot the hardware is not power-cycled, so AF state from
+the old kernel can persist into the new kernel. When AF and PF drivers
+are built as modules, the PF driver may probe before AF reinitializes
+the hardware.
 
-[ 3136.996771] Hardware name: Valve Jupiter/Jupiter, BIOS F7A0131 01/30/2024
-[ 3136.996773] Workqueue: events_unbound deferred_probe_work_func
-[ 3136.996780] Call Trace:
-[ 3136.996782]  <TASK>
-[ 3136.996787]  dump_stack_lvl+0x6e/0xa0
-[ 3136.996796]  __setup_irq.cold+0x9c/0xce
-[ 3136.996803]  ? __pfx_irq_default_primary_handler+0x10/0x10
-[ 3136.996812]  ? __pfx_nau8821_interrupt+0x10/0x10 [snd_soc_nau8821]
-[ 3136.996825]  request_threaded_irq+0xd9/0x160
-[ 3136.996853]  devm_request_threaded_irq+0x71/0xd0
-[ 3136.996859]  ? __pfx_nau8821_interrupt+0x10/0x10 [snd_soc_nau8821]
-[ 3136.996882]  nau8821_enable_jack_detect+0xa5/0xc0 [snd_soc_nau8821]
-[ 3136.996901]  acp5x_8821_init+0x8d/0xa0 [snd_soc_acp5x_mach]
-[ 3136.996917]  snd_soc_link_init+0x25/0x50 [snd_soc_core]
-[ 3136.996958]  snd_soc_bind_card+0x615/0xd00 [snd_soc_core]
-[ 3136.997026]  snd_soc_register_card+0x1b2/0x1c0 [snd_soc_core]
-[ 3136.997064]  devm_snd_soc_register_card+0x47/0x90 [snd_soc_core]
-[ 3136.997108]  acp5x_probe+0x72/0xb0 [snd_soc_acp5x_mach]
-[...]
-[ 3136.997508] nau8821 i2c-NVTN2020:00: Cannot request irq 58 (-16)
+The PF driver treats the RVUM block revision as an indication that AF
+initialization is complete. If this value is left uncleared at shutdown,
+PF may incorrectly assume AF is ready and access stale hardware state,
+leading to a crash.
 
-Introduce jdet_active flag to driver data structure and use it to
-provide one-time initialization of the jack detection work queue and
-related interrupt line.
+Clear the RVUM block revision during AF shutdown to avoid PF
+mis-detecting AF readiness after kexec.
 
-Note this is also a prerequisite for additional fixes around module
-unloading and suspend handling.
-
-Fixes: aab1ad11d69f ("ASoC: nau8821: new driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20251231-nau8821-cleanup-v1-1-6b0b76cbbb64@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 54494aa5d1e6 ("octeontx2-af: Add Marvell OcteonTX2 RVU AF driver")
+Signed-off-by: Anshumali Gaur <agaur@marvell.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260203050701.2616685-1-agaur@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/nau8821.c | 5 +++++
- sound/soc/codecs/nau8821.h | 1 +
- 2 files changed, 6 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/sound/soc/codecs/nau8821.c b/sound/soc/codecs/nau8821.c
-index 4fa9a785513e5..dfb9630bffe29 100644
---- a/sound/soc/codecs/nau8821.c
-+++ b/sound/soc/codecs/nau8821.c
-@@ -1661,8 +1661,13 @@ int nau8821_enable_jack_detect(struct snd_soc_component *component,
- 	int ret;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 747fbdf2a908f..8530df8b3fdaf 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -3632,11 +3632,22 @@ static void rvu_remove(struct pci_dev *pdev)
+ 	devm_kfree(&pdev->dev, rvu);
+ }
  
- 	nau8821->jack = jack;
++static void rvu_shutdown(struct pci_dev *pdev)
++{
++	struct rvu *rvu = pci_get_drvdata(pdev);
 +
-+	if (nau8821->jdet_active)
-+		return 0;
++	if (!rvu)
++		return;
 +
- 	/* Initiate jack detection work queue */
- 	INIT_DELAYED_WORK(&nau8821->jdet_work, nau8821_jdet_work);
-+	nau8821->jdet_active = true;
++	rvu_clear_rvum_blk_revid(rvu);
++}
++
+ static struct pci_driver rvu_driver = {
+ 	.name = DRV_NAME,
+ 	.id_table = rvu_id_table,
+ 	.probe = rvu_probe,
+ 	.remove = rvu_remove,
++	.shutdown = rvu_shutdown,
+ };
  
- 	ret = devm_request_threaded_irq(nau8821->dev, nau8821->irq, NULL,
- 		nau8821_interrupt, IRQF_TRIGGER_LOW | IRQF_ONESHOT,
-diff --git a/sound/soc/codecs/nau8821.h b/sound/soc/codecs/nau8821.h
-index 88602923780d8..f9d7cd8cbd211 100644
---- a/sound/soc/codecs/nau8821.h
-+++ b/sound/soc/codecs/nau8821.h
-@@ -562,6 +562,7 @@ struct nau8821 {
- 	struct snd_soc_dapm_context *dapm;
- 	struct snd_soc_jack *jack;
- 	struct delayed_work jdet_work;
-+	bool jdet_active;
- 	int irq;
- 	int clk_id;
- 	int micbias_voltage;
+ static int __init rvu_init_module(void)
 -- 
 2.51.0
 
