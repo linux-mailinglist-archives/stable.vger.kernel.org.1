@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-218726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GDQ3GKhYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:24 +0100
+	id aNsYF+SenmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C7519079F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F4110192DD1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C63823102E29
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1CF663105B97
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FE7248881;
-	Wed, 25 Feb 2026 01:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2306C313285;
+	Wed, 25 Feb 2026 06:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s65tRFoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xowSjY1D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2A0243376;
-	Wed, 25 Feb 2026 01:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D1630EF8B;
+	Wed, 25 Feb 2026 06:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983589; cv=none; b=WDe4FYOref2YOQUT/DaXa/M52x7b42XRBb4rS4FvT2IpbkVHasJUw3b7hw+OprWs7VeOPoMM90V9tHWysd17Wcizs5BsnrLDrtWxD+UXczWO68SAKQjjg0QcT0NhXDJUA0z32VvVD+MmwTYz0jMzEOACwGYtXrV2rX9Sb/50tEk=
+	t=1772002709; cv=none; b=IDrKiXSMDyc2dZ680kQ9nEt8q3On62xuBY7H5vda+G8A7Ywibg1DaWWGUFUu+0LiBh7mKc3bPW+XtCSMOJ8UrtZXXNIvX3hIzzCsbTvJ+9DE01IvqiiERe8olU0bJDBBFuaoxofYlMejj5K5QNMhuGcIINCIQaUzS6sZb5mQj90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983589; c=relaxed/simple;
-	bh=KOpsJregEoTeYoCiIMeIZnI6QHHRzfWMvj9mY2IQY8w=;
+	s=arc-20240116; t=1772002709; c=relaxed/simple;
+	bh=dyp9/YIG2FHBausJbNDui8JSmOcG3YdaP/YFeT2bKc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2BEcaCOS0gjlOp6K0yvj/TMUI9t3kgyz9HjxqHPjNeK6zWmIQzwkd/7A0FUFJR0oErsCZkBBDGyoSAtrTQo90IKVeEhuM80OqAxDdyH/wvG02/5I8wGYR7TJOPqVm358pJ+/FLVZNUdjz7YwMiuFjTpZjHDL5KC7DpSofV6Kyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s65tRFoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7918C116D0;
-	Wed, 25 Feb 2026 01:39:48 +0000 (UTC)
+	 MIME-Version; b=ccMnMeJkC2JcQF/jXgOQIZmGkheyTaxrMQNmL3pu2lQPHV83Yn+MBIELfqUyKEBCXvk5K5AXxXE1oF9tc4Vl7OzZxUfKK9+Y+Lcnn9j8K8ei09v0F5nlsEpQX9aOl4PD4/3CoN1Huq7cP3LYcSj9ZLMOT50DEGN3MOJW2bz4g2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xowSjY1D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B313BC116D0;
+	Wed, 25 Feb 2026 06:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983589;
-	bh=KOpsJregEoTeYoCiIMeIZnI6QHHRzfWMvj9mY2IQY8w=;
+	s=korg; t=1772002709;
+	bh=dyp9/YIG2FHBausJbNDui8JSmOcG3YdaP/YFeT2bKc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s65tRFoA+Ytr3AsEIwDZGSOOhSlNqa8p5ba/QOOAgoV5c90HLclIWF+nnGtJ/FvrQ
-	 GpCauDDqYGjnEZwTKTl4iGeJluptWnPOjpXE3yy4DBxH83rgdzTqh53sagLkerAQO3
-	 QkFQhw/YcxbMvlpp2E50wmtKnwMN1fYs5IjJ75t4=
+	b=xowSjY1Dy0hHQbVFHP0D3LXgg0xvUBwKrIsZKSz6PdiHk0Mac5yItZfvsqAnRn/A2
+	 5EwsV7Zd4eLLXIpR2Edi9jLybQbJMekq023/Ge5MGoGbMLQ5XWqAxf/3L29sfU9aT4
+	 od0BLVeSm67CJDJ8AI5rmJzMical47LZostiyA4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jacob Keller <Jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Petre Rodan <petre.rodan@subdimension.ro>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 687/781] net/mlx5: Fix misidentification of write combining CQE during poll loop
+Subject: [PATCH 6.18 470/641] iio: pressure: mprls0025pa: fix scan_type struct
 Date: Tue, 24 Feb 2026 17:23:16 -0800
-Message-ID: <20260225012416.620193383@linuxfoundation.org>
+Message-ID: <20260225012359.901432555@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218726-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219429-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,97 +87,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: E4C7519079F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,subdimension.ro:email]
+X-Rspamd-Queue-Id: F4110192DD1
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Petre Rodan <petre.rodan@subdimension.ro>
 
-[ Upstream commit d451994ebc7d4392610bd4b2ab339b255deb4143 ]
+[ Upstream commit 8a228e036926f7e57421d750c3724e63f11b808a ]
 
-The write combining completion poll loop uses usleep_range() which can
-sleep much longer than requested due to scheduler latency. Under load,
-we witnessed a 20ms+ delay until the process was rescheduled, causing
-the jiffies based timeout to expire while the thread is sleeping.
+Fix the scan_type sign and realbits assignment.
 
-The original do-while loop structure (poll, sleep, check timeout) would
-exit without a final poll when waking after timeout, missing a CQE that
-arrived during sleep.
+The pressure is a 24bit unsigned int between output_min and output_max.
 
-Instead of the open-coded while loop, use the kernel's poll_timeout_us()
-which always performs an additional check after the sleep expiration,
-and is less error-prone.
+ transfer function A: 10%   to 90%   of 2^24
+ transfer function B:  2.5% to 22.5% of 2^24
+ transfer function C: 20%   to 80%   of 2^24
+[MPR_FUNCTION_A] = { .output_min = 1677722, .output_max = 15099494 }
+[MPR_FUNCTION_B] = { .output_min =  419430, .output_max =  3774874 }
+[MPR_FUNCTION_C] = { .output_min = 3355443, .output_max = 13421773 }
 
-Note: poll_timeout_us() doesn't accept a sleep range, by passing 10
-sleep_us the sleep range effectively changes from 2-10 to 3-10 usecs.
-
-Fixes: d98995b4bf98 ("net/mlx5: Reimplement write combining test")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Jacob Keller <Jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260218072904.1764634-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/wc.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/iio/pressure/mprls0025pa.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/wc.c b/drivers/net/ethernet/mellanox/mlx5/core/wc.c
-index 815a7c97d6b09..04d03be1bb775 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/wc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/wc.c
-@@ -2,6 +2,7 @@
- // Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
- 
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/mlx5/transobj.h>
- #include "lib/clock.h"
- #include "mlx5_core.h"
-@@ -15,7 +16,7 @@
- #define TEST_WC_NUM_WQES 255
- #define TEST_WC_LOG_CQ_SZ (order_base_2(TEST_WC_NUM_WQES))
- #define TEST_WC_SQ_LOG_WQ_SZ TEST_WC_LOG_CQ_SZ
--#define TEST_WC_POLLING_MAX_TIME_JIFFIES msecs_to_jiffies(100)
-+#define TEST_WC_POLLING_MAX_TIME_USEC (100 * USEC_PER_MSEC)
- 
- struct mlx5_wc_cq {
- 	/* data path - accessed per cqe */
-@@ -359,7 +360,6 @@ static int mlx5_wc_poll_cq(struct mlx5_wc_sq *sq)
- static void mlx5_core_test_wc(struct mlx5_core_dev *mdev)
- {
- 	unsigned int offset = 0;
--	unsigned long expires;
- 	struct mlx5_wc_sq *sq;
- 	int i, err;
- 
-@@ -389,13 +389,9 @@ static void mlx5_core_test_wc(struct mlx5_core_dev *mdev)
- 
- 	mlx5_wc_post_nop(sq, &offset, true);
- 
--	expires = jiffies + TEST_WC_POLLING_MAX_TIME_JIFFIES;
--	do {
--		err = mlx5_wc_poll_cq(sq);
--		if (err)
--			usleep_range(2, 10);
--	} while (mdev->wc_state == MLX5_WC_STATE_UNINITIALIZED &&
--		 time_is_after_jiffies(expires));
-+	poll_timeout_us(mlx5_wc_poll_cq(sq),
-+			mdev->wc_state != MLX5_WC_STATE_UNINITIALIZED, 10,
-+			TEST_WC_POLLING_MAX_TIME_USEC, false);
- 
- 	mlx5_wc_destroy_sq(sq);
- 
+diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
+index 4b23f87a822b1..6ba45d4c16b30 100644
+--- a/drivers/iio/pressure/mprls0025pa.c
++++ b/drivers/iio/pressure/mprls0025pa.c
+@@ -160,8 +160,8 @@ static const struct iio_chan_spec mpr_channels[] = {
+ 					BIT(IIO_CHAN_INFO_OFFSET),
+ 		.scan_index = 0,
+ 		.scan_type = {
+-			.sign = 's',
+-			.realbits = 32,
++			.sign = 'u',
++			.realbits = 24,
+ 			.storagebits = 32,
+ 			.endianness = IIO_CPU,
+ 		},
 -- 
 2.51.0
 
