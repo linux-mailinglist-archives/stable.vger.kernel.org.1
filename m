@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-219327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKkKAcCdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:12 +0100
+	id OGLwAbhUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA0B192A9E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9AB18FD91
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EAD6E308D75E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C84530F9E52
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1EC2DC767;
-	Wed, 25 Feb 2026 06:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E3E25A642;
+	Wed, 25 Feb 2026 01:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOn9I31A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+P+xSXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38AF2D77FA;
-	Wed, 25 Feb 2026 06:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B641E26E6F8;
+	Wed, 25 Feb 2026 01:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002643; cv=none; b=rB3cqD73QJhqTL1IQYtanEF9kyJ9azl2yJYG0hEJ/Skj3v7GwM2NQar5Q3uZm0Kr1qM46vAM6PhKbi5Ap36hpUfomEkoii6oacXzly4lQWt03JuMzwBCt6h1FRZF3N7f1o2VJEJZAYtioGrhFtwJednXd8aCwun/0SKXS3aSWbY=
+	t=1771983569; cv=none; b=U57/MWQqJge/EyMpx3IdA8AiUc/yafEPYhOvkq0UCp88az2ABQD2HrA/Z28x79qVpFr4aLG4cxHe8y5wn/zcnAJwB+9F3r/ezDuT+aA/e8YmTe/UoJRp/LyMpyrPhyl6mgnO1QlwH+296HvHONY/FhTILl+vEghLn8A/5vOeGBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002643; c=relaxed/simple;
-	bh=z/nMbvQkmTrEv2RJ0VipMncCp2L8lxLA93n6hFlPaiA=;
+	s=arc-20240116; t=1771983569; c=relaxed/simple;
+	bh=N5eQICA58o5uo/PDc9JZqKPovFyK/NOSHC0PCl3NGRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVVvTsr0+EjjbNZ/KavO9q1chlW9yV8d4AQEB6MXjeTOCNujSpCk+J5YrIhSmzkECxqAw0HyFIA3oHdU3AnlelqTX0vlbsmpsnqXxvjWN2pR51BB/fcnzVIef7reePIo2S9+/3xf3fVxA303mHzXeU1eJXHhx9f1OT7g6Szmzi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOn9I31A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980BCC116D0;
-	Wed, 25 Feb 2026 06:57:22 +0000 (UTC)
+	 MIME-Version; b=BqnXdxw/NAMIBrAHQQN4rQllFZfDhtbAH8vkhlXWV8OcF9ZJtGCIlapVbKLEXbTpMjRa5G6mOP2UQ/fYVoGrguRDkSarGESzIojXkVKV8bRXFsJKjxvxTThNtacmbh8vQnbQJ6uFHC85T6R58dy9/1c+wr4KmZcWkIRvR2tPTfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+P+xSXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F492C19423;
+	Wed, 25 Feb 2026 01:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002642;
-	bh=z/nMbvQkmTrEv2RJ0VipMncCp2L8lxLA93n6hFlPaiA=;
+	s=korg; t=1771983569;
+	bh=N5eQICA58o5uo/PDc9JZqKPovFyK/NOSHC0PCl3NGRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZOn9I31A628gSZIOde8R28HqZ+kJhfIT4Jdz4I9NzwYcJv4yQAmnMj+7Azy85Nymm
-	 kKMdiTBg4x7KOshquGUV13ajqXD4rjrQKj24EoM+ZngkXsFYJL1GPLzZm5bYBfnFvy
-	 PAn+MoxMfFTzBGGkAWqWZXcufiZVigIqqP3AfoOQ=
+	b=e+P+xSXkYngjvKrrIdz2qFiq2967TGnUFGV4oYXZucDMCv2XWUGZ2RZlnrt8k+wBK
+	 h6cMpvX0PHD1yjX4hsrDmo0j8XgkDWnhJIAP4MvZT2wPkv1/q2RXRVfbhwpBsDWRrJ
+	 cqWrEGP861H2K3QFbUZ/fDl1+Mgi9U1LCJUr5nsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Imran Shaik <imran.shaik@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Xiaoli Feng <xifeng@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 410/641] clk: qcom: gcc-sm8750: Update the SDCC RCGs to use shared_floor_ops
+Subject: [PATCH 6.19 627/781] smb: client: fix regression with mount options parsing
 Date: Tue, 24 Feb 2026 17:22:16 -0800
-Message-ID: <20260225012358.498042045@linuxfoundation.org>
+Message-ID: <20260225012415.191230749@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219327-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218709-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,63 +89,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,linaro.org:email]
-X-Rspamd-Queue-Id: 6BA0B192A9E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,manguebit.org:email]
+X-Rspamd-Queue-Id: 7F9AB18FD91
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit a7231d4aa084e485394f9214ec9bcb2d1f65dde9 ]
+[ Upstream commit 72f4d48034864b93700d1d23fc418d90fa28d7ae ]
 
-Use shared_floor_ops for the SDCC RCGs so the RCG is safely parked
-during disable and the new parent configuration is programmed in
-hardware only when the new parent is enabled, avoiding cases where
-the RCG configuration fails to update.
+After commit 1ef15fbe6771 ("cifs: client: enforce consistent handling
+of multichannel and max_channels"), invalid mount options started to
+be ignored, allowing cifs.ko to proceed with the mount instead of
+baling out.
 
-Fixes: 3267c774f3ff ("clk: qcom: Add support for GCC on SM8750")
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-2-473afc86589c@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The problem was related to smb3_handle_conflicting_options() being
+called even when an invalid parameter had been parsed, overwriting the
+return value of vfs_parse_fs_string() in
+smb3_fs_context_parse_monolithic().
+
+Fix this by calling smb3_handle_conflicting_options() only when a
+valid mount option has been passed.
+
+Reproducer:
+
+$ mount.cifs //srv/share /mnt -o ${opts}
+$ mount -o remount,foo,${opts} /mnt # must fail
+
+Fixes: 1ef15fbe6771 ("cifs: client: enforce consistent handling of multichannel and max_channels")
+Reported-by: Xiaoli Feng <xifeng@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: linux-cifs@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm8750.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/fs_context.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sm8750.c b/drivers/clk/qcom/gcc-sm8750.c
-index def86b71a3da5..db81569dd4b17 100644
---- a/drivers/clk/qcom/gcc-sm8750.c
-+++ b/drivers/clk/qcom/gcc-sm8750.c
-@@ -1030,7 +1030,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.parent_data = gcc_parent_data_8,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_8),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_floor_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
- };
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index d4291d3a9a485..2527d2d29f190 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -826,9 +826,7 @@ static int smb3_fs_context_parse_monolithic(struct fs_context *fc,
+ 		if (ret < 0)
+ 			break;
+ 	}
+-	ret = smb3_handle_conflicting_options(fc);
+-
+-	return ret;
++	return ret ?: smb3_handle_conflicting_options(fc);
+ }
  
-@@ -1052,7 +1052,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
- 		.parent_data = gcc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_floor_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
- };
- 
+ /*
 -- 
 2.51.0
 
