@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-218616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACOQKexSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218616-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:56 +0100
+	id 0MnBEvydnmk5WgQAu9opvQ
+	(envelope-from <stable+bounces-219234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863F518F5EC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D24192B46
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D0F733039347
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4D6430E83D0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C5E2609C5;
-	Wed, 25 Feb 2026 01:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21652C21F2;
+	Wed, 25 Feb 2026 06:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlfN8A2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWh5Viib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A206254B03;
-	Wed, 25 Feb 2026 01:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841842C0F97;
+	Wed, 25 Feb 2026 06:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983463; cv=none; b=VEf7nLUNpGzOKJD4SJG4PBWiGNXCSoUF8+CLYKNIVhf1RyAK6RSFZcZBJyoJSL9Q55tx1mSXOSt6DXQI3T9l71ODlp4CbYr6gN6AU5XGte9f98dnnOkR25r/imSLUvqRMGwbgH7u8rx47RoKCmFVS7tK73PdBWVngKcqKlgMwgg=
+	t=1772002582; cv=none; b=nW44UAO4P17FTRLxH6bUnZo1rIijlKokzEyRmjCn14wApoGaNTLlqxjGjrALBQyqbdN+tQA6fdV9p3aqjKt2jXt+9ap2E/tHmzJ0DCi61xNCBwdUssGTf6h96jKVLfiVtrnjfp2EFZ/iiUUiJLomS5/i1lBT2hyzEvC6RcdlJAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983463; c=relaxed/simple;
-	bh=JTwuJhBrHgvAjJ0eoq+14Emib3h4injhWhI8YTlfdsQ=;
+	s=arc-20240116; t=1772002582; c=relaxed/simple;
+	bh=X9kgN/V4aH4ZMcsz+7cZrpb+oBYCezwBYVNxhuYY2UY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZkwEB8hrlSSB2hIkpfSUZDd40qkAB2BGzzcozFtfCDPijQ46P93HIsc5cd+RZWxc8u4KlK9+lGA839Yz0p/Wo35Wfotm9mgmYGG8ZRpEg/66eqgM/oa3bq9pYFQjBsmTGGzW6G/ETR4X3Bqyp/4VM7PESkebf6RFimb718CFukU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlfN8A2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C41C116D0;
-	Wed, 25 Feb 2026 01:37:42 +0000 (UTC)
+	 MIME-Version; b=lxqC3/RW3EhPTuhwPyGNogVbw4Bw1SP+eFanyRmzJGURhEYqVIN9VuGB1JvuBOM5H+uiakCGmyqfXgyHMiUdmEzm/46xePberdy4fztFgTRi7tKh8D+eAeEC9+3HRYacQXE1e1dWlUwaSmM9ldmuFjarpJgM1UMg02sAlzdfIx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWh5Viib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51135C19422;
+	Wed, 25 Feb 2026 06:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983463;
-	bh=JTwuJhBrHgvAjJ0eoq+14Emib3h4injhWhI8YTlfdsQ=;
+	s=korg; t=1772002582;
+	bh=X9kgN/V4aH4ZMcsz+7cZrpb+oBYCezwBYVNxhuYY2UY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZlfN8A2yqRypys6iVBL58F0r786eIw3xkK8fBWNgNsIaB72N0IHx+iXEZ57cc0TVs
-	 LBjknUiYWE0EHN6t8Y7lzWzB8/RXQ9C1OGMnhn7zC+cgiDKBcVDuIckE/bpWH+mpFs
-	 WMrkqgf/kr787M2g/rww2h0V/4mIP4viFx9wf4u8=
+	b=jWh5ViibI1XihIii2oY6lVzgo2epXv/OkUEebLD10JrpExHnfsGf47T11LdV3Fks+
+	 fU0kHFKBXh+tPEE2X5NpN4LeI6d3kMgAZ9Nk5gDcKQQYFNPPah864EaGIjDXFOC0Y0
+	 29BNZsJInUf8lfOcop3ADvDr+Bu13zXYNWqq2Teo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Petr Oros <poros@redhat.com>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 535/781] clk: qcom: regmap-divider: convert from divider_round_rate() to divider_determine_rate()
+Subject: [PATCH 6.18 318/641] dpll: zl3073x: Specify phase adjustment granularity for pins
 Date: Tue, 24 Feb 2026 17:20:44 -0800
-Message-ID: <20260225012412.919404359@linuxfoundation.org>
+Message-ID: <20260225012356.420716009@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218616-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219234-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,65 +90,184 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 863F518F5EC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: B3D24192B46
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit d8300e6e078a3a44ac0c75c6d8ba46d78ab94035 ]
+[ Upstream commit 055a01b29fd643e33b9b1e88e24bbe1afe6fc6d9 ]
 
-The divider_round_rate() function is now deprecated, so let's migrate
-to divider_determine_rate() instead so that this deprecated API can be
-removed.
+Output pins phase adjustment values in the device are expressed
+in half synth clock cycles. Use this number of cycles as output
+pins' phase adjust granularity and simplify both get/set callbacks.
 
-Note that when the main function itself was migrated to use
-determine_rate, this was mistakenly converted to:
-
-    req->rate = divider_round_rate(...)
-
-This is invalid in the case when an error occurs since it can set the
-rate to a negative value.
-
-Fixes: b6f90511c165 ("clk: qcom: regmap-divider: convert from round_rate() to determine_rate()")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260108-clk-divider-round-rate-v1-16-535a3ed73bf3@redhat.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Petr Oros <poros@redhat.com>
+Tested-by: Prathosh Satish <Prathosh.Satish@microchip.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Link: https://patch.msgid.link/20251029153207.178448-3-ivecera@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 5d41f95f5d0b ("dpll: zl3073x: Fix output pin phase adjustment sign")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-regmap-divider.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/dpll/zl3073x/dpll.c | 58 +++++++++----------------------------
+ drivers/dpll/zl3073x/prop.c | 11 +++++++
+ 2 files changed, 25 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/clk/qcom/clk-regmap-divider.c b/drivers/clk/qcom/clk-regmap-divider.c
-index af9c01dd78537..672e82caf2050 100644
---- a/drivers/clk/qcom/clk-regmap-divider.c
-+++ b/drivers/clk/qcom/clk-regmap-divider.c
-@@ -34,12 +34,8 @@ static int div_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
- {
- 	struct clk_regmap_div *divider = to_clk_regmap_div(hw);
+diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+index f93f9a4583243..d90150671d374 100644
+--- a/drivers/dpll/zl3073x/dpll.c
++++ b/drivers/dpll/zl3073x/dpll.c
+@@ -35,6 +35,7 @@
+  * @prio: pin priority <0, 14>
+  * @selectable: pin is selectable in automatic mode
+  * @esync_control: embedded sync is controllable
++ * @phase_gran: phase adjustment granularity
+  * @pin_state: last saved pin state
+  * @phase_offset: last saved pin phase offset
+  * @freq_offset: last saved fractional frequency offset
+@@ -49,6 +50,7 @@ struct zl3073x_dpll_pin {
+ 	u8			prio;
+ 	bool			selectable;
+ 	bool			esync_control;
++	s32			phase_gran;
+ 	enum dpll_pin_state	pin_state;
+ 	s64			phase_offset;
+ 	s64			freq_offset;
+@@ -1388,25 +1390,14 @@ zl3073x_dpll_output_pin_phase_adjust_get(const struct dpll_pin *dpll_pin,
+ 	struct zl3073x_dpll *zldpll = dpll_priv;
+ 	struct zl3073x_dev *zldev = zldpll->dev;
+ 	struct zl3073x_dpll_pin *pin = pin_priv;
+-	u32 synth_freq;
+ 	s32 phase_comp;
+-	u8 out, synth;
++	u8 out;
+ 	int rc;
  
--	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
--				       NULL,
--				       divider->width,
--				       CLK_DIVIDER_ROUND_CLOSEST);
+-	out = zl3073x_output_pin_out_get(pin->id);
+-	synth = zl3073x_out_synth_get(zldev, out);
+-	synth_freq = zl3073x_synth_freq_get(zldev, synth);
 -
--	return 0;
-+	return divider_determine_rate(hw, req, NULL, divider->width,
-+				      CLK_DIVIDER_ROUND_CLOSEST);
- }
+-	/* Check synth freq for zero */
+-	if (!synth_freq) {
+-		dev_err(zldev->dev, "Got zero synth frequency for output %u\n",
+-			out);
+-		return -EINVAL;
+-	}
+-
+ 	guard(mutex)(&zldev->multiop_lock);
  
- static int div_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	/* Read output configuration */
++	out = zl3073x_output_pin_out_get(pin->id);
+ 	rc = zl3073x_mb_op(zldev, ZL_REG_OUTPUT_MB_SEM, ZL_OUTPUT_MB_SEM_RD,
+ 			   ZL_REG_OUTPUT_MB_MASK, BIT(out));
+ 	if (rc)
+@@ -1417,11 +1408,10 @@ zl3073x_dpll_output_pin_phase_adjust_get(const struct dpll_pin *dpll_pin,
+ 	if (rc)
+ 		return rc;
+ 
+-	/* Value in register is expressed in half synth clock cycles */
+-	phase_comp *= (int)div_u64(PSEC_PER_SEC, 2 * synth_freq);
+-
+-	/* Reverse two's complement negation applied during 'set' */
+-	*phase_adjust = -phase_comp;
++	/* Convert value to ps and reverse two's complement negation applied
++	 * during 'set'
++	 */
++	*phase_adjust = -phase_comp * pin->phase_gran;
+ 
+ 	return rc;
+ }
+@@ -1437,39 +1427,18 @@ zl3073x_dpll_output_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
+ 	struct zl3073x_dpll *zldpll = dpll_priv;
+ 	struct zl3073x_dev *zldev = zldpll->dev;
+ 	struct zl3073x_dpll_pin *pin = pin_priv;
+-	int half_synth_cycle;
+-	u32 synth_freq;
+-	u8 out, synth;
++	u8 out;
+ 	int rc;
+ 
+-	/* Get attached synth */
+-	out = zl3073x_output_pin_out_get(pin->id);
+-	synth = zl3073x_out_synth_get(zldev, out);
+-
+-	/* Get synth's frequency */
+-	synth_freq = zl3073x_synth_freq_get(zldev, synth);
+-
+-	/* Value in register is expressed in half synth clock cycles so
+-	 * the given phase adjustment a multiple of half synth clock.
+-	 */
+-	half_synth_cycle = (int)div_u64(PSEC_PER_SEC, 2 * synth_freq);
+-
+-	if ((phase_adjust % half_synth_cycle) != 0) {
+-		NL_SET_ERR_MSG_FMT(extack,
+-				   "Phase adjustment value has to be multiple of %d",
+-				   half_synth_cycle);
+-		return -EINVAL;
+-	}
+-	phase_adjust /= half_synth_cycle;
+-
+ 	/* The value in the register is stored as two's complement negation
+-	 * of requested value.
++	 * of requested value and expressed in half synth clock cycles.
+ 	 */
+-	phase_adjust = -phase_adjust;
++	phase_adjust = -phase_adjust / pin->phase_gran;
+ 
+ 	guard(mutex)(&zldev->multiop_lock);
+ 
+ 	/* Read output configuration */
++	out = zl3073x_output_pin_out_get(pin->id);
+ 	rc = zl3073x_mb_op(zldev, ZL_REG_OUTPUT_MB_SEM, ZL_OUTPUT_MB_SEM_RD,
+ 			   ZL_REG_OUTPUT_MB_MASK, BIT(out));
+ 	if (rc)
+@@ -1758,9 +1727,10 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
+ 	if (IS_ERR(props))
+ 		return PTR_ERR(props);
+ 
+-	/* Save package label & esync capability */
++	/* Save package label, esync capability and phase adjust granularity */
+ 	strscpy(pin->label, props->package_label);
+ 	pin->esync_control = props->esync_control;
++	pin->phase_gran = props->dpll_props.phase_gran;
+ 
+ 	if (zl3073x_dpll_is_input_pin(pin)) {
+ 		rc = zl3073x_dpll_ref_prio_get(pin, &pin->prio);
+diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
+index 4cf7e8aefcb37..9e1fca5cdaf1e 100644
+--- a/drivers/dpll/zl3073x/prop.c
++++ b/drivers/dpll/zl3073x/prop.c
+@@ -208,7 +208,18 @@ struct zl3073x_pin_props *zl3073x_pin_props_get(struct zl3073x_dev *zldev,
+ 			DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE |
+ 			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
+ 	} else {
++		u8 out, synth;
++		u32 f;
++
+ 		props->dpll_props.type = DPLL_PIN_TYPE_GNSS;
++
++		/* The output pin phase adjustment granularity equals half of
++		 * the synth frequency count.
++		 */
++		out = zl3073x_output_pin_out_get(index);
++		synth = zl3073x_out_synth_get(zldev, out);
++		f = 2 * zl3073x_synth_freq_get(zldev, synth);
++		props->dpll_props.phase_gran = f ? div_u64(PSEC_PER_SEC, f) : 1;
+ 	}
+ 
+ 	props->dpll_props.phase_range.min = S32_MIN;
 -- 
 2.51.0
 
