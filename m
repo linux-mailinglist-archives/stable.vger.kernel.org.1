@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CImqMjGfnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:21 +0100
+	id +A94DJNWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D807192E9E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5992919034C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CFC6031170F2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 76FCA30AAC89
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9846D30F92E;
-	Wed, 25 Feb 2026 06:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456EB26561A;
+	Wed, 25 Feb 2026 01:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH+wZgR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQjXyYKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2734C81;
-	Wed, 25 Feb 2026 06:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EC11E2834;
+	Wed, 25 Feb 2026 01:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002722; cv=none; b=Jw9zhhBHKbtNAkN3hS1jjpLEitoPCxtLGxknHClQhCJfG9LcMSjo8MobVqIYxw69zfNMxWpECoypklSwp7KKWfGATbm+PmGbuK8E+KsYWodtZa7tW2PWDU1RDrAgfcqQqKGd3BFixMtCbfMmbIwSZF+avn3wWvS9J8YD+QfHNYc=
+	t=1771983707; cv=none; b=rh1dTFPeyztHNj8SdhvGEojBoRhuY8b4u05ZKgtOLG3S4XS8lXSX+9U7qPuiZwTpHfAyBnQci5cxJL8OnLNPMtUL/w+Egf03GO9o7bWO/R5LBC70CnRR7Unzb/+z4+w7oa3bByBIsj3hCn1A9JbOAYnYcWVxAabrozfbyIL1lo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002722; c=relaxed/simple;
-	bh=ISg45eiW4OKdxCjWR1ITL085KueXdBYO6EAM0OHTO4g=;
+	s=arc-20240116; t=1771983707; c=relaxed/simple;
+	bh=H3Es8cx2qoR/XkfVBxMpMqIMsTKZYtUI7ty9DLj5dSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aU1Og65NTfFeX3VK1KmkTu7RZz+39fBNJbLzh2zSpkWMqYieQZKFMK2HV0oPed0d+SKLPw624rCQ1CFn0Gs6RKzy4lnJPN6tTPYZERHmMQnBAsUAGKQRvboNySEK5FV+4X0yF4wK3hbafOX1pfsPdXKAsr9rDHHvv8t4ocNt0Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH+wZgR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3650AC116D0;
-	Wed, 25 Feb 2026 06:58:42 +0000 (UTC)
+	 MIME-Version; b=sr4qYjWQWjePFy1H/s1GX2L1tD+yBf75wMmCjvZf5P2zdDswhVQSxfJMv52nRsXBadRk4PoNcYHM15XK1sen8rwaL5ZhhQkwxHM6+cYXkcW0y2DtnOMgVkJ/VN/9Bw8Cwwa00OPlUTVhxkUUgwkBPnuEI2d20R5i68Hwn0BTGmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQjXyYKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F2BC116D0;
+	Wed, 25 Feb 2026 01:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002722;
-	bh=ISg45eiW4OKdxCjWR1ITL085KueXdBYO6EAM0OHTO4g=;
+	s=korg; t=1771983706;
+	bh=H3Es8cx2qoR/XkfVBxMpMqIMsTKZYtUI7ty9DLj5dSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qH+wZgR/kL3f1gMnABJN4sWm4XHgeAFUfY1FKJL79+p12s5bRF3RpMfItZrnMKqTT
-	 yxKCZQE9u5O/n0DfURiFn04KBK7vCLVNett9BKc+Oxie76vcMVgt/O4lYdOf6KPCSi
-	 9YQWyNfBNRRm2Y6zXSpz67b5f7nYRPK3RGZFSGT0=
+	b=FQjXyYKbSGjrzOJH1n2Ts9Zvchm+IDu8rjp+iC+s7e1MAWMaiDfQMLbziWgL7MlWG
+	 Y8j0kWUI1atA7OIxldRWzmOBOmsW/SulT/UsI/qpArJpCdLY2LWxHSpiju+Ghzn/dC
+	 JmQiF+4W/ZSLsKN/3vzjpVx36+xzGuJTeM6TuoWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 532/641] eth: fbnic: increase FBNIC_HDR_BYTES_MIN from 128 to 256 bytes
-Date: Tue, 24 Feb 2026 17:24:18 -0800
-Message-ID: <20260225012401.418203342@linuxfoundation.org>
+Subject: [PATCH 6.19 750/781] PCI: dwc: ep: Always clear IB maps on BAR update
+Date: Tue, 24 Feb 2026 17:24:19 -0800
+Message-ID: <20260225012418.116379904@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +66,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219448-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,meta.com,gmail.com,redhat.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218826-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.967];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,meta.com:email]
-X-Rspamd-Queue-Id: 7D807192E9E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,valinux.co.jp:email]
+X-Rspamd-Queue-Id: 5992919034C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-[ Upstream commit bd254115f38db3c046332bb62e8719e0dc7c2b53 ]
+[ Upstream commit 8c746e22096579897d1f8f74dbb6b17a6862fb6d ]
 
-Increase FBNIC_HDR_BYTES_MIN from 128 to 256 bytes. The previous minimum
-was too small to guarantee that very long L2+L3+L4 headers always fit
-within the header buffer. When EN_HDR_SPLIT is disabled and a packet
-exceeds MAX_HEADER_BYTES, splitting occurs at that byte offset instead
-of the header boundary, resulting in some of the header landing in the
-payload page. The increased minimum ensures headers always fit with the
-MAX_HEADER_BYTES cut off and land in the header page.
+dw_pcie_ep_set_bar() currently tears down existing inbound mappings only
+when either the previous or the new struct pci_epf_bar uses submaps
+(num_submap != 0). If both the old and new mappings are BAR Match Mode,
+reprogramming the same ATU index is sufficient, so no explicit teardown
+was needed.
 
-Fixes: 2b30fc01a6c7 ("eth: fbnic: Add support for HDS configuration")
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Acked-by: Mohsin Bashir <mohsin.bashr@gmail.com>
-Link: https://patch.msgid.link/20260211-fbnic-tcp-hds-fixes-v1-2-55d050e6f606@meta.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+However, some callers may reuse the same struct pci_epf_bar instance and
+update it in place before calling set_bar() again. In that case
+ep_func->epf_bar[bar] and the passed-in epf_bar can point to the same
+object, so we cannot reliably distinguish BAR Match Mode -> BAR Match Mode
+from Address Match Mode -> BAR Match Mode. As a result, the conditional
+teardown based on num_submap becomes unreliable and existing inbound maps
+may be left active.
+
+Call dw_pcie_ep_clear_ib_maps() unconditionally before reprogramming the
+BAR so that in-place updates are handled correctly.
+
+This introduces a behavioral change in a corner case: if a BAR
+reprogramming attempt fails (especially for the long-standing BAR Match
+Mode -> BAR Match Mode update case), the previously programmed inbound
+mapping will already have been torn down. This should be acceptable, since
+the caller observes the error and should not use the BAR for any real
+transactions in that case.
+
+While at it, document that the existing update parameter check is
+best-effort for in-place updates.
+
+Fixes: cc839bef7727 ("PCI: dwc: ep: Support BAR subrange inbound mapping via Address Match Mode iATU")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Link: https://patch.msgid.link/20260202145407.503348-3-den@valinux.co.jp
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
-index 27776e844e29b..51a98f27d5d91 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
-@@ -66,7 +66,7 @@ struct fbnic_net;
- 	(4096 - FBNIC_RX_HROOM - FBNIC_RX_TROOM - FBNIC_RX_PAD)
- #define FBNIC_HDS_THRESH_DEFAULT \
- 	(1536 - FBNIC_RX_PAD)
--#define FBNIC_HDR_BYTES_MIN		128
-+#define FBNIC_HDR_BYTES_MIN		256
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 6d3c35dd280f3..59fd6ebf01489 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -518,6 +518,12 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 		/*
+ 		 * We can only dynamically change a BAR if the new BAR size and
+ 		 * BAR flags do not differ from the existing configuration.
++		 *
++		 * Note: this safety check only works when the caller uses
++		 * a new struct pci_epf_bar in the second set_bar() call.
++		 * If the same instance is updated in place and passed in,
++		 * we cannot reliably detect invalid barno/size/flags
++		 * changes here.
+ 		 */
+ 		if (ep_func->epf_bar[bar]->barno != bar ||
+ 		    ep_func->epf_bar[bar]->size != size ||
+@@ -526,10 +532,12 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
  
- struct fbnic_pkt_buff {
- 	struct xdp_buff buff;
+ 		/*
+ 		 * When dynamically changing a BAR, tear down any existing
+-		 * mappings before re-programming.
++		 * mappings before re-programming. This is redundant when
++		 * both the old and new mappings are BAR Match Mode, but
++		 * required to handle in-place updates and match-mode
++		 * changes reliably.
+ 		 */
+-		if (ep_func->epf_bar[bar]->num_submap || epf_bar->num_submap)
+-			dw_pcie_ep_clear_ib_maps(ep, func_no, bar);
++		dw_pcie_ep_clear_ib_maps(ep, func_no, bar);
+ 
+ 		/*
+ 		 * When dynamically changing a BAR, skip writing the BAR reg, as
 -- 
 2.51.0
 
