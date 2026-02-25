@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-219403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDSWIaGenmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:57 +0100
+	id QCc4LsydnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29458192D0E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A55192AC1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E04AA30F0F99
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 087AE30234DE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1E3311946;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E976A308F1A;
 	Wed, 25 Feb 2026 06:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xuHVTezu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZT4/Z/F6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C013081D7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4453081D7;
 	Wed, 25 Feb 2026 06:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002693; cv=none; b=rqjjytTMNSYaeL4epi2YSGmbh3p3SkQpgN7zH062u00B1Z5v5wziJxn7/IpIq/R/9kyRBrFftQM9odwlUA1JptkAG9aMUEmrsVVtiLwarKFsswBvHqHmNf1GEgSfBuu3iKG++r+D98XxTcGVabmn2IeaQVeTreADqFpYbHOTGmk=
+	t=1772002693; cv=none; b=eo3wkqo+BOX1XTOirtx3sLSGaDUs3uPgGTGgaxdn5nzabGQJEPnlCVBR7H2G9I4Y516qkPFnixWXzVBrRHx1EAR4g8mGcp0G7ZAUU/pAVERvorZt7V5CITzUUuLPg73m3uGE9CnuE4KbHHaLd96xv9c65GmlbZ1cn1oX76ePNB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772002693; c=relaxed/simple;
-	bh=qECuJFnGuNTKRxpqdj9FxUcfhcNsgIsm+Sdx9VJQqlI=;
+	bh=j2xwMmpoxMlzyR54aQX/0bT1RG46u4o+s0ioCK8oRtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uq+jkYzYBGTPyLdtCGmdumyZZo2OI1CSlw9Kj7EyHf3+5DyFOtqfa02bxGTeRkHVXL1A3LZ1V9xeLJDT6gT+p1f2lHkh9xK79y/sCq0IuGI+zDOPzA5RL49nPQOUzzyktipquz9ni7fPglyQnw9pT3yBXTOtfeVJroolh55d4yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xuHVTezu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFE2C19425;
-	Wed, 25 Feb 2026 06:58:12 +0000 (UTC)
+	 MIME-Version; b=lnQoovSBZLkK0UXbrUsPWomtLi3GZ2e8qy41hXGM20YbkUPxAeoxcF0do+S98E0lJe2AS4ZMtnUjTtVynhHrt/QvfMmceGg6lPOIwGs+9hdA5gz85TqplLVgUsWLpKUQqyGh3PVbkiPNK05uDmbgpkJDo1Uii/lIC+AH6R+7Zi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZT4/Z/F6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B10C4AF09;
+	Wed, 25 Feb 2026 06:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1772002693;
-	bh=qECuJFnGuNTKRxpqdj9FxUcfhcNsgIsm+Sdx9VJQqlI=;
+	bh=j2xwMmpoxMlzyR54aQX/0bT1RG46u4o+s0ioCK8oRtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xuHVTezuC32AyJ/kL5bTbaczbweLAQUkKUzorMuFtE8LBV4ACAfZ9PMl07youh2Xt
-	 YBF3ak1F/2GLXzCnFxgYMcMHnZ6CzzKBqPkIczRKHPYouXFy9X7OPSmsFK4CWk4Hqv
-	 MNTsjGVEbUZT2bhAfJNcyAIuQ9do98ODGaLhLViE=
+	b=ZT4/Z/F6Obz01aFqjbhr3ZI1qQvaVW3kvDLD3xi36JlxWYWh48VMu/aZhzw8bjQrn
+	 NwOisJLa+Fa6qcrbC1xjsltwtqTP0U7kFqdpvuFZPYpSisotvVfh4HUXZVXo4b5ZCC
+	 ar1NuiG42tAce/JalScTcdZC6LsWlh2p54rIRyDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 487/641] pidfs: return -EREMOTE when PIDFD_GET_INFO is called on another ns
-Date: Tue, 24 Feb 2026 17:23:33 -0800
-Message-ID: <20260225012400.318315877@linuxfoundation.org>
+Subject: [PATCH 6.18 488/641] pinctrl: qcom: sm8250-lpass-lpi: Fix i2s2_data_groups definition
+Date: Tue, 24 Feb 2026 17:23:34 -0800
+Message-ID: <20260225012400.342050056@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -65,81 +67,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219403-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219404-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.978];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,sourceware.org:url]
-X-Rspamd-Queue-Id: 29458192D0E
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 89A55192AC1
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Boccassi <luca.boccassi@gmail.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit ab89060fbc92edd6e852bf0f533f29140afabe0e ]
+[ Upstream commit eabf273c8466af3f033473c2d2267a6ea7946d57 ]
 
-Currently it is not possible to distinguish between the case where a
-process has already exited and the case where a process is in a
-different namespace, as both return -ESRCH.
-glibc's pidfd_getpid() procfs-based implementation returns -EREMOTE
-in the latter, so that distinguishing the two is possible, as the
-fdinfo in procfs will list '0' as the PID in that case:
+The i2s2_data function is available on both gpio12 and gpio13. Fix the
+groups definition.
 
-https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/pidfd_getpid.c;h=860829cf07da2267484299ccb02861822c0d07b4;hb=HEAD#l121
-
-Change the error code so that the kernel also returns -EREMOTE in
-that case.
-
-Fixes: 7477d7dce48a ("pidfs: allow to retrieve exit information")
-
-Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
-Link: https://patch.msgid.link/20260127225209.2293342-1-luca.boccassi@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pidfs.c | 2 +-
+ drivers/pinctrl/qcom/pinctrl-sm8250-lpass-lpi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/pidfs.c b/fs/pidfs.c
-index f4d7dac1b4494..34987fcdd9a87 100644
---- a/fs/pidfs.c
-+++ b/fs/pidfs.c
-@@ -321,7 +321,7 @@ static long pidfd_info(struct file *file, unsigned int cmd, unsigned long arg)
- 	 * namespace hierarchy.
- 	 */
- 	if (!pid_in_current_pidns(pid))
--		return -ESRCH;
-+		return -EREMOTE;
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm8250-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sm8250-lpass-lpi.c
+index 64494a86490e2..c27452eece3e6 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sm8250-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-sm8250-lpass-lpi.c
+@@ -73,7 +73,7 @@ static const char * const i2s1_ws_groups[] = { "gpio7" };
+ static const char * const i2s1_data_groups[] = { "gpio8", "gpio9" };
+ static const char * const wsa_swr_clk_groups[] = { "gpio10" };
+ static const char * const wsa_swr_data_groups[] = { "gpio11" };
+-static const char * const i2s2_data_groups[] = { "gpio12", "gpio12" };
++static const char * const i2s2_data_groups[] = { "gpio12", "gpio13" };
  
- 	attr = READ_ONCE(pid->attr);
- 	if (mask & PIDFD_INFO_EXIT) {
+ static const struct lpi_pingroup sm8250_groups[] = {
+ 	LPI_PINGROUP(0, 0, swr_tx_clk, qua_mi2s_sclk, _, _),
 -- 
 2.51.0
 
