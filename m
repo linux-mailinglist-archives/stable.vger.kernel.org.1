@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218414-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICISGhNXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218980-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:39 +0100
+	id +B1jHe9Snmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218414-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F04190478
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2C618F5FA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E24231B83C0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4F428314E823
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EFB284884;
-	Wed, 25 Feb 2026 01:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CA218DB2A;
+	Wed, 25 Feb 2026 01:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWuo4Zk4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqFMEsW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D0528507E;
-	Wed, 25 Feb 2026 01:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994651E2834;
+	Wed, 25 Feb 2026 01:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983884; cv=none; b=cEcuTqZDAyff/FdRjr37TF9p+78Gi/0ll/axgmxBWitGQlcxLmzvSqp3EZ9gFSdr1XPQWnpO8RZkRgesloKaNBbxjeVuniMr7fldtPocM7DaVgGJo87eH5R6fxuNbVamAP+xXQIo7hSP2OtgrihADPR4goO8hqJrXDlF2fqA/P0=
+	t=1771983232; cv=none; b=WaxU2q3Uf+2JhjGoBFBcCpbduIJGHFgpAwgM2CPobfLJ3NsBGrsSKRmRKaGAZOJlTxc0VUIvY5eixQHiBXhLRhaev1smkDskcQPfnIsxY8nhhK2GKGb3aJ2yyzFroipk+HBa4dcSIS4vsgCpxX2uHue3ZmESDKv/oJxdmBqxPzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983884; c=relaxed/simple;
-	bh=qp7dleylViQ1L7WHZHUGe6LA+zA+Xsvcd5fPHV552qU=;
+	s=arc-20240116; t=1771983232; c=relaxed/simple;
+	bh=ZxP2QO5hCmV35+EEFtiVc1vE2fhkalj6Kk+bCzHoOUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lS91aK4e6Mxs1Lijw/koY29WV3j6OXrtuL/1KyXh5rzIezVBA0V9M5VexZmVmIYM91NlE6FBMt4HKGh4zZiWgynMZvUKjzWBb3zuefxTIsFjYGxLNlSB52l4v8Q1pqaphA8dKqrBzms2AsAuh7OG7SIvXGC2RIw0Tj/9X5AnSKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWuo4Zk4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0D2C116D0;
-	Wed, 25 Feb 2026 01:44:44 +0000 (UTC)
+	 MIME-Version; b=fo34LWADiGIEyF0X3O97FqnoZl863FClx8AkZKjmDiWw5NTm0YbtF9jKq+1+jDk8X6UUlgHonx+mV/tapXkq/NitVvqNBpfuZPFzkaYAwA0YBobVbVI9X/8nS+SLDYjh9K7IvULuGYc3t6KKOvH06uXQ5CGCypVZHbb2VouFgX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqFMEsW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64664C116D0;
+	Wed, 25 Feb 2026 01:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983884;
-	bh=qp7dleylViQ1L7WHZHUGe6LA+zA+Xsvcd5fPHV552qU=;
+	s=korg; t=1771983232;
+	bh=ZxP2QO5hCmV35+EEFtiVc1vE2fhkalj6Kk+bCzHoOUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EWuo4Zk4/fVBg5acdZ+/X9WHZgqQo18L4/W3cKQrYhxqe6eIroh/Qm8lwAnyuNeYw
-	 Q1TF26nnz+meLMIrrqhV4xqEgUCKrfoaDQ9DvJBE2d85IOOpy8SNAtH2Vq5KRlF04a
-	 RFeb6gEe9aeMTAPG2eTMsFdKC6s1eSyybHK+xcEc=
+	b=DqFMEsW9YiwFRamgGvtwSexoeZDol5mhJtInEEidK0zVzurtGPunFIiyi/doPkob3
+	 NuTyS+ngSi0vT3BhQVlaXno3RxEXcg1ROlM3gft4S0WOEjFIXPkkgvRjjnR87kJHcm
+	 SEkkpbucqnPAmb85GMMuB/AtVuR22DtwZH8HrCDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 158/641] arm64: dts: amlogic: g12: assign the MMC B and C signal clocks
+Subject: [PATCH 6.19 375/781] wifi: ath11k: add usecase firmware handling based on device compatible
 Date: Tue, 24 Feb 2026 17:18:04 -0800
-Message-ID: <20260225012352.906149465@linuxfoundation.org>
+Message-ID: <20260225012408.890009151@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,80 +71,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218414-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218980-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,baylibre.com:email,ffe05000:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ffe07000:email]
-X-Rspamd-Queue-Id: B9F04190478
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 0F2C618F5FA
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
 
-[ Upstream commit be2ff5fdb0e83e32d4ec4e68a69875cec0d14621 ]
+[ Upstream commit c386a2b1068910538e87ef1cf2fc938ebf7e218f ]
 
-The amlogic MMC driver operate with the assumption that MMC clock
-is configured to provide 24MHz. It uses this path for low
-rates such as 400kHz.
+For M.2 WLAN chips, there is no suitable DTS node to specify the
+firmware-name property. In addition, assigning firmware for the
+M.2 PCIe interface causes chips that do not use usecase specific
+firmware to fail. Therefore, abandoning the approach of specifying
+firmware in DTS. As an alternative, propose a static lookup table
+mapping device compatible to firmware names. Currently, only WCN6855
+HW2.1 requires this.
 
-Assign the clocks to make sure they are properly configured
+However, support for the firmware-name property is retained to keep
+the ABI backwards compatible.
 
-Fixes: 4759fd87b928 ("arm64: dts: meson: g12a: add mmc nodes")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260114-amlogic-mmc-clocks-followup-v1-5-a999fafbe0aa@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+For details on usecase specific firmware, see:
+https://lore.kernel.org/all/20250522013444.1301330-3-miaoqing.pan@oss.qualcomm.com/.
+
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04685-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+
+Fixes: edbbc647c4f3 ("wifi: ath11k: support usercase-specific firmware overrides")
+Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260121095055.3683957-2-miaoqing.pan@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/ath/ath11k/core.c | 27 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/core.h |  4 ++++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi b/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
-index dcc927a9da802..6724405eaa6f5 100644
---- a/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
-@@ -2443,6 +2443,9 @@ sd_emmc_b: mmc@ffe05000 {
- 				 <&clkc CLKID_FCLK_DIV2>;
- 			clock-names = "core", "clkin0", "clkin1";
- 			resets = <&reset RESET_SD_EMMC_B>;
-+
-+			assigned-clocks = <&clkc CLKID_SD_EMMC_B_CLK0>;
-+			assigned-clock-rates = <24000000>;
- 		};
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 812686173ac8a..06b4df2370e95 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -997,6 +997,33 @@ static const struct dmi_system_id ath11k_pm_quirk_table[] = {
+ 	{}
+ };
  
- 		sd_emmc_c: mmc@ffe07000 {
-@@ -2455,6 +2458,9 @@ sd_emmc_c: mmc@ffe07000 {
- 				 <&clkc CLKID_FCLK_DIV2>;
- 			clock-names = "core", "clkin0", "clkin1";
- 			resets = <&reset RESET_SD_EMMC_C>;
++static const struct __ath11k_core_usecase_firmware_table {
++	u32 hw_rev;
++	const char *compatible;
++	const char *firmware_name;
++} ath11k_core_usecase_firmware_table[] = {
++	{ ATH11K_HW_WCN6855_HW21, "qcom,lemans-evk", "nfa765"},
++	{ ATH11K_HW_WCN6855_HW21, "qcom,monaco-evk", "nfa765"},
++	{ ATH11K_HW_WCN6855_HW21, "qcom,hamoa-iot-evk", "nfa765"},
++	{ /* Sentinel */ }
++};
 +
-+			assigned-clocks = <&clkc CLKID_SD_EMMC_C_CLK0>;
-+			assigned-clock-rates = <24000000>;
- 		};
++const char *ath11k_core_get_usecase_firmware(struct ath11k_base *ab)
++{
++	const struct __ath11k_core_usecase_firmware_table *entry = NULL;
++
++	entry = ath11k_core_usecase_firmware_table;
++	while (entry->compatible) {
++		if (ab->hw_rev == entry->hw_rev &&
++		    of_machine_is_compatible(entry->compatible))
++			return entry->firmware_name;
++		entry++;
++	}
++
++	return NULL;
++}
++EXPORT_SYMBOL(ath11k_core_get_usecase_firmware);
++
+ void ath11k_fw_stats_pdevs_free(struct list_head *head)
+ {
+ 	struct ath11k_fw_stats_pdev *i, *tmp;
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index e8780b05ce11e..834988dad591c 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -1275,6 +1275,7 @@ bool ath11k_core_coldboot_cal_support(struct ath11k_base *ab);
  
- 		usb: usb@ffe09000 {
+ const struct firmware *ath11k_core_firmware_request(struct ath11k_base *ab,
+ 						    const char *filename);
++const char *ath11k_core_get_usecase_firmware(struct ath11k_base *ab);
+ 
+ static inline const char *ath11k_scan_state_str(enum ath11k_scan_state state)
+ {
+@@ -1329,6 +1330,9 @@ static inline void ath11k_core_create_firmware_path(struct ath11k_base *ab,
+ 
+ 	of_property_read_string(ab->dev->of_node, "firmware-name", &fw_name);
+ 
++	if (!fw_name)
++		fw_name = ath11k_core_get_usecase_firmware(ab);
++
+ 	if (fw_name && strncmp(filename, "board", 5))
+ 		snprintf(buf, buf_len, "%s/%s/%s/%s", ATH11K_FW_DIR,
+ 			 ab->hw_params.fw.dir, fw_name, filename);
 -- 
 2.51.0
 
