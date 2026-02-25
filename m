@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218991-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIMSA/tSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:11 +0100
+	id mLIaIl9VnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218991-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BF218F631
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AE218FFB7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D37F431CF382
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3F94C30BDEC9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4315F20C012;
-	Wed, 25 Feb 2026 01:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989BA2BE031;
+	Wed, 25 Feb 2026 01:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQN1KpND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgiMGTwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AAF18DB2A;
-	Wed, 25 Feb 2026 01:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8091FC7;
+	Wed, 25 Feb 2026 01:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983245; cv=none; b=ZMMvEc4oEMqN7OmTD0RZgbBBbs7tUuxjhWdU1zi8V5Y+cixj3F8+HWUgcOV2uzpdMLf7yRGo6rx03oI4S0kCn29TW3D+OLZuK48cK1FmP9euCvKYo7d5cS4Fx4YrQ2hkpNV09wqNZAmf450z1tyGcA3MR5axmz60ELZCc6AMoe0=
+	t=1771983897; cv=none; b=VjVw33jdfpd7dKvHQ0q/oR6oE9QA5vku9VHrRXNkVd+LY1hrPN3W3scZnRcltih8RS7yJcc1mFhWJV7P9XY8gOmxRtk6JrQFWIx+NudqyKAGk9T9Z2cDVw+uOptOLCWS25Fl3tOxAvAqXhu4HR6vYf0UciknuLfmUQUPhLUQG5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983245; c=relaxed/simple;
-	bh=F04mM+yveI+io+D/sUZCpIPLjHl/y7gIp58pDJ7aQPY=;
+	s=arc-20240116; t=1771983897; c=relaxed/simple;
+	bh=pW+rBh22cxtrNjhT+jOpJvLMKmXRniaRs8UcTzTUXSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDO+fTnQ1CoAASkZKqBTwdri8nB3G53C7/WYqEf3EaGT73DK7Q9eZE1SepuUSg1tyD79Pi3kM8rrpwbfq3gL8qEGeOmIOy4M0V3CNey8CcXXJFAuzkn23i9EZfr+4mIQeJrMI4aOMC8xOuu+stGFzyQGgBCRBlPgZ+F4dw3vnZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQN1KpND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A31C116D0;
-	Wed, 25 Feb 2026 01:34:04 +0000 (UTC)
+	 MIME-Version; b=m/KfTGNTZb1Nt3zxisIqJlRIYjCaUVsQ05na7HWUsqZsvhj9anN+euClUsuUyi3+YEEbdajKTWsJWpWZE+smoEkJ4bUyBOCZ7LP0Q/jZ9X5sGAW38BBAUvWqV8wk+TmAEONXnY6oDa+1GYVkMLgnOuFtOYSPYhkxM8QexnNs0yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgiMGTwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE98C116D0;
+	Wed, 25 Feb 2026 01:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983244;
-	bh=F04mM+yveI+io+D/sUZCpIPLjHl/y7gIp58pDJ7aQPY=;
+	s=korg; t=1771983897;
+	bh=pW+rBh22cxtrNjhT+jOpJvLMKmXRniaRs8UcTzTUXSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQN1KpNDGQfYYOg97TOArFuKfuGkXSN+l+FOKEQQTzvnATx7P/T3o3zmyRePiOlKe
-	 +uGGoJk/W7GXfHfQ+wTEGPQyujXc041Ydrt3vDOLv5JQKnyeU4+FpV2XcNDthhIzgI
-	 hpVIu4+11gCKhDL1xjFZw2dr6GD4q31un7UKFlR8=
+	b=MgiMGTwA6VWJwoKJHgHsZ7vOos6n3THsYp8Fnvd3X2om+Rblxa2xonHGT/11TmCE/
+	 /YFvLMqq7oof8yWtg/FVSkJ3sGe3WZuixiuDmK1tRB1i4Pl8pua+JUAPRx6X0i/j7S
+	 rwTSIRdEzomKVbF6brpT6qodQpadZzSOAkvYMrkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Steven Price <steven.price@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 385/781] jfs: avoid -Wtautological-constant-out-of-range-compare warning
+Subject: [PATCH 6.18 168/641] drm/panthor: Recover from panthor_gpu_flush_caches() failures
 Date: Tue, 24 Feb 2026 17:18:14 -0800
-Message-ID: <20260225012409.138952079@linuxfoundation.org>
+Message-ID: <20260225012353.124588214@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,74 +79,126 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218425-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218991-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,arndb.de:email]
-X-Rspamd-Queue-Id: 93BF218F631
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email]
+X-Rspamd-Queue-Id: 55AE218FFB7
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit 7833570dae833028337bb53b7f389825b910c100 ]
+[ Upstream commit 3c0a60195b37af83bbbaf223cd3a78945bace49e ]
 
-A recent change for the range check started triggering a clang warning:
+We have seen a few cases where the whole memory subsystem is blocked
+and flush operations never complete. When that happens, we want to:
 
-fs/jfs/jfs_dtree.c:2906:31: error: result of comparison of constant 128 with expression of type 's8' (aka 'signed char') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
- 2906 |                         if (stbl[i] < 0 || stbl[i] >= DTPAGEMAXSLOT) {
-      |                                            ~~~~~~~ ^  ~~~~~~~~~~~~~
-fs/jfs/jfs_dtree.c:3111:30: error: result of comparison of constant 128 with expression of type 's8' (aka 'signed char') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
- 3111 |                 if (stbl[0] < 0 || stbl[0] >= DTPAGEMAXSLOT) {
-      |                                    ~~~~~~~ ^  ~~~~~~~~~~~~~
+- schedule a reset, so we can recover from this situation
+- in the reset path, we need to reset the pending_reqs so we can send
+  new commands after the reset
+- if more panthor_gpu_flush_caches() operations are queued after
+  the timeout, we skip them and return -EIO directly to avoid needless
+  waits (the memory block won't miraculously work again)
 
-Both the old and the new check were useless, but the previous version
-apparently did not lead to the warning.
+Note that we drop the WARN_ON()s because these hangs can be triggered
+with buggy GPU jobs created by the UMD, and there's no way we can
+prevent it. We do keep the error messages though.
 
-Remove the extraneous range check for simplicity.
+v2:
+- New patch
 
-Fixes: cafc6679824a ("jfs: replace hardcoded magic number with DTPAGEMAXSLOT constant")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+v3:
+- Collect R-b
+- Explicitly mention the fact we dropped the WARN_ON()s in the commit
+  message
+
+v4:
+- No changes
+
+Fixes: 5cd894e258c4 ("drm/panthor: Add the GPU logical block")
+Reviewed-by: Steven Price <steven.price@arm.com>
+Link: https://patch.msgid.link/20251128084841.3804658-4-boris.brezillon@collabora.com
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dtree.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panthor/panthor_gpu.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 0ab83bb7bbdf9..9ab3f2fc61d17 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -2903,7 +2903,7 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
- 		stbl = DT_GETSTBL(p);
+diff --git a/drivers/gpu/drm/panthor/panthor_gpu.c b/drivers/gpu/drm/panthor/panthor_gpu.c
+index db69449a5be09..b92c9e738dbfa 100644
+--- a/drivers/gpu/drm/panthor/panthor_gpu.c
++++ b/drivers/gpu/drm/panthor/panthor_gpu.c
+@@ -259,38 +259,42 @@ int panthor_gpu_l2_power_on(struct panthor_device *ptdev)
+ int panthor_gpu_flush_caches(struct panthor_device *ptdev,
+ 			     u32 l2, u32 lsc, u32 other)
+ {
+-	bool timedout = false;
+ 	unsigned long flags;
++	int ret = 0;
  
- 		for (i = index; i < p->header.nextindex; i++) {
--			if (stbl[i] < 0 || stbl[i] >= DTPAGEMAXSLOT) {
-+			if (stbl[i] < 0) {
- 				jfs_err("JFS: Invalid stbl[%d] = %d for inode %ld, block = %lld",
- 					i, stbl[i], (long)ip->i_ino, (long long)bn);
- 				free_page(dirent_buf);
-@@ -3108,7 +3108,7 @@ static int dtReadFirst(struct inode *ip, struct btstack * btstack)
- 		/* get the leftmost entry */
- 		stbl = DT_GETSTBL(p);
+ 	/* Serialize cache flush operations. */
+ 	guard(mutex)(&ptdev->gpu->cache_flush_lock);
  
--		if (stbl[0] < 0 || stbl[0] >= DTPAGEMAXSLOT) {
-+		if (stbl[0] < 0) {
- 			DT_PUTPAGE(mp);
- 			jfs_error(ip->i_sb, "stbl[0] out of bound\n");
- 			return -EIO;
+ 	spin_lock_irqsave(&ptdev->gpu->reqs_lock, flags);
+-	if (!drm_WARN_ON(&ptdev->base,
+-			 ptdev->gpu->pending_reqs & GPU_IRQ_CLEAN_CACHES_COMPLETED)) {
++	if (!(ptdev->gpu->pending_reqs & GPU_IRQ_CLEAN_CACHES_COMPLETED)) {
+ 		ptdev->gpu->pending_reqs |= GPU_IRQ_CLEAN_CACHES_COMPLETED;
+ 		gpu_write(ptdev, GPU_CMD, GPU_FLUSH_CACHES(l2, lsc, other));
++	} else {
++		ret = -EIO;
+ 	}
+ 	spin_unlock_irqrestore(&ptdev->gpu->reqs_lock, flags);
+ 
++	if (ret)
++		return ret;
++
+ 	if (!wait_event_timeout(ptdev->gpu->reqs_acked,
+ 				!(ptdev->gpu->pending_reqs & GPU_IRQ_CLEAN_CACHES_COMPLETED),
+ 				msecs_to_jiffies(100))) {
+ 		spin_lock_irqsave(&ptdev->gpu->reqs_lock, flags);
+ 		if ((ptdev->gpu->pending_reqs & GPU_IRQ_CLEAN_CACHES_COMPLETED) != 0 &&
+ 		    !(gpu_read(ptdev, GPU_INT_RAWSTAT) & GPU_IRQ_CLEAN_CACHES_COMPLETED))
+-			timedout = true;
++			ret = -ETIMEDOUT;
+ 		else
+ 			ptdev->gpu->pending_reqs &= ~GPU_IRQ_CLEAN_CACHES_COMPLETED;
+ 		spin_unlock_irqrestore(&ptdev->gpu->reqs_lock, flags);
+ 	}
+ 
+-	if (timedout) {
++	if (ret) {
++		panthor_device_schedule_reset(ptdev);
+ 		drm_err(&ptdev->base, "Flush caches timeout");
+-		return -ETIMEDOUT;
+ 	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ /**
+@@ -330,6 +334,7 @@ int panthor_gpu_soft_reset(struct panthor_device *ptdev)
+ 		return -ETIMEDOUT;
+ 	}
+ 
++	ptdev->gpu->pending_reqs = 0;
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
