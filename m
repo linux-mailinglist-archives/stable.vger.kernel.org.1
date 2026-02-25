@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-219386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHuII+WfnmloWgQAu9opvQ
-	(envelope-from <stable+bounces-219386-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:21 +0100
+	id IMKfBXtYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A25193007
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F29819072E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B00031B7EC1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0D2431C55E6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8433101B0;
-	Wed, 25 Feb 2026 06:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B0226E708;
+	Wed, 25 Feb 2026 01:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUfqnb20"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tAShxItj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35232D4805;
-	Wed, 25 Feb 2026 06:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769981E2834;
+	Wed, 25 Feb 2026 01:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002682; cv=none; b=obHilJNZX3Vssy689T6pe+GHVGlnY6SOGjZFCBq+3xAmq5iscrauywenzi6U8bppqmAbjmYP2SOtkgHZrmNdXcN9ApH2JzywMlg7sCwHj4vex/mliswGyMNuoo8xeNMyinRG1xxIEYZvh5eGIdaBlVKJT3gogXjEGaGQl0CZW3c=
+	t=1771983540; cv=none; b=P37oM81llwnnoZSLkKhfzW5dxubHXCHoxZoArKMafABTJyDRrOdsLushCmzpVoZr25y6gKPToluJpozcb2BSVByY5APkfSzgYhcK0F/MSRS17dvFF8D3dVaRAmSccyUBY9EyZp5rzf1h0SBeVFv6+0n6b9a3+oEqcv/jy9PEz14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002682; c=relaxed/simple;
-	bh=rcYXMfC11fvvIHI1l0OxwE4O/iFWHrRJz9hdbu3mtaU=;
+	s=arc-20240116; t=1771983540; c=relaxed/simple;
+	bh=4ZjMjuAt2qgVJkre0tHFAfJKd7KBI31hdCnFEuSZ1J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=asGEMBRrO/Ftcx6F3xo0zqAeaWO6nbndhhfjV1gMEos3VCQFqnXgOXMg8Rlb8oXIlDKyfZ6DSR+TJHM1D0i6kgZGxgBj5wVt2uycwA6d+EdFRCcly1hRU5yWxJz24NfbsdeSu9sY9iXt6OvlGAEdRM51zibr3eR5++amusrY5tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUfqnb20; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB82BC116D0;
-	Wed, 25 Feb 2026 06:58:01 +0000 (UTC)
+	 MIME-Version; b=C4vVpGqKYUjvsJXcbzAsq6ZkKa4pOfuAAltDSV7lniiHJANYtbTrP1xhZJaXRoYM9U4CIObKIfCyjF2gFPTPpAPOegrORzUEx175wRtrTUJoEGBPhHR/oCqMhxVXs4C094HY19tBww8+8gvcHIJW1z3KeEfdse5cPzmrgVf8S7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAShxItj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41ABCC116D0;
+	Wed, 25 Feb 2026 01:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002681;
-	bh=rcYXMfC11fvvIHI1l0OxwE4O/iFWHrRJz9hdbu3mtaU=;
+	s=korg; t=1771983540;
+	bh=4ZjMjuAt2qgVJkre0tHFAfJKd7KBI31hdCnFEuSZ1J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUfqnb20enNGwNqoNnyZO4Ms5Nob0qbL5a7L0TxocbRtOYhDHo8rieS6R7pETvb/V
-	 PtC1jpOKEA53HF+sYNGsbrkLwHjB88K3umwV9yaYAGStcIPv9HoCkyr6LPnusVuEvg
-	 7cuvC8I7G91SI8qlnFPGz5EJQXYf+AwZm67Kv05A=
+	b=tAShxItj3LFC3I7lqwRK4h5hhYbISv4g8jS+A7Z+O7PNBE76RZRVURlayZh42Fj1G
+	 yXLt7Qietbx5Hnitbew//PheIYgan/pHsSmrEJneHjMP2YWFPxqbop6cwvAZ6FJgzP
+	 y3FQIwhiqAQvTRQX/NzlbL7GLe/tNeoLiyCgMG/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Hodina <petr.hodina@protonmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	David Heidelberg <david@ixit.cz>,
-	Bjorn Andersson <andersson@kernel.org>,
+	syzbot+707d6a5da1ab9e0c6f9d@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 427/641] clk: qcom: dispcc-sdm845: Enable parents for pixel clocks
+Subject: [PATCH 6.19 644/781] ipv6: Fix out-of-bound access in fib6_add_rt2node().
 Date: Tue, 24 Feb 2026 17:22:33 -0800
-Message-ID: <20260225012358.893209602@linuxfoundation.org>
+Message-ID: <20260225012415.595421805@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,82 +68,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,protonmail.com,oss.qualcomm.com,ixit.cz,kernel.org];
-	TAGGED_FROM(0.00)[bounces-219386-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218683-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,707d6a5da1ab9e0c6f9d];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: F0A25193007
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 7F29819072E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Hodina <petr.hodina@protonmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit a1d63493634e98360140027fef49d82b1ff0a267 ]
+[ Upstream commit 8244f959e2c125c849e569f5b23ed49804cce695 ]
 
-Add CLK_OPS_PARENT_ENABLE to MDSS pixel clock sources to ensure parent
-clocks are enabled during clock operations, preventing potential
-stability issues during display configuration.
+syzbot reported out-of-bound read in fib6_add_rt2node(). [0]
 
-Fixes: 81351776c9fb ("clk: qcom: Add display clock controller driver for SDM845")
-Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: David Heidelberg <david@ixit.cz>
-Link: https://lore.kernel.org/r/20260107-stability-discussion-v2-1-ef7717b435ff@protonmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+When IPv6 route is created with RTA_NH_ID, struct fib6_info
+does not have the trailing struct fib6_nh.
+
+The cited commit started to check !iter->fib6_nh->fib_nh_gw_family
+to ensure that rt6_qualify_for_ecmp() will return false for iter.
+
+If iter->nh is not NULL, rt6_qualify_for_ecmp() returns false anyway.
+
+Let's check iter->nh before reading iter->fib6_nh and avoid OOB read.
+
+[0]:
+BUG: KASAN: slab-out-of-bounds in fib6_add_rt2node+0x349c/0x3500 net/ipv6/ip6_fib.c:1142
+Read of size 1 at addr ffff8880384ba6de by task syz.0.18/5500
+
+CPU: 0 UID: 0 PID: 5500 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xba/0x230 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ fib6_add_rt2node+0x349c/0x3500 net/ipv6/ip6_fib.c:1142
+ fib6_add_rt2node_nh net/ipv6/ip6_fib.c:1363 [inline]
+ fib6_add+0x910/0x18c0 net/ipv6/ip6_fib.c:1531
+ __ip6_ins_rt net/ipv6/route.c:1351 [inline]
+ ip6_route_add+0xde/0x1b0 net/ipv6/route.c:3957
+ inet6_rtm_newroute+0x268/0x19e0 net/ipv6/route.c:5660
+ rtnetlink_rcv_msg+0x7d5/0xbe0 net/core/rtnetlink.c:6958
+ netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ ____sys_sendmsg+0xa68/0xad0 net/socket.c:2592
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2646
+ __sys_sendmsg net/socket.c:2678 [inline]
+ __do_sys_sendmsg net/socket.c:2683 [inline]
+ __se_sys_sendmsg net/socket.c:2681 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2681
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f9316b9aeb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd8809b678 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f9316e15fa0 RCX: 00007f9316b9aeb9
+RDX: 0000000000000000 RSI: 0000200000004380 RDI: 0000000000000003
+RBP: 00007f9316c08c1f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f9316e15fac R14: 00007f9316e15fa0 R15: 00007f9316e15fa0
+ </TASK>
+
+Allocated by task 5499:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:415
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __do_kmalloc_node mm/slub.c:5657 [inline]
+ __kmalloc_noprof+0x40c/0x7e0 mm/slub.c:5669
+ kmalloc_noprof include/linux/slab.h:961 [inline]
+ kzalloc_noprof include/linux/slab.h:1094 [inline]
+ fib6_info_alloc+0x30/0xf0 net/ipv6/ip6_fib.c:155
+ ip6_route_info_create+0x142/0x860 net/ipv6/route.c:3820
+ ip6_route_add+0x49/0x1b0 net/ipv6/route.c:3949
+ inet6_rtm_newroute+0x268/0x19e0 net/ipv6/route.c:5660
+ rtnetlink_rcv_msg+0x7d5/0xbe0 net/core/rtnetlink.c:6958
+ netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ ____sys_sendmsg+0xa68/0xad0 net/socket.c:2592
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2646
+ __sys_sendmsg net/socket.c:2678 [inline]
+ __do_sys_sendmsg net/socket.c:2683 [inline]
+ __se_sys_sendmsg net/socket.c:2681 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2681
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: bbf4a17ad9ff ("ipv6: Fix ECMP sibling count mismatch when clearing RTF_ADDRCONF")
+Reported-by: syzbot+707d6a5da1ab9e0c6f9d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/698cbfba.050a0220.2eeac1.009d.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Shigeru Yoshida <syoshida@redhat.com>
+Link: https://patch.msgid.link/20260211175133.3657034-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sdm845.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/ip6_fib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sdm845.c b/drivers/clk/qcom/dispcc-sdm845.c
-index 2f9e9665d7e93..78e43f6d75026 100644
---- a/drivers/clk/qcom/dispcc-sdm845.c
-+++ b/drivers/clk/qcom/dispcc-sdm845.c
-@@ -280,7 +280,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk0_clk_src = {
- 		.name = "disp_cc_mdss_pclk0_clk_src",
- 		.parent_data = disp_cc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_4),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
-@@ -295,7 +295,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk1_clk_src = {
- 		.name = "disp_cc_mdss_pclk1_clk_src",
- 		.parent_data = disp_cc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_4),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index c6439e30e892a..cc149227b49f4 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1139,7 +1139,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 					fib6_add_gc_list(iter);
+ 				}
+ 				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT)) &&
+-				    !iter->fib6_nh->fib_nh_gw_family) {
++				    (iter->nh || !iter->fib6_nh->fib_nh_gw_family)) {
+ 					iter->fib6_flags &= ~RTF_ADDRCONF;
+ 					iter->fib6_flags &= ~RTF_PREFIX_RT;
+ 				}
 -- 
 2.51.0
 
