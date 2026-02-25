@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-219322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0A3OHG2dnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:49 +0100
+	id AJwbDC9Tnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108A81929B2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:49 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E199C18F707
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E89F0301D0D4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8EA4D307814A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACCF2FF176;
-	Wed, 25 Feb 2026 06:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1FB26158C;
+	Wed, 25 Feb 2026 01:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1kkXKYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUVNZm9B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAC32D8DCF;
-	Wed, 25 Feb 2026 06:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604442494FE;
+	Wed, 25 Feb 2026 01:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002639; cv=none; b=KlhS4FInkWkUjZa0RCfrEDMidnMDASUaA7BfCP410NWg8SH0rjmF01n4zrDrSLRMbqZiCxVvmBkA9F2y+jBIKGoJviNCMB6OmM1WcWAczqo1mMR73EOlPGYuSaVoSu+hqFaAErYJfvC2ThJ9VOOa+qaVPCTcs++BQFIqV8pV7J0=
+	t=1771983546; cv=none; b=if5e3PDRXST9xkCLtYMClz2f2mA8XH1zIbIQapaTkKp3SP5u+eCBEUvTbGemvSKC42pmkMi2R140/ZPJFTGtfstHhjqycfBXRmJVUMrFl79JqQS51TcjZ+epxFFE+aygdTL9Fd2HefNIyvUlGidp3t5Q7rPNaeAcYscGzqwdjmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002639; c=relaxed/simple;
-	bh=6Ujak/vFSGDdh1ezT937jW46YnYf+gJRp3/jrmZ5yDE=;
+	s=arc-20240116; t=1771983546; c=relaxed/simple;
+	bh=Q0swMtVFqCC8xyRBh9wqIcoGqF3T8saNgfMKpKk584w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yf8Lh+oT+tErYKwZGgnEauUm/DRWDGIoSybAUHM3J3s8uXL8tacJ8hLWNJi5bbWWb9nLAphjP9mXxmBJixt5sGXUsFYAEFbvKdlKAuW+u+y0eMitCnA1S811z3dRZAa72VpQn+Xy5bVTtsFoyceOBUzx1ewdi65TCaGvuXefLbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1kkXKYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57464C116D0;
-	Wed, 25 Feb 2026 06:57:19 +0000 (UTC)
+	 MIME-Version; b=nCzHvcaaw2V2EWzWgwmO0KZAHpZhCdIu+bisXCqR7RiMav2ctZ0oLrWJg8eD8PuC15FdLt5FJO8kYyGogQgEwlTGE2eMc4omlO+XcTC1Mg7wibjSV4C9QmYCX9IxUKTsf7b3QfQinhifwLIxddipIEBVeugbxTbynCmkd7kzdM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUVNZm9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22922C116D0;
+	Wed, 25 Feb 2026 01:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002639;
-	bh=6Ujak/vFSGDdh1ezT937jW46YnYf+gJRp3/jrmZ5yDE=;
+	s=korg; t=1771983546;
+	bh=Q0swMtVFqCC8xyRBh9wqIcoGqF3T8saNgfMKpKk584w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1kkXKYA5f9bKbshsnmhxp3xE6LXkeNkTVMjktQrLtHqKUfmU5GheQgcIvZb+eC3N
-	 J2CrCCpahIn1qfMcKjQJFz9TpTdTjzO8wpU2oN+o7Pe4pvEk/Tuacfcke/HiDRRqX+
-	 AyxdCbcAvWyWVTPN0va2W3313hTh7q8WO4oIbo9s=
+	b=RUVNZm9B33+UKwYRkrYQm2jnWqwIvXJyPC/WmtTgA9hZH8zkqcHSzM9H3HOxipn8e
+	 UdAe8gEzMHMW+vxs9QsDrPF3iaTjhbzrVZK3uMdV51Vn3zEm/sfPQCrYwMHqrLwET5
+	 2K6fawn1xFzgX02GRsYu5Bp46Oyg3Av7khxIZB+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 405/641] clk: qcom: gcc-sm8650: Use floor ops for SDCC RCGs
+Subject: [PATCH 6.19 622/781] tools/power turbostat: Harden against unexpected values
 Date: Tue, 24 Feb 2026 17:22:11 -0800
-Message-ID: <20260225012358.380430222@linuxfoundation.org>
+Message-ID: <20260225012415.070102135@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,83 +68,303 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219322-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218688-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,qualcomm.com:email]
-X-Rspamd-Queue-Id: 108A81929B2
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E199C18F707
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit 8c4415fd17cd5979c31a4bf303acc702e9726033 ]
+[ Upstream commit d0f7093ad5e4aa37405da2669bca1a62d22b7025 ]
 
-In line with commit a27ac3806b0a ("clk: qcom: gcc-sm8450: Use floor ops
-for SDCC RCGs") done to fix issues with overclocked SD cards on SM8450
-powered boards set floor clock operations for SDCC RCGs on SM8650.
+Divide-by-zero resulted if LLC references == 0
 
-This change fixes initialization of some SD cards, where the problem
-is manifested by the SDHC driver:
+Pull the percentage division into pct() to centralize sanity checks there.
 
-    mmc0: Card appears overclocked; req 50000000 Hz, actual 100000000 Hz
-    mmc0: error -110 whilst initialising SD card
+Fixes: 8808292799b0 ("tools/power turbostat: Print "nan" for out of range percentages")
 
-Fixes: c58225b7e3d7 ("clk: qcom: add the SM8650 Global Clock Controller driver, part 1")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251124212012.3660189-3-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm8650.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 94 +++++++++++++++------------
+ 1 file changed, 51 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sm8650.c b/drivers/clk/qcom/gcc-sm8650.c
-index 24f98062b9dd5..2dd6444ce0365 100644
---- a/drivers/clk/qcom/gcc-sm8650.c
-+++ b/drivers/clk/qcom/gcc-sm8650.c
-@@ -1257,7 +1257,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.parent_data = gcc_parent_data_11,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_11),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_shared_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
- };
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index c4c8b6315fd26..1b26d94c373fb 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -3001,22 +3001,30 @@ void print_header(char *delim)
+ }
  
-@@ -1279,7 +1279,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
- 		.parent_data = gcc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_shared_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
- };
+ /*
+- * pct()
++ * pct(numerator, denominator)
+  *
+- * If absolute value is < 1.1, return percentage
+- * otherwise, return nan
++ * Return sanity checked percentage (100.0 * numerator/denominotor)
+  *
+- * return value is appropriate for printing percentages with %f
+- * while flagging some obvious erroneous values.
++ * n < 0: nan
++ * d <= 0: nan
++ * n/d > 1.1: nan
+  */
+-double pct(double d)
++double pct(double numerator, double denominator)
+ {
++	double retval;
  
+-	double abs = fabs(d);
++	if (numerator < 0)
++		return nan("");
+ 
+-	if (abs < 1.10)
+-		return (100.0 * d);
+-	return nan("");
++	if (denominator <= 0)
++		return nan("");
++
++	retval = 100.0 * numerator / denominator;
++
++	if (retval > 110.0)
++		return nan("");
++
++	return retval;
+ }
+ 
+ int dump_counters(PER_THREAD_PARAMS)
+@@ -3046,7 +3054,7 @@ int dump_counters(PER_THREAD_PARAMS)
+ 
+ 		outp += sprintf(outp, "LLC refs: %lld", t->llc.references);
+ 		outp += sprintf(outp, "LLC miss: %lld", t->llc.misses);
+-		outp += sprintf(outp, "LLC Hit%%: %.2f", pct((t->llc.references - t->llc.misses) / t->llc.references));
++		outp += sprintf(outp, "LLC Hit%%: %.2f", pct((t->llc.references - t->llc.misses), t->llc.references));
+ 
+ 		for (i = 0, mp = sys.tp; mp; i++, mp = mp->next) {
+ 			outp += sprintf(outp, "tADDED [%d] %8s msr0x%x: %08llX %s\n", i, mp->name, mp->msr_num, t->counter[i], mp->sp->path);
+@@ -3261,7 +3269,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 		outp += sprintf(outp, "%s%.0f", (printed++ ? delim : ""), 1.0 / units * t->aperf / interval_float);
+ 
+ 	if (DO_BIC(BIC_Busy))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(t->mperf / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(t->mperf, tsc));
+ 
+ 	if (DO_BIC(BIC_Bzy_MHz)) {
+ 		if (has_base_hz)
+@@ -3302,7 +3310,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 			outp += sprintf(outp, "%s%.0f", (printed++ ? delim : ""), t->llc.references / interval_float / 1000);
+ 
+ 		if (DO_BIC(BIC_LLC_HIT))
+-			outp += sprintf(outp, fmt8, (printed++ ? delim : ""), pct((t->llc.references - t->llc.misses) / t->llc.references));
++			outp += sprintf(outp, fmt8, (printed++ ? delim : ""), pct((t->llc.references - t->llc.misses), t->llc.references));
+ 	}
+ 
+ 	/* Added Thread Counters */
+@@ -3315,7 +3323,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 			if (mp->type == COUNTER_USEC)
+ 				outp += print_float_value(&printed, delim, t->counter[i] / interval_float / 10000);
+ 			else
+-				outp += print_float_value(&printed, delim, pct(t->counter[i] / tsc));
++				outp += print_float_value(&printed, delim, pct(t->counter[i], tsc));
+ 		}
+ 	}
+ 
+@@ -3329,7 +3337,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 			if (pp->type == COUNTER_USEC)
+ 				outp += print_float_value(&printed, delim, t->perf_counter[i] / interval_float / 10000);
+ 			else
+-				outp += print_float_value(&printed, delim, pct(t->perf_counter[i] / tsc));
++				outp += print_float_value(&printed, delim, pct(t->perf_counter[i], tsc));
+ 		}
+ 	}
+ 
+@@ -3343,34 +3351,34 @@ int format_counters(PER_THREAD_PARAMS)
+ 			break;
+ 
+ 		case PMT_TYPE_XTAL_TIME:
+-			value_converted = pct(value_raw / crystal_hz / interval_float);
++			value_converted = pct(value_raw / crystal_hz, interval_float);
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 			break;
+ 
+ 		case PMT_TYPE_TCORE_CLOCK:
+-			value_converted = pct(value_raw / tcore_clock_freq_hz / interval_float);
++			value_converted = pct(value_raw / tcore_clock_freq_hz, interval_float);
+ 			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), value_converted);
+ 		}
+ 	}
+ 
+ 	/* C1 */
+ 	if (DO_BIC(BIC_CPU_c1))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(t->c1 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(t->c1, tsc));
+ 
+ 	/* print per-core data only for 1st thread in core */
+ 	if (!is_cpu_first_thread_in_core(t, c))
+ 		goto done;
+ 
+ 	if (DO_BIC(BIC_CPU_c3))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(c->c3 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(c->c3, tsc));
+ 	if (DO_BIC(BIC_CPU_c6))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(c->c6 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(c->c6, tsc));
+ 	if (DO_BIC(BIC_CPU_c7))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(c->c7 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(c->c7, tsc));
+ 
+ 	/* Mod%c6 */
+ 	if (DO_BIC(BIC_Mod_c6))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(c->mc6_us / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(c->mc6_us, tsc));
+ 
+ 	if (DO_BIC(BIC_CoreTmp))
+ 		outp += sprintf(outp, "%s%d", (printed++ ? delim : ""), c->core_temp_c);
+@@ -3386,7 +3394,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 		else if (mp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE)
+ 			outp += print_decimal_value(mp->width, &printed, delim, c->counter[i]);
+ 		else if (mp->format == FORMAT_PERCENT)
+-			outp += print_float_value(&printed, delim, pct(c->counter[i] / tsc));
++			outp += print_float_value(&printed, delim, pct(c->counter[i], tsc));
+ 	}
+ 
+ 	/* Added perf Core counters */
+@@ -3396,7 +3404,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 		else if (pp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE)
+ 			outp += print_decimal_value(pp->width, &printed, delim, c->perf_counter[i]);
+ 		else if (pp->format == FORMAT_PERCENT)
+-			outp += print_float_value(&printed, delim, pct(c->perf_counter[i] / tsc));
++			outp += print_float_value(&printed, delim, pct(c->perf_counter[i], tsc));
+ 	}
+ 
+ 	/* Added PMT Core counters */
+@@ -3409,12 +3417,12 @@ int format_counters(PER_THREAD_PARAMS)
+ 			break;
+ 
+ 		case PMT_TYPE_XTAL_TIME:
+-			value_converted = pct(value_raw / crystal_hz / interval_float);
++			value_converted = pct(value_raw / crystal_hz, interval_float);
+ 			outp += print_float_value(&printed, delim, value_converted);
+ 			break;
+ 
+ 		case PMT_TYPE_TCORE_CLOCK:
+-			value_converted = pct(value_raw / tcore_clock_freq_hz / interval_float);
++			value_converted = pct(value_raw / tcore_clock_freq_hz, interval_float);
+ 			outp += print_float_value(&printed, delim, value_converted);
+ 		}
+ 	}
+@@ -3470,39 +3478,39 @@ int format_counters(PER_THREAD_PARAMS)
+ 	if (DO_BIC(BIC_Totl_c0))
+ 		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), 100 * p->pkg_wtd_core_c0 / tsc);	/* can exceed 100% */
+ 	if (DO_BIC(BIC_Any_c0))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pkg_any_core_c0 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pkg_any_core_c0, tsc));
+ 	if (DO_BIC(BIC_GFX_c0))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pkg_any_gfxe_c0 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pkg_any_gfxe_c0, tsc));
+ 	if (DO_BIC(BIC_CPUGFX))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pkg_both_core_gfxe_c0 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pkg_both_core_gfxe_c0, tsc));
+ 
+ 	if (DO_BIC(BIC_Pkgpc2))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc2 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc2, tsc));
+ 	if (DO_BIC(BIC_Pkgpc3))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc3 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc3, tsc));
+ 	if (DO_BIC(BIC_Pkgpc6))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc6 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc6, tsc));
+ 	if (DO_BIC(BIC_Pkgpc7))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc7 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc7, tsc));
+ 	if (DO_BIC(BIC_Pkgpc8))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc8 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc8, tsc));
+ 	if (DO_BIC(BIC_Pkgpc9))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc9 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc9, tsc));
+ 	if (DO_BIC(BIC_Pkgpc10))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc10 / tsc));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->pc10, tsc));
+ 
+ 	if (DO_BIC(BIC_Diec6))
+-		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->die_c6 / crystal_hz / interval_float));
++		outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->die_c6 / crystal_hz, interval_float));
+ 
+ 	if (DO_BIC(BIC_CPU_LPI)) {
+ 		if (p->cpu_lpi >= 0)
+-			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->cpu_lpi / 1000000.0 / interval_float));
++			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->cpu_lpi / 1000000.0, interval_float));
+ 		else
+ 			outp += sprintf(outp, "%s(neg)", (printed++ ? delim : ""));
+ 	}
+ 	if (DO_BIC(BIC_SYS_LPI)) {
+ 		if (p->sys_lpi >= 0)
+-			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->sys_lpi / 1000000.0 / interval_float));
++			outp += sprintf(outp, "%s%.2f", (printed++ ? delim : ""), pct(p->sys_lpi / 1000000.0, interval_float));
+ 		else
+ 			outp += sprintf(outp, "%s(neg)", (printed++ ? delim : ""));
+ 	}
+@@ -3542,7 +3550,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 		else if (mp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE)
+ 			outp += print_decimal_value(mp->width, &printed, delim, p->counter[i]);
+ 		else if (mp->format == FORMAT_PERCENT)
+-			outp += print_float_value(&printed, delim, pct(p->counter[i] / tsc));
++			outp += print_float_value(&printed, delim, pct(p->counter[i], tsc));
+ 	}
+ 
+ 	/* Added perf Package Counters */
+@@ -3554,7 +3562,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 		else if (pp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE)
+ 			outp += print_decimal_value(pp->width, &printed, delim, p->perf_counter[i]);
+ 		else if (pp->format == FORMAT_PERCENT)
+-			outp += print_float_value(&printed, delim, pct(p->perf_counter[i] / tsc));
++			outp += print_float_value(&printed, delim, pct(p->perf_counter[i], tsc));
+ 	}
+ 
+ 	/* Added PMT Package Counters */
+@@ -3567,12 +3575,12 @@ int format_counters(PER_THREAD_PARAMS)
+ 			break;
+ 
+ 		case PMT_TYPE_XTAL_TIME:
+-			value_converted = pct(value_raw / crystal_hz / interval_float);
++			value_converted = pct(value_raw / crystal_hz, interval_float);
+ 			outp += print_float_value(&printed, delim, value_converted);
+ 			break;
+ 
+ 		case PMT_TYPE_TCORE_CLOCK:
+-			value_converted = pct(value_raw / tcore_clock_freq_hz / interval_float);
++			value_converted = pct(value_raw / tcore_clock_freq_hz, interval_float);
+ 			outp += print_float_value(&printed, delim, value_converted);
+ 		}
+ 	}
 -- 
 2.51.0
 
