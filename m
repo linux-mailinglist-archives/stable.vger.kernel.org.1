@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-218555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GVAGqFSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:41 +0100
+	id EDyeLn1Unmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1801A18F47A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0779D18FCE9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 27162300D347
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7361030730BC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8816B254B03;
-	Wed, 25 Feb 2026 01:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DC3256C84;
+	Wed, 25 Feb 2026 01:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjAqCCln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLULXZt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C059256C6C;
-	Wed, 25 Feb 2026 01:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AC0243376;
+	Wed, 25 Feb 2026 01:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983394; cv=none; b=eSP/dzKgB2BmfYKuW+8ym7orwaeDJ2RLFZx5m/Trd9KAuIqi1EUsi44+B2hCR555jD7gN9Z0Znv8wOgU0Gfb8matdF1QLaa1NhysxkkNn4taHmJ8F4MbUsN513VnVhYmIk4ZmLDz2fPpZB8IXkpvARh8H9uy4IvUIH3ufsB0OJ0=
+	t=1771983395; cv=none; b=Itba/n1OwOmqFt7CRvHn7Eo5Gw6ekvUM0inIm1X9o5yvhf4HtbJyiGHYTFyABhrvX8bJDjaTNZPqjHxOyH/VA6lZddXCcaBPzXsjIrORsb4v3YF0QY9CGr7nD1J5+q/dkOij5AGJOZw+ooxpkDLnFXhQHlipq1l1GuT1CMq7eKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983394; c=relaxed/simple;
-	bh=0P57qqbAfslKg/ZHYk+5ckkFS074O3sTwm143HKmGEQ=;
+	s=arc-20240116; t=1771983395; c=relaxed/simple;
+	bh=/9MCQAAVaON6/E/xSKZY4YRItAZXriax4p58XmV/auw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULqKgo9hrCca+E2fPMPOGfdMdIAg4MqgOhS1tiNnQE2J7+OD7F1Hhz+/vPfrvxxjnqrnTnHOLSucNgwTnxTBbgT9rMuGMd895mYJdwJuBZ7OkEVV9ZyKwO3v55+qE39VksBCfSRGBlJGmib85vQhpq+w2XCqgMoCGREwxMjEcMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjAqCCln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9ADC116D0;
+	 MIME-Version; b=AEql++ZID/jllxQOg17LrAPLtcxNKTy0wJT1ZBdpvVNxh6iRNCnT7oYTY1h9Ch4lvT5lpqV6YEc3hE1V4q9rCo55nS9ZAJYcivsNvEcEGxg9rj8m8yM7dUuuvssCywgoa3a/FV5bQULpmt6FW/PKTdqt3kexkDXrt35mKWad13s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLULXZt5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3640C116D0;
 	Wed, 25 Feb 2026 01:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983394;
-	bh=0P57qqbAfslKg/ZHYk+5ckkFS074O3sTwm143HKmGEQ=;
+	s=korg; t=1771983395;
+	bh=/9MCQAAVaON6/E/xSKZY4YRItAZXriax4p58XmV/auw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QjAqCClnqBZMstawFIyh3voUPjhsK2TFlLqVj63825U7cHr+YItIAAHq/o0xq51Rr
-	 vp5HdtCeLJu+wSHDVgx2CyzEbtBBKqrWQOymvLpHFB3KUkwXNcj+Y9ImvmCr6U/Utx
-	 D51g+8xHOoK8ojSUGlBPuk/oSDpk08CDoQ3B6bb0=
+	b=JLULXZt5OFLnS3XZfURh4BSLrtzlW4+E9MBJ8dSSAujkc3kFqZxqaQRuxtrCEuzUx
+	 KitIxnQJf+YpFwPxAmleTSonNVZ9g9uVYqi3eip6e/AXTPNYIqRGWY6jGJdjIRFwav
+	 7/tLfovavjmKYn1/+OAvBaE1HDND/ij4FWKZtEx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
 	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 516/781] clk: meson: gxbb: Limit the HDMI PLL OD to /4 on GXL/GXM SoCs
-Date: Tue, 24 Feb 2026 17:20:25 -0800
-Message-ID: <20260225012412.460359922@linuxfoundation.org>
+Subject: [PATCH 6.19 517/781] clk: meson: g12a: Limit the HDMI PLL OD to /4
+Date: Tue, 24 Feb 2026 17:20:26 -0800
+Message-ID: <20260225012412.484425358@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -70,31 +70,31 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218555-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218556-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,googlemail.com,baylibre.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.987];
+	NEURAL_HAM(-0.00)[-0.978];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,baylibre.com:email]
-X-Rspamd-Queue-Id: 1801A18F47A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,baylibre.com:email]
+X-Rspamd-Queue-Id: 0779D18FCE9
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
@@ -103,80 +103,79 @@ X-Rspamd-Action: no action
 
 From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 5b1a43950fd3162af0ce52b13c14a2d29b179d4f ]
+[ Upstream commit 7aa6c24697ef5db1402dd38743914493cd5b356d ]
 
 GXBB has the HDMI PLL OD in the HHI_HDMI_PLL_CNTL2 register while for
-GXL/GXM the OD has moved to HHI_HDMI_PLL_CNTL3. At first glance the rest
-of the OD setup seems identical.
+G12A/G12B/SM1 the OD has moved to HHI_HDMI_PLL_CNTL0. At first glance
+the rest of the OD setup seems identical.
 
 However, looking at the downstream kernel sources as well as testing
-shows that GXL only supports three OD values:
+shows that G12A/G12B/SM1 only supports three OD values:
 - register value 0 means: divide by 1
 - register value 1 means: divide by 2
 - register value 2 means: divide by 4
 
-Using register value 3 (which on GXBB means: divide by 8) still divides
-by 4 as verified using meson-clk-measure. Downstream sources are also
-only using OD register values 0, 1 and 2 for GXL (while for GXBB the
-downstream kernel sources are also using value 3).
+Downstream sources are also only using OD register values 0, 1 and 2
+for G12A/G12B/SM1 (while for GXBB the downstream kernel sources are also
+using value 3 which means: divide by 8).
 
 Add clk_div_table and have it replace the CLK_DIVIDER_POWER_OF_TWO flag
 to make the kernel's view of this register match with how the hardware
 actually works.
 
-Fixes: 69d92293274b ("clk: meson: add the gxl hdmi pll")
+Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
 Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20260105204710.447779-2-martin.blumenstingl@googlemail.com
+Link: https://lore.kernel.org/r/20260105204710.447779-3-martin.blumenstingl@googlemail.com
 Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/gxbb.c | 17 ++++++++++++++---
+ drivers/clk/meson/g12a.c | 17 ++++++++++++++---
  1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/meson/gxbb.c b/drivers/clk/meson/gxbb.c
-index 5a229c4ffae10..ec9a3414875ac 100644
---- a/drivers/clk/meson/gxbb.c
-+++ b/drivers/clk/meson/gxbb.c
-@@ -349,12 +349,23 @@ static struct clk_regmap gxbb_hdmi_pll = {
+diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
+index 185b6348251db..d0d4c7b6dc827 100644
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -777,12 +777,23 @@ static struct clk_regmap g12a_hdmi_pll_dco = {
  	},
  };
  
 +/*
-+ * GXL hdmi OD dividers are POWER_OF_TWO dividers but limited to /4.
++ * G12/SM1 hdmi OD dividers are POWER_OF_TWO dividers but limited to /4.
 + * A divider value of 3 should map to /8 but instead map /4 so ignore it.
 + */
-+static const struct clk_div_table gxl_hdmi_pll_od_div_table[] = {
++static const struct clk_div_table g12a_hdmi_pll_od_div_table[] = {
 +	{ .val = 0, .div = 1 },
 +	{ .val = 1, .div = 2 },
 +	{ .val = 2, .div = 4 },
 +	{ /* sentinel */ }
 +};
 +
- static struct clk_regmap gxl_hdmi_pll_od = {
+ static struct clk_regmap g12a_hdmi_pll_od = {
  	.data = &(struct clk_regmap_div_data){
- 		.offset = HHI_HDMI_PLL_CNTL + 8,
- 		.shift = 21,
+ 		.offset = HHI_HDMI_PLL_CNTL0,
+ 		.shift = 16,
  		.width = 2,
 -		.flags = CLK_DIVIDER_POWER_OF_TWO,
-+		.table = gxl_hdmi_pll_od_div_table,
++		.table = g12a_hdmi_pll_od_div_table,
  	},
  	.hw.init = &(struct clk_init_data){
  		.name = "hdmi_pll_od",
-@@ -372,7 +383,7 @@ static struct clk_regmap gxl_hdmi_pll_od2 = {
- 		.offset = HHI_HDMI_PLL_CNTL + 8,
- 		.shift = 23,
+@@ -800,7 +811,7 @@ static struct clk_regmap g12a_hdmi_pll_od2 = {
+ 		.offset = HHI_HDMI_PLL_CNTL0,
+ 		.shift = 18,
  		.width = 2,
 -		.flags = CLK_DIVIDER_POWER_OF_TWO,
-+		.table = gxl_hdmi_pll_od_div_table,
++		.table = g12a_hdmi_pll_od_div_table,
  	},
  	.hw.init = &(struct clk_init_data){
  		.name = "hdmi_pll_od2",
-@@ -390,7 +401,7 @@ static struct clk_regmap gxl_hdmi_pll = {
- 		.offset = HHI_HDMI_PLL_CNTL + 8,
- 		.shift = 19,
+@@ -818,7 +829,7 @@ static struct clk_regmap g12a_hdmi_pll = {
+ 		.offset = HHI_HDMI_PLL_CNTL0,
+ 		.shift = 20,
  		.width = 2,
 -		.flags = CLK_DIVIDER_POWER_OF_TWO,
-+		.table = gxl_hdmi_pll_od_div_table,
++		.table = g12a_hdmi_pll_od_div_table,
  	},
  	.hw.init = &(struct clk_init_data){
  		.name = "hdmi_pll",
