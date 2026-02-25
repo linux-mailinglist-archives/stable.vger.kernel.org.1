@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJIABzZWnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-219045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:58 +0100
+	id SH5NGXVSnmm6UgQAu9opvQ
+	(envelope-from <stable+bounces-218504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC39190200
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B439018F380
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE97330CB674
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C24B830B311C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA89245019;
-	Wed, 25 Feb 2026 01:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EC3254B03;
+	Wed, 25 Feb 2026 01:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSsN32RF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpUyP0L3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0048C42A9D;
-	Wed, 25 Feb 2026 01:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FFF24677D;
+	Wed, 25 Feb 2026 01:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983966; cv=none; b=NjOWo0/86Re9EA8cGRXgackdHOJXRSrnSCasftqWD5U6rKq1pGcpey5JQCVk95np0estBWqCwHI9Y97BuYweYC5saV21RQ/bkjLcP96E1JbJoGPAYk1RDAowjdEOleozMcthy1+3Ji/e5PdnY6DsWzvRdg+RSXVcDhr/RarCLTw=
+	t=1771983335; cv=none; b=MWHAFgUWMer7MJCEb+faWi/NtBt01aKy/7+RmU9mVR6whX64fDnX+Ylj12fIKPMBt4EN4lzAf3Lk3QXpvwRCyz/gGlrcNVLgP5M/L8+LwrcsbFXAvd4VmcqD4nF4/JjVanc/rpczO09fQ5umSPUsdO0EfF6UdYRRU2VsD3aOoOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983966; c=relaxed/simple;
-	bh=pq5RtppMLdIjXPfMdwnqsG9IbrOzZJrmrh7KJ61+qac=;
+	s=arc-20240116; t=1771983335; c=relaxed/simple;
+	bh=TZWMZyqCeDbBoib3+W/eXPGitzlSrz6PWb/dldcbXo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kl04/NSdWYO2iCCviOxpKTDvzvdLvBB4OLH6faNSAPxPL99byfI9GuFu2TsfFcnyQFV4vaUugIwLSDCyD3hdadY7gVcCN8t1v+024VaxMruTSObMiYcFHjcVKFFBd5gJyfnxDyuDe2Yg602yncCHN1/Sb+2qRLgHuF7t0UQQJA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSsN32RF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7011BC116D0;
-	Wed, 25 Feb 2026 01:46:05 +0000 (UTC)
+	 MIME-Version; b=B0pf5tkD4aZj+AA5K0ZMHLitnQGNHHPRkq8pP2xmRkYUqx7HF834VTzwFWdQXejV9IraceMHv4W0ZbcTgrwDaUYXVVSUx3J/oYxMF7H2/SAF0wRHdhTZmEiG0BtoMM5YRqhctm7uRYFmOy+LqFV5uhINjQonsNU4q6AHbvH5AJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpUyP0L3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90861C116D0;
+	Wed, 25 Feb 2026 01:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983965;
-	bh=pq5RtppMLdIjXPfMdwnqsG9IbrOzZJrmrh7KJ61+qac=;
+	s=korg; t=1771983335;
+	bh=TZWMZyqCeDbBoib3+W/eXPGitzlSrz6PWb/dldcbXo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eSsN32RF8TNfKzJzdik5zUcpeMPx4RhQUFuirB7SQOo3aZRlrvIR7O/9FR+dlyak2
-	 WUvfVQP38UgVdzRuFWDhGDeKpLju2/sqRwTj19/yTgFEfmBCvawG4gz+U0L3m2N2sZ
-	 KSLx75pQjnY5FBNk3CTB07FBiMTsOfRa+NiMG0Q0=
+	b=FpUyP0L3B6hVJDKI1T9H0L0KQm5lvQBIWukmbCxRkPjjv85yZcUX5didZJxhSXZRy
+	 kmuG7IKQBPL2ji49HZ4sXEiZgFujLbebbNpN7Qxt0uS3mLqpU7ELuT7VkNSEcxjj0O
+	 HmncmgTsxmYaMtY6XxiZkYfl9TNmxRoMWkGCD7e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheetal <sheetal@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
+	Honggang LI <honggangli@163.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 221/641] ASoC: tegra: Add AHUB writeable_reg for RX holes
-Date: Tue, 24 Feb 2026 17:19:07 -0800
-Message-ID: <20260225012354.275933375@linuxfoundation.org>
+Subject: [PATCH 6.19 439/781] RDMA/rtrs: server: remove dead code
+Date: Tue, 24 Feb 2026 17:19:08 -0800
+Message-ID: <20260225012410.469154881@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,181 +67,88 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218504-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,163.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219045-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DCC39190200
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: B439018F380
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheetal <sheetal@nvidia.com>
+From: Honggang LI <honggangli@163.com>
 
-[ Upstream commit 0ba6286a71581aaf8413a55b9bd90ea3463fd23b ]
+[ Upstream commit a3572bdc3a028ca47f77d7166ac95b719cf77d50 ]
 
-Add writeable_reg callbacks for Tegra210/186 AHUB RX registers so the
-flat cache only treats valid RX locations as writable, avoiding holes
-in the register map.
+As rkey had been initialized to zero, the WARN_ON_ONCE should never been
+triggered. Remove it.
 
-Fixes: 16e1bcc2caf4 ("ASoC: tegra: Add Tegra210 based AHUB driver")
-Signed-off-by: Sheetal <sheetal@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260123095346.1258556-2-sheetal@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Honggang LI <honggangli@163.com>
+Link: https://patch.msgid.link/20251224023819.138846-1-honggangli@163.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/tegra/tegra210_ahub.c | 57 +++++++++++++++++++++++++++++++++
- sound/soc/tegra/tegra210_ahub.h | 30 +++++++++++++++++
- 2 files changed, 87 insertions(+)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/sound/soc/tegra/tegra210_ahub.c b/sound/soc/tegra/tegra210_ahub.c
-index 21aeaeba0b107..01d60a74ad1c3 100644
---- a/sound/soc/tegra/tegra210_ahub.c
-+++ b/sound/soc/tegra/tegra210_ahub.c
-@@ -2049,6 +2049,61 @@ static const struct snd_soc_component_driver tegra264_ahub_component = {
- 	.num_dapm_routes	= ARRAY_SIZE(tegra264_ahub_routes),
- };
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index 9ecc6343455d6..7a402eb8e0bf0 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -208,7 +208,6 @@ static int rdma_write_sg(struct rtrs_srv_op *id)
+ 	size_t sg_cnt;
+ 	int err, offset;
+ 	bool need_inval;
+-	u32 rkey = 0;
+ 	struct ib_reg_wr rwr;
+ 	struct ib_sge *plist;
+ 	struct ib_sge list;
+@@ -240,11 +239,6 @@ static int rdma_write_sg(struct rtrs_srv_op *id)
+ 	wr->wr.num_sge	= 1;
+ 	wr->remote_addr	= le64_to_cpu(id->rd_msg->desc[0].addr);
+ 	wr->rkey	= le32_to_cpu(id->rd_msg->desc[0].key);
+-	if (rkey == 0)
+-		rkey = wr->rkey;
+-	else
+-		/* Only one key is actually used */
+-		WARN_ON_ONCE(rkey != wr->rkey);
  
-+static bool tegra210_ahub_wr_reg(struct device *dev, unsigned int reg)
-+{
-+	int part;
-+
-+	if (reg % TEGRA210_XBAR_RX_STRIDE)
-+		return false;
-+
-+	for (part = 0; part < TEGRA210_XBAR_UPDATE_MAX_REG; part++) {
-+		switch (reg & ~(part * TEGRA210_XBAR_PART1_RX)) {
-+		case TEGRA210_AXBAR_PART_0_ADMAIF_RX1_0 ... TEGRA210_AXBAR_PART_0_ADMAIF_RX10_0:
-+		case TEGRA210_AXBAR_PART_0_I2S1_RX1_0 ... TEGRA210_AXBAR_PART_0_I2S5_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_SFC1_RX1_0 ... TEGRA210_AXBAR_PART_0_SFC4_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_MIXER1_RX1_0 ... TEGRA210_AXBAR_PART_0_MIXER1_RX10_0:
-+		case TEGRA210_AXBAR_PART_0_SPDIF1_RX1_0 ... TEGRA210_AXBAR_PART_0_SPDIF1_RX2_0:
-+		case TEGRA210_AXBAR_PART_0_AFC1_RX1_0 ... TEGRA210_AXBAR_PART_0_AFC6_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_OPE1_RX1_0 ... TEGRA210_AXBAR_PART_0_OPE2_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_SPKPROT1_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_MVC1_RX1_0 ... TEGRA210_AXBAR_PART_0_MVC2_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_AMX1_RX1_0 ... TEGRA210_AXBAR_PART_0_ADX2_RX1_0:
-+			return true;
-+		default:
-+			break;
-+		}
-+	}
-+
-+	return false;
-+}
-+
-+static bool tegra186_ahub_wr_reg(struct device *dev, unsigned int reg)
-+{
-+	int part;
-+
-+	if (reg % TEGRA210_XBAR_RX_STRIDE)
-+		return false;
-+
-+	for (part = 0; part < TEGRA186_XBAR_UPDATE_MAX_REG; part++) {
-+		switch (reg & ~(part * TEGRA210_XBAR_PART1_RX)) {
-+		case TEGRA210_AXBAR_PART_0_ADMAIF_RX1_0 ... TEGRA186_AXBAR_PART_0_I2S6_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_SFC1_RX1_0 ... TEGRA210_AXBAR_PART_0_SFC4_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_MIXER1_RX1_0 ... TEGRA210_AXBAR_PART_0_MIXER1_RX10_0:
-+		case TEGRA186_AXBAR_PART_0_DSPK1_RX1_0 ... TEGRA186_AXBAR_PART_0_DSPK2_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_AFC1_RX1_0 ... TEGRA210_AXBAR_PART_0_AFC6_RX1_0:
-+		case TEGRA210_AXBAR_PART_0_OPE1_RX1_0:
-+		case TEGRA186_AXBAR_PART_0_MVC1_RX1_0 ... TEGRA186_AXBAR_PART_0_MVC2_RX1_0:
-+		case TEGRA186_AXBAR_PART_0_AMX1_RX1_0 ... TEGRA186_AXBAR_PART_0_AMX3_RX4_0:
-+		case TEGRA210_AXBAR_PART_0_ADX1_RX1_0 ... TEGRA186_AXBAR_PART_0_ASRC1_RX7_0:
-+			return true;
-+		default:
-+			break;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- static bool tegra264_ahub_wr_reg(struct device *dev, unsigned int reg)
- {
- 	int part;
-@@ -2076,6 +2131,7 @@ static const struct regmap_config tegra210_ahub_regmap_config = {
- 	.reg_bits		= 32,
- 	.val_bits		= 32,
- 	.reg_stride		= 4,
-+	.writeable_reg		= tegra210_ahub_wr_reg,
- 	.max_register		= TEGRA210_MAX_REGISTER_ADDR,
- 	.cache_type		= REGCACHE_FLAT,
- };
-@@ -2084,6 +2140,7 @@ static const struct regmap_config tegra186_ahub_regmap_config = {
- 	.reg_bits		= 32,
- 	.val_bits		= 32,
- 	.reg_stride		= 4,
-+	.writeable_reg		= tegra186_ahub_wr_reg,
- 	.max_register		= TEGRA186_MAX_REGISTER_ADDR,
- 	.cache_type		= REGCACHE_FLAT,
- };
-diff --git a/sound/soc/tegra/tegra210_ahub.h b/sound/soc/tegra/tegra210_ahub.h
-index f355b2cfd19b2..acbe640dd3b57 100644
---- a/sound/soc/tegra/tegra210_ahub.h
-+++ b/sound/soc/tegra/tegra210_ahub.h
-@@ -68,6 +68,36 @@
- #define TEGRA210_MAX_REGISTER_ADDR (TEGRA210_XBAR_PART2_RX +		\
- 	(TEGRA210_XBAR_RX_STRIDE * (TEGRA210_XBAR_AUDIO_RX_COUNT - 1)))
+ 	wr->wr.opcode = IB_WR_RDMA_WRITE;
+ 	wr->wr.wr_cqe   = &io_comp_cqe;
+@@ -277,7 +271,7 @@ static int rdma_write_sg(struct rtrs_srv_op *id)
+ 		inv_wr.opcode = IB_WR_SEND_WITH_INV;
+ 		inv_wr.wr_cqe   = &io_comp_cqe;
+ 		inv_wr.send_flags = 0;
+-		inv_wr.ex.invalidate_rkey = rkey;
++		inv_wr.ex.invalidate_rkey = wr->rkey;
+ 	}
  
-+/* AXBAR register offsets */
-+#define TEGRA186_AXBAR_PART_0_AMX1_RX1_0	0x120
-+#define TEGRA186_AXBAR_PART_0_AMX3_RX4_0	0x14c
-+#define TEGRA186_AXBAR_PART_0_ASRC1_RX7_0	0x1a8
-+#define TEGRA186_AXBAR_PART_0_DSPK1_RX1_0	0xc0
-+#define TEGRA186_AXBAR_PART_0_DSPK2_RX1_0	0xc4
-+#define TEGRA186_AXBAR_PART_0_I2S6_RX1_0	0x54
-+#define TEGRA186_AXBAR_PART_0_MVC1_RX1_0	0x110
-+#define TEGRA186_AXBAR_PART_0_MVC2_RX1_0	0x114
-+#define TEGRA210_AXBAR_PART_0_ADMAIF_RX10_0	0x24
-+#define TEGRA210_AXBAR_PART_0_ADMAIF_RX1_0	0x0
-+#define TEGRA210_AXBAR_PART_0_ADX1_RX1_0	0x160
-+#define TEGRA210_AXBAR_PART_0_ADX2_RX1_0	0x164
-+#define TEGRA210_AXBAR_PART_0_AFC1_RX1_0	0xd0
-+#define TEGRA210_AXBAR_PART_0_AFC6_RX1_0	0xe4
-+#define TEGRA210_AXBAR_PART_0_AMX1_RX1_0	0x140
-+#define TEGRA210_AXBAR_PART_0_I2S1_RX1_0	0x40
-+#define TEGRA210_AXBAR_PART_0_I2S5_RX1_0	0x50
-+#define TEGRA210_AXBAR_PART_0_MIXER1_RX10_0	0xa4
-+#define TEGRA210_AXBAR_PART_0_MIXER1_RX1_0	0x80
-+#define TEGRA210_AXBAR_PART_0_MVC1_RX1_0	0x120
-+#define TEGRA210_AXBAR_PART_0_MVC2_RX1_0	0x124
-+#define TEGRA210_AXBAR_PART_0_OPE1_RX1_0	0x100
-+#define TEGRA210_AXBAR_PART_0_OPE2_RX1_0	0x104
-+#define TEGRA210_AXBAR_PART_0_SFC1_RX1_0	0x60
-+#define TEGRA210_AXBAR_PART_0_SFC4_RX1_0	0x6c
-+#define TEGRA210_AXBAR_PART_0_SPDIF1_RX1_0	0xc0
-+#define TEGRA210_AXBAR_PART_0_SPDIF1_RX2_0	0xc4
-+#define TEGRA210_AXBAR_PART_0_SPKPROT1_RX1_0	0x110
-+
- #define MUX_REG(id) (TEGRA210_XBAR_RX_STRIDE * (id))
- 
- #define MUX_VALUE(npart, nbit) (1 + (nbit) + (npart) * 32)
+ 	imm_wr.wr.next = NULL;
 -- 
 2.51.0
 
