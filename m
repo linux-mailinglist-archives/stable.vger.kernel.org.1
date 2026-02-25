@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-218863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PJVD1hZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:07:20 +0100
+	id ILgpEkRRnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989A7190915
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:07:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F8B18EF61
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2EE832A21C4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A0B7D308F629
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21D82877E5;
-	Wed, 25 Feb 2026 01:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E39256C6C;
+	Wed, 25 Feb 2026 01:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9siogar"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCdyJsy8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B576C286D70;
-	Wed, 25 Feb 2026 01:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A924E1D5ABA;
+	Wed, 25 Feb 2026 01:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983747; cv=none; b=ddfUgbFr8yCYPfj/k2owmKdmVJLRbbqOlZh+QfOXmMuKEcCVKbJnJ9eqbI7UJlyryeRPct7Yw586DtrujaCHBZnRDLoeB3jSktxLMwMQyQMh73IHm0C8Scq++66LJSGZxp4cnt6PQ6qnUaWMhygRFDRvGpeY2t/V2m4f1nvbp1M=
+	t=1771983056; cv=none; b=YJ7lpvLM/ge6tkMAGZpfVexSLsymBz2crMpR2o3eXUES25+rXMuSz3pll4vOSsCeCLI/ltw7mMDKgOPFEeTezm0kDee3HbOsADnYdSlegz4ZZELMMql/x7M6GIDs3CDPdjXbPGmQIq+Tk6CcxM3VMJeohHyPDt5djWLFxnO7n8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983747; c=relaxed/simple;
-	bh=/XI4GLoTHALgaycaJZXU/n3zhea/WogzrLWhA9PActE=;
+	s=arc-20240116; t=1771983056; c=relaxed/simple;
+	bh=1IQxgHc1NaUAizKRRjcyuTRrFzVlDjXbNT3m2TdEtMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gWvjXqM7bG9NOQL7hUtsX/nTjfqy6QOu+ZEliZkpFzgBSsXpxnowcc7aOg+6ZviZ8ztyWIgOfmDMEQ9+oAWV/BqTKv0oCJAYWtHV1W3lfCbewGsC0sUXk0YT1BlAdukl3luJel096fGOK1U6Zhq1io0H/jePt1d0dyKPkUahfIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9siogar; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E01C116D0;
-	Wed, 25 Feb 2026 01:42:27 +0000 (UTC)
+	 MIME-Version; b=ZiH2zd2JiGP/7bbraenB223vjEDxIrvSF5016eP+J2MVz4i261UUtrqU1XY8xb0ogn37k6Ly5xPy3iso2i1exwhoJJqAV1q0dATfeYH3zPVZXUNH1uTATndxLp82uGqyRjOSNZ1zcdYIa5IbvDuu81/Nqf5GerKaRZOT6hK5jr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCdyJsy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670D8C116D0;
+	Wed, 25 Feb 2026 01:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983747;
-	bh=/XI4GLoTHALgaycaJZXU/n3zhea/WogzrLWhA9PActE=;
+	s=korg; t=1771983056;
+	bh=1IQxgHc1NaUAizKRRjcyuTRrFzVlDjXbNT3m2TdEtMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9siogar5NH85Rg8pYN+nXyGgq3rIdQNYiq/XRtX+wy+MHN0Mh0PWAsNyOStPgAcJ
-	 cSYZvHsVkwM2K6v/fMavKe6+uHZG4mkrSLrq5ECLahDG+iddS89hOom3H8OgOc6gYq
-	 vj4ZNEfi/BSiLit7XXgbczyIRMmBjuLQFqdsT56s=
+	b=aCdyJsy8D1PpRHNTuHlqEqwgRKank031gArlc6KJoxHcQyza9ELiw3nw6FAwwNeLY
+	 Dlr1/Ynr9nRwYal5gY7Z0ydOClidaa8ksRWfppZbbaHB0jcBeQ9PhZmFOA0A5nO9/8
+	 chkq/zFQOt4IWBSVa2LgiQTIN2hgHaM6geUJiE8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com,
-	Shardul Bankar <shardul.b@mpiricsoftware.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 004/641] hfsplus: return error when node already exists in hfs_bnode_create
+Subject: [PATCH 6.19 221/781] ALSA: hda: Relax __free() variable declarations
 Date: Tue, 24 Feb 2026 17:15:30 -0800
-Message-ID: <20260225012349.042749850@linuxfoundation.org>
+Message-ID: <20260225012405.133903699@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +64,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218863-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-218258-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,1c8ff72d0cd8a50dfeaa];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,dubeyko.com:email]
-X-Rspamd-Queue-Id: 989A7190915
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D9F8B18EF61
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit d8a73cc46c8462a969a7516131feb3096f4c49d3 ]
+[ Upstream commit 04c654624f41d3c3eee48e9837a52d8a2bbc7332 ]
 
-When hfs_bnode_create() finds that a node is already hashed (which should
-not happen in normal operation), it currently returns the existing node
-without incrementing its reference count. This causes a reference count
-inconsistency that leads to a kernel panic when the node is later freed
-in hfs_bnode_put():
+We used to have a variable declaration with __free() initialized with
+NULL.  This was to keep the old coding style rule, but recently it's
+relaxed and rather recommends to follow the new rule to declare in
+place of use for __free() -- which avoids potential deadlocks or UAFs
+with nested cleanups.
 
-    kernel BUG at fs/hfsplus/bnode.c:676!
-    BUG_ON(!atomic_read(&node->refcnt))
+Although the current code has no bug, per se, let's follow the new
+standard and move the declaration to the place of assignment (or
+directly assign the allocated result) instead of NULL initializations.
 
-This scenario can occur when hfs_bmap_alloc() attempts to allocate a node
-that is already in use (e.g., when node 0's bitmap bit is incorrectly
-unset), or due to filesystem corruption.
-
-Returning an existing node from a create path is not normal operation.
-
-Fix this by returning ERR_PTR(-EEXIST) instead of the node when it's
-already hashed. This properly signals the error condition to callers,
-which already check for IS_ERR() return values.
-
-Reported-by: syzbot+1c8ff72d0cd8a50dfeaa@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=1c8ff72d0cd8a50dfeaa
-Link: https://lore.kernel.org/all/784415834694f39902088fa8946850fc1779a318.camel@ibm.com/
-Fixes: 634725a92938 ("[PATCH] hfs: cleanup HFS+ prints")
-Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20251229204938.1907089-1-shardul.b@mpiricsoftware.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: ee0b0f5d32fe ("ALSA: hda/generic: Use auto cleanup for temporary buffers")
+Fixes: 03c5c350e38d ("ALSA: hda/realtek: Add support for new HP G12 laptops")
+Fixes: b0550d4c2dd8 ("ALSA: hda/common: Use auto cleanup for temporary buffers")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20251216140634.171890-10-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/bnode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/hda/codecs/generic.c         | 4 ++--
+ sound/hda/codecs/realtek/alc269.c  | 4 ++--
+ sound/hda/codecs/realtek/realtek.c | 5 +++--
+ sound/hda/common/codec.c           | 4 ++--
+ sound/hda/common/sysfs.c           | 5 +++--
+ 5 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index 482a6c5faa197..8e60e04c427bd 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -629,7 +629,7 @@ struct hfs_bnode *hfs_bnode_create(struct hfs_btree *tree, u32 num)
- 	if (node) {
- 		pr_crit("new node %u already hashed?\n", num);
- 		WARN_ON(1);
--		return node;
-+		return ERR_PTR(-EEXIST);
+diff --git a/sound/hda/codecs/generic.c b/sound/hda/codecs/generic.c
+index 7bcf9aef8275f..443500a3518f4 100644
+--- a/sound/hda/codecs/generic.c
++++ b/sound/hda/codecs/generic.c
+@@ -1984,15 +1984,15 @@ static int parse_output_paths(struct hda_codec *codec)
+ {
+ 	struct hda_gen_spec *spec = codec->spec;
+ 	struct auto_pin_cfg *cfg = &spec->autocfg;
+-	struct auto_pin_cfg *best_cfg __free(kfree) = NULL;
+ 	unsigned int val;
+ 	int best_badness = INT_MAX;
+ 	int badness;
+ 	bool fill_hardwired = true, fill_mio_first = true;
+ 	bool best_wired = true, best_mio = true;
+ 	bool hp_spk_swapped = false;
++	struct auto_pin_cfg *best_cfg __free(kfree) =
++		kmalloc(sizeof(*best_cfg), GFP_KERNEL);
+ 
+-	best_cfg = kmalloc(sizeof(*best_cfg), GFP_KERNEL);
+ 	if (!best_cfg)
+ 		return -ENOMEM;
+ 	*best_cfg = *cfg;
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index b66965a521076..0618a61413580 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -2916,7 +2916,6 @@ static void find_cirrus_companion_amps(struct hda_codec *cdc)
+ {
+ 	struct device *dev = hda_codec_dev(cdc);
+ 	struct acpi_device *adev;
+-	struct fwnode_handle *fwnode __free(fwnode_handle) = NULL;
+ 	const char *bus = NULL;
+ 	static const struct {
+ 		const char *hid;
+@@ -2946,7 +2945,8 @@ static void find_cirrus_companion_amps(struct hda_codec *cdc)
+ 			bus = "spi";
  	}
- 	node = __hfs_bnode_create(tree, num);
- 	if (!node)
+ 
+-	fwnode = fwnode_handle_get(acpi_fwnode_handle(adev));
++	struct fwnode_handle *fwnode __free(fwnode_handle) =
++		fwnode_handle_get(acpi_fwnode_handle(adev));
+ 	acpi_dev_put(adev);
+ 
+ 	if (!bus) {
+diff --git a/sound/hda/codecs/realtek/realtek.c b/sound/hda/codecs/realtek/realtek.c
+index ca377a5adadb5..efe20b4505290 100644
+--- a/sound/hda/codecs/realtek/realtek.c
++++ b/sound/hda/codecs/realtek/realtek.c
+@@ -215,12 +215,13 @@ void alc_update_knob_master(struct hda_codec *codec,
+ {
+ 	unsigned int val;
+ 	struct snd_kcontrol *kctl;
+-	struct snd_ctl_elem_value *uctl __free(kfree) = NULL;
+ 
+ 	kctl = snd_hda_find_mixer_ctl(codec, "Master Playback Volume");
+ 	if (!kctl)
+ 		return;
+-	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
++
++	struct snd_ctl_elem_value *uctl __free(kfree) =
++		kzalloc(sizeof(*uctl), GFP_KERNEL);
+ 	if (!uctl)
+ 		return;
+ 	val = snd_hda_codec_read(codec, jack->nid, 0,
+diff --git a/sound/hda/common/codec.c b/sound/hda/common/codec.c
+index c6d44168c7f9d..ffe7c69d5a32c 100644
+--- a/sound/hda/common/codec.c
++++ b/sound/hda/common/codec.c
+@@ -1854,9 +1854,9 @@ static int check_follower_present(struct hda_codec *codec,
+ /* call kctl->put with the given value(s) */
+ static int put_kctl_with_value(struct snd_kcontrol *kctl, int val)
+ {
+-	struct snd_ctl_elem_value *ucontrol __free(kfree) = NULL;
++	struct snd_ctl_elem_value *ucontrol __free(kfree) =
++		kzalloc(sizeof(*ucontrol), GFP_KERNEL);
+ 
+-	ucontrol = kzalloc(sizeof(*ucontrol), GFP_KERNEL);
+ 	if (!ucontrol)
+ 		return -ENOMEM;
+ 	ucontrol->value.integer.value[0] = val;
+diff --git a/sound/hda/common/sysfs.c b/sound/hda/common/sysfs.c
+index f8c8483fd5e5f..bedf10b308850 100644
+--- a/sound/hda/common/sysfs.c
++++ b/sound/hda/common/sysfs.c
+@@ -299,7 +299,6 @@ static void remove_trail_spaces(char *str)
+ 
+ static int parse_hints(struct hda_codec *codec, const char *buf)
+ {
+-	char *key __free(kfree) = NULL;
+ 	char *val;
+ 	struct hda_hint *hint;
+ 
+@@ -308,7 +307,9 @@ static int parse_hints(struct hda_codec *codec, const char *buf)
+ 		return 0;
+ 	if (*buf == '=')
+ 		return -EINVAL;
+-	key = kstrndup_noeol(buf, 1024);
++
++	char *key __free(kfree) =
++		kstrndup_noeol(buf, 1024);
+ 	if (!key)
+ 		return -ENOMEM;
+ 	/* extract key and val */
 -- 
 2.51.0
 
