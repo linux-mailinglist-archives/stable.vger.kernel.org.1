@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218780-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNrxKQOenmk5WgQAu9opvQ
-	(envelope-from <stable+bounces-219436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:19 +0100
+	id wOeCJeZVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218780-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7FE192B53
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC39190141
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1611C304671E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5F77E30B8C22
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A822E313E3D;
-	Wed, 25 Feb 2026 06:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C698326E6F8;
+	Wed, 25 Feb 2026 01:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIKAcmiP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFzqXsbG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3D530F53B;
-	Wed, 25 Feb 2026 06:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7601D5141;
+	Wed, 25 Feb 2026 01:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002714; cv=none; b=hQaekfcmIV8Xhz3BKtxLywh/geGB0cEFl3d4GU71WeRYcXElHhdn3Bu5qd3OUA31Xp14dyf8uIik3mnfR1VQsROfkAzbZ3eMmIkNfo5qq1aUI7nf6IclU2EvW081ob2Ic+V6fOzZPLLiyXSHAEF78kFtDIA79FA2QNsJkzB6TgA=
+	t=1771983653; cv=none; b=n1S3+Ma7FyNljoJdxzUDUcBaiLnxGzD1DkBCna3TdTgixCyQ84lj3/vpFUu8m23dkm0qerGQYui2OoBR/NJpr3axc2s6aIu4nDcVovOm6Ty0cvzbaxPEBmK9pXeuBZjG3AOnO65JQNOuoxSEUdNjEn9rgpZGoIPZgLUk6lO/QJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002714; c=relaxed/simple;
-	bh=3eq+6kDWSmF+Aj8XL3qEt+45Lmb+8044A2dp9X4S/ZU=;
+	s=arc-20240116; t=1771983653; c=relaxed/simple;
+	bh=+2X4W8iFPo43N15eqBLVAfJughp7cpJ+9LAqx+udoHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPwl44hqFIcOv5FdGT1hpTxO114nZ/OAyJ+ZgHijb8n8D2njE+tOmHRsf/7hL+oPAeuVHvRGcTScbkcN12iuyIiryVo6c/9zSHDofOJfacgPKTRDGg6wGOqfiuenykgx3o0592fF46TybruSwHOwdtWlZpx0O05TjQXPgXDLyRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIKAcmiP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45477C116D0;
-	Wed, 25 Feb 2026 06:58:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QFasYAA2PN6pf9eH51jdo7FlOEixlC2qCSIc/FJd2IF1Az4MBjDUnotPPg4pPFIbeF7upOGOsy2MW13r6Lfy8zbYQ5zSHpg6eMCGfiPdFMv8LZxmV7sGDvgp6j2ea9OPVOIM8E8VW0Q/wIEf3VkIqXc6YqP0zOBhdzrPIQ/lWt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFzqXsbG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E8DC116D0;
+	Wed, 25 Feb 2026 01:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002714;
-	bh=3eq+6kDWSmF+Aj8XL3qEt+45Lmb+8044A2dp9X4S/ZU=;
+	s=korg; t=1771983653;
+	bh=+2X4W8iFPo43N15eqBLVAfJughp7cpJ+9LAqx+udoHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIKAcmiPg3M04nUp6QM9yEFm1+EPWf0WA6NfMv85YqSwyHAEplPkN30O9y+bJW/Gn
-	 5B0TRWt6TX8xAJN0sbQ4xmKM3QhVZX1zA0dZzn9IXiPU2jphzY8ijnmis/ApriXdej
-	 rPTE4ajs4+MNbxQ4D4DJedLtiTlB324CklsXUB4U=
+	b=vFzqXsbGAIC9t7QvwoBmHC7GwTvWSLluBrFDkxSR8sCptueo4SkDWn0Bp1dLsbIdq
+	 vI8ltNl9DhmF8IJhwzJGdsAtBq0tU9CkMAL8k0G7iPugFzOReznVpTneQ4yiMdL4B7
+	 s6bZBhKNPByRyu4xlQlYgb5nUAi8S6wCsQasmIyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyi Guo <n7l8m4@u.northwestern.edu>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 521/641] net: mscc: ocelot: add missing lock protection in ocelot_port_xmit_inj()
-Date: Tue, 24 Feb 2026 17:24:07 -0800
-Message-ID: <20260225012401.153756617@linuxfoundation.org>
+Subject: [PATCH 6.19 739/781] drm/amd/display: Use DCE 6 link encoder for DCE 6 analog connectors
+Date: Tue, 24 Feb 2026 17:24:08 -0800
+Message-ID: <20260225012417.853885104@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +64,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219436-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218780-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4E7FE192B53
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: BAC39190141
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 026f6513c5880c2c89e38ad66bbec2868f978605 ]
+[ Upstream commit 2de34fbcab2063cd3d52e5872a801b9a5fc755d0 ]
 
-ocelot_port_xmit_inj() calls ocelot_can_inject() and
-ocelot_port_inject_frame() without holding the injection group lock.
-Both functions contain lockdep_assert_held() for the injection lock,
-and the correct caller felix_port_deferred_xmit() properly acquires
-the lock using ocelot_lock_inj_grp() before calling these functions.
+DCE 6 should use the DCE 6 specific link encoder.
+This was a copy paste mistake.
 
-Add ocelot_lock_inj_grp()/ocelot_unlock_inj_grp() around the register
-injection path to fix the missing lock protection. The FDMA path is not
-affected as it uses its own locking mechanism.
-
-Fixes: c5e12ac3beb0 ("net: mscc: ocelot: serialize access to the injection/extraction groups")
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20260208225602.1339325-4-n7l8m4@u.northwestern.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0fbe321a93ce ("drm/amd/display: Implement DCE analog link encoders (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mscc/ocelot_net.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot_net.c b/drivers/net/ethernet/mscc/ocelot_net.c
-index a7966c174b2e2..1b82693204640 100644
---- a/drivers/net/ethernet/mscc/ocelot_net.c
-+++ b/drivers/net/ethernet/mscc/ocelot_net.c
-@@ -597,14 +597,22 @@ static netdev_tx_t ocelot_port_xmit_inj(struct sk_buff *skb,
- 	int port = priv->port.index;
- 	u32 rew_op = 0;
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+index f0152933bee2c..068fb1df8d889 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+@@ -734,7 +734,7 @@ static struct link_encoder *dce60_link_encoder_create(
+ 		return NULL;
  
--	if (!ocelot_can_inject(ocelot, 0))
-+	ocelot_lock_inj_grp(ocelot, 0);
-+
-+	if (!ocelot_can_inject(ocelot, 0)) {
-+		ocelot_unlock_inj_grp(ocelot, 0);
- 		return NETDEV_TX_BUSY;
-+	}
- 
--	if (!ocelot_xmit_timestamp(ocelot, port, skb, &rew_op))
-+	if (!ocelot_xmit_timestamp(ocelot, port, skb, &rew_op)) {
-+		ocelot_unlock_inj_grp(ocelot, 0);
- 		return NETDEV_TX_OK;
-+	}
- 
- 	ocelot_port_inject_frame(ocelot, port, 0, rew_op, skb);
- 
-+	ocelot_unlock_inj_grp(ocelot, 0);
-+
- 	consume_skb(skb);
- 
- 	return NETDEV_TX_OK;
+ 	if (enc_init_data->connector.id == CONNECTOR_ID_VGA) {
+-		dce110_link_encoder_construct(enc110,
++		dce60_link_encoder_construct(enc110,
+ 			enc_init_data,
+ 			&link_enc_feature,
+ 			&link_enc_regs[ENGINE_ID_DACA],
 -- 
 2.51.0
 
