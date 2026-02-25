@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLVMBKpUnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218902-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:22 +0100
+	id oAvoEVlTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D402F18FD74
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4A918F7DA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 58A1330C9620
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C64D312DCAA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A550283FDB;
-	Wed, 25 Feb 2026 01:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4885218DB2A;
+	Wed, 25 Feb 2026 01:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djm16NaE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUK+/sG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D291251795;
-	Wed, 25 Feb 2026 01:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B73A1D5ABA;
+	Wed, 25 Feb 2026 01:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983794; cv=none; b=BLWMT0C3uLJTAT5fW3YqXWuvRocs3jv0IWTfbcXqt3GnNCG+r7zpBucSWAcuyUzFg9AxZs1jeFecWbhrbsZ8adW4VwlVQ9LAh20z8ZOyKYJYtsV6Z8kMQdJn3SmvWdg1ppTagfY1RePlymYpbQytsk8RtjOsA/yACjaqWYYC3pM=
+	t=1771983143; cv=none; b=EbW1e/xaOkC/P2Eftrynh9FnW4nY1p3nA58/EZ1SKVSjuk7JkDUv3OkFcHHqtMDnkN76axnmw7DT9JJ9S/izGD5yn4wRTjoXb1gMEaUML81OnpOBsGIYRbVrv6NqtJiIp/6MiPZe1e0F2phpsDNFaExvZQlLG0zVrO+QaaxT/DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983794; c=relaxed/simple;
-	bh=NKfKuxQWPAbM2bAdbsghMkEjXeGBeZNKeF6jYIeBsnk=;
+	s=arc-20240116; t=1771983143; c=relaxed/simple;
+	bh=arfcpn1l/DK1bmG8h6fcWiBemxbFOkFbVtlLSjQJAaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IieWx5+pf/bhShoShqEmPiH4KWYcLdRr/RB56AY+yOFtkt88Ax/GnkN+z7zPc2Bl9wLq/v9ovaqNCHK12ZKTpxb/UYORpxaJ7fG/gBr8VzjFASKj+OFTbcPJp/SUIF/OqE2YRcfbiUbxd7K2rjHiobZ7Yge08GvTdq8Ld+PP6ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djm16NaE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D248BC116D0;
-	Wed, 25 Feb 2026 01:43:13 +0000 (UTC)
+	 MIME-Version; b=lj6i0ZNpGcELyFv+gsvSuKHIUjHegG8IEpSlQP8yxnRJSpGGDVd0ESVJ3xty1NgQ/YefuH+uZR5cUjvexKqv8mvJJjkhakYGJmBaY3XItgOyf3yoiv+tUVrKQ2kKFu+6TyGpLI22rYN94X9CWLIZGata9Q7+JWIukbsDTROr6Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUK+/sG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2D9C19423;
+	Wed, 25 Feb 2026 01:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983794;
-	bh=NKfKuxQWPAbM2bAdbsghMkEjXeGBeZNKeF6jYIeBsnk=;
+	s=korg; t=1771983142;
+	bh=arfcpn1l/DK1bmG8h6fcWiBemxbFOkFbVtlLSjQJAaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=djm16NaEO7ZtHQH0R17lXVBZcrrDJxEGgshsBHlJRlq4W8qrU3A8W8BvVt7tfIkyB
-	 mbWrwyApo94Ybn8lOu5MsjXzGPxj97JIvdUmOnVnvf/REsPKKbd+cexCsKl1n5FL7M
-	 Fb3ly2rqVGoe/dleUMX/9ZkXX7vFYbRwJ4168pbE=
+	b=SUK+/sG3fkcnnPVs90WRg8s8aDqxvgqYMdhX12T+f4PLt96nrTGXIySTIeoSjshC2
+	 rGZH7uLWoU66L/6sP0TVSBJcGhEnkFpp9ranp4LM9qQ/r7vRERYCm5aYGbSJ3/tDNM
+	 xFwKwkF0iR6PNKSi0d+SZ1bOraXElLJoc03Ge5wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Vinod Govindapillai <vinod.govindapillai@intel.com>,
+	Uma Shankar <uma.shankar@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 079/641] crypto: hisilicon/zip - support fallback for zip
+Subject: [PATCH 6.19 296/781] drm/i915/display: fix the pixel normalization handling for xe3p_lpd
 Date: Tue, 24 Feb 2026 17:16:45 -0800
-Message-ID: <20260225012350.988184374@linuxfoundation.org>
+Message-ID: <20260225012406.968584260@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,180 +70,189 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218336-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218902-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email]
-X-Rspamd-Queue-Id: D402F18FD74
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: BC4A918F7DA
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 
-[ Upstream commit 73398f85a430cfebc2ff06ab836d6d9eb1484c79 ]
+[ Upstream commit 3e28a67a85f9b569066f6dfcddadb39294c0c9d4 ]
 
-When the hardware queue resource busy(no shareable queue)
-or memery alloc fail in initialization of acomp_alg, use
-soft algorithm to complete the work.
+Pixel normalizer is enabled with normalization factor as 1.0 for
+FP16 formats in order to support FBC for those formats in xe3p_lpd.
+Previously pixel normalizer gets disabled during the plane disable
+routine. But there could be plane format settings without explicitly
+calling the plane disable in-between and we could endup keeping the
+pixel normalizer enabled for formats which we don't require that.
+This is causing crc mismatches in yuv formats and FIFO underruns in
+planar formats like NV12. Fix this by updating the pixel normalizer
+configuration based on the pixel formats explicitly during the plane
+settings arm calls itself - enable it for FP16 and disable it for
+other formats in HDR capable planes.
 
-Fixes: 1a9e6f59caee ("crypto: hisilicon/zip - remove zlib and gzip")
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+v2: avoid redundant pixel normalization setting updates
+
+v3: moved the normalization factor definition to intel_fbc.c and some
+    updates to comments
+
+v4: simplified the pixel normalizer setting handling
+
+Fixes: 5298eea7ed20 ("drm/i915/xe3p_lpd: use pixel normalizer for fp16 formats for FBC")
+Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Link: https://patch.msgid.link/20260130095919.107805-1-vinod.govindapillai@intel.com
+(cherry picked from commit c0dc68f4e2aa7eddb9ec6d95931f9576d8fe7334)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/Kconfig          |  1 +
- drivers/crypto/hisilicon/zip/zip_crypto.c | 50 +++++++++++++++++++----
- 2 files changed, 43 insertions(+), 8 deletions(-)
+ .../drm/i915/display/intel_display_device.h   |  1 +
+ drivers/gpu/drm/i915/display/intel_fbc.c      | 10 +++---
+ drivers/gpu/drm/i915/display/intel_fbc.h      |  3 +-
+ .../drm/i915/display/skl_universal_plane.c    | 36 +++++++++----------
+ 4 files changed, 26 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/Kconfig b/drivers/crypto/hisilicon/Kconfig
-index 4835bdebdbb38..a0cb1a8186ac9 100644
---- a/drivers/crypto/hisilicon/Kconfig
-+++ b/drivers/crypto/hisilicon/Kconfig
-@@ -57,6 +57,7 @@ config CRYPTO_DEV_HISI_ZIP
- 	depends on UACCE || UACCE=n
- 	depends on ACPI
- 	select CRYPTO_DEV_HISI_QM
-+	select CRYPTO_DEFLATE
- 	help
- 	  Support for HiSilicon ZIP Driver
- 
-diff --git a/drivers/crypto/hisilicon/zip/zip_crypto.c b/drivers/crypto/hisilicon/zip/zip_crypto.c
-index 2f9035c016f3f..5fc2ed9d5eef3 100644
---- a/drivers/crypto/hisilicon/zip/zip_crypto.c
-+++ b/drivers/crypto/hisilicon/zip/zip_crypto.c
-@@ -84,6 +84,7 @@ struct hisi_zip_sqe_ops {
- struct hisi_zip_ctx {
- 	struct hisi_zip_qp_ctx qp_ctx[HZIP_CTX_Q_NUM];
- 	const struct hisi_zip_sqe_ops *ops;
-+	bool fallback;
- };
- 
- static int sgl_sge_nr_set(const char *val, const struct kernel_param *kp)
-@@ -110,6 +111,24 @@ static u16 sgl_sge_nr = HZIP_SGL_SGE_NR;
- module_param_cb(sgl_sge_nr, &sgl_sge_nr_ops, &sgl_sge_nr, 0444);
- MODULE_PARM_DESC(sgl_sge_nr, "Number of sge in sgl(1-255)");
- 
-+static int hisi_zip_fallback_do_work(struct acomp_req *acomp_req, bool is_decompress)
-+{
-+	ACOMP_FBREQ_ON_STACK(fbreq, acomp_req);
-+	int ret;
-+
-+	if (!is_decompress)
-+		ret = crypto_acomp_compress(fbreq);
-+	else
-+		ret = crypto_acomp_decompress(fbreq);
-+	if (ret) {
-+		pr_err("failed to do fallback work, ret=%d\n", ret);
-+		return ret;
-+	}
-+
-+	acomp_req->dlen = fbreq->dlen;
-+	return ret;
-+}
-+
- static struct hisi_zip_req *hisi_zip_create_req(struct hisi_zip_qp_ctx *qp_ctx,
- 						struct acomp_req *req)
- {
-@@ -313,10 +332,15 @@ static int hisi_zip_acompress(struct acomp_req *acomp_req)
- {
- 	struct hisi_zip_ctx *ctx = crypto_tfm_ctx(acomp_req->base.tfm);
- 	struct hisi_zip_qp_ctx *qp_ctx = &ctx->qp_ctx[HZIP_QPC_COMP];
--	struct device *dev = &qp_ctx->qp->qm->pdev->dev;
- 	struct hisi_zip_req *req;
-+	struct device *dev;
- 	int ret;
- 
-+	if (ctx->fallback)
-+		return hisi_zip_fallback_do_work(acomp_req, 0);
-+
-+	dev = &qp_ctx->qp->qm->pdev->dev;
-+
- 	req = hisi_zip_create_req(qp_ctx, acomp_req);
- 	if (IS_ERR(req))
- 		return PTR_ERR(req);
-@@ -334,10 +358,15 @@ static int hisi_zip_adecompress(struct acomp_req *acomp_req)
- {
- 	struct hisi_zip_ctx *ctx = crypto_tfm_ctx(acomp_req->base.tfm);
- 	struct hisi_zip_qp_ctx *qp_ctx = &ctx->qp_ctx[HZIP_QPC_DECOMP];
--	struct device *dev = &qp_ctx->qp->qm->pdev->dev;
- 	struct hisi_zip_req *req;
-+	struct device *dev;
- 	int ret;
- 
-+	if (ctx->fallback)
-+		return hisi_zip_fallback_do_work(acomp_req, 1);
-+
-+	dev = &qp_ctx->qp->qm->pdev->dev;
-+
- 	req = hisi_zip_create_req(qp_ctx, acomp_req);
- 	if (IS_ERR(req))
- 		return PTR_ERR(req);
-@@ -546,7 +575,7 @@ static int hisi_zip_acomp_init(struct crypto_acomp *tfm)
- 	ret = hisi_zip_ctx_init(ctx, COMP_NAME_TO_TYPE(alg_name), tfm->base.node);
- 	if (ret) {
- 		pr_err("failed to init ctx (%d)!\n", ret);
--		return ret;
-+		goto switch_to_soft;
+diff --git a/drivers/gpu/drm/i915/display/intel_display_device.h b/drivers/gpu/drm/i915/display/intel_display_device.h
+index b559ef43d5470..6944d081f0ad3 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_device.h
++++ b/drivers/gpu/drm/i915/display/intel_display_device.h
+@@ -189,6 +189,7 @@ struct intel_display_platforms {
+ #define HAS_MSO(__display)		(DISPLAY_VER(__display) >= 12)
+ #define HAS_OVERLAY(__display)		(DISPLAY_INFO(__display)->has_overlay)
+ #define HAS_PIPEDMC(__display)		(DISPLAY_VER(__display) >= 12)
++#define HAS_PIXEL_NORMALIZER(__display)	(DISPLAY_VER(__display) >= 35)
+ #define HAS_PSR(__display)		(DISPLAY_INFO(__display)->has_psr)
+ #define HAS_PSR_HW_TRACKING(__display)	(DISPLAY_INFO(__display)->has_psr_hw_tracking)
+ #define HAS_PSR2_SEL_FETCH(__display)	(DISPLAY_VER(__display) >= 12)
+diff --git a/drivers/gpu/drm/i915/display/intel_fbc.c b/drivers/gpu/drm/i915/display/intel_fbc.c
+index 437d2fda20a7e..8d387709f25cc 100644
+--- a/drivers/gpu/drm/i915/display/intel_fbc.c
++++ b/drivers/gpu/drm/i915/display/intel_fbc.c
+@@ -1120,13 +1120,15 @@ static bool xe3p_lpd_fbc_pixel_format_is_valid(const struct intel_plane_state *p
  	}
- 
- 	dev = &ctx->qp_ctx[0].qp->qm->pdev->dev;
-@@ -571,16 +600,20 @@ static int hisi_zip_acomp_init(struct crypto_acomp *tfm)
- 	hisi_zip_release_req_q(ctx);
- err_ctx_exit:
- 	hisi_zip_ctx_exit(ctx);
--	return ret;
-+switch_to_soft:
-+	ctx->fallback = true;
-+	return 0;
  }
  
- static void hisi_zip_acomp_exit(struct crypto_acomp *tfm)
+-bool
+-intel_fbc_is_enable_pixel_normalizer(const struct intel_plane_state *plane_state)
++bool intel_fbc_need_pixel_normalizer(const struct intel_plane_state *plane_state)
  {
- 	struct hisi_zip_ctx *ctx = crypto_tfm_ctx(&tfm->base);
+ 	struct intel_display *display = to_intel_display(plane_state);
  
--	hisi_zip_release_sgl_pool(ctx);
--	hisi_zip_release_req_q(ctx);
--	hisi_zip_ctx_exit(ctx);
-+	if (!ctx->fallback) {
-+		hisi_zip_release_sgl_pool(ctx);
-+		hisi_zip_release_req_q(ctx);
-+		hisi_zip_ctx_exit(ctx);
-+	}
+-	return DISPLAY_VER(display) >= 35 &&
+-	       xe3p_lpd_fbc_fp16_format_is_valid(plane_state);
++	if (HAS_PIXEL_NORMALIZER(display) &&
++	    xe3p_lpd_fbc_fp16_format_is_valid(plane_state))
++		return true;
++
++	return false;
  }
  
- static struct acomp_alg hisi_zip_acomp_deflate = {
-@@ -591,7 +624,8 @@ static struct acomp_alg hisi_zip_acomp_deflate = {
- 	.base			= {
- 		.cra_name		= "deflate",
- 		.cra_driver_name	= "hisi-deflate-acomp",
--		.cra_flags		= CRYPTO_ALG_ASYNC,
-+		.cra_flags		= CRYPTO_ALG_ASYNC |
-+					  CRYPTO_ALG_NEED_FALLBACK,
- 		.cra_module		= THIS_MODULE,
- 		.cra_priority		= HZIP_ALG_PRIORITY,
- 		.cra_ctxsize		= sizeof(struct hisi_zip_ctx),
+ static bool pixel_format_is_valid(const struct intel_plane_state *plane_state)
+diff --git a/drivers/gpu/drm/i915/display/intel_fbc.h b/drivers/gpu/drm/i915/display/intel_fbc.h
+index 91424563206a3..7e2416b29a0ea 100644
+--- a/drivers/gpu/drm/i915/display/intel_fbc.h
++++ b/drivers/gpu/drm/i915/display/intel_fbc.h
+@@ -53,7 +53,6 @@ void intel_fbc_prepare_dirty_rect(struct intel_atomic_state *state,
+ 				  struct intel_crtc *crtc);
+ void intel_fbc_dirty_rect_update_noarm(struct intel_dsb *dsb,
+ 				       struct intel_plane *plane);
+-bool
+-intel_fbc_is_enable_pixel_normalizer(const struct intel_plane_state *plane_state);
++bool intel_fbc_need_pixel_normalizer(const struct intel_plane_state *plane_state);
+ 
+ #endif /* __INTEL_FBC_H__ */
+diff --git a/drivers/gpu/drm/i915/display/skl_universal_plane.c b/drivers/gpu/drm/i915/display/skl_universal_plane.c
+index ee8e24497d2cf..ed14b9ea2ad2d 100644
+--- a/drivers/gpu/drm/i915/display/skl_universal_plane.c
++++ b/drivers/gpu/drm/i915/display/skl_universal_plane.c
+@@ -892,23 +892,20 @@ static void icl_plane_disable_sel_fetch_arm(struct intel_dsb *dsb,
+ 	intel_de_write_dsb(display, dsb, SEL_FETCH_PLANE_CTL(pipe, plane->id), 0);
+ }
+ 
+-static void x3p_lpd_plane_update_pixel_normalizer(struct intel_dsb *dsb,
+-						  struct intel_plane *plane,
+-						  bool enable)
++static bool plane_has_normalizer(struct intel_plane *plane)
+ {
+ 	struct intel_display *display = to_intel_display(plane);
+-	enum intel_fbc_id fbc_id = skl_fbc_id_for_pipe(plane->pipe);
+-	u32 val;
+ 
+-	/* Only HDR planes have pixel normalizer and don't matter if no FBC */
+-	if (!skl_plane_has_fbc(display, fbc_id, plane->id))
+-		return;
++	return HAS_PIXEL_NORMALIZER(display) && icl_is_hdr_plane(display, plane->id);
++}
+ 
+-	val = enable ? PLANE_PIXEL_NORMALIZE_NORM_FACTOR(PLANE_PIXEL_NORMALIZE_NORM_FACTOR_1_0) |
+-		       PLANE_PIXEL_NORMALIZE_ENABLE : 0;
++static u32 pixel_normalizer_value(const struct intel_plane_state *plane_state)
++{
++	if (!intel_fbc_need_pixel_normalizer(plane_state))
++		return 0;
+ 
+-	intel_de_write_dsb(display, dsb,
+-			   PLANE_PIXEL_NORMALIZE(plane->pipe, plane->id), val);
++	return PLANE_PIXEL_NORMALIZE_ENABLE |
++	       PLANE_PIXEL_NORMALIZE_NORM_FACTOR(PLANE_PIXEL_NORMALIZE_NORM_FACTOR_1_0);
+ }
+ 
+ static void
+@@ -927,8 +924,9 @@ icl_plane_disable_arm(struct intel_dsb *dsb,
+ 
+ 	icl_plane_disable_sel_fetch_arm(dsb, plane, crtc_state);
+ 
+-	if (DISPLAY_VER(display) >= 35)
+-		x3p_lpd_plane_update_pixel_normalizer(dsb, plane, false);
++	if (plane_has_normalizer(plane))
++		intel_de_write_dsb(display, dsb,
++				   PLANE_PIXEL_NORMALIZE(plane->pipe, plane->id), 0);
+ 
+ 	intel_de_write_dsb(display, dsb, PLANE_CTL(pipe, plane_id), 0);
+ 	intel_de_write_dsb(display, dsb, PLANE_SURF(pipe, plane_id), 0);
+@@ -1677,11 +1675,13 @@ icl_plane_update_arm(struct intel_dsb *dsb,
+ 
+ 	/*
+ 	 * In order to have FBC for fp16 formats pixel normalizer block must be
+-	 * active. Check if pixel normalizer block need to be enabled for FBC.
+-	 * If needed, use normalization factor as 1.0 and enable the block.
++	 * active. For FP16 formats, use normalization factor as 1.0 and enable
++	 * the block.
+ 	 */
+-	if (intel_fbc_is_enable_pixel_normalizer(plane_state))
+-		x3p_lpd_plane_update_pixel_normalizer(dsb, plane, true);
++	if (plane_has_normalizer(plane))
++		intel_de_write_dsb(display, dsb,
++				   PLANE_PIXEL_NORMALIZE(plane->pipe, plane->id),
++				   pixel_normalizer_value(plane_state));
+ 
+ 	/*
+ 	 * The control register self-arms if the plane was previously
 -- 
 2.51.0
 
