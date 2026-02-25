@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219044-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHqeBTJUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:22 +0100
+	id YCitLsJYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-219044-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B01F18FC1A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CF01907CC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8635B308F83D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F218E309D6E5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4925324677D;
-	Wed, 25 Feb 2026 01:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D093319D891;
+	Wed, 25 Feb 2026 01:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivORkHBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq5JOunl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D95D18B0A;
-	Wed, 25 Feb 2026 01:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9314722127B;
+	Wed, 25 Feb 2026 01:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983311; cv=none; b=YNY5w6Kd6YNKnE3ZjjTsOvTAyQYlxfw8wRV+NS9EhMvdN9o22UgTVz7oY+IP3qtYHFISu3Bql5acmbsuAcd6tfggjyKK5Px2v4VHofNbIAIm2Bx/3DaOirGvglwoD50zgIUhxdYDdhcKo3svqwHH6dZ1Rs4kNG8pHd/uLSI9oOo=
+	t=1771983964; cv=none; b=kwRKcqVwNpc9wDU6jvYHrvhJ0BDS9Y5wEyrUIlyODy+d81vJbJVDDrOdnuDkUUSrSWlxyc3Vwm/3wFwFwzA1dJnfJyxV3jEv/28ikmTNzUkmRTRhAYkLDnMgQVdtpRJlYztlTYwJBqCsov7OTigIEX721wTFGQTN+XKeilZHBLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983311; c=relaxed/simple;
-	bh=irDwe8yRMji4YwO6LAsWlipahdLhe5e/ZsQnEBK4dyU=;
+	s=arc-20240116; t=1771983964; c=relaxed/simple;
+	bh=ChSQstuvxqTEE34sY2tL3Mtpwwj3YxuUTk3zoc6hCMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsSmdI+Xknmeiv5ZpIJN0XnzeNPmVi4wCDwqjHrcOwaNU/c6mpReQv/wlpkD2ADbJjM0uQguv/zBoCUiTtZxHzwllQq2ZvG6za763wz6cGWPnId9GVBVvlS1kqrDoyHdtsbW8wVwEey5eTCSaf0qWq+S0Iv74mIXPkUWnLbe6Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivORkHBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDCBC116D0;
-	Wed, 25 Feb 2026 01:35:10 +0000 (UTC)
+	 MIME-Version; b=GST6Gg5c+qTh5nthtuNX+2JsLBtbJWG5OEkLUYuu3mM9nRphovYki+8PFpIyqfeb2BacT7l9iCZlJFlsEtDIAs3nOPGDgtz9heoCDJGskT4W2Vp1RADE1nPaGRe5X18p7G24sDHyo7wEplSnSHZ/djRiLLxzkKzG13SrgaSZTso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq5JOunl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A502C116D0;
+	Wed, 25 Feb 2026 01:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983310;
-	bh=irDwe8yRMji4YwO6LAsWlipahdLhe5e/ZsQnEBK4dyU=;
+	s=korg; t=1771983964;
+	bh=ChSQstuvxqTEE34sY2tL3Mtpwwj3YxuUTk3zoc6hCMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ivORkHBVkrLGk8a1Am74ad8BwpYHs9wl7P5IAIAWEssmVvFUJ1exLdZ8lSSTAaKLW
-	 kN+XSi2DQtjkFWOLMRie7bsVPvPg7p7Jl2b0qqKP87dIwsYKfCXSRIGD2u+MIwrMfk
-	 wOJfI4Z44xQiUdxy/6rV6XKPRAfQv2zPMq8l/Gnk=
+	b=Lq5JOunlOm5WIhHMYDbXPOG//0FOmnaTw9SpZ2/FJv2DrUnaQjdhW33KAx/bcxnVa
+	 V9Nf/40Lerpqv+8d59P/I1COhdBDIwm6H4dk0KAMChh10pIlUcwQnP2U7ElrzCqiI6
+	 udSAuK74bbbB4cS2kyjET3+G63z25YPGtrt8uAew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 437/781] octeontx2-pf: Unregister devlink on probe failure
+Subject: [PATCH 6.18 220/641] mm/slab: fix false lockdep warning in __kfree_rcu_sheaf()
 Date: Tue, 24 Feb 2026 17:19:06 -0800
-Message-ID: <20260225012410.421027569@linuxfoundation.org>
+Message-ID: <20260225012354.253684511@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,64 +71,158 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219044-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218482-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,marvell.com:email]
-X-Rspamd-Queue-Id: 5B01F18FC1A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qemu.org:url,oracle.com:email]
+X-Rspamd-Queue-Id: E6CF01907CC
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-[ Upstream commit 943f3b8bfbf297cf74392b50a7108ce1fe4cbd8c ]
+[ Upstream commit f8b4cd2dad097e4ea5aed3511f42b9eb771e7b19 ]
 
-When probe fails after devlink registration, the missing devlink unregister
-call causing a memory leak.
+kvfree_call_rcu() can be called while holding a raw_spinlock_t.
+Since __kfree_rcu_sheaf() may acquire a spinlock_t (which becomes a
+sleeping lock on PREEMPT_RT) and violate lock nesting rules,
+kvfree_call_rcu() bypasses the sheaves layer entirely on PREEMPT_RT.
 
-Fixes: 2da489432747 ("octeontx2-pf: devlink params support to set mcam entry count")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Link: https://patch.msgid.link/20260206182645.4032737-1-hkelam@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+However, lockdep still complains about acquiring spinlock_t while holding
+raw_spinlock_t, even on !PREEMPT_RT where spinlock_t is a spinning lock.
+This causes a false lockdep warning [1]:
+
+ =============================
+ [ BUG: Invalid wait context ]
+ 6.19.0-rc6-next-20260120 #21508 Not tainted
+ -----------------------------
+ migration/1/23 is trying to lock:
+ ffff8afd01054e98 (&barn->lock){..-.}-{3:3}, at: barn_get_empty_sheaf+0x1d/0xb0
+ other info that might help us debug this:
+ context-{5:5}
+ 3 locks held by migration/1/23:
+  #0: ffff8afd01fd89a8 (&p->pi_lock){-.-.}-{2:2}, at: __balance_push_cpu_stop+0x3f/0x200
+  #1: ffffffff9f15c5c8 (rcu_read_lock){....}-{1:3}, at: cpuset_cpus_allowed_fallback+0x27/0x250
+  #2: ffff8afd1f470be0 ((local_lock_t *)&pcs->lock){+.+.}-{3:3}, at: __kfree_rcu_sheaf+0x52/0x3d0
+ stack backtrace:
+ CPU: 1 UID: 0 PID: 23 Comm: migration/1 Not tainted 6.19.0-rc6-next-20260120 #21508 PREEMPTLAZY
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+ Stopper: __balance_push_cpu_stop+0x0/0x200 <- balance_push+0x118/0x170
+ Call Trace:
+  <TASK>
+  __dump_stack+0x22/0x30
+  dump_stack_lvl+0x60/0x80
+  dump_stack+0x19/0x24
+  __lock_acquire+0xd3a/0x28e0
+  ? __lock_acquire+0x5a9/0x28e0
+  ? __lock_acquire+0x5a9/0x28e0
+  ? barn_get_empty_sheaf+0x1d/0xb0
+  lock_acquire+0xc3/0x270
+  ? barn_get_empty_sheaf+0x1d/0xb0
+  ? __kfree_rcu_sheaf+0x52/0x3d0
+  _raw_spin_lock_irqsave+0x47/0x70
+  ? barn_get_empty_sheaf+0x1d/0xb0
+  barn_get_empty_sheaf+0x1d/0xb0
+  ? __kfree_rcu_sheaf+0x52/0x3d0
+  __kfree_rcu_sheaf+0x19f/0x3d0
+  kvfree_call_rcu+0xaf/0x390
+  set_cpus_allowed_force+0xc8/0xf0
+  [...]
+  </TASK>
+
+This wasn't triggered until sheaves were enabled for all slab caches,
+since kfree_rcu() wasn't being called with a raw spinlock held for
+caches with sheaves (vma, maple node).
+
+As suggested by Vlastimil Babka, fix this by using a lockdep map with
+LD_WAIT_CONFIG wait type to tell lockdep that acquiring spinlock_t is valid
+in this case, as those spinlocks won't be used on PREEMPT_RT.
+
+Note that kfree_rcu_sheaf_map should be acquired using _try() variant,
+otherwise the acquisition of the lockdep map itself will trigger an invalid
+wait context warning.
+
+Reported-by: Paul E. McKenney <paulmck@kernel.org>
+Closes: https://lore.kernel.org/linux-mm/c858b9af-2510-448b-9ab3-058f7b80dd42@paulmck-laptop [1]
+Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/slub.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 6b2d8559f0eb1..444bb67494ab7 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -3315,6 +3315,7 @@ static int otx2_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- err_sriov_cleannup:
- 	otx2_sriov_vfcfg_cleanup(pf);
- err_pf_sriov_init:
-+	otx2_unregister_dl(pf);
- 	otx2_shutdown_tc(pf);
- err_mcam_flow_del:
- 	otx2_mcam_flow_del(pf);
+diff --git a/mm/slub.c b/mm/slub.c
+index e01641cea143b..896421a555573 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6232,11 +6232,29 @@ static void rcu_free_sheaf(struct rcu_head *head)
+ 	free_empty_sheaf(s, sheaf);
+ }
+ 
++/*
++ * kvfree_call_rcu() can be called while holding a raw_spinlock_t. Since
++ * __kfree_rcu_sheaf() may acquire a spinlock_t (sleeping lock on PREEMPT_RT),
++ * this would violate lock nesting rules. Therefore, kvfree_call_rcu() avoids
++ * this problem by bypassing the sheaves layer entirely on PREEMPT_RT.
++ *
++ * However, lockdep still complains that it is invalid to acquire spinlock_t
++ * while holding raw_spinlock_t, even on !PREEMPT_RT where spinlock_t is a
++ * spinning lock. Tell lockdep that acquiring spinlock_t is valid here
++ * by temporarily raising the wait-type to LD_WAIT_CONFIG.
++ */
++static DEFINE_WAIT_OVERRIDE_MAP(kfree_rcu_sheaf_map, LD_WAIT_CONFIG);
++
+ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
+ {
+ 	struct slub_percpu_sheaves *pcs;
+ 	struct slab_sheaf *rcu_sheaf;
+ 
++	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT)))
++		return false;
++
++	lock_map_acquire_try(&kfree_rcu_sheaf_map);
++
+ 	if (!local_trylock(&s->cpu_sheaves->lock))
+ 		goto fail;
+ 
+@@ -6313,10 +6331,12 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
+ 	local_unlock(&s->cpu_sheaves->lock);
+ 
+ 	stat(s, FREE_RCU_SHEAF);
++	lock_map_release(&kfree_rcu_sheaf_map);
+ 	return true;
+ 
+ fail:
+ 	stat(s, FREE_RCU_SHEAF_FAIL);
++	lock_map_release(&kfree_rcu_sheaf_map);
+ 	return false;
+ }
+ 
 -- 
 2.51.0
 
