@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-219037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPBVKSNWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:39 +0100
+	id qOyMC95RnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C18D1901CC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8033018F0F6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 53F323091671
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 657903052890
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756372BE64F;
-	Wed, 25 Feb 2026 01:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A65248886;
+	Wed, 25 Feb 2026 01:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulbs7oeC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oy6KApnE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67A92C3254;
-	Wed, 25 Feb 2026 01:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773B018B0A;
+	Wed, 25 Feb 2026 01:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983956; cv=none; b=EmYVUd2+34vfVia3fsj7DgWgXVBSCbfWNkY+2aMICZeZnGfq8F0Vw3cUgkd+Em7FtPCFzLzOdL/lGSBdkGVkAb/soq61IxhafWKruMEQlEw5+wCru/o7ed+P1JPcRuUAuLXR6vCve9pduS8htATKmBcDSIq2WWMoYUXtCtPEFiU=
+	t=1771983298; cv=none; b=sQ/r8cSvCrVUbYBSKzjwLZixZtNlsYXSOZ4xuOR1gmtBC1uGdHArD4k2tY874LnGDNEFwjvemYAwE3g5SbtxLHzG9MmfDL5yGHzD5EpIuvghuYhYfKCNypA4u1CmYasSnXzhnPdC348fp4wQ34tIcIU7PVP6By6L3IZ1mMhS+s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983956; c=relaxed/simple;
-	bh=0IvimZMHDeHZH8BnnQvrrU9AEKvElt/qTFlEufIjh2Y=;
+	s=arc-20240116; t=1771983298; c=relaxed/simple;
+	bh=xjK0XPtmbEtXoxlbUvaEaMHcizM0X/B3164r3yo8bkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYXKnRLk/uS2f/lu2tKHvHFY79v7/Gim31FuSRqPGpdrLNdQh5x0xfDAqPYRWcnH+znMUcXrW1xAMvW4rLDXYGV2jtILT7caGB926Ere6SlgbQ03QwDxJSi6somfWEb5JxkUThTmYpxlj9ZtJ2tRVhEDjl8zhrZJGLb1rlGgDtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulbs7oeC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89456C19423;
-	Wed, 25 Feb 2026 01:45:55 +0000 (UTC)
+	 MIME-Version; b=rBWx4+aBsCuW6RcYayS7p3TS2mOVIwzrYS2qS35qEElZgS4lcM5ubv2poaqs95dudUjuw0n48fTZJ9Ipr00CAAmhby10zsulNnOcituSl742IL/5XPRqIDWN6CdClYGdCU3X5p3Uu5i7bFo1O3NAZ5nuJZvYAILYNyz1E0tumPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oy6KApnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F886C116D0;
+	Wed, 25 Feb 2026 01:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983955;
-	bh=0IvimZMHDeHZH8BnnQvrrU9AEKvElt/qTFlEufIjh2Y=;
+	s=korg; t=1771983298;
+	bh=xjK0XPtmbEtXoxlbUvaEaMHcizM0X/B3164r3yo8bkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulbs7oeCgqC+ecPDkz8EnJzXzYX4GxmSotoJqT3fq758kzsYqOlCeIoB4lMI1J9ZV
-	 Ga4YSMgHteFAr/ySRwXM4ia63ONaYqb+PWwoghjG1S4mDD3es95ZVR5YqorWPE/vmG
-	 Y283gS3tDmrow20gkFdWytfK8HS2NFyNGdhO9h7w=
+	b=oy6KApnEHxDhADUfyqIlKqiDNeVUaFA7xIWfc1cg7PH5qQEoiEd1Hha7D9jA6ZDNF
+	 FGKtkjoArOXwNeArsinem3ww1VUkKcxwO4l/sBLhd3DaVwFMrFdNvG2GGX4OnH2M9O
+	 ZqUYA8KlOPK+XmKJgCfE7HZn7ykzHDGLPoUYpznk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	syzbot+827272712bd6d12c79a4@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 214/641] platform/chrome: cros_typec_switch: Dont touch struct fwnode_handle::dev
+Subject: [PATCH 6.19 431/781] serial: caif: fix use-after-free in caif_serial ldisc_close()
 Date: Tue, 24 Feb 2026 17:19:00 -0800
-Message-ID: <20260225012354.124661522@linuxfoundation.org>
+Message-ID: <20260225012410.270197394@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +67,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219037-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218471-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6C18D1901CC
+	TAGGED_RCPT(0.00)[stable,827272712bd6d12c79a4];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,huawei.com:email,shopee.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8033018F0F6
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit e1adf48853bc715f4deea074932aa1c44eb7abea ]
+[ Upstream commit 308e7e4d0a846359685f40aade023aee7b27284c ]
 
-The 'dev' field in struct fwnode is special and related to device links,
-There no driver should use it for printing messages. Fix incorrect use
-of private field.
+There is a use-after-free bug in caif_serial where handle_tx() may
+access ser->tty after the tty has been freed.
 
-Fixes: affc804c44c8 ("platform/chrome: cros_typec_switch: Add switch driver")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20260120131413.1697891-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+The race condition occurs between ldisc_close() and packet transmission:
+
+    CPU 0 (close)                     CPU 1 (xmit)
+    -------------                     ------------
+    ldisc_close()
+      tty_kref_put(ser->tty)
+      [tty may be freed here]
+                     <-- race window -->
+                                      caif_xmit()
+                                        handle_tx()
+                                          tty = ser->tty  // dangling ptr
+                                          tty->ops->write() // UAF!
+      schedule_work()
+        ser_release()
+          unregister_netdevice()
+
+The root cause is that tty_kref_put() is called in ldisc_close() while
+the network device is still active and can receive packets.
+
+Since ser and tty have a 1:1 binding relationship with consistent
+lifecycles (ser is allocated in ldisc_open and freed in ser_release
+via unregister_netdevice, and each ser binds exactly one tty), we can
+safely defer the tty reference release to ser_release() where the
+network device is unregistered.
+
+Fix this by moving tty_kref_put() from ldisc_close() to ser_release(),
+after unregister_netdevice(). This ensures the tty reference is held
+as long as the network device exists, preventing the UAF.
+
+Note: We save ser->tty before unregister_netdevice() because ser is
+embedded in netdev's private data and will be freed along with netdev
+(needs_free_netdev = true).
+
+How to reproduce: Add mdelay(500) at the beginning of ldisc_close()
+to widen the race window, then run the reproducer program [1].
+
+Note: There is a separate deadloop issue in handle_tx() when using
+PORT_UNKNOWN serial ports (e.g., /dev/ttyS3 in QEMU without proper
+serial backend). This deadloop exists even without this patch,
+and is likely caused by inconsistency between uart_write_room() and
+uart_write() in serial core. It has been addressed in a separate
+patch [2].
+
+KASAN report:
+
+==================================================================
+BUG: KASAN: slab-use-after-free in handle_tx+0x5d1/0x620
+Read of size 1 at addr ffff8881131e1490 by task caif_uaf_trigge/9929
+
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x10e/0x1f0
+ print_report+0xd0/0x630
+ kasan_report+0xe4/0x120
+ handle_tx+0x5d1/0x620
+ dev_hard_start_xmit+0x9d/0x6c0
+ __dev_queue_xmit+0x6e2/0x4410
+ packet_xmit+0x243/0x360
+ packet_sendmsg+0x26cf/0x5500
+ __sys_sendto+0x4a3/0x520
+ __x64_sys_sendto+0xe0/0x1c0
+ do_syscall_64+0xc9/0xf80
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f615df2c0d7
+
+Allocated by task 9930:
+
+Freed by task 64:
+
+Last potentially related work creation:
+
+The buggy address belongs to the object at ffff8881131e1000
+ which belongs to the cache kmalloc-cg-2k of size 2048
+The buggy address is located 1168 bytes inside of
+ freed 2048-byte region [ffff8881131e1000, ffff8881131e1800)
+
+The buggy address belongs to the physical page:
+page_owner tracks the page as allocated
+page last free pid 9778 tgid 9778 stack trace:
+
+Memory state around the buggy address:
+ ffff8881131e1380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8881131e1400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff8881131e1480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                         ^
+ ffff8881131e1500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff8881131e1580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+[1]: https://gist.github.com/mrpre/f683f244544f7b11e7fa87df9e6c2eeb
+[2]: https://lore.kernel.org/linux-serial/20260204074327.226165-1-jiayuan.chen@linux.dev/T/#u
+
+Reported-by: syzbot+827272712bd6d12c79a4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a4a7550611e234f5@google.com/T/
+Fixes: 56e0ef527b18 ("drivers/net: caif: fix wrong rtnl_is_locked() usage")
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+Link: https://patch.msgid.link/20260206074450.154267-1-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_typec_switch.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/caif/caif_serial.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/chrome/cros_typec_switch.c b/drivers/platform/chrome/cros_typec_switch.c
-index 8d7c34abb0a12..d8a28d4e51a85 100644
---- a/drivers/platform/chrome/cros_typec_switch.c
-+++ b/drivers/platform/chrome/cros_typec_switch.c
-@@ -230,20 +230,20 @@ static int cros_typec_register_switches(struct cros_typec_switch_data *sdata)
+diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
+index c398ac42eae90..b90890030751f 100644
+--- a/drivers/net/caif/caif_serial.c
++++ b/drivers/net/caif/caif_serial.c
+@@ -284,6 +284,7 @@ static void ser_release(struct work_struct *work)
+ {
+ 	struct list_head list;
+ 	struct ser_device *ser, *tmp;
++	struct tty_struct *tty;
  
- 		adev = to_acpi_device_node(fwnode);
- 		if (!adev) {
--			dev_err(fwnode->dev, "Couldn't get ACPI device handle\n");
-+			dev_err(dev, "Couldn't get ACPI device handle for %pfwP\n", fwnode);
- 			ret = -ENODEV;
- 			goto err_switch;
+ 	spin_lock(&ser_lock);
+ 	list_replace_init(&ser_release_list, &list);
+@@ -292,9 +293,11 @@ static void ser_release(struct work_struct *work)
+ 	if (!list_empty(&list)) {
+ 		rtnl_lock();
+ 		list_for_each_entry_safe(ser, tmp, &list, node) {
++			tty = ser->tty;
+ 			dev_close(ser->dev);
+ 			unregister_netdevice(ser->dev);
+ 			debugfs_deinit(ser);
++			tty_kref_put(tty);
  		}
+ 		rtnl_unlock();
+ 	}
+@@ -355,8 +358,6 @@ static void ldisc_close(struct tty_struct *tty)
+ {
+ 	struct ser_device *ser = tty->disc_data;
  
- 		ret = acpi_evaluate_integer(adev->handle, "_ADR", NULL, &index);
- 		if (ACPI_FAILURE(ret)) {
--			dev_err(fwnode->dev, "_ADR wasn't evaluated\n");
-+			dev_err(dev, "_ADR wasn't evaluated for %pfwP\n", fwnode);
- 			ret = -ENODATA;
- 			goto err_switch;
- 		}
- 
- 		if (index >= EC_USB_PD_MAX_PORTS) {
--			dev_err(fwnode->dev, "Invalid port index number: %llu\n", index);
-+			dev_err(dev, "%pfwP: Invalid port index number: %llu\n", fwnode, index);
- 			ret = -EINVAL;
- 			goto err_switch;
- 		}
+-	tty_kref_put(ser->tty);
+-
+ 	spin_lock(&ser_lock);
+ 	list_move(&ser->node, &ser_release_list);
+ 	spin_unlock(&ser_lock);
 -- 
 2.51.0
 
