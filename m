@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKdKEEufnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:47 +0100
+	id sCadCVdUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B633F192EE9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DB018FC7C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D178317AE8D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C886D31B30CD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B28306B21;
-	Wed, 25 Feb 2026 06:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCB225A357;
+	Wed, 25 Feb 2026 01:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFcDJNQj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgUe0lEN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9393090D4;
-	Wed, 25 Feb 2026 06:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E221D5141;
+	Wed, 25 Feb 2026 01:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002635; cv=none; b=E0yspcMJmkIiFDZVn43o7uZ4vkskZljMi25jqYvDuWs0fy9xq2Q7SxFkB82atH9aG6PtP25Gz5mwEXxPP1oV1zfjH4/QyvnX8Lxr3YLPmeQ40tjVGqGjOkOgshvUrz81PMh1nL96RvajuZBZvsMvBc11kjUDB3ziC8trhKWqTGc=
+	t=1771983509; cv=none; b=Y9J28LOjMch+8JS7ZrIgsiAGlKb6jWtw7DPU25j/lq+aRyhyNlQWwypMscGNPOD7KMNNcW3ZQy8FWHox9/LJBY+dJLgSVSolwGk7GxK/xpugv2ZN+51eFy2cHDQzE1gZraxPjKo9fjA6ku0AIpooQwaKofGG/0eOW3LFgLP2iGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002635; c=relaxed/simple;
-	bh=FNElasNoDRfpEIRLJknq6N71nkI1aTjcWaHtIc+Lk+k=;
+	s=arc-20240116; t=1771983509; c=relaxed/simple;
+	bh=MiNK1y/cjldeRorKjqniF/c0H2sTJtGk79riODAl1XY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFUr2U3WcdR4/Sfk57wAKRMZ3bcCHjJXNDFiTNf0DWdNaFWnYMGOsuxmqA1sGfWxgT58MMrZTm9cASpafJ/rZQ4A2Kkse2rVidTPWSecBTf7EW1pYgZqflhBO6INMlsf/XFFlys9PxBaPVCq3X8Q+n+vC2wZBmiNtO8xQF/2cUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFcDJNQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41C0C116D0;
-	Wed, 25 Feb 2026 06:57:14 +0000 (UTC)
+	 MIME-Version; b=teauH7TxEvkTA7smpFEdiaOkcHSoTZsYW1i5jaONHC0Otq+fqwxiHIXs6q7MqCTjCBBCnN9KwIYQxamleiUsYAxqv3tdqx876VS+zRFNxRav+H+QRBXPaWZ2Su9N34p57zNvPEMPvoqXkAfk1r+PUCRFRjlki4BiS/s2+uAtk9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgUe0lEN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BA1C19424;
+	Wed, 25 Feb 2026 01:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002634;
-	bh=FNElasNoDRfpEIRLJknq6N71nkI1aTjcWaHtIc+Lk+k=;
+	s=korg; t=1771983509;
+	bh=MiNK1y/cjldeRorKjqniF/c0H2sTJtGk79riODAl1XY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFcDJNQj3VAjVI1cqPiFOlqiEjDu+s3cB8QjslIXR64YRV690A0DU+iw63F1+eRRt
-	 XPTep8xJIIStc8EDekccOgzYpZlayWrmr4UfFVASlRp+RPjQZ8YFg7wJzGrit7Tgmj
-	 qN+/i0oPhWagoHdSUOFsN/LLNQ+JqFIW5Xf0jpx4=
+	b=WgUe0lENwlh3XK57F4rOsHgqovI00L6rS5vGjbpW4cN2wuHE8+4gimblQ6yvTSe+P
+	 FU+vdGlPrS9jTl4KEvC74Z6w3y4JJ6P05s5epoQQTiaEjSGJ8Yvdfy3rC0GTIXpy7U
+	 rMnOprQ3I59aWaClRxOG/f52y2i+qNnfHZJM0V9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	syzbot+23aee7afc440fe803545@syzkaller.appspotmail.com,
+	Baokun Li <libaokun1@huawei.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 399/641] Revert "mailbox/pcc: support mailbox management of the shared buffer"
+Subject: [PATCH 6.19 616/781] fs/ntfs3: fix ntfs_mount_options leak in ntfs_fill_super()
 Date: Tue, 24 Feb 2026 17:22:05 -0800
-Message-ID: <20260225012358.239058099@linuxfoundation.org>
+Message-ID: <20260225012414.910464549@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,287 +66,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219315-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218657-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.990];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B633F192EE9
+	TAGGED_RCPT(0.00)[stable,23aee7afc440fe803545];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 72DB018FC7C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit f82c3e62b6b8c31d8c56415bf38658f306fda4cb ]
+[ Upstream commit f7edab0cee03a1cbe0e55a7bcab8d2d8b6b74278 ]
 
-This reverts commit 5378bdf6a611a32500fccf13d14156f219bb0c85.
+In ntfs_fill_super(), the fc->fs_private pointer is set to NULL without
+first freeing the memory it points to. This causes the subsequent call to
+ntfs_fs_free() to skip freeing the ntfs_mount_options structure.
 
-Commit 5378bdf6a611 ("mailbox/pcc: support mailbox management of the shared buffer")
-attempted to introduce generic helpers for managing the PCC shared memory,
-but it largely duplicates functionality already provided by the mailbox
-core and leaves gaps:
+This results in a kmemleak report:
 
-1. TX preparation: The mailbox framework already supports this via
-  ->tx_prepare callback for mailbox clients. The patch adds
-  pcc_write_to_buffer() and expects clients to toggle pchan->chan.manage_writes,
-  but no drivers set manage_writes, so pcc_write_to_buffer() has no users.
+  unreferenced object 0xff1100015378b800 (size 32):
+    comm "mount", pid 582, jiffies 4294890685
+    hex dump (first 32 bytes):
+      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+      00 00 00 00 00 00 00 00 ed ff ed ff 00 04 00 00  ................
+    backtrace (crc ed541d8c):
+      __kmalloc_cache_noprof+0x424/0x5a0
+      __ntfs_init_fs_context+0x47/0x590
+      alloc_fs_context+0x5d8/0x960
+      __x64_sys_fsopen+0xb1/0x190
+      do_syscall_64+0x50/0x1f0
+      entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-2. RX handling: Data reception is already delivered through
-   mbox_chan_received_data() and client ->rx_callback. The patch adds an
-   optional pchan->chan.rx_alloc, which again has no users and duplicates
-   the existing path.
+This issue can be reproduced using the following commands:
+        fallocate -l 100M test.file
+        mount test.file /tmp/test
 
-3. Completion handling: While adding last_tx_done is directionally useful,
-   the implementation only covers Type 3/4 and fails to handle the absence
-   of a command_complete register, so it is incomplete for other types.
+Since sbi->options is duplicated from fc->fs_private and does not
+directly use the memory allocated for fs_private, it is unnecessary to
+set fc->fs_private to NULL.
 
-Given the duplication and incomplete coverage, revert this change. Any new
-requirements should be addressed in focused follow-ups rather than bundling
-multiple behavioral changes together.
+Additionally, this patch simplifies the code by utilizing the helper
+function put_mount_options() instead of open-coding the cleanup logic.
 
-Fixes: 5378bdf6a611 ("mailbox/pcc: support mailbox management of the shared buffer")
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Reported-by: syzbot+23aee7afc440fe803545@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=23aee7afc440fe803545
+Fixes: aee4d5a521e9 ("ntfs3: fix double free of sbi->options->nls and clarify ownership of fc->fs_private")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/pcc.c | 102 ++----------------------------------------
- include/acpi/pcc.h    |  29 ------------
- 2 files changed, 4 insertions(+), 127 deletions(-)
+ fs/ntfs3/super.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index ff292b9e0be9e..0e0a66359d4c3 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -305,22 +305,6 @@ static void pcc_chan_acknowledge(struct pcc_chan_info *pchan)
- 		pcc_chan_reg_read_modify_write(&pchan->db);
- }
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index 8b0cf0ed4f72c..0567a3b224ed3 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -705,9 +705,7 @@ static void ntfs_put_super(struct super_block *sb)
+ 	ntfs_set_state(sbi, NTFS_DIRTY_CLEAR);
  
--static void *write_response(struct pcc_chan_info *pchan)
--{
--	struct pcc_header pcc_header;
--	void *buffer;
--	int data_len;
--
--	memcpy_fromio(&pcc_header, pchan->chan.shmem,
--		      sizeof(pcc_header));
--	data_len = pcc_header.length - sizeof(u32) + sizeof(struct pcc_header);
--
--	buffer = pchan->chan.rx_alloc(pchan->chan.mchan->cl, data_len);
--	if (buffer != NULL)
--		memcpy_fromio(buffer, pchan->chan.shmem, data_len);
--	return buffer;
--}
--
- /**
-  * pcc_mbox_irq - PCC mailbox interrupt handler
-  * @irq:	interrupt number
-@@ -332,8 +316,6 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- {
- 	struct pcc_chan_info *pchan;
- 	struct mbox_chan *chan = p;
--	struct pcc_header *pcc_header = chan->active_req;
--	void *handle = NULL;
+ 	if (sbi->options) {
+-		unload_nls(sbi->options->nls);
+-		kfree(sbi->options->nls_name);
+-		kfree(sbi->options);
++		put_mount_options(sbi->options);
+ 		sbi->options = NULL;
+ 	}
  
- 	pchan = chan->con_priv;
+@@ -1253,7 +1251,6 @@ static int ntfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		}
+ 	}
+ 	sbi->options = options;
+-	fc->fs_private = NULL;
+ 	sb->s_flags |= SB_NODIRATIME;
+ 	sb->s_magic = 0x7366746e; // "ntfs"
+ 	sb->s_op = &ntfs_sops;
+@@ -1679,9 +1676,7 @@ static int ntfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ out:
+ 	/* sbi->options == options */
+ 	if (options) {
+-		unload_nls(options->nls);
+-		kfree(options->nls_name);
+-		kfree(options);
++		put_mount_options(sbi->options);
+ 		sbi->options = NULL;
+ 	}
  
-@@ -357,17 +339,7 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	 * required to avoid any possible race in updatation of this flag.
- 	 */
- 	pchan->chan_in_use = false;
--
--	if (pchan->chan.rx_alloc)
--		handle = write_response(pchan);
--
--	if (chan->active_req) {
--		pcc_header = chan->active_req;
--		if (pcc_header->flags & PCC_CMD_COMPLETION_NOTIFY)
--			mbox_chan_txdone(chan, 0);
--	}
--
--	mbox_chan_received_data(chan, handle);
-+	mbox_chan_received_data(chan, NULL);
- 
- 	pcc_chan_acknowledge(pchan);
- 
-@@ -411,24 +383,9 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
- 	pcc_mchan = &pchan->chan;
- 	pcc_mchan->shmem = acpi_os_ioremap(pcc_mchan->shmem_base_addr,
- 					   pcc_mchan->shmem_size);
--	if (!pcc_mchan->shmem)
--		goto err;
--
--	pcc_mchan->manage_writes = false;
--
--	/* This indicates that the channel is ready to accept messages.
--	 * This needs to happen after the channel has registered
--	 * its callback. There is no access point to do that in
--	 * the mailbox API. That implies that the mailbox client must
--	 * have set the allocate callback function prior to
--	 * sending any messages.
--	 */
--	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
--		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
--
--	return pcc_mchan;
-+	if (pcc_mchan->shmem)
-+		return pcc_mchan;
- 
--err:
- 	mbox_free_channel(chan);
- 	return ERR_PTR(-ENXIO);
- }
-@@ -459,38 +416,8 @@ void pcc_mbox_free_channel(struct pcc_mbox_chan *pchan)
- }
- EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
- 
--static int pcc_write_to_buffer(struct mbox_chan *chan, void *data)
--{
--	struct pcc_chan_info *pchan = chan->con_priv;
--	struct pcc_mbox_chan *pcc_mbox_chan = &pchan->chan;
--	struct pcc_header *pcc_header = data;
--
--	if (!pchan->chan.manage_writes)
--		return 0;
--
--	/* The PCC header length includes the command field
--	 * but not the other values from the header.
--	 */
--	int len = pcc_header->length - sizeof(u32) + sizeof(struct pcc_header);
--	u64 val;
--
--	pcc_chan_reg_read(&pchan->cmd_complete, &val);
--	if (!val) {
--		pr_info("%s pchan->cmd_complete not set", __func__);
--		return -1;
--	}
--	memcpy_toio(pcc_mbox_chan->shmem,  data, len);
--	return 0;
--}
--
--
- /**
-- * pcc_send_data - Called from Mailbox Controller code. If
-- *		pchan->chan.rx_alloc is set, then the command complete
-- *		flag is checked and the data is written to the shared
-- *		buffer io memory.
-- *
-- *		If pchan->chan.rx_alloc is not set, then it is used
-+ * pcc_send_data - Called from Mailbox Controller code. Used
-  *		here only to ring the channel doorbell. The PCC client
-  *		specific read/write is done in the client driver in
-  *		order to maintain atomicity over PCC channel once
-@@ -506,37 +433,17 @@ static int pcc_send_data(struct mbox_chan *chan, void *data)
- 	int ret;
- 	struct pcc_chan_info *pchan = chan->con_priv;
- 
--	ret = pcc_write_to_buffer(chan, data);
--	if (ret)
--		return ret;
--
- 	ret = pcc_chan_reg_read_modify_write(&pchan->cmd_update);
- 	if (ret)
- 		return ret;
- 
- 	ret = pcc_chan_reg_read_modify_write(&pchan->db);
--
- 	if (!ret && pchan->plat_irq > 0)
- 		pchan->chan_in_use = true;
- 
- 	return ret;
- }
- 
--
--static bool pcc_last_tx_done(struct mbox_chan *chan)
--{
--	struct pcc_chan_info *pchan = chan->con_priv;
--	u64 val;
--
--	pcc_chan_reg_read(&pchan->cmd_complete, &val);
--	if (!val)
--		return false;
--	else
--		return true;
--}
--
--
--
- /**
-  * pcc_startup - Called from Mailbox Controller code. Used here
-  *		to request the interrupt.
-@@ -582,7 +489,6 @@ static const struct mbox_chan_ops pcc_chan_ops = {
- 	.send_data = pcc_send_data,
- 	.startup = pcc_startup,
- 	.shutdown = pcc_shutdown,
--	.last_tx_done = pcc_last_tx_done,
- };
- 
- /**
-diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
-index 9af3b502f8395..840bfc95bae33 100644
---- a/include/acpi/pcc.h
-+++ b/include/acpi/pcc.h
-@@ -17,35 +17,6 @@ struct pcc_mbox_chan {
- 	u32 latency;
- 	u32 max_access_rate;
- 	u16 min_turnaround_time;
--
--	/* Set to true to indicate that the mailbox should manage
--	 * writing the dat to the shared buffer. This differs from
--	 * the case where the drivesr are writing to the buffer and
--	 * using send_data only to  ring the doorbell.  If this flag
--	 * is set, then the void * data parameter of send_data must
--	 * point to a kernel-memory buffer formatted in accordance with
--	 * the PCC specification.
--	 *
--	 * The active buffer management will include reading the
--	 * notify_on_completion flag, and will then
--	 * call mbox_chan_txdone when the acknowledgment interrupt is
--	 * received.
--	 */
--	bool manage_writes;
--
--	/* Optional callback that allows the driver
--	 * to allocate the memory used for receiving
--	 * messages.  The return value is the location
--	 * inside the buffer where the mailbox should write the data.
--	 */
--	void *(*rx_alloc)(struct mbox_client *cl,  int size);
--};
--
--struct pcc_header {
--	u32 signature;
--	u32 flags;
--	u32 length;
--	u32 command;
- };
- 
- /* Generic Communications Channel Shared Memory Region */
 -- 
 2.51.0
 
