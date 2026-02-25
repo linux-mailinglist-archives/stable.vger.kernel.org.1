@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218809-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iL14CuqinmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:14 +0100
+	id yGfDIM9TnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218809-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B66C193439
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B4518FA3A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1561231F2A17
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1CF55305846F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9202D29C2;
-	Wed, 25 Feb 2026 06:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4A724677D;
+	Wed, 25 Feb 2026 01:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzP/GDY7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xI0VPshQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A103C2D7810;
-	Wed, 25 Feb 2026 06:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36872494FE;
+	Wed, 25 Feb 2026 01:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002737; cv=none; b=UcLvctBFuO8/e7UbFlqWzMXPEWaYV6twbCOrqfg3FujLgCeNYNXQ86YwW4bTXkdHRt2nAiEghYviV4yaH6KgWPz9jlAv5GwromEBZEM3BMBx5MsR9JBoCdStF5W3TISa+hRYp/ly0jr9iSbw5Y9OrRuYH3TsaUS4lbm2lfvpPJs=
+	t=1771983687; cv=none; b=UeGmabj4Ygl/mv+wEK5BgiQa1lbv/RB7Legg95CwDgTddOZwjYboF2OonZprB2lcwy8iIgTiMK2xn+0/AZ/2wTN4YLhsdQNv0fgwPZbDzaidVIw8pY233kVGqwoF9zk6MhVamDyxe8gzx1EYxU85Rg5Oy5Yk5FJiy6uKK8nG620=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002737; c=relaxed/simple;
-	bh=hdNXIHtPxc+CHzvcoHe7vGk3k7vsyQeXseGXe4e3W+E=;
+	s=arc-20240116; t=1771983687; c=relaxed/simple;
+	bh=qadBpM6U4A5mH8tJEM03axnXHHX+A5lmTHZHrWw3lDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKsNq/iVE/WdInoVCU9RBF205pLjABy/HZNvOlr90wMvUMcrXsood4UAmwTErBaRCGqkLE0aZ9+5nU/J5ovVslW6E8oxkfegFPUC3u92HezRLLgIXXUqPZ1tcoeJWYOv99C9xu07SkS4DJ/qMSy/pN2Bp2DB/TVOFDfeNO7G0/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzP/GDY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78875C116D0;
-	Wed, 25 Feb 2026 06:58:57 +0000 (UTC)
+	 MIME-Version; b=YmRQ4OTV0GbDXJQk/a6LgGtOOHfzGKQqbD5U6T9T+yEF8Ezy03nSLGK8+zwknIRCBKSiF4HihzCZDrtD+UecXiP47hvKuY5k6vYyzgh4aCtx6YZEXk+1aXWZNlFh3/9rbUoFX4spHZgDJ9vxEW+wmImf5AidHyStRt8Axp7e5JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xI0VPshQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDBCC116D0;
+	Wed, 25 Feb 2026 01:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002737;
-	bh=hdNXIHtPxc+CHzvcoHe7vGk3k7vsyQeXseGXe4e3W+E=;
+	s=korg; t=1771983686;
+	bh=qadBpM6U4A5mH8tJEM03axnXHHX+A5lmTHZHrWw3lDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NzP/GDY7b0FBVuwYxWO7pLWXgYjOMR4tk2QDQfXUJ7FfKm0cOPywYgL19Mu4uW85z
-	 cfyWNJT8ot6I70B+mCHjkkYHGA+FnCPbfC68rkP1HvBqguBdTG8Qsk818hLsKoa45W
-	 MI11UYq8zgOQGKjPVcsyVYl5UsuIZzsk5Noa/pGE=
+	b=xI0VPshQ0u8rodPs/27d37mCDHWaLjBnvKuTThJx8WmIEE3c8n6o/a5KbhWWUlWJc
+	 Js1Wo/vNnfRDB8RKqF9mSPMGf/Jqk5EDny9UtjeZUi/hXBN6+KH1t+nydKifZv03P7
+	 934F6WqJ3LIr/bcmVMuUJSKuxIIude9J6X8LhPHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 553/641] inet: move icmp_global_{credit,stamp} to a separate cache line
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.19 770/781] dt-bindings: phy: qcom-edp: Add missing clock for X Elite
 Date: Tue, 24 Feb 2026 17:24:39 -0800
-Message-ID: <20260225012401.925629174@linuxfoundation.org>
+Message-ID: <20260225012418.602263317@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219471-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218809-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,71 +87,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4B66C193439
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: 33B4518FA3A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 87b08913a9ae82082e276d237ece08fc8ee24380 ]
+commit 6b99eeacf6abb1ff2d6463c84e490343f39cf11a upstream.
 
-icmp_global_credit was meant to be changed ~1000 times per second,
-but if an admin sets net.ipv4.icmp_msgs_per_sec to a very high value,
-icmp_global_credit changes can inflict false sharing to surrounding
-fields that are read mostly.
+On X Elite platform, the eDP PHY uses one more clock called ref.
 
-Move icmp_global_credit and icmp_global_stamp to a separate
-cacheline aligned group.
+The current X Elite devices supported upstream work fine without this
+clock, because the boot firmware leaves this clock enabled. But we should
+not rely on that. Also, even though this change breaks the ABI, it is
+needed in order to make the driver disables this clock along with the
+other ones, for a proper bring-down of the entire PHY.
 
-Fixes: b056b4cd9178 ("icmp: move icmp_global.credit and icmp_global.stamp to per netns storage")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260216142832.3834174-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So attach the this ref clock to the PHY.
+
+Cc: stable@vger.kernel.org # v6.10
+Fixes: 5d5607861350 ("dt-bindings: phy: qcom-edp: Add X1E80100 PHY compatibles")
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://patch.msgid.link/20251224-phy-qcom-edp-add-missing-refclk-v5-1-3f45d349b5ac@oss.qualcomm.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netns/ipv4.h | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml |   28 +++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/netns/ipv4.h b/include/net/netns/ipv4.h
-index 34eb3aecb3f21..62166da045548 100644
---- a/include/net/netns/ipv4.h
-+++ b/include/net/netns/ipv4.h
-@@ -87,6 +87,12 @@ struct netns_ipv4 {
- 	int sysctl_tcp_rmem[3];
- 	__cacheline_group_end(netns_ipv4_read_rx);
+--- a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
+@@ -37,12 +37,15 @@ properties:
+       - description: PLL register block
  
-+	/* ICMP rate limiter hot cache line. */
-+	__cacheline_group_begin_aligned(icmp);
-+	atomic_t	icmp_global_credit;
-+	u32		icmp_global_stamp;
-+	__cacheline_group_end_aligned(icmp);
-+
- 	struct inet_timewait_death_row tcp_death_row;
- 	struct udp_table *udp_table;
+   clocks:
+-    maxItems: 2
++    minItems: 2
++    maxItems: 3
  
-@@ -139,8 +145,7 @@ struct netns_ipv4 {
- 	int sysctl_icmp_ratemask;
- 	int sysctl_icmp_msgs_per_sec;
- 	int sysctl_icmp_msgs_burst;
--	atomic_t icmp_global_credit;
--	u32 icmp_global_stamp;
+   clock-names:
++    minItems: 2
+     items:
+       - const: aux
+       - const: cfg_ahb
++      - const: ref
+ 
+   "#clock-cells":
+     const: 1
+@@ -64,6 +67,29 @@ required:
+   - "#clock-cells"
+   - "#phy-cells"
+ 
++allOf:
++  - if:
++      properties:
++        compatible:
++          enum:
++            - qcom,x1e80100-dp-phy
++    then:
++      properties:
++        clocks:
++          minItems: 3
++          maxItems: 3
++        clock-names:
++          minItems: 3
++          maxItems: 3
++    else:
++      properties:
++        clocks:
++          minItems: 2
++          maxItems: 2
++        clock-names:
++          minItems: 2
++          maxItems: 2
 +
- 	u32 ip_rt_min_pmtu;
- 	int ip_rt_mtu_expires;
- 	int ip_rt_min_advmss;
--- 
-2.51.0
-
+ additionalProperties: false
+ 
+ examples:
 
 
 
