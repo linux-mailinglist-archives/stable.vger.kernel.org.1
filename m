@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-219439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLFuGhSfnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:52 +0100
+	id cAklFplTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8031192E39
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B1F18F927
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0FBC13110C90
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 195E13036183
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8C030F53B;
-	Wed, 25 Feb 2026 06:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32918248881;
+	Wed, 25 Feb 2026 01:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDvXOnI7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueYQZO4k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7EF2C21DF;
-	Wed, 25 Feb 2026 06:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA24025A642;
+	Wed, 25 Feb 2026 01:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002716; cv=none; b=cM+Q6dyjfQvUb2Qs4DT13kjy+awUsdbtx6CZj8DJmvHK2GMhyPf3hiamPotqycZ5HNuakgLUVloXIfqomF5McnsSNk9WujP//bngobH3UP3BEqAixC35y4pdzoQsf3bBk/En/ai0LtcTz+qH6+KP0MiXzIg1je1v9mfqvJxkGkw=
+	t=1771983656; cv=none; b=ERx6fnj7aceZCnmVK4uN4++TcO5VTNJPKeiiDScjcvR0B0jNTevLsUKv7TuuY1OeWutjJJaOeobxkL3eiY4+Sm1kH87P1VXTBoVz3sbgc6kA6LKkNmF8P5HVRd/k0dc9FGBNO6s49AsBEfdnjdrH6hacnOiA+jzsMh61iQJvc0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002716; c=relaxed/simple;
-	bh=QSibnMaq34yXwmYqp0TeR3esyRUMeRybm7a1J6Q642Q=;
+	s=arc-20240116; t=1771983656; c=relaxed/simple;
+	bh=WLaBuml/7bKbvKA0lBEHyKv7hWbyeJtT/qIcEK5xyWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4iz8oFkwGjRIh4CrzNc5MRpdM7sQJ8k527vVr7ZOPn0z7TJG3DDK1hCc8OO3hG6ZFiFCYmq5EUXl63Y4mbFgTTkUTa1ch2++skdPdTY3YiyIhfTA3Q4e4PZv+gaVZGIORzHFHZtMnXcL58fqqyt+pQnjy934ILVg56MhwgBAxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDvXOnI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37874C116D0;
-	Wed, 25 Feb 2026 06:58:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W3V+aBEjhsPOydub9XetcUj2GOU0+CKYtKF2rzrDOqFtF+MYcLyhKQmPV7pZF4nZcFu3Ha8MBFURvtYblzBWeMTEOTR0Dq0m6PMaNBa48LYwlNhJfg2RzXv3REBu7NuH3/CRLn9bsJgROWf1yXKoEzsRlrbbZBHefZBX4CKvK4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueYQZO4k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98A2C116D0;
+	Wed, 25 Feb 2026 01:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002716;
-	bh=QSibnMaq34yXwmYqp0TeR3esyRUMeRybm7a1J6Q642Q=;
+	s=korg; t=1771983655;
+	bh=WLaBuml/7bKbvKA0lBEHyKv7hWbyeJtT/qIcEK5xyWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vDvXOnI7AAi2KPyGmariuIDbOJ3JMo+pv5FZmbCf2KbuDhzNMt2aGDSoox33D2mgx
-	 XhCF/V1Np/duNJALXr9lo0qbWRQqOtsbXsaf9eYTFrzUeJRywRnAq/zZ2PWPd4sZG6
-	 SCH5xpEZNqCNG6BQ9gZhJGokvlQs/hzjViQ6pYP8=
+	b=ueYQZO4kU/HqS4ZLJ0JwMfGHluQJlPQeWyZl+cQccp4G+R9eTQPj1DJTfeHF8YkCI
+	 +ZLzaUsoY9f9QA5kb+xPYqGHNKQU8Yz/TrmW0sW4r4YvxtfJKOCvlnnJq6T7nOV2ko
+	 e0Lw+TgZkK0Rgr0T9js5W5RSSh1yZ5viaBSZS/WU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+707d6a5da1ab9e0c6f9d@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 524/641] ipv6: Fix out-of-bound access in fib6_add_rt2node().
+Subject: [PATCH 6.19 741/781] drm/amd/display: Only use analog stream encoder with analog engine
 Date: Tue, 24 Feb 2026 17:24:10 -0800
-Message-ID: <20260225012401.226788788@linuxfoundation.org>
+Message-ID: <20260225012417.903148664@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,160 +64,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219439-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218782-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,707d6a5da1ab9e0c6f9d];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D8031192E39
+	NEURAL_HAM(-0.00)[-0.995];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 19B1F18F927
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 8244f959e2c125c849e569f5b23ed49804cce695 ]
+[ Upstream commit 17ff034f805e032ed1358624a71381f9d6e29e9e ]
 
-syzbot reported out-of-bound read in fib6_add_rt2node(). [0]
+Some GPUs have analog connectors that work with a DP bridge chip
+and don't actually have an internal DAC: Those should not use
+the analog stream encoders.
 
-When IPv6 route is created with RTA_NH_ID, struct fib6_info
-does not have the trailing struct fib6_nh.
-
-The cited commit started to check !iter->fib6_nh->fib_nh_gw_family
-to ensure that rt6_qualify_for_ecmp() will return false for iter.
-
-If iter->nh is not NULL, rt6_qualify_for_ecmp() returns false anyway.
-
-Let's check iter->nh before reading iter->fib6_nh and avoid OOB read.
-
-[0]:
-BUG: KASAN: slab-out-of-bounds in fib6_add_rt2node+0x349c/0x3500 net/ipv6/ip6_fib.c:1142
-Read of size 1 at addr ffff8880384ba6de by task syz.0.18/5500
-
-CPU: 0 UID: 0 PID: 5500 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xba/0x230 mm/kasan/report.c:482
- kasan_report+0x117/0x150 mm/kasan/report.c:595
- fib6_add_rt2node+0x349c/0x3500 net/ipv6/ip6_fib.c:1142
- fib6_add_rt2node_nh net/ipv6/ip6_fib.c:1363 [inline]
- fib6_add+0x910/0x18c0 net/ipv6/ip6_fib.c:1531
- __ip6_ins_rt net/ipv6/route.c:1351 [inline]
- ip6_route_add+0xde/0x1b0 net/ipv6/route.c:3957
- inet6_rtm_newroute+0x268/0x19e0 net/ipv6/route.c:5660
- rtnetlink_rcv_msg+0x7d5/0xbe0 net/core/rtnetlink.c:6958
- netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg net/socket.c:742 [inline]
- ____sys_sendmsg+0xa68/0xad0 net/socket.c:2592
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2646
- __sys_sendmsg net/socket.c:2678 [inline]
- __do_sys_sendmsg net/socket.c:2683 [inline]
- __se_sys_sendmsg net/socket.c:2681 [inline]
- __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2681
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f9316b9aeb9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd8809b678 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f9316e15fa0 RCX: 00007f9316b9aeb9
-RDX: 0000000000000000 RSI: 0000200000004380 RDI: 0000000000000003
-RBP: 00007f9316c08c1f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f9316e15fac R14: 00007f9316e15fa0 R15: 00007f9316e15fa0
- </TASK>
-
-Allocated by task 5499:
- kasan_save_stack mm/kasan/common.c:57 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
- poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
- __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:415
- kasan_kmalloc include/linux/kasan.h:263 [inline]
- __do_kmalloc_node mm/slub.c:5657 [inline]
- __kmalloc_noprof+0x40c/0x7e0 mm/slub.c:5669
- kmalloc_noprof include/linux/slab.h:961 [inline]
- kzalloc_noprof include/linux/slab.h:1094 [inline]
- fib6_info_alloc+0x30/0xf0 net/ipv6/ip6_fib.c:155
- ip6_route_info_create+0x142/0x860 net/ipv6/route.c:3820
- ip6_route_add+0x49/0x1b0 net/ipv6/route.c:3949
- inet6_rtm_newroute+0x268/0x19e0 net/ipv6/route.c:5660
- rtnetlink_rcv_msg+0x7d5/0xbe0 net/core/rtnetlink.c:6958
- netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg net/socket.c:742 [inline]
- ____sys_sendmsg+0xa68/0xad0 net/socket.c:2592
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2646
- __sys_sendmsg net/socket.c:2678 [inline]
- __do_sys_sendmsg net/socket.c:2683 [inline]
- __se_sys_sendmsg net/socket.c:2681 [inline]
- __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2681
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: bbf4a17ad9ff ("ipv6: Fix ECMP sibling count mismatch when clearing RTF_ADDRCONF")
-Reported-by: syzbot+707d6a5da1ab9e0c6f9d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/698cbfba.050a0220.2eeac1.009d.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Shigeru Yoshida <syoshida@redhat.com>
-Link: https://patch.msgid.link/20260211175133.3657034-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5834c33fd3f6 ("drm/amd/display: Add concept of analog encoders (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index c6439e30e892a..cc149227b49f4 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1139,7 +1139,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 					fib6_add_gc_list(iter);
- 				}
- 				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT)) &&
--				    !iter->fib6_nh->fib_nh_gw_family) {
-+				    (iter->nh || !iter->fib6_nh->fib_nh_gw_family)) {
- 					iter->fib6_flags &= ~RTF_ADDRCONF;
- 					iter->fib6_flags &= ~RTF_PREFIX_RT;
- 				}
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
+index a916872db7bd4..83b9abb64bfcb 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
+@@ -979,7 +979,10 @@ struct stream_encoder *dce100_find_first_free_match_stream_enc_for_link(
+ 	struct dc_link *link = stream->link;
+ 	enum engine_id preferred_engine = link->link_enc->preferred_engine;
+ 
+-	if (dc_is_rgb_signal(stream->signal))
++	/* Prefer analog engine if the link encoder has one.
++	 * Otherwise, it's an external encoder.
++	 */
++	if (dc_is_rgb_signal(stream->signal) && link->link_enc->analog_engine != ENGINE_ID_UNKNOWN)
+ 		preferred_engine = link->link_enc->analog_engine;
+ 
+ 	for (i = 0; i < pool->stream_enc_count; i++) {
 -- 
 2.51.0
 
