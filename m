@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-218909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKSkHJFWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:29 +0100
+	id 2OfJIIBTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E139019033F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BA318F8A9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99C9D30C3F4A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 262E231AEF08
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593952BDC13;
-	Wed, 25 Feb 2026 01:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C254F22579E;
+	Wed, 25 Feb 2026 01:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+fxlh2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEsos3SA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5712BD00C;
-	Wed, 25 Feb 2026 01:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8634B1D5ABA;
+	Wed, 25 Feb 2026 01:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983802; cv=none; b=FwI6TWc4xEBbayYVoMC/fhjfMM6yDkkC8gWD0XE9lXdptrn87y5/87A6/+jrf+I9asN0maMs9yRMSmhqCmB52wZC8Xs4/5kHVPOo/zTOiZ50nGMfivPxNuWP1tcqXSUOXn3U/Vim6lZLu8iCKO1nwINmM6dhUfGzFrhA1B9vFl8=
+	t=1771983177; cv=none; b=tmYHzBon+eO7YjPzj4y+08wjU8+fVA6/4tFu9zyEtQvPGPJj9bU+fyIeQ/9P6JY8XYdKSiji9wXRta2OGakd/07Y3MKp171Ieh6MlgCiF2Hqhl3pG2dHURvXqyzCSZwtp3lM5j7GbI3vhuDN14C2AZGqu4T7HARihlHK149sZyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983802; c=relaxed/simple;
-	bh=U/BnbCiK03L+vjirZFFAlwe3RfYy9VWFc/RCdG0YskM=;
+	s=arc-20240116; t=1771983177; c=relaxed/simple;
+	bh=d3E/9qU4wvA1p1P4+fuadpw/EVgVOMkGS/S33/YrVBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpogHlkcxU6mlMdVfGFexp9OmFU0YvSV/Okc+e7orJbv7RQ2pXj/fk5ddOuJ+L0Gbu5cbZKyb0bMb82e7ELY4sxrf0/GQNXqKLVsCaNG7/SQPHyIOQW9qGyKrmUsTtcNYiD7rT2/59LIK9unkQlWTG/KpKLuXzx3zRqKJY6DQ6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+fxlh2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD37C116D0;
-	Wed, 25 Feb 2026 01:43:21 +0000 (UTC)
+	 MIME-Version; b=S5FI7GhXroCEguuQ1u0oYOfvePZxooqawnax/SsoUaohUxW1UmZrzbnO3jl2dmAnDMHzuJmkqGNBKKG88URWk98A6E5aFasbTyqlmjU0uPg8lISeCbD0gRzljzg9sS03MrqzqqM7PuemzdgK/vFhcJlYGx97cj1mdZPtJhYTCWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEsos3SA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E858C116D0;
+	Wed, 25 Feb 2026 01:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983802;
-	bh=U/BnbCiK03L+vjirZFFAlwe3RfYy9VWFc/RCdG0YskM=;
+	s=korg; t=1771983177;
+	bh=d3E/9qU4wvA1p1P4+fuadpw/EVgVOMkGS/S33/YrVBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+fxlh2nhbdme012++UEGIrKDHYnbPWzbZX9hwLKCicDJkv7FBYoAh97YhpDIQF/x
-	 CgwDRtAejHOSnSU/KucLCFSY5TdHqNqbJejjoNWjRNXCM72sBojUBXUI1YontDzwIr
-	 La6+LBx1bWQjb3xJPRKBeFyMcYmvOMtv30n43ur4=
+	b=bEsos3SAwNr5o6e+s5b3zo2TS23xEb8vRtIZgHGj5/d5XBR5aPtMl0yDKXfF+WmWs
+	 VfNu1XE1JDqIwAXxs5fCa4zsa6iwyRSg1tzbh3G1sfd4coqZ2r/yr9V5IObujjwDQj
+	 hVNZ7FN4IzMbIecX3ELtFNpCMR4HcsmnzanvLbbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuran Liu <electronlsr@gmail.com>,
-	Peili Gao <gplhust955@gmail.com>,
-	Haoran Ni <haoran.ni.cs@gmail.com>,
-	Zesen Liu <ftyghome@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 085/641] bpf: Fix memory access flags in helper prototypes
+Subject: [PATCH 6.19 302/781] ASoC: SDCA: Remove outdated todo comment
 Date: Tue, 24 Feb 2026 17:16:51 -0800
-Message-ID: <20260225012351.154929154@linuxfoundation.org>
+Message-ID: <20260225012407.116405811@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,213 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218909-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.965];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218367-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E139019033F
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,msgid.link:url]
+X-Rspamd-Queue-Id: 01BA318F8A9
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zesen Liu <ftyghome@gmail.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 802eef5afb1865bc5536a5302c068ba2215a1f72 ]
+[ Upstream commit b27b57f85fe3f0eca479556ac55bc9cbd1a5685a ]
 
-After commit 37cce22dbd51 ("bpf: verifier: Refactor helper access type tracking"),
-the verifier started relying on the access type flags in helper
-function prototypes to perform memory access optimizations.
+Support for -cn- properties has already been added, however the TODO
+comment noting this feature was required was not removed. Remove the
+now redundant comment.
 
-Currently, several helper functions utilizing ARG_PTR_TO_MEM lack the
-corresponding MEM_RDONLY or MEM_WRITE flags. This omission causes the
-verifier to incorrectly assume that the buffer contents are unchanged
-across the helper call. Consequently, the verifier may optimize away
-subsequent reads based on this wrong assumption, leading to correctness
-issues.
-
-For bpf_get_stack_proto_raw_tp, the original MEM_RDONLY was incorrect
-since the helper writes to the buffer. Change it to ARG_PTR_TO_UNINIT_MEM
-which correctly indicates write access to potentially uninitialized memory.
-
-Similar issues were recently addressed for specific helpers in commit
-ac44dcc788b9 ("bpf: Fix verifier assumptions of bpf_d_path's output buffer")
-and commit 2eb7648558a7 ("bpf: Specify access type of bpf_sysctl_get_name args").
-
-Fix these prototypes by adding the correct memory access flags.
-
-Fixes: 37cce22dbd51 ("bpf: verifier: Refactor helper access type tracking")
-Co-developed-by: Shuran Liu <electronlsr@gmail.com>
-Signed-off-by: Shuran Liu <electronlsr@gmail.com>
-Co-developed-by: Peili Gao <gplhust955@gmail.com>
-Signed-off-by: Peili Gao <gplhust955@gmail.com>
-Co-developed-by: Haoran Ni <haoran.ni.cs@gmail.com>
-Signed-off-by: Haoran Ni <haoran.ni.cs@gmail.com>
-Signed-off-by: Zesen Liu <ftyghome@gmail.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20260120-helper_proto-v3-1-27b0180b4e77@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 50a479527ef01 ("ASoC: SDCA: Add support for -cn- value properties")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260204125944.1134011-2-ckeepax@opensource.cirrus.com
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c     |  2 +-
- kernel/bpf/syscall.c     |  2 +-
- kernel/trace/bpf_trace.c |  6 +++---
- net/core/filter.c        | 20 ++++++++++----------
- 4 files changed, 15 insertions(+), 15 deletions(-)
+ sound/soc/sdca/sdca_functions.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 81ef159ef89bd..68da6dcfb4bb7 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -1080,7 +1080,7 @@ const struct bpf_func_proto bpf_snprintf_proto = {
- 	.func		= bpf_snprintf,
- 	.gpl_only	= true,
- 	.ret_type	= RET_INTEGER,
--	.arg1_type	= ARG_PTR_TO_MEM_OR_NULL,
-+	.arg1_type	= ARG_PTR_TO_MEM_OR_NULL | MEM_WRITE,
- 	.arg2_type	= ARG_CONST_SIZE_OR_ZERO,
- 	.arg3_type	= ARG_PTR_TO_CONST_STR,
- 	.arg4_type	= ARG_PTR_TO_MEM | PTR_MAYBE_NULL | MEM_RDONLY,
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index df219e7259099..e9cf69594824c 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -6396,7 +6396,7 @@ static const struct bpf_func_proto bpf_kallsyms_lookup_name_proto = {
- 	.func		= bpf_kallsyms_lookup_name,
- 	.gpl_only	= false,
- 	.ret_type	= RET_INTEGER,
--	.arg1_type	= ARG_PTR_TO_MEM,
-+	.arg1_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
- 	.arg2_type	= ARG_CONST_SIZE_OR_ZERO,
- 	.arg3_type	= ARG_ANYTHING,
- 	.arg4_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_UNINIT | MEM_WRITE | MEM_ALIGNED,
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 49e0bdaa7a1bf..e7f1fe44352af 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -1022,7 +1022,7 @@ const struct bpf_func_proto bpf_snprintf_btf_proto = {
- 	.func		= bpf_snprintf_btf,
- 	.gpl_only	= false,
- 	.ret_type	= RET_INTEGER,
--	.arg1_type	= ARG_PTR_TO_MEM,
-+	.arg1_type	= ARG_PTR_TO_MEM | MEM_WRITE,
- 	.arg2_type	= ARG_CONST_SIZE,
- 	.arg3_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
- 	.arg4_type	= ARG_CONST_SIZE,
-@@ -1526,7 +1526,7 @@ static const struct bpf_func_proto bpf_read_branch_records_proto = {
- 	.gpl_only       = true,
- 	.ret_type       = RET_INTEGER,
- 	.arg1_type      = ARG_PTR_TO_CTX,
--	.arg2_type      = ARG_PTR_TO_MEM_OR_NULL,
-+	.arg2_type      = ARG_PTR_TO_MEM_OR_NULL | MEM_WRITE,
- 	.arg3_type      = ARG_CONST_SIZE_OR_ZERO,
- 	.arg4_type      = ARG_ANYTHING,
- };
-@@ -1661,7 +1661,7 @@ static const struct bpf_func_proto bpf_get_stack_proto_raw_tp = {
- 	.gpl_only	= true,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
--	.arg2_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
-+	.arg2_type	= ARG_PTR_TO_UNINIT_MEM,
- 	.arg3_type	= ARG_CONST_SIZE_OR_ZERO,
- 	.arg4_type	= ARG_ANYTHING,
- };
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 88b265f6ccf89..b9a51f322b655 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -6325,7 +6325,7 @@ static const struct bpf_func_proto bpf_xdp_fib_lookup_proto = {
- 	.gpl_only	= true,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type      = ARG_PTR_TO_CTX,
--	.arg2_type      = ARG_PTR_TO_MEM,
-+	.arg2_type      = ARG_PTR_TO_MEM | MEM_WRITE,
- 	.arg3_type      = ARG_CONST_SIZE,
- 	.arg4_type	= ARG_ANYTHING,
- };
-@@ -6380,7 +6380,7 @@ static const struct bpf_func_proto bpf_skb_fib_lookup_proto = {
- 	.gpl_only	= true,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type      = ARG_PTR_TO_CTX,
--	.arg2_type      = ARG_PTR_TO_MEM,
-+	.arg2_type      = ARG_PTR_TO_MEM | MEM_WRITE,
- 	.arg3_type      = ARG_CONST_SIZE,
- 	.arg4_type	= ARG_ANYTHING,
- };
-@@ -7934,9 +7934,9 @@ static const struct bpf_func_proto bpf_tcp_raw_gen_syncookie_ipv4_proto = {
- 	.gpl_only	= true, /* __cookie_v4_init_sequence() is GPL */
- 	.pkt_access	= true,
- 	.ret_type	= RET_INTEGER,
--	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
-+	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
- 	.arg1_size	= sizeof(struct iphdr),
--	.arg2_type	= ARG_PTR_TO_MEM,
-+	.arg2_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
- 	.arg3_type	= ARG_CONST_SIZE_OR_ZERO,
- };
+diff --git a/sound/soc/sdca/sdca_functions.c b/sound/soc/sdca/sdca_functions.c
+index 5a1f120487ef0..e86004c9dea03 100644
+--- a/sound/soc/sdca/sdca_functions.c
++++ b/sound/soc/sdca/sdca_functions.c
+@@ -911,10 +911,6 @@ static int find_sdca_control_value(struct device *dev, struct sdca_entity *entit
+ 	return 0;
+ }
  
-@@ -7966,9 +7966,9 @@ static const struct bpf_func_proto bpf_tcp_raw_gen_syncookie_ipv6_proto = {
- 	.gpl_only	= true, /* __cookie_v6_init_sequence() is GPL */
- 	.pkt_access	= true,
- 	.ret_type	= RET_INTEGER,
--	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
-+	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
- 	.arg1_size	= sizeof(struct ipv6hdr),
--	.arg2_type	= ARG_PTR_TO_MEM,
-+	.arg2_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
- 	.arg3_type	= ARG_CONST_SIZE_OR_ZERO,
- };
- 
-@@ -7986,9 +7986,9 @@ static const struct bpf_func_proto bpf_tcp_raw_check_syncookie_ipv4_proto = {
- 	.gpl_only	= true, /* __cookie_v4_check is GPL */
- 	.pkt_access	= true,
- 	.ret_type	= RET_INTEGER,
--	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
-+	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
- 	.arg1_size	= sizeof(struct iphdr),
--	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
-+	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
- 	.arg2_size	= sizeof(struct tcphdr),
- };
- 
-@@ -8010,9 +8010,9 @@ static const struct bpf_func_proto bpf_tcp_raw_check_syncookie_ipv6_proto = {
- 	.gpl_only	= true, /* __cookie_v6_check is GPL */
- 	.pkt_access	= true,
- 	.ret_type	= RET_INTEGER,
--	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
-+	.arg1_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
- 	.arg1_size	= sizeof(struct ipv6hdr),
--	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM,
-+	.arg2_type	= ARG_PTR_TO_FIXED_SIZE_MEM | MEM_RDONLY,
- 	.arg2_size	= sizeof(struct tcphdr),
- };
- #endif /* CONFIG_SYN_COOKIES */
+-/*
+- * TODO: Add support for -cn- properties, allowing different channels to have
+- * different defaults etc.
+- */
+ static int find_sdca_entity_control(struct device *dev, struct sdca_entity *entity,
+ 				    struct fwnode_handle *control_node,
+ 				    struct sdca_control *control)
 -- 
 2.51.0
 
