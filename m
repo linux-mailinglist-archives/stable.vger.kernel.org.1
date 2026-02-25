@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wL9IFCdTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:55 +0100
+	id mBoUCGienmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0B118F700
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4BC192C5C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4050E300C0D0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2809330DCC0E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADAD265CA6;
-	Wed, 25 Feb 2026 01:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CB03016E0;
+	Wed, 25 Feb 2026 06:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKVhP+jh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQvBl/2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB6D1E2834;
-	Wed, 25 Feb 2026 01:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274862D5926;
+	Wed, 25 Feb 2026 06:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983534; cv=none; b=GTJmLbx1WAsMWPmfqNX5XsHpT0dTNOEAVXbEOfaiT3CkEAwpXYB0TKyK8GIB0rsuaPSdPfMdYhzQeYHeb59HVLY2J2A6iGZZGSepfZXCp7Gn85pRWLGQzWri/XmoZ/g5/NwkHNBxFXEv8oLB9uJRUUxqAEpBqiGgB74rk0+6NJg=
+	t=1772002679; cv=none; b=GCuWI5Cw4BO3U3Dpzkluo9vbYT2wYgxyZdc2PoJ9yYDSDTUTJ9WxQd4//4mRvxtybn7wWYPY/w4nu+IWDlDSGnSGfaM/b1VrI8oo2/J3VOiCV707qOo+jRidVXW7Ek2+xHYQkXCp3Jfx32j65yL56XT7taX9uqaL7RgJH2PnTW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983534; c=relaxed/simple;
-	bh=dJjt3JLLnOZMZ4x7FtHNDe3L4GbHYjmbNw0ZS04+fRY=;
+	s=arc-20240116; t=1772002679; c=relaxed/simple;
+	bh=iUfF+Q6pyfiXKAQUaeLNBPGzl9Wx8w17rb93hGvROkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ok3uL7T2jmnzJV2rcFrG7NH0CSrvT8Nu9N7sH0Fr9iSHdPVuh4DnC6v88b6GuCmIxtU17d2YJXxwuK0/oiRzXQLTFPil0r2SBYJES87XOaGaTFwfFODj2oUIHwuAbE5cznlC95ifIhYeSRXuCqkRNfK4k1L/w6TfIM0VqiI4m6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKVhP+jh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE73C116D0;
-	Wed, 25 Feb 2026 01:38:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ULdZe0wq0O1dme7vLQL+9nxpX3CSoT8KMvlzj40BtL7yIQ+RW4KLlP+G40t/KaqpinOpJUNiB79klkxcDBJxhMuIvMiWZbCHu72yWScDmVVA4QhAwH8oqe0kexmKIbn7ptNfYGsS0JKnkoO3t3a3DEwaGoUI1SCnkIZAUQNYDrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQvBl/2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0108CC116D0;
+	Wed, 25 Feb 2026 06:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983534;
-	bh=dJjt3JLLnOZMZ4x7FtHNDe3L4GbHYjmbNw0ZS04+fRY=;
+	s=korg; t=1772002679;
+	bh=iUfF+Q6pyfiXKAQUaeLNBPGzl9Wx8w17rb93hGvROkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SKVhP+jhw3Hp7QDmvqSJhDcF63DZV/s9ES6WNR84FZs3JHIpgFzyRmvyvTJeQdTMW
-	 m3UuTBddbceJuaXYjKcMQ03UecOgecZIL5M/oduI98YnmJW9IZpKdw9gCLrRuMKcST
-	 8tMMaabOjQKJ5JxYctFs1BH4A1F2+JZn4ZNMISug=
+	b=fQvBl/2MuCrS6AgRmjmVsE74KI2IZLWOIY/3uWP5etZ2AfaCqQYvEfwdVeQiBON69
+	 3hyG4aq0fj5drHKF2sEouM9oXj3otsvLQ0dSas12V/wGPwg/sN+1yr741vjSnTgyZc
+	 ZoVR3sg0c4sP41RSQLKf2O/2FCn1P2O9oWPhFB1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 639/781] net: sparx5/lan969x: fix DWRR cost max to match hardware register width
-Date: Tue, 24 Feb 2026 17:22:28 -0800
-Message-ID: <20260225012415.478694523@linuxfoundation.org>
+Subject: [PATCH 6.18 423/641] Input: adp5589 - remove a leftover header file
+Date: Tue, 24 Feb 2026 17:22:29 -0800
+Message-ID: <20260225012358.799155050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +65,250 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218678-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mleia.com,ideasonboard.com,analog.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-219382-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,microchip.com:email]
-X-Rspamd-Queue-Id: EB0B118F700
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mleia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,ideasonboard.com:email]
+X-Rspamd-Queue-Id: AC4BC192C5C
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Machon <daniel.machon@microchip.com>
+From: Vladimir Zapolskiy <vz@mleia.com>
 
-[ Upstream commit 6c28aa8dfdf24f554d4c5d4ff7d723a95360d94a ]
+[ Upstream commit f8a6e5eac701369afb5d69aba875dc5fec93003d ]
 
-DWRR (Deficit Weighted Round Robin) scheduling distributes bandwidth
-across traffic classes based on per-queue cost values, where lower cost
-means higher bandwidth share.
+In commit 3bdbd0858df6 ("Input: adp5589: remove the driver") the last user
+of include/linux/input/adp5589.h was removed along with the whole driver,
+thus the header file can be also removed.
 
-The SPX5_DWRR_COST_MAX constant is 63 (6 bits) but the hardware
-register field HSCH_DWRR_ENTRY_DWRR_COST is GENMASK(24, 20), only
-5 bits wide (max 31). This causes sparx5_weight_to_hw_cost() to
-compute cost values that silently overflow via FIELD_PREP, resulting
-in incorrect scheduling weights.
-
-Set SPX5_DWRR_COST_MAX to 31 to match the hardware register width.
-
-Fixes: 211225428d65 ("net: microchip: sparx5: add support for offloading ets qdisc")
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260210-sparx5-fix-dwrr-cost-max-v1-1-58fbdbc25652@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Vladimir Zapolskiy <vz@mleia.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Fixes: 3bdbd0858df6 ("Input: adp5589: remove the driver")
+Link: https://patch.msgid.link/20260113151140.3843753-1-vz@mleia.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_qos.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/input/adp5589.h | 180 ----------------------------------
+ 1 file changed, 180 deletions(-)
+ delete mode 100644 include/linux/input/adp5589.h
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_qos.h b/drivers/net/ethernet/microchip/sparx5/sparx5_qos.h
-index 1231a80335d7b..04f76f1e23f60 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_qos.h
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_qos.h
-@@ -35,7 +35,7 @@
- #define SPX5_SE_BURST_UNIT 4096
- 
- /* Dwrr */
--#define SPX5_DWRR_COST_MAX 63
-+#define SPX5_DWRR_COST_MAX 31
- 
- struct sparx5_shaper {
- 	u32 mode;
+diff --git a/include/linux/input/adp5589.h b/include/linux/input/adp5589.h
+deleted file mode 100644
+index 0e4742c8c81e3..0000000000000
+--- a/include/linux/input/adp5589.h
++++ /dev/null
+@@ -1,180 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * Analog Devices ADP5589/ADP5585 I/O Expander and QWERTY Keypad Controller
+- *
+- * Copyright 2010-2011 Analog Devices Inc.
+- */
+-
+-#ifndef _ADP5589_H
+-#define _ADP5589_H
+-
+-/*
+- * ADP5589 specific GPI and Keymap defines
+- */
+-
+-#define ADP5589_KEYMAPSIZE	88
+-
+-#define ADP5589_GPI_PIN_ROW0 97
+-#define ADP5589_GPI_PIN_ROW1 98
+-#define ADP5589_GPI_PIN_ROW2 99
+-#define ADP5589_GPI_PIN_ROW3 100
+-#define ADP5589_GPI_PIN_ROW4 101
+-#define ADP5589_GPI_PIN_ROW5 102
+-#define ADP5589_GPI_PIN_ROW6 103
+-#define ADP5589_GPI_PIN_ROW7 104
+-#define ADP5589_GPI_PIN_COL0 105
+-#define ADP5589_GPI_PIN_COL1 106
+-#define ADP5589_GPI_PIN_COL2 107
+-#define ADP5589_GPI_PIN_COL3 108
+-#define ADP5589_GPI_PIN_COL4 109
+-#define ADP5589_GPI_PIN_COL5 110
+-#define ADP5589_GPI_PIN_COL6 111
+-#define ADP5589_GPI_PIN_COL7 112
+-#define ADP5589_GPI_PIN_COL8 113
+-#define ADP5589_GPI_PIN_COL9 114
+-#define ADP5589_GPI_PIN_COL10 115
+-#define GPI_LOGIC1 116
+-#define GPI_LOGIC2 117
+-
+-#define ADP5589_GPI_PIN_ROW_BASE ADP5589_GPI_PIN_ROW0
+-#define ADP5589_GPI_PIN_ROW_END ADP5589_GPI_PIN_ROW7
+-#define ADP5589_GPI_PIN_COL_BASE ADP5589_GPI_PIN_COL0
+-#define ADP5589_GPI_PIN_COL_END ADP5589_GPI_PIN_COL10
+-
+-#define ADP5589_GPI_PIN_BASE ADP5589_GPI_PIN_ROW_BASE
+-#define ADP5589_GPI_PIN_END ADP5589_GPI_PIN_COL_END
+-
+-#define ADP5589_GPIMAPSIZE_MAX (ADP5589_GPI_PIN_END - ADP5589_GPI_PIN_BASE + 1)
+-
+-/*
+- * ADP5585 specific GPI and Keymap defines
+- */
+-
+-#define ADP5585_KEYMAPSIZE	30
+-
+-#define ADP5585_GPI_PIN_ROW0 37
+-#define ADP5585_GPI_PIN_ROW1 38
+-#define ADP5585_GPI_PIN_ROW2 39
+-#define ADP5585_GPI_PIN_ROW3 40
+-#define ADP5585_GPI_PIN_ROW4 41
+-#define ADP5585_GPI_PIN_ROW5 42
+-#define ADP5585_GPI_PIN_COL0 43
+-#define ADP5585_GPI_PIN_COL1 44
+-#define ADP5585_GPI_PIN_COL2 45
+-#define ADP5585_GPI_PIN_COL3 46
+-#define ADP5585_GPI_PIN_COL4 47
+-#define GPI_LOGIC 48
+-
+-#define ADP5585_GPI_PIN_ROW_BASE ADP5585_GPI_PIN_ROW0
+-#define ADP5585_GPI_PIN_ROW_END ADP5585_GPI_PIN_ROW5
+-#define ADP5585_GPI_PIN_COL_BASE ADP5585_GPI_PIN_COL0
+-#define ADP5585_GPI_PIN_COL_END ADP5585_GPI_PIN_COL4
+-
+-#define ADP5585_GPI_PIN_BASE ADP5585_GPI_PIN_ROW_BASE
+-#define ADP5585_GPI_PIN_END ADP5585_GPI_PIN_COL_END
+-
+-#define ADP5585_GPIMAPSIZE_MAX (ADP5585_GPI_PIN_END - ADP5585_GPI_PIN_BASE + 1)
+-
+-struct adp5589_gpi_map {
+-	unsigned short pin;
+-	unsigned short sw_evt;
+-};
+-
+-/* scan_cycle_time */
+-#define ADP5589_SCAN_CYCLE_10ms		0
+-#define ADP5589_SCAN_CYCLE_20ms		1
+-#define ADP5589_SCAN_CYCLE_30ms		2
+-#define ADP5589_SCAN_CYCLE_40ms		3
+-
+-/* RESET_CFG */
+-#define RESET_PULSE_WIDTH_500us		0
+-#define RESET_PULSE_WIDTH_1ms		1
+-#define RESET_PULSE_WIDTH_2ms		2
+-#define RESET_PULSE_WIDTH_10ms		3
+-
+-#define RESET_TRIG_TIME_0ms		(0 << 2)
+-#define RESET_TRIG_TIME_1000ms		(1 << 2)
+-#define RESET_TRIG_TIME_1500ms		(2 << 2)
+-#define RESET_TRIG_TIME_2000ms		(3 << 2)
+-#define RESET_TRIG_TIME_2500ms		(4 << 2)
+-#define RESET_TRIG_TIME_3000ms		(5 << 2)
+-#define RESET_TRIG_TIME_3500ms		(6 << 2)
+-#define RESET_TRIG_TIME_4000ms		(7 << 2)
+-
+-#define RESET_PASSTHRU_EN		(1 << 5)
+-#define RESET1_POL_HIGH			(1 << 6)
+-#define RESET1_POL_LOW			(0 << 6)
+-#define RESET2_POL_HIGH			(1 << 7)
+-#define RESET2_POL_LOW			(0 << 7)
+-
+-/* ADP5589 Mask Bits:
+- * C C C C C C C C C C C | R R R R R R R R
+- * 1 9 8 7 6 5 4 3 2 1 0 | 7 6 5 4 3 2 1 0
+- * 0
+- * ---------------- BIT ------------------
+- * 1 1 1 1 1 1 1 1 1 0 0 | 0 0 0 0 0 0 0 0
+- * 8 7 6 5 4 3 2 1 0 9 8 | 7 6 5 4 3 2 1 0
+- */
+-
+-#define ADP_ROW(x)	(1 << (x))
+-#define ADP_COL(x)	(1 << (x + 8))
+-#define ADP5589_ROW_MASK		0xFF
+-#define ADP5589_COL_MASK		0xFF
+-#define ADP5589_COL_SHIFT		8
+-#define ADP5589_MAX_ROW_NUM		7
+-#define ADP5589_MAX_COL_NUM		10
+-
+-/* ADP5585 Mask Bits:
+- * C C C C C | R R R R R R
+- * 4 3 2 1 0 | 5 4 3 2 1 0
+- *
+- * ---- BIT -- -----------
+- * 1 0 0 0 0 | 0 0 0 0 0 0
+- * 0 9 8 7 6 | 5 4 3 2 1 0
+- */
+-
+-#define ADP5585_ROW_MASK		0x3F
+-#define ADP5585_COL_MASK		0x1F
+-#define ADP5585_ROW_SHIFT		0
+-#define ADP5585_COL_SHIFT		6
+-#define ADP5585_MAX_ROW_NUM		5
+-#define ADP5585_MAX_COL_NUM		4
+-
+-#define ADP5585_ROW(x)	(1 << ((x) & ADP5585_ROW_MASK))
+-#define ADP5585_COL(x)	(1 << (((x) & ADP5585_COL_MASK) + ADP5585_COL_SHIFT))
+-
+-/* Put one of these structures in i2c_board_info platform_data */
+-
+-struct adp5589_kpad_platform_data {
+-	unsigned keypad_en_mask;	/* Keypad (Rows/Columns) enable mask */
+-	const unsigned short *keymap;	/* Pointer to keymap */
+-	unsigned short keymapsize;	/* Keymap size */
+-	bool repeat;			/* Enable key repeat */
+-	bool en_keylock;		/* Enable key lock feature (ADP5589 only)*/
+-	unsigned char unlock_key1;	/* Unlock Key 1 (ADP5589 only) */
+-	unsigned char unlock_key2;	/* Unlock Key 2 (ADP5589 only) */
+-	unsigned char unlock_timer;	/* Time in seconds [0..7] between the two unlock keys 0=disable (ADP5589 only) */
+-	unsigned char scan_cycle_time;	/* Time between consecutive scan cycles */
+-	unsigned char reset_cfg;	/* Reset config */
+-	unsigned short reset1_key_1;	/* Reset Key 1 */
+-	unsigned short reset1_key_2;	/* Reset Key 2 */
+-	unsigned short reset1_key_3;	/* Reset Key 3 */
+-	unsigned short reset2_key_1;	/* Reset Key 1 */
+-	unsigned short reset2_key_2;	/* Reset Key 2 */
+-	unsigned debounce_dis_mask;	/* Disable debounce mask */
+-	unsigned pull_dis_mask;		/* Disable all pull resistors mask */
+-	unsigned pullup_en_100k;	/* Pull-Up 100k Enable Mask */
+-	unsigned pullup_en_300k;	/* Pull-Up 300k Enable Mask */
+-	unsigned pulldown_en_300k;	/* Pull-Down 300k Enable Mask */
+-	const struct adp5589_gpi_map *gpimap;
+-	unsigned short gpimapsize;
+-	const struct adp5589_gpio_platform_data *gpio_data;
+-};
+-
+-struct i2c_client; /* forward declaration */
+-
+-struct adp5589_gpio_platform_data {
+-	int	gpio_start;	/* GPIO Chip base # */
+-};
+-
+-#endif
 -- 
 2.51.0
 
