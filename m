@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJP6Bl+fnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:07 +0100
+	id qM8QHbZUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD509192F1A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 936C818FD89
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE936309BB7B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C78230F9E63
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3012FC893;
-	Wed, 25 Feb 2026 06:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066DF26B2D7;
+	Wed, 25 Feb 2026 01:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeRREQeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwsglv1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F60A2D77FA;
-	Wed, 25 Feb 2026 06:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE09D25A642;
+	Wed, 25 Feb 2026 01:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002641; cv=none; b=szO/xfiFUZeESeWSXzPst/K6pISaVKhI00elfsKbMLjri0+cJsp0vALPoX1JTa8QaDKLwxSNcXA8m4UK3MbRU734hi5NPA5VC7hWqRlFga17I0oJP+di7xkt1Tk8khQDguid+cJYyVDl+x+I1+7OJYUrt3do520z8pABkpsq/UA=
+	t=1771983568; cv=none; b=jtW2F4pgtvVtOC+9Ecff58y6G7kha3yekUcn4yqNMYVJGvUkDb/3pFrtY0rJQx2+onhVlnhUlGifF6BahZwdzgljn3PDbqJMKE1GzjXpUY6N6N7LaHGhfJPxwkW9FKsB3MkAjrnOstkELPefly/1QcMUTlAul85Ahn/rYpNMw3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002641; c=relaxed/simple;
-	bh=TBbCa2K4XBjLTvm1b8NyhjO+YuavMpGA6xoyjTOxd/o=;
+	s=arc-20240116; t=1771983568; c=relaxed/simple;
+	bh=fEGyEByCqX2E+bhb3pgJ2fjc1bgQULVtvCAkCOr5yhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/HkFNM1jL07Yh/k1RSbF4Xdenpv+zN+22ojO9tRWXiHNdoArrIp+g7eKMLgZHantJ/QZa9QRG+pfiWGe4eaRmiqO2SMG6hScuPSLysc539Y65R3SBZJvDcLJdM1CpAkVScwl8ArbDp9bHfIXx5wuwqvORdRmV7lGEqp3z0RPbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeRREQeD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4689AC116D0;
-	Wed, 25 Feb 2026 06:57:21 +0000 (UTC)
+	 MIME-Version; b=kfZnqrxdJiF1Er2rLzqg0p4NjR2D4IkEHi/+qRYA7CEO0dpX5vKYBBpHgHsS3IcjiiXEhpvMm31DPAketZI0fGXs3xU8nWt1wWjs9H2aWMg2HsgURYJGBcy6vXrmzCBoRy9W6aTamQFENwvLcMpNgLkxz2c125KqJYkJqW7JTik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwsglv1s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6C1C19423;
+	Wed, 25 Feb 2026 01:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002641;
-	bh=TBbCa2K4XBjLTvm1b8NyhjO+YuavMpGA6xoyjTOxd/o=;
+	s=korg; t=1771983568;
+	bh=fEGyEByCqX2E+bhb3pgJ2fjc1bgQULVtvCAkCOr5yhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XeRREQeDVLb0ZsnjnE15sheR7JD5pg+5yYU51DWR+5Q8cYDyqNqP8yXcStiRMwri+
-	 piJSsVM/vYFgUjY6qP4lJVT9a6+pd4SkQCIIMp0wTImhEZUj0HaAPW1SOKANIyco0n
-	 nVKNDGzT4Ap3UWZQplcba9LumJ/EUytnJgbom/uQ=
+	b=mwsglv1sYIPCeqRIMyLjBftJNW6XYgVJxVx1P3DcnSbOrMFvb9cgLdtZMWtJJAvCc
+	 TidT7GmtlQSVMl0z2lKWG7yK9tYCgn/LxnhW5nRiX7sxUEbds+g1uptfibooT3L0Me
+	 0iHIKFNDdjEGiu1KOeDqMjN0/FI4jCH2Ei3hrA60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	Jens Remus <jremus@linux.ibm.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 408/641] clk: meson: g12a: Limit the HDMI PLL OD to /4
-Date: Tue, 24 Feb 2026 17:22:14 -0800
-Message-ID: <20260225012358.449201165@linuxfoundation.org>
+Subject: [PATCH 6.19 626/781] kbuild: Add objtool to top-level clean target
+Date: Tue, 24 Feb 2026 17:22:15 -0800
+Message-ID: <20260225012415.167110696@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,120 +66,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219325-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,googlemail.com,baylibre.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218708-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.962];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AD509192F1A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,checkpatch.pl:url]
+X-Rspamd-Queue-Id: 936C818FD89
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 7aa6c24697ef5db1402dd38743914493cd5b356d ]
+[ Upstream commit 68b4fe32d73789dea23e356f468de67c8367ef8f ]
 
-GXBB has the HDMI PLL OD in the HHI_HDMI_PLL_CNTL2 register while for
-G12A/G12B/SM1 the OD has moved to HHI_HDMI_PLL_CNTL0. At first glance
-the rest of the OD setup seems identical.
+Objtool is an integral part of the build, make sure it gets cleaned by
+"make clean" and "make mrproper".
 
-However, looking at the downstream kernel sources as well as testing
-shows that G12A/G12B/SM1 only supports three OD values:
-- register value 0 means: divide by 1
-- register value 1 means: divide by 2
-- register value 2 means: divide by 4
-
-Downstream sources are also only using OD register values 0, 1 and 2
-for G12A/G12B/SM1 (while for GXBB the downstream kernel sources are also
-using value 3 which means: divide by 8).
-
-Add clk_div_table and have it replace the CLK_DIVIDER_POWER_OF_TWO flag
-to make the kernel's view of this register match with how the hardware
-actually works.
-
-Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20260105204710.447779-3-martin.blumenstingl@googlemail.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Fixes: 442f04c34a1a ("objtool: Add tool to perform compile-time stack metadata validation")
+Reported-by: Jens Remus <jremus@linux.ibm.com>
+Closes: https://lore.kernel.org/15f2af3b-be33-46fc-b972-6b8e7e0aa52e@linux.ibm.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Tested-by: Jens Remus <jremus@linux.ibm.com>
+Link: https://patch.msgid.link/968faf2ed30fa8b3519f79f01a1ecfe7929553e5.1770759919.git.jpoimboe@kernel.org
+[nathan: use Closes: instead of Link: per checkpatch.pl]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/g12a.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ Makefile               | 11 ++++++++++-
+ tools/objtool/Makefile |  2 ++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
-index 185b6348251db..d0d4c7b6dc827 100644
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -777,12 +777,23 @@ static struct clk_regmap g12a_hdmi_pll_dco = {
- 	},
- };
+diff --git a/Makefile b/Makefile
+index 21df635071198..7e34042743d9e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1474,6 +1474,15 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
+ 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
+ endif
  
-+/*
-+ * G12/SM1 hdmi OD dividers are POWER_OF_TWO dividers but limited to /4.
-+ * A divider value of 3 should map to /8 but instead map /4 so ignore it.
-+ */
-+static const struct clk_div_table g12a_hdmi_pll_od_div_table[] = {
-+	{ .val = 0, .div = 1 },
-+	{ .val = 1, .div = 2 },
-+	{ .val = 2, .div = 4 },
-+	{ /* sentinel */ }
-+};
++PHONY += objtool_clean
 +
- static struct clk_regmap g12a_hdmi_pll_od = {
- 	.data = &(struct clk_regmap_div_data){
- 		.offset = HHI_HDMI_PLL_CNTL0,
- 		.shift = 16,
- 		.width = 2,
--		.flags = CLK_DIVIDER_POWER_OF_TWO,
-+		.table = g12a_hdmi_pll_od_div_table,
- 	},
- 	.hw.init = &(struct clk_init_data){
- 		.name = "hdmi_pll_od",
-@@ -800,7 +811,7 @@ static struct clk_regmap g12a_hdmi_pll_od2 = {
- 		.offset = HHI_HDMI_PLL_CNTL0,
- 		.shift = 18,
- 		.width = 2,
--		.flags = CLK_DIVIDER_POWER_OF_TWO,
-+		.table = g12a_hdmi_pll_od_div_table,
- 	},
- 	.hw.init = &(struct clk_init_data){
- 		.name = "hdmi_pll_od2",
-@@ -818,7 +829,7 @@ static struct clk_regmap g12a_hdmi_pll = {
- 		.offset = HHI_HDMI_PLL_CNTL0,
- 		.shift = 20,
- 		.width = 2,
--		.flags = CLK_DIVIDER_POWER_OF_TWO,
-+		.table = g12a_hdmi_pll_od_div_table,
- 	},
- 	.hw.init = &(struct clk_init_data){
- 		.name = "hdmi_pll",
++objtool_O = $(abspath $(objtree))/tools/objtool
++
++objtool_clean:
++ifneq ($(wildcard $(objtool_O)),)
++	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
++endif
++
+ tools/: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+ 	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
+@@ -1637,7 +1646,7 @@ vmlinuxclean:
+ 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/link-vmlinux.sh clean
+ 	$(Q)$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) clean)
+ 
+-clean: archclean vmlinuxclean resolve_btfids_clean
++clean: archclean vmlinuxclean resolve_btfids_clean objtool_clean
+ 
+ # mrproper - Delete all generated files, including .config
+ #
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index a40f302329291..6964175abdfdf 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -29,6 +29,8 @@ srctree := $(patsubst %/,%,$(dir $(CURDIR)))
+ srctree := $(patsubst %/,%,$(dir $(srctree)))
+ endif
+ 
++RM ?= rm -f
++
+ LIBSUBCMD_DIR = $(srctree)/tools/lib/subcmd/
+ ifneq ($(OUTPUT),)
+   LIBSUBCMD_OUTPUT = $(abspath $(OUTPUT))/libsubcmd
 -- 
 2.51.0
 
