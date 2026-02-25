@@ -1,191 +1,192 @@
-Return-Path: <stable+bounces-219138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BG3IiVgnmmaUwQAu9opvQ
-	(envelope-from <stable+bounces-219138-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:36:21 +0100
+	id qJMnBphknmlCVAQAu9opvQ
+	(envelope-from <stable+bounces-219139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:55:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8092190F65
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:36:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E25C1910B6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:55:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C2F03059FFB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D3FA304CE9D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54561288517;
-	Wed, 25 Feb 2026 02:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55F629992A;
+	Wed, 25 Feb 2026 02:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qzV4M5hN"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ZpZGEvMk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185BF285C85
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F39A22B5AD
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771986935; cv=none; b=OkcBitDVecDTvVjq9nNhEbm6zPQtRUGk+HbpheiSwizuOEtGvjz5rnKGWGWaPfcHFbutMXevjnKcR5cAvV6U/8dsEBtXZ4uwQcdwC+TpvGFsxCJ50VaqXTANxo4fX/pefIujPl6FqaXZT82MknRduNJafTnqcXRd8O2y6AFBDN0=
+	t=1771988105; cv=none; b=bsFefANmHyrU9WNcVqiMMCPwxGyhY4OTPd58o0giA1Ipspfou/slwlVDtKqHaCKinlmqgwrjMtvcgPS9EiZLbl9wJFlJPHXSbTojeKbDB4ILtdNpqfm2jlZShtOF9GOWqJqVDTxdqMZ+iweCEMhJtHEVLw2gjbYrGZ8m9AyJ2+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771986935; c=relaxed/simple;
-	bh=BOb7YHSNzeKo6URRN4aD5SGdrphlzUsYjFL9Mc7pzW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjeTgHVCwnEXBAn3P9OdjAjKgbGzhg+FY0qTpY54H1zaaPF6RUNv9oBd6qhDB3UPAXxONeS3o/6LkC2gxTq/3Y3NBMDA+dWXm3qaYBbAhALDZH3o43PCZtcw7jEeWdovC+QWhqbA0zlMaei9CklH0zuI58o1q3rPiKqt/749M8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qzV4M5hN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F6AC116D0;
-	Wed, 25 Feb 2026 02:35:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771986935;
-	bh=BOb7YHSNzeKo6URRN4aD5SGdrphlzUsYjFL9Mc7pzW0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qzV4M5hNn1EUduu4rtZMXY9NKtgypQf2mTPt7ZtDKllxAPy8iDreTSPpw4riJ2qqo
-	 hL80PPzzkr+tQfdFpILd5yfnyXKENuf/+/B+gxWTC1ntmCP9XpPivXpPP+LCn4o8BI
-	 CGbmALbRg/g7uxm5BF08QT/PhPHcAdz51XgmQ/9qEJkLI6RJhfK3LrMosP65HeHMXJ
-	 zajc8Bf9D4KCezagfgGWyNWITn65nkNNLBDjIw8i2XZ/irBQOBMmhlEMYLMEv4RoTH
-	 5yvAuBiOZsdHrSYErNbdocjSYExDsas7ppniUp0D2m75V+7pUAN1jVTTs0CUSbAKsv
-	 YS8zS+c4EGjZg==
-From: Sasha Levin <sashal@kernel.org>
+	s=arc-20240116; t=1771988105; c=relaxed/simple;
+	bh=PLcq2XfGK8enrQXuhWQFRZKlWB3Le6L7ftaCYdrFU7A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UiqnZcqE5J/2haE0u8oaHPg43GAOB5hYUO+dtzn+L2kop2bW5gT5rw2X/75x7tAY6zMLOKfOGtbbATdW9lnfz873tOuAxMo5ovu/yjFVfGsqPTInqBEXgnM2grB8wsJoQt5t3Q1+zwJ908XYXOxPR6+lAZNSEGdf2rsDjN8cqbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ZpZGEvMk; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso46595125e9.1
+        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 18:55:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1771988102; x=1772592902; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HuAA4LL0UTtbYiDJhfwXYWHeF9YJmDkn9xDPdMSh39A=;
+        b=ZpZGEvMkU6M2tRHbVWUKao2KoZ/CfFTG6LXorSjEUi5qlyj1yoSX41Ap9UBO1f8x6o
+         2ohAW7+ayYQZcfHF2lgQk9Ld7vbCaVK/HzsDjZeIDAwsE4B8oYu7LR6CwAIDwH7MdFqE
+         ZMmNpRh8DKTsu/Q8/ExZ/O3wqRl6Snyh6yQQvZhu/nny5qrbvyeSK567RrV07Q2red4i
+         XFV9fNDVvVrxmx/AJXMBhdEtHsgfba1gwlMI6Oqrn6QlQvlTs4LpnC4OlEGg4x0G7HhI
+         qqDOp69v8CB/zwvSfLuPWL0UXluzlFDK+1TwwpgcqU3uUkGz5CWD8V3ezPbS7i3qhFA/
+         6GJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771988102; x=1772592902;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HuAA4LL0UTtbYiDJhfwXYWHeF9YJmDkn9xDPdMSh39A=;
+        b=ena52EZ4dcDXrlnUK8SyVpBN8zeHLzhIjitqskE9LndZS5pXZdt0VRNzGUonxDVs4i
+         rt++RLLDqY+0q1N2/+nhtFIHc4f/Y+lpA7oN/l8R2wzcgb8EtwMc28NfREBALCKGiGvf
+         zS1nBZCcqJqwhDOSnF5etAHDycWCletOc/W9itRo3zXG7rDoWpPBJrctrgHYOIRjazlF
+         Rr7CQZfllQW3lOp9vO7poQJRDx7BSJhxWPG/KwcRIcHW0toiFf8hs05TXhdkzxYFR79I
+         Fo6NKeBwhVWIS2LV8iN1O+vZjT2A6lJZP3qYhtYu6wPA9NjMLZXViQobR+D/VpFqU4kU
+         7kng==
+X-Gm-Message-State: AOJu0YxTCwqwHuTSRqImPMOZwLflFF8zu3gnXVWxer8BVfD4uHKIbKmj
+	FvTG//2NRD+fMtTmh+1UIvFMq68LThcqKOtvHF6Zb/7craT9AgyZsDSYYQcsgGpmoaeqKNzDriy
+	TxYTw
+X-Gm-Gg: ATEYQzwkud+m+B9WhIDI+N1MURySWBXZfbhmyFthvIW1iAPArTrCwtcEhZ54wa2SNH0
+	gS/4XBP++zN9GEWWDjXWIYI6vfen7AEewandQFuGz3YdlppcREIKySbbqSOFEdqUZty0lt1CD2H
+	ObzS1qSVQdBNqW5CqFd5l690I6Pl5gxBpxXs2Hj3SqJvBdHbFrAJgynXbojm7nDVWtLeK0Eivjp
+	DBGQpMggE9mdgMxUfAm6eKRDMU4bNSZ4pA2XT7hppIq+E0sngdOCtlJ0vpwjmrZRhh32bCX11sR
+	a1TkkvDkEKlG6QNl36YPmIWMCHH/xcR2SCRttoEXQU07bVStJ67nJfkSOuw/SSpwUZJRU9J7dBa
+	aYt/X+EWjRvk7aK4sj/+QuEyR03Y5D4ui4nLqFAgNgufPqivxn3BZOQmX9I2ewh+Qd51vhrHlDK
+	UB9j9Li39T8073518cs/iS6q52Ng==
+X-Received: by 2002:a05:600c:c4a5:b0:483:7783:5382 with SMTP id 5b1f17b1804b1-483a95e6b64mr217224605e9.27.1771988102287;
+        Tue, 24 Feb 2026 18:55:02 -0800 (PST)
+Received: from localhost ([2401:e180:8d80:eebd:d098:7649:31a9:9ad7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad75027b0asm126568115ad.67.2026.02.24.18.55.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 18:55:01 -0800 (PST)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 To: stable@vger.kernel.org
-Cc: Zhang Yi <yi.zhang@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	stable@kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] ext4: don't set EXT4_GET_BLOCKS_CONVERT when splitting before submitting I/O
-Date: Tue, 24 Feb 2026 21:35:32 -0500
-Message-ID: <20260225023532.3816235-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026022421-anointer-scoundrel-fb15@gregkh>
-References: <2026022421-anointer-scoundrel-fb15@gregkh>
+Cc: =?UTF-8?q?Ricardo=20B=2E=20Marli=C3=A8re?= <rbm@suse.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH stable 6.6 00/11] Backport selftest for "bpf: Check skb->transport_header is set in bpf_skb_check_mtu"
+Date: Wed, 25 Feb 2026 10:54:38 +0800
+Message-ID: <20260225025454.17398-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219138-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219139-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E8092190F65
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:mid,suse.com:dkim]
+X-Rspamd-Queue-Id: 6E25C1910B6
 X-Rspamd-Action: no action
 
-From: Zhang Yi <yi.zhang@huawei.com>
+This patchset backport the corresponding BPF selftests for commit
+d946f3c98328 ("bpf: Check skb->transport_header is set in
+bpf_skb_check_mtu"), which has already been included since 6.12.63.
 
-[ Upstream commit feaf2a80e78f89ee8a3464126077ba8683b62791 ]
+The BPF selftest added in commit 6cc73f35406c ("selftests/bpf: Test
+bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) when transport_header is not set")
+additionally depends on network namespace support for BPF selftests
+added by Bastien, otherwise the MTU in root networking namespace will be
+set to 10, causing other BPF selftests to fail. Credit goes to Ricardo
+Marlière for figuring out the dependency. Details below.
 
-When allocating blocks during within-EOF DIO and writeback with
-dioread_nolock enabled, EXT4_GET_BLOCKS_PRE_IO was set to split an
-existing large unwritten extent. However, EXT4_GET_BLOCKS_CONVERT was
-set when calling ext4_split_convert_extents(), which may potentially
-result in stale data issues.
+The follow commits are backported:
+ 1. f52403b6bfea "selftests/bpf: Add traffic monitor functions."
+ 2. f5281aacec85 "selftests/bpf: Add the traffic monitor option to test_progs."
+ 3. 1e115a58be0f "selftests/bpf: netns_new() and netns_free() helpers."
+ 4. 52a5b8a30fa8 "selftests/bpf: Monitor traffic for tc_redirect."
+ 5. b407b52b1850 "selftests/bpf: Monitor traffic for sockmap_listen."
+ 6. 69354085975a "selftests/bpf: Monitor traffic for select_reuseport."
+ 7. 5772c3458bb8 "selftests/bpf: use simply-expanded variables for libpcap flags"
+ 8. 4a06c5251ae3 "selftests/bpf: ns_current_pid_tgid: Rename the test function"
+ 9. c047e0e0e435 "selftests/bpf: Optionally open a dedicated namespace to run test in it"
+10. 207cd7578ad1 "selftests/bpf: tc_links/tc_opts: Unserialize tests"
+11. 6cc73f35406c "selftests/bpf: Test bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) when transport_header is not set"
 
-Assume we have an unwritten extent, and then DIO writes the second half.
+Patch 1-6 adds the infrastructure required for creating network
+namespace when running BPF selftests. Patch 7 is a follow-up fix for
+patch 1. Patch 8-10 adds network namespace support for BPF selftests.
+Patch 11 is the BPF selftests for commit d946f3c98328 ("bpf: Check
+skb->transport_header is set in bpf_skb_check_mtu").
 
-   [UUUUUUUUUUUUUUUU] on-disk extent        U: unwritten extent
-   [UUUUUUUUUUUUUUUU] extent status tree
-            |<-   ->| ----> dio write this range
+Bastien Curutchet (eBPF Foundation) (3):
+  selftests/bpf: ns_current_pid_tgid: Rename the test function
+  selftests/bpf: Optionally open a dedicated namespace to run test in it
+  selftests/bpf: tc_links/tc_opts: Unserialize tests
 
-First, ext4_iomap_alloc() call ext4_map_blocks() with
-EXT4_GET_BLOCKS_PRE_IO, EXT4_GET_BLOCKS_UNWRIT_EXT and
-EXT4_GET_BLOCKS_CREATE flags set. ext4_map_blocks() find this extent and
-call ext4_split_convert_extents() with EXT4_GET_BLOCKS_CONVERT and the
-above flags set.
+Eduard Zingerman (1):
+  selftests/bpf: use simply-expanded variables for libpcap flags
 
-Then, ext4_split_convert_extents() calls ext4_split_extent() with
-EXT4_EXT_MAY_ZEROOUT, EXT4_EXT_MARK_UNWRIT2 and EXT4_EXT_DATA_VALID2
-flags set, and it calls ext4_split_extent_at() to split the second half
-with EXT4_EXT_DATA_VALID2, EXT4_EXT_MARK_UNWRIT1, EXT4_EXT_MAY_ZEROOUT
-and EXT4_EXT_MARK_UNWRIT2 flags set. However, ext4_split_extent_at()
-failed to insert extent since a temporary lack -ENOSPC. It zeroes out
-the first half but convert the entire on-disk extent to written since
-the EXT4_EXT_DATA_VALID2 flag set, but left the second half as unwritten
-in the extent status tree.
+Kui-Feng Lee (6):
+  selftests/bpf: Add traffic monitor functions.
+  selftests/bpf: Add the traffic monitor option to test_progs.
+  selftests/bpf: netns_new() and netns_free() helpers.
+  selftests/bpf: Monitor traffic for tc_redirect.
+  selftests/bpf: Monitor traffic for sockmap_listen.
+  selftests/bpf: Monitor traffic for select_reuseport.
 
-   [0000000000SSSSSS]  data                S: stale data, 0: zeroed
-   [WWWWWWWWWWWWWWWW]  on-disk extent      W: written extent
-   [WWWWWWWWWWUUUUUU]  extent status tree
+Martin KaFai Lau (1):
+  selftests/bpf: Test bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) when
+    transport_header is not set
 
-Finally, if the DIO failed to write data to the disk, the stale data in
-the second half will be exposed once the cached extent entry is gone.
+ tools/testing/selftests/bpf/Makefile          |   5 +
+ tools/testing/selftests/bpf/network_helpers.c | 500 ++++++++++++++++++
+ tools/testing/selftests/bpf/network_helpers.h |  21 +
+ .../selftests/bpf/prog_tests/check_mtu.c      |  23 +-
+ .../bpf/prog_tests/ns_current_pid_tgid.c      |   2 +-
+ .../bpf/prog_tests/select_reuseport.c         |  37 +-
+ .../selftests/bpf/prog_tests/sockmap_listen.c |   8 +
+ .../selftests/bpf/prog_tests/tc_links.c       |  28 +-
+ .../selftests/bpf/prog_tests/tc_opts.c        |  40 +-
+ .../selftests/bpf/prog_tests/tc_redirect.c    |  29 +-
+ .../selftests/bpf/progs/test_check_mtu.c      |  12 +
+ tools/testing/selftests/bpf/test_progs.c      | 192 ++++++-
+ tools/testing/selftests/bpf/test_progs.h      |   6 +
+ 13 files changed, 809 insertions(+), 94 deletions(-)
 
-Fix this issue by not passing EXT4_GET_BLOCKS_CONVERT when splitting
-an unwritten extent before submitting I/O, and make
-ext4_split_convert_extents() to zero out the entire extent range
-to zero for this case, and also mark the extent in the extent status
-tree for consistency.
-
-Fixes: b8a8684502a0 ("ext4: Introduce FALLOC_FL_ZERO_RANGE flag for fallocate")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Cc: stable@kernel.org
-Message-ID: <20251129103247.686136-4-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-[ different function signatures ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ext4/extents.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index a3d3c9fc64262..fa738c8c9ea29 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3702,11 +3702,15 @@ static int ext4_split_convert_extents(handle_t *handle,
- 	/* Convert to unwritten */
- 	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
- 		split_flag |= EXT4_EXT_DATA_VALID1;
--	/* Convert to initialized */
--	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
-+	/* Split the existing unwritten extent */
-+	} else if (flags & (EXT4_GET_BLOCKS_UNWRIT_EXT |
-+			    EXT4_GET_BLOCKS_CONVERT)) {
- 		split_flag |= ee_block + ee_len <= eof_block ?
- 			      EXT4_EXT_MAY_ZEROOUT : 0;
--		split_flag |= (EXT4_EXT_MARK_UNWRIT2 | EXT4_EXT_DATA_VALID2);
-+		split_flag |= EXT4_EXT_MARK_UNWRIT2;
-+		/* Convert to initialized */
-+		if (flags & EXT4_GET_BLOCKS_CONVERT)
-+			split_flag |= EXT4_EXT_DATA_VALID2;
- 	}
- 	flags |= EXT4_GET_BLOCKS_PRE_IO;
- 	return ext4_split_extent(handle, inode, ppath, map, split_flag, flags);
-@@ -3871,7 +3875,7 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
- 	/* get_block() before submitting IO, split the extent */
- 	if (flags & EXT4_GET_BLOCKS_PRE_IO) {
- 		ret = ext4_split_convert_extents(handle, inode, map, ppath,
--					 flags | EXT4_GET_BLOCKS_CONVERT);
-+					 flags);
- 		if (ret < 0) {
- 			err = ret;
- 			goto out2;
 -- 
-2.51.0
+2.53.0
 
 
