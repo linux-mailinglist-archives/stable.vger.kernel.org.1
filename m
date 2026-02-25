@@ -1,256 +1,216 @@
-Return-Path: <stable+bounces-219539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218045-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEpHF0ignmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:10:00 +0100
+	id QPsDKk5QnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218045-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:28:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDDD41930C2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC1118EB5A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 622B7315370A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B48F83019041
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE7530EF65;
-	Wed, 25 Feb 2026 06:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EA1251795;
+	Wed, 25 Feb 2026 01:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJ/F7nV5"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0EFQtS/K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0345B3128BE;
-	Wed, 25 Feb 2026 06:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AC72494FE
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 01:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002783; cv=none; b=gkKdW1gOwu7LiFUav8ZT4CAekfHgdROYVOvzwhviFG9O07gGBxDF5GNr3OId4pWCY+9ANC5kVtTUSzCIKMub7J1lRwHBZVhrgW4E/qEdNJmULGvTza41kmuTsayoGOyIrYpxfgIj/DA47TwP9bSNrqQewyY5dyuio6Doy+07s8E=
+	t=1771982754; cv=none; b=IEojdKiRpzQ/KfcVRYc1/VHYHdz3Y9dQHSfKTGexWsCPEtgEsqZiExAvkn1CvJcFlTgZOdp0b87gZin7Ev8x2AbWrtR2OvJx+h0eTG8Kk2jUBW2aY18RxcPtnRGf29Dwrbrc0IIVY76d4LPbBCvlG/R3pPkKau7gcJFnz85jmlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002783; c=relaxed/simple;
-	bh=lgmCM39FXQWq4E+xaXcZDixXYeZRXBhVzFDgVzuP7pc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgrCd/We6DrAGJUiXU3acR5XoxREQrXt32JNW5JyA1AEwcJX4fRY/11PH56o5q/FujhJQ1nW7KqFvQ33fL7ShDccgcW/2NPBCF2BBlkUNpQkjxxETnaNaa4I/63/aG354SJMh4J2d3RbqNNHNvF8PorWtpeINlPU+sERpTVNUgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJ/F7nV5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E4EC116D0;
-	Wed, 25 Feb 2026 06:59:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002782;
-	bh=lgmCM39FXQWq4E+xaXcZDixXYeZRXBhVzFDgVzuP7pc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJ/F7nV5Np1dKtxzkmOlVl2FBQeqNMorTFQvTGMxGxOIxmeAA50N/Oq16+Q1jEggt
-	 KeNT9LJmPJ30jssINXVS6eDKZTfQ60pI4fiqVtSoxoiafvFS3AXZZJkWfCZwQYV0WR
-	 UlhfqXhtSmOOnWAJSE68UgmsqtwykMVcheIVeP8E=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Igor Pylypiv <ipylypiv@google.com>
-Subject: [PATCH 6.18 623/641] ata: libata-scsi: refactor ata_scsi_translate()
-Date: Tue, 24 Feb 2026 17:25:49 -0800
-Message-ID: <20260225012403.601677794@linuxfoundation.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1771982754; c=relaxed/simple;
+	bh=ryim3kBKfVpNClBm87uaeHeC28gK3jBN4xRGvEH2sTo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Geffd/h+qhsR3E9+xlWyZq5ygXZXZiwx115RNe4B5crF0s06M2NmTZAQG/vhaM2wbAEv8r63Jrg1JaARNTGZ+x8NGcKAr7EiSuX899JNwHYOixQKb+8b5EZiqt+xjIYnoq4Syy5LtcOOI9IWmqlqVkmCPVux00aXKIefZlemTf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0EFQtS/K; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3562370038dso5391094a91.3
+        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 17:25:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771982752; x=1772587552; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=O/dMkWi/E0gzEc9xlKrxZrN+8RFKbCVIlfOl5w/8K8Y=;
+        b=0EFQtS/KT1thHFV9tfcvpczJxk3g5SeTrr0uSyDAJ3+UEMl4FdqYUuG/56DfZXI2S7
+         YZGap1Sfsqz/XclpY/JinY31UWfjnDjeEIeKPVdUEPOcV+K3hGd1ZMYsCpmmBoTuM7ro
+         jpJN5AaWg7WiHO+5PWvCL9MFpHagNIOQw6DEcUsStcHwTe9fYdEmWC5cHTnh6EXrZKe0
+         YZm7+4g9RZWuKLmu9PkLnhgfTbK2SdnQM/SE/gy2/aOKnJ0QhpAwxs1izgdfdMg5O0dv
+         fJv/WkCBSkItjo93dRV2HScnHjGGTxzs8XkMXhn8C2W7QsGxEZtgCAS/O7WnhK1h2gxk
+         RDEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771982752; x=1772587552;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=O/dMkWi/E0gzEc9xlKrxZrN+8RFKbCVIlfOl5w/8K8Y=;
+        b=hPjTfirKYBWAAammQN37YVAMftI0cwUUdsihZ7gt7+FwzRn/Ryreg4U8Urw1AXjhfu
+         B+ZlXUfI6+zCggM+Md7N4qdxfT1uDS6KyeNpo3chMg2HGGWd7ZHF2m5EGmQ2mGDNJnov
+         fCsCfsXbenQYMzKXOqr15BldaIFbxjaF595iuNQ9RbITDLyI1MjBE9iWZ7Bm3OFsZo3p
+         MrzpcVTPdE/JeT009fuUIhFWWKH6sMp8ueXFP9J8vMADiR232rmGRfT9mlychHpoiI/5
+         0D2jbC/990eyktByUwBH5xNV+o45aBFAsSdfH+LDwk39BgLGM7suPQ3CG6LbyZIAY4Do
+         gQ1g==
+X-Forwarded-Encrypted: i=1; AJvYcCX+2mTE6fDhjwvkez/0vqNAOXsqJCka3Cw3FBiegHylmBwGHZRmKBYMDru3sYkIYQCTECdZLDA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5H/t9lckZ4OGkuYhY++maYKjOdh3GFUCDfb4PGGJiffgvyUW5
+	xSQYq3/TPQwu+ke+KuZu7XeD0hbI9sUBf0HPLxNPrhnUe6Gq8P2cVCFUHugoTZTTsY3O5hNJX6e
+	AH8bFzA==
+X-Received: from pjbge3.prod.google.com ([2002:a17:90b:e03:b0:354:be64:d426])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2812:b0:354:a9f3:68bc
+ with SMTP id 98e67ed59e1d1-358ae8e8390mr10841719a91.30.1771982752378; Tue, 24
+ Feb 2026 17:25:52 -0800 (PST)
+Date: Tue, 24 Feb 2026 17:25:50 -0800
+In-Reply-To: <CAO9r8zO+Eej0AjzQt6dnELKLKHZ33DGLbDv=_sP1J1qLMVWpvw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260223154636.116671-1-yosry@kernel.org> <20260223154636.116671-3-yosry@kernel.org>
+ <CAO9r8zPsAMaiU794xoXDso3sdAM0_EN2PyE13vR4NqqEh9e2=g@mail.gmail.com>
+ <aZ5ItfEUtIlVbzuQ@google.com> <CAO9r8zPbu1BsOsPU02YcCLDbRXZoDmVd8XiMHssSDnkjdDPC4g@mail.gmail.com>
+ <aZ5MF8_RK56C8B9Q@google.com> <CAO9r8zO+Eej0AjzQt6dnELKLKHZ33DGLbDv=_sP1J1qLMVWpvw@mail.gmail.com>
+Message-ID: <aZ5Pnvb4OAVWWtuR@google.com>
+Subject: Re: [PATCH v1 2/4] KVM: nSVM: Delay stuffing L2's current RIP into
+ NextRIP until vCPU run
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219539-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-218045-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BDDD41930C2
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 0FC1118EB5A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+On Tue, Feb 24, 2026, Yosry Ahmed wrote:
+> On Tue, Feb 24, 2026 at 5:10=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > On Tue, Feb 24, 2026, Yosry Ahmed wrote:
+> > > > > Doing this in svm_prepare_switch_to_guest() is wrong, or at least
+> > > > > after the svm->guest_state_loaded check. It's possible to emulate=
+ the
+> > > > > nested VMRUN without doing a vcpu_put(), which means
+> > > > > svm->guest_state_loaded will remain true and this code will be
+> > > > > skipped.
+> > > > >
+> > > > > In fact, this breaks the svm_nested_soft_inject_test test. Funny
+> > > > > enough, I was only running it with my repro changes, which papere=
+d
+> > > > > over the bug because it forced an exit to userspace after VMRUN d=
+ue to
+> > > > > single-stepping, so svm->guest_state_loaded got cleared and the c=
+ode
+> > > > > was executed on the next KVM_RUN, before L2 runs.
+> > > > >
+> > > > > I can move it above the svm->guest_state_loaded check, but I thin=
+k I
+> > > > > will just put it in pre_svm_run() instead.
+> > > >
+> > > > I would rather not expand pre_svm_run(), and instead just open code=
+ it in
+> > > > svm_vcpu_run().  pre_svm_run() probably should never have been adde=
+d, because
+> > > > it's far from a generic "pre run" API.  E.g. if we want to keep the=
+ helper around,
+> > > > it should probably be named something something ASID.
+> > >
+> > > I sent a new version before I saw your response.. sorry.
+> > >
+> > > How strongly do you feel about this? :P
+> >
+> > Strong enough that I'll fix it up when applying, unless it's a sticking=
+ point on
+> > your end.
+>=20
+> It's just that 99% of the time someone is reading svm_vcpu_run(), they
+> won't care about this code, and it's also cognitive load to filter it
+> out. We can add a helper for this code (and the soft IRQ inject),
+> something like svm_fixup_nested_rips() or sth.
 
-------------------
+I don't entirely disagree, but at the same time, why is someome reading svm=
+_vcpu_run()
+if they don't want to look at the gory details?
 
-From: Damien Le Moal <dlemoal@kernel.org>
+> We discussed a helper before and you didn't like it, but that was in a
+> different context (a helper that combined normal and special cases).
+> WDYT?
 
-commit bb3a8154b1a1dc2c86d037482c0a2cf9186829ed upstream.
+A helper would work.  svm_fixup_nested_rips() is good, the only flaw is the=
+ CS.base
+chunk, but I'm not sure I care enough about 32-bit to reject the name just =
+because
+of that :-)
 
-Factor out of ata_scsi_translate() the code handling queued command
-deferral using the port qc_defer callback and issuing the queued
-command with ata_qc_issue() into the new function ata_scsi_qc_issue(),
-and simplify the goto used in ata_scsi_translate().
-While at it, also add a lockdep annotation to check that the port lock
-is held when ata_scsi_translate() is called.
+That would make it easier to reduce indentation, e.g.
 
-No functional changes.
+static void svm_fixup_nested_rips(struct kvm_vcpu *vcpu)
+{
+	struct vcpu_svm *svm =3D to_svm(vcpu);
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/ata/libata-scsi.c |   81 ++++++++++++++++++++++++++++------------------
- 1 file changed, 50 insertions(+), 31 deletions(-)
+	/*
+	 * If nrips is supported in hardware but not exposed to L1, stuff the
+	 * actual L2 RIP to emulate what a nrips=3D0 CPU would do (L1 is
+	 * responsible for advancing RIP prior to injecting the event). Once L2
+	 * runs after L1 executes VMRUN, NextRIP is updated by the CPU and/or
+	 * KVM, and this is no longer needed.
+	 *
+	 * This is done here (as opposed to when preparing vmcb02) to use the
+	 * most up-to-date value of RIP regardless of the order of restoring
+	 * registers and nested state in the vCPU save+restore path.
+	 *
+	 * Simiarly, initialize svm->soft_int_* fields here to use the most
+	 * up-to-date values of RIP and CS base, regardless of restore order.
+	 */
+	if (!is_guest_mode(vcpu) || !svm->nested.nested_run_pending)
+		return;
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1690,6 +1690,42 @@ static void ata_scsi_qc_complete(struct
- 	ata_qc_done(qc);
- }
- 
-+static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
-+{
-+	int ret;
-+
-+	if (!ap->ops->qc_defer)
-+		goto issue;
-+
-+	/* Check if the command needs to be deferred. */
-+	ret = ap->ops->qc_defer(qc);
-+	switch (ret) {
-+	case 0:
-+		break;
-+	case ATA_DEFER_LINK:
-+		ret = SCSI_MLQUEUE_DEVICE_BUSY;
-+		break;
-+	case ATA_DEFER_PORT:
-+		ret = SCSI_MLQUEUE_HOST_BUSY;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		ret = SCSI_MLQUEUE_HOST_BUSY;
-+		break;
-+	}
-+
-+	if (ret) {
-+		/* Force a requeue of the command to defer its execution. */
-+		ata_qc_free(qc);
-+		return ret;
-+	}
-+
-+issue:
-+	ata_qc_issue(qc);
-+
-+	return 0;
-+}
-+
- /**
-  *	ata_scsi_translate - Translate then issue SCSI command to ATA device
-  *	@dev: ATA device to which the command is addressed
-@@ -1713,66 +1749,49 @@ static void ata_scsi_qc_complete(struct
-  *	spin_lock_irqsave(host lock)
-  *
-  *	RETURNS:
-- *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY if the command
-- *	needs to be deferred.
-+ *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY or SCSI_MLQUEUE_HOST_BUSY if the
-+ *	command needs to be deferred.
-  */
- static int ata_scsi_translate(struct ata_device *dev, struct scsi_cmnd *cmd,
- 			      ata_xlat_func_t xlat_func)
- {
- 	struct ata_port *ap = dev->link->ap;
- 	struct ata_queued_cmd *qc;
--	int rc;
- 
-+	lockdep_assert_held(ap->lock);
-+
-+	/*
-+	 * ata_scsi_qc_new() calls scsi_done(cmd) in case of failure. So we
-+	 * have nothing further to do when allocating a qc fails.
-+	 */
- 	qc = ata_scsi_qc_new(dev, cmd);
- 	if (!qc)
--		goto err_mem;
-+		return 0;
- 
- 	/* data is present; dma-map it */
- 	if (cmd->sc_data_direction == DMA_FROM_DEVICE ||
- 	    cmd->sc_data_direction == DMA_TO_DEVICE) {
- 		if (unlikely(scsi_bufflen(cmd) < 1)) {
- 			ata_dev_warn(dev, "WARNING: zero len r/w req\n");
--			goto err_did;
-+			cmd->result = (DID_ERROR << 16);
-+			goto done;
- 		}
- 
- 		ata_sg_init(qc, scsi_sglist(cmd), scsi_sg_count(cmd));
--
- 		qc->dma_dir = cmd->sc_data_direction;
- 	}
- 
- 	qc->complete_fn = ata_scsi_qc_complete;
- 
- 	if (xlat_func(qc))
--		goto early_finish;
--
--	if (ap->ops->qc_defer) {
--		if ((rc = ap->ops->qc_defer(qc)))
--			goto defer;
--	}
--
--	/* select device, send command to hardware */
--	ata_qc_issue(qc);
--
--	return 0;
-+		goto done;
- 
--early_finish:
--	ata_qc_free(qc);
--	scsi_done(cmd);
--	return 0;
-+	return ata_scsi_qc_issue(ap, qc);
- 
--err_did:
-+done:
- 	ata_qc_free(qc);
--	cmd->result = (DID_ERROR << 16);
- 	scsi_done(cmd);
--err_mem:
- 	return 0;
--
--defer:
--	ata_qc_free(qc);
--	if (rc == ATA_DEFER_LINK)
--		return SCSI_MLQUEUE_DEVICE_BUSY;
--	else
--		return SCSI_MLQUEUE_HOST_BUSY;
- }
- 
- /**
+	if (boot_cpu_has(X86_FEATURE_NRIPS) &&
+	    !guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+		svm->vmcb->control.next_rip =3D kvm_rip_read(vcpu);
 
-
+	if (svm->soft_int_injected) {
+		svm->soft_int_csbase =3D svm->vmcb->save.cs.base;
+		svm->soft_int_old_rip =3D kvm_rip_read(vcpu);
+		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+			svm->soft_int_next_rip =3D kvm_rip_read(vcpu);
+	}
+}
 
