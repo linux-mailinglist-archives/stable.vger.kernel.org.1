@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-218435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNCpIdxTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:56 +0100
+	id 2D1SAd1SnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F1F18FA7C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A02918F587
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3918E30D6CE1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E76E63144D54
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6497242D9B;
-	Wed, 25 Feb 2026 01:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C36243376;
+	Wed, 25 Feb 2026 01:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSupuQ4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrsM2S6a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8D418B0A;
-	Wed, 25 Feb 2026 01:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4D420C012;
+	Wed, 25 Feb 2026 01:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983256; cv=none; b=mXvDxrydI73Omjq9YGx9KuC4cmLqqW3PLuOJ1Ibr6DzvAbu0Rsz0rf3Wu9Oce0iyNbMTDuMZgK1j20iomLl7qVocbRKXrVFLX+Sc9lMZUYfUgCIhmz45QZcbnoHkaqj7w7GuEOt7M+m+8kPCTEsn6pPd5lY+InWJ1RhaV5FHyc4=
+	t=1771983205; cv=none; b=iX9iYCjimp+0XjX0/K+O9/NzirRnoUUOLZaj3Q0vmd2vl2NisoP9cwiaxduzxEvWO6B9Xc6uQQxHm+aC1Hz3J++0QotiutgqJztx+ZTGZCirnwMPmNfp4LieoakJtStMMU85TbE73f63j/ExCgQM4pOasTKQjkyffVxtjWEDrUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983256; c=relaxed/simple;
-	bh=TSqL8/e/l3vQoDKC7q2TLODonjE2NudyX6AG3Jqu+zs=;
+	s=arc-20240116; t=1771983205; c=relaxed/simple;
+	bh=HrfjhNauZBcmvFx5Y79EFkMvWhg7XPkNPoK6TKp9oFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgsVahqqoeVx0njDQWcf7uE41ceIKZJqDcNY+MlqCQKN8d1H/4b6Q8aELg56dhYbw/CR/NGcAjodfsM7jnYdqCL2YFkIy0WWdxF0UOgiKraxBOBE0N4s2KoyK+CHLwg3IH+Q65IzKXmEKDvu0bQdkF3TL0gJ/DASgfSSL/6XxQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSupuQ4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C30FC116D0;
-	Wed, 25 Feb 2026 01:34:16 +0000 (UTC)
+	 MIME-Version; b=p6ngZTQn2Hfz4oWt32yN1tJPvZQZuv15wYZXApTOD2B0LVBNgEGO/nRELYQOIne7QH1S5yCLnlKlLn5ww7/VNWz5Ek7Z2v/ldoTASgBL/Fce7Zi8OVsjbFHhrpVbu1mD4pUOh+/s3c0jjKy8izU1DmZXmAjGUHT7iAfl80sqovY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrsM2S6a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9D6C116D0;
+	Wed, 25 Feb 2026 01:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983256;
-	bh=TSqL8/e/l3vQoDKC7q2TLODonjE2NudyX6AG3Jqu+zs=;
+	s=korg; t=1771983204;
+	bh=HrfjhNauZBcmvFx5Y79EFkMvWhg7XPkNPoK6TKp9oFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSupuQ4eyYOxmKoGvK345y6NhvDDn/OdNo5HHVjyZsUmUdjzx4CJS2pNvG64EOPdC
-	 6To5NRRDCjRq6tdRJChe09auOZ4VoGAYjz1XhBpKs/DrdK78iiDbyrYaajuF8Wb1PN
-	 qZ4rn3NqviEV+rKQBekImTjWDR5ozGxplSk53ioU=
+	b=rrsM2S6aQl8Ayuh8tXmyfJM10taUVeXSmaQCgUXBffVCbqBT8pzD8D1jAfI3Xvqir
+	 ddVuFFzLrWslRcm2tC4hi2LZAWTCBxUQ1IV5/9Y4489phA/hrVy3URLL/AbKtc/GHB
+	 qfRjL2qxOIbZ80V6HNZ8SPJzOe+CAecILhDaqQEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Aleksandra Rukomoinikova <ARukomoinikova@k2.cloud>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
 	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 345/781] netfilter: nf_tables: reset table validation state on abort
-Date: Tue, 24 Feb 2026 17:17:34 -0800
-Message-ID: <20260225012408.154779128@linuxfoundation.org>
+Subject: [PATCH 6.19 346/781] netfilter: nf_conncount: increase the connection clean up limit to 64
+Date: Tue, 24 Feb 2026 17:17:35 -0800
+Message-ID: <20260225012408.179773035@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -68,87 +70,151 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218391-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218435-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email]
-X-Rspamd-Queue-Id: D9F1F18FA7C
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,k2.cloud:email]
+X-Rspamd-Queue-Id: 7A02918F587
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 6f93616a7323d646d18db9c09f147e453b40fdd7 ]
+[ Upstream commit 21d033e472735ecec677f1ae46d6740b5e47a4f3 ]
 
-If a transaction fails the final validation in the commit hook, the table
-validation state is changed to NFT_VALIDATE_DO and a replay of the batch is
-performed.  Every rule insert will then do a graph validation.
+After the optimization to only perform one GC per jiffy, a new problem
+was introduced. If more than 8 new connections are tracked per jiffy the
+list won't be cleaned up fast enough possibly reaching the limit
+wrongly.
 
-This is much slower, but provides better error reporting to the user
-because we can point at the rule that introduces the validation issue.
+In order to prevent this issue, only skip the GC if it was already
+triggered during the same jiffy and the increment is lower than the
+clean up limit. In addition, increase the clean up limit to 64
+connections to avoid triggering GC too often and do more effective GCs.
 
-Without this reset the affected table(s) remain in full validation mode,
-i.e. on next transaction we start with slow-mode.
+This has been tested using a HTTP server and several
+performance tools while having nft_connlimit/xt_connlimit or OVS limit
+configured.
 
-This makes the next transaction after a failed incremental update very slow:
+Output of slowhttptest + OVS limit at 52000 connections:
 
- # time iptables-restore < /tmp/ruleset
- real    0m0.496s [..]
- # time iptables -A CALLEE -j CALLER
- iptables v1.8.11 (nf_tables):  RULE_APPEND failed (Too many links): rule in chain CALLEE
- real    0m0.022s [..]
- # time iptables-restore < /tmp/ruleset
- real    1m22.355s [..]
+ slow HTTP test status on 340th second:
+ initializing:        0
+ pending:             432
+ connected:           51998
+ error:               0
+ closed:              0
+ service available:   YES
 
-After this patch, 2nd iptables-restore is back to ~0.5s.
-
-Fixes: 9a32e9850686 ("netfilter: nf_tables: don't write table validation state without mutex")
+Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
+Reported-by: Aleksandra Rukomoinikova <ARukomoinikova@k2.cloud>
+Closes: https://lore.kernel.org/netfilter/b2064e7b-0776-4e14-adb6-c68080987471@k2.cloud/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/net/netfilter/nf_conntrack_count.h |  1 +
+ net/netfilter/nf_conncount.c               | 15 ++++++++++-----
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index be92750e2af3a..ec9e5e2a9f277 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -11536,6 +11536,13 @@ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
- 	ret = __nf_tables_abort(net, action);
- 	nft_gc_seq_end(nft_net, gc_seq);
+diff --git a/include/net/netfilter/nf_conntrack_count.h b/include/net/netfilter/nf_conntrack_count.h
+index 52a06de41aa0f..cf0166520cf33 100644
+--- a/include/net/netfilter/nf_conntrack_count.h
++++ b/include/net/netfilter/nf_conntrack_count.h
+@@ -13,6 +13,7 @@ struct nf_conncount_list {
+ 	u32 last_gc;		/* jiffies at most recent gc */
+ 	struct list_head head;	/* connections with the same filtering key */
+ 	unsigned int count;	/* length of list */
++	unsigned int last_gc_count; /* length of list at most recent gc */
+ };
  
-+	if (action == NFNL_ABORT_NONE) {
-+		struct nft_table *table;
-+
-+		list_for_each_entry(table, &nft_net->tables, list)
-+			table->validate_state = NFT_VALIDATE_SKIP;
-+	}
-+
- 	WARN_ON_ONCE(!list_empty(&nft_net->commit_list));
+ struct nf_conncount_data *nf_conncount_init(struct net *net, unsigned int keylen);
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 8487808c87614..288936f5c1bf9 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -34,8 +34,9 @@
  
- 	/* module autoload needs to happen after GC sequence update because it
+ #define CONNCOUNT_SLOTS		256U
+ 
+-#define CONNCOUNT_GC_MAX_NODES	8
+-#define MAX_KEYLEN		5
++#define CONNCOUNT_GC_MAX_NODES		8
++#define CONNCOUNT_GC_MAX_COLLECT	64
++#define MAX_KEYLEN			5
+ 
+ /* we will save the tuples of all connections we care about */
+ struct nf_conncount_tuple {
+@@ -182,12 +183,13 @@ static int __nf_conncount_add(struct net *net,
+ 		goto out_put;
+ 	}
+ 
+-	if ((u32)jiffies == list->last_gc)
++	if ((u32)jiffies == list->last_gc &&
++	    (list->count - list->last_gc_count) < CONNCOUNT_GC_MAX_COLLECT)
+ 		goto add_new_node;
+ 
+ 	/* check the saved connections */
+ 	list_for_each_entry_safe(conn, conn_n, &list->head, node) {
+-		if (collect > CONNCOUNT_GC_MAX_NODES)
++		if (collect > CONNCOUNT_GC_MAX_COLLECT)
+ 			break;
+ 
+ 		found = find_or_evict(net, list, conn);
+@@ -230,6 +232,7 @@ static int __nf_conncount_add(struct net *net,
+ 		nf_ct_put(found_ct);
+ 	}
+ 	list->last_gc = (u32)jiffies;
++	list->last_gc_count = list->count;
+ 
+ add_new_node:
+ 	if (WARN_ON_ONCE(list->count > INT_MAX)) {
+@@ -277,6 +280,7 @@ void nf_conncount_list_init(struct nf_conncount_list *list)
+ 	spin_lock_init(&list->list_lock);
+ 	INIT_LIST_HEAD(&list->head);
+ 	list->count = 0;
++	list->last_gc_count = 0;
+ 	list->last_gc = (u32)jiffies;
+ }
+ EXPORT_SYMBOL_GPL(nf_conncount_list_init);
+@@ -316,13 +320,14 @@ static bool __nf_conncount_gc_list(struct net *net,
+ 		}
+ 
+ 		nf_ct_put(found_ct);
+-		if (collected > CONNCOUNT_GC_MAX_NODES)
++		if (collected > CONNCOUNT_GC_MAX_COLLECT)
+ 			break;
+ 	}
+ 
+ 	if (!list->count)
+ 		ret = true;
+ 	list->last_gc = (u32)jiffies;
++	list->last_gc_count = list->count;
+ 
+ 	return ret;
+ }
 -- 
 2.51.0
 
