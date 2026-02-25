@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-218317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218885-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBnxGUBTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:20 +0100
+	id cBS7FUxWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218885-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A7718F74A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84C0190246
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F34433196104
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B087232CEF3B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C2418DB2A;
-	Wed, 25 Feb 2026 01:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EFB27FD5D;
+	Wed, 25 Feb 2026 01:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqKHGk/l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kg05cXiv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B2A2505B2;
-	Wed, 25 Feb 2026 01:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439F427603A;
+	Wed, 25 Feb 2026 01:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983120; cv=none; b=pHWQ3K4JAsskbMIp5KhQcorUvnWymrLJRvrkoGrSHnJuq5UbMAqkpQCwxlfZLNBPlLI54YcU5pi872rnzNBJiPsYIrFpq7L2p8Z/KVnwchfr6BFk4f4KN/m4dfI5Hoy7b5yXf6/rBOuEcXdXagwuBsg8yqOx//0YpU5BYDxtHKI=
+	t=1771983773; cv=none; b=C83z09lbaFOJEiUaBDnkZuX9uCwfiSDkTVX6bo66FatSyqXDbFLzAhhoqvtnPIo/TuXTOCr+ulSxUVffS73DsMaTvH61XC98Dx8VTQDYQ7sANzgjnK2hZuaU+QMG8HFBNMIuwExCVRRUhHwfuW9hiYFN71nkZEAHKNvf67Xq8R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983120; c=relaxed/simple;
-	bh=reR33B0CFW+kjIITQoXms7m8EEkI0mtxmn8QxsMnUu0=;
+	s=arc-20240116; t=1771983773; c=relaxed/simple;
+	bh=hHljI9zu/7ApduK2xY6MufKtUKdP3+zty8iKq+2ViFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jQLvXYJG3HusGrN3U5SjSZ1Ryn3xAfuJeFUww7zuQ06rFDrzwW7eF8QJh1nDa5tOo0Wf/kb7YE3efE6kfjz5XPIjFiBhdyGpUHMpe/0OIyhImIayEsu7rGVBmqBEIAXIyoAmmlN85+MNOAQ7P6KtYpY6nU+OXZepm+6NBVR+3lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqKHGk/l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6ADC116D0;
-	Wed, 25 Feb 2026 01:31:59 +0000 (UTC)
+	 MIME-Version; b=WylV9RZaDX0jJ1cGVKPGQTDJdmzi2qzDjO4J/DUUKMYdaryJiqMUluaoD4opRtCBEat/g2XICdlGlwegbNWxxYk6c7P579DDmaTIOrgSFR5cPipSzsy10PElhUGJ9+dKFaVuukmiHmXUrx/7RYUWsOIx3MHHnWyIKdmkbbblY18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kg05cXiv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4365C19424;
+	Wed, 25 Feb 2026 01:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983119;
-	bh=reR33B0CFW+kjIITQoXms7m8EEkI0mtxmn8QxsMnUu0=;
+	s=korg; t=1771983772;
+	bh=hHljI9zu/7ApduK2xY6MufKtUKdP3+zty8iKq+2ViFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqKHGk/lGaOodMlNrVjrxfP1EGv47tdjMdUl5rqZ/DY6Ftk6he9SfBurOWYjGUDJV
-	 CkLr0HrtU5PS8Lc++t+hEYbsomJI2EjKHYmaXWd83UmHCGDSMPKGa2ysUKV/qKays0
-	 VTb+W7WzazD9C2QZFwTjqp9EYKDKS10E/wPdcdCw=
+	b=kg05cXivkYp5KEhiaUxYQNmqyeHZKPj3pyw+6uTBElh7rezpNLS/NL+mTGyCOrTZQ
+	 s9Pl7tLCfIf+MIGRzvCFX0JwaJIUkFh2nDC6HWS09znR5h9Hq0P78UtHCRn/18Z/B+
+	 jnBtrWoxYhpRgBiwtZqkAzNR+vorm6tqi14tdofQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Val Packett <val@packett.cool>
-Subject: [PATCH 6.19 279/781] drm/msm/dpu: offset HBB values written to DPU by -13
-Date: Tue, 24 Feb 2026 17:16:28 -0800
-Message-ID: <20260225012406.540769444@linuxfoundation.org>
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	x86@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 063/641] x86/cpu/amd: Correct the microcode table for Zenbleed
+Date: Tue, 24 Feb 2026 17:16:29 -0800
+Message-ID: <20260225012350.579345028@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218317-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218885-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,79 +89,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,packett.cool:email]
-X-Rspamd-Queue-Id: D0A7718F74A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,citrix.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,alien8.de:email,amd.com:email]
+X-Rspamd-Queue-Id: E84C0190246
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Andrew Cooper <andrew.cooper3@citrix.com>
 
-[ Upstream commit 7ead14d4b9742b5ed244f35b999f0fe26dc23586 ]
+[ Upstream commit fb7bfa31b8e8569f154f2fe0ea6c2f03c0f087aa ]
 
-As in all other places, the Highest Bank Bit value should be programmed
-into the hardware with the offset of -13.  Correct the value written
-into the register to prevent unpredictable results.
+The good revisions are tied to exact steppings, meaning it's not valid to
+match on model number alone, let alone a range.
 
-Fixes: 227d4ce0b09e ("drm/msm: Offset MDSS HBB value by 13")
-Tested-by: Val Packett <val@packett.cool> # x1e80100-dell-latitude-7455
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/699276/
-Link: https://lore.kernel.org/r/20260119-msm-ubwc-fixes-v4-2-0987acc0427f@oss.qualcomm.com
+This is probably only a latent issue.  From public microcode archives, the
+following CPUs exist 17-30-00, 17-60-00, 17-70-00 and would be captured by the
+model ranges.  They're likely pre-production steppings, and likely didn't get
+Zenbleed microcode, but it's still incorrect to compare them to a different
+steppings revision.
+
+Either way, convert the logic to use x86_match_min_microcode_rev(), which is
+the preferred mechanism.
+
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: x86@kernel.org
+Link: https://patch.msgid.link/20251126130352.880424-1-andrew.cooper3@citrix.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 30 +++++++++---------------------
+ 1 file changed, 9 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c
-index 6f1fc790ad6d8..b66c4cb5760c9 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c
-@@ -270,30 +270,32 @@ static void dpu_hw_sspp_setup_format(struct dpu_sw_pipe *pipe,
- 		((fmt->bpp - 1) << 9);
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 5d46709c58d0b..a92750f3079af 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -951,26 +951,14 @@ static void init_amd_zen1(struct cpuinfo_x86 *c)
+ 	}
+ }
  
- 	if (fmt->fetch_mode != MDP_FETCH_LINEAR) {
-+		u32 hbb = ctx->ubwc->highest_bank_bit - 13;
-+
- 		if (MSM_FORMAT_IS_UBWC(fmt))
- 			opmode |= MDSS_MDP_OP_BWC_EN;
- 		src_format |= (fmt->fetch_mode & 3) << 30; /*FRAME_FORMAT */
- 		DPU_REG_WRITE(c, SSPP_FETCH_CONFIG,
- 			DPU_FETCH_CONFIG_RESET_VALUE |
--			ctx->ubwc->highest_bank_bit << 18);
-+			hbb << 18);
- 		switch (ctx->ubwc->ubwc_enc_version) {
- 		case UBWC_1_0:
- 			fast_clear = fmt->alpha_enable ? BIT(31) : 0;
- 			DPU_REG_WRITE(c, SSPP_UBWC_STATIC_CTRL,
- 					fast_clear | (ctx->ubwc->ubwc_swizzle & 0x1) |
- 					BIT(8) |
--					(ctx->ubwc->highest_bank_bit << 4));
-+					(hbb << 4));
- 			break;
- 		case UBWC_2_0:
- 			fast_clear = fmt->alpha_enable ? BIT(31) : 0;
- 			DPU_REG_WRITE(c, SSPP_UBWC_STATIC_CTRL,
- 					fast_clear | (ctx->ubwc->ubwc_swizzle) |
--					(ctx->ubwc->highest_bank_bit << 4));
-+					(hbb << 4));
- 			break;
- 		case UBWC_3_0:
- 			DPU_REG_WRITE(c, SSPP_UBWC_STATIC_CTRL,
- 					BIT(30) | (ctx->ubwc->ubwc_swizzle) |
--					(ctx->ubwc->highest_bank_bit << 4));
-+					(hbb << 4));
- 			break;
- 		case UBWC_4_0:
- 			DPU_REG_WRITE(c, SSPP_UBWC_STATIC_CTRL,
+-static bool cpu_has_zenbleed_microcode(void)
+-{
+-	u32 good_rev = 0;
+-
+-	switch (boot_cpu_data.x86_model) {
+-	case 0x30 ... 0x3f: good_rev = 0x0830107b; break;
+-	case 0x60 ... 0x67: good_rev = 0x0860010c; break;
+-	case 0x68 ... 0x6f: good_rev = 0x08608107; break;
+-	case 0x70 ... 0x7f: good_rev = 0x08701033; break;
+-	case 0xa0 ... 0xaf: good_rev = 0x08a00009; break;
+-
+-	default:
+-		return false;
+-	}
+-
+-	if (boot_cpu_data.microcode < good_rev)
+-		return false;
+-
+-	return true;
+-}
++static const struct x86_cpu_id amd_zenbleed_microcode[] = {
++	ZEN_MODEL_STEP_UCODE(0x17, 0x31, 0x0, 0x0830107b),
++	ZEN_MODEL_STEP_UCODE(0x17, 0x60, 0x1, 0x0860010c),
++	ZEN_MODEL_STEP_UCODE(0x17, 0x68, 0x1, 0x08608107),
++	ZEN_MODEL_STEP_UCODE(0x17, 0x71, 0x0, 0x08701033),
++	ZEN_MODEL_STEP_UCODE(0x17, 0xa0, 0x0, 0x08a00009),
++	{}
++};
+ 
+ static void zen2_zenbleed_check(struct cpuinfo_x86 *c)
+ {
+@@ -980,7 +968,7 @@ static void zen2_zenbleed_check(struct cpuinfo_x86 *c)
+ 	if (!cpu_has(c, X86_FEATURE_AVX))
+ 		return;
+ 
+-	if (!cpu_has_zenbleed_microcode()) {
++	if (!x86_match_min_microcode_rev(amd_zenbleed_microcode)) {
+ 		pr_notice_once("Zenbleed: please update your microcode for the most optimal fix\n");
+ 		msr_set_bit(MSR_AMD64_DE_CFG, MSR_AMD64_DE_CFG_ZEN2_FP_BACKUP_FIX_BIT);
+ 	} else {
 -- 
 2.51.0
 
