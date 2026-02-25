@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-219551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBYuEY+gnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:11:11 +0100
+	id gGLmLNSenmlVWgQAu9opvQ
+	(envelope-from <stable+bounces-219553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD12519310A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:11:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F4D192D8F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5266130387E1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:02:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 98E2B307E679
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB42330D58;
-	Wed, 25 Feb 2026 06:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CBC313537;
+	Wed, 25 Feb 2026 06:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQEvxJHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/Y1ePGG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E279831352F;
-	Wed, 25 Feb 2026 06:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A2730F526;
+	Wed, 25 Feb 2026 06:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002791; cv=none; b=KcIAeWseZTmZzuxpB6gKh5ozAC6KvkO9cGR+2TT9UgVIE3ggXNLDgyFOUfldYENHMlcAcpE+bdhi2xnHmwvaVH7W7DwcrlquSYVQEwybm+uylXwSULL0fft0za/96PKtaMn8xxYGqXk1503Mcg6Vgf6bxmlo/5v+R89L1sxo2q4=
+	t=1772002792; cv=none; b=My/cICDi1PS1gEHdQOBobMB5NIU2cryJx2Y0lttlkRX7+kJVYOOGNAVO5+yxnzVjmn0RlkKbeDAL3CYzGzWxhSku+Sizjrvz3kXm6HqGu6bpxNRLIvUUe9F7CJu07zoWw/axrXymyQ5sXfCYClT7v3BODlP0b6LFNdKfSB8T5lI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002791; c=relaxed/simple;
-	bh=/KtdpCE2NB3syAXeYs9wiLDMdV4FauQcsuZitcuCeT8=;
+	s=arc-20240116; t=1772002792; c=relaxed/simple;
+	bh=SsF3E0YNCyPbAz/q/YNIZCbOxAQKBEpLzpjK9WzNd6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4onrCBv+A6bbU74Fxp+NBsfuKuiF12OO/3I7Z0XFmW1l+6OtSKdn1z3e4UY54NN16wDLfXagGAuRmRbkKMiPGAJmTR6pSuaeIJgLy1ppbpViNwzqRuJ1TvL4Lb2EQTRY+C7CV0BBV8kp63VP8DZ0MsQ6kmYB+kh8jG27P5wyJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQEvxJHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4BAC116D0;
-	Wed, 25 Feb 2026 06:59:50 +0000 (UTC)
+	 MIME-Version; b=Y/F3kcV0sDi3Ai31TLNLVL0RjPzk4HJ0yQQVt169JguP+JNBUDX1FFV488ReCbazXhek0ycINyoRjRUkbIpqb7YFtMnF5TURWRrGupo1pyh9t33YSHyHfJ8979zBTakRWMWSya88hsm1r5cHrBljusH/XVG75J76UhIIobfR5TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/Y1ePGG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE192C116D0;
+	Wed, 25 Feb 2026 06:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002790;
-	bh=/KtdpCE2NB3syAXeYs9wiLDMdV4FauQcsuZitcuCeT8=;
+	s=korg; t=1772002792;
+	bh=SsF3E0YNCyPbAz/q/YNIZCbOxAQKBEpLzpjK9WzNd6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQEvxJHbT2mNHaRxWi/1z6ycVMfOXKgzO0e8aRDQMrdGw3HrtTzKv0jtl4n00bEvw
-	 DyklAGsBIXVIYW11Jvo1+Lx5erUZZyZRgh3Xs91oiaO+pi2R62F2RO71qg+C2BTAYH
-	 VhZroMPBJSMjZ2WIuDK78uI7rhXb1PVMykRub7LE=
+	b=P/Y1ePGGTc4Muw2N50L3xjO3UhD9M/MbTTd2Vf+q8pndnxKFvkBdGK+N/eOGGQ+jR
+	 qteFwL+LrdK78Ds6aN9UWXYNrVd2gUPvSdXPylVJ9PGoWy/jvL/fM2w+/rOYO7rZA3
+	 QBUHeTNDxmbtkEpwEpeN2BHvQkyKH42hjBTmAEpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lewis Mason <lewis@ocuru.co.uk>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 634/641] ALSA: hda/realtek: Add quirk for Samsung Galaxy Book3 Pro 360 (NP965QFG)
-Date: Tue, 24 Feb 2026 17:26:00 -0800
-Message-ID: <20260225012403.868838693@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 6.18 635/641] drm/exynos: vidi: use priv->vidi_dev for ctx lookup in vidi_connection_ioctl()
+Date: Tue, 24 Feb 2026 17:26:01 -0800
+Message-ID: <20260225012403.891577913@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -66,66 +66,124 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-219553-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,samsung.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219551-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ocuru.co.uk:email]
-X-Rspamd-Queue-Id: AD12519310A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 61F4D192D8F
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lewis Mason <mason8110@gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 3a6b7dc431aab90744e973254604855e654294ae upstream.
+commit d3968a0d85b211e197f2f4f06268a7031079e0d0 upstream.
 
-The Samsung Galaxy Book3 Pro 360 NP965QFG (subsystem ID 0x144d:0xc1cb)
-uses the same Realtek ALC298 codec and amplifier configuration as the
-NP960QFG (0x144d:0xc1ca). Apply the same ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS
-fixup to enable the internal speakers.
+vidi_connection_ioctl() retrieves the driver_data from drm_dev->dev to
+obtain a struct vidi_context pointer. However, drm_dev->dev is the
+exynos-drm master device, and the driver_data contained therein is not
+the vidi component device, but a completely different device.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Lewis Mason <lewis@ocuru.co.uk>
-Link: https://patch.msgid.link/20260210231337.7265-1-lewis@ocuru.co.uk
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This can lead to various bugs, ranging from null pointer dereferences and
+garbage value accesses to, in unlucky cases, out-of-bounds errors,
+use-after-free errors, and more.
+
+To resolve this issue, we need to store/delete the vidi device pointer in
+exynos_drm_private->vidi_dev during bind/unbind, and then read this
+exynos_drm_private->vidi_dev within ioctl() to obtain the correct
+struct vidi_context pointer.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/exynos/exynos_drm_drv.h  |    1 +
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c |   14 +++++++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -6951,6 +6951,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x144d, 0xc872, "Samsung Galaxy Book2 Pro (NP950XEE)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
- 	SND_PCI_QUIRK(0x144d, 0xc886, "Samsung Galaxy Book3 Pro (NP964XFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x144d, 0xc1ca, "Samsung Galaxy Book3 Pro 360 (NP960QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
-+	SND_PCI_QUIRK(0x144d, 0xc1cb, "Samsung Galaxy Book3 Pro 360 (NP965QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x144d, 0xc1cc, "Samsung Galaxy Book3 Ultra (NT960XFH)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x1458, 0x900e, "Gigabyte G5 KF5 (2023)", ALC2XX_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
+--- a/drivers/gpu/drm/exynos/exynos_drm_drv.h
++++ b/drivers/gpu/drm/exynos/exynos_drm_drv.h
+@@ -199,6 +199,7 @@ struct drm_exynos_file_private {
+ struct exynos_drm_private {
+ 	struct device *g2d_dev;
+ 	struct device *dma_dev;
++	struct device *vidi_dev;
+ 	void *mapping;
+ 
+ 	/* for atomic commit */
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -231,9 +231,14 @@ ATTRIBUTE_GROUPS(vidi);
+ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
+ 				struct drm_file *file_priv)
+ {
+-	struct vidi_context *ctx = dev_get_drvdata(drm_dev->dev);
++	struct exynos_drm_private *priv = drm_dev->dev_private;
++	struct device *dev = priv ? priv->vidi_dev : NULL;
++	struct vidi_context *ctx = dev ? dev_get_drvdata(dev) : NULL;
+ 	struct drm_exynos_vidi_connection *vidi = data;
+ 
++	if (!ctx)
++		return -ENODEV;
++
+ 	if (!vidi) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev,
+ 				  "user data for vidi is null.\n");
+@@ -393,6 +398,7 @@ static int vidi_bind(struct device *dev,
+ {
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
+ 	struct drm_device *drm_dev = data;
++	struct exynos_drm_private *priv = drm_dev->dev_private;
+ 	struct drm_encoder *encoder = &ctx->encoder;
+ 	struct exynos_drm_plane *exynos_plane;
+ 	struct exynos_drm_plane_config plane_config = { 0 };
+@@ -400,6 +406,8 @@ static int vidi_bind(struct device *dev,
+ 	int ret;
+ 
+ 	ctx->drm_dev = drm_dev;
++	if (priv)
++		priv->vidi_dev = dev;
+ 
+ 	plane_config.pixel_formats = formats;
+ 	plane_config.num_pixel_formats = ARRAY_SIZE(formats);
+@@ -445,8 +453,12 @@ static int vidi_bind(struct device *dev,
+ static void vidi_unbind(struct device *dev, struct device *master, void *data)
+ {
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
++	struct drm_device *drm_dev = data;
++	struct exynos_drm_private *priv = drm_dev->dev_private;
+ 
+ 	timer_delete_sync(&ctx->timer);
++	if (priv)
++		priv->vidi_dev = NULL;
+ }
+ 
+ static const struct component_ops vidi_component_ops = {
 
 
 
