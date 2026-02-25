@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-219080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LQQIapanmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:58 +0100
+	id WOkFMWFUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:09 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B31190B79
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F16CA18FC98
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8FEFE31398AC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 34F87306FD08
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B011262FC0;
-	Wed, 25 Feb 2026 01:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A40A242D9B;
+	Wed, 25 Feb 2026 01:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zp/BJ7ld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWJWrZm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDF7265CBE;
-	Wed, 25 Feb 2026 01:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21C223D7CF;
+	Wed, 25 Feb 2026 01:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984007; cv=none; b=W7T1asi2L7iUFPM6Koi91YzsTJzfgaFfSHZDTrp5YVMOun0g/4aaxn+f7GBsWxRGyDRE+5abrz8g/SzHAMQ8Co3tqqqh2mm/PSfdM6Hi4gzeQYDhFrGsnFJHA+1U9FeCnlMOBb+LIyljXHdYlst3eMiIvx48Qg8QxMC1Q8+Ea0o=
+	t=1771983346; cv=none; b=Rmk8Ny8Lo3at6lxvav5/F4lxu1Z1oIJkiAi+FhNGXXNv68editO30n8JQx02w1lTL1wMBBTnlvX0iI4KPo707foa0RfiRpzrPfyRjbmDt8z0C9mhjvYY3UrQVDPWKIdz6Pg+nPEfTPUHCvD4nxMX4H9Y/9PBOnyK8HCK0Yzl4VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984007; c=relaxed/simple;
-	bh=ZhhpiGFh7er93iK67ms0fqWmSqierUy+QHZtBCmj+B0=;
+	s=arc-20240116; t=1771983346; c=relaxed/simple;
+	bh=mBt5q2QQVBFQ2p0qCWWOHwY3VUlimZHIBCcOBkZRSoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sM3xg7SZwvf2ry991+MAkc4ubm+TsSfSJv4NBnh1D7sNnd5RX8P9IlFZNWuRSxMiY79Haux5KxCant8aBhptjKAHFp3K17n5Va4Jf4EMmp3/qXsKFXY8Z5M1gYGKs1HhqCgeLm9iga9AgCZuV+My/x/MZyzcecxJ4+b125EfBas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zp/BJ7ld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0384AC116D0;
-	Wed, 25 Feb 2026 01:46:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pE/Aqo/eiGm+SD/UVJWCSQpnwPY3aiE5VbM2raTjeIcTdGDsm7pb5ebgFsa4eetesJxQloGZ4e51nytj3KRR/iG0HVA1joeKPnHeF5Fj3arCBNoIiUBh4SYTqpzD/Hl6FiKWtLpV0WyGz0mx7F+rQiSM00Hj9aoUERg2pChdNy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWJWrZm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CD7C116D0;
+	Wed, 25 Feb 2026 01:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984007;
-	bh=ZhhpiGFh7er93iK67ms0fqWmSqierUy+QHZtBCmj+B0=;
+	s=korg; t=1771983346;
+	bh=mBt5q2QQVBFQ2p0qCWWOHwY3VUlimZHIBCcOBkZRSoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zp/BJ7ld78BthmVazQirU62O0R9fkIM0k2a45MtuqcM/9peHdxy7raNVUlbYlwPR4
-	 +RPrtwGpwH5qitFqizmh91xRGxxViSq+E+0hot4LINVUIwZf7oRnwLUoHA5w89ocuH
-	 b+kYhWIFILfr7aQGQ5KA5Pki0SmaVi8OdwpNr3lw=
+	b=PWJWrZm/TUjysi2uDZ9WU44AcXBFhoRxjFoQxvCCkyq5+AjjDUp1VxQrx/pUWOBW8
+	 iarkiJc7p3p4N6soDL0loPVP5P5TknJ0w7c75T7DrixQpKP74FJW0tL6kFxSZWj/VI
+	 Gg1N0XDyos8w5cCgZEqZGZAvdy3NL0n1wUxbAWf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandra Rukomoinikova <ARukomoinikova@k2.cloud>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
+	Lars Francke <lars.francke@gmail.com>,
+	Yijun Shen <Yijun.Shen@Dell.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 258/641] netfilter: nf_conncount: increase the connection clean up limit to 64
+Subject: [PATCH 6.19 475/781] crypto: ccp - Send PSP_CMD_TEE_RING_DESTROY when PSP_CMD_TEE_RING_INIT fails
 Date: Tue, 24 Feb 2026 17:19:44 -0800
-Message-ID: <20260225012355.083123436@linuxfoundation.org>
+Message-ID: <20260225012411.464585836@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,157 +67,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219080-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,Dell.com,kernel.org,amd.com,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-218514-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,k2.cloud:email,strlen.de:email]
-X-Rspamd-Queue-Id: A5B31190B79
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,intel.com:email,amd.com:email]
+X-Rspamd-Queue-Id: F16CA18FC98
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 21d033e472735ecec677f1ae46d6740b5e47a4f3 ]
+[ Upstream commit 7b85137caf110a09a4a18f00f730de4709f9afc8 ]
 
-After the optimization to only perform one GC per jiffy, a new problem
-was introduced. If more than 8 new connections are tracked per jiffy the
-list won't be cleaned up fast enough possibly reaching the limit
-wrongly.
+The hibernate resume sequence involves loading a resume kernel that is just
+used for loading the hibernate image before shifting back to the existing
+kernel.
 
-In order to prevent this issue, only skip the GC if it was already
-triggered during the same jiffy and the increment is lower than the
-clean up limit. In addition, increase the clean up limit to 64
-connections to avoid triggering GC too often and do more effective GCs.
+During that hibernate resume sequence the resume kernel may have loaded
+the ccp driver.  If this happens the resume kernel will also have called
+PSP_CMD_TEE_RING_INIT but it will never have called
+PSP_CMD_TEE_RING_DESTROY.
 
-This has been tested using a HTTP server and several
-performance tools while having nft_connlimit/xt_connlimit or OVS limit
-configured.
+This is problematic because the existing kernel needs to re-initialize the
+ring.  One could argue that the existing kernel should call destroy
+as part of restore() but there is no guarantee that the resume kernel did
+or didn't load the ccp driver.  There is also no callback opportunity for
+the resume kernel to destroy before handing back control to the existing
+kernel.
 
-Output of slowhttptest + OVS limit at 52000 connections:
+Similar problems could potentially exist with the use of kdump and
+crash handling. I actually reproduced this issue like this:
 
- slow HTTP test status on 340th second:
- initializing:        0
- pending:             432
- connected:           51998
- error:               0
- closed:              0
- service available:   YES
+1) rmmod ccp
+2) hibernate the system
+3) resume the system
+4) modprobe ccp
 
-Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
-Reported-by: Aleksandra Rukomoinikova <ARukomoinikova@k2.cloud>
-Closes: https://lore.kernel.org/netfilter/b2064e7b-0776-4e14-adb6-c68080987471@k2.cloud/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+The resume kernel will have loaded ccp but never destroyed and then when
+I try to modprobe it fails.
+
+Because of these possible cases add a flow that checks the error code from
+the PSP_CMD_TEE_RING_INIT call and tries to call PSP_CMD_TEE_RING_DESTROY
+if it failed.  If this succeeds then call PSP_CMD_TEE_RING_INIT again.
+
+Fixes: f892a21f51162 ("crypto: ccp - use generic power management")
+Reported-by: Lars Francke <lars.francke@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/CAD-Ua_gfJnQSo8ucS_7ZwzuhoBRJ14zXP7s8b-zX3ZcxcyWePw@mail.gmail.com/
+Tested-by: Yijun Shen <Yijun.Shen@Dell.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://patch.msgid.link/20260116041132.153674-6-superm1@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_count.h |  1 +
- net/netfilter/nf_conncount.c               | 15 ++++++++++-----
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/crypto/ccp/tee-dev.c | 14 ++++++++++++++
+ include/linux/psp.h          |  1 +
+ 2 files changed, 15 insertions(+)
 
-diff --git a/include/net/netfilter/nf_conntrack_count.h b/include/net/netfilter/nf_conntrack_count.h
-index 52a06de41aa0f..cf0166520cf33 100644
---- a/include/net/netfilter/nf_conntrack_count.h
-+++ b/include/net/netfilter/nf_conntrack_count.h
-@@ -13,6 +13,7 @@ struct nf_conncount_list {
- 	u32 last_gc;		/* jiffies at most recent gc */
- 	struct list_head head;	/* connections with the same filtering key */
- 	unsigned int count;	/* length of list */
-+	unsigned int last_gc_count; /* length of list at most recent gc */
- };
+diff --git a/drivers/crypto/ccp/tee-dev.c b/drivers/crypto/ccp/tee-dev.c
+index ef1430f86ad62..92ffa412622a2 100644
+--- a/drivers/crypto/ccp/tee-dev.c
++++ b/drivers/crypto/ccp/tee-dev.c
+@@ -113,6 +113,7 @@ static int tee_init_ring(struct psp_tee_device *tee)
+ {
+ 	int ring_size = MAX_RING_BUFFER_ENTRIES * sizeof(struct tee_ring_cmd);
+ 	struct tee_init_ring_cmd *cmd;
++	bool retry = false;
+ 	unsigned int reg;
+ 	int ret;
  
- struct nf_conncount_data *nf_conncount_init(struct net *net, unsigned int keylen);
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 8487808c87614..288936f5c1bf9 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -34,8 +34,9 @@
- 
- #define CONNCOUNT_SLOTS		256U
- 
--#define CONNCOUNT_GC_MAX_NODES	8
--#define MAX_KEYLEN		5
-+#define CONNCOUNT_GC_MAX_NODES		8
-+#define CONNCOUNT_GC_MAX_COLLECT	64
-+#define MAX_KEYLEN			5
- 
- /* we will save the tuples of all connections we care about */
- struct nf_conncount_tuple {
-@@ -182,12 +183,13 @@ static int __nf_conncount_add(struct net *net,
- 		goto out_put;
+@@ -135,6 +136,7 @@ static int tee_init_ring(struct psp_tee_device *tee)
+ 	/* Send command buffer details to Trusted OS by writing to
+ 	 * CPU-PSP message registers
+ 	 */
++retry_init:
+ 	ret = psp_mailbox_command(tee->psp, PSP_CMD_TEE_RING_INIT, cmd,
+ 				  TEE_DEFAULT_CMD_TIMEOUT, &reg);
+ 	if (ret) {
+@@ -145,6 +147,18 @@ static int tee_init_ring(struct psp_tee_device *tee)
  	}
  
--	if ((u32)jiffies == list->last_gc)
-+	if ((u32)jiffies == list->last_gc &&
-+	    (list->count - list->last_gc_count) < CONNCOUNT_GC_MAX_COLLECT)
- 		goto add_new_node;
- 
- 	/* check the saved connections */
- 	list_for_each_entry_safe(conn, conn_n, &list->head, node) {
--		if (collect > CONNCOUNT_GC_MAX_NODES)
-+		if (collect > CONNCOUNT_GC_MAX_COLLECT)
- 			break;
- 
- 		found = find_or_evict(net, list, conn);
-@@ -230,6 +232,7 @@ static int __nf_conncount_add(struct net *net,
- 		nf_ct_put(found_ct);
- 	}
- 	list->last_gc = (u32)jiffies;
-+	list->last_gc_count = list->count;
- 
- add_new_node:
- 	if (WARN_ON_ONCE(list->count > INT_MAX)) {
-@@ -277,6 +280,7 @@ void nf_conncount_list_init(struct nf_conncount_list *list)
- 	spin_lock_init(&list->list_lock);
- 	INIT_LIST_HEAD(&list->head);
- 	list->count = 0;
-+	list->last_gc_count = 0;
- 	list->last_gc = (u32)jiffies;
- }
- EXPORT_SYMBOL_GPL(nf_conncount_list_init);
-@@ -316,13 +320,14 @@ static bool __nf_conncount_gc_list(struct net *net,
- 		}
- 
- 		nf_ct_put(found_ct);
--		if (collected > CONNCOUNT_GC_MAX_NODES)
-+		if (collected > CONNCOUNT_GC_MAX_COLLECT)
- 			break;
- 	}
- 
- 	if (!list->count)
- 		ret = true;
- 	list->last_gc = (u32)jiffies;
-+	list->last_gc_count = list->count;
- 
- 	return ret;
- }
+ 	if (FIELD_GET(PSP_CMDRESP_STS, reg)) {
++		/*
++		 * During the hibernate resume sequence driver may have gotten loaded
++		 * but the ring not properly destroyed. If the ring doesn't work, try
++		 * to destroy and re-init once.
++		 */
++		if (!retry && FIELD_GET(PSP_CMDRESP_STS, reg) == PSP_TEE_STS_RING_BUSY) {
++			dev_info(tee->dev, "tee: ring init command failed with busy status, retrying\n");
++			if (tee_send_destroy_cmd(tee)) {
++				retry = true;
++				goto retry_init;
++			}
++		}
+ 		dev_err(tee->dev, "tee: ring init command failed (%#010lx)\n",
+ 			FIELD_GET(PSP_CMDRESP_STS, reg));
+ 		tee_free_ring(tee);
+diff --git a/include/linux/psp.h b/include/linux/psp.h
+index 92e60aeef21e1..b337dcce1e991 100644
+--- a/include/linux/psp.h
++++ b/include/linux/psp.h
+@@ -18,6 +18,7 @@
+  * and should include an appropriate local definition in their source file.
+  */
+ #define PSP_CMDRESP_STS		GENMASK(15, 0)
++#define  PSP_TEE_STS_RING_BUSY 0x0000000d  /* Ring already initialized */
+ #define PSP_CMDRESP_CMD		GENMASK(23, 16)
+ #define PSP_CMDRESP_RESERVED	GENMASK(29, 24)
+ #define PSP_CMDRESP_RECOVERY	BIT(30)
 -- 
 2.51.0
 
