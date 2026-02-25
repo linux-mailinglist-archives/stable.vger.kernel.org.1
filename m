@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOAfBJdSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218525-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:31 +0100
+	id CFl9JkdWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FD318F42E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B05190229
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E8AE5309239F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 610FA30B5A8C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D1F242D9B;
-	Wed, 25 Feb 2026 01:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E907284684;
+	Wed, 25 Feb 2026 01:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXIk0DW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkk5zAZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571B818B0A;
-	Wed, 25 Feb 2026 01:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B6D22127B;
+	Wed, 25 Feb 2026 01:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983361; cv=none; b=VmkMlyNin1F5m/hpvLgnm9QBBOsZgswFZygIlrm1l61asn141kvn0lTWqdBs1H5v8Fdx1+bQw6uLI0R+PRsYKNItGL/wNHwHVS2aKJrwO/T7gWn8ieu5C90RrFB2CnU6gpGsZW3Ubj6QhaeDNYNmdBCKdneXm6gnRqSmZTdncpE=
+	t=1771983974; cv=none; b=dUHJRyZq7C/q1/vAvIOuKrTTd1DHxNPKLQZ9V+/xDTJlAoIU0qfi5aaEEYF1R3irfW06xPj4vSzf8MdYPLGwffi5WyQPbERmQ5qKX1zTeS+biFOLDFmMu3Gc6gWa5qGrgaHmhcnl4dIPg3DjZRvgYJNHFO1XvEiz62bdnGeehhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983361; c=relaxed/simple;
-	bh=sakwBSFzZRWbyBUIVi4PG5IErjGfCPyOOUXR3t9ZuUo=;
+	s=arc-20240116; t=1771983974; c=relaxed/simple;
+	bh=B1zFBZHVwa0gGmBvBCwmJsnn3JNFw6x6iRVarcjNy8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAMQZqy8C1AumD/e9DBQtQHluDdS86PMlNZadB4kIhfisSbZasDCHIioy+0iet2skyk5em2oWy9U8GDTKixpBHOmvsg+r65sLNrlekxOpDfQCA58gOB9aNo3fCcKEu0XveOMdv89xXEgg4kPdPxQBO4nMo7hcr75uBzSya0Hqy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXIk0DW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B622C19423;
-	Wed, 25 Feb 2026 01:36:01 +0000 (UTC)
+	 MIME-Version; b=UQofrR2eK5Ngx9YKOfl0iYynXX/JbKPIue9oHPJ1vY02xMSi7+02TVDOSiSIccTSxRmhU2W3swDLaRhtcDpBh3wC6W4lNapintMwXSxxiX0DxU48SXIaksr/sR9syLTaBlgMM9T8G/MjbqsQiwy8wa3wHUivgHeFVp8IGQfreJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkk5zAZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B547C116D0;
+	Wed, 25 Feb 2026 01:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983361;
-	bh=sakwBSFzZRWbyBUIVi4PG5IErjGfCPyOOUXR3t9ZuUo=;
+	s=korg; t=1771983974;
+	bh=B1zFBZHVwa0gGmBvBCwmJsnn3JNFw6x6iRVarcjNy8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WXIk0DW4VD04Ei0mZ4CM0KKeb6oDWTzxRJ5V9vb/IS+L1mv/DyKAOro/vy1OnR+CA
-	 zTLWtOeLvoZzEpMVszzWU3Sww1OCKs/VaFV/1cGDGE3ycPypa/XXYHPE3PeMWwGPbb
-	 vAwfcNp3YB7Ko/5wRauVDSt+SWBAW+S/eKS0Jxig=
+	b=zkk5zAZc2QTw8hQBj36kYRYhQJMmCNUO0CG3Bj7dJUS+PipUxdEN/g8IOG1CoFcvt
+	 JZgiZNlP9ZB8SekwAOhZDubI2VNdnm00mppwGzces806sz86WOyiGNnIajSJzwfCTb
+	 o2ucZGxI/wvWyQ5xYjL5RqFBRy5t6UuFwJCjlxFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 445/781] RDMA/mlx5: Fix ucaps init error flow
+Subject: [PATCH 6.18 228/641] ASoC: SDCA: Remove outdated todo comment
 Date: Tue, 24 Feb 2026 17:19:14 -0800
-Message-ID: <20260225012410.622080646@linuxfoundation.org>
+Message-ID: <20260225012354.428962435@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218525-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219052-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,63 +87,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B8FD318F42E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 26B05190229
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 6dc78c53de99e4ed9868d4f0fc6da6e46f52fe4d ]
+[ Upstream commit b27b57f85fe3f0eca479556ac55bc9cbd1a5685a ]
 
-In mlx5_ib_stage_caps_init(), if mlx5_ib_init_ucaps() fails after
-mlx5_ib_init_var_table() succeeds, the VAR bitmap is leaked since
-the function returns without cleanup.
+Support for -cn- properties has already been added, however the TODO
+comment noting this feature was required was not removed. Remove the
+now redundant comment.
 
-Thus, cleanup the var table bitmap in case of error of initializing
-ucaps before exiting, preventing the leak above.
-
-Fixes: cf7174e8982f ("RDMA/mlx5: Create UCAP char devices for supported device capabilities")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
-Link: https://patch.msgid.link/20260104-ib-core-misc-v1-3-00367f77f3a8@nvidia.com
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 50a479527ef01 ("ASoC: SDCA: Add support for -cn- value properties")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260204125944.1134011-2-ckeepax@opensource.cirrus.com
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/sdca/sdca_functions.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 40284bbb45d6d..8d515d266125e 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -4466,12 +4466,16 @@ static int mlx5_ib_stage_caps_init(struct mlx5_ib_dev *dev)
- 	    MLX5_HCA_CAP_2_GENERAL_OBJECT_TYPES_RDMA_CTRL) {
- 		err = mlx5_ib_init_ucaps(dev);
- 		if (err)
--			return err;
-+			goto err_ucaps;
- 	}
- 
- 	dev->ib_dev.use_cq_dim = true;
- 
+diff --git a/sound/soc/sdca/sdca_functions.c b/sound/soc/sdca/sdca_functions.c
+index 19b12564f822e..7adbf653bd8ac 100644
+--- a/sound/soc/sdca/sdca_functions.c
++++ b/sound/soc/sdca/sdca_functions.c
+@@ -854,10 +854,6 @@ static int find_sdca_control_value(struct device *dev, struct sdca_entity *entit
  	return 0;
-+
-+err_ucaps:
-+	bitmap_free(dev->var_table.bitmap);
-+	return err;
  }
  
- static const struct ib_device_ops mlx5_ib_dev_port_ops = {
+-/*
+- * TODO: Add support for -cn- properties, allowing different channels to have
+- * different defaults etc.
+- */
+ static int find_sdca_entity_control(struct device *dev, struct sdca_entity *entity,
+ 				    struct fwnode_handle *control_node,
+ 				    struct sdca_control *control)
 -- 
 2.51.0
 
