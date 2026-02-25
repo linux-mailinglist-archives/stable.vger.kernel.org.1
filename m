@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-219444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218822-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JpSC4GgnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:10:57 +0100
+	id QGyzIhFZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218822-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:09 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0B1193103
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:10:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5101908A0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DAA8330E9906
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30471323FFE1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29DC30EF97;
-	Wed, 25 Feb 2026 06:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCA5271471;
+	Wed, 25 Feb 2026 01:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sft71XOX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWLux17r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955EC2D77F5;
-	Wed, 25 Feb 2026 06:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65CF1E2834;
+	Wed, 25 Feb 2026 01:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002719; cv=none; b=haLWGrgxM5NepXuDmYKI9Tc0UHIZhXsp98XwY6xO50ivLlhQRT7m/OEkIZo/GQgJckVT4BA1hDxXIjqYAEiv3OF2DUgfd4BFfBhLJiiOJOjm0YEDBB/5PTlQ/qx7uuKEOauV8vzp9Ss/bHEgr6E/YVSnr1SyEph94BSzTAPl3zo=
+	t=1771983702; cv=none; b=C6IkanJNNOxXXvF+L9PGWet1ktLVP5UPQgcDk1FAw+SHmZCE2Bqhfv9oFYAq841EszvHFiuAO0620wULvgvdYg4ANxPXZUEQRVi5SiiNsfywRQCSVJP06Inknbj/WK6T0x5pFbLL9PvkKWR934UacPiI1R/LxOM9E0A432c+fxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002719; c=relaxed/simple;
-	bh=m/2TukzH2o6WaiTi5r0mO9/o03fZ9q4XEq43G5HnOa8=;
+	s=arc-20240116; t=1771983702; c=relaxed/simple;
+	bh=gJ5uysqsrHe5FZEG/3c2ZdfqMNgzGWHBw1l7edlkIkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idLhJSb+Od/BJARsVJPrT/rT0+9H0h6XETHR75FC3OYAg6j2dWuZd/SWpnBP8qi/PNPlIFGIXvC7Q+SMSueW0JkR8eNV+9+TVQfJ5j03peUQTQLQQR9ZZHdF65rpmSvm1givo6qDmU0ijqmNu35ZSW/Ws0Q0XY5jbxecOxlStFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sft71XOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDC1C116D0;
-	Wed, 25 Feb 2026 06:58:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZKxUDbwx6VUEHsMZtEShfxcjrEepquLIyDPNJTo+IuneqpM1kW+3AZb76TqZAeq0SUELwOPMZr9ceVhjNVOfXZitgJIWd9d/gBtIyxsgl7d4LpFi5R2ZJjRPvaoHWNJN1St3jovONgYfLy3t/B8KfNSgCfi9vLEEp6C1hOqZWW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWLux17r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51D9C116D0;
+	Wed, 25 Feb 2026 01:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002719;
-	bh=m/2TukzH2o6WaiTi5r0mO9/o03fZ9q4XEq43G5HnOa8=;
+	s=korg; t=1771983701;
+	bh=gJ5uysqsrHe5FZEG/3c2ZdfqMNgzGWHBw1l7edlkIkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sft71XOXFhF8lU4yelHojE2f3Ju163PcJaX32MjowNBpD2KGaeRrrQ020tIy91P6w
-	 j5EmIGSzP55Q6DMXtKHCHHVw1bu0HktEH2K/x09Hyu95cPn6gP/PkA19co5tmGWIkC
-	 d1tMOmk0KWp34ynJtfT+XRHtWWrG5Add2jy7DeCU=
+	b=QWLux17rYGMK/sach7woa2MKOHSPLEzpxBHT2hk6WXHRqi6z91j+F93l5FnXU8eXT
+	 jH/hxfMBMP9Q5fgj3xrmRyOublTpc/2xJo4opE0BeozA23oIYwCg0HFh30ykwJ77bd
+	 Ay9TshkT+7ftYoekNzsokZ2BXZENo3V8wXPej+Tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Mauro Rossi <issor.oruam@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 529/641] bpf: Add a map/btf from a fd array more consistently
+Subject: [PATCH 6.19 746/781] drm/amd/display: Turn off DAC in DCE link encoder using VBIOS
 Date: Tue, 24 Feb 2026 17:24:15 -0800
-Message-ID: <20260225012401.347297629@linuxfoundation.org>
+Message-ID: <20260225012418.022275485@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +65,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219444-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218822-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linaro.org,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.974];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: AB0B1193103
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: DE5101908A0
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit b0b1a8583d8e797114e613139e3e3318a1704690 ]
+[ Upstream commit e021ee995056ee7e58114edd92bcd4578d8b4bb5 ]
 
-The add_fd_from_fd_array() function takes a file descriptor as a
-parameter and tries to add either map or btf to the corresponding
-list of used objects. As was reported by Dan Carpenter, since the
-commit c81e4322acf0 ("bpf: Fix a potential use-after-free of BTF
-object"), the fdget() is called twice on the file descriptor, and
-thus userspace, potentially, can replace the file pointed to by the
-file descriptor in between the two calls. On practice, this shouldn't
-break anything on the kernel side, but for consistency fix the code
-such that only one fdget() is executed.
+Apparently, the VBIOS DAC1EncoderControl function is much more
+graceful about turning off the DAC. It writes various DAC
+registers in a specific sequence. Use that instead of just
+clearing the DAC_ENABLE register.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/aY689z7gHNv8rgVO@stanley.mountain/
-Fixes: ccd2d799ed44 ("bpf: Fix a potential use-after-free of BTF object")
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Link: https://lore.kernel.org/r/20260213212949.759321-1-a.s.protopopov@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Do this in just the dce110_link_encoder_disable_output
+function and remove it from the HWSS.
+
+Fixes: 0fbe321a93ce ("drm/amd/display: Implement DCE analog link encoders (v2)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Tested-by: Mauro Rossi <issor.oruam@gmail.com>
+Suggested-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../drm/amd/display/dc/dce/dce_link_encoder.c | 30 +++++++++++--------
+ .../amd/display/dc/hwss/dce110/dce110_hwseq.c |  3 --
+ 2 files changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index dade674ffe071..c4fa2268dbbc5 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -24098,9 +24098,11 @@ static int add_fd_from_fd_array(struct bpf_verifier_env *env, int fd)
- 		return 0;
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+index 5c1a10f77733a..2e742950a62c7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+@@ -131,6 +131,21 @@ static enum bp_result link_transmitter_control(
+ 	return result;
+ }
+ 
++static enum bp_result link_dac_encoder_control(
++	struct dce110_link_encoder *link_enc,
++	enum bp_encoder_control_action action,
++	uint32_t pix_clk_100hz)
++{
++	struct dc_bios *bios = link_enc->base.ctx->dc_bios;
++	struct bp_encoder_control encoder_control = {0};
++
++	encoder_control.action = action;
++	encoder_control.engine_id = link_enc->base.analog_engine;
++	encoder_control.pixel_clock = pix_clk_100hz / 10;
++
++	return bios->funcs->encoder_control(bios, &encoder_control);
++}
++
+ static void enable_phy_bypass_mode(
+ 	struct dce110_link_encoder *enc110,
+ 	bool enable)
+@@ -1337,19 +1352,8 @@ void dce110_link_encoder_disable_output(
+ 	struct bp_transmitter_control cntl = { 0 };
+ 	enum bp_result result;
+ 
+-	switch (enc->analog_engine) {
+-	case ENGINE_ID_DACA:
+-		REG_UPDATE(DAC_ENABLE, DAC_ENABLE, 0);
+-		break;
+-	case ENGINE_ID_DACB:
+-		/* DACB doesn't seem to be present on DCE6+,
+-		 * although there are references to it in the register file.
+-		 */
+-		DC_LOG_ERROR("%s DACB is unsupported\n", __func__);
+-		break;
+-	default:
+-		break;
+-	}
++	if (enc->analog_engine != ENGINE_ID_UNKNOWN)
++		link_dac_encoder_control(enc110, ENCODER_CONTROL_DISABLE, 0);
+ 
+ 	/* The code below only applies to connectors that support digital signals. */
+ 	if (enc->transmitter == TRANSMITTER_UNKNOWN)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index ebd74b43e935e..fd41e52e4d2f1 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -1218,9 +1218,6 @@ void dce110_disable_stream(struct pipe_ctx *pipe_ctx)
+ 		dccg->funcs->disable_symclk_se(dccg, stream_enc->stream_enc_inst,
+ 					       link_enc->transmitter - TRANSMITTER_UNIPHY_A);
  	}
+-
+-	if (dc_is_rgb_signal(pipe_ctx->stream->signal))
+-		dce110_dac_encoder_control(pipe_ctx, false);
+ }
  
--	btf = btf_get_by_fd(fd);
--	if (!IS_ERR(btf))
-+	btf = __btf_get_by_fd(f);
-+	if (!IS_ERR(btf)) {
-+		btf_get(btf);
- 		return __add_used_btf(env, btf);
-+	}
- 
- 	verbose(env, "fd %d is not pointing to valid bpf_map or btf\n", fd);
- 	return PTR_ERR(map);
+ void dce110_unblank_stream(struct pipe_ctx *pipe_ctx,
 -- 
 2.51.0
 
