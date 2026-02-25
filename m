@@ -1,223 +1,168 @@
-Return-Path: <stable+bounces-219635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sN1oLFgJn2neYgQAu9opvQ
-	(envelope-from <stable+bounces-219635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:38:16 +0100
+	id yOiZGfoIn2neYgQAu9opvQ
+	(envelope-from <stable+bounces-219637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:36:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C3A198D38
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:38:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1169198D08
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:36:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEA0F306A51C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:33:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6318A3024EC3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9CC392802;
-	Wed, 25 Feb 2026 14:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058633AE713;
+	Wed, 25 Feb 2026 14:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gQp0fc7q"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="dWxcjpZb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC58286D64
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 14:33:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772030032; cv=none; b=a7mstCN9wNMEZGHDkmmx3mEKEJ5vCL3IZX5UApF+gleupxSkESvXfoB1eFF9wzNIx57pF30y9KQqUuX3wBRvLKvIYs9GqTBgJJhgghnIz6Y4WHQppWblloUGv4zVcCe30t3+zlEaEYUSezNJlQnsOdPANfV8IFaPxymywmyek14=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772030032; c=relaxed/simple;
-	bh=DWwhvfOQ4s5087f3KDIgSNpW+dbFRQtW6uUYUkduE4c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWjaYFveqOznNWB8TYOGgoO8ouU9jy+e9L3y8MnLsfUctxh/aOippfxflu0ndJSyP09FykTZ3ogEjGWgk/6yCz7TWDC5GEyhvchS576x2jat3KkEPnvfzKyXsqfBCE0wBFN7OYB1WedLBO+2EUlsyCiCGHAIUznyBRYuXQ6oKWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gQp0fc7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1334AC116D0;
-	Wed, 25 Feb 2026 14:33:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772030031;
-	bh=DWwhvfOQ4s5087f3KDIgSNpW+dbFRQtW6uUYUkduE4c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQp0fc7qmVLWkxddQVF5KQZ89638eRZTSuqAnwop6y5pJmzxDhJ24m1EWj7p3uiAL
-	 cObUvuHcaUGwtukC1bLq5PiuleO8cgj03dwgiW180XX80P6DX4qftfTfVh21D/dw13
-	 NefFNUptu8WYGA9gEQNqFJXklAZsKNbJ6kF64Dl6TPWsShxJkZ3Ylk9UKbWC9/+Cur
-	 fUa2b4+RNk6PiuYcT97QIB7QUqbd2dheU8vnsZib3CrT+lIEpJrrilBkN4/iIDtnpr
-	 DQMO1EcFfROCNE9mG1BXXE08+usNeYQdECIZdRmIfdyCvWy8aGXuQ3MdnfFGHYainN
-	 dk/xCp3o7lmAw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Yongjian Sun <sunyongjian1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] ext4: fix e4b bitmap inconsistency reports
-Date: Wed, 25 Feb 2026 09:33:49 -0500
-Message-ID: <20260225143349.471932-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026022403-jittery-reputably-8b52@gregkh>
-References: <2026022403-jittery-reputably-8b52@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ED2387362
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 14:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772030199; cv=pass; b=lLsWJuLSnWpC0PHFmi/CgbS8/DfoQJewJy2I4ttjRexnKV7MgVRVdaWyRhfVOx9gcuQ9CtkkTKzop10IrR41MG1/cG6KRGwjbYyo1k3ltAk+C0P7a8pb57vCW9f9PT/zLgBB3HuILu3TawY/X20GjOhDab4cGIys6B8QMes+UGE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772030199; c=relaxed/simple;
+	bh=3o3jV1yPotn5Ay2C7EwxJyn8N/Xj/yz6IduDQ0zFG74=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DR6pK1JAh6t1VNI2A8kipVMFV3Pg6ZmvwI4h6AjQ0w5okosU2V1FKxtIDuBNJsJzwkrfMHiG9KW01J24h1gtZqHBVFPHhgbqqEneo0sU2FJTldnEKYgrELlaEET4lyTlkAIdy/yk9X5XEsqx95vexE623KL2jy7fx+j6thKKuPA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=dWxcjpZb; arc=pass smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b8f7a30515aso800879666b.0
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 06:36:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772030197; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JaCz+W18D9G49loFn8ed3XqGJ4bIhjeHYYCJhG+ev08V6ZdQ3t1YrnGnmsjvjvLk36
+         siENXmXK9hXJpl7iyl8M//2Ussa2FxMMTxUBCP6Z9Sn+GB4HMnb7T1pIxeYe3LxrdLC9
+         unHQjHCiSZD5/G6/cpBrUfJDElZiqMxnzOXJ0CPdpMbApU0/wPC+asdrq48Se49B1sGg
+         6jDFj8ixk0X52eAXexm2LjvnnAPexpv2cCAdh79HKB8PIfqSPwMwF9TSVYsQuNbRI4vi
+         RXL9lAr8n1EqaJFaFv3ompHbhzFrcgQjLFMYWrkvehTowG9u21plwGP7kRWiJabNCBzn
+         BWlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=zp5unT2XQ1YJf2wpzP11qQXI2wzEEGxzhd1xDPuzeN4=;
+        fh=vMhX5fX6hkCbGdV29FDoCHLzq8OZyAzc05JVDKUKOws=;
+        b=RzpCKR73p3ZS8iS0H2b9XpPoRy3SLYGpvT8amWZHDt37taw66zRMskP4/9uywSbu+d
+         aJeNOAyvgi2H9fbcdwg1gayGD+hk2CKl11BQ15NnSsGwdNPkBPU9n1d0DZZM2OSMl1ZA
+         aRRe0hNbEos4XRMyqoesEc77zdMplAII/B3EJWvwoduHb/CAZlwFAbsp9bidrcZVP5pU
+         SnuqVxYcUV9DAkEMDt8T1sqvSJb9lHW10ET58DgSwrerW4Eeul5Oh9YHKCSPFhEoETIP
+         W5IFszc5Fy47ZshlcxB+cedVnyA3HZwu8J/tls7qaKFQuy+DDq1lmXO4fwXHuz9UjGy/
+         fdwA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1772030197; x=1772634997; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zp5unT2XQ1YJf2wpzP11qQXI2wzEEGxzhd1xDPuzeN4=;
+        b=dWxcjpZbj5qjJ+aTe9UUbtwucoeSP/REyxjxc/Y5eCzCtIZMf6JJKCb66hcTn1VpyT
+         Mnxv58Xeas6H5pMvz5kGn80IIT6h2b8nOkTKUzB0KPcF9rgSfasH6ROjl4wOYyMkGHFe
+         mCQP38woAqzLsrO6iJBVnDQTUTg+sx5y07x4hM3srZ32E9u5J9bPTS7m8vS5KprjIDhW
+         hAz89QXK0C34OnCAjZNCXUlIJSO4KCGzViExplZ3R4lKnY9Oz2osTPAcbTZQzT0Vmlf+
+         5RhZP5vALn1GLjNQP87bfqHBLD4Z8cyNAjJBZNlRdPa+U7nGHh31aKML39ojfQJHpnY7
+         wMDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772030197; x=1772634997;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zp5unT2XQ1YJf2wpzP11qQXI2wzEEGxzhd1xDPuzeN4=;
+        b=wqp5+UeRxOaogDHv+SnSegezWfJiFRlTpE+aB+Ofk4kki9a2KKgRUge07uhlSv0ey+
+         3PfBvGMBnu6pR31pfuZ1E2ZcDHlIsxo8iEBtgSWAO00PZDctTYmeEiGI9ZxcDvUGvrQp
+         Q30X3fNEGmwR+f5tfQBlCyVn14NcBG/kQIA368+kL3hIVZaGnX2T4TvB2nD0gLRik02K
+         bqmtJdEpZghMhxIZ4JBVQ6ZdMpvWDmc9MmHrK49tvbdgLWLjODdx0/4qGeaEd3bOCaxt
+         9qaGaLzCTU5XBquT71PzaIgufz/RJ4VzYVU36F1SnMg3sf+LPkgqQhR5aQ+aOoNGDW+n
+         3wKw==
+X-Gm-Message-State: AOJu0Yz8BkvhnjYHh7peNlYZhuLvq6Bp9BLLCXfPQfxUId5tae+14fO1
+	H+u/w6N6zibRTlxjNXL8Y/qUL605x+n1oXbKaT5m9B5+ySDzNMZZNQR9sNFpfXvMQwxma8yH4Ib
+	ZzxH9sPHqHNmiIowv7ZoFRtHa16sc0x1UqfUKBQYWQA==
+X-Gm-Gg: ATEYQzwfi+eyaabot7XY77Oo1GmTUQAcaKqHOQIEj2mtNDXwTBd78MvoDbTpGrSDHhq
+	cInxKk4lRvkhmibyb9+3oh6PvpufCs5xGV6tMup26Z4zJOZAdNLSPuZqfdJyTO7BV2CjkzBrFUO
+	HNSppjn6uOjt9YJi70v5+K6MKQXIPqeR0iVyUcXjfmGEDJm2OrWo5Rg6OPwN0SqsDLAK5+00aEa
+	wGqTa9TPvBFJLrSTkCn97n8TeltTQQJfz9mQ0S9lIeI3gNhcm+WfvoCz8rRk9XGlF+no7/MALMj
+	kKdGmS6loudLqmElIEvmA1zOEaVsqxlz3OJqIHbBv/rk1JnaGtBfk2iG5HIIN6n78JhuXsA=
+X-Received: by 2002:a17:907:9347:b0:b8f:9d12:2390 with SMTP id
+ a640c23a62f3a-b93517ece31mr28684866b.58.1772030196916; Wed, 25 Feb 2026
+ 06:36:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Wed, 25 Feb 2026 20:05:59 +0530
+X-Gm-Features: AaiRm51dFPxFAjtNDltCSh9T-PORoFUyIe-AxoTdzJjCL4PMD3axwmNmKN25HEs
+Message-ID: <CAG=yYwmBmC_eT9iFznY2OgmZ0yaZ91GAkvZTxoJHb00F7W+6Jw@mail.gmail.com>
+Subject: Re: [PATCH 6.18 000/641] 6.18.14-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Tested-by: Jeffrin Jose T" <jeffrin@rajagiritech.edu.in>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219635-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[rajagiritech.edu.in];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219637-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,huawei.com:email]
-X-Rspamd-Queue-Id: 16C3A198D38
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F1169198D08
 X-Rspamd-Action: no action
 
-From: Yongjian Sun <sunyongjian1@huawei.com>
+ hello,
 
-[ Upstream commit bdc56a9c46b2a99c12313122b9352b619a2e719e ]
+Compiled and booted  6.18.14-rc1+
+dmesg related error
 
-A bitmap inconsistency issue was observed during stress tests under
-mixed huge-page workloads. Ext4 reported multiple e4b bitmap check
-failures like:
+----------------------err--------------------------
+$sudo dmesg -l err
+[   22.068694] kobject: kobject_add_internal failed for lp.0 (error:
+-2 parent: parport0)
+$
+-----------------------err-------------------------
 
-ext4_mb_complex_scan_group:2508: group 350, 8179 free clusters as
-per group info. But got 8192 blocks
+.
 
-Analysis and experimentation confirmed that the issue is caused by a
-race condition between page migration and bitmap modification. Although
-this timing window is extremely narrow, it is still hit in practice:
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
 
-folio_lock                        ext4_mb_load_buddy
-__migrate_folio
-  check ref count
-  folio_mc_copy                     __filemap_get_folio
-                                      folio_try_get(folio)
-                                  ......
-                                  mb_mark_used
-                                  ext4_mb_unload_buddy
-  __folio_migrate_mapping
-    folio_ref_freeze
-folio_unlock
 
-The root cause of this issue is that the fast path of load_buddy only
-increments the folio's reference count, which is insufficient to prevent
-concurrent folio migration. We observed that the folio migration process
-acquires the folio lock. Therefore, we can determine whether to take the
-fast path in load_buddy by checking the lock status. If the folio is
-locked, we opt for the slow path (which acquires the lock) to close this
-concurrency window.
-
-Additionally, this change addresses the following issues:
-
-When the DOUBLE_CHECK macro is enabled to inspect bitmap-related
-issues, the following error may be triggered:
-
-corruption in group 324 at byte 784(6272): f in copy != ff on
-disk/prealloc
-
-Analysis reveals that this is a false positive. There is a specific race
-window where the bitmap and the group descriptor become momentarily
-inconsistent, leading to this error report:
-
-ext4_mb_load_buddy                   ext4_mb_load_buddy
-  __filemap_get_folio(create|lock)
-    folio_lock
-  ext4_mb_init_cache
-    folio_mark_uptodate
-                                     __filemap_get_folio(no lock)
-                                     ......
-                                     mb_mark_used
-                                       mb_mark_used_double
-  mb_cmp_bitmaps
-                                       mb_set_bits(e4b->bd_bitmap)
-  folio_unlock
-
-The original logic assumed that since mb_cmp_bitmaps is called when the
-bitmap is newly loaded from disk, the folio lock would be sufficient to
-prevent concurrent access. However, this overlooks a specific race
-condition: if another process attempts to load buddy and finds the folio
-is already in an uptodate state, it will immediately begin using it without
-holding folio lock.
-
-Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260106090820.836242-1-sunyongjian@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ folio -> page ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ext4/mballoc.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
-
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 0fd921ada8973..41aa6c47339a0 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1570,16 +1570,17 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	/* we could use find_or_create_page(), but it locks page
- 	 * what we'd like to avoid in fast path ... */
- 	page = find_get_page_flags(inode->i_mapping, pnum, FGP_ACCESSED);
--	if (page == NULL || !PageUptodate(page)) {
-+	if (page == NULL || !PageUptodate(page) || PageLocked(page)) {
-+		/*
-+		 * PageLocked is employed to detect ongoing page
-+		 * migrations, since concurrent migrations can lead to
-+		 * bitmap inconsistency. And if we are not uptodate that
-+		 * implies somebody just created the page but is yet to
-+		 * initialize it. We can drop the page reference and
-+		 * try to get the page with lock in both cases to avoid
-+		 * concurrency.
-+		 */
- 		if (page)
--			/*
--			 * drop the page reference and try
--			 * to get the page with lock. If we
--			 * are not uptodate that implies
--			 * somebody just created the page but
--			 * is yet to initialize the same. So
--			 * wait for it to initialize.
--			 */
- 			put_page(page);
- 		page = find_or_create_page(inode->i_mapping, pnum, gfp);
- 		if (page) {
-@@ -1614,7 +1615,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	poff = block % blocks_per_page;
- 
- 	page = find_get_page_flags(inode->i_mapping, pnum, FGP_ACCESSED);
--	if (page == NULL || !PageUptodate(page)) {
-+	if (page == NULL || !PageUptodate(page) || PageLocked(page)) {
- 		if (page)
- 			put_page(page);
- 		page = find_or_create_page(inode->i_mapping, pnum, gfp);
--- 
-2.51.0
-
+--
+software engineer
+rajagiri school of engineering and technology-
 
