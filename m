@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-219563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHgrNGajnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:23:18 +0100
+	id eAkyJCWhnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:13:41 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013B4193550
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E56A21931CB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:13:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 195FD302A6CB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:02:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D97AF304CE93
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2E533971E;
-	Wed, 25 Feb 2026 06:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A783831BC84;
+	Wed, 25 Feb 2026 06:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHZWAy2k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLkrhNUs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6EE63081C2;
-	Wed, 25 Feb 2026 06:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B2B312806;
+	Wed, 25 Feb 2026 06:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002798; cv=none; b=Pio87En637zp5mk8+CzVDVDXjhOeR99xEdVYOkk66U5If9t7htxI+0Ed827/e8xTGkTDXp5fiNZA9n0roah9QVUZhr1nyDUAOoKqgBFj4WhczIUvmGW63opU8dZSmX2/qGRsEdfrpI9lGT5pQ+LD3eplRa7HpcS7bYcX2yu5xa8=
+	t=1772002770; cv=none; b=tH7WAOcaQLDl6V2A9vRLNuCYxMte3DjnE84l/XAwKWp8cUIjJpx1rOTdw89I/vlRp5a8wXh/VXoPWCkng6Z8rSOmnW23je8SwDoaFJlQU/Bl2rQXeCRJt6Fb9U1YJz1W9DfcQD+0x8hkgoEbDScU42cITC1v8M4d3aHDeH21UJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002798; c=relaxed/simple;
-	bh=S8N1t4UEObLBPphNw1d7VCjlRIevEDZnMjELMVukGyw=;
+	s=arc-20240116; t=1772002770; c=relaxed/simple;
+	bh=Yz/1R67NkL4pQvnVVGyy87b2obeMgCUVrWxfbcaIoKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GR0d+BZAW+pV17q7ISxtnwmrXo3Eo38VQRdVy1BtaRmhOUnuwsdwO96rnlm4P0svkNl8rWpJMMQ6FeQH0ekeruygIFp3ew0ftu3RWZKOvPlJ8HVs3horaHt1se/Pjoy+9gM0Rq6UOmB8vOgxpWt4k/SuZCprI/uKnLqpEbdumBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHZWAy2k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A787AC116D0;
-	Wed, 25 Feb 2026 06:59:58 +0000 (UTC)
+	 MIME-Version; b=QfLA1sQU40dd38UkIxVw5DwlqAMBdi2RldWeP8aQoc7W5K7pcP6t8MfDH+ByhkaKcpAzBZL6q1pee7B7ZUosZ527wDvUemqJLcxBjEFLPeD/g6Gm/tVmQlXvKcC6th1x6AnkG8RMDb8VQNJZrbUhw6gChzFd3KrQoPDoLuVkZVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLkrhNUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381ABC116D0;
+	Wed, 25 Feb 2026 06:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002798;
-	bh=S8N1t4UEObLBPphNw1d7VCjlRIevEDZnMjELMVukGyw=;
+	s=korg; t=1772002770;
+	bh=Yz/1R67NkL4pQvnVVGyy87b2obeMgCUVrWxfbcaIoKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHZWAy2kOJLiBwRbH19Gadna/IkELEKNOyO4fIc/kgYJGlDIB7fc8EV8cpxfbRMyH
-	 EuDhOyVe7EXi/zDM9qwuIyEemR2zrDx6h3IKdyCn2wIe14hnPjbN0gAj37ZEBMEdBL
-	 4/MXshNb6ZT/I3wgHWvlWUNA8hbHCTsY3ybMjhW0=
+	b=VLkrhNUsaz0lbqGduNDp0gymlxHrKzdZI8n+yaf/WUZj9wRIkcq+IBOCqvvLcdfIg
+	 Sn5y62a4Gju79Vapqmf7EQ1sfrBGi8uwBN6eONfauZqmafmzFH8yCZXgvMvRXJYYLv
+	 5ScjhUEl9RMDPRQV7X9jYq6a3vCxn40N2DrrCRV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Alex Lyakas <alex.lyakas@zadara.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 604/641] btrfs: reset block group size class when it becomes empty
-Date: Tue, 24 Feb 2026 17:25:30 -0800
-Message-ID: <20260225012403.150095554@linuxfoundation.org>
+Subject: [PATCH 6.18 605/641] btrfs: use the correct type to initialize block reserve for delayed refs
+Date: Tue, 24 Feb 2026 17:25:31 -0800
+Message-ID: <20260225012403.173720501@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -75,105 +75,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bur.io,gmail.com,suse.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-219563-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219520-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 013B4193550
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,zadara.com:email]
+X-Rspamd-Queue-Id: E56A21931CB
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 5870ec7c8fe57a8b2c65005e5da5efc054faa3e6 ]
+[ Upstream commit 2155d0c0a761a56ce7ede83a26eb23ea0f935260 ]
 
-Block group size classes are managed consistently everywhere.
-Currently, btrfs_use_block_group_size_class() sets a block group's size
-class to specialize it for a specific allocation size. However, this
-size class remains "stale" even if the block group becomes completely
-empty (both used and reserved bytes reach zero).
+When initializing the delayed refs block reserve for a transaction handle
+we are passing a type of BTRFS_BLOCK_RSV_DELOPS, which is meant for
+delayed items and not for delayed refs. The correct type for delayed refs
+is BTRFS_BLOCK_RSV_DELREFS.
 
-This happens in two scenarios:
+On release of any excess space reserved in a local delayed refs reserve,
+we also should transfer that excess space to the global block reserve
+(it it's full, we return to the space info for general availability).
 
-1. When space reservations are freed (e.g., due to errors or transaction
-   aborts) via btrfs_free_reserved_bytes().
-2. When the last extent in a block group is freed via
-   btrfs_update_block_group().
+By initializing a transaction's local delayed refs block reserve with a
+type of BTRFS_BLOCK_RSV_DELOPS, we were also causing any excess space
+released from the delayed block reserve (fs_info->delayed_block_rsv, used
+for delayed inodes and items) to be transferred to the global block
+reserve instead of the global delayed refs block reserve. This was an
+unintentional change in commit 28270e25c69a ("btrfs: always reserve space
+for delayed refs when starting transaction"), but it's not particularly
+serious as things tend to cancel out each other most of the time and it's
+relatively rare to be anywhere near exhaustion of the global reserve.
 
-While size classes are advisory, a stale size class can cause
-find_free_extent to unnecessarily skip candidate block groups during
-initial search loops. This undermines the purpose of size classes to
-reduce fragmentation by keeping block groups restricted to a specific
-size class when they could be reused for any size.
+Fix this by initializing a transaction's local delayed refs reserve with
+a type of BTRFS_BLOCK_RSV_DELREFS and making btrfs_block_rsv_release()
+attempt to transfer unused space from such a reserve into the global block
+reserve, just as we did before that commit for when the block reserve is
+a delayed refs rsv.
 
-Fix this by resetting the size class to BTRFS_BG_SZ_NONE whenever a
-block group's used and reserved counts both reach zero. This ensures
-that empty block groups are fully available for any allocation size in
-the next cycle.
-
-Fixes: 52bb7a2166af ("btrfs: introduce size class to block group allocator")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
+Reported-by: Alex Lyakas <alex.lyakas@zadara.com>
+Link: https://lore.kernel.org/linux-btrfs/CAOcd+r0FHG5LWzTSu=LknwSoqxfw+C00gFAW7fuX71+Z5AfEew@mail.gmail.com/
+Fixes: 28270e25c69a ("btrfs: always reserve space for delayed refs when starting transaction")
+Reviewed-by: Alex Lyakas <alex.lyakas@zadara.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/btrfs/block-rsv.c   | 7 ++++---
+ fs/btrfs/transaction.c | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index 144868f02e2aa..f7f6d8cb33114 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -3681,6 +3681,14 @@ int btrfs_write_dirty_block_groups(struct btrfs_trans_handle *trans)
- 	return ret;
- }
+diff --git a/fs/btrfs/block-rsv.c b/fs/btrfs/block-rsv.c
+index 75cd35570a287..fc378d2038a2d 100644
+--- a/fs/btrfs/block-rsv.c
++++ b/fs/btrfs/block-rsv.c
+@@ -278,10 +278,11 @@ u64 btrfs_block_rsv_release(struct btrfs_fs_info *fs_info,
+ 	struct btrfs_block_rsv *target = NULL;
  
-+static void btrfs_maybe_reset_size_class(struct btrfs_block_group *bg)
-+{
-+	lockdep_assert_held(&bg->lock);
-+	if (btrfs_block_group_should_use_size_class(bg) &&
-+	    bg->used == 0 && bg->reserved == 0)
-+		bg->size_class = BTRFS_BG_SZ_NONE;
-+}
-+
- int btrfs_update_block_group(struct btrfs_trans_handle *trans,
- 			     u64 bytenr, u64 num_bytes, bool alloc)
- {
-@@ -3745,6 +3753,7 @@ int btrfs_update_block_group(struct btrfs_trans_handle *trans,
- 		old_val -= num_bytes;
- 		cache->used = old_val;
- 		cache->pinned += num_bytes;
-+		btrfs_maybe_reset_size_class(cache);
- 		btrfs_space_info_update_bytes_pinned(space_info, num_bytes);
- 		space_info->bytes_used -= num_bytes;
- 		space_info->disk_used -= num_bytes * factor;
-@@ -3865,6 +3874,7 @@ void btrfs_free_reserved_bytes(struct btrfs_block_group *cache, u64 num_bytes,
- 	spin_lock(&cache->lock);
- 	bg_ro = cache->ro;
- 	cache->reserved -= num_bytes;
-+	btrfs_maybe_reset_size_class(cache);
- 	if (is_delalloc)
- 		cache->delalloc_bytes -= num_bytes;
- 	spin_unlock(&cache->lock);
+ 	/*
+-	 * If we are a delayed block reserve then push to the global rsv,
+-	 * otherwise dump into the global delayed reserve if it is not full.
++	 * If we are a delayed refs block reserve then push to the global
++	 * reserve, otherwise dump into the global delayed refs reserve if it is
++	 * not full.
+ 	 */
+-	if (block_rsv->type == BTRFS_BLOCK_RSV_DELOPS)
++	if (block_rsv->type == BTRFS_BLOCK_RSV_DELREFS)
+ 		target = global_rsv;
+ 	else if (block_rsv != global_rsv && !btrfs_block_rsv_full(delayed_rsv))
+ 		target = delayed_rsv;
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index b537bba767806..089712b15d603 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -726,7 +726,7 @@ start_transaction(struct btrfs_root *root, unsigned int num_items,
+ 
+ 	h->type = type;
+ 	INIT_LIST_HEAD(&h->new_bgs);
+-	btrfs_init_metadata_block_rsv(fs_info, &h->delayed_rsv, BTRFS_BLOCK_RSV_DELOPS);
++	btrfs_init_metadata_block_rsv(fs_info, &h->delayed_rsv, BTRFS_BLOCK_RSV_DELREFS);
+ 
+ 	smp_mb();
+ 	if (cur_trans->state >= TRANS_STATE_COMMIT_START &&
 -- 
 2.51.0
 
