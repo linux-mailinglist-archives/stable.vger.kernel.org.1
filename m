@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-219642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iG8ZHFQNn2neYgQAu9opvQ
-	(envelope-from <stable+bounces-219642-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:55:16 +0100
+	id oGK+IFgNn2neYgQAu9opvQ
+	(envelope-from <stable+bounces-219643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:55:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88984199098
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:55:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 931611990A7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:55:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A277F305D28F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:52:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3B0A6305D936
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199921917FB;
-	Wed, 25 Feb 2026 14:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D613ACEFF;
+	Wed, 25 Feb 2026 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l5QLcOVZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hjPXwUwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF423D4123
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 14:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BC93D3D1C
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 14:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772031151; cv=none; b=DpyvjprEsgJMYLy4InsqS0vGDAg6iOfv1UEBrkXlohKOXdY1omSEqKMnc4GuasyMMQAweNzknxKvC8hljmt1p0+ktq98htCgMMLd9EP6TffrkcWAD3aZO9CsnwcDWfYH7oL01W6TxH+9adwvlsBktyW47VmuYPPxwbF4HnViB3M=
+	t=1772031154; cv=none; b=jzAh1KbnQ/XiEh4FsWlO8C5t6gKAZ8g73kG5Euz5PbGVWOwfqQWJ2/V4/ElsbPjb10Hl8RSmvC5+WL0Gv5ayH4uzdJcliJXUul6rImRYR7rsOQZeUqjP9sywTELTv+ozWkDJmYh2hznR/2+5iGNKfd1u461jeau9ykBSyYVgTS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772031151; c=relaxed/simple;
-	bh=Hc2A/hpisgaA+xXA3qCeftD315VxIXx8Rsh+w9jqP2c=;
+	s=arc-20240116; t=1772031154; c=relaxed/simple;
+	bh=6yut/uymorE6TLTRey2GUBafQ46K3AhzMXmheKyKb9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkWPNwpUPxIp5IgjTWuE0pIMrTRAmF43SyybHtAF8gAQkv0iU6TWBFffZHiGbvD5jAunkmNaBBEVJwvHUCqibpNu/wYXn6JVq2iO68ZQxfqVfLavWhfmu6GJaprENrXQU8qyrWw1aWL3JZtD2I3momG7zS+NM2/tUGMrbXcuqNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l5QLcOVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CDCC19421;
-	Wed, 25 Feb 2026 14:52:30 +0000 (UTC)
+	 MIME-Version; b=c/RrRIiei9SJRrdSUupV6vnswF5GZjae9c+Vts+nJmPLnP45zbJrDMjPdy8Fza9OwF/OE8PgqVsZ4xAoCHWJTLdOmQfUYn2z62vcOyW+N4vIOw8zKfa0asyEDkCwsrzjh2qUpgvjjHOZkwFcsJ6j8Lqt9ibi7bncHwDNZhuOxdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hjPXwUwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEE1C116D0;
+	Wed, 25 Feb 2026 14:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772031151;
-	bh=Hc2A/hpisgaA+xXA3qCeftD315VxIXx8Rsh+w9jqP2c=;
+	s=k20201202; t=1772031154;
+	bh=6yut/uymorE6TLTRey2GUBafQ46K3AhzMXmheKyKb9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5QLcOVZ3FC20WP4L4OzatWbqUtkf0Sp6fngMODIOZ0wPeaF2LLE4VI9XyFUptb8L
-	 mooLBTKugBjWe2ShThhiX/8sM6UwH7+qh1KXSW8OTwt1CJxIIGg5pejaJAEeNQIoqL
-	 YnIKgLedXVsm0LhVDI539+ZrbIqjeA6tHm3T3MllJ9fvy654+2/WJW74IOZ4SNIXX6
-	 LrOADU6ZI+EWdpE+ohNqMZMmCAdZx8Y5YTOkXgeEIER9VdTnNL02/+pKxPGx5TnkhY
-	 vQ2t1DWYmIDCmm1NjEb/l/GGN4+70GlBMx2OFqjiaUG6uPUR1jSiVC8G2mGQKRE6uM
-	 9GWhuCXOKjijA==
+	b=hjPXwUwaJu6JyqRgxP/qswfUaemqYjwz+WolxnYXSrIO95dXE6yQIT0TEk8D6xjEe
+	 pa+pAWxF1fvT34JM/xGbXGjB2D+ruDLDeKZQOZ5o/5nCDb/iIbh9BzlpYmuJ8nWADI
+	 5zzsIIeKrh33HTU27JmM+2b342ylrjZ6XNzvNZ13HdeBmqOD7XaF8Hvk5s8yroCm+g
+	 jHYRrX+Oxl8YhIYfyHMdqVRhG55l19s8cthiIdim9jajZuySzkQsWt4Cfj87fmyFnX
+	 YxxCeNUo63C1LACwMxolbnd13pqEdP+Goke6HTxPUYlsI1A2W+s+7mBPzV0ocDzAK/
+	 9Vr1kW/EN9E5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Yongjian Sun <sunyongjian1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
+Cc: Brian Foster <bfoster@redhat.com>,
 	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
 	Theodore Ts'o <tytso@mit.edu>,
 	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] ext4: fix e4b bitmap inconsistency reports
-Date: Wed, 25 Feb 2026 09:52:28 -0500
-Message-ID: <20260225145229.546147-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] ext4: fix dirtyclusters double decrement on fs shutdown
+Date: Wed, 25 Feb 2026 09:52:32 -0500
+Message-ID: <20260225145232.546260-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026022404-jawed-posting-46ce@gregkh>
-References: <2026022404-jawed-posting-46ce@gregkh>
+In-Reply-To: <2026022422-deviancy-scanning-ca65@gregkh>
+References: <2026022422-deviancy-scanning-ca65@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,154 +66,136 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219643-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219642-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 88984199098
+X-Rspamd-Queue-Id: 931611990A7
 X-Rspamd-Action: no action
 
-From: Yongjian Sun <sunyongjian1@huawei.com>
+From: Brian Foster <bfoster@redhat.com>
 
-[ Upstream commit bdc56a9c46b2a99c12313122b9352b619a2e719e ]
+[ Upstream commit 94a8cea54cd935c54fa2fba70354757c0fc245e3 ]
 
-A bitmap inconsistency issue was observed during stress tests under
-mixed huge-page workloads. Ext4 reported multiple e4b bitmap check
-failures like:
+fstests test generic/388 occasionally reproduces a warning in
+ext4_put_super() associated with the dirty clusters count:
 
-ext4_mb_complex_scan_group:2508: group 350, 8179 free clusters as
-per group info. But got 8192 blocks
+  WARNING: CPU: 7 PID: 76064 at fs/ext4/super.c:1324 ext4_put_super+0x48c/0x590 [ext4]
 
-Analysis and experimentation confirmed that the issue is caused by a
-race condition between page migration and bitmap modification. Although
-this timing window is extremely narrow, it is still hit in practice:
+Tracing the failure shows that the warning fires due to an
+s_dirtyclusters_counter value of -1. IOW, this appears to be a
+spurious decrement as opposed to some sort of leak. Further tracing
+of the dirty cluster count deltas and an LLM scan of the resulting
+output identified the cause as a double decrement in the error path
+between ext4_mb_mark_diskspace_used() and the caller
+ext4_mb_new_blocks().
 
-folio_lock                        ext4_mb_load_buddy
-__migrate_folio
-  check ref count
-  folio_mc_copy                     __filemap_get_folio
-                                      folio_try_get(folio)
-                                  ......
-                                  mb_mark_used
-                                  ext4_mb_unload_buddy
-  __folio_migrate_mapping
-    folio_ref_freeze
-folio_unlock
+First, note that generic/388 is a shutdown vs. fsstress test and so
+produces a random set of operations and shutdown injections. In the
+problematic case, the shutdown triggers an error return from the
+ext4_handle_dirty_metadata() call(s) made from
+ext4_mb_mark_context(). The changed value is non-zero at this point,
+so ext4_mb_mark_diskspace_used() does not exit after the error
+bubbles up from ext4_mb_mark_context(). Instead, the former
+decrements both cluster counters and returns the error up to
+ext4_mb_new_blocks(). The latter falls into the !ar->len out path
+which decrements the dirty clusters counter a second time, creating
+the inconsistency.
 
-The root cause of this issue is that the fast path of load_buddy only
-increments the folio's reference count, which is insufficient to prevent
-concurrent folio migration. We observed that the folio migration process
-acquires the folio lock. Therefore, we can determine whether to take the
-fast path in load_buddy by checking the lock status. If the folio is
-locked, we opt for the slow path (which acquires the lock) to close this
-concurrency window.
+To avoid this problem and simplify ownership of the cluster
+reservation in this codepath, lift the counter reduction to a single
+place in the caller. This makes it more clear that
+ext4_mb_new_blocks() is responsible for acquiring cluster
+reservation (via ext4_claim_free_clusters()) in the !delalloc case
+as well as releasing it, regardless of whether it ends up consumed
+or returned due to failure.
 
-Additionally, this change addresses the following issues:
-
-When the DOUBLE_CHECK macro is enabled to inspect bitmap-related
-issues, the following error may be triggered:
-
-corruption in group 324 at byte 784(6272): f in copy != ff on
-disk/prealloc
-
-Analysis reveals that this is a false positive. There is a specific race
-window where the bitmap and the group descriptor become momentarily
-inconsistent, leading to this error report:
-
-ext4_mb_load_buddy                   ext4_mb_load_buddy
-  __filemap_get_folio(create|lock)
-    folio_lock
-  ext4_mb_init_cache
-    folio_mark_uptodate
-                                     __filemap_get_folio(no lock)
-                                     ......
-                                     mb_mark_used
-                                       mb_mark_used_double
-  mb_cmp_bitmaps
-                                       mb_set_bits(e4b->bd_bitmap)
-  folio_unlock
-
-The original logic assumed that since mb_cmp_bitmaps is called when the
-bitmap is newly loaded from disk, the folio lock would be sufficient to
-prevent concurrent access. However, this overlooks a specific race
-condition: if another process attempts to load buddy and finds the folio
-is already in an uptodate state, it will immediately begin using it without
-holding folio lock.
-
-Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Fixes: 0087d9fb3f29 ("ext4: Fix s_dirty_blocks_counter if block allocation failed with nodelalloc")
+Signed-off-by: Brian Foster <bfoster@redhat.com>
 Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260106090820.836242-1-sunyongjian@huaweicloud.com
+Link: https://patch.msgid.link/20260113171905.118284-1-bfoster@redhat.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
-[ folio -> page ]
+[ Drop mballoc-test changes ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ fs/ext4/mballoc.c | 21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
 diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index d1a616bbb5bdb..a55e116afbc5a 100644
+index 0fd921ada8973..e16f64daf1334 100644
 --- a/fs/ext4/mballoc.c
 +++ b/fs/ext4/mballoc.c
-@@ -1230,16 +1230,17 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	/* we could use find_or_create_page(), but it locks page
- 	 * what we'd like to avoid in fast path ... */
- 	page = find_get_page_flags(inode->i_mapping, pnum, FGP_ACCESSED);
--	if (page == NULL || !PageUptodate(page)) {
-+	if (page == NULL || !PageUptodate(page) || PageLocked(page)) {
-+		/*
-+		 * PageLocked is employed to detect ongoing page
-+		 * migrations, since concurrent migrations can lead to
-+		 * bitmap inconsistency. And if we are not uptodate that
-+		 * implies somebody just created the page but is yet to
-+		 * initialize it. We can drop the page reference and
-+		 * try to get the page with lock in both cases to avoid
-+		 * concurrency.
-+		 */
- 		if (page)
--			/*
--			 * drop the page reference and try
--			 * to get the page with lock. If we
--			 * are not uptodate that implies
--			 * somebody just created the page but
--			 * is yet to initialize the same. So
--			 * wait for it to initialize.
--			 */
- 			put_page(page);
- 		page = find_or_create_page(inode->i_mapping, pnum, gfp);
- 		if (page) {
-@@ -1274,7 +1275,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	poff = block % blocks_per_page;
+@@ -3836,8 +3836,7 @@ void ext4_exit_mballoc(void)
+  * Returns 0 if success or error code
+  */
+ static noinline_for_stack int
+-ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
+-				handle_t *handle, unsigned int reserv_clstrs)
++ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac, handle_t *handle)
+ {
+ 	struct buffer_head *bitmap_bh = NULL;
+ 	struct ext4_group_desc *gdp;
+@@ -3925,13 +3924,6 @@ ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
  
- 	page = find_get_page_flags(inode->i_mapping, pnum, FGP_ACCESSED);
--	if (page == NULL || !PageUptodate(page)) {
-+	if (page == NULL || !PageUptodate(page) || PageLocked(page)) {
- 		if (page)
- 			put_page(page);
- 		page = find_or_create_page(inode->i_mapping, pnum, gfp);
+ 	ext4_unlock_group(sb, ac->ac_b_ex.fe_group);
+ 	percpu_counter_sub(&sbi->s_freeclusters_counter, ac->ac_b_ex.fe_len);
+-	/*
+-	 * Now reduce the dirty block count also. Should not go negative
+-	 */
+-	if (!(ac->ac_flags & EXT4_MB_DELALLOC_RESERVED))
+-		/* release all the reserved blocks if non delalloc */
+-		percpu_counter_sub(&sbi->s_dirtyclusters_counter,
+-				   reserv_clstrs);
+ 
+ 	if (sbi->s_log_groups_per_flex) {
+ 		ext4_group_t flex_group = ext4_flex_group(sbi,
+@@ -5803,7 +5795,7 @@ ext4_fsblk_t ext4_mb_new_blocks(handle_t *handle,
+ 			ext4_mb_pa_free(ac);
+ 	}
+ 	if (likely(ac->ac_status == AC_STATUS_FOUND)) {
+-		*errp = ext4_mb_mark_diskspace_used(ac, handle, reserv_clstrs);
++		*errp = ext4_mb_mark_diskspace_used(ac, handle);
+ 		if (*errp) {
+ 			ext4_discard_allocated_blocks(ac);
+ 			goto errout;
+@@ -5835,12 +5827,9 @@ ext4_fsblk_t ext4_mb_new_blocks(handle_t *handle,
+ 		kmem_cache_free(ext4_ac_cachep, ac);
+ 	if (inquota && ar->len < inquota)
+ 		dquot_free_block(ar->inode, EXT4_C2B(sbi, inquota - ar->len));
+-	if (!ar->len) {
+-		if ((ar->flags & EXT4_MB_DELALLOC_RESERVED) == 0)
+-			/* release all the reserved blocks if non delalloc */
+-			percpu_counter_sub(&sbi->s_dirtyclusters_counter,
+-						reserv_clstrs);
+-	}
++	/* release any reserved blocks */
++	if (reserv_clstrs)
++		percpu_counter_sub(&sbi->s_dirtyclusters_counter, reserv_clstrs);
+ 
+ 	trace_ext4_allocate_blocks(ar, (unsigned long long)block);
+ 
 -- 
 2.51.0
 
