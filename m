@@ -1,352 +1,206 @@
-Return-Path: <stable+bounces-219604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBOoINr3nmm+YAQAu9opvQ
-	(envelope-from <stable+bounces-219604-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:23:38 +0100
+	id sMB2J1v3nmm+YAQAu9opvQ
+	(envelope-from <stable+bounces-219605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:21:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB18198011
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:23:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 415C8197FAC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:21:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB2AF30F4101
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 13:20:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 28B163027E0D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 13:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFF13ACF0B;
-	Wed, 25 Feb 2026 13:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B8B3B8D48;
+	Wed, 25 Feb 2026 13:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AxB6l9Gw";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OK12alkZ"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D903254AF;
-	Wed, 25 Feb 2026 13:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C812E13A244
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 13:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772025621; cv=none; b=PEjeAoIFhGu6ahCiWZJWa/FKsVCSZykceSCRmi8fTrGslgBVLLNU5LHtDHSv00kZEfBPliZTn1OLVH75RRKP5MV8DSaE7nMddJ2+oOumRcXBLJ+8sQTgpiQlrtzsEzTm30DVCcYG5vUVyMHBAyV/Q1TdY0OHLOJMmWCsTWNqlfY=
+	t=1772025685; cv=none; b=aDvwqtSSTnlwlyN/aewbLX/WMqnkA4bTcTZMpOBOUUaVlLdb1ekSQSrCnYwS9lG/Peww/7ms7IihJ4SbPotOcmpUlajsR6prFd9jePcA0hut6hc/J6HqzFe3IXzxhY7oKpraRSE279CDE0cZnhHTHp5aMhvff3c7gTT5W5w1iTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772025621; c=relaxed/simple;
-	bh=l36SvtO+lraqmgwtuml5sAhuMZEJR9PfVE40dAW2rQE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OSSPppEyrZFfdXz9qlmzm+oD0G5m07qrvpMmMV0Jo2owxTjpGWe+FRdu712ofBYvRALXc0Jlcii66FhFOHSZPC/c6BvitUBe4OHJWNVs8xZ3IMlcPRnb1JEjz8C4YKREuFf9w1C8thNcINMWuIjJORh/T+yynZi2sV/UnwYi2Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.224.196])
-	by frasgout13.his.huawei.com (SkyGuard) with ESMTPS id 4fLZr005K3zpTg8;
-	Wed, 25 Feb 2026 21:17:04 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.47])
-	by mail.maildlp.com (Postfix) with ESMTP id 35FAD40499;
-	Wed, 25 Feb 2026 21:20:16 +0800 (CST)
-Received: from [10.204.63.22] (unknown [10.204.63.22])
-	by APP1 (Coremail) with SMTP id LxC2BwDnIwb_9p5pDAl7BA--.43122S2;
-	Wed, 25 Feb 2026 14:20:13 +0100 (CET)
-Message-ID: <5579780966d26d2fd0e3756d404d2156bd55a06b.camel@huaweicloud.com>
-Subject: Re: [PATCH v5] ima_fs: Avoid creating measurement lists for
- unsupported hash algos
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: dima@arista.com, Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu
- <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
- Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>,  "Serge E. Hallyn" <serge@hallyn.com>,
- Silvia Sisinni <silvia.sisinni@polito.it>, Enrico Bravi
- <enrico.bravi@polito.it>
-Cc: Jonathan McDowell <noodles@earth.li>, linux-integrity@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Dmitry Safonov <0x7f454c46@gmail.com>
-Date: Wed, 25 Feb 2026 14:19:55 +0100
-In-Reply-To: <20260223-ima-oob-v5-1-91cc1064e767@arista.com>
-References: <20260223-ima-oob-v5-1-91cc1064e767@arista.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	s=arc-20240116; t=1772025685; c=relaxed/simple;
+	bh=gPd6+PZcmUbTbkDvrJ11b6yWE2uDUvuPbL8XSCOXmns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qHiNsQ+F2g6NGJNpQ1wHz0V/wSxpfu5ghinE51508gpVD3Qf8zvL2WK14liwGYJtTWtr9ku9xt+ArL4hEw2O06f7XfVvlMJbfa/ZZd3c+diVCoPBTe7VaKOslxugXVPaXy7Z9bffBEeZLVCdoqyprViOYIviTvNaMzj3ZCakr0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AxB6l9Gw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OK12alkZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772025684;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A9FXhwMMHFtDvmmN9O+r+h6L/Zassq9EP7jemgy3/40=;
+	b=AxB6l9GwxoH9i7Eh/JWdMBOvBBl0pvLYs33Iaq88/iXNPZ9V/SbYJn4keG9iaFAxzvR/vt
+	sg1soAiWrZ7yiP8IfqL0wfLXscdJ4lJCWfIGYKYCr52wb2jxyve8jaPSa1xCUWS7ECybrc
+	Ys/HGSUSSfLUsvuRgcdwHOiDJCIBen8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-527-xZK-bFY2NRiT-eEQPJ9USw-1; Wed, 25 Feb 2026 08:21:22 -0500
+X-MC-Unique: xZK-bFY2NRiT-eEQPJ9USw-1
+X-Mimecast-MFC-AGG-ID: xZK-bFY2NRiT-eEQPJ9USw_1772025681
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4376b624589so4035681f8f.3
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 05:21:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1772025681; x=1772630481; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=A9FXhwMMHFtDvmmN9O+r+h6L/Zassq9EP7jemgy3/40=;
+        b=OK12alkZTJlEg2byMp7L8vec/l4RYh/iLnJcm1wCKjXuwldfczS1wJevya08eAGKfZ
+         cf9XY/wf+gHZ/f3nKbL3e189ru+G1GkvKLjsjpXK+wPBjLGKsOtbd4YquY237PkzrBMe
+         U8OoRIudaP2LnvC24yzd1ERlciOlu7AJ/UnWOnyl7J59peU+jYo4NHZt1sJUsE9/TKp0
+         A2MinrgZjknHcDCZdjYpAiu2QMPP1e5AYAygrbcv+/1XsY1MAZfJEaWUI2Lx/CVeVzgU
+         YmDObNUb2+TNDWTZObBi250Pf9iuKOpQ0Rcis7EKP8LfMC4EnM/qe2A8iRV/PZlqJ4he
+         Zv0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772025681; x=1772630481;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A9FXhwMMHFtDvmmN9O+r+h6L/Zassq9EP7jemgy3/40=;
+        b=bpMc6yUevDpFrvFgco8omx4qhmwqXslbERAm9HQiUzOrbpda7/2zYuKh59EVyYArTh
+         LlC9LJosLNxThfQmpnB88in47mnm4d3yFRRVzoUqRL3foK385e+28iGMkDkvhXaVgI/D
+         kJwt3CMz52UiFHdg0Aby059MspbASX0/NCOzInpUEx+FhxjhfQTO/Wb2Sq83SZw5KOaB
+         Jd3IjcwgG/lMpoI6zEWMePqm2AekHPpXJ7tD1TkkJXFKVoT9KfrLlsvmdXBeKDUt00h/
+         ipCwHr+VJdlo0GW6MmFTjkwqivy1Z/eWEv+wJH0tUqGGblLDtzOM0nMVluNqJjXDNeLM
+         GkHw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5EhgBa4ThD+AEMLYFmwCgEGyHemWjucck2UWzs8wF0HaiyalE4s+Pby+eXVtrBN7oyPSsQwg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5AM07eRhgGVBELTfaIb9clymd/WiLhme9jID+JLJzJxqjZoRa
+	FXbYVneJgKJJGRNWjsBn5HEEdoJdVpTw0/KM9kMaKxRIu0CBCmd/HLMWNcKz+ZTu/I4L4U86NR6
+	3rsNW5zINy7dtFSMX1LRdkHsKj0HurlNli5oSOv/DRly+wdb97DPVo1rsWQ==
+X-Gm-Gg: ATEYQzyPNaPKTVnT/ovX0fHUkr3PTEaMGCOVXgSLFlS5HL0EfDoQGHtflE5p1bVKEeC
+	Vro7+d1SCRGF3qXx2/WQ2vT8dxkLE7mgBdOEoX8sT+Y/15V02joHnHxjUepLD9qCuFPQbiYf+eV
+	CQyoEHlSyVtmivWPiSAQREsu8xYWERj2MlIlfUzM5NpDof1J00GdEhVu9q4CZrionBFWfFbTF9b
+	RJsWg6aSEfat1dZPjThhRAUEuS7qOcIpKdH8nzHEeka/u/xAe4oNlGYyOG3usQwqJce7LH9ScDE
+	mxFNTQLxlZUqJJKTvir2wECS/wCH6FcI/iJdOGiKiLWqKaX4jD9TwBBgI6gunMpLPGw4BxGusYI
+	psQFZ06s7cRqdw1zhDmXTkhu5Dsr6UKz2edSJwGWl3727SA==
+X-Received: by 2002:a05:6000:4009:b0:436:7ab:9290 with SMTP id ffacd0b85a97d-4396f16e345mr29973658f8f.1.1772025681009;
+        Wed, 25 Feb 2026 05:21:21 -0800 (PST)
+X-Received: by 2002:a05:6000:4009:b0:436:7ab:9290 with SMTP id ffacd0b85a97d-4396f16e345mr29973604f8f.1.1772025680520;
+        Wed, 25 Feb 2026 05:21:20 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-79-166.inter.net.il. [80.230.79.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d3fdd0sm33025046f8f.19.2026.02.25.05.21.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 05:21:20 -0800 (PST)
+Date: Wed, 25 Feb 2026 08:21:16 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Srujana Challa <schalla@marvell.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"jasowang@redhat.com" <jasowang@redhat.com>,
+	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
+	"eperezma@redhat.com" <eperezma@redhat.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	Nithin Kumar Dabilpuram <ndabilpuram@marvell.com>,
+	Shiva Shankar Kommula <kshankar@marvell.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [EXTERNAL] Re: [PATCH net,v4,1/2] virtio_net: Improve RSS key
+ size validation and use NETDEV_RSS_KEY_LEN
+Message-ID: <20260225081735-mutt-send-email-mst@kernel.org>
+References: <20260224065850.962826-1-schalla@marvell.com>
+ <20260225050154-mutt-send-email-mst@kernel.org>
+ <BY1PR18MB63744FC9F4786AB2F617AC4CA075A@BY1PR18MB6374.namprd18.prod.outlook.com>
+ <20260225072355-mutt-send-email-mst@kernel.org>
+ <BY1PR18MB6374C4D43F9BD88443A8B067A075A@BY1PR18MB6374.namprd18.prod.outlook.com>
+ <20260225073537-mutt-send-email-mst@kernel.org>
+ <BY1PR18MB63741BBD1FEF6CB7328A7B44A075A@BY1PR18MB6374.namprd18.prod.outlook.com>
+ <BY1PR18MB6374C5EC263CB6812B197296A075A@BY1PR18MB6374.namprd18.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:LxC2BwDnIwb_9p5pDAl7BA--.43122S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3AFy5XFWfXryUXF4rAFyDGFg_yoW3Zr1kpa
-	93WryfCr4kJ3yxtrn7C3W7ur4fZ3yFy3WUWw1kJw1UAFn8Wr1qkrnYkr1Fkrs0gr98AFyx
-	ta1UJr43Krn8taDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUFk
-	u4UUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAPBGmeaqAMyQAAsx
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BY1PR18MB6374C5EC263CB6812B197296A075A@BY1PR18MB6374.namprd18.prod.outlook.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219604-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[huaweicloud.com];
-	FREEMAIL_TO(0.00)[arista.com,linux.ibm.com,huawei.com,gmail.com,oracle.com,paul-moore.com,namei.org,hallyn.com,polito.it];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[earth.li,vger.kernel.org,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219605-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[roberto.sassu@huaweicloud.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.987];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mst@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huaweicloud.com:mid,huawei.com:email,marc.info:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2AB18198011
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 415C8197FAC
 X-Rspamd-Action: no action
 
-On Mon, 2026-02-23 at 14:56 +0000, Dmitry Safonov via B4 Relay wrote:
-> From: Dmitry Safonov <dima@arista.com>
->=20
-> ima_tpm_chip->allocated_banks[i].crypto_id is initialized to
-> HASH_ALGO__LAST if the TPM algorithm is not supported. However there
-> are places relying on the algorithm to be valid because it is accessed
-> by hash_algo_name[].
->=20
-> On 6.12.40 I observe the following read out-of-bounds in hash_algo_name:
->   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->   BUG: KASAN: global-out-of-bounds in create_securityfs_measurement_lists=
-+0x396/0x440
->   Read of size 8 at addr ffffffff83e18138 by task swapper/0/1
->=20
->   CPU: 4 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.40 #3
->   Call Trace:
->    <TASK>
->    dump_stack_lvl+0x61/0x90
->    print_report+0xc4/0x580
->    ? kasan_addr_to_slab+0x26/0x80
->    ? create_securityfs_measurement_lists+0x396/0x440
->    kasan_report+0xc2/0x100
->    ? create_securityfs_measurement_lists+0x396/0x440
->    create_securityfs_measurement_lists+0x396/0x440
->    ima_fs_init+0xa3/0x300
->    ima_init+0x7d/0xd0
->    init_ima+0x28/0x100
->    do_one_initcall+0xa6/0x3e0
->    kernel_init_freeable+0x455/0x740
->    kernel_init+0x24/0x1d0
->    ret_from_fork+0x38/0x80
->    ret_from_fork_asm+0x11/0x20
->    </TASK>
->=20
->   The buggy address belongs to the variable:
->    hash_algo_name+0xb8/0x420
->=20
->   Memory state around the buggy address:
->    ffffffff83e18000: 00 01 f9 f9 f9 f9 f9 f9 00 01 f9 f9 f9 f9 f9 f9
->    ffffffff83e18080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->   >ffffffff83e18100: 00 00 00 00 00 00 00 f9 f9 f9 f9 f9 00 05 f9 f9
->                                           ^
->    ffffffff83e18180: f9 f9 f9 f9 00 00 00 00 00 00 00 04 f9 f9 f9 f9
->    ffffffff83e18200: 00 00 00 00 00 00 00 00 04 f9 f9 f9 f9 f9 f9 f9
->   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> Seems like the TPM chip supports sha3_256, which isn't yet in
-> tpm_algorithms:
->   tpm tpm0: TPM with unsupported bank algorithm 0x0027
->=20
-> Thus solve the problem by creating a file name with "_tpm_alg_<ID>"
-> postfix if the crypto algorithm isn't initialized.
->=20
-> This is how it looks on the test machine (patch ported to v6.12 release):
->   # ls -1 /sys/kernel/security/ima/
->   ascii_runtime_measurements
->   ascii_runtime_measurements_tpm_alg_27
->   ascii_runtime_measurements_sha1
->   ascii_runtime_measurements_sha256
->   binary_runtime_measurements
->   binary_runtime_measurements_tpm_alg_27
->   binary_runtime_measurements_sha1
->   binary_runtime_measurements_sha256
->   policy
->   runtime_measurements_count
->   violations
->=20
-> Fixes: 9fa8e7625008 ("ima: add crypto agility support for template-hash a=
-lgorithm")
-> Signed-off-by: Dmitry Safonov <dima@arista.com>
-> Cc: Enrico Bravi <enrico.bravi@polito.it>
-> Cc: Silvia Sisinni <silvia.sisinni@polito.it>
-> Cc: Roberto Sassu <roberto.sassu@huawei.com>
-> Cc: Mimi Zohar <zohar@linux.ibm.com>
-> ---
-> Changes in v5:
-> - Use lower-case for sysfs file name (as suggested-by Jonathan and Robert=
-o)
-> - Don't use email quotes for patch description (Roberto)
-> - Re-word the patch description (suggested-by Roberto)
-> - Link to v4: https://lore.kernel.org/r/20260127-ima-oob-v4-1-bf0cd7f9b4d=
-4@arista.com
->=20
-> Changes in v4:
-> - Use ima_tpm_chip->allocated_banks[algo_idx].digest_size instead of hash=
-_digest_size[algo]
->   (Roberto Sassu)
-> - Link to v3: https://lore.kernel.org/r/20260127-ima-oob-v3-1-1dd09f4c2a6=
-a@arista.com
-> Testing note: I test it on v6.12.40 kernel backport, which slightly diffe=
-rs as
-> lookup_template_data_hash_algo() was yet present.
->=20
-> Changes in v3:
-> - Now fix the spelling *for real* (sorry, messed it up in v2)
-> - Link to v2: https://lore.kernel.org/r/20260127-ima-oob-v2-1-f38a18c850c=
-f@arista.com
->=20
-> Changes in v2:
-> - Instead of skipping unknown algorithms, add files under their TPM_ALG_I=
-D (Roberto Sassu)
-> - Fix spelling (Roberto Sassu)
-> - Copy @stable on the fix
-> - Link to v1: https://lore.kernel.org/r/20260127-ima-oob-v1-1-2d42f3418e5=
-7@arista.com
-> ---
->  security/integrity/ima/ima_fs.c | 34 ++++++++++++++++++----------------
->  1 file changed, 18 insertions(+), 16 deletions(-)
->=20
-> diff --git a/security/integrity/ima/ima_fs.c b/security/integrity/ima/ima=
-_fs.c
-> index 012a58959ff0..3d9996ed486d 100644
-> --- a/security/integrity/ima/ima_fs.c
-> +++ b/security/integrity/ima/ima_fs.c
-> @@ -132,16 +132,12 @@ int ima_measurements_show(struct seq_file *m, void =
-*v)
->  	char *template_name;
->  	u32 pcr, namelen, template_data_len; /* temporary fields */
->  	bool is_ima_template =3D false;
-> -	enum hash_algo algo;
->  	int i, algo_idx;
-> =20
->  	algo_idx =3D ima_sha1_idx;
-> -	algo =3D HASH_ALGO_SHA1;
-> =20
-> -	if (m->file !=3D NULL) {
-> +	if (m->file !=3D NULL)
->  		algo_idx =3D (unsigned long)file_inode(m->file)->i_private;
-> -		algo =3D ima_algo_array[algo_idx].algo;
-> -	}
-> =20
->  	/* get entry */
->  	e =3D qe->entry;
-> @@ -160,7 +156,8 @@ int ima_measurements_show(struct seq_file *m, void *v=
-)
->  	ima_putc(m, &pcr, sizeof(e->pcr));
-> =20
->  	/* 2nd: template digest */
-> -	ima_putc(m, e->digests[algo_idx].digest, hash_digest_size[algo]);
-> +	ima_putc(m, e->digests[algo_idx].digest,
-> +		 ima_tpm_chip->allocated_banks[algo_idx].digest_size);
-> =20
->  	/* 3rd: template name size */
->  	namelen =3D !ima_canonical_fmt ? strlen(template_name) :
-> @@ -229,16 +226,12 @@ static int ima_ascii_measurements_show(struct seq_f=
-ile *m, void *v)
->  	struct ima_queue_entry *qe =3D v;
->  	struct ima_template_entry *e;
->  	char *template_name;
-> -	enum hash_algo algo;
->  	int i, algo_idx;
-> =20
->  	algo_idx =3D ima_sha1_idx;
-> -	algo =3D HASH_ALGO_SHA1;
-> =20
-> -	if (m->file !=3D NULL) {
-> +	if (m->file !=3D NULL)
->  		algo_idx =3D (unsigned long)file_inode(m->file)->i_private;
-> -		algo =3D ima_algo_array[algo_idx].algo;
-> -	}
-> =20
->  	/* get entry */
->  	e =3D qe->entry;
-> @@ -252,7 +245,8 @@ static int ima_ascii_measurements_show(struct seq_fil=
-e *m, void *v)
->  	seq_printf(m, "%2d ", e->pcr);
-> =20
->  	/* 2nd: template hash */
-> -	ima_print_digest(m, e->digests[algo_idx].digest, hash_digest_size[algo]=
-);
-> +	ima_print_digest(m, e->digests[algo_idx].digest,
-> +			 ima_tpm_chip->allocated_banks[algo_idx].digest_size);
+On Wed, Feb 25, 2026 at 12:56:19PM +0000, Srujana Challa wrote:
+> > > > > > >
+> > > > > > >
+> > > > > > > So if device is powerful and supports a very big key size then...
+> > > > > > > we disable the feature? how does this make sense?
+> > > > > > The intent isn’t to disable the feature on capable devices, but
+> > > > > > to ensure the driver never advertises support for RSS key sizes
+> > > > > > larger than what the net device can actually handle. Even if a
+> > > > > > device reports a very
+> > > > > large key size, the driver is constrained by NETDEV_RSS_KEY_LEN,
+> > > > > since
+> > > > > netdev_rss_key_fill() enforces:
+> > > > > > BUG_ON(len > sizeof(netdev_rss_key));
+> > > > >
+> > > > > so cap it to NETDEV_RSS_KEY_LEN. Why is that a reason to clear the
+> > > feature?
+> > > > Our device mandates that hash_key_length must be identical to
+> > > > rss_max_key_size to guarantee symmetric bidirectional flow hashing.
+> > > > If rss_max_key_size is larger than VIRTIO_NET_RSS_MAX_KEY_SIZE,
+> > > > clamping
+> > > the value is not feasible.
+> > >
+> > > I don't know what to tell you. rss_max_key_size is just the max device
+> > > supports. driver should be free to use a smaller size.
+> > My understanding is that this patch prevents the probe from failing by
+> > disabling the feature instead.
+> > Given the current implementation, the driver becomes unusable when this
+> > condition is hit.
+> 
+> I understand that the driver is allowed to use a smaller RSS key than the device’s advertised rss_max_key_size.
+> But, our hardware does not behave correctly in that configuration. For symmetric bidirectional hashing,
+> the device requires that the hash_key_length match rss_max_key_size exactly.
+> If the driver uses a smaller key, the hardware produces inconsistent hash values for forward vs reverse flows.
+> Because of this device requirement, we cannot cap the key to NETDEV_RSS_KEY_LEN when the device advertises
+> a larger rss_max_key_size.
 
-Sorry, I realized that this does not work if SHA1 or the default hash
-algorithm are not among allocated PCR banks.
+Would you not say it's a buggy device then?
 
-I just sent a patch to correctly determine the digest size:
-
-https://marc.info/?l=3Dlinux-integrity&m=3D177202677128752&w=3D2
-
-and applied yours on top of that (if it is fine for you):
-
-https://github.com/linux-integrity/linux/commit/6efbd2b38b102ecbadc350228cc=
-30fd67666a089
-
-
-Thanks
-
-Roberto
-
-> =20
->  	/* 3th:  template name */
->  	seq_printf(m, " %s", template_name);
-> @@ -404,16 +398,24 @@ static int __init create_securityfs_measurement_lis=
-ts(void)
->  		char file_name[NAME_MAX + 1];
->  		struct dentry *dentry;
-> =20
-> -		sprintf(file_name, "ascii_runtime_measurements_%s",
-> -			hash_algo_name[algo]);
-> +		if (algo =3D=3D HASH_ALGO__LAST)
-> +			sprintf(file_name, "ascii_runtime_measurements_tpm_alg_%x",
-> +				ima_tpm_chip->allocated_banks[i].alg_id);
-> +		else
-> +			sprintf(file_name, "ascii_runtime_measurements_%s",
-> +				hash_algo_name[algo]);
->  		dentry =3D securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
->  						ima_dir, (void *)(uintptr_t)i,
->  						&ima_ascii_measurements_ops);
->  		if (IS_ERR(dentry))
->  			return PTR_ERR(dentry);
-> =20
-> -		sprintf(file_name, "binary_runtime_measurements_%s",
-> -			hash_algo_name[algo]);
-> +		if (algo =3D=3D HASH_ALGO__LAST)
-> +			sprintf(file_name, "binary_runtime_measurements_tpm_alg_%x",
-> +				ima_tpm_chip->allocated_banks[i].alg_id);
-> +		else
-> +			sprintf(file_name, "binary_runtime_measurements_%s",
-> +				hash_algo_name[algo]);
->  		dentry =3D securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
->  						ima_dir, (void *)(uintptr_t)i,
->  						&ima_measurements_ops);
->=20
-> ---
-> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-> change-id: 20260127-ima-oob-9fa83a634d7b
->=20
-> Best regards,
+-- 
+MST
 
 
