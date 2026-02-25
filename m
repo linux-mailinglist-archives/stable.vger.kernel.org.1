@@ -1,171 +1,272 @@
-Return-Path: <stable+bounces-219618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CI95OvP4nmm+YAQAu9opvQ
-	(envelope-from <stable+bounces-219618-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:28:19 +0100
+	id SMmKLKn5nmm+YAQAu9opvQ
+	(envelope-from <stable+bounces-219619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:31:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F5A198119
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:28:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14941198189
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:31:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5AD8130312F4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 13:28:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D2DA304C7EA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 13:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF3F3B8D5C;
-	Wed, 25 Feb 2026 13:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992643B8BC1;
+	Wed, 25 Feb 2026 13:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OZRRRZp2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RWYlo1Px"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC5E3B8D40
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 13:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EE438F943
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 13:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772026095; cv=none; b=cZEH/oFdX84p5Ud0UZf/FKHiGkgaCWT7KliPfBPv0+avmLzvH7K9KF6UoLQDSpAZo316kYnjPzg9WdaCsgcK+TuDi70COYYN8ry7ghG8i9G0/t0sbfjKM+tOYr3QmfLWUCZDnB5kWxEQsHyJI1v5HB47faKvOEUSx+MqacQHuzA=
+	t=1772026153; cv=none; b=aOoVt9Y0Oj+kQpdOutuWXhvZMa+OujnlaxPGtjproA6VyAwKu0vVcPBH9zScUxJZ8Mlr7QJSPCW8ywvJXC6mnbqcmoQ+jkz6nzDaQ1Pq9nlLgXFJm79qOT+3rl3Le/B+ISE++D9pw/Jz6fnc8lssyeQaHYXbgGAYNFGAORNdEgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772026095; c=relaxed/simple;
-	bh=xRRjy3veOaCbWL+KPQCuz6nqQMwyYwm747YQfaGDlEw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fFbyYkah6lDbAyATVdOdzdhGNnt41GqrRXpCTIdg1g/Z1Zr+bpikn95noCTN4V1ELb55fMZLUgSczKVuwF1WMJ2WUOdLpTlKARkZuMhPQlhmyBdn8f+bAE9YCgiqesbrVN7c+mzyQPv6fgkmJSv6yA5+a32t4T8mKsNo39Oii/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OZRRRZp2; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ad21f437eeso6934645ad.0
-        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 05:28:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772026094; x=1772630894; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=X4gY9ENXOOQCpnDpsjGMdFNmPdFyocZAizDByCQ4qGg=;
-        b=OZRRRZp2gFfzT7yi/jgdGgT4gJXmqsHJfdzQ/QqCXhvup5f/XYROVpVWfZWUfSJFPh
-         3f1I3ZFIt1aW7GY+eaWIw2tUUe3CG1+OJIMA+Iewp5NuaIBf69cES+fNv7CnNIpy1jYl
-         EpYRXW1XIP1PRTUpi2YCSa3kaxyAuyL40OaNld8kY4ao2oe1KG3maDQbVrw85eDcVZCk
-         uQTTG5vjXBq0vLCHxslz6vi5oLQqp4Rya7X3zrEnx52wMKbs1iKepM9UY4ad093II50Q
-         I0D95KJg/eIModQZwDhgnD+LenZwrUe+35XnDzTgabaDYQgO6bfFNwP2dPHOnEEXhNMK
-         8VsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772026094; x=1772630894;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X4gY9ENXOOQCpnDpsjGMdFNmPdFyocZAizDByCQ4qGg=;
-        b=Y7dCENvltIWIJWF3f74iniTOEBQ4Eof13oJOZ5/JUDda/XsdbdN2jz2Jgrdn7Gbt3M
-         q01s6GS5msH3Mez7eYwjuTSFfqp0uZBwRaMQMv1FTBtWldpAWHs3w1htI3fRDD47qa9h
-         hteE6bLGoq1ZB6biD8V+fNsiyVB3p+0lIECQsBWkKWX+AqU+EJYopUkUgFHUiwepw/DR
-         8EFwsIlbcYUFDEJf8eVAWRHkqSmcxjV+ZHaSmCgQF0TSqB9IiQm0/EWqbZ35hL1+zzM3
-         +UuwwaaDSCYkyejph4L63J9Y8n1E4b3ICgvzh+uzm/R9HZYR1aHUiGvpXsaZA6iW8to+
-         LmhA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7pFggq7Dl6QOCjfBqZXUz8AV7NHG7A2Hydo62O/1EtI0qHnAROIDiZNfzV6q1f9tR1k169p8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yztwbsm0JorwtSMhkPu8dx2dzsywLTbyNoAAxYfiaRJhT0fPa+S
-	EQbDZxlWIPGS5KH2m5VeamMKDS2K65Cm9YZ1Q6YehIALt74ZOQL4alFR
-X-Gm-Gg: ATEYQzx/iYnuiIz8Zp5l8NH4X9ViPorXB3pmifRV6VGNwaqBfl0YBTU2/AigcDQWDPR
-	cJn4u7AG++HhGoj0wCJ3tQ6sD4qWAyieINPFTI0c73GbWRTUKiuH4k4CYaPQEFCWz3KVwyUd+EP
-	t3bHzIDRpv7iPtU+eTu5SOQq73XB9kXdtAQjtJuHR/J2pPhuaIHRBLY7XIMpTR0p7fqRC1R0p4I
-	hL7zDVjrB9EC2rfd8UIVsDQbuYO0AMG0DEsyAxB0KJWhVyS1n2lTJpuiG4wHN78xUTiPvas64aO
-	pa92eDI8dH9+3ojVbiK6ef4W3/VHC18IdkYVSJTDZMJ2MbcOrH7i5hZTTu0wh66amprvt5I4CdI
-	7QzrYgzrJLAt7AHTFpkEXM44l249lQnBlmMzSBusbeYoeUJH7+sLCO/CcKTLUlWUndNthyh7yLH
-	lM/6+xNCgkStoG5wDecPeRf3kt
-X-Received: by 2002:a17:902:e5c8:b0:2a0:c92e:a378 with SMTP id d9443c01a7336-2adbdc6b962mr38059985ad.7.1772026093769;
-        Wed, 25 Feb 2026 05:28:13 -0800 (PST)
-Received: from lgs.. ([36.255.193.30])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad75052e9asm142759875ad.88.2026.02.25.05.28.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 05:28:13 -0800 (PST)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Yaxing Guo <guoyaxing@bosc.ac.cn>,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] uio: uio_pci_generic_sva: fix double free of devm_kzalloc() memory
-Date: Wed, 25 Feb 2026 21:27:36 +0800
-Message-ID: <20260225132737.4176605-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1772026153; c=relaxed/simple;
+	bh=DVgT5RMRNWekHbyHQc8KcLrs3cWTMG1K0k1HgAFeRF0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=mWO73RZJUHw5TfLeUanIPUI07Vn8O1rGlYu10uGWekH7Vr6XrB0rj+u0U1CJVrgam7rlJsni6Ze2Y2bjMDM2XIy7rR+DW+aMP6wr0hvQHC+GQwvmtj2Qkjto/x+p0PX8mWtYdNcj/OLdJ5F3soiU1xw8KSq5I0Fl80Xug35jZLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RWYlo1Px; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772026152; x=1803562152;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=DVgT5RMRNWekHbyHQc8KcLrs3cWTMG1K0k1HgAFeRF0=;
+  b=RWYlo1PxA+vFIwQoRyW+6dZEprBgv7yHlFqGWdjMFt3Rgh/QfQJ9NPUG
+   K6F6Rz6ZygkeIdZ3/VMjmZqQijrnIwusJ8ZKSYgzSAJecxUnssASRsSV9
+   VO5Mdtwx/I1VERDd6VixzFZ0/9gOuP8GeDjI/8DxqjASQ+2b7f2HvjDHY
+   EnlicU+lpZzdv7anKqaddarob2INlUIq6UxsHTxpGddMDPqRc3VrIGqHq
+   z896bQ7W0FWvZy02qkUSAl+KbiYuu0/JN53jtG5+1OTHSRYRD81B4IkUV
+   bbd7nGr1YoiLuYmnn4BhfP8GlOVjGv357qGG5c1P4H69bv5QXDZymhHzM
+   A==;
+X-CSE-ConnectionGUID: UvGiYbNNRaKIBJ37DetJPw==
+X-CSE-MsgGUID: wOobzBbuRmul0N0W1zWJMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="95679097"
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; 
+   d="scan'208";a="95679097"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 05:29:11 -0800
+X-CSE-ConnectionGUID: sFhDSqreQCuseaty/XGkng==
+X-CSE-MsgGUID: DqnRm6IwSjqOsCklKY3Y1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; 
+   d="scan'208";a="216116671"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.68])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 05:29:07 -0800
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>, Jouni =?utf-8?Q?H?=
+ =?utf-8?Q?=C3=B6gander?=
+ <jouni.hogander@intel.com>, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 4/5] drm/i915/psr: DSC configuration for Early Transport
+In-Reply-To: <528b9b9c-920d-4146-a4f7-97db356e7f28@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260219130743.1232188-1-jouni.hogander@intel.com>
+ <20260219130743.1232188-5-jouni.hogander@intel.com>
+ <528b9b9c-920d-4146-a4f7-97db356e7f28@intel.com>
+Date: Wed, 25 Feb 2026 15:29:04 +0200
+Message-ID: <62858fcc175b123862a5071265a65210428e3bc5@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_MATCH_TO(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-219618-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-219619-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	HAS_ORG_HEADER(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 66F5A198119
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jani.nikula@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 14941198189
 X-Rspamd-Action: no action
 
-uio_pci_sva allocates struct uio_pci_sva_dev with devm_kzalloc() in probe(), but then calls kfree(udev) both on the probe() error path (label out_free) and again in remove().
-Because devm_kzalloc() allocations are devres-managed and are freed automatically when the device is detached, which also happens after a failing probe() and during driver unbind, the explicit kfree() can result in a double free. If probe() fails after devm_kzalloc(), the error path kfree(udev) frees the object, and devres cleanup will free it again when the core unwinds the partially bound device. On normal driver removal, remove() explicitly frees udev, and devres will free it again when the device is detached.
+On Wed, 25 Feb 2026, "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com> wrote:
+> On 2/19/2026 6:37 PM, Jouni H=C3=B6gander wrote:
+>> There is Selective Update slice row per frame and picture height
+>> configurations needed on DSC when using Selective Update Early
+>> Transport. Calculate and configure these when using Early Transport.
+>>
+>> Bspec: 68927
+>> Fixes: 467e4e061c44 ("drm/i915/psr: Enable psr2 early transport as possi=
+ble")
+>> Cc: <stable@vger.kernel.org> # v6.9+
+>
+>
+> This patch needs the other patch where registers are defined. I am not=20
+> sure if stable will only pick this patch or will try to find out the=20
+> dependency patch.
+>
+> We need to check if there is a way to tell the dependency patch/commit=20
+> to stable, so that both patches are applied together.
+>
+> If we want this change to get ported to older kernels, we might need to=20
+> squash the register definition patch with this patch.
 
-Fix by removing the manual kfree() calls and dropping the now-unused label.
+Nope. Neither we nor stable want dependencies squashed. They'll happily
+pick up extra dependency commits if needed, though.
 
-Fixes: 3397c3cd859a2 ("uio: Add SVA support for PCI devices via uio_pci_generic_sva.c")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/uio/uio_pci_generic_sva.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Someone(tm) just needs to let them know about the dependencies when they
+send the mail about (the presumably failed) backport attempt.
 
-diff --git a/drivers/uio/uio_pci_generic_sva.c b/drivers/uio/uio_pci_generic_sva.c
-index 4a46acd994a8..152201047334 100644
---- a/drivers/uio/uio_pci_generic_sva.c
-+++ b/drivers/uio/uio_pci_generic_sva.c
-@@ -129,15 +129,13 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	ret = devm_uio_register_device(&pdev->dev, &udev->info);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to register uio device\n");
--		goto out_free;
-+		goto out_disable;
- 	}
- 
- 	pci_set_drvdata(pdev, udev);
- 
- 	return 0;
- 
--out_free:
--	kfree(udev);
- out_disable:
- 	pci_disable_device(pdev);
- 
-@@ -150,7 +148,6 @@ static void remove(struct pci_dev *pdev)
- 
- 	pci_release_regions(pdev);
- 	pci_disable_device(pdev);
--	kfree(udev);
- }
- 
- static ssize_t pasid_show(struct device *dev,
--- 
-2.43.0
+BR,
+Jani.
 
+
+>
+>
+>> Signed-off-by: Jouni H=C3=B6gander <jouni.hogander@intel.com>
+>> ---
+>>   .../drm/i915/display/intel_display_types.h    |  1 +
+>>   drivers/gpu/drm/i915/display/intel_psr.c      | 24 +++++++++++++++++++
+>>   2 files changed, 25 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/driver=
+s/gpu/drm/i915/display/intel_display_types.h
+>> index e8e4af03a6a6..8903804c04b1 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_display_types.h
+>> +++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+>> @@ -1381,6 +1381,7 @@ struct intel_crtc_state {
+>>   	u32 psr2_man_track_ctl;
+>>=20=20=20
+>>   	u32 pipe_srcsz_early_tpt;
+>> +	u32 dsc_su_parameter_set_0_calc;
+>
+> I think let's just have a bool parameter something like=20
+> psr_su_update_dsc_pps.
+>
+> We can set this bool variable during intel_psr2_sel_fetch_update()
+>
+>
+>>=20=20=20
+>>   	struct drm_rect psr2_su_area;
+>>=20=20=20
+>> diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/=
+i915/display/intel_psr.c
+>> index 331645a2c9f6..0a2948ec308d 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_psr.c
+>> +++ b/drivers/gpu/drm/i915/display/intel_psr.c
+>> @@ -2618,6 +2618,11 @@ void intel_psr2_program_trans_man_trk_ctl(struct =
+intel_dsb *dsb,
+>>=20=20=20
+>>   	intel_de_write_dsb(display, dsb, PIPE_SRCSZ_ERLY_TPT(crtc->pipe),
+>>   			   crtc_state->pipe_srcsz_early_tpt);
+>> +	intel_de_write_dsb(display, dsb, DSC_SU_PARAMETER_SET_0_DSC0(crtc->pip=
+e),
+>> +			   crtc_state->dsc_su_parameter_set_0_calc);
+>> +	if (intel_dsc_get_vdsc_per_pipe(crtc_state) > 1)
+>> +		intel_de_write_dsb(display, dsb, DSC_SU_PARAMETER_SET_0_DSC1(crtc->pi=
+pe),
+>> +				   crtc_state->dsc_su_parameter_set_0_calc);
+>>   }
+>>=20=20=20
+>>   static void psr2_man_trk_ctl_calc(struct intel_crtc_state *crtc_state,
+>> @@ -2668,6 +2673,23 @@ static u32 psr2_pipe_srcsz_early_tpt_calc(struct =
+intel_crtc_state *crtc_state,
+>>   	return PIPESRC_WIDTH(width - 1) | PIPESRC_HEIGHT(height - 1);
+>>   }
+>>=20=20=20
+>> +static u32 psr2_dsc_su_parameter_set_0_calc(struct intel_crtc_state *cr=
+tc_state,
+>> +					    bool full_update)
+>> +{
+>> +	const struct drm_dsc_config *vdsc_cfg =3D &crtc_state->dsc.config;
+>> +	int slice_row_per_frame, pic_height;
+>> +
+>> +	if (!crtc_state->enable_psr2_su_region_et || full_update ||
+>> +	    !crtc_state->dsc.compression_enable)
+>> +		return 0;
+>> +
+>
+> Although we are making sure that height of the psr2_su_area is a=20
+> multiple of the slice_height, perhaps it would be good to have a=20
+> drm_WARN here to flag any misconfiguration i.e. if height is not a=20
+> multiple of slice_height.
+>
+>
+>> +	slice_row_per_frame =3D drm_rect_height(&crtc_state->psr2_su_area) / v=
+dsc_cfg->slice_height;
+>> +	pic_height =3D slice_row_per_frame * vdsc_cfg->slice_height;
+>> +
+>> +	return DSC_SU_PARAMETER_SET_0_SU_SLICE_ROW_PER_FRAME(slice_row_per_fra=
+me) |
+>> +		DSC_SU_PARAMETER_SET_0_SU_PIC_HEIGHT(pic_height);
+>> +}
+>
+> Since this writes a DSC register belonging to PPS Set 0, this function=20
+> should be moved to intel_vdsc.c.
+>
+> Also, based on the boolean flag (psr_su_update_dsc_pps) discussed above,=
+=20
+> this function should simply retrieve the required fields from crtc_state=
+=20
+> and program the register.
+>
+> Such a helper function should then be called from=20
+> intel_psr2_program_trans_man_trk_ctl() in place of the direct=20
+> intel_reg_write() call.
+>
+> IMO, all register reads/writes, along with the wrappers/helpers around=20
+> them, should live in the file corresponding to the block that owns those=
+=20
+> registers, based on context.
+>
+>
+> Regards,
+>
+> Ankit
+>
+>> +
+>>   static void clip_area_update(struct drm_rect *overlap_damage_area,
+>>   			     struct drm_rect *damage_area,
+>>   			     struct drm_rect *pipe_src)
+>> @@ -3026,6 +3048,8 @@ int intel_psr2_sel_fetch_update(struct intel_atomi=
+c_state *state,
+>>   	psr2_man_trk_ctl_calc(crtc_state, full_update);
+>>   	crtc_state->pipe_srcsz_early_tpt =3D
+>>   		psr2_pipe_srcsz_early_tpt_calc(crtc_state, full_update);
+>> +	crtc_state->dsc_su_parameter_set_0_calc =3D psr2_dsc_su_parameter_set_=
+0_calc(crtc_state,
+>> +										   full_update);
+>>   	return 0;
+>>   }
+>>=20=20=20
+
+--=20
+Jani Nikula, Intel
 
