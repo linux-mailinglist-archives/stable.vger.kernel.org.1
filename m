@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-219450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qO4lKkOfnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:39 +0100
+	id cK4jMZNWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9C9192ED9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E92190350
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D9DE311B186
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7CFD130AACA7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74FB314A95;
-	Wed, 25 Feb 2026 06:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23E02609C5;
+	Wed, 25 Feb 2026 01:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TE0Rnlpj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCXwXeLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB3B314B76;
-	Wed, 25 Feb 2026 06:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66125251793;
+	Wed, 25 Feb 2026 01:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002723; cv=none; b=VWmPLUlpOgtCkbi2ReK5yBugDp+SMFRE8sazHTtMsHmTPIf1ZRZdDunVrwx2YX8I2qcxcpza6A2YkksmzRAHUcRLm2uwgg73w373pT1PQWBEn5svSFJOwfdGA693mJlgvL0YqrU3KCLavhP+sz6+OX32j4FJ29jPehkGmdfjTsw=
+	t=1771983708; cv=none; b=ZxsKu3FyZF8g3ckJ85nyfAEnU9S8nAcN38BYEPmhUmSot4Q4aJ5nyFUqIV7mVqkt23sNQ5vmFXDY9/WuIS2TE1M/R0gn0Fj3LqC/kvnHaOTro8NoLws28frkdSaxMHUSAylI119IGOPY76xtpJXznT6GtfEdZDqecANqaTaw1Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002723; c=relaxed/simple;
-	bh=WgRldFMEfY1mQ6G5Y5E65uGlJ2Bpmq/H1tZAuoB8pFA=;
+	s=arc-20240116; t=1771983708; c=relaxed/simple;
+	bh=iYrg0IG3nmGtdB3+wA0JK/tM29klMWYaL9o+8Fptehg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNW52YNHRqoy6hIjtydrMAHo4sBRjPPY7FD69yUx3/MeDlEFDzvmqwm4PHTxP2NlsS8opcvJo7xzGMO8uDUX3kLM9oJ+XRUJD6Fcfck1Sac/dnc6x+jb5cDkPJIZwMgKE849Gy58yHcSYPqxGNaKRFi06ax5l1AWpwlhCtyPhX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TE0Rnlpj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D7CC19425;
-	Wed, 25 Feb 2026 06:58:43 +0000 (UTC)
+	 MIME-Version; b=URpMMI2x+yyW7wsQu+xjhmH6787Z02rahDMTDfHuGfEqamNLWKnVfGKma7bvBRP4ZOgVc3yqJBx6b+1zRS0t9nkm4zMjwoLDmmIrhqxIi8al6PYvFDetpAsmat0tenHIRl3X5tKVNaWUvi0q77BA9kT54lQzgq/ntjjDUc2NTnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCXwXeLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC63CC116D0;
+	Wed, 25 Feb 2026 01:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002723;
-	bh=WgRldFMEfY1mQ6G5Y5E65uGlJ2Bpmq/H1tZAuoB8pFA=;
+	s=korg; t=1771983708;
+	bh=iYrg0IG3nmGtdB3+wA0JK/tM29klMWYaL9o+8Fptehg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TE0Rnlpj0S2yE/daCtA5KblXlbkf6yoq5G2ti0yV7iiVh0f+V+G1rDA+2P8eVky8T
-	 Bleqak5tzfolEFZT5qYHXs2ZmGPB/IPD2OWsJ60tdpXu/4prHLdLQhch4Ho6DTWs54
-	 fpJr8GZx7gsl0Ytc95J8lnst6DvBST6lBkp/M1c0=
+	b=PCXwXeLzextUnGc540bIfU/oaYEX9z+DsatF/1DRgQl2M0ELcFOfUYfnwSv10Zbtt
+	 ORP78f0/BHQHbsF0LJh1NUOoEdFRKimWAPf9ruSmVNojNmiry131LAedVntnOkpdin
+	 5rlu7xOtLpsGxL/e3ymRL7e6O3Kv7djyN7i1KVw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 534/641] ovpn: tcp - dont deref NULL sk_socket member after tcp_close()
+	stable <stable@kernel.org>,
+	"Thomas Richard (TI)" <thomas.richard@bootlin.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.19 751/781] usb: cdns3: fix role switching during resume
 Date: Tue, 24 Feb 2026 17:24:20 -0800
-Message-ID: <20260225012401.470664308@linuxfoundation.org>
+Message-ID: <20260225012418.141484230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219450-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218827-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,88 +90,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3F9C9192ED9
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,bootlin.com:email]
+X-Rspamd-Queue-Id: 40E92190350
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Quartulli <antonio@openvpn.net>
+From: Thomas Richard (TI) <thomas.richard@bootlin.com>
 
-[ Upstream commit 94560267d6c41b1ff3fafbab726e3f8a55a6af34 ]
+commit 87e4b043b98a1d269be0b812f383881abee0ca45 upstream.
 
-When deleting a peer in case of keepalive expiration, the peer is
-removed from the OpenVPN hashtable and is temporary inserted in a
-"release list" for further processing.
+If the role change while we are suspended, the cdns3 driver switches to the
+new mode during resume. However, switching to host mode in this context
+causes a NULL pointer dereference.
 
-This happens in:
-ovpn_peer_keepalive_work()
-  unlock_ovpn(release_list)
+The host role's start() operation registers a xhci-hcd device, but its
+probe is deferred while we are in the resume path. The host role's resume()
+operation assumes the xhci-hcd device is already probed, which is not the
+case, leading to the dereference. Since the start() operation of the new
+role is already called, the resume operation can be skipped.
 
-This processing includes detaching from the socket being used to
-talk to this peer, by restoring its original proto and socket
-ops/callbacks.
+So skip the resume operation for the new role if a role switch occurs
+during resume. Once the resume sequence is complete, the xhci-hcd device
+can be probed in case of host mode.
 
-In case of TCP it may happen that, while the peer is sitting in
-the release list, userspace decides to close the socket.
-This will result in a concurrent execution of:
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000208
+Mem abort info:
+...
+Data abort info:
+...
+[0000000000000208] pgd=0000000000000000, p4d=0000000000000000
+Internal error: Oops: 0000000096000004 [#1]  SMP
+Modules linked in:
+CPU: 0 UID: 0 PID: 146 Comm: sh Not tainted
+6.19.0-rc7-00013-g6e64f4aabfae-dirty #135 PREEMPT
+Hardware name: Texas Instruments J7200 EVM (DT)
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : usb_hcd_is_primary_hcd+0x0/0x1c
+lr : cdns_host_resume+0x24/0x5c
+...
+Call trace:
+ usb_hcd_is_primary_hcd+0x0/0x1c (P)
+ cdns_resume+0x6c/0xbc
+ cdns3_controller_resume.isra.0+0xe8/0x17c
+ cdns3_plat_resume+0x18/0x24
+ platform_pm_resume+0x2c/0x68
+ dpm_run_callback+0x90/0x248
+ device_resume+0x100/0x24c
+ dpm_resume+0x190/0x2ec
+ dpm_resume_end+0x18/0x34
+ suspend_devices_and_enter+0x2b0/0xa44
+ pm_suspend+0x16c/0x5fc
+ state_store+0x80/0xec
+ kobj_attr_store+0x18/0x2c
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x130/0x1dc
+ vfs_write+0x240/0x370
+ ksys_write+0x70/0x108
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x10c
+ el0_svc_common.constprop.0+0x40/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x34/0x108
+ el0t_64_sync_handler+0xa0/0xe4
+ el0t_64_sync+0x198/0x19c
+Code: 52800003 f9407ca5 d63f00a0 17ffffe4 (f9410401)
+---[ end trace 0000000000000000 ]---
 
-tcp_close(sk)
-  __tcp_close(sk)
-    sock_orphan(sk)
-      sk_set_socket(sk, NULL)
-
-The last function call will set sk->sk_socket to NULL.
-
-When the releasing routine is resumed, ovpn_tcp_socket_detach()
-will attempt to dereference sk->sk_socket to restore its original
-ops member. This operation will crash due to sk->sk_socket being NULL.
-
-Fix this race condition by testing-and-accessing
-sk->sk_socket atomically under sk->sk_callback_lock.
-
-Link: https://lore.kernel.org/netdev/176996279620.3109699.15382994681575380467@eldamar.lan/
-Link: https://github.com/OpenVPN/ovpn-net-next/issues/29
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Link: https://patch.msgid.link/20260212213130.11497-1-antonio@openvpn.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 2cf2581cd229 ("usb: cdns3: add power lost support for system resume")
+Signed-off-by: Thomas Richard (TI) <thomas.richard@bootlin.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20260130-usb-cdns3-fix-role-switching-during-resume-v1-1-44c456852b52@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ovpn/tcp.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index f0b4e07ba9245..ec2bbc28c1966 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -199,7 +199,19 @@ void ovpn_tcp_socket_detach(struct ovpn_socket *ovpn_sock)
- 	sk->sk_data_ready = peer->tcp.sk_cb.sk_data_ready;
- 	sk->sk_write_space = peer->tcp.sk_cb.sk_write_space;
- 	sk->sk_prot = peer->tcp.sk_cb.prot;
--	sk->sk_socket->ops = peer->tcp.sk_cb.ops;
-+
-+	/* tcp_close() may race this function and could set
-+	 * sk->sk_socket to NULL. It does so by invoking
-+	 * sock_orphan(), which holds sk_callback_lock before
-+	 * doing the assignment.
-+	 *
-+	 * For this reason we acquire the same lock to avoid
-+	 * sk_socket to disappear under our feet
-+	 */
-+	write_lock_bh(&sk->sk_callback_lock);
-+	if (sk->sk_socket)
-+		sk->sk_socket->ops = peer->tcp.sk_cb.ops;
-+	write_unlock_bh(&sk->sk_callback_lock);
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -551,7 +551,7 @@ int cdns_resume(struct cdns *cdns)
+ 		}
+ 	}
  
- 	rcu_assign_sk_user_data(sk, NULL);
- }
--- 
-2.51.0
-
+-	if (cdns->roles[cdns->role]->resume)
++	if (!role_changed && cdns->roles[cdns->role]->resume)
+ 		cdns->roles[cdns->role]->resume(cdns, power_lost);
+ 
+ 	return 0;
 
 
 
