@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-219063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDB+IWBWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:40 +0100
+	id +M0bMt9TnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525BB190297
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DAE718FA92
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 74AFB307CF03
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0006331D6D45
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5401E29AAF7;
-	Wed, 25 Feb 2026 01:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEDD20C012;
+	Wed, 25 Feb 2026 01:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DaqGU+Lm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpoQYiDR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E7F1FE45D;
-	Wed, 25 Feb 2026 01:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CF818B0A;
+	Wed, 25 Feb 2026 01:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983987; cv=none; b=JBhp+S38ZnV6pEWU4qDQVXgGlJHiEAOggemRGAFeMxFRf6KqvOWnVyUvheMjX9RVgtm3wrcEtZQNSZ9O6ioEAqwfK8Q3I+3sIQE/dI167WVy+0BV3OmAbeFkMHZPmuPCKMV1QX44gYnESQ+7zqujne7drB53TUa39BN4EPwl3vs=
+	t=1771983264; cv=none; b=O8tcW5U/GtPFPZg/o+vKnBqUIXTZY5EMxRMn8Apv20IKB2MD+UwgiTkBioRsOR/NKHYtpca8p4Mh2rWlKQYd/00NuZv+cpLa9a/a2X5D2V/IpViG7VvDiwaZdosDjClqDFpEqPUeMGCzpYRL7Eh7UMX8Der7L9L/4TbquPbN5Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983987; c=relaxed/simple;
-	bh=oNHKH8fRRIea1c24t/hVzSgTXAZcxP5CcKTY66r658A=;
+	s=arc-20240116; t=1771983264; c=relaxed/simple;
+	bh=xGhBiQB6ndVyvovtf1LjPSNDVp8aEE3F8R/yPZxeiys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6QsHhR+xV98/MKmL8D2CwsB1mHBFvaszV5wTBkOv69eiv3peRzGLd+LZLVP2qelME00GxJGSzvpjaxz2YaFrEqqGAWTeSrQOXNHpTVr7QGSCK078gWeddISICG9a5gK86qno1+B7SF/g+KsgFkym3tvrwfGfDVl36I4jma+GqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DaqGU+Lm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6439C116D0;
-	Wed, 25 Feb 2026 01:46:26 +0000 (UTC)
+	 MIME-Version; b=LVSWc8TP8J5yPwx1cfGl1+XoOZNQbVXntkZKabZkoygDJJ02w637FmYIBMoA0sUCHuNwFfb8wE4LFDcC4hF5z3rNLdGe1Iix0ryGRtddyQUOa5UClpxuuaQtusDPuJk0Cp3fq53L1lj4IQa9FTal990+w6dFq+QPfipbG26oMUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpoQYiDR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54F7C116D0;
+	Wed, 25 Feb 2026 01:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983987;
-	bh=oNHKH8fRRIea1c24t/hVzSgTXAZcxP5CcKTY66r658A=;
+	s=korg; t=1771983264;
+	bh=xGhBiQB6ndVyvovtf1LjPSNDVp8aEE3F8R/yPZxeiys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DaqGU+LmeTEqW73Hbh/mFf+2I0Zo0kK/sIls+c9+Yxl8szsx1+V8/xf107JFQrKLT
-	 bGOZe2r8mW26GANyP9eb6BCKI/j9JYPVGdVjbSwjMHfl4eCFbHs/4CB0WNXmiBSltQ
-	 Rw8Y0EkAzPIggR2i2J2R112iGZ8gXOHuhf6i1Wic=
+	b=VpoQYiDRPvwg55t5XiL6WTbgS/Tnl0eGrKGGkOh3RyVSWVTPT4humEkj45we4NVk6
+	 SqyKKiACWoLrB7z0ykguBLmCOwE2Q2YIBSlSaDKBk/wyPVmYWDib/vQSnSwX4iOIP4
+	 FN3irvVlsXaNL2lSU9m1H0h4eJYLK/dbmwVOnHjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 188/641] drm/amd: Drop "amdgpu kernel modesetting enabled" message
+Subject: [PATCH 6.19 405/781] inet: RAW sockets using IPPROTO_RAW MUST drop incoming ICMP
 Date: Tue, 24 Feb 2026 17:18:34 -0800
-Message-ID: <20260225012353.561963192@linuxfoundation.org>
+Message-ID: <20260225012409.637147821@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219063-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218442-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,51 +89,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 525BB190297
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tsinghua.edu.cn:email,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3DAE718FA92
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8644084a74a4573278d6f454c6638ccd5965f4e2 ]
+[ Upstream commit c89477ad79446867394360b29bb801010fc3ff22 ]
 
-The behavior for amdgpu was changed with commit e00e5c223878
-("drm/amdgpu: adjust drm_firmware_drivers_only() handling") to
-potentially allow loading even if nomodeset was set, so the
-message is no longer accurate.
+Yizhou Zhao reported that simply having one RAW socket on protocol
+IPPROTO_RAW (255) was dangerous.
 
-Just drop it to avoid confusion.
+  socket(AF_INET, SOCK_RAW, 255);
 
-Fixes: e00e5c223878 ("drm/amdgpu: adjust drm_firmware_drivers_only() handling")
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+A malicious incoming ICMP packet can set the protocol field to 255
+and match this socket, leading to FNHE cache changes.
+
+inner = IP(src="192.168.2.1", dst="8.8.8.8", proto=255)/Raw("TEST")
+pkt = IP(src="192.168.1.1", dst="192.168.2.1")/ICMP(type=3, code=4, nexthopmtu=576)/inner
+
+"man 7 raw" states:
+
+  A protocol of IPPROTO_RAW implies enabled IP_HDRINCL and is able
+  to send any IP protocol that is specified in the passed header.
+  Receiving of all IP protocols via IPPROTO_RAW is not possible
+  using raw sockets.
+
+Make sure we drop these malicious packets.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Link: https://lore.kernel.org/netdev/20251109134600.292125-1-zhaoyz24@mails.tsinghua.edu.cn/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260203192509.682208-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/ipv4/icmp.c | 14 ++++++++++----
+ net/ipv6/icmp.c |  6 ++++++
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index ec9516d6ae976..3aa33c1de29b5 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -3155,7 +3155,6 @@ static int __init amdgpu_init(void)
- 	if (r)
- 		goto error_fence;
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 4abbec2f47ef5..4acbbc703e798 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -1031,16 +1031,22 @@ static void icmp_socket_deliver(struct sk_buff *skb, u32 info)
+ 	/* Checkin full IP header plus 8 bytes of protocol to
+ 	 * avoid additional coding at protocol handlers.
+ 	 */
+-	if (!pskb_may_pull(skb, iph->ihl * 4 + 8)) {
+-		__ICMP_INC_STATS(dev_net_rcu(skb->dev), ICMP_MIB_INERRORS);
+-		return;
+-	}
++	if (!pskb_may_pull(skb, iph->ihl * 4 + 8))
++		goto out;
++
++	/* IPPROTO_RAW sockets are not supposed to receive anything. */
++	if (protocol == IPPROTO_RAW)
++		goto out;
  
--	DRM_INFO("amdgpu kernel modesetting enabled.\n");
- 	amdgpu_register_atpx_handler();
- 	amdgpu_acpi_detect();
+ 	raw_icmp_error(skb, protocol, info);
  
+ 	ipprot = rcu_dereference(inet_protos[protocol]);
+ 	if (ipprot && ipprot->err_handler)
+ 		ipprot->err_handler(skb, info);
++	return;
++
++out:
++	__ICMP_INC_STATS(dev_net_rcu(skb->dev), ICMP_MIB_INERRORS);
+ }
+ 
+ static bool icmp_tag_validation(int proto)
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 9d37e7711bc2b..a77f3113ef23b 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -1066,6 +1066,12 @@ enum skb_drop_reason icmpv6_notify(struct sk_buff *skb, u8 type,
+ 	if (reason != SKB_NOT_DROPPED_YET)
+ 		goto out;
+ 
++	if (nexthdr == IPPROTO_RAW) {
++		/* Add a more specific reason later ? */
++		reason = SKB_DROP_REASON_NOT_SPECIFIED;
++		goto out;
++	}
++
+ 	/* BUGGG_FUTURE: we should try to parse exthdrs in this packet.
+ 	   Without this we will not able f.e. to make source routed
+ 	   pmtu discovery.
 -- 
 2.51.0
 
