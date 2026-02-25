@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-219343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMb6HYOdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219343-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:11 +0100
+	id YAwNBItUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2751D192A1C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B1518FD24
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5A150301220D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 033AD31C7DF2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEDA2FB08C;
-	Wed, 25 Feb 2026 06:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247EB1E2834;
+	Wed, 25 Feb 2026 01:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw6NCZXm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEUu5Eb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A7030CD94;
-	Wed, 25 Feb 2026 06:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4F42494FE;
+	Wed, 25 Feb 2026 01:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002653; cv=none; b=cahv018Gc/+auNSZeSjn3hmTTfhwjI2X8leTjhKX0VWw32+PQOj5IIIblKlSbOlQOlv4ILLdS2T9V8UejjX7fo8bSAPWoMDgesC67b9VybohCudVShxuZEqHUjTWlhCiOVIDGOdiBIcPEOPPtchYQNlF6w3NgCKKd8ZwDsr1CoI=
+	t=1771983542; cv=none; b=CmvF24uveeS+UDN3Wnp0p5fjdZWPWPwiSuZw9iCJ5vqWNjZnVAbUgwOIbOs8xqtZYhpjtX7VZ0UHDP3yYCX+i/98E76pMHlw3V8FicrrkHCLespok9N7iPGGuX+BabT0181NA4FX4evZ+nj06dMKEahMN+aftlRGahmx+M0pCq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002653; c=relaxed/simple;
-	bh=zkZH3qTAiOXHBE5bbuuQdle9QBtHX3rTDNXyBCLzOis=;
+	s=arc-20240116; t=1771983542; c=relaxed/simple;
+	bh=MmaYPBUB9PlmD07+JreWXgFg/STmUXNg5WiqW8O4mg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UkSW9Tnh72rT89FO7AEzrdToBzA3HVaYPVR+eJpkWRnH+RNH4pECKiEPKBsflf48t8u5TuaUUa+X0/E6/pLAjh5o0kKqxUeZaJUePEf7FuHSrrwYdR7xb2purUydV+hqNU/QeZrewL+VAitjl7XImItW6j7JNo+jnSs/B8YC1+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw6NCZXm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE56C116D0;
-	Wed, 25 Feb 2026 06:57:33 +0000 (UTC)
+	 MIME-Version; b=kPIU2lXPQsjrb98nR3dO5vU0D31poThT3ZnM0b01i5VrgIBijPHOhGhcml+05N5HobhDsSl5++HxfdZLaBZamF1S6QMbkcFseRFHnRzxbHudFK4ulHuMJqSWE3d6exllQplHRYPXWEI+dDqjArMIfGlZJ+rHplEnfAnLwRAuYRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEUu5Eb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981ECC116D0;
+	Wed, 25 Feb 2026 01:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002653;
-	bh=zkZH3qTAiOXHBE5bbuuQdle9QBtHX3rTDNXyBCLzOis=;
+	s=korg; t=1771983542;
+	bh=MmaYPBUB9PlmD07+JreWXgFg/STmUXNg5WiqW8O4mg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mw6NCZXmC05tUDfLaXL/uFoMwb5+QzVaeo9lHw72chimQh0YP3T+Ojmw2DXBdxlPJ
-	 Gfp07aTDShX0ZCPQz6ENIFMc1MeeObGJl6eXuLSXP3bvVQ/7ZOtH3dw0aB7FTAf8LF
-	 /Iwza6OE5kaaz7jI4HjkCILv08/VH3ObE6r2+jtA=
+	b=EEUu5Eb2sNkI93OxFs2bi4VTEoQsOo1ffeK2PdABpyvqlIwL+wr6elXnf62hG4ubR
+	 hC4weuyekMopXQwPYtSjvVzXUdbo/Hm8AVZhPO2CJr0iKzgE/ARO4BK5n0YJtbTftK
+	 VdQ7Z8K1hHQHG8td3iAOIQF+fSjgYJs44PlLlkow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Heidelberg <david@ixit.cz>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Chengfeng Ye <dg573847474@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 428/641] clk: qcom: dispcc-sm7150: Fix dispcc_mdss_pclk1_clk_src
-Date: Tue, 24 Feb 2026 17:22:34 -0800
-Message-ID: <20260225012358.917329655@linuxfoundation.org>
+Subject: [PATCH 6.19 646/781] fbnic: close fw_log race between users and teardown
+Date: Tue, 24 Feb 2026 17:22:35 -0800
+Message-ID: <20260225012415.640718587@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,67 +67,155 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218685-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219343-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2751D192A1C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 90B1518FD24
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Heidelberg <david@ixit.cz>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit fab13d738c9bd645965464b881335f580d38a54e ]
+[ Upstream commit ee5492fd88cfc079c19fbeac78e9e53b7f6c04f3 ]
 
-Set CLK_OPS_PARENT_ENABLE to ensure the parent gets prepared and enabled
-when switching to it.
+Fixes a theoretical race on fw_log between the teardown path and fw_log
+write functions.
 
-Fixes: e3c13e0caa8c ("clk: qcom: dispcc-sm7150: Fix dispcc_mdss_pclk0_clk_src")
-Signed-off-by: David Heidelberg <david@ixit.cz>
-Link: https://lore.kernel.org/r/20260117-sm7150-dispcc-fix-v1-1-2f39966bcad2@ixit.cz
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+fw_log is written inside fbnic_fw_log_write() and can be reached from
+the mailbox handler fbnic_fw_msix_intr(), but fw_log is freed before
+IRQ/MBX teardown during cleanup, resulting in a potential data race of
+dereferencing a freed/null variable.
+
+Possible Interleaving Scenario:
+  CPU0: fbnic_fw_msix_intr() // Entry
+          fbnic_fw_log_write()
+            if (fbnic_fw_log_ready())   // true
+            ... preempt ...
+  CPU1: fbnic_remove() // Entry
+          fbnic_fw_log_free()
+            vfree(log->data_start);
+            log->data_start = NULL;
+  CPU0: continues, walks log->entries or writes to log->data_start
+
+The initialization also has an incorrect order problem, as the fw_log
+is currently allocated after MBX setup during initialization.
+Fix the problems by adjusting the synchronization order to put
+initialization in place before the mailbox is enabled, and not cleared
+until after the mailbox has been disabled.
+
+Fixes: ecc53b1b46c89 ("eth: fbnic: Enable firmware logging")
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://patch.msgid.link/20260211191329.530886-1-dg573847474@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm7150.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/meta/fbnic/fbnic_fw_log.c    |  3 ---
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c   | 19 ++++++++++++-------
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm7150.c b/drivers/clk/qcom/dispcc-sm7150.c
-index ddc7230b8aea7..923f0f38e804c 100644
---- a/drivers/clk/qcom/dispcc-sm7150.c
-+++ b/drivers/clk/qcom/dispcc-sm7150.c
-@@ -370,7 +370,7 @@ static struct clk_rcg2 dispcc_mdss_pclk1_clk_src = {
- 		.name = "dispcc_mdss_pclk1_clk_src",
- 		.parent_data = dispcc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(dispcc_parent_data_4),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw_log.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw_log.c
+index 85a883dba385f..d8a9a7d7c2375 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw_log.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw_log.c
+@@ -51,8 +51,6 @@ int fbnic_fw_log_init(struct fbnic_dev *fbd)
+ 	log->data_start = data;
+ 	log->data_end = data + FBNIC_FW_LOG_SIZE;
+ 
+-	fbnic_fw_log_enable(fbd, true);
+-
+ 	return 0;
+ }
+ 
+@@ -63,7 +61,6 @@ void fbnic_fw_log_free(struct fbnic_dev *fbd)
+ 	if (!fbnic_fw_log_ready(fbd))
+ 		return;
+ 
+-	fbnic_fw_log_disable(fbd);
+ 	INIT_LIST_HEAD(&log->entries);
+ 	log->size = 0;
+ 	vfree(log->data_start);
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+index 9240673c7533d..e92187bc1c0fa 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+@@ -307,11 +307,17 @@ static int fbnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto free_irqs;
+ 	}
+ 
++	err = fbnic_fw_log_init(fbd);
++	if (err)
++		dev_warn(fbd->dev,
++			 "Unable to initialize firmware log buffer: %d\n",
++			 err);
++
+ 	err = fbnic_fw_request_mbx(fbd);
+ 	if (err) {
+ 		dev_err(&pdev->dev,
+ 			"Firmware mailbox initialization failure\n");
+-		goto free_irqs;
++		goto free_fw_log;
+ 	}
+ 
+ 	/* Send the request to enable the FW logging to host. Note if this
+@@ -319,11 +325,7 @@ static int fbnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	 * possible the FW is just too old to support the logging and needs
+ 	 * to be updated.
+ 	 */
+-	err = fbnic_fw_log_init(fbd);
+-	if (err)
+-		dev_warn(fbd->dev,
+-			 "Unable to initialize firmware log buffer: %d\n",
+-			 err);
++	fbnic_fw_log_enable(fbd, true);
+ 
+ 	fbnic_devlink_register(fbd);
+ 	fbnic_devlink_otp_check(fbd, "error detected during probe");
+@@ -370,6 +372,8 @@ static int fbnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	  * firmware updates for fixes.
+ 	  */
+ 	return 0;
++free_fw_log:
++	fbnic_fw_log_free(fbd);
+ free_irqs:
+ 	fbnic_free_irqs(fbd);
+ err_destroy_health:
+@@ -404,8 +408,9 @@ static void fbnic_remove(struct pci_dev *pdev)
+ 	fbnic_hwmon_unregister(fbd);
+ 	fbnic_dbg_fbd_exit(fbd);
+ 	fbnic_devlink_unregister(fbd);
+-	fbnic_fw_log_free(fbd);
++	fbnic_fw_log_disable(fbd);
+ 	fbnic_fw_free_mbx(fbd);
++	fbnic_fw_log_free(fbd);
+ 	fbnic_free_irqs(fbd);
+ 
+ 	fbnic_devlink_health_destroy(fbd);
 -- 
 2.51.0
 
