@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-219508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBo7EQ+jnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:51 +0100
+	id oAvFAvufnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219510-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920B219349A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81390193032
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88BD03204212
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D6EB313D6EE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C359030E0D9;
-	Wed, 25 Feb 2026 06:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1714D31961A;
+	Wed, 25 Feb 2026 06:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zARMqQt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXQyU65M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E242BDC03;
-	Wed, 25 Feb 2026 06:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03E831960B;
+	Wed, 25 Feb 2026 06:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002762; cv=none; b=lydmyC6TTQZeD59B4c5EF4RsZJ5NHJPen8fAG8oo+Kh6c1EHLQxfIdwPKcQdlWjlW4OyjA4GQ4c5Aq5msqHZ3PNUhRDRTJhKn1G3efu5h0jtxMoOMaVQng0rfLfmNAyNE4wblECe7GGBArjtr0CaAeRGNBfTtDAfrsPa7JXH4h4=
+	t=1772002763; cv=none; b=MGlSERq14fk+ZGdZlygIe4m9hTQY92JKubzRWM3aDQK4n+iHLSIcpJ7aD/1nz+NxCqvinPKq5Ugl46XJJd/Cot9l1lJrwaC7//kzb0S1thKGvAgTqlz99mc0i7R6soj58Hr0jtot1xfLIiE1b+buIHr+mYIyFoFyVyR/aoJDFyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002762; c=relaxed/simple;
-	bh=6sfTjFsDe9Kwf/spSj65jT1JEboyrSD8Clqk29LAc6Y=;
+	s=arc-20240116; t=1772002763; c=relaxed/simple;
+	bh=z8NBonEidLDhc0rrpprHc1WnHmF2c6QwcLHB0kqgFNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fGIr747VF4CuUjQczS65zSuRjQDC7Tiq7F2uQvHZCpFLqG2WRYmC19ywNBPAH/C6aAcj61iGJqSMfQxGppZIFViPf7y13w2hhFOeia2EJN4PXh4cXKdkyG3llRaKhHYP/ojIGyAHgHrJNiLM0DZdekSxBWWfOrIy7FD0j1Li1B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zARMqQt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A854C116D0;
-	Wed, 25 Feb 2026 06:59:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AIMOnbpRJh59za7Q+lz9l2xaywNLY4Tua8J2TSrgUa7x2mgpguKV3Y/mqG9R/fUIqF6poPqZzgMsd47yKV3gF3Nb+zfkFhJTA/VKwnXPxEJc2oBaDv1lb2ShZVnzl2eSrX6SBq1YN++9tdPjYkwXmhX0xAD+vdQWUYoYDZMXyV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXQyU65M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E00C116D0;
+	Wed, 25 Feb 2026 06:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002762;
-	bh=6sfTjFsDe9Kwf/spSj65jT1JEboyrSD8Clqk29LAc6Y=;
+	s=korg; t=1772002763;
+	bh=z8NBonEidLDhc0rrpprHc1WnHmF2c6QwcLHB0kqgFNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zARMqQt2Hs3K9LRnIG2FlamWfV1tOwbm001apLvddlj4/Lyg6XicyJd5/pxwMAuMa
-	 zaofMKIePKrNkAA855UT4wMMonkG8C0FFYbMPeCzQkp9eAFMxZjj+5q/ad6iFIjVHx
-	 FYDEa0wVMmYKTCW9e+Puon5UEblav+TtT0gIDJkE=
+	b=CXQyU65MdZFOhNfkfHoShlcBHODc11qFNicXXvSxRl9G91CzT7uU/HSNbr2rzCvDI
+	 UD/ysDOP5JWm0oMY+yDHQieuyzKiKAxqYK4sygYcmtJe4jHwYzBh/v+jjhzQKhCxYq
+	 wckfeGL8J2W4BwXBABbQzC6sWRAZ4xhyvEDHc5Fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Mario Limonciello <superm1@kernel.org>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	ChiaHsuan Chung <chiahsuan.chung@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	"=?UTF-8?q?J . =20Neusch=C3=A4fer?=" <j.ne@posteo.net>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 592/641] drm/amd/display: Fix out-of-bounds stream encoder index v3
-Date: Tue, 24 Feb 2026 17:25:18 -0800
-Message-ID: <20260225012402.859255091@linuxfoundation.org>
+Subject: [PATCH 6.18 593/641] spi: wpcm-fiu: Fix potential NULL pointer dereference in wpcm_fiu_probe()
+Date: Tue, 24 Feb 2026 17:25:19 -0800
+Message-ID: <20260225012402.882941778@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -70,250 +64,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,posteo.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-219510-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219508-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.983];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 920B219349A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,posteo.net:email]
+X-Rspamd-Queue-Id: 81390193032
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit abde491143e4e12eecc41337910aace4e8d59603 ]
+[ Upstream commit 888a0a802c467bbe34a42167bdf9d7331333440a ]
 
-eng_id can be negative and that stream_enc_regs[]
-can be indexed out of bounds.
+platform_get_resource_byname() can return NULL, which would cause a crash
+when passed the pointer to resource_size().
 
-eng_id is used directly as an index into stream_enc_regs[], which has
-only 5 entries. When eng_id is 5 (ENGINE_ID_DIGF) or negative, this can
-access memory past the end of the array.
+Move the fiu->memory_size assignment after the error check for
+devm_ioremap_resource() to prevent the potential NULL pointer dereference.
 
-Add a bounds check using ARRAY_SIZE() before using eng_id as an index.
-The unsigned cast also rejects negative values.
-
-This avoids out-of-bounds access.
-
-Fixes the below smatch error:
-dcn*_resource.c: stream_encoder_create() may index
-stream_enc_regs[eng_id] out of bounds (size 5).
-
-drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn351/dcn351_resource.c
-    1246 static struct stream_encoder *dcn35_stream_encoder_create(
-    1247         enum engine_id eng_id,
-    1248         struct dc_context *ctx)
-    1249 {
-
-    ...
-
-    1255
-    1256         /* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
-    1257         if (eng_id <= ENGINE_ID_DIGF) {
-
-ENGINE_ID_DIGF is 5.  should <= be <?
-
-Unrelated but, ugh, why is Smatch saying that "eng_id" can be negative?
-end_id is type signed long, but there are checks in the caller which prevent it from being negative.
-
-    1258                 vpg_inst = eng_id;
-    1259                 afmt_inst = eng_id;
-    1260         } else
-    1261                 return NULL;
-    1262
-
-    ...
-
-    1281
-    1282         dcn35_dio_stream_encoder_construct(enc1, ctx, ctx->dc_bios,
-    1283                                         eng_id, vpg, afmt,
---> 1284                                         &stream_enc_regs[eng_id],
-                                                  ^^^^^^^^^^^^^^^^^^^^^^^ This stream_enc_regs[] array has 5 elements so we are one element beyond the end of the array.
-
-    ...
-
-    1287         return &enc1->base;
-    1288 }
-
-v2: use explicit bounds check as suggested by Roman/Dan; avoid unsigned int cast
-
-v3: The compiler already knows how to compare the two values, so the
-    cast (int) is not needed. (Roman)
-
-Fixes: 2728e9c7c842 ("drm/amd/display: add DC changes for DCN351")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Mario Limonciello <superm1@kernel.org>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: ChiaHsuan Chung <chiahsuan.chung@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 9838c182471e ("spi: wpcm-fiu: Add direct map support")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: J. Neuschäfer <j.ne@posteo.net>
+Link: https://patch.msgid.link/20260212-wpcm-v1-1-5b7c4f526aac@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/resource/dcn315/dcn315_resource.c  | 8 ++++----
- .../drm/amd/display/dc/resource/dcn316/dcn316_resource.c  | 8 ++++----
- .../drm/amd/display/dc/resource/dcn32/dcn32_resource.c    | 8 ++++----
- .../drm/amd/display/dc/resource/dcn321/dcn321_resource.c  | 8 ++++----
- .../drm/amd/display/dc/resource/dcn35/dcn35_resource.c    | 8 ++++----
- .../drm/amd/display/dc/resource/dcn351/dcn351_resource.c  | 8 ++++----
- 6 files changed, 24 insertions(+), 24 deletions(-)
+ drivers/spi/spi-wpcm-fiu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-index 82cc78c291d82..12c2a0d9fb2a3 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-@@ -1226,12 +1226,12 @@ static struct stream_encoder *dcn315_stream_encoder_create(
- 	/*PHYB is wired off in HW, allow front end to remapping, otherwise needs more changes*/
+diff --git a/drivers/spi/spi-wpcm-fiu.c b/drivers/spi/spi-wpcm-fiu.c
+index a9aee2a6c7dcb..c47b56f0933f1 100644
+--- a/drivers/spi/spi-wpcm-fiu.c
++++ b/drivers/spi/spi-wpcm-fiu.c
+@@ -459,11 +459,11 @@ static int wpcm_fiu_probe(struct platform_device *pdev)
  
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "memory");
+ 	fiu->memory = devm_ioremap_resource(dev, res);
+-	fiu->memory_size = min_t(size_t, resource_size(res), MAX_MEMORY_SIZE_TOTAL);
+ 	if (IS_ERR(fiu->memory))
+ 		return dev_err_probe(dev, PTR_ERR(fiu->memory),
+ 			       "Failed to map flash memory window\n");
  
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
-+
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn31_vpg_create(ctx, vpg_inst);
- 	afmt = dcn31_afmt_create(ctx, afmt_inst);
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
-index 636110e48d01b..3c77c14c5a5ed 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
-@@ -1220,12 +1220,12 @@ static struct stream_encoder *dcn316_stream_encoder_create(
- 	int afmt_inst;
++	fiu->memory_size = min_t(size_t, resource_size(res), MAX_MEMORY_SIZE_TOTAL);
+ 	fiu->shm_regmap = syscon_regmap_lookup_by_phandle_optional(dev->of_node, "nuvoton,shm");
  
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
- 
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
-+
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn31_vpg_create(ctx, vpg_inst);
- 	afmt = dcn31_afmt_create(ctx, afmt_inst);
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-index 3965a7f1b64b7..9cace432ce364 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-@@ -1208,12 +1208,12 @@ static struct stream_encoder *dcn32_stream_encoder_create(
- 	int afmt_inst;
- 
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
- 
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
-+
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn32_vpg_create(ctx, vpg_inst);
- 	afmt = dcn32_afmt_create(ctx, afmt_inst);
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
-index ad214986f7ac7..26fd5c03c0147 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
-@@ -1189,12 +1189,12 @@ static struct stream_encoder *dcn321_stream_encoder_create(
- 	int afmt_inst;
- 
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
- 
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
-+
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn321_vpg_create(ctx, vpg_inst);
- 	afmt = dcn321_afmt_create(ctx, afmt_inst);
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-index 06bec7dcc7556..e8d74ceb9dc29 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-@@ -1271,12 +1271,12 @@ static struct stream_encoder *dcn35_stream_encoder_create(
- 	int afmt_inst;
- 
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
- 
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
-+
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn31_vpg_create(ctx, vpg_inst);
- 	afmt = dcn31_afmt_create(ctx, afmt_inst);
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-index 7974e306126e0..532e5d9bc4337 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-@@ -1251,12 +1251,12 @@ static struct stream_encoder *dcn35_stream_encoder_create(
- 	int afmt_inst;
- 
- 	/* Mapping of VPG, AFMT, DME register blocks to DIO block instance */
--	if (eng_id <= ENGINE_ID_DIGF) {
--		vpg_inst = eng_id;
--		afmt_inst = eng_id;
--	} else
-+	if (eng_id < 0 || eng_id >= ARRAY_SIZE(stream_enc_regs))
- 		return NULL;
- 
-+	vpg_inst = eng_id;
-+	afmt_inst = eng_id;
-+
- 	enc1 = kzalloc(sizeof(struct dcn10_stream_encoder), GFP_KERNEL);
- 	vpg = dcn31_vpg_create(ctx, vpg_inst);
- 	afmt = dcn31_afmt_create(ctx, afmt_inst);
+ 	wpcm_fiu_hw_init(fiu);
 -- 
 2.51.0
 
