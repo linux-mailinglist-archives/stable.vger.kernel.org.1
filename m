@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOu8N79XnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:00:31 +0100
+	id sJJDFZhSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F791905C9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:00:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F19EB18F43B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DD60530DB18E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6BD0D31287CC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5C023D7CF;
-	Wed, 25 Feb 2026 01:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53F7242D9B;
+	Wed, 25 Feb 2026 01:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVHGw7ac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbbviyER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706DD26E6F4;
-	Wed, 25 Feb 2026 01:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6861C18DB2A;
+	Wed, 25 Feb 2026 01:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983775; cv=none; b=VyOW2AMWRCuLPRqWZOogb6icEFKWKX+BgKhM5EFzjkDNLbN5D+hJD/2sErMDlyGcHrKzvT4WEWf1ZmxEQKxQkT3eu8cEyH7Pao0Kbq+RJrOs5dasu31OgMLzGa0RYNZSeo9caSOJH4fArXJ/1BovW0+nvZ+JpebSfk/5HM0YCJ4=
+	t=1771983124; cv=none; b=ezA5O5hohGFHyWiDdqtyZ9zxwb2kDSKe89h5OLnGRxX3RpH9cRncr7eu0mQY6YKvSQzDRbX5+0ldqdIt+YAEh1rc3KVqnpz6+b7GA5DR02VgQv1f1Uo7Ts9VV/Ms0u+OzZL3KWHF4nQc5x7IAT3daU1EHxd346O/DwoO2fTnnOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983775; c=relaxed/simple;
-	bh=B1oi9+tCvxcLQ81cWgvFak73rYRzzMn8+pB4rhkdd40=;
+	s=arc-20240116; t=1771983124; c=relaxed/simple;
+	bh=dhYiJ4wPt3YhlQNQSpW7OTx82IzhObkaaO5mh+QLYF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OrUb/Yd+abuXPQg+SOHAbI9cfWvXK7pl9OEUfBx8Rv0VZf/ks8Ps49i760uyRJdjlvnAouqGBPLy4T4jL1pK3vvgxuHXaihcd7S8ViQLR2NTjSbI3iA6aspAR2GcQhlfDFFtlUThx7JU0xJwcPADtstvrGje2zZVxFILSty2LiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVHGw7ac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27811C19423;
-	Wed, 25 Feb 2026 01:42:55 +0000 (UTC)
+	 MIME-Version; b=Yz5D/B2jqm0SZ6xEOtYA2ZqBjRcJaWRLsRgES01UBONifNp9WrWv7uonkBBoAwEYE3liIFXU7+yybn58Do8aGjVpOGg3K5E33ELWIjLv7eOtafJsV/vFHb2F5iuQuCCiu8cmuR1FUQ2yxVztDwfINelV4AqvXtyF+NynLir533E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PbbviyER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABEBC19424;
+	Wed, 25 Feb 2026 01:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983775;
-	bh=B1oi9+tCvxcLQ81cWgvFak73rYRzzMn8+pB4rhkdd40=;
+	s=korg; t=1771983124;
+	bh=dhYiJ4wPt3YhlQNQSpW7OTx82IzhObkaaO5mh+QLYF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVHGw7acBCpmC9Yps+yJqQDkgb9IMaRWa6j3PBCbIUK8xENgOXRhU5YS2VofZxt7W
-	 5+cIzNSJKZeBXodRq5CDtqx+/rUjW6r92Npwy8yunB47Wt5XIY6hX2XAh8jq9vT37d
-	 B2oxLdkwk+n+vwMiU+mlGKn2nHwQ7STtPSuInzqM=
+	b=PbbviyERVgPGM41VsfwXkPtB8aVEFrYMoarWGcAlTf2Zz2Q9kCrQTHPE5VORd1OZn
+	 C5QB1i0AjfSz9NHXf5L3ue7Qbfq6hBGDgrxHniDEDw7hauIVXRcR0Mcj/safb5375A
+	 TfNy7OZSZoqx20/ETxPknFejhTD2ws31OZfG+MNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	kernel test robot <lkp@intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 065/641] crypto: qat - fix warning on adf_pfvf_pf_proto.c
+Subject: [PATCH 6.19 282/781] drm/msm/dp: Avoid division by zero in msm_dp_ctrl_config_msa()
 Date: Tue, 24 Feb 2026 17:16:31 -0800
-Message-ID: <20260225012350.630535580@linuxfoundation.org>
+Message-ID: <20260225012406.618320489@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +65,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218887-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218321-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,req.data:url,intel.com:email,apana.org.au:email,resp.data:url]
-X-Rspamd-Queue-Id: 11F791905C9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: F19EB18F43B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 994689b8f91b02fdb5f64cba2412cde5ef3084b5 ]
+[ Upstream commit f185076da44c774241a16a82a7773ece3c1c607b ]
 
-Building the QAT driver with -Wmaybe-uninitialized triggers warnings in
-qat_common/adf_pfvf_pf_proto.c. Specifically, the variables blk_type,
-blk_byte, and byte_max may be used uninitialized in handle_blkmsg_req():
+An (admittedly problematic) optimization change in LLVM 20 [1] turns
+known division by zero into the equivalent of __builtin_unreachable(),
+which invokes undefined behavior if it is encountered in a control flow
+graph, destroying code generation. When compile testing for x86_64,
+objtool flags an instance of this optimization triggering in
+msm_dp_ctrl_config_msa(), inlined into msm_dp_ctrl_on_stream():
 
-  make M=drivers/crypto/intel/qat W=1 C=2 "KCFLAGS=-Werror" \
-       KBUILD_CFLAGS_KERNEL=-Wmaybe-uninitialized           \
-       CFLAGS_MODULE=-Wmaybe-uninitialized
+  drivers/gpu/drm/msm/msm.o: warning: objtool: msm_dp_ctrl_on_stream(): unexpected end of section .text.msm_dp_ctrl_on_stream
 
-  ...
-  warning: ‘byte_max’ may be used uninitialized [-Wmaybe-uninitialized]
-  warning: ‘blk_type’ may be used uninitialized [-Wmaybe-uninitialized]
-  warning: ‘blk_byte’ may be used uninitialized [-Wmaybe-uninitialized]
+The zero division happens if the else branch in the first if statement
+in msm_dp_ctrl_config_msa() is taken because pixel_div is initialized to
+zero and it is not possible for LLVM to eliminate the else branch since
+rate is still not known after inlining into msm_dp_ctrl_on_stream().
 
-Although the caller of handle_blkmsg_req() always provides a req.type
-that is handled by the switch, the compiler cannot guarantee this.
+Transform the if statements into a switch statement with a default case
+with the existing error print and an early return to avoid the invalid
+division. Add a comment to note this helps the compiler, even though the
+case is known to be unreachable. With this, pixel_dev's default zero
+initialization can be dropped, as it is dead with this change.
 
-Add a default case to the switch statement to handle an invalid req.type.
-
-Fixes: 673184a2a58f ("crypto: qat - introduce support for PFVF block messages")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Link: https://github.com/llvm/llvm-project/commit/37932643abab699e8bb1def08b7eb4eae7ff1448 [1]
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202601081959.9UVJEOfP-lkp@intel.com/
+Suggested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/698355/
+Link: https://lore.kernel.org/r/20260113-drm-msm-dp_ctrl-avoid-zero-div-v2-1-f1aa67bf6e8e@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../crypto/intel/qat/qat_common/adf_pfvf_pf_proto.c    | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/msm/dp/dp_ctrl.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_pfvf_pf_proto.c b/drivers/crypto/intel/qat/qat_common/adf_pfvf_pf_proto.c
-index b9b5e744a3f16..af8dbc7517cf8 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_pfvf_pf_proto.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_pfvf_pf_proto.c
-@@ -148,6 +148,16 @@ static struct pfvf_message handle_blkmsg_req(struct adf_accel_vf_info *vf_info,
- 		blk_byte = FIELD_GET(ADF_VF2PF_SMALL_BLOCK_BYTE_MASK, req.data);
- 		byte_max = ADF_VF2PF_SMALL_BLOCK_BYTE_MAX;
- 		break;
-+	default:
-+		dev_err(&GET_DEV(vf_info->accel_dev),
-+			"Invalid BlockMsg type 0x%.4x received from VF%u\n",
-+			req.type, vf_info->vf_nr);
-+		resp.type = ADF_PF2VF_MSGTYPE_BLKMSG_RESP;
-+		resp.data = FIELD_PREP(ADF_PF2VF_BLKMSG_RESP_TYPE_MASK,
-+				       ADF_PF2VF_BLKMSG_RESP_TYPE_ERROR) |
-+			    FIELD_PREP(ADF_PF2VF_BLKMSG_RESP_DATA_MASK,
-+				       ADF_PF2VF_UNSPECIFIED_ERROR);
-+		return resp;
- 	}
+diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+index cbcc7c2f0ffc4..94411870a5e0a 100644
+--- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
++++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+@@ -2395,20 +2395,32 @@ static void msm_dp_ctrl_config_msa(struct msm_dp_ctrl_private *ctrl,
+ 			       bool is_ycbcr_420)
+ {
+ 	u32 pixel_m, pixel_n;
+-	u32 mvid, nvid, pixel_div = 0, dispcc_input_rate;
++	u32 mvid, nvid, pixel_div, dispcc_input_rate;
+ 	u32 const nvid_fixed = DP_LINK_CONSTANT_N_VALUE;
+ 	u32 const link_rate_hbr2 = 540000;
+ 	u32 const link_rate_hbr3 = 810000;
+ 	unsigned long den, num;
  
- 	/* Is this a request for CRC or data? */
+-	if (rate == link_rate_hbr3)
++	switch (rate) {
++	case link_rate_hbr3:
+ 		pixel_div = 6;
+-	else if (rate == 162000 || rate == 270000)
+-		pixel_div = 2;
+-	else if (rate == link_rate_hbr2)
++		break;
++	case link_rate_hbr2:
+ 		pixel_div = 4;
+-	else
++		break;
++	case 162000:
++	case 270000:
++		pixel_div = 2;
++		break;
++	default:
++		/*
++		 * This cannot be reached but the compiler is not able to know
++		 * that statically so return early to avoid a possibly invalid
++		 * division.
++		 */
+ 		DRM_ERROR("Invalid pixel mux divider\n");
++		return;
++	}
+ 
+ 	dispcc_input_rate = (rate * 10) / pixel_div;
+ 
 -- 
 2.51.0
 
