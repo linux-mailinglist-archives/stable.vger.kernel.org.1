@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-219430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFP2ElignmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:10:16 +0100
+	id 8EmaOttUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7091930D2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:10:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7424B18FE12
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFA7431D5447
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E0FCD31E20B9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC98531353C;
-	Wed, 25 Feb 2026 06:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA7F26CE1A;
+	Wed, 25 Feb 2026 01:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="So4Pj3m6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWtJTfT4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2F131352A;
-	Wed, 25 Feb 2026 06:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D241E2834;
+	Wed, 25 Feb 2026 01:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002710; cv=none; b=Mtz0bEO8yOSgGCME7Dqi6ZgRoMMSlNDJ7JDzC7FmYdHF8/GW62B4yIzqgLFTkbx3h5gTIFDvhxFr9fM7V/GWFvUF8EoVObZRoiumMJet4df2CECDG05ncAJxMclyfnYyvTxC1MovjsJB4SvO4Kl/zwuMJMzJ9GsnKkUS0UiQKX4=
+	t=1771983590; cv=none; b=OKpI5RAzrhneKTYyawxRKjxuLHYWePagZGCbT8H/oz2d87oGTQo5Zv+nKhaZpCTwZ/MhzUc2QY6ayQpHQW/YmvE9e+oBq/BJBqsMu07wcxNgG2b24a+K498BJc/cWe5TJ+e0srz7jrIpVfIYIIZwrfI29Ju9r+b+p1iUq+9vtxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002710; c=relaxed/simple;
-	bh=8U42xW0UXF/h5EcHj3f8yKPugKH4BkG8ajAZI4MkurU=;
+	s=arc-20240116; t=1771983590; c=relaxed/simple;
+	bh=XD/1YlRpTuHqYx2AeLg/6ULRsKZRn9ll6uOuoaXRdUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KppKhZAoAmIMITVgP4R3OrLvBOW1+tR1edBRPJYvzuwGUKFiIOcrDFkVxX91pf4+o5IJhEtfq9usMwGffEwSn5bpMy9FMYBiqwY9NCH1yi8TwhyIB4Y36Tfgt6gm0Btq7OzdWtDiUdssBx2g4lU3W6lW0PF5DRuwKe7eJfDIWek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=So4Pj3m6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65650C116D0;
-	Wed, 25 Feb 2026 06:58:30 +0000 (UTC)
+	 MIME-Version; b=NnaK6IT1nknBsMYJrOBwHNj9PhiJme+N/RY+Ke9H1UBQojz25da6Oa2zCOaZ0rMmq4U0aV7n15z/x+nrAut1mNg+4djgcTKrfTjKAvc0kB0z2P/7tcVx1XQkobr9CSEGFNPjEYBg57vzBe7NHGZT6O89eDe7QQFs/0B8ZaVHni0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWtJTfT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF4BC116D0;
+	Wed, 25 Feb 2026 01:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002710;
-	bh=8U42xW0UXF/h5EcHj3f8yKPugKH4BkG8ajAZI4MkurU=;
+	s=korg; t=1771983590;
+	bh=XD/1YlRpTuHqYx2AeLg/6ULRsKZRn9ll6uOuoaXRdUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=So4Pj3m6CSNKa3uhrDXB4owwjJQ08cvSTIVyGmy594tvYLNZFtzcbDEJtywneLfhN
-	 hDddMy2dTxnuQuv+uCqDvL3JoHtod3hXZJTVd3L7VL3oo6JYL1AN3roy2wcjGK1O5R
-	 ugRclGZGoAi9KFw0uGQaigp1ipSLu8nW3hCKIQXA=
+	b=fWtJTfT41sMNZjcGzIlap1xrPHT8pwQ1HfwjNa+zzG5MQqwrmQa4l9WWUSSLaCpe8
+	 Vd7AX9JAWHV6PFYG/sL99vgtytsuRM6ox5Yr3R7kR2vJf3GZoXsZuyu18wLGspRPpr
+	 PuYbaNuZ6X+64ojnvAzqD1d5KkYGeu6DN+IhGQAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petre Rodan <petre.rodan@subdimension.ro>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jacob Keller <Jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 471/641] iio: pressure: mprls0025pa: fix pressure calculation
+Subject: [PATCH 6.19 688/781] net/mlx5e: MACsec, add ASO poll loop in macsec_aso_set_arm_event
 Date: Tue, 24 Feb 2026 17:23:17 -0800
-Message-ID: <20260225012359.925448126@linuxfoundation.org>
+Message-ID: <20260225012416.642185789@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219430-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218727-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,121 +89,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,subdimension.ro:email]
-X-Rspamd-Queue-Id: 9C7091930D2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 7424B18FE12
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petre Rodan <petre.rodan@subdimension.ro>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit d63403d4e31ae537fefc5c0ee9d90f29b4fc532b ]
+[ Upstream commit 9854b243ce4225328d0b32fdc998d35b6952d3f7 ]
 
-A sign change is needed for proper calculation of the pressure.
+The macsec_aso_set_arm_event function calls mlx5_aso_poll_cq once
+without a retry loop. If the CQE is not immediately available after
+posting the WQE, the function fails unnecessarily.
 
-This is a minor fix since it only affects users that might have custom
-silicon from Honeywell that has honeywell,pmin-pascal != 0.
+Use read_poll_timeout() to poll 3-10 usecs for CQE, consistent with
+other ASO polling code paths in the driver.
 
-Also due to the fact that raw pressure values can not be lower
-than output_min (400k-3.3M) there is no need to calculate a decimal for
-the offset.
-
-Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 739cfa34518e ("net/mlx5: Make ASO poll CQ usable in atomic context")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Jacob Keller <Jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260218072904.1764634-5-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/mprls0025pa.c | 26 +++++++++++---------------
- drivers/iio/pressure/mprls0025pa.h |  2 --
- 2 files changed, 11 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-index 6ba45d4c16b30..d4133fef91fac 100644
---- a/drivers/iio/pressure/mprls0025pa.c
-+++ b/drivers/iio/pressure/mprls0025pa.c
-@@ -59,7 +59,7 @@
-  *
-  * Values given to the userspace in sysfs interface:
-  * * raw	- press_cnt
-- * * offset	- (-1 * outputmin) - pmin / scale
-+ * * offset	- (-1 * outputmin) + pmin / scale
-  *                note: With all sensors from the datasheet pmin = 0
-  *                which reduces the offset to (-1 * outputmin)
-  */
-@@ -313,8 +313,7 @@ static int mpr_read_raw(struct iio_dev *indio_dev,
- 		return IIO_VAL_INT_PLUS_NANO;
- 	case IIO_CHAN_INFO_OFFSET:
- 		*val = data->offset;
--		*val2 = data->offset2;
--		return IIO_VAL_INT_PLUS_NANO;
-+		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -330,8 +329,9 @@ int mpr_common_probe(struct device *dev, const struct mpr_ops *ops, int irq)
- 	struct mpr_data *data;
- 	struct iio_dev *indio_dev;
- 	const char *triplet;
--	s64 scale, offset;
-+	s64 odelta, pdelta;
- 	u32 func;
-+	s32 tmp;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+index 641cd3a2cdfab..90b3bc5f9166f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+@@ -1386,7 +1386,8 @@ static int macsec_aso_set_arm_event(struct mlx5_core_dev *mdev, struct mlx5e_mac
+ 			   MLX5_ACCESS_ASO_OPC_MOD_MACSEC);
+ 	macsec_aso_build_ctrl(aso, &aso_wqe->aso_ctrl, in);
+ 	mlx5_aso_post_wqe(maso, false, &aso_wqe->ctrl);
+-	err = mlx5_aso_poll_cq(maso, false);
++	read_poll_timeout(mlx5_aso_poll_cq, err, !err, 10, 10 * USEC_PER_MSEC,
++			  false, maso, false);
+ 	mutex_unlock(&aso->aso_lock);
  
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
- 	if (!indio_dev)
-@@ -405,17 +405,13 @@ int mpr_common_probe(struct device *dev, const struct mpr_ops *ops, int irq)
- 	data->outmin = mpr_func_spec[data->function].output_min;
- 	data->outmax = mpr_func_spec[data->function].output_max;
- 
--	/* use 64 bit calculation for preserving a reasonable precision */
--	scale = div_s64(((s64)(data->pmax - data->pmin)) * NANO,
--			data->outmax - data->outmin);
--	data->scale = div_s64_rem(scale, NANO, &data->scale2);
--	/*
--	 * multiply with NANO before dividing by scale and later divide by NANO
--	 * again.
--	 */
--	offset = ((-1LL) * (s64)data->outmin) * NANO -
--		  div_s64(div_s64((s64)data->pmin * NANO, scale), NANO);
--	data->offset = div_s64_rem(offset, NANO, &data->offset2);
-+	odelta = data->outmax - data->outmin;
-+	pdelta = data->pmax - data->pmin;
-+
-+	data->scale = div_s64_rem(div_s64(pdelta * NANO, odelta), NANO, &tmp);
-+	data->scale2 = tmp;
-+
-+	data->offset = div_s64(odelta * data->pmin, pdelta) - data->outmin;
- 
- 	if (data->irq > 0) {
- 		ret = devm_request_irq(dev, data->irq, mpr_eoc_handler, 0,
-diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
-index d62a018eaff32..b6944b3051267 100644
---- a/drivers/iio/pressure/mprls0025pa.h
-+++ b/drivers/iio/pressure/mprls0025pa.h
-@@ -53,7 +53,6 @@ enum mpr_func_id {
-  * @scale: pressure scale
-  * @scale2: pressure scale, decimal number
-  * @offset: pressure offset
-- * @offset2: pressure offset, decimal number
-  * @gpiod_reset: reset
-  * @irq: end of conversion irq. used to distinguish between irq mode and
-  *       reading in a loop until data is ready
-@@ -75,7 +74,6 @@ struct mpr_data {
- 	int			scale;
- 	int			scale2;
- 	int			offset;
--	int			offset2;
- 	struct gpio_desc	*gpiod_reset;
- 	int			irq;
- 	struct completion	completion;
+ 	return err;
 -- 
 2.51.0
 
