@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGiBKqJTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:58 +0100
+	id YHfYNjNVnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEEA18F95A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6916B18FF43
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AD34D30C9930
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CAF8530E7D9B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BB022579E;
-	Wed, 25 Feb 2026 01:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C64285041;
+	Wed, 25 Feb 2026 01:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMBGLP6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8pJMFcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B31A18DB2A;
-	Wed, 25 Feb 2026 01:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9633B284884;
+	Wed, 25 Feb 2026 01:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983229; cv=none; b=qlOA79kK4Rn0B6YY36KRcDix6nsKG6u6flcs8r5KsudM1XwQ3osJtxxIQnEQmOFpdSWFX8Ejh0o/gklCCH9pnHAj/740nz3EAYPcaXpkTyKYi+sjvHZw2WVgDsADHYXaXZQmThogX1CyArYyBKRqbUktJfYhu0eolfiFRSU/r5A=
+	t=1771983882; cv=none; b=jbW/O7oPiNsuoLVywvQzK2coTkM3sBT2OLy0x98iEMQuDQtZPMb3JyGDJqTFIwt9tHX7x7peJF+lKWIXZ21sby7ejescC2jvUhJsxD42GD6Tt3YYvAhiowrDOAf8QDZv9sYSBao8DyWyFKqNCTI1bNFputn99AH5OtumoTQVCms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983229; c=relaxed/simple;
-	bh=eJgV4GM/BV7vW7mXlkaY9rpj5IDe5nd4eOSeQFrxBv0=;
+	s=arc-20240116; t=1771983882; c=relaxed/simple;
+	bh=6fAlAxwi/oGyaRdT9CYugRZ9oasDMbwXIyLFuE4NaQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HM27IXSDLOKS46FbnSFOIzx2/BOo+NmJff2Jq/Haio92frdelHD2BiosOhNx+3n4w7WQXM9uK6ZFWokRLh2xKzGvylaNmA63WtDGYFMee0iwjGOHRmeoRYH8MoaLeQ+Im3HAShsnZRhykVZBEDOWG2pbbdKPXxnzbuqMivunkVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMBGLP6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC08C116D0;
-	Wed, 25 Feb 2026 01:33:49 +0000 (UTC)
+	 MIME-Version; b=QJ/AG8anOUf+5IjxXL5k4YWeulJRMpUvl67HQODyx5pK4NbdkT29+sIrl5gRUz8d3Renv3yJDiTl27Alj0frA4pQBO3pZ/SV6t9hF8k/GtidHtWkcz+RqpRjnB/5udCwdHn/CACLIrQELEUUR7SDdOOhmLPIQ36I/J222bYgt8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8pJMFcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F4DC116D0;
+	Wed, 25 Feb 2026 01:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983229;
-	bh=eJgV4GM/BV7vW7mXlkaY9rpj5IDe5nd4eOSeQFrxBv0=;
+	s=korg; t=1771983882;
+	bh=6fAlAxwi/oGyaRdT9CYugRZ9oasDMbwXIyLFuE4NaQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fMBGLP6BeReLx7s8LCNkrQOgXgxCWwCQhS9laxJCPcW9QPd6/yCwVSdkcpIHMVtQe
-	 VPLjXeY9PGmT//n9IFzIx+Pgp1BDjTNQEtbS2HV6FIxnmxr7NyQrWn7peyRNEZElFx
-	 XNpItMwSDJK5wWRf8OxhbYBsGM4ciZk2p8SZR/M4=
+	b=h8pJMFcSSPLncWs18sm1MX9RtPUyClMynR7bIssOFR7NFA1zEMF4kDkGNftFVut92
+	 rJEXky/r1+y9V6d8xUo22fijUev11frGy2MBFomGhU80FT14gFYTC4NdB9Hrq9SYNO
+	 0ErHmMg2sw0soovIsLt7IKbjoccU7y/dH8QGw6H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@auroraos.dev>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 373/781] PCI: Check parent for NULL in of_pci_bus_release_domain_nr()
+Subject: [PATCH 6.18 156/641] arm64: dts: amlogic: axg: assign the MMC signal clocks
 Date: Tue, 24 Feb 2026 17:18:02 -0800
-Message-ID: <20260225012408.838995507@linuxfoundation.org>
+Message-ID: <20260225012352.863577543@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218978-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218411-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_PROHIBIT(0.00)[0.0.27.88:email];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxtesting.org:url]
-X-Rspamd-Queue-Id: DCEEA18F95A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,baylibre.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.0.30.120:email,0.0.19.136:email]
+X-Rspamd-Queue-Id: 6916B18FF43
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit f7245901de8978d829f80b3d8e36ed9a8fd18049 ]
+[ Upstream commit 13d3fe2318ef6e46d6fcfe13bc373827fdf2aeac ]
 
-of_pci_bus_find_domain_nr() allows its parent parameter to be NULL but
-of_pci_bus_release_domain_nr() (that undoes its effect) doesn't -- that
-means it's going to blow up while calling of_get_pci_domain_nr() if the
-parent parameter indeed happens to be NULL.  Add the missing NULL check.
+The amlogic MMC driver operate with the assumption that MMC clock
+is configured to provide 24MHz. It uses this path for low
+rates such as 400kHz.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+Assign the clocks to make sure they are properly configured
 
-Fixes: c14f7ccc9f5d ("PCI: Assign PCI domain IDs by ida_alloc()")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20260127203944.28588-1-s.shtylyov@auroraos.dev
+Fixes: 221cf34bac54 ("ARM64: dts: meson-axg: enable the eMMC controller")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260114-amlogic-mmc-clocks-followup-v1-3-a999fafbe0aa@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/amlogic/meson-axg.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 86ccbd0efb495..d9d531e8283c2 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -6594,7 +6594,7 @@ static void of_pci_bus_release_domain_nr(struct device *parent, int domain_nr)
- 		return;
+diff --git a/arch/arm64/boot/dts/amlogic/meson-axg.dtsi b/arch/arm64/boot/dts/amlogic/meson-axg.dtsi
+index 04fb130ac7c6a..bbf94a1f92a10 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-axg.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-axg.dtsi
+@@ -1960,6 +1960,9 @@ sd_emmc_b: mmc@5000 {
+ 					<&clkc CLKID_FCLK_DIV2>;
+ 				clock-names = "core", "clkin0", "clkin1";
+ 				resets = <&reset RESET_SD_EMMC_B>;
++
++				assigned-clocks = <&clkc CLKID_SD_EMMC_B_CLK0>;
++				assigned-clock-rates = <24000000>;
+ 			};
  
- 	/* Release domain from IDA where it was allocated. */
--	if (of_get_pci_domain_nr(parent->of_node) == domain_nr)
-+	if (parent && of_get_pci_domain_nr(parent->of_node) == domain_nr)
- 		ida_free(&pci_domain_nr_static_ida, domain_nr);
- 	else
- 		ida_free(&pci_domain_nr_dynamic_ida, domain_nr);
+ 			sd_emmc_c: mmc@7000 {
+@@ -1972,6 +1975,9 @@ sd_emmc_c: mmc@7000 {
+ 					<&clkc CLKID_FCLK_DIV2>;
+ 				clock-names = "core", "clkin0", "clkin1";
+ 				resets = <&reset RESET_SD_EMMC_C>;
++
++				assigned-clocks = <&clkc CLKID_SD_EMMC_C_CLK0>;
++				assigned-clock-rates = <24000000>;
+ 			};
+ 
+ 			nfc: nand-controller@7800 {
 -- 
 2.51.0
 
