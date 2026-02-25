@@ -1,72 +1,59 @@
-Return-Path: <stable+bounces-219100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218530-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iO4UAZRWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219100-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:32 +0100
+	id OHoZOeNSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218530-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98AF0190354
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E52318F5AB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AD46B30AD71D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B784630FAF22
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D2F27BF6C;
-	Wed, 25 Feb 2026 01:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526CD20C012;
+	Wed, 25 Feb 2026 01:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/AqcI1O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LD0Q6FX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15CE26F46F;
-	Wed, 25 Feb 2026 01:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1649D1EB5E1;
+	Wed, 25 Feb 2026 01:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984032; cv=none; b=e+l0J8vgnXjS87h0J16hmrZkCfCv5JFbAUgmdCoZAp4B/KpQn2DL5iWX9sOdLNlp/Waua+22HM4+5CKxWF/A6sXxar4orDFrD+8pyJv+PbeKtAJvicuvx5WGqybFG8GlcXbC8bUjkFHKMjCat2Ng+cpvyzLU1BTu5ofTAXGt38k=
+	t=1771983367; cv=none; b=KJsvxoDpcBL/+6CIy9qXqg9TyrOLHyXk2tllSstV9GZL9j5/g+GcMuKABk5ZXfWP6B7h1GCgYG3W3GljC29idYcPEZ0TCvvGgFM1FpaRI3ZmKAOpBaC06l0pk430ZlvauYHCOIzrV55x5VoHf8jiukX2YsptDyU2cr43V7AnBO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984032; c=relaxed/simple;
-	bh=gSJf4WFDjQayrA9xCT4bx3lyDRrSZuWKq6QW6HBrPUs=;
+	s=arc-20240116; t=1771983367; c=relaxed/simple;
+	bh=ScU3JhVJdDff8EOkZUTPOo4wPlTBpPCSXNTkqoUNrfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bfmQ7d7WCJCTnILWCrp1pjfS1OI4qQ3PlKg6/rqnLBRf8wH3D0otnIslEEik0265tCXjGgvRgIPaM9HQzGgqG4iAApD6xT8Tp4mG5tmgVVbRBHtQmSaJNXG025KSDlU18CCK4PvQTyLM81k7YvOTvlRE8S61wEX7zFR0aoHn09w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/AqcI1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FD5C116D0;
-	Wed, 25 Feb 2026 01:47:12 +0000 (UTC)
+	 MIME-Version; b=TiOSqUUMhIDiqnQ2IxAKkCnB5BFwIbXpeWSmtw4/troLhRjoEM8+vKP12/nwdME8MZBmmuIlYvqjjcS/6Eni+PJOIbrN5UZ6rzpGwccDt2iqIizbN3b3xaEZlGEA3Dgug1oaspmQ3fLxGTk/ZbjKISJ1e7jkZXq/4ng6g4SpZeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LD0Q6FX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA1BC116D0;
+	Wed, 25 Feb 2026 01:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984032;
-	bh=gSJf4WFDjQayrA9xCT4bx3lyDRrSZuWKq6QW6HBrPUs=;
+	s=korg; t=1771983367;
+	bh=ScU3JhVJdDff8EOkZUTPOo4wPlTBpPCSXNTkqoUNrfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/AqcI1OfDdjXdP6Yly3T6aBY15B9X+4si3SqT/fPpw7xW3yn2TjM/0RM9FuttSZ6
-	 AjvSGuaBNjVLTA8r73o87CQctE01+kgVq35yzxF8ipxoY4S4GnIrhL5p8YwXRtrFq6
-	 XACfojiWu0GvGQpc30Pm4RsgGG942zRZaVUkaQG8=
+	b=LD0Q6FX3SFYU+x4ruRWTs2ncqYw8lQMrJkS5A1YxQqY4OaC4CGgAHpaTT/8gDCFZT
+	 QXn2PXdfXTO22AVis+/bD+h0TCzTkOmoaVMOq1y889wgn5+315t0bb+0IdmQMdQ+TQ
+	 UNWT2aljX1ao7pX3GcHvMKk7maM746yPGSzyi5Bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Panagiotis Foliadis <pfoliadis@posteo.net>,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Weili Qian <qianweili@huawei.com>,
+	Alex Williamson <alex@shazbot.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 276/641] rust: task: restrict Task::group_leader() to current
+Subject: [PATCH 6.19 493/781] hisi_acc_vfio_pci: fix VF reset timeout issue
 Date: Tue, 24 Feb 2026 17:20:02 -0800
-Message-ID: <20260225012355.479035431@linuxfoundation.org>
+Message-ID: <20260225012411.899706126@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,135 +63,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219100-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,redhat.com,gmail.com,garyguo.net,kernel.org,protonmail.com,posteo.net,umich.edu,linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218530-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 98AF0190354
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[shazbot.org:email,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6E52318F5AB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Weili Qian <qianweili@huawei.com>
 
-[ Upstream commit 105ddfb2d2b3acec7a7d9695463df48733d91e6c ]
+[ Upstream commit a22099ed7936f8e8dabbdbadd97d56047797116b ]
 
-The Task::group_leader() method currently allows you to access the
-group_leader() of any task, for example one you hold a refcount to.  But
-this is not safe in general since the group leader could change when a
-task exits.  See for example commit a15f37a40145c ("kernel/sys.c: fix the
-racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths").
+If device error occurs during live migration, qemu will
+reset the VF. At this time, VF reset and device reset are performed
+simultaneously. The VF reset will timeout. Therefore, the QM_RESETTING
+flag is used to ensure that VF reset and device reset are performed
+serially.
 
-All existing users of Task::group_leader() call this method on current,
-which is guaranteed running, so there's not an actual issue in Rust code
-today.  But to prevent code in the future from making this mistake,
-restrict Task::group_leader() so that it can only be called on current.
-
-There are some other cases where accessing task->group_leader is okay.
-For example it can be safe if you hold tasklist_lock or rcu_read_lock().
-However, only supporting current->group_leader is sufficient for all
-in-tree Rust users of group_leader right now.  Safe Rust functionality for
-accessing it under rcu or while holding tasklist_lock may be added in the
-future if required by any future Rust module.
-
-This patch is a bugfix in that it prevents users of this API from writing
-incorrect code.  It doesn't change behavior of correct code.
-
-Link: https://lkml.kernel.org/r/20260107-task-group-leader-v2-1-8fbf816f2a2f@google.com
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Fixes: 313c4281bc9d ("rust: add basic `Task`")
-Reported-by: Oleg Nesterov <oleg@redhat.com>
-Closes: https://lore.kernel.org/all/aTLnV-5jlgfk1aRK@redhat.com/
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Benno Lossin <lossin@kernel.org>
-Cc: "Björn Roy Baron" <bjorn3_gh@protonmail.com>
-Cc: Björn Roy Baron <bjorn3_gh@protonmail.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Panagiotis Foliadis <pfoliadis@posteo.net>
-Cc: Shankari Anand <shankari.ak0208@gmail.com>
-Cc: Trevor Gross <tmgross@umich.edu>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
+Signed-off-by: Weili Qian <qianweili@huawei.com>
+Link: https://lore.kernel.org/r/20260122020205.2884497-2-liulongfang@huawei.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/task.rs | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 24 +++++++++++++++++++
+ .../vfio/pci/hisilicon/hisi_acc_vfio_pci.h    |  2 ++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 49fad6de06740..cc907fb531bce 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -204,18 +204,6 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
-         self.0.get()
-     }
- 
--    /// Returns the group leader of the given task.
--    pub fn group_leader(&self) -> &Task {
--        // SAFETY: The group leader of a task never changes after initialization, so reading this
--        // field is not a data race.
--        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
--
--        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
--        // and given that a task has a reference to its group leader, we know it must be valid for
--        // the lifetime of the returned task reference.
--        unsafe { &*ptr.cast() }
--    }
--
-     /// Returns the PID of the given task.
-     pub fn pid(&self) -> Pid {
-         // SAFETY: The pid of a task never changes after initialization, so reading this field is
-@@ -345,6 +333,18 @@ pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
-         // `release_task()` call.
-         Some(unsafe { PidNamespace::from_ptr(active_ns) })
-     }
-+
-+    /// Returns the group leader of the current task.
-+    pub fn group_leader(&self) -> &Task {
-+        // SAFETY: The group leader of a task never changes while the task is running, and `self`
-+        // is the current task, which is guaranteed running.
-+        let ptr = unsafe { (*self.as_ptr()).group_leader };
-+
-+        // SAFETY: `current->group_leader` stays valid for at least the duration in which `current`
-+        // is running, and the signature of this function ensures that the returned `&Task` can
-+        // only be used while `current` is still valid, thus still running.
-+        unsafe { &*ptr.cast() }
-+    }
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+index cf45f6370c369..d1e8053640a98 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+@@ -1188,9 +1188,32 @@ hisi_acc_vfio_pci_get_device_state(struct vfio_device *vdev,
+ 	return 0;
  }
  
- // SAFETY: The type invariants guarantee that `Task` is always refcounted.
++static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
++{
++	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
++	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
++	struct device *dev = &qm->pdev->dev;
++	u32 delay = 0;
++
++	/* All reset requests need to be queued for processing */
++	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
++		msleep(1);
++		if (++delay > QM_RESET_WAIT_TIMEOUT) {
++			dev_err(dev, "reset prepare failed\n");
++			return;
++		}
++	}
++
++	hisi_acc_vdev->set_reset_flag = true;
++}
++
+ static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
+ {
+ 	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
++	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
++
++	if (hisi_acc_vdev->set_reset_flag)
++		clear_bit(QM_RESETTING, &qm->misc_ctl);
+ 
+ 	if (hisi_acc_vdev->core_device.vdev.migration_flags !=
+ 				VFIO_MIGRATION_STOP_COPY)
+@@ -1734,6 +1757,7 @@ static const struct pci_device_id hisi_acc_vfio_pci_table[] = {
+ MODULE_DEVICE_TABLE(pci, hisi_acc_vfio_pci_table);
+ 
+ static const struct pci_error_handlers hisi_acc_vf_err_handlers = {
++	.reset_prepare = hisi_acc_vf_pci_reset_prepare,
+ 	.reset_done = hisi_acc_vf_pci_aer_reset_done,
+ 	.error_detected = vfio_pci_core_aer_err_detected,
+ };
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
+index cd55eba64dfb2..a3d91a31e3d88 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
+@@ -27,6 +27,7 @@
+ 
+ #define ERROR_CHECK_TIMEOUT		100
+ #define CHECK_DELAY_TIME		100
++#define QM_RESET_WAIT_TIMEOUT  60000
+ 
+ #define QM_SQC_VFT_BASE_SHIFT_V2	28
+ #define QM_SQC_VFT_BASE_MASK_V2		GENMASK(15, 0)
+@@ -128,6 +129,7 @@ struct hisi_acc_vf_migration_file {
+ struct hisi_acc_vf_core_device {
+ 	struct vfio_pci_core_device core_device;
+ 	u8 match_done;
++	bool set_reset_flag;
+ 	/*
+ 	 * io_base is only valid when dev_opened is true,
+ 	 * which is protected by open_mutex.
 -- 
 2.51.0
 
