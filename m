@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMK9Em2dnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219301-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:49 +0100
+	id yFtmGwlTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D36001929B1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F9D18F66B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6AEC33052709
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B6883302B19E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9332FF669;
-	Wed, 25 Feb 2026 06:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D611262FC0;
+	Wed, 25 Feb 2026 01:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnHF8c0S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6Suiud5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100A42D8DCF;
-	Wed, 25 Feb 2026 06:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202BD248881;
+	Wed, 25 Feb 2026 01:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002626; cv=none; b=Z4rp4Y0l3LXBWRtB6ruwGsduQwOaakqf59tIF795GgKZDkbXTmtv2WIzJZhyGqpUkr9TQHvoguPY+56BivclbpDSjTwGCwV5y1yp9EuycXczGT2HvaLq/xFfpNgGl3Sz0qdbbOUnDM3uV7fo6ok6dTdwGkNGW9o2+nzAQjMq4Jo=
+	t=1771983493; cv=none; b=dbzmRcw9xzJORfxIby87WYQS+R+gaHtCgoprSv/MykLxyeI18x5d6/Fmnwag1wsPhrrl/NOSUo/LXRtwBLQT72oEBcITch9rINTvzem8tySsRRYU7Jx/jOByjNEp0E6bLFmG2vOFg9FHU92SKtugD2y3GusRPChaECr5/Os+cvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002626; c=relaxed/simple;
-	bh=XU95D6OmSiSXTvsKTFIup/uk6DbtD2lvpy4Xh09gvbc=;
+	s=arc-20240116; t=1771983493; c=relaxed/simple;
+	bh=dcBV2UW8xpJAtLJy8HaUd/F9MVmlThlMNB/4ak7hAts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oj/Dhbc3ettJlLtxoQ1851Nq6VC2v1awmpEV7jWZKQDvRfcOOzozNcQhEskOQqvsOguTBDaRBVGwYi3858DKYOrAkAeXzFU1VLR37/+Yg9iF8Kq1OsiHzipmvS+J2YUj1gx+FJFNLfcQNGdkPHwxUjtIsUbgmh2uScEyV/78Od0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnHF8c0S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58DFC19422;
-	Wed, 25 Feb 2026 06:57:05 +0000 (UTC)
+	 MIME-Version; b=peG+71g/d8Y163b2dY7HVNqfTgbKUmXMNEKbMSYCZNVkOjHNa31XsDVdsHuC4sWaQpgcGxsZjGUR/0sZlqZJ+Y+ONFBOZeNEW6Ut4QGqWR9fzy8ZadbrB9rg7S0V6+sILyVcc1d8k5bG9zFpI/a1CCtpCqaZ5Jw9BCQ3oSvMjkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6Suiud5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD506C116D0;
+	Wed, 25 Feb 2026 01:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002625;
-	bh=XU95D6OmSiSXTvsKTFIup/uk6DbtD2lvpy4Xh09gvbc=;
+	s=korg; t=1771983493;
+	bh=dcBV2UW8xpJAtLJy8HaUd/F9MVmlThlMNB/4ak7hAts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vnHF8c0SU5q9pDQxjaYD2MSP5QqDQf4SO/mTLoOrW5iENeVFaZAt6HhOkZIMGBZi5
-	 q6Huq3zfQrgJUREfkZPhVWlaz527O/4Ao338YNEUgFVhmhs2xfqBypdduHkjERWDEP
-	 u/m289nEiob1epRmNFillh99rPC/eimC3wm7Gcc0=
+	b=X6Suiud5rEov/afi0M4iXKK87uOJUSVez4oz7bnYSSDS3D//u80zLKvT/yJJ4I2CI
+	 V9L1n3lwFVfpFx+68PAJBGfU51GsfSt34WIMtyLD2VU1VlhCwodG0JvznvHP3RT33d
+	 kWeit47lz0mQ6omW53GeEiG4Vs33IWhPym91AeCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weili Qian <qianweili@huawei.com>,
-	Alex Williamson <alex@shazbot.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 386/641] hisi_acc_vfio_pci: fix VF reset timeout issue
+Subject: [PATCH 6.19 603/781] pinctrl: meson: amlogic-a4: Fix device node reference leak in bank helpers
 Date: Tue, 24 Feb 2026 17:21:52 -0800
-Message-ID: <20260225012357.937839425@linuxfoundation.org>
+Message-ID: <20260225012414.584476367@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,125 +66,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219301-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218643-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amlogic.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.959];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,shazbot.org:email]
-X-Rspamd-Queue-Id: D36001929B1
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amlogic.com:email]
+X-Rspamd-Queue-Id: 12F9D18F66B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weili Qian <qianweili@huawei.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit a22099ed7936f8e8dabbdbadd97d56047797116b ]
+[ Upstream commit e56aa18eba32fb68ac5e19e44670010095bb189c ]
 
-If device error occurs during live migration, qemu will
-reset the VF. At this time, VF reset and device reset are performed
-simultaneously. The VF reset will timeout. Therefore, the QM_RESETTING
-flag is used to ensure that VF reset and device reset are performed
-serially.
+of_parse_phandle_with_fixed_args() increments the reference count of the
+returned device node, so it must be explicitly released using
+of_node_put() after use.
 
-Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
-Signed-off-by: Weili Qian <qianweili@huawei.com>
-Link: https://lore.kernel.org/r/20260122020205.2884497-2-liulongfang@huawei.com
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+Fix the reference leak in aml_bank_pins() and aml_bank_number() by
+adding the missing of_node_put() calls.
+
+Fixes: 6e9be3abb78c ("pinctrl: Add driver support for Amlogic SoCs")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 24 +++++++++++++++++++
- .../vfio/pci/hisilicon/hisi_acc_vfio_pci.h    |  2 ++
- 2 files changed, 26 insertions(+)
+ drivers/pinctrl/meson/pinctrl-amlogic-a4.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index d07093d7cc3f5..ed2ae035deb16 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1169,9 +1169,32 @@ hisi_acc_vfio_pci_get_device_state(struct vfio_device *vdev,
- 	return 0;
+diff --git a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
+index d9e3a8d5932a8..f05d8261624a4 100644
+--- a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
++++ b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
+@@ -725,8 +725,9 @@ static u32 aml_bank_pins(struct device_node *np)
+ 	if (of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3,
+ 					     0, &of_args))
+ 		return 0;
+-	else
+-		return of_args.args[2];
++
++	of_node_put(of_args.np);
++	return of_args.args[2];
  }
  
-+static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
-+{
-+	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
-+	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
-+	struct device *dev = &qm->pdev->dev;
-+	u32 delay = 0;
+ static int aml_bank_number(struct device_node *np)
+@@ -736,8 +737,9 @@ static int aml_bank_number(struct device_node *np)
+ 	if (of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3,
+ 					     0, &of_args))
+ 		return -EINVAL;
+-	else
+-		return of_args.args[1] >> 8;
 +
-+	/* All reset requests need to be queued for processing */
-+	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
-+		msleep(1);
-+		if (++delay > QM_RESET_WAIT_TIMEOUT) {
-+			dev_err(dev, "reset prepare failed\n");
-+			return;
-+		}
-+	}
-+
-+	hisi_acc_vdev->set_reset_flag = true;
-+}
-+
- static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
- {
- 	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
-+	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
-+
-+	if (hisi_acc_vdev->set_reset_flag)
-+		clear_bit(QM_RESETTING, &qm->misc_ctl);
++	of_node_put(of_args.np);
++	return of_args.args[1] >> 8;
+ }
  
- 	if (hisi_acc_vdev->core_device.vdev.migration_flags !=
- 				VFIO_MIGRATION_STOP_COPY)
-@@ -1690,6 +1713,7 @@ static const struct pci_device_id hisi_acc_vfio_pci_table[] = {
- MODULE_DEVICE_TABLE(pci, hisi_acc_vfio_pci_table);
- 
- static const struct pci_error_handlers hisi_acc_vf_err_handlers = {
-+	.reset_prepare = hisi_acc_vf_pci_reset_prepare,
- 	.reset_done = hisi_acc_vf_pci_aer_reset_done,
- 	.error_detected = vfio_pci_core_aer_err_detected,
- };
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
-index 91002ceeebc18..6253fa074003e 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
-@@ -27,6 +27,7 @@
- 
- #define ERROR_CHECK_TIMEOUT		100
- #define CHECK_DELAY_TIME		100
-+#define QM_RESET_WAIT_TIMEOUT  60000
- 
- #define QM_SQC_VFT_BASE_SHIFT_V2	28
- #define QM_SQC_VFT_BASE_MASK_V2		GENMASK(15, 0)
-@@ -110,6 +111,7 @@ struct hisi_acc_vf_migration_file {
- struct hisi_acc_vf_core_device {
- 	struct vfio_pci_core_device core_device;
- 	u8 match_done;
-+	bool set_reset_flag;
- 	/*
- 	 * io_base is only valid when dev_opened is true,
- 	 * which is protected by open_mutex.
+ static unsigned int aml_count_pins(struct device_node *np)
 -- 
 2.51.0
 
