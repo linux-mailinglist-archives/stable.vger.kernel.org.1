@@ -1,388 +1,301 @@
-Return-Path: <stable+bounces-219187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KChFfp2nmnCVQQAu9opvQ
-	(envelope-from <stable+bounces-219187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 05:13:46 +0100
+	id JWmlI653nmn/VQQAu9opvQ
+	(envelope-from <stable+bounces-219188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 05:16:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF3E191870
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 05:13:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2E119188A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 05:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F8F4304522B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 04:13:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA7AA304C486
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 04:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600D529AB1D;
-	Wed, 25 Feb 2026 04:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F46329BD90;
+	Wed, 25 Feb 2026 04:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O/O2kAaz"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MyvzTN8u"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8464619A2A3
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 04:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771992823; cv=fail; b=qilpRHVLm80hVdx652Q54DM24cZVzlvnDHR5v8uIt05yQZmqPEz2L3eQ+HdZ6PqrC9Y4KALVJa0TZ5OB1U2UCQLteSAQseFiOMw0V7FLxBliWj/DeH6VDnVArLszjtB/d1uvbfR8tGnbYF7J3jeJhkjyNnTQi9qS8ht5rtLJY1E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771992823; c=relaxed/simple;
-	bh=C9akqr1p82j6IfyUpiMxeewlbx7qXdsvmj/GTnipb9I=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=MSPgZDhyblkaw6fY9t7mGE6KBHG2J3bqrzUYdy5QyCdYwWbgpxJy1Lw6MI+uozQDSSW0ewQcKsF/SRuI3JTxGV/EEEBIDLpyKYUxhUeJlEbbd5ns5kLvmjl3NcJN6whYtjFwoCqGdFxW+Qo8M9Wfxre+lq0/fl1OfbNMr5o9qso=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O/O2kAaz; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771992821; x=1803528821;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=C9akqr1p82j6IfyUpiMxeewlbx7qXdsvmj/GTnipb9I=;
-  b=O/O2kAaznGykIyUweNtfwiheOCIh635b2XWb85zW//Q3Ohow5XgYhQEO
-   SwjGjbnNrqrcTfbe+6bno5CkGg0ewIhaPXH68DvDHhfCeNXja/IuAT8PP
-   XPyBduHPYyoJ77VPS5MpCNk3ZwJRTSmBL5uzhZreu3KWIyrGJvsD+8sWI
-   QL1Bj1XcT1wdC55NpoKjJqzRzdMXnRVljosxCLHs8bhd1QenoSSNgc4++
-   i8iQgWiMJunEW+M82e0VHYykWJSvLTZNwH6iMV2o/xwJSL7aMUftghUQu
-   nuAMoxwZTmoKLW2ZKX1CfQFPXWdT9mozpfMT2coh8oEH5C2ksg3f4Gn8Y
-   w==;
-X-CSE-ConnectionGUID: VMMpE0C4SVS+Kgw82pIpYg==
-X-CSE-MsgGUID: prhj4+guQi6mu9s7uxDoLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="76891267"
-X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
-   d="scan'208";a="76891267"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 20:13:40 -0800
-X-CSE-ConnectionGUID: cPW7yvxnTiWvKEea/XUF3w==
-X-CSE-MsgGUID: Hx74epWHTfeU9Ts0U8oCLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
-   d="scan'208";a="246667467"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 20:13:40 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 24 Feb 2026 20:13:39 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 24 Feb 2026 20:13:39 -0800
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.39) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 24 Feb 2026 20:13:39 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bjQNDbUGt+slJ3IPCXN2vxZjZTUZ79jEUwA+M9aFCc1TzoPEz7Vrq3KpX4JMOd3JfoBFfTM1bRbF8wcKKjTz4ub52wVV5TUqJdWQMFRTyD9poAEfG9nXHHs9T5S+LvJNphQzI7cCtv902OuI7rlEhUpaGy7YfypYMcKN4I7Bf9j8/V1mykMAeE/9vV0vzyUhyTwjRFFjqnYiS4EyU4HYuTj2BVk9J12vRTb7fQHCIWayI0DelTkVeuYLeV8m6zKRl+a6IGu1R4/4/SL8pxOkB2d0hY3orEybNkErUJNhCbjac9P+PsnuEXATby3cPJ/xsSR8GhfnjuTvryZOTAIlZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0rVN41fCD+D0Gzk1tE0d+uPF0hYTu6wUOHUHn9bllnM=;
- b=CFSH0oGCqPHjzhaqOpvJkjuPpgFKnDtH7CibLafuGafZc24wmwwvyA5+hoQAYdFOvCnHM6l3F1HADqno3kUph2kXslDoPg1f5BqQuBf4hrxx8dFoLZFBU9XVzFVaxkgJCrAYuwYMAsd1akPneke+bswBedg688JvMzCHS54IgQppgsvJolHfSY5EiC9yQnN/W3xCdyIpc52mb11LN8m5RHF7leMiScglj855rDcmLkvTi4lZtkzJB4j1Ivs1BWhNtDbxcs04OLxkUxv81fYXYzqCiCwbBywXaJKU6ket4It7HiynrWDk/5JCuMoOiv/QngXiQJEd/qS8SmgcGP2bwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
- by MW4PR11MB7055.namprd11.prod.outlook.com (2603:10b6:303:22b::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Wed, 25 Feb
- 2026 04:13:37 +0000
-Received: from DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::68b9:ea3c:8166:3cc4]) by DM4PR11MB5341.namprd11.prod.outlook.com
- ([fe80::68b9:ea3c:8166:3cc4%4]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
- 04:13:36 +0000
-Message-ID: <40fbaf0f-525c-4f38-bb26-3f662a0a1a0c@intel.com>
-Date: Wed, 25 Feb 2026 09:43:29 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] drm/i915/psr: Repeat Selective Update area alignment
-To: =?UTF-8?Q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>,
-	<intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>
-CC: <stable@vger.kernel.org>
-References: <20260219130743.1232188-1-jouni.hogander@intel.com>
- <20260219130743.1232188-2-jouni.hogander@intel.com>
-Content-Language: en-US
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-In-Reply-To: <20260219130743.1232188-2-jouni.hogander@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0151.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d7::14) To DM4PR11MB5341.namprd11.prod.outlook.com
- (2603:10b6:5:390::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26141E8836;
+	Wed, 25 Feb 2026 04:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771992999; cv=none; b=t8Yy9P48f4X3TTcP1idsm5PvCnICHClFiqM+J3Bpc4hdhVY6fFyeWAmsbuaq+6gK/8NTiia+LbX98d410bQGC1hXhlRb3JuCNadW1DjGkRmhPx5brwXj65YHr9HFBtlv70djKDGWtGQzByKd+po1zh0T3ZP4+8KUC70XU9UpEYg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771992999; c=relaxed/simple;
+	bh=sdKKVLcqscdDMHAnpJ+Gkqhj+X56bUXmUnQwvc+2jLU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m9HZKoh+3NDTqw0/+7RwTJ5lI2ZYB9zUfxCy1z1x6Clp9GTnsBZqe5TbVyBUs9Mv/HclQ0Vt7Uwu5XSY6kgWo2uKeWLIOt7Sl9ynBN3hdBkfBcd5s8e5CuXVsuJcHn6yXjteph9dgV0388zQYIethb35By+5ZwdipqZy98fidSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MyvzTN8u; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Hr
+	hdleSboPuLc6Y9mZ4jEkEnwB4af0/nPwDI6YPYUfU=; b=MyvzTN8u61wLcChTdo
+	eCMHgT/ycIMFpsTnvivUwOFByQwtjyKdaauHtm3YZU0yA6BQZIN6kyKu2G88uA4j
+	NBqr+rHpJeoIhxfjsp/8f1CiGyWeIUq0MUnYrBuzM4571ofBGKLPu8BIDVSioh99
+	v9dkVONMlqVR/yTDv2diX1Bls=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDX_QiHd55pLy8aMw--.48963S2;
+	Wed, 25 Feb 2026 12:16:08 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Rob Herring <robh@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1.y 1/2] net: enetc: reimplement RFS/RSS memory clearing as PCI quirk
+Date: Wed, 25 Feb 2026 12:16:04 +0800
+Message-Id: <20260225041605.1563705-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|MW4PR11MB7055:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb44d2a1-9e38-42be-1eed-08de74243f3d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Y0hKMnhzUHMvbS83TjJqb3RuVkM5cG9iNUpLcVU0cW9waXVON0NQYzRWazRn?=
- =?utf-8?B?WTdVMGVRTjBYWW1zSjdVWXBrM1k0bm52Q3UyNlVLczBFa1pkdDI4aFpZZEk2?=
- =?utf-8?B?dU5yYmxPZ1hkbEpOZjBkOE16cnpaOHZKV2pFMzh0TGlQTjBlQi9sY09nLzR4?=
- =?utf-8?B?ZVN1ZFJkMmkvNUhnamxLMHRIOVZWcm1FeVI2SnhZYkQ5bjhpdzVKbDg0c1E2?=
- =?utf-8?B?WVBJUWhIYldvS1BjQVM0VTRXbjN0ZEtkL0JqbUhVNm5xanhNR0orUXNSa3Jr?=
- =?utf-8?B?ei9uZ1ZQTmY0ZXpNRjhhcjVhQm5CV3d0clZlT3RnMHFDS2VaY0hQaHJQY2pX?=
- =?utf-8?B?cFRGc3Q2YUo0dVJNN1R2aHJXejJabENTeEdjWWNta3NTa0Y4eCtoWk0rZ3Ju?=
- =?utf-8?B?RmxFeVNwaFZIVW04akpyUmU1VU1aQ2JSZ0xGc0NxVXFQbWg3T05hSVkyVk4y?=
- =?utf-8?B?ZmdIWmxTMkkvK2R1TjVNS1BWc2J6SHV1QUNnTEFjdEtJVS9HNWk4RERCeWIx?=
- =?utf-8?B?bkgvTGxTM0E1OHlaV2RYR013Mnlxc2U0dVRCWmFnWVl1eGowenZOK2hkZk0z?=
- =?utf-8?B?emw2WXVDaDZJb2hVb0REa21hM1ZOOThycXlaam5lNUNkdjJmNjFjdFRSTXcv?=
- =?utf-8?B?WXBQS2thanNyYWg3MnQrZ25oc3ZmUkIwczNCZVNFY2taSE1RN1VFczRWNHpR?=
- =?utf-8?B?aFd2U25oQ29GRkoveElYZHhwQTVkdXZ0RmhneEVHRU81MHRQRVFhT21USzZp?=
- =?utf-8?B?MHdTekFGcHBJUDAxN3FPVllIL2pvZ2xsdzhuK1JJTTArekloMzk4VVZUcHVh?=
- =?utf-8?B?UGNiTHAzQTJkU3F3Q2trSUY2U1NBM0gwUzB4QWdZQUUrZ25EWlc2NnlsNTZW?=
- =?utf-8?B?WkR1ZlJLZDZxZ05DRXRDNGhIWlBGazFjV0pmYmxoUy9tamhUbTBCZlVTRTFn?=
- =?utf-8?B?Tk1pMGttbHp6VmlOQmVaMEFMb0k4TzlkMGRwWVJqdWw4NVA4T1QyWmtIY3JF?=
- =?utf-8?B?UUZaQ2lIc0VFOHlmUGNtUCtaWHd3V1dmUTA3NjUxRGZ2TFN4SjFmTEhiWStQ?=
- =?utf-8?B?SkdXYnB4K3dWQ3pONGVvMmZ6QnIyMjZ1SUw0MHk5U1RBU1hzMzdNaHNCQmN6?=
- =?utf-8?B?UmQvZTJKMDdpSFQwMzUwaFV3SkRHaG1JM21ROWdnM3BKMVRiMGo3bXRDdDB4?=
- =?utf-8?B?blVaMSt1bXVCU1RTSzJiS3FoTlRuVFcxaFRYMzFaTmRYVTdKc2xFcGp4M05I?=
- =?utf-8?B?NGowUGhDb25YQlRUSUU4MkZBQld1akx4bnlnWlBMemU1U0pDZ0ptWmdRZCsx?=
- =?utf-8?B?eVdmTzZUckhuRktnMmV6cVhHQmQ5OTVPMThvU1ozNUtTWDRVVlFHRFFjS0lO?=
- =?utf-8?B?OXI5TUhXTk5JTHRJUC9qUnh0RzBMbVl2d3g5dFc5Rm5takRCaXFuWEpXSTdE?=
- =?utf-8?B?OHJKM3B5bklmcktVY2MrVGMrTDVVMGNId0tKSllEeXVzK1lPRUlGNXVNdjB3?=
- =?utf-8?B?ZEgxZTR0S2xySjFURjJMVnZ0cTFvUS9xZE1JRkVnZHExRGpyQUpybWk0cTNi?=
- =?utf-8?B?aHZKckJLN0RwNEd3dUd1UmdpRjJianRZUDl6YXBZa0ZYdHJWdVRxWm1pSi92?=
- =?utf-8?B?dlBraFNCRVFwNW51K0dEcVdMdjMrSkQzcmg5dEVLK1RYZUpOdEZ5dGU1VTIw?=
- =?utf-8?B?azU3dHhBb1YwbDlDQW1lcGN0TnhZbGcvQWxFYVJLdGNTWk9TWXJUbXpQZnM5?=
- =?utf-8?B?Z09UeXlWV1QzMmFVSFRtSXBmWno3OHpmTDRzQmpXZ01TV2ZqMEJIUUkvc1lq?=
- =?utf-8?B?cUZPSmdMQmhOMWM1dC9lYS9YRlhZRDJKcnRBSEx2TCtrWCtwTTJaMTcwdU5k?=
- =?utf-8?B?SmVRTmJSOVZFQXVvK3ZvdVZnVzRtbTcyOEVXR3hJVU03ellLdk92UFR4TUVv?=
- =?utf-8?B?M29lQXg3T0pLKzhkM1U0UEVzYXNtUGt1WU5qaDRuYTJkcDhYSFk5STVGK2l1?=
- =?utf-8?B?N2o3d3FJZ2M1UlM4UWpTVlFxRE55UHpiTXNCSkNPQU1UbTIxVVIyR2IvN3NM?=
- =?utf-8?B?SVBNblJLVWtwVlBYdDZtYVZSUnl3Wk1qaFdMbVF3djl1aWxIcWhaTVY3bkVm?=
- =?utf-8?Q?rA5g=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5341.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SW5pdWptU3ZYSmNCaUtGTVEycFpMSXdIZzVmYmFIOWxPRE5vSERkQTRuQjd3?=
- =?utf-8?B?dEsxbk1CWFZ5dGM2Vy9nUTUzeEMvcitCclF4cEw1RWlvSXZZMkVKbm96S3c2?=
- =?utf-8?B?emVrdi9KL0xQQ3luREYzOXhnSXV6U0NOMlExR2lzemlSdmhrS1Bnc1NNQU91?=
- =?utf-8?B?L1ltbFJWRitrUzVQVHRLYjE0a1Q4cFl4MkJKRVZKakNZakhVOGVTdWtTNG1L?=
- =?utf-8?B?SmUwZGo3UHZvOTczZWhnL0loWGpPTUwySlp4cjZLeWREUThxM1J3TG8rWE9F?=
- =?utf-8?B?NFNlYjFHSnVOTDF4eEx4eG9nRm1LMm9meStUQW9jZTZXcGREUUg1cmM5L0xz?=
- =?utf-8?B?YUltRmVKb3pMUUdiMmZBdnlvc2hhWmZ2TnVoY09hdVM3VVlBOHJRN2g1R01L?=
- =?utf-8?B?KzR6cG52QXcxSk9wUFA0Z053SjZTQW9EWHhURC95VFJ6QmZ2dTRrRzd4QWpy?=
- =?utf-8?B?SlVpK09mU01XQW9nVW5uSlN5M2h4aWFMZWFxSThsWndDNDFXVWJHd2dhU29W?=
- =?utf-8?B?eUN0QU5CWVVCNzd3VkE4cnJaUlk2VFpzNWlsc2N6ODh5dlRzWWlpTjdUOFZi?=
- =?utf-8?B?aUVVRHF2UkI0WGRkQ213b1BaT1lzOGpTUDF2NVBISHJNNVdDWHpvS21KL2Zt?=
- =?utf-8?B?QXBYb2d0OUVJY212Tjl5Wmx4QlhKVlpFTldxUTgyZ09PRXBNVkNKRmtUcElZ?=
- =?utf-8?B?RVZNdGJpeHFXcmRuQ2tlanNuZ1RNNnl2bFpBWnA4OC9tbThqNFhESTBEWWsw?=
- =?utf-8?B?V29EMkhiS3VwSlNhanFEaE5zQUtJMDFvL1JkWVRuVnY1czFTWnZEY0U1eVZr?=
- =?utf-8?B?Q1hiM1VuNTdEeUxaa05LZUNJamdCZWpvdUw4MjJIemFPUkFBb1F4dm1FV3RP?=
- =?utf-8?B?Nk01RElQYXc1UU12a0s5eXIvZm1QUy95UnBVSDdKbFIvQ0NWdmQ4SmZmdjdQ?=
- =?utf-8?B?Ym8vb0tpdzJEdWlrbGFOQndocTc5MnBiTE9PS3BiNjFyejdnZmp0YjZJWEgx?=
- =?utf-8?B?enIzNDE5ZERnV3VFdTVialRkeXJTcFNLNlZlUzE4TEhRTThhaWhaVWlJOUtX?=
- =?utf-8?B?dlU3dmV2bEptNG5sZUgrS25KeWFoT2hKcTRMTG9wcjZtTzlkWklsdFR4U3hv?=
- =?utf-8?B?Nmd5MDZrZlk3MzNjRFA2VVg2THIzTlJqRVphUUg2bjlETHlkYUdWWHJLcU9k?=
- =?utf-8?B?UXNYck9FazZiVytuTzdtN2MvS2NLR2pielRNMWtBaXk4TXZrZzBBN0E5ejQ1?=
- =?utf-8?B?QjZtdkw4SThKT01SRW5NWlV4VVdtSUdpWE1pcTErWlVKeEZ2eXRpUFJja2Ro?=
- =?utf-8?B?MDBjZE54S3FmYTE4Y1c5amcxVEFQMUc0STdRTmxia3VFOHJnZ2VkcDVxNy85?=
- =?utf-8?B?cG94NTkrUjdsM1dlbmZKK0hJL2NqdmRhRldSdzNlTUhCaVZyb2loT21OY25h?=
- =?utf-8?B?ZUdiSDVTTW9IWG9rUmVkZnljcXBCUFpFM0d3b0hWSzBzNlZrSSt3SlAvb1BB?=
- =?utf-8?B?V0JBcHVDUTYzV3pjVjU1a3dyK0h1Q2NLWHFXS29sSmp4QURXbHZXV1RoM21h?=
- =?utf-8?B?VUlYTTJHaktBc1R1aExRT2J4NnA2UTNBazNjS3ZOZ1hNRTcyOUVyWTVFYjBE?=
- =?utf-8?B?MVR1L1B6eSs3OGxwajNuY3ErLzBlR0NnQXR4SnRnYlczVlRuS2xwNkFES2lT?=
- =?utf-8?B?LzdtYkdqakFmT0xYRTQzdFZ2Y1RYVnFKNWJWYXc1ZGduVlZsYVV5M09NNHpU?=
- =?utf-8?B?Wng5S1RnRGV5ZlNyQTl1TnFlc1R6eWZDYWNacXdnKzJKL3RGQUJyaGlRUVZ6?=
- =?utf-8?B?WVJGRGRuaFN3aEI4MEJNSWJRcHlPd21VTXBwb0RmR25sVFA1MDkrb0lvYXhq?=
- =?utf-8?B?Szc1Rk93VnI1YUthR3JBM0xlOG1rWld4TTRBOHJZdGE2d3hnRk5LQ2JheTI1?=
- =?utf-8?B?bzdGUDladzRsckZPb3QrcFhORVlSYk51ZzgyaUdkWGU3YldhTW5IRU9FUXdj?=
- =?utf-8?B?K1VVdHBRUjdiL2tTYlJ5dkpqWUUrcmJaaTN2WExGbjJhLzYrLysrejFBS3Jm?=
- =?utf-8?B?SWZlemF5WENmTGtPNzlrNjNTbzY1amE3QWg3SHFjRWRqSkY4VzJrMzB4Ynk1?=
- =?utf-8?B?UjNMemNFbWwxajQwbTZKSWdOU1FlSWZBUGpEUXp3VS84S1hwem9UeksycHBB?=
- =?utf-8?B?SGxhaHZJQnMxcHNjRnNnb3F0K1FjeG41NVl3UVY3cjBIZG8zeXp6SXJxMW0w?=
- =?utf-8?B?bjNEOEFIWWNtV2dkRzBPZUkyblI0Y0FNTEJSTzRyaDVodlUveHpEbklsSThM?=
- =?utf-8?B?QkZSZzlaRWh0OWpaOWFzYzdRZTdsOG1pMkFUNG85RU43Nmt6emJ6MlU5NmNa?=
- =?utf-8?Q?y3ftDdghXHNZXtfA=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb44d2a1-9e38-42be-1eed-08de74243f3d
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 04:13:36.5435
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HgCq3FKBxdNJHfuw088mg9GMGLdRW3Ah1SpbsBF3lqls1phHWrJ2tM/jFKkobSrYzMAZsLsWbfir+0o5cD7fgQaAtpaYnZ37B2TKTACiOfk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7055
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDX_QiHd55pLy8aMw--.48963S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Aw18Zr47WF43Kw1xJw4UCFg_yoWxXr4DpF
+	WfWasIgr4kXry5Cw4kJr4UAFy5KF4Iq3yrW3yxCw1I9a1avFn7Jrn2gr10y3W8trWkXa17
+	A34Dta18ZF1kAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi4SokUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+QkCm2med4k0cQAA3l
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219187-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:mid,intel.com:dkim,intel.com:email];
-	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-219188-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,nxp.com,kernel.org,davemloft.net,163.com];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ankit.k.nautiyal@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: ACF3E191870
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,davemloft.net:email]
+X-Rspamd-Queue-Id: DA2E119188A
 X-Rspamd-Action: no action
 
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-On 2/19/2026 6:37 PM, Jouni Högander wrote:
-> Currently we are aligning Selective Update area to cover cursor fully if
-> needed only once. It may happen that cursor is in Selective Update area
-> after pipe alignment and after that covering cursor plane only
-> partially. Fix this by looping alignment as long as alignment isn't needed
-> anymore.
+[ Upstream commit f0168042a21292d20007d24ab2e4fc32f79ebf11 ]
 
-If I understand correctly, intel_psr2_sel_fetch_et_alignment() tries to 
-expand the current su area so that it includes the cursor if it was 
-partially covered.
+The workaround implemented in commit 3222b5b613db ("net: enetc:
+initialize RFS/RSS memories for unused ports too") is no longer
+effective after commit 6fffbc7ae137 ("PCI: Honor firmware's device
+disabled status"). Thus, it has introduced a regression and we see AER
+errors being reported again:
 
-Then the intel_psr2_sel_fetch_pipe_alignment() tries to expand the su 
-area to align with the slice height/y granularity.
+$ ip link set sw2p0 up && dhclient -i sw2p0 && ip addr show sw2p0
+fsl_enetc 0000:00:00.2 eno2: configuring for fixed/internal link mode
+fsl_enetc 0000:00:00.2 eno2: Link is Up - 2.5Gbps/Full - flow control rx/tx
+mscc_felix 0000:00:00.5 swp2: configuring for fixed/sgmii link mode
+mscc_felix 0000:00:00.5 swp2: Link is Up - 1Gbps/Full - flow control off
+sja1105 spi2.2 sw2p0: configuring for phy/rgmii-id link mode
+sja1105 spi2.2 sw2p0: Link is Up - 1Gbps/Full - flow control off
+pcieport 0000:00:1f.0: AER: Multiple Corrected error received: 0000:00:00.0
+pcieport 0000:00:1f.0: AER: can't find device of ID0000
 
-Hence it is possible that after aligning the area with the slice 
-height/y granularity, the cursor which might have been outside the su 
-area, has now become partially inside the su area.
+Rob's suggestion is to reimplement the enetc driver workaround as a
+PCI fixup, and to modify the PCI core to run the fixups for all PCI
+functions. This change handles the first part.
 
-So the iteration makes sense. However there are couple of things:
+We refactor the common code in enetc_psi_create() and enetc_psi_destroy(),
+and use the PCI fixup only for those functions for which enetc_pf_probe()
+won't get called. This avoids some work being done twice for the PFs
+which are enabled.
 
-- if the cursor was already inside the su area, then even after pipe 
-alignment which expands the su area (y1 decreases goes vertically up and 
-y2 increases goes vertically down) the cursor will still be inside the 
-su area.
+Fixes: 6fffbc7ae137 ("PCI: Honor firmware's device disabled status")
+Link: https://lore.kernel.org/netdev/CAL_JsqLsVYiPLx2kcHkDQ4t=hQVCR7NHziDwi9cCFUFhx48Qow@mail.gmail.com/
+Suggested-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+---
+ .../net/ethernet/freescale/enetc/enetc_pf.c   | 103 +++++++++++++-----
+ 1 file changed, 73 insertions(+), 30 deletions(-)
 
-  In that case we dont need to do another iteration we can exit the loop.
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+index b84d5a66558a..b6fd12c9ecc4 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -1236,50 +1236,81 @@ static int enetc_pf_register_with_ierb(struct pci_dev *pdev)
+ 	return ret;
+ }
+ 
+-static int enetc_pf_probe(struct pci_dev *pdev,
+-			  const struct pci_device_id *ent)
++static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
+ {
+-	struct device_node *node = pdev->dev.of_node;
+-	struct enetc_ndev_priv *priv;
+-	struct net_device *ndev;
+ 	struct enetc_si *si;
+-	struct enetc_pf *pf;
+ 	int err;
+ 
+-	err = enetc_pf_register_with_ierb(pdev);
+-	if (err == -EPROBE_DEFER)
+-		return err;
+-	if (err)
+-		dev_warn(&pdev->dev,
+-			 "Could not register with IERB driver: %pe, please update the device tree\n",
+-			 ERR_PTR(err));
+-
+-	err = enetc_pci_probe(pdev, KBUILD_MODNAME, sizeof(*pf));
+-	if (err)
+-		return dev_err_probe(&pdev->dev, err, "PCI probing failed\n");
++	err = enetc_pci_probe(pdev, KBUILD_MODNAME, sizeof(struct enetc_pf));
++	if (err) {
++		dev_err_probe(&pdev->dev, err, "PCI probing failed\n");
++		goto out;
++	}
+ 
+ 	si = pci_get_drvdata(pdev);
+ 	if (!si->hw.port || !si->hw.global) {
+ 		err = -ENODEV;
+ 		dev_err(&pdev->dev, "could not map PF space, probing a VF?\n");
+-		goto err_map_pf_space;
++		goto out_pci_remove;
+ 	}
+ 
+ 	err = enetc_setup_cbdr(&pdev->dev, &si->hw, ENETC_CBDR_DEFAULT_SIZE,
+ 			       &si->cbd_ring);
+ 	if (err)
+-		goto err_setup_cbdr;
++		goto out_pci_remove;
+ 
+ 	err = enetc_init_port_rfs_memory(si);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Failed to initialize RFS memory\n");
+-		goto err_init_port_rfs;
++		goto out_teardown_cbdr;
+ 	}
+ 
+ 	err = enetc_init_port_rss_memory(si);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Failed to initialize RSS memory\n");
+-		goto err_init_port_rss;
++		goto out_teardown_cbdr;
++	}
++
++	return si;
++
++out_teardown_cbdr:
++	enetc_teardown_cbdr(&si->cbd_ring);
++out_pci_remove:
++	enetc_pci_remove(pdev);
++out:
++	return ERR_PTR(err);
++}
++
++static void enetc_psi_destroy(struct pci_dev *pdev)
++{
++	struct enetc_si *si = pci_get_drvdata(pdev);
++
++	enetc_teardown_cbdr(&si->cbd_ring);
++	enetc_pci_remove(pdev);
++}
++
++static int enetc_pf_probe(struct pci_dev *pdev,
++			  const struct pci_device_id *ent)
++{
++	struct device_node *node = pdev->dev.of_node;
++	struct enetc_ndev_priv *priv;
++	struct net_device *ndev;
++	struct enetc_si *si;
++	struct enetc_pf *pf;
++	int err;
++
++	err = enetc_pf_register_with_ierb(pdev);
++	if (err == -EPROBE_DEFER)
++		return err;
++	if (err)
++		dev_warn(&pdev->dev,
++			 "Could not register with IERB driver: %pe, please update the device tree\n",
++			 ERR_PTR(err));
++
++	si = enetc_psi_create(pdev);
++	if (IS_ERR(si)) {
++		err = PTR_ERR(si);
++		goto err_psi_create;
+ 	}
+ 
+ 	if (node && !of_device_is_available(node)) {
+@@ -1365,15 +1396,10 @@ static int enetc_pf_probe(struct pci_dev *pdev,
+ 	si->ndev = NULL;
+ 	free_netdev(ndev);
+ err_alloc_netdev:
+-err_init_port_rss:
+-err_init_port_rfs:
+ err_device_disabled:
+ err_setup_mac_addresses:
+-	enetc_teardown_cbdr(&si->cbd_ring);
+-err_setup_cbdr:
+-err_map_pf_space:
+-	enetc_pci_remove(pdev);
+-
++	enetc_psi_destroy(pdev);
++err_psi_create:
+ 	return err;
+ }
+ 
+@@ -1396,12 +1422,29 @@ static void enetc_pf_remove(struct pci_dev *pdev)
+ 	enetc_free_msix(priv);
+ 
+ 	enetc_free_si_resources(priv);
+-	enetc_teardown_cbdr(&si->cbd_ring);
+ 
+ 	free_netdev(si->ndev);
+ 
+-	enetc_pci_remove(pdev);
++	enetc_psi_destroy(pdev);
++}
++
++static void enetc_fixup_clear_rss_rfs(struct pci_dev *pdev)
++{
++	struct device_node *node = pdev->dev.of_node;
++	struct enetc_si *si;
++
++	/* Only apply quirk for disabled functions. For the ones
++	 * that are enabled, enetc_pf_probe() will apply it.
++	 */
++	if (node && of_device_is_available(node))
++		return;
++
++	si = enetc_psi_create(pdev);
++	if (si)
++		enetc_psi_destroy(pdev);
+ }
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FREESCALE, ENETC_DEV_ID_PF,
++			enetc_fixup_clear_rss_rfs);
+ 
+ static const struct pci_device_id enetc_pf_id_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_DEV_ID_PF) },
+-- 
+2.34.1
 
-- cursor_in_su_area is set and never used.
-
-
-Perhaps we can change the loop a bit like:
-
-bool su_area_changed;
-.....
-do {
-     bool cursor_in_su_area = false;
-
-     intel_psr2_sel_fetch_et_alignment(state, crtc, 
-&cursor_in_su_area);     // Cursor is now either fully inside su area OR 
-fully outside.
-     su_area_changed = intel_psr2_sel_fetch_pipe_alignment(crtc_state);  
-   // Alignment increased the su area.
-
-/*
-  * If the cursor was outside the SU area before alignment, the 
-alignment step
-  * (which only expands SU) may pull the cursor partially inside, so we must
-  * run ET alignment again to fully cover it.
-  *
-  * But if the cursor was already fully inside before alignment, 
-expanding the
-  * SU area won't change that, so no further work is needed.
-  */
-     if (cursor_in_su_area)
-         break;
-} while (su_area_changed);
-
-
-
->
-> Fixes: 1bff93b8bc27 ("drm/i915/psr: Extend SU area to cover cursor fully if needed")
-> Cc: <stable@vger.kernel.org> # v6.9+
-> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-> ---
->   drivers/gpu/drm/i915/display/intel_psr.c | 32 ++++++++++++++++--------
->   1 file changed, 21 insertions(+), 11 deletions(-)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-> index 5bea2eda744b..331645a2c9f6 100644
-> --- a/drivers/gpu/drm/i915/display/intel_psr.c
-> +++ b/drivers/gpu/drm/i915/display/intel_psr.c
-> @@ -2688,11 +2688,12 @@ static void clip_area_update(struct drm_rect *overlap_damage_area,
->   		overlap_damage_area->y2 = damage_area->y2;
->   }
->   
-> -static void intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_state)
-> +static bool intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_state)
->   {
->   	struct intel_display *display = to_intel_display(crtc_state);
->   	const struct drm_dsc_config *vdsc_cfg = &crtc_state->dsc.config;
->   	u16 y_alignment;
-> +	bool aligned = false;
-
-
-Here also it would make sense if we make this su_area_changed. (ofcourse 
-after alignment)
-
-Hope I am making some sense and not totally off.
-
-Regards,
-
-Ankit
-
-
->   
->   	/* ADLP aligns the SU region to vdsc slice height in case dsc is enabled */
->   	if (crtc_state->dsc.compression_enable &&
-> @@ -2701,10 +2702,18 @@ static void intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_st
->   	else
->   		y_alignment = crtc_state->su_y_granularity;
->   
-> -	crtc_state->psr2_su_area.y1 -= crtc_state->psr2_su_area.y1 % y_alignment;
-> -	if (crtc_state->psr2_su_area.y2 % y_alignment)
-> +	if (crtc_state->psr2_su_area.y1 % y_alignment) {
-> +		crtc_state->psr2_su_area.y1 -= crtc_state->psr2_su_area.y1 % y_alignment;
-> +		aligned = true;
-> +	}
-> +
-> +	if (crtc_state->psr2_su_area.y2 % y_alignment) {
->   		crtc_state->psr2_su_area.y2 = ((crtc_state->psr2_su_area.y2 /
->   						y_alignment) + 1) * y_alignment;
-> +		aligned = true;
-> +	}
-> +
-> +	return aligned;
->   }
->   
->   /*
-> @@ -2945,15 +2954,16 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
->   	if (ret)
->   		return ret;
->   
-> -	/*
-> -	 * Adjust su area to cover cursor fully as necessary (early
-> -	 * transport). This needs to be done after
-> -	 * drm_atomic_add_affected_planes to ensure visible cursor is added into
-> -	 * affected planes even when cursor is not updated by itself.
-> -	 */
-> -	intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
-> +	do {
-> +		/*
-> +		 * Adjust su area to cover cursor fully as necessary (early
-> +		 * transport). This needs to be done after
-> +		 * drm_atomic_add_affected_planes to ensure visible cursor is added into
-> +		 * affected planes even when cursor is not updated by itself.
-> +		 */
-> +		intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
->   
-> -	intel_psr2_sel_fetch_pipe_alignment(crtc_state);
-> +	} while (intel_psr2_sel_fetch_pipe_alignment(crtc_state));
->   
->   	/*
->   	 * Now that we have the pipe damaged area check if it intersect with
 
