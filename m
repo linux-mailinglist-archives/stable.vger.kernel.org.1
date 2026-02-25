@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMAtI8+dnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:27 +0100
+	id SDToHTlTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2654D192AC8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8BE218F739
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F21430D49C0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E68FA312B174
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1EF2C11CF;
-	Wed, 25 Feb 2026 06:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF2018B0A;
+	Wed, 25 Feb 2026 01:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUZFgxFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlRtIuIV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A732C3252;
-	Wed, 25 Feb 2026 06:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8369020C012;
+	Wed, 25 Feb 2026 01:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002578; cv=none; b=YXTO4ZoUKCwKdecV3qbW/8aVRanfIS2cSjp8i5MZvO4mKnWka0lK7clo+mAOToQaNMrcXpFt607b3ejDwTXuaKQ5CqX5s3YFPHlNQX4dMgauvf9N3WLQKBe3cHxkAt3R4pH7fI/INLc5mt/fiSQFAf+akTaDW+ud+wBB8p/Z7A8=
+	t=1771983378; cv=none; b=nxvL87ZLAI1tdW54K8UH4UL9qSzlo1p+YjADdqUnELSm+AA7CkAbSqopmoSz5RarzR6Q91sJoisD15hGtBV+HiyRyUKaDzvQXSf3UIDdEP6lZKqFKaJbNE9en/lzBgYlWBT2wYz3FgrUplEbfO8B7ZarrWCQcBFOVrm/VqbnjXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002578; c=relaxed/simple;
-	bh=CYfjDcp/wyadi8AXCFZznbHGj+lv6mMXyyUsxLc7z+Y=;
+	s=arc-20240116; t=1771983378; c=relaxed/simple;
+	bh=XRZFchPwgJEKVJXlc1j1OD4DsyUpcw4bi3RNJhClyeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjzZL1JlGq/I3Oi8Bl+Hm1uib1f12IXCragDRTtTYWdMrCRAyGR+xiXQKvOPIRyZsXPVF5X93FBLVtbgDBqRTWbcegyFKEyTDBcCqmeCKaFs1tfRRxTMmZFUPH24q4PVVDNwjkstxv6OcYe2jbUp37jYM647ceMpY1PZxC3tufA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUZFgxFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD87CC116D0;
-	Wed, 25 Feb 2026 06:56:17 +0000 (UTC)
+	 MIME-Version; b=ZXoHXeLPtmdNokecioJuubiSm4xweEJtBudiN5YmDVofy4eU8LPxsGUlEakzAiXDd0L2QLfuJ70jelMwhqNzjYeeSy8Wt10JwxRg4qhCjuC9uk2Ofq17Z2RcYhIg+FIYB3ZjWkSF/ZArmxFH5TwIkGCPwfDh+LpKI4sLpp8zILc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlRtIuIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B43C116D0;
+	Wed, 25 Feb 2026 01:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002577;
-	bh=CYfjDcp/wyadi8AXCFZznbHGj+lv6mMXyyUsxLc7z+Y=;
+	s=korg; t=1771983378;
+	bh=XRZFchPwgJEKVJXlc1j1OD4DsyUpcw4bi3RNJhClyeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUZFgxFaLz9hehd49/ewQKOi//Gvjwzd5OqhljVdkbGJ5lpSakMpPPLb5MSplIJkI
-	 DoHyyRYNUCLisdKSRhvyNdU5kUh2atwWjYz6Tojjz7/Qv6Hn1UYDs0dKOTzFWkOn+q
-	 oNgy/r+Q0U+s74nuNyj8DM1ZfnEffxxYf/71RnbM=
+	b=BlRtIuIVylT61F8Z/Z4WeOsN8+C3WAohglh0QwXZW4LHQ0fXoXHsu+yuRQh15/ouR
+	 CIKx1NxaAgAhHFNOENuN+RUZOmxbZlLwglef0Oby997L+7nNJeDGYXqD/7JJ1TxUC5
+	 zpgKj897WkbtTprGhQ/4GR/vOtBWNtoWKxkv5ZmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 285/641] wifi: ath12k: Fix index decrement when array_len is zero
+Subject: [PATCH 6.19 502/781] fs/nfs: Fix readdir slow-start regression
 Date: Tue, 24 Feb 2026 17:20:11 -0800
-Message-ID: <20260225012355.671701402@linuxfoundation.org>
+Message-ID: <20260225012412.116889896@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +69,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219227-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218540-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 2654D192AC8
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D8BE218F739
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit e4763898bb1325dbb3792961b6d607b5c6452d64 ]
+[ Upstream commit 42e7c876b182da65723700f6bc507a8aecb10d3b ]
 
-Currently, print_array_to_buf_index() decrements index unconditionally.
-This may lead to invalid buffer access when array_len is zero.
+Commit 580f236737d1 ("NFS: Adjust the amount of readahead
+performed by NFS readdir") reduces the amount of readahead names
+caching done by the client.
 
-Fix this by decrementing index only when array_len is non-zero.
+The downside of this approach is READDIR now may suffer from
+a slow-start issue, where initially it will fetch names that fit
+in a single page, then in 2, 4, 8 until the maximum supported
+transfer size (usually 1M).
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+This patch tries to take a balanced approach between mitigating
+the slow-start issue still maintaining some efficiency gains.
 
-Fixes: adf6df963c03 ("wifi: ath12k: Add support to parse requested stats_type")
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260123071253.2202644-2-aaradhana.sahu@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 580f236737d1 ("NFS: Adjust the amount of readahead performed by NFS readdir")
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/nfs/dir.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index 48b010a1b7566..4f749d473d0e1 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index e3654f4a1b9aa..571bb40880b2d 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -73,7 +73,7 @@ const struct address_space_operations nfs_dir_aops = {
+ 	.free_folio = nfs_readdir_clear_array,
+ };
  
- #include <linux/vmalloc.h>
-@@ -29,8 +29,10 @@ print_array_to_buf_index(u8 *buf, u32 offset, const char *header, u32 stats_inde
- 				   " %u:%u,", stats_index++, le32_to_cpu(array[i]));
- 	}
- 	/* To overwrite the last trailing comma */
--	index--;
--	*(buf + offset + index) = '\0';
-+	if (array_len > 0) {
-+		index--;
-+		*(buf + offset + index) = '\0';
-+	}
+-#define NFS_INIT_DTSIZE PAGE_SIZE
++#define NFS_INIT_DTSIZE SZ_64K
  
- 	if (footer) {
- 		index += scnprintf(buf + offset + index,
+ static struct nfs_open_dir_context *
+ alloc_nfs_open_dir_context(struct inode *dir)
+@@ -84,7 +84,7 @@ alloc_nfs_open_dir_context(struct inode *dir)
+ 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL_ACCOUNT);
+ 	if (ctx != NULL) {
+ 		ctx->attr_gencount = nfsi->attr_gencount;
+-		ctx->dtsize = NFS_INIT_DTSIZE;
++		ctx->dtsize = min(NFS_SERVER(dir)->dtsize, NFS_INIT_DTSIZE);
+ 		spin_lock(&dir->i_lock);
+ 		if (list_empty(&nfsi->open_files) &&
+ 		    (nfsi->cache_validity & NFS_INO_DATA_INVAL_DEFER))
 -- 
 2.51.0
 
