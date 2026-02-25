@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-218984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218995-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEqiAUBVnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218984-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:52 +0100
+	id QE1FD2hVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218995-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91AA818FF66
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFCE18FFF0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BA8FF3016882
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AB2243084D4F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD1729A309;
-	Wed, 25 Feb 2026 01:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267C2287253;
+	Wed, 25 Feb 2026 01:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybzms/hb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdvJCjP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4F4285419;
-	Wed, 25 Feb 2026 01:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE59F24677A;
+	Wed, 25 Feb 2026 01:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983889; cv=none; b=mML+HXBqwzHi8ubp45P1k5th9mKGBUCy0lN0JMrhT0LDR4tEAquNJAciYjHysv+apPbMuviFqkXQbAmkf/a4YyKl3iNRsYN5Mi7Y/lqp5jkvULdYLCDCUTQlKA5F4JQR+rkCbTnDBCRCAFz903p74xV2a1vlLVyJfo4t0EyAX5k=
+	t=1771983903; cv=none; b=MWi0w4zaB5eblltQOrBD+Ugy06+dP7d0u5Wk3ZgPZR+tSb6D3hjur04Q4KYODZkuxVnyGZidoaHHl4lR9lnigCf6O6OAO7O1pHo7FZH2dmU8tMtvdGbA/kfN6GPuho80A8BivKvfmMw3r2Cj5GEp17e2dmllv0Mud5xoSeZCe2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983889; c=relaxed/simple;
-	bh=cQhU8V1KP+BrbAyoqCQue4bR7RUYhkwfAJVEO+16+4c=;
+	s=arc-20240116; t=1771983903; c=relaxed/simple;
+	bh=U1TnIQw1Q5dBUS6xD4Bj3dX84dDlSa6ZD7cDvpg+jKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvEB20xNFBTACV7bBkSFAvYVBk95gvuqYDLwRtJS6g4/KKWYx50gCPSkU6bOy11UDppv3ZkJL/96cI12UElZXYxs7q0fGcY2vL/T3b80Yj9+RJLyRz9pgH54BSpCjfPsQB9aWMbxyi4VSZGjcsKWKS5OqedFZ0ftT9k/OPpqnKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybzms/hb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC00CC19424;
-	Wed, 25 Feb 2026 01:44:48 +0000 (UTC)
+	 MIME-Version; b=k6qC14foqEvpvLetSZt6BYAOZwGIkEw1GF5j38/8jWwuhQ5BzUUkWxG0QxNkk5GXKDDKENRfL7W0Loeulj82ngT3VQqlHKtQLzHh15hjfXrC8AvTbFRsgnrSZo8xZcNYHwwICGlh1kEdWDuGnPuWitKpopyNTnjRNfnzEHQJwKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdvJCjP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9919EC116D0;
+	Wed, 25 Feb 2026 01:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983889;
-	bh=cQhU8V1KP+BrbAyoqCQue4bR7RUYhkwfAJVEO+16+4c=;
+	s=korg; t=1771983903;
+	bh=U1TnIQw1Q5dBUS6xD4Bj3dX84dDlSa6ZD7cDvpg+jKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ybzms/hbe2Q3ar06PkpmFi3J8+bdLCShqoTigYM222vcwyP7QZgoJx609NYu8IINs
-	 nDJ12CUfiC+39oh2kj5+IdK6t7Hpk63vQdQibUJAX/Y7dJFMTGydSGcR56cEpXJI/s
-	 ML5EZfg+3kTaGKh8Jiw4oYxuRNEmFEqSLAct6JY4=
+	b=gdvJCjP+oWZYHwLf/7oYKVvaZrLN3rZG6KC8jzIH/gBhJEUbqQtSXdvOlTqGvm8Ff
+	 bWeC9nv4Uzza7qLD2x6w5FV5jKnEZAygTsVXDEMVW02S0ubFTBGi9GVD/hSXfQF3eF
+	 9+Mfl/pvubgFt/j0j74gnWf+gVwspwOuusvpcMag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 135/641] arm64: dts: qcom: sdm845-oneplus: Dont mark ts supply boot-on
-Date: Tue, 24 Feb 2026 17:17:41 -0800
-Message-ID: <20260225012352.411222368@linuxfoundation.org>
+Subject: [PATCH 6.18 136/641] arm64: dts: qcom: sdm845-oneplus: Dont keep panel regulator always on
+Date: Tue, 24 Feb 2026 17:17:42 -0800
+Message-ID: <20260225012352.431532367@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218984-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218995-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -93,8 +93,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ixit.cz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: 91AA818FF66
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,ixit.cz:email]
+X-Rspamd-Queue-Id: 9BFCE18FFF0
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
@@ -103,17 +103,16 @@ X-Rspamd-Action: no action
 
 From: Casey Connolly <casey.connolly@linaro.org>
 
-[ Upstream commit c9b98b9dad9749bf2eb7336a6fca31a6af1039d7 ]
+[ Upstream commit 45d1f42d3e84b5880cf9fab1eb24a7818320eeb7 ]
 
-The touchscreen isn't enabled by bootloader and doesn't need to be
-enabled at boot, only when the driver probes, thus remove the
-regulator-boot-on property.
+The panel regulator doesn't need to be always on, so remove this
+property.
 
 Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
 Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
 Signed-off-by: David Heidelberg <david@ixit.cz>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251118-dts-oneplus-regulators-v2-1-3e67cea1e4e7@ixit.cz
+Link: https://lore.kernel.org/r/20251118-dts-oneplus-regulators-v2-2-3e67cea1e4e7@ixit.cz
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -121,17 +120,17 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-index 51a9a276399ac..35d105ff689b9 100644
+index 35d105ff689b9..7169da658dcd0 100644
 --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-@@ -160,7 +160,6 @@ ts_1p8_supply: ts-1p8-regulator {
+@@ -256,7 +256,6 @@ vreg_l14a_1p88: ldo14 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-always-on;
+ 		};
  
- 		gpio = <&tlmm 88 0>;
- 		enable-active-high;
--		regulator-boot-on;
- 	};
- };
- 
+ 		vreg_l17a_1p3: ldo17 {
 -- 
 2.51.0
 
