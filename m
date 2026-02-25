@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHeAFlVSnmm6UgQAu9opvQ
-	(envelope-from <stable+bounces-218501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:25 +0100
+	id MPqfCOFYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-219068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAC818F31C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DA619081C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3E1C3099466
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5D442313726A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4839248881;
-	Wed, 25 Feb 2026 01:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10812299950;
+	Wed, 25 Feb 2026 01:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTQOWQyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UyISykAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888B720C012;
-	Wed, 25 Feb 2026 01:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C888E239099;
+	Wed, 25 Feb 2026 01:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983332; cv=none; b=BGEWPYT6df1bprbSNe/otSsXXW+N7jA/iauYBqCWOup2lRo3fNav/dBx7mbXUCpOnO1sVX61vHm/z/Nf0QsUXjmospITwzZ7HhHlpotC6eEwA1FEjs7OYl0uKkLD3yVr0IqfxOKzAL/Yt9qUA5KB1bH+4yOVa7RXpoLI7VXe8CE=
+	t=1771983992; cv=none; b=nbFKeuszyGU4eBcp73WIBYcTbUfMUUJjx/pZSKntw3WHbK5f51/d1N7QwehBOiD7eqGRwsoWUl4mg4oVLWE6WjkCJluZ037skp5mSBLtlfp/Gzd8tq7MzrV057qMdlMFVBx8VmPjEriLfJAGyiA1bX8HVoUL5LSoHmZf7zjtqRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983332; c=relaxed/simple;
-	bh=Cr1mgrVhjXOR6gMJJ5WPcGTa/QsGdVd6RE3ZvwIrAtY=;
+	s=arc-20240116; t=1771983992; c=relaxed/simple;
+	bh=wEccGvuoyHCyv/ypeHe02letJ070K4WRwwdq7bUsR38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJmlRCYOFMdVP6fwK05wNICP/4HxmBUAy1L7Xakj8lrg2C9e7qlKX2nCccNBMQe/99lzIxjOwpNaxHwU/Z6ksgdGQkd0ip0D3Z4rNxzFfsLUrIoDNzhxVe9gH3lbCQ0xtMEjC51yNrfoFlng74rn4sRkA107mgeCY0jIkXyjjPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTQOWQyg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4733CC116D0;
-	Wed, 25 Feb 2026 01:35:32 +0000 (UTC)
+	 MIME-Version; b=mh42gTMXNamTNbZJntb+zs8JJnHzHCP1wT3Eq+RxHmwzsUSdEmyeiv6tjsEDveQMeB1ruD/YTuMFh/447T0t2UHrcxZG44CS75DbQxwWIJFunm6tY1hH7wXljNyct6STdwAFEArjgCeBMrxthXjgdvVKExW7UkZGPOXZtPPUJLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UyISykAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D73C116D0;
+	Wed, 25 Feb 2026 01:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983332;
-	bh=Cr1mgrVhjXOR6gMJJ5WPcGTa/QsGdVd6RE3ZvwIrAtY=;
+	s=korg; t=1771983992;
+	bh=wEccGvuoyHCyv/ypeHe02letJ070K4WRwwdq7bUsR38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTQOWQyg/s/mfzce4ybhdMj2skpPFMtqwIqV1dO5Iit6vimphl9Rm1jMqFj7QHotB
-	 Qfm8AfVOFr3RGrwUJCvfWNLVWd+1sCQSMdDi1yVxs0/+c88wG+FHpSq5TL34XGfrDd
-	 UR7z6+o2x0swKWwhUqAuaDDKRoF6eI//MrKz8CkA=
+	b=UyISykAO4BNLFG29xer1FlbAqwXEZLTvCqJN6aXIF0EqJ7nE8LNVPBa1A6r8BWdiT
+	 rtp5O4LQXnRHdHwkn+jdKKSZI3AlS90XH74nJzx1kXknY96TyWpVGe9Ztaexpr7Laz
+	 R4XHlhKFpl0uh880nxtLNqrkq7siHXBybKBwR7c0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Aadityarangan Shridhar Iyengar <adiyenga@cisco.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 463/781] RDMA/iwcm: Fix workqueue list corruption by removing work_list
-Date: Tue, 24 Feb 2026 17:19:32 -0800
-Message-ID: <20260225012411.136800078@linuxfoundation.org>
+Subject: [PATCH 6.18 247/641] PCI/PTM: Fix pcie_ptm_create_debugfs() memory leak
+Date: Tue, 24 Feb 2026 17:19:33 -0800
+Message-ID: <20260225012354.843638561@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218501-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219068-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,217 +87,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,acm.org:email]
-X-Rspamd-Queue-Id: CFAC818F31C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,cisco.com:email]
+X-Rspamd-Queue-Id: 62DA619081C
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Aadityarangan Shridhar Iyengar <adiyenga@cisco.com>
 
-[ Upstream commit 7874eeacfa42177565c01d5198726671acf7adf2 ]
+[ Upstream commit 62171369cf17794ddd88f602c2c84d008ecafcff ]
 
-The commit e1168f0 ("RDMA/iwcm: Simplify cm_event_handler()")
-changed the work submission logic to unconditionally call
-queue_work() with the expectation that queue_work() would
-have no effect if work was already pending. The problem is
-that a free list of struct iwcm_work is used (for which
-struct work_struct is embedded), so each call to queue_work()
-is basically unique and therefore does indeed queue the work.
+In pcie_ptm_create_debugfs(), if devm_kasprintf() fails after successfully
+allocating ptm_debugfs with kzalloc(), the function returns without freeing
+the allocated memory, resulting in a memory leak.
 
-This causes a problem in the work handler which walks the work_list
-until it's empty to process entries. This means that a single
-run of the work handler could process item N+1 and release it
-back to the free list while the actual workqueue entry is still
-queued. It could then get reused (INIT_WORK...) and lead to
-list corruption in the workqueue logic.
+Free ptm_debugfs before returning in the devm_kasprintf() error path and in
+pcie_ptm_destroy_debugfs().
 
-Fix this by just removing the work_list. The workqueue already
-does this for us.
-
-This fixes the following error that was observed when stress
-testing with ucmatose on an Intel E830 in iWARP mode:
-
-[  151.465780] list_del corruption. next->prev should be ffff9f0915c69c08, but was ffff9f0a1116be08. (next=ffff9f0a15b11c08)
-[  151.466639] ------------[ cut here ]------------
-[  151.466986] kernel BUG at lib/list_debug.c:67!
-[  151.467349] Oops: invalid opcode: 0000 [#1] SMP NOPTI
-[  151.467753] CPU: 14 UID: 0 PID: 2306 Comm: kworker/u64:18 Not tainted 6.19.0-rc4+ #1 PREEMPT(voluntary)
-[  151.468466] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  151.469192] Workqueue:  0x0 (iw_cm_wq)
-[  151.469478] RIP: 0010:__list_del_entry_valid_or_report+0xf0/0x100
-[  151.469942] Code: c7 58 5f 4c b2 e8 10 50 aa ff 0f 0b 48 89 ef e8 36 57 cb ff 48 8b 55 08 48 89 e9 48 89 de 48 c7 c7 a8 5f 4c b2 e8 f0 4f aa ff <0f> 0b 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90 90 90 90 90 90
-[  151.471323] RSP: 0000:ffffb15644e7bd68 EFLAGS: 00010046
-[  151.471712] RAX: 000000000000006d RBX: ffff9f0915c69c08 RCX: 0000000000000027
-[  151.472243] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff9f0a37d9c600
-[  151.472768] RBP: ffff9f0a15b11c08 R08: 0000000000000000 R09: c0000000ffff7fff
-[  151.473294] R10: 0000000000000001 R11: ffffb15644e7bba8 R12: ffff9f092339ee68
-[  151.473817] R13: ffff9f0900059c28 R14: ffff9f092339ee78 R15: 0000000000000000
-[  151.474344] FS:  0000000000000000(0000) GS:ffff9f0a847b5000(0000) knlGS:0000000000000000
-[  151.474934] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  151.475362] CR2: 0000559e233a9088 CR3: 000000020296b004 CR4: 0000000000770ef0
-[  151.475895] PKRU: 55555554
-[  151.476118] Call Trace:
-[  151.476331]  <TASK>
-[  151.476497]  move_linked_works+0x49/0xa0
-[  151.476792]  __pwq_activate_work.isra.46+0x2f/0xa0
-[  151.477151]  pwq_dec_nr_in_flight+0x1e0/0x2f0
-[  151.477479]  process_scheduled_works+0x1c8/0x410
-[  151.477823]  worker_thread+0x125/0x260
-[  151.478108]  ? __pfx_worker_thread+0x10/0x10
-[  151.478430]  kthread+0xfe/0x240
-[  151.478671]  ? __pfx_kthread+0x10/0x10
-[  151.478955]  ? __pfx_kthread+0x10/0x10
-[  151.479240]  ret_from_fork+0x208/0x270
-[  151.479523]  ? __pfx_kthread+0x10/0x10
-[  151.479806]  ret_from_fork_asm+0x1a/0x30
-[  151.480103]  </TASK>
-
-Fixes: e1168f09b331 ("RDMA/iwcm: Simplify cm_event_handler()")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20260112020006.1352438-1-jmoroni@google.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 132833405e61 ("PCI: Add debugfs support for exposing PTM context")
+Signed-off-by: Aadityarangan Shridhar Iyengar <adiyenga@cisco.com>
+[bhelgaas: squash additional fix from Mani:
+https://lore.kernel.org/r/pdp4xc4d5ee3e547mmdro5riui3mclduqdl7j6iclfbozo2a4c@7m3qdm6yrhuv]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20260111163650.33168-1-adiyenga@cisco.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/iwcm.c | 56 +++++++++++++---------------------
- drivers/infiniband/core/iwcm.h |  1 -
- 2 files changed, 21 insertions(+), 36 deletions(-)
+ drivers/pci/pcie/ptm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/iwcm.c b/drivers/infiniband/core/iwcm.c
-index 62410578dec37..eb942ab9c4055 100644
---- a/drivers/infiniband/core/iwcm.c
-+++ b/drivers/infiniband/core/iwcm.c
-@@ -95,7 +95,6 @@ static struct workqueue_struct *iwcm_wq;
- struct iwcm_work {
- 	struct work_struct work;
- 	struct iwcm_id_private *cm_id;
--	struct list_head list;
- 	struct iw_cm_event event;
- 	struct list_head free_list;
- };
-@@ -178,7 +177,6 @@ static int alloc_work_entries(struct iwcm_id_private *cm_id_priv, int count)
- 			return -ENOMEM;
- 		}
- 		work->cm_id = cm_id_priv;
--		INIT_LIST_HEAD(&work->list);
- 		put_work(work);
- 	}
- 	return 0;
-@@ -213,7 +211,6 @@ static void free_cm_id(struct iwcm_id_private *cm_id_priv)
- static bool iwcm_deref_id(struct iwcm_id_private *cm_id_priv)
- {
- 	if (refcount_dec_and_test(&cm_id_priv->refcount)) {
--		BUG_ON(!list_empty(&cm_id_priv->work_list));
- 		free_cm_id(cm_id_priv);
- 		return true;
- 	}
-@@ -260,7 +257,6 @@ struct iw_cm_id *iw_create_cm_id(struct ib_device *device,
- 	refcount_set(&cm_id_priv->refcount, 1);
- 	init_waitqueue_head(&cm_id_priv->connect_wait);
- 	init_completion(&cm_id_priv->destroy_comp);
--	INIT_LIST_HEAD(&cm_id_priv->work_list);
- 	INIT_LIST_HEAD(&cm_id_priv->work_free_list);
+diff --git a/drivers/pci/pcie/ptm.c b/drivers/pci/pcie/ptm.c
+index 65e4b008be00d..41d370f082ee4 100644
+--- a/drivers/pci/pcie/ptm.c
++++ b/drivers/pci/pcie/ptm.c
+@@ -519,8 +519,10 @@ struct pci_ptm_debugfs *pcie_ptm_create_debugfs(struct device *dev, void *pdata,
+ 		return NULL;
  
- 	return &cm_id_priv->id;
-@@ -1007,13 +1003,13 @@ static int process_event(struct iwcm_id_private *cm_id_priv,
+ 	dirname = devm_kasprintf(dev, GFP_KERNEL, "pcie_ptm_%s", dev_name(dev));
+-	if (!dirname)
++	if (!dirname) {
++		kfree(ptm_debugfs);
+ 		return NULL;
++	}
+ 
+ 	ptm_debugfs->debugfs = debugfs_create_dir(dirname, NULL);
+ 	ptm_debugfs->pdata = pdata;
+@@ -551,6 +553,7 @@ void pcie_ptm_destroy_debugfs(struct pci_ptm_debugfs *ptm_debugfs)
+ 
+ 	mutex_destroy(&ptm_debugfs->lock);
+ 	debugfs_remove_recursive(ptm_debugfs->debugfs);
++	kfree(ptm_debugfs);
  }
- 
- /*
-- * Process events on the work_list for the cm_id. If the callback
-- * function requests that the cm_id be deleted, a flag is set in the
-- * cm_id flags to indicate that when the last reference is
-- * removed, the cm_id is to be destroyed. This is necessary to
-- * distinguish between an object that will be destroyed by the app
-- * thread asleep on the destroy_comp list vs. an object destroyed
-- * here synchronously when the last reference is removed.
-+ * Process events for the cm_id. If the callback function requests
-+ * that the cm_id be deleted, a flag is set in the cm_id flags to
-+ * indicate that when the last reference is removed, the cm_id is
-+ * to be destroyed. This is necessary to distinguish between an
-+ * object that will be destroyed by the app thread asleep on the
-+ * destroy_comp list vs. an object destroyed here synchronously
-+ * when the last reference is removed.
-  */
- static void cm_work_handler(struct work_struct *_work)
- {
-@@ -1024,35 +1020,26 @@ static void cm_work_handler(struct work_struct *_work)
- 	int ret = 0;
- 
- 	spin_lock_irqsave(&cm_id_priv->lock, flags);
--	while (!list_empty(&cm_id_priv->work_list)) {
--		work = list_first_entry(&cm_id_priv->work_list,
--					struct iwcm_work, list);
--		list_del_init(&work->list);
--		levent = work->event;
--		put_work(work);
--		spin_unlock_irqrestore(&cm_id_priv->lock, flags);
--
--		if (!test_bit(IWCM_F_DROP_EVENTS, &cm_id_priv->flags)) {
--			ret = process_event(cm_id_priv, &levent);
--			if (ret) {
--				destroy_cm_id(&cm_id_priv->id);
--				WARN_ON_ONCE(iwcm_deref_id(cm_id_priv));
--			}
--		} else
--			pr_debug("dropping event %d\n", levent.event);
--		if (iwcm_deref_id(cm_id_priv))
--			return;
--		spin_lock_irqsave(&cm_id_priv->lock, flags);
--	}
-+	levent = work->event;
-+	put_work(work);
- 	spin_unlock_irqrestore(&cm_id_priv->lock, flags);
-+
-+	if (!test_bit(IWCM_F_DROP_EVENTS, &cm_id_priv->flags)) {
-+		ret = process_event(cm_id_priv, &levent);
-+		if (ret) {
-+			destroy_cm_id(&cm_id_priv->id);
-+			WARN_ON_ONCE(iwcm_deref_id(cm_id_priv));
-+		}
-+	} else
-+		pr_debug("dropping event %d\n", levent.event);
-+	if (iwcm_deref_id(cm_id_priv))
-+		return;
- }
- 
- /*
-  * This function is called on interrupt context. Schedule events on
-  * the iwcm_wq thread to allow callback functions to downcall into
-- * the CM and/or block.  Events are queued to a per-CM_ID
-- * work_list. If this is the first event on the work_list, the work
-- * element is also queued on the iwcm_wq thread.
-+ * the CM and/or block.
-  *
-  * Each event holds a reference on the cm_id. Until the last posted
-  * event has been delivered and processed, the cm_id cannot be
-@@ -1094,7 +1081,6 @@ static int cm_event_handler(struct iw_cm_id *cm_id,
- 	}
- 
- 	refcount_inc(&cm_id_priv->refcount);
--	list_add_tail(&work->list, &cm_id_priv->work_list);
- 	queue_work(iwcm_wq, &work->work);
- out:
- 	spin_unlock_irqrestore(&cm_id_priv->lock, flags);
-diff --git a/drivers/infiniband/core/iwcm.h b/drivers/infiniband/core/iwcm.h
-index bf74639be1287..b56fb12edece4 100644
---- a/drivers/infiniband/core/iwcm.h
-+++ b/drivers/infiniband/core/iwcm.h
-@@ -50,7 +50,6 @@ struct iwcm_id_private {
- 	struct ib_qp *qp;
- 	struct completion destroy_comp;
- 	wait_queue_head_t connect_wait;
--	struct list_head work_list;
- 	spinlock_t lock;
- 	refcount_t refcount;
- 	struct list_head work_free_list;
+ EXPORT_SYMBOL_GPL(pcie_ptm_destroy_debugfs);
+ #endif
 -- 
 2.51.0
 
