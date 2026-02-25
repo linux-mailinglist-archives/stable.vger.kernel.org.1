@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHcsCbxSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:08 +0100
+	id WHm/I+ZUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD20D18F4E8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC6118FE35
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0D9AC3138907
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1EA0D30D6456
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7983620C012;
-	Wed, 25 Feb 2026 01:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1480277026;
+	Wed, 25 Feb 2026 01:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTkRMQhf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iR7bOS/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7121E2834;
-	Wed, 25 Feb 2026 01:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BE6265CBE;
+	Wed, 25 Feb 2026 01:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983173; cv=none; b=PweLd7Yq7IJnYe+sdGGPlzHcC9mnCfpfX/U4s9J8O5WeiqTRXEsuiByZxbdQkAdI1IZrzWKFWrS4KirGHNJ1oT6UGjKqdR0Kf12Z+Rh+yIyM+WJTJdCadAqczOpQH4hWVFI6gt5Qlq0296iSoNFoI23XOJICnFYAUS2QIIKNk/A=
+	t=1771983828; cv=none; b=rAPmoy8SBCi+frPdK80mVTF2HQ9nqS1SMzSUWgZNTOJ8q9l99tZ74bPC6kJG2O+YWzLGTlTdoVHINg26knDqTdzQ57QXdOBgns3OnGvUp56BYTbugEVlF4UKAo/5ZBoeBhNH1CPvD5iewiCuLsAWSQoxPdrlheSZIjqD0bnka6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983173; c=relaxed/simple;
-	bh=1DxQ7irKyMCX6tEJ2Ktr56LscaLPYRNLryp7gJPfedw=;
+	s=arc-20240116; t=1771983828; c=relaxed/simple;
+	bh=bO4NnhmFy8eR/h0Wuz/gO/w7WogTQtM67CukVRtkF+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1U0amKwwGsW5XbRValCWxkLvCcE6WueyA6jpa2NF7hTXp3CjT5/FzEiFQhN0RJp0s5rZgDqIR+gG0al4phME8G1OB/Dw70N+n6ppvCv33TfxulpqoHhqdzharSY3Bi1nKDh5vKz9Yr6zW7+c15e5qUFsejYGLP+2gUDU8a+XdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTkRMQhf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C75C116D0;
-	Wed, 25 Feb 2026 01:32:52 +0000 (UTC)
+	 MIME-Version; b=V+c8zHAoiFIa+btVjmI7xoyYQZg2kb4qrvKkwdAOXsYxkZpZHLZPK+wF6DJYrcQFX2OTN9ILLQlJWrtnNdXPOEdeihnOi9AlpP+CMoOuJvpyohvn+YY8ztB6hSUCtkGJdbkSGn47aJKy6WnYfRyHZhXKFT82XH+GDdjSpiRnAmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iR7bOS/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B082C116D0;
+	Wed, 25 Feb 2026 01:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983173;
-	bh=1DxQ7irKyMCX6tEJ2Ktr56LscaLPYRNLryp7gJPfedw=;
+	s=korg; t=1771983828;
+	bh=bO4NnhmFy8eR/h0Wuz/gO/w7WogTQtM67CukVRtkF+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lTkRMQhfK9komie+k6GtYytNDRjJ5mh168lwUHxeSW1fS++frfF7kBFmmQVxdA7/t
-	 5aC6ZnPJcny6xHih8K8dSIbZDX4E2GyjtHbsOlVfINRJlfiSQCw3Y1rakix6cMdMjD
-	 HzdSIRbj4kzTQLDg6G107Q6rjMik+Bgt74Mna6nw=
+	b=iR7bOS/wVBO5Hq7VQhjPRbu10Bo6OPd9VPWm8WKIdM2lGfyFGVDF8e0qCUZ8Qodev
+	 l4oPyuHjEvakT6NDG80THDAIqNkFcarwb47GF7iA0XSKkxOudJW64ar8S90ffKyCCA
+	 3qpvLK5jLHbncgoyM6/vNvtjaCW2FicovIf015cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Alistair Popple <apopple@nvidia.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 325/781] PCI/P2PDMA: Fix p2pmem_alloc_mmap() warning condition
-Date: Tue, 24 Feb 2026 17:17:14 -0800
-Message-ID: <20260225012407.678293215@linuxfoundation.org>
+Subject: [PATCH 6.18 109/641] scsi: efct: Use IRQF_ONESHOT and default primary handler
+Date: Tue, 24 Feb 2026 17:17:15 -0800
+Message-ID: <20260225012351.762555016@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,80 +69,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218363-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218931-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,deltatee.com:email]
-X-Rspamd-Queue-Id: AD20D18F4E8
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4AC6118FE35
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit cb500023a75246f60b79af9f7321d6e75330c5b5 ]
+[ Upstream commit bd81f07e9a27c341cd7e72be95eb0b7cf3910926 ]
 
-Commit b7e282378773 has already changed the initial page refcount of
-p2pdma page from one to zero, however, in p2pmem_alloc_mmap() it uses
-"VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))" to assert the initial page
-refcount should not be zero and the following will be reported when
-CONFIG_DEBUG_VM is enabled:
+There is no added value in efct_intr_msix() compared to
+irq_default_primary_handler().
 
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x380400000
-  flags: 0x20000000002000(reserved|node=0|zone=4)
-  raw: 0020000000002000 ff1100015e3ab440 0000000000000000 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: VM_WARN_ON_ONCE_PAGE(!page_ref_count(page))
-  ------------[ cut here ]------------
-  WARNING: CPU: 5 PID: 449 at drivers/pci/p2pdma.c:240 p2pmem_alloc_mmap+0x83a/0xa60
+Using a threaded interrupt without a dedicated primary handler mandates
+the IRQF_ONESHOT flag to mask the interrupt source while the threaded
+handler is active. Otherwise the interrupt can fire again before the
+threaded handler had a chance to run.
 
-Fix by using "page_ref_count(page)" as the assertion condition.
+Use the default primary interrupt handler by specifying NULL and set
+IRQF_ONESHOT so the interrupt source is masked until the secondary
+handler is done.
 
-Fixes: b7e282378773 ("mm/mm_init: move p2pdma page refcount initialisation to p2pdma")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Link: https://patch.msgid.link/20251220040446.274991-3-houtao@huaweicloud.com
+Fixes: 4df84e8466242 ("scsi: elx: efct: Driver initialization routines")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260128095540.863589-8-bigeasy@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/p2pdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/elx/efct/efct_driver.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 218c1f5252b66..dd64ec830fdd4 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -147,7 +147,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
- 		 * we have just allocated the page no one else should be
- 		 * using it.
- 		 */
--		VM_WARN_ON_ONCE_PAGE(!page_ref_count(page), page);
-+		VM_WARN_ON_ONCE_PAGE(page_ref_count(page), page);
- 		set_page_count(page, 1);
- 		ret = vm_insert_page(vma, vaddr, page);
- 		if (ret) {
+diff --git a/drivers/scsi/elx/efct/efct_driver.c b/drivers/scsi/elx/efct/efct_driver.c
+index 1bd42f7db1773..528399f725d42 100644
+--- a/drivers/scsi/elx/efct/efct_driver.c
++++ b/drivers/scsi/elx/efct/efct_driver.c
+@@ -415,12 +415,6 @@ efct_intr_thread(int irq, void *handle)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static irqreturn_t
+-efct_intr_msix(int irq, void *handle)
+-{
+-	return IRQ_WAKE_THREAD;
+-}
+-
+ static int
+ efct_setup_msix(struct efct *efct, u32 num_intrs)
+ {
+@@ -450,7 +444,7 @@ efct_setup_msix(struct efct *efct, u32 num_intrs)
+ 		intr_ctx->index = i;
+ 
+ 		rc = request_threaded_irq(pci_irq_vector(efct->pci, i),
+-					  efct_intr_msix, efct_intr_thread, 0,
++					  NULL, efct_intr_thread, IRQF_ONESHOT,
+ 					  EFCT_DRIVER_NAME, intr_ctx);
+ 		if (rc) {
+ 			dev_err(&efct->pci->dev,
 -- 
 2.51.0
 
