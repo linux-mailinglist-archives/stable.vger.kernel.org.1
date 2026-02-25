@@ -1,210 +1,248 @@
-Return-Path: <stable+bounces-219652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBj8JEUWn2nWYwQAu9opvQ
-	(envelope-from <stable+bounces-219652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:33:25 +0100
+	id yMMAN6Qbn2kzZAQAu9opvQ
+	(envelope-from <stable+bounces-219653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:56:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D0E199A99
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:33:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5338D19A125
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:56:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1D02318C231
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:23:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0D9331F41B6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB123D3D04;
-	Wed, 25 Feb 2026 15:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4E73D7D77;
+	Wed, 25 Feb 2026 15:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dg1fRSCg"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="B8Kn1HHZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927793D3319;
-	Wed, 25 Feb 2026 15:23:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6F63D7D71
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 15:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772033013; cv=none; b=mlIFjYLtIt1ErCKLPiZiXN4dhquFUbL2OlGU6blCDxbq8EtX7alBa5QfioaV4Lrd1kfSVHMoKgRayMpacavOwhZEdXOvqJVXPUWstC4ly7TEQg3phhVC5e4FplvFVqtbbfHthk5QVPAI8uCCR8XAq+xnx1raeLPf2joi2s6AjhQ=
+	t=1772033916; cv=none; b=n9zCY0AaifJSDmKeR46FxkGJILjxqG1qJNeMKH1Yzc5gWnd7BdvgYrljTmPFiVosONJEBlt0Ms2z8cFVRSwQZzghKaQAuXwE6YTSqyk3hBGb185x1gIW1w4JikP7TfyI9JQ9BuUXo5L1DVowmtxtLO63o+ZDYw0ax05p0W93Y/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772033013; c=relaxed/simple;
-	bh=gS5Yk7wYTW6W1m8o50Cew7D6B1+VreaVyadftIITtbc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=T1/e6Heb3MwRl2ZfnXd6h4wJu6bCXQo4vF61M73X0TqGv1tU5tirN+aBC2Ly4XkJVsH7tOmU3Fo9VX/IIIPf7OAx6Wgz9kq1ihoaro05wvCiMzHpOWPPM9NTDc72A2ITl2KSCUeAYSifFPgxREJIcpPIvKvAQJBmFdPKYO1NIqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dg1fRSCg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43831C116D0;
-	Wed, 25 Feb 2026 15:23:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772033013;
-	bh=gS5Yk7wYTW6W1m8o50Cew7D6B1+VreaVyadftIITtbc=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Dg1fRSCg7k3Q2cK9Sat615Pj7Jh0PALjT32x9LczwQkRJEkfcOlRGlQvCq/OfhtyQ
-	 SU+aTqkoeOQMHGt6s/Oc6VC6xrwccygDUgzu9ii4MyuDMtNBqzDgwChPufMaqkCzgW
-	 uLHQuo0VgJ3QxnXTbIKkqcDWrcpBEy9VrmC46MD+elXPqK08UWyEego0mwNh+rYb/U
-	 S+LE3hsOmSqxwHWQdTfhsAZKOCUtomSxdHJr83Lo6JxATY49GUAn2ORLbpCLhZgnQh
-	 TkKAV3TTOwTwKGZmUrAHcmNEPdLEWUEV4ebP7hEtgoRnhX2bnpA2vQ14qhuC2nWPu2
-	 EjcdY+vRMEt9w==
-Message-ID: <7da49940-e1a4-4018-9db1-208411598e77@kernel.org>
-Date: Wed, 25 Feb 2026 16:23:29 +0100
+	s=arc-20240116; t=1772033916; c=relaxed/simple;
+	bh=YhjBQew5gzB4pLmLGvlQ5a4ijHNLQAUTvykDlvnWBSA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lf0qWsOyw6Jd8tS7R7BQRDr+3d96u9jZQRzv8zak1shM8SUn3ceBqz6GPHTqLZyyZnkSLuDWlzARAts8r4W5Fs4Nua6DwiQRzKAvnp3bXnW2VQrS1HGCv7YMB1hkO4LwPYtmOCb95xH5GwphsrHQ0Bo4KPbt8TWaAOkJ0xqVYQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=B8Kn1HHZ; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8c711959442so94834385a.0
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 07:38:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1772033914; x=1772638714; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=l5HNgHHBMKtxWITqTdRd2/TKdA9TSeuNJbOQlnmGijo=;
+        b=B8Kn1HHZVIW5hb7q7q/iq9QdWlzLQxKGgbgRKVVA2dcsiWXsU8J5zRxg7akZAjZQ+K
+         EjbwZiE7vXVxBJIWExJTQmLW4NkkpXNsm6SzdByTN8j0oFCT1Cvd8hcIKivmyg2agVv3
+         t4yME9/k9VvBYTNFrVVkeXxNlFWPSR0vucvZUD/Jg2K7sPkR9+5ioteGAkiw6Muv5wqN
+         UpR9GY1dIYY+zO6BUiKK4azCpbqXvY7gjXAwwXU69x0wacorBYAqEA0e3ymJvLpsBctn
+         7WXUaDeyMlPV+BarLarHSFk6r8H+lXXxX33A77qmxrcmr1ok9sIA6A5lGxO57oGv6XLZ
+         0vwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772033914; x=1772638714;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=l5HNgHHBMKtxWITqTdRd2/TKdA9TSeuNJbOQlnmGijo=;
+        b=MqN1zeVyUC2jEaWjMA01/XuEUFr+jMjrrHQMbJJJdGdreMO6VFotLvsmOVvk6S/8H9
+         Vv5n0nkfY+0JrXVTfyE/Hugjco+/RleAkSZhIGLDKs6y5CuEXd7SdOkqpMMomaLJuhbO
+         D+WkCfwc4AKBEswqBEvaXyfodbFxMb303me8KRpOeJogqCEgeB9ZWWTOE9xcUn7hGoaN
+         engX6a3p9OOi4WdHG7k5UExK1gD6pbb7yyAvruijzhsNDs4l1m8kWtiU7E2QkStXrSkA
+         Uv+EpszAuazW3ht8UWy7jk9zC2Tm0q81Y0b+rar1p81yUj0FiohyJ2mil91jAYAQsrw8
+         Zdhw==
+X-Forwarded-Encrypted: i=1; AJvYcCUVRtSvaOqZJ21KGGCPmw+hHWG8WhDs99raMyRcwI9Q4fJmDvE8B31xmZtuYjdbcEdGsR8SkhA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWbF3E4LuDceAJMJ/xh2nf3Wt0pPd4xT7JMkT9xM3Jw0N28HwC
+	CTEz9LF6W3YlAMBIYHQdUKNCFXrsl55egeojS7wHjz8nAiiHdEt4255B1YISAae81w==
+X-Gm-Gg: ATEYQzxf511MGyxBTE6JM/uNY75VJPxMqcZD0l99+B2/B4g2trNwroPkXd2YCUylgjD
+	mpld2Ld1rk0QUbgFOreFg2kXEJ7O9d6Biav/xWr2jaIIY3IFYxe/TTYIxt6FOaAN5gXiwARping
+	ULcm8C9Ei2HE5dWF+hiUt7SP8kY64VsSgLnULpBG2fxgK5rLtGG7fDc8DPhdVl+d8IapiCYBhe+
+	cimd8RrrrcG+9dkF+Q0k81Wi2vJQreW/EOXTZcXIO2uHet0U2eQfHb3uVObSrgiQjN/kr3MXeLW
+	tBiN6lqwHUoN7Y3y8s3GDguiC5IyKUXVMM++MgmNj96dRMJfBKeuPn8cS1ThiVjWLdx/B9vadOX
+	z4kJR49f4lL/r4qZ2D48HrMq/u0J5ww/0DGzrihAoKIwMPoqpkCXQKfHnVR+rEiTEJ8NBVyfqfj
+	Fj6pjRFpbUb+L6Rfrl3vOwyWQCVK//DlO4PZhS9a0c4SPSMEGYmd2W
+X-Received: by 2002:a05:620a:280a:b0:8c6:a587:377f with SMTP id af79cd13be357-8cbb20e412emr467750985a.36.1772033913962;
+        Wed, 25 Feb 2026 07:38:33 -0800 (PST)
+Received: from rowland.harvard.edu ([140.247.181.15])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb8d101ceesm1312661285a.34.2026.02.25.07.38.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 07:38:33 -0800 (PST)
+Date: Wed, 25 Feb 2026 10:38:31 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: "Jimmy Hu (xWF)" <hhhuuu@xwf.google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Dan Vacura <w36195@motorola.com>, Xu Yang <xu.yang_2@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	badhri@google.com
+Subject: Re: [PATCH] usb: gadget: f_uvc: fix NULL pointer dereference during
+ unbind race
+Message-ID: <5d79b7a5-7856-456a-9b9f-48f55feefe4f@rowland.harvard.edu>
+References: <20260224083955.1375032-1-hhhuuu@google.com>
+ <50314bb4-1539-452d-86d6-47887a9603a7@rowland.harvard.edu>
+ <CAJh=zj+qoLr40+sSMksRi5AG36GkO_kDk=axvPoEU76Md-NeCg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/huge_memory: Fix use of NULL folio in
- move_pages_huge_pmd()
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Chris Down <chris@chrisdown.name>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <aZU1vSmn5aF8xvJj@chrisdown.name>
- <0b653dcd-842b-4360-bc1c-8fe779efbc23@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <0b653dcd-842b-4360-bc1c-8fe779efbc23@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJh=zj+qoLr40+sSMksRi5AG36GkO_kDk=axvPoEU76Md-NeCg@mail.gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[rowland.harvard.edu,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[rowland.harvard.edu:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219652-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[rowland.harvard.edu:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219653-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chrisdown.name:email]
-X-Rspamd-Queue-Id: E9D0E199A99
+	TAGGED_RCPT(0.00)[stable,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rowland.harvard.edu:mid,rowland.harvard.edu:dkim,harvard.edu:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5338D19A125
 X-Rspamd-Action: no action
 
-On 2/18/26 08:52, David Hildenbrand (Arm) wrote:
-> On 2/18/26 04:45, Chris Down wrote:
->> move_pages_huge_pmd() handles UFFDIO_MOVE for both normal THPs and huge
->> zero pages. For the huge zero page path, src_folio is explicitly set to
->> NULL (used as a sentinel to skip folio operations like lock and rmap).
->>
->> In the huge zero page branch, src_folio is NULL, so folio_mk_pmd(NULL,
->> pgprot) passes NULL through folio_pfn() and page_to_pfn(). With
->> SPARSEMEM_VMEMMAP this silently produces a bogus PFN, installing a PMD
->> pointing to non-existent physical memory. On other memory models it
->> is a NULL dereference.
->>
->> Use page_folio(src_page) to obtain the valid huge zero folio from the
->> page, which was obtained from pmd_page() and remains valid throughout.
->>
->> Fixes: e3981db444a0 ("mm: add folio_mk_pmd()")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Chris Down <chris@chrisdown.name>
->> ---
->>   mm/huge_memory.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 44ff8a648afd..fed57951a7cd 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -2794,7 +2794,7 @@ int move_pages_huge_pmd(struct mm_struct *mm,
->> pmd_t *dst_pmd, pmd_t *src_pmd, pm
->>           _dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
->>       } else {
->>           src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
->> -        _dst_pmd = folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
->> +        _dst_pmd = folio_mk_pmd(page_folio(src_page), dst_vma-
->> >vm_page_prot);
->>       }
->>       set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
->>   
+On Wed, Feb 25, 2026 at 10:31:54AM +0800, Jimmy Hu (xWF) wrote:
+> On Tue, Feb 24, 2026 at 11:47 PM Alan Stern <stern@rowland.harvard.edu> wrote:
+> >
+> > On Tue, Feb 24, 2026 at 04:39:55PM +0800, Jimmy Hu wrote:
+> > > Commit b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly
+> > > shutdown") introduced two stages of synchronization waits totaling 1500ms
+> > > in uvc_function_unbind() to prevent several types of kernel panics.
+> > > However, this timing-based approach is insufficient during power
+> > > management (PM) transitions.
+> > >
+> > > When the PM subsystem starts freezing user space processes, the
+> > > wait_event_interruptible_timeout() is aborted early, which allows the
+> > > unbind thread to proceed and nullify the gadget pointer
+> > > (cdev->gadget = NULL):
+> > >
+> > > [  814.123447][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind()
+> > > [  814.178583][ T3173] PM: suspend entry (deep)
+> > > [  814.192487][ T3173] Freezing user space processes
+> > > [  814.197668][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind no clean disconnect, wait for release
+> > >
+> > > When the PM subsystem resumes or aborts the suspend and tasks are
+> > > restarted, the V4L2 release path is executed and attempts to access the
+> > > already nullified gadget pointer, triggering a kernel panic:
+> > >
+> > > [  814.292597][    C0] PM: pm_system_irq_wakeup: 479 triggered dhdpcie_host_wake
+> > > [  814.386727][ T3173] Restarting tasks ...
+> > > [  814.403522][ T4558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
+> > > [  814.404021][ T4558] pc : usb_gadget_deactivate+0x14/0xf4
+> > > [  814.404031][ T4558] lr : usb_function_deactivate+0x54/0x94
+> > > [  814.404078][ T4558] Call trace:
+> > > [  814.404080][ T4558]  usb_gadget_deactivate+0x14/0xf4
+> > > [  814.404083][ T4558]  usb_function_deactivate+0x54/0x94
+> > > [  814.404087][ T4558]  uvc_function_disconnect+0x1c/0x5c
+> > > [  814.404092][ T4558]  uvc_v4l2_release+0x44/0xac
+> > > [  814.404095][ T4558]  v4l2_release+0xcc/0x130
+> > >
+> > > The fix introduces a 'func_unbinding' flag in struct uvc_device to protect
+> > > critical sections:
+> > > 1. In uvc_function_disconnect(), it prevents accessing the nullified
+> > >    cdev->gadget pointer.
+> > > 2. In uvc_v4l2_release(), it ensures uvcg_free_buffers() is skipped
+> > >    if unbind is already in progress, avoiding races with concurrent
+> > >    bind operations or use-after-free on the video queue memory.
+> >
+> > Sorry if the answer to this question is obvious to anybody familiar with
+> > the driver...
+> >
+> > The patch adds a flag that can be accessed by two different tasks
+> > (disconnect and release).  Is there any synchronization to prevent these
+> > tasks from racing and accessing the new flag concurrently?
+> >
+> > Alan Stern
 > 
-> God this code is horrible.
+> Hi Alan,
 > 
-> Why can't we simply move the PMD like move_huge_pmd() would do and make
-> this code less error prone?
+> Thanks for pointing that out. You're right, the boolean flag lacks
+> proper synchronization for concurrent access.
+> I will submit a V2 patch using atomic bit operations to ensure memory
+> visibility and atomicity across tasks. The changes will include:
+> * Replacing 'bool func_unbinding' with 'unsigned long flags' in struct
+> uvc_device.
+> * Using clear_bit() in uvc_function_bind() to reset the state.
+> * Using set_bit() in uvc_function_unbind() to mark the unbinding phase.
+> * Using test_bit() in uvc_function_disconnect() and uvc_v4l2_disable()
+> for safe checks.
 > 
->     _dst_pmd = src_pmdval;
-> 
-> According to validate_move_areas(), the permissions of both VMAs are equal.
-> 
-> 
-> We might have to handle it just like move_huge_pmd():
-> 
->     _dst_pmd = move_soft_dirty_pmd(src_pmdval);
-> 
-> To also set the softdirty bit.
-> 
-> Then, we would want to just clear uffd.
-> 
->     _dst_pmd = move_soft_dirty_pmd(src_pmdval);
->     _dst_pmd = clear_uffd_wp_pmd(_dst_pmd);
-> 
+> Does this approach look reasonable to you?
 
-Chris, do you have time to follow up, or should I look into it? The
-issue looks quite bad, so we should tackle it ASAP.
+No, because data races are more complicated than just concurrent 
+non-atomic accesses.  There's also the issue of ordering.  Here's what I 
+mean...
 
--- 
-Cheers,
+You want to change the bind routine to do something like:
 
-David
+	cdev->gadget = ...
+	set_bit(&uvc->flags, 0);	// Driver is bound
+
+and unbind to do something like:
+
+	clear_bit(&uvc->flags, 0);	// Driver is unbound
+	cdev->gadget = NULL;
+
+You'll also change disconnect and disable like this:
+
+	if (test_bit(&uvc->flags, 0)) {
+		... use cdev->gadget ...
+	}
+
+The problem is that modern CPUs can execute instructions out of order 
+and can speculate loads.  When the CPU runs the bind routine, there's 
+nothing to prevent it from doing the set_bit() before assigning 
+cdev->gadget.  Similarly, when the CPU runs the unbind routine, there's 
+nothing to prevent it from setting cdev->gadget to NULL before doing the 
+clear_bit().
+
+More subtly, when the CPU runs the disconnect or disable routines, 
+there's nothing to prevent it from speculatively reading cdev->gadget 
+(and getting a NULL result) before doing the test_bit() (and getting 1).
+
+To prevent these problems, you would need to use memory barriers.  For 
+example, you could put smb_wmb() between the two statements in bind and 
+unbind, and smp_rmb() in disconnect and disable before cdev->gadget 
+gets used.  (For a lot more information about these memory barriers and 
+other ordering issues, see 
+tools/memory-model/Documentation/explanation.txt.)
+
+A simpler approach, if it won't cause any problems, is to ensure 
+synchronization by protecting all these different pieces of code with a 
+mutex.  Then they would never execute concurrently.
+
+Alan Stern
 
