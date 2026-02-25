@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMPxJEpUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:46 +0100
+	id kHPBF19XnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C050B18FC50
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C9B190505
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0D621309437D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 323A43218935
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753FD22579E;
-	Wed, 25 Feb 2026 01:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB8429D26D;
+	Wed, 25 Feb 2026 01:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdSR+I/4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziO/Vsss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CB118B0A;
-	Wed, 25 Feb 2026 01:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717B3285C9F;
+	Wed, 25 Feb 2026 01:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983331; cv=none; b=gnng3dsBqNrikX5MCyDvkHJ3BcNKvM5eeEmh0qGBNWiGvvErnpo39MUU27tlI4r0+qTeaZfg6yDhiJXeR5uUMFGtw0u8dzbylhN3PkrWIJMZ6sAdjpRJQT6dGFK/p94F0ymoTUbfgMxtQ1f4ouWxbfzMA22rRaHfcT+ATd3/VZI=
+	t=1771983991; cv=none; b=EwDOFvJIpDSbu0E55C82ngE3H1o7ZoP5G52Hef0+wM6lWE1SgKx+OToF35qFFYcF7Q/IE0eJOw8KiM+QniKJ8lgXmy7G7WEFLbuujMx0JHy91O5u8hjK+fXC0j99ITlGpfzJBPkuV7KCbgWCCPFKRaMIRA/1DN1jdFo6RzXqOiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983331; c=relaxed/simple;
-	bh=bjVMd3UbGdpWwQgrrK3vVrory18ZOjqeQueFosMk9eE=;
+	s=arc-20240116; t=1771983991; c=relaxed/simple;
+	bh=eOetcmNxe8Lf18pu1a1GPmInKZpzAZ416QvsGS72N/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3zk/vjR2JsaUIGZTYE2PJ9v354HDx/wlCs54thYsLs6F0bp4fB+NdFq1LfaF3dc4LkmTMGVpVidYiqvWuvYM9CubymTWczvqR/V/QJ7bP7PC7w++vmPZRpSS1jk187o+cSHIrUijgTjNP3ym+xx94Kbwj8xRMK7O95vpSMzK8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdSR+I/4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED989C116D0;
-	Wed, 25 Feb 2026 01:35:30 +0000 (UTC)
+	 MIME-Version; b=mntcpdG39Tpj3CH4raZOjv45SjIfDjLMEskrcYWKRhk8+Z1SVPCiAwsaNcOO3PPlRSFMnf0A9M+Z8LeByruX6Kftztd0W4kZbo7+60zG75pJOFyHyXRvV9LkNg5u0TDYV4IkzPGldBGnSyEobpM7lC2anGRvxjJOpl2EThx6PiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziO/Vsss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B26C116D0;
+	Wed, 25 Feb 2026 01:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983331;
-	bh=bjVMd3UbGdpWwQgrrK3vVrory18ZOjqeQueFosMk9eE=;
+	s=korg; t=1771983991;
+	bh=eOetcmNxe8Lf18pu1a1GPmInKZpzAZ416QvsGS72N/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdSR+I/452v+6cTHTPW+eRAQmU2JslwNSTtS1Ru5OWXHqrr4V2Oia1NkplYQ4AWS5
-	 WQ55JJPh3HRlk840/xITSaxTDe+0BC64xdASxJb7NGrF+9Z/y5gS8NFuq4oxyu5Hj8
-	 RYLuJqviM+iZTh8hr9iyu3CaLaRNL4ZUEe9d53Y4=
+	b=ziO/VsssNOaO2muZMPJkcrGvz5+i6dh2fKrX9dfInGUwbXFX6wWEMQke5aAneBPb0
+	 ZOkbA8zLO8xltY9IiwKwrvWbTM/0hNC/KMxe3PlvX27avOAXlNjdo4ouvm352seDE8
+	 VElRoIdHlD66MoJZOkmSKxkpMldBUGieMUd3ymAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Zhu Yanjun <yanjun.Zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 462/781] RDMA/rxe: Fix double free in rxe_srq_from_init
-Date: Tue, 24 Feb 2026 17:19:31 -0800
-Message-ID: <20260225012411.082152100@linuxfoundation.org>
+Subject: [PATCH 6.18 246/641] dm: use READ_ONCE in dm_blk_report_zones
+Date: Tue, 24 Feb 2026 17:19:32 -0800
+Message-ID: <20260225012354.822784778@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,96 +69,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218500-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-219067-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: C050B18FC50
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 00C9B190505
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 0beefd0e15d962f497aad750b2d5e9c3570b66d1 ]
+[ Upstream commit e9f5a55b70ae6187ab64ef2d1232ae2738e31d1f ]
 
-In rxe_srq_from_init(), the queue pointer 'q' is assigned to
-'srq->rq.queue' before copying the SRQ number to user space.
-If copy_to_user() fails, the function calls rxe_queue_cleanup()
-to free the queue, but leaves the now-invalid pointer in
-'srq->rq.queue'.
+The functon dm_blk_report_zones reads md->zone_revalidate_map, however it
+may change while the function is running. Use READ_ONCE.
 
-The caller of rxe_srq_from_init() (rxe_create_srq) eventually
-calls rxe_srq_cleanup() upon receiving the error, which triggers
-a second rxe_queue_cleanup() on the same memory, leading to a
-double free.
-
-The call trace looks like this:
-   kmem_cache_free+0x.../0x...
-   rxe_queue_cleanup+0x1a/0x30 [rdma_rxe]
-   rxe_srq_cleanup+0x42/0x60 [rdma_rxe]
-   rxe_elem_release+0x31/0x70 [rdma_rxe]
-   rxe_create_srq+0x12b/0x1a0 [rdma_rxe]
-   ib_create_srq_user+0x9a/0x150 [ib_core]
-
-Fix this by moving 'srq->rq.queue = q' after copy_to_user.
-
-Fixes: aae0484e15f0 ("IB/rxe: avoid srq memory leak")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20260112015412.29458-1-jiashengjiangcool@gmail.com
-Reviewed-by: Zhu Yanjun <yanjun.Zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 37f53a2c60d0 ("dm: fix dm_blk_report_zones")
+Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_srq.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/md/dm-zone.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_srq.c b/drivers/infiniband/sw/rxe/rxe_srq.c
-index 2a234f26ac104..c9a7cd38953d3 100644
---- a/drivers/infiniband/sw/rxe/rxe_srq.c
-+++ b/drivers/infiniband/sw/rxe/rxe_srq.c
-@@ -77,9 +77,6 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
- 		goto err_free;
- 	}
+diff --git a/drivers/md/dm-zone.c b/drivers/md/dm-zone.c
+index ba39c8313f32b..f4950b5f766d3 100644
+--- a/drivers/md/dm-zone.c
++++ b/drivers/md/dm-zone.c
+@@ -56,7 +56,7 @@ int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
+ {
+ 	struct mapped_device *md = disk->private_data;
+ 	struct dm_table *map;
+-	struct dm_table *zone_revalidate_map = md->zone_revalidate_map;
++	struct dm_table *zone_revalidate_map = READ_ONCE(md->zone_revalidate_map);
+ 	int srcu_idx, ret = -EIO;
+ 	bool put_table = false;
  
--	srq->rq.queue = q;
--	init->attr.max_wr = srq->rq.max_wr;
--
- 	if (uresp) {
- 		if (copy_to_user(&uresp->srq_num, &srq->srq_num,
- 				 sizeof(uresp->srq_num))) {
-@@ -88,6 +85,9 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
- 		}
- 	}
- 
-+	srq->rq.queue = q;
-+	init->attr.max_wr = srq->rq.max_wr;
-+
- 	return 0;
- 
- err_free:
 -- 
 2.51.0
 
