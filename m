@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aA9dJjdTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:11 +0100
+	id GLWIO5pXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32CFF18F72C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6A0190596
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F7FE3124BA6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5222230BF063
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20D525228D;
-	Wed, 25 Feb 2026 01:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3F027A10F;
+	Wed, 25 Feb 2026 01:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHlWNW0l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpC/sq+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F71243376;
-	Wed, 25 Feb 2026 01:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E283279DC2;
+	Wed, 25 Feb 2026 01:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983114; cv=none; b=HLfQ3qj8GVdqLR+FWSsRbAIyu1zGg2El6ZKcWu37E0WTdN1MGrq8YpwoCU1QcmPgJHN2vhOWTvI7gxyC0nwkv4cEu6JQVtQoR5krfIzEevRO+AT7qcymxNHspC0bne8t2R6iCUq6lyV0gjrPl3svuRLlxIpYKBy1WYrG9NgJ1wU=
+	t=1771983765; cv=none; b=eOV3/9U381po73/YRl5TzQ0mx31CNCxU6rDmNtxSywR9OJzOslsIPa5VYbIresSZN3rvlUcG1IL9AHA9zj3P3U+J69wgaCazxHOnT55uMnVNjJ6PPZsjP9r0K9dAgXpG+Kx4HdQMymZ5gCrR/eaZAoRaRGEqrIbpYAv9AtX+cVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983114; c=relaxed/simple;
-	bh=om+0vS2UhU1lqMCdzQZQ6ZIWITVV1Bhm/xaNnOk7x4Y=;
+	s=arc-20240116; t=1771983765; c=relaxed/simple;
+	bh=D8sP9qLx6uCKeCdmTtE2vTi4kUbVg1/3+JM5pEOkaI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxZ9JfkYFfhik5FW92urVafuO86hilphwzbQ0jMvTIgf6tDm0pM77mLf2E9rP8rzAiDoEwLNBMRYLtUboiR0mr42EPMFraLkT4NDh46BFHhC/LGQJuWljG+FZZQ3qMzrw3CtiPfY7xNpWXwnwUwb+Qg12Il/msxEX48unEW5jq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHlWNW0l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44774C116D0;
-	Wed, 25 Feb 2026 01:31:54 +0000 (UTC)
+	 MIME-Version; b=qqhQrUoK6OmCvdaWl0g6jEez36yb48iQnFrWd6u4kZNwtWfZGkmV2UUY5mYjRJZCE4ceV6WUC7/VCUAq0/G/RbwkCxLfAuJXAce1imB3bwsoXS+IC3ERgtz2i0oyOo+BTgQBE5kjYLKmnxDHLC+1YEhlJdsjxiWyfK4tHlIQz8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpC/sq+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAE3C116D0;
+	Wed, 25 Feb 2026 01:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983114;
-	bh=om+0vS2UhU1lqMCdzQZQ6ZIWITVV1Bhm/xaNnOk7x4Y=;
+	s=korg; t=1771983765;
+	bh=D8sP9qLx6uCKeCdmTtE2vTi4kUbVg1/3+JM5pEOkaI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vHlWNW0lWSYxn1IvZ0nqKZBdZK8ESJuFbjdSuTNVvonYRrzvmkvxjqK0fXwgRktFQ
-	 TEpsDasT4hmwhT/MZbJWHrQVjgXcZhogPm+e96VmpCNsPZk/4v4FplL/+Q+rfGDfae
-	 eg+kxjqcgsVv699gu3lOJ5BoLbpXPe5iHExj2b7k=
+	b=xpC/sq+nfG2Abg74Yx4EI9mEi5ySAb/YZTH9ix1aRn1UAj1m0sCYF9GGiwIOxd8IJ
+	 1NR2Yqd++KTykPT8ZvgsI1EXWR557OI4ipd4XR351vtGHCLo/kF1FxVx9Dj5+VkhBE
+	 4DCA7ksGbwLpcRnGji5veH3M1XnDO0dj99GkAyhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Tao Tian <tiantao6@hisilicon.com>,
+	Mark Brown <broonie@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 274/781] drm/hisilicon/hibmc: Adding reset colorbar cfg in dp init.
+Subject: [PATCH 6.18 057/641] arm64/gcs: Fix error handling in arch_set_shadow_stack_status()
 Date: Tue, 24 Feb 2026 17:16:23 -0800
-Message-ID: <20260225012406.418151953@linuxfoundation.org>
+Message-ID: <20260225012350.424476836@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218312-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218878-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,53 +87,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 32CFF18F72C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4F6A0190596
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 6dad7fa8581e96321ec8a6a4f8160762466f539a ]
+[ Upstream commit 53c998527ffa60f9deda8974a11ad39790684159 ]
 
-Add colorbar disable operation before reset chontroller, to make sure
-colorbar status is clear in the DP init, so if rmmod the driver and the
-previous colorbar configuration will not affect the next time insmod the
-driver.
+alloc_gcs() returns an error-encoded pointer on failure, which comes
+from do_mmap(), not NULL.
 
-Fixes: 3c7623fb5bb6 ("drm/hisilicon/hibmc: Enable this hot plug detect of irq feature")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Tao Tian <tiantao6@hisilicon.com>
-Link: https://patch.msgid.link/20251210023759.3944834-5-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+The current NULL check fails to detect errors, which could lead to using
+an invalid GCS address.
+
+Use IS_ERR_VALUE() to properly detect errors, consistent with the
+check in gcs_alloc_thread_stack().
+
+Fixes: b57180c75c7e ("arm64/gcs: Implement shadow stack prctl() interface")
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/mm/gcs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-index 8f8ca940b6b26..d5bd3c45649b2 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-@@ -180,6 +180,8 @@ int hibmc_dp_hw_init(struct hibmc_dp *dp)
- 	/* int init */
- 	writel(0, dp_dev->base + HIBMC_DP_INTR_ENABLE);
- 	writel(HIBMC_DP_INT_RST, dp_dev->base + HIBMC_DP_INTR_ORIGINAL_STATUS);
-+	/* clr colorbar */
-+	writel(0, dp_dev->base + HIBMC_DP_COLOR_BAR_CTRL);
- 	/* rst */
- 	writel(0, dp_dev->base + HIBMC_DP_DPTX_RST_CTRL);
- 	usleep_range(30, 50);
+diff --git a/arch/arm64/mm/gcs.c b/arch/arm64/mm/gcs.c
+index 6e93f78de79b1..04a23a497f205 100644
+--- a/arch/arm64/mm/gcs.c
++++ b/arch/arm64/mm/gcs.c
+@@ -199,8 +199,8 @@ int arch_set_shadow_stack_status(struct task_struct *task, unsigned long arg)
+ 
+ 		size = gcs_size(0);
+ 		gcs = alloc_gcs(0, size);
+-		if (!gcs)
+-			return -ENOMEM;
++		if (IS_ERR_VALUE(gcs))
++			return gcs;
+ 
+ 		task->thread.gcspr_el0 = gcs + size - sizeof(u64);
+ 		task->thread.gcs_base = gcs;
 -- 
 2.51.0
 
