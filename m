@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-219008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218962-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6H9DIilXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:01 +0100
+	id uE6GDgBXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218962-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2A519049D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 916B9190433
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6384131C55CD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E141231B1121
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA987276049;
-	Wed, 25 Feb 2026 01:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC6F2701B8;
+	Wed, 25 Feb 2026 01:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGZLf0K+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlC2LfjB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8771E2834;
-	Wed, 25 Feb 2026 01:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C614D256C84;
+	Wed, 25 Feb 2026 01:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983919; cv=none; b=Q6/2TN1yAu/FZV/jV8XRnLmvt7e3StY+xhOvw5yLUtYBmsn6cO8MAcQC1L5BxutQTjIwZWB7PxfN3SPzZd0hcIKRkYo9nTzQR6d5I7L8JexlQiAmKkneRyVCerDv5lGLdxIThdfv8NGXs2sTIU26H0I54tFfOUxda7kc7uBZZV4=
+	t=1771983863; cv=none; b=Y6NI5THHv9KT3Nb2MxOTuQK7Q8OdC9ceiqxNp7Vq8q5Ahr1ufAH0HrKUCuzj81Pjqsoq52Dsj8sBsgauOe4Lae92mRD3L4y1ND7xDaNmwkJKXbhrNTABSAsfyU2Hat2eVSJ6qbdmEpkM8gZR3P4uxt2yg9nPVEQoqR0626rO8Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983919; c=relaxed/simple;
-	bh=R3z3t7jqWv+/XhDpH7A/upBYMRn2zsJaiyiFlWnRvp8=;
+	s=arc-20240116; t=1771983863; c=relaxed/simple;
+	bh=tLiUzJBKr/WG3Ukego/D9XLuUYU7TQUPUcOQHNtC9qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCUxb+Hy9uH55SfhLR925EujFenZ+pb6+sKOMkQuLWDopNaoeKvBBA9/UsLPlP6gKbObJ+cGY3aa+TveGfcLxWodKTWr1NwGA47znjDolQz3mZ8ZxEYnZ9H69dxAZ45ap842brdWKephEactbOTeyublOhExMKzwtMaABupYw+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGZLf0K+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED8AC116D0;
-	Wed, 25 Feb 2026 01:45:19 +0000 (UTC)
+	 MIME-Version; b=DdfwTakILWl/9xAMeizJrz6HsAOh/ZhhdT58YN3titxhOkgFiolml6vpPuN76/QABPJ0HrbwyYs9PO7ORex2Dw5JW7ahOioClUL3athdxpze2LHMkS2wAnKP0mH8xXaavxsoSWqY97BDPfCR8lDiC1gKK9fCqwd2xUQ7eMxXYTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlC2LfjB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C26BC116D0;
+	Wed, 25 Feb 2026 01:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983919;
-	bh=R3z3t7jqWv+/XhDpH7A/upBYMRn2zsJaiyiFlWnRvp8=;
+	s=korg; t=1771983863;
+	bh=tLiUzJBKr/WG3Ukego/D9XLuUYU7TQUPUcOQHNtC9qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGZLf0K+/dXHLSLH/T2moU+Z2lNolnRpN+ioFQcRi/sO2sfRqQxv6uqnu8GiqyZyF
-	 F/wAFiGPpUj5NQFeF/iN3sKtb4jvIGBtWeRNzeeVC1fX+8lpV0mxa3QPXAVuRPBIvr
-	 yPBeT+/MHxbopHjy6Y3tt6i4F2+6JbXGdfUyzdew=
+	b=PlC2LfjB6bIihcW26TaO30ODxy2jm4n+oL7meCal+ml69iJIikby5mGMGiu4tRion
+	 BUy69jQa3/EtFZlS6Vi98fkypKkTOeN0l3aOKthnZbLG8niwnfBGpbyzWpf+aBIC4I
+	 +xMuBu36KpFM+/8jYJo8NATxn1nVDbULqDMtErNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 132/641] arm64: dts: tqma8mpql-mba8mp-ras314: Fix HDMI CEC pad control settings
-Date: Tue, 24 Feb 2026 17:17:38 -0800
-Message-ID: <20260225012352.344509021@linuxfoundation.org>
+Subject: [PATCH 6.18 133/641] clk: qcom: Return correct error code in qcom_cc_probe_by_index()
+Date: Tue, 24 Feb 2026 17:17:39 -0800
+Message-ID: <20260225012352.369288027@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -69,64 +70,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218962-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219008-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tq-group.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DB2A519049D
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 916B9190433
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 53a5c1d98d1155ece4c9446c0fea55e17d08774a ]
+[ Upstream commit 1e07ebe744fb522983bd52a4a6148601675330c7 ]
 
-As per datasheet of the HDMI protection IC the CEC_IC pin has been
-configured as open-drain.
+When devm_platform_ioremap_resource() fails, it returns various
+error codes. Returning a hardcoded -ENOMEM masks the actual
+failure reason.
 
-Fixes: ddabb3ce3f90 ("arm64: dts: freescale: add TQMa8MPQL on MBa8MP-RAS314")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Use PTR_ERR() to propagate the actual error code returned by
+devm_platform_ioremap_resource() instead of -ENOMEM.
+
+Fixes: 75e0a1e30191 ("clk: qcom: define probe by index API as common API")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251217041338.2432-1-vulab@iscas.ac.cn
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts | 2 +-
+ drivers/clk/qcom/common.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-index f7346b3d35fe5..a122f2ed5f531 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-@@ -704,7 +704,7 @@ pinctrl_hdmi: hdmigrp {
- 		fsl,pins = <MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x400001c2>,
- 			   <MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x400001c2>,
- 			   <MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD	0x40000010>,
--			   <MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC	0x40000154>;
-+			   <MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC	0x40000030>;
- 	};
+diff --git a/drivers/clk/qcom/common.c b/drivers/clk/qcom/common.c
+index 1215918867741..eec369d2173b5 100644
+--- a/drivers/clk/qcom/common.c
++++ b/drivers/clk/qcom/common.c
+@@ -454,7 +454,7 @@ int qcom_cc_probe_by_index(struct platform_device *pdev, int index,
  
- 	pinctrl_gpt1: gpt1grp {
+ 	base = devm_platform_ioremap_resource(pdev, index);
+ 	if (IS_ERR(base))
+-		return -ENOMEM;
++		return PTR_ERR(base);
+ 
+ 	regmap = devm_regmap_init_mmio(&pdev->dev, base, desc->config);
+ 	if (IS_ERR(regmap))
 -- 
 2.51.0
 
