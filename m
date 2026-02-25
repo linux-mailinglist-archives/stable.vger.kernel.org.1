@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219227-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KR6GXZUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:30 +0100
+	id qMAtI8+dnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219227-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BBF18FCCB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2654D192AC8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E6B34307015F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F21430D49C0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D74243376;
-	Wed, 25 Feb 2026 01:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1EF2C11CF;
+	Wed, 25 Feb 2026 06:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veeJdnpv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUZFgxFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C05720C012;
-	Wed, 25 Feb 2026 01:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A732C3252;
+	Wed, 25 Feb 2026 06:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983377; cv=none; b=moM4Aftn0+5oXBBE0I3PQowbJmo0qipKTXOOj5yc/Ok8o8I5WP7B+gVq13ZXa8iHGmto9lTMvcuUN/ms0FzTt7a+PacZ0SNKx2EEgvn65//wJUopocHZarwMAKjHyLlSHaVenfI4f+Wpc+5ppMgFADGrVYoO2zLwVHdB814ntTk=
+	t=1772002578; cv=none; b=YXTO4ZoUKCwKdecV3qbW/8aVRanfIS2cSjp8i5MZvO4mKnWka0lK7clo+mAOToQaNMrcXpFt607b3ejDwTXuaKQ5CqX5s3YFPHlNQX4dMgauvf9N3WLQKBe3cHxkAt3R4pH7fI/INLc5mt/fiSQFAf+akTaDW+ud+wBB8p/Z7A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983377; c=relaxed/simple;
-	bh=FatDsmeB12Z23jWDrGfOVfTiK3/9HwYNOOu5Xr08wTw=;
+	s=arc-20240116; t=1772002578; c=relaxed/simple;
+	bh=CYfjDcp/wyadi8AXCFZznbHGj+lv6mMXyyUsxLc7z+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpTbg2YC/V5eUGd+99HGalmtjikBzpaYcjsLU6fpVEKrN8o+rpPJNXCf7m3GGieJqv8zQWLChvLioXpnISc/IWY5pT3nnVYkohUQtUuWMItbHY76g3G/hSkl0KPt6ML4zWqMLrRcYXGJIsj+u7Qwm2sRYy0h9MHDr1vHxGr+Bco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veeJdnpv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AFDC116D0;
-	Wed, 25 Feb 2026 01:36:17 +0000 (UTC)
+	 MIME-Version; b=SjzZL1JlGq/I3Oi8Bl+Hm1uib1f12IXCragDRTtTYWdMrCRAyGR+xiXQKvOPIRyZsXPVF5X93FBLVtbgDBqRTWbcegyFKEyTDBcCqmeCKaFs1tfRRxTMmZFUPH24q4PVVDNwjkstxv6OcYe2jbUp37jYM647ceMpY1PZxC3tufA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUZFgxFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD87CC116D0;
+	Wed, 25 Feb 2026 06:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983377;
-	bh=FatDsmeB12Z23jWDrGfOVfTiK3/9HwYNOOu5Xr08wTw=;
+	s=korg; t=1772002577;
+	bh=CYfjDcp/wyadi8AXCFZznbHGj+lv6mMXyyUsxLc7z+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=veeJdnpvHeKh0H1+eX+8tP/so5CSW/QxKHGJOYxcZGF+tkQumPR7H/+VcH98al7It
-	 bzHBGLoZ7eWvEvDeHWyxl1ATP8d7DACvcHAJINd179k5qpP0uYJX4rVM0pDyQ+KaL+
-	 jYNO5nHObxZiINplXmLmUswOQ42Y7P4G4opGCD68=
+	b=vUZFgxFaLz9hehd49/ewQKOi//Gvjwzd5OqhljVdkbGJ5lpSakMpPPLb5MSplIJkI
+	 DoHyyRYNUCLisdKSRhvyNdU5kUh2atwWjYz6Tojjz7/Qv6Hn1UYDs0dKOTzFWkOn+q
+	 oNgy/r+Q0U+s74nuNyj8DM1ZfnEffxxYf/71RnbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Chen <me@linux.beauty>,
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+	Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 501/781] nvdimm: virtio_pmem: serialize flush requests
-Date: Tue, 24 Feb 2026 17:20:10 -0800
-Message-ID: <20260225012412.093837228@linuxfoundation.org>
+Subject: [PATCH 6.18 285/641] wifi: ath12k: Fix index decrement when array_len is zero
+Date: Tue, 24 Feb 2026 17:20:11 -0800
+Message-ID: <20260225012355.671701402@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,132 +66,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218539-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.beauty,gmail.com,redhat.com,intel.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.952];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219227-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 94BBF18FCCB
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 2654D192AC8
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Chen <me@linux.beauty>
+From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
 
-[ Upstream commit a9ba6733c7f1096c4506bf4e34a546e07242df74 ]
+[ Upstream commit e4763898bb1325dbb3792961b6d607b5c6452d64 ]
 
-Under heavy concurrent flush traffic, virtio-pmem can overflow its request
-virtqueue (req_vq): virtqueue_add_sgs() starts returning -ENOSPC and the
-driver logs "no free slots in the virtqueue". Shortly after that the
-device enters VIRTIO_CONFIG_S_NEEDS_RESET and flush requests fail with
-"virtio pmem device needs a reset".
+Currently, print_array_to_buf_index() decrements index unconditionally.
+This may lead to invalid buffer access when array_len is zero.
 
-Serialize virtio_pmem_flush() with a per-device mutex so only one flush
-request is in-flight at a time. This prevents req_vq descriptor overflow
-under high concurrency.
+Fix this by decrementing index only when array_len is non-zero.
 
-Reproducer (guest with virtio-pmem):
-  - mkfs.ext4 -F /dev/pmem0
-  - mount -t ext4 -o dax,noatime /dev/pmem0 /mnt/bench
-  - fio: ioengine=io_uring rw=randwrite bs=4k iodepth=64 numjobs=64
-        direct=1 fsync=1 runtime=30s time_based=1
-  - dmesg: "no free slots in the virtqueue"
-           "virtio pmem device needs a reset"
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
 
-Fixes: 6e84200c0a29 ("virtio-pmem: Add virtio pmem driver")
-Signed-off-by: Li Chen <me@linux.beauty>
-Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20260203021353.121091-1-me@linux.beauty
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: adf6df963c03 ("wifi: ath12k: Add support to parse requested stats_type")
+Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260123071253.2202644-2-aaradhana.sahu@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/nd_virtio.c   | 3 ++-
- drivers/nvdimm/virtio_pmem.c | 1 +
- drivers/nvdimm/virtio_pmem.h | 4 ++++
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
-index c3f07be4aa22a..af82385be7c6a 100644
---- a/drivers/nvdimm/nd_virtio.c
-+++ b/drivers/nvdimm/nd_virtio.c
-@@ -44,6 +44,8 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
- 	unsigned long flags;
- 	int err, err1;
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+index 48b010a1b7566..4f749d473d0e1 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
  
-+	guard(mutex)(&vpmem->flush_lock);
-+
- 	/*
- 	 * Don't bother to submit the request to the device if the device is
- 	 * not activated.
-@@ -53,7 +55,6 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
- 		return -EIO;
+ #include <linux/vmalloc.h>
+@@ -29,8 +29,10 @@ print_array_to_buf_index(u8 *buf, u32 offset, const char *header, u32 stats_inde
+ 				   " %u:%u,", stats_index++, le32_to_cpu(array[i]));
  	}
+ 	/* To overwrite the last trailing comma */
+-	index--;
+-	*(buf + offset + index) = '\0';
++	if (array_len > 0) {
++		index--;
++		*(buf + offset + index) = '\0';
++	}
  
--	might_sleep();
- 	req_data = kmalloc(sizeof(*req_data), GFP_KERNEL);
- 	if (!req_data)
- 		return -ENOMEM;
-diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
-index 2396d19ce5496..77b1966619059 100644
---- a/drivers/nvdimm/virtio_pmem.c
-+++ b/drivers/nvdimm/virtio_pmem.c
-@@ -64,6 +64,7 @@ static int virtio_pmem_probe(struct virtio_device *vdev)
- 		goto out_err;
- 	}
- 
-+	mutex_init(&vpmem->flush_lock);
- 	vpmem->vdev = vdev;
- 	vdev->priv = vpmem;
- 	err = init_vq(vpmem);
-diff --git a/drivers/nvdimm/virtio_pmem.h b/drivers/nvdimm/virtio_pmem.h
-index 0dddefe594c46..f72cf17f9518f 100644
---- a/drivers/nvdimm/virtio_pmem.h
-+++ b/drivers/nvdimm/virtio_pmem.h
-@@ -13,6 +13,7 @@
- #include <linux/module.h>
- #include <uapi/linux/virtio_pmem.h>
- #include <linux/libnvdimm.h>
-+#include <linux/mutex.h>
- #include <linux/spinlock.h>
- 
- struct virtio_pmem_request {
-@@ -35,6 +36,9 @@ struct virtio_pmem {
- 	/* Virtio pmem request queue */
- 	struct virtqueue *req_vq;
- 
-+	/* Serialize flush requests to the device. */
-+	struct mutex flush_lock;
-+
- 	/* nvdimm bus registers virtio pmem device */
- 	struct nvdimm_bus *nvdimm_bus;
- 	struct nvdimm_bus_descriptor nd_desc;
+ 	if (footer) {
+ 		index += scnprintf(buf + offset + index,
 -- 
 2.51.0
 
