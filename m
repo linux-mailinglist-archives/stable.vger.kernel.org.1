@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219452-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAK1IqZTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218791-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:02 +0100
+	id aJSHA9einmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219452-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:20:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD9318F97C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60544193405
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CAE84306AF4A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 869FD31E9DE7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8182727FA;
-	Wed, 25 Feb 2026 01:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BA82C21DF;
+	Wed, 25 Feb 2026 06:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvEBwPN7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="let3yVZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D0B1E2834;
-	Wed, 25 Feb 2026 01:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA96314D16;
+	Wed, 25 Feb 2026 06:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983666; cv=none; b=iEtSoHCHVZOZcDu7uwWkmQkxVj2cIkZ+jO/bKTWD5ontnuWXX7EXgABtMHBiAJo5PHql/vXeOedMBIfPbbtd/cZNuxiCNYuoG/lGsjSijsB2XdqgbI950287nyS78xP0C1PrY/J1uNeDMKSf4mSlDC4V60URDGi0+BgAGkrKKGA=
+	t=1772002725; cv=none; b=MdwwJjkbOLBmo8YYMdAkBoQnr1CS7b2Hm8fu0imZB0AMk34bXRr0lPCZmS0TqE5sMi6cmER42UVLgIJWZ5pDIL/ZtFZ6X8QaYd95rLBTUvZzFhffc1j/5WScgzuhKelHIxlx+ur1u0oguFU0FH4UAtWOq4S42qJvShHvP2B3qjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983666; c=relaxed/simple;
-	bh=YTtBa+fL6PMiMjCTMQcaXmxCHAgTKYd67KhDNCxJQIc=;
+	s=arc-20240116; t=1772002725; c=relaxed/simple;
+	bh=9TnRzfFdLZtcDRcAz9cvVhJ01O49k6Ae/G55rcqMBQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmmszbRke/Ka61ZVWuNWGLV+airGv9sbCmr3bbzpuFpTtKHs0IlbtsWcaZ8TfB7Nk6+X7Div6ASHXhDS8YOdzEDjGOaVsIMn1QqgqStvf7UEh49Iei3KLOJaKFECo4Gp94GFXTQEQTNNu+OVusD8CaiPahkN0lcUAzioHKJ2cIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvEBwPN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B65C116D0;
-	Wed, 25 Feb 2026 01:41:06 +0000 (UTC)
+	 MIME-Version; b=rj33iW8fXaD+nMhbkad5m6Sb7efZE62uDt4d1dCtyhc/lfJbPOJKFNR/rBHMouEJpn2qXZKO77DWTqhIX9PnjAPkIswq55IZEP9ZyznYaP0BisuDkxMtS9el5uwXk8WAezy5NxxZ9sdFPGcuzOCJwMa8J0hMW0QRP/r7Za/vZrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=let3yVZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF76C116D0;
+	Wed, 25 Feb 2026 06:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983666;
-	bh=YTtBa+fL6PMiMjCTMQcaXmxCHAgTKYd67KhDNCxJQIc=;
+	s=korg; t=1772002724;
+	bh=9TnRzfFdLZtcDRcAz9cvVhJ01O49k6Ae/G55rcqMBQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EvEBwPN7mQstFyDDUXoDmkCZtTyU+zwRPBiqODGZjtsEzok+55RR1uctYd0ZZbpVD
-	 46Yi0RYp9iS+X5O+cjkLxO+pxLHj5wd+7OQOxys6hxdZqrh3JYDcvgyis5vrEEveHW
-	 4aJYwTIMxUYie5DXWlA3o2AcOsGlgefa5Lm0jkig=
+	b=let3yVZwESLQPQMNPKjmvdZ3k3p08CwtdPq6QUsqXmXTK84xl0cJoPJfsOICVyPfU
+	 Au2xRGa4jt62aZUTmjVHXi9iRKCqjnpSQHJSp1OACLlkCtOW8Fr70ByaP+HYaYsl6R
+	 PvL/1XlFDLEFC3Hd/WndhjB5dgrt0nhsvq4Rrzuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.19 753/781] ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error paths
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Juergen Gross <jgross@suse.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 536/641] xen-netback: reject zero-queue configuration from guest
 Date: Tue, 24 Feb 2026 17:24:22 -0800
-Message-ID: <20260225012418.189736209@linuxfoundation.org>
+Message-ID: <20260225012401.518894915@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +70,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219452-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218791-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ispras.ru:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxtesting.org:url]
-X-Rspamd-Queue-Id: 2CD9318F97C
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[northwestern.edu:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 60544193405
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-commit a09dc10d1353f0e92c21eae2a79af1c2b1ddcde8 upstream.
+[ Upstream commit 6d1dc8014334c7fb25719999bca84d811e60a559 ]
 
-There are two places where ksmbd_vfs_kern_path_end_removing() needs to be
-called in order to balance what the corresponding successful call to
-ksmbd_vfs_kern_path_start_removing() has done, i.e. drop inode locks and
-put the taken references.  Otherwise there might be potential deadlocks
-and unbalanced locks which are caught like:
+A malicious or buggy Xen guest can write "0" to the xenbus key
+"multi-queue-num-queues". The connect() function in the backend only
+validates the upper bound (requested_num_queues > xenvif_max_queues)
+but not zero, allowing requested_num_queues=0 to reach
+vzalloc(array_size(0, sizeof(struct xenvif_queue))), which triggers
+WARN_ON_ONCE(!size) in __vmalloc_node_range().
 
-BUG: workqueue leaked lock or atomic: kworker/5:21/0x00000000/7596
-     last function: handle_ksmbd_work
-2 locks held by kworker/5:21/7596:
- #0: ffff8881051ae448 (sb_writers#3){.+.+}-{0:0}, at: ksmbd_vfs_kern_path_locked+0x142/0x660
- #1: ffff888130e966c0 (&type->i_mutex_dir_key#3/1){+.+.}-{4:4}, at: ksmbd_vfs_kern_path_locked+0x17d/0x660
-CPU: 5 PID: 7596 Comm: kworker/5:21 Not tainted 6.1.162-00456-gc29b353f383b #138
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-Workqueue: ksmbd-io handle_ksmbd_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x44/0x5b
- process_one_work.cold+0x57/0x5c
- worker_thread+0x82/0x600
- kthread+0x153/0x190
- ret_from_fork+0x22/0x30
- </TASK>
+On systems with panic_on_warn=1, this allows a guest-to-host denial
+of service.
 
-Found by Linux Verification Center (linuxtesting.org).
+The Xen network interface specification requires
+the queue count to be "greater than zero".
 
-Fixes: d5fc1400a34b ("smb/server: avoid deadlock when linking with ReplaceIfExists")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a zero check to match the validation already present
+in xen-blkback, which has included this
+guard since its multi-queue support was added.
+
+Fixes: 8d3d53b3e433 ("xen-netback: Add support for multiple queues")
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://patch.msgid.link/20260212224040.86674-1-n7l8m4@u.northwestern.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/xen-netback/xenbus.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6114,14 +6114,14 @@ static int smb2_create_link(struct ksmbd
- 				rc = -EINVAL;
- 				ksmbd_debug(SMB, "cannot delete %s\n",
- 					    link_name);
--				goto out;
- 			}
- 		} else {
- 			rc = -EEXIST;
- 			ksmbd_debug(SMB, "link already exists\n");
--			goto out;
- 		}
- 		ksmbd_vfs_kern_path_end_removing(&path);
-+		if (rc)
-+			goto out;
+diff --git a/drivers/net/xen-netback/xenbus.c b/drivers/net/xen-netback/xenbus.c
+index a78a25b872409..61b547aab286a 100644
+--- a/drivers/net/xen-netback/xenbus.c
++++ b/drivers/net/xen-netback/xenbus.c
+@@ -735,10 +735,11 @@ static void connect(struct backend_info *be)
+ 	 */
+ 	requested_num_queues = xenbus_read_unsigned(dev->otherend,
+ 					"multi-queue-num-queues", 1);
+-	if (requested_num_queues > xenvif_max_queues) {
++	if (requested_num_queues > xenvif_max_queues ||
++	    requested_num_queues == 0) {
+ 		/* buggy or malicious guest */
+ 		xenbus_dev_fatal(dev, -EINVAL,
+-				 "guest requested %u queues, exceeding the maximum of %u.",
++				 "guest requested %u queues, but valid range is 1 - %u.",
+ 				 requested_num_queues, xenvif_max_queues);
+ 		return;
  	}
- 	rc = ksmbd_vfs_link(work, target_name, link_name);
- 	if (rc)
+-- 
+2.51.0
+
 
 
 
