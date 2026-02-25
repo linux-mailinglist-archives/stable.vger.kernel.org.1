@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218601-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OFIQC5qenmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:50 +0100
+	id GMk5Fx5YnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218601-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941A2192CF9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E120919069E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21BF13128C13
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 672F530A0076
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06D32D23A4;
-	Wed, 25 Feb 2026 06:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E626262FC0;
+	Wed, 25 Feb 2026 01:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxduVSHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trkISvzq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44AF2C17A0;
-	Wed, 25 Feb 2026 06:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1227A24A05D;
+	Wed, 25 Feb 2026 01:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002598; cv=none; b=ZpasqzDXhoHC+x3+hj5iO+uLfwmuSLxY9Y15kk653e8cKzK5DE8eW6djqfxDb2FBJ2oJrEezwVz5BuI9kmbZu3KZBwZl7zzKuteKFuJSciTdsHxYy4OGUVEqpElDU1kVTLy8QQ/r4+40QuJPw3KmGINMjHKxHVNsmGkcXyIbJfc=
+	t=1771983446; cv=none; b=pP6U4FKNpzJRbQVXHBdcFdVjRIcQPfGG8PUAV5+61g9h/LTO6ezgdbgu41j8Z9sQDpaNhsUAHmgid/B2WSd9TdWHdjvMbv7ihCjsYhZ5NBC0ze3pYNw5IJbvfcp5+2k39g+iK0xplrUvJ0+JsCSmBfOhZ5WmdCm2bDfRRLAkSa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002598; c=relaxed/simple;
-	bh=NTPF+SCv7IwTPXKIpTukm7ts0VMM0Puf8lwyP+fVYDE=;
+	s=arc-20240116; t=1771983446; c=relaxed/simple;
+	bh=qZJjVIDE/zHlabxhX9QrTinaEPGCyu2y4o0oi5Y6xi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6nkhQU8NkIAceJxx39t56J/SVH0tU8UfWj7eywE+uhphWK2Xn19Fz/vu2shJYA7ivdNecTxMRCZZ0UYaMqb+EAYMsgi10CIg69rnxnJCZ+JPiFoFsg6qJSiOgH41qdx63EZDdv6Mm56xigbfz8pYjYJ/fjursaxqrS2cWe+gMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxduVSHR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F19C116D0;
-	Wed, 25 Feb 2026 06:56:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jj/P2logA8PBLAW2zQpUKwofloOjDFK2jiFZlRWVgSQnO/aX1oVLE02qcUDCLaOGbiulu/UnixOaiPoHzl6U8BakL6+X5SkpG87SGa+OSsq101RVb53ZhAGfKde+sHuF+3+F1BbC2MW1Wz7xSxpe5JRD/4YeKsSZs+lPMBNAIqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trkISvzq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DB6C116D0;
+	Wed, 25 Feb 2026 01:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002598;
-	bh=NTPF+SCv7IwTPXKIpTukm7ts0VMM0Puf8lwyP+fVYDE=;
+	s=korg; t=1771983446;
+	bh=qZJjVIDE/zHlabxhX9QrTinaEPGCyu2y4o0oi5Y6xi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xxduVSHRBx00WcGAj61eoT/NJy8DrSU/m1jwcnH/x0cNieqoJbHeBEsiJ3wNfyLC+
-	 EQRYUhOdZcZMt4ufTNC1HrdHm+/KwYNfY6slStKH/6m2syD2fbAGtmf/pWCeqDUrsa
-	 hkQav9VPdMHEdvRz9WscQ2RapSAKfdg7aw4VUTwU=
+	b=trkISvzqzHqq9Nm+qnbLRn/UEdIJg7QZg196fHh+mitrRaeqtdwWkkjeAiKnI4oZH
+	 SJ8jqWfwq1++Y2U8ICnUSct2B+eP+1sAL/rz8GilGhI3TWDpWuv8MvDkfSNo5Dw2QC
+	 NzLQbEP/Tq4ewKrWvJlxtOJm7jIt49ga0Y/Ckugw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 345/641] power: supply: act8945a: Fix use-after-free in power_supply_changed()
+Subject: [PATCH 6.19 562/781] dma: dma-axi-dmac: fix SW cyclic transfers
 Date: Tue, 24 Feb 2026 17:21:11 -0800
-Message-ID: <20260225012357.018844638@linuxfoundation.org>
+Message-ID: <20260225012413.584254646@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +64,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218601-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219259-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 941A2192CF9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email]
+X-Rspamd-Queue-Id: E120919069E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waqar Hameed <waqar.hameed@axis.com>
+From: Nuno Sá <nuno.sa@analog.com>
 
-[ Upstream commit 3291c51d4684d048dd2eb91b5b65fcfdaf72141f ]
+[ Upstream commit 9bd257181fd5c996d922e9991500ad27987cfbf4 ]
 
-Using the `devm_` variant for requesting IRQ _before_ the `devm_`
-variant for allocating/registering the `power_supply` handle, means that
-the `power_supply` handle will be deallocated/unregistered _before_ the
-interrupt handler (since `devm_` naturally deallocates in reverse
-allocation order). This means that during removal, there is a race
-condition where an interrupt can fire just _after_ the `power_supply`
-handle has been freed, *but* just _before_ the corresponding
-unregistration of the IRQ handler has run.
+If 'hw_cyclic' is false we should still be able to do cyclic transfers in
+"software". That was not working for the case where 'desc->num_sgs' is 1
+because 'chan->next_desc' is never set with the current desc which means
+that the cyclic transfer only runs once and in the next SOT interrupt we
+do nothing since vchan_next_desc() will return NULL.
 
-This will lead to the IRQ handler calling `power_supply_changed()` with
-a freed `power_supply` handle. Which usually crashes the system or
-otherwise silently corrupts the memory...
+Fix it by setting 'chan->next_desc' as soon as we get a new desc via
+vchan_next_desc().
 
-Note that there is a similar situation which can also happen during
-`probe()`; the possibility of an interrupt firing _before_ registering
-the `power_supply` handle. This would then lead to the nasty situation
-of using the `power_supply` handle *uninitialized* in
-`power_supply_changed()`.
-
-Fix this racy use-after-free by making sure the IRQ is requested _after_
-the registration of the `power_supply` handle.
-
-Fixes: a09209acd6a8 ("power: supply: act8945a_charger: Add status change update support")
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-Link: https://patch.msgid.link/bcf3a23b5187df0bba54a8c8fe09f8b8a0031dee.1766268280.git.waqar.hameed@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 0e3b67b348b8 ("dmaengine: Add support for the Analog Devices AXI-DMAC DMA controller")
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+base-commit: 398035178503bf662281bbffb4bebce1460a4bc5
+change-id: 20251104-axi-dmac-fixes-and-improvs-e3ad512a329c
+Acked-by: Michael Hennerich <michael.hennerich@analog.com>
+Link: https://patch.msgid.link/20251104-axi-dmac-fixes-and-improvs-v1-1-3e6fd9328f72@analog.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/act8945a_charger.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/dma/dma-axi-dmac.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/act8945a_charger.c b/drivers/power/supply/act8945a_charger.c
-index 3901a02f326a5..9dec4486b1439 100644
---- a/drivers/power/supply/act8945a_charger.c
-+++ b/drivers/power/supply/act8945a_charger.c
-@@ -597,14 +597,6 @@ static int act8945a_charger_probe(struct platform_device *pdev)
- 		return irq ?: -ENXIO;
+diff --git a/drivers/dma/dma-axi-dmac.c b/drivers/dma/dma-axi-dmac.c
+index 5b06b0dc67ee1..e22639822045f 100644
+--- a/drivers/dma/dma-axi-dmac.c
++++ b/drivers/dma/dma-axi-dmac.c
+@@ -247,6 +247,7 @@ static void axi_dmac_start_transfer(struct axi_dmac_chan *chan)
+ 			return;
+ 		list_move_tail(&vdesc->node, &chan->active_descs);
+ 		desc = to_axi_dmac_desc(vdesc);
++		chan->next_desc = desc;
+ 	}
+ 	sg = &desc->sg[desc->num_submitted];
+ 
+@@ -265,8 +266,6 @@ static void axi_dmac_start_transfer(struct axi_dmac_chan *chan)
+ 		else
+ 			chan->next_desc = NULL;
+ 		flags |= AXI_DMAC_FLAG_LAST;
+-	} else {
+-		chan->next_desc = desc;
  	}
  
--	ret = devm_request_irq(&pdev->dev, irq, act8945a_status_changed,
--			       IRQF_TRIGGER_FALLING, "act8945a_interrupt",
--			       charger);
--	if (ret) {
--		dev_err(&pdev->dev, "failed to request nIRQ pin IRQ\n");
--		return ret;
--	}
--
- 	charger->desc.name = "act8945a-charger";
- 	charger->desc.get_property = act8945a_charger_get_property;
- 	charger->desc.properties = act8945a_charger_props;
-@@ -625,6 +617,14 @@ static int act8945a_charger_probe(struct platform_device *pdev)
- 		return PTR_ERR(charger->psy);
- 	}
- 
-+	ret = devm_request_irq(&pdev->dev, irq, act8945a_status_changed,
-+			       IRQF_TRIGGER_FALLING, "act8945a_interrupt",
-+			       charger);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to request nIRQ pin IRQ\n");
-+		return ret;
-+	}
-+
- 	platform_set_drvdata(pdev, charger);
- 
- 	INIT_WORK(&charger->work, act8945a_work);
+ 	sg->hw->id = axi_dmac_read(dmac, AXI_DMAC_REG_TRANSFER_ID);
 -- 
 2.51.0
 
