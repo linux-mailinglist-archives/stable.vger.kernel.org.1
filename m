@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8H6/IZNRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:34:11 +0100
+	id +Bu4AUVZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:07:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF2418F02E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:34:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C46190907
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A7CB307D734
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF5DB305E9FC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3FE18DB2A;
-	Wed, 25 Feb 2026 01:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854D8271471;
+	Wed, 25 Feb 2026 01:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSnMvYnj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMiMaAjy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC2C1E2834;
-	Wed, 25 Feb 2026 01:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498CB19FA93;
+	Wed, 25 Feb 2026 01:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983099; cv=none; b=f+OWvGTM1nvDdvhSFCzD/Tzlg4BOggC1WRyLW5Bi7tCaZhqTfsVl9Xjp+0alfZAoew4liHCdEeZtzz/0nPdH2S+GElyKZGSKX4QiOe/5Tj8nGqL2JqtFnkuwNHDFE9rd4+azeoGjyq2hBdnUMpC7oKbL1xzJe/r9mCD/kcTpyQc=
+	t=1771983743; cv=none; b=jJFFErns44RZKJj0twFRHIE/xkKCSXwmpco+ugPupRgLvY4RYakKVvKVhi97C2hmUZnqn7eK8SzfQm4QV+OEjzZt6wpS6Q/6nquvGSXPXQ8T+JCbTNw+mI6D04p7hgJv+7jc8a1LcN4CgXx/IM3PFuDcnm83G5j8jtxueVyWx6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983099; c=relaxed/simple;
-	bh=XCXbX0dJqcGirfWeaz3PwfKTds6v6fsQROxASmMrd9s=;
+	s=arc-20240116; t=1771983743; c=relaxed/simple;
+	bh=Y8N5gHuJGtKMgwaCu1IS8UKmo6+B8LN6W4vGTN4ewGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdopoDFZZTVHLkCO3NxjMcTVGt3unVk4ju4jKkxnH36l1CQ6Us/x7jJTQisGV56IiEYgDC5sA6lynNpt3EpYbKcJtaPbwwNcl+CYP7DEBfpWNilDWMMTO7KtaMbXdKkTGjdnVyUxBqWH/jdDo9u/2DttnqbWWuM9uCHQMPabz3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSnMvYnj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457D6C116D0;
-	Wed, 25 Feb 2026 01:31:39 +0000 (UTC)
+	 MIME-Version; b=pm7v3Rbhtgio9mh261Lw3DyOhdLIpi960IB4ZhdLdR7DT0xe8VuSkkFnsB6/c0+5y683U3StgFt4M90LLxLsOiJ3YITqg4lC2etrOBYKz78XfdRPVQR+eEN8KYoTXJg+xFx4CZJM0eHNyb0PWFyqx7lw4v4plR9ozyXwIeDSgmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMiMaAjy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0F5C116D0;
+	Wed, 25 Feb 2026 01:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983099;
-	bh=XCXbX0dJqcGirfWeaz3PwfKTds6v6fsQROxASmMrd9s=;
+	s=korg; t=1771983743;
+	bh=Y8N5gHuJGtKMgwaCu1IS8UKmo6+B8LN6W4vGTN4ewGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSnMvYnjsRoOPygsOiT4k+2NSincjlGqJKqAfZOMpnjcvo5J3B6TyH+yC+EmSAQnQ
-	 TL0XkPx1ldzWoG078lFRO+E7Iq4kgfryAfrb965CePl7Gc45lDimWPfWLY2BadT7L+
-	 VgPMXuQ0dRetRVr/yEl3+hmBZMuTzpwEDQUvqsVw=
+	b=YMiMaAjytD5fWcEXnqEh+SQUm1nbhecDNt+W6CKLfomC1ojRZWJJ3HgqQLbXcsUoX
+	 7d7jh+/GKY/TGCFw9MtJlrYdNju2xQXMgQvWlxLXUnNwQK+g4NP/dbBfwwuzTc/9tD
+	 tWndctQvsI0Nus/z7CWCGsNT1hVPQoE04bT3W5V8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Teddy Astie <teddy.astie@vates.tech>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 253/781] spi: microchip-core: use XOR instead of ANDNOT to fix the logic
+Subject: [PATCH 6.18 036/641] xen/virtio: Dont use grant-dma-ops when running as Dom0
 Date: Tue, 24 Feb 2026 17:16:02 -0800
-Message-ID: <20260225012405.913738308@linuxfoundation.org>
+Message-ID: <20260225012349.874591875@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,73 +69,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218298-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218858-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2CF2418F02E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
+X-Rspamd-Queue-Id: 66C46190907
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Teddy Astie <teddy.astie@vates.tech>
 
-[ Upstream commit 19a4505a7a5d4eea70f1a42d601c25d730922fdf ]
+[ Upstream commit dc8ea8714311e549ee93a2b0bdd5487d20bfadbf ]
 
-Use XOR instead of ANDNOT to fix the logic. The current approach with
-(foo & BAR & ~baz) is harder to process, and it proved to be wrong,
-than more usual pattern for the comparing misconfiguration using
-((foo ^ baz) & BAR) which can be read as "find all different bits
-between foo and baz that are related to BAR (mask)". Besides that
-it makes the binary code shorter.
+Dom0 inherit devices from the machine and is usually in PV mode.
+If we are running in a virtual that has virtio devices, these devices
+would be considered as using grants with Dom0 as backend, while being
+the said Dom0 itself, while we want to use these devices like regular
+PCI devices.
 
-Function                                     old     new   delta
-mchp_corespi_setup                           103      99      -4
+Fix this by preventing grant-dma-ops from being used when running as Dom0
+(initial domain). We still keep the device-tree logic as-is.
 
-Fixes: 059f545832be ("spi: add support for microchip "soft" spi controller")
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Tested-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260108175100.3535306-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Teddy Astie <teddy.astie@vates.tech>
+Fixes: 61367688f1fb0 ("xen/virtio: enable grant based virtio on x86")
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <6698564dd2270a9f7377b78ebfb20cb425cabbe8.1767720955.git.teddy.astie@vates.tech>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-microchip-core-spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/grant-dma-ops.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
-index 89e40fc45d73a..c8ebb58e0369a 100644
---- a/drivers/spi/spi-microchip-core-spi.c
-+++ b/drivers/spi/spi-microchip-core-spi.c
-@@ -161,7 +161,7 @@ static int mchp_corespi_setup(struct spi_device *spi)
- 		return -EOPNOTSUPP;
- 	}
- 
--	if (spi->mode & SPI_MODE_X_MASK & ~spi->controller->mode_bits) {
-+	if ((spi->mode ^ spi->controller->mode_bits) & SPI_MODE_X_MASK) {
- 		dev_err(&spi->dev, "incompatible CPOL/CPHA, must match controller's Motorola mode\n");
- 		return -EINVAL;
- 	}
+diff --git a/drivers/xen/grant-dma-ops.c b/drivers/xen/grant-dma-ops.c
+index 29257d2639dbf..43a918c498c6c 100644
+--- a/drivers/xen/grant-dma-ops.c
++++ b/drivers/xen/grant-dma-ops.c
+@@ -362,7 +362,8 @@ static int xen_grant_init_backend_domid(struct device *dev,
+ 	if (np) {
+ 		ret = xen_dt_grant_init_backend_domid(dev, np, backend_domid);
+ 		of_node_put(np);
+-	} else if (IS_ENABLED(CONFIG_XEN_VIRTIO_FORCE_GRANT) || xen_pv_domain()) {
++	} else if (!xen_initial_domain() &&
++		   (IS_ENABLED(CONFIG_XEN_VIRTIO_FORCE_GRANT) || xen_pv_domain())) {
+ 		dev_info(dev, "Using dom0 as backend\n");
+ 		*backend_domid = 0;
+ 		ret = 0;
 -- 
 2.51.0
 
