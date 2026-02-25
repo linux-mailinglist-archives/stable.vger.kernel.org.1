@@ -1,181 +1,196 @@
-Return-Path: <stable+bounces-219650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPnTDggUn2nhYwQAu9opvQ
-	(envelope-from <stable+bounces-219650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:23:52 +0100
+	id ILo7CGYVn2nWYwQAu9opvQ
+	(envelope-from <stable+bounces-219651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:29:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB99C1998B7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:23:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3A31999D1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:29:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 930343049333
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:16:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3E4A33062504
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01490296BCB;
-	Wed, 25 Feb 2026 15:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18DB3D34AA;
+	Wed, 25 Feb 2026 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyF2GjSY"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="CTxCXBeR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B596727280F;
-	Wed, 25 Feb 2026 15:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D31338F93A;
+	Wed, 25 Feb 2026 15:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772032606; cv=none; b=mXbOeR61wBVfBwY5M0J5NicNsMYDWBfa/MT6HM3QKtAzQ5E+F7+iImLuL2bKg6FM95h52VMva08KjLBRUyQm7A7EU9OXug1fUxBoREMjql4rjABIHIX2jU10evFPrR7pLNJZvgJXYwExTz9U8GZB5NlHrdsW1prksZbERSFCE3U=
+	t=1772032976; cv=none; b=M4BmZ0FmkpzHkwifu+ZP3yzTFo8bRqjv71dJF34ZdtIhmgmhqSYaplFR8YUqKh28aAs7VNQrQsNvC1THIWGux62QNd8Njouz0zqh3TXiZmWfXozheIg6b48IsXrnyvO2t5ZfySFRk7HTMhnd4z2or0szqcNRmV/0YgWgZ0CkVxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772032606; c=relaxed/simple;
-	bh=UejWfdREaDrfFPZgYBJ+YzBzaiPzuyTqjgCRqfTmp5g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WMlJDaE7MTjhH1rtpzE5hPoxfv4isDrv5UGMr37Q/DDY7kvtSZRJbJtKiSSqeDLtU8MUHUVEtJa4NUdNUrx1j0wvzELUWiYQO8xg3m09Mr2EbtPHvPCeW2xyaFT9bFbeQ5wPSmGuZ55SaDr1wHIRDLhEMEwZZ/pDxMYzd5z/9zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyF2GjSY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD6EC116D0;
-	Wed, 25 Feb 2026 15:16:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772032606;
-	bh=UejWfdREaDrfFPZgYBJ+YzBzaiPzuyTqjgCRqfTmp5g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qyF2GjSYZss/Pzj6Hd5RTlVOEhARbb4Z6Z+MJr8at3M7hApLfmwEaOf2GU0HuhNEK
-	 JyJQg0yeLjI2l/9S8Jk+KuNOlOtftVIzoy+gnP8JzkOsVBm7bIj05VQbYcFQeMysFL
-	 2mQsT58KR/w1Ahsswu2URXaQNP+nFaejO4Pg3RdQ=
-Date: Wed, 25 Feb 2026 07:16:38 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Yaxing Guo <guoyaxing@bosc.ac.cn>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] uio: uio_pci_generic_sva: fix double free of
- devm_kzalloc() memory
-Message-ID: <2026022525-donut-speech-c4a9@gregkh>
-References: <20260225145131.4178163-1-lgs201920130244@gmail.com>
+	s=arc-20240116; t=1772032976; c=relaxed/simple;
+	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zx+hOlPQzm/6P75kYMu3mNic9Fu1EG0lHW8rT5kd3ReQ50AE+KlXaZAnT9me2QZMvKG7F2kanDuW7NRtfOmbEZG8kcR8wh/mtWQs3Vb+DocGQl1lfiBxuXX+6JCt6NxYV7H27pFtpgfpvy5laihjYo9o8gItiNHc0w8TLmqDnqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=CTxCXBeR; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1772032970; x=1772637770; i=rwarsow@gmx.de;
+	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=CTxCXBeREbYxpPEuY0kYhqtEHzRlRC4fN5fIOEnpQl3Njbc2Mp20bx9OTA73CUTf
+	 riOu2NiC97fNfIiex7F8QI4441aVAbTIA0WYy1pVBOHU5kMgNvEIL4jV4k2SF2clM
+	 W0hfvtI7mGkNdZjO1W4NTBDUlJRIJKSDU3xZ9fm3YVGJDDVe56wwYPBpKDQzQCgpH
+	 6uuXhbF9ydvJigYIjCcTSWRgDuVSkvcBe7W5qfDgnJl1wITMyKTH6loc4xlouGFNQ
+	 uOvveuFUFgEN8ga24mWKl+HATl53y26MDxfjteNtpryPvrC3/kBI/KaB1KLIHWcgT
+	 Yl59udiwOkUMiOVHkQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.34.196]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MWASY-1wEbrs2bb0-00HxYd; Wed, 25
+ Feb 2026 16:22:50 +0100
+Message-ID: <f293295e-718e-44e4-963a-5ff449b238fb@gmx.de>
+Date: Wed, 25 Feb 2026 16:22:46 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225145131.4178163-1-lgs201920130244@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 000/781] 6.19.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260225012359.695468795@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:toxi38npCJhzhyb15vvBzYV/2Kb3Xn9kFLleRjj2y5nmitq4HLd
+ IkckTVrfo1YeC1l6inD0aDMbEQ2alj+ZW9PlCwJemvjh0v/499KBssGlmgeE/fsQ9LNIBLe
+ YV+uXK5Mf0NoqFmRsw++WXTYsyZYIYosptVPSwbsKVMpLo93WqgkcRPd/7qoxavO5YOnYdx
+ 56C6DN0V56evV9gJ3f0hQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:+2y516H32bk=;qi9B/Py7gi3xS33+LQscQsy7UwD
+ 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
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219650-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219651-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmx.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CB99C1998B7
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmx.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gmx.de:mid,gmx.de:dkim,gmx.de:email]
+X-Rspamd-Queue-Id: 3D3A31999D1
 X-Rspamd-Action: no action
 
-On Wed, Feb 25, 2026 at 10:51:31PM +0800, Guangshuo Li wrote:
-> uio_pci_sva allocates struct uio_pci_sva_dev with devm_kzalloc() in
-> probe(), but then calls kfree(udev) both on the probe() error path
-> (label out_free) and again in remove().
-> 
-> Because devm_kzalloc() allocations are devres-managed and are freed
-> automatically when the device is detached (including after a failing
-> probe() and during driver unbind), the explicit kfree() can lead to a
-> double free.
-> 
-> If probe() fails after devm_kzalloc(), the error path frees udev and
-> devres cleanup will free it again when the core unwinds the partially
-> bound device.  On normal driver removal, remove() frees udev and devres
-> will free it again when the device is detached.
-> 
-> Fix by removing the manual kfree() calls and dropping the now-unused
-> label.
-> 
-> Fixes: 3397c3cd859a2 ("uio: Add SVA support for PCI devices via uio_pci_generic_sva.c")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->  drivers/uio/uio_pci_generic_sva.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/uio/uio_pci_generic_sva.c b/drivers/uio/uio_pci_generic_sva.c
-> index 4a46acd994a8..152201047334 100644
-> --- a/drivers/uio/uio_pci_generic_sva.c
-> +++ b/drivers/uio/uio_pci_generic_sva.c
-> @@ -129,15 +129,13 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  	ret = devm_uio_register_device(&pdev->dev, &udev->info);
->  	if (ret) {
->  		dev_err(&pdev->dev, "Failed to register uio device\n");
-> -		goto out_free;
-> +		goto out_disable;
->  	}
->  
->  	pci_set_drvdata(pdev, udev);
->  
->  	return 0;
->  
-> -out_free:
-> -	kfree(udev);
->  out_disable:
->  	pci_disable_device(pdev);
->  
-> @@ -150,7 +148,6 @@ static void remove(struct pci_dev *pdev)
->  
->  	pci_release_regions(pdev);
->  	pci_disable_device(pdev);
-> -	kfree(udev);
->  }
->  
->  static ssize_t pasid_show(struct device *dev,
-> -- 
-> 2.43.0
-> 
-> 
+Hi
 
-Hi,
+no regressions here on x86_64 (Intel 11th Gen. CPU)
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Thanks
 
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
