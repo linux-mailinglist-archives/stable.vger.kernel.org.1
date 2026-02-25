@@ -1,147 +1,133 @@
-Return-Path: <stable+bounces-219185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNjpFm1wnmkvVQQAu9opvQ
-	(envelope-from <stable+bounces-219185-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 04:45:49 +0100
+	id +OsQM7F1nmnCVQQAu9opvQ
+	(envelope-from <stable+bounces-219186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 05:08:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7B9191479
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 04:45:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB35C1917CA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 05:08:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F657304178E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:44:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3CD19303EDB8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 04:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAB829DB99;
-	Wed, 25 Feb 2026 03:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cx1lT4ft"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3158265298;
+	Wed, 25 Feb 2026 04:08:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7B317A2EA
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 03:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1810A1ACEDF;
+	Wed, 25 Feb 2026 04:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771991092; cv=none; b=DfGwtlLGsWZBksVCHRwEOTWoBCTAs91Q8o4XzNRONL3FUHVjvh+uzePcf34eCUmTauszNURKbP2JCYdHlFMm3hml7mmz2WQg1zDx4Sgz7Px+h3/jrowolrvrY1XiviQChgvkY9Fnri0zKubRQRj9KtB6ODLsqWJ2+eZvY24ikGU=
+	t=1771992492; cv=none; b=qo5Pv+5eULvHn5jR7exVvfdMkSzUiWa2U/mKinKg+nr846bfhG8H6cD9PXI9Q2adOEDVfEXf5Hg/9uSFoNVQSn6uVWM51fimcGf+sufK3SgLFM7GG5jzMiSLNAj2+gnu6u5oJlMSxW47kXPBtopX2LjWK/MXyo3C6uFqWLwBMJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771991092; c=relaxed/simple;
-	bh=VsioVV/OWnu73udVOsSViW+wEMHjulRCvqfJc7/3E9A=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WAfkGXKKgHTLwuCnidhQf4MtJ5uO9A4L4gNxEjLs6hYmdJp3sV8GsNO44c5/eQc2vKTB61ZnGyCaebfI/5+mWH/E0v8NIq2tMfyUdwEClSSOjjxP+rpRlq35vE5LIiQWJ5bUnISQW8giBEhlGZIvBhdyPsXjA45o2fy+yRDTkdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cx1lT4ft; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4836e3288cdso2392595e9.0
-        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 19:44:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1771991089; x=1772595889; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PjtSnBpgWMxidZS08Y+UAgjN+XeL99JEW/KIqk0jjS8=;
-        b=cx1lT4ftCRrKdKp5lLK1V5VHx+H1UUY0Z2zUFupdGT2D84aJE84YUkpydP4xDIU0Dm
-         Hs4MJCRz/4LaXZsdDOY7SByreEETMCdnn6kmnI6K/5rkivg+pp5PB0oMbUbKEZpXDocf
-         CDtJDb6Pc6XcNhUzm4wXf/iLilaDU3KaCj1zR5hFex0l1jzEJfZQnkmSAt2jj6gVgqOM
-         KWvbks7VtGLaY9o07niy4LE1LJCirivcDE8MczWUYzmWY3V5a+Ics4ynisj6JSOYzE91
-         +6XXjp+V04iF8vACCkMmXE+Lnp1puK/ZM6/ZNeHgJtAJk7vZg6nKF8q2Z47bEk3oUE3F
-         rdRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771991089; x=1772595889;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PjtSnBpgWMxidZS08Y+UAgjN+XeL99JEW/KIqk0jjS8=;
-        b=j/eMDR0dxp6qO1T3atZcTMIpA5p/SJ8s5gFS6OniWT7/Lxm3Mb8UILOxPVZoapUOJM
-         toXDYstYYC0J383Cr33Q23YR3t7CDHE5ilS646fgGGJKkugSB99IgyAGkyRabBhFAMZD
-         x0FdP5LCt5pNUeHTFXdyAsf0PS5m5zLF4WhUvV2vnc7aaUFGCYxDWmzm/VMpHxRFWH7V
-         uMQqZSqPv1iUsvQzlo7kGS3mAHfctRTQ81SaEF1ID6d5QWPnB9RFSrdRmPCOw1InxZo4
-         ITBLKGVUNpcZnFYgjW8guvCjDIry3wA7p7styzItr72a38rfIccMyowsYWMf0YHrUCO/
-         LBtw==
-X-Gm-Message-State: AOJu0YyqwBSFEXa7wPBx4EOnU8czkIWFaG+1a0MWf211UDcwI2rUYE1N
-	GM8LYLL7VTcNDDkSgSq7L71n5sANiwsNr7hSyQ31px+7RXD6OKBMCMha/lQHzi59pfN+TNJmYy2
-	Q1AJI
-X-Gm-Gg: ATEYQzypk5Smz72qJliSuxMkToq+sv3W7jv1RstXDIKYYstSgtxAEbCdmItgFNQE1qv
-	qQl5izbVbstrGKL5qyxtv1pUYVco+1KYgHvYUMfSgefWFYAMNWtww5C7mMDnsizlrsN8kdL8mzj
-	2HqGbT5mgcWCveiZFcEIm/aboUeyQQmh1NtbCyJ3xB/T3UZ9N7Tin6y7ROmux7Yuc+v7c+6hBu3
-	n1V2SyoBwlFPB8wsH7Rsy4SDK/e7eGvGAeI2xfT6dYXSlQiqlaZqYJ7Dfrq+ztjmJWoPtWjPKU9
-	lX7rfh213c8BAgelU73peLjjHBp9nxSTehIMXwkV13hpzeW/DNwndhEnz5z/0KVQtNpaYz3Dzzn
-	Us4byQC8gFlOWNzSSgbcdnoLR/MyFr7bEEE/Gyd6+FdV1mPsJa1CPwUSFUZnesB/GowUkzEWPEa
-	ft0XT4fsjR8LVmA+wnndw=
-X-Received: by 2002:a05:600c:21d4:b0:483:7eeb:4558 with SMTP id 5b1f17b1804b1-483bd713d0bmr25415525e9.2.1771991088785;
-        Tue, 24 Feb 2026 19:44:48 -0800 (PST)
-Received: from u94a ([2401:e180:8d80:eebd:d098:7649:31a9:9ad7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad74f5e0f2sm121839545ad.31.2026.02.24.19.44.47
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 19:44:48 -0800 (PST)
-Date: Wed, 25 Feb 2026 11:44:43 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: stable@vger.kernel.org
-Subject: Re: [PATCH stable 6.6 00/11] Backport selftest for "bpf: Check
- skb->transport_header is set in bpf_skb_check_mtu"
-Message-ID: <cbbxjsmon7zxr2p4jafswdacndgdzomjdqu7wyojtegdzd77zf@egykxauihxol>
-References: <20260225025454.17398-1-shung-hsi.yu@suse.com>
+	s=arc-20240116; t=1771992492; c=relaxed/simple;
+	bh=pBG51dN+at3FTBWtB/0OKOsFiQ8+6HNAR0s0DNYu4qk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UENIObmIgmIQc8u43zJLRCjdXc08aR28WFj/nsb33NAqrIiFUtZci2vyw/Lm/Eh0H2jha+GYxQAbPqejGN1vkpHNitKV4BXWSfU29w4ve/Jr729yS+UrQ53skHlQu+dE2kTSsq3YxdUPTSjORKr3lrCFnZtAXExApFj6tXLyQ10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fLLY40WJ3zKm4B;
+	Wed, 25 Feb 2026 12:03:20 +0800 (CST)
+Received: from kwepemf200017.china.huawei.com (unknown [7.202.181.10])
+	by mail.maildlp.com (Postfix) with ESMTPS id 61965402AB;
+	Wed, 25 Feb 2026 12:08:07 +0800 (CST)
+Received: from [10.67.121.58] (10.67.121.58) by kwepemf200017.china.huawei.com
+ (7.202.181.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 25 Feb
+ 2026 12:08:06 +0800
+Message-ID: <a9cbeebf-4029-4eb0-b486-9615b03b3c93@hisilicon.com>
+Date: Wed, 25 Feb 2026 12:08:06 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225025454.17398-1-shung-hsi.yu@suse.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cpufreq: cppc: drop invariance when FIE is disabled
+To: Penghe Geng <pgeng@nvidia.com>
+CC: Viresh Kumar <viresh.kumar@linaro.org>, Ionela Voinescu
+	<ionela.voinescu@arm.com>, <linux-pm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, "Rafael J. Wysocki"
+	<rafael@kernel.org>
+References: <20260220224920.416602-1-pgeng@nvidia.com>
+Content-Language: en-US
+From: Jie Zhan <zhanjie9@hisilicon.com>
+In-Reply-To: <20260220224920.416602-1-pgeng@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemf200017.china.huawei.com (7.202.181.10)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[hisilicon.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.com:+];
-	RCPT_COUNT_ONE(0.00)[1];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219185-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email,hisilicon.com:mid];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:dkim]
-X-Rspamd-Queue-Id: CF7B9191479
+	FROM_NEQ_ENVFROM(0.00)[zhanjie9@hisilicon.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219186-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: AB35C1917CA
 X-Rspamd-Action: no action
 
-On Wed, Feb 25, 2026 at 10:54:38AM +0800, Shung-Hsi Yu wrote:
-> This patchset backport the corresponding BPF selftests for commit
-> d946f3c98328 ("bpf: Check skb->transport_header is set in
-> bpf_skb_check_mtu"), which has already been included since 6.12.63.
-[...]
-> The follow commits are backported:
->  1. f52403b6bfea "selftests/bpf: Add traffic monitor functions."
->  2. f5281aacec85 "selftests/bpf: Add the traffic monitor option to test_progs."
->  3. 1e115a58be0f "selftests/bpf: netns_new() and netns_free() helpers."
->  4. 52a5b8a30fa8 "selftests/bpf: Monitor traffic for tc_redirect."
->  5. b407b52b1850 "selftests/bpf: Monitor traffic for sockmap_listen."
->  6. 69354085975a "selftests/bpf: Monitor traffic for select_reuseport."
->  7. 5772c3458bb8 "selftests/bpf: use simply-expanded variables for libpcap flags"
->  8. 4a06c5251ae3 "selftests/bpf: ns_current_pid_tgid: Rename the test function"
->  9. c047e0e0e435 "selftests/bpf: Optionally open a dedicated namespace to run test in it"
-> 10. 207cd7578ad1 "selftests/bpf: tc_links/tc_opts: Unserialize tests"
-> 11. 6cc73f35406c "selftests/bpf: Test bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) when transport_header is not set"
-[...]
 
-Forgot to mentioned that BPF selftests was ran and passes after this patchset was applied:
-https://github.com/shunghsiyu/libbpf/actions/runs/22343432214/job/64773946420
+On 2/21/2026 6:49 AM, Penghe Geng wrote:
+> CONFIG_ACPI_CPPC_CPUFREQ_FIE gates CPPC counter-based frequency
+> invariance support. When FIE is disabled, the CPPC driver does not
+> register a frequency scale source, but cpufreq_register_driver() still
+> enables cpufreq_freq_invariance for target/fast-switch drivers.
+> 
+> Disable cpufreq frequency invariance after CPPC driver registration when
+> FIE is disabled. This avoids scheduler behavior mismatch when no
+> invariance updates are provided, which can cause major performance
+> regressions on sensitive platforms.
+Hi Penghe,
+
+IIUC, even if CPPC FIE is not there, cpufreq still updates frequency scales
+in cpufreq_freq_transition_end() and cpufreq_driver_fast_switch(), so the
+frequency scale number is still somewhat meaningful and the
+'cpufreq_freq_invariance' static key reflects that correctly.
+
+Any numbers or evidence of that "performance regressions" so that we can
+understand the issue better?
+
+Thanks,
+Jie
+> 
+> Export cpufreq_disable_freq_invariance() so modular cppc_cpufreq can call
+> it.
+> 
+> Fixes: 1eb5dde674f5 ("cpufreq: CPPC: Add support for frequency invariance")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Penghe Geng <pgeng@nvidia.com>
+> ---
+>  drivers/cpufreq/cppc_cpufreq.c | 4 ++++
+>  drivers/cpufreq/cpufreq.c      | 8 ++++++++
+>  include/linux/cpufreq.h        | 3 +++
+>  3 files changed, 15 insertions(+)
+> 
+...
 
