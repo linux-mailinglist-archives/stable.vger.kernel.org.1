@@ -1,90 +1,90 @@
-Return-Path: <stable+bounces-219147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219148-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGLEDcVknmlCVAQAu9opvQ
-	(envelope-from <stable+bounces-219147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:56:05 +0100
+	id CDCYNMpknmlCVAQAu9opvQ
+	(envelope-from <stable+bounces-219148-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:56:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58F71910F6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:56:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A7C1910FE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BADC7308107E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2BDE30CB10E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43894299924;
-	Wed, 25 Feb 2026 02:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31EDD29992A;
+	Wed, 25 Feb 2026 02:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="b399ZxA+"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gd/6Nw5S"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D8D296BD1
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F78298CC7
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771988132; cv=none; b=DpbYqRva+UkA4f2PPe9uoOXbBn4OhGTku++V+W+EgMqZMwWE6wuqjwGDsSuVsw9DvfKoCjXWJ2jJptGUyLHTvJrDzavL1tbZVeVemFX8oIMxMVvgUXCvE4/7Q4DIGtmPlIT4IwYIzLP68E9nVqtBTl9SDYGWkNxabSAzIMjtn9Y=
+	t=1771988136; cv=none; b=DF+mYVCp1Q/kGYoOqwDNf+d30edo48dzSXAPXCokuoLccF9hLLWYg6bHAJ+h6xkBCtRURdFT6vd6f+PsuoKCCYgnk8spVResDoxrD/Aaq8f1lqy7Mg5D04x95l8IW9pE/DUKGy3qizW2rGA75H7Vh4TtqamBknVbTQbE2e1/Fxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771988132; c=relaxed/simple;
-	bh=fMHHKFEdjQdBy9uMS2UJfVIHJ5UwGKOb/jxB6aSzfOg=;
+	s=arc-20240116; t=1771988136; c=relaxed/simple;
+	bh=o1h/u9FhjjWVtur33TA+KKvXLcTL5amrasnwRCvki9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgNSHenXPvkXr72R9aa5gu8EYFO3qoQaN67uqhcWhgA7JK1dDXUi60O3pqncb8qTMHwvgYQ5+NVP/haGCYN+YW3ZELr87i8/63hBoZBPPfm2UHt2G7ouCBFqlpD6kX5DjjmEWf45v+de8kapfrIXW55bjJjjWDfLUaTZbtPVrE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=b399ZxA+; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=uBHMlEabsKEiJo1tIY9TD2ErZ7zl0aoQFYBU+QSEFCJE8LR1PC6sPTi1VbK2JOLbhdu3oeSb39aG6ov5BkKQsUDwI1QbKSugDazORCqHsrmpw/BHw4ClCZmDqJN0xev2EAq6zgv6v4shvvLEja4U95W8o3OTNLZ0DNPkPoDRybU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gd/6Nw5S; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso53590435e9.3
-        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 18:55:30 -0800 (PST)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48370174e18so33564035e9.2
+        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 18:55:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1771988129; x=1772592929; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1771988133; x=1772592933; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FXhgb2zQPpqqc0jn/TaFjFQNrp/xJUmN4JUSCw7TpjI=;
-        b=b399ZxA+p403JgtTa2sMFnPKSvjU3tIOn9lsooAIT9/u+shDDPW/sJzJAIf2pGWBry
-         dD1iPEa4sxfAReXPr+X0YA2AA+Pr3FIKObVVeFBOenvwqXZR6ar2x3FHC5RzbF4EUF8E
-         PgDvknduim1IsrHO4anbcXSo6A4RDXwTwoEdOLP3gyBbFi/uyu2jv0FFyd9biIVurqb7
-         1yRAHmzavElb7sQkfFosxHDYji9RfKxeY3KgkgbBveIDQlfCd8by19/we/Sfur/2jddy
-         ml5Z/whoobopJp5bERIjvraaxPIaw9JEzWxRnBWHcvshU2VMvCqHGxS/r9KXQuYFgu02
-         3xlQ==
+        bh=Ue9w+IK86QxKn4sY6heQYTaIr0+bmZDWqfW5vRRrm+E=;
+        b=gd/6Nw5SZMg2kfeg5jZP/zDCiythiJa1G2JLFbJ09p0Bj6ZUx0MK7z0LwcJChjp5n5
+         LxshbBM3KRQQHCl7zcICxJ2wUd46ZCi5HmDnSrFTvwj/WWgcctp4H+C4a7X05utT2aGh
+         KppDQw1+Zg5zUycnoo/NDyO3AN7DHh0lherSDBiFheZwfrwNsspfe0r1L7SWrz9CUaEs
+         axJRYKZWQtoczBEsw/dcIis+89h3gMDWPXeCn5YoaRNYtkyHSCIoj6sdaxEwm5Tq72Co
+         /vVXd8u4MylpS0hq7khILZ7a0wFBE78Kbb+kp9l+3/E/4/Mc/yTwGQweKB/k1et+T8uo
+         N14A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771988129; x=1772592929;
+        d=1e100.net; s=20230601; t=1771988133; x=1772592933;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=FXhgb2zQPpqqc0jn/TaFjFQNrp/xJUmN4JUSCw7TpjI=;
-        b=mAiN+RzTLRpso9jbUxdlUJjm0AwhC0GrX9LeHTSdYkBRWX1KLcddqT09fvBMaEyK8Q
-         tYstNyHQ1K1VsmC8QxXLAYYehEIm8M1UDISwVbBz4dcgLQB0wbRM0jAmuB2a6En3+Vxr
-         2rBoTfx7zWqsMSo2KaDTk6BXNGFBkYjaeXhiEyK/01Ko5fj0kwNQ6GgxRC4C8/deGN4a
-         LUZte0BUTZq0+FvkDJgp/OyIK+XPR0lz34ZVzTFsvcNRYK/TQ3UPmzJanhcoObAiGlfd
-         ejjbm53pdrIajXX9MdHBtOhaP1lgUpeHOdkYuHWDTehiWUZ5JPwPJbGfyGmNXYjnIhGs
-         H9zA==
-X-Gm-Message-State: AOJu0YzfuK9VSFi6ddOASLQUYVy8QTSjseSDCm4R/choVjT0nmw0H52H
-	gaF/q6AqCBExQmynBJG7z8wDxpsIxzlL0P904/R50oVUeDFTPefMMFqc8MnlIxxSgNfiFtHdfoM
-	z3RrP
-X-Gm-Gg: ATEYQzxfsVe9JTPpwMzJCds2TYkmUyGhQI91Ek+vDm1RGe88Zdnk516J2w9QMSEpj0w
-	pUYgcc5GatvpKprTFyc+tCrcXVo0dVCWeiRW/xWOQUx1pWL5E1CaRNYZnuI4GbhzNMJBMeWLg2e
-	q/BPA0UttVkBFt31yUcm9iY44DC/JOF8Nw/6FoQQ3tYIqLz0YfiEE9BY+EaGLISqEsnuvs6/GIJ
-	CoDvBSy0Crm8J7uhda5WXbOkfwSlJpP0vE9ASOfgHBWPYauoyxa9RPnbCaj5SBh9I1ujnl9NRk5
-	hJcGBbtkNqsnsZV/Ut9Wq9t1Vc3FZ2khxLXI8U2wPqicXWD1oZfEvVo1qkHxlRA3HMmPsA/nYpg
-	xgvwMR12STqXww1Pc4JI1UnzN9S0hKJZukjlju1dYif64WsFK3Nt0Q9UlzfGWJbKb+UzV0J/n8P
-	O20xYZUagBisNQhVhkeTWoJL0UBQ==
-X-Received: by 2002:a05:600c:8b88:b0:479:35e7:a0e3 with SMTP id 5b1f17b1804b1-483a963d64bmr208607145e9.30.1771988128952;
-        Tue, 24 Feb 2026 18:55:28 -0800 (PST)
+        bh=Ue9w+IK86QxKn4sY6heQYTaIr0+bmZDWqfW5vRRrm+E=;
+        b=qAzEggdjcUsZOyUbFxi4lzgd3G1o8qgsqljRtQ0iPzBiw1g41lcNlKXErludBf9H7C
+         C8855jCM252denwTeX971VlipJelsXGf1bzZbQWUY0Oi58PN8UPsyTbMZJ8AtHQLJfHQ
+         EyfHUoaxSiv85KGbmPEefi7Vggl1KRxux76EMEPyy6NV1cM7XCjOX6FFBipcdyQgnniq
+         mzB1O+U73+YOtv9XC8m4N0r5DgAhq1yuKGaY0V86ISpLL5fDaxvfX0eRmHsxB5uq8Cqe
+         Qqn+RXV/A+4mAhdMMfvslvzbOcvxdprt29ggA8wyqdUqqr3ilJ7DcIrL9pp395wURW0B
+         aqeQ==
+X-Gm-Message-State: AOJu0YxK8qtXm+j0OvJiZzxPKjodtS9BSwseO7JojTUVZPR5f/vFKBul
+	WXorpDR6kxtb8GDOZQ4nioUCYSqj+ZT0pB/GmRSaHnz1E3IC/IlJQd/T5lSjbRG2gC1TeIhrh1e
+	cGilW
+X-Gm-Gg: ATEYQzwJ44IWp1vMxBiUqxTPb8CbEpDL/56qKEJp/qN92iBSR/0iuHfKTmvfh9cryep
+	GCDjQPrATPXTcGgjOkEkRBdfhnl70qO/iUG0+6Hj0rfOmnV2qBbcil0fB6KGaYNC1jMX+kgtCpK
+	udRQdtokQJE1vl3RKEhr1L4Pat6oZ6eXKAmVjeKan14RxS8Kpan5zA88SiophRqrUXtNZgJi0AK
+	nh7S/b1bXuUF0qrpW817wCuabtk5+i6n+2h/ABShnP9tvrJmrc0MLS2u0AkEoV1cnOp4JDRabyT
+	cTNl/lr6mF5Ud4dpOKFBh29GPuR0Oc0+gO25vkkqPL8KaNsbFhX3JPXLHyGgS8sItw8WQV4leHN
+	DTSWrLN3yec6M6fYFzB00P+5kGqiB53vBTWLkHomRnaOBfTdivld8XTNUnj/NSdHsaUju0j/RNn
+	nMgPch5m+3lqDI21Xdwm/h9lo1Dw==
+X-Received: by 2002:a05:600c:1910:b0:483:badb:618f with SMTP id 5b1f17b1804b1-483bef5aaaemr12535645e9.25.1771988132955;
+        Tue, 24 Feb 2026 18:55:32 -0800 (PST)
 Received: from localhost ([2401:e180:8d80:eebd:d098:7649:31a9:9ad7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd8ee179sm11578436b3a.61.2026.02.24.18.55.28
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd692b99sm12233308b3a.24.2026.02.24.18.55.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 18:55:28 -0800 (PST)
+        Tue, 24 Feb 2026 18:55:32 -0800 (PST)
 From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?Ricardo=20B=2E=20Marli=C3=A8re?= <rbm@suse.com>,
 	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH stable 6.6 07/11] selftests/bpf: use simply-expanded variables for libpcap flags
-Date: Wed, 25 Feb 2026 10:54:45 +0800
-Message-ID: <20260225025454.17398-8-shung-hsi.yu@suse.com>
+	"Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH stable 6.6 08/11] selftests/bpf: ns_current_pid_tgid: Rename the test function
+Date: Wed, 25 Feb 2026 10:54:46 +0800
+Message-ID: <20260225025454.17398-9-shung-hsi.yu@suse.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225025454.17398-1-shung-hsi.yu@suse.com>
 References: <20260225025454.17398-1-shung-hsi.yu@suse.com>
@@ -97,77 +97,69 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
 	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[suse.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-219147-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219148-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A58F71910F6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,suse.com:email,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 35A7C1910FE
 X-Rspamd-Action: no action
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>
 
-commit 5772c3458bb8d17d763e0f411e1bae1bf4eda88d upstream.
+commit 4a06c5251ae341224e4010795a4db080857545fe upstream.
 
-Save pkg-config output for libpcap as simply-expanded variables.
-For an obscure reason 'shell' call in LDLIBS/CFLAGS recursively
-expanded variables makes *.test.o files compilation non-parallel
-when make is executed with -j option.
+Next patch will add a new feature to test_prog to run tests in a
+dedicated namespace if the test name starts with 'ns_'. Here the test
+name already starts with 'ns_' and creates some namespaces which would
+conflict with the new feature.
 
-While at it, reuse 'pkg-config --cflags' call to define
--DTRAFFIC_MONITOR=1 option, it's exit status is the same as for
-'pkg-config --exists'.
+Rename the test to avoid this conflict.
 
-Fixes: f52403b6bfea ("selftests/bpf: Add traffic monitor functions.")
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20240823194409.774815-1-eddyz87@gmail.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
+Link: https://lore.kernel.org/r/20250219-b4-tc_links-v2-1-14504db136b7@bootlin.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: 6cc73f35406c ("selftests/bpf: Test bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) when transport_header is not set")
 Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 ---
- tools/testing/selftests/bpf/Makefile | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index 2eeb51b13249..9d652cd3f494 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -33,9 +33,10 @@ CFLAGS += -g -O0 -rdynamic -Wall -Werror $(GENFLAGS) $(SAN_CFLAGS)	\
- LDFLAGS += $(SAN_LDFLAGS)
- LDLIBS += -lelf -lz -lrt -lpthread
+diff --git a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
+index a84c41862ff8..05e8678632ca 100644
+--- a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
++++ b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
+@@ -96,7 +96,7 @@ static void test_ns_current_pid_tgid_new_ns(int (*fn)(void *), void *arg)
+ }
  
--LDLIBS += $(shell $(PKG_CONFIG) --libs libpcap 2>/dev/null)
--CFLAGS += $(shell $(PKG_CONFIG) --cflags libpcap 2>/dev/null)
--CFLAGS += $(shell $(PKG_CONFIG) --exists libpcap 2>/dev/null && echo "-DTRAFFIC_MONITOR=1")
-+PCAP_CFLAGS	:= $(shell $(PKG_CONFIG) --cflags libpcap 2>/dev/null && echo "-DTRAFFIC_MONITOR=1")
-+PCAP_LIBS	:= $(shell $(PKG_CONFIG) --libs libpcap 2>/dev/null)
-+LDLIBS += $(PCAP_LIBS)
-+CFLAGS += $(PCAP_CFLAGS)
- 
- ifneq ($(LLVM),)
- # Silence some warnings when compiled with clang
+ /* TODO: use a different tracepoint */
+-void serial_test_ns_current_pid_tgid(void)
++void serial_test_current_pid_tgid(void)
+ {
+ 	if (test__start_subtest("root_ns_tp"))
+ 		test_current_pid_tgid_tp(NULL);
 -- 
 2.53.0
 
