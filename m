@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-218617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGeFBgxUnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218617-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:44 +0100
+	id EKHfDwOenmk5WgQAu9opvQ
+	(envelope-from <stable+bounces-219235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B8118FB60
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBCE192B4D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37154318F919
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C991E30EC569
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9059324A05D;
-	Wed, 25 Feb 2026 01:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61EE72C17A0;
+	Wed, 25 Feb 2026 06:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyBAHGMU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4mCOehh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5344F26056D;
-	Wed, 25 Feb 2026 01:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236672C11CD;
+	Wed, 25 Feb 2026 06:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983464; cv=none; b=rzEakCeWmUyYUMaxxaaDh1Dnu1KKEPoP0fpea1MBLqFiZ5yA7IlmwLx1U62EWI7aM+npGPyJrmhn78JF3ckKrEGN+hdJm1S3yVbi850r8ieOWiokAsWZBzA09Hb5LwMnnuyNDDYp0q2MF8jwR1dk90wGcJhlGQTnhSMYSOLA7hg=
+	t=1772002583; cv=none; b=PKOKQIbydElPvOU/c9JiNF1MPvj7iAm3eXpCZiIGLxZVdB4NogTb8iNfKZdYkRb6SwO+urlv+EoxDS76ju5qRXXpnGwTKSJgg3EjH6Ml8BhzYUtUTqVwBG3Fqg/WM8XQfgd5JNxVATYgbXxSh30LZeKQIAxe1GVR3uF+xD34J8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983464; c=relaxed/simple;
-	bh=VqoF0w7RAaZHQBiuBPNWW2LtuwyBqiTuUMZ3pQKmUm4=;
+	s=arc-20240116; t=1772002583; c=relaxed/simple;
+	bh=6MgIqNCj9CxA3qSs8P+wkv0FUebCuZQpu5s8rQwga1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exbPj7TSquITEIptHUbxdM09OA9yn68/uVJgxcjKFrdOFFDvjlKbBUHBG4fxwcDkYfYGLQV10dmOzA41HaF5c8VyOF418JHV2Fw+FW5Tv3ngObRn54R3vRr0amRx0D74wFeMtaOcamHAMRs+ZEnDjsYSyWdNFXhg2/ZPhlIvDMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyBAHGMU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DC9C116D0;
-	Wed, 25 Feb 2026 01:37:43 +0000 (UTC)
+	 MIME-Version; b=XKpc0yPck8co7WYg/Dce3OrQd2xni9PEehwKqkBiFyHSE8rKVfo+mfjfcf6+tvf6hdvH0Hohjotvj7HAdDsARPA0qV/SE17y1dPdDLuPrA/bRJfld1sLXW5w/qczqHW4OO5UmF+w/IeFwb653E2ApFS1DlSGR3xpv4+AuM2e4RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4mCOehh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE25CC116D0;
+	Wed, 25 Feb 2026 06:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983464;
-	bh=VqoF0w7RAaZHQBiuBPNWW2LtuwyBqiTuUMZ3pQKmUm4=;
+	s=korg; t=1772002583;
+	bh=6MgIqNCj9CxA3qSs8P+wkv0FUebCuZQpu5s8rQwga1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyBAHGMU4Ndvf1XUqo+oR2oOp5Kp6pZkGp0misFoiEir7Pe/oPLedwfOK7tc7rBMs
-	 gcIBrG2443XB68z2MiPPNMx5YfvEOIZJHrUUeRgSdbmHiUWxla8f3n45vbSBaKbJvW
-	 QekfqaU4Fr9rgHcTnHXMD53PTYrNi25OvResa4Q4=
+	b=P4mCOehhcj5lnw9cj8jt/BESoYsISMi9rhd08kOUeQ5SDgoHaeP5i0tPZNiTt4DK+
+	 o92wxQDJ4q7vfq9ESBIcj/S7R5wIcWogd4fX1TmkvJLVTVNTKCSTVQRQczwlSoaou/
+	 sfJoc3/1chjZWatGY4/0lpPbs2HWr7UAijuEgdrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Hodina <petr.hodina@protonmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	David Heidelberg <david@ixit.cz>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Petr Oros <poros@redhat.com>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 536/781] clk: qcom: dispcc-sdm845: Enable parents for pixel clocks
+Subject: [PATCH 6.18 319/641] dpll: zl3073x: Store raw register values instead of parsed state
 Date: Tue, 24 Feb 2026 17:20:45 -0800
-Message-ID: <20260225012412.945728046@linuxfoundation.org>
+Message-ID: <20260225012356.441195792@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,73 +76,394 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,protonmail.com,oss.qualcomm.com,ixit.cz,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218617-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219235-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ixit.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 61B8118FB60
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AEBCE192B4D
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Hodina <petr.hodina@protonmail.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit a1d63493634e98360140027fef49d82b1ff0a267 ]
+[ Upstream commit 58fb88d30b0250f928e1afa0eaa4547770d86229 ]
 
-Add CLK_OPS_PARENT_ENABLE to MDSS pixel clock sources to ensure parent
-clocks are enabled during clock operations, preventing potential
-stability issues during display configuration.
+The zl3073x_ref, zl3073x_out and zl3073x_synth structures
+previously stored state that was parsed from register reads. This
+included values like boolean 'enabled' flags, synthesizer selections,
+and pre-calculated frequencies.
 
-Fixes: 81351776c9fb ("clk: qcom: Add display clock controller driver for SDM845")
-Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: David Heidelberg <david@ixit.cz>
-Link: https://lore.kernel.org/r/20260107-stability-discussion-v2-1-ef7717b435ff@protonmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This commit refactors the state management to store the raw register
+values directly in these structures. The various inline helper functions
+are updated to parse these raw values on-demand using FIELD_GET.
+
+Reviewed-by: Petr Oros <poros@redhat.com>
+Tested-by: Prathosh Satish <Prathosh.Satish@microchip.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Link: https://patch.msgid.link/20251113074105.141379-2-ivecera@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 5d41f95f5d0b ("dpll: zl3073x: Fix output pin phase adjustment sign")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sdm845.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dpll/zl3073x/core.c | 81 ++++++++++++-------------------------
+ drivers/dpll/zl3073x/core.h | 61 ++++++++++++++++------------
+ 2 files changed, 60 insertions(+), 82 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sdm845.c b/drivers/clk/qcom/dispcc-sdm845.c
-index 2f9e9665d7e93..78e43f6d75026 100644
---- a/drivers/clk/qcom/dispcc-sdm845.c
-+++ b/drivers/clk/qcom/dispcc-sdm845.c
-@@ -280,7 +280,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk0_clk_src = {
- 		.name = "disp_cc_mdss_pclk0_clk_src",
- 		.parent_data = disp_cc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_4),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
+diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
+index e42e527813cf8..50c1fe59bc7f0 100644
+--- a/drivers/dpll/zl3073x/core.c
++++ b/drivers/dpll/zl3073x/core.c
+@@ -598,25 +598,22 @@ int zl3073x_write_hwreg_seq(struct zl3073x_dev *zldev,
+  * @zldev: pointer to zl3073x_dev structure
+  * @index: input reference index to fetch state for
+  *
+- * Function fetches information for the given input reference that are
+- * invariant and stores them for later use.
++ * Function fetches state for the given input reference and stores it for
++ * later user.
+  *
+  * Return: 0 on success, <0 on error
+  */
+ static int
+ zl3073x_ref_state_fetch(struct zl3073x_dev *zldev, u8 index)
+ {
+-	struct zl3073x_ref *input = &zldev->ref[index];
+-	u8 ref_config;
++	struct zl3073x_ref *ref = &zldev->ref[index];
+ 	int rc;
+ 
+ 	/* If the input is differential then the configuration for N-pin
+ 	 * reference is ignored and P-pin config is used for both.
+ 	 */
+-	if (zl3073x_is_n_pin(index) &&
+-	    zl3073x_ref_is_diff(zldev, index - 1)) {
+-		input->enabled = zl3073x_ref_is_enabled(zldev, index - 1);
+-		input->diff = true;
++	if (zl3073x_is_n_pin(index) && zl3073x_ref_is_diff(zldev, index - 1)) {
++		memcpy(ref, &zldev->ref[index - 1], sizeof(*ref));
+ 
+ 		return 0;
+ 	}
+@@ -630,16 +627,14 @@ zl3073x_ref_state_fetch(struct zl3073x_dev *zldev, u8 index)
+ 		return rc;
+ 
+ 	/* Read ref_config register */
+-	rc = zl3073x_read_u8(zldev, ZL_REG_REF_CONFIG, &ref_config);
++	rc = zl3073x_read_u8(zldev, ZL_REG_REF_CONFIG, &ref->config);
+ 	if (rc)
+ 		return rc;
+ 
+-	input->enabled = FIELD_GET(ZL_REF_CONFIG_ENABLE, ref_config);
+-	input->diff = FIELD_GET(ZL_REF_CONFIG_DIFF_EN, ref_config);
+-
+ 	dev_dbg(zldev->dev, "REF%u is %s and configured as %s\n", index,
+-		str_enabled_disabled(input->enabled),
+-		input->diff ? "differential" : "single-ended");
++		str_enabled_disabled(zl3073x_ref_is_enabled(zldev, index)),
++		zl3073x_ref_is_diff(zldev, index)
++			? "differential" : "single-ended");
+ 
+ 	return rc;
+ }
+@@ -649,8 +644,8 @@ zl3073x_ref_state_fetch(struct zl3073x_dev *zldev, u8 index)
+  * @zldev: pointer to zl3073x_dev structure
+  * @index: output index to fetch state for
+  *
+- * Function fetches information for the given output (not output pin)
+- * that are invariant and stores them for later use.
++ * Function fetches state of the given output (not output pin) and stores it
++ * for later use.
+  *
+  * Return: 0 on success, <0 on error
+  */
+@@ -658,22 +653,16 @@ static int
+ zl3073x_out_state_fetch(struct zl3073x_dev *zldev, u8 index)
+ {
+ 	struct zl3073x_out *out = &zldev->out[index];
+-	u8 output_ctrl, output_mode;
+ 	int rc;
+ 
+ 	/* Read output configuration */
+-	rc = zl3073x_read_u8(zldev, ZL_REG_OUTPUT_CTRL(index), &output_ctrl);
++	rc = zl3073x_read_u8(zldev, ZL_REG_OUTPUT_CTRL(index), &out->ctrl);
+ 	if (rc)
+ 		return rc;
+ 
+-	/* Store info about output enablement and synthesizer the output
+-	 * is connected to.
+-	 */
+-	out->enabled = FIELD_GET(ZL_OUTPUT_CTRL_EN, output_ctrl);
+-	out->synth = FIELD_GET(ZL_OUTPUT_CTRL_SYNTH_SEL, output_ctrl);
+-
+ 	dev_dbg(zldev->dev, "OUT%u is %s and connected to SYNTH%u\n", index,
+-		str_enabled_disabled(out->enabled), out->synth);
++		str_enabled_disabled(zl3073x_out_is_enabled(zldev, index)),
++		zl3073x_out_synth_get(zldev, index));
+ 
+ 	guard(mutex)(&zldev->multiop_lock);
+ 
+@@ -683,17 +672,13 @@ zl3073x_out_state_fetch(struct zl3073x_dev *zldev, u8 index)
+ 	if (rc)
+ 		return rc;
+ 
+-	/* Read output_mode */
+-	rc = zl3073x_read_u8(zldev, ZL_REG_OUTPUT_MODE, &output_mode);
++	/* Read output mode */
++	rc = zl3073x_read_u8(zldev, ZL_REG_OUTPUT_MODE, &out->mode);
+ 	if (rc)
+ 		return rc;
+ 
+-	/* Extract and store output signal format */
+-	out->signal_format = FIELD_GET(ZL_OUTPUT_MODE_SIGNAL_FORMAT,
+-				       output_mode);
+-
+ 	dev_dbg(zldev->dev, "OUT%u has signal format 0x%02x\n", index,
+-		out->signal_format);
++		zl3073x_out_signal_format_get(zldev, index));
+ 
+ 	return rc;
+ }
+@@ -703,8 +688,7 @@ zl3073x_out_state_fetch(struct zl3073x_dev *zldev, u8 index)
+  * @zldev: pointer to zl3073x_dev structure
+  * @index: synth index to fetch state for
+  *
+- * Function fetches information for the given synthesizer that are
+- * invariant and stores them for later use.
++ * Function fetches state of the given synthesizer and stores it for later use.
+  *
+  * Return: 0 on success, <0 on error
+  */
+@@ -712,25 +696,13 @@ static int
+ zl3073x_synth_state_fetch(struct zl3073x_dev *zldev, u8 index)
+ {
+ 	struct zl3073x_synth *synth = &zldev->synth[index];
+-	u16 base, m, n;
+-	u8 synth_ctrl;
+-	u32 mult;
+ 	int rc;
+ 
+ 	/* Read synth control register */
+-	rc = zl3073x_read_u8(zldev, ZL_REG_SYNTH_CTRL(index), &synth_ctrl);
++	rc = zl3073x_read_u8(zldev, ZL_REG_SYNTH_CTRL(index), &synth->ctrl);
+ 	if (rc)
+ 		return rc;
+ 
+-	/* Store info about synth enablement and DPLL channel the synth is
+-	 * driven by.
+-	 */
+-	synth->enabled = FIELD_GET(ZL_SYNTH_CTRL_EN, synth_ctrl);
+-	synth->dpll = FIELD_GET(ZL_SYNTH_CTRL_DPLL_SEL, synth_ctrl);
+-
+-	dev_dbg(zldev->dev, "SYNTH%u is %s and driven by DPLL%u\n", index,
+-		str_enabled_disabled(synth->enabled), synth->dpll);
+-
+ 	guard(mutex)(&zldev->multiop_lock);
+ 
+ 	/* Read synth configuration */
+@@ -744,35 +716,32 @@ zl3073x_synth_state_fetch(struct zl3073x_dev *zldev, u8 index)
+ 	 *
+ 	 * Read registers with these values
+ 	 */
+-	rc = zl3073x_read_u16(zldev, ZL_REG_SYNTH_FREQ_BASE, &base);
++	rc = zl3073x_read_u16(zldev, ZL_REG_SYNTH_FREQ_BASE, &synth->freq_base);
+ 	if (rc)
+ 		return rc;
+ 
+-	rc = zl3073x_read_u32(zldev, ZL_REG_SYNTH_FREQ_MULT, &mult);
++	rc = zl3073x_read_u32(zldev, ZL_REG_SYNTH_FREQ_MULT, &synth->freq_mult);
+ 	if (rc)
+ 		return rc;
+ 
+-	rc = zl3073x_read_u16(zldev, ZL_REG_SYNTH_FREQ_M, &m);
++	rc = zl3073x_read_u16(zldev, ZL_REG_SYNTH_FREQ_M, &synth->freq_m);
+ 	if (rc)
+ 		return rc;
+ 
+-	rc = zl3073x_read_u16(zldev, ZL_REG_SYNTH_FREQ_N, &n);
++	rc = zl3073x_read_u16(zldev, ZL_REG_SYNTH_FREQ_N, &synth->freq_n);
+ 	if (rc)
+ 		return rc;
+ 
+ 	/* Check denominator for zero to avoid div by 0 */
+-	if (!n) {
++	if (!synth->freq_n) {
+ 		dev_err(zldev->dev,
+ 			"Zero divisor for SYNTH%u retrieved from device\n",
+ 			index);
+ 		return -EINVAL;
+ 	}
+ 
+-	/* Compute and store synth frequency */
+-	zldev->synth[index].freq = div_u64(mul_u32_u32(base * m, mult), n);
+-
+ 	dev_dbg(zldev->dev, "SYNTH%u frequency: %u Hz\n", index,
+-		zldev->synth[index].freq);
++		zl3073x_synth_freq_get(zldev, index));
+ 
+ 	return rc;
+ }
+diff --git a/drivers/dpll/zl3073x/core.h b/drivers/dpll/zl3073x/core.h
+index 1dca4ddcf2350..51d0fd6cfabfc 100644
+--- a/drivers/dpll/zl3073x/core.h
++++ b/drivers/dpll/zl3073x/core.h
+@@ -29,38 +29,38 @@ struct zl3073x_dpll;
+ 
+ /**
+  * struct zl3073x_ref - input reference invariant info
+- * @enabled: input reference is enabled or disabled
+- * @diff: true if input reference is differential
+  * @ffo: current fractional frequency offset
++ * @config: reference config
+  */
+ struct zl3073x_ref {
+-	bool	enabled;
+-	bool	diff;
+ 	s64	ffo;
++	u8	config;
  };
-@@ -295,7 +295,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk1_clk_src = {
- 		.name = "disp_cc_mdss_pclk1_clk_src",
- 		.parent_data = disp_cc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_4),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
+ 
+ /**
+  * struct zl3073x_out - output invariant info
+- * @enabled: out is enabled or disabled
+- * @synth: synthesizer the out is connected to
+- * @signal_format: out signal format
++ * @ctrl: output control
++ * @mode: output mode
+  */
+ struct zl3073x_out {
+-	bool	enabled;
+-	u8	synth;
+-	u8	signal_format;
++	u8	ctrl;
++	u8	mode;
  };
+ 
+ /**
+  * struct zl3073x_synth - synthesizer invariant info
+- * @freq: synthesizer frequency
+- * @dpll: ID of DPLL the synthesizer is driven by
+- * @enabled: synth is enabled or disabled
++ * @freq_mult: frequency multiplier
++ * @freq_base: frequency base
++ * @freq_m: frequency numerator
++ * @freq_n: frequency denominator
++ * @ctrl: synth control
+  */
+ struct zl3073x_synth {
+-	u32	freq;
+-	u8	dpll;
+-	bool	enabled;
++	u32	freq_mult;
++	u16	freq_base;
++	u16	freq_m;
++	u16	freq_n;
++	u8	ctrl;
+ };
+ 
+ /**
+@@ -239,7 +239,10 @@ zl3073x_ref_ffo_get(struct zl3073x_dev *zldev, u8 index)
+ static inline bool
+ zl3073x_ref_is_diff(struct zl3073x_dev *zldev, u8 index)
+ {
+-	return zldev->ref[index].diff;
++	if (FIELD_GET(ZL_REF_CONFIG_DIFF_EN, zldev->ref[index].config))
++		return true;
++
++	return false;
+ }
+ 
+ /**
+@@ -252,7 +255,10 @@ zl3073x_ref_is_diff(struct zl3073x_dev *zldev, u8 index)
+ static inline bool
+ zl3073x_ref_is_enabled(struct zl3073x_dev *zldev, u8 index)
+ {
+-	return zldev->ref[index].enabled;
++	if (FIELD_GET(ZL_REF_CONFIG_ENABLE, zldev->ref[index].config))
++		return true;
++
++	return false;
+ }
+ 
+ /**
+@@ -265,7 +271,7 @@ zl3073x_ref_is_enabled(struct zl3073x_dev *zldev, u8 index)
+ static inline u8
+ zl3073x_synth_dpll_get(struct zl3073x_dev *zldev, u8 index)
+ {
+-	return zldev->synth[index].dpll;
++	return FIELD_GET(ZL_SYNTH_CTRL_DPLL_SEL, zldev->synth[index].ctrl);
+ }
+ 
+ /**
+@@ -278,7 +284,10 @@ zl3073x_synth_dpll_get(struct zl3073x_dev *zldev, u8 index)
+ static inline u32
+ zl3073x_synth_freq_get(struct zl3073x_dev *zldev, u8 index)
+ {
+-	return zldev->synth[index].freq;
++	struct zl3073x_synth *synth = &zldev->synth[index];
++
++	return mul_u64_u32_div(synth->freq_base * synth->freq_m,
++			       synth->freq_mult, synth->freq_n);
+ }
+ 
+ /**
+@@ -291,7 +300,7 @@ zl3073x_synth_freq_get(struct zl3073x_dev *zldev, u8 index)
+ static inline bool
+ zl3073x_synth_is_enabled(struct zl3073x_dev *zldev, u8 index)
+ {
+-	return zldev->synth[index].enabled;
++	return FIELD_GET(ZL_SYNTH_CTRL_EN, zldev->synth[index].ctrl);
+ }
+ 
+ /**
+@@ -304,7 +313,7 @@ zl3073x_synth_is_enabled(struct zl3073x_dev *zldev, u8 index)
+ static inline u8
+ zl3073x_out_synth_get(struct zl3073x_dev *zldev, u8 index)
+ {
+-	return zldev->out[index].synth;
++	return FIELD_GET(ZL_OUTPUT_CTRL_SYNTH_SEL, zldev->out[index].ctrl);
+ }
+ 
+ /**
+@@ -321,10 +330,10 @@ zl3073x_out_is_enabled(struct zl3073x_dev *zldev, u8 index)
+ 
+ 	/* Output is enabled only if associated synth is enabled */
+ 	synth = zl3073x_out_synth_get(zldev, index);
+-	if (zl3073x_synth_is_enabled(zldev, synth))
+-		return zldev->out[index].enabled;
++	if (!zl3073x_synth_is_enabled(zldev, synth))
++		return false;
+ 
+-	return false;
++	return FIELD_GET(ZL_OUTPUT_CTRL_EN, zldev->out[index].ctrl);
+ }
+ 
+ /**
+@@ -337,7 +346,7 @@ zl3073x_out_is_enabled(struct zl3073x_dev *zldev, u8 index)
+ static inline u8
+ zl3073x_out_signal_format_get(struct zl3073x_dev *zldev, u8 index)
+ {
+-	return zldev->out[index].signal_format;
++	return FIELD_GET(ZL_OUTPUT_MODE_SIGNAL_FORMAT, zldev->out[index].mode);
+ }
+ 
+ /**
 -- 
 2.51.0
 
