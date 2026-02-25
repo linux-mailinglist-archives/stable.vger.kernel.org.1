@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDHANeNVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218856-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:35 +0100
+	id QIrlBOVSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FEF1190134
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E39518F5B2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7FD4314F16C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A05863080C7F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D405026ED33;
-	Wed, 25 Feb 2026 01:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95FA2417E0;
+	Wed, 25 Feb 2026 01:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAXdvm5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9tNPETa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C8E19FA93;
-	Wed, 25 Feb 2026 01:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0FA1E2834;
+	Wed, 25 Feb 2026 01:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983741; cv=none; b=qjKLm9XWHTxAIQSfcBz4LLl7X5fI+RvkwHdqUtaViUjPNnYC8MRizFFYwPMovkIF0tg6g03KxeSa2M1lp9rbJI24duHfqko4PA2R46XbPW9XvU+YQS86GAcC9aInOV28FZjmbtw32Fn96rivI2lT2nRTzx/MBh4qoicTfIPOKRA=
+	t=1771983153; cv=none; b=n6OqOCq6YJqCVwZKa+/2tHd78U3rHcziWX+0Jg3UyUaG35sNQ8oC3SkqnkOf//RMOTkTDcZcs2jT4t04NU3qOLfJvsS0MIIW9rMQPgXTMzKBCdA/jZj8jP8jBrEN+JB2dFI/jJzY8q/lOa8SH7RVbnICKlDN45S8UIiJaKS+Ois=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983741; c=relaxed/simple;
-	bh=9hpmITP2Q7TxEKlmEvSS79dI7+ixpEHWZtkTsiTb1sk=;
+	s=arc-20240116; t=1771983153; c=relaxed/simple;
+	bh=TnoZ2E5e8WIOdl/w4U6Oq6n8+hPEIyOYM+aU1QGU+8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHl0723U/M4o80pYsRQLGu0iunFU4N3/g9+smcO9kOBOYdD+uzYY8JxZ6hzzbEgBSkSwBHLcIyrQQGyqeVbN79x79HmcB4t9vSD9HKZ20PhNwIbyhnuREgUNWWg4Ue8fUTakwBV+JnscGe0MceyYNVLROPiDgLOE9hy8mSFv84Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAXdvm5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E40BC116D0;
-	Wed, 25 Feb 2026 01:42:21 +0000 (UTC)
+	 MIME-Version; b=lYc5s1Z+P/80qKtabIp4PQjump66b2pGaMspHXnSgPPQJUPMsUgBgNTyZf8hePhWO/8fJV6zfFAr+HfV7AsOj9ZKs8xdK2SPT0S8ZH0cMsYJYUfzudiuc2AFPuL6pREWdqOKwAcKkj3lUFW1NfzjS5WJR2C9pgUqiLFeCXfRq0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9tNPETa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69695C116D0;
+	Wed, 25 Feb 2026 01:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983741;
-	bh=9hpmITP2Q7TxEKlmEvSS79dI7+ixpEHWZtkTsiTb1sk=;
+	s=korg; t=1771983153;
+	bh=TnoZ2E5e8WIOdl/w4U6Oq6n8+hPEIyOYM+aU1QGU+8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mAXdvm5q99nBMptgecPToOwin06uXdKELHSCbYQNq9Db4XEjFLuvaWHm/w505KbQA
-	 s6CMTWmJam1iEpsX6mDJJuDx1F65JxSi1TMwB3Ve5ox+7wRqgv5vPDs545nCkVf6/g
-	 Q43OYrrXQEpGYeaXbTgXWOWGcRtGG8F9g+MUdYUA=
+	b=x9tNPETa/bZAOiryzAPOOL58BvOvhgTF0b1KJsB2+Sq8mMYN4PTDdQ+6E6gk+pPn2
+	 qFyX5Q7NnsAufqCr86df8VktF+9mPxLDQQAcp4LUAm/RCMxkexff25NGpB0bsRqLYP
+	 wlRAaaxUtE3LxbP6A3SrvIk0k6BoIelEmUGAgSC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 034/641] rnbd-srv: Fix server side setting of bi_size for special IOs
-Date: Tue, 24 Feb 2026 17:16:00 -0800
-Message-ID: <20260225012349.822947773@linuxfoundation.org>
+Subject: [PATCH 6.19 252/781] mei: late_bind: fix struct intel_lb_component_ops kernel-doc
+Date: Tue, 24 Feb 2026 17:16:01 -0800
+Message-ID: <20260225012405.889488839@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218856-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218344-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,91 +87,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,ionos.com:email,kernel.dk:email]
-X-Rspamd-Queue-Id: 4FEF1190134
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5E39518F5B2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 4ac9690d4b9456ca1d5276d86547fa2e7cd47684 ]
+[ Upstream commit 936cae9254e55a39aeaa0c156a764d22f319338b ]
 
-On rnbd-srv, the bi_size of the bio is set during the bio_add_page
-function, to which datalen is passed. But for special IOs like DISCARD
-and WRITE_ZEROES, datalen is 0, since there is no data to write. For
-these special IOs, use the bi_size of the rnbd_msg_io.
+Fix kernel-doc warnings on struct intel_lb_component_ops:
 
-Fixes: f6f84be089c9 ("block/rnbd-srv: Add sanity check and remove redundant assignment")
-Signed-off-by: Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Warning: include/drm/intel/intel_lb_mei_interface.h:55 Incorrect use of
+  kernel-doc format: * push_payload - Sends a payload to the
+  authentication firmware
+
+And a bunch more. There isn't really support for documenting function
+pointer struct members in kernel-doc, but at least reference the member
+properly.
+
+Fixes: 741eeabb7c78 ("mei: late_bind: add late binding component driver")
+Cc: Alexander Usyskin <alexander.usyskin@intel.com>
+Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
+Link: https://patch.msgid.link/20260107160226.2381388-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rnbd/rnbd-srv.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ include/drm/intel/intel_lb_mei_interface.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/rnbd/rnbd-srv.c b/drivers/block/rnbd/rnbd-srv.c
-index 2df8941a6b146..9b3fdc202e152 100644
---- a/drivers/block/rnbd/rnbd-srv.c
-+++ b/drivers/block/rnbd/rnbd-srv.c
-@@ -145,18 +145,30 @@ static int process_rdma(struct rnbd_srv_session *srv_sess,
- 	priv->sess_dev = sess_dev;
- 	priv->id = id;
- 
--	bio = bio_alloc(file_bdev(sess_dev->bdev_file), 1,
-+	bio = bio_alloc(file_bdev(sess_dev->bdev_file), !!datalen,
- 			rnbd_to_bio_flags(le32_to_cpu(msg->rw)), GFP_KERNEL);
--	bio_add_virt_nofail(bio, data, datalen);
--
--	bio->bi_opf = rnbd_to_bio_flags(le32_to_cpu(msg->rw));
--	if (bio_has_data(bio) &&
--	    bio->bi_iter.bi_size != le32_to_cpu(msg->bi_size)) {
--		rnbd_srv_err_rl(sess_dev, "Datalen mismatch:  bio bi_size (%u), bi_size (%u)\n",
--				bio->bi_iter.bi_size, msg->bi_size);
--		err = -EINVAL;
--		goto bio_put;
-+	if (unlikely(!bio)) {
-+		err = -ENOMEM;
-+		goto put_sess_dev;
- 	}
-+
-+	if (!datalen) {
-+		/*
-+		 * For special requests like DISCARD and WRITE_ZEROES, the datalen is zero.
-+		 */
-+		bio->bi_iter.bi_size = le32_to_cpu(msg->bi_size);
-+	} else {
-+		bio_add_virt_nofail(bio, data, datalen);
-+		bio->bi_opf = rnbd_to_bio_flags(le32_to_cpu(msg->rw));
-+		if (bio->bi_iter.bi_size != le32_to_cpu(msg->bi_size)) {
-+			rnbd_srv_err_rl(sess_dev,
-+					"Datalen mismatch:  bio bi_size (%u), bi_size (%u)\n",
-+					bio->bi_iter.bi_size, msg->bi_size);
-+			err = -EINVAL;
-+			goto bio_put;
-+		}
-+	}
-+
- 	bio->bi_end_io = rnbd_dev_bi_end_io;
- 	bio->bi_private = priv;
- 	bio->bi_iter.bi_sector = le64_to_cpu(msg->sector);
-@@ -170,6 +182,7 @@ static int process_rdma(struct rnbd_srv_session *srv_sess,
- 
- bio_put:
- 	bio_put(bio);
-+put_sess_dev:
- 	rnbd_put_sess_dev(sess_dev);
- err:
- 	kfree(priv);
+diff --git a/include/drm/intel/intel_lb_mei_interface.h b/include/drm/intel/intel_lb_mei_interface.h
+index d65be2cba2ab9..0850738a30fc7 100644
+--- a/include/drm/intel/intel_lb_mei_interface.h
++++ b/include/drm/intel/intel_lb_mei_interface.h
+@@ -53,7 +53,8 @@ enum intel_lb_status {
+  */
+ struct intel_lb_component_ops {
+ 	/**
+-	 * push_payload - Sends a payload to the authentication firmware
++	 * @push_payload: Sends a payload to the authentication firmware
++	 *
+ 	 * @dev: Device struct corresponding to the mei device
+ 	 * @type: Payload type (see &enum intel_lb_type)
+ 	 * @flags: Payload flags bitmap (e.g. %INTEL_LB_FLAGS_IS_PERSISTENT)
 -- 
 2.51.0
 
