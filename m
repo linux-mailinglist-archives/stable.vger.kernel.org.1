@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHPBF19XnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:55 +0100
+	id sHeAFlVSnmm6UgQAu9opvQ
+	(envelope-from <stable+bounces-218501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C9B190505
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFAC818F31C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 323A43218935
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3E1C3099466
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB8429D26D;
-	Wed, 25 Feb 2026 01:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4839248881;
+	Wed, 25 Feb 2026 01:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziO/Vsss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTQOWQyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717B3285C9F;
-	Wed, 25 Feb 2026 01:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888B720C012;
+	Wed, 25 Feb 2026 01:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983991; cv=none; b=EwDOFvJIpDSbu0E55C82ngE3H1o7ZoP5G52Hef0+wM6lWE1SgKx+OToF35qFFYcF7Q/IE0eJOw8KiM+QniKJ8lgXmy7G7WEFLbuujMx0JHy91O5u8hjK+fXC0j99ITlGpfzJBPkuV7KCbgWCCPFKRaMIRA/1DN1jdFo6RzXqOiE=
+	t=1771983332; cv=none; b=BGEWPYT6df1bprbSNe/otSsXXW+N7jA/iauYBqCWOup2lRo3fNav/dBx7mbXUCpOnO1sVX61vHm/z/Nf0QsUXjmospITwzZ7HhHlpotC6eEwA1FEjs7OYl0uKkLD3yVr0IqfxOKzAL/Yt9qUA5KB1bH+4yOVa7RXpoLI7VXe8CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983991; c=relaxed/simple;
-	bh=eOetcmNxe8Lf18pu1a1GPmInKZpzAZ416QvsGS72N/U=;
+	s=arc-20240116; t=1771983332; c=relaxed/simple;
+	bh=Cr1mgrVhjXOR6gMJJ5WPcGTa/QsGdVd6RE3ZvwIrAtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mntcpdG39Tpj3CH4raZOjv45SjIfDjLMEskrcYWKRhk8+Z1SVPCiAwsaNcOO3PPlRSFMnf0A9M+Z8LeByruX6Kftztd0W4kZbo7+60zG75pJOFyHyXRvV9LkNg5u0TDYV4IkzPGldBGnSyEobpM7lC2anGRvxjJOpl2EThx6PiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziO/Vsss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B26C116D0;
-	Wed, 25 Feb 2026 01:46:31 +0000 (UTC)
+	 MIME-Version; b=oJmlRCYOFMdVP6fwK05wNICP/4HxmBUAy1L7Xakj8lrg2C9e7qlKX2nCccNBMQe/99lzIxjOwpNaxHwU/Z6ksgdGQkd0ip0D3Z4rNxzFfsLUrIoDNzhxVe9gH3lbCQ0xtMEjC51yNrfoFlng74rn4sRkA107mgeCY0jIkXyjjPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTQOWQyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4733CC116D0;
+	Wed, 25 Feb 2026 01:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983991;
-	bh=eOetcmNxe8Lf18pu1a1GPmInKZpzAZ416QvsGS72N/U=;
+	s=korg; t=1771983332;
+	bh=Cr1mgrVhjXOR6gMJJ5WPcGTa/QsGdVd6RE3ZvwIrAtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziO/VsssNOaO2muZMPJkcrGvz5+i6dh2fKrX9dfInGUwbXFX6wWEMQke5aAneBPb0
-	 ZOkbA8zLO8xltY9IiwKwrvWbTM/0hNC/KMxe3PlvX27avOAXlNjdo4ouvm352seDE8
-	 VElRoIdHlD66MoJZOkmSKxkpMldBUGieMUd3ymAQ=
+	b=tTQOWQyg/s/mfzce4ybhdMj2skpPFMtqwIqV1dO5Iit6vimphl9Rm1jMqFj7QHotB
+	 Qfm8AfVOFr3RGrwUJCvfWNLVWd+1sCQSMdDi1yVxs0/+c88wG+FHpSq5TL34XGfrDd
+	 UR7z6+o2x0swKWwhUqAuaDDKRoF6eI//MrKz8CkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
+	Jacob Moroni <jmoroni@google.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 246/641] dm: use READ_ONCE in dm_blk_report_zones
+Subject: [PATCH 6.19 463/781] RDMA/iwcm: Fix workqueue list corruption by removing work_list
 Date: Tue, 24 Feb 2026 17:19:32 -0800
-Message-ID: <20260225012354.822784778@linuxfoundation.org>
+Message-ID: <20260225012411.136800078@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,64 +70,234 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218501-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219067-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 00C9B190505
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,acm.org:email]
+X-Rspamd-Queue-Id: CFAC818F31C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit e9f5a55b70ae6187ab64ef2d1232ae2738e31d1f ]
+[ Upstream commit 7874eeacfa42177565c01d5198726671acf7adf2 ]
 
-The functon dm_blk_report_zones reads md->zone_revalidate_map, however it
-may change while the function is running. Use READ_ONCE.
+The commit e1168f0 ("RDMA/iwcm: Simplify cm_event_handler()")
+changed the work submission logic to unconditionally call
+queue_work() with the expectation that queue_work() would
+have no effect if work was already pending. The problem is
+that a free list of struct iwcm_work is used (for which
+struct work_struct is embedded), so each call to queue_work()
+is basically unique and therefore does indeed queue the work.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Fixes: 37f53a2c60d0 ("dm: fix dm_blk_report_zones")
-Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
+This causes a problem in the work handler which walks the work_list
+until it's empty to process entries. This means that a single
+run of the work handler could process item N+1 and release it
+back to the free list while the actual workqueue entry is still
+queued. It could then get reused (INIT_WORK...) and lead to
+list corruption in the workqueue logic.
+
+Fix this by just removing the work_list. The workqueue already
+does this for us.
+
+This fixes the following error that was observed when stress
+testing with ucmatose on an Intel E830 in iWARP mode:
+
+[  151.465780] list_del corruption. next->prev should be ffff9f0915c69c08, but was ffff9f0a1116be08. (next=ffff9f0a15b11c08)
+[  151.466639] ------------[ cut here ]------------
+[  151.466986] kernel BUG at lib/list_debug.c:67!
+[  151.467349] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[  151.467753] CPU: 14 UID: 0 PID: 2306 Comm: kworker/u64:18 Not tainted 6.19.0-rc4+ #1 PREEMPT(voluntary)
+[  151.468466] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  151.469192] Workqueue:  0x0 (iw_cm_wq)
+[  151.469478] RIP: 0010:__list_del_entry_valid_or_report+0xf0/0x100
+[  151.469942] Code: c7 58 5f 4c b2 e8 10 50 aa ff 0f 0b 48 89 ef e8 36 57 cb ff 48 8b 55 08 48 89 e9 48 89 de 48 c7 c7 a8 5f 4c b2 e8 f0 4f aa ff <0f> 0b 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90 90 90 90 90 90
+[  151.471323] RSP: 0000:ffffb15644e7bd68 EFLAGS: 00010046
+[  151.471712] RAX: 000000000000006d RBX: ffff9f0915c69c08 RCX: 0000000000000027
+[  151.472243] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff9f0a37d9c600
+[  151.472768] RBP: ffff9f0a15b11c08 R08: 0000000000000000 R09: c0000000ffff7fff
+[  151.473294] R10: 0000000000000001 R11: ffffb15644e7bba8 R12: ffff9f092339ee68
+[  151.473817] R13: ffff9f0900059c28 R14: ffff9f092339ee78 R15: 0000000000000000
+[  151.474344] FS:  0000000000000000(0000) GS:ffff9f0a847b5000(0000) knlGS:0000000000000000
+[  151.474934] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  151.475362] CR2: 0000559e233a9088 CR3: 000000020296b004 CR4: 0000000000770ef0
+[  151.475895] PKRU: 55555554
+[  151.476118] Call Trace:
+[  151.476331]  <TASK>
+[  151.476497]  move_linked_works+0x49/0xa0
+[  151.476792]  __pwq_activate_work.isra.46+0x2f/0xa0
+[  151.477151]  pwq_dec_nr_in_flight+0x1e0/0x2f0
+[  151.477479]  process_scheduled_works+0x1c8/0x410
+[  151.477823]  worker_thread+0x125/0x260
+[  151.478108]  ? __pfx_worker_thread+0x10/0x10
+[  151.478430]  kthread+0xfe/0x240
+[  151.478671]  ? __pfx_kthread+0x10/0x10
+[  151.478955]  ? __pfx_kthread+0x10/0x10
+[  151.479240]  ret_from_fork+0x208/0x270
+[  151.479523]  ? __pfx_kthread+0x10/0x10
+[  151.479806]  ret_from_fork_asm+0x1a/0x30
+[  151.480103]  </TASK>
+
+Fixes: e1168f09b331 ("RDMA/iwcm: Simplify cm_event_handler()")
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Link: https://patch.msgid.link/20260112020006.1352438-1-jmoroni@google.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-zone.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/core/iwcm.c | 56 +++++++++++++---------------------
+ drivers/infiniband/core/iwcm.h |  1 -
+ 2 files changed, 21 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/md/dm-zone.c b/drivers/md/dm-zone.c
-index ba39c8313f32b..f4950b5f766d3 100644
---- a/drivers/md/dm-zone.c
-+++ b/drivers/md/dm-zone.c
-@@ -56,7 +56,7 @@ int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
+diff --git a/drivers/infiniband/core/iwcm.c b/drivers/infiniband/core/iwcm.c
+index 62410578dec37..eb942ab9c4055 100644
+--- a/drivers/infiniband/core/iwcm.c
++++ b/drivers/infiniband/core/iwcm.c
+@@ -95,7 +95,6 @@ static struct workqueue_struct *iwcm_wq;
+ struct iwcm_work {
+ 	struct work_struct work;
+ 	struct iwcm_id_private *cm_id;
+-	struct list_head list;
+ 	struct iw_cm_event event;
+ 	struct list_head free_list;
+ };
+@@ -178,7 +177,6 @@ static int alloc_work_entries(struct iwcm_id_private *cm_id_priv, int count)
+ 			return -ENOMEM;
+ 		}
+ 		work->cm_id = cm_id_priv;
+-		INIT_LIST_HEAD(&work->list);
+ 		put_work(work);
+ 	}
+ 	return 0;
+@@ -213,7 +211,6 @@ static void free_cm_id(struct iwcm_id_private *cm_id_priv)
+ static bool iwcm_deref_id(struct iwcm_id_private *cm_id_priv)
  {
- 	struct mapped_device *md = disk->private_data;
- 	struct dm_table *map;
--	struct dm_table *zone_revalidate_map = md->zone_revalidate_map;
-+	struct dm_table *zone_revalidate_map = READ_ONCE(md->zone_revalidate_map);
- 	int srcu_idx, ret = -EIO;
- 	bool put_table = false;
+ 	if (refcount_dec_and_test(&cm_id_priv->refcount)) {
+-		BUG_ON(!list_empty(&cm_id_priv->work_list));
+ 		free_cm_id(cm_id_priv);
+ 		return true;
+ 	}
+@@ -260,7 +257,6 @@ struct iw_cm_id *iw_create_cm_id(struct ib_device *device,
+ 	refcount_set(&cm_id_priv->refcount, 1);
+ 	init_waitqueue_head(&cm_id_priv->connect_wait);
+ 	init_completion(&cm_id_priv->destroy_comp);
+-	INIT_LIST_HEAD(&cm_id_priv->work_list);
+ 	INIT_LIST_HEAD(&cm_id_priv->work_free_list);
  
+ 	return &cm_id_priv->id;
+@@ -1007,13 +1003,13 @@ static int process_event(struct iwcm_id_private *cm_id_priv,
+ }
+ 
+ /*
+- * Process events on the work_list for the cm_id. If the callback
+- * function requests that the cm_id be deleted, a flag is set in the
+- * cm_id flags to indicate that when the last reference is
+- * removed, the cm_id is to be destroyed. This is necessary to
+- * distinguish between an object that will be destroyed by the app
+- * thread asleep on the destroy_comp list vs. an object destroyed
+- * here synchronously when the last reference is removed.
++ * Process events for the cm_id. If the callback function requests
++ * that the cm_id be deleted, a flag is set in the cm_id flags to
++ * indicate that when the last reference is removed, the cm_id is
++ * to be destroyed. This is necessary to distinguish between an
++ * object that will be destroyed by the app thread asleep on the
++ * destroy_comp list vs. an object destroyed here synchronously
++ * when the last reference is removed.
+  */
+ static void cm_work_handler(struct work_struct *_work)
+ {
+@@ -1024,35 +1020,26 @@ static void cm_work_handler(struct work_struct *_work)
+ 	int ret = 0;
+ 
+ 	spin_lock_irqsave(&cm_id_priv->lock, flags);
+-	while (!list_empty(&cm_id_priv->work_list)) {
+-		work = list_first_entry(&cm_id_priv->work_list,
+-					struct iwcm_work, list);
+-		list_del_init(&work->list);
+-		levent = work->event;
+-		put_work(work);
+-		spin_unlock_irqrestore(&cm_id_priv->lock, flags);
+-
+-		if (!test_bit(IWCM_F_DROP_EVENTS, &cm_id_priv->flags)) {
+-			ret = process_event(cm_id_priv, &levent);
+-			if (ret) {
+-				destroy_cm_id(&cm_id_priv->id);
+-				WARN_ON_ONCE(iwcm_deref_id(cm_id_priv));
+-			}
+-		} else
+-			pr_debug("dropping event %d\n", levent.event);
+-		if (iwcm_deref_id(cm_id_priv))
+-			return;
+-		spin_lock_irqsave(&cm_id_priv->lock, flags);
+-	}
++	levent = work->event;
++	put_work(work);
+ 	spin_unlock_irqrestore(&cm_id_priv->lock, flags);
++
++	if (!test_bit(IWCM_F_DROP_EVENTS, &cm_id_priv->flags)) {
++		ret = process_event(cm_id_priv, &levent);
++		if (ret) {
++			destroy_cm_id(&cm_id_priv->id);
++			WARN_ON_ONCE(iwcm_deref_id(cm_id_priv));
++		}
++	} else
++		pr_debug("dropping event %d\n", levent.event);
++	if (iwcm_deref_id(cm_id_priv))
++		return;
+ }
+ 
+ /*
+  * This function is called on interrupt context. Schedule events on
+  * the iwcm_wq thread to allow callback functions to downcall into
+- * the CM and/or block.  Events are queued to a per-CM_ID
+- * work_list. If this is the first event on the work_list, the work
+- * element is also queued on the iwcm_wq thread.
++ * the CM and/or block.
+  *
+  * Each event holds a reference on the cm_id. Until the last posted
+  * event has been delivered and processed, the cm_id cannot be
+@@ -1094,7 +1081,6 @@ static int cm_event_handler(struct iw_cm_id *cm_id,
+ 	}
+ 
+ 	refcount_inc(&cm_id_priv->refcount);
+-	list_add_tail(&work->list, &cm_id_priv->work_list);
+ 	queue_work(iwcm_wq, &work->work);
+ out:
+ 	spin_unlock_irqrestore(&cm_id_priv->lock, flags);
+diff --git a/drivers/infiniband/core/iwcm.h b/drivers/infiniband/core/iwcm.h
+index bf74639be1287..b56fb12edece4 100644
+--- a/drivers/infiniband/core/iwcm.h
++++ b/drivers/infiniband/core/iwcm.h
+@@ -50,7 +50,6 @@ struct iwcm_id_private {
+ 	struct ib_qp *qp;
+ 	struct completion destroy_comp;
+ 	wait_queue_head_t connect_wait;
+-	struct list_head work_list;
+ 	spinlock_t lock;
+ 	refcount_t refcount;
+ 	struct list_head work_free_list;
 -- 
 2.51.0
 
