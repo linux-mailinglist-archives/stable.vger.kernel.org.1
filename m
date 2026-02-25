@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-219286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDd2NkWdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:09 +0100
+	id 4NtJMRZUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B977192959
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2741418FB8B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8EF89302732C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5AC830B4D6A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB902D7D42;
-	Wed, 25 Feb 2026 06:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DB826158C;
+	Wed, 25 Feb 2026 01:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmGk5UH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFBBxQgJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C542D7810;
-	Wed, 25 Feb 2026 06:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8F525A357;
+	Wed, 25 Feb 2026 01:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002616; cv=none; b=aX5A1YTv9t1fQCWsUTK9Rt9CqOBT9sgDE8GKM5qs4PAeYZT51XAySxpwCQWD33PGXZ6v0SHZSvjeZf6McaaK4QUZQqafODbQkZaelBy/Jl2htQbt849RdXzhSDEF4jTEHCHbFFf/ByK1VJ51zWbAQNW8Ld7D7zkwn1SuUtoN5gg=
+	t=1771983471; cv=none; b=aHYYK4DkcsBODBBpHW8D0IncL/gKJUxkHgYHUFtNAC/PrE0u5PWSNxKK0h+88HyLQhnR9tWVTtKiAys56FeeAlOVsOO4bB7LHGo9fZHQOTaScS3mMtLdFaRNfQhww4DUu6u+zZ7tyaR0jOFXMTcpzG2fS9684cxpTZ6fqFHuu8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002616; c=relaxed/simple;
-	bh=kNUUT22Az9icbmvNaV5TwrYRsG/41vOdu+6VziNc7Ng=;
+	s=arc-20240116; t=1771983471; c=relaxed/simple;
+	bh=ogzwiv+o6fhV/3RSSIyYGB8rkazzWDPCK58i8CVbvQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ogWW+Z7t3bZFDBe+13i7ggsL7aCmxcQzOescbvdYSfWpQWwfeIADawmkdYkaA2lL4h7fDRmzHTnLJjSs0aqfpoTvK4aBk8mUB94TtZ9WKcEUzJMLXNC9bW/KFhfiPv3Do+QyXeMM6fL3mQhpgC2kje78JOu7/0dm/yyNZWc2DqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NmGk5UH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CF0C116D0;
-	Wed, 25 Feb 2026 06:56:56 +0000 (UTC)
+	 MIME-Version; b=C2LbkcAXGR3DdBGae8xxCv3WnE+KpoKqzhn8gx1MvnclVrfZmjmj3+Hscpl3OGZpWszy0UrTRFHdoqEMk+aHiHwz2SqzIaBJ1KoHZ1RPjqE6I6bHpPJ5Vw2asofGtsPyuMdR49GI2i9/KCihiZDNkCamgkNFHBZ9kmSoji8gInw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFBBxQgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E63C116D0;
+	Wed, 25 Feb 2026 01:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002616;
-	bh=kNUUT22Az9icbmvNaV5TwrYRsG/41vOdu+6VziNc7Ng=;
+	s=korg; t=1771983471;
+	bh=ogzwiv+o6fhV/3RSSIyYGB8rkazzWDPCK58i8CVbvQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NmGk5UH2kQQPLikDva+47Jcp2iWhM891VGsSxKwJ1DeOCh+F6dJnMvdAL1tSn42sQ
-	 W4e+tRAATgcSbX1S1WYSd5TYh52ekGgRZ7TN2rOyeGJPsoOfhICLfwa2Q3ilthkISZ
-	 BYmO+VlOMFGiX8/qMZ+lJH1tItb8jd94dfYBb+Xw=
+	b=UFBBxQgJA1eTJjZmz58kXP6jgVu9up7g4N5ASMGcAg7sKvmc92yy3ySHhsLvTD5ZU
+	 olviwuBLaqhin9gqNBQutsnM/u+w/Ru75Y3UYukpJGUAnP9jDh5YoApjSeC6b08xtq
+	 qy7DahYHZVdaAyFeFFGMPDSXNqWQpyWcP8eg6lm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lars Francke <lars.francke@gmail.com>,
-	Yijun Shen <Yijun.Shen@Dell.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Raviteja Laggyshetty <raviteja.laggyshetty@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 369/641] crypto: ccp - Add an S4 restore flow
+Subject: [PATCH 6.19 586/781] interconnect: qcom: qcs8300: fix the num_links for nsp icc node
 Date: Tue, 24 Feb 2026 17:21:35 -0800
-Message-ID: <20260225012357.546555535@linuxfoundation.org>
+Message-ID: <20260225012414.175133604@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,201 +65,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,Dell.com,kernel.org,amd.com,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-219286-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218623-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 6B977192959
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2741418FB8B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Raviteja Laggyshetty <raviteja.laggyshetty@oss.qualcomm.com>
 
-[ Upstream commit 0ba2035026d0ab6c7c7e65ad8b418dc73d5700d9 ]
+[ Upstream commit 3dc4092fe5c8baf6bf4e882b44615f19564a5076 ]
 
-The system will have lost power during S4.  The ring used for TEE
-communications needs to be initialized before use.
+The qxm_nsp node is configured with an incorrect num_links value,
+causing remoteproc driver to fail probing because it cannot acquire the
+interconnect path for qxm_nsp -> ebi. This results in the following
+error in dmesg:
 
-Fixes: f892a21f51162 ("crypto: ccp - use generic power management")
-Reported-by: Lars Francke <lars.francke@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/CAD-Ua_gfJnQSo8ucS_7ZwzuhoBRJ14zXP7s8b-zX3ZcxcyWePw@mail.gmail.com/
-Tested-by: Yijun Shen <Yijun.Shen@Dell.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://patch.msgid.link/20260116041132.153674-4-superm1@kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+  platform 26300000.remoteproc: deferred probe pending:
+  qcom_q6v5_pas: failed to acquire interconnect path
+
+Set num_links to 2 to match the two link_nodes, allowing remoteproc
+clients to obtain the correct path handle and vote on qxm_nsp -> ebi.
+
+Fixes: 874be3339c85 ("interconnect: qcom: qcs8300: convert to dynamic IDs")
+Signed-off-by: Raviteja Laggyshetty <raviteja.laggyshetty@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260120-monaco_num_links_fix_nsp_ebi_path-v3-1-536be21ce3ff@oss.qualcomm.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/psp-dev.c | 11 +++++++++++
- drivers/crypto/ccp/sp-dev.c  | 12 ++++++++++++
- drivers/crypto/ccp/sp-dev.h  |  3 +++
- drivers/crypto/ccp/sp-pci.c  | 16 +++++++++++++++-
- drivers/crypto/ccp/tee-dev.c |  5 +++++
- drivers/crypto/ccp/tee-dev.h |  1 +
- 6 files changed, 47 insertions(+), 1 deletion(-)
+ drivers/interconnect/qcom/qcs8300.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/ccp/psp-dev.c b/drivers/crypto/ccp/psp-dev.c
-index 9e21da0e298ad..5c7f7e02a7d8a 100644
---- a/drivers/crypto/ccp/psp-dev.c
-+++ b/drivers/crypto/ccp/psp-dev.c
-@@ -351,6 +351,17 @@ struct psp_device *psp_get_master_device(void)
- 	return sp ? sp->psp_data : NULL;
- }
- 
-+int psp_restore(struct sp_device *sp)
-+{
-+	struct psp_device *psp = sp->psp_data;
-+	int ret = 0;
-+
-+	if (psp->tee_data)
-+		ret = tee_restore(psp);
-+
-+	return ret;
-+}
-+
- void psp_pci_init(void)
- {
- 	psp_master = psp_get_master_device();
-diff --git a/drivers/crypto/ccp/sp-dev.c b/drivers/crypto/ccp/sp-dev.c
-index 3467f6db4f505..f204aa5df96e2 100644
---- a/drivers/crypto/ccp/sp-dev.c
-+++ b/drivers/crypto/ccp/sp-dev.c
-@@ -230,6 +230,18 @@ int sp_resume(struct sp_device *sp)
- 	return 0;
- }
- 
-+int sp_restore(struct sp_device *sp)
-+{
-+	if (sp->psp_data) {
-+		int ret = psp_restore(sp);
-+
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return sp_resume(sp);
-+}
-+
- struct sp_device *sp_get_psp_master_device(void)
- {
- 	struct sp_device *i, *ret = NULL;
-diff --git a/drivers/crypto/ccp/sp-dev.h b/drivers/crypto/ccp/sp-dev.h
-index 6f9d7063257d7..c8a611ef275b5 100644
---- a/drivers/crypto/ccp/sp-dev.h
-+++ b/drivers/crypto/ccp/sp-dev.h
-@@ -141,6 +141,7 @@ void sp_destroy(struct sp_device *sp);
- 
- int sp_suspend(struct sp_device *sp);
- int sp_resume(struct sp_device *sp);
-+int sp_restore(struct sp_device *sp);
- int sp_request_ccp_irq(struct sp_device *sp, irq_handler_t handler,
- 		       const char *name, void *data);
- void sp_free_ccp_irq(struct sp_device *sp, void *data);
-@@ -174,6 +175,7 @@ int psp_dev_init(struct sp_device *sp);
- void psp_pci_init(void);
- void psp_dev_destroy(struct sp_device *sp);
- void psp_pci_exit(void);
-+int psp_restore(struct sp_device *sp);
- 
- #else /* !CONFIG_CRYPTO_DEV_SP_PSP */
- 
-@@ -181,6 +183,7 @@ static inline int psp_dev_init(struct sp_device *sp) { return 0; }
- static inline void psp_pci_init(void) { }
- static inline void psp_dev_destroy(struct sp_device *sp) { }
- static inline void psp_pci_exit(void) { }
-+static inline int psp_restore(struct sp_device *sp) { return 0; }
- 
- #endif /* CONFIG_CRYPTO_DEV_SP_PSP */
- 
-diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
-index 8891ceee1d7d0..6ac805d99ccb3 100644
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -353,6 +353,13 @@ static int __maybe_unused sp_pci_resume(struct device *dev)
- 	return sp_resume(sp);
- }
- 
-+static int __maybe_unused sp_pci_restore(struct device *dev)
-+{
-+	struct sp_device *sp = dev_get_drvdata(dev);
-+
-+	return sp_restore(sp);
-+}
-+
- #ifdef CONFIG_CRYPTO_DEV_SP_PSP
- static const struct sev_vdata sevv1 = {
- 	.cmdresp_reg		= 0x10580,	/* C2PMSG_32 */
-@@ -563,7 +570,14 @@ static const struct pci_device_id sp_pci_table[] = {
+diff --git a/drivers/interconnect/qcom/qcs8300.c b/drivers/interconnect/qcom/qcs8300.c
+index 70a377bbcf293..bc403a9bf68c6 100644
+--- a/drivers/interconnect/qcom/qcs8300.c
++++ b/drivers/interconnect/qcom/qcs8300.c
+@@ -629,7 +629,7 @@ static struct qcom_icc_node qxm_nsp = {
+ 	.name = "qxm_nsp",
+ 	.channels = 2,
+ 	.buswidth = 32,
+-	.num_links = 1,
++	.num_links = 2,
+ 	.link_nodes = { &qns_hcp, &qns_nsp_gemnoc },
  };
- MODULE_DEVICE_TABLE(pci, sp_pci_table);
  
--static SIMPLE_DEV_PM_OPS(sp_pci_pm_ops, sp_pci_suspend, sp_pci_resume);
-+static const struct dev_pm_ops sp_pci_pm_ops = {
-+	.suspend = pm_sleep_ptr(sp_pci_suspend),
-+	.resume = pm_sleep_ptr(sp_pci_resume),
-+	.freeze = pm_sleep_ptr(sp_pci_suspend),
-+	.thaw = pm_sleep_ptr(sp_pci_resume),
-+	.poweroff = pm_sleep_ptr(sp_pci_suspend),
-+	.restore_early = pm_sleep_ptr(sp_pci_restore),
-+};
- 
- static struct pci_driver sp_pci_driver = {
- 	.name = "ccp",
-diff --git a/drivers/crypto/ccp/tee-dev.c b/drivers/crypto/ccp/tee-dev.c
-index af881daa5855b..11c4b05e2f3a2 100644
---- a/drivers/crypto/ccp/tee-dev.c
-+++ b/drivers/crypto/ccp/tee-dev.c
-@@ -366,3 +366,8 @@ int psp_check_tee_status(void)
- 	return 0;
- }
- EXPORT_SYMBOL(psp_check_tee_status);
-+
-+int tee_restore(struct psp_device *psp)
-+{
-+	return tee_init_ring(psp->tee_data);
-+}
-diff --git a/drivers/crypto/ccp/tee-dev.h b/drivers/crypto/ccp/tee-dev.h
-index ea9a2b7c05f57..c23416cb7bb37 100644
---- a/drivers/crypto/ccp/tee-dev.h
-+++ b/drivers/crypto/ccp/tee-dev.h
-@@ -111,5 +111,6 @@ struct tee_ring_cmd {
- 
- int tee_dev_init(struct psp_device *psp);
- void tee_dev_destroy(struct psp_device *psp);
-+int tee_restore(struct psp_device *psp);
- 
- #endif /* __TEE_DEV_H__ */
 -- 
 2.51.0
 
