@@ -1,78 +1,80 @@
-Return-Path: <stable+bounces-219733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBPMEZSKn2nYcgQAu9opvQ
-	(envelope-from <stable+bounces-219733-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 00:49:40 +0100
+	id aLDtDWSIn2mmcgQAu9opvQ
+	(envelope-from <stable+bounces-219732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 00:40:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E30119F18E
-	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 00:49:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AAF19EE6C
+	for <lists+stable@lfdr.de>; Thu, 26 Feb 2026 00:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 512E8301455B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 23:49:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50C86301FFBB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 23:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBBE3859C2;
-	Wed, 25 Feb 2026 23:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63CC318131;
+	Wed, 25 Feb 2026 23:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NYrXeu5v"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LOJxOlx9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f66.google.com (mail-qv1-f66.google.com [209.85.219.66])
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D808385525
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 23:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A46374743
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 23:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772063377; cv=none; b=g5cXrxa2tiibQ9AoLLe/XpLi515qhlo6OQuqf5EH8anhOrZMirF3TvypOdugHdKdJdKx4UwkgOKHzOIYgf9K0VjWAAxPhTmQ8LkN/QQOB1zxC96pAhsm9eMIzSNW0glBYduAHeJ7i8Xhv8bw9yjx6Qa2GCmJh+37SSEiJ59r4wE=
+	t=1772062816; cv=none; b=Zd9C5pyhExDoQrPrU6LowCekHTj5iDmwJjZux/fl5UYE4uK3nEQEpuLI5K5yh96d5awzXnr3fgdNamMYxjYFpjsg+r5GYrSuIhKj7GOU56E3lH1RjKV9rOFEOUPWiI0C3DFnB0L/a/NBk+OehcABbn22bps+uzHaecMpqKbwpqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772063377; c=relaxed/simple;
-	bh=d51HuoOmpWeVvzeALE+lMavxmqBiRdAp6WylD8/LF7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=POZPGpPQ1fuVSGBX8cn1wFBgR0BeBAylFHI/ENqqiNwB1veSaw0mivG24eHTsO+wwXFYU4cqEI7yjSvc3LNhqfoOjzFySuSal54Wh03ajRsttg1UZi5Ra4rwDLWuihtltnrZLEcyZJ3x2fzlcAczXkFvRZ2SVKQ4pPcwmSL0wao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NYrXeu5v; arc=none smtp.client-ip=209.85.219.66
+	s=arc-20240116; t=1772062816; c=relaxed/simple;
+	bh=r8wg/zTMLGF0c6ws0gBwcFNqgLBNdehNrCwpVGQtYCk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a1BM5VWOKsQsd0AdrwIZaLGIOBtU69yY0RBb4QRZdIugeKlqcpOh3LpDE3Bw5vczGrVFIfyiW8+rHsTE+atQFwNSbosYd4PNuOe4qg8XSmHSHFYG9aB0EXDFfg7QNP/DR1yTOOOj2LvCQIPo1TZemMpAJShI3XC/AuZQVEdKlic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LOJxOlx9; arc=none smtp.client-ip=209.85.221.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f66.google.com with SMTP id 6a1803df08f44-899b2b6ab42so3031586d6.1
-        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 15:49:35 -0800 (PST)
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-567417610ddso392006e0c.2
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 15:40:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772063375; x=1772668175; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+BkblkEJs+X0mWovyrEaETuHy2IBYlQP27IPZgkim9E=;
-        b=NYrXeu5vE2ReS9Lqz+z0YyqLBbm1S4HUiR3WmpfkT8HjYx0QKWucA+H4eVMmX6Qrpm
-         8k8wzdMdl/igUKur/MXIYiShsMnANzgb1zZNGxFSjJ9mvF7lhPgybO7c4IS5CFxgKdWJ
-         WchHgbJ2+PcOEiCQyIftBmeO0/Hd/NCa2yoBvGEGe+PO1i1S/9u1mK8t1xVQSpdmLGO1
-         R5vWvzGo0iLB+DDCRyb4/LiI+kt2N9z/HVG9RutFaOAhOSOoqql7hsaCLKJFgXEWkXpB
-         vdbxhSpEY7IXxGkzrsRI3Eb2Tf+pGygD4y7APriNmw0J5ns+E0LBpTQGvE/iA0VvJR3a
-         ZhFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772063375; x=1772668175;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772062814; x=1772667614; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+BkblkEJs+X0mWovyrEaETuHy2IBYlQP27IPZgkim9E=;
-        b=t5Na6Wy+7gPOrPC4B3CCXD+aecQJE2DyRbQXUQ0sFuandJnTgQp5DmiO7RfpAcw9JD
-         AAfr18lCM0Az7YzRRwKfBJ4aOxGLy/UF85cl6sBvQ+qx+0dKLJ+Pk0+ZPryR4TQeBCnN
-         GPdQdkZc/dt9FEoWPJ/o0DaWvekDYOkspvhYExgzA4/4LmqOMdc30pWKc2ijEjOEvXsc
-         7v7gliJk+udOUjZn3SfcHWSsvURi6w73p4ntakBzOOO1afT5StQDpxAwYezpOF9dhZGb
-         lYGQeN+psA6RKRpKRwoPszLRkM5/b4SNKvaqVDpjwx5iXYJ5rtA0C6rGqiZSxgSo9Szs
-         DVkQ==
-X-Gm-Message-State: AOJu0YxVRrF2qP2Jx4VTt9T+6xJ/g40uK+StpDOyRKmm85yAcTBfJixs
-	N8jqEfEpG9f3al1W77SiO/gt+r5P54wtoAm9yXBqY3kwwEoJLJ2asNrQpSMlQ5BOg+0=
-X-Gm-Gg: ATEYQzxHj/r3/SmMfsr8/32GzsRpVSoz4Qu1VdTLgFqH5MwtdkAxRTGOsjpdIa7hp+W
-	LqhVhZ9Wgo98vC6ZEAlw2TBYN/6a2bWG9BDLMA470II08vC7XrXva5eIrGcO2UqKy8vGD0YasP+
-	Cz+52G03leEM2M8w0E6Tuww9ODKraAY7htJzDCi2AajHkeDaGjhqs3wCMh8Tv2r9eJCGilsfFek
-	Lg61NcVwGMwkddUwdwwe8CZbJ0kd5xo/KcY9wiBA2WANUbP5GGF43s2f8T5F8tBNYEouVyt5FVX
-	yWEN8bivne9zSL8lE6/kAF62OsA7EMReGYKjUzm65t8WwgOAEMDwomnI+HtGQcJczYMSPkG5WY5
-	RUMbucKEmffGaW3SGlqnDdCrmvvm1aL0lXy4mGPLN/sOjCIQePhXkc0Nxu3oS9ZFwY2nqkNUJc7
-	DKx+IIWJ4yU8CbnzBGWFNZ+4LLvbVeon7tvhNn13Y/+SQlKNTfbjjGDg==
-X-Received: by 2002:a05:6a00:3d16:b0:823:9e5:855e with SMTP id d2e1a72fcca58-8273ba1d7cbmr73184b3a.0.1772056703193;
-        Wed, 25 Feb 2026 13:58:23 -0800 (PST)
+        bh=PUr8SLvQryvqYLcag0z8osWYOXvaps7+TNLrrSYBjRQ=;
+        b=LOJxOlx93tgku14Sm3iOrx0DlNic9CDBTpozspgm3z4RB5mzkv8yn/JmE9zqXYO0SG
+         rWFNa+ZoGlPPE3d3gFFK2wM7iW0SxnHXtxuAVcV8gbiW29Js3vvUkm+ZagySU3DdAoSl
+         apR4CAWSj+li/bf03aK7NKDieKFAXK+NEjjmsrXBOQMxPPIIz5C5vrGASVy4jMepUUnk
+         cP7ZqfYn+co8A4xNO3dlnhFkCEAiH7s1fX6FAxaZvx41Jd98p8qRp5aA2i78jumBsaAR
+         CqrieT9Nmqpmjuc1EUen6QzAcrRU66g0GpZUjhvKimjRL2rGUaol3s6KtcyAU8YqQU8M
+         whkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772062814; x=1772667614;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PUr8SLvQryvqYLcag0z8osWYOXvaps7+TNLrrSYBjRQ=;
+        b=kt7SuPVgG831hqfi0PnRBbk7qED7kShfPioGRPfBjNansiljAlZunT0jclQmgDn36f
+         xL9rO7qbGVCweD5rX8MI5fUTIPw6v/I88Pu2AFe/gflmXXkAiAIjFAj49dXPZRmuIwc8
+         zxePDkLUqvksyW3Z+Nq0MThbv/Qemccu3JxitbzsIsBVx7mZhxc6HnfJZ8bIzlERvDeq
+         z/8iT6ZLjHPKpGnH71Uiz6nitvIhCXVoXIxGj0kIejXOImqANYLP3f0o/JbYtNA/Ompx
+         g1VtPF270gtE0lqeqDWotqZ0dB1xxkknhwC/yTRT/0Fnk74iNswz6rkOzvjovz1DW3Xh
+         m9Cg==
+X-Gm-Message-State: AOJu0Yw8ukiobYJgWdaPg5pqKC6+P5hs6fj7JuL2wKDVpX2SGcM3e/Y8
+	IgAa/c3scB/5PNH6FaatW8WnEbJnagTvzQCfKfqy4T9vduDQXC8z7/IJVJ+b9wfa
+X-Gm-Gg: ATEYQzyKciIbinvwt68hZVg532q2qi2y5Roxva/yQUZI/ySLAZXTuQqmDdks2bRCG4x
+	bTFI3k5aICuPDULUTs4UW4qCWT4TpQHaSPjb8CmfYhOxtyun9sWU7BcYeZFZ6xvBM9eR163V6XD
+	0bfn56k7FNINjdLkMTwPC8lAcc49qXBsqhIHGvtVfDZ4aXUSucNKjIi8cHW3YhfbiXMu2vbfAJc
+	+MPEA1oG5pi8ecdZSkmHoxPYXuzmb4pdyA0hoYdJGKLYpPPpqMLs91b1PUOvg02wmt6/5dv31VI
+	9MxOw3GJAmXjvVdcDTqnIoKcI0YzkXh9xsu1CDiAgEuqjJnE8x195RYnGY2ykTLQolWF9sqQ/uS
+	BMM3z7l5HgCP0WRmuIsQ8MLBQ3fKK7slCdLHYDLRuPWXc1DmZv69Pyt+eLPlx0JblQqH1D5Q13X
+	o7SNbucZAGV1wJ47BL1AL0t/h0uKnUQ39duR281uMTadaynHfGwupO3A==
+X-Received: by 2002:a05:6a00:1d87:b0:827:2736:d928 with SMTP id d2e1a72fcca58-8273c009899mr32043b3a.39.1772056705129;
+        Wed, 25 Feb 2026 13:58:25 -0800 (PST)
 Received: from ryzen ([2601:644:8000:56f5::8bd])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739db3ab8sm229151b3a.27.2026.02.25.13.58.21
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739db3ab8sm229151b3a.27.2026.02.25.13.58.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 13:58:22 -0800 (PST)
+        Wed, 25 Feb 2026 13:58:24 -0800 (PST)
 From: Rosen Penev <rosenp@gmail.com>
 To: stable@vger.kernel.org
 Cc: Harry Wentland <harry.wentland@amd.com>,
@@ -94,10 +96,12 @@ Cc: Harry Wentland <harry.wentland@amd.com>,
 	amd-gfx@lists.freedesktop.org (open list:AMD DISPLAY CORE),
 	dri-devel@lists.freedesktop.org (open list:DRM DRIVERS),
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH for 6.12 and 6.6 1/2] drm/amd/display: Add pixel_clock to amd_pp_display_configuration
-Date: Wed, 25 Feb 2026 13:58:03 -0800
-Message-ID: <20260225215804.11398-1-rosenp@gmail.com>
+Subject: [PATCH for 6.12 and 6.6 2/2] drm/amd/pm: Use pm_display_cfg in legacy DPM (v2)
+Date: Wed, 25 Feb 2026 13:58:04 -0800
+Message-ID: <20260225215804.11398-2-rosenp@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260225215804.11398-1-rosenp@gmail.com>
+References: <20260225215804.11398-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -119,7 +123,7 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,linuxfoundation.org,rudorff.com,kernel.org,iscas.ac.cn,lists.freedesktop.org,vger.kernel.org];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-219733-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219732-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -131,89 +135,367 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rosenp@gmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 9E30119F18E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A0AAF19EE6C
 X-Rspamd-Action: no action
 
 From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit b515dcb0dc4e85d8254f5459cfb32fce88dacbfb upstream.
+commit 9d73b107a61b73e7101d4b728ddac3d2c77db111 upstream.
 
-This commit adds the pixel_clock field to the display config
-struct so that power management (DPM) can use it.
+This commit is necessary for DC to function well with chips
+that use the legacy power management code, ie. SI and KV.
+Communicate display information from DC to the legacy PM code.
 
-We currently don't have a proper bandwidth calculation on old
-GPUs with DCE 6-10 because dce_calcs only supports DCE 11+.
-So the power management (DPM) on these GPUs may need to make
-ad-hoc decisions for display based on the pixel clock.
+Currently DC uses pm_display_cfg to communicate power management
+requirements from the display code to the DPM code.
+However, the legacy (non-DC) code path used different fields
+and therefore could not take into account anything from DC.
 
-Also rename sym_clock to pixel_clock in dm_pp_single_disp_config
-to avoid confusion with other code where the sym_clock refers to
-the DisplayPort symbol clock.
+Change the legacy display code to fill the same pm_display_cfg
+struct as DC and use the same in the legacy DPM code.
+
+To ease review and reduce churn, this commit does not yet
+delete the now unneeded code, that is done in the next commit.
+
+v2:
+Rebase.
+Fix single_display in amdgpu_dpm_pick_power_state.
 
 Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_pp_smu.c       | 1 +
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c | 2 +-
- drivers/gpu/drm/amd/display/dc/dm_services_types.h             | 2 +-
- drivers/gpu/drm/amd/include/dm_pp_interface.h                  | 1 +
- 4 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c  | 67 +++++++++++++++++++
+ .../gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h  |  2 +
+ drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c    |  4 +-
+ .../gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c    |  6 +-
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c    | 65 ++++++------------
+ .../gpu/drm/amd/pm/powerplay/amd_powerplay.c  | 11 +--
+ 6 files changed, 97 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_pp_smu.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_pp_smu.c
-index 848c5b4bb301..016230896d0e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_pp_smu.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_pp_smu.c
-@@ -97,6 +97,7 @@ bool dm_pp_apply_display_requirements(
- 			const struct dm_pp_single_disp_config *dc_cfg =
- 						&pp_display_cfg->disp_configs[i];
- 			adev->pm.pm_display_cfg.displays[i].controller_id = dc_cfg->pipe_idx + 1;
-+			adev->pm.pm_display_cfg.displays[i].pixel_clock = dc_cfg->pixel_clock;
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
+index 2d2d2d5e6763..9ef965e4a92e 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
+@@ -100,3 +100,70 @@ u32 amdgpu_dpm_get_vrefresh(struct amdgpu_device *adev)
+
+ 	return vrefresh;
+ }
++
++void amdgpu_dpm_get_display_cfg(struct amdgpu_device *adev)
++{
++	struct drm_device *ddev = adev_to_drm(adev);
++	struct amd_pp_display_configuration *cfg = &adev->pm.pm_display_cfg;
++	struct single_display_configuration *display_cfg;
++	struct drm_crtc *crtc;
++	struct amdgpu_crtc *amdgpu_crtc;
++	struct amdgpu_connector *conn;
++	int num_crtcs = 0;
++	int vrefresh;
++	u32 vblank_in_pixels, vblank_time_us;
++
++	cfg->min_vblank_time = 0xffffffff; /* if the displays are off, vblank time is max */
++
++	if (adev->mode_info.num_crtc && adev->mode_info.mode_config_initialized) {
++		list_for_each_entry(crtc, &ddev->mode_config.crtc_list, head) {
++			amdgpu_crtc = to_amdgpu_crtc(crtc);
++
++			/* The array should only contain active displays. */
++			if (!amdgpu_crtc->enabled)
++				continue;
++
++			conn = to_amdgpu_connector(amdgpu_crtc->connector);
++			display_cfg = &adev->pm.pm_display_cfg.displays[num_crtcs++];
++
++			if (amdgpu_crtc->hw_mode.clock) {
++				vrefresh = drm_mode_vrefresh(&amdgpu_crtc->hw_mode);
++
++				vblank_in_pixels =
++					amdgpu_crtc->hw_mode.crtc_htotal *
++					(amdgpu_crtc->hw_mode.crtc_vblank_end -
++					amdgpu_crtc->hw_mode.crtc_vdisplay +
++					(amdgpu_crtc->v_border * 2));
++
++				vblank_time_us =
++					vblank_in_pixels * 1000 / amdgpu_crtc->hw_mode.clock;
++
++				/* The legacy (non-DC) code has issues with mclk switching
++				 * with refresh rates over 120 Hz. Disable mclk switching.
++				 */
++				if (vrefresh > 120)
++					vblank_time_us = 0;
++
++				/* Find minimum vblank time. */
++				if (vblank_time_us < cfg->min_vblank_time)
++					cfg->min_vblank_time = vblank_time_us;
++
++				/* Find vertical refresh rate of first active display. */
++				if (!cfg->vrefresh)
++					cfg->vrefresh = vrefresh;
++			}
++
++			if (amdgpu_crtc->crtc_id < cfg->crtc_index) {
++				/* Find first active CRTC and its line time. */
++				cfg->crtc_index = amdgpu_crtc->crtc_id;
++				cfg->line_time_in_us = amdgpu_crtc->line_time;
++			}
++
++			display_cfg->controller_id = amdgpu_crtc->crtc_id;
++			display_cfg->pixel_clock = conn->pixelclock_for_modeset;
++		}
++	}
++
++	cfg->display_clk = adev->clock.default_dispclk;
++	cfg->num_display = num_crtcs;
++}
+diff --git a/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h b/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h
+index 5c2a89f0d5d5..8be11510cd92 100644
+--- a/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h
++++ b/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h
+@@ -29,4 +29,6 @@ u32 amdgpu_dpm_get_vblank_time(struct amdgpu_device *adev);
+
+ u32 amdgpu_dpm_get_vrefresh(struct amdgpu_device *adev);
+
++void amdgpu_dpm_get_display_cfg(struct amdgpu_device *adev);
++
+ #endif
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+index 6b34a33d788f..8cf7e517da84 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+@@ -2299,7 +2299,7 @@ static void kv_apply_state_adjust_rules(struct amdgpu_device *adev,
+
+ 		if (pi->sys_info.nb_dpm_enable) {
+ 			force_high = (mclk >= pi->sys_info.nbp_memory_clock[3]) ||
+-				pi->video_start || (adev->pm.dpm.new_active_crtc_count >= 3) ||
++				pi->video_start || (adev->pm.pm_display_cfg.num_display >= 3) ||
+ 				pi->disable_nb_ps3_in_battery;
+ 			ps->dpm0_pg_nb_ps_lo = force_high ? 0x2 : 0x3;
+ 			ps->dpm0_pg_nb_ps_hi = 0x2;
+@@ -2358,7 +2358,7 @@ static int kv_calculate_nbps_level_settings(struct amdgpu_device *adev)
+ 			return 0;
+
+ 		force_high = ((mclk >= pi->sys_info.nbp_memory_clock[3]) ||
+-			      (adev->pm.dpm.new_active_crtc_count >= 3) || pi->video_start);
++			      (adev->pm.pm_display_cfg.num_display >= 3) || pi->video_start);
+
+ 		if (force_high) {
+ 			for (i = pi->lowest_valid; i <= pi->highest_valid; i++)
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
+index c7518b13e787..8eb121db2ce4 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
+@@ -797,8 +797,7 @@ static struct amdgpu_ps *amdgpu_dpm_pick_power_state(struct amdgpu_device *adev,
+ 	int i;
+ 	struct amdgpu_ps *ps;
+ 	u32 ui_class;
+-	bool single_display = (adev->pm.dpm.new_active_crtc_count < 2) ?
+-		true : false;
++	bool single_display = adev->pm.pm_display_cfg.num_display < 2;
+
+ 	/* check if the vblank period is too short to adjust the mclk */
+ 	if (single_display && adev->powerplay.pp_funcs->vblank_too_short) {
+@@ -994,7 +993,8 @@ void amdgpu_legacy_dpm_compute_clocks(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+
+-	amdgpu_dpm_get_active_displays(adev);
++	if (!adev->dc_enabled)
++		amdgpu_dpm_get_display_cfg(adev);
+
+ 	amdgpu_dpm_change_power_state_locked(adev);
+ }
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index 29cecfab0704..7ea310601ff5 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -3058,7 +3058,7 @@ static int si_get_vce_clock_voltage(struct amdgpu_device *adev,
+ static bool si_dpm_vblank_too_short(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+-	u32 vblank_time = amdgpu_dpm_get_vblank_time(adev);
++	u32 vblank_time = adev->pm.pm_display_cfg.min_vblank_time;
+ 	/* we never hit the non-gddr5 limit so disable it */
+ 	u32 switch_limit = adev->gmc.vram_type == AMDGPU_VRAM_TYPE_GDDR5 ? 450 : 0;
+
+@@ -3424,9 +3424,10 @@ static void rv770_get_engine_memory_ss(struct amdgpu_device *adev)
+ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ 					struct amdgpu_ps *rps)
+ {
++	const struct amd_pp_display_configuration *display_cfg =
++		&adev->pm.pm_display_cfg;
+ 	struct  si_ps *ps = si_get_ps(rps);
+ 	struct amdgpu_clock_and_voltage_limits *max_limits;
+-	struct amdgpu_connector *conn;
+ 	bool disable_mclk_switching = false;
+ 	bool disable_sclk_switching = false;
+ 	u32 mclk, sclk;
+@@ -3470,14 +3471,9 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ 	 * For example, 4K 60Hz and 1080p 144Hz fall into this category.
+ 	 * Find number of such displays connected.
+ 	 */
+-	for (i = 0; i < adev->mode_info.num_crtc; i++) {
+-		if (!(adev->pm.dpm.new_active_crtcs & (1 << i)) ||
+-			!adev->mode_info.crtcs[i]->enabled)
+-			continue;
+-
+-		conn = to_amdgpu_connector(adev->mode_info.crtcs[i]->connector);
+-
+-		if (conn->pixelclock_for_modeset > 297000)
++	for (i = 0; i < display_cfg->num_display; i++) {
++		/* The array only contains active displays. */
++		if (display_cfg->displays[i].pixel_clock > 297000)
+ 			high_pixelclock_count++;
+ 	}
+
+@@ -3510,7 +3506,7 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ 		rps->ecclk = 0;
+ 	}
+
+-	if ((adev->pm.dpm.new_active_crtc_count > 1) ||
++	if ((adev->pm.pm_display_cfg.num_display > 1) ||
+ 	    si_dpm_vblank_too_short(adev))
+ 		disable_mclk_switching = true;
+
+@@ -3658,7 +3654,7 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ 						   ps->performance_levels[i].mclk,
+ 						   max_limits->vddc,  &ps->performance_levels[i].vddc);
+ 		btc_apply_voltage_dependency_rules(&adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk,
+-						   adev->clock.current_dispclk,
++						   display_cfg->display_clk,
+ 						   max_limits->vddc,  &ps->performance_levels[i].vddc);
+ 	}
+
+@@ -4183,16 +4179,16 @@ static void si_program_ds_registers(struct amdgpu_device *adev)
+
+ static void si_program_display_gap(struct amdgpu_device *adev)
+ {
++	const struct amd_pp_display_configuration *cfg = &adev->pm.pm_display_cfg;
+ 	u32 tmp, pipe;
+-	int i;
+
+ 	tmp = RREG32(CG_DISPLAY_GAP_CNTL) & ~(DISP1_GAP_MASK | DISP2_GAP_MASK);
+-	if (adev->pm.dpm.new_active_crtc_count > 0)
++	if (cfg->num_display > 0)
+ 		tmp |= DISP1_GAP(R600_PM_DISPLAY_GAP_VBLANK_OR_WM);
+ 	else
+ 		tmp |= DISP1_GAP(R600_PM_DISPLAY_GAP_IGNORE);
+
+-	if (adev->pm.dpm.new_active_crtc_count > 1)
++	if (cfg->num_display > 1)
+ 		tmp |= DISP2_GAP(R600_PM_DISPLAY_GAP_VBLANK_OR_WM);
+ 	else
+ 		tmp |= DISP2_GAP(R600_PM_DISPLAY_GAP_IGNORE);
+@@ -4202,17 +4198,8 @@ static void si_program_display_gap(struct amdgpu_device *adev)
+ 	tmp = RREG32(DCCG_DISP_SLOW_SELECT_REG);
+ 	pipe = (tmp & DCCG_DISP1_SLOW_SELECT_MASK) >> DCCG_DISP1_SLOW_SELECT_SHIFT;
+
+-	if ((adev->pm.dpm.new_active_crtc_count > 0) &&
+-	    (!(adev->pm.dpm.new_active_crtcs & (1 << pipe)))) {
+-		/* find the first active crtc */
+-		for (i = 0; i < adev->mode_info.num_crtc; i++) {
+-			if (adev->pm.dpm.new_active_crtcs & (1 << i))
+-				break;
+-		}
+-		if (i == adev->mode_info.num_crtc)
+-			pipe = 0;
+-		else
+-			pipe = i;
++	if (cfg->num_display > 0 && pipe != cfg->crtc_index) {
++		pipe = cfg->crtc_index;
+
+ 		tmp &= ~DCCG_DISP1_SLOW_SELECT_MASK;
+ 		tmp |= DCCG_DISP1_SLOW_SELECT(pipe);
+@@ -4223,7 +4210,7 @@ static void si_program_display_gap(struct amdgpu_device *adev)
+ 	 * This can be a problem on PowerXpress systems or if you want to use the card
+ 	 * for offscreen rendering or compute if there are no crtcs enabled.
+ 	 */
+-	si_notify_smc_display_change(adev, adev->pm.dpm.new_active_crtc_count > 0);
++	si_notify_smc_display_change(adev, cfg->num_display > 0);
+ }
+
+ static void si_enable_spread_spectrum(struct amdgpu_device *adev, bool enable)
+@@ -5527,7 +5514,7 @@ static int si_convert_power_level_to_smc(struct amdgpu_device *adev,
+ 	    (pl->mclk <= pi->mclk_stutter_mode_threshold) &&
+ 	    !eg_pi->uvd_enabled &&
+ 	    (RREG32(DPG_PIPE_STUTTER_CONTROL) & STUTTER_ENABLE) &&
+-	    (adev->pm.dpm.new_active_crtc_count <= 2)) {
++	    (adev->pm.pm_display_cfg.num_display <= 2)) {
+ 		level->mcFlags |= SISLANDS_SMC_MC_STUTTER_EN;
+ 	}
+
+@@ -5676,7 +5663,7 @@ static bool si_is_state_ulv_compatible(struct amdgpu_device *adev,
+ 	/* XXX validate against display requirements! */
+
+ 	for (i = 0; i < adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.count; i++) {
+-		if (adev->clock.current_dispclk <=
++		if (adev->pm.pm_display_cfg.display_clk <=
+ 		    adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[i].clk) {
+ 			if (ulv->pl.vddc <
+ 			    adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[i].v)
+@@ -5830,30 +5817,22 @@ static int si_upload_ulv_state(struct amdgpu_device *adev)
+
+ static int si_upload_smc_data(struct amdgpu_device *adev)
+ {
+-	struct amdgpu_crtc *amdgpu_crtc = NULL;
+-	int i;
++	const struct amd_pp_display_configuration *cfg = &adev->pm.pm_display_cfg;
+ 	u32 crtc_index = 0;
+ 	u32 mclk_change_block_cp_min = 0;
+ 	u32 mclk_change_block_cp_max = 0;
+
+-	for (i = 0; i < adev->mode_info.num_crtc; i++) {
+-		if (adev->pm.dpm.new_active_crtcs & (1 << i)) {
+-			amdgpu_crtc = adev->mode_info.crtcs[i];
+-			break;
+-		}
+-	}
+-
+ 	/* When a display is plugged in, program these so that the SMC
+ 	 * performs MCLK switching when it doesn't cause flickering.
+ 	 * When no display is plugged in, there is no need to restrict
+ 	 * MCLK switching, so program them to zero.
+ 	 */
+-	if (adev->pm.dpm.new_active_crtc_count && amdgpu_crtc) {
+-		crtc_index = amdgpu_crtc->crtc_id;
++	if (cfg->num_display) {
++		crtc_index = cfg->crtc_index;
+
+-		if (amdgpu_crtc->line_time) {
+-			mclk_change_block_cp_min = 200 / amdgpu_crtc->line_time;
+-			mclk_change_block_cp_max = 100 / amdgpu_crtc->line_time;
++		if (cfg->line_time_in_us) {
++			mclk_change_block_cp_min = 200 / cfg->line_time_in_us;
++			mclk_change_block_cp_max = 100 / cfg->line_time_in_us;
  		}
+ 	}
 
- 		amdgpu_dpm_display_configuration_change(adev, &adev->pm.pm_display_cfg);
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-index 13cf415e38e5..d50b9440210e 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-@@ -164,7 +164,7 @@ void dce110_fill_display_configs(
- 			stream->link->cur_link_settings.link_rate;
- 		cfg->link_settings.link_spread =
- 			stream->link->cur_link_settings.link_spread;
--		cfg->sym_clock = stream->phy_pix_clk;
-+		cfg->pixel_clock = stream->phy_pix_clk;
- 		/* Round v_refresh*/
- 		cfg->v_refresh = stream->timing.pix_clk_100hz * 100;
- 		cfg->v_refresh /= stream->timing.h_total;
-diff --git a/drivers/gpu/drm/amd/display/dc/dm_services_types.h b/drivers/gpu/drm/amd/display/dc/dm_services_types.h
-index facf269c4326..b4eefe3ce7c7 100644
---- a/drivers/gpu/drm/amd/display/dc/dm_services_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dm_services_types.h
-@@ -127,7 +127,7 @@ struct dm_pp_single_disp_config {
- 	uint32_t src_height;
- 	uint32_t src_width;
- 	uint32_t v_refresh;
--	uint32_t sym_clock; /* HDMI only */
-+	uint32_t pixel_clock; /* Pixel clock in KHz (for HDMI only: normalized) */
- 	struct dc_link_settings link_settings; /* DP only */
- };
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+index 0115d26b5af9..24b25cddf0c1 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+@@ -1569,16 +1569,7 @@ static void pp_pm_compute_clocks(void *handle)
+ 	struct amdgpu_device *adev = hwmgr->adev;
 
-diff --git a/drivers/gpu/drm/amd/include/dm_pp_interface.h b/drivers/gpu/drm/amd/include/dm_pp_interface.h
-index acd1cef61b7c..349544504c93 100644
---- a/drivers/gpu/drm/amd/include/dm_pp_interface.h
-+++ b/drivers/gpu/drm/amd/include/dm_pp_interface.h
-@@ -65,6 +65,7 @@ struct single_display_configuration {
- 	uint32_t view_resolution_cy;
- 	enum amd_pp_display_config_type displayconfigtype;
- 	uint32_t vertical_refresh; /* for active display */
-+	uint32_t pixel_clock; /* Pixel clock in KHz (for HDMI only: normalized) */
- };
-
- #define MAX_NUM_DISPLAY 32
+ 	if (!adev->dc_enabled) {
+-		amdgpu_dpm_get_active_displays(adev);
+-		adev->pm.pm_display_cfg.num_display = adev->pm.dpm.new_active_crtc_count;
+-		adev->pm.pm_display_cfg.vrefresh = amdgpu_dpm_get_vrefresh(adev);
+-		adev->pm.pm_display_cfg.min_vblank_time = amdgpu_dpm_get_vblank_time(adev);
+-		/* we have issues with mclk switching with
+-		 * refresh rates over 120 hz on the non-DC code.
+-		 */
+-		if (adev->pm.pm_display_cfg.vrefresh > 120)
+-			adev->pm.pm_display_cfg.min_vblank_time = 0;
+-
++		amdgpu_dpm_get_display_cfg(adev);
+ 		pp_display_configuration_change(handle,
+ 						&adev->pm.pm_display_cfg);
+ 	}
 --
 2.53.0
 
