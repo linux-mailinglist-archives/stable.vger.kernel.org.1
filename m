@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-219310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLIJNTWfnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:25 +0100
+	id kDPdIk9Unmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04493192EA5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F50A18FC66
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2DB6317061D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33BFE31AF2D0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA002D73AD;
-	Wed, 25 Feb 2026 06:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EAC26056D;
+	Wed, 25 Feb 2026 01:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4qMSsr3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIjDnze1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39BA2D29C2;
-	Wed, 25 Feb 2026 06:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA02B243376;
+	Wed, 25 Feb 2026 01:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002631; cv=none; b=qqFD1hAQfetJkjv+aQomYQkJseP3OhbDjiBqEhubT+mkdP3+3M78p0EJtvCSpy1ndaGU7VMSrAmhSXWAKOr8JaicHqeL+if8ZOGsC14amqx3nLn1eFN+9FEqsCPe/2QhbWP8YOca/Ei2hmXr2iEZFtqdV7B12hWeRdFSdSg7MLI=
+	t=1771983503; cv=none; b=rO7OulV8cioxUDwy2roSA7cVdQ8V+tl0uHA06L2L/66mpV1UWLxBMpTSghwfFtOzXMXlHUpMTNGIv3pqkMVHsg0TN/4qvEVt33GpZeEfsbN3chM6Jvp65YEJ97kYNYszBX9abyY9vKPPC08owVe7iMYpvbB15KjSzkbi+oV5NGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002631; c=relaxed/simple;
-	bh=tLk7mMCq7sir67GEulzq4kdBRHXuXyZezOKUUCnTS40=;
+	s=arc-20240116; t=1771983503; c=relaxed/simple;
+	bh=6Z924ZUI+t5jJSkrkTJAHH0CAXNkvmgJCjlqSk2XYnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cm+jIra7oL8W+MiuKxjwuTt85kj1u3rJgVKtbU+tcnLMmz1JRrwtJTQG3VwatZOcSx85IdMos+npzjbdA7jYNkz6tZ6ExIetQdoxneymye/rK4fdgdm6jsrlepfCfmD7Uah6m8RNv8pGIB3aUv+JhrO3NBnGPY3+Z2XcilPMliw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4qMSsr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C855C116D0;
-	Wed, 25 Feb 2026 06:57:11 +0000 (UTC)
+	 MIME-Version; b=dNwpwlraByYut7DOquNgawCR8Oit8vJVKWURVyfYoTvdj+logB6uOV05b46n4Fk2yu7X03I3jUW+sgveVZ596xfcj/4I3J9Qkw5Irl9uCpxczhwEDsWryTpOy18Zm89pzKure5qvAHWgEUeKbnUaKXZh16j7BBKYiyyYYoM0faI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIjDnze1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71C5C116D0;
+	Wed, 25 Feb 2026 01:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002631;
-	bh=tLk7mMCq7sir67GEulzq4kdBRHXuXyZezOKUUCnTS40=;
+	s=korg; t=1771983503;
+	bh=6Z924ZUI+t5jJSkrkTJAHH0CAXNkvmgJCjlqSk2XYnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w4qMSsr34IW87fwr2fp/Lmd3qu6FmMJd5DxWAk4lp0qzp5GuQS++LgByINC9QwboS
-	 eedt9EuHgUSRa3OE+JwfZyh8Xxmx7iBrebZUEbdYGJSv2a6Z8O0oZpXV09kpv/wD8/
-	 qh2o0WD68hPUy3zwaOxURCbjYmZXwZkwxymWrJfc=
+	b=UIjDnze1ckeBe8sXWPvucyHiKNdAl+FBz6ZtRG2Yqr00LduwRT7NuXwQ9pvcEAk5T
+	 156dpZOn9gW5jTN4A1fIQiWInRwzQ8v0snkM85rp+0HsrdLuHTpsGroBof0fmsYl0O
+	 UTHBQEOCM2tIQ9znO2hDCZ1fqLBi/sJClj+z2SKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Chen <me@linux.beauty>,
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Martin Wilck <mwilck@suse.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 394/641] nvdimm: virtio_pmem: serialize flush requests
-Date: Tue, 24 Feb 2026 17:22:00 -0800
-Message-ID: <20260225012358.122987395@linuxfoundation.org>
+Subject: [PATCH 6.19 612/781] block: allow IOC_PR_READ_* ioctls with BLK_OPEN_READ
+Date: Tue, 24 Feb 2026 17:22:01 -0800
+Message-ID: <20260225012414.809016664@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,132 +69,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219310-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.beauty,gmail.com,redhat.com,intel.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.956];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218652-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linux.beauty:email]
-X-Rspamd-Queue-Id: 04493192EA5
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,lst.de:email,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0F50A18FC66
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Chen <me@linux.beauty>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-[ Upstream commit a9ba6733c7f1096c4506bf4e34a546e07242df74 ]
+[ Upstream commit 5b88af7113feba2f0ae3402bb57cb5c94eea7dc3 ]
 
-Under heavy concurrent flush traffic, virtio-pmem can overflow its request
-virtqueue (req_vq): virtqueue_add_sgs() starts returning -ENOSPC and the
-driver logs "no free slots in the virtqueue". Shortly after that the
-device enters VIRTIO_CONFIG_S_NEEDS_RESET and flush requests fail with
-"virtio pmem device needs a reset".
+The recently added IOC_PR_READ_* ioctls require the same BLK_OPEN_WRITE
+permission as the older persistent reservation ioctls. This has the
+drawback that udev triggers when the file descriptor is closed,
+resulting in unnecessary activity like scanning partitions even though
+these read-only ioctls do not modify the device.
 
-Serialize virtio_pmem_flush() with a per-device mutex so only one flush
-request is in-flight at a time. This prevents req_vq descriptor overflow
-under high concurrency.
+Change IOC_PR_READ_KEYS and IOC_PR_READ_RESERVATION to require
+BLK_OPEN_READ. This prevents unnecessary activity every time `blkpr
+--read-keys` or `blkpr --read-reservation` is invoked by shell scripts,
+for example.
 
-Reproducer (guest with virtio-pmem):
-  - mkfs.ext4 -F /dev/pmem0
-  - mount -t ext4 -o dax,noatime /dev/pmem0 /mnt/bench
-  - fio: ioengine=io_uring rw=randwrite bs=4k iodepth=64 numjobs=64
-        direct=1 fsync=1 runtime=30s time_based=1
-  - dmesg: "no free slots in the virtqueue"
-           "virtio pmem device needs a reset"
+It is safe to reduce the permission requirement from BLK_OPEN_WRITE to
+BLK_OPEN_READ since these two ioctls do not modify the persistent
+reservation state. Userspace cannot use the information fetched by these
+ioctls to make changes to the device unless it later opens the device
+with BLK_OPEN_WRITE.
 
-Fixes: 6e84200c0a29 ("virtio-pmem: Add virtio pmem driver")
-Signed-off-by: Li Chen <me@linux.beauty>
-Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20260203021353.121091-1-me@linux.beauty
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: 3e2cb9ee76c2 ("block: add IOC_PR_READ_RESERVATION ioctl")
+Fixes: 22a1ffea5f80 ("block: add IOC_PR_READ_KEYS ioctl")
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Martin Wilck <mwilck@suse.com>
+Cc: Benjamin Marzinski <bmarzins@redhat.com>
+Suggested-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/nd_virtio.c   | 3 ++-
- drivers/nvdimm/virtio_pmem.c | 1 +
- drivers/nvdimm/virtio_pmem.h | 4 ++++
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ block/ioctl.c | 34 +++++++++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
-index c3f07be4aa22a..af82385be7c6a 100644
---- a/drivers/nvdimm/nd_virtio.c
-+++ b/drivers/nvdimm/nd_virtio.c
-@@ -44,6 +44,8 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
- 	unsigned long flags;
- 	int err, err1;
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 344478348a54e..337e4c3b65b2c 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -318,7 +318,13 @@ int blkdev_compat_ptr_ioctl(struct block_device *bdev, blk_mode_t mode,
+ EXPORT_SYMBOL(blkdev_compat_ptr_ioctl);
+ #endif
  
-+	guard(mutex)(&vpmem->flush_lock);
+-static bool blkdev_pr_allowed(struct block_device *bdev, blk_mode_t mode)
++enum pr_direction {
++	PR_IN,  /* read from device */
++	PR_OUT, /* write to device */
++};
++
++static bool blkdev_pr_allowed(struct block_device *bdev, blk_mode_t mode,
++		enum pr_direction dir)
+ {
+ 	/* no sense to make reservations for partitions */
+ 	if (bdev_is_partition(bdev))
+@@ -326,11 +332,17 @@ static bool blkdev_pr_allowed(struct block_device *bdev, blk_mode_t mode)
+ 
+ 	if (capable(CAP_SYS_ADMIN))
+ 		return true;
 +
  	/*
- 	 * Don't bother to submit the request to the device if the device is
- 	 * not activated.
-@@ -53,7 +55,6 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
- 		return -EIO;
- 	}
+-	 * Only allow unprivileged reservations if the file descriptor is open
+-	 * for writing.
++	 * Only allow unprivileged reservation _out_ commands if the file
++	 * descriptor is open for writing. Allow reservation _in_ commands if
++	 * the file descriptor is open for reading since they do not modify the
++	 * device.
+ 	 */
+-	return mode & BLK_OPEN_WRITE;
++	if (dir == PR_IN)
++		return mode & BLK_OPEN_READ;
++	else
++		return mode & BLK_OPEN_WRITE;
+ }
  
--	might_sleep();
- 	req_data = kmalloc(sizeof(*req_data), GFP_KERNEL);
- 	if (!req_data)
- 		return -ENOMEM;
-diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
-index 2396d19ce5496..77b1966619059 100644
---- a/drivers/nvdimm/virtio_pmem.c
-+++ b/drivers/nvdimm/virtio_pmem.c
-@@ -64,6 +64,7 @@ static int virtio_pmem_probe(struct virtio_device *vdev)
- 		goto out_err;
- 	}
+ static int blkdev_pr_register(struct block_device *bdev, blk_mode_t mode,
+@@ -339,7 +351,7 @@ static int blkdev_pr_register(struct block_device *bdev, blk_mode_t mode,
+ 	const struct pr_ops *ops = bdev->bd_disk->fops->pr_ops;
+ 	struct pr_registration reg;
  
-+	mutex_init(&vpmem->flush_lock);
- 	vpmem->vdev = vdev;
- 	vdev->priv = vpmem;
- 	err = init_vq(vpmem);
-diff --git a/drivers/nvdimm/virtio_pmem.h b/drivers/nvdimm/virtio_pmem.h
-index 0dddefe594c46..f72cf17f9518f 100644
---- a/drivers/nvdimm/virtio_pmem.h
-+++ b/drivers/nvdimm/virtio_pmem.h
-@@ -13,6 +13,7 @@
- #include <linux/module.h>
- #include <uapi/linux/virtio_pmem.h>
- #include <linux/libnvdimm.h>
-+#include <linux/mutex.h>
- #include <linux/spinlock.h>
+-	if (!blkdev_pr_allowed(bdev, mode))
++	if (!blkdev_pr_allowed(bdev, mode, PR_OUT))
+ 		return -EPERM;
+ 	if (!ops || !ops->pr_register)
+ 		return -EOPNOTSUPP;
+@@ -357,7 +369,7 @@ static int blkdev_pr_reserve(struct block_device *bdev, blk_mode_t mode,
+ 	const struct pr_ops *ops = bdev->bd_disk->fops->pr_ops;
+ 	struct pr_reservation rsv;
  
- struct virtio_pmem_request {
-@@ -35,6 +36,9 @@ struct virtio_pmem {
- 	/* Virtio pmem request queue */
- 	struct virtqueue *req_vq;
+-	if (!blkdev_pr_allowed(bdev, mode))
++	if (!blkdev_pr_allowed(bdev, mode, PR_OUT))
+ 		return -EPERM;
+ 	if (!ops || !ops->pr_reserve)
+ 		return -EOPNOTSUPP;
+@@ -375,7 +387,7 @@ static int blkdev_pr_release(struct block_device *bdev, blk_mode_t mode,
+ 	const struct pr_ops *ops = bdev->bd_disk->fops->pr_ops;
+ 	struct pr_reservation rsv;
  
-+	/* Serialize flush requests to the device. */
-+	struct mutex flush_lock;
-+
- 	/* nvdimm bus registers virtio pmem device */
- 	struct nvdimm_bus *nvdimm_bus;
- 	struct nvdimm_bus_descriptor nd_desc;
+-	if (!blkdev_pr_allowed(bdev, mode))
++	if (!blkdev_pr_allowed(bdev, mode, PR_OUT))
+ 		return -EPERM;
+ 	if (!ops || !ops->pr_release)
+ 		return -EOPNOTSUPP;
+@@ -393,7 +405,7 @@ static int blkdev_pr_preempt(struct block_device *bdev, blk_mode_t mode,
+ 	const struct pr_ops *ops = bdev->bd_disk->fops->pr_ops;
+ 	struct pr_preempt p;
+ 
+-	if (!blkdev_pr_allowed(bdev, mode))
++	if (!blkdev_pr_allowed(bdev, mode, PR_OUT))
+ 		return -EPERM;
+ 	if (!ops || !ops->pr_preempt)
+ 		return -EOPNOTSUPP;
+@@ -411,7 +423,7 @@ static int blkdev_pr_clear(struct block_device *bdev, blk_mode_t mode,
+ 	const struct pr_ops *ops = bdev->bd_disk->fops->pr_ops;
+ 	struct pr_clear c;
+ 
+-	if (!blkdev_pr_allowed(bdev, mode))
++	if (!blkdev_pr_allowed(bdev, mode, PR_OUT))
+ 		return -EPERM;
+ 	if (!ops || !ops->pr_clear)
+ 		return -EOPNOTSUPP;
+@@ -434,7 +446,7 @@ static int blkdev_pr_read_keys(struct block_device *bdev, blk_mode_t mode,
+ 	size_t keys_copy_len;
+ 	int ret;
+ 
+-	if (!blkdev_pr_allowed(bdev, mode))
++	if (!blkdev_pr_allowed(bdev, mode, PR_IN))
+ 		return -EPERM;
+ 	if (!ops || !ops->pr_read_keys)
+ 		return -EOPNOTSUPP;
+@@ -486,7 +498,7 @@ static int blkdev_pr_read_reservation(struct block_device *bdev,
+ 	struct pr_read_reservation out = {};
+ 	int ret;
+ 
+-	if (!blkdev_pr_allowed(bdev, mode))
++	if (!blkdev_pr_allowed(bdev, mode, PR_IN))
+ 		return -EPERM;
+ 	if (!ops || !ops->pr_read_reservation)
+ 		return -EOPNOTSUPP;
 -- 
 2.51.0
 
