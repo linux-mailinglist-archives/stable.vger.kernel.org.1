@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-219228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGxCLtWdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:33 +0100
+	id uKwbOeBTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FAFA192ACF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5823218FAA0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EAA3130D6E1A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB75831795B7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4722D1F44;
-	Wed, 25 Feb 2026 06:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C0D26463A;
+	Wed, 25 Feb 2026 01:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+BogKTj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyWFEe/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6102C3252;
-	Wed, 25 Feb 2026 06:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB82256C8B;
+	Wed, 25 Feb 2026 01:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002578; cv=none; b=tGMNvM52evPH00vVf6ImX9L9Yyldhn0cJqGaobg7tVP/7Wp4tqMiMg6MDafOqSoXH/Olo6tEzUTpScL5SZ57ReIsqtlrzMtOUMNqN5H+g6srAyNwoBqKKB4MifkC9GwIPTyAqarxBkJAAe5zYgAmsMCMrEG6puefiBIhC83IIg8=
+	t=1771983439; cv=none; b=DQNemmH8WEKxOcaL/3TkWtsaJysXafD9PtymiB1n+WUSUj0ogz0jy4mjk1Np+iQ5u9DZTh97ZzjuByQt8fq0PupCiep0y+W6FHRdiIDH2Ui+YyQYXTiTjMO0Boi7HmNc+6/q+ZOwuGlh6+Qa7B19ePw2H3bp7Ss7KDVoRy95omE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002578; c=relaxed/simple;
-	bh=zg+Zkv7bH0/uNJIJT9+mlDCTqLg+86dB186Tiu1Vdbk=;
+	s=arc-20240116; t=1771983439; c=relaxed/simple;
+	bh=RPv0st3Drw3tzHvdBWsH40GRQ1sO+FuoANcLyG9cDwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZD1xmFoCIrAHwK7th6J0XORtpp5fqtVStXaqOuz/U3P0bwp0IqfVKzEEeADOE4lqv+dZIiqdLpiGcKItp8ekokX1SA/XWVQ5mre4kprsjjuLAfhIczPwA1uGB+JXlUCEyuKfx0orPtXQNgNnq5ltM9N/KsjLMptWDC21UDilBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+BogKTj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62840C116D0;
-	Wed, 25 Feb 2026 06:56:18 +0000 (UTC)
+	 MIME-Version; b=AvBe+Yop+3iBUdVCNIZFz3sPr70mc537LN64KL9RrkizPsPOcDso6aORrG491pnQ3Lhsqjz5pFa7Oal1cf2rUQqqT54q+akKtP22qqzgjBv0//+aS6mDhGmJZm6NMPiSoYLS+C8vTt45kObuGvbkgg9SCRfVi7NTSOx35TnYmow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyWFEe/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3391C116D0;
+	Wed, 25 Feb 2026 01:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002578;
-	bh=zg+Zkv7bH0/uNJIJT9+mlDCTqLg+86dB186Tiu1Vdbk=;
+	s=korg; t=1771983439;
+	bh=RPv0st3Drw3tzHvdBWsH40GRQ1sO+FuoANcLyG9cDwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+BogKTjN8LhUwCoGbnwkcDDHh3MrXneuJcOAJTju0bKbtyaizbVerGP7oLGCYmrU
-	 MpwmOv1ejSktF3xE9kpezB8hIJykjBSpzQuhXxLLkWwHG5s8BZYRm4DHMXHu7RpQ4E
-	 zXROcwZi9EE5Ogb5VMKCBtMoSekagqZEel+ufLgs=
+	b=jyWFEe/OwwnIf7kbHtPEeK5FXjvCQGLWreMDzaKRg7UpRtBovX7MS3Bj9H4OVvlK8
+	 xFkYn+UbdVr1tgdYG0vbnylEwjPCJnh2L6a1iG98uPxZsWHG/NevHE3H+M2j2j3P0+
+	 2N+L4tzIUedQilSySI5bgDgpttlx0d9VNg3rxbHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 312/641] netfilter: nft_set_rbtree: remove seqcount_rwlock_t
-Date: Tue, 24 Feb 2026 17:20:38 -0800
-Message-ID: <20260225012356.287048293@linuxfoundation.org>
+Subject: [PATCH 6.19 530/781] clk: rockchip: Fix error pointer check after rockchip_clk_register_gate_link()
+Date: Tue, 24 Feb 2026 17:20:39 -0800
+Message-ID: <20260225012412.800035328@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,93 +67,69 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218595-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sntech.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219228-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,strlen.de:email]
-X-Rspamd-Queue-Id: 2FAFA192ACF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sntech.de:email]
+X-Rspamd-Queue-Id: 5823218FAA0
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 5599fa810b503eafc2bd8cd15bd45f35fc8ff6b9 ]
+[ Upstream commit a8d722f03923b1c6166d39482c6df8f017e185d9 ]
 
-After the conversion to binary search array, this is not required anymore.
-Remove it.
+Replace NULL check with IS_ERR_OR_NULL() check after calling
+rockchip_clk_register_gate_link() since this function
+returns error pointers (ERR_PTR).
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Stable-dep-of: 782f2688128e ("netfilter: nft_set_rbtree: validate element belonging to interval")
+Fixes: c62fa612cfa6 ("clk: rockchip: implement linked gate clock support")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://patch.msgid.link/20250805030358.3665878-1-linmq006@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/clk/rockchip/clk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 1b0502cc87301..6470bc5d38749 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -33,7 +33,6 @@ struct nft_rbtree {
- 	rwlock_t		lock;
- 	struct nft_array __rcu	*array;
- 	struct nft_array	*array_next;
--	seqcount_rwlock_t	count;
- 	unsigned long		last_gc;
- };
+diff --git a/drivers/clk/rockchip/clk.c b/drivers/clk/rockchip/clk.c
+index 2601df3b1066b..9ac9d13e87de0 100644
+--- a/drivers/clk/rockchip/clk.c
++++ b/drivers/clk/rockchip/clk.c
+@@ -693,7 +693,7 @@ void rockchip_clk_register_late_branches(struct device *dev,
+ 			break;
+ 		}
  
-@@ -572,9 +571,7 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 		cond_resched();
- 
- 		write_lock_bh(&priv->lock);
--		write_seqcount_begin(&priv->count);
- 		err = __nft_rbtree_insert(net, set, rbe, elem_priv);
--		write_seqcount_end(&priv->count);
- 		write_unlock_bh(&priv->lock);
- 	} while (err == -EAGAIN);
- 
-@@ -584,9 +581,7 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- static void nft_rbtree_erase(struct nft_rbtree *priv, struct nft_rbtree_elem *rbe)
- {
- 	write_lock_bh(&priv->lock);
--	write_seqcount_begin(&priv->count);
- 	rb_erase(&rbe->node, &priv->root);
--	write_seqcount_end(&priv->count);
- 	write_unlock_bh(&priv->lock);
+-		if (!pdev)
++		if (IS_ERR_OR_NULL(pdev))
+ 			dev_err(dev, "failed to register device for clock %s\n", list->name);
+ 	}
  }
- 
-@@ -798,7 +793,6 @@ static int nft_rbtree_init(const struct nft_set *set,
- 	BUILD_BUG_ON(offsetof(struct nft_rbtree_elem, priv) != 0);
- 
- 	rwlock_init(&priv->lock);
--	seqcount_rwlock_init(&priv->count, &priv->lock);
- 	priv->root = RB_ROOT;
- 
- 	priv->array = NULL;
 -- 
 2.51.0
 
