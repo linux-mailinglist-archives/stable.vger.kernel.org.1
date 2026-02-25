@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-218622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPWjJBVUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:53 +0100
+	id 6FIjM0OdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB38D18FB84
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C67192952
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3DEB3193CF1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 88EB53020ED1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0CD26560A;
-	Wed, 25 Feb 2026 01:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48492D77F5;
+	Wed, 25 Feb 2026 06:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="my3CV6ie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Bk3M1oj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F3825A642;
-	Wed, 25 Feb 2026 01:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669282D73AD;
+	Wed, 25 Feb 2026 06:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983470; cv=none; b=tim2uJmRoh6PobIYnaN93EbcuMs+p3bkyC89pwdczG8NeZcMjspOJ9Xga8gb0hB6AqagO/MYOM42s5vV4l6Ai4nBYIqiovkKujQnHSkkRfJrEiQFkpfn6BZSAP5dGaO0e/eETODGqcitkRpte+/U+tPEyk7y8u379DXiUSFeONU=
+	t=1772002616; cv=none; b=QzeuxXNnxDCAGYuRF+fpU7QX681z4loTu/Dq60mUQARCAQA5Y5aqAPHpDF5iCuzE6XJ7PE3SPQSdemMgs064dA4EXdxmQSBp4ItbmcQvI7DyJjcpnJwyI9OBcRrO5jb4KcFhAFIns4yOLtM/GsZMJfmNJjwpvASUK3wyUPRHn08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983470; c=relaxed/simple;
-	bh=fBKzq1fTg6PK6/4S78HqTGtAebUPOSi59j0kvlczkvk=;
+	s=arc-20240116; t=1772002616; c=relaxed/simple;
+	bh=vtwQyzVZoeEB5XWf56eaciW76e3pBGVvOwWlll0wTko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWpJEKm/5u2uSLTudGy22EKwFzt7E292TPuwAgYEdH1HPFSor1bmDsIOY/eDOvr4IpQEI66Bkb0dHfu+PId5D7xjAZLpDa5bcJME9YGZ3D9Iz2IuFCazeq1cLPN9g6AOvb0jj7c8OFuxOb3ysyZUp+E0p53WP1H9R36FGuORC+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=my3CV6ie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DD7C116D0;
-	Wed, 25 Feb 2026 01:37:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B/6nnWRHD0je78txpMHA2Mnay340FkYrG7iU0wT3wDGgKl/D6FaXnl4N8aUCrmCU98FmQAnG8Q5jiYEetayCmL00TNdmLr29DPDwoWrrpwM03EaRJDzeS5uw8IFauZ43gGVaJGGzftkb5kXlSGIaf5Q8e306kryEzUSTluuTxmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Bk3M1oj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEB4C116D0;
+	Wed, 25 Feb 2026 06:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983469;
-	bh=fBKzq1fTg6PK6/4S78HqTGtAebUPOSi59j0kvlczkvk=;
+	s=korg; t=1772002616;
+	bh=vtwQyzVZoeEB5XWf56eaciW76e3pBGVvOwWlll0wTko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=my3CV6ie22MXPRJGqlO/t+QW+W3++NH8jxkThb8O/UP/KWx6/+vwpyAcHC1JrCgYQ
-	 1+N2fRwCEElyIKHObgkIMfY9MYhVjzIGGJQUVfEP6aHm2ZvVad4j0aad3jV7Qaft1M
-	 qr7qa8bEpMEDmB8K1A6K9iU9sSbYzEq5+ocmI720=
+	b=1Bk3M1oj6KtxWEEZ4PXecaOuXgtt1Zm71zZHISmhDGxBlgFkvWj0/TlEaPlVbpR+X
+	 cCZMXF1jyhPdy7VwJTAb71FdsTHVbzeDmxHlQLS7pi16WD19RqtGfrm/Z0Og2wguf4
+	 se+og+Wiv3CyPXVve6x9aOUcDeGovV+IbBSMmC+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richard <thomas.richard@bootlin.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Yijun Shen <Yijun.Shen@Dell.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 585/781] phy: freescale: imx8qm-hsio: fix NULL pointer dereference
+Subject: [PATCH 6.18 368/641] crypto: ccp - Declare PSP dead if PSP_CMD_TEE_RING_INIT fails
 Date: Tue, 24 Feb 2026 17:21:34 -0800
-Message-ID: <20260225012414.150304732@linuxfoundation.org>
+Message-ID: <20260225012357.524109579@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +66,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218622-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-219285-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,bootlin.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EB38D18FB84
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,amd.com:email]
+X-Rspamd-Queue-Id: 44C67192952
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richard <thomas.richard@bootlin.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 4dd5d4c0361af0a3fd24f45c815996abf4429770 ]
+[ Upstream commit 5e599d7871bf852e94e8aa08b99724635f2cbf96 ]
 
-During the probe the refclk_pad pointer is set to NULL if the
-'fsl,refclk-pad-mode' property is not defined in the devicetree node. But
-in imx_hsio_configure_clk_pad() this pointer is unconditionally used which
-could result in a NULL pointer dereference. So check the pointer before to
-use it.
+tee_init_ring() only declares PSP dead if the command times out.
+If there is any other failure it is still considered fatal though.
+Set psp_dead for other failures as well.
 
-Fixes: 82c56b6dd24f ("phy: freescale: imx8qm-hsio: Add i.MX8QM HSIO PHY driver support")
-Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
-Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
-Link: https://patch.msgid.link/20260114-phy-fsl-imx8qm-hsio-fix-null-pointer-dereference-v1-1-730e941be464@bootlin.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 949a0c8dd3c2 ("crypto: ccp - Move direct access to some PSP registers out of TEE")
+Tested-by: Yijun Shen <Yijun.Shen@Dell.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://patch.msgid.link/20260116041132.153674-3-superm1@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8qm-hsio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/ccp/tee-dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-index 977d21d753a59..279b8ac7822df 100644
---- a/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8qm-hsio.c
-@@ -251,7 +251,7 @@ static void imx_hsio_configure_clk_pad(struct phy *phy)
- 	struct imx_hsio_lane *lane = phy_get_drvdata(phy);
- 	struct imx_hsio_priv *priv = lane->priv;
+diff --git a/drivers/crypto/ccp/tee-dev.c b/drivers/crypto/ccp/tee-dev.c
+index 5e1d80724678d..af881daa5855b 100644
+--- a/drivers/crypto/ccp/tee-dev.c
++++ b/drivers/crypto/ccp/tee-dev.c
+@@ -125,6 +125,7 @@ static int tee_init_ring(struct psp_tee_device *tee)
+ 		dev_err(tee->dev, "tee: ring init command failed (%#010lx)\n",
+ 			FIELD_GET(PSP_CMDRESP_STS, reg));
+ 		tee_free_ring(tee);
++		psp_dead = true;
+ 		ret = -EIO;
+ 	}
  
--	if (strncmp(priv->refclk_pad, "output", 6) == 0) {
-+	if (priv->refclk_pad && strncmp(priv->refclk_pad, "output", 6) == 0) {
- 		pll = true;
- 		regmap_update_bits(priv->misc, HSIO_CTRL0,
- 				   HSIO_IOB_A_0_TXOE | HSIO_IOB_A_0_M1M0_MASK,
 -- 
 2.51.0
 
