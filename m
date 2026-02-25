@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-219022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDRbLdVVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-219022-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:21 +0100
+	id cI0ILBRTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB7B19010C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F7218F6B2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CAB0230731AA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A00330BDA97
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB8227F75C;
-	Wed, 25 Feb 2026 01:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4629622579E;
+	Wed, 25 Feb 2026 01:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="065gvbMO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOOxD+kw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB1E18DF80;
-	Wed, 25 Feb 2026 01:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0752F18B0A;
+	Wed, 25 Feb 2026 01:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983935; cv=none; b=MDhq7fjgNdjOgYVi7DEaVUkRX0VggpRnhFHRaZMeADzaAEXjiXi0aLeiuIgBtVxWEC8MAd7qAuY2w3bk4vZop0vHSJ55ImEtZriqVxVMDnyeuvFkGvRDtdvQXhxX9j49+qHJOJIr2ETG35oAOc4YsxWKE4W3qcaiknr2Mj4Czeg=
+	t=1771983278; cv=none; b=KhGi74c738+9KdNU2rB7T5W6gIYRKIHt14zkrtNjONhDUpjcOfT7C02/9RJzlADBFLJRZVrcL3YObLw/kMc8MADFJZyCrHC/Sv88B1ZTg+IE1fFshmTgFd04W8uHBUeoZkFGv8ymELxi+qdeSVuDNnMAqCzgKQMw51XueV8gdrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983935; c=relaxed/simple;
-	bh=Z30WJ10w4qKEdXjTXnrXPrXBcTaMHoyODvr4mt0/eiw=;
+	s=arc-20240116; t=1771983278; c=relaxed/simple;
+	bh=MF8j2FyKQgJ96koN6X4KJDuJs9QCoBSIrDcPwBbyz34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBoEk3/885bbD4FJCVwXGX5efNVorDtmgx1ikwtN34ucZIQvUKwZCeSBmlieU4MSgqPHMmYVCf7fUZvRzaXAbrHhpn7YMFi1C6jr1GAei97k/1c7MesZKeGDxVV3G89qfG0OIfmD9SuJ4LKFvw0oAuKz0RiNoPKmPB5mJ/Hgsdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=065gvbMO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB34C116D0;
-	Wed, 25 Feb 2026 01:45:35 +0000 (UTC)
+	 MIME-Version; b=bs9q2mK4FhMObkF461Im1SXk6XBojQHJnV0oJIUX9eNrfzAIvyRBBlu0W02cpOk8qRIbbzbSrjHkcFpeDk8nI4A3PjJbbHkAVxOuW6Kt+alRIOvTGsSEDtni7CeIq1QwHDIAcxLuKSaQdmB+B/TQAgPCdayjDeP5ZLsE0EKaMew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOOxD+kw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32D5C116D0;
+	Wed, 25 Feb 2026 01:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983935;
-	bh=Z30WJ10w4qKEdXjTXnrXPrXBcTaMHoyODvr4mt0/eiw=;
+	s=korg; t=1771983277;
+	bh=MF8j2FyKQgJ96koN6X4KJDuJs9QCoBSIrDcPwBbyz34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=065gvbMO5bLij4Ssq4WWT1lLfSq2K5daMAaygKcx0PGI86mGEP0iVZbdgK3XYbY1G
-	 Alsn1mDglDuUvwe8tB7HuAoZtQrd/A2tqMai+PGFm7cNJXmsYLd03GI5vcSW5iNxDw
-	 lFYEe9lxR2r2OxNJ9wjCpd7+TaudWprFmK/mSVzY=
+	b=XOOxD+kwIx3Lw0eueNzAkfBsJGuoJgRHrJafMwc4fkD2U+tb1zrVGcWJgXTovIFLj
+	 knn+EStb5iEwcVtOYfiA7QomtvV3XlJ8lQvwX2hnmWeJ3CQr3L+RS7OIvBbIfJ2MCe
+	 iUkb/x3sfr+wO1CS27X5VuE3HzHkqcKu5p+fgrqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	syzbot+d417922a3e7935517ef6@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 200/641] drm/msm/dsi_phy_14nm: convert from divider_round_rate() to divider_determine_rate()
+Subject: [PATCH 6.19 417/781] netfilter: nft_set_rbtree: dont gc elements on insert
 Date: Tue, 24 Feb 2026 17:18:46 -0800
-Message-ID: <20260225012353.822605799@linuxfoundation.org>
+Message-ID: <20260225012409.924632966@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,86 +65,334 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218455-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219022-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable,d417922a3e7935517ef6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7BB7B19010C
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 32F7218F6B2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 1d232f793d4dbffd329ad48b52954d4c8ca24db5 ]
+[ Upstream commit 35f83a75529a829b0939708b003652f7b4f3df9a ]
 
-The divider_round_rate() function is now deprecated, so let's migrate
-to divider_determine_rate() instead so that this deprecated API can be
-removed.
+During insertion we can queue up expired elements for garbage
+collection.
 
-Note that when the main function itself was migrated to use
-determine_rate, this was mistakenly converted to:
+In case of later abort, the commit hook will never be called.
+Packet path and 'get' requests will find free'd elements in the
+binary search blob:
 
-    req->rate = divider_round_rate(...)
+ nft_set_ext_key include/net/netfilter/nf_tables.h:800 [inline]
+ nft_array_get_cmp+0x1f6/0x2a0 net/netfilter/nft_set_rbtree.c:133
+ __inline_bsearch include/linux/bsearch.h:15 [inline]
+ bsearch+0x50/0xc0 lib/bsearch.c:33
+ nft_rbtree_get+0x16b/0x400 net/netfilter/nft_set_rbtree.c:169
+ nft_setelem_get net/netfilter/nf_tables_api.c:6495 [inline]
+ nft_get_set_elem+0x420/0xaa0 net/netfilter/nf_tables_api.c:6543
+ nf_tables_getsetelem+0x448/0x5e0 net/netfilter/nf_tables_api.c:6632
+ nfnetlink_rcv_msg+0x8ae/0x12c0 net/netfilter/nfnetlink.c:290
 
-This is invalid in the case when an error occurs since it can set the
-rate to a negative value.
+Also, when we insert an element that triggers -EEXIST, and that insertion
+happens to also zap a timed-out entry, we end up with same issue:
+Neither commit nor abort hook is called.
 
-Fixes: cc41f29a6b04 ("drm/msm/dsi_phy_14nm: convert from round_rate() to determine_rate()")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/697613/
-Link: https://lore.kernel.org/r/20260108-clk-divider-round-rate-v1-24-535a3ed73bf3@redhat.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fix this by removing gc api usage during insertion.
+
+The blamed commit also removes concurrency of the rbtree with the
+packet path, so we can now safely rb_erase() the element and move
+it to a new expired list that can be reaped in the commit hook
+before building the next blob iteration.
+
+This also avoids the need to rebuild the blob in the abort path:
+Expired elements seen during insertion attempts are kept around
+until a transaction passes.
+
+Reported-by: syzbot+d417922a3e7935517ef6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d417922a3e7935517ef6
+Fixes: 7e43e0a1141d ("netfilter: nft_set_rbtree: translate rbtree to array for binary search")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: 782f2688128e ("netfilter: nft_set_rbtree: validate element belonging to interval")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 136 ++++++++++++++++-----------------
+ 1 file changed, 68 insertions(+), 68 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-index fdefcbd9c2848..a156c7e7cea83 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-@@ -628,12 +628,7 @@ static int dsi_pll_14nm_postdiv_determine_rate(struct clk_hw *hw,
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 6470bc5d38749..14b4256bb00d0 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -34,11 +34,15 @@ struct nft_rbtree {
+ 	struct nft_array __rcu	*array;
+ 	struct nft_array	*array_next;
+ 	unsigned long		last_gc;
++	struct list_head	expired;
+ };
  
- 	DBG("DSI%d PLL parent rate=%lu", pll_14nm->phy->id, req->rate);
+ struct nft_rbtree_elem {
+ 	struct nft_elem_priv	priv;
+-	struct rb_node		node;
++	union {
++		struct rb_node	node;
++		struct list_head list;
++	};
+ 	struct nft_set_ext	ext;
+ };
  
--	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
--				       NULL,
--				       postdiv->width,
--				       postdiv->flags);
--
--	return 0;
-+	return divider_determine_rate(hw, req, NULL, postdiv->width, postdiv->flags);
+@@ -186,13 +190,16 @@ nft_rbtree_get(const struct net *net, const struct nft_set *set,
+ 	return &rbe->priv;
  }
  
- static int dsi_pll_14nm_postdiv_set_rate(struct clk_hw *hw, unsigned long rate,
+-static void nft_rbtree_gc_elem_remove(struct net *net, struct nft_set *set,
+-				      struct nft_rbtree *priv,
+-				      struct nft_rbtree_elem *rbe)
++static void nft_rbtree_gc_elem_move(struct net *net, struct nft_set *set,
++				    struct nft_rbtree *priv,
++				    struct nft_rbtree_elem *rbe)
+ {
+ 	lockdep_assert_held_write(&priv->lock);
+ 	nft_setelem_data_deactivate(net, set, &rbe->priv);
+ 	rb_erase(&rbe->node, &priv->root);
++
++	/* collected later on in commit callback */
++	list_add(&rbe->list, &priv->expired);
+ }
+ 
+ static const struct nft_rbtree_elem *
+@@ -203,11 +210,6 @@ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+ 	struct net *net = read_pnet(&set->net);
+ 	struct nft_rbtree_elem *rbe_prev;
+-	struct nft_trans_gc *gc;
+-
+-	gc = nft_trans_gc_alloc(set, 0, GFP_ATOMIC);
+-	if (!gc)
+-		return ERR_PTR(-ENOMEM);
+ 
+ 	/* search for end interval coming before this element.
+ 	 * end intervals don't carry a timeout extension, they
+@@ -225,28 +227,10 @@ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
+ 	rbe_prev = NULL;
+ 	if (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+-		nft_rbtree_gc_elem_remove(net, set, priv, rbe_prev);
+-
+-		/* There is always room in this trans gc for this element,
+-		 * memory allocation never actually happens, hence, the warning
+-		 * splat in such case. No need to set NFT_SET_ELEM_DEAD_BIT,
+-		 * this is synchronous gc which never fails.
+-		 */
+-		gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
+-		if (WARN_ON_ONCE(!gc))
+-			return ERR_PTR(-ENOMEM);
+-
+-		nft_trans_gc_elem_add(gc, rbe_prev);
++		nft_rbtree_gc_elem_move(net, set, priv, rbe_prev);
+ 	}
+ 
+-	nft_rbtree_gc_elem_remove(net, set, priv, rbe);
+-	gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
+-	if (WARN_ON_ONCE(!gc))
+-		return ERR_PTR(-ENOMEM);
+-
+-	nft_trans_gc_elem_add(gc, rbe);
+-
+-	nft_trans_gc_queue_sync_done(gc);
++	nft_rbtree_gc_elem_move(net, set, priv, rbe);
+ 
+ 	return rbe_prev;
+ }
+@@ -708,29 +692,13 @@ static void nft_rbtree_walk(const struct nft_ctx *ctx,
+ 	}
+ }
+ 
+-static void nft_rbtree_gc_remove(struct net *net, struct nft_set *set,
+-				 struct nft_rbtree *priv,
+-				 struct nft_rbtree_elem *rbe)
+-{
+-	nft_setelem_data_deactivate(net, set, &rbe->priv);
+-	nft_rbtree_erase(priv, rbe);
+-}
+-
+-static void nft_rbtree_gc(struct nft_set *set)
++static void nft_rbtree_gc_scan(struct nft_set *set)
+ {
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	struct nft_rbtree_elem *rbe, *rbe_end = NULL;
+ 	struct net *net = read_pnet(&set->net);
+ 	u64 tstamp = nft_net_tstamp(net);
+ 	struct rb_node *node, *next;
+-	struct nft_trans_gc *gc;
+-
+-	set  = nft_set_container_of(priv);
+-	net  = read_pnet(&set->net);
+-
+-	gc = nft_trans_gc_alloc(set, 0, GFP_KERNEL);
+-	if (!gc)
+-		return;
+ 
+ 	for (node = rb_first(&priv->root); node ; node = next) {
+ 		next = rb_next(node);
+@@ -748,34 +716,46 @@ static void nft_rbtree_gc(struct nft_set *set)
+ 		if (!__nft_set_elem_expired(&rbe->ext, tstamp))
+ 			continue;
+ 
+-		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
+-		if (!gc)
+-			goto try_later;
+-
+ 		/* end element needs to be removed first, it has
+ 		 * no timeout extension.
+ 		 */
++		write_lock_bh(&priv->lock);
+ 		if (rbe_end) {
+-			nft_rbtree_gc_remove(net, set, priv, rbe_end);
+-			nft_trans_gc_elem_add(gc, rbe_end);
++			nft_rbtree_gc_elem_move(net, set, priv, rbe_end);
+ 			rbe_end = NULL;
+ 		}
+ 
+-		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
+-		if (!gc)
+-			goto try_later;
+-
+-		nft_rbtree_gc_remove(net, set, priv, rbe);
+-		nft_trans_gc_elem_add(gc, rbe);
++		nft_rbtree_gc_elem_move(net, set, priv, rbe);
++		write_unlock_bh(&priv->lock);
+ 	}
+ 
+-try_later:
++	priv->last_gc = jiffies;
++}
++
++static void nft_rbtree_gc_queue(struct nft_set *set)
++{
++	struct nft_rbtree *priv = nft_set_priv(set);
++	struct nft_rbtree_elem *rbe, *rbe_end;
++	struct nft_trans_gc *gc;
++
++	if (list_empty(&priv->expired))
++		return;
+ 
+-	if (gc) {
+-		gc = nft_trans_gc_catchall_sync(gc);
+-		nft_trans_gc_queue_sync_done(gc);
+-		priv->last_gc = jiffies;
++	gc = nft_trans_gc_alloc(set, 0, GFP_KERNEL);
++	if (!gc)
++		return;
++
++	list_for_each_entry_safe(rbe, rbe_end, &priv->expired, list) {
++		list_del(&rbe->list);
++		nft_trans_gc_elem_add(gc, rbe);
++
++		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
++		if (!gc)
++			return;
+ 	}
++
++	gc = nft_trans_gc_catchall_sync(gc);
++	nft_trans_gc_queue_sync_done(gc);
+ }
+ 
+ static u64 nft_rbtree_privsize(const struct nlattr * const nla[],
+@@ -794,6 +774,7 @@ static int nft_rbtree_init(const struct nft_set *set,
+ 
+ 	rwlock_init(&priv->lock);
+ 	priv->root = RB_ROOT;
++	INIT_LIST_HEAD(&priv->expired);
+ 
+ 	priv->array = NULL;
+ 	priv->array_next = NULL;
+@@ -811,10 +792,15 @@ static void nft_rbtree_destroy(const struct nft_ctx *ctx,
+ 			       const struct nft_set *set)
+ {
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+-	struct nft_rbtree_elem *rbe;
++	struct nft_rbtree_elem *rbe, *next;
+ 	struct nft_array *array;
+ 	struct rb_node *node;
+ 
++	list_for_each_entry_safe(rbe, next, &priv->expired, list) {
++		list_del(&rbe->list);
++		nf_tables_set_elem_destroy(ctx, set, &rbe->priv);
++	}
++
+ 	while ((node = priv->root.rb_node) != NULL) {
+ 		rb_erase(node, &priv->root);
+ 		rbe = rb_entry(node, struct nft_rbtree_elem, node);
+@@ -861,13 +847,21 @@ static void nft_rbtree_commit(struct nft_set *set)
+ 	u32 num_intervals = 0;
+ 	struct rb_node *node;
+ 
+-	if (time_after_eq(jiffies, priv->last_gc + nft_set_gc_interval(set)))
+-		nft_rbtree_gc(set);
+-
+ 	/* No changes, skip, eg. elements updates only. */
+ 	if (!priv->array_next)
+ 		return;
+ 
++	/* GC can be performed if the binary search blob is going
++	 * to be rebuilt.  It has to be done in two phases: first
++	 * scan tree and move all expired elements to the expired
++	 * list.
++	 *
++	 * Then, after blob has been re-built and published to other
++	 * CPUs, queue collected entries for freeing.
++	 */
++	if (time_after_eq(jiffies, priv->last_gc + nft_set_gc_interval(set)))
++		nft_rbtree_gc_scan(set);
++
+ 	/* Reverse walk to create an array from smaller to largest interval. */
+ 	node = rb_last(&priv->root);
+ 	if (node)
+@@ -914,10 +908,16 @@ static void nft_rbtree_commit(struct nft_set *set)
+ 		num_intervals++;
+ err_out:
+ 	priv->array_next->num_intervals = num_intervals;
+-	old = rcu_replace_pointer(priv->array, priv->array_next, true);
++	old = rcu_replace_pointer(priv->array, priv->array_next,
++				  lockdep_is_held(&nft_pernet(read_pnet(&set->net))->commit_mutex));
+ 	priv->array_next = NULL;
+ 	if (old)
+ 		call_rcu(&old->rcu_head, nft_array_free_rcu);
++
++	/* New blob is public, queue collected entries for freeing.
++	 * call_rcu ensures elements stay around until readers are done.
++	 */
++	nft_rbtree_gc_queue(set);
+ }
+ 
+ static void nft_rbtree_abort(const struct nft_set *set)
 -- 
 2.51.0
 
