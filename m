@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-218760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219423-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OA6SE9hYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:12 +0100
+	id uKtcCNqenmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219423-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11451907F1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFC1192DA0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9477F31FD5C2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 304903102447
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85AD276050;
-	Wed, 25 Feb 2026 01:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356FE3128DF;
+	Wed, 25 Feb 2026 06:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kl656bNa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liR84OpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8D41E2834;
-	Wed, 25 Feb 2026 01:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE10A30E85D;
+	Wed, 25 Feb 2026 06:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983630; cv=none; b=LAEquyqTIdsf6sH3Wh77t+8u+PvK/LWIimkorhQzHdNy/weP2F23iPVylS+abmPCbtr4zPhU6ZNK5R1nU8CMDclJ2jwmHVGnEmAk/BRjFrWon7WRG4XtB0aHrZQzqqgNOlpykc3yYYMj5rtKhbnrBFJCtSb2cUqy5OWcGNfJDag=
+	t=1772002706; cv=none; b=p/H4/+C0qsUBLgV3tkuxMRcs7Omn6dBehwwEtY9XzFSjGp2yfHOC1gGzZxkQ5xvI+rcA3ngUvKN8QYsq0cc4PxNym/Ddi9jS8GipQK4o4Er7xd8KM61A0bee+655VAWjx+W44SlnBVhngYwi/22ghmQO4Q/0dDPb9ES5+jo8/24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983630; c=relaxed/simple;
-	bh=xQWiE5JhMVvAzQm3MGe/n4kIid53IQSAFM4N71RhQSE=;
+	s=arc-20240116; t=1772002706; c=relaxed/simple;
+	bh=wGiwoiSQTlhu1geUa/BVOkOij7QNb6GGUf4mIl6tcGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U6w4MIu8oLMnYGWqckXtb9sv6E9MXO2K+OxdqRaZX72AABEosw+bH/XuMeFVPj984DE+k0noHV8jFLbJNIHPQPTDg9FeScFd+jRwFc2XlrYHZ2Nqfr2FnzJzWzoMltwqnICJjnoCjqzAe4fzcJmLi+rB9w0S4FsRzpTAsfeYeYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kl656bNa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2F7C116D0;
-	Wed, 25 Feb 2026 01:40:30 +0000 (UTC)
+	 MIME-Version; b=IZd0HCDLKd8S1QzgmgqBCNaEPG0M/ESKXPSIYm4v1RYo2Q6BOWypxjz7og/wpWVqBtXcHOAe0IJNn6BeTqY754M6SyAm2/m+sNBNjYXwxWDFp+2UGZx8mvAkyxV2FhWlb+r+z0ZQ7hM0XomC4kFSWtlkdqPDbw6qAAFyDkjAzy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liR84OpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EB1C116D0;
+	Wed, 25 Feb 2026 06:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983630;
-	bh=xQWiE5JhMVvAzQm3MGe/n4kIid53IQSAFM4N71RhQSE=;
+	s=korg; t=1772002705;
+	bh=wGiwoiSQTlhu1geUa/BVOkOij7QNb6GGUf4mIl6tcGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kl656bNatgbiaU9yKRHInIpQB02qxg94Byiff92Wqd9rr6M2JxBXqdLY16QFSzDV9
-	 dCOtCknitmg+CmhSOpIxr/25M5HRFe7qG30HArMpqV2T+qWAQZHCsn6DPKg4RUwC97
-	 XS9ba31DZL0tLekkTfRkwBHoQgjtrLJYbiDCyi4c=
+	b=liR84OpRrhUnKb25kDgeMw4uV9V+7SwC1p6HkpNEn3zhBFYPlM8z50nQ+llnA3AmR
+	 bsWVjTjRNdhD95/NBDHjyND92WpFVgIEP8U7iwmwKzP9IRzaIzfIM44rMfqMr9U5sj
+	 AytcugEfbeCL6QT9nfQMgw4014UXy3hKnsCh6ANU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Jens Remus <jremus@linux.ibm.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 721/781] drm/amdkfd: Fix watch_id bounds checking in debug address watch v2
-Date: Tue, 24 Feb 2026 17:23:50 -0800
-Message-ID: <20260225012417.420189577@linuxfoundation.org>
+Subject: [PATCH 6.18 505/641] kbuild: Add objtool to top-level clean target
+Date: Tue, 24 Feb 2026 17:23:51 -0800
+Message-ID: <20260225012400.759747867@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,169 +64,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218760-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219423-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E11451907F1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8AFC1192DA0
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 5a19302cab5cec7ae7f1a60c619951e6c17d8742 ]
+[ Upstream commit 68b4fe32d73789dea23e356f468de67c8367ef8f ]
 
-The address watch clear code receives watch_id as an unsigned value
-(u32), but some helper functions were using a signed int and checked
-bits by shifting with watch_id.
+Objtool is an integral part of the build, make sure it gets cleaned by
+"make clean" and "make mrproper".
 
-If a very large watch_id is passed from userspace, it can be converted
-to a negative value.  This can cause invalid shifts and may access
-memory outside the watch_points array.
-
-drm/amdkfd: Fix watch_id bounds checking in debug address watch v2
-
-Fix this by checking that watch_id is within MAX_WATCH_ADDRESSES before
-using it.  Also use BIT(watch_id) to test and clear bits safely.
-
-This keeps the behavior unchanged for valid watch IDs and avoids
-undefined behavior for invalid ones.
-
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_debug.c:448
-kfd_dbg_trap_clear_dev_address_watch() error: buffer overflow
-'pdd->watch_points' 4 <= u32max user_rl='0-3,2147483648-u32max' uncapped
-
-drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_debug.c
-    433 int kfd_dbg_trap_clear_dev_address_watch(struct kfd_process_device *pdd,
-    434                                         uint32_t watch_id)
-    435 {
-    436         int r;
-    437
-    438         if (!kfd_dbg_owns_dev_watch_id(pdd, watch_id))
-
-kfd_dbg_owns_dev_watch_id() doesn't check for negative values so if
-watch_id is larger than INT_MAX it leads to a buffer overflow.
-(Negative shifts are undefined).
-
-    439                 return -EINVAL;
-    440
-    441         if (!pdd->dev->kfd->shared_resources.enable_mes) {
-    442                 r = debug_lock_and_unmap(pdd->dev->dqm);
-    443                 if (r)
-    444                         return r;
-    445         }
-    446
-    447         amdgpu_gfx_off_ctrl(pdd->dev->adev, false);
---> 448         pdd->watch_points[watch_id] = pdd->dev->kfd2kgd->clear_address_watch(
-    449                                                         pdd->dev->adev,
-    450                                                         watch_id);
-
-v2: (as per, Jonathan Kim)
- - Add early watch_id >= MAX_WATCH_ADDRESSES validation in the set path to
-   match the clear path.
- - Drop the redundant bounds check in kfd_dbg_owns_dev_watch_id().
-
-Fixes: e0f85f4690d0 ("drm/amdkfd: add debug set and clear address watch points operation")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jonathan Kim <jonathan.kim@amd.com>
-Cc: Felix Kuehling <felix.kuehling@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 442f04c34a1a ("objtool: Add tool to perform compile-time stack metadata validation")
+Reported-by: Jens Remus <jremus@linux.ibm.com>
+Closes: https://lore.kernel.org/15f2af3b-be33-46fc-b972-6b8e7e0aa52e@linux.ibm.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Tested-by: Jens Remus <jremus@linux.ibm.com>
+Link: https://patch.msgid.link/968faf2ed30fa8b3519f79f01a1ecfe7929553e5.1770759919.git.jpoimboe@kernel.org
+[nathan: use Closes: instead of Link: per checkpatch.pl]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_debug.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ Makefile               | 11 ++++++++++-
+ tools/objtool/Makefile |  2 ++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_debug.c b/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
-index ba99e0f258aee..986cb297de8f8 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_debug.c
-@@ -401,27 +401,25 @@ static int kfd_dbg_get_dev_watch_id(struct kfd_process_device *pdd, int *watch_i
- 	return -ENOMEM;
- }
+diff --git a/Makefile b/Makefile
+index c4b22ec262784..bc34a825aba80 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1440,6 +1440,15 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
+ 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
+ endif
  
--static void kfd_dbg_clear_dev_watch_id(struct kfd_process_device *pdd, int watch_id)
-+static void kfd_dbg_clear_dev_watch_id(struct kfd_process_device *pdd, u32 watch_id)
- {
- 	spin_lock(&pdd->dev->watch_points_lock);
- 
- 	/* process owns device watch point so safe to clear */
--	if ((pdd->alloc_watch_ids >> watch_id) & 0x1) {
--		pdd->alloc_watch_ids &= ~(0x1 << watch_id);
--		pdd->dev->alloc_watch_ids &= ~(0x1 << watch_id);
-+	if (pdd->alloc_watch_ids & BIT(watch_id)) {
-+		pdd->alloc_watch_ids &= ~BIT(watch_id);
-+		pdd->dev->alloc_watch_ids &= ~BIT(watch_id);
- 	}
- 
- 	spin_unlock(&pdd->dev->watch_points_lock);
- }
- 
--static bool kfd_dbg_owns_dev_watch_id(struct kfd_process_device *pdd, int watch_id)
-+static bool kfd_dbg_owns_dev_watch_id(struct kfd_process_device *pdd, u32 watch_id)
- {
- 	bool owns_watch_id = false;
- 
- 	spin_lock(&pdd->dev->watch_points_lock);
--	owns_watch_id = watch_id < MAX_WATCH_ADDRESSES &&
--			((pdd->alloc_watch_ids >> watch_id) & 0x1);
--
-+	owns_watch_id = pdd->alloc_watch_ids & BIT(watch_id);
- 	spin_unlock(&pdd->dev->watch_points_lock);
- 
- 	return owns_watch_id;
-@@ -432,6 +430,9 @@ int kfd_dbg_trap_clear_dev_address_watch(struct kfd_process_device *pdd,
- {
- 	int r;
- 
-+	if (watch_id >= MAX_WATCH_ADDRESSES)
-+		return -EINVAL;
++PHONY += objtool_clean
 +
- 	if (!kfd_dbg_owns_dev_watch_id(pdd, watch_id))
- 		return -EINVAL;
- 
-@@ -469,6 +470,9 @@ int kfd_dbg_trap_set_dev_address_watch(struct kfd_process_device *pdd,
- 	if (r)
- 		return r;
- 
-+	if (*watch_id >= MAX_WATCH_ADDRESSES)
-+		return -EINVAL;
++objtool_O = $(abspath $(objtree))/tools/objtool
 +
- 	if (!pdd->dev->kfd->shared_resources.enable_mes) {
- 		r = debug_lock_and_unmap(pdd->dev->dqm);
- 		if (r) {
++objtool_clean:
++ifneq ($(wildcard $(objtool_O)),)
++	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
++endif
++
+ tools/: FORCE
+ 	$(Q)mkdir -p $(objtree)/tools
+ 	$(Q)$(MAKE) O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
+@@ -1603,7 +1612,7 @@ vmlinuxclean:
+ 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/link-vmlinux.sh clean
+ 	$(Q)$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) clean)
+ 
+-clean: archclean vmlinuxclean resolve_btfids_clean
++clean: archclean vmlinuxclean resolve_btfids_clean objtool_clean
+ 
+ # mrproper - Delete all generated files, including .config
+ #
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index 8c20361dd100e..99d3897e046c6 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -7,6 +7,8 @@ srctree := $(patsubst %/,%,$(dir $(CURDIR)))
+ srctree := $(patsubst %/,%,$(dir $(srctree)))
+ endif
+ 
++RM ?= rm -f
++
+ LIBSUBCMD_DIR = $(srctree)/tools/lib/subcmd/
+ ifneq ($(OUTPUT),)
+   LIBSUBCMD_OUTPUT = $(abspath $(OUTPUT))/libsubcmd
 -- 
 2.51.0
 
