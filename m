@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-219281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GO1tNzudnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:56:59 +0100
+	id EIlwN2NUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C0619293D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:56:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7102A18FC9F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8EEDC3024297
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BEB731B83D1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB07F4C81;
-	Wed, 25 Feb 2026 06:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F44268690;
+	Wed, 25 Feb 2026 01:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtFZCsTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HB0sr3rP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9FF2D6E74;
-	Wed, 25 Feb 2026 06:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBD9243376;
+	Wed, 25 Feb 2026 01:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002613; cv=none; b=fA+MM5mvOyGfhe2PjLE9dz69N9R6GnZm/7L+96BP4yrGwJpVD2Xz+UlAWIs1BwgQOQShF7d9Ue+WWnh6ZLLpAXwYb75ySYqMkgIc1CboMCljkxDfXqHdcC1tI65zQw5q2KWew5FI19O7KOWo5GSngZNPqagi1Lcv5ZX6XUK33YQ=
+	t=1771983517; cv=none; b=m/vA4QDnU4YzhOcXF9pySDhL3AECsybd7iJsoxr+KxsU/LtqIyPiap12igkInx7dNqDUDzkabgXX4oBY/gFs5Wr8jcZwcD6sb26hsRy9cCzIW1yBJz5XbQyIXc4P4ZBhTRAgByWeXKQinsylXq709DJXUNxJSIQ1XhNLAKPZXnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002613; c=relaxed/simple;
-	bh=z9/tr1LfYETC0IuBkzM4ybcp2i4jHNM+ebpae90bzhU=;
+	s=arc-20240116; t=1771983517; c=relaxed/simple;
+	bh=yvqb7ez7Ru5Cl71RVNPNHYrtBrjpzKfX9z2L4L2EB/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbTVHaswTG/mpGziE9JbrQsGinKuTjgWxHZkSbllzpOs/cKtVAKgmKvErrIFAw9mUI4esyCQg6Chltr59grz0VcKpAvHovJQ+PCLUNbNGruVERQoXLTlp3Bv7GcNR1ynxYsqPbwRngdaPu4rHUmpitR/r1PY6LyVsWKTOetYoNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtFZCsTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779EBC116D0;
-	Wed, 25 Feb 2026 06:56:53 +0000 (UTC)
+	 MIME-Version; b=ON4nVc2Ihemu8rHUJeM19QrsRTv4TXjVsv0NES3CgetvkHcNKhzZ4mNHJMIJX3QmVGyMdtVdnp9HX9mtMRoIhVxmgY+Z8rg6rzxGpesrE/fp6NF+XgV8COv0BPTjYAB0QjWicVQMpexIdgMpxysOud6kpXRAuKh76+tbW8cGzgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HB0sr3rP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D476C116D0;
+	Wed, 25 Feb 2026 01:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002613;
-	bh=z9/tr1LfYETC0IuBkzM4ybcp2i4jHNM+ebpae90bzhU=;
+	s=korg; t=1771983517;
+	bh=yvqb7ez7Ru5Cl71RVNPNHYrtBrjpzKfX9z2L4L2EB/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtFZCsTBCWIcMcNO/2Ww2nR2BFrWT3gqSYmCNLzWKOjydQ7PnXG40rHctpUOT9mIj
-	 4wv6HIMy6cf1l8CpW8mB2aKDyCvQS6CJRcEB5HBrBjikFoXcIjHut+kMFMYzP7tjZL
-	 kHVTn/4CWnJzb4Sw2DWcNLf/tRCGK9YMW7mvVQOQ=
+	b=HB0sr3rPliGNUxCE2E+SRW/mHfDMzehnOJP29a545EQyK5ooGwyLji1tBlW+ssVdl
+	 nBkeiQHMar/epd/2ZsG6hKFHoI+1LogyM3vfH82/TEz7/fnrO/ALmqSeCnycmsjZ1t
+	 R93igrYcho508qPDuXgZhmrZQ4ibCZ/Yo0n/phmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Raag Jadav <raag.jadav@intel.com>,
-	Jani Partanen <jiipee@sotapeli.fi>,
-	Lucas De Marchi <demarchi@kernel.org>,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Kery Qi <qikeyu2017@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 365/641] mtd: intel-dg: Fix accessing regions before setting nregions
+Subject: [PATCH 6.19 582/781] watchdog: starfive-wdt: Fix PM reference leak in probe error path
 Date: Tue, 24 Feb 2026 17:21:31 -0800
-Message-ID: <20260225012357.454578763@linuxfoundation.org>
+Message-ID: <20260225012414.073290347@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,94 +70,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,roeck-us.net,linux-watchdog.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218664-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219281-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 13C0619293D
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-watchdog.org:email]
+X-Rspamd-Queue-Id: 7102A18FC9F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Kery Qi <qikeyu2017@gmail.com>
 
-[ Upstream commit 779c59274d03cc5c07237a2c845dfb71cff77705 ]
+[ Upstream commit 3f2d8d79cceb05a8b8dd200fa81c0dffc59ec46f ]
 
-The regions array is counted by nregions, but it's set only after
-accessing it:
+The PM reference count is not expected to be incremented on return in
+functions starfive_wdt_probe.
 
-[] UBSAN: array-index-out-of-bounds in drivers/mtd/devices/mtd_intel_dg.c:750:15
-[] index 0 is out of range for type '<unknown> [*]'
+However, pm_runtime_get_sync will increment pm usage counter
+even failed. Forgetting to putting operation will result in a
+reference leak here.
 
-Fix it by also fixing an undesired behavior: the loop silently ignores
-ENOMEM and continues setting the other entries.
+Replace it with pm_runtime_resume_and_get to keep usage
+counter balanced.
 
-CC: Gustavo A. R. Silva <gustavoars@kernel.org>
-CC: Raag Jadav <raag.jadav@intel.com>
-Reported-by: Jani Partanen <jiipee@sotapeli.fi>
-Closes: https://lore.kernel.org/all/caca6c67-4f1d-49f1-948f-e63b6b937b29@sotapeli.fi
-Fixes: ceb5ab3cb646 ("mtd: add driver for intel graphics non-volatile memory device")
-Signed-off-by: Lucas De Marchi <demarchi@kernel.org>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Reviewed-by: Raag Jadav <raag.jadav@intel.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: db728ea9c7be ("drivers: watchdog: Add StarFive Watchdog driver")
+Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/devices/mtd_intel_dg.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/watchdog/starfive-wdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/devices/mtd_intel_dg.c b/drivers/mtd/devices/mtd_intel_dg.c
-index b438ee5aacc34..114e69135b8d9 100644
---- a/drivers/mtd/devices/mtd_intel_dg.c
-+++ b/drivers/mtd/devices/mtd_intel_dg.c
-@@ -738,6 +738,7 @@ static int intel_dg_mtd_probe(struct auxiliary_device *aux_dev,
- 
- 	kref_init(&nvm->refcnt);
- 	mutex_init(&nvm->lock);
-+	nvm->nregions = nregions;
- 
- 	for (n = 0, i = 0; i < INTEL_DG_NVM_REGIONS; i++) {
- 		if (!invm->regions[i].name)
-@@ -745,13 +746,15 @@ static int intel_dg_mtd_probe(struct auxiliary_device *aux_dev,
- 
- 		char *name = kasprintf(GFP_KERNEL, "%s.%s",
- 				       dev_name(&aux_dev->dev), invm->regions[i].name);
--		if (!name)
--			continue;
-+		if (!name) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+
- 		nvm->regions[n].name = name;
- 		nvm->regions[n].id = i;
- 		n++;
- 	}
--	nvm->nregions = n; /* in case where kasprintf fail */
- 
- 	nvm->base = devm_ioremap_resource(device, &invm->bar);
- 	if (IS_ERR(nvm->base)) {
+diff --git a/drivers/watchdog/starfive-wdt.c b/drivers/watchdog/starfive-wdt.c
+index ed71d3960a0f2..af55adc4a3c69 100644
+--- a/drivers/watchdog/starfive-wdt.c
++++ b/drivers/watchdog/starfive-wdt.c
+@@ -446,7 +446,7 @@ static int starfive_wdt_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, wdt);
+ 	pm_runtime_enable(&pdev->dev);
+ 	if (pm_runtime_enabled(&pdev->dev)) {
+-		ret = pm_runtime_get_sync(&pdev->dev);
++		ret = pm_runtime_resume_and_get(&pdev->dev);
+ 		if (ret < 0)
+ 			return ret;
+ 	} else {
 -- 
 2.51.0
 
