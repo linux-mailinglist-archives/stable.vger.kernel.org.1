@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219059-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLVZDR5SnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:30 +0100
+	id OMcbOlpXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219059-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92ED118F1EF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC611904F6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1444D30810B5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7AD8231EC7B9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E083C248886;
-	Wed, 25 Feb 2026 01:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBDA28EA56;
+	Wed, 25 Feb 2026 01:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w22Sntj0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMqzOU0q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FE520C012;
-	Wed, 25 Feb 2026 01:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739361F03DE;
+	Wed, 25 Feb 2026 01:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983316; cv=none; b=TEMt2ssmdVDbt6YMlpdXQLA5gtiTRWoHytLOXOWgJBLRcPBu0rYyqFOmqyRGGkv33uAJpckbR6pD0YfI5MPrXKWbXpXTpdKOUx4ENa3MDbSMe6ikKa/nZ+ymCwZL7XqWTjjSLn+kFB72IVRtJ7qQVNpdpZ03L6/XVWtPMMop94Q=
+	t=1771983982; cv=none; b=DIhPYSyYHV7BpEH4vX0Y0IBzYNg+2eGVRtSRfDZr6jAnPBtQ+rbXRxZT1qmCA5RNVkM+KJfhuC90+rb0iJ7a34Y/jGspIRmZcwV4k6ynvQklq6OO9DgYCYrU7+ningavMzBuDQ8tKgKo1QNoTbBpwG0ywipf8OtjQSKfDKWDozo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983316; c=relaxed/simple;
-	bh=ExV53+0y58fe373TKX46laTSPr9GSXgdTLigib89UaI=;
+	s=arc-20240116; t=1771983982; c=relaxed/simple;
+	bh=gPc9sPvnjvuuo8PiEnbHwDQRyNzdPfV6pzdudXW1/Cw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c/kKvksU2OT0NiqHyxc7ILvWlsCuRMwiKPW0oZZXaywJjgOw/kuR6XmDNhUspTiiFKCnqEyGqhWSTh0K1oWNiHvLwUyuR3zGF23vKJm54njFcO7wIfZIClmEx2EiY/WyTjYkZQWilI8n6b+Iy1+YZ/YWDBdGXd0lga0GIT3Mxwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w22Sntj0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFBBC19424;
-	Wed, 25 Feb 2026 01:35:16 +0000 (UTC)
+	 MIME-Version; b=ZuPMx6ZdcY1OncExgpZtVRA8JUQ2eKwLT1Q4c455UNOY9/h/awNAFa+0wewTjbF95p2a2Xmq3CDtLfgSdTGnWu80AiW1BYDMLdxTgLIM+HDa/1N2cH/rKbCBZ5r5pKTx4No0lqd47Nx5tDW+KW7b4BguUKFgLVtW/a9ycoWrpzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMqzOU0q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D812C116D0;
+	Wed, 25 Feb 2026 01:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983316;
-	bh=ExV53+0y58fe373TKX46laTSPr9GSXgdTLigib89UaI=;
+	s=korg; t=1771983982;
+	bh=gPc9sPvnjvuuo8PiEnbHwDQRyNzdPfV6pzdudXW1/Cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w22Sntj0XqeDZ+4NdMnWSDQzNaxKgPdjWLDm/PWGsVZ7amWeMB03auat16gzs/WsB
-	 i4zEyGD8L4OLetwzP5cZ2eWZZHxn3nQbv3occ4ToDuNN6kCpV1fo94uL3Wm2rQVQJH
-	 hPReEe//NikLO+SLUpADnNvfkmThwPgmcPpVi0xk=
+	b=GMqzOU0q4/IT6KdB3wVX0/KDDWtd1+XAjMJUSTb+HyvPM2tn5eCi5+O22PwvSyO12
+	 knfHbHsOticUxrTqRlpnVXRn1tyolBTC9qyUmb0gYqgTG7tYEOuFlV2LIgZem3yypI
+	 908ktXj9ssTALDyrVEGmD0V30E2adEeMe1xjhPeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 450/781] power: supply: bq25980: Fix use-after-free in power_supply_changed()
-Date: Tue, 24 Feb 2026 17:19:19 -0800
-Message-ID: <20260225012410.750613278@linuxfoundation.org>
+Subject: [PATCH 6.18 234/641] PCI: mediatek: Fix IRQ domain leak when MSI allocation fails
+Date: Tue, 24 Feb 2026 17:19:20 -0800
+Message-ID: <20260225012354.558619443@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,91 +79,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218487-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219059-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 92ED118F1EF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4FC611904F6
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waqar Hameed <waqar.hameed@axis.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 5f0b1cb41906e86b64bf69f5ededb83b0d757c27 ]
+[ Upstream commit 7f0cdcddf8bef1c8c18f9be6708073fd3790a20f ]
 
-Using the `devm_` variant for requesting IRQ _before_ the `devm_`
-variant for allocating/registering the `power_supply` handle, means that
-the `power_supply` handle will be deallocated/unregistered _before_ the
-interrupt handler (since `devm_` naturally deallocates in reverse
-allocation order). This means that during removal, there is a race
-condition where an interrupt can fire just _after_ the `power_supply`
-handle has been freed, *but* just _before_ the corresponding
-unregistration of the IRQ handler has run.
+In mtk_pcie_init_irq_domain(), if mtk_pcie_allocate_msi_domains()
+fails after port->irq_domain has been successfully created via
+irq_domain_create_linear(), the function returns directly without
+cleaning up the allocated IRQ domain, resulting in a resource leak.
 
-This will lead to the IRQ handler calling `power_supply_changed()` with
-a freed `power_supply` handle. Which usually crashes the system or
-otherwise silently corrupts the memory...
+Add irq_domain_remove() call in the error path to properly release the
+INTx IRQ domain before returning the error.
 
-Note that there is a similar situation which can also happen during
-`probe()`; the possibility of an interrupt firing _before_ registering
-the `power_supply` handle. This would then lead to the nasty situation
-of using the `power_supply` handle *uninitialized* in
-`power_supply_changed()`.
-
-Fix this racy use-after-free by making sure the IRQ is requested _after_
-the registration of the `power_supply` handle.
-
-Fixes: 5069185fc18e ("power: supply: bq25980: Add support for the BQ259xx family")
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-Link: https://patch.msgid.link/8763035cadb959e14787b3837f2d3db61f6e1c34.1766268280.git.waqar.hameed@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 43e6409db64d ("PCI: mediatek: Add MSI support for MT2712 and MT7622")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20251119023308.476-1-vulab@iscas.ac.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq25980_charger.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/pci/controller/pcie-mediatek.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/bq25980_charger.c b/drivers/power/supply/bq25980_charger.c
-index 723858d62d141..73f06f09f134c 100644
---- a/drivers/power/supply/bq25980_charger.c
-+++ b/drivers/power/supply/bq25980_charger.c
-@@ -1241,6 +1241,12 @@ static int bq25980_probe(struct i2c_client *client)
- 		return ret;
- 	}
+diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
+index 24cc30a2ab6c6..e0bf667c2b4c6 100644
+--- a/drivers/pci/controller/pcie-mediatek.c
++++ b/drivers/pci/controller/pcie-mediatek.c
+@@ -575,8 +575,10 @@ static int mtk_pcie_init_irq_domain(struct mtk_pcie_port *port,
  
-+	ret = bq25980_power_supply_init(bq, dev);
-+	if (ret) {
-+		dev_err(dev, "Failed to register power supply\n");
-+		return ret;
-+	}
-+
- 	if (client->irq) {
- 		ret = devm_request_threaded_irq(dev, client->irq, NULL,
- 						bq25980_irq_handler_thread,
-@@ -1251,12 +1257,6 @@ static int bq25980_probe(struct i2c_client *client)
+ 	if (IS_ENABLED(CONFIG_PCI_MSI)) {
+ 		ret = mtk_pcie_allocate_msi_domains(port);
+-		if (ret)
++		if (ret) {
++			irq_domain_remove(port->irq_domain);
  			return ret;
++		}
  	}
  
--	ret = bq25980_power_supply_init(bq, dev);
--	if (ret) {
--		dev_err(dev, "Failed to register power supply\n");
--		return ret;
--	}
--
- 	ret = bq25980_hw_init(bq);
- 	if (ret) {
- 		dev_err(dev, "Cannot initialize the chip.\n");
+ 	return 0;
 -- 
 2.51.0
 
