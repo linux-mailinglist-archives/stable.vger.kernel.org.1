@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-219473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SCuYNeyinmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:16 +0100
+	id eERaNIxTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F004193447
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FB418F8EB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F49031F36DA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B14EA307C8A2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4895D2D5926;
-	Wed, 25 Feb 2026 06:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E7D26CE2D;
+	Wed, 25 Feb 2026 01:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAryJh4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+XvEKF7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8D730BBB8;
-	Wed, 25 Feb 2026 06:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FE3258ED5;
+	Wed, 25 Feb 2026 01:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002739; cv=none; b=i9KvSUim6srsS5vltHhaG0hy/H/mlQ8pRlEkF+d0ZwQFqxZUvgUXUYqth+89bYCzc7n409OLAjWC/VrUvnwiHNIH+T9sNW40tA8bDm85RgSkHVAJsrAA03TuQPlF2jhuwH1+c+VheOoteBBRwcO91bw/pyjSvyS5meUkYWjgMrQ=
+	t=1771983644; cv=none; b=V/I03EeV+PhxFZLp2xv8YBxkhuHlrup38Ci9KNVd3B2O4SxgITZ6WeHmDMjUgwQpXjjpMVGfi6HuyvOsvrgsSzVVFg5/8s0H7N99Rkj19t4ccYYdxcueCnT/XcDI+XFKACH1syKl6O2yPKGaX/ZrRnEAn9+K9wAhfkp/1Eusr+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002739; c=relaxed/simple;
-	bh=d8LcF4Rl+xA4giKx02Lezsi4AXnWTtkOn3ZOAduZvNM=;
+	s=arc-20240116; t=1771983644; c=relaxed/simple;
+	bh=dIv2FCd7w3YEf00fhntKa9PBrHb9mSYDX1e5LUjBIsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhT/OkBU4yPmGBfjnHViKRgFQripcE3DwpjOg30bZSN2s3SMFzeAU5DSE1xK+BReEDIsYfSBoUbjpaaH64Oxl5qOtOPrRrBQV5M49w/3FLl4ppjRyxhs746NfFlCoAZPb4h1VUC4/Nfc9NMdnbfeBW8fWxWKNVnZGJ9vt1E8d+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAryJh4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7997C116D0;
-	Wed, 25 Feb 2026 06:58:58 +0000 (UTC)
+	 MIME-Version; b=tuSs74PaY/CPmy5dJ204dcLSeyeqCTnK/Asa6b1yxcp9KT02Ou4SxCGEGETJsAGsmVYHETA8hR6zx2KjGZvJgUZYB/AKp8OA0NNl7HfGTk5CL3YBaqQ0P8Df+t6aDSjUwgu7vvh5rqthoyo7AKmZMN826PzYAwH7HkM58rhX1tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+XvEKF7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E7BC116D0;
+	Wed, 25 Feb 2026 01:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002738;
-	bh=d8LcF4Rl+xA4giKx02Lezsi4AXnWTtkOn3ZOAduZvNM=;
+	s=korg; t=1771983644;
+	bh=dIv2FCd7w3YEf00fhntKa9PBrHb9mSYDX1e5LUjBIsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAryJh4MALMCKgzUu8qrvmFmipHP9crRUkKIBas3YdJN3VPD7SM9HS3oNRlxEUbWM
-	 HiJ46clgDXfX4WQeQi+l1WR+DsH/WbGlbjBeEXMPBoKTLZ1Zuqe5yuHeWJPNR9JbuP
-	 x8rMCDIfsFUOSPfV9USLSmdluvpCoZY/pkfg1EbU=
+	b=M+XvEKF7SEWAQBLK2CN0Qf6fxVJX8TiqQxrX8Jd2nlxYk8FxJuyqJcGGYv67AUcEm
+	 OKPl/9/q6dqt2/SJzUqxPTBi7n8r/5STK3lX2gFu+EfhI/ZK+FUEE3ckgIYRu1wfWT
+	 VYXm5+wE8T1+/GekgmBbtk7pjLkf3pu8hxy+p/gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 515/641] net: stmmac: remove broken PCS code
+Subject: [PATCH 6.19 732/781] drm/xe: Make xe_modparam.force_vram_bar_size signed
 Date: Tue, 24 Feb 2026 17:24:01 -0800
-Message-ID: <20260225012401.004721642@linuxfoundation.org>
+Message-ID: <20260225012417.687191378@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,317 +67,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219473-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218772-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lunn.ch:email,renesas.com:email]
-X-Rspamd-Queue-Id: 2F004193447
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 94FB418F8EB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 813882ae22756bcf9645d405e045c60e5aab0a93 ]
+[ Upstream commit 1acec6ef0511b92e7974cc5a8768bfd3a659feaf ]
 
-Changing the netif_carrier_*() state behind phylink's back has always
-been prohibited because it messes up with phylinks state tracking, and
-means that phylink no longer guarantees to call the mac_link_down()
-and mac_link_up() methods at the appropriate times.  This was later
-documented in the sfp-phylink network driver conversion guide.
+vram_bar_size is registered as an int module parameter and is documented
+to accept negative values to disable BAR resizing.
+Store it as an int in xe_modparam as well, so negative values work as
+intended and the module_param type matches.
 
-stmmac was converted to phylink in 2019, but nothing was done with the
-"PCS" code. Since then, apart from the updates as part of phylink
-development, nothing has happened with stmmac to improve its use of
-phylink, or even to address this point.
-
-A couple of years ago, a has_integrated_pcs boolean was added by Bart,
-which later became the STMMAC_FLAG_HAS_INTEGRATED_PCS flag, to avoid
-manipulating the netif_carrier_*() state. This flag is mis-named,
-because whenever the stmmac is synthesized for its native SGMII, TBI
-or RTBI interfaces, it has an "integrated PCS". This boolean/flag
-actually means "ignore the status from the integrated PCS".
-
-Discussing with Bart, the reasons for this are lost to the winds of
-time (which is why we should always document the reasons in the commit
-message.)
-
-RGMII also has in-band status, and the dwmac cores and stmmac code
-supports this but with one bug that saves the day.
-
-When dwmac cores are synthesised for RGMII only, they do not contain
-an integrated PCS, and so priv->dma_cap.pcs is clear, which prevents
-(incorrectly) the "RGMII PCS" being used, meaning we don't read the
-in-band status. However, a core synthesised for RGMII and also SGMII,
-TBI or RTBI will have this capability bit set, thus making these
-code paths reachable.
-
-The Jetson Xavier NX uses RGMII mode to talk to its PHY, and removing
-the incorrect check for priv->dma_cap.pcs reveals the theortical issue
-with netif_carrier_*() manipulation is real:
-
-dwc-eth-dwmac 2490000.ethernet eth0: Register MEM_TYPE_PAGE_POOL RxQ-0
-dwc-eth-dwmac 2490000.ethernet eth0: PHY [stmmac-0:00] driver [RTL8211F Gigabit Ethernet] (irq=141)
-dwc-eth-dwmac 2490000.ethernet eth0: No Safety Features support found
-dwc-eth-dwmac 2490000.ethernet eth0: IEEE 1588-2008 Advanced Timestamp supported
-dwc-eth-dwmac 2490000.ethernet eth0: registered PTP clock
-dwc-eth-dwmac 2490000.ethernet eth0: configuring for phy/rgmii-id link mode
-8021q: adding VLAN 0 to HW filter on device eth0
-dwc-eth-dwmac 2490000.ethernet eth0: Adding VLAN ID 0 is not supported
-Link is Up - 1000/Full
-Link is Down
-Link is Up - 1000/Full
-
-This looks good until one realises that the phylink "Link" status
-messages are missing, even when the RJ45 cable is reconnected. Nothing
-one can do results in the interface working. The interrupt handler
-(which prints those "Link is" messages) always wins over phylink's
-resolve worker, meaning phylink never calls the mac_link_up() nor
-mac_link_down() methods.
-
-eth0 also sees no traffic received, and is unable to obtain a DHCP
-address:
-
-3: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group defa
-ult qlen 1000
-    link/ether e6:d3:6a:e6:92:de brd ff:ff:ff:ff:ff:ff
-    RX: bytes  packets  errors  dropped overrun mcast
-    0          0        0       0       0       0
-    TX: bytes  packets  errors  dropped carrier collsns
-    27686      149      0       0       0       0
-
-With the STMMAC_FLAG_HAS_INTEGRATED_PCS flag set, which disables the
-netif_carrier_*() manipulation then stmmac works normally:
-
-dwc-eth-dwmac 2490000.ethernet eth0: Register MEM_TYPE_PAGE_POOL RxQ-0
-dwc-eth-dwmac 2490000.ethernet eth0: PHY [stmmac-0:00] driver [RTL8211F Gigabit Ethernet] (irq=141)
-dwc-eth-dwmac 2490000.ethernet eth0: No Safety Features support found
-dwc-eth-dwmac 2490000.ethernet eth0: IEEE 1588-2008 Advanced Timestamp supported
-dwc-eth-dwmac 2490000.ethernet eth0: registered PTP clock
-dwc-eth-dwmac 2490000.ethernet eth0: configuring for phy/rgmii-id link mode
-8021q: adding VLAN 0 to HW filter on device eth0
-dwc-eth-dwmac 2490000.ethernet eth0: Adding VLAN ID 0 is not supported
-Link is Up - 1000/Full
-dwc-eth-dwmac 2490000.ethernet eth0: Link is Up - 1Gbps/Full - flow control rx/tx
-
-and packets can be transferred.
-
-This clearly shows that when priv->hw->pcs is set, but
-STMMAC_FLAG_HAS_INTEGRATED_PCS is clear, the driver reliably fails.
-
-Discovering whether a platform falls into this is impossible as
-parsing all the dtsi and dts files to find out which use the stmmac
-driver, whether any of them use RGMII or SGMII and also depends
-whether an external interface is being used. The kernel likely
-doesn't contain all dts files either.
-
-The only driver that sets this flag uses the qcom,sa8775p-ethqos
-compatible, and uses SGMII or 2500BASE-X.
-
-but these are saved from this problem by the incorrect check for
-priv->dma_cap.pcs.
-
-So, we have to assume that for every other platform that uses SGMII
-with stmmac is using an external PCS.
-
-Moreover, ethtool output can be incorrect. With the full-duplex link
-negotiated, ethtool reports:
-
-        Speed: 1000Mb/s
-        Duplex: Half
-
-because with dwmac4, the full-duplex bit is in bit 16 of the status,
-priv->xstats.pcs_duplex becomes BIT(16) for full duplex, but the
-ethtool ksettings duplex member is u8 - so becomes zero. Moreover,
-the supported, advertised and link partner modes are all "not
-reported".
-
-Finally, ksettings_set() won't be able to set the advertisement on
-a PHY if this PCS code is activated, which is incorrect when SGMII
-is used with a PHY.
-
-Thus, remove:
-1. the incorrect netif_carrier_*() manipulation.
-2. the broken ethtool ksettings code.
-
-Given that all uses of STMMAC_FLAG_HAS_INTEGRATED_PCS are now gone,
-remove the flag from stmmac.h and dwmac-qcom-ethqos.c.
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://patch.msgid.link/E1v9P5y-0000000AolC-1QWH@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: babab1b42ed6 ("net: stmmac: fix oops when split header is enabled")
+Fixes: 80742a1aa26e ("drm/xe: Allow to drop vram resizing")
+Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Link: https://patch.msgid.link/20260202181853.1095736-2-shuicheng.lin@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit 25c9aa4dcb5ef2ad9f354d19f8f1eeb690d1c161)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../stmicro/stmmac/dwmac-qcom-ethqos.c        |  4 --
- .../ethernet/stmicro/stmmac/stmmac_ethtool.c  | 55 -------------------
- .../net/ethernet/stmicro/stmmac/stmmac_main.c |  9 ---
- include/linux/stmmac.h                        |  1 -
- 4 files changed, 69 deletions(-)
+ drivers/gpu/drm/xe/xe_module.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index d8fd4d8f6ced7..f62825220cf70 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -96,7 +96,6 @@ struct ethqos_emac_driver_data {
- 	bool rgmii_config_loopback_en;
- 	bool has_emac_ge_3;
- 	const char *link_clk_name;
--	bool has_integrated_pcs;
- 	u32 dma_addr_width;
- 	struct dwmac4_addrs dwmac4_addrs;
- 	bool needs_sgmii_loopback;
-@@ -282,7 +281,6 @@ static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
- 	.rgmii_config_loopback_en = false,
- 	.has_emac_ge_3 = true,
- 	.link_clk_name = "phyaux",
--	.has_integrated_pcs = true,
- 	.needs_sgmii_loopback = true,
- 	.dma_addr_width = 36,
- 	.dwmac4_addrs = {
-@@ -856,8 +854,6 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
- 		plat_dat->flags |= STMMAC_FLAG_TSO_EN;
- 	if (of_device_is_compatible(np, "qcom,qcs404-ethqos"))
- 		plat_dat->flags |= STMMAC_FLAG_RX_CLK_RUNS_IN_LPI;
--	if (data->has_integrated_pcs)
--		plat_dat->flags |= STMMAC_FLAG_HAS_INTEGRATED_PCS;
- 	if (data->dma_addr_width)
- 		plat_dat->host_dma_width = data->dma_addr_width;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-index 39fa1ec92f82f..d89662b48087e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -322,47 +322,6 @@ static int stmmac_ethtool_get_link_ksettings(struct net_device *dev,
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 
--	if (!(priv->plat->flags & STMMAC_FLAG_HAS_INTEGRATED_PCS) &&
--	    (priv->hw->pcs & STMMAC_PCS_RGMII ||
--	     priv->hw->pcs & STMMAC_PCS_SGMII)) {
--		u32 supported, advertising, lp_advertising;
--
--		if (!priv->xstats.pcs_link) {
--			cmd->base.speed = SPEED_UNKNOWN;
--			cmd->base.duplex = DUPLEX_UNKNOWN;
--			return 0;
--		}
--		cmd->base.duplex = priv->xstats.pcs_duplex;
--
--		cmd->base.speed = priv->xstats.pcs_speed;
--
--		/* Encoding of PSE bits is defined in 802.3z, 37.2.1.4 */
--
--		ethtool_convert_link_mode_to_legacy_u32(
--			&supported, cmd->link_modes.supported);
--		ethtool_convert_link_mode_to_legacy_u32(
--			&advertising, cmd->link_modes.advertising);
--		ethtool_convert_link_mode_to_legacy_u32(
--			&lp_advertising, cmd->link_modes.lp_advertising);
--
--		/* Reg49[3] always set because ANE is always supported */
--		cmd->base.autoneg = ADVERTISED_Autoneg;
--		supported |= SUPPORTED_Autoneg;
--		advertising |= ADVERTISED_Autoneg;
--		lp_advertising |= ADVERTISED_Autoneg;
--
--		cmd->base.port = PORT_OTHER;
--
--		ethtool_convert_legacy_u32_to_link_mode(
--			cmd->link_modes.supported, supported);
--		ethtool_convert_legacy_u32_to_link_mode(
--			cmd->link_modes.advertising, advertising);
--		ethtool_convert_legacy_u32_to_link_mode(
--			cmd->link_modes.lp_advertising, lp_advertising);
--
--		return 0;
--	}
--
- 	return phylink_ethtool_ksettings_get(priv->phylink, cmd);
- }
- 
-@@ -372,20 +331,6 @@ stmmac_ethtool_set_link_ksettings(struct net_device *dev,
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 
--	if (!(priv->plat->flags & STMMAC_FLAG_HAS_INTEGRATED_PCS) &&
--	    (priv->hw->pcs & STMMAC_PCS_RGMII ||
--	     priv->hw->pcs & STMMAC_PCS_SGMII)) {
--		/* Only support ANE */
--		if (cmd->base.autoneg != AUTONEG_ENABLE)
--			return -EINVAL;
--
--		mutex_lock(&priv->lock);
--		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->ps, 0);
--		mutex_unlock(&priv->lock);
--
--		return 0;
--	}
--
- 	return phylink_ethtool_ksettings_set(priv->phylink, cmd);
- }
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 0dd17179c85d2..e707abc35e2de 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6012,15 +6012,6 @@ static void stmmac_common_interrupt(struct stmmac_priv *priv)
- 		for (queue = 0; queue < queues_count; queue++)
- 			stmmac_host_mtl_irq_status(priv, priv->hw, queue);
- 
--		/* PCS link status */
--		if (priv->hw->pcs &&
--		    !(priv->plat->flags & STMMAC_FLAG_HAS_INTEGRATED_PCS)) {
--			if (priv->xstats.pcs_link)
--				netif_carrier_on(priv->dev);
--			else
--				netif_carrier_off(priv->dev);
--		}
--
- 		stmmac_timestamp_interrupt(priv, priv);
- 	}
- }
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index fa1318bac06c4..99022620457ac 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -171,7 +171,6 @@ struct dwmac4_addrs {
- 	u32 mtl_low_cred_offset;
- };
- 
--#define STMMAC_FLAG_HAS_INTEGRATED_PCS		BIT(0)
- #define STMMAC_FLAG_SPH_DISABLE			BIT(1)
- #define STMMAC_FLAG_USE_PHY_WOL			BIT(2)
- #define STMMAC_FLAG_HAS_SUN8I			BIT(3)
+diff --git a/drivers/gpu/drm/xe/xe_module.h b/drivers/gpu/drm/xe/xe_module.h
+index 5a3bfea8b7b4c..b668495392701 100644
+--- a/drivers/gpu/drm/xe/xe_module.h
++++ b/drivers/gpu/drm/xe/xe_module.h
+@@ -12,7 +12,7 @@
+ struct xe_modparam {
+ 	bool force_execlist;
+ 	bool probe_display;
+-	u32 force_vram_bar_size;
++	int force_vram_bar_size;
+ 	int guc_log_level;
+ 	char *guc_firmware_path;
+ 	char *huc_firmware_path;
 -- 
 2.51.0
 
