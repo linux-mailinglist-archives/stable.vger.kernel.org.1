@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218386-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EkwC59WnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:43 +0100
+	id 4JQ7HdVSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218386-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1645190377
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0676718F54D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BF7431026D0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5883D30E4F67
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCEE286413;
-	Wed, 25 Feb 2026 01:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2880242D9B;
+	Wed, 25 Feb 2026 01:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zs50WMT2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sobRSvQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4385724A06D;
-	Wed, 25 Feb 2026 01:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50281EB5E1;
+	Wed, 25 Feb 2026 01:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983810; cv=none; b=thodetyaQGWw996hq6nBOTGZAvAXFm7hc+G+ERTmAi5FvxO1h7D+FCgHDzjYQ2vJ0vEDOOZSrBKtKcNZx3sgZuH4iW0mz4LKb3C8KaL/DeJy+176nilMXOq/lHlCuBLtGMa7IBTg7Wq+f2gFxJClyxxBVSdBXVCnWDcN3RGhcQE=
+	t=1771983199; cv=none; b=MonRSBRiL/yiC+6feWJhAuQBNl8YZUbmln+MswVPPhCUqy5Zk5jPLOdMU4Z89meN3T2N0LT7GXRSDvNCaNQaVkaY4G6k8HKyqaFp8RGqtc6NOHTQKX+cf6FNll1czlrwsjTXeJ7wXjQJLH/8cY07R1uz0PZGEuYYZplwXrxgJT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983810; c=relaxed/simple;
-	bh=EhDeLLXKduXDJX1xD+oN/OrYLrO42miP2gWcnhql5xs=;
+	s=arc-20240116; t=1771983199; c=relaxed/simple;
+	bh=gG+H5YxytJfqttM9xfxr6ntG+EZXGbHs8G8S5trc3Go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7lsYV8tiqNBfEGSa7xHroXYvFJEqIMxtYr1d5awB/OcpE17c+JJGEcpVKQTxP+TAhNSZlN2vEdKNCaTBdPe5wMDVogqQ5ll6LoDA2B/PLYCN/zvglAs7tJ78UADgBzW92yVTztc0edukCkfZZuwCW7g/8NSvRXSiYPvkV05JZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zs50WMT2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17142C116D0;
-	Wed, 25 Feb 2026 01:43:29 +0000 (UTC)
+	 MIME-Version; b=AcRX+zn8HYGFgc5UlHQkEdr2iQrA91uhWdsMCRLhowtABNo+c7jg8qLx65a/TGJIQ6WuZGTMHM7YKnPQBq8i1TO1XJHYV0MY8WErdyz48HpIk/dejHyC/HCm8LE56HVqfnWWpthIkkwE72A/tynhmpyx5sPAD0iFZy90pSn56y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sobRSvQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64822C19423;
+	Wed, 25 Feb 2026 01:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983810;
-	bh=EhDeLLXKduXDJX1xD+oN/OrYLrO42miP2gWcnhql5xs=;
+	s=korg; t=1771983199;
+	bh=gG+H5YxytJfqttM9xfxr6ntG+EZXGbHs8G8S5trc3Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zs50WMT2L/noAwivE3lvyXcCTNMSgLBtk/VnbvfaOVVe3rGMPiENHUhA3FWIBxBFv
-	 mYkvwrZLgQWItqzSHmYOkxRZ9MkvUkgXYCGCvrOmjUAw9olmwnZGdgf2fZwdxAtBA+
-	 VHmyE+xDLwyml1ZxdjtayCbZXYc+W0Bpov6mhlVI=
+	b=sobRSvQ86x1vljWzg8HfPdvlC9jlXBsjVH6oMGOSoNIZkxpVFKA9LbaWB5gl65hX6
+	 rIF6i9WiOj6Aa3R0dRIZN01ORmZc0PXnNVz9bYAPmpBkwl6FZSeYOqoQ2WeoeHVNb5
+	 14opuRMewxXFwdMtKo4VCP7PbjfVRGEMsbhlla3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 087/641] hrtimer: Fix trace oddity
-Date: Tue, 24 Feb 2026 17:16:53 -0800
-Message-ID: <20260225012351.202693151@linuxfoundation.org>
+Subject: [PATCH 6.19 305/781] ASoC: SDCA: Add ability to connect SDCA jacks to ASoC jacks
+Date: Tue, 24 Feb 2026 17:16:54 -0800
+Message-ID: <20260225012407.189220706@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +70,213 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218386-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218916-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email]
-X-Rspamd-Queue-Id: A1645190377
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cirrus.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0676718F54D
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 5d6446f409da00e5a389125ddb5ce09f5bc404c9 ]
+[ Upstream commit 82e12800f563baf663277ef0017f40a335b8e84c ]
 
-It turns out that __run_hrtimer() will trace like:
+Add handling for the ASoC jack API to SDCA to allow user-space to be
+hooked up normally.
 
-          <idle>-0     [032] d.h2. 20705.474563: hrtimer_cancel:       hrtimer=0xff2db8f77f8226e8
-          <idle>-0     [032] d.h1. 20705.474563: hrtimer_expire_entry: hrtimer=0xff2db8f77f8226e8 now=20699452001850 function=tick_nohz_handler/0x0
-
-Which is a bit nonsensical, the timer doesn't get canceled on
-expiration. The cause is the use of the incorrect debug helper.
-
-Fixes: c6a2a1770245 ("hrtimer: Add tracepoint for hrtimers")
-Reported-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260121143208.219595606@infradead.org
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251215153650.3913117-3-ckeepax@opensource.cirrus.com
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: d7730c44b7dd ("ASoC: SDCA: Still process most of the jack detect if control is missing")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/sound/sdca_jack.h  |   5 ++
+ sound/soc/sdca/sdca_jack.c | 106 ++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 110 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index e618addb58641..21b6d93401480 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1742,7 +1742,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
+diff --git a/include/sound/sdca_jack.h b/include/sound/sdca_jack.h
+index 9fad5f22cbb9e..3ec22046d3ebc 100644
+--- a/include/sound/sdca_jack.h
++++ b/include/sound/sdca_jack.h
+@@ -12,16 +12,21 @@
  
- 	lockdep_assert_held(&cpu_base->lock);
+ struct sdca_interrupt;
+ struct snd_kcontrol;
++struct snd_soc_jack;
  
--	debug_deactivate(timer);
-+	debug_hrtimer_deactivate(timer);
- 	base->running = timer;
+ /**
+  * struct jack_state - Jack state structure to keep data between interrupts
+  * @kctl: Pointer to the ALSA control attached to this jack
++ * @jack: Pointer to the ASoC jack struct for this jack
+  */
+ struct jack_state {
+ 	struct snd_kcontrol *kctl;
++	struct snd_soc_jack *jack;
+ };
  
- 	/*
+ int sdca_jack_alloc_state(struct sdca_interrupt *interrupt);
+ int sdca_jack_process(struct sdca_interrupt *interrupt);
++int sdca_jack_set_jack(struct sdca_interrupt_info *info, struct snd_soc_jack *jack);
++int sdca_jack_report(struct sdca_interrupt *interrupt);
+ 
+ #endif // __SDCA_JACK_H__
+diff --git a/sound/soc/sdca/sdca_jack.c b/sound/soc/sdca/sdca_jack.c
+index 83b2b9cc81f00..5b9cf69cbcd6b 100644
+--- a/sound/soc/sdca/sdca_jack.c
++++ b/sound/soc/sdca/sdca_jack.c
+@@ -17,11 +17,13 @@
+ #include <linux/rwsem.h>
+ #include <sound/asound.h>
+ #include <sound/control.h>
++#include <sound/jack.h>
+ #include <sound/sdca.h>
+ #include <sound/sdca_function.h>
+ #include <sound/sdca_interrupts.h>
+ #include <sound/sdca_jack.h>
+ #include <sound/soc-component.h>
++#include <sound/soc-jack.h>
+ #include <sound/soc.h>
+ 
+ /**
+@@ -114,7 +116,7 @@ int sdca_jack_process(struct sdca_interrupt *interrupt)
+ 
+ 	snd_ctl_notify(card->snd_card, SNDRV_CTL_EVENT_MASK_VALUE, &kctl->id);
+ 
+-	return 0;
++	return sdca_jack_report(interrupt);
+ }
+ EXPORT_SYMBOL_NS_GPL(sdca_jack_process, "SND_SOC_SDCA");
+ 
+@@ -138,3 +140,105 @@ int sdca_jack_alloc_state(struct sdca_interrupt *interrupt)
+ 	return 0;
+ }
+ EXPORT_SYMBOL_NS_GPL(sdca_jack_alloc_state, "SND_SOC_SDCA");
++
++/**
++ * sdca_jack_set_jack - attach an ASoC jack to SDCA
++ * @info: SDCA interrupt information.
++ * @jack: ASoC jack to be attached.
++ *
++ * Return: Zero on success or a negative error code.
++ */
++int sdca_jack_set_jack(struct sdca_interrupt_info *info, struct snd_soc_jack *jack)
++{
++	int i, ret;
++
++	guard(mutex)(&info->irq_lock);
++
++	for (i = 0; i < SDCA_MAX_INTERRUPTS; i++) {
++		struct sdca_interrupt *interrupt = &info->irqs[i];
++		struct sdca_control *control = interrupt->control;
++		struct sdca_entity *entity = interrupt->entity;
++		struct jack_state *jack_state;
++
++		if (!interrupt->irq)
++			continue;
++
++		switch (SDCA_CTL_TYPE(entity->type, control->sel)) {
++		case SDCA_CTL_TYPE_S(GE, DETECTED_MODE):
++			jack_state = interrupt->priv;
++			jack_state->jack = jack;
++
++			/* Report initial state in case IRQ was already handled */
++			ret = sdca_jack_report(interrupt);
++			if (ret)
++				return ret;
++			break;
++		default:
++			break;
++		}
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(sdca_jack_set_jack, "SND_SOC_SDCA");
++
++int sdca_jack_report(struct sdca_interrupt *interrupt)
++{
++	struct jack_state *jack_state = interrupt->priv;
++	struct sdca_control_range *range;
++	enum sdca_terminal_type type;
++	unsigned int report = 0;
++	unsigned int reg, val;
++	int ret;
++
++	reg = SDW_SDCA_CTL(interrupt->function->desc->adr, interrupt->entity->id,
++			   SDCA_CTL_GE_SELECTED_MODE, 0);
++
++	ret = regmap_read(interrupt->function_regmap, reg, &val);
++	if (ret) {
++		dev_err(interrupt->dev, "failed to read selected mode: %d\n", ret);
++		return ret;
++	}
++
++	range = sdca_selector_find_range(interrupt->dev, interrupt->entity,
++					 SDCA_CTL_GE_SELECTED_MODE,
++					 SDCA_SELECTED_MODE_NCOLS, 0);
++	if (!range)
++		return -EINVAL;
++
++	type = sdca_range_search(range, SDCA_SELECTED_MODE_INDEX,
++				 val, SDCA_SELECTED_MODE_TERM_TYPE);
++
++	switch (type) {
++	case SDCA_TERM_TYPE_LINEIN_STEREO:
++	case SDCA_TERM_TYPE_LINEIN_FRONT_LR:
++	case SDCA_TERM_TYPE_LINEIN_CENTER_LFE:
++	case SDCA_TERM_TYPE_LINEIN_SURROUND_LR:
++	case SDCA_TERM_TYPE_LINEIN_REAR_LR:
++		report = SND_JACK_LINEIN;
++		break;
++	case SDCA_TERM_TYPE_LINEOUT_STEREO:
++	case SDCA_TERM_TYPE_LINEOUT_FRONT_LR:
++	case SDCA_TERM_TYPE_LINEOUT_CENTER_LFE:
++	case SDCA_TERM_TYPE_LINEOUT_SURROUND_LR:
++	case SDCA_TERM_TYPE_LINEOUT_REAR_LR:
++		report = SND_JACK_LINEOUT;
++		break;
++	case SDCA_TERM_TYPE_MIC_JACK:
++		report = SND_JACK_MICROPHONE;
++		break;
++	case SDCA_TERM_TYPE_HEADPHONE_JACK:
++		report = SND_JACK_HEADPHONE;
++		break;
++	case SDCA_TERM_TYPE_HEADSET_JACK:
++		report = SND_JACK_HEADSET;
++		break;
++	default:
++		break;
++	}
++
++	snd_soc_jack_report(jack_state->jack, report, 0xFFFF);
++
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(sdca_jack_report, "SND_SOC_SDCA");
 -- 
 2.51.0
 
