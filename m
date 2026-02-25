@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-218571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFx2E6BUnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:12 +0100
+	id sBc3ENxSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DE718FD51
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C0618F578
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 44ACD3001187
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 517F130F75AB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78361256C8B;
-	Wed, 25 Feb 2026 01:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CCA242D9B;
+	Wed, 25 Feb 2026 01:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAKRmXhw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXkdYNVE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5081D5141;
-	Wed, 25 Feb 2026 01:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD54E18B0A;
+	Wed, 25 Feb 2026 01:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983413; cv=none; b=lxGlCe/mXLaF+hd8ndzuGk7hNf0iyC03uod/zyzFbqsQIR3uZswS/qOkimss81qahbjJDiLe10YTkEEizshRiflqp7RbA66pmdVqPU/Ywz83v8ajG+Q4XgaVbvAAC02yJ0NIlza9y2+7hX1fJmgTAJ56a696JYR59mAQbGaVE2k=
+	t=1771983364; cv=none; b=G3EgbQXphdkkKyohf7/3+8iduLEhUyYkUNdkkfIxKErGOMWw8EbG9hyJJ7XQnn5+To/99ajUUYkcUbNG7/QCgJJntGHF53gYAo47xp/46z2VHZuyoKCHpVdlSC2bL3TGUwnnvd70YSGZRpYsEFafYUnjSILMcyeshjvA6jt2Zk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983413; c=relaxed/simple;
-	bh=/yKTmPzjxhs9pj/KUyMvpDPymtdk5Xxv2kt3aeuxUEg=;
+	s=arc-20240116; t=1771983364; c=relaxed/simple;
+	bh=uJjG3a5MWhGcVFmmWaNoZR36h+zZpdm91U5sRt1GZtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdTxUjNr9Tdp55NkDenHD9NIf/Xlqwv8NP8KsgP0+TJ5Yjkokfdc4ASKfVeNjBNiLN+My+b5GiStgiOYjTHgsYcAPkT6EQ1l0vJgGm2Rxrl77QxEhB/khjT+pfgM9lfmrmPweoLB7zNVzNAiOsX3v2bujtt97s1tMyvERaFP67M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAKRmXhw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FC0C116D0;
-	Wed, 25 Feb 2026 01:36:53 +0000 (UTC)
+	 MIME-Version; b=XYORkvQq08bw2lrWIREg+PoPpGi8yXZvH3qQcTmO4Z2Ug8EKnVqYpK7/njyohQ1VVrdaHj7SMbl85hLx8M8eA3oB+DKYdpi5VRhtDNQngRcS8G5eVAOKabQZFGF0snT/0pqAuD+o5O5BL6vYlZZzALqP2V9kEAQqqNtMG709c68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXkdYNVE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 665A1C116D0;
+	Wed, 25 Feb 2026 01:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983413;
-	bh=/yKTmPzjxhs9pj/KUyMvpDPymtdk5Xxv2kt3aeuxUEg=;
+	s=korg; t=1771983364;
+	bh=uJjG3a5MWhGcVFmmWaNoZR36h+zZpdm91U5sRt1GZtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UAKRmXhwfIprcJDoNllCDRxVF86hO9K/EK8ZV5ObZqiCQThZDmU36lV8AP4ODn3ws
-	 bvDXyvbp7vHRWqAv61kbPZGC4SwhUB41QHIs8sS7b2OgbHG8ZIPVWFz4Gx9hskzwle
-	 F7/7MTthdmn04exAOdxnHSmG5TIWAt/+zVG0lQMw=
+	b=RXkdYNVEyxgQfzCeVJmye1hhV+wsLgU4GJNAWTPiOzu/mqSxwrt6ZO8HKip/4PFdz
+	 9rzGM3///7zCcvMWxFRlj002er/dkybISEVg+heGs4jt90sOgrsO0nTZF6qgVkG1sC
+	 kdJqprbBpizFf0gQt4l0qqX6XtPRRKrR0oWIFumA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuxiong Wang <yuxiong.wang@linux.alibaba.com>,
-	Huang Ying <ying.huang@linux.alibaba.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
+	Weigang He <geoffreyhe2@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 490/781] cxl: Fix premature commit_end increment on decoder commit failure
-Date: Tue, 24 Feb 2026 17:19:59 -0800
-Message-ID: <20260225012411.825909331@linuxfoundation.org>
+Subject: [PATCH 6.19 491/781] mtd: parsers: ofpart: fix OF node refcount leak in parse_fixed_partitions()
+Date: Tue, 24 Feb 2026 17:20:00 -0800
+Message-ID: <20260225012411.851229747@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -69,92 +67,114 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218528-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218571-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email]
-X-Rspamd-Queue-Id: 66DE718FD51
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B3C0618F578
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuxiong Wang <yuxiong.wang@linux.alibaba.com>
+From: Weigang He <geoffreyhe2@gmail.com>
 
-[ Upstream commit 7b6f9d9b1ea05c9c22570126547c780e8c6c3f62 ]
+[ Upstream commit 7cce81df7d26d44123bd7620715c8349d96793d7 ]
 
-In cxl_decoder_commit(), commit_end is incremented before verifying
-whether the commit succeeded, and the CXL_DECODER_F_ENABLE bit in
-cxld->flags is only set after a successful commit. As a result, if the
-commit fails, commit_end has been incremented and cxld->reset() has no
-effect since the flag is not set, so commit_end remains incorrectly
-incremented. The inconsistency between commit_end and CXL_DECODER_F_ENABLE
-causes failure during subsequent either commit or reset operations.
+of_get_child_by_name() returns a node pointer with refcount incremented,
+which must be released with of_node_put() when done. However, in
+parse_fixed_partitions(), when dedicated is true (i.e., a "partitions"
+subnode was found), the ofpart_node obtained from of_get_child_by_name()
+is never released on any code path.
 
-Fix this by incrementing commit_end only after confirming the commit
-succeeded. Also, remove the ineffective cxld->reset() call. According to
-CXL Spec r4.0 8.2.4.20.12 Committing Decoder Programming, since
-cxld_await_commit() has cleared the decoder commit bit on failure, no
-additional reset is required.
+Add of_node_put(ofpart_node) calls on all exit paths when dedicated is
+true to fix the reference count leak.
 
-[dj: Fixed commit log 80 char wrapping. ]
-[dj: Fix "Fixes" tag to correct hash length. ]
-[dj: Change spec to r4.0. ]
+This bug was detected by our static analysis tool.
 
-Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
-Signed-off-by: Yuxiong Wang <yuxiong.wang@linux.alibaba.com>
-Acked-by: Huang Ying <ying.huang@linux.alibaba.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Link: https://patch.msgid.link/20260129064552.31180-1-yuxiong.wang@linux.alibaba.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: 562b4e91d3b2 ("mtd: parsers: ofpart: fix parsing subpartitions")
+Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/hdm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mtd/parsers/ofpart_core.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-index a7ad730763e85..bc4b0c8607258 100644
---- a/drivers/cxl/core/hdm.c
-+++ b/drivers/cxl/core/hdm.c
-@@ -844,14 +844,13 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
- 	scoped_guard(rwsem_read, &cxl_rwsem.dpa)
- 		setup_hw_decoder(cxld, hdm);
- 
--	port->commit_end++;
- 	rc = cxld_await_commit(hdm, cxld->id);
- 	if (rc) {
- 		dev_dbg(&port->dev, "%s: error %d committing decoder\n",
- 			dev_name(&cxld->dev), rc);
--		cxld->reset(cxld);
- 		return rc;
+diff --git a/drivers/mtd/parsers/ofpart_core.c b/drivers/mtd/parsers/ofpart_core.c
+index abfa687989182..09961c6f39496 100644
+--- a/drivers/mtd/parsers/ofpart_core.c
++++ b/drivers/mtd/parsers/ofpart_core.c
+@@ -77,6 +77,7 @@ static int parse_fixed_partitions(struct mtd_info *master,
+ 	of_id = of_match_node(parse_ofpart_match_table, ofpart_node);
+ 	if (dedicated && !of_id) {
+ 		/* The 'partitions' subnode might be used by another parser */
++		of_node_put(ofpart_node);
+ 		return 0;
  	}
-+	port->commit_end++;
- 	cxld->flags |= CXL_DECODER_F_ENABLE;
  
- 	return 0;
+@@ -91,12 +92,18 @@ static int parse_fixed_partitions(struct mtd_info *master,
+ 		nr_parts++;
+ 	}
+ 
+-	if (nr_parts == 0)
++	if (nr_parts == 0) {
++		if (dedicated)
++			of_node_put(ofpart_node);
+ 		return 0;
++	}
+ 
+ 	parts = kcalloc(nr_parts, sizeof(*parts), GFP_KERNEL);
+-	if (!parts)
++	if (!parts) {
++		if (dedicated)
++			of_node_put(ofpart_node);
+ 		return -ENOMEM;
++	}
+ 
+ 	i = 0;
+ 	for_each_child_of_node(ofpart_node,  pp) {
+@@ -175,6 +182,9 @@ static int parse_fixed_partitions(struct mtd_info *master,
+ 	if (quirks && quirks->post_parse)
+ 		quirks->post_parse(master, parts, nr_parts);
+ 
++	if (dedicated)
++		of_node_put(ofpart_node);
++
+ 	*pparts = parts;
+ 	return nr_parts;
+ 
+@@ -183,6 +193,8 @@ static int parse_fixed_partitions(struct mtd_info *master,
+ 	       master->name, pp, mtd_node);
+ 	ret = -EINVAL;
+ ofpart_none:
++	if (dedicated)
++		of_node_put(ofpart_node);
+ 	of_node_put(pp);
+ 	kfree(parts);
+ 	return ret;
 -- 
 2.51.0
 
