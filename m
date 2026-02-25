@@ -1,202 +1,129 @@
-Return-Path: <stable+bounces-218040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLzuE0hKnmnXUQQAu9opvQ
-	(envelope-from <stable+bounces-218040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:03:04 +0100
+	id +H8KN6lKnmnXUQQAu9opvQ
+	(envelope-from <stable+bounces-218041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:04:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB2618E7F2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:03:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B89218E821
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:04:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C963D30C3A8B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:00:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E7A903054113
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21466287253;
-	Wed, 25 Feb 2026 01:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8348023EA88;
+	Wed, 25 Feb 2026 01:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6r5QVWj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ufQROy/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C7D285419;
-	Wed, 25 Feb 2026 01:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46610231A41
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 01:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771981203; cv=none; b=gnc/BETjWmzPuC256E4rk/qOeF7TZQYB0Y7Pbovg+4TUZ9B/F1+Pegq8K4DpNVILLPm1yHOus6nlxU2Wu6IlnhrPAKDeFq2sQPS/R5b/XnCsPr3i5ZutsG2saNrxs8qcUimYz2XEsyLSvAzl2CYn9paAn7B8u2/nUMoaGIy7gOk=
+	t=1771981269; cv=none; b=p19tgKAJVTVTaaLQ2ToDKlEcKFPOY3HUf3r6XR9krrAUr4VghPPGEnJoAK0BUVC2ww6obw8l4EkaBFIFaoKVURE6gmMLqwU7mzOel/U7A6xxSGtmFRkf1fJhcvVFuhZT9a4YgQBAGMMDhtqggFDIC1cTjQ6A4cXUGE/w+LYNWlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771981203; c=relaxed/simple;
-	bh=FavqCuxwPI2jjEa8BSTc8DH2PtmtIb+TIzINQXl1X+w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGR/ew6MtrqNx6fISbpT2PUIQImZqvgF89BL+lnh/HLSLPEGXSvkqDZUzXcRaObeGNEBQFqtgoeEbH2az300H+M3Tsnhw7LLtgRObZpF+1gQpTnB0Csc/x5OKgus3tluypUA7gWGr2xTA4OcCD/92z2fIFRzKU1vlS9o3s+0Soo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6r5QVWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDFDC116D0;
-	Wed, 25 Feb 2026 01:00:03 +0000 (UTC)
+	s=arc-20240116; t=1771981269; c=relaxed/simple;
+	bh=TfYc7xs5AoCgDmaQhtHDFVfWTb2Pd0soWTYMVW9mmTc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ojy06i3rbf2um1SQtny2CN72ClfyEDt3lIt+WR0h0COcmklrkh7Amj8A+Ey/g3GmnkPT+iOQwlmtt1az/sYJK1t8QjKq85lMySU+rL/EER1i1KJKtEY8zFI+w8qWlmyQcGkWRv7Wu8Doe3TYz0b+i7upHVDSIIu4yPumuqOVdmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ufQROy/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC737C19423
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 01:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771981203;
-	bh=FavqCuxwPI2jjEa8BSTc8DH2PtmtIb+TIzINQXl1X+w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6r5QVWjVceXFSgUpkcP7WbDG86YQWboasi78WVoxH+KyzKYjF5mjGoC0DdA8n3fX
-	 kEZF61o2RzlIwBsL+F51TmdSsGq+2rCZM1ys4ngJHi2FZJIoTKdTtLcg8IE8OkCqwQ
-	 taImdHlRXiVgSTPE0xWBaMZVSnA0ue3THP5lRVnvAkPkU2FqaIqzbhGthvEMjl2R7O
-	 6Tc4PxkcswXCw5uJ0tnolNt00tf3FuyoLKOvE9KmCK6pfleE2SqJBYlQMdE3PGxouu
-	 3NxmixNOeOjDLuv5pDLBtPy6XQm6TNJn70U5eUYRGhfnTZkVnKbhH7lc1sz+weJhR1
-	 juaE3+nZKNVwg==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 7/8] KVM: nSVM: Delay setting soft IRQ RIP tracking fields until vCPU run
-Date: Wed, 25 Feb 2026 00:59:49 +0000
-Message-ID: <20260225005950.3739782-8-yosry@kernel.org>
-X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-In-Reply-To: <20260225005950.3739782-1-yosry@kernel.org>
-References: <20260225005950.3739782-1-yosry@kernel.org>
+	s=k20201202; t=1771981268;
+	bh=TfYc7xs5AoCgDmaQhtHDFVfWTb2Pd0soWTYMVW9mmTc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ufQROy/Ig/AH26DnmlNZauasxPdWt9cp0agPMOibBhlJlDXvRvUimvw/bxo8vPOHg
+	 /WnkXZIdOzDLumKJIJPbeAAUyi3BfPZpVqwP5EOSSbAUR82DsZ9YUjjzj/KZOpO4xn
+	 FKHqCoTFOVrobTK+PsUztnbCBnIIxM7UqgyIr1ZZXfpbcIU6Wm4lwAD0f2l4rv49Q/
+	 r3gpJUlJoDpYH2GhqW1Hsd9JDiXN1BWnhAZKKcLc4MGGxXR6QRdDUXgnrBxgZHNjv+
+	 V3f9WSDulglJhBW7wHcRjMo8qo2D5JiJs6pRqro+qDqoA+IITF0eioBJ8X7k1IVSkW
+	 mt1j2qc99TcRQ==
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-65b9608a9adso10387847a12.3
+        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 17:01:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVuASWrdcjQ1jnyUj+v0UEiwJGBM6NeNXLiYGedNlKeWfWINFcwOzqEn6rJApELnHXzvyHwDuU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy79MekRdef0hh/38t8127R2mia1+3vhoFod0wUgAO6UaE4xbeh
+	j/IZFFahlgWqxJukQeNjc6iSa6kQbBk47Kx4eM6CgEpcwCS+Und9ZDWbbPeSCD3NjX4PojDsleX
+	AHViImAGz51E+vjgjuoNPJgncr+ltjm0=
+X-Received: by 2002:a17:907:d94:b0:b73:6d56:7332 with SMTP id
+ a640c23a62f3a-b9341903c5amr36094266b.13.1771981267786; Tue, 24 Feb 2026
+ 17:01:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260223154636.116671-1-yosry@kernel.org> <20260223154636.116671-3-yosry@kernel.org>
+ <CAO9r8zPsAMaiU794xoXDso3sdAM0_EN2PyE13vR4NqqEh9e2=g@mail.gmail.com> <aZ5ItfEUtIlVbzuQ@google.com>
+In-Reply-To: <aZ5ItfEUtIlVbzuQ@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 24 Feb 2026 17:00:56 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zPbu1BsOsPU02YcCLDbRXZoDmVd8XiMHssSDnkjdDPC4g@mail.gmail.com>
+X-Gm-Features: AaiRm52m3EoNOeCo__hUjoDPDKy5FvTWAW3YBfoYKKtnhYo-R9J1u6Qj27WjJ5A
+Message-ID: <CAO9r8zPbu1BsOsPU02YcCLDbRXZoDmVd8XiMHssSDnkjdDPC4g@mail.gmail.com>
+Subject: Re: [PATCH v1 2/4] KVM: nSVM: Delay stuffing L2's current RIP into
+ NextRIP until vCPU run
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218040-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218041-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DDB2618E7F2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0B89218E821
 X-Rspamd-Action: no action
 
-In the save+restore path, when restoring nested state, the values of RIP
-and CS base passed into nested_vmcb02_prepare_control() are mostly
-incorrect.  They are both pulled from the vmcb02. For CS base, the value
-is only correct if system regs are restored before nested state. The
-value of RIP is whatever the vCPU had in vmcb02 before restoring nested
-state (zero on a freshly created vCPU).
+> > Doing this in svm_prepare_switch_to_guest() is wrong, or at least
+> > after the svm->guest_state_loaded check. It's possible to emulate the
+> > nested VMRUN without doing a vcpu_put(), which means
+> > svm->guest_state_loaded will remain true and this code will be
+> > skipped.
+> >
+> > In fact, this breaks the svm_nested_soft_inject_test test. Funny
+> > enough, I was only running it with my repro changes, which papered
+> > over the bug because it forced an exit to userspace after VMRUN due to
+> > single-stepping, so svm->guest_state_loaded got cleared and the code
+> > was executed on the next KVM_RUN, before L2 runs.
+> >
+> > I can move it above the svm->guest_state_loaded check, but I think I
+> > will just put it in pre_svm_run() instead.
+>
+> I would rather not expand pre_svm_run(), and instead just open code it in
+> svm_vcpu_run().  pre_svm_run() probably should never have been added, because
+> it's far from a generic "pre run" API.  E.g. if we want to keep the helper around,
+> it should probably be named something something ASID.
 
-Instead, take a similar approach to NextRIP, and delay initializing the
-RIP tracking fields until shortly before the vCPU is run, to make sure
-the most up-to-date values of RIP and CS base are used regardless of
-KVM_SET_SREGS, KVM_SET_REGS, and KVM_SET_NESTED_STATE's relative
-ordering.
+I sent a new version before I saw your response.. sorry.
 
-Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
-CC: stable@vger.kernel.org
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
----
- arch/x86/kvm/svm/nested.c | 17 ++++++++---------
- arch/x86/kvm/svm/svm.c    | 10 ++++++++++
- 2 files changed, 18 insertions(+), 9 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index dcd4a8eb156f2..4499241b4e401 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -742,9 +742,7 @@ static bool is_evtinj_nmi(u32 evtinj)
- 	return type == SVM_EVTINJ_TYPE_NMI;
- }
- 
--static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
--					  unsigned long vmcb12_rip,
--					  unsigned long vmcb12_csbase)
-+static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
- {
- 	u32 int_ctl_vmcb01_bits = V_INTR_MASKING_MASK;
- 	u32 int_ctl_vmcb12_bits = V_TPR_MASK | V_IRQ_INJECTION_BITS_MASK;
-@@ -856,14 +854,15 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
- 		vmcb02->control.next_rip = svm->nested.ctl.next_rip;
- 
- 	svm->nmi_l1_to_l2 = is_evtinj_nmi(vmcb02->control.event_inj);
-+
-+	/*
-+	 * soft_int_csbase, soft_int_old_rip, and soft_int_next_rip (if L1
-+	 * doesn't have NRIPS)  are initialized later, before the vCPU is run.
-+	 */
- 	if (is_evtinj_soft(vmcb02->control.event_inj)) {
- 		svm->soft_int_injected = true;
--		svm->soft_int_csbase = vmcb12_csbase;
--		svm->soft_int_old_rip = vmcb12_rip;
- 		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
- 			svm->soft_int_next_rip = svm->nested.ctl.next_rip;
--		else
--			svm->soft_int_next_rip = vmcb12_rip;
- 	}
- 
- 	/* LBR_CTL_ENABLE_MASK is controlled by svm_update_lbrv() */
-@@ -961,7 +960,7 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
- 	nested_svm_copy_common_state(svm->vmcb01.ptr, svm->nested.vmcb02.ptr);
- 
- 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
--	nested_vmcb02_prepare_control(svm, vmcb12->save.rip, vmcb12->save.cs.base);
-+	nested_vmcb02_prepare_control(svm);
- 	nested_vmcb02_prepare_save(svm, vmcb12);
- 
- 	ret = nested_svm_load_cr3(&svm->vcpu, svm->nested.save.cr3,
-@@ -1906,7 +1905,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
- 	nested_copy_vmcb_control_to_cache(svm, ctl);
- 
- 	svm_switch_vmcb(svm, &svm->nested.vmcb02);
--	nested_vmcb02_prepare_control(svm, svm->vmcb->save.rip, svm->vmcb->save.cs.base);
-+	nested_vmcb02_prepare_control(svm);
- 
- 	/*
- 	 * While the nested guest CR3 is already checked and set by
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ded4372f2d499..7948e601ea784 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3670,11 +3670,21 @@ static int pre_svm_run(struct kvm_vcpu *vcpu)
- 	 * This is done here (as opposed to when preparing vmcb02) to use the
- 	 * most up-to-date value of RIP regardless of the order of restoring
- 	 * registers and nested state in the vCPU save+restore path.
-+	 *
-+	 * Simiarly, initialize svm->soft_int_* fields here to use the most
-+	 * up-to-date values of RIP and CS base, regardless of restore order.
- 	 */
- 	if (is_guest_mode(vcpu) && svm->nested.nested_run_pending) {
- 		if (boot_cpu_has(X86_FEATURE_NRIPS) &&
- 		    !guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
- 			svm->vmcb->control.next_rip = kvm_rip_read(vcpu);
-+
-+		if (svm->soft_int_injected) {
-+			svm->soft_int_csbase = svm->vmcb->save.cs.base;
-+			svm->soft_int_old_rip = kvm_rip_read(vcpu);
-+			if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-+				svm->soft_int_next_rip = kvm_rip_read(vcpu);
-+		}
- 	}
- 
- 	return 0;
--- 
-2.53.0.414.gf7e9f6c205-goog
-
+How strongly do you feel about this? :P
 
