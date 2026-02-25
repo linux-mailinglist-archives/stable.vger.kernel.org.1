@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SL5hBjhVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218767-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:44 +0100
+	id sC1iJNKgnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:12:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1FF18FF4A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17910193166
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:12:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EAAC31297BD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5C9731F55D2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABDC2741B6;
-	Wed, 25 Feb 2026 01:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BD03101D0;
+	Wed, 25 Feb 2026 06:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhdyAxci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W2/KxvG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B632765DF;
-	Wed, 25 Feb 2026 01:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9C72D7810;
+	Wed, 25 Feb 2026 06:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983638; cv=none; b=WzuVnqmOoBGo3jYvutKjgTpPzq4fb3q/CPaGV1uqBPOgGIk5VWZYxJwoHjUr6D3BLl4StJGOHna5aCBxHeIiy9B7dFRzstGISwSuAxjjnO440E2h+g27pGGjSHlilIN8rVZHTcLbqlE8hb57PZHhEmgIAcEyj4Bpt9uUzKsXjF0=
+	t=1772002742; cv=none; b=YA5+9JqiNElUybiPsZ762gcr7yqhrneKytx2JeWUtPzk63n9zQpD77HTUuK660DkfFDGtaad7a4wbhyqZABNDsz64hAlztLAhtOZ3Q0r/qnZ6NFQuONl7a8TmH8G1shfub1JanqUhFtBc1wuO7hJgYBOaN4E9ZOqgxRemjpjF4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983638; c=relaxed/simple;
-	bh=WC2U96jU+SHQ11OEAD/LB9E39EYqvbwEBTTroA9zIn8=;
+	s=arc-20240116; t=1772002742; c=relaxed/simple;
+	bh=xxD3+bxgtfG1G9HHffAIyXHzq1b2MfVX7ssVHtNL5nA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ls+KZ+ADBJjTLAwUr2ezwjNNBnRqOD6u6CrlGuwL/vtmHer2gIIHQL0yuSkGmZpZpEn8tHR8R1UDr8Eoq+qx4h9AupVD49NUCKyhKhA5EchvF4jMJsEolKR2hvK56l0ozZiNO/DoNkj5THCZ2gfC77mnBdiXW43PwqjImk0AYuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhdyAxci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72477C116D0;
-	Wed, 25 Feb 2026 01:40:38 +0000 (UTC)
+	 MIME-Version; b=FejZyZ0SY0ivtNONL3V081kV7Fc73AChEZruDcdASHqv5qVnGox8pZCJv8Ev2mW/shwVeejrhdwKbcypOhYYREZ0kqykIs/CGAirzSJ9DnGPG2tzi2tRW+lek5GhVa464DYUeVw+6BndZuzsxmdMqyAQheHFt7mmgu9pQp1jyu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W2/KxvG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F1BC116D0;
+	Wed, 25 Feb 2026 06:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983638;
-	bh=WC2U96jU+SHQ11OEAD/LB9E39EYqvbwEBTTroA9zIn8=;
+	s=korg; t=1772002742;
+	bh=xxD3+bxgtfG1G9HHffAIyXHzq1b2MfVX7ssVHtNL5nA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhdyAxciK7HVFDEYWeNuyvlXPFJQxeP9wgH1d2jlY07jxZVpU8/UNKWG0xcCJ+xHW
-	 Uo3KTthAkuWAmvC2CyBUdMzPhAbNVmeUYDm4GHWNUMncAyM+wEttw+JYVFqehyNXBG
-	 TsbHHtH2lIEJmAYzkWfGawDzg29IPo+/H+AjA+tM=
+	b=0W2/KxvGvz1VuvYfrBo8t4/feSzTLEYKEQXGJwrZ3MWFEZcuO3dyx22mac+tZu1K1
+	 AaWPXWz2iI/WhVGdhofds/vrA3db+JfAHd9S3+JgMmK2L8deXTT2Bo2mfwYCcOxSyA
+	 3IuTiH3kpo+rjyX6cnKKwaRSUk8Ka7MN4v0b1cyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Ralf Lici <ralf@mandelbit.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Antonio Quartulli <antonio@openvpn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 727/781] drm/xe/pf: Fix sysfs initialization
+Subject: [PATCH 6.18 510/641] ovpn: set sk_user_data before overriding callbacks
 Date: Tue, 24 Feb 2026 17:23:56 -0800
-Message-ID: <20260225012417.567593197@linuxfoundation.org>
+Message-ID: <20260225012400.881307472@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218767-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219478-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,169 +87,166 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 5E1FF18FF4A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mandelbit.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,queasysnail.net:email]
+X-Rspamd-Queue-Id: 17910193166
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Ralf Lici <ralf@mandelbit.com>
 
-[ Upstream commit bf7172cd25ed182f30af2cbb9f80c730dc717d8e ]
+[ Upstream commit 93686c472eb7b09a51b97a096449e7092fefcd1f ]
 
-In case of devm_add_action_or_reset() failure the provided cleanup
-action will be run immediately on the not yet initialized kobject.
-This may lead to errors like:
+During initialization, we override socket callbacks and set sk_user_data
+to an ovpn_socket instance. Currently, these two operations are
+decoupled: callbacks are overridden before sk_user_data is set. While
+existing callbacks perform safety checks for NULL or non-ovpn
+sk_user_data, this condition causes a "half-formed" state where valid
+packets arriving during attachment trigger error logs (e.g., "invoked on
+non ovpn socket").
 
- [ ] kobject: '(null)' (ff110001393608e0): is not initialized, yet kobject_put() is being called.
- [ ] WARNING: lib/kobject.c:734 at kobject_put+0xd9/0x250, CPU#0: kworker/0:0/9
- [ ] RIP: 0010:kobject_put+0xdf/0x250
- [ ] Call Trace:
- [ ]  xe_sriov_pf_sysfs_init+0x21/0x100 [xe]
- [ ]  xe_sriov_pf_init_late+0x87/0x2b0 [xe]
- [ ]  xe_sriov_init_late+0x5f/0x2c0 [xe]
- [ ]  xe_device_probe+0x5f2/0xc20 [xe]
- [ ]  xe_pci_probe+0x396/0x610 [xe]
- [ ]  local_pci_probe+0x47/0xb0
+Set sk_user_data before overriding the callbacks so that it can be
+accessed safely from them. Since we already check that the socket has no
+sk_user_data before setting it, this remains safe even if an interrupt
+accesses the socket after sk_user_data is set but before the callbacks
+are overridden.
 
- [ ] refcount_t: underflow; use-after-free.
- [ ] WARNING: lib/refcount.c:28 at refcount_warn_saturate+0x68/0xb0, CPU#0: kworker/0:0/9
- [ ] RIP: 0010:refcount_warn_saturate+0x68/0xb0
- [ ] Call Trace:
- [ ]  kobject_put+0x174/0x250
- [ ]  xe_sriov_pf_sysfs_init+0x21/0x100 [xe]
- [ ]  xe_sriov_pf_init_late+0x87/0x2b0 [xe]
- [ ]  xe_sriov_init_late+0x5f/0x2c0 [xe]
- [ ]  xe_device_probe+0x5f2/0xc20 [xe]
- [ ]  xe_pci_probe+0x396/0x610 [xe]
- [ ]  local_pci_probe+0x47/0xb0
+This also requires initializing all protocol-specific fields (such as
+tcp_tx_work and peer links) before calling ovpn_socket_attach, ensuring
+the ovpn_socket is fully formed before it becomes visible to any
+callback.
 
-Fix that by calling kobject_init() and kobject_add() separately
-and register cleanup action after the kobject is initialized.
-
-Also make this cleanup registration a part of the create helper to
-fix another mistake, as in the loop we were wrongly passing parent
-kobject while registering cleanup action, and this resulted in some
-undetected leaks.
-
-Fixes: 5c170a4d9c53 ("drm/xe/pf: Prepare sysfs for SR-IOV admin attributes")
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Link: https://patch.msgid.link/20260203235332.1350-1-michal.wajdeczko@intel.com
-(cherry picked from commit 98b16727f07e26a5d4de84d88805ce7ffcfdd324)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: f6226ae7a0cd ("ovpn: introduce the ovpn_socket object")
+Signed-off-by: Ralf Lici <ralf@mandelbit.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_sriov_pf_sysfs.c | 54 +++++++++++++-------------
- 1 file changed, 26 insertions(+), 28 deletions(-)
+ drivers/net/ovpn/socket.c | 39 +++++++++++++++++++++------------------
+ drivers/net/ovpn/tcp.c    |  9 +++++++--
+ drivers/net/ovpn/udp.c    |  1 +
+ 3 files changed, 29 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_sriov_pf_sysfs.c b/drivers/gpu/drm/xe/xe_sriov_pf_sysfs.c
-index c0b767ac735cf..d1c1f6c295664 100644
---- a/drivers/gpu/drm/xe/xe_sriov_pf_sysfs.c
-+++ b/drivers/gpu/drm/xe/xe_sriov_pf_sysfs.c
-@@ -349,18 +349,33 @@ static const struct attribute_group *xe_sriov_vf_attr_groups[] = {
+diff --git a/drivers/net/ovpn/socket.c b/drivers/net/ovpn/socket.c
+index 9750871ab65ce..448cee3b3f9fa 100644
+--- a/drivers/net/ovpn/socket.c
++++ b/drivers/net/ovpn/socket.c
+@@ -200,6 +200,22 @@ struct ovpn_socket *ovpn_socket_new(struct socket *sock, struct ovpn_peer *peer)
+ 	ovpn_sock->sk = sk;
+ 	kref_init(&ovpn_sock->refcount);
  
- /* no user serviceable parts below */
- 
--static struct kobject *create_xe_sriov_kobj(struct xe_device *xe, unsigned int vfid)
-+static void action_put_kobject(void *arg)
-+{
-+	struct kobject *kobj = arg;
++	/* TCP sockets are per-peer, therefore they are linked to their unique
++	 * peer
++	 */
++	if (sk->sk_protocol == IPPROTO_TCP) {
++		INIT_WORK(&ovpn_sock->tcp_tx_work, ovpn_tcp_tx_work);
++		ovpn_sock->peer = peer;
++		ovpn_peer_hold(peer);
++	} else if (sk->sk_protocol == IPPROTO_UDP) {
++		/* in UDP we only link the ovpn instance since the socket is
++		 * shared among multiple peers
++		 */
++		ovpn_sock->ovpn = peer->ovpn;
++		netdev_hold(peer->ovpn->dev, &ovpn_sock->dev_tracker,
++			    GFP_KERNEL);
++	}
 +
-+	kobject_put(kobj);
-+}
-+
-+static struct kobject *create_xe_sriov_kobj(struct xe_device *xe, unsigned int vfid,
-+					    const struct kobj_type *ktype)
- {
- 	struct xe_sriov_kobj *vkobj;
-+	int err;
+ 	/* the newly created ovpn_socket is holding reference to sk,
+ 	 * therefore we increase its refcounter.
+ 	 *
+@@ -212,29 +228,16 @@ struct ovpn_socket *ovpn_socket_new(struct socket *sock, struct ovpn_peer *peer)
  
- 	xe_sriov_pf_assert_vfid(xe, vfid);
- 
- 	vkobj = kzalloc(sizeof(*vkobj), GFP_KERNEL);
- 	if (!vkobj)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 
- 	vkobj->xe = xe;
- 	vkobj->vfid = vfid;
-+	kobject_init(&vkobj->base, ktype);
+ 	ret = ovpn_socket_attach(ovpn_sock, sock, peer);
+ 	if (ret < 0) {
++		if (sk->sk_protocol == IPPROTO_TCP)
++			ovpn_peer_put(peer);
++		else if (sk->sk_protocol == IPPROTO_UDP)
++			netdev_put(peer->ovpn->dev, &ovpn_sock->dev_tracker);
 +
-+	err = devm_add_action_or_reset(xe->drm.dev, action_put_kobject, &vkobj->base);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	return &vkobj->base;
+ 		sock_put(sk);
+ 		kfree(ovpn_sock);
+ 		ovpn_sock = ERR_PTR(ret);
+-		goto sock_release;
+-	}
+-
+-	/* TCP sockets are per-peer, therefore they are linked to their unique
+-	 * peer
+-	 */
+-	if (sk->sk_protocol == IPPROTO_TCP) {
+-		INIT_WORK(&ovpn_sock->tcp_tx_work, ovpn_tcp_tx_work);
+-		ovpn_sock->peer = peer;
+-		ovpn_peer_hold(peer);
+-	} else if (sk->sk_protocol == IPPROTO_UDP) {
+-		/* in UDP we only link the ovpn instance since the socket is
+-		 * shared among multiple peers
+-		 */
+-		ovpn_sock->ovpn = peer->ovpn;
+-		netdev_hold(peer->ovpn->dev, &ovpn_sock->dev_tracker,
+-			    GFP_KERNEL);
+ 	}
+ 
+-	rcu_assign_sk_user_data(sk, ovpn_sock);
+ sock_release:
+ 	release_sock(sk);
+ 	return ovpn_sock;
+diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
+index 0d7f30360d874..f0b4e07ba9245 100644
+--- a/drivers/net/ovpn/tcp.c
++++ b/drivers/net/ovpn/tcp.c
+@@ -487,6 +487,7 @@ int ovpn_tcp_socket_attach(struct ovpn_socket *ovpn_sock,
+ 	/* make sure no pre-existing encapsulation handler exists */
+ 	if (ovpn_sock->sk->sk_user_data)
+ 		return -EBUSY;
++	rcu_assign_sk_user_data(ovpn_sock->sk, ovpn_sock);
+ 
+ 	/* only a fully connected socket is expected. Connection should be
+ 	 * handled in userspace
+@@ -495,13 +496,14 @@ int ovpn_tcp_socket_attach(struct ovpn_socket *ovpn_sock,
+ 		net_err_ratelimited("%s: provided TCP socket is not in ESTABLISHED state: %d\n",
+ 				    netdev_name(peer->ovpn->dev),
+ 				    ovpn_sock->sk->sk_state);
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err;
+ 	}
+ 
+ 	ret = strp_init(&peer->tcp.strp, ovpn_sock->sk, &cb);
+ 	if (ret < 0) {
+ 		DEBUG_NET_WARN_ON_ONCE(1);
+-		return ret;
++		goto err;
+ 	}
+ 
+ 	INIT_WORK(&peer->tcp.defer_del_work, ovpn_tcp_peer_del_work);
+@@ -536,6 +538,9 @@ int ovpn_tcp_socket_attach(struct ovpn_socket *ovpn_sock,
+ 	strp_check_rcv(&peer->tcp.strp);
+ 
+ 	return 0;
++err:
++	rcu_assign_sk_user_data(ovpn_sock->sk, NULL);
++	return ret;
  }
  
-@@ -471,28 +486,17 @@ static void pf_sysfs_note(struct xe_device *xe, int err, const char *what)
- 	xe_sriov_dbg(xe, "Failed to setup sysfs %s (%pe)\n", what, ERR_PTR(err));
- }
- 
--static void action_put_kobject(void *arg)
--{
--	struct kobject *kobj = arg;
--
--	kobject_put(kobj);
--}
--
- static int pf_setup_root(struct xe_device *xe)
+ static void ovpn_tcp_close(struct sock *sk, long timeout)
+diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
+index d6a0f7a0b75d7..272b535ecaad4 100644
+--- a/drivers/net/ovpn/udp.c
++++ b/drivers/net/ovpn/udp.c
+@@ -386,6 +386,7 @@ int ovpn_udp_socket_attach(struct ovpn_socket *ovpn_sock, struct socket *sock,
+ 			   struct ovpn_priv *ovpn)
  {
- 	struct kobject *parent = &xe->drm.dev->kobj;
- 	struct kobject *root;
- 	int err;
- 
--	root = create_xe_sriov_kobj(xe, PFID);
--	if (!root)
--		return pf_sysfs_error(xe, -ENOMEM, "root obj");
--
--	err = devm_add_action_or_reset(xe->drm.dev, action_put_kobject, root);
--	if (err)
--		return pf_sysfs_error(xe, err, "root action");
-+	root = create_xe_sriov_kobj(xe, PFID, &xe_sriov_dev_ktype);
-+	if (IS_ERR(root))
-+		return pf_sysfs_error(xe, PTR_ERR(root), "root obj");
- 
--	err = kobject_init_and_add(root, &xe_sriov_dev_ktype, parent, "sriov_admin");
-+	err = kobject_add(root, parent, "sriov_admin");
- 	if (err)
- 		return pf_sysfs_error(xe, err, "root init");
- 
-@@ -513,20 +517,14 @@ static int pf_setup_tree(struct xe_device *xe)
- 	root = xe->sriov.pf.sysfs.root;
- 
- 	for (n = 0; n <= totalvfs; n++) {
--		kobj = create_xe_sriov_kobj(xe, VFID(n));
--		if (!kobj)
--			return pf_sysfs_error(xe, -ENOMEM, "tree obj");
--
--		err = devm_add_action_or_reset(xe->drm.dev, action_put_kobject, root);
--		if (err)
--			return pf_sysfs_error(xe, err, "tree action");
-+		kobj = create_xe_sriov_kobj(xe, VFID(n), &xe_sriov_vf_ktype);
-+		if (IS_ERR(kobj))
-+			return pf_sysfs_error(xe, PTR_ERR(kobj), "tree obj");
- 
- 		if (n)
--			err = kobject_init_and_add(kobj, &xe_sriov_vf_ktype,
--						   root, "vf%u", n);
-+			err = kobject_add(kobj, root, "vf%u", n);
- 		else
--			err = kobject_init_and_add(kobj, &xe_sriov_vf_ktype,
--						   root, "pf");
-+			err = kobject_add(kobj, root, "pf");
- 		if (err)
- 			return pf_sysfs_error(xe, err, "tree init");
- 
+ 	struct udp_tunnel_sock_cfg cfg = {
++		.sk_user_data = ovpn_sock,
+ 		.encap_type = UDP_ENCAP_OVPNINUDP,
+ 		.encap_rcv = ovpn_udp_encap_recv,
+ 		.encap_destroy = ovpn_udp_encap_destroy,
 -- 
 2.51.0
 
