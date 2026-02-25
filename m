@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219325-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBOTAZZYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:06 +0100
+	id SJP6Bl+fnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219325-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9330F190775
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD509192F1A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B3E931D4A79
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE936309BB7B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0D62690EC;
-	Wed, 25 Feb 2026 01:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3012FC893;
+	Wed, 25 Feb 2026 06:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1j/tf6n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeRREQeD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21FF243376;
-	Wed, 25 Feb 2026 01:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F60A2D77FA;
+	Wed, 25 Feb 2026 06:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983567; cv=none; b=DRCBYpRqAgqxRxsJF7dbmq8L47N1FAGlZuhwLPmFVxZqSfynQANmOhVup+8a8Xm7TFGWPt+zFG3dfX/+mnvOI3havu2wVWkAZfBd4wJErE2KuXrNZx/5T1QaNeO3yyPJLQtuBoK0xTJznHTnrdsgzgR9ag/nLk7S33CqmogwFLA=
+	t=1772002641; cv=none; b=szO/xfiFUZeESeWSXzPst/K6pISaVKhI00elfsKbMLjri0+cJsp0vALPoX1JTa8QaDKLwxSNcXA8m4UK3MbRU734hi5NPA5VC7hWqRlFga17I0oJP+di7xkt1Tk8khQDguid+cJYyVDl+x+I1+7OJYUrt3do520z8pABkpsq/UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983567; c=relaxed/simple;
-	bh=u0W2WLbSmGNtv4Hz+QZRFyUxoCehWJVdT/Gl14hZU3w=;
+	s=arc-20240116; t=1772002641; c=relaxed/simple;
+	bh=TBbCa2K4XBjLTvm1b8NyhjO+YuavMpGA6xoyjTOxd/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iw1hvPZvDXXozEeMRO/UojPuyAJj6dZlcOJxq8qKs9CAv+XOxdXtRKrRsW5x6oP0AZd5LycFvfNFUooz7Zd0hb+yzOmX4HjTAXLiUTVkCNw3tpsxwViRmwyHZzgRD0tWUyLhVDXQiyoMxU6lHvL6WdoOg1BlKsUlSGharOcCu3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1j/tf6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870A2C19423;
-	Wed, 25 Feb 2026 01:39:27 +0000 (UTC)
+	 MIME-Version; b=i/HkFNM1jL07Yh/k1RSbF4Xdenpv+zN+22ojO9tRWXiHNdoArrIp+g7eKMLgZHantJ/QZa9QRG+pfiWGe4eaRmiqO2SMG6hScuPSLysc539Y65R3SBZJvDcLJdM1CpAkVScwl8ArbDp9bHfIXx5wuwqvORdRmV7lGEqp3z0RPbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeRREQeD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4689AC116D0;
+	Wed, 25 Feb 2026 06:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983567;
-	bh=u0W2WLbSmGNtv4Hz+QZRFyUxoCehWJVdT/Gl14hZU3w=;
+	s=korg; t=1772002641;
+	bh=TBbCa2K4XBjLTvm1b8NyhjO+YuavMpGA6xoyjTOxd/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b1j/tf6n0syCtGdKfdU0cHfNbskjWEEAFtBvLK2L1sZ6pedtX7DKYVcAxydDQ6IYU
-	 r/RAkLrpwF63lZRhHVESG/Rout4qRiPXz0VoZTtnMHgxCIMaHS/5PJVz8E7xUEM/jZ
-	 nGaOvDhmtoyHFfOXi3O8WuNxaGTpGsFaaRc1GlMg=
+	b=XeRREQeDVLb0ZsnjnE15sheR7JD5pg+5yYU51DWR+5Q8cYDyqNqP8yXcStiRMwri+
+	 piJSsVM/vYFgUjY6qP4lJVT9a6+pd4SkQCIIMp0wTImhEZUj0HaAPW1SOKANIyco0n
+	 nVKNDGzT4Ap3UWZQplcba9LumJ/EUytnJgbom/uQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 625/781] powercap: intel_rapl_tpmi: Remove FW_BUG from invalid version check
+Subject: [PATCH 6.18 408/641] clk: meson: g12a: Limit the HDMI PLL OD to /4
 Date: Tue, 24 Feb 2026 17:22:14 -0800
-Message-ID: <20260225012415.140848749@linuxfoundation.org>
+Message-ID: <20260225012358.449201165@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,81 +65,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218707-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219325-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,googlemail.com,baylibre.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.962];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 9330F190775
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AD509192F1A
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit c7d54dafa042cf379859dba265fe5afef6fa8770 ]
+[ Upstream commit 7aa6c24697ef5db1402dd38743914493cd5b356d ]
 
-On partitioned systems, multiple TPMI instances may exist per package,
-but RAPL registers are only valid on one instance since RAPL has
-package-scope control. Other instances return invalid versions during
-domain parsing, which is expected behavior on such systems.
+GXBB has the HDMI PLL OD in the HHI_HDMI_PLL_CNTL2 register while for
+G12A/G12B/SM1 the OD has moved to HHI_HDMI_PLL_CNTL0. At first glance
+the rest of the OD setup seems identical.
 
-Currently this generates a firmware bug warning:
+However, looking at the downstream kernel sources as well as testing
+shows that G12A/G12B/SM1 only supports three OD values:
+- register value 0 means: divide by 1
+- register value 1 means: divide by 2
+- register value 2 means: divide by 4
 
-  intel_rapl_tpmi: [Firmware Bug]: Invalid version
+Downstream sources are also only using OD register values 0, 1 and 2
+for G12A/G12B/SM1 (while for GXBB the downstream kernel sources are also
+using value 3 which means: divide by 8).
 
-Remove the FW_BUG tag, downgrade to pr_debug(), and update the message
-to clarify that invalid versions are expected on partitioned systems
-where only one instance can be valid.
+Add clk_div_table and have it replace the CLK_DIVIDER_POWER_OF_TWO flag
+to make the kernel's view of this register match with how the hardware
+actually works.
 
-Fixes: 9eef7f9da928 ("powercap: intel_rapl: Introduce RAPL TPMI interface driver")
-Reported-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20260211223401.1575776-1-sathyanarayanan.kuppuswamy@linux.intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20260105204710.447779-3-martin.blumenstingl@googlemail.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/intel_rapl_tpmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/meson/g12a.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/powercap/intel_rapl_tpmi.c b/drivers/powercap/intel_rapl_tpmi.c
-index 0a0b85f4528b1..0f8abdc592bc1 100644
---- a/drivers/powercap/intel_rapl_tpmi.c
-+++ b/drivers/powercap/intel_rapl_tpmi.c
-@@ -157,7 +157,7 @@ static int parse_one_domain(struct tpmi_rapl_package *trp, u32 offset)
- 	tpmi_domain_flags = tpmi_domain_header >> 32 & 0xffff;
+diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
+index 185b6348251db..d0d4c7b6dc827 100644
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -777,12 +777,23 @@ static struct clk_regmap g12a_hdmi_pll_dco = {
+ 	},
+ };
  
- 	if (tpmi_domain_version == TPMI_VERSION_INVALID) {
--		pr_warn(FW_BUG "Invalid version\n");
-+		pr_debug("Invalid version, other instances may be valid\n");
- 		return -ENODEV;
- 	}
- 
++/*
++ * G12/SM1 hdmi OD dividers are POWER_OF_TWO dividers but limited to /4.
++ * A divider value of 3 should map to /8 but instead map /4 so ignore it.
++ */
++static const struct clk_div_table g12a_hdmi_pll_od_div_table[] = {
++	{ .val = 0, .div = 1 },
++	{ .val = 1, .div = 2 },
++	{ .val = 2, .div = 4 },
++	{ /* sentinel */ }
++};
++
+ static struct clk_regmap g12a_hdmi_pll_od = {
+ 	.data = &(struct clk_regmap_div_data){
+ 		.offset = HHI_HDMI_PLL_CNTL0,
+ 		.shift = 16,
+ 		.width = 2,
+-		.flags = CLK_DIVIDER_POWER_OF_TWO,
++		.table = g12a_hdmi_pll_od_div_table,
+ 	},
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "hdmi_pll_od",
+@@ -800,7 +811,7 @@ static struct clk_regmap g12a_hdmi_pll_od2 = {
+ 		.offset = HHI_HDMI_PLL_CNTL0,
+ 		.shift = 18,
+ 		.width = 2,
+-		.flags = CLK_DIVIDER_POWER_OF_TWO,
++		.table = g12a_hdmi_pll_od_div_table,
+ 	},
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "hdmi_pll_od2",
+@@ -818,7 +829,7 @@ static struct clk_regmap g12a_hdmi_pll = {
+ 		.offset = HHI_HDMI_PLL_CNTL0,
+ 		.shift = 20,
+ 		.width = 2,
+-		.flags = CLK_DIVIDER_POWER_OF_TWO,
++		.table = g12a_hdmi_pll_od_div_table,
+ 	},
+ 	.hw.init = &(struct clk_init_data){
+ 		.name = "hdmi_pll",
 -- 
 2.51.0
 
