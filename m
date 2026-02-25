@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDyeLn1Unmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:37 +0100
+	id iOD2NhKdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:56:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0779D18FCE9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7DE192911
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:56:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7361030730BC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 64544303479B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DC3256C84;
-	Wed, 25 Feb 2026 01:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D63F2C11CF;
+	Wed, 25 Feb 2026 06:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLULXZt5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YLOvtEJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AC0243376;
-	Wed, 25 Feb 2026 01:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52382C0263;
+	Wed, 25 Feb 2026 06:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983395; cv=none; b=Itba/n1OwOmqFt7CRvHn7Eo5Gw6ekvUM0inIm1X9o5yvhf4HtbJyiGHYTFyABhrvX8bJDjaTNZPqjHxOyH/VA6lZddXCcaBPzXsjIrORsb4v3YF0QY9CGr7nD1J5+q/dkOij5AGJOZw+ooxpkDLnFXhQHlipq1l1GuT1CMq7eKU=
+	t=1772002567; cv=none; b=NhmVADxU4duQUE/2C1nwOOkwzT72RveNIeEhEr0BmGAy+ULkV6YxilsJ9JxLhi6hE6VfkvFjbTr7feXKFcNygEPq1mtU8pjA55sktzd9q4FQFtTaeoXzs1jkRN/xA5k2TMCa9ltFQI4RNQTnokJaTCN0Z0IKeLGED1wpkgUA/P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983395; c=relaxed/simple;
-	bh=/9MCQAAVaON6/E/xSKZY4YRItAZXriax4p58XmV/auw=;
+	s=arc-20240116; t=1772002567; c=relaxed/simple;
+	bh=5aa3CU9PWB6KKQUWiSRMLV+Rp25e9/3938yzBu0MaYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEql++ZID/jllxQOg17LrAPLtcxNKTy0wJT1ZBdpvVNxh6iRNCnT7oYTY1h9Ch4lvT5lpqV6YEc3hE1V4q9rCo55nS9ZAJYcivsNvEcEGxg9rj8m8yM7dUuuvssCywgoa3a/FV5bQULpmt6FW/PKTdqt3kexkDXrt35mKWad13s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLULXZt5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3640C116D0;
-	Wed, 25 Feb 2026 01:36:34 +0000 (UTC)
+	 MIME-Version; b=g8ezLYJTmq1sSrWaM/Gp6cxjlLUBYDof4dxiD0cmFNcdfX2CF/bBbBRQcUDOOgT41yJiAzgQJD3Iq2Mc0q3UkZHBX+g7b6iZZH0snmjmDHZO4FusjEQZdC+sjqsfqkVQcqy3X7Mg4JCH+8u0s2DIGy1NPPtN70Ri6zM+EqcI0AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YLOvtEJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCAFC19422;
+	Wed, 25 Feb 2026 06:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983395;
-	bh=/9MCQAAVaON6/E/xSKZY4YRItAZXriax4p58XmV/auw=;
+	s=korg; t=1772002566;
+	bh=5aa3CU9PWB6KKQUWiSRMLV+Rp25e9/3938yzBu0MaYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLULXZt5OFLnS3XZfURh4BSLrtzlW4+E9MBJ8dSSAujkc3kFqZxqaQRuxtrCEuzUx
-	 KitIxnQJf+YpFwPxAmleTSonNVZ9g9uVYqi3eip6e/AXTPNYIqRGWY6jGJdjIRFwav
-	 7/tLfovavjmKYn1/+OAvBaE1HDND/ij4FWKZtEx0=
+	b=2YLOvtEJuppxagMxidtWSeroxRgRo+F+7jw98vNWBeRERkukB9FwoVwtg0yIfRLKI
+	 BTi0fzL7D2NmM5QJ9CKP3KMELvYEUMRJi6a+XsOvm9IYxhVhYiOQTywuYnxlD4RH3W
+	 GW8NxgJDL3QuwZpneARMR3GTFri26b+mS7LhaYqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	Anshumali Gaur <agaur@marvell.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 517/781] clk: meson: g12a: Limit the HDMI PLL OD to /4
+Subject: [PATCH 6.18 300/641] octeontx2-af: Fix PF driver crash with kexec kernel booting
 Date: Tue, 24 Feb 2026 17:20:26 -0800
-Message-ID: <20260225012412.484425358@linuxfoundation.org>
+Message-ID: <20260225012356.013480709@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,120 +66,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218556-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,googlemail.com,baylibre.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219214-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.978];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,baylibre.com:email]
-X-Rspamd-Queue-Id: 0779D18FCE9
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,marvell.com:email,intel.com:email]
+X-Rspamd-Queue-Id: 4A7DE192911
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Anshumali Gaur <agaur@marvell.com>
 
-[ Upstream commit 7aa6c24697ef5db1402dd38743914493cd5b356d ]
+[ Upstream commit 2d2d574309e3ae84ee794869a5da8b4c38753a94 ]
 
-GXBB has the HDMI PLL OD in the HHI_HDMI_PLL_CNTL2 register while for
-G12A/G12B/SM1 the OD has moved to HHI_HDMI_PLL_CNTL0. At first glance
-the rest of the OD setup seems identical.
+During a kexec reboot the hardware is not power-cycled, so AF state from
+the old kernel can persist into the new kernel. When AF and PF drivers
+are built as modules, the PF driver may probe before AF reinitializes
+the hardware.
 
-However, looking at the downstream kernel sources as well as testing
-shows that G12A/G12B/SM1 only supports three OD values:
-- register value 0 means: divide by 1
-- register value 1 means: divide by 2
-- register value 2 means: divide by 4
+The PF driver treats the RVUM block revision as an indication that AF
+initialization is complete. If this value is left uncleared at shutdown,
+PF may incorrectly assume AF is ready and access stale hardware state,
+leading to a crash.
 
-Downstream sources are also only using OD register values 0, 1 and 2
-for G12A/G12B/SM1 (while for GXBB the downstream kernel sources are also
-using value 3 which means: divide by 8).
+Clear the RVUM block revision during AF shutdown to avoid PF
+mis-detecting AF readiness after kexec.
 
-Add clk_div_table and have it replace the CLK_DIVIDER_POWER_OF_TWO flag
-to make the kernel's view of this register match with how the hardware
-actually works.
-
-Fixes: 085a4ea93d54 ("clk: meson: g12a: add peripheral clock controller")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20260105204710.447779-3-martin.blumenstingl@googlemail.com
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Fixes: 54494aa5d1e6 ("octeontx2-af: Add Marvell OcteonTX2 RVU AF driver")
+Signed-off-by: Anshumali Gaur <agaur@marvell.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260203050701.2616685-1-agaur@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/g12a.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
-index 185b6348251db..d0d4c7b6dc827 100644
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -777,12 +777,23 @@ static struct clk_regmap g12a_hdmi_pll_dco = {
- 	},
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 747fbdf2a908f..8530df8b3fdaf 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -3632,11 +3632,22 @@ static void rvu_remove(struct pci_dev *pdev)
+ 	devm_kfree(&pdev->dev, rvu);
+ }
+ 
++static void rvu_shutdown(struct pci_dev *pdev)
++{
++	struct rvu *rvu = pci_get_drvdata(pdev);
++
++	if (!rvu)
++		return;
++
++	rvu_clear_rvum_blk_revid(rvu);
++}
++
+ static struct pci_driver rvu_driver = {
+ 	.name = DRV_NAME,
+ 	.id_table = rvu_id_table,
+ 	.probe = rvu_probe,
+ 	.remove = rvu_remove,
++	.shutdown = rvu_shutdown,
  };
  
-+/*
-+ * G12/SM1 hdmi OD dividers are POWER_OF_TWO dividers but limited to /4.
-+ * A divider value of 3 should map to /8 but instead map /4 so ignore it.
-+ */
-+static const struct clk_div_table g12a_hdmi_pll_od_div_table[] = {
-+	{ .val = 0, .div = 1 },
-+	{ .val = 1, .div = 2 },
-+	{ .val = 2, .div = 4 },
-+	{ /* sentinel */ }
-+};
-+
- static struct clk_regmap g12a_hdmi_pll_od = {
- 	.data = &(struct clk_regmap_div_data){
- 		.offset = HHI_HDMI_PLL_CNTL0,
- 		.shift = 16,
- 		.width = 2,
--		.flags = CLK_DIVIDER_POWER_OF_TWO,
-+		.table = g12a_hdmi_pll_od_div_table,
- 	},
- 	.hw.init = &(struct clk_init_data){
- 		.name = "hdmi_pll_od",
-@@ -800,7 +811,7 @@ static struct clk_regmap g12a_hdmi_pll_od2 = {
- 		.offset = HHI_HDMI_PLL_CNTL0,
- 		.shift = 18,
- 		.width = 2,
--		.flags = CLK_DIVIDER_POWER_OF_TWO,
-+		.table = g12a_hdmi_pll_od_div_table,
- 	},
- 	.hw.init = &(struct clk_init_data){
- 		.name = "hdmi_pll_od2",
-@@ -818,7 +829,7 @@ static struct clk_regmap g12a_hdmi_pll = {
- 		.offset = HHI_HDMI_PLL_CNTL0,
- 		.shift = 20,
- 		.width = 2,
--		.flags = CLK_DIVIDER_POWER_OF_TWO,
-+		.table = g12a_hdmi_pll_od_div_table,
- 	},
- 	.hw.init = &(struct clk_init_data){
- 		.name = "hdmi_pll",
+ static int __init rvu_init_module(void)
 -- 
 2.51.0
 
