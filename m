@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-218250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNqYMS5SnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:46 +0100
+	id QF2sLrJQnmmNUgQAu9opvQ
+	(envelope-from <stable+bounces-218206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41DEE18F259
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FECD18ECAA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BB03F310E68A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:30:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7F436305FD98
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C29256C8B;
-	Wed, 25 Feb 2026 01:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362F525332E;
+	Wed, 25 Feb 2026 01:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eS/yIbHJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HC3lzpJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFEA248886;
-	Wed, 25 Feb 2026 01:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFDE251793;
+	Wed, 25 Feb 2026 01:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983047; cv=none; b=cUb0fT2Xx8Wa6niG0Vk0m0djnvazY+S5FqsgJxVvaiGMOOnLdUJnODTxrXI4x/DM8Rpi51qJ/naTsUZdy4+NyznbK47Qi0HdeGz7ci18MvbxAzWKZ3gH9/d4QqbnoTwD7iq6OjjapunMEAIhDHEomhBbvkJLdYeDaDvbqrxTEZ8=
+	t=1771982998; cv=none; b=F0ev0nVW2jY4ZADTR5NU2mO6w9cVf+g2of/xEHiNXmyf9gaXpu31niJlIVuz/ec3LrPAtZMz+eyQIcUCwVcWkqNx7aGEtdAq1tsrGE88Ne9syRjwfpLWlAu0m20TQQ23TyMTa1t5yt5LJaQoA/FR8aaV6L6aZLcb/iMooP5KbU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983047; c=relaxed/simple;
-	bh=EeZiGCm9cLI1GW0Ayo/JLMTbykO9Sf0QKiqGK6jQaMA=;
+	s=arc-20240116; t=1771982998; c=relaxed/simple;
+	bh=WS5iJCRYFlL1Ca9i43PPfJ9pJCVkVljcoqUqxOkD1jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPUnrD4YhTvCe2oKCSPAjV76R+BVlwuSqEVJZ2oRYc+hge1RHIk9NPSCSEgcpvV8eMKJzWNBNdmi3YkKPmY+PNsoRgIHFvDm+KRYVBiEZ0BUxPrH2QCAZipU9qy8cSNrgUFMEB/lFP6dPzZsFGOqHN2YxUItSw/leU/XlniJso0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eS/yIbHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983ACC116D0;
-	Wed, 25 Feb 2026 01:30:47 +0000 (UTC)
+	 MIME-Version; b=ORzkOwsREOmlWACKFyT7KvgTP9rh2v3G0K3rTCvzdVivWerwMKklqPTmvgQxraaVvghH+r8uDgyiOcr2x4h01KcWY3te1/B1f4YbB/dEOalBm8rS6PzcqqNKPmbelhH7mPdZZhq6RDvu6AoKTVp2nt/HUKanAl7DLWRkQOPDvPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HC3lzpJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3930C116D0;
+	Wed, 25 Feb 2026 01:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983047;
-	bh=EeZiGCm9cLI1GW0Ayo/JLMTbykO9Sf0QKiqGK6jQaMA=;
+	s=korg; t=1771982997;
+	bh=WS5iJCRYFlL1Ca9i43PPfJ9pJCVkVljcoqUqxOkD1jc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eS/yIbHJ4F54npe49MFZoa3LWaJfBmgx8Udz1bxQ09uPm6BwvWi52m6THS3CcrW4K
-	 b0MwESVe7qhJduqxGElGdCSyIZiFHiI5suR7W7BbRDYhMfUY5sVt8GFPWVnV9OIorW
-	 qxdtvtu0l7KKU9EYPaoRtO/mnQZqLMyquTbfaDcY=
+	b=HC3lzpJTQrTtY70KgPJ8hznaevva0w3yPTQHa8XSmhSWux4WyMa6dOHNXUqcaiw+4
+	 fPGCX9M466XzDZgeU5uXl3MZ0HXa5AnumsF8xxmgGzkpiq3jxuk4IUwujNoeQlvUq1
+	 zcpsVsxxDMwMrtdKf8mH1XBlo2B7LFv4TkvhofGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Nick Xie <nick@khadas.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 168/781] arm64: dts: mediatek: mt8183-jacuzzi-pico6: Fix typo in pinmux node
-Date: Tue, 24 Feb 2026 17:14:37 -0800
-Message-ID: <20260225012403.771543993@linuxfoundation.org>
+Subject: [PATCH 6.19 169/781] arm64: dts: amlogic: s4: assign mmc b clock to 24MHz
+Date: Tue, 24 Feb 2026 17:14:38 -0800
+Message-ID: <20260225012403.795442020@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -69,64 +70,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218206-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218250-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,0.0.0.2:email,collabora.com:email,chromium.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 41DEE18F259
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5FECD18ECAA
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit b1fc81a986c9b8089db31e21a372cc8b6514e900 ]
+[ Upstream commit 86124a8becb43eed3103f2459399daee8af2c99d ]
 
-Rename "piins-bt-wakeup" to "pins-bt-wakeup" to fix a dtbs_check
-warning happening due to this typo.
+The amlogic MMC driver operate with the assumption that MMC clock
+is configured to provide 24MHz. It uses this path for low
+rates such as 400kHz.
 
-Fixes: 055ef10ccdd4 ("arm64: dts: mt8183: Add jacuzzi pico/pico6 board")
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+This assumption did hold true until but it now, but it is apparently
+not the case with s4. The clock has been reported to provide 1GHz
+instead. This is most likely due to how the bootloader is using the MMC
+clock on this platform.
+
+Regardless of why the MMC clock rate is 1GHz, if the MMC driver expects
+24MHz, the clock should be properly assigned, so assign it.
+
+Reported-by: Nick Xie <nick@khadas.com>
+Closes: https://lore.kernel.org/linux-amlogic/20260113011931.40424-1-nick@khadas.com/
+Fixes: 3ab9d54b5d84 ("arm64: dts: amlogic: enable some device nodes for S4")
+Tested-by: Nick Xie <nick@khadas.com>
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260114-amlogic-s4-mmc-fixup-v3-1-a4d3e136b3f2@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/amlogic/meson-s4.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts
-index cce326aec1aa5..40af5656d6f15 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts
-@@ -91,7 +91,7 @@ bluetooth@2 {
- 
- &pio {
- 	bt_pins_wakeup: bt-pins-wakeup {
--		piins-bt-wakeup {
-+		pins-bt-wakeup {
- 			pinmux = <PINMUX_GPIO42__FUNC_GPIO42>;
- 			input-enable;
+diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+index 9d99ed2994dfa..f314f07062abe 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+@@ -838,6 +838,9 @@ sd: mmc@fe08a000 {
+ 			clock-names = "core", "clkin0", "clkin1";
+ 			resets = <&reset RESET_SD_EMMC_B>;
+ 			status = "disabled";
++
++			assigned-clocks = <&clkc_periphs CLKID_SD_EMMC_B>;
++			assigned-clock-rates = <24000000>;
  		};
+ 
+ 		emmc: mmc@fe08c000 {
 -- 
 2.51.0
 
