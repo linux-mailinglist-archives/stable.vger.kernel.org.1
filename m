@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218820-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHuaDRCgnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219518-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:04 +0100
+	id MF9PKw9ZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218820-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8AE19304F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DBF190899
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47B66314185A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 077CE323D84B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52931311C35;
-	Wed, 25 Feb 2026 06:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C242C2701B8;
+	Wed, 25 Feb 2026 01:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPt8gRhu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yescZD04"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DC7306B21;
-	Wed, 25 Feb 2026 06:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851121E2834;
+	Wed, 25 Feb 2026 01:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002769; cv=none; b=SinZh/Fpljer7sbeT3TRdq04ybNSlafxLKp6WiKYtcnnQ95JqHPrZlzAAeJKmcCO9rIftsg7y/kqONZpdlY/KLgbB3DugS5rYbxmdo6isKWixAl50xrFddOGutNO2psGnBKNZ17I4iXfjD0OpC+7aeSb3qz5LxA9XKJipfBsjv8=
+	t=1771983699; cv=none; b=J1COO4ijjXxDZZiSP2AzTMr1+GcUrRJV07Xgy9LrszirRsh4IJI2VEn9Hj7Pjn2FYTiM4Zrib9Tw3GyWQdkLulrZGotYltdNrs0kc2qIqWTGCunJdpKm3cJIwxiHSko322JFaYF5NZMPca2MJGGqxwtPU5ENeE9SlFh8wrEBlTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002769; c=relaxed/simple;
-	bh=740Z5+vSXC47+1/h4Anf/p1rQiSL/TV84E1cWtUw0WA=;
+	s=arc-20240116; t=1771983699; c=relaxed/simple;
+	bh=D8qyOjwbKBRmtuu4bL+8am5cAfcIT/rxaNMmArEyuwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ulk8L4UXEsowmMdrpuNQDbHCX0W1+DcYRb97vc/u7RFBX56tVI0rea/RCtDw7uOk8bD4RHoCQ7SWEfR+lWlooq7SzDgPpeMoSxsDBecAe/lGCMZ4TjUJnAQ5+1zWiJAPhdajxXoIbOgazJ4wkgpRLYnMK7C03YT57cBaDhiye2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPt8gRhu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D2EC116D0;
-	Wed, 25 Feb 2026 06:59:28 +0000 (UTC)
+	 MIME-Version; b=kxSoFd/4tu3Z9vZpry3rc1uwujY7km+iOYI4CureSkw0ss9/NePHnThMd6k6/kG/RHWl7B5V+llhM6UhfX13/VwTPTAW8W+9+3strVxc7cO3kgysyN33ROzub/ew8qZVKvSDyMIRhb0Zhv69drEqVhwMKfwpo3UqLcvsW1LwiPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yescZD04; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420FCC116D0;
+	Wed, 25 Feb 2026 01:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002769;
-	bh=740Z5+vSXC47+1/h4Anf/p1rQiSL/TV84E1cWtUw0WA=;
+	s=korg; t=1771983699;
+	bh=D8qyOjwbKBRmtuu4bL+8am5cAfcIT/rxaNMmArEyuwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UPt8gRhuZWJCyKZWjQ4x3BEic9b3fB5f04nP01Wcv5LiSL0Q6nea7l99ExWkRPKtV
-	 DQnyL8jxpeeN5RHcrqtSLsC5PVaCPvfI0o1KbEvNpK9FdnvKpfiAQImzinejVruifx
-	 a9DbjrpYmSOhgGrQ3mKdR76b+aNv86ApOLh8fa6g=
+	b=yescZD043mM9GcdZOoNMv99wHmrsptHqvC5i5AECBrQzvXTEZuhkQu6gVm/2iVF2A
+	 wt6EGymVjLiapzxT2fC+7HkC9ASvURZGE5RIhzmnNJ57v+SvNEo8ATzeU7KNjuIk/S
+	 Kqfh30LEaljMbE3zcfVNcYijZEm0v+jE0KNUcE2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamin Mc <jaminmc@gmail.com>,
-	=?UTF-8?q?Fabian=20Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 563/641] apparmor: fix NULL pointer dereference in __unix_needs_revalidation
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Florian Bezdeka <florian.bezdeka@siemens.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.19 780/781] Drivers: hv: vmbus: Use kthread for vmbus interrupts on PREEMPT_RT
 Date: Tue, 24 Feb 2026 17:24:49 -0800
-Message-ID: <20260225012402.164160645@linuxfoundation.org>
+Message-ID: <20260225012418.844786499@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +64,213 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,proxmox.com,canonical.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219518-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,siemens.com,outlook.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218820-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,canonical.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,localhost:email]
-X-Rspamd-Queue-Id: 9D8AE19304F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,outlook.com:email]
+X-Rspamd-Queue-Id: 10DBF190899
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: System Administrator <root@localhost>
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-[ Upstream commit e2938ad00b21340c0362562dfedd7cfec0554d67 ]
+commit f8e6343b7a89c7c649db5a9e309ba7aa20401813 upstream.
 
-When receiving file descriptors via SCM_RIGHTS, both the socket pointer
-and the socket's sk pointer can be NULL during socket setup or teardown,
-causing NULL pointer dereferences in __unix_needs_revalidation().
+Resolves the following lockdep report when booting PREEMPT_RT on Hyper-V
+with related guest support enabled:
 
-This is a regression in AppArmor 5.0.0 (kernel 6.17+) where the new
-__unix_needs_revalidation() function was added without proper NULL checks.
+[    1.127941] hv_vmbus: registering driver hyperv_drm
 
-The crash manifests as:
-  BUG: kernel NULL pointer dereference, address: 0x0000000000000018
-  RIP: aa_file_perm+0xb7/0x3b0 (or +0xbe/0x3b0, +0xc0/0x3e0)
-  Call Trace:
-   apparmor_file_receive+0x42/0x80
-   security_file_receive+0x2e/0x50
-   receive_fd+0x1d/0xf0
-   scm_detach_fds+0xad/0x1c0
+[    1.132518] =============================
+[    1.132519] [ BUG: Invalid wait context ]
+[    1.132521] 6.19.0-rc8+ #9 Not tainted
+[    1.132524] -----------------------------
+[    1.132525] swapper/0/0 is trying to lock:
+[    1.132526] ffff8b9381bb3c90 (&channel->sched_lock){....}-{3:3}, at: vmbus_chan_sched+0xc4/0x2b0
+[    1.132543] other info that might help us debug this:
+[    1.132544] context-{2:2}
+[    1.132545] 1 lock held by swapper/0/0:
+[    1.132547]  #0: ffffffffa010c4c0 (rcu_read_lock){....}-{1:3}, at: vmbus_chan_sched+0x31/0x2b0
+[    1.132557] stack backtrace:
+[    1.132560] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.19.0-rc8+ #9 PREEMPT_{RT,(lazy)}
+[    1.132565] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/25/2025
+[    1.132567] Call Trace:
+[    1.132570]  <IRQ>
+[    1.132573]  dump_stack_lvl+0x6e/0xa0
+[    1.132581]  __lock_acquire+0xee0/0x21b0
+[    1.132592]  lock_acquire+0xd5/0x2d0
+[    1.132598]  ? vmbus_chan_sched+0xc4/0x2b0
+[    1.132606]  ? lock_acquire+0xd5/0x2d0
+[    1.132613]  ? vmbus_chan_sched+0x31/0x2b0
+[    1.132619]  rt_spin_lock+0x3f/0x1f0
+[    1.132623]  ? vmbus_chan_sched+0xc4/0x2b0
+[    1.132629]  ? vmbus_chan_sched+0x31/0x2b0
+[    1.132634]  vmbus_chan_sched+0xc4/0x2b0
+[    1.132641]  vmbus_isr+0x2c/0x150
+[    1.132648]  __sysvec_hyperv_callback+0x5f/0xa0
+[    1.132654]  sysvec_hyperv_callback+0x88/0xb0
+[    1.132658]  </IRQ>
+[    1.132659]  <TASK>
+[    1.132660]  asm_sysvec_hyperv_callback+0x1a/0x20
 
-The function dereferences sock->sk->sk_family without checking if either
-sock or sock->sk is NULL first.
+As code paths that handle vmbus IRQs use sleepy locks under PREEMPT_RT,
+the vmbus_isr execution needs to be moved into thread context. Open-
+coding this allows to skip the IPI that irq_work would additionally
+bring and which we do not need, being an IRQ, never an NMI.
 
-Add NULL checks for both sock and sock->sk before accessing sk_family.
+This affects both x86 and arm64, therefore hook into the common driver
+logic.
 
-Fixes: 88fec3526e841 ("apparmor: make sure unix socket labeling is correctly updated.")
-Reported-by: Jamin Mc <jaminmc@gmail.com>
-Closes: https://bugzilla.proxmox.com/show_bug.cgi?id=7083
-Closes: https://gitlab.com/apparmor/apparmor/-/issues/568
-Signed-off-by: Fabian Grünbichler <f.gruenbichler@proxmox.com>
-Signed-off-by: System Administrator <root@localhost>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+Tested-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/file.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hv/vmbus_drv.c |   66 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 65 insertions(+), 1 deletion(-)
 
-diff --git a/security/apparmor/file.c b/security/apparmor/file.c
-index c758204028780..919dbbbc87ab6 100644
---- a/security/apparmor/file.c
-+++ b/security/apparmor/file.c
-@@ -578,6 +578,9 @@ static bool __unix_needs_revalidation(struct file *file, struct aa_label *label,
- 		return false;
- 	if (request & NET_PEER_MASK)
- 		return false;
-+	/* sock and sock->sk can be NULL for sockets being set up or torn down */
-+	if (!sock || !sock->sk)
-+		return false;
- 	if (sock->sk->sk_family == PF_UNIX) {
- 		struct aa_sk_ctx *ctx = aa_sock(sock->sk);
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -25,6 +25,7 @@
+ #include <linux/cpu.h>
+ #include <linux/sched/isolation.h>
+ #include <linux/sched/task_stack.h>
++#include <linux/smpboot.h>
  
--- 
-2.51.0
-
+ #include <linux/delay.h>
+ #include <linux/panic_notifier.h>
+@@ -1350,7 +1351,7 @@ static void vmbus_message_sched(struct h
+ 	}
+ }
+ 
+-void vmbus_isr(void)
++static void __vmbus_isr(void)
+ {
+ 	struct hv_per_cpu_context *hv_cpu
+ 		= this_cpu_ptr(hv_context.cpu_context);
+@@ -1363,6 +1364,53 @@ void vmbus_isr(void)
+ 
+ 	add_interrupt_randomness(vmbus_interrupt);
+ }
++
++static DEFINE_PER_CPU(bool, vmbus_irq_pending);
++static DEFINE_PER_CPU(struct task_struct *, vmbus_irqd);
++
++static void vmbus_irqd_wake(void)
++{
++	struct task_struct *tsk = __this_cpu_read(vmbus_irqd);
++
++	__this_cpu_write(vmbus_irq_pending, true);
++	wake_up_process(tsk);
++}
++
++static void vmbus_irqd_setup(unsigned int cpu)
++{
++	sched_set_fifo(current);
++}
++
++static int vmbus_irqd_should_run(unsigned int cpu)
++{
++	return __this_cpu_read(vmbus_irq_pending);
++}
++
++static void run_vmbus_irqd(unsigned int cpu)
++{
++	__this_cpu_write(vmbus_irq_pending, false);
++	__vmbus_isr();
++}
++
++static bool vmbus_irq_initialized;
++
++static struct smp_hotplug_thread vmbus_irq_threads = {
++	.store                  = &vmbus_irqd,
++	.setup			= vmbus_irqd_setup,
++	.thread_should_run      = vmbus_irqd_should_run,
++	.thread_fn              = run_vmbus_irqd,
++	.thread_comm            = "vmbus_irq/%u",
++};
++
++void vmbus_isr(void)
++{
++	if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
++		vmbus_irqd_wake();
++	} else {
++		lockdep_hardirq_threaded();
++		__vmbus_isr();
++	}
++}
+ EXPORT_SYMBOL_FOR_MODULES(vmbus_isr, "mshv_vtl");
+ 
+ static irqreturn_t vmbus_percpu_isr(int irq, void *dev_id)
+@@ -1462,6 +1510,13 @@ static int vmbus_bus_init(void)
+ 	 * the VMbus interrupt handler.
+ 	 */
+ 
++	if (IS_ENABLED(CONFIG_PREEMPT_RT) && !vmbus_irq_initialized) {
++		ret = smpboot_register_percpu_thread(&vmbus_irq_threads);
++		if (ret)
++			goto err_kthread;
++		vmbus_irq_initialized = true;
++	}
++
+ 	if (vmbus_irq == -1) {
+ 		hv_setup_vmbus_handler(vmbus_isr);
+ 	} else {
+@@ -1507,6 +1562,11 @@ err_connect:
+ 		free_percpu(vmbus_evt);
+ 	}
+ err_setup:
++	if (IS_ENABLED(CONFIG_PREEMPT_RT) && vmbus_irq_initialized) {
++		smpboot_unregister_percpu_thread(&vmbus_irq_threads);
++		vmbus_irq_initialized = false;
++	}
++err_kthread:
+ 	bus_unregister(&hv_bus);
+ 	return ret;
+ }
+@@ -2976,6 +3036,10 @@ static void __exit vmbus_exit(void)
+ 		free_percpu_irq(vmbus_irq, vmbus_evt);
+ 		free_percpu(vmbus_evt);
+ 	}
++	if (IS_ENABLED(CONFIG_PREEMPT_RT) && vmbus_irq_initialized) {
++		smpboot_unregister_percpu_thread(&vmbus_irq_threads);
++		vmbus_irq_initialized = false;
++	}
+ 	for_each_online_cpu(cpu) {
+ 		struct hv_per_cpu_context *hv_cpu
+ 			= per_cpu_ptr(hv_context.cpu_context, cpu);
 
 
 
