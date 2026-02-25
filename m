@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218961-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHocDAhSnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:08 +0100
+	id EPFIH/xWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218961-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB7618F193
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9D9190424
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1DC43309281B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC14E31B06A7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA9C243376;
-	Wed, 25 Feb 2026 01:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE53C275AFD;
+	Wed, 25 Feb 2026 01:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLITzQpz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mXmdRk1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0248F1D5ABA;
-	Wed, 25 Feb 2026 01:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82495256C84;
+	Wed, 25 Feb 2026 01:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983190; cv=none; b=vGpaKc37EI+uX+P9NvqFf8rq5JXnkwos4r6B3JWBZXqycXIOlCHfpOYDUtzYd56dFDWnuOG0ZiIKILVTmvmxF8c5jA9S6LmGBWBCtXtjjM+Z3rhjfbDN5/gETx9dbMvmv2G0IEWzEvrPS0jAC//Ql/rTh7uhx4vmFCzgvC/MNc0=
+	t=1771983862; cv=none; b=JfY6XqSukEfjBv4LShkBrU5vk4e0QbzQYdAzvPRLA8+dqGQDDTbiYlpIht41opL9cpU8hYQvmwHAR99bMKAID4n181T0bei2maTlXBtND0KswwBmhOn0b1R+fnwqo9ssAV6pHyC/uMjxizSG2CuBJCdt4O9CMg7L7BlRIDO9Rnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983190; c=relaxed/simple;
-	bh=ChonPSgZDZLZscUWs6vbttXzxVP4V6x9nRjwcaFgyEM=;
+	s=arc-20240116; t=1771983862; c=relaxed/simple;
+	bh=uciAaTooVvz1ayY2XmTUz6W+4HWFr7aPP1frGlWkAho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xb3xqh7aDOalGA8EBaz1mlZhz2rMe8CyosEVnmHhlO7xRGOPVkG8Hx8H6hqiu+tPqCVMzHT/+tY/8WpVfK+0PS2dW3ZUDiEs/Yf8N1vy9N5qHTWjlA+koMXFkpk1bIba3yHNpWUZoL3zUmnakXGsPHeeGJBeNRSNaUge2zOf8OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLITzQpz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D53C116D0;
-	Wed, 25 Feb 2026 01:33:09 +0000 (UTC)
+	 MIME-Version; b=PYy+iOySLBEVL7P+hSbB11XRMyzGeAGS4uo0Th1tRrIu1y5WUOCESZea6vPDIa5FBosUbT7VFX7U3E9wfsQgSiddhDOY6IOMHShclF485y4W3NRmQBI7YR+w5QV6Hm1DuN+nSO/2iK7rj30QCFOqAO5MfRQYmcoBk/zQPA/c9xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mXmdRk1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43CEEC116D0;
+	Wed, 25 Feb 2026 01:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983189;
-	bh=ChonPSgZDZLZscUWs6vbttXzxVP4V6x9nRjwcaFgyEM=;
+	s=korg; t=1771983862;
+	bh=uciAaTooVvz1ayY2XmTUz6W+4HWFr7aPP1frGlWkAho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLITzQpz1r1QqmeLREU9LAKu6msc7gp3Re+uykLx3Y74zEtAtm1Y5v7Ohj91QmV1P
-	 8Ok7fpl1ojwyIqyblnnu36tfgdpEKg1C8Lg/hzVsK8ppKzRu6HheW964Ne3IYrJ1hv
-	 OWqDtUDHEgSnVXFWJ7YMY0iAWQe/65RFb5SYTW8E=
+	b=0mXmdRk12tJ+D5EdqZg1B+/e9k3MJBxoJfNIz8kHSxnVQuwhpHmdfJs8JlXDv585K
+	 XvlnOJpjp6LfQpQXdrBRRWtvBoeBJ4YdTAWZn2MW4bxyGBE3uTxzpPrOcevWj8rHeb
+	 5sMhZBHHNnGPxLQxOEEW4xGIdDH3mxp8B9DBZaCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
+	Kery Qi <qikeyu2017@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 303/781] ASoC: SDCA: Handle volatile controls correctly
+Subject: [PATCH 6.18 086/641] selftests/bpf: Fix resource leak in serial_test_wq on attach failure
 Date: Tue, 24 Feb 2026 17:16:52 -0800
-Message-ID: <20260225012407.141266741@linuxfoundation.org>
+Message-ID: <20260225012351.179412522@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,136 +70,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux.dev];
+	TAGGED_FROM(0.00)[bounces-218961-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218378-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CBB7618F193
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DA9D9190424
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Kery Qi <qikeyu2017@gmail.com>
 
-[ Upstream commit 9fad74b79e5ff353fe156c4b685cceffa5afdb1d ]
+[ Upstream commit a32ae2658471dd87a2f7a438388ed7d9a5767212 ]
 
-There are very few volatile controls in SDCA that are exported
-as ALSA controls, typically Detected Mode is the only common
-one. However, the current code does not resume the device when
-these ALSA controls are accessed, which will result in the
-read/write failing.
+When wq__attach() fails, serial_test_wq() returns early without calling
+wq__destroy(), leaking the skeleton resources allocated by
+wq__open_and_load(). This causes ASAN leak reports in selftests runs.
 
-Add a new wrapper specifically for volatile controls that will do
-the required pm_runtime operations before accessing the register.
+Fix this by jumping to a common clean_up label that calls wq__destroy()
+on all exit paths after successful open_and_load.
 
-Fixes: c3ca24e3fcb6 ("ASoC: SDCA: Create ALSA controls from DisCo")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260204125944.1134011-3-ckeepax@opensource.cirrus.com
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Note that the early return after wq__open_and_load() failure is correct
+and doesn't need fixing, since that function returns NULL on failure
+(after internally cleaning up any partial allocations).
+
+Fixes: 8290dba51910 ("selftests/bpf: wq: add bpf_wq_start() checks")
+Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/bpf/20260121094114.1801-3-qikeyu2017@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sdca/sdca_asoc.c | 52 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 50 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/wq.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sdca/sdca_asoc.c b/sound/soc/sdca/sdca_asoc.c
-index 498aba9df5d9b..9685281529e9f 100644
---- a/sound/soc/sdca/sdca_asoc.c
-+++ b/sound/soc/sdca/sdca_asoc.c
-@@ -16,6 +16,7 @@
- #include <linux/minmax.h>
- #include <linux/module.h>
- #include <linux/overflow.h>
-+#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/soundwire/sdw_registers.h>
- #include <linux/string_helpers.h>
-@@ -792,6 +793,48 @@ static int control_limit_kctl(struct device *dev,
- 	return 0;
+diff --git a/tools/testing/selftests/bpf/prog_tests/wq.c b/tools/testing/selftests/bpf/prog_tests/wq.c
+index 99e438fe12acd..15ac8e6d17450 100644
+--- a/tools/testing/selftests/bpf/prog_tests/wq.c
++++ b/tools/testing/selftests/bpf/prog_tests/wq.c
+@@ -16,12 +16,12 @@ void serial_test_wq(void)
+ 	/* re-run the success test to check if the timer was actually executed */
+ 
+ 	wq_skel = wq__open_and_load();
+-	if (!ASSERT_OK_PTR(wq_skel, "wq_skel_load"))
++	if (!ASSERT_OK_PTR(wq_skel, "wq__open_and_load"))
+ 		return;
+ 
+ 	err = wq__attach(wq_skel);
+ 	if (!ASSERT_OK(err, "wq_attach"))
+-		return;
++		goto clean_up;
+ 
+ 	prog_fd = bpf_program__fd(wq_skel->progs.test_syscall_array_sleepable);
+ 	err = bpf_prog_test_run_opts(prog_fd, &topts);
+@@ -31,6 +31,7 @@ void serial_test_wq(void)
+ 	usleep(50); /* 10 usecs should be enough, but give it extra */
+ 
+ 	ASSERT_EQ(wq_skel->bss->ok_sleepable, (1 << 1), "ok_sleepable");
++clean_up:
+ 	wq__destroy(wq_skel);
  }
  
-+static int volatile_get_volsw(struct snd_kcontrol *kcontrol,
-+			      struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
-+	struct device *dev = component->dev;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret < 0) {
-+		dev_err(dev, "failed to resume reading %s: %d\n",
-+			kcontrol->id.name, ret);
-+		return ret;
-+	}
-+
-+	ret = snd_soc_get_volsw(kcontrol, ucontrol);
-+
-+	pm_runtime_put(dev);
-+
-+	return ret;
-+}
-+
-+static int volatile_put_volsw(struct snd_kcontrol *kcontrol,
-+			      struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
-+	struct device *dev = component->dev;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret < 0) {
-+		dev_err(dev, "failed to resume writing %s: %d\n",
-+			kcontrol->id.name, ret);
-+		return ret;
-+	}
-+
-+	ret = snd_soc_put_volsw(kcontrol, ucontrol);
-+
-+	pm_runtime_put(dev);
-+
-+	return ret;
-+}
-+
- static int populate_control(struct device *dev,
- 			    struct sdca_function_data *function,
- 			    struct sdca_entity *entity,
-@@ -849,8 +892,13 @@ static int populate_control(struct device *dev,
- 	(*kctl)->private_value = (unsigned long)mc;
- 	(*kctl)->iface = SNDRV_CTL_ELEM_IFACE_MIXER;
- 	(*kctl)->info = snd_soc_info_volsw;
--	(*kctl)->get = snd_soc_get_volsw;
--	(*kctl)->put = snd_soc_put_volsw;
-+	if (control->is_volatile) {
-+		(*kctl)->get = volatile_get_volsw;
-+		(*kctl)->put = volatile_put_volsw;
-+	} else {
-+		(*kctl)->get = snd_soc_get_volsw;
-+		(*kctl)->put = snd_soc_put_volsw;
-+	}
- 
- 	if (readonly_control(control))
- 		(*kctl)->access = SNDRV_CTL_ELEM_ACCESS_READ;
 -- 
 2.51.0
 
