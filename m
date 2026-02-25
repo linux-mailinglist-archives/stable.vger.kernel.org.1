@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-219071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICDLF6JanmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:50 +0100
+	id oFuxEYpSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD00190B62
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C3018F3CB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0FE183137A86
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70CB130547CD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9C5286D64;
-	Wed, 25 Feb 2026 01:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495FA18B0A;
+	Wed, 25 Feb 2026 01:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDILo/Ah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8B12thM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801B11FE45D;
-	Wed, 25 Feb 2026 01:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D22320C012;
+	Wed, 25 Feb 2026 01:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983996; cv=none; b=UoWL841rtdfdK9whLxzgpNqlxlo4YvgroGtbgQ3pW7Rsb/8EyhOVSedSd3LkGx5XFmVlW5OYk8j+nlt1WlS2+hUl/Am80bBh9rs7ORPmAfrKsS6SqrqwdWrBlxA49qrUSqk/mg6Z7jNTaDVzSHoQv3oenmWaPDFiidF/GOslG+M=
+	t=1771983338; cv=none; b=c9Ua/nkqZ+DGdHAGxMl0FKfAuT4+cAO5Kn3T2EfycSVUUA0EywZ+4yyNGDogGi687g+p1VbCtk7+ORQkfDW7kixXJHStAKiwpImpdMlyr8oH/PxTv2Re6jNpt+DQtUfOIXOMvzgWJgiosQN4yL2Ro//QaUPLXl0aWlM4hX78Yxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983996; c=relaxed/simple;
-	bh=Veu8Ppl5/aa19wLyEVBRlVVLRvdVscextJnh1/Xr77s=;
+	s=arc-20240116; t=1771983338; c=relaxed/simple;
+	bh=pqCifMnBRNcAZlTZJ1NL4tBn7L//PdAFwlZ99jP4KRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GhcZ2/pwdlGOHdYxYkjwo6v4R+Yk/3994LPWJ0BjtC+m3EtgO1wfBDzQFOREI95Lptvn3xZtYX3+798w0ST5DLwuGUAkVE6AHpDQrkegJ7vwz1AtpYKb9PpM4YkUtsQZH/p9hqwtTL0SRMSz+I6m87si7P2RPedimb2AOABsUpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDILo/Ah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5F7C19424;
-	Wed, 25 Feb 2026 01:46:36 +0000 (UTC)
+	 MIME-Version; b=DVl/3LnDJK/OY7hm3v14+iCvO/tFmuAHWSDdmPm+ttfBXYduWLCzWTw6EmUwIx6DdK5NuMmPex2XZzDhY0ELU32PJNM2lD6lYTduEvgWnXlbtjloeNCmWHIB9wCDdw25gqghlDq9TfTaZuRINd+ssUWL+mVSxW6LgZMrHMIkJfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8B12thM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24A7C19423;
+	Wed, 25 Feb 2026 01:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983996;
-	bh=Veu8Ppl5/aa19wLyEVBRlVVLRvdVscextJnh1/Xr77s=;
+	s=korg; t=1771983337;
+	bh=pqCifMnBRNcAZlTZJ1NL4tBn7L//PdAFwlZ99jP4KRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDILo/Ah956X7ZDorxAb/wBMy44SxBoNTztBfuSXdWpGKLzR+PcipEuJEO9VezxyY
-	 lFJH6q4PaGlK6EVhR6QeZaYfWQNqHuiJXQWQzH4NmJZOzToe6w8lIz4HYYn7JoWGoJ
-	 pEYaoM4b8KjMe5QZilwfx3le2g+YweSpnluZbPvc=
+	b=y8B12thMJ6uqlCgMQ+Pkk/HEZt8t4FRUSP4qnk0thDUXqj0p3y4sUYDmFSbg/CbR8
+	 5C2otHiWsvhcS/5/XqHTDnatd0rFzacDByh4C/lXvuCWESvs7t6Fs1D5eOwOpNP85F
+	 77N0HfSDvhROJoXWtjGZJNF1GrfC4IYMdD7QR3ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 250/641] wifi: ath12k: do WoW offloads only on primary link
+Subject: [PATCH 6.19 467/781] IB/mlx5: Fix port speed query for representors
 Date: Tue, 24 Feb 2026 17:19:36 -0800
-Message-ID: <20260225012354.907837201@linuxfoundation.org>
+Message-ID: <20260225012411.275401037@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219071-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218506-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,97 +88,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9FD00190B62
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: A5C3018F3CB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-[ Upstream commit e62102ac9b773bdb08475aa9ca24dea61ae98708 ]
+[ Upstream commit 18ea78e2ae83d1d86a72d21d9511927e57e2c0e1 ]
 
-In case of multi-link connection, WCN7850 firmware crashes due to WoW
-offloads enabled on both primary and secondary links.
+When querying speed information for a representor in switchdev mode,
+the code previously used the first device in the eswitch, which may not
+match the device that actually owns the representor. In setups such as
+multi-port eswitch or LAG, this led to incorrect port attributes being
+reported.
 
-Change to do it only on primary link to fix it.
+Fix this by retrieving the correct core device from the representor's
+eswitch before querying its port attributes.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
-
-Fixes: 32f7b19668bd ("wifi: ath12k: support MLO as well if single_chip_mlo_support flag is set")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251103-ath12-primary-link-wow-v1-1-3cf523dc09f0@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 27f9e0ccb6da ("net/mlx5: Lag, Add single RDMA device in multiport mode")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://patch.msgid.link/20260115-port-speed-query-fix-v2-1-3bde6a3c78e7@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wow.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/infiniband/hw/mlx5/main.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
-index e8481626f1940..c78aa95d49791 100644
---- a/drivers/net/wireless/ath/ath12k/wow.c
-+++ b/drivers/net/wireless/ath/ath12k/wow.c
-@@ -135,6 +135,9 @@ static int ath12k_wow_cleanup(struct ath12k *ar)
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
- 
- 	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		if (arvif != &arvif->ahvif->deflink)
-+			continue;
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 3485a9a3d75e0..9997479410005 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -561,12 +561,20 @@ static int mlx5_query_port_roce(struct ib_device *device, u32 port_num,
+ 	 * of an error it will still be zeroed out.
+ 	 * Use native port in case of reps
+ 	 */
+-	if (dev->is_rep)
+-		err = mlx5_query_port_ptys(mdev, out, sizeof(out), MLX5_PTYS_EN,
+-					   1, 0);
+-	else
+-		err = mlx5_query_port_ptys(mdev, out, sizeof(out), MLX5_PTYS_EN,
+-					   mdev_port_num, 0);
++	if (dev->is_rep) {
++		struct mlx5_eswitch_rep *rep;
 +
- 		ret = ath12k_wow_vif_cleanup(arvif);
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to clean wow wakeups on vdev %i: %d\n",
-@@ -479,8 +482,12 @@ static int ath12k_wow_set_wakeups(struct ath12k *ar,
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
- 
- 	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		if (arvif != &arvif->ahvif->deflink)
-+			continue;
++		rep = dev->port[port_num - 1].rep;
++		if (rep) {
++			mdev = mlx5_eswitch_get_core_dev(rep->esw);
++			WARN_ON(!mdev);
++		}
++		mdev_port_num = 1;
++	}
 +
- 		if (ath12k_wow_is_p2p_vdev(arvif->ahvif))
- 			continue;
++	err = mlx5_query_port_ptys(mdev, out, sizeof(out), MLX5_PTYS_EN,
++				   mdev_port_num, 0);
 +
- 		ret = ath12k_wow_vif_set_wakeups(arvif, wowlan);
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to set wow wakeups on vdev %i: %d\n",
-@@ -538,6 +545,9 @@ static int ath12k_wow_nlo_cleanup(struct ath12k *ar)
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
- 
- 	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		if (arvif != &arvif->ahvif->deflink)
-+			continue;
-+
- 		if (ath12k_wow_is_p2p_vdev(arvif->ahvif))
- 			continue;
- 
-@@ -745,6 +755,9 @@ static int ath12k_wow_arp_ns_offload(struct ath12k *ar, bool enable)
- 	list_for_each_entry(arvif, &ar->arvifs, list) {
- 		ahvif = arvif->ahvif;
- 
-+		if (arvif != &ahvif->deflink)
-+			continue;
-+
- 		if (ahvif->vdev_type != WMI_VDEV_TYPE_STA)
- 			continue;
- 
-@@ -776,6 +789,9 @@ static int ath12k_gtk_rekey_offload(struct ath12k *ar, bool enable)
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
- 
- 	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		if (arvif != &arvif->ahvif->deflink)
-+			continue;
-+
- 		if (arvif->ahvif->vdev_type != WMI_VDEV_TYPE_STA ||
- 		    !arvif->is_up ||
- 		    !arvif->rekey_data.enable_offload)
+ 	if (err)
+ 		goto out;
+ 	ext = !!MLX5_GET_ETH_PROTO(ptys_reg, out, true, eth_proto_capability);
 -- 
 2.51.0
 
