@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-218158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEpHJQdRnmmNUgQAu9opvQ
-	(envelope-from <stable+bounces-218158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:51 +0100
+	id KNknLBNRnmmNUgQAu9opvQ
+	(envelope-from <stable+bounces-218169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E909218EE40
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83C118EE9E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9E69D3079C28
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:29:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BFE5C3049CA6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EF7242D9B;
-	Wed, 25 Feb 2026 01:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D0521D596;
+	Wed, 25 Feb 2026 01:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dygY+3y5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgkJVmVM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051C14369A;
-	Wed, 25 Feb 2026 01:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2801724A06D;
+	Wed, 25 Feb 2026 01:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982942; cv=none; b=UD+PIjlIYm06kbt1COcm5TwvUVsWuTcm2Saf6StOkeMn7nqUSdg3eGCqDTSdHZRqAXVGGeMz/RT718C0sutKy7S6DPeJC/TszE4AKKgZrueVqoYVvcejf3aq3UhE0pzJ67YOW00HdfGGN8skx9a/OvKJz6M06dbaUy7EWJTxE8U=
+	t=1771982954; cv=none; b=PdfR9WaoW9METNtJv4nlfxWcuSQnKwvaIj4C+lt6s/i48nwDapXz4VHxfVhV4Y9GQ5RoGTmB1L18DLuyeex/xdeJ3x/r+HlsZ3zAq8LEW6WsDkrL5r5J3ZWn0RYIsAGc4fjvuwxi64X74lF6jpyitsHyWkq8oaIMwX8SjsVHuY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982942; c=relaxed/simple;
-	bh=6JfrC9Z1TuOkGSHfCin5dt2YIrmReTxnLyDo444llU8=;
+	s=arc-20240116; t=1771982954; c=relaxed/simple;
+	bh=GOVD60ZXAo6bwRpz+sY4fhlxkXyNzEQJHvsQfcw9G4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZ4mZD/VbJTXxDqAuE/kl6wNpttMNF02AcRzh0ZyHamv8GI+F69RiTzq3Z2yURA1NBkiEqWQOZJTeA5dbssP+cg119+5cu43gtl0zq3olVTl7NXbbWVvhy5/LAapyegR9NDpbROTDfwt0lG9OImaL7TYag5gBWUbXvfnoTbts+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dygY+3y5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0872C116D0;
-	Wed, 25 Feb 2026 01:29:01 +0000 (UTC)
+	 MIME-Version; b=o5Uy4NEE4bPISNVcnG5eABmPL1Kcv8OnO1oVsXEzfTpDGDVSVKagRjXKOPAkH3ThuJxk4iY2jmppX4jaAPjOhOWCQ7sjDpSf/KUPfoXgmtvV/ggr+IUuA5isovzVg+1YE+0WV2GXuEy+fCEm8EQ9NK3nEjf6LQuAukcn6ECmVOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgkJVmVM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4B4C116D0;
+	Wed, 25 Feb 2026 01:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982941;
-	bh=6JfrC9Z1TuOkGSHfCin5dt2YIrmReTxnLyDo444llU8=;
+	s=korg; t=1771982954;
+	bh=GOVD60ZXAo6bwRpz+sY4fhlxkXyNzEQJHvsQfcw9G4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dygY+3y5Nmffx4u5F5eTP2btQpGt6zql7HN+Vu4kW1g/rIFfvon9HejsZAhuJlOz2
-	 q6T8nYlhI053YZkzm6p+oqFC6y7qVRKmlJ6Q2ZIyi8tPOV0DQER8gUa0fwBKVZh1xd
-	 /iY//stypPAd2vIg+2mjTQbhf/a+pjHQfkyGbLsg=
+	b=LgkJVmVM4QKbmm0LVRb7BFVyqQNgZawfYlo+6jnmTvRV0FcUySjgXMxfJcVSfHzCB
+	 dna1JTXCDchodyTcTNsTCW4/Psg4IlnyZEaaas7Yd1i42KMFpAwRfBoqNKpthDTRht
+	 lpfZVdlMThEtYv/fCkhyMybA182RpxYZXF1wuz2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Weili Qian <qianweili@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 113/781] selftests/bpf: Fix kprobe multi stacktrace_ips test
-Date: Tue, 24 Feb 2026 17:13:42 -0800
-Message-ID: <20260225012402.449481338@linuxfoundation.org>
+Subject: [PATCH 6.19 114/781] crypto: hisilicon/trng - support tfms sharing the device
+Date: Tue, 24 Feb 2026 17:13:43 -0800
+Message-ID: <20260225012402.473908902@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -67,83 +68,287 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218158-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218169-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E909218EE40
+X-Rspamd-Queue-Id: E83C118EE9E
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Weili Qian <qianweili@huawei.com>
 
-[ Upstream commit 0207f94971e72a13380e28022c86da147e8e090f ]
+[ Upstream commit 3d3135057ff567d5c09fff4c9ef6391a684e8042 ]
 
-We now include the attached function in the stack trace,
-fixing the test accordingly.
+Since the number of devices is limited, and the number
+of tfms may exceed the number of devices, to ensure that
+tfms can be successfully allocated, support tfms
+sharing the same device.
 
-Fixes: c9e208fa93cd ("selftests/bpf: Add stacktrace ips test for kprobe_multi/kretprobe_multi")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20260126211837.472802-4-jolsa@kernel.org
+Fixes: e4d9d10ef4be ("crypto: hisilicon/trng - add support for PRNG")
+Signed-off-by: Weili Qian <qianweili@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/stacktrace_ips.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/crypto/hisilicon/trng/trng.c | 121 +++++++++++++++++++--------
+ 1 file changed, 86 insertions(+), 35 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/stacktrace_ips.c b/tools/testing/selftests/bpf/prog_tests/stacktrace_ips.c
-index c9efdd2a5b18a..c93718dafd9b6 100644
---- a/tools/testing/selftests/bpf/prog_tests/stacktrace_ips.c
-+++ b/tools/testing/selftests/bpf/prog_tests/stacktrace_ips.c
-@@ -74,11 +74,20 @@ static void test_stacktrace_ips_kprobe_multi(bool retprobe)
+diff --git a/drivers/crypto/hisilicon/trng/trng.c b/drivers/crypto/hisilicon/trng/trng.c
+index ac74df4a94712..5ca0b90859a81 100644
+--- a/drivers/crypto/hisilicon/trng/trng.c
++++ b/drivers/crypto/hisilicon/trng/trng.c
+@@ -40,6 +40,7 @@
+ #define SEED_SHIFT_24		24
+ #define SEED_SHIFT_16		16
+ #define SEED_SHIFT_8		8
++#define SW_MAX_RANDOM_BYTES	65520
  
- 	load_kallsyms();
+ struct hisi_trng_list {
+ 	struct mutex lock;
+@@ -53,8 +54,10 @@ struct hisi_trng {
+ 	struct list_head list;
+ 	struct hwrng rng;
+ 	u32 ver;
+-	bool is_used;
+-	struct mutex mutex;
++	u32 ctx_num;
++	/* The bytes of the random number generated since the last seeding. */
++	u32 random_bytes;
++	struct mutex lock;
+ };
  
--	check_stacktrace_ips(bpf_map__fd(skel->maps.stackmap), skel->bss->stack_key, 4,
--			     ksym_get_addr("bpf_testmod_stacktrace_test_3"),
--			     ksym_get_addr("bpf_testmod_stacktrace_test_2"),
--			     ksym_get_addr("bpf_testmod_stacktrace_test_1"),
--			     ksym_get_addr("bpf_testmod_test_read"));
-+	if (retprobe) {
-+		check_stacktrace_ips(bpf_map__fd(skel->maps.stackmap), skel->bss->stack_key, 4,
-+				     ksym_get_addr("bpf_testmod_stacktrace_test_3"),
-+				     ksym_get_addr("bpf_testmod_stacktrace_test_2"),
-+				     ksym_get_addr("bpf_testmod_stacktrace_test_1"),
-+				     ksym_get_addr("bpf_testmod_test_read"));
-+	} else {
-+		check_stacktrace_ips(bpf_map__fd(skel->maps.stackmap), skel->bss->stack_key, 5,
-+				     ksym_get_addr("bpf_testmod_stacktrace_test"),
-+				     ksym_get_addr("bpf_testmod_stacktrace_test_3"),
-+				     ksym_get_addr("bpf_testmod_stacktrace_test_2"),
-+				     ksym_get_addr("bpf_testmod_stacktrace_test_1"),
-+				     ksym_get_addr("bpf_testmod_test_read"));
+ struct hisi_trng_ctx {
+@@ -63,10 +66,14 @@ struct hisi_trng_ctx {
+ 
+ static atomic_t trng_active_devs;
+ static struct hisi_trng_list trng_devices;
++static int hisi_trng_read(struct hwrng *rng, void *buf, size_t max, bool wait);
+ 
+-static void hisi_trng_set_seed(struct hisi_trng *trng, const u8 *seed)
++static int hisi_trng_set_seed(struct hisi_trng *trng, const u8 *seed)
+ {
+ 	u32 val, seed_reg, i;
++	int ret;
++
++	writel(0x0, trng->base + SW_DRBG_BLOCKS);
+ 
+ 	for (i = 0; i < SW_DRBG_SEED_SIZE;
+ 	     i += SW_DRBG_SEED_SIZE / SW_DRBG_SEED_REGS_NUM) {
+@@ -78,6 +85,20 @@ static void hisi_trng_set_seed(struct hisi_trng *trng, const u8 *seed)
+ 		seed_reg = (i >> SW_DRBG_NUM_SHIFT) % SW_DRBG_SEED_REGS_NUM;
+ 		writel(val, trng->base + SW_DRBG_SEED(seed_reg));
+ 	}
++
++	writel(SW_DRBG_BLOCKS_NUM | (0x1 << SW_DRBG_ENABLE_SHIFT),
++	       trng->base + SW_DRBG_BLOCKS);
++	writel(0x1, trng->base + SW_DRBG_INIT);
++	ret = readl_relaxed_poll_timeout(trng->base + SW_DRBG_STATUS,
++					 val, val & BIT(0), SLEEP_US, TIMEOUT_US);
++	if (ret) {
++		pr_err("failed to init trng(%d)\n", ret);
++		return -EIO;
 +	}
++
++	trng->random_bytes = 0;
++
++	return 0;
+ }
  
- cleanup:
- 	stacktrace_ips__destroy(skel);
+ static int hisi_trng_seed(struct crypto_rng *tfm, const u8 *seed,
+@@ -85,8 +106,7 @@ static int hisi_trng_seed(struct crypto_rng *tfm, const u8 *seed,
+ {
+ 	struct hisi_trng_ctx *ctx = crypto_rng_ctx(tfm);
+ 	struct hisi_trng *trng = ctx->trng;
+-	u32 val = 0;
+-	int ret = 0;
++	int ret;
+ 
+ 	if (slen < SW_DRBG_SEED_SIZE) {
+ 		pr_err("slen(%u) is not matched with trng(%d)\n", slen,
+@@ -94,43 +114,45 @@ static int hisi_trng_seed(struct crypto_rng *tfm, const u8 *seed,
+ 		return -EINVAL;
+ 	}
+ 
+-	writel(0x0, trng->base + SW_DRBG_BLOCKS);
+-	hisi_trng_set_seed(trng, seed);
++	mutex_lock(&trng->lock);
++	ret = hisi_trng_set_seed(trng, seed);
++	mutex_unlock(&trng->lock);
+ 
+-	writel(SW_DRBG_BLOCKS_NUM | (0x1 << SW_DRBG_ENABLE_SHIFT),
+-	       trng->base + SW_DRBG_BLOCKS);
+-	writel(0x1, trng->base + SW_DRBG_INIT);
++	return ret;
++}
+ 
+-	ret = readl_relaxed_poll_timeout(trng->base + SW_DRBG_STATUS,
+-					val, val & BIT(0), SLEEP_US, TIMEOUT_US);
+-	if (ret)
+-		pr_err("fail to init trng(%d)\n", ret);
++static int hisi_trng_reseed(struct hisi_trng *trng)
++{
++	u8 seed[SW_DRBG_SEED_SIZE];
++	int size;
+ 
+-	return ret;
++	if (!trng->random_bytes)
++		return 0;
++
++	size = hisi_trng_read(&trng->rng, seed, SW_DRBG_SEED_SIZE, false);
++	if (size != SW_DRBG_SEED_SIZE)
++		return -EIO;
++
++	return hisi_trng_set_seed(trng, seed);
+ }
+ 
+-static int hisi_trng_generate(struct crypto_rng *tfm, const u8 *src,
+-			      unsigned int slen, u8 *dstn, unsigned int dlen)
++static int hisi_trng_get_bytes(struct hisi_trng *trng, u8 *dstn, unsigned int dlen)
+ {
+-	struct hisi_trng_ctx *ctx = crypto_rng_ctx(tfm);
+-	struct hisi_trng *trng = ctx->trng;
+ 	u32 data[SW_DRBG_DATA_NUM];
+ 	u32 currsize = 0;
+ 	u32 val = 0;
+ 	int ret;
+ 	u32 i;
+ 
+-	if (dlen > SW_DRBG_BLOCKS_NUM * SW_DRBG_BYTES || dlen == 0) {
+-		pr_err("dlen(%u) exceeds limit(%d)!\n", dlen,
+-			SW_DRBG_BLOCKS_NUM * SW_DRBG_BYTES);
+-		return -EINVAL;
+-	}
++	ret = hisi_trng_reseed(trng);
++	if (ret)
++		return ret;
+ 
+ 	do {
+ 		ret = readl_relaxed_poll_timeout(trng->base + SW_DRBG_STATUS,
+-		     val, val & BIT(1), SLEEP_US, TIMEOUT_US);
++						 val, val & BIT(1), SLEEP_US, TIMEOUT_US);
+ 		if (ret) {
+-			pr_err("fail to generate random number(%d)!\n", ret);
++			pr_err("failed to generate random number(%d)!\n", ret);
+ 			break;
+ 		}
+ 
+@@ -145,30 +167,57 @@ static int hisi_trng_generate(struct crypto_rng *tfm, const u8 *src,
+ 			currsize = dlen;
+ 		}
+ 
++		trng->random_bytes += SW_DRBG_BYTES;
+ 		writel(0x1, trng->base + SW_DRBG_GEN);
+ 	} while (currsize < dlen);
+ 
+ 	return ret;
+ }
+ 
++static int hisi_trng_generate(struct crypto_rng *tfm, const u8 *src,
++			      unsigned int slen, u8 *dstn, unsigned int dlen)
++{
++	struct hisi_trng_ctx *ctx = crypto_rng_ctx(tfm);
++	struct hisi_trng *trng = ctx->trng;
++	unsigned int currsize = 0;
++	unsigned int block_size;
++	int ret;
++
++	if (!dstn || !dlen) {
++		pr_err("output is error, dlen %u!\n", dlen);
++		return -EINVAL;
++	}
++
++	do {
++		block_size = min_t(unsigned int, dlen - currsize, SW_MAX_RANDOM_BYTES);
++		mutex_lock(&trng->lock);
++		ret = hisi_trng_get_bytes(trng, dstn + currsize, block_size);
++		mutex_unlock(&trng->lock);
++		if (ret)
++			return ret;
++		currsize += block_size;
++	} while (currsize < dlen);
++
++	return 0;
++}
++
+ static int hisi_trng_init(struct crypto_tfm *tfm)
+ {
+ 	struct hisi_trng_ctx *ctx = crypto_tfm_ctx(tfm);
+ 	struct hisi_trng *trng;
+-	int ret = -EBUSY;
++	u32 ctx_num = ~0;
+ 
+ 	mutex_lock(&trng_devices.lock);
+ 	list_for_each_entry(trng, &trng_devices.list, list) {
+-		if (!trng->is_used) {
+-			trng->is_used = true;
++		if (trng->ctx_num < ctx_num) {
++			ctx_num = trng->ctx_num;
+ 			ctx->trng = trng;
+-			ret = 0;
+-			break;
+ 		}
+ 	}
++	ctx->trng->ctx_num++;
+ 	mutex_unlock(&trng_devices.lock);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static void hisi_trng_exit(struct crypto_tfm *tfm)
+@@ -176,7 +225,7 @@ static void hisi_trng_exit(struct crypto_tfm *tfm)
+ 	struct hisi_trng_ctx *ctx = crypto_tfm_ctx(tfm);
+ 
+ 	mutex_lock(&trng_devices.lock);
+-	ctx->trng->is_used = false;
++	ctx->trng->ctx_num--;
+ 	mutex_unlock(&trng_devices.lock);
+ }
+ 
+@@ -238,7 +287,7 @@ static int hisi_trng_del_from_list(struct hisi_trng *trng)
+ 	int ret = -EBUSY;
+ 
+ 	mutex_lock(&trng_devices.lock);
+-	if (!trng->is_used) {
++	if (!trng->ctx_num) {
+ 		list_del(&trng->list);
+ 		ret = 0;
+ 	}
+@@ -262,7 +311,9 @@ static int hisi_trng_probe(struct platform_device *pdev)
+ 	if (IS_ERR(trng->base))
+ 		return PTR_ERR(trng->base);
+ 
+-	trng->is_used = false;
++	trng->ctx_num = 0;
++	trng->random_bytes = SW_MAX_RANDOM_BYTES;
++	mutex_init(&trng->lock);
+ 	trng->ver = readl(trng->base + HISI_TRNG_VERSION);
+ 	if (!trng_devices.is_init) {
+ 		INIT_LIST_HEAD(&trng_devices.list);
 -- 
 2.51.0
 
