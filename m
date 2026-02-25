@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-218782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAklFplTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:49 +0100
+	id 4CJOHRdZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B1F18F927
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034241908AE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 195E13036183
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA7D33247C31
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32918248881;
-	Wed, 25 Feb 2026 01:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D4D262FE7;
+	Wed, 25 Feb 2026 01:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueYQZO4k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dl4tPejB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA24025A642;
-	Wed, 25 Feb 2026 01:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3846F1E2834;
+	Wed, 25 Feb 2026 01:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983656; cv=none; b=ERx6fnj7aceZCnmVK4uN4++TcO5VTNJPKeiiDScjcvR0B0jNTevLsUKv7TuuY1OeWutjJJaOeobxkL3eiY4+Sm1kH87P1VXTBoVz3sbgc6kA6LKkNmF8P5HVRd/k0dc9FGBNO6s49AsBEfdnjdrH6hacnOiA+jzsMh61iQJvc0U=
+	t=1771983709; cv=none; b=b/jDBvR2UdDROqFhRUoQTH+95q+4M0leNolLCiZo76MkBZhoprdgO8XFLyAvI2uLhMBV9gpZxtWNH7kegPM01RmxTnUGfGJ+o5GCHpm9SrFOmRJvQQedN56Nb49SgfpdYDrcFmNgiLYBdhBiZb1/1C9uvQq2bBYvixB1gFwZhRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983656; c=relaxed/simple;
-	bh=WLaBuml/7bKbvKA0lBEHyKv7hWbyeJtT/qIcEK5xyWk=;
+	s=arc-20240116; t=1771983709; c=relaxed/simple;
+	bh=ydrpjouAYetoeQG8NVdTde5je2MftaQYDGMrTnzXuuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W3V+aBEjhsPOydub9XetcUj2GOU0+CKYtKF2rzrDOqFtF+MYcLyhKQmPV7pZF4nZcFu3Ha8MBFURvtYblzBWeMTEOTR0Dq0m6PMaNBa48LYwlNhJfg2RzXv3REBu7NuH3/CRLn9bsJgROWf1yXKoEzsRlrbbZBHefZBX4CKvK4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueYQZO4k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98A2C116D0;
-	Wed, 25 Feb 2026 01:40:55 +0000 (UTC)
+	 MIME-Version; b=QB6GtfvF/Cj/OIpy5jWbCM0hK5I3gInVS4UTHOXk9cAZVJNBgJovCPtmTCHyiCrQ9gpcJpJurJ4Mqkw4skjBrJaptUH3UrWe6VGDA6XAmLI2gY7Gtp/oD3K6zVFOTTvLbC0tuaYeiGGtqSdk2FLszBWfWWr6rv6al3guS00uFG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dl4tPejB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B69C116D0;
+	Wed, 25 Feb 2026 01:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983655;
-	bh=WLaBuml/7bKbvKA0lBEHyKv7hWbyeJtT/qIcEK5xyWk=;
+	s=korg; t=1771983709;
+	bh=ydrpjouAYetoeQG8NVdTde5je2MftaQYDGMrTnzXuuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ueYQZO4kU/HqS4ZLJ0JwMfGHluQJlPQeWyZl+cQccp4G+R9eTQPj1DJTfeHF8YkCI
-	 +ZLzaUsoY9f9QA5kb+xPYqGHNKQU8Yz/TrmW0sW4r4YvxtfJKOCvlnnJq6T7nOV2ko
-	 e0Lw+TgZkK0Rgr0T9js5W5RSSh1yZ5viaBSZS/WU=
+	b=Dl4tPejBrPW8Fk8/FSrstw/5P3KOjvdhWcbcNUHq8J+clXcLcjUd/6CzMtJWa41m3
+	 wkddNUcE6Hy2izegdZxiaEGXMHsw1qtWhHHRYIxK3xL6MrqDFzG5NveIMv4vuPdTUC
+	 hl4gzjKy1MTmgvbgRX5E9qroglZ4hRCV6Wq1D4KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 741/781] drm/amd/display: Only use analog stream encoder with analog engine
-Date: Tue, 24 Feb 2026 17:24:10 -0800
-Message-ID: <20260225012417.903148664@linuxfoundation.org>
+Subject: [PATCH 6.19 742/781] x86/hyperv: Fix error pointer dereference
+Date: Tue, 24 Feb 2026 17:24:11 -0800
+Message-ID: <20260225012417.925448582@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -64,77 +63,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218782-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218828-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 19B1F18F927
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 034241908AE
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit 17ff034f805e032ed1358624a71381f9d6e29e9e ]
+[ Upstream commit 705d01c8d78121ee1634bfc602ac4b0ad1438fab ]
 
-Some GPUs have analog connectors that work with a DP bridge chip
-and don't actually have an internal DAC: Those should not use
-the analog stream encoders.
+The function idle_thread_get() can return an error pointer and is not
+checked for it. Add check for error pointer.
 
-Fixes: 5834c33fd3f6 ("drm/amd/display: Add concept of analog encoders (v2)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Detected by Smatch:
+arch/x86/hyperv/hv_vtl.c:126 hv_vtl_bringup_vcpu() error:
+'idle' dereferencing possible ERR_PTR()
+
+Fixes: 2b4b90e053a29 ("x86/hyperv: Use per cpu initial stack for vtl context")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/hyperv/hv_vtl.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
-index a916872db7bd4..83b9abb64bfcb 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce100/dce100_resource.c
-@@ -979,7 +979,10 @@ struct stream_encoder *dce100_find_first_free_match_stream_enc_for_link(
- 	struct dc_link *link = stream->link;
- 	enum engine_id preferred_engine = link->link_enc->preferred_engine;
+diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
+index c0edaed0efb30..9b6a9bc4ab760 100644
+--- a/arch/x86/hyperv/hv_vtl.c
++++ b/arch/x86/hyperv/hv_vtl.c
+@@ -110,7 +110,7 @@ static void hv_vtl_ap_entry(void)
  
--	if (dc_is_rgb_signal(stream->signal))
-+	/* Prefer analog engine if the link encoder has one.
-+	 * Otherwise, it's an external encoder.
-+	 */
-+	if (dc_is_rgb_signal(stream->signal) && link->link_enc->analog_engine != ENGINE_ID_UNKNOWN)
- 		preferred_engine = link->link_enc->analog_engine;
+ static int hv_vtl_bringup_vcpu(u32 target_vp_index, int cpu, u64 eip_ignored)
+ {
+-	u64 status;
++	u64 status, rsp, rip;
+ 	int ret = 0;
+ 	struct hv_enable_vp_vtl *input;
+ 	unsigned long irq_flags;
+@@ -123,9 +123,11 @@ static int hv_vtl_bringup_vcpu(u32 target_vp_index, int cpu, u64 eip_ignored)
+ 	struct desc_struct *gdt;
  
- 	for (i = 0; i < pool->stream_enc_count; i++) {
+ 	struct task_struct *idle = idle_thread_get(cpu);
+-	u64 rsp = (unsigned long)idle->thread.sp;
++	if (IS_ERR(idle))
++		return PTR_ERR(idle);
+ 
+-	u64 rip = (u64)&hv_vtl_ap_entry;
++	rsp = (unsigned long)idle->thread.sp;
++	rip = (u64)&hv_vtl_ap_entry;
+ 
+ 	native_store_gdt(&gdt_ptr);
+ 	store_idt(&idt_ptr);
 -- 
 2.51.0
 
