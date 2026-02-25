@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHdCM8qdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:22 +0100
+	id gBJaDlVWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89306192ABA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7AF190264
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 36E0D301E9B5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B49DC30B9933
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FE130DEDD;
-	Wed, 25 Feb 2026 06:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D090271456;
+	Wed, 25 Feb 2026 01:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6ld8aaf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQ+4c9HR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F513081D7;
-	Wed, 25 Feb 2026 06:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38B31E2834;
+	Wed, 25 Feb 2026 01:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002692; cv=none; b=cAle14m0jgrXWAP2BukhnejAseE2HUjsn1llqW+RBEIq7tl+1QPFu9h7sZUTfC90x2Injb6CBrRBtoja7qfcdgjnGfT0IoMhREmVycPqExV92IEMKBROvDK+NK0QOB0nNkFZcRIQU9YhnJgkfRy9rywYMt3Y1Nxb+3yaZ+Rft10=
+	t=1771983662; cv=none; b=IWECxyuN3qbDS8xUJrmibHgtnfATaQ4w8ItCvJ9Br3/P03unLYjAsYaJe6U+TxxzA6LPlSGD0CosoyUSX27W1ow4juyfOba61NU89R92vBNABPLbtUqDatY+TFpBVzQPMSwuCvt2rUl9hY7AKopv5e1DSvaSOSarb98HS0ie1pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002692; c=relaxed/simple;
-	bh=uXkpV9fdwkUblVen1QaMV+Y1o5UNiFGJxGRfVUjDHzE=;
+	s=arc-20240116; t=1771983662; c=relaxed/simple;
+	bh=cpvQcPKQ7H54qct2ORcKp3tJNOn92m0Be6kw0tpIz34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4Y7ileZNlNzWwRi4JVLfqFMbpwvW5po/UXae/8NSYogsj3O2f/aDHu5dyJ4PbH6bWXjrWFKdXR1hJkFB2v4kgSNQUut5YABQhuqBnrJzgYVArMJrRtHBp4NIKe1BS+r6oHEWBXPAQrl8p4KWZvZXr8Tp4Kmwn4ROs6ufeilCZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6ld8aaf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFCBC116D0;
-	Wed, 25 Feb 2026 06:58:12 +0000 (UTC)
+	 MIME-Version; b=pgzJe4xt80XVKkBDmXeC7B8xQqxY4BMulLhdEb4M6OzCKJtIWblwVyUu4bpST2pvpp7PUoGBXg0U5MtyeoNGm2Oy/TcoQbJzVSGWkL6T1tmvS45Zt4m7ZyD4oTevg3BvP4HOLSxcxkx2kMJZofCxREH7mNPJQnOZ4+vBA9HoThI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQ+4c9HR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B727C116D0;
+	Wed, 25 Feb 2026 01:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002692;
-	bh=uXkpV9fdwkUblVen1QaMV+Y1o5UNiFGJxGRfVUjDHzE=;
+	s=korg; t=1771983661;
+	bh=cpvQcPKQ7H54qct2ORcKp3tJNOn92m0Be6kw0tpIz34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c6ld8aafadj9oBqlc4DZxEcOBUwYsaZDJzZDmiITciB4KYuNFSW/G0zpLYRc4HMEb
-	 t2d0yGrwRfm9ZB/b8ck6M80avmCCJ7ZAtzbCnTawXudwyWRlc8PPjdsoQuIn8FDPRf
-	 nGTES5roAssuUCJPGmlbpFkIzcG9z9O9i+pI7PG4=
+	b=qQ+4c9HRRt0ttOrzpLtS2b6QaPaePep8GlVhFyVZzcW/0KjfSOH3mMCJ8yPbK72zi
+	 TNKBdd0OqzXzyoSe4UB/WbBkg8pnNoG5V5F2WcUfaBJvXqtaIH7m5Hlqtje0/Hd+rh
+	 iUaz2286r7XcZ4VBA+yRJ1Chmb5ppYAmh8H/EZqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Zhengmian Hu <huzhengmian@gmail.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 486/641] mips: LOONGSON32: drop a dangling Kconfig symbol
+Subject: [PATCH 6.19 703/781] apparmor: avoid per-cpu hold underflow in aa_get_buffer
 Date: Tue, 24 Feb 2026 17:23:32 -0800
-Message-ID: <20260225012400.294703990@linuxfoundation.org>
+Message-ID: <20260225012416.996711977@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218787-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,canonical.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219402-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,infradead.org,gmail.com,alpha.franken.de,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,infradead.org:email,franken.de:email]
-X-Rspamd-Queue-Id: 89306192ABA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,canonical.com:email]
+X-Rspamd-Queue-Id: 7F7AF190264
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Zhengmian Hu <huzhengmian@gmail.com>
 
-[ Upstream commit d463fc5ca1ace0b2e8bb764df04fc12ecd6f8e2b ]
+[ Upstream commit 640cf2f09575c9dc344b3f7be2498d31e3923ead ]
 
-CPU_HAS_LOAD_STORE_LR is not used anywhere in the kernel sources,
-so drop it.
+When aa_get_buffer() pulls from the per-cpu list it unconditionally
+decrements cache->hold. If hold reaches 0 while count is still non-zero,
+the unsigned decrement wraps to UINT_MAX. This keeps hold non-zero for a
+very long time, so aa_put_buffer() never returns buffers to the global
+list, which can starve other CPUs and force repeated kmalloc(aa_g_path_max)
+allocations.
 
-Fixes: 85c4354076ca ("MIPS: loongson32: Switch to generic core")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Keguang Zhang <keguang.zhang@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Guard the decrement so hold never underflows.
+Fixes: ea9bae12d028 ("apparmor: cache buffers on percpu list if there is lock contention")
+
+Signed-off-by: Zhengmian Hu <huzhengmian@gmail.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ security/apparmor/lsm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e8683f58fd3e2..83a6b68d8a39a 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1408,7 +1408,6 @@ config CPU_LOONGSON32
- 	select CPU_MIPS32
- 	select CPU_MIPSR2
- 	select CPU_HAS_PREFETCH
--	select CPU_HAS_LOAD_STORE_LR
- 	select CPU_SUPPORTS_32BIT_KERNEL
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_CPUFREQ
+diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
+index 8d5d9a966b719..9175fd677ef3d 100644
+--- a/security/apparmor/lsm.c
++++ b/security/apparmor/lsm.c
+@@ -2137,7 +2137,8 @@ char *aa_get_buffer(bool in_atomic)
+ 	if (!list_empty(&cache->head)) {
+ 		aa_buf = list_first_entry(&cache->head, union aa_buffer, list);
+ 		list_del(&aa_buf->list);
+-		cache->hold--;
++		if (cache->hold)
++			cache->hold--;
+ 		cache->count--;
+ 		put_cpu_ptr(&aa_local_buffers);
+ 		return &aa_buf->buffer[0];
 -- 
 2.51.0
 
