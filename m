@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-218687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIpZCYFYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:45 +0100
+	id 8OWMOJFUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7AA19073C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F3818FD2D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3999330EA5FB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 793FA31C9D3B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8186626560A;
-	Wed, 25 Feb 2026 01:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE93826056D;
+	Wed, 25 Feb 2026 01:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tzt5IFeI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTmd6Fth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454E726056D;
-	Wed, 25 Feb 2026 01:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824652494FE;
+	Wed, 25 Feb 2026 01:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983545; cv=none; b=frryWIf95tOHMMjAe3N1iup6bkwKn8hgndd8ONtwOUsc9sVZNiotOvklNGeHFg51mlFdl1+LyQB62mXi/r4za49je2RqkS8QjeOlew8+iIndgw3Rflf2sizXsnB4OlHLhNfJaWcwqbi4hialFJ63TqSRP6Kx2bWvR1wTcxjpdAc=
+	t=1771983547; cv=none; b=GLwNKL7uQURRaBAmZ84Rqm1prXqUfDsmtKEnpSEVSmW6zW31+Ou1PuUvYR9U0gCVaTtXiabAklL36nIRtVNuIaQmDaGUhSDsWrs97KDwOX8hqndLZB68t/0LUXx0/a1CpF0zQELze2NsREeThqT93SZ9y9kIHC/zUX61euAMKTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983545; c=relaxed/simple;
-	bh=RRZs6rbwyKD5SGrl7rGVgVw/ghsCHqn+dy1+4kcCPuo=;
+	s=arc-20240116; t=1771983547; c=relaxed/simple;
+	bh=IuiaV2YtW4Fobt3BxeG/yTLkf7vwRyxWsLLqM7pUB8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ky5Ba7O34TfbAK90esCgvpU1UhTFv85sJAVzUgWDRydJH80aVhm8/BuzmfBsNlotIe2bQTsSoqOciKFnJ/TB89tffTQ0VFhdWZiE8cgbVFsr80tpmEdtKiJARjfg/4fuRi5fZGCWQkwgSbqSRlYbfrCB55idMsMPAlfBa8Qd/Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tzt5IFeI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0242DC116D0;
-	Wed, 25 Feb 2026 01:39:04 +0000 (UTC)
+	 MIME-Version; b=tfgccPpkjmmwg+jKKVgx2YBMIugPHz6pogn1ip2pcP/ifbK4MWSIyTltB9BDnQMO9JRIp5a/hZeu+8L9oLFXXEl17/r9BdjqK3e5IzGZ6grmMgbozVRzhKP2YnpA6jBUmmUt5yuPBtHIPwCFqnW1fH4L6viZXAC1wrQmD3iwV+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTmd6Fth; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3997EC116D0;
+	Wed, 25 Feb 2026 01:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983545;
-	bh=RRZs6rbwyKD5SGrl7rGVgVw/ghsCHqn+dy1+4kcCPuo=;
+	s=korg; t=1771983547;
+	bh=IuiaV2YtW4Fobt3BxeG/yTLkf7vwRyxWsLLqM7pUB8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tzt5IFeIj85CK+NDJKaL8ZIt9zpL4Zh0JKUXNIP2BYU/KpGqnskhdqMEFU0Q8L1II
-	 VzStXXmNZZRd7ZwB1tt3/llgTK0dgN6VrCKouy5uv2qp3TtCLbP5sD9xv1hCdBXgF7
-	 tXtKP1Y0Gxgr3O/UPluGE+YjbSLwjK2IChjn0zCE=
+	b=mTmd6FthQLA0duTMyVQEBkds4kWep06OR6w3PmbAsgKuGihpV8GSglfCRxrlJZoRx
+	 bbCKfPCzWruvZvbfy9vYa77GMQv0LY8YLYPi2CzNxiVymwjSlmlUjTjy1xKbHLIf0l
+	 nLLT62u8IpIm9dLaNZom2NrQ3cj1gXMxuV9RFjKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5a0f1995634f7c1dadbf@syzkaller.appspotmail.com,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Anton Protopopov <a.s.protopopov@gmail.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 648/781] bpf: Fix a potential use-after-free of BTF object
-Date: Tue, 24 Feb 2026 17:22:37 -0800
-Message-ID: <20260225012415.688919512@linuxfoundation.org>
+Subject: [PATCH 6.19 649/781] bpf: Add a map/btf from a fd array more consistently
+Date: Tue, 24 Feb 2026 17:22:38 -0800
+Message-ID: <20260225012415.713167793@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -72,30 +72,30 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218687-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218689-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linaro.org,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.973];
+	NEURAL_HAM(-0.00)[-0.976];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,5a0f1995634f7c1dadbf];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 8A7AA19073C
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
+X-Rspamd-Queue-Id: 40F3818FD2D
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
@@ -104,138 +104,44 @@ X-Rspamd-Action: no action
 
 From: Anton Protopopov <a.s.protopopov@gmail.com>
 
-[ Upstream commit ccd2d799ed4467c07f5ee18c2f5c59bcc990822c ]
+[ Upstream commit b0b1a8583d8e797114e613139e3e3318a1704690 ]
 
-Refcounting in the check_pseudo_btf_id() function is incorrect:
-the __check_pseudo_btf_id() function might get called with a zero
-refcounted btf. Fix this, and patch related code accordingly.
+The add_fd_from_fd_array() function takes a file descriptor as a
+parameter and tries to add either map or btf to the corresponding
+list of used objects. As was reported by Dan Carpenter, since the
+commit c81e4322acf0 ("bpf: Fix a potential use-after-free of BTF
+object"), the fdget() is called twice on the file descriptor, and
+thus userspace, potentially, can replace the file pointed to by the
+file descriptor in between the two calls. On practice, this shouldn't
+break anything on the kernel side, but for consistency fix the code
+such that only one fdget() is executed.
 
-v3: rephrase a comment (AI)
-v2: fix a refcount leak introduced in v1 (AI)
-
-Reported-by: syzbot+5a0f1995634f7c1dadbf@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5a0f1995634f7c1dadbf
-Fixes: 76145f725532 ("bpf: Refactor check_pseudo_btf_id")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/aY689z7gHNv8rgVO@stanley.mountain/
+Fixes: ccd2d799ed44 ("bpf: Fix a potential use-after-free of BTF object")
 Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Link: https://lore.kernel.org/r/20260209132904.63908-1-a.s.protopopov@gmail.com
+Link: https://lore.kernel.org/r/20260213212949.759321-1-a.s.protopopov@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 52 +++++++++++++++++++++----------------------
- 1 file changed, 26 insertions(+), 26 deletions(-)
+ kernel/bpf/verifier.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index c9e2e22da3309..a16aca34f5834 100644
+index a16aca34f5834..fe01edfcc34c6 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -20685,29 +20685,29 @@ static int find_btf_percpu_datasec(struct btf *btf)
- }
- 
- /*
-- * Add btf to the used_btfs array and return the index. (If the btf was
-- * already added, then just return the index.) Upon successful insertion
-- * increase btf refcnt, and, if present, also refcount the corresponding
-- * kernel module.
-+ * Add btf to the env->used_btfs array. If needed, refcount the
-+ * corresponding kernel module. To simplify caller's logic
-+ * in case of error or if btf was added before the function
-+ * decreases the btf refcount.
-  */
- static int __add_used_btf(struct bpf_verifier_env *env, struct btf *btf)
- {
- 	struct btf_mod_pair *btf_mod;
-+	int ret = 0;
- 	int i;
- 
- 	/* check whether we recorded this BTF (and maybe module) already */
- 	for (i = 0; i < env->used_btf_cnt; i++)
- 		if (env->used_btfs[i].btf == btf)
--			return i;
-+			goto ret_put;
- 
- 	if (env->used_btf_cnt >= MAX_USED_BTFS) {
- 		verbose(env, "The total number of btfs per program has reached the limit of %u\n",
- 			MAX_USED_BTFS);
--		return -E2BIG;
-+		ret = -E2BIG;
-+		goto ret_put;
- 	}
- 
--	btf_get(btf);
--
- 	btf_mod = &env->used_btfs[env->used_btf_cnt];
- 	btf_mod->btf = btf;
- 	btf_mod->module = NULL;
-@@ -20716,12 +20716,18 @@ static int __add_used_btf(struct bpf_verifier_env *env, struct btf *btf)
- 	if (btf_is_module(btf)) {
- 		btf_mod->module = btf_try_get_module(btf);
- 		if (!btf_mod->module) {
--			btf_put(btf);
--			return -ENXIO;
-+			ret = -ENXIO;
-+			goto ret_put;
- 		}
- 	}
- 
--	return env->used_btf_cnt++;
-+	env->used_btf_cnt++;
-+	return 0;
-+
-+ret_put:
-+	/* Either error or this BTF was already added */
-+	btf_put(btf);
-+	return ret;
- }
- 
- /* replace pseudo btf_id with kernel symbol address */
-@@ -20818,9 +20824,7 @@ static int check_pseudo_btf_id(struct bpf_verifier_env *env,
- 
- 	btf_fd = insn[1].imm;
- 	if (btf_fd) {
--		CLASS(fd, f)(btf_fd);
--
--		btf = __btf_get_by_fd(f);
-+		btf = btf_get_by_fd(btf_fd);
- 		if (IS_ERR(btf)) {
- 			verbose(env, "invalid module BTF object FD specified.\n");
- 			return -EINVAL;
-@@ -20830,17 +20834,17 @@ static int check_pseudo_btf_id(struct bpf_verifier_env *env,
- 			verbose(env, "kernel is missing BTF, make sure CONFIG_DEBUG_INFO_BTF=y is specified in Kconfig.\n");
- 			return -EINVAL;
- 		}
-+		btf_get(btf_vmlinux);
- 		btf = btf_vmlinux;
- 	}
- 
- 	err = __check_pseudo_btf_id(env, insn, aux, btf);
--	if (err)
-+	if (err) {
-+		btf_put(btf);
- 		return err;
-+	}
- 
--	err = __add_used_btf(env, btf);
--	if (err < 0)
--		return err;
--	return 0;
-+	return __add_used_btf(env, btf);
- }
- 
- static bool is_tracing_prog_type(enum bpf_prog_type type)
-@@ -24654,13 +24658,9 @@ static int add_fd_from_fd_array(struct bpf_verifier_env *env, int fd)
+@@ -24658,9 +24658,11 @@ static int add_fd_from_fd_array(struct bpf_verifier_env *env, int fd)
  		return 0;
  	}
  
--	btf = __btf_get_by_fd(f);
--	if (!IS_ERR(btf)) {
--		err = __add_used_btf(env, btf);
--		if (err < 0)
--			return err;
--		return 0;
--	}
-+	btf = btf_get_by_fd(fd);
-+	if (!IS_ERR(btf))
-+		return __add_used_btf(env, btf);
+-	btf = btf_get_by_fd(fd);
+-	if (!IS_ERR(btf))
++	btf = __btf_get_by_fd(f);
++	if (!IS_ERR(btf)) {
++		btf_get(btf);
+ 		return __add_used_btf(env, btf);
++	}
  
  	verbose(env, "fd %d is not pointing to valid bpf_map or btf\n", fd);
  	return PTR_ERR(map);
