@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBGnLn6enmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219390-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:22 +0100
+	id +BXzIWRTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340B5192CA9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B97718F820
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3040F30E4DDF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E0CB30711EB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12732D4805;
-	Wed, 25 Feb 2026 06:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011F1263C7F;
+	Wed, 25 Feb 2026 01:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Te3MWGE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NybIOJNs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94ED72D7393;
-	Wed, 25 Feb 2026 06:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A5526ED3D;
+	Wed, 25 Feb 2026 01:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002684; cv=none; b=hDReh6Del41AS/5eKg65VlSAlC7U6cPp+3m4wO6frC5tTZZBiQmSgtz9PAu2f/HjokYjCMPT3M3Y5Z/XCckVfHBxvU5jLDzYivUGMsq92TjwJ5Qf0USy1M2mptX23qUVSUUs6l3wsfeTdYxnQHZXqEd4xh+sLjMhIuBkRrMaYsg=
+	t=1771983604; cv=none; b=n2gkHl9PAHCzi5MMguHPNsrnNTclwEP9SeYxybTo8aI22T3gzrH71q2gXozmBt9ajZ+KjQNjx/P3UQHkVEZyv8EXkLbRJqQYWnSQX3IjjPZ4OMXe+B4u6G2rziaRIv9OudaNFp8P10DNpFdsRy485Rgm7QtqhY5/VGWRt8rAL4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002684; c=relaxed/simple;
-	bh=q07ayK835PsSs+Vw0KfLZCd+B3q9KIhM1qr89UHPo44=;
+	s=arc-20240116; t=1771983604; c=relaxed/simple;
+	bh=dCuspvkBgChxKpcrAe19aeMnq1nsvbpkpI8FjxFb31U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPAdOb1qjplgP1VhcliN0g8uJkKCYJeRCUiuAr+LSWTZyRQYMBY/ZYrodQRsxtXOTtP6GXB2aUudtckuAVq4x8o2AiWSvXmSUyQJ2fVIBIJc5BxgOdquItrAuCprPvDCFT19fRApAGoUWwqWXgAlURxAFb+L4Ru95mJP/rFKGuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Te3MWGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61990C116D0;
-	Wed, 25 Feb 2026 06:58:04 +0000 (UTC)
+	 MIME-Version; b=Guj0te8JvpfStNsQgP9mnUYyLI3xk7EK+wqRQkvskQkfliqnR+3iBsgmmVdicbnafISTNI5HGpMG45Wn1gVrmIBkFID8zOtpcKdCDW4gX9TCW7cWLeEiIB4YrtAK0C5kjNcuYl8iqaRe80rww9h78kiYiJTY4WEUnJYqcHfW5KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NybIOJNs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64370C19423;
+	Wed, 25 Feb 2026 01:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002684;
-	bh=q07ayK835PsSs+Vw0KfLZCd+B3q9KIhM1qr89UHPo44=;
+	s=korg; t=1771983604;
+	bh=dCuspvkBgChxKpcrAe19aeMnq1nsvbpkpI8FjxFb31U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Te3MWGEWv4nP56oKHqM05YJAo44VHFHKDTYyZIok1gc0d/f+2RwqvaLIUl5tp6iw
-	 dYnyb9K9Q8JO4w5h86Jl2EjYcbGbZQUydgllonDkHsXrDG6QZDFjox1LPQf0IWojA6
-	 EzAip3PNqwQBm8ddwHUfzOSquuAYbyje7Fow9jNw=
+	b=NybIOJNsN0Zk61FOv3DqIUvEBnXBkWyDzB8ndMgoX0kHdosehSKJrHgWZoCUM9u5t
+	 1+2L63bQaITDo+JlcgHundLECNsRRa5s7/kh03WA0x9UOUEyVBnRdLkiOl7GrUAP/M
+	 GFXbGGi6J9NEpfy6SG6Vyu0EXsMWDtVH+7NxhnhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Junhao He <hejunhao3@h-partners.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 475/641] coresight: tmc-etr: Fix race condition between sysfs and perf mode
+Subject: [PATCH 6.19 692/781] apparmor: fix NULL sock in aa_sock_file_perm
 Date: Tue, 24 Feb 2026 17:23:21 -0800
-Message-ID: <20260225012400.027812608@linuxfoundation.org>
+Message-ID: <20260225012416.733596218@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,125 +69,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219390-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218738-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hisilicon.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,h-partners.com:email]
-X-Rspamd-Queue-Id: 340B5192CA9
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4B97718F820
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: John Johansen <john.johansen@canonical.com>
 
-[ Upstream commit e6e43e82c79c97917cbe356c07e8a6f3f982ab53 ]
+[ Upstream commit 00b67657535dfea56e84d11492f5c0f61d0af297 ]
 
-When trying to run perf and sysfs mode simultaneously, the WARN_ON()
-in tmc_etr_enable_hw() is triggered sometimes:
+Deal with the potential that sock and sock-sk can be NULL during
+socket setup or teardown. This could lead to an oops. The fix for NULL
+pointer dereference in __unix_needs_revalidation shows this is at
+least possible for af_unix sockets. While the fix for af_unix sockets
+applies for newer mediation this is still the fall back path for older
+af_unix mediation and other sockets, so ensure it is covered.
 
- WARNING: CPU: 42 PID: 3911571 at drivers/hwtracing/coresight/coresight-tmc-etr.c:1060 tmc_etr_enable_hw+0xc0/0xd8 [coresight_tmc]
- [..snip..]
- Call trace:
-  tmc_etr_enable_hw+0xc0/0xd8 [coresight_tmc] (P)
-  tmc_enable_etr_sink+0x11c/0x250 [coresight_tmc] (L)
-  tmc_enable_etr_sink+0x11c/0x250 [coresight_tmc]
-  coresight_enable_path+0x1c8/0x218 [coresight]
-  coresight_enable_sysfs+0xa4/0x228 [coresight]
-  enable_source_store+0x58/0xa8 [coresight]
-  dev_attr_store+0x20/0x40
-  sysfs_kf_write+0x4c/0x68
-  kernfs_fop_write_iter+0x120/0x1b8
-  vfs_write+0x2c8/0x388
-  ksys_write+0x74/0x108
-  __arm64_sys_write+0x24/0x38
-  el0_svc_common.constprop.0+0x64/0x148
-  do_el0_svc+0x24/0x38
-  el0_svc+0x3c/0x130
-  el0t_64_sync_handler+0xc8/0xd0
-  el0t_64_sync+0x1ac/0x1b0
- ---[ end trace 0000000000000000 ]---
-
-Since the enablement of sysfs mode is separeted into two critical regions,
-one for sysfs buffer allocation and another for hardware enablement, it's
-possible to race with the perf mode. Fix this by double check whether
-the perf mode's been used before enabling the hardware in sysfs mode.
-
- mode:
-   [sysfs mode]                   [perf mode]
-   tmc_etr_get_sysfs_buffer()
-     spin_lock(&drvdata->spinlock)
-     [sysfs buffer allocation]
-     spin_unlock(&drvdata->spinlock)
-                                  spin_lock(&drvdata->spinlock)
-                                  tmc_etr_enable_hw()
-                                    drvdata->etr_buf = etr_perf->etr_buf
-                                  spin_unlock(&drvdata->spinlock)
-   spin_lock(&drvdata->spinlock)
-   tmc_etr_enable_hw()
-     WARN_ON(drvdata->etr_buf) // WARN sicne etr_buf initialized at
-                                  the perf side
-   spin_unlock(&drvdata->spinlock)
-
-With this fix, we retain the check for CS_MODE_PERF in get_etr_sysfs_buf.
-This ensures we verify whether the perf mode's already running before we
-actually allocate the buffer. Then we can save the time of
-allocating/freeing the sysfs buffer if race with the perf mode.
-
-Fixes: 296b01fd106e ("coresight: Refactor out buffer allocation function for ETR")
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Signed-off-by: Junhao He <hejunhao3@h-partners.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20260121101543.2017014-3-wangyushan12@huawei.com
+Fixes: 56974a6fcfef6 ("apparmor: add base infastructure for socket mediation")
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-tmc-etr.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ security/apparmor/net.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-tmc-etr.c b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-index 60b0e0a6da057..9144b273d415f 100644
---- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
-+++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-@@ -1306,6 +1306,19 @@ static int tmc_enable_etr_sink_sysfs(struct coresight_device *csdev)
+diff --git a/security/apparmor/net.c b/security/apparmor/net.c
+index 45cf25605c345..44c04102062f3 100644
+--- a/security/apparmor/net.c
++++ b/security/apparmor/net.c
+@@ -326,8 +326,10 @@ int aa_sock_file_perm(const struct cred *subj_cred, struct aa_label *label,
+ 	struct socket *sock = (struct socket *) file->private_data;
  
- 	raw_spin_lock_irqsave(&drvdata->spinlock, flags);
+ 	AA_BUG(!label);
+-	AA_BUG(!sock);
+-	AA_BUG(!sock->sk);
++
++	/* sock && sock->sk can be NULL for sockets being set up or torn down */
++	if (!sock || !sock->sk)
++		return 0;
  
-+	/*
-+	 * Since the sysfs buffer allocation and the hardware enablement is not
-+	 * in the same critical region, it's possible to race with the perf.
-+	 */
-+	if (coresight_get_mode(csdev) == CS_MODE_PERF) {
-+		drvdata->sysfs_buf = NULL;
-+		raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
-+
-+		/* Free allocated memory out side of the spinlock */
-+		tmc_etr_free_sysfs_buf(sysfs_buf);
-+		return -EBUSY;
-+	}
-+
- 	/*
- 	 * In sysFS mode we can have multiple writers per sink.  Since this
- 	 * sink is already enabled no memory is needed and the HW need not be
+ 	if (sock->sk->sk_family == PF_UNIX)
+ 		return aa_unix_file_perm(subj_cred, label, op, request, file);
 -- 
 2.51.0
 
