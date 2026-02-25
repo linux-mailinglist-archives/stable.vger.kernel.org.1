@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-219472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLVNHcWgnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:12:05 +0100
+	id OFWnEftVnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC91C193155
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:12:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992501901A8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:52:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28EF130752FC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 277EF30B50B8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF213019BA;
-	Wed, 25 Feb 2026 06:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58947273D6D;
+	Wed, 25 Feb 2026 01:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPZADWkn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Txf5oI5U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FF62D7810;
-	Wed, 25 Feb 2026 06:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B45F2690EC;
+	Wed, 25 Feb 2026 01:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002738; cv=none; b=kpyBC49YE+lJB5YJPEsEXBbN2/WcqpkZA1uZ+McZr/9D1im8BCmgwcd1lxSepQt0k6PcZdf+Q7ThEGEoprOFO+dMSkq9WV8wPszIibgem/ChG11KzRG1UMWIPNt9oukzByUZgUQlc5jHI2mpCeuUR+Ob7CfNCFw58hFDixea7yQ=
+	t=1771983688; cv=none; b=D+f8WgUkpTz/jptx8xHVeahYXRHFJDg4MpYDiUtiHioLI0ujq3qnzkvHewDxBvLYscoaLdZz0m/j8mCieidt+HScacMrv2YJKqyTuVqPLRAocuxWIsIBUOfnbtTZDLH6AeG6SfI/Zs0o9Ci4v/AfHYp0XcwenwwK3nER/Us97v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002738; c=relaxed/simple;
-	bh=phpPWjUWkstQeQ417nyn6j9WIX2Io9DSALqDTn73+iw=;
+	s=arc-20240116; t=1771983688; c=relaxed/simple;
+	bh=jz+UEefKkEvT/7EDvNUJ/xRzswZViTuq9fJD6O1DFPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dI3V5O3hkPQ7ixAAZF1SxLkR9KM1CHEPRtZdE4TUQEUPfGH3gCumOewgj/298/AFuCBp64DzY47Pura0fxzUwogdfL5x6sTmAvBTIsRJqurchH9SIgbCm5lslzk8W/V32H7jcLnb/WIcYq5iiKGaYUMl5bekIwZyEFYoi2RnrT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPZADWkn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28081C116D0;
-	Wed, 25 Feb 2026 06:58:58 +0000 (UTC)
+	 MIME-Version; b=aYdnF4H1ukSYnzRQa99rE3d3Rke6WsApDpGU56WHNrDPpPDAtLFV3HdX65rXJhuI1ixlA7asBBtzkly/sACMXXkL1UxuJF2/UjRkzh2Q1Euu3ZtyiDYmRqwLXAJKkS2mSm5ckAFkQOjetFJ+3oqH6UJaXzpVm+fodxSjR7tQ1iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Txf5oI5U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1FDC116D0;
+	Wed, 25 Feb 2026 01:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002738;
-	bh=phpPWjUWkstQeQ417nyn6j9WIX2Io9DSALqDTn73+iw=;
+	s=korg; t=1771983688;
+	bh=jz+UEefKkEvT/7EDvNUJ/xRzswZViTuq9fJD6O1DFPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPZADWkn2Wndup0MaNtYk3zH0rZMBRyoOxkxvyBy0G/vqs2neKCiiYliqgTgY64IA
-	 9qQ3FW7tSTbXL4/vCTlt5pqvxL3EfmgxtPRHqb1KTyTsEgTRPNQlr49Ed3xOjJg9cP
-	 XkI+WQIL5KVCVu5/EGLoiOpWzx5PipLLwhiWfhbA=
+	b=Txf5oI5UWHVw6bzKhk1H6TRY7EpQ0s/LK1H8ii03nnXDL1e0cdJHrWyx0nz9Inflt
+	 ji9lg5smpOccMPdUNhMRUSm2bP4+tsHhLcGP/412l0o9oCYejC16F2HIk5wDGo1oRi
+	 o9p/lpDcRQIyheKrTeWf+SVSCOgFbYhcTQMK/WYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 554/641] ipv6: icmp: remove obsolete code in icmpv6_xrlim_allow()
+	Nihal Kumar Gupta <quic_nihalkum@quicinc.com>,
+	Vikram Sharma <quic_vikramsa@quicinc.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.19 771/781] dt-bindings: media: qcom,qcs8300-camss: Add missing power supplies
 Date: Tue, 24 Feb 2026 17:24:40 -0800
-Message-ID: <20260225012401.949141328@linuxfoundation.org>
+Message-ID: <20260225012418.627910241@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,130 +67,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218810-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219472-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: CC91C193155
+	NEURAL_HAM(-0.00)[-0.996];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[quicinc.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linaro.org:email]
+X-Rspamd-Queue-Id: 992501901A8
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vikram Sharma <quic_vikramsa@quicinc.com>
 
-[ Upstream commit 0201eedb69b24a6be9b7c1716287a89c4dde2320 ]
+commit 555e882051a3a7ecc2bcee2b2047822249dcd074 upstream.
 
-Following part was needed before the blamed commit, because
-inet_getpeer_v6() second argument was the prefix.
+Add missing vdda-phy-supply and vdda-pll-supply in the (monaco)qcs8300
+camss binding. While enabling imx412 sensor for qcs8300 we see a need
+to add these supplies which were missing in initial submission.
 
-	/* Give more bandwidth to wider prefixes. */
-	if (rt->rt6i_dst.plen < 128)
-		tmo >>= ((128 - rt->rt6i_dst.plen)>>5);
-
-Now inet_getpeer_v6() retrieves hosts, we need to remove
-@tmo adjustement or wider prefixes likes /24 allow 8x
-more ICMP to be sent for a given ratelimit.
-
-As we had this issue for a while, this patch changes net.ipv6.icmp.ratelimit
-default value from 1000ms to 100ms to avoid potential regressions.
-
-Also add a READ_ONCE() when reading net->ipv6.sysctl.icmpv6_time.
-
-Fixes: fd0273d7939f ("ipv6: Remove external dependency on rt6i_dst and rt6i_src")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20260216142832.3834174-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 634a2958fae30 ("media: dt-bindings: Add qcom,qcs8300-camss compatible")
+Cc: stable@vger.kernel.org
+Co-developed-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
+Signed-off-by: Nihal Kumar Gupta <quic_nihalkum@quicinc.com>
+Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/ip-sysctl.rst | 7 ++++---
- net/ipv6/af_inet6.c                    | 2 +-
- net/ipv6/icmp.c                        | 7 +------
- 3 files changed, 6 insertions(+), 10 deletions(-)
+ Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml |   13 ++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index a06cb99d66dcd..7a637e87005fe 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -3195,12 +3195,13 @@ enhanced_dad - BOOLEAN
- ===========
+--- a/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
++++ b/Documentation/devicetree/bindings/media/qcom,qcs8300-camss.yaml
+@@ -120,6 +120,14 @@ properties:
+     items:
+       - const: top
  
- ratelimit - INTEGER
--	Limit the maximal rates for sending ICMPv6 messages.
-+	Limit the maximal rates for sending ICMPv6 messages to a particular
-+	peer.
++  vdda-phy-supply:
++    description:
++      Phandle to a 0.88V regulator supply to CSI PHYs.
++
++  vdda-pll-supply:
++    description:
++      Phandle to 1.2V regulator supply to CSI PHYs pll block.
++
+   ports:
+     $ref: /schemas/graph.yaml#/properties/ports
  
- 	0 to disable any limiting,
--	otherwise the minimal space between responses in milliseconds.
-+	otherwise the space between responses in milliseconds.
+@@ -160,6 +168,8 @@ required:
+   - power-domains
+   - power-domain-names
+   - ports
++  - vdda-phy-supply
++  - vdda-pll-supply
  
--	Default: 1000
-+	Default: 100
+ additionalProperties: false
  
- ratemask - list of comma separated ranges
- 	For ICMPv6 message types matching the ranges in the ratemask, limit
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index 1b0314644e0cc..0e8f48835869c 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -955,7 +955,7 @@ static int __net_init inet6_net_init(struct net *net)
- 	int err = 0;
+@@ -328,6 +338,9 @@ examples:
+             power-domains = <&camcc CAM_CC_TITAN_TOP_GDSC>;
+             power-domain-names = "top";
  
- 	net->ipv6.sysctl.bindv6only = 0;
--	net->ipv6.sysctl.icmpv6_time = 1*HZ;
-+	net->ipv6.sysctl.icmpv6_time = HZ / 10;
- 	net->ipv6.sysctl.icmpv6_echo_ignore_all = 0;
- 	net->ipv6.sysctl.icmpv6_echo_ignore_multicast = 0;
- 	net->ipv6.sysctl.icmpv6_echo_ignore_anycast = 0;
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index 306eec18e82c1..35b32dcf581ff 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -217,14 +217,9 @@ static bool icmpv6_xrlim_allow(struct sock *sk, u8 type,
- 	} else if (dev && (dev->flags & IFF_LOOPBACK)) {
- 		res = true;
- 	} else {
--		struct rt6_info *rt = dst_rt6_info(dst);
--		int tmo = net->ipv6.sysctl.icmpv6_time;
-+		int tmo = READ_ONCE(net->ipv6.sysctl.icmpv6_time);
- 		struct inet_peer *peer;
- 
--		/* Give more bandwidth to wider prefixes. */
--		if (rt->rt6i_dst.plen < 128)
--			tmo >>= ((128 - rt->rt6i_dst.plen)>>5);
--
- 		peer = inet_getpeer_v6(net->ipv6.peers, &fl6->daddr);
- 		res = inet_peer_xrlim_allow(peer, tmo);
- 	}
--- 
-2.51.0
-
++            vdda-phy-supply = <&vreg_l4a_0p88>;
++            vdda-pll-supply = <&vreg_l1c_1p2>;
++
+             ports {
+                 #address-cells = <1>;
+                 #size-cells = <0>;
 
 
 
