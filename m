@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDq1LpefnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:03 +0100
+	id QHbyM3RVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159AC192F71
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD53190042
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DC3231975D6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2C20A3014F57
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45CF303A0A;
-	Wed, 25 Feb 2026 06:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F6B26E6F8;
+	Wed, 25 Feb 2026 01:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFJArp8M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17yYmtSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CA3309EF2;
-	Wed, 25 Feb 2026 06:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C642494FE;
+	Wed, 25 Feb 2026 01:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002660; cv=none; b=fkfKsJSSAXHBROCnFWCRM/RFccDov7USVdCGHxQl902o0YHqqEWUmUcXg68Vr2SB/QTERvaNz3WL/55TWlxaMCfOA48b09ibU5kH7mzzJ05O/aFgdRCv7BOc1JCzTD7QnmnSReGGbFY0Ztkj1FI/ixLROnGfbiyX50Rxz0MGsTo=
+	t=1771983554; cv=none; b=nKo901pFwVS8EsaJ7k1iia3XBDw9oMgNPgZjnzDcwfb0LOZlMSePWakUaVDgYBgmmwEHxjmjvmYUETTsVIBWTHmFSgUYB8NDtnclZuUmytvP23esHvAG0+7umA4qp5+Vx20JjA9M+xxy19Ibu+0bvK93PYetfwWt1+7QqaWeFX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002660; c=relaxed/simple;
-	bh=n4vdjzT5NuWeUnqKtc0883EjwIFpcQ4+1lUh4+iYqaI=;
+	s=arc-20240116; t=1771983554; c=relaxed/simple;
+	bh=dVGAjYjX5Ei9ggLTWrcSUqN4z26krng2RiC0G0qqAUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WpZFa21cbOmJMPhSci4KqSQngzv6nSgIW7j0FYMUjdDApQEp74NGUCk6Sxs/IwkBE7hkIgtneImpnbX7FuuXIhk/JYwvnu3BwLoXEKbiFfLunYt7hszsnF2lgdunr5SLCNivDxlaflEGmjNiIKdiKd0v2R0Y5OGAfIZKEG69glU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFJArp8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5DAC116D0;
-	Wed, 25 Feb 2026 06:57:40 +0000 (UTC)
+	 MIME-Version; b=c7UqIPBt+7vxSnhKQbwTO20j8l5jyJXajM+xl8f5gheLIcDRvvUKS5AplbBpobL0KeTXLHyBom4k9VqkRGXBAKkc6we6hQiX4cwxj8lR/GKg4niN+leO4B+rOC7/MRiVFV6WBWUt4D8eoWcZrVIt6v9+GEvxHzSbQoX4cTVmDa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17yYmtSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC286C116D0;
+	Wed, 25 Feb 2026 01:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002660;
-	bh=n4vdjzT5NuWeUnqKtc0883EjwIFpcQ4+1lUh4+iYqaI=;
+	s=korg; t=1771983554;
+	bh=dVGAjYjX5Ei9ggLTWrcSUqN4z26krng2RiC0G0qqAUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFJArp8MyTMK+yU022o61mjvnYdZWIWbTIgC4iraWvLql25olFm5tTUYfvkZlYZqq
-	 H8C/omlwSK9715DbLQ7M6BavS+f9cGZVSNOQ9roOR1nHruu0UPfwhPMyl0dMw7ptvT
-	 kLXB2/cm01MuKWlPcPiJFpvEFH/flabAYaSmXjGM=
+	b=17yYmtSz33PATuv/AbML2geREuDJKI3VSw67D8V+zBMIexLBKppEx594DEFDZuFI1
+	 K5WofChuQ9feMAxVxsVpDp0SNpxOSdSFymkDXD6DbH9YKR4WduDJgPWwrv2O6nq0xI
+	 tN0eFQVUZilKBaJffsZVKENH0+ZxNhIvbVbQ9sMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Brian Masney <bmasney@redhat.com>,
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Juergen Gross <jgross@suse.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 438/641] clk: sophgo: sg2042-clkgen: convert from divider_round_rate() to divider_determine_rate()
+Subject: [PATCH 6.19 655/781] xen-netback: reject zero-queue configuration from guest
 Date: Tue, 24 Feb 2026 17:22:44 -0800
-Message-ID: <20260225012359.146868496@linuxfoundation.org>
+Message-ID: <20260225012415.854750069@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,102 +68,87 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219354-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,redhat.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218695-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email]
-X-Rspamd-Queue-Id: 159AC192F71
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 2FD53190042
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-[ Upstream commit 77b04dc19693510ce8ed1c6eda5f5b833e208816 ]
+[ Upstream commit 6d1dc8014334c7fb25719999bca84d811e60a559 ]
 
-The divider_round_rate() function is now deprecated, so let's migrate
-to divider_determine_rate() instead so that this deprecated API can be
-removed.
+A malicious or buggy Xen guest can write "0" to the xenbus key
+"multi-queue-num-queues". The connect() function in the backend only
+validates the upper bound (requested_num_queues > xenvif_max_queues)
+but not zero, allowing requested_num_queues=0 to reach
+vzalloc(array_size(0, sizeof(struct xenvif_queue))), which triggers
+WARN_ON_ONCE(!size) in __vmalloc_node_range().
 
-Note that when the main function itself was migrated to use
-determine_rate, this was mistakenly converted to:
+On systems with panic_on_warn=1, this allows a guest-to-host denial
+of service.
 
-    req->rate = divider_round_rate(...)
+The Xen network interface specification requires
+the queue count to be "greater than zero".
 
-This is invalid in the case when an error occurs since it can set the
-rate to a negative value.
+Add a zero check to match the validation already present
+in xen-blkback, which has included this
+guard since its multi-queue support was added.
 
-Note that this commit also removes a debugging message that's not really
-needed.
-
-Fixes: 9a3b6993613d ("clk: sophgo: sg2042-clkgen: convert from round_rate() to determine_rate()")
-Tested-by: Chen Wang <unicorn_wang@outlook.com>
-Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+Fixes: 8d3d53b3e433 ("xen-netback: Add support for multiple queues")
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://patch.msgid.link/20260212224040.86674-1-n7l8m4@u.northwestern.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sophgo/clk-sg2042-clkgen.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/net/xen-netback/xenbus.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/sophgo/clk-sg2042-clkgen.c b/drivers/clk/sophgo/clk-sg2042-clkgen.c
-index 683661b71787c..9725ac4e050a4 100644
---- a/drivers/clk/sophgo/clk-sg2042-clkgen.c
-+++ b/drivers/clk/sophgo/clk-sg2042-clkgen.c
-@@ -180,7 +180,6 @@ static int sg2042_clk_divider_determine_rate(struct clk_hw *hw,
- 					     struct clk_rate_request *req)
- {
- 	struct sg2042_divider_clock *divider = to_sg2042_clk_divider(hw);
--	unsigned long ret_rate;
- 	u32 bestdiv;
- 
- 	/* if read only, just return current value */
-@@ -191,17 +190,13 @@ static int sg2042_clk_divider_determine_rate(struct clk_hw *hw,
- 			bestdiv = readl(divider->reg) >> divider->shift;
- 			bestdiv &= clk_div_mask(divider->width);
- 		}
--		ret_rate = DIV_ROUND_UP_ULL((u64)req->best_parent_rate, bestdiv);
--	} else {
--		ret_rate = divider_round_rate(hw, req->rate, &req->best_parent_rate, NULL,
--					      divider->width, divider->div_flags);
--	}
-+		req->rate = DIV_ROUND_UP_ULL((u64)req->best_parent_rate, bestdiv);
- 
--	pr_debug("--> %s: divider_round_rate: val = %ld\n",
--		 clk_hw_get_name(hw), ret_rate);
--	req->rate = ret_rate;
-+		return 0;
-+	}
- 
--	return 0;
-+	return divider_determine_rate(hw, req, NULL, divider->width,
-+				      divider->div_flags);
- }
- 
- static int sg2042_clk_divider_set_rate(struct clk_hw *hw,
+diff --git a/drivers/net/xen-netback/xenbus.c b/drivers/net/xen-netback/xenbus.c
+index a78a25b872409..61b547aab286a 100644
+--- a/drivers/net/xen-netback/xenbus.c
++++ b/drivers/net/xen-netback/xenbus.c
+@@ -735,10 +735,11 @@ static void connect(struct backend_info *be)
+ 	 */
+ 	requested_num_queues = xenbus_read_unsigned(dev->otherend,
+ 					"multi-queue-num-queues", 1);
+-	if (requested_num_queues > xenvif_max_queues) {
++	if (requested_num_queues > xenvif_max_queues ||
++	    requested_num_queues == 0) {
+ 		/* buggy or malicious guest */
+ 		xenbus_dev_fatal(dev, -EINVAL,
+-				 "guest requested %u queues, exceeding the maximum of %u.",
++				 "guest requested %u queues, but valid range is 1 - %u.",
+ 				 requested_num_queues, xenvif_max_queues);
+ 		return;
+ 	}
 -- 
 2.51.0
 
