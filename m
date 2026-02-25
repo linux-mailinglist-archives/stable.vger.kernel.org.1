@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aICnGnpSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:02 +0100
+	id UD/2LiJUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED72A18F395
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6199218FBAF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14D75311893D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4E57F30A3870
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CB72417E0;
-	Wed, 25 Feb 2026 01:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B5A26E6FA;
+	Wed, 25 Feb 2026 01:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xuzDEDHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rh1CWi6u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784941F03DE;
-	Wed, 25 Feb 2026 01:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB9B2797AC;
+	Wed, 25 Feb 2026 01:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983081; cv=none; b=W+pT/JEfhcdMJOerDTbLOKQqKs/CBo8f2vdDJraCLEFnrtW8frYXiEGM6vqMWUC5Z2fdHVUIEL8DteAO5Ow7EyH0oiPdpTYcJdLnCHK8D+XFEZwdYrpJz1GXuN+DOC19iPlunYeNk0Kyb1b0l8RzY/Nuc1106A9Uj6OpAfzqDWg=
+	t=1771983730; cv=none; b=DUOi+EHfVkMkZfWYFm9a5vrCH3EjGU4vZZdmJU1qV0BBRM1q4diwqwrJNvrR8TOSYPkYhxVRpNZZN+vM3eILTDTi9ueJx4zlKqVt1Wx+u0snYI+SxftWCcr6L0f2MAePsplYrwpkAxqH5Huo2rl0dgIudSIM3joH1BORTdBldMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983081; c=relaxed/simple;
-	bh=ychzSSXSQZ4foBSuIY+7VFoB/i8xIR0w87AfCfm3/aU=;
+	s=arc-20240116; t=1771983730; c=relaxed/simple;
+	bh=6rgRqGji+Hbeh8hrKCOOexE03YIeRwNNa4SzPYOVUxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uo8lBzmbZ/bHBKMEFfWpO4bGHcU2F1tOWFfi1rgBGNk0f1dRv01ymXZ/fJ7HyvCCsFaHFk8+QN0YvzThTqOdTPZgQZV9ZYXhlQOmWOdpIk+DIIriiJiaU+dH3udRFZAuHJ3HzlkG5IrNNPYbQ9y9JiRHk1mtvXMAMai99irmbwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xuzDEDHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425D1C116D0;
-	Wed, 25 Feb 2026 01:31:21 +0000 (UTC)
+	 MIME-Version; b=AhLsh+qSXHF83FfQlxaDatyaMll7a5aKerVm2vhCerIPH9lqoirnFQydfWT/mOrV+DzLiKU/kAehhHCH4Ubv/G3DpyopSeTWqo6bb6T3+r9OMaeAfKUkPUmIz5qNJJf6pUoEWKAqrpe3FyOXbn2J+yXF+k/I0Mz9wtp8YJt5I54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rh1CWi6u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96C9C19424;
+	Wed, 25 Feb 2026 01:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983081;
-	bh=ychzSSXSQZ4foBSuIY+7VFoB/i8xIR0w87AfCfm3/aU=;
+	s=korg; t=1771983730;
+	bh=6rgRqGji+Hbeh8hrKCOOexE03YIeRwNNa4SzPYOVUxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xuzDEDHcY3Y3V6jusXuOjQY6xZ/P3BZmnHwYOlpZFys3WuS4tNpSwCANjpe3eYPjw
-	 byRs9Xzal8sL/VxUNPDcIoDQz8XF64JBdWEAEPZwyDt1XI1qcI47DVOcXks84uZ5ng
-	 uDz2lzq1TE5KbnprUikbjMocU6DOO4HRLYStW+wU=
+	b=Rh1CWi6uV+IKPQ5oaiZqxnh3qNos9tvC/eAaY+OVfVCufafs9rBCE0In7uPNnuceV
+	 TnPSKlDMSQOvrLfEgHhQCAthfpKvP/f88Bqg6mdAXob/X2lgEM5+OKQH0BCeox09Ri
+	 r6Ozv0VE0opB7Ts5ps3r/3wb/m8supobeV3Oq4Aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 242/781] drm/amd/display: Remove unused encoder types
+Subject: [PATCH 6.18 025/641] btrfs: introduce btrfs_bio::async_csum
 Date: Tue, 24 Feb 2026 17:15:51 -0800
-Message-ID: <20260225012405.642819596@linuxfoundation.org>
+Message-ID: <20260225012349.592996938@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,158 +69,290 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218281-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218846-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: ED72A18F395
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6199218FBAF
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Lipski <ivan.lipski@amd.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 4ab27b01df629545de5a5f9889867b0f19438cd8 ]
+[ Upstream commit dd57c78aec398717a2fa6488d87b1a6cd43c7d0d ]
 
-[Why&How]
-We only support ENCODER_ID_INTERNAL_UNIPHY encoders now, so NUTMEG & TRAVIS
-can be removed from translate_encoder_to_transmitter.
+[ENHANCEMENT]
+Btrfs currently calculates data checksums then submits the bio.
 
-Also refactor to use local variables of transmitter to exit early.
+But after commit 968f19c5b1b7 ("btrfs: always fallback to buffered write
+if the inode requires checksum"), any writes with data checksum will
+fallback to buffered IO, meaning the content will not change during
+writeback.
 
-V2: Fix construct_phy check for  TRANSMITTER_UKNOWN
+This means we're safe to calculate the data checksum and submit the bio
+in parallel, and only need the following new behavior:
 
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 436d0d22aa70 ("drm/amd/display: Pass proper DAC encoder ID to VBIOS")
+- Wait the csum generation to finish before calling btrfs_bio::end_io()
+  Or this can lead to use-after-free for the csum generation worker.
+
+- Save the current bi_iter for csum_one_bio()
+  As the submission part can advance btrfs_bio::bio.bi_iter, if not
+  saved csum_one_bio() may got an empty bi_iter and do not generate any
+  checksum.
+
+  Unfortunately this means we have to increase the size of btrfs_bio for
+  16 bytes, but this is still acceptable.
+
+As usual, such new feature is hidden behind the experimental flag.
+
+[THEORETIC ANALYZE]
+Consider the following theoretic hardware performance, which should be
+more or less close to modern mainstream hardware:
+
+	Memory bandwidth:	50GiB/s
+	CRC32C bandwidth:	45GiB/s
+	SSD bandwidth:		8GiB/s
+
+Then write bandwidth with data checksum before the patch is:
+
+	1 / ( 1 / 50 + 1 / 45 + 1 / 8) = 5.98 GiB/s
+
+After the patch, the bandwidth is:
+
+	1 / ( 1 / 50 + max( 1 / 45 + 1 / 8)) = 6.90 GiB/s
+
+The difference is 15.32% improvement.
+
+[REAL WORLD BENCHMARK]
+I'm using a Zen5 (HX 370) as the host, the VM has 4GiB memory, 10 vCPUs, the
+storage is backed by a PCIe gen3 x4 NVMe.
+
+The test is a direct IO write, with 1MiB block size, write 7GiB data
+into a btrfs mount with data checksum. Thus the direct write will
+fallback to buffered one:
+
+Vanilla Datasum:	1619.97 GiB/s
+Patched Datasum:	1792.26 GiB/s
+Diff			+10.6 %
+
+In my case, the bottleneck is the storage, thus the improvement is not
+reaching the theoretic one, but still some observable improvement.
+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: b39b26e017c7 ("btrfs: zoned: don't zone append to conventional zone")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/link/link_factory.c    | 47 +++++--------------
- 1 file changed, 12 insertions(+), 35 deletions(-)
+ fs/btrfs/bio.c       | 21 ++++++++++++----
+ fs/btrfs/bio.h       |  7 ++++++
+ fs/btrfs/file-item.c | 60 +++++++++++++++++++++++++++++++-------------
+ fs/btrfs/file-item.h |  2 +-
+ 4 files changed, 67 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-index a6e2b0821969b..b3ca83f918747 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-@@ -350,24 +350,6 @@ static enum transmitter translate_encoder_to_transmitter(
- 			return TRANSMITTER_UNKNOWN;
- 		}
- 	break;
--	case ENCODER_ID_EXTERNAL_NUTMEG:
--		switch (encoder.enum_id) {
--		case ENUM_ID_1:
--			return TRANSMITTER_NUTMEG_CRT;
--		default:
--			return TRANSMITTER_UNKNOWN;
--		}
--	break;
--	case ENCODER_ID_EXTERNAL_TRAVIS:
--		switch (encoder.enum_id) {
--		case ENUM_ID_1:
--			return TRANSMITTER_TRAVIS_CRT;
--		case ENUM_ID_2:
--			return TRANSMITTER_TRAVIS_LCD;
--		default:
--			return TRANSMITTER_UNKNOWN;
--		}
--	break;
- 	default:
- 		return TRANSMITTER_UNKNOWN;
- 	}
-@@ -477,14 +459,6 @@ static enum engine_id find_analog_engine(struct dc_link *link)
- 	return ENGINE_ID_UNKNOWN;
- }
+diff --git a/fs/btrfs/bio.c b/fs/btrfs/bio.c
+index 52b8893f26f16..1286c1ac19404 100644
+--- a/fs/btrfs/bio.c
++++ b/fs/btrfs/bio.c
+@@ -105,6 +105,9 @@ void btrfs_bio_end_io(struct btrfs_bio *bbio, blk_status_t status)
+ 	/* Make sure we're already in task context. */
+ 	ASSERT(in_task());
  
--static bool transmitter_supported(const enum transmitter transmitter)
--{
--	return transmitter != TRANSMITTER_UNKNOWN &&
--		transmitter != TRANSMITTER_NUTMEG_CRT &&
--		transmitter != TRANSMITTER_TRAVIS_CRT &&
--		transmitter != TRANSMITTER_TRAVIS_LCD;
--}
--
- static bool analog_engine_supported(const enum engine_id engine_id)
++	if (bbio->async_csum)
++		wait_for_completion(&bbio->csum_done);
++
+ 	bbio->bio.bi_status = status;
+ 	if (bbio->bio.bi_pool == &btrfs_clone_bioset) {
+ 		struct btrfs_bio *orig_bbio = bbio->private;
+@@ -538,7 +541,11 @@ static int btrfs_bio_csum(struct btrfs_bio *bbio)
  {
- 	return engine_id == ENGINE_ID_DACA ||
-@@ -502,6 +476,8 @@ static bool construct_phy(struct dc_link *link,
- 	struct dc_bios *bios = init_params->dc->ctx->dc_bios;
- 	const struct dc_vbios_funcs *bp_funcs = bios->funcs;
- 	struct bp_disp_connector_caps_info disp_connect_caps_info = { 0 };
-+	struct graphics_object_id link_encoder = { 0 };
-+	enum transmitter transmitter_from_encoder;
- 
- 	DC_LOGGER_INIT(dc_ctx->logger);
- 
-@@ -522,21 +498,21 @@ static bool construct_phy(struct dc_link *link,
- 	link->link_id =
- 		bios->funcs->get_connector_id(bios, init_params->connector_index);
- 
-+	link->ep_type = DISPLAY_ENDPOINT_PHY;
-+
-+	DC_LOG_DC("BIOS object table - link_id: %d", link->link_id.id);
-+
- 	/* Determine early if the link has any supported encoders,
- 	 * so that we avoid initializing DDC and HPD, etc.
- 	 */
--	bp_funcs->get_src_obj(bios, link->link_id, 0, &enc_init_data.encoder);
--	enc_init_data.transmitter = translate_encoder_to_transmitter(enc_init_data.encoder);
-+	bp_funcs->get_src_obj(bios, link->link_id, 0, &link_encoder);
-+	transmitter_from_encoder = translate_encoder_to_transmitter(link_encoder);
- 	enc_init_data.analog_engine = find_analog_engine(link);
- 
--	link->ep_type = DISPLAY_ENDPOINT_PHY;
--
--	DC_LOG_DC("BIOS object table - link_id: %d", link->link_id.id);
--
--	if (!transmitter_supported(enc_init_data.transmitter) &&
-+	if (transmitter_from_encoder == TRANSMITTER_UNKNOWN &&
- 	    !analog_engine_supported(enc_init_data.analog_engine)) {
- 		DC_LOG_WARNING("link_id %d has unsupported encoder\n", link->link_id.id);
--		goto unsupported_fail;
-+		goto create_fail;
- 	}
- 
- 	if (bios->funcs->get_disp_connector_caps_info) {
-@@ -670,6 +646,8 @@ static bool construct_phy(struct dc_link *link,
- 	enc_init_data.connector = link->link_id;
- 	enc_init_data.channel = get_ddc_line(link);
- 	enc_init_data.hpd_source = get_hpd_line(link);
-+	enc_init_data.transmitter = transmitter_from_encoder;
-+	enc_init_data.encoder = link_encoder;
- 
- 	link->hpd_src = enc_init_data.hpd_source;
- 
-@@ -806,7 +784,6 @@ static bool construct_phy(struct dc_link *link,
- 		link->hpd_gpio = NULL;
- 	}
- 
--unsupported_fail:
- 	DC_LOG_DC("BIOS object table - %s failed.\n", __func__);
- 	return false;
+ 	if (bbio->bio.bi_opf & REQ_META)
+ 		return btree_csum_one_bio(bbio);
+-	return btrfs_csum_one_bio(bbio);
++#ifdef CONFIG_BTRFS_EXPERIMENTAL
++	return btrfs_csum_one_bio(bbio, true);
++#else
++	return btrfs_csum_one_bio(bbio, false);
++#endif
  }
+ 
+ /*
+@@ -617,10 +624,14 @@ static bool should_async_write(struct btrfs_bio *bbio)
+ 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
+ 	enum btrfs_offload_csum_mode csum_mode = READ_ONCE(fs_devices->offload_csum_mode);
+ 
+-	if (csum_mode == BTRFS_OFFLOAD_CSUM_FORCE_OFF)
+-		return false;
+-
+-	auto_csum_mode = (csum_mode == BTRFS_OFFLOAD_CSUM_AUTO);
++	if (csum_mode == BTRFS_OFFLOAD_CSUM_FORCE_ON)
++		return true;
++	/*
++	 * Write bios will calculate checksum and submit bio at the same time.
++	 * Unless explicitly required don't offload serial csum calculate and bio
++	 * submit into a workqueue.
++	 */
++	return false;
+ #endif
+ 
+ 	/* Submit synchronously if the checksum implementation is fast. */
+diff --git a/fs/btrfs/bio.h b/fs/btrfs/bio.h
+index b7a0de6f97840..9a44b86d561b1 100644
+--- a/fs/btrfs/bio.h
++++ b/fs/btrfs/bio.h
+@@ -63,6 +63,9 @@ struct btrfs_bio {
+ 		struct {
+ 			struct btrfs_ordered_extent *ordered;
+ 			struct btrfs_ordered_sum *sums;
++			struct work_struct csum_work;
++			struct completion csum_done;
++			struct bvec_iter csum_saved_iter;
+ 			u64 orig_physical;
+ 		};
+ 
+@@ -90,6 +93,10 @@ struct btrfs_bio {
+ 	 * scrub bios.
+ 	 */
+ 	bool is_scrub;
++
++	/* Whether the csum generation for data write is async. */
++	bool async_csum;
++
+ 	/*
+ 	 * This member must come last, bio_alloc_bioset will allocate enough
+ 	 * bytes for entire btrfs_bio but relies on bio being last.
+diff --git a/fs/btrfs/file-item.c b/fs/btrfs/file-item.c
+index a42e6d54e7cd7..4b7c40f05e8f9 100644
+--- a/fs/btrfs/file-item.c
++++ b/fs/btrfs/file-item.c
+@@ -18,6 +18,7 @@
+ #include "fs.h"
+ #include "accessors.h"
+ #include "file-item.h"
++#include "volumes.h"
+ 
+ #define __MAX_CSUM_ITEMS(r, size) ((unsigned long)(((BTRFS_LEAF_DATA_SIZE(r) - \
+ 				   sizeof(struct btrfs_item) * 2) / \
+@@ -764,21 +765,46 @@ int btrfs_lookup_csums_bitmap(struct btrfs_root *root, struct btrfs_path *path,
+ 	return ret;
+ }
+ 
++static void csum_one_bio(struct btrfs_bio *bbio, struct bvec_iter *src)
++{
++	struct btrfs_inode *inode = bbio->inode;
++	struct btrfs_fs_info *fs_info = inode->root->fs_info;
++	SHASH_DESC_ON_STACK(shash, fs_info->csum_shash);
++	struct bio *bio = &bbio->bio;
++	struct btrfs_ordered_sum *sums = bbio->sums;
++	struct bvec_iter iter = *src;
++	phys_addr_t paddr;
++	const u32 blocksize = fs_info->sectorsize;
++	int index = 0;
++
++	shash->tfm = fs_info->csum_shash;
++
++	btrfs_bio_for_each_block(paddr, bio, &iter, blocksize) {
++		btrfs_calculate_block_csum(fs_info, paddr, sums->sums + index);
++		index += fs_info->csum_size;
++	}
++}
++
++static void csum_one_bio_work(struct work_struct *work)
++{
++	struct btrfs_bio *bbio = container_of(work, struct btrfs_bio, csum_work);
++
++	ASSERT(btrfs_op(&bbio->bio) == BTRFS_MAP_WRITE);
++	ASSERT(bbio->async_csum == true);
++	csum_one_bio(bbio, &bbio->csum_saved_iter);
++	complete(&bbio->csum_done);
++}
++
+ /*
+  * Calculate checksums of the data contained inside a bio.
+  */
+-int btrfs_csum_one_bio(struct btrfs_bio *bbio)
++int btrfs_csum_one_bio(struct btrfs_bio *bbio, bool async)
+ {
+ 	struct btrfs_ordered_extent *ordered = bbio->ordered;
+ 	struct btrfs_inode *inode = bbio->inode;
+ 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
+-	SHASH_DESC_ON_STACK(shash, fs_info->csum_shash);
+ 	struct bio *bio = &bbio->bio;
+ 	struct btrfs_ordered_sum *sums;
+-	struct bvec_iter iter = bio->bi_iter;
+-	phys_addr_t paddr;
+-	const u32 blocksize = fs_info->sectorsize;
+-	int index;
+ 	unsigned nofs_flag;
+ 
+ 	nofs_flag = memalloc_nofs_save();
+@@ -789,21 +815,21 @@ int btrfs_csum_one_bio(struct btrfs_bio *bbio)
+ 	if (!sums)
+ 		return -ENOMEM;
+ 
++	sums->logical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
+ 	sums->len = bio->bi_iter.bi_size;
+ 	INIT_LIST_HEAD(&sums->list);
+-
+-	sums->logical = bio->bi_iter.bi_sector << SECTOR_SHIFT;
+-	index = 0;
+-
+-	shash->tfm = fs_info->csum_shash;
+-
+-	btrfs_bio_for_each_block(paddr, bio, &iter, blocksize) {
+-		btrfs_calculate_block_csum(fs_info, paddr, sums->sums + index);
+-		index += fs_info->csum_size;
+-	}
+-
+ 	bbio->sums = sums;
+ 	btrfs_add_ordered_sum(ordered, sums);
++
++	if (!async) {
++		csum_one_bio(bbio, &bbio->bio.bi_iter);
++		return 0;
++	}
++	init_completion(&bbio->csum_done);
++	bbio->async_csum = true;
++	bbio->csum_saved_iter = bbio->bio.bi_iter;
++	INIT_WORK(&bbio->csum_work, csum_one_bio_work);
++	schedule_work(&bbio->csum_work);
+ 	return 0;
+ }
+ 
+diff --git a/fs/btrfs/file-item.h b/fs/btrfs/file-item.h
+index 0d59e830018a6..5645c5e3abdb7 100644
+--- a/fs/btrfs/file-item.h
++++ b/fs/btrfs/file-item.h
+@@ -64,7 +64,7 @@ int btrfs_lookup_file_extent(struct btrfs_trans_handle *trans,
+ int btrfs_csum_file_blocks(struct btrfs_trans_handle *trans,
+ 			   struct btrfs_root *root,
+ 			   struct btrfs_ordered_sum *sums);
+-int btrfs_csum_one_bio(struct btrfs_bio *bbio);
++int btrfs_csum_one_bio(struct btrfs_bio *bbio, bool async);
+ int btrfs_alloc_dummy_sum(struct btrfs_bio *bbio);
+ int btrfs_lookup_csums_range(struct btrfs_root *root, u64 start, u64 end,
+ 			     struct list_head *list, int search_commit,
 -- 
 2.51.0
 
