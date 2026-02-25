@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKRTIk9anmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:27 +0100
+	id 8LdNKBZSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EABDD190AD2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B5618F1C7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1954D31DA45D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D30CC3079C7C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088CF284B29;
-	Wed, 25 Feb 2026 01:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A9220C012;
+	Wed, 25 Feb 2026 01:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KducAZbT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zwi+MnY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0191251795;
-	Wed, 25 Feb 2026 01:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7559E18B0A;
+	Wed, 25 Feb 2026 01:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983977; cv=none; b=oIBSrcasNJrPAQ3ly3NKOlNd2HuLro0i6sgdDCY57SczI+5IippeiVlp3AE/sv1ompeg3fLVkJzvJWGu6UxczvkQXjvXNha5CSA3+g8MO1KncyWRAAkfX6f/xPSgh+1mp10dGOOB4sUP8W6n9jZlil3wAdlXL4KUC5pcXJA9lKg=
+	t=1771983313; cv=none; b=oTTxLKiFY1v5ZSC+R1DjlyqFPKenpE3y6f5pUzeYh3vMVQCK2zNZxZGn1D9uot+sfXLW0SMZL6n5ui0R/87hK0ygsP6nX3gkfn/STFvbB9QnFkqvvFOsOKu8hhT/g8B0PClstqbWLyNdbb0r5fZus9HzqnUhAUFMsylck5EZjdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983977; c=relaxed/simple;
-	bh=MTsQemdt8StVzY778CwSdW1c0QFfwVMpJnUJOCbe31g=;
+	s=arc-20240116; t=1771983313; c=relaxed/simple;
+	bh=Si7QO/+qlAn2IQlez5FoZaGwvxgpet7DsKuUb+OQgTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qoW2YWar3qWgkWmOX35JQk09BLvZ3KNBpcou0tX53VMbrhYDoZ/I/N46dU44i+yNkndra8pVdZpBLmVkKuamQKEei6mAQXER58WCjvQnlkI9HY8l3YYJkmiITGQJUo+ZBBePoYHqLszH6lG0FvxwqYU6NJ4JkFp2or4WwdaJbmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KducAZbT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883ACC116D0;
-	Wed, 25 Feb 2026 01:46:17 +0000 (UTC)
+	 MIME-Version; b=HSUeE5pd17KFiVPAGVCrNyFH/eRzUFrj/czIkJAsruL6QqB3glK3ues+R2Ye7b8ThdXJZHe+MRzDhmUKgPISmOycSUBDT8Sr3NKhZkvN8QcJDVrRpV1Sk88mL+lb5jI+OtZEJyEoXCxYb0uxrXmtut0uiZNYMKa32El6kYGhp4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zwi+MnY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A0EC116D0;
+	Wed, 25 Feb 2026 01:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983977;
-	bh=MTsQemdt8StVzY778CwSdW1c0QFfwVMpJnUJOCbe31g=;
+	s=korg; t=1771983313;
+	bh=Si7QO/+qlAn2IQlez5FoZaGwvxgpet7DsKuUb+OQgTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KducAZbTvIb8ljSkNBV3yRqJw8wjZG7P8i/joqFGevdFk+Z/ukfrtUfB9gEvnzcx3
-	 2j6iZUPhlXGxiSA+c4b+W3woqbG/jfaM/50fTJbv+cGZwWUCWT8PUYMIMc9cMWDW/M
-	 BJkG5+DjItTGb27BfUU/KT58s0nMz3+TveCSWMFI=
+	b=0zwi+MnYOm32Qa9qEZPnTaO7/48WApYkNb24VoGN3T/xG3JrHej5B3AFlSkSlSKZY
+	 v1ZbblPivNq93dNGecNIWKH2NJ2LRH8Cf1RYHOkouw+QgZmO62mZtJCdWRLXahPn62
+	 01M6jolWTP1A3BjH5/BfXU+ixEUe7HamjOmweb34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
+	Waqar Hameed <waqar.hameed@axis.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 230/641] ASoC: SDCA: Handle volatile controls correctly
+Subject: [PATCH 6.19 447/781] power: supply: ab8500: Fix use-after-free in power_supply_changed()
 Date: Tue, 24 Feb 2026 17:19:16 -0800
-Message-ID: <20260225012354.472778651@linuxfoundation.org>
+Message-ID: <20260225012410.672314232@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219055-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218484-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,114 +92,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,cirrus.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: EABDD190AD2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: B4B5618F1C7
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Waqar Hameed <waqar.hameed@axis.com>
 
-[ Upstream commit 9fad74b79e5ff353fe156c4b685cceffa5afdb1d ]
+[ Upstream commit c4af8a98bb52825a5331ae1d0604c0ea6956ba4b ]
 
-There are very few volatile controls in SDCA that are exported
-as ALSA controls, typically Detected Mode is the only common
-one. However, the current code does not resume the device when
-these ALSA controls are accessed, which will result in the
-read/write failing.
+Using the `devm_` variant for requesting IRQ _before_ the `devm_`
+variant for allocating/registering the `power_supply` handle, means that
+the `power_supply` handle will be deallocated/unregistered _before_ the
+interrupt handler (since `devm_` naturally deallocates in reverse
+allocation order). This means that during removal, there is a race
+condition where an interrupt can fire just _after_ the `power_supply`
+handle has been freed, *but* just _before_ the corresponding
+unregistration of the IRQ handler has run.
 
-Add a new wrapper specifically for volatile controls that will do
-the required pm_runtime operations before accessing the register.
+This will lead to the IRQ handler calling `power_supply_changed()` with
+a freed `power_supply` handle. Which usually crashes the system or
+otherwise silently corrupts the memory...
 
-Fixes: c3ca24e3fcb6 ("ASoC: SDCA: Create ALSA controls from DisCo")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260204125944.1134011-3-ckeepax@opensource.cirrus.com
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Note that there is a similar situation which can also happen during
+`probe()`; the possibility of an interrupt firing _before_ registering
+the `power_supply` handle. This would then lead to the nasty situation
+of using the `power_supply` handle *uninitialized* in
+`power_supply_changed()`.
+
+Commit 1c1f13a006ed ("power: supply: ab8500: Move to componentized
+binding") introduced this issue during a refactorization. Fix this racy
+use-after-free by making sure the IRQ is requested _after_ the
+registration of the `power_supply` handle.
+
+Fixes: 1c1f13a006ed ("power: supply: ab8500: Move to componentized binding")
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/ccf83a09942cb8dda3dff70b2682f2c2e9cb97f2.1766268280.git.waqar.hameed@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sdca/sdca_asoc.c | 52 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 50 insertions(+), 2 deletions(-)
+ drivers/power/supply/ab8500_charger.c | 40 +++++++++++++--------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/sound/soc/sdca/sdca_asoc.c b/sound/soc/sdca/sdca_asoc.c
-index 7e986870d48c5..197a592ec2f16 100644
---- a/sound/soc/sdca/sdca_asoc.c
-+++ b/sound/soc/sdca/sdca_asoc.c
-@@ -16,6 +16,7 @@
- #include <linux/minmax.h>
- #include <linux/module.h>
- #include <linux/overflow.h>
-+#include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/soundwire/sdw_registers.h>
- #include <linux/string_helpers.h>
-@@ -836,6 +837,48 @@ static int control_limit_kctl(struct device *dev,
- 	return 0;
- }
+diff --git a/drivers/power/supply/ab8500_charger.c b/drivers/power/supply/ab8500_charger.c
+index 5f4537766e5b9..1813fbdfa1c1f 100644
+--- a/drivers/power/supply/ab8500_charger.c
++++ b/drivers/power/supply/ab8500_charger.c
+@@ -3466,26 +3466,6 @@ static int ab8500_charger_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
  
-+static int volatile_get_volsw(struct snd_kcontrol *kcontrol,
-+			      struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
-+	struct device *dev = component->dev;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret < 0) {
-+		dev_err(dev, "failed to resume reading %s: %d\n",
-+			kcontrol->id.name, ret);
-+		return ret;
-+	}
-+
-+	ret = snd_soc_get_volsw(kcontrol, ucontrol);
-+
-+	pm_runtime_put(dev);
-+
-+	return ret;
-+}
-+
-+static int volatile_put_volsw(struct snd_kcontrol *kcontrol,
-+			      struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
-+	struct device *dev = component->dev;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret < 0) {
-+		dev_err(dev, "failed to resume writing %s: %d\n",
-+			kcontrol->id.name, ret);
-+		return ret;
-+	}
-+
-+	ret = snd_soc_put_volsw(kcontrol, ucontrol);
-+
-+	pm_runtime_put(dev);
-+
-+	return ret;
-+}
-+
- static int populate_control(struct device *dev,
- 			    struct sdca_function_data *function,
- 			    struct sdca_entity *entity,
-@@ -890,8 +933,13 @@ static int populate_control(struct device *dev,
- 	(*kctl)->private_value = (unsigned long)mc;
- 	(*kctl)->iface = SNDRV_CTL_ELEM_IFACE_MIXER;
- 	(*kctl)->info = snd_soc_info_volsw;
--	(*kctl)->get = snd_soc_get_volsw;
--	(*kctl)->put = snd_soc_put_volsw;
-+	if (control->is_volatile) {
-+		(*kctl)->get = volatile_get_volsw;
-+		(*kctl)->put = volatile_put_volsw;
-+	} else {
-+		(*kctl)->get = snd_soc_get_volsw;
-+		(*kctl)->put = snd_soc_put_volsw;
-+	}
+-	/* Request interrupts */
+-	for (i = 0; i < ARRAY_SIZE(ab8500_charger_irq); i++) {
+-		irq = platform_get_irq_byname(pdev, ab8500_charger_irq[i].name);
+-		if (irq < 0)
+-			return irq;
+-
+-		ret = devm_request_threaded_irq(dev,
+-			irq, NULL, ab8500_charger_irq[i].isr,
+-			IRQF_SHARED | IRQF_NO_SUSPEND | IRQF_ONESHOT,
+-			ab8500_charger_irq[i].name, di);
+-
+-		if (ret != 0) {
+-			dev_err(dev, "failed to request %s IRQ %d: %d\n"
+-				, ab8500_charger_irq[i].name, irq, ret);
+-			return ret;
+-		}
+-		dev_dbg(dev, "Requested %s IRQ %d: %d\n",
+-			ab8500_charger_irq[i].name, irq, ret);
+-	}
+-
+ 	/* initialize lock */
+ 	spin_lock_init(&di->usb_state.usb_lock);
+ 	mutex_init(&di->usb_ipt_crnt_lock);
+@@ -3614,6 +3594,26 @@ static int ab8500_charger_probe(struct platform_device *pdev)
+ 		return PTR_ERR(di->usb_chg.psy);
+ 	}
  
- 	if (readonly_control(control))
- 		(*kctl)->access = SNDRV_CTL_ELEM_ACCESS_READ;
++	/* Request interrupts */
++	for (i = 0; i < ARRAY_SIZE(ab8500_charger_irq); i++) {
++		irq = platform_get_irq_byname(pdev, ab8500_charger_irq[i].name);
++		if (irq < 0)
++			return irq;
++
++		ret = devm_request_threaded_irq(dev,
++			irq, NULL, ab8500_charger_irq[i].isr,
++			IRQF_SHARED | IRQF_NO_SUSPEND | IRQF_ONESHOT,
++			ab8500_charger_irq[i].name, di);
++
++		if (ret != 0) {
++			dev_err(dev, "failed to request %s IRQ %d: %d\n"
++				, ab8500_charger_irq[i].name, irq, ret);
++			return ret;
++		}
++		dev_dbg(dev, "Requested %s IRQ %d: %d\n",
++			ab8500_charger_irq[i].name, irq, ret);
++	}
++
+ 	/*
+ 	 * Check what battery we have, since we always have the USB
+ 	 * psy, use that as a handle.
 -- 
 2.51.0
 
