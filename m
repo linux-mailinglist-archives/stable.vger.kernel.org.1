@@ -1,72 +1,60 @@
-Return-Path: <stable+bounces-218404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJzXLatTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:07 +0100
+	id mPJQMyZVnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3710818F998
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4180118FF10
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BF2B631C5A73
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4F3CB30B8CE8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C34220C012;
-	Wed, 25 Feb 2026 01:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5051DDC37;
+	Wed, 25 Feb 2026 01:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YM3obhzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3gpuFZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E64418B0A;
-	Wed, 25 Feb 2026 01:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC4D2BEC23;
+	Wed, 25 Feb 2026 01:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983219; cv=none; b=bYAIGClZJZP/q9CsyEwXopeJ9bQCT3kK7UAtLN4Dq7b9KX+OC/Iaq/4IdGktV71n7IDfoVK1XcP8pOqC8BhJKSQ5NCizpCSKuRdYWyMqbo1er0MKRnzmyDEkHyWBIaJ5bfGmlmoJO+F3aJCxFSIpVX9dDOzR7sxImH+fGEoy2Qg=
+	t=1771983873; cv=none; b=s0fr6UcV4aeoXbGGVjgQM9zS6sqTpDmwmHZPbwPjJo8lt9j2h80Nk86PmeK/EDLGCRBs58ixIa+Tt8CA8klKI0+LLpf8fVRbzcRLPAq0yIMpgImSokk86iE495hh5CrvU3OUcIoCt4R0OH+LyItYGsSWgmr74Dbc9OBjoEH51c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983219; c=relaxed/simple;
-	bh=fpnZ0h9FJw9RmgIfYTN9l55vpX4/4ri/AwQeDw/I2W0=;
+	s=arc-20240116; t=1771983873; c=relaxed/simple;
+	bh=pQfJaW5FySZ6mEuxnYgNccZN0ocpXo77pvixAAOJyug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BKVc68p+aQXyTdXHDQFgYS9FsWCAL3S+iOaHruK80xrGm3OGMJhNeUqNeeCRvpDzRXg6CpM9ZMYTyvkyQXU0p1XG6dFKQdXnHJl63QSGTI808tDEO8e7dHGa7TnXLOMF7NJrKdQr9H3j2NmDrLfM4sFrSt2u/lFFU76Y0c8GiNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YM3obhzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE1FC116D0;
-	Wed, 25 Feb 2026 01:33:38 +0000 (UTC)
+	 MIME-Version; b=oIx7H5/AaszB+RCkTgJKYAVxPtyv8pMfq3zXZ37hMFCqUDceU/yb0xq6LWkfRH7vyCh7tPkueVsLipt/wOEQiIllydFS7l2D2GLmvOLNarlJMvJI4pGzb/Pl2ewCRJqje0agUv0xlGM4cea+XVtkahj6K8UBAHT6n648Peuvfhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3gpuFZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD98FC116D0;
+	Wed, 25 Feb 2026 01:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983219;
-	bh=fpnZ0h9FJw9RmgIfYTN9l55vpX4/4ri/AwQeDw/I2W0=;
+	s=korg; t=1771983873;
+	bh=pQfJaW5FySZ6mEuxnYgNccZN0ocpXo77pvixAAOJyug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YM3obhzoSodECIy7LidelSmkzp+nrbOpewcG8RJcOUtbF6Pm+p1G1nmxGFdx9Gh4k
-	 GmDMrgO0znLrRgI1A5fNYHLimmUhBav/xb7VgFbxPjpK/5dIkH4JSnfe1nfbbb8O2j
-	 GyrzCw7A1U9ElZpNK+UpFvJFhJ3O0NX0OdGJWSzY=
+	b=K3gpuFZXr+YtHMxMY69YQQmoPQFy6wq05aZx3tRYAYxZPAhyliuA48HQ1sgq7UeGy
+	 8aD/2rDapULisA/PY69Yaas6xbUUzu1zFqqL4LR3ENWJauqVosa/KrF1wg6P/FWTKr
+	 FJYpUU0MakofSykpVvCFWtg2/ppetcJjzMTQPVsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Panagiotis Foliadis <pfoliadis@posteo.net>,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Xie <nick@khadas.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 366/781] rust: task: restrict Task::group_leader() to current
+Subject: [PATCH 6.18 149/641] arm64: dts: amlogic: s4: assign mmc b clock to 24MHz
 Date: Tue, 24 Feb 2026 17:17:55 -0800
-Message-ID: <20260225012408.657578041@linuxfoundation.org>
+Message-ID: <20260225012352.709307751@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,135 +64,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218404-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,redhat.com,gmail.com,garyguo.net,kernel.org,protonmail.com,posteo.net,umich.edu,linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218970-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,posteo.net:email]
-X-Rspamd-Queue-Id: 3710818F998
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,khadas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4180118FF10
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 105ddfb2d2b3acec7a7d9695463df48733d91e6c ]
+[ Upstream commit 86124a8becb43eed3103f2459399daee8af2c99d ]
 
-The Task::group_leader() method currently allows you to access the
-group_leader() of any task, for example one you hold a refcount to.  But
-this is not safe in general since the group leader could change when a
-task exits.  See for example commit a15f37a40145c ("kernel/sys.c: fix the
-racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths").
+The amlogic MMC driver operate with the assumption that MMC clock
+is configured to provide 24MHz. It uses this path for low
+rates such as 400kHz.
 
-All existing users of Task::group_leader() call this method on current,
-which is guaranteed running, so there's not an actual issue in Rust code
-today.  But to prevent code in the future from making this mistake,
-restrict Task::group_leader() so that it can only be called on current.
+This assumption did hold true until but it now, but it is apparently
+not the case with s4. The clock has been reported to provide 1GHz
+instead. This is most likely due to how the bootloader is using the MMC
+clock on this platform.
 
-There are some other cases where accessing task->group_leader is okay.
-For example it can be safe if you hold tasklist_lock or rcu_read_lock().
-However, only supporting current->group_leader is sufficient for all
-in-tree Rust users of group_leader right now.  Safe Rust functionality for
-accessing it under rcu or while holding tasklist_lock may be added in the
-future if required by any future Rust module.
+Regardless of why the MMC clock rate is 1GHz, if the MMC driver expects
+24MHz, the clock should be properly assigned, so assign it.
 
-This patch is a bugfix in that it prevents users of this API from writing
-incorrect code.  It doesn't change behavior of correct code.
-
-Link: https://lkml.kernel.org/r/20260107-task-group-leader-v2-1-8fbf816f2a2f@google.com
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Fixes: 313c4281bc9d ("rust: add basic `Task`")
-Reported-by: Oleg Nesterov <oleg@redhat.com>
-Closes: https://lore.kernel.org/all/aTLnV-5jlgfk1aRK@redhat.com/
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Benno Lossin <lossin@kernel.org>
-Cc: "Björn Roy Baron" <bjorn3_gh@protonmail.com>
-Cc: Björn Roy Baron <bjorn3_gh@protonmail.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Panagiotis Foliadis <pfoliadis@posteo.net>
-Cc: Shankari Anand <shankari.ak0208@gmail.com>
-Cc: Trevor Gross <tmgross@umich.edu>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Nick Xie <nick@khadas.com>
+Closes: https://lore.kernel.org/linux-amlogic/20260113011931.40424-1-nick@khadas.com/
+Fixes: 3ab9d54b5d84 ("arm64: dts: amlogic: enable some device nodes for S4")
+Tested-by: Nick Xie <nick@khadas.com>
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260114-amlogic-s4-mmc-fixup-v3-1-a4d3e136b3f2@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/task.rs | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-s4.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 49fad6de06740..cc907fb531bce 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -204,18 +204,6 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
-         self.0.get()
-     }
- 
--    /// Returns the group leader of the given task.
--    pub fn group_leader(&self) -> &Task {
--        // SAFETY: The group leader of a task never changes after initialization, so reading this
--        // field is not a data race.
--        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
--
--        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
--        // and given that a task has a reference to its group leader, we know it must be valid for
--        // the lifetime of the returned task reference.
--        unsafe { &*ptr.cast() }
--    }
--
-     /// Returns the PID of the given task.
-     pub fn pid(&self) -> Pid {
-         // SAFETY: The pid of a task never changes after initialization, so reading this field is
-@@ -345,6 +333,18 @@ pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
-         // `release_task()` call.
-         Some(unsafe { PidNamespace::from_ptr(active_ns) })
-     }
+diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+index 9d99ed2994dfa..f314f07062abe 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+@@ -838,6 +838,9 @@ sd: mmc@fe08a000 {
+ 			clock-names = "core", "clkin0", "clkin1";
+ 			resets = <&reset RESET_SD_EMMC_B>;
+ 			status = "disabled";
 +
-+    /// Returns the group leader of the current task.
-+    pub fn group_leader(&self) -> &Task {
-+        // SAFETY: The group leader of a task never changes while the task is running, and `self`
-+        // is the current task, which is guaranteed running.
-+        let ptr = unsafe { (*self.as_ptr()).group_leader };
-+
-+        // SAFETY: `current->group_leader` stays valid for at least the duration in which `current`
-+        // is running, and the signature of this function ensures that the returned `&Task` can
-+        // only be used while `current` is still valid, thus still running.
-+        unsafe { &*ptr.cast() }
-+    }
- }
++			assigned-clocks = <&clkc_periphs CLKID_SD_EMMC_B>;
++			assigned-clock-rates = <24000000>;
+ 		};
  
- // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+ 		emmc: mmc@fe08c000 {
 -- 
 2.51.0
 
