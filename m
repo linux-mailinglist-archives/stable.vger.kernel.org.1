@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-218718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AG+oFU5TnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:34 +0100
+	id MMG7OWaenmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3461B18F790
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5A1192C54
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2731B306BCDA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5F22330DB639
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D8226D4F7;
-	Wed, 25 Feb 2026 01:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA0D2D29C2;
+	Wed, 25 Feb 2026 06:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYZ8U7H8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBQ7aOI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD39126056D;
-	Wed, 25 Feb 2026 01:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821452D5926;
+	Wed, 25 Feb 2026 06:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983579; cv=none; b=jx/V6run7ho0HdAt6ZRFq6iAUBP/z8sypHqZ/dqSXqCJciQOEXHng6GrSlElcPLNr6AnE/neqWFwiXZ62CaxqTTCZVfEMD2Q9iJHSNWt40/MeiTtPGHJs2QTlAPHK3fMZsvpKNuL55YpFsuesG4A9B4cAw9SkhJF3p/9a3LcmVk=
+	t=1772002678; cv=none; b=no+IOjuO7gELuYtD///1lvIt4i7b/qxqaA4e8kafl2/4l8lQFicl2FyTveRqCo+yCVbEuJ7nY8A38SHftUZyykUHAFGncipaY4xS1Nk+mLxcMLR60wbjEhsc/8XutLAs4RNVVXYzYtvnjB0lHN7BWDSwNgd18iONM3jg021fCuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983579; c=relaxed/simple;
-	bh=ZcMkM3lmq+xL1JcEghWhJ0s7MDZPOmGyxKcfDHc61W4=;
+	s=arc-20240116; t=1772002678; c=relaxed/simple;
+	bh=UI8CGB4ZII8rLB9XNnG8ztyvYrMDYlmuLJ1/WlGi9R4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S66I5zmK7vXSPWW1PnTtw5+lcYu0Kum2kCq5kmR59BH4/qGB86d/JN8ekXVCRX+CE4Dq3ctMSct/BMIhI/EvhSO61qaHj7AZIbb3xBe93ngR7V42qiPvaUV83jV7O2gkmEWPvTCpUY2bDo4YLh9eoWwngY82ilpkc69ToJK9ShE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYZ8U7H8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D40EC116D0;
-	Wed, 25 Feb 2026 01:39:39 +0000 (UTC)
+	 MIME-Version; b=jLts5vHT5qKbEoF08JCoaK0wtzuxgBov4kKbqqTRDt4Xf8TkpyxipQjGLhfFIEOMlWpkSOaLd89H9Ha0KhJ21Z9lsa5nVFoF3kvQP3Dre7bS2FjY1B9WFH6i9LE8MhcgceV3Nk1mCs5KVh2ZQo3+/Lxg8Z6/Tg6SMbqkd7KNW1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBQ7aOI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B92C116D0;
+	Wed, 25 Feb 2026 06:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983579;
-	bh=ZcMkM3lmq+xL1JcEghWhJ0s7MDZPOmGyxKcfDHc61W4=;
+	s=korg; t=1772002678;
+	bh=UI8CGB4ZII8rLB9XNnG8ztyvYrMDYlmuLJ1/WlGi9R4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYZ8U7H8Uw46hqirf84SKqiyoe0uoH0To0ehzoRdag1PZf00fzTw6oOyP92Vge5r8
-	 zmabxiMHtdhnOjjXzZc+FgmPKSpAqa9UUdDJ/iBKp+5hOpOES9uNKz3tD8jd72RyQj
-	 NiLWtew9U5NGBJcPat0PWBhOVzTjyTjplgg1GvSE=
+	b=LBQ7aOI05wWKdpP8/eYi/ejR0Nz5rZ293E/38uchLVmMGa2STB1DPRRBZhbySALBF
+	 WVym6nW93h8WRO/iVsVS6Thx9LZSBYisHST21pb8/cu0Luop9vX0SO573gECwH/XkW
+	 8a//+6v2Fb1q5CYD3JYwPF5A5Od58WB1FjU2xO/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 680/781] ipv6: icmp: remove obsolete code in icmpv6_xrlim_allow()
+Subject: [PATCH 6.18 463/641] gpib: Fix error code in ibonline()
 Date: Tue, 24 Feb 2026 17:23:09 -0800
-Message-ID: <20260225012416.455185626@linuxfoundation.org>
+Message-ID: <20260225012359.733653635@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,123 +68,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218718-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219381-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3461B18F790
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8E5A1192C54
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 0201eedb69b24a6be9b7c1716287a89c4dde2320 ]
+[ Upstream commit 96118565d24e7691e423d73be224b3a3fffc4680 ]
 
-Following part was needed before the blamed commit, because
-inet_getpeer_v6() second argument was the prefix.
+This accidentally returns 1 on error, but it should return negative
+error codes.
 
-	/* Give more bandwidth to wider prefixes. */
-	if (rt->rt6i_dst.plen < 128)
-		tmo >>= ((128 - rt->rt6i_dst.plen)>>5);
-
-Now inet_getpeer_v6() retrieves hosts, we need to remove
-@tmo adjustement or wider prefixes likes /24 allow 8x
-more ICMP to be sent for a given ratelimit.
-
-As we had this issue for a while, this patch changes net.ipv6.icmp.ratelimit
-default value from 1000ms to 100ms to avoid potential regressions.
-
-Also add a READ_ONCE() when reading net->ipv6.sysctl.icmpv6_time.
-
-Fixes: fd0273d7939f ("ipv6: Remove external dependency on rt6i_dst and rt6i_src")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20260216142832.3834174-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9dde4559e939 ("staging: gpib: Add GPIB common core driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aSlMnaT1M104NJb2@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/ip-sysctl.rst | 7 ++++---
- net/ipv6/af_inet6.c                    | 2 +-
- net/ipv6/icmp.c                        | 7 +------
- 3 files changed, 6 insertions(+), 10 deletions(-)
+ drivers/staging/gpib/common/iblib.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index bc9a01606daf5..2c65d57103fb1 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -3232,12 +3232,13 @@ enhanced_dad - BOOLEAN
- ===========
- 
- ratelimit - INTEGER
--	Limit the maximal rates for sending ICMPv6 messages.
-+	Limit the maximal rates for sending ICMPv6 messages to a particular
-+	peer.
- 
- 	0 to disable any limiting,
--	otherwise the minimal space between responses in milliseconds.
-+	otherwise the space between responses in milliseconds.
- 
--	Default: 1000
-+	Default: 100
- 
- ratemask - list of comma separated ranges
- 	For ICMPv6 message types matching the ranges in the ratemask, limit
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index b705751eb73c6..d3534bdb805da 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -955,7 +955,7 @@ static int __net_init inet6_net_init(struct net *net)
- 	int err = 0;
- 
- 	net->ipv6.sysctl.bindv6only = 0;
--	net->ipv6.sysctl.icmpv6_time = 1*HZ;
-+	net->ipv6.sysctl.icmpv6_time = HZ / 10;
- 	net->ipv6.sysctl.icmpv6_echo_ignore_all = 0;
- 	net->ipv6.sysctl.icmpv6_echo_ignore_multicast = 0;
- 	net->ipv6.sysctl.icmpv6_echo_ignore_anycast = 0;
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index a77f3113ef23b..55b1aa75ab802 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -217,14 +217,9 @@ static bool icmpv6_xrlim_allow(struct sock *sk, u8 type,
- 	} else if (dev && (dev->flags & IFF_LOOPBACK)) {
- 		res = true;
- 	} else {
--		struct rt6_info *rt = dst_rt6_info(dst);
--		int tmo = net->ipv6.sysctl.icmpv6_time;
-+		int tmo = READ_ONCE(net->ipv6.sysctl.icmpv6_time);
- 		struct inet_peer *peer;
- 
--		/* Give more bandwidth to wider prefixes. */
--		if (rt->rt6i_dst.plen < 128)
--			tmo >>= ((128 - rt->rt6i_dst.plen)>>5);
--
- 		peer = inet_getpeer_v6(net->ipv6.peers, &fl6->daddr);
- 		res = inet_peer_xrlim_allow(peer, tmo);
+diff --git a/drivers/staging/gpib/common/iblib.c b/drivers/staging/gpib/common/iblib.c
+index 7cbb6a467177d..b672dd6aad25f 100644
+--- a/drivers/staging/gpib/common/iblib.c
++++ b/drivers/staging/gpib/common/iblib.c
+@@ -227,11 +227,10 @@ int ibonline(struct gpib_board *board)
+ #ifndef CONFIG_NIOS2
+ 	board->autospoll_task = kthread_run(&autospoll_thread, board,
+ 					    "gpib%d_autospoll_kthread", board->minor);
+-	retval = IS_ERR(board->autospoll_task);
+-	if (retval) {
++	if (IS_ERR(board->autospoll_task)) {
+ 		dev_err(board->gpib_dev, "failed to create autospoll thread\n");
+ 		board->interface->detach(board);
+-		return retval;
++		return PTR_ERR(board->autospoll_task);
  	}
+ #endif
+ 	board->online = 1;
 -- 
 2.51.0
 
