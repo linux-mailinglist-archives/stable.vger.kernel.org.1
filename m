@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-219240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218578-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MO8BNCKenmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:50 +0100
+	id EEsiI8dSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218578-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35770192B98
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 670AB18F530
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C27130F831A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AE9C7307816C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81432C0F97;
-	Wed, 25 Feb 2026 06:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05475256C8B;
+	Wed, 25 Feb 2026 01:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9Ejmmfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VefnVm4b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFB82C0263;
-	Wed, 25 Feb 2026 06:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5501FE45D;
+	Wed, 25 Feb 2026 01:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002586; cv=none; b=XmB8EoqBdIiZZCYC5/1AIGpGmFtZpnvyOQSQuBt4d9YR8WChSieinwWpFQwpeiV/+99QCkR50fdKF57Lb2XYnIYMT0S3p+0tIO+buvkyKmxQvd30W/lbsJV7fTQxHSqVqokoio3a+SCkpmb0wJZC/5bHhFh+lByopP3WOPVVPwc=
+	t=1771983420; cv=none; b=NjZhe1OE8oQzxmpLAS0Yfhkq5A1/PwpSqZpUmkC63Unkyv772WYkQEXs6I3Cft1JypYii9S9v93h3DsBMjASTsNiBKEuM7Cz6PzgASMKNtivc1DsyVpf+vb0ek/8Gw8Xj9Za2lv7DpGFIlDOPHv/FSCVi8HuJkc0+WHSCYwr1V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002586; c=relaxed/simple;
-	bh=ieGXJNtNcdDMZBUiAv1IE4v3sbqqUcsepDLPO+SO+Hk=;
+	s=arc-20240116; t=1771983420; c=relaxed/simple;
+	bh=zVsoVHZDpThTWMq6ZyohVCKJmjm1WttEXvH9UkdmX0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmPu0Ny7u7vqBNIVzbaaAPu96EZ7XP+JYwmubdqL0wJiNAXdXVrvbXL0xslqgMDcCuE7CKZ9D1DeJ3caJ1Hfy5cwtgXATuJO4J6mZEZO+X+i8VLyk4BGm5ySlxMc445tR0nqYvDQ79SgN8wo4tfN9Rs3WRqqKwC26EnOAXpJoo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9Ejmmfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A68C116D0;
-	Wed, 25 Feb 2026 06:56:26 +0000 (UTC)
+	 MIME-Version; b=AtrJe0jjlu4JnBYG/PkzWynlyWyGqxI/ENua2wRs6BvvbnvB85E33eAbPU3iIj15R9I+1DeHnIk5aAB6cgo4wmMD6WoqUNhvl+tW9A48Mhns9XJ/CxXlQUIJ0HeFFxBmqEjRJnchD4SPP9csHUKXpDRu8uHa9+TGYV0s4iLm7ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VefnVm4b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775B1C19423;
+	Wed, 25 Feb 2026 01:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002586;
-	bh=ieGXJNtNcdDMZBUiAv1IE4v3sbqqUcsepDLPO+SO+Hk=;
+	s=korg; t=1771983420;
+	bh=zVsoVHZDpThTWMq6ZyohVCKJmjm1WttEXvH9UkdmX0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9Ejmmfzt1EhtXPj/Uf+SHm13rO9bGqj/Ox7j1Op9Gmmw3KuGcqqD8BsQ+La6REhd
-	 40+FI4YF9ahXmv+7uBvaV4WTSyWJjKDRJ5cv5ZTlhYU2fiaN+n8R7U//EL87b2d1Op
-	 UC9dvT20Pf4gXqKSnOcmv63OB6szd9yXSGB6TC4k=
+	b=VefnVm4b2HjleDNXen90XEMZGnsGn6l5vM5+PuWBdyOTTQyzivt9FM3I+W0QCQ2B6
+	 4xnZLiiWGnRiLf808QV5tOddm0M0pbMWjhlmqfxW9KjfBiqtJHiasZkwCrya0UU9A3
+	 bE33p0IQCmuLz/mTIvM+DB9sfA8Rq95+hvN8r4+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 323/641] net: hns3: fix double free issue for tx spare buffer
-Date: Tue, 24 Feb 2026 17:20:49 -0800
-Message-ID: <20260225012356.530577121@linuxfoundation.org>
+Subject: [PATCH 6.19 541/781] clk: bm1880: convert from divider_round_rate() to divider_determine_rate()
+Date: Tue, 24 Feb 2026 17:20:50 -0800
+Message-ID: <20260225012413.066303376@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,102 +69,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219240-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218578-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 35770192B98
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 670AB18F530
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 6d2f142b1e4b203387a92519d9d2e34752a79dbb ]
+[ Upstream commit 463b97bef0c9fb02b743d6b9f0d698cae81a1d9f ]
 
-In hns3_set_ringparam(), a temporary copy (tmp_rings) of the ring structure
-is created for rollback. However, the tx_spare pointer in the original
-ring handle is incorrectly left pointing to the old backup memory.
+The divider_round_rate() function is now deprecated, so let's migrate
+to divider_determine_rate() instead so that this deprecated API can be
+removed.
 
-Later, if memory allocation fails in hns3_init_all_ring() during the setup,
-the error path attempts to free all newly allocated rings. Since tx_spare
-contains a stale (non-NULL) pointer from the backup, it is mistaken for
-a newly allocated buffer and is erroneously freed, leading to a double-free
-of the backup memory.
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
 
-The root cause is that the tx_spare field was not cleared after its value
-was saved in tmp_rings, leaving a dangling pointer.
+    req->rate = divider_round_rate(...)
 
-Fix this by setting tx_spare to NULL in the original ring structure
-when the creation of the new `tx_spare` fails. This ensures the
-error cleanup path only frees genuinely newly allocated buffers.
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
 
-Fixes: 907676b130711 ("net: hns3: use tx bounce buffer for small packets")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260205121719.3285730-1-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 64613d7fb42f ("clk: bm1880: convert from round_rate() to determine_rate()")
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/clk/clk-bm1880.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index e976a88b952f0..c8eba180250e7 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -1048,13 +1048,13 @@ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
- 	int order;
- 
- 	if (!alloc_size)
--		return;
-+		goto not_init;
- 
- 	order = get_order(alloc_size);
- 	if (order > MAX_PAGE_ORDER) {
- 		if (net_ratelimit())
- 			dev_warn(ring_to_dev(ring), "failed to allocate tx spare buffer, exceed to max order\n");
--		return;
-+		goto not_init;
+diff --git a/drivers/clk/clk-bm1880.c b/drivers/clk/clk-bm1880.c
+index dac190bc6e19a..d2617fe16d2e4 100644
+--- a/drivers/clk/clk-bm1880.c
++++ b/drivers/clk/clk-bm1880.c
+@@ -629,10 +629,7 @@ static int bm1880_clk_div_determine_rate(struct clk_hw *hw,
+ 		return 0;
  	}
  
- 	tx_spare = devm_kzalloc(ring_to_dev(ring), sizeof(*tx_spare),
-@@ -1092,6 +1092,13 @@ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
- 	devm_kfree(ring_to_dev(ring), tx_spare);
- devm_kzalloc_error:
- 	ring->tqp->handle->kinfo.tx_spare_buf_size = 0;
-+not_init:
-+	/* When driver init or reset_init, the ring->tx_spare is always NULL;
-+	 * but when called from hns3_set_ringparam, it's usually not NULL, and
-+	 * will be restored if hns3_init_all_ring() failed. So it's safe to set
-+	 * ring->tx_spare to NULL here.
-+	 */
-+	ring->tx_spare = NULL;
+-	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
+-				       div->table, div->width, div->flags);
+-
+-	return 0;
++	return divider_determine_rate(hw, req, div->table, div->width, div->flags);
  }
  
- /* Use hns3_tx_spare_space() to make sure there is enough buffer
+ static int bm1880_clk_div_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.51.0
 
