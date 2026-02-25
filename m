@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBGPMkZanmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:18 +0100
+	id EDNzK+5RnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4841F190AB4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3631F18F131
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3AE731D5E99
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 422C73069D26
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B4B25A357;
-	Wed, 25 Feb 2026 01:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5DD248886;
+	Wed, 25 Feb 2026 01:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpkiTuRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntdbHuEf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F3F22127B;
-	Wed, 25 Feb 2026 01:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F1818B0A;
+	Wed, 25 Feb 2026 01:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983961; cv=none; b=e610ToMhGAi43xpvyvYWzuud+6QWM3DoXcj724Apkm0RnFeOFThZDIaiB55paDaz39Kec2hMSzELBmIpRgJqrJHgzyLQ1EljBemUwvNftcopQnG7KwPkMRhZXRRYKewARCCFgz84EA0I+EBtlgDp5+zpMmu2i37/r6h7ZF5WxSs=
+	t=1771983302; cv=none; b=DO0oH8RBgKX1hFCMCi664spFJSFHNBy2fJRPBPo3civBpSCa1V2DkgKZLCjgPV8fvVGVRAUC7ko2SmsNqFGCnYS/07qeCKKJlMkQUVWe1gJvrjVaLg73YZt0qGmREY6ktZQe4kqsO3KWke3qWrweU/ySAyOSaOchMSbvH/H2IEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983961; c=relaxed/simple;
-	bh=hPLi9KFJy6MB9I71M0AN5EOBtV0807PlAdG1fZJU+Og=;
+	s=arc-20240116; t=1771983302; c=relaxed/simple;
+	bh=Bdt5ihuaehjst7qSe0NfhtTr+l5Lt3dsm8e1+BKuoQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QhFgURimyoqC+0UrV96IsbhxaMavhVwnucWrtSqaD8rRSNsYyYFdJ/b3DjBlM6FG3mP//DhL0OC2yh3T81acPS6YP4jH60fYQ2UyxevixXT+fwpWJURTC/a8ro4AG5At31HchKPUbt4snD7JxwMhvltGjD8QwHQRQyD+7Q5uxrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpkiTuRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD217C116D0;
-	Wed, 25 Feb 2026 01:46:00 +0000 (UTC)
+	 MIME-Version; b=V2y0+2/Q4LzT0+ctL+/RHusfCZLE1yBV6bW+Qi0CP91KgFnbF1AydIY2z6hkNvL6VdBCCkwLnmIZ07BI8mYsIVLFbBVaPbbOo2iDbnMVcQU406P0ZoaEg5q9al71o7cV1pdOf7g1zyuiy4jb5TlolfIQeCHBqHcGfP3LOQl723E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntdbHuEf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E82C116D0;
+	Wed, 25 Feb 2026 01:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983961;
-	bh=hPLi9KFJy6MB9I71M0AN5EOBtV0807PlAdG1fZJU+Og=;
+	s=korg; t=1771983302;
+	bh=Bdt5ihuaehjst7qSe0NfhtTr+l5Lt3dsm8e1+BKuoQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpkiTuRL73VuJU5tvF40Ed5d4R+DQ1RZNtdkwbIaXGQlTXWahOc50F6/jfhwuXqwR
-	 rA18sFvNjb6AoogtDFN/h3jWaBoFfC9gCS8Wl06cQQph72NRrV+lGSwHnYuFK9WC2Z
-	 Ca7sLabmaDLfqNXap28AVxDcZ2Z4u1jg6APTY9WM=
+	b=ntdbHuEfomZr+Sx28C36gJ42kfI8U5XiKpXBiCcLfNk03GsSYrVff9bzL6NM/mMCB
+	 YrQiMy3RqAFBB9pm4W2rulQab4RiF+fyvdrZrFUnCBlklx06PYooVVs6n+yGd08aMh
+	 XBvOkfLbarpgAJOoTpLHQ+CACUEy63WXImIk734w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+	Eric Joyner <eric.joyner@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 218/641] drm/xe/ptl: Disable DCC on PTL
+Subject: [PATCH 6.19 435/781] ionic: Rate limit unknown xcvr type messages
 Date: Tue, 24 Feb 2026 17:19:04 -0800
-Message-ID: <20260225012354.210357464@linuxfoundation.org>
+Message-ID: <20260225012410.374080436@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219041-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218475-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,97 +88,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 4841F190AB4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3631F18F131
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+From: Eric Joyner <eric.joyner@amd.com>
 
-[ Upstream commit 801a6e61f5fbab2c0dd76c8360f45b625b49e410 ]
+[ Upstream commit cdb1634de3bf197c0d86487d1fb84c128a79cc7c ]
 
-On PTL, the recommendation is to disable DCC(Duty Cycle Control) as
-it may cause some regressions due to added latencies. Upcoming GuC
-releases will disable DCC on PTL as well, but we need to force it in
-KMD so that this behavior is propagated to older kernels.
+Running ethtool repeatedly with a transceiver unknown to the driver or
+firmware will cause the driver to spam the kernel logs with "unknown
+xcvr type" messages which can distract from real issues; and this isn't
+interesting information outside of debugging. Fix this by rate limiting
+the output so that there are still notifications but not so many that
+they flood the log.
 
-v2: Update commit message (Rodrigo)
-v3: Rebase
-v4: Fix typo: s/propagted/propagated
+Using dev_dbg_once() would reduce the number of messages further, but
+this would miss the case where a different unknown transceiver type is
+plugged in, and its status is requested.
 
-Fixes: 5cdb71d3b0db ("drm/xe/ptl: Add GuC FW definition for PTL")
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Link: https://patch.msgid.link/20260124005917.398522-1-vinay.belgaumkar@intel.com
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 40ee63f5df2d5c6471b583df800aac89dc0502a4)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 4d03e00a2140 ("ionic: Add initial ethtool support")
+Signed-off-by: Eric Joyner <eric.joyner@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://patch.msgid.link/20260206224651.1491-1-eric.joyner@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_pc.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
-index 53fdf59524c41..a3e9796e6430f 100644
---- a/drivers/gpu/drm/xe/xe_guc_pc.c
-+++ b/drivers/gpu/drm/xe/xe_guc_pc.c
-@@ -1231,6 +1231,36 @@ int xe_guc_pc_set_power_profile(struct xe_guc_pc *pc, const char *buf)
- 	return ret;
- }
- 
-+static int pc_action_set_dcc(struct xe_guc_pc *pc, bool enable)
-+{
-+	int ret;
-+
-+	ret = pc_action_set_param(pc,
-+				  SLPC_PARAM_TASK_ENABLE_DCC,
-+				  enable);
-+	if (!ret)
-+		return pc_action_set_param(pc,
-+					   SLPC_PARAM_TASK_DISABLE_DCC,
-+					   !enable);
-+	else
-+		return ret;
-+}
-+
-+static int pc_modify_defaults(struct xe_guc_pc *pc)
-+{
-+	struct xe_device *xe = pc_to_xe(pc);
-+	struct xe_gt *gt = pc_to_gt(pc);
-+	int ret = 0;
-+
-+	if (xe->info.platform == XE_PANTHERLAKE) {
-+		ret = pc_action_set_dcc(pc, false);
-+		if (unlikely(ret))
-+			xe_gt_err(gt, "Failed to modify DCC default: %pe\n", ERR_PTR(ret));
-+	}
-+
-+	return ret;
-+}
-+
- /**
-  * xe_guc_pc_start - Start GuC's Power Conservation component
-  * @pc: Xe_GuC_PC instance
-@@ -1288,6 +1318,10 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
- 			   ktime_ms_delta(ktime_get(), earlier));
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index 2d9efadb5d2ae..347b0aff100b9 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -263,9 +263,10 @@ static int ionic_get_link_ksettings(struct net_device *netdev,
+ 		/* This means there's no module plugged in */
+ 		break;
+ 	default:
+-		dev_info(lif->ionic->dev, "unknown xcvr type pid=%d / 0x%x\n",
+-			 idev->port_info->status.xcvr.pid,
+-			 idev->port_info->status.xcvr.pid);
++		dev_dbg_ratelimited(lif->ionic->dev,
++				    "unknown xcvr type pid=%d / 0x%x\n",
++				    idev->port_info->status.xcvr.pid,
++				    idev->port_info->status.xcvr.pid);
+ 		break;
  	}
  
-+	ret = pc_modify_defaults(pc);
-+	if (ret)
-+		return ret;
-+
- 	ret = pc_init_freqs(pc);
- 	if (ret)
- 		goto out;
 -- 
 2.51.0
 
