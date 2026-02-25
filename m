@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-219540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219542-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGI/F0+hnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:14:23 +0100
+	id wPzuCFihnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219542-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:14:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFBBB193208
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:14:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C82319321F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6383F310FEF7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8971321C000
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3353254B3;
-	Wed, 25 Feb 2026 06:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7F131326A;
+	Wed, 25 Feb 2026 06:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZcSSU9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Stbo8QUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5962FF669;
-	Wed, 25 Feb 2026 06:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F603242D6;
+	Wed, 25 Feb 2026 06:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002783; cv=none; b=H4AHdmbIFLWSrK6NbadRW/RT0/M6EUgzbxIYhi/ADzIfEWDbs6+do8i2SKKfxooqnUaDlJ/0eXA3FDE3WWvzEigHF8POvZR+Ds3QO942qDJQqTGq3pakVb4LKhNlKwoMhInptpl2m5imtbX6rP6mR1WelVgKMaosuHJPf/4XUco=
+	t=1772002785; cv=none; b=Ahymj6gDYNG3HEbCtuIS3eZIoxoKVZzuhs1S72yaA0DyBIu5RvHWZyM7A74Ike33K4r3a0S8O2C5WVc7OQMcsHgMjMNO0VC86kLU4IghiuvcnMaHViQ5toyTZ7Ak+V89M9ZW9HU+5OeJZ6S9sBBf5z6m54rzJwohdgx+NfF+oPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002783; c=relaxed/simple;
-	bh=LCfBlUP5QW7hjRWUUnaHFxRwIDzmq56IVbL0nDYEt7w=;
+	s=arc-20240116; t=1772002785; c=relaxed/simple;
+	bh=aO5EqwgfHtA9VYy8rTNySHyAG8JsB4Q86P9fq6v0/sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Snvn0Vt2BN83tMBkAGKOlZfK7oMEDGhZU3pw8SVJOltq/Fx01M/vvkDv21pPTWgjLlxtE/HjTCFXbec6FCoonslyt3nwU+WvFFReWa48FJgzTNpqcYYK+BACsnP1igyDoDEG5h0eanIZptbh2Ye+80PZiY+bLXGPVUHAmzISxiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZcSSU9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77421C116D0;
-	Wed, 25 Feb 2026 06:59:43 +0000 (UTC)
+	 MIME-Version; b=R3xAtjmwEFMyiispm2AED5fZfpRI4Q9Dg1Sxj8MEupmeYaJkytzyp5u+sA/jN62LHuOzNS1DsrWg/kHisxUBPDglbb9Hi0siIaE/+T+7Tz2+1stQpMHqq0yT0+8Azfh/mmohRmpOff3unjBcxu3E5YVnrmig+XbQW9wrfyT1zMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Stbo8QUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD59C116D0;
+	Wed, 25 Feb 2026 06:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002783;
-	bh=LCfBlUP5QW7hjRWUUnaHFxRwIDzmq56IVbL0nDYEt7w=;
+	s=korg; t=1772002784;
+	bh=aO5EqwgfHtA9VYy8rTNySHyAG8JsB4Q86P9fq6v0/sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZcSSU9JW8l6FbieniQVWo6EKsMoq34/3kCwD20DTVx8xT/D9dGRLOI81GZv6Yt0/
-	 9kfQKE1q7rJtIE4HKUZ5hzQtFr3JU2jSrXxhua7jDlt6VanockjWJI1uqSqyvysp4b
-	 RKUuKgozPR/ViQqI1sAQ/TIHB5jf1EvvpfYJ8EX0=
+	b=Stbo8QUYaInqiuUayDIltizU3TCTGc1VGhCcS9BpneF3Fj7NjQeQQQofy0AMWrGH7
+	 zbZqPPnRn4ArX49oe0zOUN4H5MDYPvGSSITtBm07K7Wmen4OvQJNC6hVAOZNgeKnIR
+	 NYScCRcBWPpbBJ+9ebibdYaytddwa/qcZw10diKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>
-Subject: [PATCH 6.18 624/641] ata: libata-scsi: avoid Non-NCQ command starvation
-Date: Tue, 24 Feb 2026 17:25:50 -0800
-Message-ID: <20260225012403.626504292@linuxfoundation.org>
+	Xingjing Deng <micro6947@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.18 625/641] SUNRPC: auth_gss: fix memory leaks in XDR decoding error paths
+Date: Tue, 24 Feb 2026 17:25:51 -0800
+Message-ID: <20260225012403.650081747@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -70,293 +67,255 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-219542-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oracle.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219540-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,oracle.com:email]
-X-Rspamd-Queue-Id: CFBBB193208
+X-Rspamd-Queue-Id: 7C82319321F
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 0ea84089dbf62a92dc7889c79e6b18fc89260808 upstream.
+commit 3e6397b056335cc56ef0e9da36c95946a19f5118 upstream.
 
-When a non-NCQ command is issued while NCQ commands are being executed,
-ata_scsi_qc_issue() indicates to the SCSI layer that the command issuing
-should be deferred by returning SCSI_MLQUEUE_XXX_BUSY.  This command
-deferring is correct and as mandated by the ACS specifications since
-NCQ and non-NCQ commands cannot be mixed.
+The gssx_dec_ctx(), gssx_dec_status(), and gssx_dec_name()
+functions allocate memory via gssx_dec_buffer(), which calls
+kmemdup(). When a subsequent decode operation fails, these
+functions return immediately without freeing previously
+allocated buffers, causing memory leaks.
 
-However, in the case of a host adapter using multiple submission queues,
-when the target device is under a constant load of NCQ commands, there
-are no guarantees that requeueing the non-NCQ command will be executed
-later and it may be deferred again repeatedly as other submission queues
-can constantly issue NCQ commands from different CPUs ahead of the
-non-NCQ command. This can lead to very long delays for the execution of
-non-NCQ commands, and even complete starvation for these commands in the
-worst case scenario.
+The leak in gssx_dec_ctx() is particularly relevant because
+the caller (gssp_accept_sec_context_upcall) initializes several
+buffer length fields to non-zero values, resulting in memory
+allocation:
 
-Since the block layer and the SCSI layer do not distinguish between
-queueable (NCQ) and non queueable (non-NCQ) commands, libata-scsi SAT
-implementation must ensure forward progress for non-NCQ commands in the
-presence of NCQ command traffic. This is similar to what SAS HBAs with a
-hardware/firmware based SAT implementation do.
+    struct gssx_ctx rctxh = {
+        .exported_context_token.len = GSSX_max_output_handle_sz,
+        .mech.len = GSS_OID_MAX_LEN,
+        .src_name.display_name.len = GSSX_max_princ_sz,
+        .targ_name.display_name.len = GSSX_max_princ_sz
+    };
 
-Implement such forward progress guarantee by limiting requeueing of
-non-NCQ commands from ata_scsi_qc_issue(): when a non-NCQ command is
-received and NCQ commands are in-flight, do not force a requeue of the
-non-NCQ command by returning SCSI_MLQUEUE_XXX_BUSY and instead return 0
-to indicate that the command was accepted but hold on to the qc using
-the new deferred_qc field of struct ata_port.
+If, for example, gssx_dec_name() succeeds for src_name but
+fails for targ_name, the memory allocated for
+exported_context_token, mech, and src_name.display_name
+remains unreferenced and cannot be reclaimed.
 
-This deferred qc will be issued using the work item deferred_qc_work
-running the function ata_scsi_deferred_qc_work() once all in-flight
-commands complete, which is checked with the port qc_defer() callback
-return value indicating that no further delay is necessary. This check
-is done using the helper function ata_scsi_schedule_deferred_qc() which
-is called from ata_scsi_qc_complete(). This thus excludes this mechanism
-from all internal non-NCQ commands issued by ATA EH.
+Add error handling with goto-based cleanup to free any
+previously allocated buffers before returning an error.
 
-When a port deferred_qc is non NULL, that is, the port has a command
-waiting for the device queue to drain, the issuing of all incoming
-commands (both NCQ and non-NCQ) is deferred using the regular busy
-mechanism. This simplifies the code and also avoids potential denial of
-service problems if a user issues too many non-NCQ commands.
-
-Finally, whenever ata EH is scheduled, regardless of the reason, a
-deferred qc is always requeued so that it can be retried once EH
-completes. This is done by calling the function
-ata_scsi_requeue_deferred_qc() from ata_eh_set_pending(). This avoids
-the need for any special processing for the deferred qc in case of NCQ
-error, link or device reset, or device timeout.
-
-Reported-by: Xingui Yang <yangxingui@huawei.com>
-Reported-by: Igor Pylypiv <ipylypiv@google.com>
-Fixes: bdb01301f3ea ("scsi: Add host and host template flag 'host_tagset'")
+Reported-by: Xingjing Deng <micro6947@gmail.com>
+Closes: https://lore.kernel.org/linux-nfs/CAK+ZN9qttsFDu6h1FoqGadXjMx1QXqPMoYQ=6O9RY4SxVTvKng@mail.gmail.com/
+Fixes: 1d658336b05f ("SUNRPC: Add RPC based upcall mechanism for RPCGSS auth")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Tested-by: Igor Pylypiv <ipylypiv@google.com>
-Tested-by: Xingui Yang <yangxingui@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c |    5 ++
- drivers/ata/libata-eh.c   |    6 ++
- drivers/ata/libata-scsi.c |   93 ++++++++++++++++++++++++++++++++++++++++++++++
- drivers/ata/libata.h      |    2 
- include/linux/libata.h    |    3 +
- 5 files changed, 109 insertions(+)
+ net/sunrpc/auth_gss/gss_rpc_xdr.c |   82 +++++++++++++++++++++++++++++---------
+ 1 file changed, 64 insertions(+), 18 deletions(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5552,6 +5552,7 @@ struct ata_port *ata_port_alloc(struct a
- 	mutex_init(&ap->scsi_scan_mutex);
- 	INIT_DELAYED_WORK(&ap->hotplug_task, ata_scsi_hotplug);
- 	INIT_DELAYED_WORK(&ap->scsi_rescan_task, ata_scsi_dev_rescan);
-+	INIT_WORK(&ap->deferred_qc_work, ata_scsi_deferred_qc_work);
- 	INIT_LIST_HEAD(&ap->eh_done_q);
- 	init_waitqueue_head(&ap->eh_wait_q);
- 	init_completion(&ap->park_req_pending);
-@@ -6162,6 +6163,10 @@ static void ata_port_detach(struct ata_p
- 		}
- 	}
+--- a/net/sunrpc/auth_gss/gss_rpc_xdr.c
++++ b/net/sunrpc/auth_gss/gss_rpc_xdr.c
+@@ -320,29 +320,47 @@ static int gssx_dec_status(struct xdr_st
  
-+	/* Make sure the deferred qc work finished. */
-+	cancel_work_sync(&ap->deferred_qc_work);
-+	WARN_ON(ap->deferred_qc);
+ 	/* status->minor_status */
+ 	p = xdr_inline_decode(xdr, 8);
+-	if (unlikely(p == NULL))
+-		return -ENOSPC;
++	if (unlikely(p == NULL)) {
++		err = -ENOSPC;
++		goto out_free_mech;
++	}
+ 	p = xdr_decode_hyper(p, &status->minor_status);
+ 
+ 	/* status->major_status_string */
+ 	err = gssx_dec_buffer(xdr, &status->major_status_string);
+ 	if (err)
+-		return err;
++		goto out_free_mech;
+ 
+ 	/* status->minor_status_string */
+ 	err = gssx_dec_buffer(xdr, &status->minor_status_string);
+ 	if (err)
+-		return err;
++		goto out_free_major_status_string;
+ 
+ 	/* status->server_ctx */
+ 	err = gssx_dec_buffer(xdr, &status->server_ctx);
+ 	if (err)
+-		return err;
++		goto out_free_minor_status_string;
+ 
+ 	/* we assume we have no options for now, so simply consume them */
+ 	/* status->options */
+ 	err = dummy_dec_opt_array(xdr, &status->options);
++	if (err)
++		goto out_free_server_ctx;
+ 
++	return 0;
 +
- 	/* Tell EH to disable all devices */
- 	ap->pflags |= ATA_PFLAG_UNLOADING;
- 	ata_port_schedule_eh(ap);
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -917,6 +917,12 @@ static void ata_eh_set_pending(struct at
- 
- 	ap->pflags |= ATA_PFLAG_EH_PENDING;
- 
-+	/*
-+	 * If we have a deferred qc, requeue it so that it is retried once EH
-+	 * completes.
-+	 */
-+	ata_scsi_requeue_deferred_qc(ap);
-+
- 	if (!fastdrain)
- 		return;
- 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1657,8 +1657,77 @@ static void ata_qc_done(struct ata_queue
- 	done(cmd);
++out_free_server_ctx:
++	kfree(status->server_ctx.data);
++	status->server_ctx.data = NULL;
++out_free_minor_status_string:
++	kfree(status->minor_status_string.data);
++	status->minor_status_string.data = NULL;
++out_free_major_status_string:
++	kfree(status->major_status_string.data);
++	status->major_status_string.data = NULL;
++out_free_mech:
++	kfree(status->mech.data);
++	status->mech.data = NULL;
+ 	return err;
  }
  
-+void ata_scsi_deferred_qc_work(struct work_struct *work)
-+{
-+	struct ata_port *ap =
-+		container_of(work, struct ata_port, deferred_qc_work);
-+	struct ata_queued_cmd *qc;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(ap->lock, flags);
-+
-+	/*
-+	 * If we still have a deferred qc and we are not in EH, issue it. In
-+	 * such case, we should not need any more deferring the qc, so warn if
-+	 * qc_defer() says otherwise.
-+	 */
-+	qc = ap->deferred_qc;
-+	if (qc && !ata_port_eh_scheduled(ap)) {
-+		WARN_ON_ONCE(ap->ops->qc_defer(qc));
-+		ap->deferred_qc = NULL;
-+		ata_qc_issue(qc);
-+	}
-+
-+	spin_unlock_irqrestore(ap->lock, flags);
-+}
-+
-+void ata_scsi_requeue_deferred_qc(struct ata_port *ap)
-+{
-+	struct ata_queued_cmd *qc = ap->deferred_qc;
-+	struct scsi_cmnd *scmd;
-+
-+	lockdep_assert_held(ap->lock);
-+
-+	/*
-+	 * If we have a deferred qc when a reset occurs or NCQ commands fail,
-+	 * do not try to be smart about what to do with this deferred command
-+	 * and simply retry it by completing it with DID_SOFT_ERROR.
-+	 */
-+	if (!qc)
-+		return;
-+
-+	scmd = qc->scsicmd;
-+	ap->deferred_qc = NULL;
-+	ata_qc_free(qc);
-+	scmd->result = (DID_SOFT_ERROR << 16);
-+	scsi_done(scmd);
-+}
-+
-+static void ata_scsi_schedule_deferred_qc(struct ata_port *ap)
-+{
-+	struct ata_queued_cmd *qc = ap->deferred_qc;
-+
-+	lockdep_assert_held(ap->lock);
-+
-+	/*
-+	 * If we have a deferred qc, then qc_defer() is defined and we can use
-+	 * this callback to determine if this qc is good to go, unless EH has
-+	 * been scheduled.
-+	 */
-+	if (!qc)
-+		return;
-+
-+	if (ata_port_eh_scheduled(ap)) {
-+		ata_scsi_requeue_deferred_qc(ap);
-+		return;
-+	}
-+	if (!ap->ops->qc_defer(qc))
-+		queue_work(system_highpri_wq, &ap->deferred_qc_work);
-+}
-+
- static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
- {
-+	struct ata_port *ap = qc->ap;
- 	struct scsi_cmnd *cmd = qc->scsicmd;
- 	u8 *cdb = cmd->cmnd;
- 	bool have_sense = qc->flags & ATA_QCFLAG_SENSE_VALID;
-@@ -1688,6 +1757,8 @@ static void ata_scsi_qc_complete(struct
- 	}
+@@ -505,28 +523,35 @@ static int gssx_dec_name(struct xdr_stre
+ 	/* name->name_type */
+ 	err = gssx_dec_buffer(xdr, &dummy_netobj);
+ 	if (err)
+-		return err;
++		goto out_free_display_name;
  
- 	ata_qc_done(qc);
+ 	/* name->exported_name */
+ 	err = gssx_dec_buffer(xdr, &dummy_netobj);
+ 	if (err)
+-		return err;
++		goto out_free_display_name;
+ 
+ 	/* name->exported_composite_name */
+ 	err = gssx_dec_buffer(xdr, &dummy_netobj);
+ 	if (err)
+-		return err;
++		goto out_free_display_name;
+ 
+ 	/* we assume we have no attributes for now, so simply consume them */
+ 	/* name->name_attributes */
+ 	err = dummy_dec_nameattr_array(xdr, &dummy_name_attr_array);
+ 	if (err)
+-		return err;
++		goto out_free_display_name;
+ 
+ 	/* we assume we have no options for now, so simply consume them */
+ 	/* name->extensions */
+ 	err = dummy_dec_opt_array(xdr, &dummy_option_array);
++	if (err)
++		goto out_free_display_name;
+ 
++	return 0;
 +
-+	ata_scsi_schedule_deferred_qc(ap);
++out_free_display_name:
++	kfree(name->display_name.data);
++	name->display_name.data = NULL;
+ 	return err;
  }
  
- static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
-@@ -1697,6 +1768,16 @@ static int ata_scsi_qc_issue(struct ata_
- 	if (!ap->ops->qc_defer)
- 		goto issue;
+@@ -649,32 +674,34 @@ static int gssx_dec_ctx(struct xdr_strea
+ 	/* ctx->state */
+ 	err = gssx_dec_buffer(xdr, &ctx->state);
+ 	if (err)
+-		return err;
++		goto out_free_exported_context_token;
  
-+	/*
-+	 * If we already have a deferred qc, then rely on the SCSI layer to
-+	 * requeue and defer all incoming commands until the deferred qc is
-+	 * processed, once all on-going commands complete.
-+	 */
-+	if (ap->deferred_qc) {
-+		ata_qc_free(qc);
-+		return SCSI_MLQUEUE_DEVICE_BUSY;
+ 	/* ctx->need_release */
+ 	err = gssx_dec_bool(xdr, &ctx->need_release);
+ 	if (err)
+-		return err;
++		goto out_free_state;
+ 
+ 	/* ctx->mech */
+ 	err = gssx_dec_buffer(xdr, &ctx->mech);
+ 	if (err)
+-		return err;
++		goto out_free_state;
+ 
+ 	/* ctx->src_name */
+ 	err = gssx_dec_name(xdr, &ctx->src_name);
+ 	if (err)
+-		return err;
++		goto out_free_mech;
+ 
+ 	/* ctx->targ_name */
+ 	err = gssx_dec_name(xdr, &ctx->targ_name);
+ 	if (err)
+-		return err;
++		goto out_free_src_name;
+ 
+ 	/* ctx->lifetime */
+ 	p = xdr_inline_decode(xdr, 8+8);
+-	if (unlikely(p == NULL))
+-		return -ENOSPC;
++	if (unlikely(p == NULL)) {
++		err = -ENOSPC;
++		goto out_free_targ_name;
 +	}
-+
- 	/* Check if the command needs to be deferred. */
- 	ret = ap->ops->qc_defer(qc);
- 	switch (ret) {
-@@ -1715,6 +1796,18 @@ static int ata_scsi_qc_issue(struct ata_
- 	}
+ 	p = xdr_decode_hyper(p, &ctx->lifetime);
  
- 	if (ret) {
-+		/*
-+		 * We must defer this qc: if this is not an NCQ command, keep
-+		 * this qc as a deferred one and report to the SCSI layer that
-+		 * we issued it so that it is not requeued. The deferred qc will
-+		 * be issued with the port deferred_qc_work once all on-going
-+		 * commands complete.
-+		 */
-+		if (!ata_is_ncq(qc->tf.protocol)) {
-+			ap->deferred_qc = qc;
-+			return 0;
-+		}
-+
- 		/* Force a requeue of the command to defer its execution. */
- 		ata_qc_free(qc);
- 		return ret;
---- a/drivers/ata/libata.h
-+++ b/drivers/ata/libata.h
-@@ -161,6 +161,8 @@ void ata_scsi_sdev_config(struct scsi_de
- int ata_scsi_dev_config(struct scsi_device *sdev, struct queue_limits *lim,
- 		struct ata_device *dev);
- int __ata_scsi_queuecmd(struct scsi_cmnd *scmd, struct ata_device *dev);
-+void ata_scsi_deferred_qc_work(struct work_struct *work);
-+void ata_scsi_requeue_deferred_qc(struct ata_port *ap);
+ 	/* ctx->ctx_flags */
+@@ -683,17 +710,36 @@ static int gssx_dec_ctx(struct xdr_strea
+ 	/* ctx->locally_initiated */
+ 	err = gssx_dec_bool(xdr, &ctx->locally_initiated);
+ 	if (err)
+-		return err;
++		goto out_free_targ_name;
  
- /* libata-eh.c */
- extern unsigned int ata_internal_cmd_timeout(struct ata_device *dev, u8 cmd);
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -899,6 +899,9 @@ struct ata_port {
- 	u64			qc_active;
- 	int			nr_active_links; /* #links with active qcs */
+ 	/* ctx->open */
+ 	err = gssx_dec_bool(xdr, &ctx->open);
+ 	if (err)
+-		return err;
++		goto out_free_targ_name;
  
-+	struct work_struct	deferred_qc_work;
-+	struct ata_queued_cmd	*deferred_qc;
+ 	/* we assume we have no options for now, so simply consume them */
+ 	/* ctx->options */
+ 	err = dummy_dec_opt_array(xdr, &ctx->options);
++	if (err)
++		goto out_free_targ_name;
 +
- 	struct ata_link		link;		/* host default link */
- 	struct ata_link		*slave_link;	/* see ata_slave_link_init() */
++	return 0;
+ 
++out_free_targ_name:
++	kfree(ctx->targ_name.display_name.data);
++	ctx->targ_name.display_name.data = NULL;
++out_free_src_name:
++	kfree(ctx->src_name.display_name.data);
++	ctx->src_name.display_name.data = NULL;
++out_free_mech:
++	kfree(ctx->mech.data);
++	ctx->mech.data = NULL;
++out_free_state:
++	kfree(ctx->state.data);
++	ctx->state.data = NULL;
++out_free_exported_context_token:
++	kfree(ctx->exported_context_token.data);
++	ctx->exported_context_token.data = NULL;
+ 	return err;
+ }
  
 
 
