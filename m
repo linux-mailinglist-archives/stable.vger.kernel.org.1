@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-218705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIyFEa9Unmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218705-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:27 +0100
+	id UG58Bj+enmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECE018FD82
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC96192BE8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4611831D35DB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2262730CFD80
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019522550D7;
-	Wed, 25 Feb 2026 01:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D202D77F5;
+	Wed, 25 Feb 2026 06:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnKH8291"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEcy6AkY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7612243376;
-	Wed, 25 Feb 2026 01:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B5E2D6E58;
+	Wed, 25 Feb 2026 06:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983565; cv=none; b=e8ZH36ZFIEmYdIrh9RFL2sxI7iIU9RCBEJ4f3rRPiveCxc5G69lGjVCqoYIVvD1mM1OjbbXIEMdSahncaMz2wYdnfP1ZnRS5Iq4ulvgQx9nHVFbPTQjxxwASdRE00L+UEPyWPL4RSaXffWDu7w4/lI/TgFUHRcKSylY9sqk0+a8=
+	t=1772002667; cv=none; b=UnwB0NoxQJiPHmpEBE8llLUFHa9ecQWdhZ33RdX3AhKrfwWyUx5OmGKFRVcgMoSGop6DcR1qEM0yYWRsu0WJYeUIdp7/xr5j7hv22NMm+55x1/qWr97oLN/WaBj57hMnOF9bT/6gwKLBPNprkHuS253g2UHJ8bVmCMzipXnIcmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983565; c=relaxed/simple;
-	bh=4Zs/iBww1gSJYWBRkAyWceyGkdpqzJXgd52bzRADhic=;
+	s=arc-20240116; t=1772002667; c=relaxed/simple;
+	bh=NhZ47EmxQFNzlb9dGpGNhrVsZIhR1cIGaVa20IeODS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BnZfUXgpQhYMYWMjvWMXn/KfDAKVKKTkXSSyQXVqkOVGTPbiRiuzUvJ2m+sJ+qsLvOpz5YXLU8J9E0998EKUTZDMBTEHbCiLN6v8s7sGO1ps3Qbinki8zKLY3O92TX0yQ3j+rmlOKdvjBBBUaeJaqr4c6e0rjlR2FVACIQRj9mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnKH8291; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BE6C116D0;
-	Wed, 25 Feb 2026 01:39:25 +0000 (UTC)
+	 MIME-Version; b=Kx/DlZIT5Mtb4XKJJlDtF6cC5OS0GHlsTXpR6lrQuUar3hb0mN7FuQLOVXHFb8mF86HLgA6s22vq2xGOakEhT8lPmpFOhy88Iazk+qcT67x2X0mj9FHqDsG2BTz1zrNcnujTRhp341iRKbcmGiaOlOsnVIdPzTzAMT++mD7HRig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEcy6AkY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA1BC116D0;
+	Wed, 25 Feb 2026 06:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983565;
-	bh=4Zs/iBww1gSJYWBRkAyWceyGkdpqzJXgd52bzRADhic=;
+	s=korg; t=1772002667;
+	bh=NhZ47EmxQFNzlb9dGpGNhrVsZIhR1cIGaVa20IeODS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GnKH8291EKw3rSyyxWdqRsiUubI/FRXTVXCAc9uTe2Dt5obFgqtTbD7ucLfKF7s4c
-	 5s71AFQadCf/pggTfrf2Kt3lXTHNS6EyCjqWCQIgQ/QExZt3DAlnmP9OnM3KT7sBOF
-	 uQRa17LspkTHhvA2KXFcnW7NCjP9isiFHWKguq4E=
+	b=AEcy6AkYTk2EjLZeiGfi4og7+IX/AoJ1KcofaUyoUw1TE9eD4T8PID2GLgD+crWbr
+	 87rB2gORFL59+oUBJfnb4vOJx6XTRYasTFifNYczRqQ/0M0F0Xq7IQL7l/XZOC5wLv
+	 d92CqmObiQ6bt4CdVQhsy3aS5MwJRTEB5lPoPIOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Brian Masney <bmasney@redhat.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 664/781] netfilter: nf_conntrack_h323: dont pass uninitialised l3num value
-Date: Tue, 24 Feb 2026 17:22:53 -0800
-Message-ID: <20260225012416.073715980@linuxfoundation.org>
+Subject: [PATCH 6.18 448/641] clk: zynqmp: divider: Fix zynqmp_clk_divider_determine_rate kerneldoc
+Date: Tue, 24 Feb 2026 17:22:54 -0800
+Message-ID: <20260225012359.376236365@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +70,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219365-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218705-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: AECE018FD82
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9DC96192BE8
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-[ Upstream commit a6d28eb8efe96b3e35c92efdf1bfacb0cccf541f ]
+[ Upstream commit 1b8773864904c7a25e45f1b12ab505bdb7e06568 ]
 
-Mihail Milev reports: Error: UNINIT (CWE-457):
- net/netfilter/nf_conntrack_h323_main.c:1189:2: var_decl:
-	Declaring variable "tuple" without initializer.
- net/netfilter/nf_conntrack_h323_main.c:1197:2:
-	uninit_use_in_call: Using uninitialized value "tuple.src.l3num" when calling "__nf_ct_expect_find".
- net/netfilter/nf_conntrack_expect.c:142:2:
-	read_value: Reading value "tuple->src.l3num" when calling "nf_ct_expect_dst_hash".
+After renaming round_rate->determine, kerneldoc does not match anymore,
+causing W=1 warnings:
 
-  1195|   	tuple.dst.protonum = IPPROTO_TCP;
-  1196|
-  1197|-> 	exp = __nf_ct_expect_find(net, nf_ct_zone(ct), &tuple);
-  1198|   	if (exp && exp->master == ct)
-  1199|   		return exp;
+  Warning: drivers/clk/zynqmp/divider.c:122 function parameter 'req' not described in 'zynqmp_clk_divider_determine_rate'
+  Warning: drivers/clk/zynqmp/divider.c:122 expecting prototype for zynqmp_clk_divider_round_rate(). Prototype was for zynqmp_clk_divider_determine_rate() instead
 
-Switch this to a C99 initialiser and set the l3num value.
-
-Fixes: f587de0e2feb ("[NETFILTER]: nf_conntrack/nf_nat: add H.323 helper port")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 0f9cf96a01fd ("clk: zynqmp: divider: convert from round_rate() to determine_rate()")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_h323_main.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/clk/zynqmp/divider.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_h323_main.c b/net/netfilter/nf_conntrack_h323_main.c
-index 14f73872f6477..e35814d68ce30 100644
---- a/net/netfilter/nf_conntrack_h323_main.c
-+++ b/net/netfilter/nf_conntrack_h323_main.c
-@@ -1186,13 +1186,13 @@ static struct nf_conntrack_expect *find_expect(struct nf_conn *ct,
- {
- 	struct net *net = nf_ct_net(ct);
- 	struct nf_conntrack_expect *exp;
--	struct nf_conntrack_tuple tuple;
-+	struct nf_conntrack_tuple tuple = {
-+		.src.l3num = nf_ct_l3num(ct),
-+		.dst.protonum = IPPROTO_TCP,
-+		.dst.u.tcp.port = port,
-+	};
+diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
+index de6f478d527d8..984e577ea6711 100644
+--- a/drivers/clk/zynqmp/divider.c
++++ b/drivers/clk/zynqmp/divider.c
+@@ -111,10 +111,9 @@ static unsigned long zynqmp_clk_divider_recalc_rate(struct clk_hw *hw,
+ }
  
--	memset(&tuple.src.u3, 0, sizeof(tuple.src.u3));
--	tuple.src.u.tcp.port = 0;
- 	memcpy(&tuple.dst.u3, addr, sizeof(tuple.dst.u3));
--	tuple.dst.u.tcp.port = port;
--	tuple.dst.protonum = IPPROTO_TCP;
- 
- 	exp = __nf_ct_expect_find(net, nf_ct_zone(ct), &tuple);
- 	if (exp && exp->master == ct)
+ /**
+- * zynqmp_clk_divider_round_rate() - Round rate of divider clock
++ * zynqmp_clk_divider_determine_rate() - Determine rate of divider clock
+  * @hw:			handle between common and hardware-specific interfaces
+- * @rate:		rate of clock to be set
+- * @prate:		rate of parent clock
++ * @req:		rate of clock to be set
+  *
+  * Return: 0 on success else error+reason
+  */
 -- 
 2.51.0
 
