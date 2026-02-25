@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219448-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFmYI5FWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:29 +0100
+	id CImqMjGfnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219448-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD02119033E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D807192E9E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6931830C4AA1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CFC6031170F2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042C6243376;
-	Wed, 25 Feb 2026 01:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9846D30F92E;
+	Wed, 25 Feb 2026 06:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFhmZ+GF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH+wZgR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88DA1E2834;
-	Wed, 25 Feb 2026 01:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2734C81;
+	Wed, 25 Feb 2026 06:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983705; cv=none; b=a4d7rlHHSQH7td4Pmj53jGzFIDAXUdOZ0m2hdoaYavgG+O4MQNNBsuC/mFwNSSxi06ICKF8b4ueSuYteMfzJVo9j2ymjUtsSVb020wjaY1fy9lYmrvzZ5/dV+VEAMTaCBkRb/18NVdi9QsSqz//G7u4pWmcRqs5SFdJbBmtxNmE=
+	t=1772002722; cv=none; b=Jw9zhhBHKbtNAkN3hS1jjpLEitoPCxtLGxknHClQhCJfG9LcMSjo8MobVqIYxw69zfNMxWpECoypklSwp7KKWfGATbm+PmGbuK8E+KsYWodtZa7tW2PWDU1RDrAgfcqQqKGd3BFixMtCbfMmbIwSZF+avn3wWvS9J8YD+QfHNYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983705; c=relaxed/simple;
-	bh=4SodZxA0bGdU5vJR5NFFlGiTPUDIXz04ffAb+Cfy/jo=;
+	s=arc-20240116; t=1772002722; c=relaxed/simple;
+	bh=ISg45eiW4OKdxCjWR1ITL085KueXdBYO6EAM0OHTO4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dzCAuvTJJLEKW3g5+SIwdJGzj/PM4H3QT8YiQmBbACLXp4jzuesJ2yN/BSC5qtScsCHAqgwjdf+hiwxSqbD6hFr82Lb0ffxD0GiiywBrf9RP/Za5NBaU6B8OCsoJMqF5JortlhUp77nHfsCLGd/18rzeBBSpplWdxcHbQN9byFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFhmZ+GF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BE0C116D0;
-	Wed, 25 Feb 2026 01:41:45 +0000 (UTC)
+	 MIME-Version; b=aU1Og65NTfFeX3VK1KmkTu7RZz+39fBNJbLzh2zSpkWMqYieQZKFMK2HV0oPed0d+SKLPw624rCQ1CFn0Gs6RKzy4lnJPN6tTPYZERHmMQnBAsUAGKQRvboNySEK5FV+4X0yF4wK3hbafOX1pfsPdXKAsr9rDHHvv8t4ocNt0Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH+wZgR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3650AC116D0;
+	Wed, 25 Feb 2026 06:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983705;
-	bh=4SodZxA0bGdU5vJR5NFFlGiTPUDIXz04ffAb+Cfy/jo=;
+	s=korg; t=1772002722;
+	bh=ISg45eiW4OKdxCjWR1ITL085KueXdBYO6EAM0OHTO4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rFhmZ+GFOGy5Eya9FuqiG8dV8L7OlH1688NuOaJAAPI2EdQNI1nhJn9CAU6iENSS9
-	 +RPd7hSQjtUxZKb8beJ70oi+cQuGD1uhxxaLeNOJg1qJAO7nWIOxwHjZwjARH0pQeg
-	 dZBYeaG6CDB5bb/MxcJzafr3Vau/XLVppf8rlOEM=
+	b=qH+wZgR/kL3f1gMnABJN4sWm4XHgeAFUfY1FKJL79+p12s5bRF3RpMfItZrnMKqTT
+	 yxKCZQE9u5O/n0DfURiFn04KBK7vCLVNett9BKc+Oxie76vcMVgt/O4lYdOf6KPCSi
+	 9YQWyNfBNRRm2Y6zXSpz67b5f7nYRPK3RGZFSGT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Mauro Rossi <issor.oruam@gmail.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 749/781] drm/amd/display: Enable DAC in DCE link encoder
+Subject: [PATCH 6.18 532/641] eth: fbnic: increase FBNIC_HDR_BYTES_MIN from 128 to 256 bytes
 Date: Tue, 24 Feb 2026 17:24:18 -0800
-Message-ID: <20260225012418.092801261@linuxfoundation.org>
+Message-ID: <20260225012401.418203342@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,245 +64,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218825-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219448-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,meta.com,gmail.com,redhat.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.967];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: CD02119033E
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,meta.com:email]
+X-Rspamd-Queue-Id: 7D807192E9E
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-[ Upstream commit 4bd8b5f8bcb57b430c35494d8a2471ce5fd7661d ]
+[ Upstream commit bd254115f38db3c046332bb62e8719e0dc7c2b53 ]
 
-Ensure that the DAC output is enabled at the correct time by
-moving it to the DCE link encoder similarly to how digital
-outputs are enabled.
+Increase FBNIC_HDR_BYTES_MIN from 128 to 256 bytes. The previous minimum
+was too small to guarantee that very long L2+L3+L4 headers always fit
+within the header buffer. When EN_HDR_SPLIT is disabled and a packet
+exceeds MAX_HEADER_BYTES, splitting occurs at that byte offset instead
+of the header boundary, resulting in some of the header landing in the
+payload page. The increased minimum ensures headers always fit with the
+MAX_HEADER_BYTES cut off and land in the header page.
 
-This also removes the call to DAC1EncoderControl from the DCE
-HWSS, which always felt like it was a hacky solution.
-
-Fixes: 0fbe321a93ce ("drm/amd/display: Implement DCE analog link encoders (v2)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Tested-by: Mauro Rossi <issor.oruam@gmail.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 2b30fc01a6c7 ("eth: fbnic: Add support for HDS configuration")
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Acked-by: Mohsin Bashir <mohsin.bashr@gmail.com>
+Link: https://patch.msgid.link/20260211-fbnic-tcp-hds-fixes-v1-2-55d050e6f606@meta.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/dce/dce_link_encoder.c | 18 +++++++++++++
- .../drm/amd/display/dc/dce/dce_link_encoder.h |  5 ++++
- .../amd/display/dc/hwss/dce110/dce110_hwseq.c | 26 +++++++------------
- .../drm/amd/display/dc/hwss/hw_sequencer.h    |  2 ++
- .../drm/amd/display/dc/inc/hw/link_encoder.h  |  2 ++
- .../gpu/drm/amd/display/dc/link/link_dpms.c   | 14 +++++++++-
- 6 files changed, 50 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-index 48a1b3b492e7f..bec8dab156eec 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-@@ -102,6 +102,7 @@ static const struct link_encoder_funcs dce110_lnk_enc_funcs = {
- 	.enable_dp_output = dce110_link_encoder_enable_dp_output,
- 	.enable_dp_mst_output = dce110_link_encoder_enable_dp_mst_output,
- 	.enable_lvds_output = dce110_link_encoder_enable_lvds_output,
-+	.enable_analog_output = dce110_link_encoder_enable_analog_output,
- 	.disable_output = dce110_link_encoder_disable_output,
- 	.dp_set_lane_settings = dce110_link_encoder_dp_set_lane_settings,
- 	.dp_set_phy_pattern = dce110_link_encoder_dp_set_phy_pattern,
-@@ -1192,6 +1193,22 @@ void dce110_link_encoder_enable_lvds_output(
- 	}
- }
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
+index 27776e844e29b..51a98f27d5d91 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
+@@ -66,7 +66,7 @@ struct fbnic_net;
+ 	(4096 - FBNIC_RX_HROOM - FBNIC_RX_TROOM - FBNIC_RX_PAD)
+ #define FBNIC_HDS_THRESH_DEFAULT \
+ 	(1536 - FBNIC_RX_PAD)
+-#define FBNIC_HDR_BYTES_MIN		128
++#define FBNIC_HDR_BYTES_MIN		256
  
-+void dce110_link_encoder_enable_analog_output(
-+	struct link_encoder *enc,
-+	uint32_t pixel_clock)
-+{
-+	struct dce110_link_encoder *enc110 = TO_DCE110_LINK_ENC(enc);
-+	enum bp_result result;
-+
-+	result = link_dac_encoder_control(enc110, ENCODER_CONTROL_ENABLE, pixel_clock);
-+
-+	if (result != BP_RESULT_OK) {
-+		DC_LOG_ERROR("%s: Failed to execute VBIOS command table!\n",
-+			__func__);
-+		BREAK_TO_DEBUGGER();
-+	}
-+}
-+
- /* enables DP PHY output */
- void dce110_link_encoder_enable_dp_output(
- 	struct link_encoder *enc,
-@@ -1776,6 +1793,7 @@ static const struct link_encoder_funcs dce60_lnk_enc_funcs = {
- 	.enable_dp_output = dce60_link_encoder_enable_dp_output,
- 	.enable_dp_mst_output = dce60_link_encoder_enable_dp_mst_output,
- 	.enable_lvds_output = dce110_link_encoder_enable_lvds_output,
-+	.enable_analog_output = dce110_link_encoder_enable_analog_output,
- 	.disable_output = dce110_link_encoder_disable_output,
- 	.dp_set_lane_settings = dce110_link_encoder_dp_set_lane_settings,
- 	.dp_set_phy_pattern = dce60_link_encoder_dp_set_phy_pattern,
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.h b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.h
-index c58b69bc319b7..6870cb619d208 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.h
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.h
-@@ -273,6 +273,11 @@ void dce110_link_encoder_enable_lvds_output(
- 	enum clock_source_id clock_source,
- 	uint32_t pixel_clock);
- 
-+/* enables analog output from the DAC */
-+void dce110_link_encoder_enable_analog_output(
-+	struct link_encoder *enc,
-+	uint32_t pixel_clock);
-+
- /* disable PHY output */
- void dce110_link_encoder_disable_output(
- 	struct link_encoder *enc,
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-index c472303276672..5896ce5511ab1 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -659,20 +659,6 @@ void dce110_update_info_frame(struct pipe_ctx *pipe_ctx)
- 	}
- }
- 
--static void
--dce110_dac_encoder_control(struct pipe_ctx *pipe_ctx, bool enable)
--{
--	struct dc_link *link = pipe_ctx->stream->link;
--	struct dc_bios *bios = link->ctx->dc_bios;
--	struct bp_encoder_control encoder_control = {0};
--
--	encoder_control.action = enable ? ENCODER_CONTROL_ENABLE : ENCODER_CONTROL_DISABLE;
--	encoder_control.engine_id = link->link_enc->analog_engine;
--	encoder_control.pixel_clock = pipe_ctx->stream->timing.pix_clk_100hz / 10;
--
--	bios->funcs->encoder_control(bios, &encoder_control);
--}
--
- void dce110_enable_stream(struct pipe_ctx *pipe_ctx)
- {
- 	enum dc_lane_count lane_count =
-@@ -703,8 +689,6 @@ void dce110_enable_stream(struct pipe_ctx *pipe_ctx)
- 
- 	tg->funcs->set_early_control(tg, early_control);
- 
--	if (dc_is_rgb_signal(pipe_ctx->stream->signal))
--		dce110_dac_encoder_control(pipe_ctx, true);
- }
- 
- static enum bp_result link_transmitter_control(
-@@ -3285,6 +3269,15 @@ void dce110_enable_tmds_link_output(struct dc_link *link,
- 	link->phy_state.symclk_state = SYMCLK_ON_TX_ON;
- }
- 
-+static void dce110_enable_analog_link_output(
-+		struct dc_link *link,
-+		uint32_t pix_clk_100hz)
-+{
-+	link->link_enc->funcs->enable_analog_output(
-+			link->link_enc,
-+			pix_clk_100hz);
-+}
-+
- void dce110_enable_dp_link_output(
- 		struct dc_link *link,
- 		const struct link_resource *link_res,
-@@ -3422,6 +3415,7 @@ static const struct hw_sequencer_funcs dce110_funcs = {
- 	.enable_lvds_link_output = dce110_enable_lvds_link_output,
- 	.enable_tmds_link_output = dce110_enable_tmds_link_output,
- 	.enable_dp_link_output = dce110_enable_dp_link_output,
-+	.enable_analog_link_output = dce110_enable_analog_link_output,
- 	.disable_link_output = dce110_disable_link_output,
- };
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer.h b/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer.h
-index 8ed9eea40c564..4f6bd365e055a 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer.h
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer.h
-@@ -1184,6 +1184,8 @@ struct hw_sequencer_funcs {
- 			const struct link_resource *link_res,
- 			enum clock_source_id clock_source,
- 			uint32_t pixel_clock);
-+	void (*enable_analog_link_output)(struct dc_link *link,
-+			uint32_t pixel_clock);
- 	void (*disable_link_output)(struct dc_link *link,
- 			const struct link_resource *link_res,
- 			enum signal_type signal);
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/link_encoder.h b/drivers/gpu/drm/amd/display/dc/inc/hw/link_encoder.h
-index e638325e35ecf..b1a88618c5bf8 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/hw/link_encoder.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/hw/link_encoder.h
-@@ -130,6 +130,8 @@ struct link_encoder_funcs {
- 	void (*enable_lvds_output)(struct link_encoder *enc,
- 		enum clock_source_id clock_source,
- 		uint32_t pixel_clock);
-+	void (*enable_analog_output)(struct link_encoder *enc,
-+		uint32_t pixel_clock);
- 	void (*disable_output)(struct link_encoder *link_enc,
- 		enum signal_type signal);
- 	void (*dp_set_lane_settings)(struct link_encoder *enc,
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-index 6ae1341476171..635f614c06734 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -2208,6 +2208,18 @@ static enum dc_status enable_link_dp_mst(
- 	return enable_link_dp(state, pipe_ctx);
- }
- 
-+static enum dc_status enable_link_analog(
-+		struct dc_state *state,
-+		struct pipe_ctx *pipe_ctx)
-+{
-+	struct dc_link *link = pipe_ctx->stream->link;
-+
-+	link->dc->hwss.enable_analog_link_output(
-+		link, pipe_ctx->stream->timing.pix_clk_100hz);
-+
-+	return DC_OK;
-+}
-+
- static enum dc_status enable_link_virtual(struct pipe_ctx *pipe_ctx)
- {
- 	struct dc_link *link = pipe_ctx->stream->link;
-@@ -2263,7 +2275,7 @@ static enum dc_status enable_link(
- 		status = DC_OK;
- 		break;
- 	case SIGNAL_TYPE_RGB:
--		status = DC_OK;
-+		status = enable_link_analog(state, pipe_ctx);
- 		break;
- 	case SIGNAL_TYPE_VIRTUAL:
- 		status = enable_link_virtual(pipe_ctx);
+ struct fbnic_pkt_buff {
+ 	struct xdp_buff buff;
 -- 
 2.51.0
 
