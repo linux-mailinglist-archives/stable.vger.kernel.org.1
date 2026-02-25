@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-218587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219291-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLKdOA9YnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:51 +0100
+	id SAdlABWfnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219291-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F96190682
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF26192E3A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C944D3170912
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F2F7315EBD8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1ADC25EF9C;
-	Wed, 25 Feb 2026 01:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A64E2F9D83;
+	Wed, 25 Feb 2026 06:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3eid5Pk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0f0b6nOL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75603256C8B;
-	Wed, 25 Feb 2026 01:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8112D77EA;
+	Wed, 25 Feb 2026 06:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983430; cv=none; b=jrdAjTlqX103QIkcjJL6/H6Ph7Fd8QuYNG+Nzz/rbifh4c/0YFuE1WtW/m3X+SxdqiLamo5EgC8ljrTwT2AigfccleD+YEGM7S9NZ21o+5/eOCiUqC90rrr3sL2VoxZ0pyYWQ2RAHZBeMxx8oI4qpJCIVDiyxwnyi1AdrirZMpw=
+	t=1772002620; cv=none; b=gGMkqNd3k6U1NPFB/45Q8AmtkZc5GbPo0RVCJUxIZiPZ8WcxfKnFASFdBinZHWCNIckR8qfIIeM06LwvtJQs5ZHgtDoZpiyr5oBFzV4PmYre/Rpkdtds+gUMlG0YyB8P54yUsbzYjQpj1GUunD17OIemEdz+47BIorkPkc2mYO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983430; c=relaxed/simple;
-	bh=rjw9fA4Hm0yiZxPo6F5CU/vDo3QuhH7VGCLHUV7JIck=;
+	s=arc-20240116; t=1772002620; c=relaxed/simple;
+	bh=ipeslegiRgRaDURMSwshO7i4lfiJEMa0YW7kQ1mG3Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cUZjVGjAKSXu3ungKs87LeEGrbDiNoBJG6M+3fcUlkFN/aSYbysX86j9wd4D//jIaG+mWt0ElN7UvEr3uINOy0+WaerxCor1ETL2vLf92i2R9Lbbg8wZCLnBMdqu1OevX6ksoFx9dLTqXRnMqNK22gYtNO1cxh78crNWafsplxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3eid5Pk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8A9C116D0;
-	Wed, 25 Feb 2026 01:37:10 +0000 (UTC)
+	 MIME-Version; b=akTlS7iQ3fqZD5uRG3JahAo3JnfJmMAqMawVGOJ6dr6wNKMbK9Dq0mwz21VzJeyhN9rXgBTjF9uRTJ3oheb6Qzu9VR5aadS9M7/e4eC3tWnIKHwGS98e6C/Fg4FmhYyJl8fDrb891oNxKo+uLwKv//LoM5cQ3aIg7rwYa6gUohk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0f0b6nOL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFA4C116D0;
+	Wed, 25 Feb 2026 06:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983430;
-	bh=rjw9fA4Hm0yiZxPo6F5CU/vDo3QuhH7VGCLHUV7JIck=;
+	s=korg; t=1772002619;
+	bh=ipeslegiRgRaDURMSwshO7i4lfiJEMa0YW7kQ1mG3Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3eid5PkAmh4v4vKZBwAjz/6gTg+jm7vlx6JEuCw9kAzsKvWxacHg6EsI8y2ldljX
-	 4eXZuu7lmYxA96Jl64AMo3R8mSb5pnoImtrdOJbM26t7a4SksQqBH5FItTkprDxswn
-	 U4Puu1rtBLiGLBUBt8KtaUw2uZv/6Gv6KDvidoAE=
+	b=0f0b6nOL3qWfFcGqdxASLj9mEGA/PqNy8eUV4JBU04hGb0SbqPPUZ0umMqhD/5+CM
+	 A0utJz9p2ykMcqRshYVNEHTW8AzvmhWcCBKFPhkxKsEzJi7hE2Afv8+jzbx4PL/tG0
+	 k81yweoCjKDAlDxvkEn1JusZYUHYA2xTteqEd6+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
+	Eric Joyner <eric.joyner@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 549/781] clk: stm32: stm32-core: convert from divider_ro_round_rate() to divider_ro_determine_rate()
-Date: Tue, 24 Feb 2026 17:20:58 -0800
-Message-ID: <20260225012413.268351412@linuxfoundation.org>
+Subject: [PATCH 6.18 333/641] ionic: Rate limit unknown xcvr type messages
+Date: Tue, 24 Feb 2026 17:20:59 -0800
+Message-ID: <20260225012356.751452215@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,94 +75,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219291-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218587-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 48F96190682
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6AF26192E3A
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Eric Joyner <eric.joyner@amd.com>
 
-[ Upstream commit 6587c9dacc89ad7014bf601fe851955429f13230 ]
+[ Upstream commit cdb1634de3bf197c0d86487d1fb84c128a79cc7c ]
 
-The divider_ro_round_rate() function is now deprecated, so let's migrate
-to divider_ro_determine_rate() instead so that this deprecated API can
-be removed.
+Running ethtool repeatedly with a transceiver unknown to the driver or
+firmware will cause the driver to spam the kernel logs with "unknown
+xcvr type" messages which can distract from real issues; and this isn't
+interesting information outside of debugging. Fix this by rate limiting
+the output so that there are still notifications but not so many that
+they flood the log.
 
-Note that when the main function itself was migrated to use
-determine_rate, this was mistakenly converted to:
+Using dev_dbg_once() would reduce the number of messages further, but
+this would miss the case where a different unknown transceiver type is
+plugged in, and its status is requested.
 
-    req->rate = divider_round_rate(...)
-
-This is invalid in the case when an error occurs since it can set the
-rate to a negative value.
-
-Fixes: cd1cb38836c0 ("clk: stm32: stm32-core: convert from round_rate() to determine_rate()")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+Fixes: 4d03e00a2140 ("ionic: Add initial ethtool support")
+Signed-off-by: Eric Joyner <eric.joyner@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Link: https://patch.msgid.link/20260206224651.1491-1-eric.joyner@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/stm32/clk-stm32-core.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_ethtool.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/stm32/clk-stm32-core.c b/drivers/clk/stm32/clk-stm32-core.c
-index 72825b9c36a4d..b95b9c591fda7 100644
---- a/drivers/clk/stm32/clk-stm32-core.c
-+++ b/drivers/clk/stm32/clk-stm32-core.c
-@@ -369,13 +369,10 @@ static int clk_stm32_divider_determine_rate(struct clk_hw *hw,
- 		val =  readl(div->base + divider->offset) >> divider->shift;
- 		val &= clk_div_mask(divider->width);
- 
--		req->rate = divider_ro_round_rate(hw, req->rate,
--						  &req->best_parent_rate,
--						  divider->table,
--						  divider->width,
--						  divider->flags, val);
--
--		return 0;
-+		return divider_ro_determine_rate(hw, req,
-+						 divider->table,
-+						 divider->width,
-+						 divider->flags, val);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+index 2d9efadb5d2ae..347b0aff100b9 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+@@ -263,9 +263,10 @@ static int ionic_get_link_ksettings(struct net_device *netdev,
+ 		/* This means there's no module plugged in */
+ 		break;
+ 	default:
+-		dev_info(lif->ionic->dev, "unknown xcvr type pid=%d / 0x%x\n",
+-			 idev->port_info->status.xcvr.pid,
+-			 idev->port_info->status.xcvr.pid);
++		dev_dbg_ratelimited(lif->ionic->dev,
++				    "unknown xcvr type pid=%d / 0x%x\n",
++				    idev->port_info->status.xcvr.pid,
++				    idev->port_info->status.xcvr.pid);
+ 		break;
  	}
  
- 	req->rate = divider_round_rate_parent(hw, clk_hw_get_parent(hw),
-@@ -455,14 +452,9 @@ static int clk_stm32_composite_determine_rate(struct clk_hw *hw,
- 		val =  readl(composite->base + divider->offset) >> divider->shift;
- 		val &= clk_div_mask(divider->width);
- 
--		rate = divider_ro_round_rate(hw, req->rate, &req->best_parent_rate,
--					     divider->table, divider->width, divider->flags,
--					     val);
--		if (rate < 0)
--			return rate;
--
--		req->rate = rate;
--		return 0;
-+		return divider_ro_determine_rate(hw, req, divider->table,
-+						 divider->width, divider->flags,
-+						 val);
- 	}
- 
- 	rate = divider_round_rate_parent(hw, clk_hw_get_parent(hw),
 -- 
 2.51.0
 
