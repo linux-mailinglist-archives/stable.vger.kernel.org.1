@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPn5H3hUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:32 +0100
+	id IDofLOWdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19DB18FCE1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48373192B0C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA90D31BFA8A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E88730A04C7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FE126560A;
-	Wed, 25 Feb 2026 01:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C893730C61B;
+	Wed, 25 Feb 2026 06:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uh8fOv56"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McKR+Pt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF0A2550D7;
-	Wed, 25 Feb 2026 01:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC9D2D8396;
+	Wed, 25 Feb 2026 06:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983529; cv=none; b=fmvGQX/Kz5x8wubmgnZCJFdDM8Mc3MIEXIWHG+Lh87Tnho7xHQ82U+BgPCOykyWnLnKONedNFE0gF2q8MgZOJCUjQvU8nXuamHmEsO8RbOycXG3SNFkgSduZxl8DVGOgKzSul2WIc0EM4jfaLG6aF+Mf8Ip4019/rSzibDHmjkg=
+	t=1772002652; cv=none; b=lgd1gxRTHDmn9oXoG5T19ZyUFIAMAMLzEn+G0afLZa8Ww3P8dXwekVROiTByFf+emskAQZcx73ZJ4kFjLtj1xt0RccNCFI71mLax2IZJ4Djvp4uoylO6JPsT0hcu29Qna68hUN355uZheF64lU55i++odL6JcXpMavX1Vuj+sZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983529; c=relaxed/simple;
-	bh=dlRIsYPDwYdO/N+K+mcdRYHJ9fBtCSzbELZ1ZEHQij0=;
+	s=arc-20240116; t=1772002652; c=relaxed/simple;
+	bh=UEXtA8qLa5wTIwOBSk3cRyT8tloBHTKnGNo1Z/llNsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HwNjL1ZgeL5c0OJdqtNz6ml67eM/J42iHVP4lfPnxYr2U3pXSeqO4Lzc2/Uq36kl04nYxMcv/9QPMKScXDVT0idCLt1rEuNivbLnVUaRbH1SQ0bdi7jl/RL2wAQhMw7sBvC1ym+kyeE36gMk6Cn8Z1pKsrY+ORcyf0RSVOfbwQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uh8fOv56; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66853C116D0;
-	Wed, 25 Feb 2026 01:38:49 +0000 (UTC)
+	 MIME-Version; b=AiGEjHbzw+x2J/QDWljCXFp7av0fyf+XNwlSocRdz10B2pCQx574+Wjh3g3KLVvrc47y2CKjw/oGwRG4GjBl1MXl3z9lo7EmNOZOEatRTAxblTwJPMwYPevhs91+xs5+Kppis8dFKB04EAq9E2nqWqCOWLIF6GEdz9cNN0S8xWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McKR+Pt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C7CC116D0;
+	Wed, 25 Feb 2026 06:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983529;
-	bh=dlRIsYPDwYdO/N+K+mcdRYHJ9fBtCSzbELZ1ZEHQij0=;
+	s=korg; t=1772002652;
+	bh=UEXtA8qLa5wTIwOBSk3cRyT8tloBHTKnGNo1Z/llNsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uh8fOv56N6w0pRxAq2JO61h9Hyu5v9GlSHdf2P2W9Bsuas/vkxZzgyU5PRns1LFZU
-	 zSXcPVLo60Qq7LMEGQdtmOSfnyUqnamtDioYfnYY+Lm03R79P9TOnxJHFKGr+RoTBI
-	 kxIZBieRMWU05oYmTLjjeFaEPkHolAC3G09NaPxc=
+	b=McKR+Pt2TS19CvS0qhcC+qyUgzKASLVHvAMC0lCcGqivG6MZcG0KiYXZE1fHSDMYw
+	 HDNsitP/BqSSw07iLap0NuKxFdgmlYfTN36r5AZYkM6erk5f7khGMaruIoF9wjdMe1
+	 7ZQVZiyiFAVungYdMqQPzvxNub9y7+z7KtqIi+2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	George Moussalem <george.moussalem@outlook.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 636/781] selftests: mlxsw: tc_restrictions: Fix test failure with new iproute2
+Subject: [PATCH 6.18 419/641] clk: qcom: gcc-ipq5018: flag sleep clock as critical
 Date: Tue, 24 Feb 2026 17:22:25 -0800
-Message-ID: <20260225012415.405904561@linuxfoundation.org>
+Message-ID: <20260225012358.707485790@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,85 +70,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-219342-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218674-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: B19DB18FCE1
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,outlook.com:email]
+X-Rspamd-Queue-Id: 48373192B0C
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: George Moussalem <george.moussalem@outlook.com>
 
-[ Upstream commit a2646773a005b59fd1dc7ff3ba15df84889ca5d2 ]
+[ Upstream commit 04c4dc1f541135708d90a9b4632af51136f93ac3 ]
 
-As explained in [1], iproute2 started rejecting tc-police burst sizes
-that result in an overflow. This can happen when the burst size is high
-enough and the rate is low enough.
+The sleep clock never be disabled. To avoid the kernel trying to disable
+it and keep it always on, flag it as critical.
 
-A couple of test cases specify such configurations, resulting in
-iproute2 errors and test failure.
-
-Fix by reducing the burst size so that the test will pass with both new
-and old iproute2 versions.
-
-[1] https://lore.kernel.org/netdev/20250916215731.3431465-1-jay.vosburgh@canonical.com/
-
-Fixes: cb12d1763267 ("selftests: mlxsw: tc_restrictions: Test tc-police restrictions")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/88b00c6e85188aa6a065dc240206119b328c46e1.1770643998.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e3fdbef1bab8 ("clk: qcom: Add Global Clock controller (GCC) driver for IPQ5018")
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251128-ipq5018-sleep-clk-fix-v1-1-6f4b75ec336c@outlook.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-ipq5018.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh b/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh
-index 0441a18f098b1..aac8ef490feb8 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/tc_restrictions.sh
-@@ -317,7 +317,7 @@ police_limits_test()
- 
- 	tc filter add dev $swp1 ingress pref 1 proto ip handle 101 \
- 		flower skip_sw \
--		action police rate 0.5kbit burst 1m conform-exceed drop/ok
-+		action police rate 0.5kbit burst 2k conform-exceed drop/ok
- 	check_fail $? "Incorrect success to add police action with too low rate"
- 
- 	tc filter add dev $swp1 ingress pref 1 proto ip handle 101 \
-@@ -327,7 +327,7 @@ police_limits_test()
- 
- 	tc filter add dev $swp1 ingress pref 1 proto ip handle 101 \
- 		flower skip_sw \
--		action police rate 1.5kbit burst 1m conform-exceed drop/ok
-+		action police rate 1.5kbit burst 2k conform-exceed drop/ok
- 	check_err $? "Failed to add police action with low rate"
- 
- 	tc filter del dev $swp1 ingress protocol ip pref 1 handle 101 flower
+diff --git a/drivers/clk/qcom/gcc-ipq5018.c b/drivers/clk/qcom/gcc-ipq5018.c
+index dcda2be8c1a51..64792cda06202 100644
+--- a/drivers/clk/qcom/gcc-ipq5018.c
++++ b/drivers/clk/qcom/gcc-ipq5018.c
+@@ -1340,6 +1340,7 @@ static struct clk_branch gcc_sleep_clk_src = {
+ 			.name = "gcc_sleep_clk_src",
+ 			.parent_data = gcc_sleep_clk_data,
+ 			.num_parents = ARRAY_SIZE(gcc_sleep_clk_data),
++			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
 -- 
 2.51.0
 
