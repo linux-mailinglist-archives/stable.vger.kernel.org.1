@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-218741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218752-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ID+2K21Tnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218741-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:05 +0100
+	id 2JmzERlVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218752-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7214718F846
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F00B18FEE5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB050302CE89
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C085831F75EE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4540D26B2D7;
-	Wed, 25 Feb 2026 01:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0265926E6FA;
+	Wed, 25 Feb 2026 01:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OumA6HOk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0EoDC9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095492741C9;
-	Wed, 25 Feb 2026 01:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9E91E2834;
+	Wed, 25 Feb 2026 01:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983608; cv=none; b=oKHdEiaF9B5mzt84NDRyMaQuJ3fyfEhjP1a9h4UNGHcpM+2U6IdihrITjeCCiIJ6px0vvbqulgj3e0OijuLxM77otCqN1J4dzGFU9h2LphRCRNLA4el0F3YM/peUUQlXceaz41uaRVB+nZO4xj3mxYLEyxSFW1Ozoh8v7QB26pE=
+	t=1771983620; cv=none; b=DQDWSAkLgl9h9Ot+AxSgBwzXe3wRVA1W26pN1AcjXiH3iSc7BGCHINydNTyzXkT9K9Yv6Dq+iLrvIQa9aRefVRy2knR8vmVvr5iHZ3Pdq+/5+qcsoQgxb9KemehkdIIQipwHUjJ4x4YnDY51/aeONZQiDyW0fgNt8pGj8U7e08k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983608; c=relaxed/simple;
-	bh=P747ClMhdzPabwDoQA+SdXZisGkzxVOpqGgn6cO2vn8=;
+	s=arc-20240116; t=1771983620; c=relaxed/simple;
+	bh=97R2Cv0yJyxvoRmXa/jdgktpCPsJqhp1n8ITfkwYO0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XxPLZlpju0sy9K4c9DMXy+ugwrvwZSmymv437fyZdM/wbExqIzITufXurHwR1boHeubGsSNRZLCBcl75JRIrMcrL+ucFLXuhQfJSpgskC30WBK4swLOWP9hnDuu4o/5oiwTKX55fXTCDyyAwOCCeWd38dAS1fE5TCzoveZBnTQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OumA6HOk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8849C116D0;
-	Wed, 25 Feb 2026 01:40:07 +0000 (UTC)
+	 MIME-Version; b=VNfVua3Bvk5HVeFvoFCaZNFO1qaJjO+xR52woLehJqhramR2Cm9lVetgcr/ODQl88fjGRDfyHXeJeXzOIfp7OAs60UEFt7wDa5j+4YIZfdoP+scbXHYhizDHkBMjmkBeawwRP/DftYpJ5Q4gKqq69hvtReed+DEVGt1gNPw+MAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0EoDC9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79351C116D0;
+	Wed, 25 Feb 2026 01:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983607;
-	bh=P747ClMhdzPabwDoQA+SdXZisGkzxVOpqGgn6cO2vn8=;
+	s=korg; t=1771983620;
+	bh=97R2Cv0yJyxvoRmXa/jdgktpCPsJqhp1n8ITfkwYO0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OumA6HOk/MXw/uzdMrUfyK8VK58+rrCHZLSflVC9CdKeytfuJlQlrc2GM+BeSFUaZ
-	 ZkYZMoaX1NxEvkdWpfWREOQZt3q4nxO6oRMPglSPDg9s0gDsKiwmMOXEMa6GP3JOZU
-	 F0NbKmswJnzWuQREMt2P8iEPAHifzET/0C66LFx0=
+	b=W0EoDC9sMQeV1PngBNAJjHtzy82fElHLUVBbwqa7oRbh3+Kje0xd/e4gZN7GAgJus
+	 tYIlSN40/b0/2v4tF2+yaZkQo4YM53DyxdfurOr+vlvXweLPRGZa6M1q9u7KjimHCO
+	 fD7Wd66KKnHrYickBHyrPqENjGuj5KhJNLajvd30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>,
-	Tyler Hicks <code@tyhicks.com>,
 	Ryan Lee <ryan.lee@canonical.com>,
 	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 695/781] apparmor: return -ENOMEM in unpack_perms_table upon alloc failure
-Date: Tue, 24 Feb 2026 17:23:24 -0800
-Message-ID: <20260225012416.803073605@linuxfoundation.org>
+Subject: [PATCH 6.19 696/781] apparmor: fix boolean argument in apparmor_mmap_file
+Date: Tue, 24 Feb 2026 17:23:25 -0800
+Message-ID: <20260225012416.827627023@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -71,30 +69,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218741-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218752-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,tyhicks.com:email]
-X-Rspamd-Queue-Id: 7214718F846
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6F00B18FEE5
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
@@ -103,40 +101,34 @@ X-Rspamd-Action: no action
 
 From: Ryan Lee <ryan.lee@canonical.com>
 
-[ Upstream commit 74b7105e53e80a4072bd3e1a50be7aa15e3f0a01 ]
+[ Upstream commit 48d5268e911abcf7674ec33c9b0b3e952be1175e ]
 
-In policy_unpack.c:unpack_perms_table, the perms struct is allocated via
-kcalloc, with the position being reset if the allocation fails. However,
-the error path results in -EPROTO being retured instead of -ENOMEM. Fix
-this to return the correct error code.
+The previous value of GFP_ATOMIC is an int and not a bool, potentially
+resulting in UB when being assigned to a bool. In addition, the mmap hook
+is called outside of locks (i.e. in a non-atomic context), so we can pass
+a fixed constant value of false instead to common_mmap.
 
-Reported-by: Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
-Fixes: fd1b2b95a2117 ("apparmor: add the ability for policy to specify a permission table")
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
 Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
 Signed-off-by: John Johansen <john.johansen@canonical.com>
+Stable-dep-of: 4a134723f9f1 ("apparmor: move check for aa_null file to cover all cases")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ security/apparmor/lsm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
-index 7523971e37d9c..dd602bd5fca99 100644
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -687,8 +687,10 @@ static ssize_t unpack_perms_table(struct aa_ext *e, struct aa_perms **perms)
- 		if (!aa_unpack_array(e, NULL, &size))
- 			goto fail_reset;
- 		*perms = kcalloc(size, sizeof(struct aa_perms), GFP_KERNEL);
--		if (!*perms)
--			goto fail_reset;
-+		if (!*perms) {
-+			e->pos = pos;
-+			return -ENOMEM;
-+		}
- 		for (i = 0; i < size; i++) {
- 			if (!unpack_perm(e, version, &(*perms)[i]))
- 				goto fail;
+diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
+index a87cd60ed2069..acca3d6efdbc8 100644
+--- a/security/apparmor/lsm.c
++++ b/security/apparmor/lsm.c
+@@ -584,7 +584,7 @@ static int common_mmap(const char *op, struct file *file, unsigned long prot,
+ static int apparmor_mmap_file(struct file *file, unsigned long reqprot,
+ 			      unsigned long prot, unsigned long flags)
+ {
+-	return common_mmap(OP_FMMAP, file, prot, flags, GFP_ATOMIC);
++	return common_mmap(OP_FMMAP, file, prot, flags, false);
+ }
+ 
+ static int apparmor_file_mprotect(struct vm_area_struct *vma,
 -- 
 2.51.0
 
