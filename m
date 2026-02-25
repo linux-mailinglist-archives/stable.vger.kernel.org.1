@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-219509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8E1aDfifnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219509-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:40 +0100
+	id CBzdMBSjnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD4B193024
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA0D1934A2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:21:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8AF7D313CF59
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04F5632066B4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7807F30E0EF;
-	Wed, 25 Feb 2026 06:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568CF31A06C;
+	Wed, 25 Feb 2026 06:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqbST/n4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTZzP5wa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3934C2BDC03;
-	Wed, 25 Feb 2026 06:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8D42BDC03;
+	Wed, 25 Feb 2026 06:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002763; cv=none; b=fSi/1Ye6GIGYBLTlsjUzbP9lTmLf/ZHfUkH14vW0qJvmsfN3JfauhOMRjFFebL1Ev5LOY/SHwVirlCi5CNQAS6HfGMi0Ta/PT0v9e2r6wNKnJUJtfEZ8X3muMHE8inbQLoMLnlW8uz8C7aALQBPHrJm16vAgMDUtWvrjFEXeU9c=
+	t=1772002765; cv=none; b=YxDxrA3ZgbRZT9aMT9n9U4qZ5brbhRfsk1+rS0xTHqDVuG+wtv5mqjOt0/eo/bXmbeB4GA92RYZ5ij0AIItV5QllkhdOkGh/8B6J4pTBUxyFK9vNt2OVPzEiE9lg83iwQrDP9x0RCByS6pk9ctRrSLPeSO5CCuatff9PTrBXizg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002763; c=relaxed/simple;
-	bh=2fctJEa6om/HmzV7bEs0QVHGQbyqaRrtuoAlKQlxAyY=;
+	s=arc-20240116; t=1772002765; c=relaxed/simple;
+	bh=Go5vKHukaJBL20tJxEaUEvwVN7i/7XdkRQiXaVFOIG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RznrP8OiSXB5EZ07iQyq3PFi6uB6tzuNNAjbwSD6HzDj+axBNzyyfB7yAVCVRnOZo+VlXbloxskiRQuN437PnpPyWxSmbxBpBmcCc09L7SBlgcMBoRHo41/O1wG2Axfl7tofNpGcrdBztMmIURE/JKVJKqQRzuMNP7r1zUaRrhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqbST/n4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10EB6C116D0;
-	Wed, 25 Feb 2026 06:59:23 +0000 (UTC)
+	 MIME-Version; b=kV4rC+UXL3LBuhqLIDcEamsi2usq/1qU5OcvdCFvJqcHeziFIoMOXJrhH7Eo4vLxHKwM9b/P11aiLtJHqXSgq4GpnYAAEi9dB1kn59rALHM84L8IgVwE5DRvQ6tN46lc9kE3Bcn4oi9NRu6KT5if1L8RkdfEOFTzKk9jSa9vfcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTZzP5wa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B5BC116D0;
+	Wed, 25 Feb 2026 06:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002763;
-	bh=2fctJEa6om/HmzV7bEs0QVHGQbyqaRrtuoAlKQlxAyY=;
+	s=korg; t=1772002765;
+	bh=Go5vKHukaJBL20tJxEaUEvwVN7i/7XdkRQiXaVFOIG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqbST/n4a4Lg/mqbrlCBrKSGJXecJTsadp0s6J3XUHMquWM6XnumBh4O714FwpHYa
-	 5pmc8R/ZQxXNjshkFdgxIt5J6Amq/mc/VFfTuNmjCwRppc/HLbg1pPFFu4TCP8BsAG
-	 hmDMpR261g9VkedZW3wQNAVTgEqPaz02DLYlevcQ=
+	b=hTZzP5waoy7RfQHhBCf5ultxkDQDygGUy+mPD2otf5cas4Loo4KNU5X4JR0Tr8XZK
+	 urKgpQzBtpLZLxW+OnOPflQD3PXX4Oxb56YbJ5ynS8o4FXGZ4zvfrqSmivAtuqutzs
+	 yvKibcwcLruLWZVwIe0KVw/yT9EaPPTuHQFXly5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
+	Zygmunt Krynicki <zygmunt.krynicki@canonical.com>,
+	Tyler Hicks <code@tyhicks.com>,
+	Ryan Lee <ryan.lee@canonical.com>,
 	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 566/641] apparmor: Fix & Optimize table creation from possibly unaligned memory
-Date: Tue, 24 Feb 2026 17:24:52 -0800
-Message-ID: <20260225012402.238896596@linuxfoundation.org>
+Subject: [PATCH 6.18 567/641] apparmor: return -ENOMEM in unpack_perms_table upon alloc failure
+Date: Tue, 24 Feb 2026 17:24:53 -0800
+Message-ID: <20260225012402.260376087@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -67,109 +69,74 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219509-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,canonical.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219512-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,canonical.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BBD4B193024
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tyhicks.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4BA0D1934A2
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Ryan Lee <ryan.lee@canonical.com>
 
-[ Upstream commit 6fc367bfd4c8886e6b1742aabbd1c0bdc310db3a ]
+[ Upstream commit 74b7105e53e80a4072bd3e1a50be7aa15e3f0a01 ]
 
-Source blob may come from userspace and might be unaligned.
-Try to optize the copying process by avoiding unaligned memory accesses.
+In policy_unpack.c:unpack_perms_table, the perms struct is allocated via
+kcalloc, with the position being reset if the allocation fails. However,
+the error path results in -EPROTO being retured instead of -ENOMEM. Fix
+this to return the correct error code.
 
-- Added Fixes tag
-- Added "Fix &" to description as this doesn't just optimize but fixes
-        a potential unaligned memory access
-Fixes: e6e8bf418850d ("apparmor: fix restricted endian type warnings for dfa unpack")
-Signed-off-by: Helge Deller <deller@gmx.de>
-[jj: remove duplicate word "convert" in comment trigger checkpatch warning]
+Reported-by: Zygmunt Krynicki <zygmunt.krynicki@canonical.com>
+Fixes: fd1b2b95a2117 ("apparmor: add the ability for policy to specify a permission table")
+Reviewed-by: Tyler Hicks <code@tyhicks.com>
+Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
 Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/include/match.h | 12 +++++++-----
- security/apparmor/match.c         |  7 +++----
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ security/apparmor/policy_unpack.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
-index 1fbe82f5021b1..0dde8eda3d1a5 100644
---- a/security/apparmor/include/match.h
-+++ b/security/apparmor/include/match.h
-@@ -104,16 +104,18 @@ struct aa_dfa {
- 	struct table_header *tables[YYTD_ID_TSIZE];
- };
- 
--#define byte_to_byte(X) (X)
--
- #define UNPACK_ARRAY(TABLE, BLOB, LEN, TTYPE, BTYPE, NTOHX)	\
- 	do { \
- 		typeof(LEN) __i; \
- 		TTYPE *__t = (TTYPE *) TABLE; \
- 		BTYPE *__b = (BTYPE *) BLOB; \
--		for (__i = 0; __i < LEN; __i++) { \
--			__t[__i] = NTOHX(__b[__i]); \
--		} \
-+		BUILD_BUG_ON(sizeof(TTYPE) != sizeof(BTYPE)); \
-+		if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN)) \
-+			memcpy(__t, __b, (LEN) * sizeof(BTYPE)); \
-+		else /* copy & convert from big-endian */ \
-+			for (__i = 0; __i < LEN; __i++) { \
-+				__t[__i] = NTOHX(&__b[__i]); \
-+			} \
- 	} while (0)
- 
- static inline size_t table_size(size_t len, size_t el_size)
-diff --git a/security/apparmor/match.c b/security/apparmor/match.c
-index 26e82ba879d44..bbeb3be68572f 100644
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -67,14 +67,13 @@ static struct table_header *unpack_table(char *blob, size_t bsize)
- 		table->td_flags = th.td_flags;
- 		table->td_lolen = th.td_lolen;
- 		if (th.td_flags == YYTD_DATA8)
--			UNPACK_ARRAY(table->td_data, blob, th.td_lolen,
--				     u8, u8, byte_to_byte);
-+			memcpy(table->td_data, blob, th.td_lolen);
- 		else if (th.td_flags == YYTD_DATA16)
- 			UNPACK_ARRAY(table->td_data, blob, th.td_lolen,
--				     u16, __be16, be16_to_cpu);
-+				     u16, __be16, get_unaligned_be16);
- 		else if (th.td_flags == YYTD_DATA32)
- 			UNPACK_ARRAY(table->td_data, blob, th.td_lolen,
--				     u32, __be32, be32_to_cpu);
-+				     u32, __be32, get_unaligned_be32);
- 		else
- 			goto fail;
- 		/* if table was vmalloced make sure the page tables are synced
+diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
+index 7523971e37d9c..dd602bd5fca99 100644
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -687,8 +687,10 @@ static ssize_t unpack_perms_table(struct aa_ext *e, struct aa_perms **perms)
+ 		if (!aa_unpack_array(e, NULL, &size))
+ 			goto fail_reset;
+ 		*perms = kcalloc(size, sizeof(struct aa_perms), GFP_KERNEL);
+-		if (!*perms)
+-			goto fail_reset;
++		if (!*perms) {
++			e->pos = pos;
++			return -ENOMEM;
++		}
+ 		for (i = 0; i < size; i++) {
+ 			if (!unpack_perm(e, version, &(*perms)[i]))
+ 				goto fail;
 -- 
 2.51.0
 
