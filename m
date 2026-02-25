@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFMcA4xZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218897-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:08:12 +0100
+	id UIMzHFBTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6405419095D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:08:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 271B318F79F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1616632E5B23
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D40FE319D388
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9936D27280F;
-	Wed, 25 Feb 2026 01:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F2D1EB5E1;
+	Wed, 25 Feb 2026 01:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDzEmGNk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUHLAya2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9F025A357;
-	Wed, 25 Feb 2026 01:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B5318DB2A;
+	Wed, 25 Feb 2026 01:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983786; cv=none; b=aTsal3WFeuy5BjW+1LCvUHUjIMJda79cx+qGKeYIya1NOITXgm1EWZ2xFBvq8Dg6vMYtxgvHYXhwwzenSehTvB69DyxPx3sxdr6N3xqURCcvhh87BG5vkUbYkDI20sgkd/76LGB/d0WIkV+0QO3ybJASgrl3iyZojdgQndTtgM8=
+	t=1771983137; cv=none; b=Da/WXscR3k2L1P95Ap9z8bucc0207KOZ55Gc2Pl69PVTHrGtbeYRVVaeF6apP8UpT9TRWDVqnV9aOL1ICdUARA0Noi66a7lLd453wiVkkpuNUZR/HrfTrMBJ4iWPYOGNVK5i5iOAZ3ugJE1ta1VJK+ooj76ZX1s7+/xFi9goqNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983786; c=relaxed/simple;
-	bh=41NZP90nW7db6NUSzJYWDsnbfudEZ+RGuGDKqU3fWFk=;
+	s=arc-20240116; t=1771983137; c=relaxed/simple;
+	bh=1cSqlXFF7WNR7GYjh1WcUJvVRg//dF8YAjmKD67qnXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHZuSR8zY00dfWT0WAOMSE29MFMUWIVlenyWxv2J+/NcceDnndYrhlZmnG/bQQIhHUnrCq4ZbccocYfYq8m1wJ+hVW7NfVchMLgFBWvgCOWWRbwkR2v2hucq6yYtFU3vFkL+JFygJ6QhY47zAOgPOmsZiMTJCFAFzlG/up6nYGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDzEmGNk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266F1C116D0;
-	Wed, 25 Feb 2026 01:43:06 +0000 (UTC)
+	 MIME-Version; b=tT/bNG+0U3ekqCP/R8QcHY34288HYT9GUdITbYouU4THnPKk0rn+ibqbeDFmvdLyWzsR3HVyR0AO9JvP2urcnJyzEt5nT5K2IDXj0/yF+74WYLseOeUlFODYMLnJ5JOhJfRnFylSF6RSnRPglhcMeWWvkqXo5Qwfu7tbniO8nBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUHLAya2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F12C116D0;
+	Wed, 25 Feb 2026 01:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983786;
-	bh=41NZP90nW7db6NUSzJYWDsnbfudEZ+RGuGDKqU3fWFk=;
+	s=korg; t=1771983137;
+	bh=1cSqlXFF7WNR7GYjh1WcUJvVRg//dF8YAjmKD67qnXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PDzEmGNkWtZGrjFXrAzKj7zmthgOa3XdRbFUcjH12jS0YSsMVw88SWWJ8WgzU/gFR
-	 CLdEN4GjNGSDiWoz6AgQ2GDoJyXSzj095Z+ZsCN8pjgC/vQUL5UwAr7dh36vkNy1Mt
-	 Iz+/MDAtJF6YqwvdXBtwVF8Iu1HfEYBGnxxrV4OA=
+	b=wUHLAya2LA+4XT/MLnYtgfKF1vfpBiLRw3xs/e2wNnKd3zHhdwpVIm/3azgNRIOQ9
+	 2Zvhq1YIDAzKqWD47VFbEt/9RC8H0+R8ZZEpIgg7lGSwEIlnA3ovL/bNNdSo4my3Mk
+	 /hMNLNo7IrrFWTB28rKchpXDnax0g2AjxbPyS3U8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Weili Qian <qianweili@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Gwendal Grignou <gwendal@google.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 074/641] crypto: hisilicon/zip - adjust the way to obtain the req in the callback function
-Date: Tue, 24 Feb 2026 17:16:40 -0800
-Message-ID: <20260225012350.859806091@linuxfoundation.org>
+Subject: [PATCH 6.19 292/781] platform/chrome: cros_ec_lightbar: Fix response size initialization
+Date: Tue, 24 Feb 2026 17:16:41 -0800
+Message-ID: <20260225012406.871079407@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,155 +69,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218897-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218332-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
-X-Rspamd-Queue-Id: 6405419095D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 271B318F79F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 19c2475ce1984cf675ebfbbeaa5509b2fb1887d6 ]
+[ Upstream commit ec0dd36dbf8b0b209e63d0cd795451fa2203c736 ]
 
-In the shared queue design, multiple tfms use same qp, and one qp
-need to corresponds to multiple qp_ctx. So use tag to obtain the
-req virtual address. Build a one-to-one relationship between tfm
-and qp_ctx. finaly remove the old get_tag operation.
+Commit 1e7913ff5f9f ("platform/chrome: cros_ec_lightbar: Reduce
+ligthbar get version command") meant to set smaller values for both
+request and response sizes.
 
-Fixes: 2bcf36348ce5 ("crypto: hisilicon/zip - initialize operations about 'sqe' in 'acomp_alg.init'")
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Weili Qian <qianweili@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+However, it incorrectly assigned the response size to the `result` field
+instead of `insize`.  Fix it.
+
+Reported-by: Gwendal Grignou <gwendal@google.com>
+Closes: https://lore.kernel.org/chrome-platform/CAMHSBOVrrYaB=1nEqZk09VkczCrj=6B-P8Fe29TpPdSDgT2CCQ@mail.gmail.com
+Fixes: 1e7913ff5f9f ("platform/chrome: cros_ec_lightbar: Reduce ligthbar get version command")
+Link: https://lore.kernel.org/r/20260130040335.361997-1-tzungbi@kernel.org
+Reviewed-by: Gwendal Grignou <gwendal@google.com>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/zip/zip_crypto.c | 24 +++++++++--------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ drivers/platform/chrome/cros_ec_lightbar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/hisilicon/zip/zip_crypto.c b/drivers/crypto/hisilicon/zip/zip_crypto.c
-index b97513981a3b7..b4a656e0177d2 100644
---- a/drivers/crypto/hisilicon/zip/zip_crypto.c
-+++ b/drivers/crypto/hisilicon/zip/zip_crypto.c
-@@ -39,6 +39,7 @@ enum {
- 	HZIP_CTX_Q_NUM
- };
- 
-+#define GET_REQ_FROM_SQE(sqe)	((u64)(sqe)->dw26 | (u64)(sqe)->dw27 << 32)
- #define COMP_NAME_TO_TYPE(alg_name)					\
- 	(!strcmp((alg_name), "deflate") ? HZIP_ALG_TYPE_DEFLATE : 0)
- 
-@@ -48,6 +49,7 @@ struct hisi_zip_req {
- 	struct hisi_acc_hw_sgl *hw_dst;
- 	dma_addr_t dma_src;
- 	dma_addr_t dma_dst;
-+	struct hisi_zip_qp_ctx *qp_ctx;
- 	u16 req_id;
- };
- 
-@@ -74,7 +76,6 @@ struct hisi_zip_sqe_ops {
- 	void (*fill_req_type)(struct hisi_zip_sqe *sqe, u8 req_type);
- 	void (*fill_tag)(struct hisi_zip_sqe *sqe, struct hisi_zip_req *req);
- 	void (*fill_sqe_type)(struct hisi_zip_sqe *sqe, u8 sqe_type);
--	u32 (*get_tag)(struct hisi_zip_sqe *sqe);
- 	u32 (*get_status)(struct hisi_zip_sqe *sqe);
- 	u32 (*get_dstlen)(struct hisi_zip_sqe *sqe);
- };
-@@ -131,6 +132,7 @@ static struct hisi_zip_req *hisi_zip_create_req(struct hisi_zip_qp_ctx *qp_ctx,
- 	req_cache = q + req_id;
- 	req_cache->req_id = req_id;
- 	req_cache->req = req;
-+	req_cache->qp_ctx = qp_ctx;
- 
- 	return req_cache;
- }
-@@ -181,7 +183,8 @@ static void hisi_zip_fill_req_type(struct hisi_zip_sqe *sqe, u8 req_type)
- 
- static void hisi_zip_fill_tag(struct hisi_zip_sqe *sqe, struct hisi_zip_req *req)
- {
--	sqe->dw26 = req->req_id;
-+	sqe->dw26 = lower_32_bits((u64)req);
-+	sqe->dw27 = upper_32_bits((u64)req);
- }
- 
- static void hisi_zip_fill_sqe_type(struct hisi_zip_sqe *sqe, u8 sqe_type)
-@@ -237,7 +240,7 @@ static int hisi_zip_do_work(struct hisi_zip_qp_ctx *qp_ctx,
- 						    &req->dma_dst, DMA_FROM_DEVICE);
- 	if (IS_ERR(req->hw_dst)) {
- 		ret = PTR_ERR(req->hw_dst);
--		dev_err(dev, "failed to map the dst buffer to hw slg (%d)!\n",
-+		dev_err(dev, "failed to map the dst buffer to hw sgl (%d)!\n",
- 			ret);
- 		goto err_unmap_input;
- 	}
-@@ -265,11 +268,6 @@ static int hisi_zip_do_work(struct hisi_zip_qp_ctx *qp_ctx,
- 	return ret;
- }
- 
--static u32 hisi_zip_get_tag(struct hisi_zip_sqe *sqe)
--{
--	return sqe->dw26;
--}
--
- static u32 hisi_zip_get_status(struct hisi_zip_sqe *sqe)
- {
- 	return sqe->dw3 & HZIP_BD_STATUS_M;
-@@ -282,14 +280,12 @@ static u32 hisi_zip_get_dstlen(struct hisi_zip_sqe *sqe)
- 
- static void hisi_zip_acomp_cb(struct hisi_qp *qp, void *data)
- {
--	struct hisi_zip_qp_ctx *qp_ctx = qp->qp_ctx;
-+	struct hisi_zip_sqe *sqe = data;
-+	struct hisi_zip_req *req = (struct hisi_zip_req *)GET_REQ_FROM_SQE(sqe);
-+	struct hisi_zip_qp_ctx *qp_ctx = req->qp_ctx;
- 	const struct hisi_zip_sqe_ops *ops = qp_ctx->ctx->ops;
- 	struct hisi_zip_dfx *dfx = &qp_ctx->zip_dev->dfx;
--	struct hisi_zip_req_q *req_q = &qp_ctx->req_q;
- 	struct device *dev = &qp->qm->pdev->dev;
--	struct hisi_zip_sqe *sqe = data;
--	u32 tag = ops->get_tag(sqe);
--	struct hisi_zip_req *req = req_q->q + tag;
- 	struct acomp_req *acomp_req = req->req;
- 	int err = 0;
- 	u32 status;
-@@ -393,7 +389,6 @@ static const struct hisi_zip_sqe_ops hisi_zip_ops = {
- 	.fill_req_type		= hisi_zip_fill_req_type,
- 	.fill_tag		= hisi_zip_fill_tag,
- 	.fill_sqe_type		= hisi_zip_fill_sqe_type,
--	.get_tag		= hisi_zip_get_tag,
- 	.get_status		= hisi_zip_get_status,
- 	.get_dstlen		= hisi_zip_get_dstlen,
- };
-@@ -581,7 +576,6 @@ static void hisi_zip_acomp_exit(struct crypto_acomp *tfm)
- {
- 	struct hisi_zip_ctx *ctx = crypto_tfm_ctx(&tfm->base);
- 
--	hisi_zip_set_acomp_cb(ctx, NULL);
- 	hisi_zip_release_sgl_pool(ctx);
- 	hisi_zip_release_req_q(ctx);
- 	hisi_zip_ctx_exit(ctx);
+diff --git a/drivers/platform/chrome/cros_ec_lightbar.c b/drivers/platform/chrome/cros_ec_lightbar.c
+index 8352e97327911..3702baff5d4f1 100644
+--- a/drivers/platform/chrome/cros_ec_lightbar.c
++++ b/drivers/platform/chrome/cros_ec_lightbar.c
+@@ -126,7 +126,7 @@ static int get_lightbar_version(struct cros_ec_dev *ec,
+ 	param = (struct ec_params_lightbar *)msg->data;
+ 	param->cmd = LIGHTBAR_CMD_VERSION;
+ 	msg->outsize = sizeof(param->cmd);
+-	msg->result = sizeof(resp->version);
++	msg->insize = sizeof(resp->version);
+ 	ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
+ 	if (ret < 0 && ret != -EINVAL) {
+ 		ret = 0;
 -- 
 2.51.0
 
