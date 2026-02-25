@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-219374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBkYFa2dnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:53 +0100
+	id YFrONcBUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B3D192A6B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841EC18FDB5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C241301A9F1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2DA5B31D9976
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670C030F806;
-	Wed, 25 Feb 2026 06:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB782641FC;
+	Wed, 25 Feb 2026 01:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wbuti/+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNeIbIOs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D733016F7;
-	Wed, 25 Feb 2026 06:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F299258ED5;
+	Wed, 25 Feb 2026 01:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002674; cv=none; b=IXTz/FSsj1xDUqRqgvOPiRT3U50RjeJ491zthCmakoFQa4qumxou/+oMJ5v+iADluPfGmcSDeCj6f3gHS4dusLvwAd4a5QFPG+kPXkz47EjUZ17HQw16MKcp1xlTIhcJ53MZw/NelYiWS9AOdNRmO2a+l1HIXIbzKxic/nCCLkM=
+	t=1771983574; cv=none; b=oIbB9MVeth9zq9V+DeJOntRKP3E7k4CjG9fHtbivZIDAuN5Sa6uG5v+4jlskggvVhqc/c2B6Fe2faD38pQL/MD89cguk6fpF9zzxehuCG2ZL2I0ESDgcJwfU5uXwutM8rkBljWsDv5uSIJzrXHRUHBieiJRqEFJWGTtZD/grvmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002674; c=relaxed/simple;
-	bh=xu/LA9qUF5fQDRDOZI+B5fps52WgMVXKbpvQsLNxGAs=;
+	s=arc-20240116; t=1771983574; c=relaxed/simple;
+	bh=Xdeakx4ccfhefowdkpLv1X7gii68MISEnhXGB/OObDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMukaZcAQjMTShBvAAbH0a/HRYOWqaQ5YPQd/krjc4009q+e7czXb4vDbW/6paavC4DIwc+fuoMgnjiaZzPTmITZIcTn5qwOYRjCsB/9deDyQW63Wu8nqjmInPCVf0JNL9izkemi0UGB2lFiWmJ8+PFGn1ZqFsaXPCe2wLR8ITk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wbuti/+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26B7C116D0;
-	Wed, 25 Feb 2026 06:57:53 +0000 (UTC)
+	 MIME-Version; b=uRYQMQSQ5TQYWOjMb3X9A1VdBZbtpxwVVnSTkyVNUPbba6HL0Cp0W+W9CnBQ53jhwZzQ1cQwXwW+jDZraeWUxIOX5T57OqRfXybiuUkdmxKWe+V+1LkWbVJ6ltwm5QBw8JFYorVaPRUMVt0/4lmUuZFvEm93Yd2kB3Imvg1RcF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNeIbIOs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EAEC116D0;
+	Wed, 25 Feb 2026 01:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002673;
-	bh=xu/LA9qUF5fQDRDOZI+B5fps52WgMVXKbpvQsLNxGAs=;
+	s=korg; t=1771983574;
+	bh=Xdeakx4ccfhefowdkpLv1X7gii68MISEnhXGB/OObDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wbuti/+JxYF0G0ldlOXYNUiJ4fR96m92rwFxh+mauGMeRxKSUwpCtav0gxKuVQBev
-	 xAR80PIqLj1hpnfTOo27u4JriIhCmjmMNEh1pqjrIf0MqvP+LOwDlOT0YiFxN6LLUP
-	 +KDmQLdhlGMRAjLBoCJDXRFuOqCL8fYk9d0Zs1Dg=
+	b=ZNeIbIOsohz2oNugs2JOmWQ1EDU0QxGd3zD55S9kmtg5vmxsZ3QvGy8SL2Wn9FHNu
+	 WjuYuyNLleXjRQaKttM1qEeHB8HAFPcP9rurwrvk2e9MdiAo1W2Oo/CVertl8tBJxP
+	 F0NjSVPXL1Wut2CnWh3i7BJkEXzRkc9p2bCBegfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Vinod Koul <vkoul@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 457/641] soundwire: intel_ace2x: add SND_HDA_CORE dependency
-Date: Tue, 24 Feb 2026 17:23:03 -0800
-Message-ID: <20260225012359.588542696@linuxfoundation.org>
+Subject: [PATCH 6.19 675/781] selftests: tc_actions: dont dump 2MB of \0 to stdout
+Date: Tue, 24 Feb 2026 17:23:04 -0800
+Message-ID: <20260225012416.335979256@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219374-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218713-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,52 +90,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,arndb.de:email]
-X-Rspamd-Queue-Id: E7B3D192A6B
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,tc_actions.sh:url]
+X-Rspamd-Queue-Id: 841EC18FDB5
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit dc3a6a942e9ee3f18560bfcb16c06bb94f37fabf ]
+[ Upstream commit 32b70e62034aa72f8414ad4e9122cce7ad418c48 ]
 
-The ace2x driver can optionally use the HDA infrastructure, but can still
-build without that. However, with SND_HDA_CORE=m and SND_HDA_ALIGNED_MMIO=y,
-it fails to link as built-in:
+Since we started running selftests in NIPA we have been seeing
+tc_actions.sh generate a soft lockup warning on ~20% of the runs.
+On the pre-netdev foundation setup it was actually a missed irq
+splat from the console. Now it's either that or a lockup.
 
-aarch64-linux-ld: drivers/soundwire/intel_ace2x.o: in function `intel_shim_wake':
-intel_ace2x.c:(.text+0x2518): undefined reference to `snd_hdac_aligned_read'
-aarch64-linux-ld: intel_ace2x.c:(.text+0x25d4): undefined reference to `snd_hdac_aligned_read'
-aarch64-linux-ld: intel_ace2x.c:(.text+0x268c): undefined reference to `snd_hdac_aligned_write'
+I initially suspected a socket locking issue since the test
+is exercising local loopback with act_mirred.
+After hours of staring at this I noticed in strace that ncat
+when -o $file is specified _both_ saves the output to the file
+and still prints it to stdout. Because the file being sent
+is constructed with:
 
-Add a Kconfig dependency that forces the soundwire driver to be a loadable
-module if necessary.
+  dd conv=sparse status=none if=/dev/zero bs=1M count=2 of=$mirred
+                                ^^^^^^^^^
 
-Fixes: 79e7123c078d ("soundwire: intel_ace2x: fix wakeup handling")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20251223215014.534756-1-arnd@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+the data printed is all \0. Most terminals don't display nul
+characters (and neither does vng output capture save them).
+But QEMU's serial console still has to poke them thru which
+is very slow and causes the lockup (if the file is >600kB).
+
+Replace the '-o $file' with '> $file'. This speeds the test up
+from 2m20s to 18s on debug kernels, and prevents the warnings.
+
+Fixes: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260214035159.2119699-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/forwarding/tc_actions.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soundwire/Kconfig b/drivers/soundwire/Kconfig
-index ad56393e4c93b..196a7daaabdb8 100644
---- a/drivers/soundwire/Kconfig
-+++ b/drivers/soundwire/Kconfig
-@@ -40,6 +40,7 @@ config SOUNDWIRE_INTEL
- 	select AUXILIARY_BUS
- 	depends on ACPI && SND_SOC
- 	depends on SND_SOC_SOF_HDA_MLINK || !SND_SOC_SOF_HDA_MLINK
-+	depends on SND_HDA_CORE || !SND_HDA_ALIGNED_MMIO
- 	help
- 	  SoundWire Intel Master driver.
- 	  If you have an Intel platform which has a SoundWire Master then
+diff --git a/tools/testing/selftests/net/forwarding/tc_actions.sh b/tools/testing/selftests/net/forwarding/tc_actions.sh
+index ea89e558672db..86edbc7e2489b 100755
+--- a/tools/testing/selftests/net/forwarding/tc_actions.sh
++++ b/tools/testing/selftests/net/forwarding/tc_actions.sh
+@@ -223,7 +223,7 @@ mirred_egress_to_ingress_tcp_test()
+ 		ip_proto icmp \
+ 			action drop
+ 
+-	ip vrf exec v$h1 ncat --recv-only -w10 -l -p 12345 -o $mirred_e2i_tf2 &
++	ip vrf exec v$h1 ncat --recv-only -w10 -l -p 12345 > $mirred_e2i_tf2 &
+ 	local rpid=$!
+ 	ip vrf exec v$h1 ncat -w1 --send-only 192.0.2.2 12345 <$mirred_e2i_tf1
+ 	wait -n $rpid
 -- 
 2.51.0
 
