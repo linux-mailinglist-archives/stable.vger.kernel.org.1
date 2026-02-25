@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-218276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJrqE2tRnmlIUgQAu9opvQ
-	(envelope-from <stable+bounces-218276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:31 +0100
+	id GL/VIC5ZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC5518EFE3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E236E1908D2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B6B6D3099513
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C3E33262CA1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8A11F03DE;
-	Wed, 25 Feb 2026 01:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F93278E5D;
+	Wed, 25 Feb 2026 01:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00FVssew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mU/jYbXH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDA12BAF7;
-	Wed, 25 Feb 2026 01:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3577D276050;
+	Wed, 25 Feb 2026 01:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983076; cv=none; b=ACoC1OJwKGTY/SvPpJdT4qMA2IenMP//vkFXkJzXoVolt1WqCp4AOKK8l7SbIGEL5vT08IG7+4wQMzHcWSd48iTMBncnifMbIPJmn9puv0tvS0Lyp5UOKQC5VP7ede1wuN5/q3IZeBL3lWkfBanc2EEE61erFp1QD6Alm/SIdG4=
+	t=1771983725; cv=none; b=nn9ErlM7fcvj9SBjdUr+ueU4EC+A40JueVLoguHTEE4Zq4BksOgVyFFQbgS3UE292isY+qidfrEGLPBY05biTuHFI6v8Gp8kIzJkFusj3u9mVgGL+Df6u0qlegKjY1LOe41G96pjti56nIoVyhJRZiCBEg7eh2QHoSd7k7GNiCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983076; c=relaxed/simple;
-	bh=1Xuk/8zRgMapNy5A/JGJ63G/DzIty+NaVihTrTaU8Cc=;
+	s=arc-20240116; t=1771983725; c=relaxed/simple;
+	bh=aFxJKg0pDb8L1HxiOu6BZwTU7i+1s6ISfsbefU0XaXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JW7bv2odVb9Gi6PXrq53HLcjWebd/9qi5lvNiP4X4yM1NewUlET213jSWpaB7AXjCBH+cRwZ68Mg+cWjwcRDynmElToJlk0EHtJ5oYrc2+2HAWX4mxrjGFjY8CYYZClKV764EyAN50t3Qe8bdvEamw4H9+dudhNZJsKZPVFkWC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00FVssew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1B0C116D0;
-	Wed, 25 Feb 2026 01:31:15 +0000 (UTC)
+	 MIME-Version; b=taS32lR/sX6pSmdd2faB0x5cRnpJKUX8z7/X99uM0Fra9nFh6/x6yHDeQVGCBXCPR+6LMWPwv0kXtqcFgU8bGB3o1vOSRNYkDM2Zf6mMJZ2A7j/3NMOeQkXU1L9UaIJVA95VRSyISxIhV5b+G3w2wAtvq8cTHjlMMb4nFfQvALU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mU/jYbXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0057EC2BC86;
+	Wed, 25 Feb 2026 01:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983075;
-	bh=1Xuk/8zRgMapNy5A/JGJ63G/DzIty+NaVihTrTaU8Cc=;
+	s=korg; t=1771983725;
+	bh=aFxJKg0pDb8L1HxiOu6BZwTU7i+1s6ISfsbefU0XaXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00FVssewbtVxaEqAc/jCvnbTDtzpyTf16SuUlWp6vWVsl/ymr/TVQO9WZtQQZGfLn
-	 8xY5uJFK7Hqbg+CkWTqX2QaynNtoQT+vhyumP2/6gLgi7jmF9wlwmrRqqbIE/udXe5
-	 Jxs6+WJIZzfIq63xPu+mnq0BxVBXxNo5iMfQY8ok=
+	b=mU/jYbXHjm5dh1gTMsfBUo3FNvHbbYXfaVECBz4l7c4SHz6qfWplagvQGNaUPjWD1
+	 CsO69GunLfeC3vArBawTkhKM5uhMagxG7Ex1gnFC64S+72bkcoWRYXOAyPrm7xUw97
+	 lPxISfy5gyU/ktQGNFAZHRSiDMfjbLFfBtXPSLV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 237/781] drm/amd/display: Dont use kernel-doc comment in dc_register_software_state struct
-Date: Tue, 24 Feb 2026 17:15:46 -0800
-Message-ID: <20260225012405.521674360@linuxfoundation.org>
+Subject: [PATCH 6.18 021/641] erofs: handle end of filesystem properly for file-backed mounts
+Date: Tue, 24 Feb 2026 17:15:47 -0800
+Message-ID: <20260225012349.488110624@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,70 +66,94 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218276-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218842-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0AC5518EFE3
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email]
+X-Rspamd-Queue-Id: E236E1908D2
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bagas Sanjaya <bagasdotme@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit b1e2a6a57aa95f8192e8edb9edaecfd326745d32 ]
+[ Upstream commit bc804a8d7e865ef47fb7edcaf5e77d18bf444ebc ]
 
-Sphinx reports kernel-doc warning:
+I/O requests beyond the end of the filesystem should be zeroed out,
+similar to loopback devices and that is what we expect.
 
-WARNING: ./drivers/gpu/drm/amd/display/dc/dc.h:2796 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
- * Software state variables used to program register fields across the display pipeline
-
-Don't use kernel-doc comment syntax to fix it.
-
-Fixes: b0ff344fe70c ("drm/amd/display: Add interface to capture expected HW state from SW state")
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: ce63cb62d794 ("erofs: support unencoded inodes for fileio")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/fileio.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
-index 29edfa51ea2cc..0a9758a042586 100644
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -2793,7 +2793,7 @@ void dc_get_underflow_debug_data_for_otg(struct dc *dc, int primary_otg_inst, st
+diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
+index e2eaa7119bd4f..5b77ee8cc99f4 100644
+--- a/fs/erofs/fileio.c
++++ b/fs/erofs/fileio.c
+@@ -25,21 +25,17 @@ static void erofs_fileio_ki_complete(struct kiocb *iocb, long ret)
+ 			container_of(iocb, struct erofs_fileio_rq, iocb);
+ 	struct folio_iter fi;
  
- void dc_get_power_feature_status(struct dc *dc, int primary_otg_inst, struct power_features *out_data);
+-	if (ret > 0) {
+-		if (ret != rq->bio.bi_iter.bi_size) {
+-			bio_advance(&rq->bio, ret);
+-			zero_fill_bio(&rq->bio);
+-		}
+-		ret = 0;
++	if (ret >= 0 && ret != rq->bio.bi_iter.bi_size) {
++		bio_advance(&rq->bio, ret);
++		zero_fill_bio(&rq->bio);
+ 	}
+-	if (rq->bio.bi_end_io) {
+-		if (ret < 0 && !rq->bio.bi_status)
+-			rq->bio.bi_status = errno_to_blk_status(ret);
+-	} else {
++	if (!rq->bio.bi_end_io) {
+ 		bio_for_each_folio_all(fi, &rq->bio) {
+ 			DBG_BUGON(folio_test_uptodate(fi.folio));
+-			erofs_onlinefolio_end(fi.folio, ret, false);
++			erofs_onlinefolio_end(fi.folio, ret < 0, false);
+ 		}
++	} else if (ret < 0 && !rq->bio.bi_status) {
++		rq->bio.bi_status = errno_to_blk_status(ret);
+ 	}
+ 	bio_endio(&rq->bio);
+ 	bio_uninit(&rq->bio);
+@@ -51,7 +47,7 @@ static void erofs_fileio_rq_submit(struct erofs_fileio_rq *rq)
+ {
+ 	const struct cred *old_cred;
+ 	struct iov_iter iter;
+-	int ret;
++	ssize_t ret;
  
--/**
-+/*
-  * Software state variables used to program register fields across the display pipeline
-  */
- struct dc_register_software_state {
+ 	if (!rq)
+ 		return;
 -- 
 2.51.0
 
