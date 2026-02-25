@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-219382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBoUCGienmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:00 +0100
+	id mB+hGl5VnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4BC192C5C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADEF18FFB0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2809330DCC0E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3B53331453FF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CB03016E0;
-	Wed, 25 Feb 2026 06:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93F126A1A4;
+	Wed, 25 Feb 2026 01:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQvBl/2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opS/bl/v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274862D5926;
-	Wed, 25 Feb 2026 06:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8A72550D7;
+	Wed, 25 Feb 2026 01:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002679; cv=none; b=GCuWI5Cw4BO3U3Dpzkluo9vbYT2wYgxyZdc2PoJ9yYDSDTUTJ9WxQd4//4mRvxtybn7wWYPY/w4nu+IWDlDSGnSGfaM/b1VrI8oo2/J3VOiCV707qOo+jRidVXW7Ek2+xHYQkXCp3Jfx32j65yL56XT7taX9uqaL7RgJH2PnTW0=
+	t=1771983535; cv=none; b=lR6KIIHZA8beFHHJEtRrValCW9xGVBDsU5/v2eoH5U0VloyjobqWOGes1sZts9ns7gdrqT/zTUZIQZ84T7j59Yl/tF88leXc23v4/VhosIX0IT+j0Q2Tdnqj9P8gHLlGii+6cvj9zpw48uGhMmPcVzBIwkDm361SAjjbGby9y4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002679; c=relaxed/simple;
-	bh=iUfF+Q6pyfiXKAQUaeLNBPGzl9Wx8w17rb93hGvROkc=;
+	s=arc-20240116; t=1771983535; c=relaxed/simple;
+	bh=1tgsdUePlenlQmvtLxq7YSmaQphKNcCpAzh/l4l2a5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ULdZe0wq0O1dme7vLQL+9nxpX3CSoT8KMvlzj40BtL7yIQ+RW4KLlP+G40t/KaqpinOpJUNiB79klkxcDBJxhMuIvMiWZbCHu72yWScDmVVA4QhAwH8oqe0kexmKIbn7ptNfYGsS0JKnkoO3t3a3DEwaGoUI1SCnkIZAUQNYDrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQvBl/2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0108CC116D0;
-	Wed, 25 Feb 2026 06:57:58 +0000 (UTC)
+	 MIME-Version; b=c3O7QYFqFF6cU1MKzWTc/rU/6CYRqB6fgzQYkVj98JNOZ8qc9DmCj+ykWUNkfdFlMCXAWZfF043JFrvHr5zYDVgsMewKecaMYYk0sJmzhep76ZC1YCh74Qp7GCHWRINQDOAMp3U2oqYkbaLVtb/pjzNi2gwueHpqsJSMe/AZyBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opS/bl/v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868E2C116D0;
+	Wed, 25 Feb 2026 01:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002679;
-	bh=iUfF+Q6pyfiXKAQUaeLNBPGzl9Wx8w17rb93hGvROkc=;
+	s=korg; t=1771983535;
+	bh=1tgsdUePlenlQmvtLxq7YSmaQphKNcCpAzh/l4l2a5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQvBl/2MuCrS6AgRmjmVsE74KI2IZLWOIY/3uWP5etZ2AfaCqQYvEfwdVeQiBON69
-	 3hyG4aq0fj5drHKF2sEouM9oXj3otsvLQ0dSas12V/wGPwg/sN+1yr741vjSnTgyZc
-	 ZoVR3sg0c4sP41RSQLKf2O/2FCn1P2O9oWPhFB1c=
+	b=opS/bl/vrnS7NBhN7mveK4xnukDKXx57djycH9G/Kaz3g9X6UECZU6DuH10CD96/U
+	 OhSSIsyDkcBnunLvHVeoFh6o+jz+vfQnC0gg05WYDQ7ZtG22xxi1vd/x2rwDPOXtGc
+	 ILfNEVHZGjwAbrm1HcC1CNTS8pkY3rYJTTVT/irM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 423/641] Input: adp5589 - remove a leftover header file
+Subject: [PATCH 6.19 640/781] net: mscc: ocelot: extract ocelot_xmit_timestamp() helper
 Date: Tue, 24 Feb 2026 17:22:29 -0800
-Message-ID: <20260225012358.799155050@linuxfoundation.org>
+Message-ID: <20260225012415.502442950@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,250 +64,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mleia.com,ideasonboard.com,analog.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-219382-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218679-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mleia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,ideasonboard.com:email]
-X-Rspamd-Queue-Id: AC4BC192C5C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8ADEF18FFB0
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vz@mleia.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-[ Upstream commit f8a6e5eac701369afb5d69aba875dc5fec93003d ]
+[ Upstream commit 29372f07f7969a2f0490793226ecf6c8c6bde0fa ]
 
-In commit 3bdbd0858df6 ("Input: adp5589: remove the driver") the last user
-of include/linux/input/adp5589.h was removed along with the whole driver,
-thus the header file can be also removed.
+Extract the PTP timestamp handling logic from ocelot_port_xmit() into a
+separate ocelot_xmit_timestamp() helper function. This is a pure
+refactor with no behavioral change.
 
-Signed-off-by: Vladimir Zapolskiy <vz@mleia.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Fixes: 3bdbd0858df6 ("Input: adp5589: remove the driver")
-Link: https://patch.msgid.link/20260113151140.3843753-1-vz@mleia.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+The helper returns false if the skb was consumed (freed) due to a
+timestamp request failure, and true if the caller should continue with
+frame injection. The rew_op value is returned via pointer.
+
+This prepares for splitting ocelot_port_xmit() into separate FDMA and
+register injection paths in a subsequent patch.
+
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20260208225602.1339325-2-n7l8m4@u.northwestern.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 026f6513c588 ("net: mscc: ocelot: add missing lock protection in ocelot_port_xmit_inj()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/input/adp5589.h | 180 ----------------------------------
- 1 file changed, 180 deletions(-)
- delete mode 100644 include/linux/input/adp5589.h
+ drivers/net/ethernet/mscc/ocelot_net.c | 36 ++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/input/adp5589.h b/include/linux/input/adp5589.h
-deleted file mode 100644
-index 0e4742c8c81e3..0000000000000
---- a/include/linux/input/adp5589.h
-+++ /dev/null
-@@ -1,180 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * Analog Devices ADP5589/ADP5585 I/O Expander and QWERTY Keypad Controller
-- *
-- * Copyright 2010-2011 Analog Devices Inc.
-- */
+diff --git a/drivers/net/ethernet/mscc/ocelot_net.c b/drivers/net/ethernet/mscc/ocelot_net.c
+index 469784d3a1a67..ef4a6c768de9b 100644
+--- a/drivers/net/ethernet/mscc/ocelot_net.c
++++ b/drivers/net/ethernet/mscc/ocelot_net.c
+@@ -551,33 +551,41 @@ static int ocelot_port_stop(struct net_device *dev)
+ 	return 0;
+ }
+ 
+-static netdev_tx_t ocelot_port_xmit(struct sk_buff *skb, struct net_device *dev)
++static bool ocelot_xmit_timestamp(struct ocelot *ocelot, int port,
++				  struct sk_buff *skb, u32 *rew_op)
+ {
+-	struct ocelot_port_private *priv = netdev_priv(dev);
+-	struct ocelot_port *ocelot_port = &priv->port;
+-	struct ocelot *ocelot = ocelot_port->ocelot;
+-	int port = priv->port.index;
+-	u32 rew_op = 0;
 -
--#ifndef _ADP5589_H
--#define _ADP5589_H
+-	if (!static_branch_unlikely(&ocelot_fdma_enabled) &&
+-	    !ocelot_can_inject(ocelot, 0))
+-		return NETDEV_TX_BUSY;
 -
--/*
-- * ADP5589 specific GPI and Keymap defines
-- */
--
--#define ADP5589_KEYMAPSIZE	88
--
--#define ADP5589_GPI_PIN_ROW0 97
--#define ADP5589_GPI_PIN_ROW1 98
--#define ADP5589_GPI_PIN_ROW2 99
--#define ADP5589_GPI_PIN_ROW3 100
--#define ADP5589_GPI_PIN_ROW4 101
--#define ADP5589_GPI_PIN_ROW5 102
--#define ADP5589_GPI_PIN_ROW6 103
--#define ADP5589_GPI_PIN_ROW7 104
--#define ADP5589_GPI_PIN_COL0 105
--#define ADP5589_GPI_PIN_COL1 106
--#define ADP5589_GPI_PIN_COL2 107
--#define ADP5589_GPI_PIN_COL3 108
--#define ADP5589_GPI_PIN_COL4 109
--#define ADP5589_GPI_PIN_COL5 110
--#define ADP5589_GPI_PIN_COL6 111
--#define ADP5589_GPI_PIN_COL7 112
--#define ADP5589_GPI_PIN_COL8 113
--#define ADP5589_GPI_PIN_COL9 114
--#define ADP5589_GPI_PIN_COL10 115
--#define GPI_LOGIC1 116
--#define GPI_LOGIC2 117
--
--#define ADP5589_GPI_PIN_ROW_BASE ADP5589_GPI_PIN_ROW0
--#define ADP5589_GPI_PIN_ROW_END ADP5589_GPI_PIN_ROW7
--#define ADP5589_GPI_PIN_COL_BASE ADP5589_GPI_PIN_COL0
--#define ADP5589_GPI_PIN_COL_END ADP5589_GPI_PIN_COL10
--
--#define ADP5589_GPI_PIN_BASE ADP5589_GPI_PIN_ROW_BASE
--#define ADP5589_GPI_PIN_END ADP5589_GPI_PIN_COL_END
--
--#define ADP5589_GPIMAPSIZE_MAX (ADP5589_GPI_PIN_END - ADP5589_GPI_PIN_BASE + 1)
--
--/*
-- * ADP5585 specific GPI and Keymap defines
-- */
--
--#define ADP5585_KEYMAPSIZE	30
--
--#define ADP5585_GPI_PIN_ROW0 37
--#define ADP5585_GPI_PIN_ROW1 38
--#define ADP5585_GPI_PIN_ROW2 39
--#define ADP5585_GPI_PIN_ROW3 40
--#define ADP5585_GPI_PIN_ROW4 41
--#define ADP5585_GPI_PIN_ROW5 42
--#define ADP5585_GPI_PIN_COL0 43
--#define ADP5585_GPI_PIN_COL1 44
--#define ADP5585_GPI_PIN_COL2 45
--#define ADP5585_GPI_PIN_COL3 46
--#define ADP5585_GPI_PIN_COL4 47
--#define GPI_LOGIC 48
--
--#define ADP5585_GPI_PIN_ROW_BASE ADP5585_GPI_PIN_ROW0
--#define ADP5585_GPI_PIN_ROW_END ADP5585_GPI_PIN_ROW5
--#define ADP5585_GPI_PIN_COL_BASE ADP5585_GPI_PIN_COL0
--#define ADP5585_GPI_PIN_COL_END ADP5585_GPI_PIN_COL4
--
--#define ADP5585_GPI_PIN_BASE ADP5585_GPI_PIN_ROW_BASE
--#define ADP5585_GPI_PIN_END ADP5585_GPI_PIN_COL_END
--
--#define ADP5585_GPIMAPSIZE_MAX (ADP5585_GPI_PIN_END - ADP5585_GPI_PIN_BASE + 1)
--
--struct adp5589_gpi_map {
--	unsigned short pin;
--	unsigned short sw_evt;
--};
--
--/* scan_cycle_time */
--#define ADP5589_SCAN_CYCLE_10ms		0
--#define ADP5589_SCAN_CYCLE_20ms		1
--#define ADP5589_SCAN_CYCLE_30ms		2
--#define ADP5589_SCAN_CYCLE_40ms		3
--
--/* RESET_CFG */
--#define RESET_PULSE_WIDTH_500us		0
--#define RESET_PULSE_WIDTH_1ms		1
--#define RESET_PULSE_WIDTH_2ms		2
--#define RESET_PULSE_WIDTH_10ms		3
--
--#define RESET_TRIG_TIME_0ms		(0 << 2)
--#define RESET_TRIG_TIME_1000ms		(1 << 2)
--#define RESET_TRIG_TIME_1500ms		(2 << 2)
--#define RESET_TRIG_TIME_2000ms		(3 << 2)
--#define RESET_TRIG_TIME_2500ms		(4 << 2)
--#define RESET_TRIG_TIME_3000ms		(5 << 2)
--#define RESET_TRIG_TIME_3500ms		(6 << 2)
--#define RESET_TRIG_TIME_4000ms		(7 << 2)
--
--#define RESET_PASSTHRU_EN		(1 << 5)
--#define RESET1_POL_HIGH			(1 << 6)
--#define RESET1_POL_LOW			(0 << 6)
--#define RESET2_POL_HIGH			(1 << 7)
--#define RESET2_POL_LOW			(0 << 7)
--
--/* ADP5589 Mask Bits:
-- * C C C C C C C C C C C | R R R R R R R R
-- * 1 9 8 7 6 5 4 3 2 1 0 | 7 6 5 4 3 2 1 0
-- * 0
-- * ---------------- BIT ------------------
-- * 1 1 1 1 1 1 1 1 1 0 0 | 0 0 0 0 0 0 0 0
-- * 8 7 6 5 4 3 2 1 0 9 8 | 7 6 5 4 3 2 1 0
-- */
--
--#define ADP_ROW(x)	(1 << (x))
--#define ADP_COL(x)	(1 << (x + 8))
--#define ADP5589_ROW_MASK		0xFF
--#define ADP5589_COL_MASK		0xFF
--#define ADP5589_COL_SHIFT		8
--#define ADP5589_MAX_ROW_NUM		7
--#define ADP5589_MAX_COL_NUM		10
--
--/* ADP5585 Mask Bits:
-- * C C C C C | R R R R R R
-- * 4 3 2 1 0 | 5 4 3 2 1 0
-- *
-- * ---- BIT -- -----------
-- * 1 0 0 0 0 | 0 0 0 0 0 0
-- * 0 9 8 7 6 | 5 4 3 2 1 0
-- */
--
--#define ADP5585_ROW_MASK		0x3F
--#define ADP5585_COL_MASK		0x1F
--#define ADP5585_ROW_SHIFT		0
--#define ADP5585_COL_SHIFT		6
--#define ADP5585_MAX_ROW_NUM		5
--#define ADP5585_MAX_COL_NUM		4
--
--#define ADP5585_ROW(x)	(1 << ((x) & ADP5585_ROW_MASK))
--#define ADP5585_COL(x)	(1 << (((x) & ADP5585_COL_MASK) + ADP5585_COL_SHIFT))
--
--/* Put one of these structures in i2c_board_info platform_data */
--
--struct adp5589_kpad_platform_data {
--	unsigned keypad_en_mask;	/* Keypad (Rows/Columns) enable mask */
--	const unsigned short *keymap;	/* Pointer to keymap */
--	unsigned short keymapsize;	/* Keymap size */
--	bool repeat;			/* Enable key repeat */
--	bool en_keylock;		/* Enable key lock feature (ADP5589 only)*/
--	unsigned char unlock_key1;	/* Unlock Key 1 (ADP5589 only) */
--	unsigned char unlock_key2;	/* Unlock Key 2 (ADP5589 only) */
--	unsigned char unlock_timer;	/* Time in seconds [0..7] between the two unlock keys 0=disable (ADP5589 only) */
--	unsigned char scan_cycle_time;	/* Time between consecutive scan cycles */
--	unsigned char reset_cfg;	/* Reset config */
--	unsigned short reset1_key_1;	/* Reset Key 1 */
--	unsigned short reset1_key_2;	/* Reset Key 2 */
--	unsigned short reset1_key_3;	/* Reset Key 3 */
--	unsigned short reset2_key_1;	/* Reset Key 1 */
--	unsigned short reset2_key_2;	/* Reset Key 2 */
--	unsigned debounce_dis_mask;	/* Disable debounce mask */
--	unsigned pull_dis_mask;		/* Disable all pull resistors mask */
--	unsigned pullup_en_100k;	/* Pull-Up 100k Enable Mask */
--	unsigned pullup_en_300k;	/* Pull-Up 300k Enable Mask */
--	unsigned pulldown_en_300k;	/* Pull-Down 300k Enable Mask */
--	const struct adp5589_gpi_map *gpimap;
--	unsigned short gpimapsize;
--	const struct adp5589_gpio_platform_data *gpio_data;
--};
--
--struct i2c_client; /* forward declaration */
--
--struct adp5589_gpio_platform_data {
--	int	gpio_start;	/* GPIO Chip base # */
--};
--
--#endif
+-	/* Check if timestamping is needed */
+ 	if (ocelot->ptp && (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)) {
+ 		struct sk_buff *clone = NULL;
+ 
+ 		if (ocelot_port_txtstamp_request(ocelot, port, skb, &clone)) {
+ 			kfree_skb(skb);
+-			return NETDEV_TX_OK;
++			return false;
+ 		}
+ 
+ 		if (clone)
+ 			OCELOT_SKB_CB(skb)->clone = clone;
+ 
+-		rew_op = ocelot_ptp_rew_op(skb);
++		*rew_op = ocelot_ptp_rew_op(skb);
+ 	}
+ 
++	return true;
++}
++
++static netdev_tx_t ocelot_port_xmit(struct sk_buff *skb, struct net_device *dev)
++{
++	struct ocelot_port_private *priv = netdev_priv(dev);
++	struct ocelot_port *ocelot_port = &priv->port;
++	struct ocelot *ocelot = ocelot_port->ocelot;
++	int port = priv->port.index;
++	u32 rew_op = 0;
++
++	if (!static_branch_unlikely(&ocelot_fdma_enabled) &&
++	    !ocelot_can_inject(ocelot, 0))
++		return NETDEV_TX_BUSY;
++
++	if (!ocelot_xmit_timestamp(ocelot, port, skb, &rew_op))
++		return NETDEV_TX_OK;
++
+ 	if (static_branch_unlikely(&ocelot_fdma_enabled)) {
+ 		ocelot_fdma_inject_frame(ocelot, port, rew_op, skb, dev);
+ 	} else {
 -- 
 2.51.0
 
