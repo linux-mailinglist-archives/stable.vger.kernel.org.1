@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-219294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SErNExmfnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:57 +0100
+	id WOH1JRNYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE26F192E5C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A8A190697
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7210D3160EF6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60ACF3176688
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A312D77EA;
-	Wed, 25 Feb 2026 06:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3CE25A357;
+	Wed, 25 Feb 2026 01:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uG42f7RB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMWIFott"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094322D839C;
-	Wed, 25 Feb 2026 06:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FDF24A05D;
+	Wed, 25 Feb 2026 01:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002622; cv=none; b=SGBCX9vs8954PWao9B9tDatyNMcZ20OqFEEcp+yoX3bSzsCvj027HDqpt7vg7KXiTp+Hz5+1k0zBWhNFLxYdtC2KoGjAfgC4yPyz9JX8lRB80T4hDcjN3/c0ZNjFslBUJIico/oRvMwEHC6Ivy90iqaFJS+YZqtN0bDZUAug1v8=
+	t=1771983436; cv=none; b=JDuFnpp9XLniYF0kIF36y/OURS83CMt3bnXNClQVXG4eaD7KMOfqUzdNBs2+YU3oVocHQwLlTVUfHnBVp7ZIPP9H3khW07VcVTm7DYdU/l3ASba3pIfC6uHByQxNRpvEsgDymIyxH9vV5nLKZsme4oWIFHSxLo8QBH9x6Zc9DSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002622; c=relaxed/simple;
-	bh=f8xV2xXUxdAHeO02DW524ihdaeVyCeBDsiCcb99U6rg=;
+	s=arc-20240116; t=1771983436; c=relaxed/simple;
+	bh=nUTwuyXyRmJQcNAQ5v8PhLEVXsbqtUu2lLGt0/kvUzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EOMs/1n+gyt51svu63mZp6LFv7L9IpgMr5duD9wW9XpdHNjlKrhE3KzYeum6biJKZT3jzie0gyG+eAgMAQDPGO9JSe7Po8OSHTXdzAxQWNdvR5/sjymyELNV+Qm+ni+ZjeFPWGcb/29ZlU445efaOvkuAVFJHy7J/w5aa0V2emI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uG42f7RB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E16C116D0;
-	Wed, 25 Feb 2026 06:57:01 +0000 (UTC)
+	 MIME-Version; b=C09BB2XEZfxKFV6ONSX2Xzd/F1UrHCQgJ653sR3TTMnjSf3lMRNJUb/WMtkE9z9Mov+lHBk7ecufkE3Uvdtyzj+EQ9JJ+YyMZCbMlHwoOv/6qoedj9ayTqFT3EmnzylsO13KwVqGqe0NU8sq4JOLeNoGjovhxCxHNN0T5pW/8io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMWIFott; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20E6C116D0;
+	Wed, 25 Feb 2026 01:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002621;
-	bh=f8xV2xXUxdAHeO02DW524ihdaeVyCeBDsiCcb99U6rg=;
+	s=korg; t=1771983436;
+	bh=nUTwuyXyRmJQcNAQ5v8PhLEVXsbqtUu2lLGt0/kvUzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uG42f7RB4MXAyzM4TntzvdxjTV3+Ilsfg/Su/dROLx8+XAUC2FcWIJv3ythnylsrT
-	 cZNWTariVMN6ayk12hEFqoZPVb7wUshbM70FUmpOC76VtoKrCFMqJDUBoUrKpUAzs+
-	 ToTUsKaQI09hWrFfbGrV/SD0eM1Kp3pCOnwtZtLA=
+	b=eMWIFottv18VE0BEU625odIChc8WbITGZtbMlQiXDa4nSrfNNLTl0giEXpvRdYYuH
+	 z5UNgYtLvE+CXFG9Y0gb6dqsOC8L50keDSBl8eCzf8+/FnT5/9jSjhjYa9DcpMZFvU
+	 xava2AnqYNygcj+SWKNjn/3PgMMBLXbETpKPhdeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sjoerd Simons <sjoerd@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Laura Nao <laura.nao@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 336/641] af_unix: Fix memleak of newsk in unix_stream_connect().
-Date: Tue, 24 Feb 2026 17:21:02 -0800
-Message-ID: <20260225012356.819148648@linuxfoundation.org>
+Subject: [PATCH 6.19 554/781] clk: mediatek: Drop __initconst from gates
+Date: Tue, 24 Feb 2026 17:21:03 -0800
+Message-ID: <20260225012413.390138978@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,79 +76,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218592-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219294-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BE26F192E5C
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 22A8A190697
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Sjoerd Simons <sjoerd@collabora.com>
 
-[ Upstream commit 6884028cd7f275f8bcb854a347265cb1fb0e4bea ]
+[ Upstream commit 871afb43e41ad4e8246438de495a939cd0f8113c ]
 
-When prepare_peercred() fails in unix_stream_connect(),
-unix_release_sock() is not called for newsk, and the memory
-is leaked.
+Since commit 8ceff24a754a ("clk: mediatek: clk-gate: Refactor
+mtk_clk_register_gate to use mtk_gate struct") the mtk_gate structs
+are no longer just used for initialization/registration, but also at
+runtime. So drop __initconst annotations.
 
-Let's move prepare_peercred() before unix_create1().
-
-Fixes: fd0a109a0f6b ("net, pidfs: prepare for handing out pidfds for reaped sk->sk_peer_pid")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260207232236.2557549-1-kuniyu@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8ceff24a754a ("clk: mediatek: clk-gate: Refactor mtk_clk_register_gate to use mtk_gate struct")
+Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Laura Nao <laura.nao@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/clk/mediatek/clk-mt7981-eth.c | 6 +++---
+ drivers/clk/mediatek/clk-mt8516.c     | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index c634a7fc86090..9dad3af700af3 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1671,10 +1671,9 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 
- 	timeo = sock_sndtimeo(sk, flags & O_NONBLOCK);
- 
--	/* First of all allocate resources.
--	 * If we will make it after state is locked,
--	 * we will have to recheck all again in any case.
--	 */
-+	err = prepare_peercred(&peercred);
-+	if (err)
-+		goto out;
- 
- 	/* create new sock for complete connection */
- 	newsk = unix_create1(net, NULL, 0, sock->type);
-@@ -1683,10 +1682,6 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 		goto out;
+diff --git a/drivers/clk/mediatek/clk-mt7981-eth.c b/drivers/clk/mediatek/clk-mt7981-eth.c
+index 906aec9ddff54..0655ebb6c561f 100644
+--- a/drivers/clk/mediatek/clk-mt7981-eth.c
++++ b/drivers/clk/mediatek/clk-mt7981-eth.c
+@@ -31,7 +31,7 @@ static const struct mtk_gate_regs sgmii0_cg_regs = {
+ 		.ops = &mtk_clk_gate_ops_no_setclr_inv,	\
  	}
  
--	err = prepare_peercred(&peercred);
--	if (err)
--		goto out;
--
- 	/* Allocate skb for sending to listening sock */
- 	skb = sock_wmalloc(newsk, 1, 0, GFP_KERNEL);
- 	if (!skb) {
+-static const struct mtk_gate sgmii0_clks[] __initconst = {
++static const struct mtk_gate sgmii0_clks[] = {
+ 	GATE_SGMII0(CLK_SGM0_TX_EN, "sgm0_tx_en", "usb_tx250m", 2),
+ 	GATE_SGMII0(CLK_SGM0_RX_EN, "sgm0_rx_en", "usb_eq_rx250m", 3),
+ 	GATE_SGMII0(CLK_SGM0_CK0_EN, "sgm0_ck0_en", "usb_ln0", 4),
+@@ -53,7 +53,7 @@ static const struct mtk_gate_regs sgmii1_cg_regs = {
+ 		.ops = &mtk_clk_gate_ops_no_setclr_inv,	\
+ 	}
+ 
+-static const struct mtk_gate sgmii1_clks[] __initconst = {
++static const struct mtk_gate sgmii1_clks[] = {
+ 	GATE_SGMII1(CLK_SGM1_TX_EN, "sgm1_tx_en", "usb_tx250m", 2),
+ 	GATE_SGMII1(CLK_SGM1_RX_EN, "sgm1_rx_en", "usb_eq_rx250m", 3),
+ 	GATE_SGMII1(CLK_SGM1_CK1_EN, "sgm1_ck1_en", "usb_ln0", 4),
+@@ -75,7 +75,7 @@ static const struct mtk_gate_regs eth_cg_regs = {
+ 		.ops = &mtk_clk_gate_ops_no_setclr_inv,	\
+ 	}
+ 
+-static const struct mtk_gate eth_clks[] __initconst = {
++static const struct mtk_gate eth_clks[] = {
+ 	GATE_ETH(CLK_ETH_FE_EN, "eth_fe_en", "netsys_2x", 6),
+ 	GATE_ETH(CLK_ETH_GP2_EN, "eth_gp2_en", "sgm_325m", 7),
+ 	GATE_ETH(CLK_ETH_GP1_EN, "eth_gp1_en", "sgm_325m", 8),
+diff --git a/drivers/clk/mediatek/clk-mt8516.c b/drivers/clk/mediatek/clk-mt8516.c
+index 21eb052b0a539..342a59019fea9 100644
+--- a/drivers/clk/mediatek/clk-mt8516.c
++++ b/drivers/clk/mediatek/clk-mt8516.c
+@@ -544,7 +544,7 @@ static const struct mtk_gate_regs top5_cg_regs = {
+ #define GATE_TOP5(_id, _name, _parent, _shift)				\
+ 	GATE_MTK(_id, _name, _parent, &top5_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
+ 
+-static const struct mtk_gate top_clks[] __initconst = {
++static const struct mtk_gate top_clks[] = {
+ 	/* TOP1 */
+ 	GATE_TOP1(CLK_TOP_THEM, "them", "ahb_infra_sel", 1),
+ 	GATE_TOP1(CLK_TOP_APDMA, "apdma", "ahb_infra_sel", 2),
 -- 
 2.51.0
 
