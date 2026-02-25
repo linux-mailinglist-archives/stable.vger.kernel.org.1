@@ -1,62 +1,72 @@
-Return-Path: <stable+bounces-218988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218421-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNwjDTlanmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:05 +0100
+	id cGXfLLlTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218421-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF35190A92
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0220118F9C4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 63EE031138B4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5CB6E30CE0A6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181CC29BDA2;
-	Wed, 25 Feb 2026 01:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB91B20C012;
+	Wed, 25 Feb 2026 01:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XR/MkHB+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHTl7DVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6C51FC7;
-	Wed, 25 Feb 2026 01:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F39518B0A;
+	Wed, 25 Feb 2026 01:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983893; cv=none; b=pf5wIX2ZiJd+RnUySlOb8AR+/paap7wSf0FcCSRxKxO6ghwOs95+lvtC3/UkIzV6TwP7UU5S1AVqyyustlt29rzbqlEi5it5DnajlkVeQeNz0o6lbobxsGHGmLVja8epqA1S3AR8w5nHNDpkcIi6WWwxkAg4cGAQcW2PFQtKNHo=
+	t=1771983240; cv=none; b=KDWSpPTkX106Cs2yFCBQXCX5w77ebrkLUPUvBRP04n+NrDmBG/cmEwRNEfZqz7FCJyJw+0GDoYMs09HXy/FWQ8ZbCXqPESPrki9h/Q179+bdkRBjuqVy8OucC1AOX+2y+Fv4z2/BSiqLUoqtIaH0SRmcOOGHmKmB2XhEc8ii1+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983893; c=relaxed/simple;
-	bh=nwkBQeUvsVA8BieULcdXEc7FfHlNM3cL1E7ZauX7h9k=;
+	s=arc-20240116; t=1771983240; c=relaxed/simple;
+	bh=xo4qb5mJduFiu/eaGHN+pJfHGWJ8tyCfWSY1n4+GSXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXnUBC8aS+RiSslofbs+QFkZx/jDd0JUYnfTz1VOZCJoEDEEEtyzsJV+9VxBSfSYIYnM0BUQ6iCSIbo1GdZsgsmdBxeJuAidoz72WoXttKABndoN3t6w3IWQ9BfOjwReFUfxmKSTj4s1rb4/k1pfsk0fNkX4H3SSKKuKM+URCBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XR/MkHB+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BAFC116D0;
-	Wed, 25 Feb 2026 01:44:53 +0000 (UTC)
+	 MIME-Version; b=qY1b+Ul11RUGoAm7YjeiDSxN8t1b1mHrzru9aWRdSMdGQdz+aRQ1UgZIKFXFOB0Q81RGm0q+p/ftlnQMFDjHGDe7HYA565PzTY1cnI5JHX3GIVo/8JsaxkmTpZr8mY/wIbzpHMCi2p8MCsAQ0cnBqPtV9LRPRJJfzNlJNb5iRNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHTl7DVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F23C116D0;
+	Wed, 25 Feb 2026 01:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983893;
-	bh=nwkBQeUvsVA8BieULcdXEc7FfHlNM3cL1E7ZauX7h9k=;
+	s=korg; t=1771983240;
+	bh=xo4qb5mJduFiu/eaGHN+pJfHGWJ8tyCfWSY1n4+GSXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XR/MkHB+Yywg2XcUR97+lO5RO9rCCArZQ4cHwMozSxPIUh2nj13l9YvDvWAi9Byfv
-	 fKvCDrlL1ds7r5fPFgHdJOLrr+aM9OnEjNHmsYZ6WAMUtxPRrRATThGtqbHwilvGOL
-	 0KLLHonTyqA705Z020BMUsjspnWPFX0WJgzuSkQA=
+	b=oHTl7DVe98EsEswKAn/nmbyBerP6UXGOuVej2hrW5AyGgX2KPzvaBvLO/HxGIpfbR
+	 VcRnBIDvpRHtUII+GouhNr9vQQQ7VoUvrqvYituHTjBTkNWvVYBLRJdx2NSvvTa105
+	 conT93E/uF4gMst/6D9d3dga5xU4go7uM1UFIE+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Muhammad Usama Anjum <usama.anjum@arm.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mark Brown <broonie@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	wang lian <lianux.mm@gmail.com>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 165/641] arm64: dts: qcom: agatti: Add CX_MEM/DBGC GPU regions
+Subject: [PATCH 6.19 382/781] selftests/mm: fix faulting-in code in pagemap_ioctl test
 Date: Tue, 24 Feb 2026 17:18:11 -0800
-Message-ID: <20260225012353.059699751@linuxfoundation.org>
+Message-ID: <20260225012409.064324173@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +78,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218988-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-218421-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,kernel.org,nvidia.com,oracle.com,redhat.com,gmail.com,huawei.com,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.986];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,0.90.6.224:email]
-X-Rspamd-Queue-Id: 5BF35190A92
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0220118F9C4
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
 
-[ Upstream commit 0fdcc948929a6d673bd0f90631dd6e42090c3dbd ]
+[ Upstream commit 7e938f00b00319510ae097e20b7487dfa578d53f ]
 
-Describe the GPU register regions, with the former existing but not
-being used much if at all on this silicon, and the latter containing
-various debugging levers generally related to dumping the state of
-the IP upon a crash.
+One of the pagemap_ioctl tests attempts to fault in pages by memcpy()'ing
+them to an unused buffer.  This probably worked originally, but since
+commit 46036188ea1f ("selftests/mm: build with -O2") the compiler is free
+to optimise away that unused buffer and the memcpy() with it.  As a result
+there might not be any resident page in the mapping and the test may fail.
 
-Fixes: 4faeef52c8e6 ("arm64: dts: qcom: qcm2290: Add GPU nodes")
-Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Closes: https://lore.kernel.org/linux-arm-msm/8a64f70b-8034-45e7-86a3-0015cf357132@oss.qualcomm.com/T/#m404f1425c36b61467760f058b696b8910340a063
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251229-topic-6115_2290_gpu_dbgc-v1-2-4a24d196389c@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+We don't need to copy all that memory anyway.  Just fault in every page.
+
+While at it also make sure to compute the number of pages once using
+simple integer arithmetic instead of ceilf() and implicit conversions.
+
+Link: https://lkml.kernel.org/r/20260122170224.4056513-8-kevin.brodsky@arm.com
+Fixes: 46036188ea1f ("selftests/mm: build with -O2")
+Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: wang lian <lianux.mm@gmail.com>
+Cc: Yunsheng Lin <linyunsheng@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcm2290.dtsi | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/pagemap_ioctl.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm2290.dtsi b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-index 3b0ba590ee825..e0e400fdd2497 100644
---- a/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
-@@ -1503,8 +1503,12 @@ usb_dwc3_ss: endpoint {
+diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+index 2cb5441f29c72..1896c7d4f72ee 100644
+--- a/tools/testing/selftests/mm/pagemap_ioctl.c
++++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+@@ -1052,11 +1052,10 @@ static void test_simple(void)
+ int sanity_tests(void)
+ {
+ 	unsigned long long mem_size, vec_size;
+-	long ret, fd, i, buf_size;
++	long ret, fd, i, buf_size, nr_pages;
+ 	struct page_region *vec;
+ 	char *mem, *fmem;
+ 	struct stat sbuf;
+-	char *tmp_buf;
  
- 		gpu: gpu@5900000 {
- 			compatible = "qcom,adreno-07000200", "qcom,adreno";
--			reg = <0x0 0x05900000 0x0 0x40000>;
--			reg-names = "kgsl_3d0_reg_memory";
-+			reg = <0x0 0x05900000 0x0 0x40000>,
-+			      <0x0 0x0599e000 0x0 0x1000>,
-+			      <0x0 0x05961000 0x0 0x800>;
-+			reg-names = "kgsl_3d0_reg_memory",
-+				    "cx_mem",
-+				    "cx_dbgc";
+ 	/* 1. wrong operation */
+ 	mem_size = 10 * page_size;
+@@ -1167,14 +1166,14 @@ int sanity_tests(void)
+ 	if (fmem == MAP_FAILED)
+ 		ksft_exit_fail_msg("error nomem %d %s\n", errno, strerror(errno));
  
- 			interrupts = <GIC_SPI 177 IRQ_TYPE_LEVEL_HIGH>;
+-	tmp_buf = malloc(sbuf.st_size);
+-	memcpy(tmp_buf, fmem, sbuf.st_size);
++	nr_pages = (sbuf.st_size + page_size - 1) / page_size;
++	force_read_pages(fmem, nr_pages, page_size);
+ 
+ 	ret = pagemap_ioctl(fmem, sbuf.st_size, vec, vec_size, 0, 0,
+ 			    0, PAGEMAP_NON_WRITTEN_BITS, 0, PAGEMAP_NON_WRITTEN_BITS);
+ 
+ 	ksft_test_result(ret >= 0 && vec[0].start == (uintptr_t)fmem &&
+-			 LEN(vec[0]) == ceilf((float)sbuf.st_size/page_size) &&
++			 LEN(vec[0]) == nr_pages &&
+ 			 (vec[0].categories & PAGE_IS_FILE),
+ 			 "%s Memory mapped file\n", __func__);
  
 -- 
 2.51.0
