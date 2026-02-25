@@ -1,167 +1,185 @@
-Return-Path: <stable+bounces-219646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oP6LOT0On2neYgQAu9opvQ
-	(envelope-from <stable+bounces-219646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:59:09 +0100
+	id gCYbEdwQn2nMYwQAu9opvQ
+	(envelope-from <stable+bounces-219647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:10:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506B6199180
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:59:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D766A1993D2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 16:10:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3907307E0A5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:58:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 674203067956
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 15:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6383D333D;
-	Wed, 25 Feb 2026 14:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5434C3D648B;
+	Wed, 25 Feb 2026 15:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZSfGsxES";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+rJd+1z2";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ZSfGsxES";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+rJd+1z2"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ury4Lg1Q";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ge8me6zA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D1B3B52F8
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 14:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1893D6467
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 15:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772031523; cv=none; b=d40OF3tXzfF9GHsXboXXvzi7tvVUFr4rgSuBlFPkpwflceN9YEr4HGI5oNihG0PuvaClBZxVj3Mf4CnJjSHcAjS8Ffgk5Ujpypl3qroGacfgmoraXAsYflCInOILfAkf8tvBfn+ObZfwRzftmh8VnL+elnX1zG8tykz2XzserNo=
+	t=1772032112; cv=none; b=S70NfWtJzHV7I6aqRJfQYp/sD7AyIIqN3GVLnlWdk2Zz5OMVu8txetOv4VPwJZcny2Gkv9f322Hv85kn9bv7dPcKeeW0T0lNxwgLEp0gBWOd39Gafy7E+Ibc3+fu1bTA0pzVQR0C595JB/YMwtVC6SRS7pEvUTkd//U97MMa42g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772031523; c=relaxed/simple;
-	bh=TOXolt1ZEZ55MOem9gzZADQa0H5pkMHgdanhH7VrG+Y=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TxYsJu3snDUnBVHEZl/tcsrGsTKZxIomgy9Oq2WDtvUGVrFKNNoPoxUt/6O8/48Ifl5osFMAsfjOPl7iKLMyynnsFk94CM1fZK+m7L6FbBCV3SEPzJwgKrYwCCHGXMdeet9k7aX+7GiAVoqSGjbSOh1PXn6Shbvv0zkikY9ZNX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZSfGsxES; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+rJd+1z2; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ZSfGsxES; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+rJd+1z2; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2C1764DE40;
-	Wed, 25 Feb 2026 14:58:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772031520; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1772032112; c=relaxed/simple;
+	bh=+UvK9AN9QVPa9/0HxagZD/lOROWdFXaXeo4a6YzoFvY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GNuPaJpOvuO6N3dwxFJboB8NSjm72SzyzUlCC5oxbzVqVLvZnP8aWCNs7/ih1X8eWOUyQenmtKvd6D3EYguZZFhjn37TWQMH6GdtLnV/iEIpbWdqCZQkfoZdTJutwEH/e+1peP3CvG6w9mTPAV05QCUN/Kd7Sp7z8K+aRPjD/Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ury4Lg1Q; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ge8me6zA; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 25 Feb 2026 16:08:23 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1772032108;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VHEqX9xxCeI9WxLOmOpXmMPtTruZUUNG8IqYcX0fsoo=;
-	b=ZSfGsxESg+oqDKl3/CGhvfLoRlI2D+52Odac7lsWB8B2shCflEFhE9fs+vLwYSv6ayFRSy
-	2e+F+id61uopy6lxYN3mtAMDPQvy3Zs3ILRIdxBee7rYdBUOyHUxknshf6mMZoy4hRTVmQ
-	CmdLfTr1XAypzG1J5r2w8uZDj8Cky0k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772031520;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=8jpK24Nz6kvyR8X/Rz8ZAhW8167lIBmZgC0YO3WnWo4=;
+	b=ury4Lg1QesfISrRxuPKCjGpXDGKskY3SNVUNe+vIosJmIoQ2EOw/lW2P97edQ5NswvLVa8
+	rJu3TdovC+YZ8e+HNsRUwg/QVcIY0LBSZMRIR6ECF/4hwuzX69pmVbzsW1ZftgGhWMEMt6
+	DMgatj0ZXQpcTi4OYRaZPn0fxQ2lGfq0Zof/wD+zrNZf6i0NO1FZoOcGFXWEUzRP4TBSFQ
+	HsN1kmjDmygMcme+SxdTZ8JDCi9zso9Ry0FnmV52wtmQxC5ivNvy0BI+wBjGEO8f4L1uPL
+	2Y3C60Nt9H3wwhaBnpsBhWgm9mUsWed2l59qCziSMC0YwqVpnUdkMFqkhVzwrA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1772032108;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VHEqX9xxCeI9WxLOmOpXmMPtTruZUUNG8IqYcX0fsoo=;
-	b=+rJd+1z2TLwcpM8jKMeCgIdlfNRv2a5NXmKJZ6ZLWAja9Vhc4D2l7mxPnDOecOkZzi7Prh
-	cX7wVt9+VXHFHOBA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZSfGsxES;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+rJd+1z2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772031520; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VHEqX9xxCeI9WxLOmOpXmMPtTruZUUNG8IqYcX0fsoo=;
-	b=ZSfGsxESg+oqDKl3/CGhvfLoRlI2D+52Odac7lsWB8B2shCflEFhE9fs+vLwYSv6ayFRSy
-	2e+F+id61uopy6lxYN3mtAMDPQvy3Zs3ILRIdxBee7rYdBUOyHUxknshf6mMZoy4hRTVmQ
-	CmdLfTr1XAypzG1J5r2w8uZDj8Cky0k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772031520;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VHEqX9xxCeI9WxLOmOpXmMPtTruZUUNG8IqYcX0fsoo=;
-	b=+rJd+1z2TLwcpM8jKMeCgIdlfNRv2a5NXmKJZ6ZLWAja9Vhc4D2l7mxPnDOecOkZzi7Prh
-	cX7wVt9+VXHFHOBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D7CE53EA65;
-	Wed, 25 Feb 2026 14:58:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id zCiDMx8On2kLeAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Wed, 25 Feb 2026 14:58:39 +0000
-Date: Wed, 25 Feb 2026 15:58:39 +0100
-Message-ID: <87v7fkdg4g.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Panagiotis Foliadis <pfoliadis@posteo.net>
-Cc: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Charalampos Mitrodimas <charmitro@posteo.net>
-Subject: Re: [PATCH] ALSA: hda/intel: increase default bdl_pos_adj for Nvidia controllers
-In-Reply-To: <20260225-nvidia-audio-fix-v1-1-b1383c37ec49@posteo.net>
-References: <20260225-nvidia-audio-fix-v1-1-b1383c37ec49@posteo.net>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	bh=8jpK24Nz6kvyR8X/Rz8ZAhW8167lIBmZgC0YO3WnWo4=;
+	b=Ge8me6zAEysBPQt6RqMpnasV+iHzr3aPyM1Y5LszXutkgb1yXu5KWt91LtqYPHOy/hyojJ
+	fj0BNLJuGd9YyzAQ==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Greg KH <greg@kroah.com>
+Cc: stable@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Ben Hutchings <ben@decadent.org.uk>
+Subject: Re: [PATCH 5.10.y 5.15.y 6.1.y 6.6.y 6.12.y 6.18.y 6.19.y] ARM:
+ clean up the memset64() C wrapper
+Message-ID: <20260225160327-91efd064-656c-409c-a1e1-aa8433a3ba6e@linutronix.de>
+References: <20260225-arm-memset64-stable-v1-1-f453c4933ca0@linutronix.de>
+ <2026022546-sloping-proactive-d4f7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Spam-Level: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2026022546-sloping-proactive-d4f7@gregkh>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219646-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219647-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,posteo.net:email]
-X-Rspamd-Queue-Id: 506B6199180
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linutronix.de:mid,linutronix.de:dkim,linutronix.de:email,decadent.org.uk:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: D766A1993D2
 X-Rspamd-Action: no action
 
-On Wed, 25 Feb 2026 15:53:43 +0100,
-Panagiotis Foliadis wrote:
+On Wed, Feb 25, 2026 at 06:36:13AM -0800, Greg KH wrote:
+> On Wed, Feb 25, 2026 at 12:35:09PM +0100, Thomas Weiﬂschuh wrote:
+> > [ Upstream commit b52343d1cb47bb27ca32a3f4952cc2fd3cd165bf ]
+> > 
+> > The current logic to split the 64-bit argument into its 32-bit halves is
+> > byte-order specific and a bit clunky.  Use a union instead which is
+> > easier to read and works in all cases.
+> > 
+> > GCC still generates the same machine code.
+> > 
+> > While at it, rename the arguments of the __memset64() prototype to
+> > actually reflect their semantics.
+> > 
+> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> > Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> > Reported-by: Ben Hutchings <ben@decadent.org.uk> # for -stable
+> > Link: https://lore.kernel.org/all/1a11526ae3d8664f705b541b8d6ea57b847b49a8.camel@decadent.org.uk/
+> > Suggested-by: https://lore.kernel.org/all/aZonkWMwpbFhzDJq@casper.infradead.org/ # for -stable
+> > Link: https://lore.kernel.org/all/aZonkWMwpbFhzDJq@casper.infradead.org/
+> > ---
+> > Hi stable team,
+> > 
+> > unfortunately the backports of commit 23ea2a4c7232 ("ARM: 9468/1: fix
+> > memset64() on big-endian") does not work on 5.10 and 5.15 as
+> > CONFIG_CPU_LITTLE_ENDIAN does not exist there, effectively breaking memset64()
+> > on little-endian. Please use this variant instead which always works.
+> > For consistency I prefer to have it backported to all versions.
+> > ---
+> >  arch/arm/include/asm/string.h | 14 +++++++++-----
+> >  1 file changed, 9 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/arch/arm/include/asm/string.h b/arch/arm/include/asm/string.h
+> > index b5ad23acb303..369781ec5511 100644
+> > --- a/arch/arm/include/asm/string.h
+> > +++ b/arch/arm/include/asm/string.h
+> > @@ -33,13 +33,17 @@ static inline void *memset32(uint32_t *p, uint32_t v, __kernel_size_t n)
+> >  }
+> >  
+> >  #define __HAVE_ARCH_MEMSET64
+> > -extern void *__memset64(uint64_t *, uint32_t low, __kernel_size_t, uint32_t hi);
+> > +extern void *__memset64(uint64_t *, uint32_t first, __kernel_size_t, uint32_t second);
+> >  static inline void *memset64(uint64_t *p, uint64_t v, __kernel_size_t n)
+> >  {
+> > -	if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN))
+> > -		return __memset64(p, v, n * 8, v >> 32);
+> > -	else
+> > -		return __memset64(p, v >> 32, n * 8, v);
+> > +	union {
+> > +		uint64_t val;
+> > +		struct {
+> > +			uint32_t first, second;
+> > +		};
+> > +	} word = { .val = v };
+> > +
+> > +	return __memset64(p, word.first, n * 8, word.second);
+> >  }
+> >  
+> >  #endif
+> > 
+> > ---
 > 
-> The default bdl_pos_adj of 32 for Nvidia HDA controllers is
-> insufficient on GA102 (and likely other recent Nvidia GPUs) after S3
-> suspend/resume. The controller's DMA timing degrades after resume,
-> causing premature IRQ detection in azx_position_ok() which results in
-> silent HDMI/DP audio output despite userspace reporting a valid
-> playback state and correct ELD data.
-> 
-> Increase bdl_pos_adj to 64 for AZX_DRIVER_NVIDIA, matching the value
-> already used by Intel Apollo Lake for the same class of timing issue.
-> 
-> Cc: stable@vger.kernel.org
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221069
-> Suggested-by: Charalampos Mitrodimas <charmitro@posteo.net>
-> Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
+> I don't understand, why is this patch needed at all?  What issue is it
+> fixing to require this?
 
-Thanks, applied now.
+memset64() was broken on ARM big-endian. It was fixed in commit 23ea2a4c7232
+("ARM: 9468/1: fix memset64() on big-endian"). That fix was marked with a Fixes:
+tag and was backported to all stable kernels. However that fix relies on the
+kconfig symbol CONFIG_CPU_LITTLE_ENDIAN (as shown in the diff above).
+That kconfig symbol does not exist on 5.10 and 5.15. So now memset64() is
+broken on ARM little-endian on those branches.
+The proposed works always, without requiring kconfig options.
+The Fixes: tag target would differ between the stable branches,
+so I left it out.
 
 
-Takashi
+Thomas
 
