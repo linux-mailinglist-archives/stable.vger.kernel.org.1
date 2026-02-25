@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219060-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GA34LQhTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:24 +0100
+	id CIT1N1ZanmlSUwQAu9opvQ
+	(envelope-from <stable+bounces-219060-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AD318F664
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A88A190AE1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:11:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 24E2D31D56C0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87F1C31DCEE9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E267320C012;
-	Wed, 25 Feb 2026 01:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A33B299AB1;
+	Wed, 25 Feb 2026 01:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPKdRkOa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfdtW6ST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A656018B0A;
-	Wed, 25 Feb 2026 01:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A94299937;
+	Wed, 25 Feb 2026 01:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983260; cv=none; b=DxMextcbGwOKF7Fv9FG1jthtCihNRy8iJDQN5Emt57HJuTFJKWweNvECtkwUXHkqWaXbE+oAf67P1qNIWbwoEgio+OuhSQ2rd7jn175va8lztJW9chLV9qKPnQ7WxJGV9HQ8Vt9RSj1Rjo1izvmRtKA0BcHqaX+0erakQURtdL8=
+	t=1771983983; cv=none; b=qROkAK6WfzL2lRx15dX/yrdjqOWwzLYSFJSLGyq47tZM+h6CapUPMqItahx5LTqnP1rvWNBWJ14YndJvk7v9ZL21QAwCTwYwQ6j7zRsLUbFRB9I6BsNECZZbmx4+s7M0S39AK2SEPPl1MJsuKW8gMrjVKmms7uILA5+T7gjc6g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983260; c=relaxed/simple;
-	bh=UgqGNqUxZ7M4EBZFwCAreSZf8CYK8OHALnuHeTQqzCc=;
+	s=arc-20240116; t=1771983983; c=relaxed/simple;
+	bh=yPRWUwPLCBRQMrE/8jMYLgIogaBikvZBU2EUnzEqrOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcd1Yh8flvhn5l60XQ2QGIkkUuTajh2C4MoPLJ2dwcdeBYHG6acAv7Iri97UCGzVJULFx6c+v677IYSuQFvTI7fXFCdQQGw5QgImqfBo06HAhgaY7K4HWCAPoBYStn0m7bZTBaEnEvZKDYCLHaBdgzfx3l5//jGS0vyUFphTXNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPKdRkOa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BB6C116D0;
-	Wed, 25 Feb 2026 01:34:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sgfywhUEdcEVRENVjvocyu/Okxkse5Rcz59JAhN9r/tbtkwgWU31BGhSkEQC7JzHg2vt+sXYdJ0eRP61C3VNr8ZQslQK61t5NAx1/xGglm8INAgQDGi4fXdeFL/jB9yY9zA2xP+8g4K8rpeRCrCvTj0PYLgJ7nIRivjw88M2Ny0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfdtW6ST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A88AC116D0;
+	Wed, 25 Feb 2026 01:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983260;
-	bh=UgqGNqUxZ7M4EBZFwCAreSZf8CYK8OHALnuHeTQqzCc=;
+	s=korg; t=1771983983;
+	bh=yPRWUwPLCBRQMrE/8jMYLgIogaBikvZBU2EUnzEqrOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YPKdRkOaeHWdhj8squVtUnyt9cfvXmrI/tkX24Cmv7pqw0ZygD+hJqghZFIkcmTgc
-	 Il1oRbhb3FDMKRFHFLghzPUJ66HBHSywWNBOmdIDHOoikm19mW9Vvs0fE5U8xRp2Ba
-	 5dgv1Q8EDJuqtEeMLujem8R6XB9tO4gQqTYz4K6Q=
+	b=lfdtW6STeSpg9wjAETAYjvaWi9Mgg1562dXclJzGogh6+HIotSnXCJ1kUj+Rx+yok
+	 sBxZsAz1V/WxszgWAcfnoEkjN1k7/S2dnSPb/Cim3KhU64i7BmXZO5ntW1NNMuDAAn
+	 7pFZlE5ZfIJx2ZTqjhgK5+7a7zgSXYmGDUH0EhMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 402/781] mptcp: fix receive space timestamp initialization
+Subject: [PATCH 6.18 185/641] smack: /smack/doi: accept previously used values
 Date: Tue, 24 Feb 2026 17:18:31 -0800
-Message-ID: <20260225012409.564860088@linuxfoundation.org>
+Message-ID: <20260225012353.496615243@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,126 +63,264 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218439-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219060-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 72AD318F664
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,swemel.ru:email]
+X-Rspamd-Queue-Id: 4A88A190AE1
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit 70274765fef555af92a1532d5bd5450c691fca9d ]
+[ Upstream commit 33d589ed60ae433b483761987b85e0d24e54584e ]
 
-MPTCP initialize the receive buffer stamp in mptcp_rcv_space_init(),
-using the provided subflow stamp. Such helper is invoked in several
-places; for passive sockets, space init happened at clone time.
+Writing to /smack/doi a value that has ever been
+written there in the past disables networking for
+non-ambient labels.
+E.g.
 
-In such scenario, MPTCP ends-up accesses the subflow stamp before
-its initialization, leading to quite randomic timing for the first
-receive buffer auto-tune event, as the timestamp for newly created
-subflow is not refreshed there.
+    # cat /smack/doi
+    3
+    # netlabelctl -p cipso list
+    Configured CIPSO mappings (1)
+     DOI value : 3
+       mapping type : PASS_THROUGH
+    # netlabelctl -p map list
+    Configured NetLabel domain mappings (3)
+     domain: "_" (IPv4)
+       protocol: UNLABELED
+     domain: DEFAULT (IPv4)
+       protocol: CIPSO, DOI = 3
+     domain: DEFAULT (IPv6)
+       protocol: UNLABELED
 
-Fix the issue moving the stamp initialization out of the mentioned helper,
-at the data transfer start, and always using a fresh timestamp.
+    # cat /smack/ambient
+    _
+    # cat /proc/$$/attr/smack/current
+    _
+    # ping -c1 10.1.95.12
+    64 bytes from 10.1.95.12: icmp_seq=1 ttl=64 time=0.964 ms
+    # echo foo >/proc/$$/attr/smack/current
+    # ping -c1 10.1.95.12
+    64 bytes from 10.1.95.12: icmp_seq=1 ttl=64 time=0.956 ms
+    unknown option 86
 
-Fixes: 013e3179dbd2 ("mptcp: fix rcv space initialization")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260203-net-next-mptcp-misc-feat-6-20-v1-2-31ec8bfc56d1@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    # echo 4 >/smack/doi
+    # echo 3 >/smack/doi
+!>  [  214.050395] smk_cipso_doi:691 cipso add rc = -17
+    # echo 3 >/smack/doi
+!>  [  249.402261] smk_cipso_doi:678 remove rc = -2
+!>  [  249.402261] smk_cipso_doi:691 cipso add rc = -17
+
+    # ping -c1 10.1.95.12
+!!> ping: 10.1.95.12: Address family for hostname not supported
+
+    # echo _ >/proc/$$/attr/smack/current
+    # ping -c1 10.1.95.12
+    64 bytes from 10.1.95.12: icmp_seq=1 ttl=64 time=0.617 ms
+
+This happens because Smack keeps decommissioned DOIs,
+fails to re-add them, and consequently refuses to add
+the “default” domain map:
+
+    # netlabelctl -p cipso list
+    Configured CIPSO mappings (2)
+     DOI value : 3
+       mapping type : PASS_THROUGH
+     DOI value : 4
+       mapping type : PASS_THROUGH
+    # netlabelctl -p map list
+    Configured NetLabel domain mappings (2)
+     domain: "_" (IPv4)
+       protocol: UNLABELED
+!>  (no ipv4 map for default domain here)
+     domain: DEFAULT (IPv6)
+       protocol: UNLABELED
+
+Fix by clearing decommissioned DOI definitions and
+serializing concurrent DOI updates with a new lock.
+
+Also:
+- allow /smack/doi to live unconfigured, since
+  adding a map (netlbl_cfg_cipsov4_map_add) may fail.
+  CIPSO_V4_DOI_UNKNOWN(0) indicates the unconfigured DOI
+- add new DOI before removing the old default map,
+  so the old map remains if the add fails
+
+(2008-02-04, Casey Schaufler)
+Fixes: e114e473771c ("Smack: Simplified Mandatory Access Control Kernel")
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 8 ++++----
- net/mptcp/protocol.h | 5 +++++
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ security/smack/smackfs.c | 71 +++++++++++++++++++++++++---------------
+ 1 file changed, 45 insertions(+), 26 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index cfa38bdaf2a92..bad9fc0f27d9c 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2082,8 +2082,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index 316c2ea401e8a..d27d9140dda2f 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -70,6 +70,7 @@ enum smk_inos {
+ static DEFINE_MUTEX(smack_cipso_lock);
+ static DEFINE_MUTEX(smack_ambient_lock);
+ static DEFINE_MUTEX(smk_net4addr_lock);
++static DEFINE_MUTEX(smk_cipso_doi_lock);
+ #if IS_ENABLED(CONFIG_IPV6)
+ static DEFINE_MUTEX(smk_net6addr_lock);
+ #endif /* CONFIG_IPV6 */
+@@ -141,7 +142,7 @@ struct smack_parsed_rule {
+ 	int			smk_access2;
+ };
  
- 	msk->rcvq_space.copied += copied;
+-static u32 smk_cipso_doi_value = SMACK_CIPSO_DOI_DEFAULT;
++static u32 smk_cipso_doi_value = CIPSO_V4_DOI_UNKNOWN;
  
--	mstamp = div_u64(tcp_clock_ns(), NSEC_PER_USEC);
--	time = tcp_stamp_us_delta(mstamp, msk->rcvq_space.time);
-+	mstamp = mptcp_stamp();
-+	time = tcp_stamp_us_delta(mstamp, READ_ONCE(msk->rcvq_space.time));
+ /*
+  * Values for parsing cipso rules
+@@ -663,43 +664,60 @@ static const struct file_operations smk_load_ops = {
+ };
  
- 	rtt_us = msk->rcvq_space.rtt_us;
- 	if (rtt_us && time < (rtt_us >> 3))
-@@ -3543,6 +3543,7 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 	__mptcp_propagate_sndbuf(nsk, ssk);
+ /**
+- * smk_cipso_doi - initialize the CIPSO domain
++ * smk_cipso_doi - set netlabel maps
++ * @ndoi: new value for our CIPSO DOI
++ * @gfp_flags: kmalloc allocation context
+  */
+-static void smk_cipso_doi(void)
++static int
++smk_cipso_doi(u32 ndoi, gfp_t gfp_flags)
+ {
+-	int rc;
++	int rc = 0;
+ 	struct cipso_v4_doi *doip;
+ 	struct netlbl_audit nai;
  
- 	mptcp_rcv_space_init(msk, ssk);
-+	msk->rcvq_space.time = mptcp_stamp();
+-	smk_netlabel_audit_set(&nai);
++	mutex_lock(&smk_cipso_doi_lock);
  
- 	if (mp_opt->suboptions & OPTION_MPTCP_MPC_ACK)
- 		__mptcp_subflow_fully_established(msk, subflow, mp_opt);
-@@ -3560,8 +3561,6 @@ void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk)
- 	msk->rcvq_space.copied = 0;
- 	msk->rcvq_space.rtt_us = 0;
- 
--	msk->rcvq_space.time = tp->tcp_mstamp;
--
- 	/* initial rcv_space offering made to peer */
- 	msk->rcvq_space.space = min_t(u32, tp->rcv_wnd,
- 				      TCP_INIT_CWND * tp->advmss);
-@@ -3757,6 +3756,7 @@ void mptcp_finish_connect(struct sock *ssk)
- 	 * accessing the field below
- 	 */
- 	WRITE_ONCE(msk->local_key, subflow->local_key);
-+	WRITE_ONCE(msk->rcvq_space.time, mptcp_stamp());
- 
- 	mptcp_pm_new_connection(msk, ssk, 0);
- }
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 66e9735007912..39afd44e072f2 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -915,6 +915,11 @@ static inline bool mptcp_is_fully_established(struct sock *sk)
- 	       READ_ONCE(mptcp_sk(sk)->fully_established);
- }
- 
-+static inline u64 mptcp_stamp(void)
-+{
-+	return div_u64(tcp_clock_ns(), NSEC_PER_USEC);
-+}
+-	rc = netlbl_cfg_map_del(NULL, PF_INET, NULL, NULL, &nai);
+-	if (rc != 0)
+-		printk(KERN_WARNING "%s:%d remove rc = %d\n",
+-		       __func__, __LINE__, rc);
++	if (smk_cipso_doi_value == ndoi)
++		goto clr_doi_lock;
 +
- void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk);
- void mptcp_data_ready(struct sock *sk, struct sock *ssk);
- bool mptcp_finish_join(struct sock *sk);
++	smk_netlabel_audit_set(&nai);
+ 
+-	doip = kmalloc(sizeof(struct cipso_v4_doi), GFP_KERNEL | __GFP_NOFAIL);
++	doip = kmalloc(sizeof(struct cipso_v4_doi), gfp_flags);
++	if (!doip) {
++		rc = -ENOMEM;
++		goto clr_doi_lock;
++	}
+ 	doip->map.std = NULL;
+-	doip->doi = smk_cipso_doi_value;
++	doip->doi = ndoi;
+ 	doip->type = CIPSO_V4_MAP_PASS;
+ 	doip->tags[0] = CIPSO_V4_TAG_RBITMAP;
+ 	for (rc = 1; rc < CIPSO_V4_TAG_MAXCNT; rc++)
+ 		doip->tags[rc] = CIPSO_V4_TAG_INVALID;
+ 
+ 	rc = netlbl_cfg_cipsov4_add(doip, &nai);
+-	if (rc != 0) {
+-		printk(KERN_WARNING "%s:%d cipso add rc = %d\n",
+-		       __func__, __LINE__, rc);
++	if (rc) {
+ 		kfree(doip);
+-		return;
++		goto clr_doi_lock;
+ 	}
+-	rc = netlbl_cfg_cipsov4_map_add(doip->doi, NULL, NULL, NULL, &nai);
+-	if (rc != 0) {
+-		printk(KERN_WARNING "%s:%d map add rc = %d\n",
+-		       __func__, __LINE__, rc);
+-		netlbl_cfg_cipsov4_del(doip->doi, &nai);
+-		return;
++
++	if (smk_cipso_doi_value != CIPSO_V4_DOI_UNKNOWN) {
++		rc = netlbl_cfg_map_del(NULL, PF_INET, NULL, NULL, &nai);
++		if (rc && rc != -ENOENT)
++			goto clr_ndoi_def;
++
++		netlbl_cfg_cipsov4_del(smk_cipso_doi_value, &nai);
+ 	}
++
++	rc = netlbl_cfg_cipsov4_map_add(ndoi, NULL, NULL, NULL, &nai);
++	if (rc) {
++		smk_cipso_doi_value = CIPSO_V4_DOI_UNKNOWN; // no default map
++clr_ndoi_def:	netlbl_cfg_cipsov4_del(ndoi, &nai);
++	} else
++		smk_cipso_doi_value = ndoi;
++
++clr_doi_lock:
++	mutex_unlock(&smk_cipso_doi_lock);
++	return rc;
+ }
+ 
+ /**
+@@ -1599,11 +1617,8 @@ static ssize_t smk_write_doi(struct file *file, const char __user *buf,
+ 
+ 	if (u == CIPSO_V4_DOI_UNKNOWN || u > U32_MAX)
+ 		return -EINVAL;
+-	smk_cipso_doi_value = u;
+-
+-	smk_cipso_doi();
+ 
+-	return count;
++	return smk_cipso_doi(u, GFP_KERNEL) ? : count;
+ }
+ 
+ static const struct file_operations smk_doi_ops = {
+@@ -2984,6 +2999,7 @@ static int __init init_smk_fs(void)
+ {
+ 	int err;
+ 	int rc;
++	struct netlbl_audit nai;
+ 
+ 	if (smack_enabled == 0)
+ 		return 0;
+@@ -3002,7 +3018,10 @@ static int __init init_smk_fs(void)
+ 		}
+ 	}
+ 
+-	smk_cipso_doi();
++	smk_netlabel_audit_set(&nai);
++	(void) netlbl_cfg_map_del(NULL, PF_INET, NULL, NULL, &nai);
++	(void) smk_cipso_doi(SMACK_CIPSO_DOI_DEFAULT,
++			     GFP_KERNEL | __GFP_NOFAIL);
+ 	smk_unlbl_ambient(NULL);
+ 
+ 	rc = smack_populate_secattr(&smack_known_floor);
 -- 
 2.51.0
 
