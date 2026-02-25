@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FIjM0OdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:07 +0100
+	id CDd2NkWdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C67192952
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B977192959
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88EB53020ED1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8EF89302732C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48492D77F5;
-	Wed, 25 Feb 2026 06:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB902D7D42;
+	Wed, 25 Feb 2026 06:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Bk3M1oj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmGk5UH2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669282D73AD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C542D7810;
 	Wed, 25 Feb 2026 06:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002616; cv=none; b=QzeuxXNnxDCAGYuRF+fpU7QX681z4loTu/Dq60mUQARCAQA5Y5aqAPHpDF5iCuzE6XJ7PE3SPQSdemMgs064dA4EXdxmQSBp4ItbmcQvI7DyJjcpnJwyI9OBcRrO5jb4KcFhAFIns4yOLtM/GsZMJfmNJjwpvASUK3wyUPRHn08=
+	t=1772002616; cv=none; b=aX5A1YTv9t1fQCWsUTK9Rt9CqOBT9sgDE8GKM5qs4PAeYZT51XAySxpwCQWD33PGXZ6v0SHZSvjeZf6McaaK4QUZQqafODbQkZaelBy/Jl2htQbt849RdXzhSDEF4jTEHCHbFFf/ByK1VJ51zWbAQNW8Ld7D7zkwn1SuUtoN5gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772002616; c=relaxed/simple;
-	bh=vtwQyzVZoeEB5XWf56eaciW76e3pBGVvOwWlll0wTko=;
+	bh=kNUUT22Az9icbmvNaV5TwrYRsG/41vOdu+6VziNc7Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B/6nnWRHD0je78txpMHA2Mnay340FkYrG7iU0wT3wDGgKl/D6FaXnl4N8aUCrmCU98FmQAnG8Q5jiYEetayCmL00TNdmLr29DPDwoWrrpwM03EaRJDzeS5uw8IFauZ43gGVaJGGzftkb5kXlSGIaf5Q8e306kryEzUSTluuTxmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Bk3M1oj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEB4C116D0;
+	 MIME-Version:Content-Type; b=ogWW+Z7t3bZFDBe+13i7ggsL7aCmxcQzOescbvdYSfWpQWwfeIADawmkdYkaA2lL4h7fDRmzHTnLJjSs0aqfpoTvK4aBk8mUB94TtZ9WKcEUzJMLXNC9bW/KFhfiPv3Do+QyXeMM6fL3mQhpgC2kje78JOu7/0dm/yyNZWc2DqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NmGk5UH2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CF0C116D0;
 	Wed, 25 Feb 2026 06:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1772002616;
-	bh=vtwQyzVZoeEB5XWf56eaciW76e3pBGVvOwWlll0wTko=;
+	bh=kNUUT22Az9icbmvNaV5TwrYRsG/41vOdu+6VziNc7Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Bk3M1oj6KtxWEEZ4PXecaOuXgtt1Zm71zZHISmhDGxBlgFkvWj0/TlEaPlVbpR+X
-	 cCZMXF1jyhPdy7VwJTAb71FdsTHVbzeDmxHlQLS7pi16WD19RqtGfrm/Z0Og2wguf4
-	 se+og+Wiv3CyPXVve6x9aOUcDeGovV+IbBSMmC+U=
+	b=NmGk5UH2kQQPLikDva+47Jcp2iWhM891VGsSxKwJ1DeOCh+F6dJnMvdAL1tSn42sQ
+	 W4e+tRAATgcSbX1S1WYSd5TYh52ekGgRZ7TN2rOyeGJPsoOfhICLfwa2Q3ilthkISZ
+	 BYmO+VlOMFGiX8/qMZ+lJH1tItb8jd94dfYBb+Xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Lars Francke <lars.francke@gmail.com>,
 	Yijun Shen <Yijun.Shen@Dell.com>,
 	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
 	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 368/641] crypto: ccp - Declare PSP dead if PSP_CMD_TEE_RING_INIT fails
-Date: Tue, 24 Feb 2026 17:21:34 -0800
-Message-ID: <20260225012357.524109579@linuxfoundation.org>
+Subject: [PATCH 6.18 369/641] crypto: ccp - Add an S4 restore flow
+Date: Tue, 24 Feb 2026 17:21:35 -0800
+Message-ID: <20260225012357.546555535@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -69,33 +70,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219285-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,Dell.com,kernel.org,amd.com,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-219286-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.992];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,amd.com:email]
-X-Rspamd-Queue-Id: 44C67192952
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 6B977192959
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
@@ -104,36 +107,161 @@ X-Rspamd-Action: no action
 
 From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 5e599d7871bf852e94e8aa08b99724635f2cbf96 ]
+[ Upstream commit 0ba2035026d0ab6c7c7e65ad8b418dc73d5700d9 ]
 
-tee_init_ring() only declares PSP dead if the command times out.
-If there is any other failure it is still considered fatal though.
-Set psp_dead for other failures as well.
+The system will have lost power during S4.  The ring used for TEE
+communications needs to be initialized before use.
 
-Fixes: 949a0c8dd3c2 ("crypto: ccp - Move direct access to some PSP registers out of TEE")
+Fixes: f892a21f51162 ("crypto: ccp - use generic power management")
+Reported-by: Lars Francke <lars.francke@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/CAD-Ua_gfJnQSo8ucS_7ZwzuhoBRJ14zXP7s8b-zX3ZcxcyWePw@mail.gmail.com/
 Tested-by: Yijun Shen <Yijun.Shen@Dell.com>
 Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
 Reviewed-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://patch.msgid.link/20260116041132.153674-3-superm1@kernel.org
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://patch.msgid.link/20260116041132.153674-4-superm1@kernel.org
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/tee-dev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/ccp/psp-dev.c | 11 +++++++++++
+ drivers/crypto/ccp/sp-dev.c  | 12 ++++++++++++
+ drivers/crypto/ccp/sp-dev.h  |  3 +++
+ drivers/crypto/ccp/sp-pci.c  | 16 +++++++++++++++-
+ drivers/crypto/ccp/tee-dev.c |  5 +++++
+ drivers/crypto/ccp/tee-dev.h |  1 +
+ 6 files changed, 47 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/crypto/ccp/psp-dev.c b/drivers/crypto/ccp/psp-dev.c
+index 9e21da0e298ad..5c7f7e02a7d8a 100644
+--- a/drivers/crypto/ccp/psp-dev.c
++++ b/drivers/crypto/ccp/psp-dev.c
+@@ -351,6 +351,17 @@ struct psp_device *psp_get_master_device(void)
+ 	return sp ? sp->psp_data : NULL;
+ }
+ 
++int psp_restore(struct sp_device *sp)
++{
++	struct psp_device *psp = sp->psp_data;
++	int ret = 0;
++
++	if (psp->tee_data)
++		ret = tee_restore(psp);
++
++	return ret;
++}
++
+ void psp_pci_init(void)
+ {
+ 	psp_master = psp_get_master_device();
+diff --git a/drivers/crypto/ccp/sp-dev.c b/drivers/crypto/ccp/sp-dev.c
+index 3467f6db4f505..f204aa5df96e2 100644
+--- a/drivers/crypto/ccp/sp-dev.c
++++ b/drivers/crypto/ccp/sp-dev.c
+@@ -230,6 +230,18 @@ int sp_resume(struct sp_device *sp)
+ 	return 0;
+ }
+ 
++int sp_restore(struct sp_device *sp)
++{
++	if (sp->psp_data) {
++		int ret = psp_restore(sp);
++
++		if (ret)
++			return ret;
++	}
++
++	return sp_resume(sp);
++}
++
+ struct sp_device *sp_get_psp_master_device(void)
+ {
+ 	struct sp_device *i, *ret = NULL;
+diff --git a/drivers/crypto/ccp/sp-dev.h b/drivers/crypto/ccp/sp-dev.h
+index 6f9d7063257d7..c8a611ef275b5 100644
+--- a/drivers/crypto/ccp/sp-dev.h
++++ b/drivers/crypto/ccp/sp-dev.h
+@@ -141,6 +141,7 @@ void sp_destroy(struct sp_device *sp);
+ 
+ int sp_suspend(struct sp_device *sp);
+ int sp_resume(struct sp_device *sp);
++int sp_restore(struct sp_device *sp);
+ int sp_request_ccp_irq(struct sp_device *sp, irq_handler_t handler,
+ 		       const char *name, void *data);
+ void sp_free_ccp_irq(struct sp_device *sp, void *data);
+@@ -174,6 +175,7 @@ int psp_dev_init(struct sp_device *sp);
+ void psp_pci_init(void);
+ void psp_dev_destroy(struct sp_device *sp);
+ void psp_pci_exit(void);
++int psp_restore(struct sp_device *sp);
+ 
+ #else /* !CONFIG_CRYPTO_DEV_SP_PSP */
+ 
+@@ -181,6 +183,7 @@ static inline int psp_dev_init(struct sp_device *sp) { return 0; }
+ static inline void psp_pci_init(void) { }
+ static inline void psp_dev_destroy(struct sp_device *sp) { }
+ static inline void psp_pci_exit(void) { }
++static inline int psp_restore(struct sp_device *sp) { return 0; }
+ 
+ #endif /* CONFIG_CRYPTO_DEV_SP_PSP */
+ 
+diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
+index 8891ceee1d7d0..6ac805d99ccb3 100644
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -353,6 +353,13 @@ static int __maybe_unused sp_pci_resume(struct device *dev)
+ 	return sp_resume(sp);
+ }
+ 
++static int __maybe_unused sp_pci_restore(struct device *dev)
++{
++	struct sp_device *sp = dev_get_drvdata(dev);
++
++	return sp_restore(sp);
++}
++
+ #ifdef CONFIG_CRYPTO_DEV_SP_PSP
+ static const struct sev_vdata sevv1 = {
+ 	.cmdresp_reg		= 0x10580,	/* C2PMSG_32 */
+@@ -563,7 +570,14 @@ static const struct pci_device_id sp_pci_table[] = {
+ };
+ MODULE_DEVICE_TABLE(pci, sp_pci_table);
+ 
+-static SIMPLE_DEV_PM_OPS(sp_pci_pm_ops, sp_pci_suspend, sp_pci_resume);
++static const struct dev_pm_ops sp_pci_pm_ops = {
++	.suspend = pm_sleep_ptr(sp_pci_suspend),
++	.resume = pm_sleep_ptr(sp_pci_resume),
++	.freeze = pm_sleep_ptr(sp_pci_suspend),
++	.thaw = pm_sleep_ptr(sp_pci_resume),
++	.poweroff = pm_sleep_ptr(sp_pci_suspend),
++	.restore_early = pm_sleep_ptr(sp_pci_restore),
++};
+ 
+ static struct pci_driver sp_pci_driver = {
+ 	.name = "ccp",
 diff --git a/drivers/crypto/ccp/tee-dev.c b/drivers/crypto/ccp/tee-dev.c
-index 5e1d80724678d..af881daa5855b 100644
+index af881daa5855b..11c4b05e2f3a2 100644
 --- a/drivers/crypto/ccp/tee-dev.c
 +++ b/drivers/crypto/ccp/tee-dev.c
-@@ -125,6 +125,7 @@ static int tee_init_ring(struct psp_tee_device *tee)
- 		dev_err(tee->dev, "tee: ring init command failed (%#010lx)\n",
- 			FIELD_GET(PSP_CMDRESP_STS, reg));
- 		tee_free_ring(tee);
-+		psp_dead = true;
- 		ret = -EIO;
- 	}
+@@ -366,3 +366,8 @@ int psp_check_tee_status(void)
+ 	return 0;
+ }
+ EXPORT_SYMBOL(psp_check_tee_status);
++
++int tee_restore(struct psp_device *psp)
++{
++	return tee_init_ring(psp->tee_data);
++}
+diff --git a/drivers/crypto/ccp/tee-dev.h b/drivers/crypto/ccp/tee-dev.h
+index ea9a2b7c05f57..c23416cb7bb37 100644
+--- a/drivers/crypto/ccp/tee-dev.h
++++ b/drivers/crypto/ccp/tee-dev.h
+@@ -111,5 +111,6 @@ struct tee_ring_cmd {
  
+ int tee_dev_init(struct psp_device *psp);
+ void tee_dev_destroy(struct psp_device *psp);
++int tee_restore(struct psp_device *psp);
+ 
+ #endif /* __TEE_DEV_H__ */
 -- 
 2.51.0
 
