@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-218245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218297-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCr8OClRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:25 +0100
+	id CBJcKjlSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218297-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9BC18EEEB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A7A18F293
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7FE2F3087617
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:30:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B64183077027
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990712417E0;
-	Wed, 25 Feb 2026 01:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02EF2417E0;
+	Wed, 25 Feb 2026 01:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OH5yJLHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D8RwkIS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B812242D9B;
-	Wed, 25 Feb 2026 01:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7307B1E2834;
+	Wed, 25 Feb 2026 01:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983042; cv=none; b=h6Y8WR3JDRq1SiCKfH+HXQmRLF3KeDSzTyYpz5cot0PbzDYT1lVWoEuc5iHGQ8uC01Jj3wOXDt4uA6BsVT96SCMcP5j4ancZKPNxNVZD25QN1B+A1KuhnVJWUsjl5mc6ftNSsHLRwLKyVsFvREJ6gsqwRP6++MsNaZmiUP8UiK0=
+	t=1771983098; cv=none; b=a1m2fsC4algI2fiDz1PQtTWm+tDd+yGQq/Ob2qMuO1r+Koq4FIphPP8Ggth6HkXcnTFU0Ny7VyHbaXcdOCf1bXOgyXBwvwcIHL99q8auuWxvpxQmtMEvnZj0wybkESSgSUfeMAwoh6z3r6HH7obl9FH3tuPBY9sKdiEO/wCe4Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983042; c=relaxed/simple;
-	bh=RxRYDHC+F5Bf0FxwN6eoaBSsY/sOou2hCNYwrwP08+s=;
+	s=arc-20240116; t=1771983098; c=relaxed/simple;
+	bh=AC8ykLs61JpiKGJG7ywuCdJlb5uDJShi8S6e/mwCQwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOLiudXGNuDsG4Q0N5hqvhx2YQZDOt+c9fJ5TClqvfGVZboe9+vpGbqiSQL9Mhzvdu5LwvWpnhBXMMU+5q2nzMAIVuYnWJL8BSoOkI7NSPbX7ylb0BxWcUYW1p5cekKQxorkfUBNmxeNKy+Z1r6xpuDvH6PNbjiBH6qs99uEM4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OH5yJLHR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A6DC116D0;
-	Wed, 25 Feb 2026 01:30:42 +0000 (UTC)
+	 MIME-Version; b=o0kLf92US5JzFvZ7/uXI4knPbp+x/0c97yEwqor5f+gNIw65Pok4q9Oxi2SbV9uhgpLayfY1sm3NGOdnDW9cwxi9LC2fJNQi3iqHYKqPViIB0gdVjfDQoGEZ87C6tCIHxZ5AP+lb6yb32zXm7hi4xFbsb1QMjW6brafwJUObNv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0D8RwkIS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3340BC19423;
+	Wed, 25 Feb 2026 01:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983042;
-	bh=RxRYDHC+F5Bf0FxwN6eoaBSsY/sOou2hCNYwrwP08+s=;
+	s=korg; t=1771983098;
+	bh=AC8ykLs61JpiKGJG7ywuCdJlb5uDJShi8S6e/mwCQwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OH5yJLHRidZ+HVRO38VV4d7anN+7780GxRZZz0jLpk5n+2y/4XdG2tlrZwLINBqOC
-	 vbWFeqNHpsp6WR2Jd+16jjM6+e8+QdWGuMOVMxxMI45vod1pHZLttrrC2jIEywcN9A
-	 EdIG7jQRDVQUbdxxR9PCvb3v9nYzCgHgviNBfuZ8=
+	b=0D8RwkIS+wQjgZ8Cr8u09vKfjN63xZnrEZpqq5zd+bT/dOD6wQxshkRswKvTFcgAA
+	 89Mds2sTOa5y4fqkycBkAY/F6YMFzdLLcGlcHWsU/yG5P0ln9fZ1K6sYF73vxmIcGY
+	 IHfh6JieKlMUadwu5gpfhfP8YlQb+s+5Zn6LAzWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Ser <contact@emersion.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 205/781] accel/amdxdna: Fix cu_idx being cleared by memset() during command setup
-Date: Tue, 24 Feb 2026 17:15:14 -0800
-Message-ID: <20260225012404.745719856@linuxfoundation.org>
+Subject: [PATCH 6.19 206/781] drm/plane: Fix IS_ERR() vs NULL bug drm_plane_create_color_pipeline_property()
+Date: Tue, 24 Feb 2026 17:15:15 -0800
+Message-ID: <20260225012404.770186602@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -67,126 +67,70 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218245-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218297-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8A9BC18EEEB
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linaro.org:email]
+X-Rspamd-Queue-Id: D1A7A18F293
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 3d32eb7a5ecff92d83a5fd34c45c171c17d3d5d0 ]
+[ Upstream commit 470cb09a2936d3c1ff8aeff46e3c14dcc4314e9b ]
 
-For one command type, cu_idx is assigned before calling memset() on the
-command structure. This results in cu_idx being overwritten, causing the
-firmware to receive an incomplete or invalid command and leading to
-unexpected command failures.
+The drm_property_create_enum() function returns NULL on error, it never
+returns error pointers.  Fix the error checking to match.
 
-Fix this by moving the memset() call before initializing cu_idx so that
-all fields are populated in the correct order.
-
-Fixes: 71829d7f2f70 ("accel/amdxdna: Use MSG_OP_CHAIN_EXEC_NPU when supported")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20251209211639.1636888-1-lizhi.hou@amd.com
+Fixes: 2afc3184f3b3 ("drm/plane: Add COLOR PIPELINE property")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Simon Ser <contact@emersion.fr>
+Link: https://patch.msgid.link/aTK9ZR0sMgqSACow@stanley.mountain
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_message.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/drm_plane.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/aie2_message.c b/drivers/accel/amdxdna/aie2_message.c
-index 18cf8e49ea94d..e64dc3152c884 100644
---- a/drivers/accel/amdxdna/aie2_message.c
-+++ b/drivers/accel/amdxdna/aie2_message.c
-@@ -645,6 +645,7 @@ aie2_cmdlist_fill_npu_cf(struct amdxdna_gem_obj *cmd_bo, void *slot, size_t *siz
- 	u32 cmd_len;
- 	void *cmd;
+diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
+index b143589717e64..bed2562bf911b 100644
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -1867,9 +1867,9 @@ int drm_plane_create_color_pipeline_property(struct drm_plane *plane,
+ 	prop = drm_property_create_enum(plane->dev, DRM_MODE_PROP_ATOMIC,
+ 					"COLOR_PIPELINE",
+ 					all_pipelines, len);
+-	if (IS_ERR(prop)) {
++	if (!prop) {
+ 		kfree(all_pipelines);
+-		return PTR_ERR(prop);
++		return -ENOMEM;
+ 	}
  
-+	memset(npu_slot, 0, sizeof(*npu_slot));
- 	cmd = amdxdna_cmd_get_payload(cmd_bo, &cmd_len);
- 	if (*size < sizeof(*npu_slot) + cmd_len)
- 		return -EINVAL;
-@@ -653,7 +654,6 @@ aie2_cmdlist_fill_npu_cf(struct amdxdna_gem_obj *cmd_bo, void *slot, size_t *siz
- 	if (npu_slot->cu_idx == INVALID_CU_IDX)
- 		return -EINVAL;
- 
--	memset(npu_slot, 0, sizeof(*npu_slot));
- 	npu_slot->type = EXEC_NPU_TYPE_NON_ELF;
- 	npu_slot->arg_cnt = cmd_len / sizeof(u32);
- 	memcpy(npu_slot->args, cmd, cmd_len);
-@@ -670,6 +670,7 @@ aie2_cmdlist_fill_npu_dpu(struct amdxdna_gem_obj *cmd_bo, void *slot, size_t *si
- 	u32 cmd_len;
- 	u32 arg_sz;
- 
-+	memset(npu_slot, 0, sizeof(*npu_slot));
- 	sn = amdxdna_cmd_get_payload(cmd_bo, &cmd_len);
- 	arg_sz = cmd_len - sizeof(*sn);
- 	if (cmd_len < sizeof(*sn) || arg_sz > MAX_NPU_ARGS_SIZE)
-@@ -682,7 +683,6 @@ aie2_cmdlist_fill_npu_dpu(struct amdxdna_gem_obj *cmd_bo, void *slot, size_t *si
- 	if (npu_slot->cu_idx == INVALID_CU_IDX)
- 		return -EINVAL;
- 
--	memset(npu_slot, 0, sizeof(*npu_slot));
- 	npu_slot->type = EXEC_NPU_TYPE_PARTIAL_ELF;
- 	npu_slot->inst_buf_addr = sn->buffer;
- 	npu_slot->inst_size = sn->buffer_size;
-@@ -702,6 +702,7 @@ aie2_cmdlist_fill_npu_preempt(struct amdxdna_gem_obj *cmd_bo, void *slot, size_t
- 	u32 cmd_len;
- 	u32 arg_sz;
- 
-+	memset(npu_slot, 0, sizeof(*npu_slot));
- 	pd = amdxdna_cmd_get_payload(cmd_bo, &cmd_len);
- 	arg_sz = cmd_len - sizeof(*pd);
- 	if (cmd_len < sizeof(*pd) || arg_sz > MAX_NPU_ARGS_SIZE)
-@@ -714,7 +715,6 @@ aie2_cmdlist_fill_npu_preempt(struct amdxdna_gem_obj *cmd_bo, void *slot, size_t
- 	if (npu_slot->cu_idx == INVALID_CU_IDX)
- 		return -EINVAL;
- 
--	memset(npu_slot, 0, sizeof(*npu_slot));
- 	npu_slot->type = EXEC_NPU_TYPE_PREEMPT;
- 	npu_slot->inst_buf_addr = pd->inst_buf;
- 	npu_slot->save_buf_addr = pd->save_buf;
-@@ -738,6 +738,7 @@ aie2_cmdlist_fill_npu_elf(struct amdxdna_gem_obj *cmd_bo, void *slot, size_t *si
- 	u32 cmd_len;
- 	u32 arg_sz;
- 
-+	memset(npu_slot, 0, sizeof(*npu_slot));
- 	pd = amdxdna_cmd_get_payload(cmd_bo, &cmd_len);
- 	arg_sz = cmd_len - sizeof(*pd);
- 	if (cmd_len < sizeof(*pd) || arg_sz > MAX_NPU_ARGS_SIZE)
-@@ -746,7 +747,6 @@ aie2_cmdlist_fill_npu_elf(struct amdxdna_gem_obj *cmd_bo, void *slot, size_t *si
- 	if (*size < sizeof(*npu_slot) + arg_sz)
- 		return -EINVAL;
- 
--	memset(npu_slot, 0, sizeof(*npu_slot));
- 	npu_slot->type = EXEC_NPU_TYPE_ELF;
- 	npu_slot->inst_buf_addr = pd->inst_buf;
- 	npu_slot->save_buf_addr = pd->save_buf;
+ 	drm_object_attach_property(&plane->base, prop, 0);
 -- 
 2.51.0
 
