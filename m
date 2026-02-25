@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-218986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDZSHANanmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:11 +0100
+	id COQQHPNSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DFF190A06
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E50CB18F604
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42A2730DE3DA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F0AEE31CC6CE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DDD29D29E;
-	Wed, 25 Feb 2026 01:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B321242D9B;
+	Wed, 25 Feb 2026 01:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZDkSOe0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXaHBWI/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF1529BDA2;
-	Wed, 25 Feb 2026 01:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F02F18B0A;
+	Wed, 25 Feb 2026 01:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983891; cv=none; b=ISEHJSVjJkaZUZQ7B1Qdiapt5vilWWETtT0/t2+fvpH0GQhbu/tmkxqZ8cD6Ey+R8XHoUBdEYt3ehKjeHUBsIdNZX+fF7wUDpJc3r/TLwP+DL3o6T7uAjaVH8DJ9FCh2At4HK8tURqO2zZ8UDQMIlJrzF3eePrDrmiJUeINbhQg=
+	t=1771983238; cv=none; b=WM15iCJAjJfh/hVA6Mwq/6jWgW+EMKLHmyC49Al9fOlJ8hnEZ+Y+AAOPszpuj7oIlOqpwv1qfhRoGfHOHethAGxWEO1k0VV4hKA8BCzpGbbLIMrjIaWF4BJO7mpT4Z5N81FzXVlZWOKiFLePA/bQtUk1Hm2mD/rpvoRA2Jv1iPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983891; c=relaxed/simple;
-	bh=qTxfdv0VW76eW+gdck6WRvyfLCsX399/K3oJU3PDrgQ=;
+	s=arc-20240116; t=1771983238; c=relaxed/simple;
+	bh=KhnAnmsGtckcSiIxl2yAeJ7pr417SHzhXMEF4pJEsIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4DwFusPxWefF/xAjqAbE4wuVJ5F+8K5xrV/WYN4OXbNFPf5Ukf2DEsnyQpIcLPoFY09US0zpPFh1Q+Qo49jgjLDWzKc6GPQXzT1IerTt5UKXoGvNice+5mV4iZ6/0phsQ6RCZfgfS3pTK3bkzcjusoCBTBMAQnEDmmuXzD/9Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZDkSOe0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8621C116D0;
-	Wed, 25 Feb 2026 01:44:50 +0000 (UTC)
+	 MIME-Version; b=UpEBSY3i0NAWmOj+Upj5aad3J99knuT+xpzprvyeYgmszoiD1dc1HtjA3Ckya+UtAlKivyUc2jIImF5VPVqeBebakoM/F40ScRDlvCGtLlnvLRADSeUU3s9VNWdNmL0npw3DOgwGf8XX0PhEMFQQCS4iMTlYFGpu4nhik4ktwyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXaHBWI/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD93C116D0;
+	Wed, 25 Feb 2026 01:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983891;
-	bh=qTxfdv0VW76eW+gdck6WRvyfLCsX399/K3oJU3PDrgQ=;
+	s=korg; t=1771983238;
+	bh=KhnAnmsGtckcSiIxl2yAeJ7pr417SHzhXMEF4pJEsIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZDkSOe0CuL6QAqHdxDAxmeanxZEaU2EgpB6gFvpOB3+OsAdK5jQRCg4cFKmXIqZS
-	 z4mPcu2AUV4/LtpiZHhK0LVXX6LPXmrF/ZqPiKINJX0YKD8kr2wyMMAUPId+EPlv2V
-	 dSc4rvqvOl76i8DvK+JCjOnfanTt3XcPXhuSOL+8=
+	b=ZXaHBWI/vaIscoap8aqI9J/u1OBEk2h1gsh0wVq0hhPiggMu2z9FyVN7v2OIGpGK1
+	 Mt01nnNr4PtGNtCx0rE9bW210e87OWbCPeP3m+fEYBWfnQ3Br/OupMTA02rClz+YVQ
+	 9KMAEltF8sl+YBUmReFqphMQPWeSZtfHArHLGJ8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 163/641] arm64: dts: qcom: x1e: bus is 40-bits (fix 64GB models)
+Subject: [PATCH 6.19 380/781] Revert "net/smc: Introduce TCP ULP support"
 Date: Tue, 24 Feb 2026 17:18:09 -0800
-Message-ID: <20260225012353.014387534@linuxfoundation.org>
+Message-ID: <20260225012409.014608250@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218986-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218419-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,53 +90,206 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,0.1.134.160:email,marek.ca:email]
-X-Rspamd-Queue-Id: C9DFF190A06
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E50CB18F604
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: D. Wythe <alibuda@linux.alibaba.com>
 
-[ Upstream commit b38dd256e11a4c8bd5a893e11fc42d493939c907 ]
+[ Upstream commit df31a6b0a3057e66994ad6ccf5d95b9b9514f033 ]
 
-Unlike the phone SoCs this was copied from, x1e has a 40-bit physical bus.
-The upper address space is used to support more than 32GB of memory.
+This reverts commit d7cd421da9da2cc7b4d25b8537f66db5c8331c40.
 
-This fixes issues when DMA buffers are allocated outside the 36-bit range.
+As reported by Al Viro, the TCP ULP support for SMC is fundamentally
+broken. The implementation attempts to convert an active TCP socket
+into an SMC socket by modifying the underlying `struct file`, dentry,
+and inode in-place, which violates core VFS invariants that assume
+these structures are immutable for an open file, creating a risk of
+use after free errors and general system instability.
 
-Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251127212943.24480-1-jonathan@marek.ca
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Given the severity of this design flaw and the fact that cleaner
+alternatives (e.g., LD_PRELOAD, BPF) exist for legacy application
+transparency, the correct course of action is to remove this feature
+entirely.
+
+Fixes: d7cd421da9da ("net/smc: Introduce TCP ULP support")
+Link: https://lore.kernel.org/netdev/Yus1SycZxcd+wHwz@ZenIV/
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Tony Lu <tonylu@linux.alibaba.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260128055452.98251-1-alibuda@linux.alibaba.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/smc/af_smc.c | 91 +++---------------------------------------------
+ 1 file changed, 4 insertions(+), 87 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index 3290fd8c2d6e6..512a75da4f13f 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -791,8 +791,8 @@ soc: soc@0 {
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index f97f77b041d97..d8201eb3ac5f3 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -3357,11 +3357,10 @@ int smc_create_clcsk(struct net *net, struct sock *sk, int family)
+ 	return 0;
+ }
  
- 		#address-cells = <2>;
- 		#size-cells = <2>;
--		dma-ranges = <0 0 0 0 0x10 0>;
--		ranges = <0 0 0 0 0x10 0>;
-+		dma-ranges = <0 0 0 0 0x100 0>;
-+		ranges = <0 0 0 0 0x100 0>;
+-static int __smc_create(struct net *net, struct socket *sock, int protocol,
+-			int kern, struct socket *clcsock)
++static int smc_create(struct net *net, struct socket *sock, int protocol,
++		      int kern)
+ {
+ 	int family = (protocol == SMCPROTO_SMC6) ? PF_INET6 : PF_INET;
+-	struct smc_sock *smc;
+ 	struct sock *sk;
+ 	int rc;
  
- 		gcc: clock-controller@100000 {
- 			compatible = "qcom,x1e80100-gcc";
+@@ -3380,15 +3379,7 @@ static int __smc_create(struct net *net, struct socket *sock, int protocol,
+ 	if (!sk)
+ 		goto out;
+ 
+-	/* create internal TCP socket for CLC handshake and fallback */
+-	smc = smc_sk(sk);
+-
+-	rc = 0;
+-	if (clcsock)
+-		smc->clcsock = clcsock;
+-	else
+-		rc = smc_create_clcsk(net, sk, family);
+-
++	rc = smc_create_clcsk(net, sk, family);
+ 	if (rc) {
+ 		sk_common_release(sk);
+ 		sock->sk = NULL;
+@@ -3397,76 +3388,12 @@ static int __smc_create(struct net *net, struct socket *sock, int protocol,
+ 	return rc;
+ }
+ 
+-static int smc_create(struct net *net, struct socket *sock, int protocol,
+-		      int kern)
+-{
+-	return __smc_create(net, sock, protocol, kern, NULL);
+-}
+-
+ static const struct net_proto_family smc_sock_family_ops = {
+ 	.family	= PF_SMC,
+ 	.owner	= THIS_MODULE,
+ 	.create	= smc_create,
+ };
+ 
+-static int smc_ulp_init(struct sock *sk)
+-{
+-	struct socket *tcp = sk->sk_socket;
+-	struct net *net = sock_net(sk);
+-	struct socket *smcsock;
+-	int protocol, ret;
+-
+-	/* only TCP can be replaced */
+-	if (tcp->type != SOCK_STREAM || sk->sk_protocol != IPPROTO_TCP ||
+-	    (sk->sk_family != AF_INET && sk->sk_family != AF_INET6))
+-		return -ESOCKTNOSUPPORT;
+-	/* don't handle wq now */
+-	if (tcp->state != SS_UNCONNECTED || !tcp->file || tcp->wq.fasync_list)
+-		return -ENOTCONN;
+-
+-	if (sk->sk_family == AF_INET)
+-		protocol = SMCPROTO_SMC;
+-	else
+-		protocol = SMCPROTO_SMC6;
+-
+-	smcsock = sock_alloc();
+-	if (!smcsock)
+-		return -ENFILE;
+-
+-	smcsock->type = SOCK_STREAM;
+-	__module_get(THIS_MODULE); /* tried in __tcp_ulp_find_autoload */
+-	ret = __smc_create(net, smcsock, protocol, 1, tcp);
+-	if (ret) {
+-		sock_release(smcsock); /* module_put() which ops won't be NULL */
+-		return ret;
+-	}
+-
+-	/* replace tcp socket to smc */
+-	smcsock->file = tcp->file;
+-	smcsock->file->private_data = smcsock;
+-	smcsock->file->f_inode = SOCK_INODE(smcsock); /* replace inode when sock_close */
+-	smcsock->file->f_path.dentry->d_inode = SOCK_INODE(smcsock); /* dput() in __fput */
+-	tcp->file = NULL;
+-
+-	return ret;
+-}
+-
+-static void smc_ulp_clone(const struct request_sock *req, struct sock *newsk,
+-			  const gfp_t priority)
+-{
+-	struct inet_connection_sock *icsk = inet_csk(newsk);
+-
+-	/* don't inherit ulp ops to child when listen */
+-	icsk->icsk_ulp_ops = NULL;
+-}
+-
+-static struct tcp_ulp_ops smc_ulp_ops __read_mostly = {
+-	.name		= "smc",
+-	.owner		= THIS_MODULE,
+-	.init		= smc_ulp_init,
+-	.clone		= smc_ulp_clone,
+-};
+-
+ unsigned int smc_net_id;
+ 
+ static __net_init int smc_net_init(struct net *net)
+@@ -3589,16 +3516,10 @@ static int __init smc_init(void)
+ 		pr_err("%s: ib_register fails with %d\n", __func__, rc);
+ 		goto out_sock;
+ 	}
+-
+-	rc = tcp_register_ulp(&smc_ulp_ops);
+-	if (rc) {
+-		pr_err("%s: tcp_ulp_register fails with %d\n", __func__, rc);
+-		goto out_ib;
+-	}
+ 	rc = smc_inet_init();
+ 	if (rc) {
+ 		pr_err("%s: smc_inet_init fails with %d\n", __func__, rc);
+-		goto out_ulp;
++		goto out_ib;
+ 	}
+ 	rc = bpf_smc_hs_ctrl_init();
+ 	if (rc) {
+@@ -3610,8 +3531,6 @@ static int __init smc_init(void)
+ 	return 0;
+ out_inet:
+ 	smc_inet_exit();
+-out_ulp:
+-	tcp_unregister_ulp(&smc_ulp_ops);
+ out_ib:
+ 	smc_ib_unregister_client();
+ out_sock:
+@@ -3647,7 +3566,6 @@ static void __exit smc_exit(void)
+ {
+ 	static_branch_disable(&tcp_have_smc);
+ 	smc_inet_exit();
+-	tcp_unregister_ulp(&smc_ulp_ops);
+ 	sock_unregister(PF_SMC);
+ 	smc_core_exit();
+ 	smc_ib_unregister_client();
+@@ -3672,7 +3590,6 @@ MODULE_AUTHOR("Ursula Braun <ubraun@linux.vnet.ibm.com>");
+ MODULE_DESCRIPTION("smc socket address family");
+ MODULE_LICENSE("GPL");
+ MODULE_ALIAS_NETPROTO(PF_SMC);
+-MODULE_ALIAS_TCP_ULP("smc");
+ /* 256 for IPPROTO_SMC and 1 for SOCK_STREAM */
+ MODULE_ALIAS_NET_PF_PROTO_TYPE(PF_INET, 256, 1);
+ #if IS_ENABLED(CONFIG_IPV6)
 -- 
 2.51.0
 
