@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CIjOfJUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:34 +0100
+	id oP38AMdSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C8F18FE6F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CD818F528
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E567D3092231
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E5DD031B298B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA47274B39;
-	Wed, 25 Feb 2026 01:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D3A2417E0;
+	Wed, 25 Feb 2026 01:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9sqXA/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/5Si2RY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232C827A45C;
-	Wed, 25 Feb 2026 01:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C35118DB2A;
+	Wed, 25 Feb 2026 01:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983840; cv=none; b=tMPgqNNkkNJW9up/uuaGlNWDvf3SA0SwhqlNcXjRCUFE/WLv1R673r66IAjy9PMd0r5TTMaRdXQM9MOhr7bHTPVX9Vkpp2EQLXe6ojuYWESlE8IM0H54lgk5QrK1+V0/exF9hwtClZO+BLBa9ch8/TaAdg7B6kX/Db8+vXmAKmc=
+	t=1771983185; cv=none; b=t2bcPVjA5hGcSltYU+ZviwwQ1RmTnmyrGkAk9NarfOl3w7z4wKF0M4m4K+RNciu7+S8jwA092O/u2IW6dWz9zb8dQuCHBHqo9d2La7mDtiYTCaA0B9uDGN/QLYhuseitPez0vS0qy41MMxKwAzdeBZzJxgKJWmbLFEZHQkXe344=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983840; c=relaxed/simple;
-	bh=7hY3zhrtLT5Hln/ank4C1wea5KFfYX729VZrNilbtsY=;
+	s=arc-20240116; t=1771983185; c=relaxed/simple;
+	bh=C6G+L688U7pOoCopJ3A3MIBmJts95bV9VMgUNfOL7Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wk+bI7yq5EAc7EbaplBi7tsO0fBSpilTZT/G49MwcOa8KgnHOWrUirPHnnQXFAVrKMAjMVcBop1Q4Bg1l9kbkYMLsx9IhV/kug3jfdztA4SEgYTwWkYS8cBgZ9yYBRGE1wrIqj6Wkv7ZXLc0c7TsrEzhbmKp7Y0BA7uDQBFCvKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9sqXA/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE347C116D0;
-	Wed, 25 Feb 2026 01:43:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LxnF/sUiTcAV88OVXGsffrOOS71VOh2AznPYC0rQd5y/EFCPYU4Sq7GEPi1Ao2lZGnBsBW2INLGhRIwAK7OVgd+pivaTUcdkYF50buerlGUK9UX+e6n0a7kQDsXZk11V/nql5m0l9TTBtMfQRIaKAKwcXOsNypz9vjYzhZHyDfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/5Si2RY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2F4C116D0;
+	Wed, 25 Feb 2026 01:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983840;
-	bh=7hY3zhrtLT5Hln/ank4C1wea5KFfYX729VZrNilbtsY=;
+	s=korg; t=1771983185;
+	bh=C6G+L688U7pOoCopJ3A3MIBmJts95bV9VMgUNfOL7Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9sqXA/mT0g3myEbnhaSK6BWkdyDIVQ/uDrfgLzoLlhbVbYHTlKxbUVtbdu38hyee
-	 rh0atR1JFQSTRHGpKJlFIYTxKNOoAtfVJOGcwBjmbT+wTYnUfZKfnSef9K82C1+4Zg
-	 3rKdE3WE0tDBIR+x5oYUkkO7VD6DvsdPkyuuqvAE=
+	b=i/5Si2RYS/3I4zxheBedjeq+hW8x2DdbdVhp/ReilEYObWILV6uao9zpLAUzybfZq
+	 kbml3cWoVkP+N1iiLawFebykhWo6QW108MaT3IBSRoGa/IDWPjgdXkDrGeQ38R+oxG
+	 Ftr5y/xOum5QnyYkffJDOR9dXdoGwCKHx9F74PRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 118/641] bpf: Limit bpf program signature size
+Subject: [PATCH 6.19 335/781] wifi: ath9k: fix kernel-doc warnings in common-debug.h
 Date: Tue, 24 Feb 2026 17:17:24 -0800
-Message-ID: <20260225012351.992745686@linuxfoundation.org>
+Message-ID: <20260225012407.913583349@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218941-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218374-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,meta.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iogearbox.net:email]
-X-Rspamd-Queue-Id: B5C8F18FE6F
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,toke.dk:email]
+X-Rspamd-Queue-Id: 70CD818F528
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: KP Singh <kpsingh@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit ea1535e28bb3773fc0b3cbd1f3842b808016990c ]
+[ Upstream commit b9909c19965dc9e5a3a898fef09b437fcc3a9494 ]
 
-Practical BPF signatures are significantly smaller than
-KMALLOC_MAX_CACHE_SIZE
+Modify kernel-doc comments in common-debug.h to avoid warnings:
 
-Allowing larger sizes opens the door for abuse by passing excessive
-size values and forcing the kernel into expensive allocation paths (via
-kmalloc_large or vmalloc).
+Warning: drivers/net/wireless/ath/ath9k/common-debug.h:21 bad line:
+  may have had errors.
+Warning: ../drivers/net/wireless/ath/ath9k/common-debug.h:23 bad line:
+  may have had errors.
+Warning: ../drivers/net/wireless/ath/ath9k/common-debug.h:26 bad line:
+  decryption process completed
+Warning: ../drivers/net/wireless/ath/ath9k/common-debug.h:28 bad line:
+  encountered an error
 
-Fixes: 349271568303 ("bpf: Implement signature verification for BPF programs")
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: KP Singh <kpsingh@kernel.org>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20260205063807.690823-1-kpsingh@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 99c15bf575b1 ("ath9k: Report total tx/rx bytes and packets in debugfs.")
+Fixes: 1395d3f00a41 ("ath9k: Add debugfs file for RX errors")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20251117020251.447692-1-rdunlap@infradead.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/ath/ath9k/common-debug.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index f39367765f0c4..2649e0472dfe0 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -2825,6 +2825,13 @@ static int bpf_prog_verify_signature(struct bpf_prog *prog, union bpf_attr *attr
- 	void *sig;
- 	int err = 0;
- 
-+	/*
-+	 * Don't attempt to use kmalloc_large or vmalloc for signatures.
-+	 * Practical signature for BPF program should be below this limit.
-+	 */
-+	if (attr->signature_size > KMALLOC_MAX_CACHE_SIZE)
-+		return -EINVAL;
-+
- 	if (system_keyring_id_check(attr->keyring_id) == 0)
- 		key = bpf_lookup_system_key(attr->keyring_id);
- 	else
+diff --git a/drivers/net/wireless/ath/ath9k/common-debug.h b/drivers/net/wireless/ath/ath9k/common-debug.h
+index 2938b5b96b074..97948af97682b 100644
+--- a/drivers/net/wireless/ath/ath9k/common-debug.h
++++ b/drivers/net/wireless/ath/ath9k/common-debug.h
+@@ -19,14 +19,14 @@
+ /**
+  * struct ath_rx_stats - RX Statistics
+  * @rx_pkts_all:  No. of total frames received, including ones that
+-	may have had errors.
++ *	may have had errors.
+  * @rx_bytes_all:  No. of total bytes received, including ones that
+-	may have had errors.
++ *	may have had errors.
+  * @crc_err: No. of frames with incorrect CRC value
+  * @decrypt_crc_err: No. of frames whose CRC check failed after
+-	decryption process completed
++ *	decryption process completed
+  * @phy_err: No. of frames whose reception failed because the PHY
+-	encountered an error
++ *	encountered an error
+  * @mic_err: No. of frames with incorrect TKIP MIC verification failure
+  * @pre_delim_crc_err: Pre-Frame delimiter CRC error detections
+  * @post_delim_crc_err: Post-Frame delimiter CRC error detections
 -- 
 2.51.0
 
