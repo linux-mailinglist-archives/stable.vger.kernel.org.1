@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-218670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEeKJERVnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:56 +0100
+	id sKcfEG+fnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56E518FF74
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94EF4192F37
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 55F0630A3976
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B607930A1552
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB22926CE2D;
-	Wed, 25 Feb 2026 01:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80862D73AD;
+	Wed, 25 Feb 2026 06:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIwMrega"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHWnF/Ao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4101D5141;
-	Wed, 25 Feb 2026 01:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0ED2C17A0;
+	Wed, 25 Feb 2026 06:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983524; cv=none; b=UuStNXGzbZsL68wzkU0bqnX0CzP9pnOYQ+0Q7sA8zhlvmug65Fk84IMJs/eTY1Put82VDvf17bKz71iE8wE+alpjCGmu5Q6rbMnQCr6tad9zNjf2vvXCUqVLCJ+ep2YQZjvePaUvTH6uC9dlqRn5yat3yrqRGYzgLZoQFHGE36o=
+	t=1772002646; cv=none; b=sYekWZPsAko1QVRN9NfrU+J9gyzl3udQwUTq/hS9GomBRg7wwHYneD1SeS4l5OtALaggD43GJ1Kwwf33tIuIjb8uNBzjoyqpYpE4S0xqyfZEsobDGD5sHfB8JeFB8aAR8WRALwlWP3urc+B7ECqXDjCXVh/qyjoGbRolZ4p0MR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983524; c=relaxed/simple;
-	bh=bNG3UjwNVtivgh0mTP6aQ6j3Smrhhwy6haRYUWb2cIc=;
+	s=arc-20240116; t=1772002646; c=relaxed/simple;
+	bh=D4auLvlWB6PsVuf3k+5SSqQG5vxyMZ4W6rAm/x8XQ/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3WM5vxoOXxOOGI4QxEA+9B8+BxqEHX+Qee+VwUm0vXH7fy58QSePjvJNp5cMBbXx/HfdXn5jyEcAsb4+L7xnK+3OOxAGupS3vyBQnBH9FUcNsXBS5+z/zITUWtsa/SjctI5jpe1Ca5i9x3o0bNdLPWQ4qwWZ809AIYI7rz7MA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIwMrega; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56897C116D0;
-	Wed, 25 Feb 2026 01:38:44 +0000 (UTC)
+	 MIME-Version; b=JPF7Em48HFYf+9JscTYhet1o3wzc5jVkoVlK9NsnUH6V0GEC4mslvHaH1MngEngTIVD/EGbz855gWqmh9ZplD6z1LJ5UHk2xkZzvxzUN8VeiWS+ovE79Aftkf4o5rqTTnomMAiszHkIt/yRqoHxexTA1ASuCmj5xexjyNM2x16o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHWnF/Ao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8450CC116D0;
+	Wed, 25 Feb 2026 06:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983524;
-	bh=bNG3UjwNVtivgh0mTP6aQ6j3Smrhhwy6haRYUWb2cIc=;
+	s=korg; t=1772002646;
+	bh=D4auLvlWB6PsVuf3k+5SSqQG5vxyMZ4W6rAm/x8XQ/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OIwMregaoa6ZUmwU1wKBA+6eVSTILKm2o7nDQ/aH3oZtlaf4JjzULaWlGQ6FnaVFf
-	 xXEi+I981N5eOFIzasaEl2L7AB2dyz9Thy/q37815vVAm9OVzMwT1eRqTtSJK5h0jH
-	 hvtt+8n1vHGZKR3LgF0U9xdMGkSI6P6dsxZFjQIQ=
+	b=PHWnF/AoHpguYXMy4iPbNaFUTXiM4O7aHPjaep8VRLdOCu+VoTOJ+9QjdaFY8T9mj
+	 O2tunvEuUcBKYv3bLKELquMzN4AV0YDpubcAEBWkapYcBJGZo1p88pf2x+gTic6xzl
+	 cAKxKuI6ZkkXu3khVWiOAKXAaFVJGkMtk3Ss/cys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Antonio Quartulli <antonio@openvpn.net>,
+	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 632/781] ovpn: set sk_user_data before overriding callbacks
+Subject: [PATCH 6.18 415/641] clk: qcom: gcc-qdu1000: Update the SDCC RCGs to use shared_floor_ops
 Date: Tue, 24 Feb 2026 17:22:21 -0800
-Message-ID: <20260225012415.310805183@linuxfoundation.org>
+Message-ID: <20260225012358.614904680@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218670-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219333-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,166 +89,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,queasysnail.net:email]
-X-Rspamd-Queue-Id: D56E518FF74
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 94EF4192F37
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralf Lici <ralf@mandelbit.com>
+From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
 
-[ Upstream commit 93686c472eb7b09a51b97a096449e7092fefcd1f ]
+[ Upstream commit 947c4b326c1f4dc64aed42170b39c2cf551ba8ca ]
 
-During initialization, we override socket callbacks and set sk_user_data
-to an ovpn_socket instance. Currently, these two operations are
-decoupled: callbacks are overridden before sk_user_data is set. While
-existing callbacks perform safety checks for NULL or non-ovpn
-sk_user_data, this condition causes a "half-formed" state where valid
-packets arriving during attachment trigger error logs (e.g., "invoked on
-non ovpn socket").
+Use shared_floor_ops for the SDCC RCGs so the RCG is safely parked
+during disable and the new parent configuration is programmed in
+hardware only when the new parent is enabled, avoiding cases where
+the RCG configuration fails to update.
 
-Set sk_user_data before overriding the callbacks so that it can be
-accessed safely from them. Since we already check that the socket has no
-sk_user_data before setting it, this remains safe even if an interrupt
-accesses the socket after sk_user_data is set but before the callbacks
-are overridden.
-
-This also requires initializing all protocol-specific fields (such as
-tcp_tx_work and peer links) before calling ovpn_socket_attach, ensuring
-the ovpn_socket is fully formed before it becomes visible to any
-callback.
-
-Fixes: f6226ae7a0cd ("ovpn: introduce the ovpn_socket object")
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Fixes: baa316580013 ("clk: qcom: gcc-qdu1000: Update the SDCC clock RCG ops")
+Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-7-473afc86589c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/socket.c | 39 +++++++++++++++++++++------------------
- drivers/net/ovpn/tcp.c    |  9 +++++++--
- drivers/net/ovpn/udp.c    |  1 +
- 3 files changed, 29 insertions(+), 20 deletions(-)
+ drivers/clk/qcom/gcc-qdu1000.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ovpn/socket.c b/drivers/net/ovpn/socket.c
-index 9750871ab65ce..448cee3b3f9fa 100644
---- a/drivers/net/ovpn/socket.c
-+++ b/drivers/net/ovpn/socket.c
-@@ -200,6 +200,22 @@ struct ovpn_socket *ovpn_socket_new(struct socket *sock, struct ovpn_peer *peer)
- 	ovpn_sock->sk = sk;
- 	kref_init(&ovpn_sock->refcount);
+diff --git a/drivers/clk/qcom/gcc-qdu1000.c b/drivers/clk/qcom/gcc-qdu1000.c
+index dbe9e9437939a..915bb9b4ff813 100644
+--- a/drivers/clk/qcom/gcc-qdu1000.c
++++ b/drivers/clk/qcom/gcc-qdu1000.c
+@@ -904,7 +904,7 @@ static struct clk_rcg2 gcc_sdcc5_apps_clk_src = {
+ 		.name = "gcc_sdcc5_apps_clk_src",
+ 		.parent_data = gcc_parent_data_8,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_8),
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
-+	/* TCP sockets are per-peer, therefore they are linked to their unique
-+	 * peer
-+	 */
-+	if (sk->sk_protocol == IPPROTO_TCP) {
-+		INIT_WORK(&ovpn_sock->tcp_tx_work, ovpn_tcp_tx_work);
-+		ovpn_sock->peer = peer;
-+		ovpn_peer_hold(peer);
-+	} else if (sk->sk_protocol == IPPROTO_UDP) {
-+		/* in UDP we only link the ovpn instance since the socket is
-+		 * shared among multiple peers
-+		 */
-+		ovpn_sock->ovpn = peer->ovpn;
-+		netdev_hold(peer->ovpn->dev, &ovpn_sock->dev_tracker,
-+			    GFP_KERNEL);
-+	}
-+
- 	/* the newly created ovpn_socket is holding reference to sk,
- 	 * therefore we increase its refcounter.
- 	 *
-@@ -212,29 +228,16 @@ struct ovpn_socket *ovpn_socket_new(struct socket *sock, struct ovpn_peer *peer)
+@@ -923,7 +923,7 @@ static struct clk_rcg2 gcc_sdcc5_ice_core_clk_src = {
+ 		.name = "gcc_sdcc5_ice_core_clk_src",
+ 		.parent_data = gcc_parent_data_2,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_2),
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
- 	ret = ovpn_socket_attach(ovpn_sock, sock, peer);
- 	if (ret < 0) {
-+		if (sk->sk_protocol == IPPROTO_TCP)
-+			ovpn_peer_put(peer);
-+		else if (sk->sk_protocol == IPPROTO_UDP)
-+			netdev_put(peer->ovpn->dev, &ovpn_sock->dev_tracker);
-+
- 		sock_put(sk);
- 		kfree(ovpn_sock);
- 		ovpn_sock = ERR_PTR(ret);
--		goto sock_release;
--	}
--
--	/* TCP sockets are per-peer, therefore they are linked to their unique
--	 * peer
--	 */
--	if (sk->sk_protocol == IPPROTO_TCP) {
--		INIT_WORK(&ovpn_sock->tcp_tx_work, ovpn_tcp_tx_work);
--		ovpn_sock->peer = peer;
--		ovpn_peer_hold(peer);
--	} else if (sk->sk_protocol == IPPROTO_UDP) {
--		/* in UDP we only link the ovpn instance since the socket is
--		 * shared among multiple peers
--		 */
--		ovpn_sock->ovpn = peer->ovpn;
--		netdev_hold(peer->ovpn->dev, &ovpn_sock->dev_tracker,
--			    GFP_KERNEL);
- 	}
- 
--	rcu_assign_sk_user_data(sk, ovpn_sock);
- sock_release:
- 	release_sock(sk);
- 	return ovpn_sock;
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index 0d7f30360d874..f0b4e07ba9245 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -487,6 +487,7 @@ int ovpn_tcp_socket_attach(struct ovpn_socket *ovpn_sock,
- 	/* make sure no pre-existing encapsulation handler exists */
- 	if (ovpn_sock->sk->sk_user_data)
- 		return -EBUSY;
-+	rcu_assign_sk_user_data(ovpn_sock->sk, ovpn_sock);
- 
- 	/* only a fully connected socket is expected. Connection should be
- 	 * handled in userspace
-@@ -495,13 +496,14 @@ int ovpn_tcp_socket_attach(struct ovpn_socket *ovpn_sock,
- 		net_err_ratelimited("%s: provided TCP socket is not in ESTABLISHED state: %d\n",
- 				    netdev_name(peer->ovpn->dev),
- 				    ovpn_sock->sk->sk_state);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto err;
- 	}
- 
- 	ret = strp_init(&peer->tcp.strp, ovpn_sock->sk, &cb);
- 	if (ret < 0) {
- 		DEBUG_NET_WARN_ON_ONCE(1);
--		return ret;
-+		goto err;
- 	}
- 
- 	INIT_WORK(&peer->tcp.defer_del_work, ovpn_tcp_peer_del_work);
-@@ -536,6 +538,9 @@ int ovpn_tcp_socket_attach(struct ovpn_socket *ovpn_sock,
- 	strp_check_rcv(&peer->tcp.strp);
- 
- 	return 0;
-+err:
-+	rcu_assign_sk_user_data(ovpn_sock->sk, NULL);
-+	return ret;
- }
- 
- static void ovpn_tcp_close(struct sock *sk, long timeout)
-diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
-index d6a0f7a0b75d7..272b535ecaad4 100644
---- a/drivers/net/ovpn/udp.c
-+++ b/drivers/net/ovpn/udp.c
-@@ -386,6 +386,7 @@ int ovpn_udp_socket_attach(struct ovpn_socket *ovpn_sock, struct socket *sock,
- 			   struct ovpn_priv *ovpn)
- {
- 	struct udp_tunnel_sock_cfg cfg = {
-+		.sk_user_data = ovpn_sock,
- 		.encap_type = UDP_ENCAP_OVPNINUDP,
- 		.encap_rcv = ovpn_udp_encap_recv,
- 		.encap_destroy = ovpn_udp_encap_destroy,
 -- 
 2.51.0
 
