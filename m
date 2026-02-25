@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-219522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219523-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFH0KySjnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219522-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:22:12 +0100
+	id CPchKm2enmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219523-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2BE1934C7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:22:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BBB192C78
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD4A730773A1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 979893047F91
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD846312806;
-	Wed, 25 Feb 2026 06:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9B8312803;
+	Wed, 25 Feb 2026 06:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0detEsU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpmuUzum"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17C0306B21;
-	Wed, 25 Feb 2026 06:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5152D306B21;
+	Wed, 25 Feb 2026 06:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002771; cv=none; b=Uiwferv9rcAf2+itK06RLhaFFvscMCoRWaGe5CTzwS5h259YZvPTvyuUm55h+7/oArjPv2ZcgMPmmZxdeY/LSKH8n379XstGg1x28t8Wc0t+5EDHc6omHmXjFpnIcqOBJH9VzcobiPskIsID9stmLbdE09BUYNlj16owEkg1tC8=
+	t=1772002772; cv=none; b=PY1eroIdVNX79G/9kK16BeFJAwSIa/e1kA3Yz5BRe0eurWdM1w2D2BqxP/ORFNiUEK3gPJXUoXawWOhiyfcGDRKXIlieAtl+tHwmBNSmRcoqfOBpOvP0fWX4l3fRJpyVtr4/yEHUxhUEWW98gkApVpwCcFrTEOVKKiBEHAgv+lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002771; c=relaxed/simple;
-	bh=83hmzWWaXbgb7kPpbzMZwCI+pbPYCz9sjLuvv8L9hSk=;
+	s=arc-20240116; t=1772002772; c=relaxed/simple;
+	bh=kqIqkrxP538sVA1OyBsk4LKx/bPTuvpVT/AeqQ/G1I8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSRZc62mEhn/s9xqTHxiGT7TohN5YzYVzy7kHkhDSClfMNe9LWbrmlsMO2w8kSfBkzmnEAXhu6YB0zTUhmZGHNoAEQ8Y6bn1/zdhaX0de18VRlSZgqArGJEylCgEf7y5Hd9Te+G0mAhl+Hxf/dyOiOE/9r4rGFj1cyJIjDt8524=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0detEsU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB9BC116D0;
-	Wed, 25 Feb 2026 06:59:31 +0000 (UTC)
+	 MIME-Version; b=hZwFOHM8cmiyYEZhtX2f0HFECmK05eCkPvbE363eDuYTtzxj13k1TS1Sj8Qlm+EHZ+4HeI9PN5C1VkqZhZERpPNW4mGbd8oSxRXSIpDXG0nwAxW4Dky7Ua6UdmscRi6jIV0QuYnH69QRZd7gBvqgE0gcbJXFDxHrmpxE0h8bqew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpmuUzum; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BC1C116D0;
+	Wed, 25 Feb 2026 06:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002771;
-	bh=83hmzWWaXbgb7kPpbzMZwCI+pbPYCz9sjLuvv8L9hSk=;
+	s=korg; t=1772002772;
+	bh=kqIqkrxP538sVA1OyBsk4LKx/bPTuvpVT/AeqQ/G1I8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0detEsU2nCLeamm5BJCMegX2TDdIOADGsGTB/PpKC30xTY4nCMPZIgsTRg++xs20
-	 SACDl4qZ5z5B1dNW7AEv6rjHbl0TkmejWva4s1jCQgMdtt083zDk7IuoK/8XGTeZHx
-	 Ah25jssipj/mK8ui5USXRMflPygU0tdpfDWtM0JA=
+	b=gpmuUzumcYLqFGPg+znKni99cIceuAEHBAWN6OqpgKxstCdqez4SoiaHc+iJgbBD7
+	 WQ2w8CTpirhyHzD1eS0KEB7fmTbMdaSM3NmyIYUhY3g5asWLxpIhXfJnyFKbjOWpYS
+	 ckkMrolgPiACHmw95x3nqwNs7WYLcjm2GqqckjCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 607/641] x86/hyperv: Fix error pointer dereference
-Date: Tue, 24 Feb 2026 17:25:33 -0800
-Message-ID: <20260225012403.222665864@linuxfoundation.org>
+Subject: [PATCH 6.18 608/641] ASoC: rockchip: i2s-tdm: Use param rate if not provided by set_sysclk
+Date: Tue, 24 Feb 2026 17:25:34 -0800
+Message-ID: <20260225012403.243913832@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -67,85 +68,85 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219522-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219523-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0A2BE1934C7
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,bootlin.com:email]
+X-Rspamd-Queue-Id: 48BBB192C78
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Detlev Casanova <detlev.casanova@collabora.com>
 
-[ Upstream commit 705d01c8d78121ee1634bfc602ac4b0ad1438fab ]
+[ Upstream commit 0783052534f547f8f201dd4554b1df9f1f8615b5 ]
 
-The function idle_thread_get() can return an error pointer and is not
-checked for it. Add check for error pointer.
+Drivers will not always call set_sysclk() for all clocks, especially when
+default mclk-fs can be used.
+When that is the case, use the clock rate set in the params multiplied by the
+default mclk-fs.
 
-Detected by Smatch:
-arch/x86/hyperv/hv_vtl.c:126 hv_vtl_bringup_vcpu() error:
-'idle' dereferencing possible ERR_PTR()
-
-Fixes: 2b4b90e053a29 ("x86/hyperv: Use per cpu initial stack for vtl context")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Fixes: 5323186e2e8d ("ASoC: rockchip: i2s_tdm: Re-add the set_sysclk callback")
+Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20260218201834.924358-1-detlev.casanova@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/hv_vtl.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/soc/rockchip/rockchip_i2s_tdm.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-index 042e8712d8dea..8aafccf7a52c7 100644
---- a/arch/x86/hyperv/hv_vtl.c
-+++ b/arch/x86/hyperv/hv_vtl.c
-@@ -105,7 +105,7 @@ static void hv_vtl_ap_entry(void)
+diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
+index d9a1fab7f4031..e4697ee0addc8 100644
+--- a/sound/soc/rockchip/rockchip_i2s_tdm.c
++++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
+@@ -22,6 +22,7 @@
  
- static int hv_vtl_bringup_vcpu(u32 target_vp_index, int cpu, u64 eip_ignored)
- {
--	u64 status;
-+	u64 status, rsp, rip;
- 	int ret = 0;
- 	struct hv_enable_vp_vtl *input;
- 	unsigned long irq_flags;
-@@ -118,9 +118,11 @@ static int hv_vtl_bringup_vcpu(u32 target_vp_index, int cpu, u64 eip_ignored)
- 	struct desc_struct *gdt;
+ #define DRV_NAME "rockchip-i2s-tdm"
  
- 	struct task_struct *idle = idle_thread_get(cpu);
--	u64 rsp = (unsigned long)idle->thread.sp;
-+	if (IS_ERR(idle))
-+		return PTR_ERR(idle);
++#define DEFAULT_MCLK_FS				256
+ #define CH_GRP_MAX				4  /* The max channel 8 / 2 */
+ #define MULTIPLEX_CH_MAX			10
  
--	u64 rip = (u64)&hv_vtl_ap_entry;
-+	rsp = (unsigned long)idle->thread.sp;
-+	rip = (u64)&hv_vtl_ap_entry;
+@@ -665,6 +666,15 @@ static int rockchip_i2s_tdm_hw_params(struct snd_pcm_substream *substream,
+ 			mclk_rate = i2s_tdm->mclk_rx_freq;
+ 		}
  
- 	native_store_gdt(&gdt_ptr);
- 	store_idt(&idt_ptr);
++		/*
++		 * When the dai/component driver doesn't need to set mclk-fs for a specific
++		 * clock, it can skip the call to set_sysclk() for that clock.
++		 * In that case, simply use the clock rate from the params and multiply it by
++		 * the default mclk-fs value.
++		 */
++		if (!mclk_rate)
++			mclk_rate = DEFAULT_MCLK_FS * params_rate(params);
++
+ 		err = clk_set_rate(mclk, mclk_rate);
+ 		if (err)
+ 			return err;
 -- 
 2.51.0
 
