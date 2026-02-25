@@ -1,179 +1,346 @@
-Return-Path: <stable+bounces-219144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLRZKrJknmlCVAQAu9opvQ
-	(envelope-from <stable+bounces-219144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:55:46 +0100
+	id MBaJEjBlnmlCVAQAu9opvQ
+	(envelope-from <stable+bounces-219152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:57:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490931910E8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:55:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CAC4191142
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 320C5309344F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 151FF304A6E1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72E829A309;
-	Wed, 25 Feb 2026 02:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7655299AB1;
+	Wed, 25 Feb 2026 02:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="TKiSaPy3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5bcm+JQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m3278.qiye.163.com (mail-m3278.qiye.163.com [220.197.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883AA298CC7;
-	Wed, 25 Feb 2026 02:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFEE296BD1
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771988124; cv=none; b=d0z+ryD1eYyQTh0JMbdSKRnXZlKxIs2vjXryJRE1sAZYmiNo66QGfrl47chnlHUO6fil66moxWXqZkVPDoePXFJVnR80h7PMhAZSikjR0c0W1w8kzA7xRYfUokon7LSVdCSx8ASkzM87NBw0ac9UN9XmP1S6G+NsA7T7+0UaYO8=
+	t=1771988252; cv=none; b=Trj1lxjPi5WpkpbCkrLnfDaTtm5cLbVXtBTpFdv7Vns9lDjLIyeXeNmRi1AMw/GM6R0drq6Dzv676olaN6coJ4UrNxN/QHJ5ZA3yFLVVGVWD99cdGohR2a9JTnMRJWf+QjawVYpVR0wHrIAVuK5FZB7HTgK8qAaezSvTOMtNpJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771988124; c=relaxed/simple;
-	bh=mIcZYpc8AT4o8gqIfnbh6XNvCFCHkFv3yuerLteQZn8=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=IeE6g8DxqL93ZfmnIGiJo5V7edlqle0MrXSDBmE4G/BOQw9qZ3ACCMHoNoNCQHyMAskFSHNSU/CzEqtMrvJ1UFcHCuGDlKPMX6gfJt8oboJrDprSkO2RePx+DN6+pwL3D1MMUPY7+AIwhg7vaBh5+kYyQLVKZykpsu1BNeqa5EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=TKiSaPy3; arc=none smtp.client-ip=220.197.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 34dd64091;
-	Wed, 25 Feb 2026 10:55:10 +0800 (GMT+08:00)
-From: Shawn Lin <shawn.lin@rock-chips.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Finley Xiao <finley.xiao@rock-chips.com>,
-	Frank Zhang <rmxpzlb@gmail.com>,
-	linux-pm@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	linux-rockchip@lists.infradead.org,
-	stable@vger.kernel.org,
-	Chaoyi Chen <chaoyi.chen@rock-chips.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH v3] pmdomain: rockchip: Fix PD_VCODEC for RK3588
-Date: Wed, 25 Feb 2026 10:55:01 +0800
-Message-Id: <1771988101-49877-1-git-send-email-shawn.lin@rock-chips.com>
-X-Mailer: git-send-email 2.7.4
-X-HM-Tid: 0a9c92b8cc6f09cckunmfc928bb9ab3f2f
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQxgZTVZNGUsaGk1KGR9NTxpWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=TKiSaPy3NhGAYO2355MbeFtq5S/6Ra41Ad4uQsAdiMqL4m7io/5+I0fKG4R1j1VxTNszAQAMQz1N7MeExgk2qWnFB67tAS8TuJHLqyg/keJTq86ri1ucgYOoVpSJUH++UlAKn8ga/TIc+VtUZbwMi0DKU40Na7iKDOD7gQBS9nQ=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=w0DCebXqm5N2UL9SR5NHgl6Sni59xFPG3ie+LKXKsvw=;
-	h=date:mime-version:subject:message-id:from;
+	s=arc-20240116; t=1771988252; c=relaxed/simple;
+	bh=c248N1j70vwcR0x4C2hfs8ScEIlF38UM/si49VuGpvU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ouL1OKTpMBoKAj6XvEb36IxnyIu3a77z58eam0yd+Yu89t4TLWLcI1R/g3eGQl5UXBF+YdCN5D2FKnpqdsxKzrajnNJsXNY9kImHFtlCJ4+T1CH/E/4O3t4EsC8kbRbwZuSsdu/O53ZnQMAVpRjdUqxuKN+ZLvVDeO3ec4HdKto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5bcm+JQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C73C116D0;
+	Wed, 25 Feb 2026 02:57:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771988252;
+	bh=c248N1j70vwcR0x4C2hfs8ScEIlF38UM/si49VuGpvU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G5bcm+JQS2VIeRtKNpi7wD3brktpsj218cQmGb6G9DzJiPnMMnoAFCedvz2SqWBRL
+	 SL0KNRjaiZ4qEDKQxmjKMahDZRorGqfhmC3JsT8bwJEJbEsXjSywreLTj2N1f+V1J0
+	 PlJpHu9QFPgqomV//yWRJ1QYYK1++cLgBvtNZaeVMkcRjr0xIf8D5CGQlPQjtYRCJQ
+	 D/XdEzi943f6NDeH3axqK1E8Vkf8KYsoSzhV4FMLFM26rmiuZQtibeYX4rcApxZqyq
+	 n8zpo904hAi8RKC0fm+7KnYS2ZKp/m3Cfae618VCpKethascVGcVd0vxeWs682pWyM
+	 LUrj35wEhJk0g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/6] ext4: get rid of ppath in ext4_find_extent()
+Date: Tue, 24 Feb 2026 21:57:24 -0500
+Message-ID: <20260225025729.3839073-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026022438-resample-unlit-c02b@gregkh>
+References: <2026022438-resample-unlit-c02b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[rock-chips.com,none];
-	R_DKIM_ALLOW(-0.20)[rock-chips.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[rock-chips.com,gmail.com,vger.kernel.org,collabora.com,sntech.de,lists.infradead.org];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219144-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219152-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shawn.lin@rock-chips.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[rock-chips.com:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rock-chips.com:mid,rock-chips.com:dkim,rock-chips.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 490931910E8
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 9CAC4191142
 X-Rspamd-Action: no action
 
-From the RK3588 TRM Table 7-1 RK3588 Voltage Domain and Power Domain Summary,
-PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltages to
-be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support landed[1].
-The panic looks like below:
+From: Baokun Li <libaokun1@huawei.com>
 
-  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec0' on, val=0
-  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec1' on, val=0
-  ...
-  Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
-  Workqueue: pm genpd_power_off_work_fn
-  Call trace:
-  show_stack+0x18/0x24 (C)
-  dump_stack_lvl+0x40/0x84
-  dump_stack+0x18/0x24
-  vpanic+0x1ec/0x4fc
-  vpanic+0x0/0x4fc
-  check_panic_on_warn+0x0/0x94
-  arm64_serror_panic+0x6c/0x78
-  do_serror+0xc4/0xcc
-  el1h_64_error_handler+0x3c/0x5c
-  el1h_64_error+0x6c/0x70
-  regmap_mmio_read32le+0x18/0x24 (P)
-  regmap_bus_reg_read+0xfc/0x130
-  regmap_read+0x188/0x1ac
-  regmap_read+0x54/0x78
-  rockchip_pd_power+0xcc/0x5f0
-  rockchip_pd_power_off+0x1c/0x4c
-  genpd_power_off+0x84/0x120
-  genpd_power_off+0x1b4/0x260
-  genpd_power_off_work_fn+0x38/0x58
-  process_scheduled_works+0x194/0x2c4
-  worker_thread+0x2ac/0x3d8
-  kthread+0x104/0x124
-  ret_from_fork+0x10/0x20
-  SMP: stopping secondary CPUs
-  Kernel Offset: disabled
-  CPU features: 0x3000000,000e0005,40230521,0400720b
-  Memory Limit: none
-  ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
+[ Upstream commit 0be4c0c2f17bd10ae16c852f02d51a6a7b318aca ]
 
-Chaoyi pointed out the PD_VCODEC is the parent of PD_RKVDEC0/1 and PD_VENC0/1, so checking
-the PD_VCODEC is enough.
+The use of path and ppath is now very confusing, so to make the code more
+readable, pass path between functions uniformly, and get rid of ppath.
 
-[1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.casanova@collabora.com/
-Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
-Cc: stable@vger.kernel.org
-Suggested-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Getting rid of ppath in ext4_find_extent() requires its caller to update
+ppath. These ppaths will also be dropped later. No functional changes.
 
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-12-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 1bf6974822d1 ("ext4: don't zero the entire extent if EXT4_EXT_DATA_PARTIAL_VALID1")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ fs/ext4/ext4.h        |  2 +-
+ fs/ext4/extents.c     | 55 +++++++++++++++++++++++--------------------
+ fs/ext4/move_extent.c |  7 +++---
+ 3 files changed, 34 insertions(+), 30 deletions(-)
 
-Changes in v3:
-- drop tags
-- rework it for just changing PD_VCODEC(chaoyi)
-
-Changes in v2:
-- collect tags
-- correct TRM section(Sebastian)
-
- drivers/pmdomain/rockchip/pm-domains.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
-index 997e93c..44d3484 100644
---- a/drivers/pmdomain/rockchip/pm-domains.c
-+++ b/drivers/pmdomain/rockchip/pm-domains.c
-@@ -1311,7 +1311,7 @@ static const struct rockchip_domain_info rk3576_pm_domains[] = {
- static const struct rockchip_domain_info rk3588_pm_domains[] = {
- 	[RK3588_PD_GPU]		= DOMAIN_RK3588("gpu",     0x0, BIT(0),  0,       0x0, 0,       BIT(1),  0x0, BIT(0),  BIT(0),  false, true),
- 	[RK3588_PD_NPU]		= DOMAIN_RK3588("npu",     0x0, BIT(1),  BIT(1),  0x0, 0,       0,       0x0, 0,       0,       false, true),
--	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, false),
-+	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, true),
- 	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
- 	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
- 	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 85ba12a48f26a..dd0317d66c1db 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3712,7 +3712,7 @@ extern int ext4_ext_insert_extent(handle_t *, struct inode *,
+ 				  struct ext4_ext_path **,
+ 				  struct ext4_extent *, int);
+ extern struct ext4_ext_path *ext4_find_extent(struct inode *, ext4_lblk_t,
+-					      struct ext4_ext_path **,
++					      struct ext4_ext_path *,
+ 					      int flags);
+ extern void ext4_free_ext_path(struct ext4_ext_path *);
+ extern int ext4_ext_check_inode(struct inode *inode);
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index a3d3c9fc64262..9644a9203152c 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -881,11 +881,10 @@ void ext4_ext_tree_init(handle_t *handle, struct inode *inode)
+ 
+ struct ext4_ext_path *
+ ext4_find_extent(struct inode *inode, ext4_lblk_t block,
+-		 struct ext4_ext_path **orig_path, int flags)
++		 struct ext4_ext_path *path, int flags)
+ {
+ 	struct ext4_extent_header *eh;
+ 	struct buffer_head *bh;
+-	struct ext4_ext_path *path = orig_path ? *orig_path : NULL;
+ 	short int depth, i, ppos = 0;
+ 	int ret;
+ 	gfp_t gfp_flags = GFP_NOFS;
+@@ -906,7 +905,7 @@ ext4_find_extent(struct inode *inode, ext4_lblk_t block,
+ 		ext4_ext_drop_refs(path);
+ 		if (depth > path[0].p_maxdepth) {
+ 			kfree(path);
+-			*orig_path = path = NULL;
++			path = NULL;
+ 		}
+ 	}
+ 	if (!path) {
+@@ -957,14 +956,10 @@ ext4_find_extent(struct inode *inode, ext4_lblk_t block,
+ 
+ 	ext4_ext_show_path(inode, path);
+ 
+-	if (orig_path)
+-		*orig_path = path;
+ 	return path;
+ 
+ err:
+ 	ext4_free_ext_path(path);
+-	if (orig_path)
+-		*orig_path = NULL;
+ 	return ERR_PTR(ret);
+ }
+ 
+@@ -1429,7 +1424,7 @@ static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+ 		/* refill path */
+ 		path = ext4_find_extent(inode,
+ 				    (ext4_lblk_t)le32_to_cpu(newext->ee_block),
+-				    ppath, gb_flags);
++				    path, gb_flags);
+ 		if (IS_ERR(path))
+ 			err = PTR_ERR(path);
+ 	} else {
+@@ -1441,7 +1436,7 @@ static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+ 		/* refill path */
+ 		path = ext4_find_extent(inode,
+ 				   (ext4_lblk_t)le32_to_cpu(newext->ee_block),
+-				    ppath, gb_flags);
++				    path, gb_flags);
+ 		if (IS_ERR(path)) {
+ 			err = PTR_ERR(path);
+ 			goto out;
+@@ -1457,8 +1452,8 @@ static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
+ 			goto repeat;
+ 		}
+ 	}
+-
+ out:
++	*ppath = IS_ERR(path) ? NULL : path;
+ 	return err;
+ }
+ 
+@@ -3243,15 +3238,17 @@ static int ext4_split_extent_at(handle_t *handle,
+ 	 * WARN_ON may be triggered in ext4_da_update_reserve_space() due to
+ 	 * an incorrect ee_len causing the i_reserved_data_blocks exception.
+ 	 */
+-	path = ext4_find_extent(inode, ee_block, ppath,
++	path = ext4_find_extent(inode, ee_block, *ppath,
+ 				flags | EXT4_EX_NOFAIL);
+ 	if (IS_ERR(path)) {
+ 		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
+ 				 split, PTR_ERR(path));
++		*ppath = NULL;
+ 		return PTR_ERR(path);
+ 	}
+ 	depth = ext_depth(inode);
+ 	ex = path[depth].p_ext;
++	*ppath = path;
+ 
+ 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
+ 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
+@@ -3361,9 +3358,12 @@ static int ext4_split_extent(handle_t *handle,
+ 	 * Update path is required because previous ext4_split_extent_at() may
+ 	 * result in split of original leaf or extent zeroout.
+ 	 */
+-	path = ext4_find_extent(inode, map->m_lblk, ppath, flags);
+-	if (IS_ERR(path))
++	path = ext4_find_extent(inode, map->m_lblk, *ppath, flags);
++	if (IS_ERR(path)) {
++		*ppath = NULL;
+ 		return PTR_ERR(path);
++	}
++	*ppath = path;
+ 	depth = ext_depth(inode);
+ 	ex = path[depth].p_ext;
+ 	if (!ex) {
+@@ -3749,9 +3749,12 @@ static int ext4_convert_unwritten_extents_endio(handle_t *handle,
+ 						 EXT4_GET_BLOCKS_CONVERT);
+ 		if (err < 0)
+ 			return err;
+-		path = ext4_find_extent(inode, map->m_lblk, ppath, 0);
+-		if (IS_ERR(path))
++		path = ext4_find_extent(inode, map->m_lblk, *ppath, 0);
++		if (IS_ERR(path)) {
++			*ppath = NULL;
+ 			return PTR_ERR(path);
++		}
++		*ppath = path;
+ 		depth = ext_depth(inode);
+ 		ex = path[depth].p_ext;
+ 	}
+@@ -3807,9 +3810,12 @@ convert_initialized_extent(handle_t *handle, struct inode *inode,
+ 				EXT4_GET_BLOCKS_CONVERT_UNWRITTEN);
+ 		if (err < 0)
+ 			return err;
+-		path = ext4_find_extent(inode, map->m_lblk, ppath, 0);
+-		if (IS_ERR(path))
++		path = ext4_find_extent(inode, map->m_lblk, *ppath, 0);
++		if (IS_ERR(path)) {
++			*ppath = NULL;
+ 			return PTR_ERR(path);
++		}
++		*ppath = path;
+ 		depth = ext_depth(inode);
+ 		ex = path[depth].p_ext;
+ 		if (!ex) {
+@@ -5194,7 +5200,7 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 	* won't be shifted beyond EXT_MAX_BLOCKS.
+ 	*/
+ 	if (SHIFT == SHIFT_LEFT) {
+-		path = ext4_find_extent(inode, start - 1, &path,
++		path = ext4_find_extent(inode, start - 1, path,
+ 					EXT4_EX_NOCACHE);
+ 		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+@@ -5243,7 +5249,7 @@ ext4_ext_shift_extents(struct inode *inode, handle_t *handle,
+ 	 * becomes NULL to indicate the end of the loop.
+ 	 */
+ 	while (iterator && start <= stop) {
+-		path = ext4_find_extent(inode, *iterator, &path,
++		path = ext4_find_extent(inode, *iterator, path,
+ 					EXT4_EX_NOCACHE);
+ 		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+@@ -5825,11 +5831,8 @@ int ext4_clu_mapped(struct inode *inode, ext4_lblk_t lclu)
+ 
+ 	/* search for the extent closest to the first block in the cluster */
+ 	path = ext4_find_extent(inode, EXT4_C2B(sbi, lclu), NULL, 0);
+-	if (IS_ERR(path)) {
+-		err = PTR_ERR(path);
+-		path = NULL;
+-		goto out;
+-	}
++	if (IS_ERR(path))
++		return PTR_ERR(path);
+ 
+ 	depth = ext_depth(inode);
+ 
+@@ -5913,7 +5916,7 @@ int ext4_ext_replay_update_ex(struct inode *inode, ext4_lblk_t start,
+ 		if (ret)
+ 			goto out;
+ 
+-		path = ext4_find_extent(inode, start, &path, 0);
++		path = ext4_find_extent(inode, start, path, 0);
+ 		if (IS_ERR(path))
+ 			return PTR_ERR(path);
+ 		ex = path[path->p_depth].p_ext;
+@@ -5927,7 +5930,7 @@ int ext4_ext_replay_update_ex(struct inode *inode, ext4_lblk_t start,
+ 			if (ret)
+ 				goto out;
+ 
+-			path = ext4_find_extent(inode, start, &path, 0);
++			path = ext4_find_extent(inode, start, path, 0);
+ 			if (IS_ERR(path))
+ 				return PTR_ERR(path);
+ 			ex = path[path->p_depth].p_ext;
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index a3b0acca02ca5..d5636a2a718a8 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -26,16 +26,17 @@ static inline int
+ get_ext_path(struct inode *inode, ext4_lblk_t lblock,
+ 		struct ext4_ext_path **ppath)
+ {
+-	struct ext4_ext_path *path;
++	struct ext4_ext_path *path = *ppath;
+ 
+-	path = ext4_find_extent(inode, lblock, ppath, EXT4_EX_NOCACHE);
++	*ppath = NULL;
++	path = ext4_find_extent(inode, lblock, path, EXT4_EX_NOCACHE);
+ 	if (IS_ERR(path))
+ 		return PTR_ERR(path);
+ 	if (path[ext_depth(inode)].p_ext == NULL) {
+ 		ext4_free_ext_path(path);
+-		*ppath = NULL;
+ 		return -ENODATA;
+ 	}
++	*ppath = path;
+ 	return 0;
+ }
+ 
 -- 
-2.7.4
+2.51.0
 
 
