@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218268-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Ka6DCBZnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218832-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:24 +0100
+	id MI5vE1xRnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218268-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A169A1908B6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BC718EFB9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:33:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD658324DBF0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2C8EA3094D5E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAC0258ED5;
-	Wed, 25 Feb 2026 01:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CBC251795;
+	Wed, 25 Feb 2026 01:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hZg4xb+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSNAR2ZL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111881E2834;
-	Wed, 25 Feb 2026 01:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7392BAF7;
+	Wed, 25 Feb 2026 01:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983714; cv=none; b=kbYNs+lw8n5yS2Uf/7dqv7/z6amBJhZ8A5DvxmxUpNdqMJjt8kH2JeWetcplNmBgTz9rs0TX6WMRKMUZZJ28Pc+04ntj9axa/8yhEuzuVcRylnra14SOQM8Pg/BLkMJ9pSjdn1pzOAWX88mtOvlH6IujElQQfsKUXRGPV/h7RC8=
+	t=1771983067; cv=none; b=epwebdKPaCsFZoY7w7IewpKNlmpI2OPO6F0yOaTqfvpDDbFwrFyPLsqQlZwoYEk5nQ++mi7r1ZmfzUXK5ppJTnqcObMPuUx2plU+hUZRg4EwAe3t3vaROlmnLc5yX59dRwojhxReP+EwfcEmLmw4yeOL2vytNRWSaTExJbhb31c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983714; c=relaxed/simple;
-	bh=Ibp3cLrBtCZb0HCPfd8LhvNiQX+W6XMi4l918L/pO+g=;
+	s=arc-20240116; t=1771983067; c=relaxed/simple;
+	bh=IrPOJ8OdZXN1KXM4DAvYTLX+PTJEcy138PAvSo76i7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5dc8qlEzevmfvLI/k7LPPWalaGXW5TWr5/jYamrGdnlZEqADqiY81G9G24AhB77uiVFmmZdvlH9sGh/JVUs5zgxban9pek5galGTpUsXknsCO9Oly685v2wHhk1V+kfsqmEb2h/0oxTMOeZYrHODPnGUXjnZpSA0Dx9qhP0uBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hZg4xb+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF15AC116D0;
-	Wed, 25 Feb 2026 01:41:53 +0000 (UTC)
+	 MIME-Version; b=FwUVSIc2rup3l/x7ycaplKnKUP9deKpezL1QlK3iCdDQlQJaI+AXc44PrGqdzXmxZEcFdH2jT1uhetxqefZLHEUiN7twUvAA53OpDtKMETJNBdUnweuzelVqjEQhPMkeRs78G1k1kCqzZhdbMAgbMH85S2rH1UiFG8a73yi/51Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSNAR2ZL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5DEC116D0;
+	Wed, 25 Feb 2026 01:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983714;
-	bh=Ibp3cLrBtCZb0HCPfd8LhvNiQX+W6XMi4l918L/pO+g=;
+	s=korg; t=1771983067;
+	bh=IrPOJ8OdZXN1KXM4DAvYTLX+PTJEcy138PAvSo76i7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hZg4xb+b4BG/9QnOq9FCsjMd+xa2T2/+cFEfkOy1SLTvfF8TPKBye6Rr9kYddRUm
-	 oj+fB21GK1orBDFR9VP2/HCMYMqShpiG+dkOLV96U7bCU4zsYdLvcwcgX13j3gdBQH
-	 APtIsfcx7V/V3cEVZ3BPPiaAccoa39dkKB8P+js4=
+	b=QSNAR2ZLxDJHfu61aSxJw7pFikxUobDSIuOX799yWnUMTO5o8K/01ngGtnH5Sm5sr
+	 VNAIgxcVCGYv/99j7jfx4rXuaiTvJgcPAENsyXJIVFb5UMhDkuffSjZxYJjlxnF8Zb
+	 U5r5dyoqX/Fag/PSGvze42c959G3wXKn7Z8FQyEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Chris J Arges <carges@cloudflare.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 012/641] i3c: master: Update hot-join flag only on success
-Date: Tue, 24 Feb 2026 17:15:38 -0800
-Message-ID: <20260225012349.240934403@linuxfoundation.org>
+Subject: [PATCH 6.19 230/781] ima: Fix stack-out-of-bounds in is_bprm_creds_for_exec()
+Date: Tue, 24 Feb 2026 17:15:39 -0800
+Message-ID: <20260225012405.352917102@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +67,225 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218832-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218268-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,nxp.com:email,bootlin.com:email]
-X-Rspamd-Queue-Id: A169A1908B6
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E8BC718EFB9
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Chris J Arges <carges@cloudflare.com>
 
-[ Upstream commit f0775157b9f9a28ae3eabc8d05b0bc52e8056c80 ]
+[ Upstream commit 377cae9851e8559e9d8b82a78c1ac0abeb18839c ]
 
-To prevent inconsistent state when an error occurs, ensure the hot-join
-flag is updated only when enabling or disabling hot-join succeeds.
+KASAN reported a stack-out-of-bounds access in ima_appraise_measurement
+from is_bprm_creds_for_exec:
 
-Fixes: 317bacf960a48 ("i3c: master: add enable(disable) hot join in sys entry")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260113072702.16268-4-adrian.hunter@intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+BUG: KASAN: stack-out-of-bounds in ima_appraise_measurement+0x12dc/0x16a0
+ Read of size 1 at addr ffffc9000160f940 by task sudo/550
+The buggy address belongs to stack of task sudo/550
+and is located at offset 24 in frame:
+  ima_appraise_measurement+0x0/0x16a0
+This frame has 2 objects:
+  [48, 56) 'file'
+  [80, 148) 'hash'
+
+This is caused by using container_of on the *file pointer. This offset
+calculation is what triggers the stack-out-of-bounds error.
+
+In order to fix this, pass in a bprm_is_check boolean which can be set
+depending on how process_measurement is called. If the caller has a
+linux_binprm pointer and the function is BPRM_CHECK we can determine
+is_check and set it then. Otherwise set it to false.
+
+Fixes: 95b3cdafd7cb7 ("ima: instantiate the bprm_creds_for_exec() hook")
+
+Signed-off-by: Chris J Arges <carges@cloudflare.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ security/integrity/ima/ima.h          |  6 ++++--
+ security/integrity/ima/ima_appraise.c | 16 +++-------------
+ security/integrity/ima/ima_main.c     | 22 +++++++++++++---------
+ 3 files changed, 20 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index bc68a5e7455be..425e36b36009b 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -620,7 +620,8 @@ static int i3c_set_hotjoin(struct i3c_master_controller *master, bool enable)
- 	else
- 		ret = master->ops->disable_hotjoin(master);
+diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
+index e3d71d8d56e38..89ebe98ffc5e5 100644
+--- a/security/integrity/ima/ima.h
++++ b/security/integrity/ima/ima.h
+@@ -441,7 +441,8 @@ int ima_check_blacklist(struct ima_iint_cache *iint,
+ int ima_appraise_measurement(enum ima_hooks func, struct ima_iint_cache *iint,
+ 			     struct file *file, const unsigned char *filename,
+ 			     struct evm_ima_xattr_data *xattr_value,
+-			     int xattr_len, const struct modsig *modsig);
++			     int xattr_len, const struct modsig *modsig,
++			     bool bprm_is_check);
+ int ima_must_appraise(struct mnt_idmap *idmap, struct inode *inode,
+ 		      int mask, enum ima_hooks func);
+ void ima_update_xattr(struct ima_iint_cache *iint, struct file *file);
+@@ -466,7 +467,8 @@ static inline int ima_appraise_measurement(enum ima_hooks func,
+ 					   const unsigned char *filename,
+ 					   struct evm_ima_xattr_data *xattr_value,
+ 					   int xattr_len,
+-					   const struct modsig *modsig)
++					   const struct modsig *modsig,
++					   bool bprm_is_check)
+ {
+ 	return INTEGRITY_UNKNOWN;
+ }
+diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity/ima/ima_appraise.c
+index 5149ff4fd50d2..16c20c578ea87 100644
+--- a/security/integrity/ima/ima_appraise.c
++++ b/security/integrity/ima/ima_appraise.c
+@@ -470,17 +470,6 @@ int ima_check_blacklist(struct ima_iint_cache *iint,
+ 	return rc;
+ }
  
--	master->hotjoin = enable;
-+	if (!ret)
-+		master->hotjoin = enable;
+-static bool is_bprm_creds_for_exec(enum ima_hooks func, struct file *file)
+-{
+-	struct linux_binprm *bprm;
+-
+-	if (func == BPRM_CHECK) {
+-		bprm = container_of(&file, struct linux_binprm, file);
+-		return bprm->is_check;
+-	}
+-	return false;
+-}
+-
+ /*
+  * ima_appraise_measurement - appraise file measurement
+  *
+@@ -492,7 +481,8 @@ static bool is_bprm_creds_for_exec(enum ima_hooks func, struct file *file)
+ int ima_appraise_measurement(enum ima_hooks func, struct ima_iint_cache *iint,
+ 			     struct file *file, const unsigned char *filename,
+ 			     struct evm_ima_xattr_data *xattr_value,
+-			     int xattr_len, const struct modsig *modsig)
++			     int xattr_len, const struct modsig *modsig,
++			     bool bprm_is_check)
+ {
+ 	static const char op[] = "appraise_data";
+ 	int audit_msgno = AUDIT_INTEGRITY_DATA;
+@@ -514,7 +504,7 @@ int ima_appraise_measurement(enum ima_hooks func, struct ima_iint_cache *iint,
+ 	 * of the script interpreter(userspace). Differentiate kernel and
+ 	 * userspace enforced integrity audit messages.
+ 	 */
+-	if (is_bprm_creds_for_exec(func, file))
++	if (bprm_is_check)
+ 		audit_msgno = AUDIT_INTEGRITY_USERSPACE;
  
- 	i3c_bus_normaluse_unlock(&master->bus);
+ 	/* If reading the xattr failed and there's no modsig, error out. */
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index 5770cf691912a..1d6229b156fb1 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -236,7 +236,8 @@ static void ima_file_free(struct file *file)
+ static int process_measurement(struct file *file, const struct cred *cred,
+ 			       struct lsm_prop *prop, char *buf, loff_t size,
+ 			       int mask, enum ima_hooks func,
+-			       enum kernel_read_file_id read_id)
++			       enum kernel_read_file_id read_id,
++			       bool bprm_is_check)
+ {
+ 	struct inode *real_inode, *inode = file_inode(file);
+ 	struct ima_iint_cache *iint = NULL;
+@@ -426,7 +427,8 @@ static int process_measurement(struct file *file, const struct cred *cred,
+ 			inode_lock(inode);
+ 			rc = ima_appraise_measurement(func, iint, file,
+ 						      pathname, xattr_value,
+-						      xattr_len, modsig);
++						      xattr_len, modsig,
++						      bprm_is_check);
+ 			inode_unlock(inode);
+ 		}
+ 		if (!rc)
+@@ -493,14 +495,15 @@ static int ima_file_mmap(struct file *file, unsigned long reqprot,
  
+ 	if (reqprot & PROT_EXEC) {
+ 		ret = process_measurement(file, current_cred(), &prop, NULL,
+-					  0, MAY_EXEC, MMAP_CHECK_REQPROT, 0);
++					  0, MAY_EXEC, MMAP_CHECK_REQPROT, 0,
++					  false);
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+ 	if (prot & PROT_EXEC)
+ 		return process_measurement(file, current_cred(), &prop, NULL,
+-					   0, MAY_EXEC, MMAP_CHECK, 0);
++					   0, MAY_EXEC, MMAP_CHECK, 0, false);
+ 
+ 	return 0;
+ }
+@@ -584,7 +587,8 @@ static int ima_bprm_check(struct linux_binprm *bprm)
+ 
+ 	security_current_getlsmprop_subj(&prop);
+ 	return process_measurement(bprm->file, current_cred(),
+-				   &prop, NULL, 0, MAY_EXEC, BPRM_CHECK, 0);
++				   &prop, NULL, 0, MAY_EXEC, BPRM_CHECK, 0,
++				   bprm->is_check);
+ }
+ 
+ /**
+@@ -614,7 +618,7 @@ static int ima_creds_check(struct linux_binprm *bprm, const struct file *file)
+ 
+ 	security_current_getlsmprop_subj(&prop);
+ 	return process_measurement((struct file *)file, bprm->cred, &prop, NULL,
+-				   0, MAY_EXEC, CREDS_CHECK, 0);
++				   0, MAY_EXEC, CREDS_CHECK, 0, false);
+ }
+ 
+ /**
+@@ -662,7 +666,7 @@ static int ima_file_check(struct file *file, int mask)
+ 	security_current_getlsmprop_subj(&prop);
+ 	return process_measurement(file, current_cred(), &prop, NULL, 0,
+ 				   mask & (MAY_READ | MAY_WRITE | MAY_EXEC |
+-					   MAY_APPEND), FILE_CHECK, 0);
++					   MAY_APPEND), FILE_CHECK, 0, false);
+ }
+ 
+ static int __ima_inode_hash(struct inode *inode, struct file *file, char *buf,
+@@ -881,7 +885,7 @@ static int ima_read_file(struct file *file, enum kernel_read_file_id read_id,
+ 	func = read_idmap[read_id] ?: FILE_CHECK;
+ 	security_current_getlsmprop_subj(&prop);
+ 	return process_measurement(file, current_cred(), &prop, NULL, 0,
+-				   MAY_READ, func, 0);
++				   MAY_READ, func, 0, false);
+ }
+ 
+ const int read_idmap[READING_MAX_ID] = {
+@@ -925,7 +929,7 @@ static int ima_post_read_file(struct file *file, char *buf, loff_t size,
+ 	func = read_idmap[read_id] ?: FILE_CHECK;
+ 	security_current_getlsmprop_subj(&prop);
+ 	return process_measurement(file, current_cred(), &prop, buf, size,
+-				   MAY_READ, func, read_id);
++				   MAY_READ, func, read_id, false);
+ }
+ 
+ /**
 -- 
 2.51.0
 
