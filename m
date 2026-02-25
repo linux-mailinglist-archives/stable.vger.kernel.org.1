@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-218037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218038-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EeMI61JnmnXUQQAu9opvQ
-	(envelope-from <stable+bounces-218037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:00:29 +0100
+	id OOT4AwpKnmnXUQQAu9opvQ
+	(envelope-from <stable+bounces-218038-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:02:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FA418E74B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5E118E7AF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:02:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4B7E93025997
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:00:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 02F23303D4E1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA1A251795;
-	Wed, 25 Feb 2026 01:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8CC27F4CA;
+	Wed, 25 Feb 2026 01:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TP5D/hiI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGbBw/rB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA4A24677A;
-	Wed, 25 Feb 2026 01:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB332279DA2;
+	Wed, 25 Feb 2026 01:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771981201; cv=none; b=gw8I9mEQsncy2Gv3iQOmlBAtZcEATYmQ5inuH9shiKTUmyGYtLimrndGh4Gw4FcFv44zsOtSoTb6XzxFDDf/IDstoxQnuhz2UIiG/zBc/RU2PByE2a2EiqCoSKjX93w8/Ui23Dykic9VtzUhNVjeYlXYtqlyutURaXEP7wKPJHU=
+	t=1771981202; cv=none; b=krT0Uh9x59cUH99Ia8RrTko8u129NmMfYbiGsghTuNnU8TlhK3Cmbl3YMpTksQ27Jkqu1GNca6kR0UnYWFxN4Iy5HDX0WllTSQ9CjQ5UduUGjgjfTh5ZjilL0g6p7Niy9mPYw5euZaegdqQaqPuo9gG4JATW8r/basfIOrjwOg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771981201; c=relaxed/simple;
-	bh=psTgTDmkBB+5q3oS5ZinWmYelhMqgnO61QHn7HGrQfU=;
+	s=arc-20240116; t=1771981202; c=relaxed/simple;
+	bh=Zo5WU3kbA0CZiONRwgdIatjelZENz1f9HZ9OS+fG6GY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDGsX9rY+byiBM4jS5UbSVm4Yjn+lsPxtEJILySb09f2htXZwE2YkvLT2VI7KAE+7XOSk9uZeuCmonghY7H/J7ayGVsOv5CE7Hs09RORHvJLim7jevwHQsAPyUBKH5a243HDyH/cEx9TdgUpJLniVueaCKD+ijYdluLTq7Z+0K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TP5D/hiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88721C116D0;
-	Wed, 25 Feb 2026 01:00:00 +0000 (UTC)
+	 MIME-Version; b=k2/EGi9HWMnJAQNEEO3ZMgvZCuC94DwrK9lbOqxPoACOHaKZ/UtV4IrY/ByOkRKbkwzYf50ZVSVPFVdCWM6JtAf78N5YBybFuHrz21+0fiqaaSnRSOh4j46CAEUnjUNWo0Bwp095HQIytCf1YCGvM6A+xihLa+gjUNQZ11HXOZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGbBw/rB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C83CC2BCB6;
+	Wed, 25 Feb 2026 01:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771981200;
-	bh=psTgTDmkBB+5q3oS5ZinWmYelhMqgnO61QHn7HGrQfU=;
+	s=k20201202; t=1771981202;
+	bh=Zo5WU3kbA0CZiONRwgdIatjelZENz1f9HZ9OS+fG6GY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TP5D/hiIbTS3RfNFXvlMH7plMu5oDJBFN3I/ysnJWKDI/qUQeQbkU4bzvUvpIrL10
-	 lG4hwoXJM+y4sJXFkHe/kLjBBt/Jrj1eTexmzHninBb/82mnh//4JmC9cTy+2M/JCz
-	 atDDBi5p8wLOHCCTnFZx8i8wnA2s6kEIbqH8TG8ZcoMVFVb/nvx5J3ZUp8YBLTbRKJ
-	 OCbjZCG0Hdw+yWYoQovXHadP8kPoA2FBrDJidxwfp8M6mXtA+enQlOFVZHEm6bKvjE
-	 KISweLTqquq37Ade0/fJHobCam6pgKkRjBBbk36nS3KkVcojSPbwWqwuIYZcmqbLJJ
-	 lalhqNt7oWfVQ==
+	b=SGbBw/rBGyblcBUMPeKcnrDjf1klhwFZxsXxHXZCg2ywy+d/wQdzWNeScKbD0ac73
+	 XKxPQRnPiW44yQGE1FP0fu7pTvKIynHEH7v/Mz0Eu0s78GodVyGYai4kG28pcMJiTr
+	 lKKjqNxCpr5GBHtbERiUs2LBCT6VUmD99ywf7ej/dq7E7BnIVgIiJftRpe1PWk/bsO
+	 i3hIruNdouRUz+cctAF6kv5QKizvAU7CpzjUSktaazE6kYi3fw5uuVfS/ziaY4Zqav
+	 P/M0jCUABUqau+0grA/aiYsZ9X3/IBAX9smlo4uqusk8uhdcgGRP4Mm6MuBgztQlKU
+	 M+2LqPK+TwJyw==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -51,9 +51,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 2/8] KVM: nSVM: Sync interrupt shadow to cached vmcb12 after VMRUN of L2
-Date: Wed, 25 Feb 2026 00:59:44 +0000
-Message-ID: <20260225005950.3739782-3-yosry@kernel.org>
+Subject: [PATCH v3 5/8] KVM: nSVM: Always use NextRIP as vmcb02's NextRIP after first L2 VMRUN
+Date: Wed, 25 Feb 2026 00:59:47 +0000
+Message-ID: <20260225005950.3739782-6-yosry@kernel.org>
 X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
 In-Reply-To: <20260225005950.3739782-1-yosry@kernel.org>
 References: <20260225005950.3739782-1-yosry@kernel.org>
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218037-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218038-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -92,51 +92,64 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A3FA418E74B
+X-Rspamd-Queue-Id: 2F5E118E7AF
 X-Rspamd-Action: no action
 
-After VMRUN in guest mode, nested_sync_control_from_vmcb02() syncs
-fields written by the CPU from vmcb02 to the cached vmcb12. This is
-because the cached vmcb12 is used as the authoritative copy of some of
-the controls, and is the payload when saving/restoring nested state.
+For guests with NRIPS disabled, L1 does not provide NextRIP when running
+an L2 with an injected soft interrupt, instead it advances the current RIP
+before running it. KVM uses the current RIP as the NextRIP in vmcb02 to
+emulate a CPU without NRIPS.
 
-int_state is also written by the CPU, specifically bit 0 (i.e.
-SVM_INTERRUPT_SHADOW_MASK) for nested VMs, but it is not sync'd to
-cached vmcb12. This does not cause a problem if KVM_SET_NESTED_STATE
-preceeds KVM_SET_VCPU_EVENTS in the restore path, as an interrupt shadow
-would be correctly restored to vmcb02 (KVM_SET_VCPU_EVENTS overwrites
-what KVM_SET_NESTED_STATE restored in int_state).
-
-However, if KVM_SET_VCPU_EVENTS preceeds KVM_SET_NESTED_STATE, an
-interrupt shadow would be restored into vmcb01 instead of vmcb02. This
-would mostly be benign for L1 (delays an interrupt), but not for L2. For
-L2, the vCPU could hang (e.g. if a wakeup interrupt is delivered before
-a HLT that should have been in an interrupt shadow).
-
-Sync int_state to the cached vmcb12 in nested_sync_control_from_vmcb02()
-to avoid this problem. With that, KVM_SET_NESTED_STATE restores the
-correct interrupt shadow state, and if KVM_SET_VCPU_EVENTS follows it
-would overwrite it with the same value.
+However, after L2 runs the first time, NextRIP will be updated by the
+CPU and/or KVM, and the current RIP is no longer the correct value to
+use in vmcb02.  Hence, after save/restore, use the current RIP if and
+only if a nested run is pending, otherwise use NextRIP.
 
 Fixes: cc440cdad5b7 ("KVM: nSVM: implement KVM_GET_NESTED_STATE and KVM_SET_NESTED_STATE")
 CC: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/svm/nested.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index de90b104a0dd5..9909ff237e5ca 100644
+index 9909ff237e5ca..f3ed1bdbe76c9 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -521,6 +521,7 @@ void nested_sync_control_from_vmcb02(struct vcpu_svm *svm)
- 	u32 mask;
- 	svm->nested.ctl.event_inj      = svm->vmcb->control.event_inj;
- 	svm->nested.ctl.event_inj_err  = svm->vmcb->control.event_inj_err;
-+	svm->nested.ctl.int_state	= svm->vmcb->control.int_state;
+@@ -845,17 +845,24 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
+ 	vmcb02->control.event_inj_err       = svm->nested.ctl.event_inj_err;
  
- 	/* Only a few fields of int_ctl are written by the processor.  */
- 	mask = V_IRQ_MASK | V_TPR_MASK;
+ 	/*
+-	 * next_rip is consumed on VMRUN as the return address pushed on the
++	 * NextRIP is consumed on VMRUN as the return address pushed on the
+ 	 * stack for injected soft exceptions/interrupts.  If nrips is exposed
+-	 * to L1, take it verbatim from vmcb12.  If nrips is supported in
+-	 * hardware but not exposed to L1, stuff the actual L2 RIP to emulate
+-	 * what a nrips=0 CPU would do (L1 is responsible for advancing RIP
+-	 * prior to injecting the event).
++	 * to L1, take it verbatim from vmcb12.
++	 *
++	 * If nrips is supported in hardware but not exposed to L1, stuff the
++	 * actual L2 RIP to emulate what a nrips=0 CPU would do (L1 is
++	 * responsible for advancing RIP prior to injecting the event). This is
++	 * only the case for the first L2 run after VMRUN. After that (e.g.
++	 * during save/restore), NextRIP is updated by the CPU and/or KVM, and
++	 * the value of the L2 RIP from vmcb12 should not be used.
+ 	 */
+-	if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
+-		vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
+-	else if (boot_cpu_has(X86_FEATURE_NRIPS))
+-		vmcb02->control.next_rip    = vmcb12_rip;
++	if (boot_cpu_has(X86_FEATURE_NRIPS)) {
++		if (guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS) ||
++		    !svm->nested.nested_run_pending)
++			vmcb02->control.next_rip    = svm->nested.ctl.next_rip;
++		else
++			vmcb02->control.next_rip    = vmcb12_rip;
++	}
+ 
+ 	svm->nmi_l1_to_l2 = is_evtinj_nmi(vmcb02->control.event_inj);
+ 	if (is_evtinj_soft(vmcb02->control.event_inj)) {
 -- 
 2.53.0.414.gf7e9f6c205-goog
 
