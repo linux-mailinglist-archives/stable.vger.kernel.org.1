@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yA68NfpSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:10 +0100
+	id yL38Iq2dnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943BE18F632
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6AA192A6C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B54893084593
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 439A8307C9F3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566BC1E2834;
-	Wed, 25 Feb 2026 01:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE1D30C360;
+	Wed, 25 Feb 2026 06:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQ7K1tSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fmPzPy5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196DB1D5141;
-	Wed, 25 Feb 2026 01:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADF32DC767;
+	Wed, 25 Feb 2026 06:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983480; cv=none; b=HnLfKawFAeNxtXU2CrHodyRAHcA/+6S1UKBjzyqzmpEU5aN+vjsk1YD1CbqSbtbxeiDmmBH1az+H4zJds+T7KezU3oI7yqMepRXx63Aq0nlIpVE5LINyaVn2BvG8irPr1xV+aM2yviCpJyJ9ROVxifTguJq5LwOjZkgkux46ukk=
+	t=1772002637; cv=none; b=o68NAD24cgzqGez2lJ6j5nyPtfqgIezXb7ZywxvveDwSo8rOLdLl7apV8iJN2QSJaAPVGxWvVXsCET2rjFXNTxGLqHhPHMJo9ZAoEH/Tr0+vbAYqFx5scDtocIzUEb1tCgMGfx4kMyHG20Yw/7kzeuDfR7YzqOPMl4XSoGoZdgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983480; c=relaxed/simple;
-	bh=0AMItDpuyvpODM0mtGdLyzbzSK/+Lu11ObU9aicywSw=;
+	s=arc-20240116; t=1772002637; c=relaxed/simple;
+	bh=vYeT90wVbt+Y3Rs9jFSQbGFfwmBcQKhgfWVav5+LEII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gChtQllnXogLPsKmaJrPWpdxC/QVFXWgNiY9FMeCaa59R1KJ7oMhJkqfWR1ywLlFJdP6YP2pFvjjWWRpfroc+apDpSVKLbqCdjndk+AOc95VmzueMMPNiRuHHwI3eGOprzjpGCTuhUAMQ75ZI3SZsrMIcicTuciJn44u8l7Ta8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ7K1tSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0327C116D0;
-	Wed, 25 Feb 2026 01:37:59 +0000 (UTC)
+	 MIME-Version; b=AtwJfKJ1GxFKqGLjk/SXszal9CfQrqkx5yi+ARzLlUivWFdRGbxNKDgVNxrNDyCYcbHw5rWyI/+76wrqjoD2BIa1T3X0mBJLrnB+SgLoTqJRYNrd16p7MccsAVtLNAkKi6KQNS33ppFMdZ4VfTRG7vwOAmG6on8aSsk19UqDBew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fmPzPy5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6E0C116D0;
+	Wed, 25 Feb 2026 06:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983480;
-	bh=0AMItDpuyvpODM0mtGdLyzbzSK/+Lu11ObU9aicywSw=;
+	s=korg; t=1772002637;
+	bh=vYeT90wVbt+Y3Rs9jFSQbGFfwmBcQKhgfWVav5+LEII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQ7K1tSLy+iKBoxKUHYCMcuScGob9nI2l9oPSpTkGlZykFMGHm3FJQ9aEpeQbsvRd
-	 VHZqq2oJLAcY6uTca+fT5kxt+OJIjzmvxLvWhHSWesNHtDiUCDN7Bqq8oC3hSc04WE
-	 HiSUzK8lDw3bPiAOVBLdhk7Xo5zFXsKVNjOj+4Ts=
+	b=1fmPzPy5MKWFOOnDpIkoSF0ClSpJZzPfT+etJc3H0EUfmkpkpP4g8Dn8KbXgvMlRL
+	 KJZyirlM3pubJsTNRZdIFgaEuJRPck/W6+bTIeHaYj7v7FBpEeBldh7LLky0Kk4GWa
+	 TD6It8skTy3rK9l5zXEeFAEBF8iv5wDHuhw8yuQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 593/781] usb: bdc: fix sleep during atomic
+Subject: [PATCH 6.18 376/641] NFS/localio: remove -EAGAIN handling in nfs_local_doio()
 Date: Tue, 24 Feb 2026 17:21:42 -0800
-Message-ID: <20260225012414.342166899@linuxfoundation.org>
+Message-ID: <20260225012357.709183937@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218631-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219319-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,48 +90,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 943BE18F632
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
+X-Rspamd-Queue-Id: ED6AA192A6C
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Mike Snitzer <snitzer@kernel.org>
 
-[ Upstream commit f1195ca3b4bbd001d3f1264dce91f83dec7777f5 ]
+[ Upstream commit e72a73957613653f50375db1f3a3fbb907a9c40b ]
 
-bdc_run() can be ran during atomic context leading to a sleep during
-atomic warning. Fix this by replacing read_poll_timeout() with
-read_poll_timeout_atomic().
+Handling -EAGAIN in nfs_local_doio() was introduced with commit
+0978e5b85fc08 (nfs_do_local_{read,write} were made to have negative
+checks for correspoding iter method) but commit e43e9a3a3d66
+since eliminated the possibility for this -EAGAIN early return.
 
-Fixes: 75ae051efc9b ("usb: gadget: bdc: use readl_poll_timeout() to simplify code")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260120200754.2488765-1-justin.chen@broadcom.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So remove nfs_local_doio()'s -EAGAIN handling that calls
+nfs_localio_disable_client() -- while it should never happen from
+nfs_do_local_{read,write} this particular -EAGAIN handling is now
+"dead" and so it has become a liability.
+
+Fixes: e43e9a3a3d66 ("nfs/localio: refactor iocb initialization")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/bdc/bdc_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/localio.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/bdc/bdc_core.c b/drivers/usb/gadget/udc/bdc/bdc_core.c
-index 5c3d8b64c0e76..f47aac078f6be 100644
---- a/drivers/usb/gadget/udc/bdc/bdc_core.c
-+++ b/drivers/usb/gadget/udc/bdc/bdc_core.c
-@@ -35,8 +35,8 @@ static int poll_oip(struct bdc *bdc, u32 usec)
- 	u32 status;
- 	int ret;
+diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
+index d1a8f6fa9d74e..358d686d2ae33 100644
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -995,8 +995,6 @@ int nfs_local_doio(struct nfs_client *clp, struct nfsd_file *localio,
+ 	}
  
--	ret = readl_poll_timeout(bdc->regs + BDC_BDCSC, status,
--				 (BDC_CSTS(status) != BDC_OIP), 10, usec);
-+	ret = readl_poll_timeout_atomic(bdc->regs + BDC_BDCSC, status,
-+					(BDC_CSTS(status) != BDC_OIP), 10, usec);
- 	if (ret)
- 		dev_err(bdc->dev, "operation timedout BDCSC: 0x%08x\n", status);
- 	else
+ 	if (status != 0) {
+-		if (status == -EAGAIN)
+-			nfs_localio_disable_client(clp);
+ 		nfs_local_iocb_release(iocb);
+ 		hdr->task.tk_status = status;
+ 		nfs_local_hdr_release(hdr, call_ops);
 -- 
 2.51.0
 
