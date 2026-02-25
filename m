@@ -1,62 +1,71 @@
-Return-Path: <stable+bounces-218518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDEoG7hSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218518-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:04 +0100
+	id EKkTFYlWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1456118F4CF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F19B7190321
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E780306F00C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B3E8B30D34F6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1FC23D7CF;
-	Wed, 25 Feb 2026 01:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F29026E6F8;
+	Wed, 25 Feb 2026 01:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UARMOuoN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKlHnbt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7045518B0A;
-	Wed, 25 Feb 2026 01:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E3220C012;
+	Wed, 25 Feb 2026 01:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983353; cv=none; b=Bn2yNPl2SILk3DJ756XAX/lGUXtVi3ujiBExSstE5bzvrWGjP0LLfb2o6Z/7/zOvKqXYkl4MsW560EQ2GPLVncQsVOthC/0HNHM8T9WkUlT0/fimSugxWBIK6OIJk2bYOztjBtF7uwmDUP/QgPhvw5MGSP6Vl+ixxM6q7efq6d8=
+	t=1771984012; cv=none; b=pA0IbF4SnbcIRjMbZYrmx3QGswFqQh88g4zU2I2iE9hpX6w1XLCu1Q3Jd359hRqo6ggjWXEprT8UP+irazdTcjbnIcRsnpKV+sTbMo8HuHcqJLIxFKp4psey3T1NpJIgDPvGwXT0mofeUDsxB3OxU9tAXWW/wKQ2UHxPgW5WMPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983353; c=relaxed/simple;
-	bh=vHCROGLlUjxZwidZMgl1UBtNKTDpBiMyksrmDNlc348=;
+	s=arc-20240116; t=1771984012; c=relaxed/simple;
+	bh=MJGW/NWRnr0Dj9I9qOEaLuZqOtogu8lo6kNcTBEmxrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DaEQCmAuOHUmS13piSL97aN6pLmDBX3AH8LUWms8WHnaOIZfebKVfWqhLD5bhBroOrhXjt6WhP5Uo1UubeMofNz84SonblrVbISf3XMzd7+pR2RaOeZ0nHCtXuz+N1eg9ljse2xswDu4DsBxbw222odo8flwRYAYjI524mkV7ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UARMOuoN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F710C116D0;
-	Wed, 25 Feb 2026 01:35:53 +0000 (UTC)
+	 MIME-Version; b=GzuZ13kco+KW0ucZZXS8sHRjF1dnjYMdwoSjgixmJLhvkTf/2qB0ROssYnjlB10s5RYpFOzm5w4z4uUL7ggLu1iJpkkFY5sbfhXJXykzvm0AIwYito8ffJ/tt5YodhB70JrE4xeGMafa3PecdTzTciJWs/IBUzXEqX92mj2vzj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKlHnbt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13943C116D0;
+	Wed, 25 Feb 2026 01:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983353;
-	bh=vHCROGLlUjxZwidZMgl1UBtNKTDpBiMyksrmDNlc348=;
+	s=korg; t=1771984012;
+	bh=MJGW/NWRnr0Dj9I9qOEaLuZqOtogu8lo6kNcTBEmxrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UARMOuoNpfXJ1eyeCU1jJZv16Qg2E5wm1ZRB4LynkzLCO/fxlUARHuFNWPW60lUXw
-	 5y+CnDnqjCp2QBWHNvMdDpvWn1utT6t0dMJMrdAaas0Xq5opuTTzB2GtjwUUkuJCgM
-	 YoukOcuQzElv4tYoJrq7D5JdakrKRmNEwnVoDpZs=
+	b=ZKlHnbt6L5+o/zhrePdEUGCkclAL64mdESS3VlzlJrKlBRs8SiinoDamKHNso5TF0
+	 9pSt2bSjhv0RGiVXEskkGzIxDPB/d7pBLL2JAy11/TCqeeFn8wXAZZ34VGZ51oDpb3
+	 /coGIkPYFJFsMtGU/ZgvXtLbjkZ95y+MgiVD1V0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Cagle <john.cagle@hammerspace.com>,
-	Allen Lu <allen.lu@hammerspace.com>,
-	Benjamin Coddington <bcodding@hammerspace.com>,
-	Mike Snitzer <snitzer@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Daniel Borkman <daniel@iogearbox.net>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	Marc Rutland <mark.rutland@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 478/781] NFS/localio: prevent direct reclaim recursion into NFS via nfs_writepages
+Subject: [PATCH 6.18 261/641] kallsyms/bpf: rename __bpf_address_lookup() to bpf_address_lookup()
 Date: Tue, 24 Feb 2026 17:19:47 -0800
-Message-ID: <20260225012411.538570224@linuxfoundation.org>
+Message-ID: <20260225012355.145968551@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,108 +77,220 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218518-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-219083-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,kernel.org,atomlin.com,iogearbox.net,samsung.com,gmail.com,arm.com,google.com,goodmis.org,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.943];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,hammerspace.com:email]
-X-Rspamd-Queue-Id: 1456118F4CF
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F19B7190321
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@hammerspace.com>
+From: Petr Mladek <pmladek@suse.com>
 
-[ Upstream commit 67435d2d8a33a75f9647724952cb1b18279d2e95 ]
+[ Upstream commit cd6735896d0343942cf3dafb48ce32eb79341990 ]
 
-LOCALIO is an NFS loopback mount optimization that avoids using the
-network for READ, WRITE and COMMIT if the NFS client and server are
-determined to be on the same system. But because LOCALIO is still
-fundamentally "just NFS loopback mount" it is susceptible to recursion
-deadlock via direct reclaim, e.g.: NFS LOCALIO down to XFS and then
-back into NFS via nfs_writepages.
+bpf_address_lookup() has been used only in kallsyms_lookup_buildid().  It
+was supposed to set @modname and @modbuildid when the symbol was in a
+module.
 
-Fix LOCALIO's potential for direct reclaim deadlock by ensuring that
-all its page cache allocations are done from GFP_NOFS context.
+But it always just cleared @modname because BPF symbols were never in a
+module.  And it did not clear @modbuildid because the pointer was not
+passed.
 
-Thanks to Ben Coddington for pointing out commit ad22c7a043c2 ("xfs:
-prevent stack overflows from page cache allocation").
+The wrapper is no longer needed.  Both @modname and @modbuildid are now
+always initialized to NULL in kallsyms_lookup_buildid().
 
-Reported-by: John Cagle <john.cagle@hammerspace.com>
-Tested-by: Allen Lu <allen.lu@hammerspace.com>
-Suggested-by: Benjamin Coddington <bcodding@hammerspace.com>
-Fixes: 70ba381e1a43 ("nfs: add LOCALIO support")
-Signed-off-by: Mike Snitzer <snitzer@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Remove the wrapper and rename __bpf_address_lookup() to
+bpf_address_lookup() because this variant is used everywhere.
+
+[akpm@linux-foundation.org: fix loongarch]
+Link: https://lkml.kernel.org/r/20251128135920.217303-6-pmladek@suse.com
+Fixes: 9294523e3768 ("module: add printk formats to add module build ID to stacktraces")
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Cc: Aaron Tomlin <atomlin@atomlin.com>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: Daniel Gomez <da.gomez@samsung.com>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Luis Chamberalin <mcgrof@kernel.org>
+Cc: Marc Rutland <mark.rutland@arm.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/localio.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/arm64/net/bpf_jit_comp.c   |  2 +-
+ arch/loongarch/net/bpf_jit.c    |  2 +-
+ arch/powerpc/net/bpf_jit_comp.c |  2 +-
+ include/linux/filter.h          | 26 ++++----------------------
+ kernel/bpf/core.c               |  4 ++--
+ kernel/kallsyms.c               |  5 ++---
+ 6 files changed, 11 insertions(+), 30 deletions(-)
 
-diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
-index 00bbac6c9fe40..84f53f27a9089 100644
---- a/fs/nfs/localio.c
-+++ b/fs/nfs/localio.c
-@@ -291,6 +291,18 @@ nfs_local_open_fh(struct nfs_client *clp, const struct cred *cred,
- }
- EXPORT_SYMBOL_GPL(nfs_local_open_fh);
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 0dfefeedfe56c..83a6ca613f9c2 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -2939,7 +2939,7 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type poke_type,
+ 	u64 plt_target = 0ULL;
+ 	bool poking_bpf_entry;
  
-+/*
-+ * Ensure all page cache allocations are done from GFP_NOFS context to
-+ * prevent direct reclaim recursion back into NFS via nfs_writepages.
-+ */
-+static void
-+nfs_local_mapping_set_gfp_nofs_context(struct address_space *m)
-+{
-+	gfp_t gfp_mask = mapping_gfp_mask(m);
-+
-+	mapping_set_gfp_mask(m, (gfp_mask & ~(__GFP_FS)));
-+}
-+
- static void
- nfs_local_iocb_free(struct nfs_local_kiocb *iocb)
+-	if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
++	if (!bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
+ 		/* Only poking bpf text is supported. Since kernel function
+ 		 * entry is set up by ftrace, we reply on ftrace to poke kernel
+ 		 * functions.
+diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+index 87ff025137873..e9d666508ae28 100644
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -1318,7 +1318,7 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type poke_type,
+ 	/* Only poking bpf text is supported. Since kernel function entry
+ 	 * is set up by ftrace, we rely on ftrace to poke kernel functions.
+ 	 */
+-	if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
++	if (!bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
+ 		return -ENOTSUPP;
+ 
+ 	image = ip - offset;
+diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+index 88ad5ba7b87fd..21f7f26a5e2f3 100644
+--- a/arch/powerpc/net/bpf_jit_comp.c
++++ b/arch/powerpc/net/bpf_jit_comp.c
+@@ -1122,7 +1122,7 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type poke_type,
+ 	branch_flags = poke_type == BPF_MOD_CALL ? BRANCH_SET_LINK : 0;
+ 
+ 	/* We currently only support poking bpf programs */
+-	if (!__bpf_address_lookup(bpf_func, &size, &offset, name)) {
++	if (!bpf_address_lookup(bpf_func, &size, &offset, name)) {
+ 		pr_err("%s (0x%lx): kernel/modules are not supported\n", __func__, bpf_func);
+ 		return -EOPNOTSUPP;
+ 	}
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 569de3b14279a..cf7a0bce1bb6d 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -1375,24 +1375,13 @@ static inline bool bpf_jit_kallsyms_enabled(void)
+ 	return false;
+ }
+ 
+-int __bpf_address_lookup(unsigned long addr, unsigned long *size,
+-				 unsigned long *off, char *sym);
++int bpf_address_lookup(unsigned long addr, unsigned long *size,
++		       unsigned long *off, char *sym);
+ bool is_bpf_text_address(unsigned long addr);
+ int bpf_get_kallsym(unsigned int symnum, unsigned long *value, char *type,
+ 		    char *sym);
+ struct bpf_prog *bpf_prog_ksym_find(unsigned long addr);
+ 
+-static inline int
+-bpf_address_lookup(unsigned long addr, unsigned long *size,
+-		   unsigned long *off, char **modname, char *sym)
+-{
+-	int ret = __bpf_address_lookup(addr, size, off, sym);
+-
+-	if (ret && modname)
+-		*modname = NULL;
+-	return ret;
+-}
+-
+ void bpf_prog_kallsyms_add(struct bpf_prog *fp);
+ void bpf_prog_kallsyms_del(struct bpf_prog *fp);
+ 
+@@ -1431,8 +1420,8 @@ static inline bool bpf_jit_kallsyms_enabled(void)
+ }
+ 
+ static inline int
+-__bpf_address_lookup(unsigned long addr, unsigned long *size,
+-		     unsigned long *off, char *sym)
++bpf_address_lookup(unsigned long addr, unsigned long *size,
++		   unsigned long *off, char *sym)
  {
-@@ -315,6 +327,7 @@ nfs_local_iocb_alloc(struct nfs_pgio_header *hdr,
- 		return NULL;
- 	}
- 
-+	nfs_local_mapping_set_gfp_nofs_context(file->f_mapping);
- 	init_sync_kiocb(&iocb->kiocb, file);
- 
- 	iocb->hdr = hdr;
-@@ -1004,6 +1017,8 @@ nfs_local_run_commit(struct file *filp, struct nfs_commit_data *data)
- 			end = LLONG_MAX;
- 	}
- 
-+	nfs_local_mapping_set_gfp_nofs_context(filp->f_mapping);
-+
- 	dprintk("%s: commit %llu - %llu\n", __func__, start, end);
- 	return vfs_fsync_range(filp, start, end, 0);
+ 	return 0;
  }
+@@ -1453,13 +1442,6 @@ static inline struct bpf_prog *bpf_prog_ksym_find(unsigned long addr)
+ 	return NULL;
+ }
+ 
+-static inline int
+-bpf_address_lookup(unsigned long addr, unsigned long *size,
+-		   unsigned long *off, char **modname, char *sym)
+-{
+-	return 0;
+-}
+-
+ static inline void bpf_prog_kallsyms_add(struct bpf_prog *fp)
+ {
+ }
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index d595fe512498c..c2278f392e932 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -713,8 +713,8 @@ static struct bpf_ksym *bpf_ksym_find(unsigned long addr)
+ 	return n ? container_of(n, struct bpf_ksym, tnode) : NULL;
+ }
+ 
+-int __bpf_address_lookup(unsigned long addr, unsigned long *size,
+-				 unsigned long *off, char *sym)
++int bpf_address_lookup(unsigned long addr, unsigned long *size,
++		       unsigned long *off, char *sym)
+ {
+ 	struct bpf_ksym *ksym;
+ 	int ret = 0;
+diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
+index 049e296f586cc..7417dd5f8a796 100644
+--- a/kernel/kallsyms.c
++++ b/kernel/kallsyms.c
+@@ -345,7 +345,7 @@ int kallsyms_lookup_size_offset(unsigned long addr, unsigned long *symbolsize,
+ 		return 1;
+ 	}
+ 	return !!module_address_lookup(addr, symbolsize, offset, NULL, NULL, namebuf) ||
+-	       !!__bpf_address_lookup(addr, symbolsize, offset, namebuf);
++	       !!bpf_address_lookup(addr, symbolsize, offset, namebuf);
+ }
+ 
+ static int kallsyms_lookup_buildid(unsigned long addr,
+@@ -377,8 +377,7 @@ static int kallsyms_lookup_buildid(unsigned long addr,
+ 	ret = module_address_lookup(addr, symbolsize, offset,
+ 				    modname, modbuildid, namebuf);
+ 	if (!ret)
+-		ret = bpf_address_lookup(addr, symbolsize,
+-					 offset, modname, namebuf);
++		ret = bpf_address_lookup(addr, symbolsize, offset, namebuf);
+ 
+ 	if (!ret)
+ 		ret = ftrace_mod_address_lookup(addr, symbolsize,
 -- 
 2.51.0
 
