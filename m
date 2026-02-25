@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-219695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNWSKi1Qn2n+ZwQAu9opvQ
-	(envelope-from <stable+bounces-219695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 20:40:29 +0100
+	id SLegFDxQn2k7aAQAu9opvQ
+	(envelope-from <stable+bounces-219696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 20:40:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5174D19CC66
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 20:40:26 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 478DE19CC9A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 20:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 433FF304AA1C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 19:40:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6C593300E6AD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 19:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5B43EDADC;
-	Wed, 25 Feb 2026 19:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1143EDAD6;
+	Wed, 25 Feb 2026 19:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sIAsJgas"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDTzxMJi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EFD395D94
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 19:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC6D3D668E
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 19:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772048415; cv=none; b=m8BPSL67rBt+/plhL4CJY+B19Q8mDkUWjtqAdYljs5dxJfLNrJ2r9ng7iVUkCyo0HYj209vAJGbSc5IwzbycrrhOE0zVdtU4bLLhFvevgbHmLBlqeByIQwfgE48WLxuNIFvEgHap/qhryb8J1iG8Qg5iBSUHFJcABnY6tK8yslA=
+	t=1772048437; cv=none; b=Q6bMTsC54XOz/7XSkEobb0+u7epseXT4F6EAhTI/khTPVSuz2XLYOPwould64a5tLp8zieV17l6asikdRnrUNx1qOmvpRtuGfGdYZBvf0Mt0hTAcr+W3Cu7WMm6S69kYUYgBaf5hGPub5S+UbdujXrbj3guud4xzvrajMru+IPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772048415; c=relaxed/simple;
-	bh=QjJey1tsBt78uqBnAnUSLeZkRgeCV0mERaGdMseQhd8=;
+	s=arc-20240116; t=1772048437; c=relaxed/simple;
+	bh=m+6R/gAaY4MtcfPJaKxphqfAl397ASBmd/12bikQzS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GAJUAwf4ACdgfioIftNMbgiGJ53KLcejR+mW50aCAY7mtLW/FSFbtZ0afU6Izueab0T1wmAInjUKtEchpj4rGHBXg7oodT15Iu4wYuVIWuSD8fLBNkfzIt++moJWpg06UANq+NEd5BzfFqy+kSbxtcBzrTaStPmddEqfkFAMVXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sIAsJgas; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFDDC19421;
-	Wed, 25 Feb 2026 19:40:13 +0000 (UTC)
+	 MIME-Version; b=rI2jeAuBsEqUqMP4NDJsusI5IEvrt6C2UYRmWrEldF+ioKrjgWEfOCkYXwMHn/M9U+CVQd97VaY+rN81yiC0WQal7Nv50AJwB32kNyp/GIXh0EXzbzNYNw/JbjZXMihfouUnlhEvlW32KPjpoNGf7vM99ls4axYl1NE1QxWc8xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDTzxMJi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CA9C19421;
+	Wed, 25 Feb 2026 19:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772048414;
-	bh=QjJey1tsBt78uqBnAnUSLeZkRgeCV0mERaGdMseQhd8=;
+	s=k20201202; t=1772048436;
+	bh=m+6R/gAaY4MtcfPJaKxphqfAl397ASBmd/12bikQzS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIAsJgasNdwejmEDAmWumCZ1zadjEeXkIidfI3fGjfu01uqII7vZyKD4jD5d3yseQ
-	 5rVZDx/GOm6N7Q7yzqBK5ob95kFo30VO18g8/1KgRdui2O9vNTV85ZbG5ubTbvVVlo
-	 6zO2dIeWoarwdSJuMsA34qfP3HMdu62Lb5/wLVqmpFFt4Fdbde/F8tYF6ERSxHPmPg
-	 tgX18EsI0BDuV1LhIq+6ciNk2N3lAtWwEfgcTgfGpomoXXdAflFuPY5qhoB5pVlbJ0
-	 RFFP7ua1pfElOvowRc+L0FiEFEVDVw4Zamy/HHFVjGUmS2vVmhvdR3txIL+UIYORvw
-	 2eqPh4CkiGflA==
+	b=sDTzxMJigtYaSgPRdI60wuZagUamXYyvQ2hbLB5bk1+7oGdoHRZf/UpItQGB6JjLU
+	 PJDxjpdGL1BZIPPE+/bgfTe35Gk6HfEs9vTmzDc6fdM58oxPPtHJDAa3sDRL7IfmPz
+	 ahnLxkxSIH0kSAO+uEV1e/3hDjobMfvUjmb3ka3qCSWNBqH6VtDIDIgLc2pSA6jHeI
+	 57c78/9zG8moN3/jm1ZBMGlr8FreOzccgEfhO10fdTmgAfKIkajjIHrodxLxPN9mmA
+	 YcATL9ILRFY+R4LJcCopdH89bR8SBttk+b0RPbgK5SZgzPgZ8ndxxDJU0IjWjimKJ6
+	 ATUFr+MLetdBw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Igor Pylypiv <ipylypiv@google.com>,
+Cc: Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	stable@kernel.org,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/2] ata: libata-scsi: refactor ata_scsi_translate()
-Date: Wed, 25 Feb 2026 14:40:11 -0500
-Message-ID: <20260225194011.1015550-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y] ext4: always allocate blocks only from groups inode can use
+Date: Wed, 25 Feb 2026 14:40:32 -0500
+Message-ID: <20260225194032.1016421-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260225194011.1015550-1-sashal@kernel.org>
-References: <2026022431-quote-freefall-2523@gregkh>
- <20260225194011.1015550-1-sashal@kernel.org>
+In-Reply-To: <2026022435-designer-unmoral-b6e7@gregkh>
+References: <2026022435-designer-unmoral-b6e7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,7 +72,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,178 +80,86 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219695-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219696-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5174D19CC66
+X-Rspamd-Queue-Id: 478DE19CC9A
 X-Rspamd-Action: no action
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit bb3a8154b1a1dc2c86d037482c0a2cf9186829ed ]
+[ Upstream commit 4865c768b563deff1b6a6384e74a62f143427b42 ]
 
-Factor out of ata_scsi_translate() the code handling queued command
-deferral using the port qc_defer callback and issuing the queued
-command with ata_qc_issue() into the new function ata_scsi_qc_issue(),
-and simplify the goto used in ata_scsi_translate().
-While at it, also add a lockdep annotation to check that the port lock
-is held when ata_scsi_translate() is called.
+For filesystems with more than 2^32 blocks inodes using indirect block
+based format cannot use blocks beyond the 32-bit limit.
+ext4_mb_scan_groups_linear() takes care to not select these unsupported
+groups for such inodes however other functions selecting groups for
+allocation don't. So far this is harmless because the other selection
+functions are used only with mb_optimize_scan and this is currently
+disabled for inodes with indirect blocks however in the following patch
+we want to enable mb_optimize_scan regardless of inode format.
 
-No functional changes.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
-[ scsi_done(cmd) => cmd->scsi_done(cmd) + DPRINTK ]
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20260114182836.14120-3-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ Drop a few hunks not needed in older trees ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c | 83 +++++++++++++++++++++++----------------
- 1 file changed, 50 insertions(+), 33 deletions(-)
+ fs/ext4/mballoc.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index d6b83614d798f..ae89d6fd32c0b 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1668,6 +1668,42 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
- 	ata_qc_done(qc);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index da0c63897190b..7a6b8a6bd10bc 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -871,6 +871,21 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+ 	}
  }
  
-+static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
++static ext4_group_t ext4_get_allocation_groups_count(
++				struct ext4_allocation_context *ac)
 +{
-+	int ret;
++	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
 +
-+	if (!ap->ops->qc_defer)
-+		goto issue;
++	/* non-extent files are limited to low blocks/groups */
++	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
++		ngroups = EXT4_SB(ac->ac_sb)->s_blockfile_groups;
 +
-+	/* Check if the command needs to be deferred. */
-+	ret = ap->ops->qc_defer(qc);
-+	switch (ret) {
-+	case 0:
-+		break;
-+	case ATA_DEFER_LINK:
-+		ret = SCSI_MLQUEUE_DEVICE_BUSY;
-+		break;
-+	case ATA_DEFER_PORT:
-+		ret = SCSI_MLQUEUE_HOST_BUSY;
-+		break;
-+	default:
-+		WARN_ON_ONCE(1);
-+		ret = SCSI_MLQUEUE_HOST_BUSY;
-+		break;
-+	}
++	/* Pairs with smp_wmb() in ext4_update_super() */
++	smp_rmb();
 +
-+	if (ret) {
-+		/* Force a requeue of the command to defer its execution. */
-+		ata_qc_free(qc);
-+		return ret;
-+	}
-+
-+issue:
-+	ata_qc_issue(qc);
-+
-+	return 0;
++	return ngroups;
 +}
 +
- /**
-  *	ata_scsi_translate - Translate then issue SCSI command to ATA device
-  *	@dev: ATA device to which the command is addressed
-@@ -1691,69 +1727,50 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
-  *	spin_lock_irqsave(host lock)
-  *
-  *	RETURNS:
-- *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY if the command
-- *	needs to be deferred.
-+ *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY or SCSI_MLQUEUE_HOST_BUSY if the
-+ *	command needs to be deferred.
-  */
- static int ata_scsi_translate(struct ata_device *dev, struct scsi_cmnd *cmd,
- 			      ata_xlat_func_t xlat_func)
- {
- 	struct ata_port *ap = dev->link->ap;
- 	struct ata_queued_cmd *qc;
--	int rc;
+ /*
+  * Choose next group by traversing largest_free_order lists. Updates *new_cr if
+  * cr level needs an update.
+@@ -2658,10 +2673,7 @@ ext4_mb_regular_allocator(struct ext4_allocation_context *ac)
  
-+	lockdep_assert_held(ap->lock);
-+
-+	/*
-+	 * ata_scsi_qc_new() calls scsi_done(cmd) in case of failure. So we
-+	 * have nothing further to do when allocating a qc fails.
-+	 */
- 	qc = ata_scsi_qc_new(dev, cmd);
- 	if (!qc)
--		goto err_mem;
-+		return 0;
+ 	sb = ac->ac_sb;
+ 	sbi = EXT4_SB(sb);
+-	ngroups = ext4_get_groups_count(sb);
+-	/* non-extent files are limited to low blocks/groups */
+-	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
+-		ngroups = sbi->s_blockfile_groups;
++	ngroups = ext4_get_allocation_groups_count(ac);
  
- 	/* data is present; dma-map it */
- 	if (cmd->sc_data_direction == DMA_FROM_DEVICE ||
- 	    cmd->sc_data_direction == DMA_TO_DEVICE) {
- 		if (unlikely(scsi_bufflen(cmd) < 1)) {
- 			ata_dev_warn(dev, "WARNING: zero len r/w req\n");
--			goto err_did;
-+			cmd->result = (DID_ERROR << 16);
-+			goto done;
- 		}
+ 	BUG_ON(ac->ac_status == AC_STATUS_FOUND);
  
- 		ata_sg_init(qc, scsi_sglist(cmd), scsi_sg_count(cmd));
--
- 		qc->dma_dir = cmd->sc_data_direction;
- 	}
- 
- 	qc->complete_fn = ata_scsi_qc_complete;
- 
- 	if (xlat_func(qc))
--		goto early_finish;
--
--	if (ap->ops->qc_defer) {
--		if ((rc = ap->ops->qc_defer(qc)))
--			goto defer;
--	}
--
--	/* select device, send command to hardware */
--	ata_qc_issue(qc);
-+		goto done;
- 
--	return 0;
-+	return ata_scsi_qc_issue(ap, qc);
- 
--early_finish:
-+done:
- 	ata_qc_free(qc);
- 	cmd->scsi_done(cmd);
- 	DPRINTK("EXIT - early finish (good or error)\n");
- 	return 0;
--
--err_did:
--	ata_qc_free(qc);
--	cmd->result = (DID_ERROR << 16);
--	cmd->scsi_done(cmd);
--err_mem:
--	DPRINTK("EXIT - internal\n");
--	return 0;
--
--defer:
--	ata_qc_free(qc);
--	DPRINTK("EXIT - defer\n");
--	if (rc == ATA_DEFER_LINK)
--		return SCSI_MLQUEUE_DEVICE_BUSY;
--	else
--		return SCSI_MLQUEUE_HOST_BUSY;
- }
- 
- struct ata_scsi_args {
 -- 
 2.51.0
 
