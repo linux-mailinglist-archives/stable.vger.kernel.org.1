@@ -1,167 +1,162 @@
-Return-Path: <stable+bounces-219686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDMMOU08n2kiZgQAu9opvQ
-	(envelope-from <stable+bounces-219686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 19:15:41 +0100
+	id GAj4ACFAn2laZgQAu9opvQ
+	(envelope-from <stable+bounces-219689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 19:32:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB8919C1A1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 19:15:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B7B19C502
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 19:32:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9B57300617A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 18:15:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 64A4C306C84C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 18:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7E020DD52;
-	Wed, 25 Feb 2026 18:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011083DA7C6;
+	Wed, 25 Feb 2026 18:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y3EvvTqQ"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="ahVX20XC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF06014A8E
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 18:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7E32ED872
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 18:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772043338; cv=none; b=TbSmJUBh/fqRgKexnhxGvomCwhWQgIc09GT2Vv5XXbUJMtcg9KioXUlZsuv+Cn3ghUXM2I4TAPXINlPNUz5O1T4vaO6wVLYFH/eaU9KXwHwVjfGxKh0fjRjpOIdbaFvO4eMzWgFmp47iCy7B7Zm2xLUQQA7tGC82TAw6m4Y/GGY=
+	t=1772044082; cv=none; b=oGlS/wdaRMrwFKYkmOLIaUj8AUQzmkUHIQPt74VGeys+bge9DVgCvktf4JvQ99hYdUS3E10XjdOBhFpwKdWSPeyTjo4+Y4/lbE4wn/qcsn5IjvekKPCCW23rn3SS/nF/2Z/iXwyFlPWj356HLPEpKDj4Of0rHksM8n1VeO7Uk9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772043338; c=relaxed/simple;
-	bh=gPVJB1xaAGq4mOg+yofzGvCAfFfANZ6ZS2PZvoeq1I8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XSKq0cet0rFuz4JIktqy1h1uffmBbP40w0Zh/1sge6YqVxAZK6+0fuDih10vQ0sVaRVKMDLyr9cHk3jPOOpjeTfmLVmFD1Efz0yysm97/sQXY5pSsqKFU93cYMHaIcJmAimV8o7LpT+ZBHMWxiPKOCngznynsLF+ZMPZzHPldPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y3EvvTqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DADC116D0;
-	Wed, 25 Feb 2026 18:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772043338;
-	bh=gPVJB1xaAGq4mOg+yofzGvCAfFfANZ6ZS2PZvoeq1I8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3EvvTqQdYuypBNqal4CE+jOnAJSM+gUC4QYt2T0dWunDgtOAEmNEnHVZMUBKX2nh
-	 wKlTN23O4uEKl7x5ikRAUWa+m85pyFsyvbM3pdLqjHHobOgU6vCa9A5Q2a4sMTv9kq
-	 ZU2YtXvcth/WeGuzwtB1VvmRr53wgUoelMEoQ9BeAqm4r4n6VgTc4O7opZ/itmoExy
-	 obUs9U36L3hffvBziLnKYXFqYrGv5JieL+HQguL5louNx0FVOKpK9ittCyCkH5slyd
-	 vJ0qOyYzhj7kP+hpnWlMlcG1lzt0gms5oPfgMWWi8KHIzT3/cHTKbDO7fyVcQeiNWi
-	 /PEf4I66Gzu9g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	stable@kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] ext4: always allocate blocks only from groups inode can use
-Date: Wed, 25 Feb 2026 13:15:35 -0500
-Message-ID: <20260225181535.912817-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026022434-hazelnut-twistable-eb07@gregkh>
-References: <2026022434-hazelnut-twistable-eb07@gregkh>
+	s=arc-20240116; t=1772044082; c=relaxed/simple;
+	bh=9tVVzABrfYESXRiAqx4OP6+dcVZfUlVvgVSA0Y+C6cw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oH+WOLVysM+AK+zZuL0YqsmNuIuLD0ZXdV2OJ52iAWBHpiyqVsvdL9Sa3jw5zBFm0zLHjTw+Of1K+4J8rIA2QXwtFxbFgm4BBxin8LjHcw0peF7UKPzgAzNuMSDGX7GeLLbvc7Y5mWa0h1yWEYPZ3sg8TI4xGptuJiiITSEyOro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=ahVX20XC; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48370174e18so417295e9.2
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 10:28:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1772044080; x=1772648880; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Hd5W4hkBAFqLmz9UiLeJS3I2LCVeFB09bmE9bveO4Gk=;
+        b=ahVX20XCUBwC1Tn9VIWyHX2zJbrbwEHWCEmjxmCH8lM3sSUCfaRxXTYAljEWLX55On
+         V1oaYOzh3y662DAqmoBJLhZXTd6xnRbFTCeE5+EODV0b+lgGuMiC3yO284AFS36vYqEX
+         a4I0Ij+e5DKn4+5jjOpbY5GxHn+HSzPQfLh0JWqXOdtRFi386pU5v5EeC3jYWQGWgezR
+         LwNM4Cki0T2Zq6M1+GZ564JU3vs6apBQlDdxn2dN1jtCV3uDYdTJaSd8bFSjkctSaby6
+         SGLZ19tIJfoWfJRgshfmhTnEDLiTB64PmJwE7je7Zf0zaNbkjn78n5xNEIeM0CBk3LFV
+         qrVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772044080; x=1772648880;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Hd5W4hkBAFqLmz9UiLeJS3I2LCVeFB09bmE9bveO4Gk=;
+        b=dV/CuxPpu3Q1HarJ7dl5/mQx9+0xAltlOeGBhwK3nic8QhEB6394UW0kFy9oy9dwpO
+         1/Rlp7HLnw+RtJdODd0FJs4hYlHlqjoDj9qgh3CCCtNWs7dk0FaIw63ZKvReGZrLt5cq
+         ldDiOef2R/ALtRAU2Qjp3HPIvUFIytJ1sPecx2t83pCKJyaca6PS2FQl2zx2qVvLsqcn
+         TpqzH8A85G6tnpElDt+ro61XsZC+cn4p1LIFV5a3TUz4KT7Sw4SdfEaxcYan2k2Xxd8R
+         fHbIX5WnHc1CFSdUDSQdCvcxH8+z/ilhlljFjnJq14DdUlccb4TOYTD+M9WjcdoqEyul
+         DpKg==
+X-Forwarded-Encrypted: i=1; AJvYcCWhhMGURg7bFmMZH9D8vhOfvnZsc0iDfHI9Qe72P+7HAD4PcFYONMdJELeGEPcJV5XsJflC7rk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkKRvIBaBVDZKap0bTgBEJbNt/MlM8q8bxH3M4stZR7qoI24G9
+	A4/XvS72nM4Eke+0jOnzPC4MaDI7ZE0YgQns8pfIGnhX4BwhkacSW8g=
+X-Gm-Gg: ATEYQzwim0pq+jxnga70SH4230tIOpUjUA2vYq40AUzFh5rUu0SOLkbKqeaFio5Qa3B
+	ryjQbQQkAa8IQjnvZMHNpZ9SIZgbYxctqNHiW4Rcx2Mm95X2huhPxucvgXKrrVau3qN6chGT6gJ
+	zqtopkgu7YCEqqFFU1ahncAurk97MUwSK4c87ioAz9ZSbEzGNBUvOy7Wvr3gYD7obG+/ylgL1Bm
+	6Ajwyy9RUeQ6oQTyjroIufgNREmvEbuOElqiKBVz5OMpHci+FTJ9FLgmoH2GfXSm5hz7QJbGbiv
+	hnsTS7Zjs+toDhnoocZjZH2z8d3zgTfC9DyUYEfINljIQKfEpUNjqPfF52QHtOX01G6drQYAkzm
+	N4cu1SAc8NWCaARPnqAJGuqxY+AudHVC/Birgj6ju0idtI3b7MMp/LTVDmPfEB8NufFX93Cgnxm
+	c551GQJ1CL/U1xP+eIUBwDWCTjMWovVkbKlixL1wfFE5xlGuCTPbhTedl9JlDuwUHvqn6p8gfQ4
+	B0=
+X-Received: by 2002:a05:600c:83ce:b0:477:7b16:5f9f with SMTP id 5b1f17b1804b1-483c21a9ab7mr25059665e9.31.1772044079551;
+        Wed, 25 Feb 2026 10:27:59 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b47ea.dip0.t-ipconnect.de. [91.43.71.234])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd6f2f88sm87884625e9.2.2026.02.25.10.27.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Feb 2026 10:27:59 -0800 (PST)
+Message-ID: <f3aaf329-6884-455a-9f52-16d98f0db4a9@googlemail.com>
+Date: Wed, 25 Feb 2026 19:27:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.19 000/781] 6.19.4-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260225155341.094945851@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260225155341.094945851@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219686-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	XM_UA_NO_VERSION(0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-219689-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[googlemail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,suse.cz:email,huawei.com:email]
-X-Rspamd-Queue-Id: 4DB8919C1A1
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 45B7B19C502
 X-Rspamd-Action: no action
 
-From: Jan Kara <jack@suse.cz>
+Am 25.02.2026 um 16:54 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.19.4 release.
+> There are 781 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-[ Upstream commit 4865c768b563deff1b6a6384e74a62f143427b42 ]
+Just like rc1, rc2 builds, boots and works fine on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or 
+regressions found.
 
-For filesystems with more than 2^32 blocks inodes using indirect block
-based format cannot use blocks beyond the 32-bit limit.
-ext4_mb_scan_groups_linear() takes care to not select these unsupported
-groups for such inodes however other functions selecting groups for
-allocation don't. So far this is harmless because the other selection
-functions are used only with mb_optimize_scan and this is currently
-disabled for inodes with indirect blocks however in the following patch
-we want to enable mb_optimize_scan regardless of inode format.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260114182836.14120-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-[ Drop a few hunks not needed in older trees ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ext4/mballoc.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 5ba161bd66a3e..44a16895f76a2 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -883,6 +883,21 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
- 	}
- }
- 
-+static ext4_group_t ext4_get_allocation_groups_count(
-+				struct ext4_allocation_context *ac)
-+{
-+	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
-+
-+	/* non-extent files are limited to low blocks/groups */
-+	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
-+		ngroups = EXT4_SB(ac->ac_sb)->s_blockfile_groups;
-+
-+	/* Pairs with smp_wmb() in ext4_update_super() */
-+	smp_rmb();
-+
-+	return ngroups;
-+}
-+
- /*
-  * Choose next group by traversing largest_free_order lists. Updates *new_cr if
-  * cr level needs an update.
-@@ -2816,10 +2831,7 @@ ext4_mb_regular_allocator(struct ext4_allocation_context *ac)
- 
- 	sb = ac->ac_sb;
- 	sbi = EXT4_SB(sb);
--	ngroups = ext4_get_groups_count(sb);
--	/* non-extent files are limited to low blocks/groups */
--	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
--		ngroups = sbi->s_blockfile_groups;
-+	ngroups = ext4_get_allocation_groups_count(ac);
- 
- 	BUG_ON(ac->ac_status == AC_STATUS_FOUND);
- 
+Beste Grüße,
+Peter Schneider
+
 -- 
-2.51.0
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
