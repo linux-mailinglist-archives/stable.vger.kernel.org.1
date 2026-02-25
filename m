@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-218429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFTBBNFTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218429-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:45 +0100
+	id +FNnBjFUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6FB18FA48
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A8218FC06
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 789F031D1A67
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1A7B1306B6B1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF9D242D9B;
-	Wed, 25 Feb 2026 01:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B4720C012;
+	Wed, 25 Feb 2026 01:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKcc1hbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0S2PoIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35F61EB5E1;
-	Wed, 25 Feb 2026 01:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B2218B0A;
+	Wed, 25 Feb 2026 01:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983249; cv=none; b=R7YNqDwx/txxr1hkwE+R+1MJUCDmCqc6gwgKNlEpMTgC8kqRDUkcJrz1rlKlIgrvA5hNZ8SlC0OcqZim3LoT+iGfzDaP1Ria2/gyvSgfqHaknWcD7hEYORwatDHO2hebImuJovkID36cN0CRrQigoW1aJNdg4CZnsC6J8dpDI8g=
+	t=1771983309; cv=none; b=lL+sF4uscWHCenE1RFdCqUVS9Qfe3L4QOddE8vvQwuddSfil2FFEHZeDPP68uxmXgluGnkg4suILUp8dke+PulamLDTq7MPoQnj9lvYQzWDL4p6VdCleM8LUv33a0X3qZcekhpeAj6DPdlDhYyGkMctN9LKuLYu/czYY3LzqZDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983249; c=relaxed/simple;
-	bh=UVXqPfrAuRglfxJNmDKPMabbqVDURUVZhtpdDMVuxfE=;
+	s=arc-20240116; t=1771983309; c=relaxed/simple;
+	bh=GSW2bIWgSE0F6hhRuXyqaVc/jY7zmo16mR57zAwslHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fu1+u/Zf6bFla4S7OLdJO3orF5pKpIguFDVAITcBtUgD4yBrpFLJnhytgn6wiJGpgBECHGLmueYM8jJWXW8wdn+Av5AkkLL8R8j0O3hsLhgAsviUr7rEGeASpHspe+IYz6envbltFUx8rMSZBPI/j+edJ7ppQEvQi4IGhf7IZj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKcc1hbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA80C116D0;
-	Wed, 25 Feb 2026 01:34:09 +0000 (UTC)
+	 MIME-Version; b=Rvsz0ziB+aUmIHhRxUidiRyj1ZP4ap+HWsRjWsiJCPvveAB/19j/rbI4AiWMryaB8fL2nunA0jVrvN5wGWtWTx+vySO0ZkKcsE4FxngZ2wdif0lWzUiIO/kyqpPqTuj7epgE2MnWqASci5WHoO3SoYe2pW5OPaBePoeHbhLIbRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0S2PoIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4E6C116D0;
+	Wed, 25 Feb 2026 01:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983249;
-	bh=UVXqPfrAuRglfxJNmDKPMabbqVDURUVZhtpdDMVuxfE=;
+	s=korg; t=1771983309;
+	bh=GSW2bIWgSE0F6hhRuXyqaVc/jY7zmo16mR57zAwslHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKcc1hbcO3C5BnKLmqut/2OqXdlwG5r2usT100nHZxUOYQ8zYks3QnqYb5soqb/e4
-	 HtrOhhxP3apY9bilZDgrnyk/K6aF5j5+lByyRhvGe83THFgHWWVWB/16tu6HdQgrXp
-	 iKvhCKVfeRUiK/iN7eMM+YShBrsByg9CTs83XN4M=
+	b=I0S2PoIEIyAXc4F6Eys5faokztzmKbM5ab8jCeUR3LgztUYGELHETHXFl4p3KUCFM
+	 v+4D2TynoBm/rGYWH6GdLmB1dsEeyb/9MTv+wTIr/V4Zu0jO+90M8t4ZVxt3gibM4x
+	 ccIJKl+IUMQuYJZtw905KZQHRK04eUZ5Ehogb8eI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Qiang Yu <qiang.yu@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 389/781] tcp: accecn: handle unexpected AccECN negotiation feedback
-Date: Tue, 24 Feb 2026 17:18:18 -0800
-Message-ID: <20260225012409.235415668@linuxfoundation.org>
+Subject: [PATCH 6.19 390/781] PCI: Add preceding capability position support in PCI_FIND_NEXT_*_CAP macros
+Date: Tue, 24 Feb 2026 17:18:19 -0800
+Message-ID: <20260225012409.261446091@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -70,145 +69,263 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218429-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218481-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,nokia-bell-labs.com:email]
-X-Rspamd-Queue-Id: AC6FB18FA48
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 57A8218FC06
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+From: Qiang Yu <qiang.yu@oss.qualcomm.com>
 
-[ Upstream commit c5ff6b83715919767f181f13e992b5055812a194 ]
+[ Upstream commit a2582e05e39adf9ab82a02561cd6f70738540ae0 ]
 
-According to Sections 3.1.2 and 3.1.3 of AccECN spec (RFC9768).
+Add support for finding the preceding capability position in PCI
+capability list by extending the capability finding macros with an
+additional parameter. This functionality is essential for modifying PCI
+capability list, as it provides the necessary information to update the
+"next" pointer of the predecessor capability when removing entries.
 
-In Section 3.1.2, it says an AccECN implementation has no need to
-recognize or support the Server response labelled 'Nonce' or ECN-nonce
-feedback more generally, as RFC 3540 has been reclassified as Historic.
-AccECN is compatible with alternative ECN feedback integrity approaches
-to the nonce. The SYN/ACK labelled 'Nonce' with (AE,CWR,ECE) = (1,0,1)
-is reserved for future use. A TCP Client (A) that receives such a SYN/ACK
-follows the procedure for forward compatibility given in Section 3.1.3.
+Modify two macros to accept a new 'prev_ptr' parameter:
+- PCI_FIND_NEXT_CAP - Now accepts 'prev_ptr' parameter for standard
+  capabilities
+- PCI_FIND_NEXT_EXT_CAP - Now accepts 'prev_ptr' parameter for extended
+  capabilities
 
-Then in Section 3.1.3, it says if a TCP Client has sent a SYN requesting
-AccECN feedback with (AE,CWR,ECE) = (1,1,1) then receives a SYN/ACK with
-the currently reserved combination (AE,CWR,ECE) = (1,0,1) but it does not
-have logic specific to such a combination, the Client MUST enable AccECN
-mode as if the SYN/ACK onfirmed that the Server supported AccECN and as
-if it fed back that the IP-ECN field on the SYN had arrived unchanged.
+When a capability is found, these macros:
+- Store the position of the preceding capability in *prev_ptr
+  (if prev_ptr != NULL)
+- Maintain all existing functionality when prev_ptr is NULL
 
-Fixes: 3cae34274c79 ("tcp: accecn: AccECN negotiation").
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260131222515.8485-7-chia-yu.chang@nokia-bell-labs.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Update current callers to accommodate this API change by passing NULL to
+'prev_ptr' argument if they do not care about the preceding capability
+position.
+
+No functional changes to driver behavior result from this commit as it
+maintains the existing capability finding functionality while adding the
+infrastructure for future capability removal operations.
+
+Signed-off-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20251109-remove_cap-v1-1-2208f46f4dc2@oss.qualcomm.com
+Stable-dep-of: 72cb5ed2a5c6 ("PCI: dwc: ep: Add per-PF BAR and inbound ATU mapping support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp_ecn.h | 44 ++++++++++++++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 13 deletions(-)
+ drivers/pci/controller/cadence/pcie-cadence.c |  4 ++--
+ .../pci/controller/dwc/pcie-designware-ep.c   |  2 +-
+ drivers/pci/controller/dwc/pcie-designware.c  |  6 ++---
+ drivers/pci/pci.c                             |  8 +++----
+ drivers/pci/pci.h                             | 23 +++++++++++++++----
+ 5 files changed, 29 insertions(+), 14 deletions(-)
 
-diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
-index 2e1637edf1d3c..a709fb1756eb7 100644
---- a/include/net/tcp_ecn.h
-+++ b/include/net/tcp_ecn.h
-@@ -473,6 +473,26 @@ static inline u8 tcp_accecn_option_init(const struct sk_buff *skb,
- 	return TCP_ACCECN_OPT_COUNTER_SEEN;
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
+index e6f1a4ac0fb7a..a1eada56edba7 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.c
++++ b/drivers/pci/controller/cadence/pcie-cadence.c
+@@ -13,13 +13,13 @@
+ u8 cdns_pcie_find_capability(struct cdns_pcie *pcie, u8 cap)
+ {
+ 	return PCI_FIND_NEXT_CAP(cdns_pcie_read_cfg, PCI_CAPABILITY_LIST,
+-				 cap, pcie);
++				 cap, NULL, pcie);
+ }
+ EXPORT_SYMBOL_GPL(cdns_pcie_find_capability);
+ 
+ u16 cdns_pcie_find_ext_capability(struct cdns_pcie *pcie, u8 cap)
+ {
+-	return PCI_FIND_NEXT_EXT_CAP(cdns_pcie_read_cfg, 0, cap, pcie);
++	return PCI_FIND_NEXT_EXT_CAP(cdns_pcie_read_cfg, 0, cap, NULL, pcie);
+ }
+ EXPORT_SYMBOL_GPL(cdns_pcie_find_ext_capability);
+ 
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 19571ac2b9617..f6c54625486e2 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -72,7 +72,7 @@ EXPORT_SYMBOL_GPL(dw_pcie_ep_reset_bar);
+ static u8 dw_pcie_ep_find_capability(struct dw_pcie_ep *ep, u8 func_no, u8 cap)
+ {
+ 	return PCI_FIND_NEXT_CAP(dw_pcie_ep_read_cfg, PCI_CAPABILITY_LIST,
+-				 cap, ep, func_no);
++				 cap, NULL, ep, func_no);
  }
  
-+static inline void tcp_ecn_rcv_synack_accecn(struct sock *sk,
-+					     const struct sk_buff *skb, u8 dsf)
-+{
-+	struct tcp_sock *tp = tcp_sk(sk);
-+
-+	tcp_ecn_mode_set(tp, TCP_ECN_MODE_ACCECN);
-+	tp->syn_ect_rcv = dsf & INET_ECN_MASK;
-+	/* Demand Accurate ECN option in response to the SYN on the SYN/ACK
-+	 * and the TCP server will try to send one more packet with an AccECN
-+	 * Option at a later point during the connection.
-+	 */
-+	if (tp->rx_opt.accecn &&
-+	    tp->saw_accecn_opt < TCP_ACCECN_OPT_COUNTER_SEEN) {
-+		u8 saw_opt = tcp_accecn_option_init(skb, tp->rx_opt.accecn);
-+
-+		tcp_accecn_saw_opt_fail_recv(tp, saw_opt);
-+		tp->accecn_opt_demand = 2;
-+	}
-+}
-+
- /* See Table 2 of the AccECN draft */
- static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb,
- 				      const struct tcphdr *th, u8 ip_dsfield)
-@@ -495,13 +515,11 @@ static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb
- 		tcp_ecn_mode_set(tp, TCP_ECN_DISABLED);
- 		break;
- 	case 0x1:
--	case 0x5:
- 		/* +========+========+============+=============+
- 		 * | A      | B      |  SYN/ACK   |  Feedback   |
- 		 * |        |        |    B->A    |  Mode of A  |
- 		 * |        |        | AE CWR ECE |             |
- 		 * +========+========+============+=============+
--		 * | AccECN | Nonce  | 1   0   1  | (Reserved)  |
- 		 * | AccECN | ECN    | 0   0   1  | Classic ECN |
- 		 * | Nonce  | AccECN | 0   0   1  | Classic ECN |
- 		 * | ECN    | AccECN | 0   0   1  | Classic ECN |
-@@ -509,20 +527,20 @@ static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb
- 		 */
- 		if (tcp_ca_no_fallback_rfc3168(sk))
- 			tcp_ecn_mode_set(tp, TCP_ECN_DISABLED);
--		else if (tcp_ecn_mode_pending(tp))
--			/* Downgrade from AccECN, or requested initially */
-+		else
- 			tcp_ecn_mode_set(tp, TCP_ECN_MODE_RFC3168);
- 		break;
--	default:
--		tcp_ecn_mode_set(tp, TCP_ECN_MODE_ACCECN);
--		tp->syn_ect_rcv = ip_dsfield & INET_ECN_MASK;
--		if (tp->rx_opt.accecn &&
--		    tp->saw_accecn_opt < TCP_ACCECN_OPT_COUNTER_SEEN) {
--			u8 saw_opt = tcp_accecn_option_init(skb, tp->rx_opt.accecn);
--
--			tcp_accecn_saw_opt_fail_recv(tp, saw_opt);
--			tp->accecn_opt_demand = 2;
-+	case 0x5:
-+		if (tcp_ecn_mode_pending(tp)) {
-+			tcp_ecn_rcv_synack_accecn(sk, skb, ip_dsfield);
-+			if (INET_ECN_is_ce(ip_dsfield)) {
-+				tp->received_ce++;
-+				tp->received_ce_pending++;
-+			}
- 		}
-+		break;
-+	default:
-+		tcp_ecn_rcv_synack_accecn(sk, skb, ip_dsfield);
- 		if (INET_ECN_is_ce(ip_dsfield) &&
- 		    tcp_accecn_validate_syn_feedback(sk, ace,
- 						     tp->syn_ect_snt)) {
+ /**
+diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+index 75fc8b767fccf..5d7a7e6f5724e 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.c
++++ b/drivers/pci/controller/dwc/pcie-designware.c
+@@ -226,13 +226,13 @@ void dw_pcie_version_detect(struct dw_pcie *pci)
+ u8 dw_pcie_find_capability(struct dw_pcie *pci, u8 cap)
+ {
+ 	return PCI_FIND_NEXT_CAP(dw_pcie_read_cfg, PCI_CAPABILITY_LIST, cap,
+-				 pci);
++				 NULL, pci);
+ }
+ EXPORT_SYMBOL_GPL(dw_pcie_find_capability);
+ 
+ u16 dw_pcie_find_ext_capability(struct dw_pcie *pci, u8 cap)
+ {
+-	return PCI_FIND_NEXT_EXT_CAP(dw_pcie_read_cfg, 0, cap, pci);
++	return PCI_FIND_NEXT_EXT_CAP(dw_pcie_read_cfg, 0, cap, NULL, pci);
+ }
+ EXPORT_SYMBOL_GPL(dw_pcie_find_ext_capability);
+ 
+@@ -246,7 +246,7 @@ static u16 __dw_pcie_find_vsec_capability(struct dw_pcie *pci, u16 vendor_id,
+ 		return 0;
+ 
+ 	while ((vsec = PCI_FIND_NEXT_EXT_CAP(dw_pcie_read_cfg, vsec,
+-					     PCI_EXT_CAP_ID_VNDR, pci))) {
++					     PCI_EXT_CAP_ID_VNDR, NULL, pci))) {
+ 		header = dw_pcie_readl_dbi(pci, vsec + PCI_VNDR_HEADER);
+ 		if (PCI_VNDR_HEADER_ID(header) == vsec_id)
+ 			return vsec;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index d9d531e8283c2..a05978f5cf2c7 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -426,7 +426,7 @@ static int pci_dev_str_match(struct pci_dev *dev, const char *p,
+ static u8 __pci_find_next_cap(struct pci_bus *bus, unsigned int devfn,
+ 			      u8 pos, int cap)
+ {
+-	return PCI_FIND_NEXT_CAP(pci_bus_read_config, pos, cap, bus, devfn);
++	return PCI_FIND_NEXT_CAP(pci_bus_read_config, pos, cap, NULL, bus, devfn);
+ }
+ 
+ u8 pci_find_next_capability(struct pci_dev *dev, u8 pos, int cap)
+@@ -531,7 +531,7 @@ u16 pci_find_next_ext_capability(struct pci_dev *dev, u16 start, int cap)
+ 		return 0;
+ 
+ 	return PCI_FIND_NEXT_EXT_CAP(pci_bus_read_config, start, cap,
+-				     dev->bus, dev->devfn);
++				     NULL, dev->bus, dev->devfn);
+ }
+ EXPORT_SYMBOL_GPL(pci_find_next_ext_capability);
+ 
+@@ -600,7 +600,7 @@ static u8 __pci_find_next_ht_cap(struct pci_dev *dev, u8 pos, int ht_cap)
+ 		mask = HT_5BIT_CAP_MASK;
+ 
+ 	pos = PCI_FIND_NEXT_CAP(pci_bus_read_config, pos,
+-				PCI_CAP_ID_HT, dev->bus, dev->devfn);
++				PCI_CAP_ID_HT, NULL, dev->bus, dev->devfn);
+ 	while (pos) {
+ 		rc = pci_read_config_byte(dev, pos + 3, &cap);
+ 		if (rc != PCIBIOS_SUCCESSFUL)
+@@ -611,7 +611,7 @@ static u8 __pci_find_next_ht_cap(struct pci_dev *dev, u8 pos, int ht_cap)
+ 
+ 		pos = PCI_FIND_NEXT_CAP(pci_bus_read_config,
+ 					pos + PCI_CAP_LIST_NEXT,
+-					PCI_CAP_ID_HT, dev->bus,
++					PCI_CAP_ID_HT, NULL, dev->bus,
+ 					dev->devfn);
+ 	}
+ 
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index e3c2852c80fbd..36f32b8af6ab3 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -106,17 +106,21 @@ bool pcie_cap_has_rtctl(const struct pci_dev *dev);
+  * @read_cfg: Function pointer for reading PCI config space
+  * @start: Starting position to begin search
+  * @cap: Capability ID to find
++ * @prev_ptr: Pointer to store position of preceding capability (optional)
+  * @args: Arguments to pass to read_cfg function
+  *
+- * Search the capability list in PCI config space to find @cap.
++ * Search the capability list in PCI config space to find @cap. If
++ * found, update *prev_ptr with the position of the preceding capability
++ * (if prev_ptr != NULL)
+  * Implements TTL (time-to-live) protection against infinite loops.
+  *
+  * Return: Position of the capability if found, 0 otherwise.
+  */
+-#define PCI_FIND_NEXT_CAP(read_cfg, start, cap, args...)		\
++#define PCI_FIND_NEXT_CAP(read_cfg, start, cap, prev_ptr, args...)	\
+ ({									\
+ 	int __ttl = PCI_FIND_CAP_TTL;					\
+-	u8 __id, __found_pos = 0;					\
++	u8 __id,  __found_pos = 0;					\
++	u8 __prev_pos = (start);					\
+ 	u8 __pos = (start);						\
+ 	u16 __ent;							\
+ 									\
+@@ -135,9 +139,12 @@ bool pcie_cap_has_rtctl(const struct pci_dev *dev);
+ 									\
+ 		if (__id == (cap)) {					\
+ 			__found_pos = __pos;				\
++			if (prev_ptr != NULL)				\
++				*(u8 *)prev_ptr = __prev_pos;		\
+ 			break;						\
+ 		}							\
+ 									\
++		__prev_pos = __pos;					\
+ 		__pos = FIELD_GET(PCI_CAP_LIST_NEXT_MASK, __ent);	\
+ 	}								\
+ 	__found_pos;							\
+@@ -149,21 +156,26 @@ bool pcie_cap_has_rtctl(const struct pci_dev *dev);
+  * @read_cfg: Function pointer for reading PCI config space
+  * @start: Starting position to begin search (0 for initial search)
+  * @cap: Extended capability ID to find
++ * @prev_ptr: Pointer to store position of preceding capability (optional)
+  * @args: Arguments to pass to read_cfg function
+  *
+  * Search the extended capability list in PCI config space to find @cap.
++ * If found, update *prev_ptr with the position of the preceding capability
++ * (if prev_ptr != NULL)
+  * Implements TTL protection against infinite loops using a calculated
+  * maximum search count.
+  *
+  * Return: Position of the capability if found, 0 otherwise.
+  */
+-#define PCI_FIND_NEXT_EXT_CAP(read_cfg, start, cap, args...)		\
++#define PCI_FIND_NEXT_EXT_CAP(read_cfg, start, cap, prev_ptr, args...)	\
+ ({									\
+ 	u16 __pos = (start) ?: PCI_CFG_SPACE_SIZE;			\
+ 	u16 __found_pos = 0;						\
++	u16 __prev_pos;							\
+ 	int __ttl, __ret;						\
+ 	u32 __header;							\
+ 									\
++	__prev_pos = __pos;						\
+ 	__ttl = (PCI_CFG_SPACE_EXP_SIZE - PCI_CFG_SPACE_SIZE) / 8;	\
+ 	while (__ttl-- > 0 && __pos >= PCI_CFG_SPACE_SIZE) {		\
+ 		__ret = read_cfg##_dword(args, __pos, &__header);	\
+@@ -175,9 +187,12 @@ bool pcie_cap_has_rtctl(const struct pci_dev *dev);
+ 									\
+ 		if (PCI_EXT_CAP_ID(__header) == (cap) && __pos != start) {\
+ 			__found_pos = __pos;				\
++			if (prev_ptr != NULL)				\
++				*(u16 *)prev_ptr = __prev_pos;		\
+ 			break;						\
+ 		}							\
+ 									\
++		__prev_pos = __pos;					\
+ 		__pos = PCI_EXT_CAP_NEXT(__header);			\
+ 	}								\
+ 	__found_pos;							\
 -- 
 2.51.0
 
