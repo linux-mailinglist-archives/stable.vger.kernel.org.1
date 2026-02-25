@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-219305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DkHNS2fnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219305-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:17 +0100
+	id 4BeCJg1TnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DFF192E79
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A93318F682
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 62FF8316D995
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F294A3070BD3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C0E3009CB;
-	Wed, 25 Feb 2026 06:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884CB26561A;
+	Wed, 25 Feb 2026 01:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNe1MImJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mufNaIF6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CA02D77FF;
-	Wed, 25 Feb 2026 06:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C345248881;
+	Wed, 25 Feb 2026 01:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002628; cv=none; b=GGkAcywx0TcW8qfVs1aXrstNS/Y9UdTdfujma3Uv4jTafcIt8N+FToMXuvXTmF3PHmgHNbSiFexdZ90sIznFaxBDBCOsmhYmL0HX0rn+F2YV0glJQbww7nlXk/YKf0ComYwp1TK19mOa5cDr492rpqYxxb+ocxKYSrQc959KR4c=
+	t=1771983499; cv=none; b=DBWI/IB3Fj0B7FTVs0aIcMye39bzj4fyxPhLv6/qb1+zXyKsm9WDVT7vYuiaAJJZ1s9V5k8hNlpKQeCldHVP/V7kH+a2CL0X1WNDSsKTnaWuzPIKAfG6U0Fxq4HNosqYkf4IvhcEVC3JP8hFQBHL/pizlsQ+8kpq1OP2XrT0uoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002628; c=relaxed/simple;
-	bh=hV3lftL4dOf2KDNb9fpWvaDBbDi0o43Tj+XBN8+/7GU=;
+	s=arc-20240116; t=1771983499; c=relaxed/simple;
+	bh=PwIU2QL4nCLuXkww2/5ivuk0n/6oQyFgDMxM8ZS7DUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1QnTLI0GmtfOlxa0kuspWzESvMt9lVSIDtoEj/QeWJG3E5Fi39uQ+ml27wxBNgfym/SBVBtInUIFdkeh0A6CSk9qjbvB+FVQG0ftls4fur9U3+jFKisQQrEDMNWO+n42FW2RHQ9BNOAP+ePmlwNR1qwQrA7qGEqoLkjztZmAjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNe1MImJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D10AC116D0;
-	Wed, 25 Feb 2026 06:57:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HS77t3AYBRYx7il8RREsrI4l31YSAKzrqyZMzqE21d3osTkqmd1Bdh/hnhZsOSJXyyYcX8hS4643ELxOZjjUGvo+qSOYzMDz2QOPMYPJZbCMg5DdWTYIl8PaSz9T3C9bncm6WvAqs1a/eylmgiTYfLHpCunzVlrfcHEfDxrB894=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mufNaIF6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE8CC116D0;
+	Wed, 25 Feb 2026 01:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002628;
-	bh=hV3lftL4dOf2KDNb9fpWvaDBbDi0o43Tj+XBN8+/7GU=;
+	s=korg; t=1771983499;
+	bh=PwIU2QL4nCLuXkww2/5ivuk0n/6oQyFgDMxM8ZS7DUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZNe1MImJRqoeyc4OIIUmQ5s+4hOT+h7zDHlUpJeiD5tCgMaEuq6ZGuTZmKygl1haT
-	 ZPaXURyyO9AnQg/kBhfoNB/ShtFsAHEIpmd/rRb2cKOzHwzhFnZu9QFfnglGc215lP
-	 crWzKSPrDaP35UTl8xk1xYKWMXUognU+MvFvXdMo=
+	b=mufNaIF6FkdHDJ2cfyejJ50HjT1trDFr1dOvOcF7eLXVd8KqVgQ/7qXdM5iXkUC9g
+	 NmrnJQlAC/6U0SZXLUrjwhVleTi0QxpAU43vpf5aKPKtm0J9twpXiP5QlFdTdmNzbK
+	 e6aYalUTBVn6l9wJeE+IDxAneydmZgIJtZqp7iHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 390/641] pNFS: fix a missing wake up while waiting on NFS_LAYOUT_DRAIN
-Date: Tue, 24 Feb 2026 17:21:56 -0800
-Message-ID: <20260225012358.028144475@linuxfoundation.org>
+Subject: [PATCH 6.19 608/781] backlight: qcom-wled: Support ovp values for PMI8994
+Date: Tue, 24 Feb 2026 17:21:57 -0800
+Message-ID: <20260225012414.707385934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +65,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219305-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218648-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,hammerspace.com:email]
-X-Rspamd-Queue-Id: 37DFF192E79
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mainlining.org:email]
+X-Rspamd-Queue-Id: 4A93318F682
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 5248d8474e594d156bee1ed10339cc16e207a28b ]
+[ Upstream commit f29f972a6e7e3f187ea4d89b98a76c1981ca4d53 ]
 
-It is possible to have a task get stuck on waiting on the
-NFS_LAYOUT_DRAIN in the following scenario
+WLED4 found in PMI8994 supports different ovp values.
 
-1. cpu a: waiter test NFS_LAYOUT_DRAIN (1) and plh_outstanding (1)
-2. cpu b: atomic_dec_and_test() -> clear bit -> wake up
-3. cpu c: sets NFS_LAYOUT_DRAIN again
-4. cpu a: calls wait_on_bit() sleeps forever.
-
-To expand on this we have say 2 outstanding pnfs write IO that get
-ESTALE which causes both to call pnfs_destroy_layout() and set the
-NFS_LAYOUT_DRAIN bit but the 1st one doesn't call the
-pnfs_put_layout_hdr() yet (as that would prevent the 2nd ESTALE write
-from trying to call pnfs_destroy_layout()). If the 1st ESTALE write
-is the one that initially sets the NFS_LAYOUT_DRAIN so that new IO
-on this file initiates new LAYOUTGET. Another new write would find
-NFS_LAYOUT_DRAIN set and phl_outstanding>0 (step 1) and would
-wait_on_bit(). LAYOUTGET completes doing step 2. Now, the 2nd of
-ESTALE writes is calling pnfs_destory_layout() and set the
-NFS_LAYOUT_DRAIN bit (step 3). Finally, the waiting write wakes up
-to check the bit and goes back to sleep.
-
-The problem revolves around the fact that if NFS_LAYOUT_INVALID_STID
-was already set, it should not do the work of
-pnfs_mark_layout_stateid_invalid(), thus NFS_LAYOUT_DRAIN will not
-be set more than once for an invalid layout.
-
-Suggested-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Fixes: 880265c77ac4 ("pNFS: Avoid a live lock condition in pnfs_update_layout()")
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 6fc632d3e3e0 ("video: backlight: qcom-wled: Add PMI8994 compatible")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Link: https://patch.msgid.link/20260116-pmi8950-wled-v3-2-e6c93de84079@mainlining.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/video/backlight/qcom-wled.c | 41 +++++++++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 33bc6db0dc92f..b3cb5ee9d821e 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -463,7 +463,8 @@ pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
- 	};
- 	struct pnfs_layout_segment *lseg, *next;
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index a63bb42c8f8b0..5decbd39b7899 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -1244,6 +1244,15 @@ static const struct wled_var_cfg wled4_ovp_cfg = {
+ 	.size = ARRAY_SIZE(wled4_ovp_values),
+ };
  
--	set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags);
-+	if (test_and_set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags))
-+		return !list_empty(&lo->plh_segs);
- 	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(lo->plh_inode)->flags);
- 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list)
- 		pnfs_clear_lseg_state(lseg, lseg_list);
++static const u32 pmi8994_wled_ovp_values[] = {
++	31000, 29500, 19400, 17800,
++};
++
++static const struct wled_var_cfg pmi8994_wled_ovp_cfg = {
++	.values = pmi8994_wled_ovp_values,
++	.size = ARRAY_SIZE(pmi8994_wled_ovp_values),
++};
++
+ static inline u32 wled5_ovp_values_fn(u32 idx)
+ {
+ 	/*
+@@ -1357,6 +1366,29 @@ static int wled_configure(struct wled *wled)
+ 		},
+ 	};
+ 
++	const struct wled_u32_opts pmi8994_wled_opts[] = {
++		{
++			.name = "qcom,current-boost-limit",
++			.val_ptr = &cfg->boost_i_limit,
++			.cfg = &wled4_boost_i_limit_cfg,
++		},
++		{
++			.name = "qcom,current-limit-microamp",
++			.val_ptr = &cfg->string_i_limit,
++			.cfg = &wled4_string_i_limit_cfg,
++		},
++		{
++			.name = "qcom,ovp-millivolt",
++			.val_ptr = &cfg->ovp,
++			.cfg = &pmi8994_wled_ovp_cfg,
++		},
++		{
++			.name = "qcom,switching-freq",
++			.val_ptr = &cfg->switch_freq,
++			.cfg = &wled3_switch_freq_cfg,
++		},
++	};
++
+ 	const struct wled_u32_opts wled5_opts[] = {
+ 		{
+ 			.name = "qcom,current-boost-limit",
+@@ -1423,8 +1455,13 @@ static int wled_configure(struct wled *wled)
+ 		break;
+ 
+ 	case 4:
+-		u32_opts = wled4_opts;
+-		size = ARRAY_SIZE(wled4_opts);
++		if (of_device_is_compatible(dev->of_node, "qcom,pmi8994-wled")) {
++			u32_opts = pmi8994_wled_opts;
++			size = ARRAY_SIZE(pmi8994_wled_opts);
++		} else {
++			u32_opts = wled4_opts;
++			size = ARRAY_SIZE(wled4_opts);
++		}
+ 		*cfg = wled4_config_defaults;
+ 		wled->wled_set_brightness = wled4_set_brightness;
+ 		wled->wled_sync_toggle = wled3_sync_toggle;
 -- 
 2.51.0
 
