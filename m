@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-219487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AF2HbyfnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:40 +0100
+	id GME1CqJVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-218821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:51:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6E3192FCC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D00190090
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:51:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AC12A3130FD2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18467323E011
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE7930CD81;
-	Wed, 25 Feb 2026 06:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EF419FA93;
+	Wed, 25 Feb 2026 01:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EtmVmHYb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrSjDrf3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47D22D4805;
-	Wed, 25 Feb 2026 06:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C154B24A05D;
+	Wed, 25 Feb 2026 01:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002748; cv=none; b=Kfkb1mejQyuN0F6dAfO2ZGAa247x8otYtfG8nKVeXY49ymeVwA/t/8EvKfUJ/kNKDeYV8szvC7flR5q9sDWOHDSEKxxWZMn3E2woRD4EByDXszyMmdxZbQICB71CpzJBPKOaLbQgrJ8tdGQLwOyEsEHUuRPSgxeREi2Mi0DRnKY=
+	t=1771983700; cv=none; b=M0g33LhYOVv3JRS0NBjFIIIIaFs/j+cQzZU6DdZPEzfneBEZshR3/3ZaNZdIIUB63hNKjzB697n+pGqh3b+6gTR2mbBzuM17vUOsoaSYbaP9E8c9harQ0i3Ig6DqzshhZzFqhemMqZtO1FrMy7Iyf18y/dX0dNcSvIGfjPffJuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002748; c=relaxed/simple;
-	bh=X2E8xW0K+oRM/T80fr6dSco6GKdkvbcMMkxLaHmu+jY=;
+	s=arc-20240116; t=1771983700; c=relaxed/simple;
+	bh=wT9wL3U4M9i9SbWKXC4s8/daJfPm7G3ImKmPZcQKCrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+xoyrp0WuaGjZ1RW3W1yIkl9gq94yokmix/51jY18sBlGcJNl+aov4RkzKiwjKvSIs15keFLdLY66zLFJt6YsRCaowW0cQOhsPDAtbPnoV6iPjQ7MG8/E/lKjSkmB6aIU6X3/xGFOmDEhTJjDBRStJnRPahLTDuM95xbG0SGgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EtmVmHYb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A435C116D0;
-	Wed, 25 Feb 2026 06:59:08 +0000 (UTC)
+	 MIME-Version; b=cSXjGMJR4/aUUjQ5DXmVYeDYZHVwMngyW8EUbjNG7jxspu7UJlc1k6kwm50JZPlrdGTtd6g29yLkTWBpgYNUXoucnyAYVa0Ew+wzXxpcuBA840Nt0/wOQi2V5qFJfhrXjqxbtDHj5SNNvvST0AqZ3V/FpEdJH9hd09N84fd+GgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrSjDrf3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DB0C116D0;
+	Wed, 25 Feb 2026 01:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002748;
-	bh=X2E8xW0K+oRM/T80fr6dSco6GKdkvbcMMkxLaHmu+jY=;
+	s=korg; t=1771983700;
+	bh=wT9wL3U4M9i9SbWKXC4s8/daJfPm7G3ImKmPZcQKCrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EtmVmHYbcDtOL5/EDjeC3yscXGioplftNnitXOGUwCefHgOqi3J5gBxFofqaLEasn
-	 BLV5Wbv7OvWJP4kmYspZaZ8L7Ko2/9g4O061Upv8hVzfr3vg/KMp3dm4OyMJ0zTKlD
-	 01eaZ4DFlx/Thgo15U7lnKrs9tyybPf4bjcxer4I=
+	b=wrSjDrf3XiRYJkFiKwhhDHMZR4xYvIQATRmJT8SIN1zojqcK2nl0DJIZkGbjpo3MS
+	 LqVHlXsrCKfoy+vnjWtPV0BOKmykDKNVjKDn4Dp4KL0sIis4JZ0NnPi8mnVX+tME5E
+	 SE3jgnQVwIX8kK2xbwDEyn1Wj0cIH+4wrQwp4t64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 564/641] apparmor: fix NULL sock in aa_sock_file_perm
+	Hongliang Wang <wanghongliang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 781/781] net: stmmac: dwmac-loongson: Set clk_csr_i to 100-150MHz
 Date: Tue, 24 Feb 2026 17:24:50 -0800
-Message-ID: <20260225012402.186963979@linuxfoundation.org>
+Message-ID: <20260225012418.868479123@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219487-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218821-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,54 +90,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,canonical.com:email]
-X-Rspamd-Queue-Id: DF6E3192FCC
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,loongson.cn:email,msgid.link:url]
+X-Rspamd-Queue-Id: 65D00190090
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 00b67657535dfea56e84d11492f5c0f61d0af297 ]
+commit e1aa5ef892fb4fa9014a25e87b64b97347919d37 upstream.
 
-Deal with the potential that sock and sock-sk can be NULL during
-socket setup or teardown. This could lead to an oops. The fix for NULL
-pointer dereference in __unix_needs_revalidation shows this is at
-least possible for af_unix sockets. While the fix for af_unix sockets
-applies for newer mediation this is still the fall back path for older
-af_unix mediation and other sockets, so ensure it is covered.
+Current clk_csr_i setting of Loongson STMMAC (including LS7A1000/2000
+and LS2K1000/2000/3000) are copy & paste from other drivers. In fact,
+Loongson STMMAC use 125MHz clocks and need 62 freq division to within
+2.5MHz, meeting most PHY MDC requirement. So fix by setting clk_csr_i
+to 100-150MHz, otherwise some PHYs may link fail.
 
-Fixes: 56974a6fcfef6 ("apparmor: add base infastructure for socket mediation")
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 30bba69d7db40e7 ("stmmac: pci: Add dwmac support for Loongson")
+Signed-off-by: Hongliang Wang <wanghongliang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://patch.msgid.link/20260203062901.2158236-1-chenhuacai@loongson.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/net.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/security/apparmor/net.c b/security/apparmor/net.c
-index 45cf25605c345..44c04102062f3 100644
---- a/security/apparmor/net.c
-+++ b/security/apparmor/net.c
-@@ -326,8 +326,10 @@ int aa_sock_file_perm(const struct cred *subj_cred, struct aa_label *label,
- 	struct socket *sock = (struct socket *) file->private_data;
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -91,8 +91,8 @@ static void loongson_default_data(struct
+ 	/* Get bus_id, this can be overwritten later */
+ 	plat->bus_id = pci_dev_id(pdev);
  
- 	AA_BUG(!label);
--	AA_BUG(!sock);
--	AA_BUG(!sock->sk);
-+
-+	/* sock && sock->sk can be NULL for sockets being set up or torn down */
-+	if (!sock || !sock->sk)
-+		return 0;
+-	/* clk_csr_i = 20-35MHz & MDC = clk_csr_i/16 */
+-	plat->clk_csr = STMMAC_CSR_20_35M;
++	/* clk_csr_i = 100-150MHz & MDC = clk_csr_i/62 */
++	plat->clk_csr = STMMAC_CSR_100_150M;
+ 	plat->core_type = DWMAC_CORE_GMAC;
+ 	plat->force_sf_dma_mode = 1;
  
- 	if (sock->sk->sk_family == PF_UNIX)
- 		return aa_unix_file_perm(subj_cred, label, op, request, file);
--- 
-2.51.0
-
 
 
 
