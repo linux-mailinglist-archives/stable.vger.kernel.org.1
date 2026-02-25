@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218313-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mL6EEDNWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:55 +0100
+	id +EHgHDxTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218313-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B651901F8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F363018F740
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6550D32BA99B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1280B3125D9E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C3F28AAEE;
-	Wed, 25 Feb 2026 01:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB5220C012;
+	Wed, 25 Feb 2026 01:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNOQ5DTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgrLQVdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6755127F73A;
-	Wed, 25 Feb 2026 01:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D54218DB2A;
+	Wed, 25 Feb 2026 01:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983766; cv=none; b=ux+gHIubX5rlCGahBpz7+IR67mBcuxGGvFaXWKyF9K9V9AP8LEbbOkI8xbxLTUJsUFQcF2bI+XTLvD6wTZL9CgeMPtJWw13ZXc8/hBYUJR06HsiODDxs25nwxpakL7lVuFnZREDvv8GKyMkqR31Xz20xQdaKuxqOl/DpKRLcx8Q=
+	t=1771983117; cv=none; b=Qs42YsjEI2WsQ3OVXvfKBDDcrGN8zY2I+zYYOK4YIfct6XHRcPnS3tO1oiQPMlW8vxpWxI15XIo+ftHYFB9uuBPHOOoOCgIdxCDVQ4L/JXyDBskx8w7VTX2jWTUlc5YcYkLC++qyl9qritlawBR7wj8oELVHjDxa27FHzI6QAYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983766; c=relaxed/simple;
-	bh=sDpGstOQwx7ypF31LxC5rPu7ToCKDUVSkj89mczTOxM=;
+	s=arc-20240116; t=1771983117; c=relaxed/simple;
+	bh=hLGc49nYL8IVfQ7nYp7oQKeQpUA52pAsxdF+8nyHECU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dOxonSGW6NVbZKpbVQRs+04Wu3T6t3HWyuN9QxM+9jzSKRQx+M72EuDsHS5gwvOPi8ulbH8LM8fVe69lErtIE3SWo/VQpWt+ZzaHD0EA6AMHwGV1KOc63aiKJXDCngk9Wn5SIv85OyUF9reTETZyOh3olqr3n6juBr4t3OUPc+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNOQ5DTr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC01C116D0;
-	Wed, 25 Feb 2026 01:42:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SSr3Upk742To8syA0FddceFIW6s9hfEBJbHGV2S7nO0HuSGcmE5A/EAoUg6M8a513Nuzi/uexK43IoIv+4w4qUD26eLJI7ByInlvScuTNX7mJHP/zRD0grMnZAUn9tAR+z9dv+fAjSn1FDcpeO0F9dYmq/E/upN13TO58Ocws9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgrLQVdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE442C116D0;
+	Wed, 25 Feb 2026 01:31:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983766;
-	bh=sDpGstOQwx7ypF31LxC5rPu7ToCKDUVSkj89mczTOxM=;
+	s=korg; t=1771983116;
+	bh=hLGc49nYL8IVfQ7nYp7oQKeQpUA52pAsxdF+8nyHECU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNOQ5DTr6b/m/d8II2fkKBaPbwYV6bc2mRbSDCAMRMEWJfHBikA88T/hEruiSLJPr
-	 ZvuH4iX7Kov9UJvEKnQ9+e/hwOH3ZxekaMWQRxkCvdnojGTQlclq38zIYa1VSeO5p3
-	 KZNmkQ5foB8MMPKGysfc2TAmQfd4MlvpUGSS/THc=
+	b=mgrLQVdlXhYLVrsZvljHeRnyA9Mau9VlzTkEueRpv18D9BiqRNKA5wzYt2wX8U2nq
+	 Xw+S2mZixJl4Y1R3pzltw2Nq/o5Qz4l3klsYGK+TrStgeABhKP3D4WQ9/WEZhnNRWr
+	 bgAdqtu92EPmECffYTdDNDiCAUM/t3YWjxYLJ61A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Kari Argillander <kari.argillander@gmail.com>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 058/641] perf: arm_spe: Properly set hw.state on failures
-Date: Tue, 24 Feb 2026 17:16:24 -0800
-Message-ID: <20260225012350.454059668@linuxfoundation.org>
+Subject: [PATCH 6.19 276/781] rust: pwm: Fix potential memory leak on init error
+Date: Tue, 24 Feb 2026 17:16:25 -0800
+Message-ID: <20260225012406.467604294@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,142 +64,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,samsung.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218313-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218879-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.984];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B9B651901F8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email]
+X-Rspamd-Queue-Id: F363018F740
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Kari Argillander <kari.argillander@gmail.com>
 
-[ Upstream commit 283182c1c239f6873d1a50e9e710c1a699f2256b ]
+[ Upstream commit a2633dc243c35754a0c2270131d8a199c987c9bf ]
 
-When arm_spe_pmu_next_off() fails to calculate a valid limit, it returns
-zero to indicate that tracing should not start.  However, the caller
-arm_spe_perf_aux_output_begin() does not propagate this failure by
-updating hwc->state, cause the error to be silently ignored by upper
-layers.
+When initializing a PWM chip using pwmchip_alloc(), the allocated device
+owns an initial reference that must be released on all error paths.
 
-Because hwc->state remains zero after a failure, arm_spe_pmu_start()
-continues to programs filter registers unnecessarily.  The driver
-still reports success to the perf core, so the core assumes the SPE
-event was enabled and proceeds to enable other events.  This breaks
-event group semantics: SPE is already stopped while other events in the
-same group are enabled.
+If __pinned_init() were to fail, the allocated pwm_chip would currently
+leak because the error path returns without calling pwmchip_put().
 
-Fix this by updating arm_spe_perf_aux_output_begin() to return a status
-code indicating success (0) or failure (-EIO).  Both the interrupt
-handler and arm_spe_pmu_start() check the return value and call
-arm_spe_pmu_stop() to set PERF_HES_STOPPED in hwc->state.
-
-In the interrupt handler, the period (e.g., period_left) needs to be
-updated, so PERF_EF_UPDATE is passed to arm_spe_pmu_stop().  When the
-error occurs during event start, the trace unit is not yet enabled, so
-a flag '0' is used to drain buffer and update state only.
-
-Fixes: d5d9696b0380 ("drivers/perf: Add support for ARMv8.2 Statistical Profiling Extension")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 7b3dce814a15 ("rust: pwm: Add Kconfig and basic data structures")
+Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+Acked-by: Michal Wilczynski <m.wilczynski@samsung.com>
+Link: https://patch.msgid.link/20260102-pwm-rust-v2-1-2702ce57d571@gmail.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_spe_pmu.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ rust/kernel/pwm.rs | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
-index fa50645feddad..e4e4e63c64c42 100644
---- a/drivers/perf/arm_spe_pmu.c
-+++ b/drivers/perf/arm_spe_pmu.c
-@@ -105,6 +105,8 @@ struct arm_spe_pmu {
- /* Keep track of our dynamic hotplug state */
- static enum cpuhp_state arm_spe_pmu_online;
+diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+index cb00f8a8765c8..2ba9cfd02bfdb 100644
+--- a/rust/kernel/pwm.rs
++++ b/rust/kernel/pwm.rs
+@@ -601,7 +601,11 @@ pub fn new(
+         let drvdata_ptr = unsafe { bindings::pwmchip_get_drvdata(c_chip_ptr) };
  
-+static void arm_spe_pmu_stop(struct perf_event *event, int flags);
-+
- enum arm_spe_pmu_buf_fault_action {
- 	SPE_PMU_BUF_FAULT_ACT_SPURIOUS,
- 	SPE_PMU_BUF_FAULT_ACT_FATAL,
-@@ -582,8 +584,8 @@ static u64 arm_spe_pmu_next_off(struct perf_output_handle *handle)
- 	return limit;
- }
+         // SAFETY: We construct the `T` object in-place in the allocated private memory.
+-        unsafe { data.__pinned_init(drvdata_ptr.cast())? };
++        unsafe { data.__pinned_init(drvdata_ptr.cast()) }.inspect_err(|_| {
++            // SAFETY: It is safe to call `pwmchip_put()` with a valid pointer obtained
++            // from `pwmchip_alloc()`. We will not use pointer after this.
++            unsafe { bindings::pwmchip_put(c_chip_ptr) }
++        })?;
  
--static void arm_spe_perf_aux_output_begin(struct perf_output_handle *handle,
--					  struct perf_event *event)
-+static int arm_spe_perf_aux_output_begin(struct perf_output_handle *handle,
-+					 struct perf_event *event)
- {
- 	u64 base, limit;
- 	struct arm_spe_pmu_buf *buf;
-@@ -597,7 +599,6 @@ static void arm_spe_perf_aux_output_begin(struct perf_output_handle *handle,
- 	/* Start a new aux session */
- 	buf = perf_aux_output_begin(handle, event);
- 	if (!buf) {
--		event->hw.state |= PERF_HES_STOPPED;
- 		/*
- 		 * We still need to clear the limit pointer, since the
- 		 * profiler might only be disabled by virtue of a fault.
-@@ -617,6 +618,7 @@ static void arm_spe_perf_aux_output_begin(struct perf_output_handle *handle,
- 
- out_write_limit:
- 	write_sysreg_s(limit, SYS_PMBLIMITR_EL1);
-+	return (limit & PMBLIMITR_EL1_E) ? 0 : -EIO;
- }
- 
- static void arm_spe_perf_aux_output_end(struct perf_output_handle *handle)
-@@ -756,7 +758,10 @@ static irqreturn_t arm_spe_pmu_irq_handler(int irq, void *dev)
- 		 * when we get to it.
- 		 */
- 		if (!(handle->aux_flags & PERF_AUX_FLAG_TRUNCATED)) {
--			arm_spe_perf_aux_output_begin(handle, event);
-+			if (arm_spe_perf_aux_output_begin(handle, event)) {
-+				arm_spe_pmu_stop(event, PERF_EF_UPDATE);
-+				break;
-+			}
- 			isb();
- 		}
- 		break;
-@@ -851,9 +856,10 @@ static void arm_spe_pmu_start(struct perf_event *event, int flags)
- 	struct perf_output_handle *handle = this_cpu_ptr(spe_pmu->handle);
- 
- 	hwc->state = 0;
--	arm_spe_perf_aux_output_begin(handle, event);
--	if (hwc->state)
-+	if (arm_spe_perf_aux_output_begin(handle, event)) {
-+		arm_spe_pmu_stop(event, 0);
- 		return;
-+	}
- 
- 	reg = arm_spe_event_to_pmsfcr(event);
- 	write_sysreg_s(reg, SYS_PMSFCR_EL1);
+         // SAFETY: `c_chip_ptr` points to a valid chip.
+         unsafe {
 -- 
 2.51.0
 
