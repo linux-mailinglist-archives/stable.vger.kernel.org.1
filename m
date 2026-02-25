@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-218594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6C2vNd9TnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:59 +0100
+	id kPTeGdtSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A44118FA91
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 061F918F570
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 951253178DB0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 683E33014A11
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608532609C5;
-	Wed, 25 Feb 2026 01:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE2A258EF9;
+	Wed, 25 Feb 2026 01:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BL9ZTQGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9hMab2n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BB01FE45D;
-	Wed, 25 Feb 2026 01:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FA21D5141;
+	Wed, 25 Feb 2026 01:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983438; cv=none; b=mJFu21IgjKUQbHS+F0tYhTzYrOHAjmHx5ZNzKVzH71nNmBFHww4zCDMEs2CLxhTgbaiqVGf/FQQLgVIjk3xf6Gljy51xp3zeJDyl4lSz1IFnAmOZl+PYSa5T1TVxo6s6CHBv34oRyOvMGWYfOO7HLaRNkTh+i1O+/0oXuQIk6eY=
+	t=1771983440; cv=none; b=nMd3hdRvf/xb3zb045Q5Ft6wy/dwE9vaIRLaZI4m/DklEXCy51dAt0ojE6AJfOHDfndvNjlugCIBuxtpux7KOrTqwYtucmovsJboS5PhW+T4aCQdtp8TdZuic6E93MSqTOlmZ3zA3UDyQ5h9VXgMh4f6NSFm2LnFDbhFS+hXYdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983438; c=relaxed/simple;
-	bh=e7sz+bYu+PrJIpMvWIIcCOM4h+nnsXlCqtsJLdDwmJM=;
+	s=arc-20240116; t=1771983440; c=relaxed/simple;
+	bh=BiOIsbBnJNRRQb0qYIdy7HRElOBc8d4a73np8okxN7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUw5mA+fpYwuRvdGZQnaoQzm8VqEOaHmFIdnpMGBGOb4nIY8PAfv3SB8E784TdgAZe4Lkwy15Pkom8N2szmESD/DTBMdsdBb7S/mJAlFUIvX79RyO4AqH/T3seRiVJvS9OX5Dr8Ex0xryQbNKCRYLQtwnR0B3O8s/b/AX0dEBlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BL9ZTQGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA59C19423;
-	Wed, 25 Feb 2026 01:37:17 +0000 (UTC)
+	 MIME-Version; b=t0IDPRdt8pTM2d6Ql8AXmQ+qxebYP2lWgnx+X5yFjuCrp1UauO7M/SXvudHKGFz9BczkmhfPkX+KhqqYFIOQQfcD8ZJwCKDoHskLgoNt4FfqyMHzHUyhFOXSNI5xJ2SZWpyyhDP1JkZ67EtTJuEtit2me1dxsU9AsXnCRN+B7vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9hMab2n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1799DC116D0;
+	Wed, 25 Feb 2026 01:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983438;
-	bh=e7sz+bYu+PrJIpMvWIIcCOM4h+nnsXlCqtsJLdDwmJM=;
+	s=korg; t=1771983440;
+	bh=BiOIsbBnJNRRQb0qYIdy7HRElOBc8d4a73np8okxN7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BL9ZTQGepIkbavnrlQCKqFtfdGu3u/erSeGvj55dpXZCu9vC2KGT6/ssz8/iYLtIB
-	 aZScuojZjy0J2cXbm6Zz6XpyUELPEZgXI4YGBJ6BqaluhF71LR9PEuTDgDP0BsEoqC
-	 NbJYv9UKh6i4wmPdbpSzdGyK7pt818AMN/seUiG4=
+	b=m9hMab2no8pgiIvm1XXtVKTvV7ojez4aPnXgeeA8zged/3YeOeeMbMEqHOsNIx9u8
+	 LTQDXpRlirUgyIkp4gkPzxEmYrEABps1a47lnEklYAz6Yq2O1H1YvOWQgWDSBRd8et
+	 ZTLl4npQ8C74du+ZX9xefSwf2Ue4JdHatGZDP6b4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Brian Masney <bmasney@redhat.com>,
 	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 556/781] clk: mediatek: Fix error handling in runtime PM setup
-Date: Tue, 24 Feb 2026 17:21:05 -0800
-Message-ID: <20260225012413.439298056@linuxfoundation.org>
+Subject: [PATCH 6.19 557/781] clk: zynqmp: divider: Fix zynqmp_clk_divider_determine_rate kerneldoc
+Date: Tue, 24 Feb 2026 17:21:06 -0800
+Message-ID: <20260225012413.464910548@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218594-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218596-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,77 +87,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3A44118FA91
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 061F918F570
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-[ Upstream commit aa2ad19210a6a444111bce55e8b69579f29318fb ]
+[ Upstream commit 1b8773864904c7a25e45f1b12ab505bdb7e06568 ]
 
-devm_pm_runtime_enable() can fail due to memory allocation. The current
-code ignores its return value, and when pm_runtime_resume_and_get() fails,
-it returns directly without unmapping the shared_io region.
+After renaming round_rate->determine, kerneldoc does not match anymore,
+causing W=1 warnings:
 
-Add error handling for devm_pm_runtime_enable(). Reorder cleanup labels
-to properly unmap shared_io on pm_runtime_resume_and_get() failure.
+  Warning: drivers/clk/zynqmp/divider.c:122 function parameter 'req' not described in 'zynqmp_clk_divider_determine_rate'
+  Warning: drivers/clk/zynqmp/divider.c:122 expecting prototype for zynqmp_clk_divider_round_rate(). Prototype was for zynqmp_clk_divider_determine_rate() instead
 
-Fixes: 2f7b1d8b5505 ("clk: mediatek: Do a runtime PM get on controllers during probe")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 0f9cf96a01fd ("clk: zynqmp: divider: convert from round_rate() to determine_rate()")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mtk.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/clk/zynqmp/divider.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
-index 19cd27941747a..deafe55a96cb1 100644
---- a/drivers/clk/mediatek/clk-mtk.c
-+++ b/drivers/clk/mediatek/clk-mtk.c
-@@ -497,14 +497,16 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
- 
- 
- 	if (mcd->need_runtime_pm) {
--		devm_pm_runtime_enable(&pdev->dev);
-+		r = devm_pm_runtime_enable(&pdev->dev);
-+		if (r)
-+			goto unmap_io;
- 		/*
- 		 * Do a pm_runtime_resume_and_get() to workaround a possible
- 		 * deadlock between clk_register() and the genpd framework.
- 		 */
- 		r = pm_runtime_resume_and_get(&pdev->dev);
- 		if (r)
--			return r;
-+			goto unmap_io;
- 	}
- 
- 	/* Calculate how many clk_hw_onecell_data entries to allocate */
-@@ -618,11 +620,11 @@ static int __mtk_clk_simple_probe(struct platform_device *pdev,
- free_data:
- 	mtk_free_clk_data(clk_data);
- free_base:
--	if (mcd->shared_io && base)
--		iounmap(base);
--
- 	if (mcd->need_runtime_pm)
- 		pm_runtime_put(&pdev->dev);
-+unmap_io:
-+	if (mcd->shared_io && base)
-+		iounmap(base);
- 	return r;
+diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
+index de6f478d527d8..984e577ea6711 100644
+--- a/drivers/clk/zynqmp/divider.c
++++ b/drivers/clk/zynqmp/divider.c
+@@ -111,10 +111,9 @@ static unsigned long zynqmp_clk_divider_recalc_rate(struct clk_hw *hw,
  }
  
+ /**
+- * zynqmp_clk_divider_round_rate() - Round rate of divider clock
++ * zynqmp_clk_divider_determine_rate() - Determine rate of divider clock
+  * @hw:			handle between common and hardware-specific interfaces
+- * @rate:		rate of clock to be set
+- * @prate:		rate of parent clock
++ * @req:		rate of clock to be set
+  *
+  * Return: 0 on success else error+reason
+  */
 -- 
 2.51.0
 
