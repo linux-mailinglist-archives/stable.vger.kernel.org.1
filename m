@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-218530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHoZOeNSnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218530-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:47 +0100
+	id uKQAG8RanmlSUwQAu9opvQ
+	(envelope-from <stable+bounces-219101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:13:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E52318F5AB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E5B190BA5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:13:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B784630FAF22
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CD57A313E521
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526CD20C012;
-	Wed, 25 Feb 2026 01:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3079E27F4CA;
+	Wed, 25 Feb 2026 01:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LD0Q6FX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LV+xroU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1649D1EB5E1;
-	Wed, 25 Feb 2026 01:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E881326F46F;
+	Wed, 25 Feb 2026 01:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983367; cv=none; b=KJsvxoDpcBL/+6CIy9qXqg9TyrOLHyXk2tllSstV9GZL9j5/g+GcMuKABk5ZXfWP6B7h1GCgYG3W3GljC29idYcPEZ0TCvvGgFM1FpaRI3ZmKAOpBaC06l0pk430ZlvauYHCOIzrV55x5VoHf8jiukX2YsptDyU2cr43V7AnBO0=
+	t=1771984034; cv=none; b=GfFwCOvStRz+QzMHzn3Z5yk+Xjpc5UOAOWNEkhwVv2IyfIYvcE1dggZKDy6jF8OC5sPbvUGZaGyM04Gy+PHV5SQhjIB5Vwg6kUh5WELxyx/26s6nCI0uJoxTpnp7pyowLvljl5qMsVw8kEIWIJW3ozu7fxmNeF2u6kwZR8lWmDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983367; c=relaxed/simple;
-	bh=ScU3JhVJdDff8EOkZUTPOo4wPlTBpPCSXNTkqoUNrfc=;
+	s=arc-20240116; t=1771984034; c=relaxed/simple;
+	bh=06s5Xt0CIRQWyDplGp/RqcJFIGCsrkYrYz5Li5ap8Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TiOSqUUMhIDiqnQ2IxAKkCnB5BFwIbXpeWSmtw4/troLhRjoEM8+vKP12/nwdME8MZBmmuIlYvqjjcS/6Eni+PJOIbrN5UZ6rzpGwccDt2iqIizbN3b3xaEZlGEA3Dgug1oaspmQ3fLxGTk/ZbjKISJ1e7jkZXq/4ng6g4SpZeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LD0Q6FX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA1BC116D0;
-	Wed, 25 Feb 2026 01:36:06 +0000 (UTC)
+	 MIME-Version; b=UrPaukFKHcfUaV/BNX2hfszys+xLJ7lpW2CPg2MVJszrQK0SgVTno0tCp4/L7Lsvt9Hfy51bVi1IKcqOmvlTzqySzCZUpkgrh/jZ+bu60wuf7/IZUNfQYOK7K1fjot2UZW3LLQM7yB/TYH19j6kmZuiAXkPjp041NIH7dpLcDso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LV+xroU3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DE0C116D0;
+	Wed, 25 Feb 2026 01:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983367;
-	bh=ScU3JhVJdDff8EOkZUTPOo4wPlTBpPCSXNTkqoUNrfc=;
+	s=korg; t=1771984033;
+	bh=06s5Xt0CIRQWyDplGp/RqcJFIGCsrkYrYz5Li5ap8Jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LD0Q6FX3SFYU+x4ruRWTs2ncqYw8lQMrJkS5A1YxQqY4OaC4CGgAHpaTT/8gDCFZT
-	 QXn2PXdfXTO22AVis+/bD+h0TCzTkOmoaVMOq1y889wgn5+315t0bb+0IdmQMdQ+TQ
-	 UNWT2aljX1ao7pX3GcHvMKk7maM746yPGSzyi5Bs=
+	b=LV+xroU3Da0bswnkOoUy+1LTILy5nykjMNEbEn14y9fNgw/+vcsRRcC6TRxcS6vgJ
+	 /gudn9L9MtdaUpeBWrM1xGsfnZPvhL/NoMZSVMGtTJXDzloxjSSpmaWOWsfmnE7F5k
+	 Am1d8I8N+5qdgHdeSnxvQbWrZ+X+XhYfwlRjt2jE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weili Qian <qianweili@huawei.com>,
-	Alex Williamson <alex@shazbot.org>,
+	Zhiyu Zhang <zhiyuzhang999@gmail.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 493/781] hisi_acc_vfio_pci: fix VF reset timeout issue
-Date: Tue, 24 Feb 2026 17:20:02 -0800
-Message-ID: <20260225012411.899706126@linuxfoundation.org>
+Subject: [PATCH 6.18 277/641] fat: avoid parent link count underflow in rmdir
+Date: Tue, 24 Feb 2026 17:20:03 -0800
+Message-ID: <20260225012355.500158732@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,121 +73,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219101-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mail.parknet.co.jp,zeniv.linux.org.uk,kernel.org,suse.cz,linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218530-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[shazbot.org:email,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6E52318F5AB
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 94E5B190BA5
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weili Qian <qianweili@huawei.com>
+From: Zhiyu Zhang <zhiyuzhang999@gmail.com>
 
-[ Upstream commit a22099ed7936f8e8dabbdbadd97d56047797116b ]
+[ Upstream commit 8cafcb881364af5ef3a8b9fed4db254054033d8a ]
 
-If device error occurs during live migration, qemu will
-reset the VF. At this time, VF reset and device reset are performed
-simultaneously. The VF reset will timeout. Therefore, the QM_RESETTING
-flag is used to ensure that VF reset and device reset are performed
-serially.
+Corrupted FAT images can leave a directory inode with an incorrect
+i_nlink (e.g. 2 even though subdirectories exist). rmdir then
+unconditionally calls drop_nlink(dir) and can drive i_nlink to 0,
+triggering the WARN_ON in drop_nlink().
 
-Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
-Signed-off-by: Weili Qian <qianweili@huawei.com>
-Link: https://lore.kernel.org/r/20260122020205.2884497-2-liulongfang@huawei.com
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+Add a sanity check in vfat_rmdir() and msdos_rmdir(): only drop the
+parent link count when it is at least 3, otherwise report a filesystem
+error.
+
+Link: https://lkml.kernel.org/r/20260101111148.1437-1-zhiyuzhang999@gmail.com
+Fixes: 9a53c3a783c2 ("[PATCH] r/o bind mounts: unlink: monitor i_nlink")
+Signed-off-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Closes: https://lore.kernel.org/linux-fsdevel/aVN06OKsKxZe6-Kv@casper.infradead.org/T/#t
+Tested-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 24 +++++++++++++++++++
- .../vfio/pci/hisilicon/hisi_acc_vfio_pci.h    |  2 ++
- 2 files changed, 26 insertions(+)
+ fs/fat/namei_msdos.c | 7 ++++++-
+ fs/fat/namei_vfat.c  | 7 ++++++-
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index cf45f6370c369..d1e8053640a98 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1188,9 +1188,32 @@ hisi_acc_vfio_pci_get_device_state(struct vfio_device *vdev,
- 	return 0;
- }
- 
-+static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
-+{
-+	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
-+	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
-+	struct device *dev = &qm->pdev->dev;
-+	u32 delay = 0;
-+
-+	/* All reset requests need to be queued for processing */
-+	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
-+		msleep(1);
-+		if (++delay > QM_RESET_WAIT_TIMEOUT) {
-+			dev_err(dev, "reset prepare failed\n");
-+			return;
-+		}
+diff --git a/fs/fat/namei_msdos.c b/fs/fat/namei_msdos.c
+index 0b920ee40a7f9..262ec1b790b56 100644
+--- a/fs/fat/namei_msdos.c
++++ b/fs/fat/namei_msdos.c
+@@ -325,7 +325,12 @@ static int msdos_rmdir(struct inode *dir, struct dentry *dentry)
+ 	err = fat_remove_entries(dir, &sinfo);	/* and releases bh */
+ 	if (err)
+ 		goto out;
+-	drop_nlink(dir);
++	if (dir->i_nlink >= 3)
++		drop_nlink(dir);
++	else {
++		fat_fs_error(sb, "parent dir link count too low (%u)",
++			dir->i_nlink);
 +	}
-+
-+	hisi_acc_vdev->set_reset_flag = true;
-+}
-+
- static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
- {
- 	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
-+	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
-+
-+	if (hisi_acc_vdev->set_reset_flag)
-+		clear_bit(QM_RESETTING, &qm->misc_ctl);
  
- 	if (hisi_acc_vdev->core_device.vdev.migration_flags !=
- 				VFIO_MIGRATION_STOP_COPY)
-@@ -1734,6 +1757,7 @@ static const struct pci_device_id hisi_acc_vfio_pci_table[] = {
- MODULE_DEVICE_TABLE(pci, hisi_acc_vfio_pci_table);
+ 	clear_nlink(inode);
+ 	fat_truncate_time(inode, NULL, S_CTIME);
+diff --git a/fs/fat/namei_vfat.c b/fs/fat/namei_vfat.c
+index 5dbc4cbb8fce3..47ff083cfc7e6 100644
+--- a/fs/fat/namei_vfat.c
++++ b/fs/fat/namei_vfat.c
+@@ -803,7 +803,12 @@ static int vfat_rmdir(struct inode *dir, struct dentry *dentry)
+ 	err = fat_remove_entries(dir, &sinfo);	/* and releases bh */
+ 	if (err)
+ 		goto out;
+-	drop_nlink(dir);
++	if (dir->i_nlink >= 3)
++		drop_nlink(dir);
++	else {
++		fat_fs_error(sb, "parent dir link count too low (%u)",
++			dir->i_nlink);
++	}
  
- static const struct pci_error_handlers hisi_acc_vf_err_handlers = {
-+	.reset_prepare = hisi_acc_vf_pci_reset_prepare,
- 	.reset_done = hisi_acc_vf_pci_aer_reset_done,
- 	.error_detected = vfio_pci_core_aer_err_detected,
- };
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
-index cd55eba64dfb2..a3d91a31e3d88 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.h
-@@ -27,6 +27,7 @@
- 
- #define ERROR_CHECK_TIMEOUT		100
- #define CHECK_DELAY_TIME		100
-+#define QM_RESET_WAIT_TIMEOUT  60000
- 
- #define QM_SQC_VFT_BASE_SHIFT_V2	28
- #define QM_SQC_VFT_BASE_MASK_V2		GENMASK(15, 0)
-@@ -128,6 +129,7 @@ struct hisi_acc_vf_migration_file {
- struct hisi_acc_vf_core_device {
- 	struct vfio_pci_core_device core_device;
- 	u8 match_done;
-+	bool set_reset_flag;
- 	/*
- 	 * io_base is only valid when dev_opened is true,
- 	 * which is protected by open_mutex.
+ 	clear_nlink(inode);
+ 	fat_truncate_time(inode, NULL, S_ATIME|S_MTIME);
 -- 
 2.51.0
 
