@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-218699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SM2tLY5YnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:58 +0100
+	id +BkXDpRYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA0D190760
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A37DE19076E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 881E831CFEA4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B8CD31D3F6D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE642641FC;
-	Wed, 25 Feb 2026 01:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF28256C6C;
+	Wed, 25 Feb 2026 01:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKUDda5g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rjs254J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23131D5141;
-	Wed, 25 Feb 2026 01:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B50243376;
+	Wed, 25 Feb 2026 01:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983559; cv=none; b=rx+x4/FKKjoedre3ySbRtC5bT2GeG6oUMAa6qFSXq/WfU1fNfXTgD/69qMbslcd+zz5koEsWn5oqkQ43vXqOMvhZU6HaZPF8OezC+gt58QSoGlgHdkdFQa/jhqC+rpar6h7sdZPAlsxb7f6VVRTugRzOW4XWA3DkZuqHylQ9vdg=
+	t=1771983566; cv=none; b=jIZYCz5FrUPhhhEItIZbaWEswkijFRD7cyZ3oybQgTo40wCocqX04hPA8hn0W4rzZnS/j77t2kSpqOkGQMXaFFP+GSSyq3kc8JNjzR05ErzvyAt/boFQ83WYmdORXl0dmZaOnCap4rHtTTWhZ6fULCAx2qZH7nl/3X1tnBcnKbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983559; c=relaxed/simple;
-	bh=eBZFCHV9IjMYVtwCsf8s35rdhq/hQf6iIjkS/okB6LI=;
+	s=arc-20240116; t=1771983566; c=relaxed/simple;
+	bh=fKIgDVXnNpHZSHseJ+TE0BcLgvL98Lrwl/Rd3B2JQ9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViE/AQJl21Ayn2yYz+bOJ9ayQTG/H8kh9o+MdXWQ41qa30rWO78UZd4XYdJq4r5x1wICLxGVp0iWW/SGyW734yUqznLcw4uvk4LnMML03uEeFYTbFCKc+WumAL3Ud62eEIaBkiAavL0f/M6mUcI8VzhP8omSlVe2HuHBNST0+7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKUDda5g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A616DC2BC86;
-	Wed, 25 Feb 2026 01:39:18 +0000 (UTC)
+	 MIME-Version; b=lUoAVJR+z+A+k8fabRR0O7xzFywn3mJjJGhYEjUXZaROlp5Uz+LnwmjcgX+cRuri7kD402155Ct8ylyUr3eUDDvU1HVsiPdDMGY0eGEaV1NskEQSxouCNtGuezAgs9UwEdBRf5rZLwySeG7I4yNz/eI0w/CzAzwfsgBGmqDELBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rjs254J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D17C116D0;
+	Wed, 25 Feb 2026 01:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983558;
-	bh=eBZFCHV9IjMYVtwCsf8s35rdhq/hQf6iIjkS/okB6LI=;
+	s=korg; t=1771983566;
+	bh=fKIgDVXnNpHZSHseJ+TE0BcLgvL98Lrwl/Rd3B2JQ9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cKUDda5gKa1CzZLKt82UiAaKXJIGO0nbG6J7bpb587besQ9TpB4UWNFrAQ/a07Soy
-	 nUB5NQR/sU3b2ASz5AYnnOf0f7r0orR9A5hK3snwHY3ESXcbpCsRTMxlhVw/c0KtV7
-	 OREj+ebvSML3WIGFAUd0aVMSyGnE51R4SooJi46c=
+	b=2rjs254JDKnJ3dSYrNOOnzqa9LsKDjR3vL16Ay6VW9zrw+wcv7Kxcf9PuCVBt5uh/
+	 qIFxMYWD9PtVW8tUbEaQ1aD4dPxNKDBnq6ldMtFR9dlxbMmDZcfA6jc/g7GOseQJo4
+	 1TPlm6vB0B3PNrmTFKUIhqMotzvec7G4JhL+2nKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Furquim Ulisses <ulisses.furquim@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Sean V Kelley <skelley@nvidia.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 623/781] powercap: intel_rapl: Remove incorrect CPU check in PMU context
-Date: Tue, 24 Feb 2026 17:22:12 -0800
-Message-ID: <20260225012415.093984728@linuxfoundation.org>
+Subject: [PATCH 6.19 624/781] ACPI: CPPC: Fix remaining for_each_possible_cpu() to use online CPUs
+Date: Tue, 24 Feb 2026 17:22:13 -0800
+Message-ID: <20260225012415.117875631@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -76,142 +74,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218699-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218706-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 3CA0D190760
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: A37DE19076E
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: Sean V Kelley <skelley@nvidia.com>
 
-[ Upstream commit 7537bae8b6eb635583e0e6260f61d13ddbd52087 ]
+[ Upstream commit 56eb0c0ed345da7815274aa821a8546a073d7e97 ]
 
-The RAPL MSR read path incorrectly validates CPU context when called
-from the PMU subsystem:
+per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
+CPUs via acpi_soft_cpu_online() --> __acpi_processor_start() -->
+acpi_cppc_processor_probe().
 
-    if (atomic) {
-        if (unlikely(smp_processor_id() != cpu))
-            return -EIO;
-        rdmsrq(ra->reg.msr, ra->value);
-    }
+However, send_pcc_cmd() and acpi_get_psd_map() still iterate over all
+possible CPUs. In acpi_get_psd_map(), encountering an offline CPU
+returns -EFAULT, causing cppc_cpufreq initialization to fail.
 
-This check fails for package-scoped MSRs like RAPL energy counters,
-which are readable from any CPU within the package.
+This breaks systems booted with "nosmt" or "nosmt=force".
 
-The perf tool avoids hitting this check by validating against
-/sys/bus/event_source/devices/power/cpumask before opening events.
-However, turbostat does not perform this validation and may attempt
-reads from non-lead CPUs, causing the check to fail and return zero
-power values.
+Fix by using for_each_online_cpu() in both functions.
 
-Since package-scoped MSRs are architecturally accessible from any CPU
-in the package, remove the CPU matching check.
-
-Also rename 'atomic' to 'pmu_ctx' to clarify this indicates PMU context
-where rdmsrq() can be used directly instead of rdmsrl_safe_on_cpu().
-
-Fixes: 748d6ba43afd ("powercap: intel_rapl: Enable MSR-based RAPL PMU support")
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Tested-by: Furquim Ulisses <ulisses.furquim@intel.com>
-Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20260209234310.1440722-2-sathyanarayanan.kuppuswamy@linux.intel.com
+Fixes: 80b8286aeec0 ("ACPI / CPPC: support for batching CPPC requests")
+Signed-off-by: Sean V Kelley <skelley@nvidia.com>
+Link: https://patch.msgid.link/20260211212254.30190-1-skelley@nvidia.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/intel_rapl_common.c |  6 +++---
- drivers/powercap/intel_rapl_msr.c    | 12 +++++-------
- include/linux/intel_rapl.h           |  2 +-
- 3 files changed, 9 insertions(+), 11 deletions(-)
+ drivers/acpi/cppc_acpi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index 3ff6da3bf4e63..3705d0608a0fb 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -254,7 +254,7 @@ static void rapl_init_domains(struct rapl_package *rp);
- static int rapl_read_data_raw(struct rapl_domain *rd,
- 			      enum rapl_primitives prim,
- 			      bool xlate, u64 *data,
--			      bool atomic);
-+			      bool pmu_ctx);
- static int rapl_write_data_raw(struct rapl_domain *rd,
- 			       enum rapl_primitives prim,
- 			       unsigned long long value);
-@@ -832,7 +832,7 @@ prim_fixups(struct rapl_domain *rd, enum rapl_primitives prim)
-  */
- static int rapl_read_data_raw(struct rapl_domain *rd,
- 			      enum rapl_primitives prim, bool xlate, u64 *data,
--			      bool atomic)
-+			      bool pmu_ctx)
- {
- 	u64 value;
- 	enum rapl_primitives prim_fixed = prim_fixups(rd, prim);
-@@ -854,7 +854,7 @@ static int rapl_read_data_raw(struct rapl_domain *rd,
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index e66e20d1f31b7..b59b0100d03c5 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -362,7 +362,7 @@ static int send_pcc_cmd(int pcc_ss_id, u16 cmd)
+ end:
+ 	if (cmd == CMD_WRITE) {
+ 		if (unlikely(ret)) {
+-			for_each_possible_cpu(i) {
++			for_each_online_cpu(i) {
+ 				struct cpc_desc *desc = per_cpu(cpc_desc_ptr, i);
  
- 	ra.mask = rpi->mask;
+ 				if (!desc)
+@@ -524,7 +524,7 @@ int acpi_get_psd_map(unsigned int cpu, struct cppc_cpudata *cpu_data)
+ 	else if (pdomain->coord_type == DOMAIN_COORD_TYPE_SW_ANY)
+ 		cpu_data->shared_type = CPUFREQ_SHARED_TYPE_ANY;
  
--	if (rd->rp->priv->read_raw(get_rid(rd->rp), &ra, atomic)) {
-+	if (rd->rp->priv->read_raw(get_rid(rd->rp), &ra, pmu_ctx)) {
- 		pr_debug("failed to read reg 0x%llx for %s:%s\n", ra.reg.val, rd->rp->name, rd->name);
- 		return -EIO;
- 	}
-diff --git a/drivers/powercap/intel_rapl_msr.c b/drivers/powercap/intel_rapl_msr.c
-index 9a7e150b3536b..152893dca5653 100644
---- a/drivers/powercap/intel_rapl_msr.c
-+++ b/drivers/powercap/intel_rapl_msr.c
-@@ -110,16 +110,14 @@ static int rapl_cpu_down_prep(unsigned int cpu)
- 	return 0;
- }
+-	for_each_possible_cpu(i) {
++	for_each_online_cpu(i) {
+ 		if (i == cpu)
+ 			continue;
  
--static int rapl_msr_read_raw(int cpu, struct reg_action *ra, bool atomic)
-+static int rapl_msr_read_raw(int cpu, struct reg_action *ra, bool pmu_ctx)
- {
- 	/*
--	 * When called from atomic-context (eg PMU event handler)
--	 * perform MSR read directly using rdmsrq().
-+	 * When called from PMU context, perform MSR read directly using
-+	 * rdmsrq() without IPI overhead. Package-scoped MSRs are readable
-+	 * from any CPU in the package.
- 	 */
--	if (atomic) {
--		if (unlikely(smp_processor_id() != cpu))
--			return -EIO;
--
-+	if (pmu_ctx) {
- 		rdmsrq(ra->reg.msr, ra->value);
- 		goto out;
- 	}
-diff --git a/include/linux/intel_rapl.h b/include/linux/intel_rapl.h
-index f479ef5b3341c..fa1f328d67120 100644
---- a/include/linux/intel_rapl.h
-+++ b/include/linux/intel_rapl.h
-@@ -152,7 +152,7 @@ struct rapl_if_priv {
- 	union rapl_reg reg_unit;
- 	union rapl_reg regs[RAPL_DOMAIN_MAX][RAPL_DOMAIN_REG_MAX];
- 	int limits[RAPL_DOMAIN_MAX];
--	int (*read_raw)(int id, struct reg_action *ra, bool atomic);
-+	int (*read_raw)(int id, struct reg_action *ra, bool pmu_ctx);
- 	int (*write_raw)(int id, struct reg_action *ra);
- 	void *defaults;
- 	void *rpi;
 -- 
 2.51.0
 
