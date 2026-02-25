@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-218434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219004-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LexHNpTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:54 +0100
+	id sKIDO4JVnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-219004-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FB918FA74
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD3219005F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1004530D43FB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 331CA30C4E7A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951DE22579E;
-	Wed, 25 Feb 2026 01:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2303726056D;
+	Wed, 25 Feb 2026 01:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W16JqE5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TF5e9joS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E2618B0A;
-	Wed, 25 Feb 2026 01:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8311E2834;
+	Wed, 25 Feb 2026 01:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983255; cv=none; b=AZ3/VCGnU/fKMYW9b4IitPai/5ZOYWBORylyEKe0SC4ef2uxsCdJLiX35Tk6ptJMaNbHWuZgj+I08O+1z+waDz4ebOhAnPa6nA/JrrplxyOLBxdkrj/RKSVn0MFF7h2rVKebEvQEImnDAHDOT5EJy3mEf/HJcbxrMb/ObJwPtl4=
+	t=1771983914; cv=none; b=ao7Cvq2MTJnquKrQ5kGThHz/R3N3kxbp2F8x2g7XBsJ9uZDUyFXEoEyXGKJ8rNOoPzz+62txiZ0s8hrggO8p2fi5iCbjeoj8/qpZtmg2/YOTaJUD1CZz7sNPsxHyhMfVayXtfF/JnTkolmyTdSQM8axlEGHnO5DCcdrHdWi5kZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983255; c=relaxed/simple;
-	bh=Fo6pmeA5rCJXyG8lFijFY+p9H3Pe/VE1uS/Xwu52qPI=;
+	s=arc-20240116; t=1771983914; c=relaxed/simple;
+	bh=dcN6eSgvaO3cpkOWinoAXnbUjVZ6gJkAEvGck50+Uzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InohxbkZjvcrVINSdlJ+d3xz/STFOQXEb1OZcMJcUcEa7+s4DKiSbWLft/MBCYZtO5r80adZ8+YzlDRTXx35Wt6jB5HdtU8K4darnP5b0Z1vxNv6iZ5j/e7RLArARMb78LJ28r1SLfrzpwbjnLIJreXQBfO4P6Ny8CZAG06u1Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W16JqE5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13725C116D0;
-	Wed, 25 Feb 2026 01:34:15 +0000 (UTC)
+	 MIME-Version; b=VrkQ2pU42363fnDJ2moJKqDO/OJRhpOcwkM5mHTMCwhs3OKkH8kn+JFkjip36Lk16ndL2Ljqg3TRkEG+8DxYYuASFipWy/HCiooDCn4xu7Q6uUQLFKSMnlGCX68JknH00iXC11oWJeolOFD+fKcp0O9unkmqXngSSqc+qd5SDCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TF5e9joS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BB4C19423;
+	Wed, 25 Feb 2026 01:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983255;
-	bh=Fo6pmeA5rCJXyG8lFijFY+p9H3Pe/VE1uS/Xwu52qPI=;
+	s=korg; t=1771983914;
+	bh=dcN6eSgvaO3cpkOWinoAXnbUjVZ6gJkAEvGck50+Uzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W16JqE5JVg+dmjmZIb4HEv23c1xaijfEOFDB41w3gEm6eMbMC9QdLajPclxXldFM3
-	 5WLnnjLHDPMJVlPMFcMNXFICwpuzniGsLDJOjxA+Qs2QnyGNblCG/OoIsqBsBkiudU
-	 a2DsHiHJr21+0IsD5MkC0Kp1N3kpEKXkRWgdWWwo=
+	b=TF5e9joScO8OqSFDEerVlc6LRMFZXGxs6E5vG9FHv5kiQ+JouIm2AN8CRqkP9x8v6
+	 7by34Y2pPlgjmKy9xk0Gd5FV1IHFIvIlHGpiwztKC0AMTzPAoJGGNt595apagtIAcP
+	 VVnSWm4V2NjN3x1G5aDhR3yVOibhGbxwXxb21sSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmytro Maluka <dmaluka@chromium.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 354/781] iommu/vt-d: Flush cache for PASID table before using it
-Date: Tue, 24 Feb 2026 17:17:43 -0800
-Message-ID: <20260225012408.369271282@linuxfoundation.org>
+Subject: [PATCH 6.18 138/641] arm64: dts: qcom: x1e80100: Fix USB combo PHYs SS1 and SS2 ref clocks
+Date: Tue, 24 Feb 2026 17:17:44 -0800
+Message-ID: <20260225012352.474732372@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218434-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219004-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,66 +89,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email,chromium.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: B2FB918FA74
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fdf000:email,fda000:email]
+X-Rspamd-Queue-Id: 5FD3219005F
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmytro Maluka <dmaluka@chromium.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 22d169bdd2849fe6bd18c2643742e1c02be6451c ]
+[ Upstream commit 3af51501e2b8c87564b5cda43b0e5c316cf54717 ]
 
-When writing the address of a freshly allocated zero-initialized PASID
-table to a PASID directory entry, do that after the CPU cache flush for
-this PASID table, not before it, to avoid the time window when this
-PASID table may be already used by non-coherent IOMMU hardware while
-its contents in RAM is still some random old data, not zero-initialized.
+It seems the USB combo SS1 and SS2 ref clocks have another gate, unlike
+the SS0. These gates are part of the TCSR clock controller.
 
-Fixes: 194b3348bdbb ("iommu/vt-d: Fix PASID directory pointer coherency")
-Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20251221123508.37495-1-dmaluka@chromium.org
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+At least on Dell XPS 13 (9345), if the ref clock provided by the TCSR
+clock controller for SS1 PHY is disabled on the clk_disable_unused late
+initcall, the PHY fails to initialize. It doesn't happen on the SS0 PHY
+and the SS2 is not used on this device.
+
+This doesn't seem to be a problem on CRD though. It might be that the
+RPMh has a vote for it from some other consumer and does not actually
+disable it when ther kernel drops its vote.
+
+Either way, these TCSR provided clocks seem to be the correct ones for
+the SS1 and SS2, so use them instead.
+
+Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251103-dts-qcom-x1e80100-fix-combo-ref-clks-v1-1-f395ec3cb7e8@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/pasid.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index 3e2255057079c..77b9b147ab50e 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -153,6 +153,9 @@ static struct pasid_entry *intel_pasid_get_entry(struct device *dev, u32 pasid)
- 		if (!entries)
- 			return NULL;
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index 662ad694cd914..3290fd8c2d6e6 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -2910,7 +2910,7 @@ usb_1_ss1_qmpphy: phy@fda000 {
+ 			reg = <0 0x00fda000 0 0x4000>;
  
-+		if (!ecap_coherent(info->iommu->ecap))
-+			clflush_cache_range(entries, VTD_PAGE_SIZE);
-+
- 		/*
- 		 * The pasid directory table entry won't be freed after
- 		 * allocation. No worry about the race with free and
-@@ -165,10 +168,8 @@ static struct pasid_entry *intel_pasid_get_entry(struct device *dev, u32 pasid)
- 			iommu_free_pages(entries);
- 			goto retry;
- 		}
--		if (!ecap_coherent(info->iommu->ecap)) {
--			clflush_cache_range(entries, VTD_PAGE_SIZE);
-+		if (!ecap_coherent(info->iommu->ecap))
- 			clflush_cache_range(&dir[dir_index].val, sizeof(*dir));
--		}
- 	}
+ 			clocks = <&gcc GCC_USB3_SEC_PHY_AUX_CLK>,
+-				 <&rpmhcc RPMH_CXO_CLK>,
++				 <&tcsr TCSR_USB4_1_CLKREF_EN>,
+ 				 <&gcc GCC_USB3_SEC_PHY_COM_AUX_CLK>,
+ 				 <&gcc GCC_USB3_SEC_PHY_PIPE_CLK>;
+ 			clock-names = "aux",
+@@ -2981,7 +2981,7 @@ usb_1_ss2_qmpphy: phy@fdf000 {
+ 			reg = <0 0x00fdf000 0 0x4000>;
  
- 	return &entries[index];
+ 			clocks = <&gcc GCC_USB3_TERT_PHY_AUX_CLK>,
+-				 <&rpmhcc RPMH_CXO_CLK>,
++				 <&tcsr TCSR_USB4_2_CLKREF_EN>,
+ 				 <&gcc GCC_USB3_TERT_PHY_COM_AUX_CLK>,
+ 				 <&gcc GCC_USB3_TERT_PHY_PIPE_CLK>;
+ 			clock-names = "aux",
 -- 
 2.51.0
 
