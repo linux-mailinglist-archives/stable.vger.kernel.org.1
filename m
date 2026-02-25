@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJKoI0VTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:25 +0100
+	id 2DCjIUGenmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD0218F75E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AEA192BEF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1567312F091
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79ACB31045D2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA76E242D9B;
-	Wed, 25 Feb 2026 01:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541572C21C4;
+	Wed, 25 Feb 2026 06:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esShA4X4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lN3Vltju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F13B18B0A;
-	Wed, 25 Feb 2026 01:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1827C2C11CD;
+	Wed, 25 Feb 2026 06:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983380; cv=none; b=opS98CgWDRCxJogkBRMHvKlRdY05KlGPRWAc320Gcjq1YI8rtxQMnsrCEtny0RghbEQS92xRm0Pwd0XPHNAqK6UXXkQj4yfyd04gs0fnOD7pQBW4X6ZdkLOnoWnfBKC1BWTR/MuIHOIGbPSXN2SFR2Eo6pMLzqqOmTZa+qaEq7s=
+	t=1772002589; cv=none; b=Oc0rO1TF/MMc6Rxdr/vBDZ781TB99d5qNhOmPoge/wDIK6yW1AXgbolTqSLbWP15t/qADq4+23FKbb+bShh1TgqyJDaOtq/0HET+7Qj910TLSRXTfk4/lRd0QkOjPUC1RIs9zsT87AydLAeHcz4hF/FPAmAeEidbqZmDsQmrKQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983380; c=relaxed/simple;
-	bh=42b7k8eY0+23K/iluDarGj7GVbw4o1UloqtJXnY/49k=;
+	s=arc-20240116; t=1772002589; c=relaxed/simple;
+	bh=1d2zG6qZeKpHdW6YxXU8tdZ6nWg+1h/z9JALFFvyiwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cp5ZQWcdGq4IgiOVbaZfrbuhH7TjoQrmipX3JVI3y1+Q8BXnrM28ABXMNyFffibgKvvcdTi/k0DOhYKGRP0LkmnUArakAxHim8v849H7YPO2Be9AzZ+kTJ7exMmxs/zImisZrsS2hBxDAAdchvPcZAV6dpo+FBW/SsvEwttM030=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esShA4X4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4282AC116D0;
-	Wed, 25 Feb 2026 01:36:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g67VfX6WWmEP0q3CFQWWzUBsGcX2/VoImBlQrxem3K6FIYnGw0aFzTsWTT599WoS3mQ72kHdM0S4HyRpP1X/yoGyeZH9w9Ke2rCr5fnLWBRxHfiK0Q5u6s+vnuMUgmrGmG2KCkfHF0SXedGRA1v+mvI1l0t07yWTNHkcGPJ74Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lN3Vltju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD8AC116D0;
+	Wed, 25 Feb 2026 06:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983380;
-	bh=42b7k8eY0+23K/iluDarGj7GVbw4o1UloqtJXnY/49k=;
+	s=korg; t=1772002588;
+	bh=1d2zG6qZeKpHdW6YxXU8tdZ6nWg+1h/z9JALFFvyiwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esShA4X4EMmjzk+cDZzRS/jNme9m3+hufKixekqKqiyVj3pu0JVwfkp1T9lMilRqZ
-	 6GWraILRrS7m2ae+91P4tAgkLIwswZsYQd8zKH+Vy/FGjfk8ZuhPy2VjUxcDZeZiuU
-	 fAlLbJqjOo4PImFa7slNFT4867Hwu+yz9zIoRaY0=
+	b=lN3Vltju4crkO7xFvOr780cv8CkVmLROFrO0OHKSAL03OZiRto4p4Oq/o7qqVExFN
+	 WHiKgJTQWF9ZAWAFvmA9dAMa69f0X44M9ENWjHcboimgEWxIFewFlf3i9HE60rp0jU
+	 DYvlxZNso666FWQwAD4BMwoYgp5vyBOmoZtfZ3E8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Tom Zanussi <zanussi@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 504/781] tracing: Remove duplicate ENABLE_EVENT_STR and DISABLE_EVENT_STR macros
+Subject: [PATCH 6.18 287/641] PCI: Initialize RCB from pci_configure_device()
 Date: Tue, 24 Feb 2026 17:20:13 -0800
-Message-ID: <20260225012412.164777372@linuxfoundation.org>
+Message-ID: <20260225012355.716509016@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +63,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218542-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219244-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2CD0218F75E
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 00AEA192BEF
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Håkon Bugge <haakon.bugge@oracle.com>
 
-[ Upstream commit 9df0e49c5b9b8d051529be9994e4f92f2d20be6f ]
+[ Upstream commit 1a6845aaa6de81f95959b380b45de8f10d6a8502 ]
 
-The macros ENABLE_EVENT_STR and DISABLE_EVENT_STR were added to trace.h so
-that more than one file can have access to them, but was never removed
-from their original location. Remove the duplicates.
+Commit e42010d8207f ("PCI: Set Read Completion Boundary to 128 iff Root
+Port supports it (_HPX)") worked around a bogus _HPX type 2 record, which
+caused program_hpx_type2() to set the RCB in an endpoint even though the
+Root Port did not have the RCB bit set.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Link: https://patch.msgid.link/20260126130037.4ba201f9@gandalf.local.home
-Fixes: d0bad49bb0a09 ("tracing: Add enable_hist/disable_hist triggers")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+e42010d8207f fixed that by setting the RCB in the endpoint only when it was
+set in the Root Port.
+
+In retrospect, program_hpx_type2() is intended for AER-related settings,
+and the RCB should be configured elsewhere so it doesn't depend on the
+presence or contents of an _HPX record.
+
+Explicitly program the RCB from pci_configure_device() so it matches the
+Root Port's RCB.  The Root Port may not be visible to virtualized guests;
+in that case, leave RCB alone.
+
+Fixes: e42010d8207f ("PCI: Set Read Completion Boundary to 128 iff Root Port supports it (_HPX)")
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20260129175237.727059-2-haakon.bugge@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/pci/probe.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 137b4d9bb116d..2c6d3e33b9fb4 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -3963,11 +3963,6 @@ void trace_put_event_file(struct trace_event_file *file)
- EXPORT_SYMBOL_GPL(trace_put_event_file);
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 8cf573fca3078..7d4f0db5ac265 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2381,6 +2381,37 @@ static void pci_configure_serr(struct pci_dev *dev)
+ 	}
+ }
  
- #ifdef CONFIG_DYNAMIC_FTRACE
--
--/* Avoid typos */
--#define ENABLE_EVENT_STR	"enable_event"
--#define DISABLE_EVENT_STR	"disable_event"
--
- struct event_probe_data {
- 	struct trace_event_file	*file;
- 	unsigned long			count;
++static void pci_configure_rcb(struct pci_dev *dev)
++{
++	struct pci_dev *rp;
++	u16 rp_lnkctl;
++
++	/*
++	 * Per PCIe r7.0, sec 7.5.3.7, RCB is only meaningful in Root Ports
++	 * (where it is read-only), Endpoints, and Bridges.  It may only be
++	 * set for Endpoints and Bridges if it is set in the Root Port. For
++	 * Endpoints, it is 'RsvdP' for Virtual Functions.
++	 */
++	if (!pci_is_pcie(dev) ||
++	    pci_pcie_type(dev) == PCI_EXP_TYPE_ROOT_PORT ||
++	    pci_pcie_type(dev) == PCI_EXP_TYPE_UPSTREAM ||
++	    pci_pcie_type(dev) == PCI_EXP_TYPE_DOWNSTREAM ||
++	    pci_pcie_type(dev) == PCI_EXP_TYPE_RC_EC ||
++	    dev->is_virtfn)
++		return;
++
++	/* Root Port often not visible to virtualized guests */
++	rp = pcie_find_root_port(dev);
++	if (!rp)
++		return;
++
++	pcie_capability_read_word(rp, PCI_EXP_LNKCTL, &rp_lnkctl);
++	pcie_capability_clear_and_set_word(dev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_RCB,
++					   (rp_lnkctl & PCI_EXP_LNKCTL_RCB) ?
++					   PCI_EXP_LNKCTL_RCB : 0);
++}
++
+ static void pci_configure_device(struct pci_dev *dev)
+ {
+ 	pci_configure_mps(dev);
+@@ -2390,6 +2421,7 @@ static void pci_configure_device(struct pci_dev *dev)
+ 	pci_configure_aspm_l1ss(dev);
+ 	pci_configure_eetlp_prefix(dev);
+ 	pci_configure_serr(dev);
++	pci_configure_rcb(dev);
+ 
+ 	pci_acpi_program_hp_params(dev);
+ }
 -- 
 2.51.0
 
