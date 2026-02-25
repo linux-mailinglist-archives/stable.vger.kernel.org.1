@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-218971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMX1NAlXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218971-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:29 +0100
+	id cAWEKelSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A54190451
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF6E18F5C3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5C7330D6D24
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E7A9631C628D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6862C0285;
-	Wed, 25 Feb 2026 01:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91613248881;
+	Wed, 25 Feb 2026 01:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKTKdXuZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzLOtQFX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B7C1F03DE;
-	Wed, 25 Feb 2026 01:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C5518B0A;
+	Wed, 25 Feb 2026 01:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983874; cv=none; b=SR4yUbzBpy3AHz4Uq2c5kU33/iLWqOdLAmDb/KKodENnPzi+VBP5DsdVTtFzGaVhi66ui7Sq8ruOjZtQijKnGMIjpAHJt76CIMtDSsgdeg5Rklsw/KqKGRisuVfpE2Qy9bTDydusdStw19FlnDSXDIyoAU+JLFT9KMkN3nj24vU=
+	t=1771983220; cv=none; b=L0eTFrDVrWJQJ2wn9f83PHpdHJ3cNpjQ12VFAgA2H8HsvbV9JeRbRzwR6zgAIdxhlXsx9TPRnOmKY20JpOzwWcb70U+FVzTvHuU1EHfJexF8tXNBULNvAwvmbrat2BtL5zcWSIQhpyEWrgEBdb5/ytLa6X7w8CPOI8N+JHnJNMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983874; c=relaxed/simple;
-	bh=X9nrRVLLoVaFJxeWS3C/Yn6iaIObQY8vLHNNwqOJKbc=;
+	s=arc-20240116; t=1771983220; c=relaxed/simple;
+	bh=jb+DUACeMBI/jkp6mQzfy+9BxQ9Dc6kQhiq2hUj4Sew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FamNU46IO7QRVem/6KV3qKpatbaOvmVo/Fh3WC18RJ+kehaBkn6fwTT1S6Z+wsENrINQWryFYzJ3VTB6cT35RsH6qlSckwr780wMC0LyAq0s26rXWAkXNDnN7BU4SdCEJjabSD/ckgCiFCn1fWVlpOmF8yCFRr7QdwCizj/3ILY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKTKdXuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138ADC116D0;
-	Wed, 25 Feb 2026 01:44:33 +0000 (UTC)
+	 MIME-Version; b=QfQXfzwCVMuoLTVSQlTPPPZoVFxionH2RLdwguoQEeCg9ygQCEYMrD2w6bkcWeb6LOjNJkk5R/DL/kQlQjSW/wDS3XvU2RU7xbO2LAFj3pDS86xd19cFJAmFJzIhILX46jlR16HG1FEmjKeL6FKfqMnmj8tUT0SE4/2WZr155WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzLOtQFX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1635EC116D0;
+	Wed, 25 Feb 2026 01:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983874;
-	bh=X9nrRVLLoVaFJxeWS3C/Yn6iaIObQY8vLHNNwqOJKbc=;
+	s=korg; t=1771983220;
+	bh=jb+DUACeMBI/jkp6mQzfy+9BxQ9Dc6kQhiq2hUj4Sew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKTKdXuZFPROQauJ+JFcMUvnqujKgKqw6iPCREcFK5OuW8MIavAQ29i+YAfbcYkkW
-	 YE04cKc4LPNTB6t8vu6Nl9XSWqcHSEP/jSeR6eAyvns6ftE2v/ybca75yISJsUn/hy
-	 5QFsaN8jF9hGJREkjcHvcpyj+u/Noi+tC7wWXFDM=
+	b=MzLOtQFXRh2t3upgpxkOlobdvxrrqVl5Nu0/TkzzcY1FGCUSyb12FQSTGxrrFafQJ
+	 h00AtSXmIAgTka2Yo0prRmMpRKRh6OnkYtKvW1g7PABnZx0HyGJFrDS1PpUhJxBep8
+	 Y5UUOEIoLN8BZAMgjrFnkbfOLb2ydg7sNGtB01Jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Xie <nick@khadas.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Zhiyu Zhang <zhiyuzhang999@gmail.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 150/641] arm64: dts: amlogic: s4: fix mmc clock assignment
+Subject: [PATCH 6.19 367/781] fat: avoid parent link count underflow in rmdir
 Date: Tue, 24 Feb 2026 17:17:56 -0800
-Message-ID: <20260225012352.731073383@linuxfoundation.org>
+Message-ID: <20260225012408.682599257@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,98 +73,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mail.parknet.co.jp,zeniv.linux.org.uk,kernel.org,suse.cz,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-218405-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218971-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,khadas.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 54A54190451
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,parknet.co.jp:email]
+X-Rspamd-Queue-Id: 1CF6E18F5C3
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Zhiyu Zhang <zhiyuzhang999@gmail.com>
 
-[ Upstream commit 3a115d42922cffc91b303992eadf220111d66c31 ]
+[ Upstream commit 8cafcb881364af5ef3a8b9fed4db254054033d8a ]
 
-MMC A and C are mis-represented as having their "clkin0" input connected to
-xtal while it is actually connected to the MMC clock, probably in an
-attempt to provide 24MHz to the device on this input.
+Corrupted FAT images can leave a directory inode with an incorrect
+i_nlink (e.g. 2 even though subdirectories exist). rmdir then
+unconditionally calls drop_nlink(dir) and can drive i_nlink to 0,
+triggering the WARN_ON in drop_nlink().
 
-Fix this and assign the clock to 24MHz to actually provide the required
-rate.
+Add a sanity check in vfat_rmdir() and msdos_rmdir(): only drop the
+parent link count when it is at least 3, otherwise report a filesystem
+error.
 
-Fixes: 3ab9d54b5d84 ("arm64: dts: amlogic: enable some device nodes for S4")
-Tested-by: Nick Xie <nick@khadas.com>
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260114-amlogic-s4-mmc-fixup-v3-2-a4d3e136b3f2@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lkml.kernel.org/r/20260101111148.1437-1-zhiyuzhang999@gmail.com
+Fixes: 9a53c3a783c2 ("[PATCH] r/o bind mounts: unlink: monitor i_nlink")
+Signed-off-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Closes: https://lore.kernel.org/linux-fsdevel/aVN06OKsKxZe6-Kv@casper.infradead.org/T/#t
+Tested-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-s4.dtsi | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/fat/namei_msdos.c | 7 ++++++-
+ fs/fat/namei_vfat.c  | 7 ++++++-
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-index f314f07062abe..dfc0a30a6e61b 100644
---- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-@@ -819,13 +819,16 @@ sdio: mmc@fe088000 {
- 			reg = <0x0 0xfe088000 0x0 0x800>;
- 			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&clkc_periphs CLKID_SDEMMC_A>,
--				 <&xtal>,
-+				 <&clkc_periphs CLKID_SD_EMMC_A>,
- 				 <&clkc_pll CLKID_FCLK_DIV2>;
- 			clock-names = "core", "clkin0", "clkin1";
- 			resets = <&reset RESET_SD_EMMC_A>;
- 			cap-sdio-irq;
- 			keep-power-in-suspend;
- 			status = "disabled";
-+
-+			assigned-clocks = <&clkc_periphs CLKID_SD_EMMC_A>;
-+			assigned-clock-rates = <24000000>;
- 		};
+diff --git a/fs/fat/namei_msdos.c b/fs/fat/namei_msdos.c
+index 0b920ee40a7f9..262ec1b790b56 100644
+--- a/fs/fat/namei_msdos.c
++++ b/fs/fat/namei_msdos.c
+@@ -325,7 +325,12 @@ static int msdos_rmdir(struct inode *dir, struct dentry *dentry)
+ 	err = fat_remove_entries(dir, &sinfo);	/* and releases bh */
+ 	if (err)
+ 		goto out;
+-	drop_nlink(dir);
++	if (dir->i_nlink >= 3)
++		drop_nlink(dir);
++	else {
++		fat_fs_error(sb, "parent dir link count too low (%u)",
++			dir->i_nlink);
++	}
  
- 		sd: mmc@fe08a000 {
-@@ -848,13 +851,16 @@ emmc: mmc@fe08c000 {
- 			reg = <0x0 0xfe08c000 0x0 0x800>;
- 			interrupts = <GIC_SPI 178 IRQ_TYPE_EDGE_RISING>;
- 			clocks = <&clkc_periphs CLKID_NAND>,
--				 <&xtal>,
-+				 <&clkc_periphs CLKID_SD_EMMC_C>,
- 				 <&clkc_pll CLKID_FCLK_DIV2>;
- 			clock-names = "core", "clkin0", "clkin1";
- 			resets = <&reset RESET_NAND_EMMC>;
- 			no-sdio;
- 			no-sd;
- 			status = "disabled";
-+
-+			assigned-clocks = <&clkc_periphs CLKID_SD_EMMC_C>;
-+			assigned-clock-rates = <24000000>;
- 		};
- 	};
- };
+ 	clear_nlink(inode);
+ 	fat_truncate_time(inode, NULL, S_CTIME);
+diff --git a/fs/fat/namei_vfat.c b/fs/fat/namei_vfat.c
+index 5dbc4cbb8fce3..47ff083cfc7e6 100644
+--- a/fs/fat/namei_vfat.c
++++ b/fs/fat/namei_vfat.c
+@@ -803,7 +803,12 @@ static int vfat_rmdir(struct inode *dir, struct dentry *dentry)
+ 	err = fat_remove_entries(dir, &sinfo);	/* and releases bh */
+ 	if (err)
+ 		goto out;
+-	drop_nlink(dir);
++	if (dir->i_nlink >= 3)
++		drop_nlink(dir);
++	else {
++		fat_fs_error(sb, "parent dir link count too low (%u)",
++			dir->i_nlink);
++	}
+ 
+ 	clear_nlink(inode);
+ 	fat_truncate_time(inode, NULL, S_ATIME|S_MTIME);
 -- 
 2.51.0
 
