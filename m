@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EaBCORTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:04 +0100
+	id oBGfHUlWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A83918FAAD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEC0190238
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5377F305A0EB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5A899309FCC5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1371EB5E1;
-	Wed, 25 Feb 2026 01:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A141A2848A8;
+	Wed, 25 Feb 2026 01:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4fxC4tQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHCfNqYK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F5C18B0A;
-	Wed, 25 Feb 2026 01:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6558E22579E;
+	Wed, 25 Feb 2026 01:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983259; cv=none; b=JkWxx9wYaJ6WwHvp4q2vYGoo1J3dpqMZrP/i9QPOPUS45WzwsZNYrn4gYlvv3s5fXDxtghZWj7SNtLYnDdZfr1K/Vz0ExlY8uWNPA95lgvNM4/BRbB16/nD5ztTPv/DiranF4VkB7XrBB6WLOdpLJGCGxG+VZGSMxO8DHEs9pBI=
+	t=1771983975; cv=none; b=u2P+/tiy50qbKbYI4tr5wS4j05bsBjY/g/TWLYr2xczJ8OjQ+fWE+3twCVfghzD1prpL1LN2H0MKYmgVk5N2+dHYpXDI0BmOgHT04e2AAnvvPQ65VhiI9hDJMMsakfKsGMFYSqcB5opdhIvBKkynwaFWqKj/ZYKfGW69JILJSBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983259; c=relaxed/simple;
-	bh=ab0W3OyWZ3vste0zexbKdaEUDEXdPs76hWEk8YuMCLk=;
+	s=arc-20240116; t=1771983975; c=relaxed/simple;
+	bh=zHBMs2IUMx63NZg4D3pe+5oqfYN2Jv3sEEvlGlYn67o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRtoK2/y2uJYdEDjZYhrxa3VgRDj0TnZy/HjIgXVmZmy0HwYHXRUr//Igms0PJBtEkVpHLcchft5s94r69oWemgKjm8CNNDs7AN+pEorjzJJIcad7OcapfTN36ZYtm1MevotjEEUkt4G9d1ttQ7sedHijx3o8imbVlZTO0PdWwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4fxC4tQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F29EC116D0;
-	Wed, 25 Feb 2026 01:34:19 +0000 (UTC)
+	 MIME-Version; b=PMsa+WQqsUHFZjgZg8Y0fjPJquA8E2fR+YzBYOJ5AQSHgDX/DIOaYPGQDqwfPoDQzoPT52BF1xa7ZQNB4QOgOI9RUWMIUEonk843qcMQSqjpfuecdk2mWRkiB8zMIs8b5N64NXk3XEO3i2wc6UvEmbEoIO1LFbCZXMiOadXV5R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHCfNqYK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2491CC116D0;
+	Wed, 25 Feb 2026 01:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983259;
-	bh=ab0W3OyWZ3vste0zexbKdaEUDEXdPs76hWEk8YuMCLk=;
+	s=korg; t=1771983975;
+	bh=zHBMs2IUMx63NZg4D3pe+5oqfYN2Jv3sEEvlGlYn67o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4fxC4tQv+hc6Ymq93EY8cum+aRSythrZT6Cf31DCbX8+EerUeW34ESodtOdvfYB6
-	 MVUEsVgD3JXlkOBVIYWMF5mVHGm4QRyHkTalGa03+8LTJX77U29mUyofFchGUaN2Zg
-	 zpoBKRgbTxQls/klb8wq1IX5wNUG2bN00P6SdvWo=
+	b=FHCfNqYKtBMte9k2ECWSmjeDDu/xGmc67RQBLQ37WoPlr7AmqdlERRyhY+EezTkkc
+	 e4eOpPWsTd4ttk0tbV43ryTrUw555D9EcplJ22r0SxLalhbwAMtgp1wp7WNp7jcvSo
+	 JrN4Uv20l6qGyPQRquojm0R9h0q5nsZ41mBPBJmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 401/781] mptcp: do not account for OoO in mptcp_rcvbuf_grow()
+Subject: [PATCH 6.18 184/641] smack: /smack/doi must be > 0
 Date: Tue, 24 Feb 2026 17:18:30 -0800
-Message-ID: <20260225012409.541414423@linuxfoundation.org>
+Message-ID: <20260225012353.475356589@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,91 +69,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218438-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219053-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4A83918FAAD
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,schaufler-ca.com:email,swemel.ru:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2BEC0190238
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit 6b329393502e5857662b851a13f947209c588587 ]
+[ Upstream commit 19c013e1551bf51e1493da1270841d60e4fd3f15 ]
 
-MPTCP-level OoOs are physiological when multiple subflows are active
-concurrently and will not cause retransmissions nor are caused by
-drops.
+/smack/doi allows writing and keeping negative doi values.
+Correct values are 0 < doi <= (max 32-bit positive integer)
 
-Accounting for them in mptcp_rcvbuf_grow() causes the rcvbuf slowly
-drifting towards tcp_rmem[2].
+(2008-02-04, Casey Schaufler)
+Fixes: e114e473771c ("Smack: Simplified Mandatory Access Control Kernel")
 
-Remove such accounting. Note that subflows will still account for TCP-level
-OoO when the MPTCP-level rcvbuf is propagated.
-
-This also closes a subtle and very unlikely race condition with rcvspace
-init; active sockets with user-space holding the msk-level socket lock,
-could complete such initialization in the receive callback, after that the
-first OoO data reaches the rcvbuf and potentially triggering a divide by
-zero Oops.
-
-Fixes: e118cdc34dd1 ("mptcp: rcvbuf auto-tuning improvement")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260203-net-next-mptcp-misc-feat-6-20-v1-1-31ec8bfc56d1@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 6 ------
- 1 file changed, 6 deletions(-)
+ security/smack/smackfs.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 8d32336674181..cfa38bdaf2a92 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -224,9 +224,6 @@ static bool mptcp_rcvbuf_grow(struct sock *sk, u32 newval)
- 	do_div(grow, oldval);
- 	rcvwin += grow << 1;
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index b1e5e62f5cbd1..316c2ea401e8a 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -141,7 +141,7 @@ struct smack_parsed_rule {
+ 	int			smk_access2;
+ };
  
--	if (!RB_EMPTY_ROOT(&msk->out_of_order_queue))
--		rcvwin += MPTCP_SKB_CB(msk->ooo_last_skb)->end_seq - msk->ack_seq;
--
- 	cap = READ_ONCE(net->ipv4.sysctl_tcp_rmem[2]);
+-static int smk_cipso_doi_value = SMACK_CIPSO_DOI_DEFAULT;
++static u32 smk_cipso_doi_value = SMACK_CIPSO_DOI_DEFAULT;
  
- 	rcvbuf = min_t(u32, mptcp_space_from_win(sk, rcvwin), cap);
-@@ -350,9 +347,6 @@ static void mptcp_data_queue_ofo(struct mptcp_sock *msk, struct sk_buff *skb)
- end:
- 	skb_condense(skb);
- 	skb_set_owner_r(skb, sk);
--	/* do not grow rcvbuf for not-yet-accepted or orphaned sockets. */
--	if (sk->sk_socket)
--		mptcp_rcvbuf_grow(sk, msk->rcvq_space.space);
- }
+ /*
+  * Values for parsing cipso rules
+@@ -1562,7 +1562,7 @@ static ssize_t smk_read_doi(struct file *filp, char __user *buf,
+ 	if (*ppos != 0)
+ 		return 0;
  
- static void mptcp_init_skb(struct sock *ssk, struct sk_buff *skb, int offset,
+-	sprintf(temp, "%d", smk_cipso_doi_value);
++	sprintf(temp, "%lu", (unsigned long)smk_cipso_doi_value);
+ 	rc = simple_read_from_buffer(buf, count, ppos, temp, strlen(temp));
+ 
+ 	return rc;
+@@ -1581,7 +1581,7 @@ static ssize_t smk_write_doi(struct file *file, const char __user *buf,
+ 			     size_t count, loff_t *ppos)
+ {
+ 	char temp[80];
+-	int i;
++	unsigned long u;
+ 
+ 	if (!smack_privileged(CAP_MAC_ADMIN))
+ 		return -EPERM;
+@@ -1594,10 +1594,12 @@ static ssize_t smk_write_doi(struct file *file, const char __user *buf,
+ 
+ 	temp[count] = '\0';
+ 
+-	if (sscanf(temp, "%d", &i) != 1)
++	if (kstrtoul(temp, 10, &u))
+ 		return -EINVAL;
+ 
+-	smk_cipso_doi_value = i;
++	if (u == CIPSO_V4_DOI_UNKNOWN || u > U32_MAX)
++		return -EINVAL;
++	smk_cipso_doi_value = u;
+ 
+ 	smk_cipso_doi();
+ 
 -- 
 2.51.0
 
