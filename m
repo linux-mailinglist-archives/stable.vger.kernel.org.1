@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-218698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219357-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMi1A6NUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:15 +0100
+	id iBE6JxOenmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219357-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B5618FD67
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:47:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FEF192B78
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EE3A31CF772
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 55BDA30B32FB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F0A2494FE;
-	Wed, 25 Feb 2026 01:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22502D248B;
+	Wed, 25 Feb 2026 06:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTGXlJf3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0Gspu8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74CC1D5141;
-	Wed, 25 Feb 2026 01:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A173033CB;
+	Wed, 25 Feb 2026 06:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983557; cv=none; b=F84qTVq0EsjOwWqJdz1mYbZzuNuiAZArQ3kZBtkHnZuigUBqPM833olXQOJ8UjgtbCbo0gda0Njr0lDoAdekjQNhdHYwcNVzEj7UeyPZ47i2dksg3BX0F0mitMomrXuBEhGF+/8pgt5o5u3KJEy4SSEG6BdAmSPa4x5rRTICF9E=
+	t=1772002662; cv=none; b=sm/w84jYjyftrCaJlaZF6dCshLbV8KskYGL5uqyjpozKLff2kykbzlYNi48G4pp7TlX3StDb8K14kRugEr/yIwxoI07DjXxvBdcNccHPk11iwquMErPWT26U/8P+K9xpa6nnbe4CWVNVHn84BF4Lcrt7vpcpO9IT5Bq4tab89uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983557; c=relaxed/simple;
-	bh=aoM0t0WGF+9q2edESCroirCOlMgiv99Ms8GWHaMRRC8=;
+	s=arc-20240116; t=1772002662; c=relaxed/simple;
+	bh=Dr2pkKmvCzGcMz3r+ZxTJvcbsVaCB1QxLAmDO7CaZbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWfFpAhHQ55s50/IqwgUutQZNoRgJA9q9yERyxBLzH4ErB3guzrRUtXJrVZbmu0r6WZRyjmQefL9Pcy8Fjv81EHjSAE20UiNv3xm0bvg9Ly9gjLTL7QV8Cx72lDg+kq6zkRaIZ1NXSA2za7Mm5D6wDHktWgv0fDY+MoEjCwCBLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTGXlJf3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C86CC2BC86;
-	Wed, 25 Feb 2026 01:39:17 +0000 (UTC)
+	 MIME-Version; b=GGbeHk2z98RbY7GvORMLmwqIk1D00qrucDbgIa85AgARD9RV814ITw7FYJemHdqDwSMKpCHjxMHWlGz75TSzMCUwX4MC2FG2RUCuDz6IUzwOqXwIYMuO7iwVgckm0vhkOQpxwo17GxLA2hl8XcSFmfNlt5oBWy38h04/VCOdu44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0Gspu8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6F7C116D0;
+	Wed, 25 Feb 2026 06:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983557;
-	bh=aoM0t0WGF+9q2edESCroirCOlMgiv99Ms8GWHaMRRC8=;
+	s=korg; t=1772002662;
+	bh=Dr2pkKmvCzGcMz3r+ZxTJvcbsVaCB1QxLAmDO7CaZbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PTGXlJf3SqMIOXsPoSI4V6JzKnQVhD0ov88qeg4QIk6TdUMKMiliTfMK1f9xyy2lV
-	 2DgL8u6sUiMR39kXxJ3HBhWhcwz9NDPP60qHxkuBydyFwtflGWYYxtuMnrzYIe3WNC
-	 EPa38OgWhWmWGNlWRocUhXa9cW/ouUzTCUq1x5+E=
+	b=u0Gspu8hm24Dc0/GPUZQCRrNbZk5KmssU6gfAWcOfKngZ0wWDOZyJxH4+rj05jB1E
+	 pm28+2DmN2p8a7l4FlJELG77Jk/Bi8vRcrgmEIzMntVIXxQX6E9LQSzxAakXDG95mV
+	 25Qm7n91mj3aQkIS5ufU/EduDdOVx96hYtZUa3CQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksei Oladko <aleksey.oladko@virtuozzo.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Brian Masney <bmasney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 658/781] selftests: forwarding: vxlan_bridge_1d: fix test failure with br_netfilter enabled
+Subject: [PATCH 6.18 441/641] clk: stm32: stm32-core: convert from divider_round_rate_parent() to divider_determine_rate()
 Date: Tue, 24 Feb 2026 17:22:47 -0800
-Message-ID: <20260225012415.926716043@linuxfoundation.org>
+Message-ID: <20260225012359.214459259@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,105 +68,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218698-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219357-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,virtuozzo.com:email]
-X-Rspamd-Queue-Id: 80B5618FD67
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 33FEF192B78
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 02cb2e6bacbb08ebf6acb61be816efd11e1f4a21 ]
+[ Upstream commit 2532795a6d6bb9791d713ffa9d9433f293b45b14 ]
 
-The test generates VXLAN traffic using mausezahn, where the encapsulated
-inner IPv4 packet contains a zero IP header checksum. After VXLAN
-decapsulation, such packets do not pass sanity checks in br_netfilter
-and are dropped, which causes the test to fail.
+The divider_round_rate_parent() function is now deprecated, so let's
+migrate to divider_determine_rate() instead so that this deprecated API
+can be removed.
 
-Fix this by calculating and setting a valid IPv4 header checksum for the
-encapsulated packet generated by mausezahn, so that the packet is accepted
-by br_netfilter. Fixed by using the payload_template_calc_checksum() /
-payload_template_expand_checksum() helpers that are only available
-in v6.3 and newer kernels.
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
 
-Fixes: a0b61f3d8ebf ("selftests: forwarding: vxlan_bridge_1d: Add an ECN decap test")
-Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260213131907.43351-2-aleksey.oladko@virtuozzo.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+    req->rate = divider_round_rate(...)
+
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
+
+Fixes: cd1cb38836c0 ("clk: stm32: stm32-core: convert from round_rate() to determine_rate()")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/forwarding/vxlan_bridge_1d.sh         | 26 ++++++++++++-------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ drivers/clk/stm32/clk-stm32-core.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/vxlan_bridge_1d.sh b/tools/testing/selftests/net/forwarding/vxlan_bridge_1d.sh
-index b43816dd998ca..457f41d5e584b 100755
---- a/tools/testing/selftests/net/forwarding/vxlan_bridge_1d.sh
-+++ b/tools/testing/selftests/net/forwarding/vxlan_bridge_1d.sh
-@@ -567,6 +567,21 @@ vxlan_encapped_ping_do()
- 	local inner_tos=$1; shift
- 	local outer_tos=$1; shift
+diff --git a/drivers/clk/stm32/clk-stm32-core.c b/drivers/clk/stm32/clk-stm32-core.c
+index b95b9c591fda7..e921c25a929c3 100644
+--- a/drivers/clk/stm32/clk-stm32-core.c
++++ b/drivers/clk/stm32/clk-stm32-core.c
+@@ -375,13 +375,8 @@ static int clk_stm32_divider_determine_rate(struct clk_hw *hw,
+ 						 divider->flags, val);
+ 	}
  
-+	local ipv4hdr=$(:
-+		    )"45:"$(                      : IP version + IHL
-+		    )"$inner_tos:"$(              : IP TOS
-+		    )"00:54:"$(                   : IP total length
-+		    )"99:83:"$(                   : IP identification
-+		    )"40:00:"$(                   : IP flags + frag off
-+		    )"40:"$(                      : IP TTL
-+		    )"01:"$(                      : IP proto
-+		    )"CHECKSUM:"$(                : IP header csum
-+		    )"c0:00:02:03:"$(             : IP saddr: 192.0.2.3
-+		    )"c0:00:02:01"$(              : IP daddr: 192.0.2.1
-+		)
-+	local checksum=$(payload_template_calc_checksum "$ipv4hdr")
-+	ipv4hdr=$(payload_template_expand_checksum "$ipv4hdr" $checksum)
-+
- 	$MZ $dev -c $count -d 100msec -q \
- 		-b $next_hop_mac -B $dest_ip \
- 		-t udp tos=$outer_tos,sp=23456,dp=$VXPORT,p=$(:
-@@ -577,16 +592,7 @@ vxlan_encapped_ping_do()
- 		    )"$dest_mac:"$(               : ETH daddr
- 		    )"$(mac_get w2):"$(           : ETH saddr
- 		    )"08:00:"$(                   : ETH type
--		    )"45:"$(                      : IP version + IHL
--		    )"$inner_tos:"$(              : IP TOS
--		    )"00:54:"$(                   : IP total length
--		    )"99:83:"$(                   : IP identification
--		    )"40:00:"$(                   : IP flags + frag off
--		    )"40:"$(                      : IP TTL
--		    )"01:"$(                      : IP proto
--		    )"00:00:"$(                   : IP header csum
--		    )"c0:00:02:03:"$(             : IP saddr: 192.0.2.3
--		    )"c0:00:02:01:"$(             : IP daddr: 192.0.2.1
-+		    )"$ipv4hdr:"$(                : IPv4 header
- 		    )"08:"$(                      : ICMP type
- 		    )"00:"$(                      : ICMP code
- 		    )"8b:f2:"$(                   : ICMP csum
+-	req->rate = divider_round_rate_parent(hw, clk_hw_get_parent(hw),
+-					      req->rate,
+-					      &req->best_parent_rate,
+-					      divider->table,
+-					      divider->width, divider->flags);
+-
+-	return 0;
++	return divider_determine_rate(hw, req, divider->table, divider->width,
++				      divider->flags);
+ }
+ 
+ static unsigned long clk_stm32_divider_recalc_rate(struct clk_hw *hw,
+@@ -438,7 +433,6 @@ static int clk_stm32_composite_determine_rate(struct clk_hw *hw,
+ {
+ 	struct clk_stm32_composite *composite = to_clk_stm32_composite(hw);
+ 	const struct stm32_div_cfg *divider;
+-	long rate;
+ 
+ 	if (composite->div_id == NO_STM32_DIV)
+ 		return 0;
+@@ -457,14 +451,8 @@ static int clk_stm32_composite_determine_rate(struct clk_hw *hw,
+ 						 val);
+ 	}
+ 
+-	rate = divider_round_rate_parent(hw, clk_hw_get_parent(hw),
+-					 req->rate, &req->best_parent_rate,
+-					 divider->table, divider->width, divider->flags);
+-	if (rate < 0)
+-		return rate;
+-
+-	req->rate = rate;
+-	return 0;
++	return divider_determine_rate(hw, req, divider->table, divider->width,
++				      divider->flags);
+ }
+ 
+ static u8 clk_stm32_composite_get_parent(struct clk_hw *hw)
 -- 
 2.51.0
 
