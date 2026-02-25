@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-219329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMyGFnSdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:56 +0100
+	id uOScGx9Tnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:47 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0871929EA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D35918F6D4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E6A0C30175C4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B8DB53091057
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565E6301717;
-	Wed, 25 Feb 2026 06:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7168B25A642;
+	Wed, 25 Feb 2026 01:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMbicfck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1C4U/HIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC8F2D77FA;
-	Wed, 25 Feb 2026 06:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354AD26CE1A;
+	Wed, 25 Feb 2026 01:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002644; cv=none; b=TAsG1sZMCGL+yIz02YApR7hAXLn05McJruiSsnJrNf5pTF5tuJtEhTlBnj+eNfUasR1AtcE9fv2zCkAKyXvnYii0dHgEMPLx3AtB6WaoS0KF5JdVhmqYGcPpL+kTL97XAHFMyG9pFQhMxASntlZMU1dpg36Hqsq1PikKap3Rl9I=
+	t=1771983522; cv=none; b=ccVZBZMi2l0P6Qu6zSNJD6QzJRdDn4diG/I4V/QP3Ngrmk2LfE+DkdLpdvhY2TvYO9BfYiwUABF6gmpECTre+K46B2SkNCDprF7tFKhfYcJLpkPa52wMr4Iqi5ENJPwSrY4b/C8zvYa+8RDXT6RaPAudlOZaTaokRVTsb/h1SB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002644; c=relaxed/simple;
-	bh=qFa638VKM5XxJy9GBbpX400mZrBVHos/hvE+scArLB0=;
+	s=arc-20240116; t=1771983522; c=relaxed/simple;
+	bh=ZzZ9VdaTcSLkKDcD8fzzv5/eTi/iDp6hyVAj0HDV+vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ql+UOI12xShTqIP2+VKJueE3RR9Bbw6mAlEmWDC5VxYjf8a7KvNAos4bcPEj5W1CwDmQYCWpkOl1lvWOsXfvS0gu42fwNBzeqCujw5COT8H4OWRPyimKXkV0toAznEBy+ONa838dAoyLpPNXPCWkOANecOvB/obXQwJRBLvtJD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMbicfck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E216CC116D0;
-	Wed, 25 Feb 2026 06:57:23 +0000 (UTC)
+	 MIME-Version; b=rPoB9kMMGZJj09leINJEUvLO3NiX2cVbp/MwH5ECGgYJXM7kcw0BWRCwiYyE3WQYDTwvnXiBcelHQuGOHq0miFdIevi/Ig6NKAI2mcfiA963GOklg4RTJei3LilU8triRII2WT7UrKPYXt55Dcu28gx+I4zi+AvObJnDXJpwi8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1C4U/HIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5476C116D0;
+	Wed, 25 Feb 2026 01:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002644;
-	bh=qFa638VKM5XxJy9GBbpX400mZrBVHos/hvE+scArLB0=;
+	s=korg; t=1771983522;
+	bh=ZzZ9VdaTcSLkKDcD8fzzv5/eTi/iDp6hyVAj0HDV+vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMbicfckIVSpfCqDx7PyF7RGr6vZQdP7pm+GvLyhuBU1e/iFWrS1xi2Mlvrtl3tJM
-	 dbL4cYT9Aw6dF7hoKO0uuD7a6c0GcN+cYJLVzipmrYt1CycBby0yHfnBWCJY8fTfaa
-	 n0noT9lezr//XSMy9dsIkeAZwkGgBWFw/Ax9wNH4=
+	b=1C4U/HIpU91OC+WvpxJx7BvzJdtPGTUaTOp5I6KQYveQZ6T664ksKeojZ7rMyZzYI
+	 pIS8megjwc3bqTF+K45Wd/XhWEaR2b+mJrnZmy+JVtz1H1tsh/FH6OpRhJU1LCk0lL
+	 yh32AZsAX47NTF1sp/MpcQPzugYji0jNlcpsKxH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Imran Shaik <imran.shaik@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Zhai Can <bczhc0@126.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 412/641] clk: qcom: gcc-sdx75: Update the SDCC RCGs to use shared_floor_ops
-Date: Tue, 24 Feb 2026 17:22:18 -0800
-Message-ID: <20260225012358.544894194@linuxfoundation.org>
+Subject: [PATCH 6.19 630/781] ACPI: PM: Add unused power resource quirk for THUNDEROBOT ZERO
+Date: Tue, 24 Feb 2026 17:22:19 -0800
+Message-ID: <20260225012415.262660062@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,80 +67,96 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-218668-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,126.com,intel.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219329-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3A0871929EA
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 1D35918F6D4
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+From: Zhai Can <bczhc0@126.com>
 
-[ Upstream commit 4b057462bb61a6571608ba393e6e018c9da9c9c3 ]
+[ Upstream commit cd7ef20ba8c6e936dba133b4136537a8ada22976 ]
 
-Use shared_floor_ops for the SDCC RCGs so the RCG is safely parked
-during disable and the new parent configuration is programmed in
-hardware only when the new parent is enabled, avoiding cases where
-the RCG configuration fails to update.
+On the THUNDEROBOT ZERO laptop, the second NVMe slot and the discrete
+NVIDIA GPU are both controlled by power-resource PXP. Due to the SSDT table
+bug (lack of reference), PXP will be shut dow as an "unused" power resource
+during initialization, making the NVMe slot #2 + NVIDIA both inaccessible.
 
-Fixes: 108cdc09b2de ("clk: qcom: Add GCC driver support for SDX75")
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-4-473afc86589c@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This issue was introduced by commit a1224f34d72a ("ACPI: PM: Check
+states of power resources during initialization"). Here are test
+results on the three consecutive commits:
+
+(bad again!) a1224f34d72a ACPI: PM: Check states of power resources during initialization
+(good) bc2836859643 ACPI: PM: Do not turn off power resources in unknown state
+(bad) 519d81956ee2 Linux 5.15-rc6
+
+On commit bc2836859643 ("ACPI: PM: Do not turn off power resources in
+unknown state") this was not an issue because the power resource state
+left UNKNOWN thus being ignored.
+
+See also commit 9b04d99788cf ("ACPI: PM: Do not turn of unused power
+resources on the Toshiba Click Mini") which is another almost identical
+case to this one.
+
+Fixes: a1224f34d72a ("ACPI: PM: Check states of power resources during initialization")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221087
+Signed-off-by: Zhai Can <bczhc0@126.com>
+Link: https://patch.msgid.link/20260214161452.2849346-1-bczhc0@126.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sdx75.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/power.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-sdx75.c b/drivers/clk/qcom/gcc-sdx75.c
-index 453a6bf8e8786..1f3cd58483a2d 100644
---- a/drivers/clk/qcom/gcc-sdx75.c
-+++ b/drivers/clk/qcom/gcc-sdx75.c
-@@ -1033,7 +1033,7 @@ static struct clk_rcg2 gcc_sdcc1_apps_clk_src = {
- 		.name = "gcc_sdcc1_apps_clk_src",
- 		.parent_data = gcc_parent_data_17,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_17),
--		.ops = &clk_rcg2_floor_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
+diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
+index 361a7721a6a87..7da5ae5594a72 100644
+--- a/drivers/acpi/power.c
++++ b/drivers/acpi/power.c
+@@ -1113,6 +1113,19 @@ static const struct dmi_system_id dmi_leave_unused_power_resources_on[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "SATELLITE Click Mini L9W-B"),
+ 		},
  	},
- };
- 
-@@ -1057,7 +1057,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.name = "gcc_sdcc2_apps_clk_src",
- 		.parent_data = gcc_parent_data_18,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_18),
--		.ops = &clk_rcg2_floor_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
++	{
++		/*
++		 * THUNDEROBOT ZERO laptop: Due to its SSDT table bug, power
++		 * resource 'PXP' will be shut down on initialization, making
++		 * the NVMe #2 and the NVIDIA dGPU both unavailable (they're
++		 * both controlled by 'PXP').
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "THUNDEROBOT"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "ZERO"),
++		}
++
++	},
+ 	{}
  };
  
 -- 
