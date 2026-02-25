@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAl3G2dVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:31 +0100
+	id 4O3QGiSenmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26CE18FFE2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00017192B9F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6298732185E8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CEDA73043BE4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD06272E6D;
-	Wed, 25 Feb 2026 01:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DCE301708;
+	Wed, 25 Feb 2026 06:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3x4dHJE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xs8iwRKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1380A25A357;
-	Wed, 25 Feb 2026 01:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB0C314D05;
+	Wed, 25 Feb 2026 06:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983670; cv=none; b=ZHzZsnxcdnZjA4zniZx2EtYxf3x8bdosM8yJtGDNjCi5i0TT7IY1t83r9uQ5R2aSiw8DNfGaH9IBuccXxFkAPrGkaBG86AEfr1jPp9dtdv9uzFtntRN6Eb1dremalG8Jpyj6sBHMheHBotE60mm4zTCJZ3gXJcfGdJ+ZkylBTvw=
+	t=1772002727; cv=none; b=AAcgQA/xwpnDtbJzUvx+6wZMUxTp3bKcpUUDN1n3ufQAAmidboQQDn9HGIqAOMJ7Xym8Gi1kYP71A1TY4ZPzOt4vT1ZyCskSF4Fdh8c9IfKuic5luybtjJhp/B+X3YqGhwZNAr+w73VootyD9T/f20gq9xcNeuT85/J9jX9b3gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983670; c=relaxed/simple;
-	bh=4vUb8HN+V8i/vfDZg2hss/MovpX3X92Jpvqntn35Xrc=;
+	s=arc-20240116; t=1772002727; c=relaxed/simple;
+	bh=rywll+bsnXmCEJX2FlHUCfDmLP16n3TzUR97M4vbFmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4NdwrssWGzD5ZxH4qmiXxGk3tc15Rf5UqLG9u1WJNywi4U75ROuXSB4o+zPocZMxtfkQEta73twISo1UqfDPvo4v2BlmSU1F+TE1lk6aqfABHhETgelORYK5Noc0FBc0B96A93PS2lou3ltDXP0zrzpQJgyxYikiWEDjPMozSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3x4dHJE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF1FC116D0;
-	Wed, 25 Feb 2026 01:41:09 +0000 (UTC)
+	 MIME-Version; b=GcQ3TB5NRKUGR1rGI+xU4Fo1Eibk0PAm6IqflEjAAHlCeWkA8NT4jvemPbTZs9e2XBwW1Ze0gOgCtt1vIekM2QRL1EKqMy5913R61c2xjWvR8N9x8OkjHAOVVT+Sfjxz/+5KnjYDJW0qZpwIwSoWJkP/WWpcQ/d+KMyPu3e4ZJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xs8iwRKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7866C116D0;
+	Wed, 25 Feb 2026 06:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983670;
-	bh=4vUb8HN+V8i/vfDZg2hss/MovpX3X92Jpvqntn35Xrc=;
+	s=korg; t=1772002726;
+	bh=rywll+bsnXmCEJX2FlHUCfDmLP16n3TzUR97M4vbFmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3x4dHJEWaGbcaPv+lTSoNvw7nPw63RY5A6Wtoq9W2iMX+V50Y8YGjfnOeSGz8KB6
-	 qyN+Ymrgdlr13iLu9w5IURPLb2KDLtylgSc0+OuMynxMkJLQ5HRqhdgROlRqC5aQQa
-	 ZKzoNEmpsszjbAldNSUoWrQMf/6Pihcul+TRHIpU=
+	b=Xs8iwRKWzJ+dkwfdRxxvbgHJRiaE7aQp2O3TncNjZ75PmUatbsR1sj7FZ87ctQEkU
+	 qGw2fyHLn1y9t3IQrXuctUeJvLwkRgNjN2U9tf379QZGEfsg2uGGHMYU6VaoQxH5JK
+	 fbVElmGQeAJXaizWTMolhTXYKMn+llZ9cjLjeqBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.19 756/781] ext4: dont zero the entire extent if EXT4_EXT_DATA_PARTIAL_VALID1
+	Aleksei Oladko <aleksey.oladko@virtuozzo.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 539/641] selftests: forwarding: vxlan_bridge_1d: fix test failure with br_netfilter enabled
 Date: Tue, 24 Feb 2026 17:24:25 -0800
-Message-ID: <20260225012418.261399420@linuxfoundation.org>
+Message-ID: <20260225012401.589850494@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218794-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219455-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,99 +87,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,huaweicloud.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: D26CE18FFE2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,virtuozzo.com:email]
+X-Rspamd-Queue-Id: 00017192B9F
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
 
-commit 1bf6974822d1dba86cf11b5f05498581cf3488a2 upstream.
+[ Upstream commit 02cb2e6bacbb08ebf6acb61be816efd11e1f4a21 ]
 
-When allocating initialized blocks from a large unwritten extent, or
-when splitting an unwritten extent during end I/O and converting it to
-initialized, there is currently a potential issue of stale data if the
-extent needs to be split in the middle.
+The test generates VXLAN traffic using mausezahn, where the encapsulated
+inner IPv4 packet contains a zero IP header checksum. After VXLAN
+decapsulation, such packets do not pass sanity checks in br_netfilter
+and are dropped, which causes the test to fail.
 
-       0  A      B  N
-       [UUUUUUUUUUUU]    U: unwritten extent
-       [--DDDDDDDD--]    D: valid data
-          |<-  ->| ----> this range needs to be initialized
+Fix this by calculating and setting a valid IPv4 header checksum for the
+encapsulated packet generated by mausezahn, so that the packet is accepted
+by br_netfilter. Fixed by using the payload_template_calc_checksum() /
+payload_template_expand_checksum() helpers that are only available
+in v6.3 and newer kernels.
 
-ext4_split_extent() first try to split this extent at B with
-EXT4_EXT_DATA_ENTIRE_VALID1 and EXT4_EXT_MAY_ZEROOUT flag set, but
-ext4_split_extent_at() failed to split this extent due to temporary lack
-of space. It zeroout B to N and mark the entire extent from 0 to N
-as written.
-
-       0  A      B  N
-       [WWWWWWWWWWWW]    W: written extent
-       [SSDDDDDDDDZZ]    Z: zeroed, S: stale data
-
-ext4_split_extent() then try to split this extent at A with
-EXT4_EXT_DATA_VALID2 flag set. This time, it split successfully and left
-a stale written extent from 0 to A.
-
-       0  A      B   N
-       [WW|WWWWWWWWWW]
-       [SS|DDDDDDDDZZ]
-
-Fix this by pass EXT4_EXT_DATA_PARTIAL_VALID1 to ext4_split_extent_at()
-when splitting at B, don't convert the entire extent to written and left
-it as unwritten after zeroing out B to N. The remaining work is just
-like the standard two-part split. ext4_split_extent() will pass the
-EXT4_EXT_DATA_VALID2 flag when it calls ext4_split_extent_at() for the
-second time, allowing it to properly handle the split. If the split is
-successful, it will keep extent from 0 to A as unwritten.
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Cc: stable@kernel.org
-Message-ID: <20251129103247.686136-3-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a0b61f3d8ebf ("selftests: forwarding: vxlan_bridge_1d: Add an ECN decap test")
+Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260213131907.43351-2-aleksey.oladko@virtuozzo.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ .../net/forwarding/vxlan_bridge_1d.sh         | 26 ++++++++++++-------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3310,6 +3310,15 @@ static struct ext4_ext_path *ext4_split_
- 		}
+diff --git a/tools/testing/selftests/net/forwarding/vxlan_bridge_1d.sh b/tools/testing/selftests/net/forwarding/vxlan_bridge_1d.sh
+index b43816dd998ca..457f41d5e584b 100755
+--- a/tools/testing/selftests/net/forwarding/vxlan_bridge_1d.sh
++++ b/tools/testing/selftests/net/forwarding/vxlan_bridge_1d.sh
+@@ -567,6 +567,21 @@ vxlan_encapped_ping_do()
+ 	local inner_tos=$1; shift
+ 	local outer_tos=$1; shift
  
- 		if (!err) {
-+			/*
-+			 * The first half contains partially valid data, the
-+			 * splitting of this extent has not been completed, fix
-+			 * extent length and ext4_split_extent() split will the
-+			 * first half again.
-+			 */
-+			if (split_flag & EXT4_EXT_DATA_PARTIAL_VALID1)
-+				goto fix_extent_len;
++	local ipv4hdr=$(:
++		    )"45:"$(                      : IP version + IHL
++		    )"$inner_tos:"$(              : IP TOS
++		    )"00:54:"$(                   : IP total length
++		    )"99:83:"$(                   : IP identification
++		    )"40:00:"$(                   : IP flags + frag off
++		    )"40:"$(                      : IP TTL
++		    )"01:"$(                      : IP proto
++		    )"CHECKSUM:"$(                : IP header csum
++		    )"c0:00:02:03:"$(             : IP saddr: 192.0.2.3
++		    )"c0:00:02:01"$(              : IP daddr: 192.0.2.1
++		)
++	local checksum=$(payload_template_calc_checksum "$ipv4hdr")
++	ipv4hdr=$(payload_template_expand_checksum "$ipv4hdr" $checksum)
 +
- 			/* update the extent length and mark as initialized */
- 			ex->ee_len = cpu_to_le16(ee_len);
- 			ext4_ext_try_to_merge(handle, inode, path, ex);
-@@ -3379,7 +3388,9 @@ static struct ext4_ext_path *ext4_split_
- 			split_flag1 |= EXT4_EXT_MARK_UNWRIT1 |
- 				       EXT4_EXT_MARK_UNWRIT2;
- 		if (split_flag & EXT4_EXT_DATA_VALID2)
--			split_flag1 |= EXT4_EXT_DATA_ENTIRE_VALID1;
-+			split_flag1 |= map->m_lblk > ee_block ?
-+				       EXT4_EXT_DATA_PARTIAL_VALID1 :
-+				       EXT4_EXT_DATA_ENTIRE_VALID1;
- 		path = ext4_split_extent_at(handle, inode, path,
- 				map->m_lblk + map->m_len, split_flag1, flags1);
- 		if (IS_ERR(path))
+ 	$MZ $dev -c $count -d 100msec -q \
+ 		-b $next_hop_mac -B $dest_ip \
+ 		-t udp tos=$outer_tos,sp=23456,dp=$VXPORT,p=$(:
+@@ -577,16 +592,7 @@ vxlan_encapped_ping_do()
+ 		    )"$dest_mac:"$(               : ETH daddr
+ 		    )"$(mac_get w2):"$(           : ETH saddr
+ 		    )"08:00:"$(                   : ETH type
+-		    )"45:"$(                      : IP version + IHL
+-		    )"$inner_tos:"$(              : IP TOS
+-		    )"00:54:"$(                   : IP total length
+-		    )"99:83:"$(                   : IP identification
+-		    )"40:00:"$(                   : IP flags + frag off
+-		    )"40:"$(                      : IP TTL
+-		    )"01:"$(                      : IP proto
+-		    )"00:00:"$(                   : IP header csum
+-		    )"c0:00:02:03:"$(             : IP saddr: 192.0.2.3
+-		    )"c0:00:02:01:"$(             : IP daddr: 192.0.2.1
++		    )"$ipv4hdr:"$(                : IPv4 header
+ 		    )"08:"$(                      : ICMP type
+ 		    )"00:"$(                      : ICMP code
+ 		    )"8b:f2:"$(                   : ICMP csum
+-- 
+2.51.0
+
 
 
 
