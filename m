@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219394-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JmzERlVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:13 +0100
+	id wOErCoqenmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219394-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F00B18FEE5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA951192CD4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C085831F75EE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DB58D30882CC
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0265926E6FA;
-	Wed, 25 Feb 2026 01:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A77310635;
+	Wed, 25 Feb 2026 06:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0EoDC9s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1bTSEsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9E91E2834;
-	Wed, 25 Feb 2026 01:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F1D2FB08C;
+	Wed, 25 Feb 2026 06:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983620; cv=none; b=DQDWSAkLgl9h9Ot+AxSgBwzXe3wRVA1W26pN1AcjXiH3iSc7BGCHINydNTyzXkT9K9Yv6Dq+iLrvIQa9aRefVRy2knR8vmVvr5iHZ3Pdq+/5+qcsoQgxb9KemehkdIIQipwHUjJ4x4YnDY51/aeONZQiDyW0fgNt8pGj8U7e08k=
+	t=1772002687; cv=none; b=GBXzJVTPfgzlHpCGsPxXmVW4QalvI5ZinV93vW9YMd0JB5eNVcjoWHAihwPJzAb1ZDI5XY4edBq/GniRIdwdbFhXePthF6NOBBrcEuacdmhCSLLudVQ48Q+PMsZJ8CZs7cBCGMZQn1PrBe1DE2XAgqdhGbGhfQYMLvHJNO/b1NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983620; c=relaxed/simple;
-	bh=97R2Cv0yJyxvoRmXa/jdgktpCPsJqhp1n8ITfkwYO0Y=;
+	s=arc-20240116; t=1772002687; c=relaxed/simple;
+	bh=stO7aqDQG7EPPFJ+y4wBH5MkNcZh6YCUUZwYP34j/Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VNfVua3Bvk5HVeFvoFCaZNFO1qaJjO+xR52woLehJqhramR2Cm9lVetgcr/ODQl88fjGRDfyHXeJeXzOIfp7OAs60UEFt7wDa5j+4YIZfdoP+scbXHYhizDHkBMjmkBeawwRP/DftYpJ5Q4gKqq69hvtReed+DEVGt1gNPw+MAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0EoDC9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79351C116D0;
-	Wed, 25 Feb 2026 01:40:20 +0000 (UTC)
+	 MIME-Version; b=CINMJqdSjw9ECFjVqrkCKRRCfggceDmslmk1Mxakh1nPto34mofyH1I1GnOsLuNYub5swLJ4xb6tP9CSQ+6kDduDQwMrJzlEdLKbC/n+g6dh+uzpUhX3vrA7cU1bMLWjuEESLksHus6ecvZcrzSJMNS7mjZKMcFidh4VMl3IAGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1bTSEsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12123C116D0;
+	Wed, 25 Feb 2026 06:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983620;
-	bh=97R2Cv0yJyxvoRmXa/jdgktpCPsJqhp1n8ITfkwYO0Y=;
+	s=korg; t=1772002687;
+	bh=stO7aqDQG7EPPFJ+y4wBH5MkNcZh6YCUUZwYP34j/Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0EoDC9sMQeV1PngBNAJjHtzy82fElHLUVBbwqa7oRbh3+Kje0xd/e4gZN7GAgJus
-	 tYIlSN40/b0/2v4tF2+yaZkQo4YM53DyxdfurOr+vlvXweLPRGZa6M1q9u7KjimHCO
-	 fD7Wd66KKnHrYickBHyrPqENjGuj5KhJNLajvd30=
+	b=G1bTSEsl4zLikRwGJYolURcpfv2N2bPjJj5BVw6o94Hbq5P93G9UOTa+Uox9y44A+
+	 Eu7mCpZ6t+mVtFE40vGb9t/s13+Sisaupm1tTKXC9O+gfDXI+rNQKn5ZKMaWY/DdiO
+	 HjAc/7nIIjJrPKdPA0ADZBlFewtTkC/8cxzrj090=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Lee <ryan.lee@canonical.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 696/781] apparmor: fix boolean argument in apparmor_mmap_file
+Subject: [PATCH 6.18 479/641] drivers: iio: mpu3050: use dev_err_probe for regulator request
 Date: Tue, 24 Feb 2026 17:23:25 -0800
-Message-ID: <20260225012416.827627023@linuxfoundation.org>
+Message-ID: <20260225012400.122699459@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,66 +70,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,huawei.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-219394-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218752-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6F00B18FEE5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AA951192CD4
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Lee <ryan.lee@canonical.com>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit 48d5268e911abcf7674ec33c9b0b3e952be1175e ]
+[ Upstream commit b010880b9936da14f8035585ab57577aa05be23a ]
 
-The previous value of GFP_ATOMIC is an int and not a bool, potentially
-resulting in UB when being assigned to a bool. In addition, the mmap hook
-is called outside of locks (i.e. in a non-atomic context), so we can pass
-a fixed constant value of false instead to common_mmap.
+Regulator requesting may result in deferred probing error which will
+abort driver probing. To avoid this just use dev_err_probe which handles
+deferred probing.
 
-Signed-off-by: Ryan Lee <ryan.lee@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Stable-dep-of: 4a134723f9f1 ("apparmor: move check for aa_null file to cover all cases")
+Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/lsm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/gyro/mpu3050-core.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index a87cd60ed2069..acca3d6efdbc8 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -584,7 +584,7 @@ static int common_mmap(const char *op, struct file *file, unsigned long prot,
- static int apparmor_mmap_file(struct file *file, unsigned long reqprot,
- 			      unsigned long prot, unsigned long flags)
- {
--	return common_mmap(OP_FMMAP, file, prot, flags, GFP_ATOMIC);
-+	return common_mmap(OP_FMMAP, file, prot, flags, false);
- }
+diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
+index 67ae7d1012bc2..ee2fcd20545de 100644
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -1162,10 +1162,8 @@ int mpu3050_common_probe(struct device *dev,
+ 	mpu3050->regs[1].supply = mpu3050_reg_vlogic;
+ 	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(mpu3050->regs),
+ 				      mpu3050->regs);
+-	if (ret) {
+-		dev_err(dev, "Cannot get regulators\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Cannot get regulators\n");
  
- static int apparmor_file_mprotect(struct vm_area_struct *vma,
+ 	ret = mpu3050_power_up(mpu3050);
+ 	if (ret)
 -- 
 2.51.0
 
