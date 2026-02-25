@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-219091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PyvNf5YnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:50 +0100
+	id YMCDFe5XnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121C5190875
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F62190639
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 05EF5313C611
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5DABC314B1D3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D33279907;
-	Wed, 25 Feb 2026 01:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FAE256C84;
+	Wed, 25 Feb 2026 01:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTow2jpK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NovfjsbV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E8E1E2834;
-	Wed, 25 Feb 2026 01:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664CC18B0A;
+	Wed, 25 Feb 2026 01:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984022; cv=none; b=pTVKoUr+z7f0si+zvIoGBRpm0kF2s0QD7p2mzdHMLF88aDwskccg3G/vp9J3p8ZFD1bcSteyBDdwD5q4kcq5HVyRj3rg9aZsaCHLUMzJZ/UPsaJbFLUeB/emecS8uQyWLYqSZ40dA1DB81k4Gbwbu8Oqhos/dNdd0heHEvTMG1M=
+	t=1771983399; cv=none; b=sQiyu45o8KB6EEGPZDKIcicRFmmLlYI4iQZAIaXETSEqU3SJkrqSQU0BZ4VezJ592T8Vi4Igsr3ihUrV4U/HGscRx5ZK083IAHd3veJGyHIWEouMoTpt+F5WyeLSwG2LTK1qB6r3+mK6tDBPxJKixhBMwqJHgkZhiordV8PiGVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984022; c=relaxed/simple;
-	bh=7uGOILO7Vm+nLKtRooTqh0DLnVt85YizVE/gLQS1AH4=;
+	s=arc-20240116; t=1771983399; c=relaxed/simple;
+	bh=CtcTGdfArZpyiqvxi2NIZBX6xxU7i4JrjfJR0+tU64s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=faqt4cfIxKsA7zszOFWoOyJWaJwYYaht6j56rCVxCyR1hjGXue3On904a4IjWn7K4oLeJyM59QXCoPb1vIwuqH+Z09EE+AOne21Nz4H27aaDORIEaV3s1iyrNjOS7khF8+LzpbBkq+ueWwOLp7LpIXEFxJTxQdM3KM/yegetAsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTow2jpK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DC5C116D0;
-	Wed, 25 Feb 2026 01:47:02 +0000 (UTC)
+	 MIME-Version; b=MLBDmSFR+2n5uZH4qNi81/q2uKoGdDP3040fmDGrtPsI7z/Qw+/AZ0YjkkC8kBqUXvKJKDGQmQLIDkBCykW+MxiFtDG0taJcCRZvVKbfjzHi+SxCJeP+EbfLPtOQCaL1MKXVZdRZrRVDZaDtr1/w0zyir0sqFUKPs+UIF1juuBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NovfjsbV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABB2C116D0;
+	Wed, 25 Feb 2026 01:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984022;
-	bh=7uGOILO7Vm+nLKtRooTqh0DLnVt85YizVE/gLQS1AH4=;
+	s=korg; t=1771983399;
+	bh=CtcTGdfArZpyiqvxi2NIZBX6xxU7i4JrjfJR0+tU64s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vTow2jpK84XT8gQUzkkjkQvNKtqTdx4TW08j5iVp9sCJR4k78L32UB4ccQhGYDxnT
-	 dSGWmabe3IzMkfJpg2O1tLAw3e7k8NwAtxEar2HGJffw+Wq3ajdgIdJp9jidpyE/7+
-	 fHvGHLjG3X70/uaGPummbR+YGg5QTh9CxPznW/4s=
+	b=NovfjsbVTVHRerAyX6kZ4JH1Mp73aFee4Ei8L5QprVNhPp5ILfAkw7sjcTwfGDip4
+	 yJXMOullgCJWMv0EQZQdOSifnZgyyQPvuJtNPCTFC2yzGNf6yN0mVTJ4jD4KyCEjP2
+	 UixjMNDEaLqKzzQaGcibldSXm/qUsu03jzrZ9bIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmytro Maluka <dmaluka@chromium.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 268/641] iommu/vt-d: Clear Present bit before tearing down context entry
+Subject: [PATCH 6.19 485/781] ata: libata-core: Quirk INTEL SSDSC2KG480G8 max_sectors
 Date: Tue, 24 Feb 2026 17:19:54 -0800
-Message-ID: <20260225012355.299478469@linuxfoundation.org>
+Message-ID: <20260225012411.708242893@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,159 +64,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219091-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218560-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,chromium.org:email]
-X-Rspamd-Queue-Id: 121C5190875
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: D9F62190639
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit c1e4f1dccbe9d7656d1c6872ebeadb5992d0aaa2 ]
+[ Upstream commit 5f64ae1ef639a2bab7e39497c55f76cc0682f108 ]
 
-When tearing down a context entry, the current implementation zeros the
-entire 128-bit entry using multiple 64-bit writes. This creates a window
-where the hardware can fetch a "torn" entry — where some fields are
-already zeroed while the 'Present' bit is still set — leading to
-unpredictable behavior or spurious faults.
+Commit 9b8b84879d4a ("block: Increase BLK_DEF_MAX_SECTORS_CAP") increased
+the default max_sectors_kb from 1280 KiB to 4096 KiB.
 
-While x86 provides strong write ordering, the compiler may reorder writes
-to the two 64-bit halves of the context entry. Even without compiler
-reordering, the hardware fetch is not guaranteed to be atomic with
-respect to multiple CPU writes.
+INTEL SSDSC2KG480G8 with FW rev XCV10120 times out when sending I/Os of
+size 4096 KiB.
 
-Align with the "Guidance to Software for Invalidations" in the VT-d spec
-(Section 6.5.3.3) by implementing the recommended ownership handshake:
+Enable ATA_QUIRK_MAX_SEC, with value 8191 (sectors) for this device,
+since any I/O with more sectors than that lead to I/O timeouts.
 
-1. Clear only the 'Present' (P) bit of the context entry first to
-   signal the transition of ownership from hardware to software.
-2. Use dma_wmb() to ensure the cleared bit is visible to the IOMMU.
-3. Perform the required cache and context-cache invalidation to ensure
-   hardware no longer has cached references to the entry.
-4. Fully zero out the entry only after the invalidation is complete.
+With this, the INTEL SSDSC2KG480G8 is usable again.
 
-Also, add a dma_wmb() to context_set_present() to ensure the entry
-is fully initialized before the 'Present' bit becomes visible.
-
-Fixes: ba39592764ed2 ("Intel IOMMU: Intel IOMMU driver")
-Reported-by: Dmytro Maluka <dmaluka@chromium.org>
-Closes: https://lore.kernel.org/all/aTG7gc7I5wExai3S@google.com/
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Dmytro Maluka <dmaluka@chromium.org>
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20260120061816.2132558-3-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Link: https://lore.kernel.org/linux-ide/176839089913.2398366.61500945766820256@eldamar.lan/
+Fixes: 9b8b84879d4a ("block: Increase BLK_DEF_MAX_SECTORS_CAP")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |  4 +++-
- drivers/iommu/intel/iommu.h | 21 ++++++++++++++++++++-
- drivers/iommu/intel/pasid.c |  5 ++++-
- 3 files changed, 27 insertions(+), 3 deletions(-)
+ drivers/ata/libata-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index e236c7ec221f4..49e83c8566a32 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -1722,10 +1722,12 @@ static void domain_context_clear_one(struct device_domain_info *info, u8 bus, u8
- 	}
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index d5151b9ca9141..fb148b1c3bdbf 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -4067,6 +4067,7 @@ static const struct ata_dev_quirk_value __ata_dev_max_sec_quirks[] = {
+ 	{ "LITEON CX1-JB*-HP",		NULL,		1024 },
+ 	{ "LITEON EP1-*",		NULL,		1024 },
+ 	{ "DELLBOSS VD",		"MV.R00-0",	8191 },
++	{ "INTEL SSDSC2KG480G8",	"XCV10120",	8191 },
+ 	{ },
+ };
  
- 	did = context_domain_id(context);
--	context_clear_entry(context);
-+	context_clear_present(context);
- 	__iommu_flush_cache(iommu, context, sizeof(*context));
- 	spin_unlock(&iommu->lock);
- 	intel_context_flush_no_pasid(info, context, did);
-+	context_clear_entry(context);
-+	__iommu_flush_cache(iommu, context, sizeof(*context));
- }
+@@ -4324,6 +4325,8 @@ static const struct ata_dev_quirks_entry __ata_dev_quirks[] = {
  
- int __domain_setup_first_level(struct intel_iommu *iommu, struct device *dev,
-diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-index dcc5466d35f93..9198ac7f6bbab 100644
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -969,7 +969,26 @@ static inline unsigned long lvl_to_nr_pages(unsigned int lvl)
- 
- static inline void context_set_present(struct context_entry *context)
- {
--	context->lo |= 1;
-+	u64 val;
-+
-+	dma_wmb();
-+	val = READ_ONCE(context->lo) | 1;
-+	WRITE_ONCE(context->lo, val);
-+}
-+
-+/*
-+ * Clear the Present (P) bit (bit 0) of a context table entry. This initiates
-+ * the transition of the entry's ownership from hardware to software. The
-+ * caller is responsible for fulfilling the invalidation handshake recommended
-+ * by the VT-d spec, Section 6.5.3.3 (Guidance to Software for Invalidations).
-+ */
-+static inline void context_clear_present(struct context_entry *context)
-+{
-+	u64 val;
-+
-+	val = READ_ONCE(context->lo) & GENMASK_ULL(63, 1);
-+	WRITE_ONCE(context->lo, val);
-+	dma_wmb();
- }
- 
- static inline void context_set_fault_enable(struct context_entry *context)
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index f64b5ae306d0f..d13099a6cb9c3 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -1028,7 +1028,7 @@ static int device_pasid_table_setup(struct device *dev, u8 bus, u8 devfn)
- 	}
- 
- 	if (context_copied(iommu, bus, devfn)) {
--		context_clear_entry(context);
-+		context_clear_present(context);
- 		__iommu_flush_cache(iommu, context, sizeof(*context));
- 
- 		/*
-@@ -1048,6 +1048,9 @@ static int device_pasid_table_setup(struct device *dev, u8 bus, u8 devfn)
- 		iommu->flush.flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
- 		devtlb_invalidation_with_pasid(iommu, dev, IOMMU_NO_PASID);
- 
-+		context_clear_entry(context);
-+		__iommu_flush_cache(iommu, context, sizeof(*context));
-+
- 		/*
- 		 * At this point, the device is supposed to finish reset at
- 		 * its driver probe stage, so no in-flight DMA will exist,
+ 	{ "Micron*",			NULL,	ATA_QUIRK_ZERO_AFTER_TRIM },
+ 	{ "Crucial*",			NULL,	ATA_QUIRK_ZERO_AFTER_TRIM },
++	{ "INTEL SSDSC2KG480G8", "XCV10120",	ATA_QUIRK_ZERO_AFTER_TRIM |
++						ATA_QUIRK_MAX_SEC },
+ 	{ "INTEL*SSD*",			NULL,	ATA_QUIRK_ZERO_AFTER_TRIM },
+ 	{ "SSD*INTEL*",			NULL,	ATA_QUIRK_ZERO_AFTER_TRIM },
+ 	{ "Samsung*SSD*",		NULL,	ATA_QUIRK_ZERO_AFTER_TRIM },
 -- 
 2.51.0
 
