@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGo0EodYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:51 +0100
+	id 6HexAo2dnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A452519074A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B32192A33
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7501930EE0F9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BDE62301C163
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF48256C84;
-	Wed, 25 Feb 2026 01:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66DD130E0D9;
+	Wed, 25 Feb 2026 06:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2KS8WIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3+lTAPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54A02494FE;
-	Wed, 25 Feb 2026 01:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E60309DC4;
+	Wed, 25 Feb 2026 06:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983551; cv=none; b=S27BItJJKZ2MgBCOWbn4nW8fGzcbdv8f471nVTRsMTV1CfCeyS8HWVPHpR4oZ8oSXXjKdkLI8ubOAWxMASz/ZIE8gh2ACSiIKTkI8gRo+mSK8R5xLH4fp4c2A1QkKk+DX/7a1+JvYPnzvriZ08AXkwc4Hj/qMD5mQobrP4QMOjc=
+	t=1772002659; cv=none; b=kRClovS/pHTkNGTworWdCucfSVhT/VNCnGpAM4mqxp3hgy0Q/O/x2kgFU/hjluqclk2EcW7aZq9qISHwiSoKZg8OClajVV3T6C/D5OO5TTiGBVKIYR6J8jmtfyzl5unp1BK4YK6MmzdyNRk+d4IovXdO2MOGcsiOfsUodsco1wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983551; c=relaxed/simple;
-	bh=wsg4bld1gZkr04FZgRjj0OzXqESvndAcQ4qloLNy23Q=;
+	s=arc-20240116; t=1772002659; c=relaxed/simple;
+	bh=1RCPb46i4XrQrHMBUPlb/VrKEdZN7a+RttApHL0GVDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KyO0cFHC2I9KFzVU6It69z5DRLb57xjM1vE7+xlYL7TDHWtqqJlhMIc3nCZT9sB975CnP30zTvdXzwLk3f3FHxkzWbtB/Uc31AS1sHoSt+2nhpSigRLCziGtgoEYi/kgvcd+/RWci+P660cVqCLXtPT/zBi5M+/EkLQkNpBM21o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2KS8WIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B32BC116D0;
-	Wed, 25 Feb 2026 01:39:11 +0000 (UTC)
+	 MIME-Version; b=JJq1Xktelz5FdCQdY2lIffd/QcZgdS/dYdz+t124ysH6p3eCTRdnI+iMNyME2KGxVJmxeGDh+zVaY6/hTxG4SpF53WmWB/6jtNdQ49Tr4OGWR6vbYvr/Ntu6xZZwDOjgPOFkHw5EQnRrEraTn7/0QNW+wTcekA4srJp/Q2VjJhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3+lTAPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01780C116D0;
+	Wed, 25 Feb 2026 06:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983551;
-	bh=wsg4bld1gZkr04FZgRjj0OzXqESvndAcQ4qloLNy23Q=;
+	s=korg; t=1772002659;
+	bh=1RCPb46i4XrQrHMBUPlb/VrKEdZN7a+RttApHL0GVDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2KS8WIRZbNqlXAdpLQ4UxDCiQVYH8pPUN9UCksogpjVuzVomBFN6JVJncuxQi06J
-	 TTMOTlhthExYve4NudCZYYnMwnhr2f8bhjK7zOWKp8rib3PY2kY9LalklCjkTRAAp6
-	 002IFGhge08NPlbHVA0c+uoQl9UwrP6flrXgt27Q=
+	b=z3+lTAPs3KOD+dC8Py/RjoYv+nbwJjIN0ClS7vhoYodpieWMCu8cdf4IWK13Luzkp
+	 J3Uwd8+eer9kw1MbXocirAfrHKe8r0+YKwwaL0ivHslcL/ta/85prcdb4WZBlz9mVn
+	 06h8DkT75Otlk+2IMuce31CFxA/hrp7bsNvhs6Vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Brian Masney <bmasney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 653/781] ovpn: tcp - dont deref NULL sk_socket member after tcp_close()
-Date: Tue, 24 Feb 2026 17:22:42 -0800
-Message-ID: <20260225012415.807844492@linuxfoundation.org>
+Subject: [PATCH 6.18 437/641] clk: nxp: lpc32xx: convert from divider_round_rate() to divider_determine_rate()
+Date: Tue, 24 Feb 2026 17:22:43 -0800
+Message-ID: <20260225012359.123630609@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218693-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219352-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,85 +90,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,openvpn.net:email]
-X-Rspamd-Queue-Id: A452519074A
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mleia.com:email]
+X-Rspamd-Queue-Id: B3B32192A33
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Quartulli <antonio@openvpn.net>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 94560267d6c41b1ff3fafbab726e3f8a55a6af34 ]
+[ Upstream commit af943663ccc266e6346e5645b13c0fca71d24395 ]
 
-When deleting a peer in case of keepalive expiration, the peer is
-removed from the OpenVPN hashtable and is temporary inserted in a
-"release list" for further processing.
+The divider_round_rate() function is now deprecated, so let's migrate
+to divider_determine_rate() instead so that this deprecated API can be
+removed.
 
-This happens in:
-ovpn_peer_keepalive_work()
-  unlock_ovpn(release_list)
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
 
-This processing includes detaching from the socket being used to
-talk to this peer, by restoring its original proto and socket
-ops/callbacks.
+    req->rate = divider_round_rate(...)
 
-In case of TCP it may happen that, while the peer is sitting in
-the release list, userspace decides to close the socket.
-This will result in a concurrent execution of:
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
 
-tcp_close(sk)
-  __tcp_close(sk)
-    sock_orphan(sk)
-      sk_set_socket(sk, NULL)
-
-The last function call will set sk->sk_socket to NULL.
-
-When the releasing routine is resumed, ovpn_tcp_socket_detach()
-will attempt to dereference sk->sk_socket to restore its original
-ops member. This operation will crash due to sk->sk_socket being NULL.
-
-Fix this race condition by testing-and-accessing
-sk->sk_socket atomically under sk->sk_callback_lock.
-
-Link: https://lore.kernel.org/netdev/176996279620.3109699.15382994681575380467@eldamar.lan/
-Link: https://github.com/OpenVPN/ovpn-net-next/issues/29
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Link: https://patch.msgid.link/20260212213130.11497-1-antonio@openvpn.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0879768df240 ("clk: nxp: lpc32xx: convert from round_rate() to determine_rate()")
+Tested-by: Vladimir Zapolskiy <vz@mleia.com>
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/tcp.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/clk/nxp/clk-lpc32xx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index f0b4e07ba9245..ec2bbc28c1966 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -199,7 +199,19 @@ void ovpn_tcp_socket_detach(struct ovpn_socket *ovpn_sock)
- 	sk->sk_data_ready = peer->tcp.sk_cb.sk_data_ready;
- 	sk->sk_write_space = peer->tcp.sk_cb.sk_write_space;
- 	sk->sk_prot = peer->tcp.sk_cb.prot;
--	sk->sk_socket->ops = peer->tcp.sk_cb.ops;
-+
-+	/* tcp_close() may race this function and could set
-+	 * sk->sk_socket to NULL. It does so by invoking
-+	 * sock_orphan(), which holds sk_callback_lock before
-+	 * doing the assignment.
-+	 *
-+	 * For this reason we acquire the same lock to avoid
-+	 * sk_socket to disappear under our feet
-+	 */
-+	write_lock_bh(&sk->sk_callback_lock);
-+	if (sk->sk_socket)
-+		sk->sk_socket->ops = peer->tcp.sk_cb.ops;
-+	write_unlock_bh(&sk->sk_callback_lock);
+diff --git a/drivers/clk/nxp/clk-lpc32xx.c b/drivers/clk/nxp/clk-lpc32xx.c
+index 23f980cf6a2b5..ae2fa5341a2e4 100644
+--- a/drivers/clk/nxp/clk-lpc32xx.c
++++ b/drivers/clk/nxp/clk-lpc32xx.c
+@@ -975,10 +975,8 @@ static int clk_divider_determine_rate(struct clk_hw *hw,
+ 		return 0;
+ 	}
  
- 	rcu_assign_sk_user_data(sk, NULL);
+-	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
+-				       divider->table, divider->width, divider->flags);
+-
+-	return 0;
++	return divider_determine_rate(hw, req, divider->table, divider->width,
++				      divider->flags);
  }
+ 
+ static int clk_divider_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.51.0
 
