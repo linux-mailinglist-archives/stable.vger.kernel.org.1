@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOevJfhTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218450-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:24 +0100
+	id KFBOESRanmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-219016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AF618FB11
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97927190A5A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 147A5315A2C1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA4BC32B1481
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49331EB5E1;
-	Wed, 25 Feb 2026 01:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC4127FD72;
+	Wed, 25 Feb 2026 01:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmJqJJgx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzeYrzy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7897A18B0A;
-	Wed, 25 Feb 2026 01:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31FC279DC2;
+	Wed, 25 Feb 2026 01:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983272; cv=none; b=b+RahkQjsm78MjY9ltAOZPL1SEGncBXQ0sGqE1LB8DlDQRX2T7GFzXcvRk451Fajvew2qWsAA4lRVONCA3y0sVEya0Zxq87SBT0b03W9VdAZ2maBvRA27Ulq+e42eKbRNpMMjohsLuKjhX+xxbVj90Nj+tHikyboZLmu8qQvkx4=
+	t=1771983928; cv=none; b=Fcc8eeS9B4MOgfG0wYg6yUco/mI37TU9FDvDACUaTX7+QzZ4ryMxgbuLC8kGYF+rLwMi1TPZl5BvhLznIc/YwoqV5V6R/bu6o9x2m3iujYzx2cSBhNYOZTYZAn1At67VYGiZMfciPYxLR8Ky92yrEo2ILPlTdCqjjCB7G2fRYew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983272; c=relaxed/simple;
-	bh=522gXAKSue+OAtZN5ReA58M4T70LgW9JZ5WIXdPNC7M=;
+	s=arc-20240116; t=1771983928; c=relaxed/simple;
+	bh=twqGR4/7Kl3BEQt74zzY1tePy6JTWXsBWLa9KUue+nU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eydVlXPqgsbJbJcADaI7xar4JHczWhB1RopJOSIMvzmxOwFc92EZR5pMZaRVYvUqcL24lx/WkY9oTKZ9FwG66+nF4SPpPddnfzc9EiwYuer5BrMlWLF9lhCklDv+AsHbt5UdH7pE2o+cw+Ofa2Ozi8wYScl212lGjcJ7kauIctE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmJqJJgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3886AC116D0;
-	Wed, 25 Feb 2026 01:34:32 +0000 (UTC)
+	 MIME-Version; b=QbRXx1GT4LKntuoUdGRlxo06ng4xBcMID1BuU5F3mrARPem6gAm+cvzTNaEzaCc3IjLUPClVfBvBhG4dJTMRwLKJKG1MSs+XOhjFZ80+sDh8sBOtkYvZvbsPFQtp6yILrBODyFwdfGOr3DpwFX8DqjsbM3Jv/xg93SY1+jez/Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzeYrzy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76126C116D0;
+	Wed, 25 Feb 2026 01:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983272;
-	bh=522gXAKSue+OAtZN5ReA58M4T70LgW9JZ5WIXdPNC7M=;
+	s=korg; t=1771983928;
+	bh=twqGR4/7Kl3BEQt74zzY1tePy6JTWXsBWLa9KUue+nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmJqJJgxpkEtpxb5ij7JiW+5Pgc/a3JHIOaHybec9ivifyb2h/2PO5DhvPwYdoB/f
-	 eZ8Md1diPqLUEkeouC4ojed37ieoAV15SkjYRlrGB2qXNoWtw8hD0mGFcCe8TxTKFZ
-	 VxOgDrWmuswhQbgtLo9chrth5b0Ul0WirIQCTXzQ=
+	b=zzeYrzy0prpKtrspsNzNjomTSRUouUqhhdpO3KJRZ77hE5GtR/jNVvnUUixgOOKqr
+	 2aNok2j6kwe5a030RBBxdvQZpLOCdGTvJre3Kfym0Ohp6+Jf1uuVZFaZNGtvT9wly1
+	 aS5X/d537OwZnXywolXayT2SDaxCXf5Ch+LZizTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Nitin Gote <nitin.r.gote@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 412/781] netfilter: nft_set_rbtree: fix bogus EEXIST with NLM_F_CREATE with null interval
+Subject: [PATCH 6.18 195/641] mei: late_bind: fix struct intel_lb_component_ops kernel-doc
 Date: Tue, 24 Feb 2026 17:18:41 -0800
-Message-ID: <20260225012409.807792890@linuxfoundation.org>
+Message-ID: <20260225012353.715678513@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,107 +70,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219016-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218450-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: 57AF618FB11
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 97927190A5A
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 7f9203f41aae8eea74fba6a3370da41332eabcda ]
+[ Upstream commit 936cae9254e55a39aeaa0c156a764d22f319338b ]
 
-Userspace adds a non-matching null element to the kernel for historical
-reasons. This null element is added when the set is populated with
-elements. Inclusion of this element is conditional, therefore,
-userspace needs to dump the set content to check for its presence.
+Fix kernel-doc warnings on struct intel_lb_component_ops:
 
-If the NLM_F_CREATE flag is turned on, this becomes an issue because
-kernel bogusly reports EEXIST.
+Warning: include/drm/intel/intel_lb_mei_interface.h:55 Incorrect use of
+  kernel-doc format: * push_payload - Sends a payload to the
+  authentication firmware
 
-Add special case to ignore NLM_F_CREATE in this case, therefore,
-re-adding the nul-element never fails.
+And a bunch more. There isn't really support for documenting function
+pointer struct members in kernel-doc, but at least reference the member
+properly.
 
-Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 741eeabb7c78 ("mei: late_bind: add late binding component driver")
+Cc: Alexander Usyskin <alexander.usyskin@intel.com>
+Reviewed-by: Nitin Gote <nitin.r.gote@intel.com>
+Link: https://patch.msgid.link/20260107160226.2381388-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c  |  5 +++++
- net/netfilter/nft_set_rbtree.c | 13 +++++++++++++
- 2 files changed, 18 insertions(+)
+ include/drm/intel/intel_lb_mei_interface.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index ec9e5e2a9f277..198b9c739b559 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7635,6 +7635,11 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 			 * and an existing one.
- 			 */
- 			err = -EEXIST;
-+		} else if (err == -ECANCELED) {
-+			/* ECANCELED reports an existing nul-element in
-+			 * interval sets.
-+			 */
-+			err = 0;
- 		}
- 		goto err_element_clash;
- 	}
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index ca594161b8402..eacb3acc2b957 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -39,6 +39,13 @@ static bool nft_rbtree_interval_start(const struct nft_rbtree_elem *rbe)
- 	return !nft_rbtree_interval_end(rbe);
- }
- 
-+static bool nft_rbtree_interval_null(const struct nft_set *set,
-+				     const struct nft_rbtree_elem *rbe)
-+{
-+	return (!memchr_inv(nft_set_ext_key(&rbe->ext), 0, set->klen) &&
-+		nft_rbtree_interval_end(rbe));
-+}
-+
- static int nft_rbtree_cmp(const struct nft_set *set,
- 			  const struct nft_rbtree_elem *e1,
- 			  const struct nft_rbtree_elem *e2)
-@@ -431,6 +438,12 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	 */
- 	if (rbe_le && !nft_rbtree_cmp(set, new, rbe_le) &&
- 	    nft_rbtree_interval_end(rbe_le) == nft_rbtree_interval_end(new)) {
-+		/* - ignore null interval, otherwise NLM_F_CREATE bogusly
-+		 *   reports EEXIST.
-+		 */
-+		if (nft_rbtree_interval_null(set, new))
-+			return -ECANCELED;
-+
- 		*elem_priv = &rbe_le->priv;
- 		return -EEXIST;
- 	}
+diff --git a/include/drm/intel/intel_lb_mei_interface.h b/include/drm/intel/intel_lb_mei_interface.h
+index d65be2cba2ab9..0850738a30fc7 100644
+--- a/include/drm/intel/intel_lb_mei_interface.h
++++ b/include/drm/intel/intel_lb_mei_interface.h
+@@ -53,7 +53,8 @@ enum intel_lb_status {
+  */
+ struct intel_lb_component_ops {
+ 	/**
+-	 * push_payload - Sends a payload to the authentication firmware
++	 * @push_payload: Sends a payload to the authentication firmware
++	 *
+ 	 * @dev: Device struct corresponding to the mei device
+ 	 * @type: Payload type (see &enum intel_lb_type)
+ 	 * @flags: Payload flags bitmap (e.g. %INTEL_LB_FLAGS_IS_PERSISTENT)
 -- 
 2.51.0
 
