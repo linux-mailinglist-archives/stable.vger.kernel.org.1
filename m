@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-218168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218170-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIEKEBNRnmlIUgQAu9opvQ
-	(envelope-from <stable+bounces-218168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:03 +0100
+	id uME1ABVRnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218170-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:05 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7196118EE9D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF8418EEAB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:32:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AD234307CDFA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:29:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 37AB7304C6A1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E482242D9B;
-	Wed, 25 Feb 2026 01:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEAE0251793;
+	Wed, 25 Feb 2026 01:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWuUc0cy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSF17j79"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FD94369A;
-	Wed, 25 Feb 2026 01:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929531D5ABA;
+	Wed, 25 Feb 2026 01:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982953; cv=none; b=lfkrxleq3m4ODyLv8O5RlgetLuq8syeZO27dFiO/0OBlvbJ4Jri8zQW/4X/0y0HGBzxlDCDiZER2nUJ6AC9fFwRAS/ffJR/+uNj15DOF3OJAR0gTpgmOaL8W0kg00lIH/Rp3cTqXRD/7u690kus60+0tHpJTkLuGuWqyY15cCUE=
+	t=1771982955; cv=none; b=mJ0GbZhSm3MiMl9aQ8Np/+kuauxxTVn4w1jKtpjYKx0Czjdgt7WUTsO3QoKscqywnW9TBScNXr83k5Y/Wb8sjPUkC81h/7EUSoJUIkr25LRiksDDwSK58duH8eqlZ4n04pHas/GF8tuqJj/Y2myt/gBvpolKZgwUvv6U/LnclRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982953; c=relaxed/simple;
-	bh=4UCDv8P6V4yIP2O3lOWQwYLeBxto56dC2wD+JCnWR3k=;
+	s=arc-20240116; t=1771982955; c=relaxed/simple;
+	bh=CPaGR3pQ8bUc/+objnSoKvJ4cZu4urYXmeZ41b+PHEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6UZiuLxxYUMaz77zwbHEm+uOeUMDgx7I7tUGq+NZzdeap9ge0CjZooEPcGaldf49vjsOd064Cu9gSYP3Trz2MeKTxLQFEh/nQzgRmQI11Ss3aNONaeZhNHeWwWa917w9/nkngDs+fLW1Mm/bCPGT9GgJ451syyh1z64T4/mMxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWuUc0cy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AE0C116D0;
-	Wed, 25 Feb 2026 01:29:12 +0000 (UTC)
+	 MIME-Version; b=ePyT9P5A4cuF7EhbAiFUjLVvn+hNZeWJFD8VA5tIr8tDHTI4cv1YRfCem9s9bc/J4DoGk5I3ux4iudDqF+ZiQBQq0lkPcz+fpk4+Y1mVyIaNFo20uNyAAyifQU2ntUWvF9/8jBbNPGSmU2qxZYiFDYfSSdUfEizXltMiDa1l6Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSF17j79; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D127C116D0;
+	Wed, 25 Feb 2026 01:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982953;
-	bh=4UCDv8P6V4yIP2O3lOWQwYLeBxto56dC2wD+JCnWR3k=;
+	s=korg; t=1771982955;
+	bh=CPaGR3pQ8bUc/+objnSoKvJ4cZu4urYXmeZ41b+PHEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWuUc0cyS5AS/oR7hHtIrPzQYbO5agVqj4QUvjt6wJR5LyUYFKdIpgOeu8seQ5UYX
-	 P2tmIbpFg+KE6VDzAz9ixjssyHQFInj5rSaT40mbHp8DV/svyG0H7y1N9okuUhtMQe
-	 FEk8UyiGfyY/LCoNEoCqDrtIzuvNf3eC+SekBtus=
+	b=VSF17j79tB66G/1TjVz7tDjGoYhIp7EJxwLOCARryBAgrqZdCAp0bShOlYZW1DZcQ
+	 8E2Q+GNdpGjJH89lAzHgJpbMmlUaYWUTqnQYPAV3io7pYeWGeBKBFO9D3+bjmK486N
+	 UM6ijIZPezQ14gUbm2fQDcgF0qRuTjaRmkNGToHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangyu Chen <cyy@cyyself.name>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Chris Mason <clm@meta.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 131/781] irqchip/sifive-plic: Handle number of hardware interrupts correctly
-Date: Tue, 24 Feb 2026 17:14:00 -0800
-Message-ID: <20260225012402.883064071@linuxfoundation.org>
+Subject: [PATCH 6.19 132/781] bpf: Limit bpf program signature size
+Date: Tue, 24 Feb 2026 17:14:01 -0800
+Message-ID: <20260225012402.908505591@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -67,260 +69,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218168-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218170-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7196118EE9D
+X-Rspamd-Queue-Id: 4EF8418EEAB
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@kernel.org>
+From: KP Singh <kpsingh@kernel.org>
 
-[ Upstream commit 42e025b719c128bdf8ff88584589a1e4a2448c81 ]
+[ Upstream commit ea1535e28bb3773fc0b3cbd1f3842b808016990c ]
 
-The driver is handling the number of hardware interrupts inconsistently.
+Practical BPF signatures are significantly smaller than
+KMALLOC_MAX_CACHE_SIZE
 
-The reason is that the firmware enumerates the maximum number of device
-interrupts, but the actual number of hardware interrupts is one more
-because hardware interrupt 0 is reserved.
+Allowing larger sizes opens the door for abuse by passing excessive
+size values and forcing the kernel into expensive allocation paths (via
+kmalloc_large or vmalloc).
 
-There are two loop variants where this matters:
-
-  1) Iterating over the device interrupts
-
-     for (irq = 1; irq < total_irqs; irq++)
-
-  2) Iterating over the number of interrupt register groups
-
-     for (grp = 0; grp < irq_groups; grp++)
-
-The current code stores the number of device interrupts and that requires
-to write the loops as:
-
-  1) for (irq = 1; irq <= device_irqs; irq++)
-
-  2) for (grp = 0; grp < DIV_ROUND_UP(device_irqs + 1); grp++)
-
-But the code gets it wrong all over the place. Just fixing up the
-conditions and off by ones is not a sustainable solution as the next changes
-will reintroduce the same bugs over and over.
-
-Sanitize it by storing the total number of hardware interrupts during probe
-and precalculating the number of groups. To future proof it mark
-priv::total_irqs __private, provide a correct iterator macro and adjust the
-code to this.
-
-Marking it private allows sparse (C=1 build) to catch direct access to this
-member:
-
-  drivers/irqchip/irq-sifive-plic.c:270:9: warning: dereference of noderef expression
-
-That should prevent at least the most obvious future damage in that area.
-
-Fixes: e80f0b6a2cf3 ("irqchip/irq-sifive-plic: Add syscore callbacks for hibernation")
-Reported-by: Yangyu Chen <cyy@cyyself.name>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Tested-by: Yangyu Chen <cyy@cyyself.name>
-Link: https://patch.msgid.link/87ikcd36i9.ffs@tglx
+Fixes: 349271568303 ("bpf: Implement signature verification for BPF programs")
+Reported-by: Chris Mason <clm@meta.com>
+Signed-off-by: KP Singh <kpsingh@kernel.org>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20260205063807.690823-1-kpsingh@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-sifive-plic.c | 82 +++++++++++++++++--------------
- 1 file changed, 45 insertions(+), 37 deletions(-)
+ kernel/bpf/syscall.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index 210a579596377..60fd8f91762b1 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -68,15 +68,17 @@
- #define PLIC_QUIRK_CP100_CLAIM_REGISTER_ERRATUM	1
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 763868d327b4a..f89aa142f71b8 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2815,6 +2815,13 @@ static int bpf_prog_verify_signature(struct bpf_prog *prog, union bpf_attr *attr
+ 	void *sig;
+ 	int err = 0;
  
- struct plic_priv {
--	struct fwnode_handle *fwnode;
--	struct cpumask lmask;
--	struct irq_domain *irqdomain;
--	void __iomem *regs;
--	unsigned long plic_quirks;
--	unsigned int nr_irqs;
--	unsigned long *prio_save;
--	u32 gsi_base;
--	int acpi_plic_id;
-+	struct fwnode_handle	*fwnode;
-+	struct cpumask		lmask;
-+	struct irq_domain	*irqdomain;
-+	void __iomem		*regs;
-+	unsigned long		plic_quirks;
-+	/* device interrupts + 1 to compensate for the reserved hwirq 0 */
-+	unsigned int __private	total_irqs;
-+	unsigned int		irq_groups;
-+	unsigned long		*prio_save;
-+	u32			gsi_base;
-+	int			acpi_plic_id;
- };
- 
- struct plic_handler {
-@@ -91,6 +93,12 @@ struct plic_handler {
- 	u32			*enable_save;
- 	struct plic_priv	*priv;
- };
-+
-+/*
-+ * Macro to deal with the insanity of hardware interrupt 0 being reserved */
-+#define for_each_device_irq(iter, priv)	\
-+	for (unsigned int iter = 1; iter < ACCESS_PRIVATE(priv, total_irqs); iter++)
-+
- static int plic_parent_irq __ro_after_init;
- static bool plic_global_setup_done __ro_after_init;
- static DEFINE_PER_CPU(struct plic_handler, plic_handlers);
-@@ -257,14 +265,11 @@ static int plic_irq_set_type(struct irq_data *d, unsigned int type)
- 
- static int plic_irq_suspend(void *data)
- {
--	struct plic_priv *priv;
--
--	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
-+	struct plic_priv *priv = this_cpu_ptr(&plic_handlers)->priv;
- 
--	/* irq ID 0 is reserved */
--	for (unsigned int i = 1; i < priv->nr_irqs; i++) {
--		__assign_bit(i, priv->prio_save,
--			     readl(priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID));
-+	for_each_device_irq(irq, priv) {
-+		__assign_bit(irq, priv->prio_save,
-+			     readl(priv->regs + PRIORITY_BASE + irq * PRIORITY_PER_ID));
- 	}
- 
- 	return 0;
-@@ -272,18 +277,15 @@ static int plic_irq_suspend(void *data)
- 
- static void plic_irq_resume(void *data)
- {
--	unsigned int i, index, cpu;
-+	struct plic_priv *priv = this_cpu_ptr(&plic_handlers)->priv;
-+	unsigned int index, cpu;
- 	unsigned long flags;
- 	u32 __iomem *reg;
--	struct plic_priv *priv;
--
--	priv = per_cpu_ptr(&plic_handlers, smp_processor_id())->priv;
- 
--	/* irq ID 0 is reserved */
--	for (i = 1; i < priv->nr_irqs; i++) {
--		index = BIT_WORD(i);
--		writel((priv->prio_save[index] & BIT_MASK(i)) ? 1 : 0,
--		       priv->regs + PRIORITY_BASE + i * PRIORITY_PER_ID);
-+	for_each_device_irq(irq, priv) {
-+		index = BIT_WORD(irq);
-+		writel((priv->prio_save[index] & BIT_MASK(irq)) ? 1 : 0,
-+		       priv->regs + PRIORITY_BASE + irq * PRIORITY_PER_ID);
- 	}
- 
- 	for_each_present_cpu(cpu) {
-@@ -293,7 +295,7 @@ static void plic_irq_resume(void *data)
- 			continue;
- 
- 		raw_spin_lock_irqsave(&handler->enable_lock, flags);
--		for (i = 0; i < DIV_ROUND_UP(priv->nr_irqs, 32); i++) {
-+		for (unsigned int i = 0; i < priv->irq_groups; i++) {
- 			reg = handler->enable_base + i * sizeof(u32);
- 			writel(handler->enable_save[i], reg);
- 		}
-@@ -431,7 +433,7 @@ static u32 cp100_isolate_pending_irq(int nr_irq_groups, struct plic_handler *han
- 
- static irq_hw_number_t cp100_get_hwirq(struct plic_handler *handler, void __iomem *claim)
- {
--	int nr_irq_groups = DIV_ROUND_UP(handler->priv->nr_irqs, 32);
-+	int nr_irq_groups = handler->priv->irq_groups;
- 	u32 __iomem *enable = handler->enable_base;
- 	irq_hw_number_t hwirq = 0;
- 	u32 iso_mask;
-@@ -614,7 +616,6 @@ static int plic_probe(struct fwnode_handle *fwnode)
- 	struct plic_handler *handler;
- 	u32 nr_irqs, parent_hwirq;
- 	struct plic_priv *priv;
--	irq_hw_number_t hwirq;
- 	void __iomem *regs;
- 	int id, context_id;
- 	u32 gsi_base;
-@@ -647,7 +648,16 @@ static int plic_probe(struct fwnode_handle *fwnode)
- 
- 	priv->fwnode = fwnode;
- 	priv->plic_quirks = plic_quirks;
--	priv->nr_irqs = nr_irqs;
 +	/*
-+	 * The firmware provides the number of device interrupts. As
-+	 * hardware interrupt 0 is reserved, the number of total interrupts
-+	 * is nr_irqs + 1.
++	 * Don't attempt to use kmalloc_large or vmalloc for signatures.
++	 * Practical signature for BPF program should be below this limit.
 +	 */
-+	nr_irqs++;
-+	ACCESS_PRIVATE(priv, total_irqs) = nr_irqs;
-+	/* Precalculate the number of register groups */
-+	priv->irq_groups = DIV_ROUND_UP(nr_irqs, 32);
++	if (attr->signature_size > KMALLOC_MAX_CACHE_SIZE)
++		return -EINVAL;
 +
- 	priv->regs = regs;
- 	priv->gsi_base = gsi_base;
- 	priv->acpi_plic_id = id;
-@@ -686,7 +696,7 @@ static int plic_probe(struct fwnode_handle *fwnode)
- 				u32 __iomem *enable_base = priv->regs +	CONTEXT_ENABLE_BASE +
- 							   i * CONTEXT_ENABLE_SIZE;
- 
--				for (int j = 0; j <= nr_irqs / 32; j++)
-+				for (int j = 0; j < priv->irq_groups; j++)
- 					writel(0, enable_base + j);
- 			}
- 			continue;
-@@ -718,23 +728,21 @@ static int plic_probe(struct fwnode_handle *fwnode)
- 			context_id * CONTEXT_ENABLE_SIZE;
- 		handler->priv = priv;
- 
--		handler->enable_save = kcalloc(DIV_ROUND_UP(nr_irqs, 32),
--					       sizeof(*handler->enable_save), GFP_KERNEL);
-+		handler->enable_save = kcalloc(priv->irq_groups, sizeof(*handler->enable_save),
-+					       GFP_KERNEL);
- 		if (!handler->enable_save) {
- 			error = -ENOMEM;
- 			goto fail_cleanup_contexts;
- 		}
- done:
--		for (hwirq = 1; hwirq <= nr_irqs; hwirq++) {
-+		for_each_device_irq(hwirq, priv) {
- 			plic_toggle(handler, hwirq, 0);
--			writel(1, priv->regs + PRIORITY_BASE +
--				  hwirq * PRIORITY_PER_ID);
-+			writel(1, priv->regs + PRIORITY_BASE + hwirq * PRIORITY_PER_ID);
- 		}
- 		nr_handlers++;
- 	}
- 
--	priv->irqdomain = irq_domain_create_linear(fwnode, nr_irqs + 1,
--						   &plic_irqdomain_ops, priv);
-+	priv->irqdomain = irq_domain_create_linear(fwnode, nr_irqs, &plic_irqdomain_ops, priv);
- 	if (WARN_ON(!priv->irqdomain)) {
- 		error = -ENOMEM;
- 		goto fail_cleanup_contexts;
+ 	if (system_keyring_id_check(attr->keyring_id) == 0)
+ 		key = bpf_lookup_system_key(attr->keyring_id);
+ 	else
 -- 
 2.51.0
 
