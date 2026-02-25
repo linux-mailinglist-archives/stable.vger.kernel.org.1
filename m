@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-219017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218451-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YL4YGYtYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:55 +0100
+	id 0NJpFvhTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218451-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C43190751
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6ED18FB10
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3FAF730980C5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2BDA530F57DD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7150528751B;
-	Wed, 25 Feb 2026 01:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD29620C012;
+	Wed, 25 Feb 2026 01:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsB9plGO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abGVwZQC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D78E27CB02;
-	Wed, 25 Feb 2026 01:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9065818DB2A;
+	Wed, 25 Feb 2026 01:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983930; cv=none; b=LCUMzBD8zkzg4cqb/SZckFYtowTsuh8zZ44wVD71mzbVgtYrFVt0en7W2BKffEL+blAxssSGuOQrODiGlDccLFNncZTtqnSgu09xnUeoEVHON08OtNysAGhpoG6p1E/6c46ROOsEsRU8R1hw/30hD+pFblMw/4KWh25hqMtq/Pg=
+	t=1771983273; cv=none; b=t6Ds1pbYnrv5czoimceYcMImTP+WJ/cQ2P/w5j1cHQY3EZOXrYsX8wGzhVG2U+3rzBguOsBj7rWZyLRinOCEVLxv9JwnZMDoYhMOG+zYQcDqFKmDrlhpkX7NJrOwUM3CRUKAwjLLWBJGl5S7X9VgLoJEwH64fZN1pu6wPLN9s9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983930; c=relaxed/simple;
-	bh=Wm4uMaBKYzooYVFHrPuR5n3TL6MSrD2p+j/yu9u/5dY=;
+	s=arc-20240116; t=1771983273; c=relaxed/simple;
+	bh=6yOqFNa+gOb33j37JUhiNKQZCSgI192RJD3/AHF2z/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sKEs3jhbXEfal/UTr8pca5Ew2W/z4/OUzzDGoo704NYQtzyz2VfXySjInO20CgMY/3JLBQoO9zgPKBzOt1NDMxLV06jibOezXkN/uWy0WqzeGH6r6WeKZOGLgKUwsHCW7pNKqIgBv8fixR42tAZPZ3rGZsaVSBqJfJonVHjH578=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsB9plGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B27C116D0;
-	Wed, 25 Feb 2026 01:45:29 +0000 (UTC)
+	 MIME-Version; b=FRV+raSXesePkWA6F9qsEwl3LhtiucA/JpKzklC4AvWHc+h8gAHwABXHUDsxlILtZSkZZgxNHKpU4yPnWBL2Ykv6qs0rahl7aIw/916247+AV0stXqnh5hZ1OQvoXFXZDCi6WgFeSmgCfM2+q3BECv4TsBXV/4Mll/hSfSuYL08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abGVwZQC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B42C116D0;
+	Wed, 25 Feb 2026 01:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983930;
-	bh=Wm4uMaBKYzooYVFHrPuR5n3TL6MSrD2p+j/yu9u/5dY=;
+	s=korg; t=1771983273;
+	bh=6yOqFNa+gOb33j37JUhiNKQZCSgI192RJD3/AHF2z/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OsB9plGO9YHfoJqPJ6GpsPsk2YWlp19sazUIq9k4zu0FnSwGNK4knYWm946nsCb4l
-	 v4Pp+TQ7qKOBz4yGkjTmwsfKBUz3+qI4HBzeO1yPIB/qfvWWHy7a6GRnUtaW/rWBza
-	 Zy+I0FlpHjaB4QkvK+DaLpJ3+e5LbkiuhTXq3bh4=
+	b=abGVwZQCYU2yEel1EuRMOHPJpXzrP/I8POIrFguBTMYt/B+03SDigeKGJQxeNI6Ae
+	 siD9JZm4CXuoqGwGKNpcpSJ5VBnmyoYdKvolHwBBu/rdnxFTUC+OxuIWWSQJSFoQoi
+	 1rm1g9fNztc/LShnaeFF7YgkGYThYLz4U1K/Yats=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 196/641] regulator: core: move supply check earlier in set_machine_constraints()
+Subject: [PATCH 6.19 413/781] netfilter: nft_set_rbtree: check for partial overlaps in anonymous sets
 Date: Tue, 24 Feb 2026 17:18:42 -0800
-Message-ID: <20260225012353.736989407@linuxfoundation.org>
+Message-ID: <20260225012409.830834872@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,151 +63,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219017-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218451-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 84C43190751
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: CF6ED18FB10
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 86a8eeb0e913f4b6a55dabba5122098d4e805e55 ]
+[ Upstream commit 4780ec142cbb24b794129d3080eee5cac2943ffc ]
 
-Since commit 98e48cd9283d ("regulator: core: resolve supply for
-boot-on/always-on regulators"), set_machine_constraints() can return
--EPROBE_DEFER very late, after it has done a lot of work and
-configuration of the regulator.
+Userspace provides an optimized representation in case intervals are
+adjacent, where the end element is omitted.
 
-This means that configuration will happen multiple times for no
-benefit in that case. Furthermore, this can lead to timing-dependent
-voltage glitches as mentioned e.g. in commit 8a866d527ac0 ("regulator:
-core: Resolve supply name earlier to prevent double-init").
+The existing partial overlap detection logic skips anonymous set checks
+on start elements for this reason.
 
-We can know that it's going to fail very early, in particular before
-going through the complete regulator configuration by moving some code
-around a little.
+However, it is possible to add intervals that overlap to this anonymous
+where two start elements with the same, eg. A-B, A-C where C < B.
 
-Do so to avoid re-configuring the regulator multiple times, also
-avoiding the voltage glitches if we can.
+      start     end
+	A        B
+      start  end
+        A     C
 
-Fixes: 98e48cd9283d ("regulator: core: resolve supply for boot-on/always-on regulators")
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://patch.msgid.link/20260109-regulators-defer-v2-3-1a25dc968e60@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Restore the check on overlapping start elements to report an overlap.
+
+Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 55 ++++++++++++++++++++++------------------
- 1 file changed, 30 insertions(+), 25 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index b38b087eccfd7..17c60d9547dc5 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1431,6 +1431,33 @@ static int set_machine_constraints(struct regulator_dev *rdev)
- 	int ret = 0;
- 	const struct regulator_ops *ops = rdev->desc->ops;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index eacb3acc2b957..f2a1aa8860184 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -309,11 +309,23 @@ static bool nft_rbtree_update_first(const struct nft_set *set,
+ 	return false;
+ }
  
-+	/*
-+	 * If there is no mechanism for controlling the regulator then
-+	 * flag it as always_on so we don't end up duplicating checks
-+	 * for this so much.  Note that we could control the state of
-+	 * a supply to control the output on a regulator that has no
-+	 * direct control.
-+	 */
-+	if (!rdev->ena_pin && !ops->enable) {
-+		if (rdev->supply_name && !rdev->supply)
-+			return -EPROBE_DEFER;
++/* Only for anonymous sets which do not allow updates, all element are active. */
++static struct nft_rbtree_elem *nft_rbtree_prev_active(struct nft_rbtree_elem *rbe)
++{
++	struct rb_node *node;
 +
-+		if (rdev->supply)
-+			rdev->constraints->always_on =
-+				rdev->supply->rdev->constraints->always_on;
-+		else
-+			rdev->constraints->always_on = true;
-+	}
++	node = rb_prev(&rbe->node);
++	if (!node)
++		return NULL;
 +
-+	/*
-+	 * If we want to enable this regulator, make sure that we know the
-+	 * supplying regulator.
-+	 */
-+	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
-+		if (rdev->supply_name && !rdev->supply)
-+			return -EPROBE_DEFER;
-+	}
++	return rb_entry(node, struct nft_rbtree_elem, node);
++}
 +
- 	ret = machine_constraints_voltage(rdev, rdev->constraints);
- 	if (ret != 0)
- 		return ret;
-@@ -1596,37 +1623,15 @@ static int set_machine_constraints(struct regulator_dev *rdev)
- 		}
- 	}
- 
--	/*
--	 * If there is no mechanism for controlling the regulator then
--	 * flag it as always_on so we don't end up duplicating checks
--	 * for this so much.  Note that we could control the state of
--	 * a supply to control the output on a regulator that has no
--	 * direct control.
--	 */
--	if (!rdev->ena_pin && !ops->enable) {
--		if (rdev->supply_name && !rdev->supply)
--			return -EPROBE_DEFER;
--
--		if (rdev->supply)
--			rdev->constraints->always_on =
--				rdev->supply->rdev->constraints->always_on;
--		else
--			rdev->constraints->always_on = true;
--	}
--
- 	/* If the constraints say the regulator should be on at this point
- 	 * and we have control then make sure it is enabled.
+ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 			       struct nft_rbtree_elem *new,
+ 			       struct nft_elem_priv **elem_priv)
+ {
+-	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL;
++	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL, *rbe_prev;
+ 	struct rb_node *node, *next, *parent, **p, *first = NULL;
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	u8 cur_genmask = nft_genmask_cur(net);
+@@ -451,11 +463,19 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	/* - new start element with existing closest, less or equal key value
+ 	 *   being a start element: partial overlap, reported as -ENOTEMPTY.
+ 	 *   Anonymous sets allow for two consecutive start element since they
+-	 *   are constant, skip them to avoid bogus overlap reports.
++	 *   are constant, but validate that this new start element does not
++	 *   sit in between an existing start and end elements: partial overlap,
++	 *   reported as -ENOTEMPTY.
  	 */
- 	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
- 		bool supply_enabled = false;
+-	if (!nft_set_is_anonymous(set) && rbe_le &&
+-	    nft_rbtree_interval_start(rbe_le) && nft_rbtree_interval_start(new))
+-		return -ENOTEMPTY;
++	if (rbe_le &&
++	    nft_rbtree_interval_start(rbe_le) && nft_rbtree_interval_start(new)) {
++		if (!nft_set_is_anonymous(set))
++			return -ENOTEMPTY;
++
++		rbe_prev = nft_rbtree_prev_active(rbe_le);
++		if (rbe_prev && nft_rbtree_interval_end(rbe_prev))
++			return -ENOTEMPTY;
++	}
  
--		/* If we want to enable this regulator, make sure that we know
--		 * the supplying regulator.
--		 */
--		if (rdev->supply_name && !rdev->supply)
--			return -EPROBE_DEFER;
--
--		/* If supplying regulator has already been enabled,
-+		/* We have ensured a potential supply has been resolved above.
-+		 *
-+		 * If supplying regulator has already been enabled,
- 		 * it's not intended to have use_count increment
- 		 * when rdev is only boot-on.
- 		 */
+ 	/* - new end element with existing closest, less or equal key value
+ 	 *   being a end element: partial overlap, reported as -ENOTEMPTY.
 -- 
 2.51.0
 
