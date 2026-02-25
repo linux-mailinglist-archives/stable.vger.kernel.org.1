@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-219434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICpNCW+gnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:10:39 +0100
+	id GB9bHeBYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8E81930EA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:10:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DD419081B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E46C431DB290
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B082D3202E82
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED5430C35E;
-	Wed, 25 Feb 2026 06:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8202741C9;
+	Wed, 25 Feb 2026 01:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNj284l1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="px8Sn9kg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B9C30EF6D;
-	Wed, 25 Feb 2026 06:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E663D26560A;
+	Wed, 25 Feb 2026 01:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002713; cv=none; b=dYzlUxQt8Z8Zw0Fhl6cJVPfGi3mgFtZXocI55f20xS13pAl5Dm9vhJKU02yzKwJZuky6g1D7V8/wp6x5QLCmedlzV3ypa1aM0wij09PZmR+guVq45zjXcWWbC4qfK9gLOU7lTKB4+sLj4gjthKdWUTm6b7Dxnt6K6VSZiyF4/JU=
+	t=1771983641; cv=none; b=lrNT/27I+/LzyHYx4XD9/DSw031oXUQOjE9k501aR8uUcPXCXU84Yy7+BmZlYQ3Eh9ZY30twE7oFE8u/deHG0QjYTd6NZF66LHzZkEt1tSnFVp8NkeNpjIobTelcbVmGELk1bt471Stmwvxpx4PnH/U1V90ofeCMW7ww3H2bu84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002713; c=relaxed/simple;
-	bh=zSGNxFsQw+v85Z+SuYBPPS2NQrOVoDpsQnxZvbe/lvE=;
+	s=arc-20240116; t=1771983641; c=relaxed/simple;
+	bh=qiqsdTmyQwU5G4YSFaHL/wB1SM0xM536phsWPuTLaos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BaDtoqCYw1N4bAZ9XZgwebHByB5S4BmVLQMPFiUbOTk1Ca5G9Is8H8Es2EXuJcPuUX8iaiemKXuYY5zTcgKMPAfJH44NRNhIUTKp1DaKVH1iOQ1P4Uk9BBdjkM9GEE/W88n1PyrtMKR6sCE5H7drOBPENKNa9Y5+WessdHlhxlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNj284l1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF116C116D0;
-	Wed, 25 Feb 2026 06:58:32 +0000 (UTC)
+	 MIME-Version; b=lD5xaMR7djfCWf640NekBryGjAX6v+C9Ax2LOn3SjjCBxseB/G2fkxbg/Kv5VlZSzcwRMK+ROYR+4znRPl+uTejTDNYQZyD55ckQpwwPTp28B88007y2zvYmuA1puh1+rDiLbQzAZ9keBGbF7zYR08U1b3J8WY63Bx9LkWFRZgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=px8Sn9kg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7ACC116D0;
+	Wed, 25 Feb 2026 01:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002713;
-	bh=zSGNxFsQw+v85Z+SuYBPPS2NQrOVoDpsQnxZvbe/lvE=;
+	s=korg; t=1771983640;
+	bh=qiqsdTmyQwU5G4YSFaHL/wB1SM0xM536phsWPuTLaos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNj284l10K49ujmjkinP+ikdudUBG+vMEmmv3QRDLmcHNaoExKoet3u9NDFnl29C+
-	 FQQdS95JXcEQlpwKsf4XG4YkceRUErNzDALig+Ts4q7zwX6WwsJdOgJxvvdkd4Ga7o
-	 7a4mD0jK7jGZBYRtKKf7QDnm6L0rOAZODKnVIg8c=
+	b=px8Sn9kgqgs5/jkdSrjRtRWxz4VXbQ+BAUnyYWEK6DUTEKIj0nUZ1IgtuKBuzj51x
+	 3nSLnBFpoxQUBHik2ZJ9H7weHBCxg/Z9G5jvJSBsyDB42T81ivzL9IkWo2KFAKOQQd
+	 tr+ijfsLDNVuG6z0Rw3/lWlQY+D0/bEMz/1bNjhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Antonio Quartulli <antonio@openvpn.net>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 511/641] ovpn: fix possible use-after-free in ovpn_net_xmit
-Date: Tue, 24 Feb 2026 17:23:57 -0800
-Message-ID: <20260225012400.904983473@linuxfoundation.org>
+Subject: [PATCH 6.19 729/781] drm/xe/mmio: Avoid double-adjust in 64-bit reads
+Date: Tue, 24 Feb 2026 17:23:58 -0800
+Message-ID: <20260225012417.614296933@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219434-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218769-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,124 +88,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,queasysnail.net:email,mandelbit.com:email]
-X-Rspamd-Queue-Id: 7B8E81930EA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 04DD419081B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralf Lici <ralf@mandelbit.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit a5ec7baa44ea3a1d6aa0ca31c0ad82edf9affe41 ]
+[ Upstream commit 4a9b4e1fa52a6aaa1adbb7f759048df14afed54c ]
 
-When building the skb_list in ovpn_net_xmit, skb_share_check will free
-the original skb if it is shared. The current implementation continues
-to use the stale skb pointer for subsequent operations:
-- peer lookup,
-- skb_dst_drop (even though all segments produced by skb_gso_segment
-  will have a dst attached),
-- ovpn_peer_stats_increment_tx.
+xe_mmio_read64_2x32() was adjusting register addresses and then
+calling xe_mmio_read32(), which applies the adjustment again.
+This may shift accesses twice if adj_offset < adj_limit. There is
+no issue currently, as for media gt, adj_offset > adj_limit, so
+the 2nd adjust will be a no-op. But it may not work in future.
 
-Fix this by moving the peer lookup and skb_dst_drop before segmentation
-so that the original skb is still valid when used. Return early if all
-segments fail skb_share_check and the list ends up empty.
-Also switch ovpn_peer_stats_increment_tx to use skb_list.next; the next
-patch fixes the stats logic.
+To fix it, replace the adjusted-address comparison with a direct
+sanity check that ensures the MMIO address adjustment cutoff never
+falls within the 8-byte range of a 64-bit register. And let
+xe_mmio_read32() handle address translation.
 
-Fixes: 08857b5ec5d9 ("ovpn: implement basic TX path (UDP)")
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+v2: rewrite the sanity check in a more natural way. (Matt)
+v3: Add Fixes tag. (Jani)
+
+Fixes: 07431945d8ae ("drm/xe: Avoid 64-bit register reads")
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Link: https://patch.msgid.link/20260130165621.471408-2-shuicheng.lin@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit a30f999681126b128a43137793ac84b6a5b7443f)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/io.c | 52 ++++++++++++++++++++++++++-----------------
- 1 file changed, 31 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/xe/xe_mmio.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
-index 3e9e7f8444b34..f70c58b10599b 100644
---- a/drivers/net/ovpn/io.c
-+++ b/drivers/net/ovpn/io.c
-@@ -365,7 +365,27 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 	/* verify IP header size in network packet */
- 	proto = ovpn_ip_check_protocol(skb);
- 	if (unlikely(!proto || skb->protocol != proto))
--		goto drop;
-+		goto drop_no_peer;
-+
-+	/* retrieve peer serving the destination IP of this packet */
-+	peer = ovpn_peer_get_by_dst(ovpn, skb);
-+	if (unlikely(!peer)) {
-+		switch (skb->protocol) {
-+		case htons(ETH_P_IP):
-+			net_dbg_ratelimited("%s: no peer to send data to dst=%pI4\n",
-+					    netdev_name(ovpn->dev),
-+					    &ip_hdr(skb)->daddr);
-+			break;
-+		case htons(ETH_P_IPV6):
-+			net_dbg_ratelimited("%s: no peer to send data to dst=%pI6c\n",
-+					    netdev_name(ovpn->dev),
-+					    &ipv6_hdr(skb)->daddr);
-+			break;
-+		}
-+		goto drop_no_peer;
-+	}
-+	/* dst was needed for peer selection - it can now be dropped */
-+	skb_dst_drop(skb);
+diff --git a/drivers/gpu/drm/xe/xe_mmio.c b/drivers/gpu/drm/xe/xe_mmio.c
+index 350dca1f09259..3d59440ec44dd 100644
+--- a/drivers/gpu/drm/xe/xe_mmio.c
++++ b/drivers/gpu/drm/xe/xe_mmio.c
+@@ -260,11 +260,11 @@ u64 xe_mmio_read64_2x32(struct xe_mmio *mmio, struct xe_reg reg)
+ 	struct xe_reg reg_udw = { .addr = reg.addr + 0x4 };
+ 	u32 ldw, udw, oldudw, retries;
  
- 	if (skb_is_gso(skb)) {
- 		segments = skb_gso_segment(skb, 0);
-@@ -396,34 +416,24 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 		__skb_queue_tail(&skb_list, curr);
- 	}
--	skb_list.prev->next = NULL;
- 
--	/* retrieve peer serving the destination IP of this packet */
--	peer = ovpn_peer_get_by_dst(ovpn, skb);
--	if (unlikely(!peer)) {
--		switch (skb->protocol) {
--		case htons(ETH_P_IP):
--			net_dbg_ratelimited("%s: no peer to send data to dst=%pI4\n",
--					    netdev_name(ovpn->dev),
--					    &ip_hdr(skb)->daddr);
--			break;
--		case htons(ETH_P_IPV6):
--			net_dbg_ratelimited("%s: no peer to send data to dst=%pI6c\n",
--					    netdev_name(ovpn->dev),
--					    &ipv6_hdr(skb)->daddr);
--			break;
--		}
--		goto drop;
-+	/* no segments survived: don't jump to 'drop' because we already
-+	 * incremented the counter for each failure in the loop
+-	reg.addr = xe_mmio_adjusted_addr(mmio, reg.addr);
+-	reg_udw.addr = xe_mmio_adjusted_addr(mmio, reg_udw.addr);
+-
+-	/* we shouldn't adjust just one register address */
+-	xe_tile_assert(mmio->tile, reg_udw.addr == reg.addr + 0x4);
++	/*
++	 * The two dwords of a 64-bit register can never straddle the offset
++	 * adjustment cutoff.
 +	 */
-+	if (unlikely(skb_queue_empty(&skb_list))) {
-+		ovpn_peer_put(peer);
-+		return NETDEV_TX_OK;
- 	}
--	/* dst was needed for peer selection - it can now be dropped */
--	skb_dst_drop(skb);
-+	skb_list.prev->next = NULL;
++	xe_tile_assert(mmio->tile, !in_range(mmio->adj_limit, reg.addr + 1, 7));
  
--	ovpn_peer_stats_increment_tx(&peer->vpn_stats, skb->len);
-+	ovpn_peer_stats_increment_tx(&peer->vpn_stats, skb_list.next->len);
- 	ovpn_send(ovpn, skb_list.next, peer);
- 
- 	return NETDEV_TX_OK;
- 
- drop:
-+	ovpn_peer_put(peer);
-+drop_no_peer:
- 	dev_dstats_tx_dropped(ovpn->dev);
- 	skb_tx_error(skb);
- 	kfree_skb_list(skb);
+ 	oldudw = xe_mmio_read32(mmio, reg_udw);
+ 	for (retries = 5; retries; --retries) {
 -- 
 2.51.0
 
