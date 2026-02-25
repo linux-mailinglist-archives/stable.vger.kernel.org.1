@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFdpNa9Snmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218351-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:55 +0100
+	id UHwsDNhUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C94E18F49F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B002B18FDFD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B46653134C2E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AE07130A17D1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237291D5ABA;
-	Wed, 25 Feb 2026 01:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1502E2874F8;
+	Wed, 25 Feb 2026 01:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gm9i7cve"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/83b+Yf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB751E2834;
-	Wed, 25 Feb 2026 01:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDE42652A2;
+	Wed, 25 Feb 2026 01:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983160; cv=none; b=ErsZyHv+VgEJDmvGcaxIW4UG7HsCuHDIiaFraZ+l77rjqQcULAw4akVXCn4nnMuwkvAZKORiDBZC8tNVczQiooelBft/kjHBNV1YqFZJVS3MvhvZzocBdX5Wvt6yOamlLVsWnsIRHUwbyX1Pl0J46mURkY9yk6pjzSEJ8hAahag=
+	t=1771983813; cv=none; b=gi4NZZzVD2T689bPXAufMjhTSSYXoan5m1gPRi7o0GEnyOxH6gQoOOY7Ig3Puiy0b5NEIyYIJe8L3nejEEnURM+GqWRQKManmNoSu7CIoBea5QK0s0Dqg7h37VSqPVXISJz8lWn28Grng51cXwAs9yRpQynYWLb2cwwLMCjgzYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983160; c=relaxed/simple;
-	bh=k0CWLz721y279tmIyf2UunUK99d+vXjpT9BJXp5XnO8=;
+	s=arc-20240116; t=1771983813; c=relaxed/simple;
+	bh=GRR0DLwaLnYDQbCm4wtgVFUmLMMqoaq8QT8l2AumtrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U7YMIDmnaf4W6sRo5co/yy2m0ZIw/MF/FAig4NRPq3OXCWIsptOlTlo1UuV66nFZ/lp0+NaLgUFvKHN2nM4gKVm9zfx/7kovKRAn+uQtUF0eZLQsczy+JtVhhoykoBpHwF+KCGptU1FaJm5r6eZFJiVS0dyxUAlpvivFLmRTxQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gm9i7cve; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A943DC116D0;
-	Wed, 25 Feb 2026 01:32:40 +0000 (UTC)
+	 MIME-Version; b=USmsw5yDRVzqGyB/vCZzt489Rl2SGTuOcLUPXCWhnWIXneggrPuOa4xfeIeFLaOwyS9YECjMGsuAytGtSfxMO3z2w0HEPG4cIfV2I9c7GcbseX7aW61ciw9y10dvjvE/If1F4yHxJ6WdMLq1bkI0p64Uw0vgdfOq5NQrllewroc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/83b+Yf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B901C116D0;
+	Wed, 25 Feb 2026 01:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983160;
-	bh=k0CWLz721y279tmIyf2UunUK99d+vXjpT9BJXp5XnO8=;
+	s=korg; t=1771983813;
+	bh=GRR0DLwaLnYDQbCm4wtgVFUmLMMqoaq8QT8l2AumtrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gm9i7cveUikT3rZjlzm3rmsYQ/kftTSNpTwQQSzig6s6yocrPP6Vv58i0z8Y6jqhv
-	 MRkupLBpqEOCutFhwt7NKE1QL5LhyGmz2qKOqCyITDop5j/cLWfx0663I+EvisZ6vO
-	 AnzJMVKLiv0h3g1wI3quik3vuJ561DDi+9ArHWOU=
+	b=O/83b+YfWjKKma2RML3+I7Jpn48X3kIwiJwN0USlLbEVHudaitFNtr3RPUbnz9P6M
+	 CRnnigUgtIbfX3APuotig6Q53mHNjvFcWJbZ80UqCopAOkkK3XR4/xEHnuYO2xmeoh
+	 YDbP7i95NLiOlCTvtN7SbEgFuMVgbB5miv1pD5pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carl Lee <carl.lee@amd.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Antoine Tenart <atenart@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 314/781] hwmon: (pmbus/mpq8785) fix VOUT_MODE mismatch during identification
-Date: Tue, 24 Feb 2026 17:17:03 -0800
-Message-ID: <20260225012407.402493502@linuxfoundation.org>
+Subject: [PATCH 6.18 098/641] crypto: inside-secure/eip93 - unregister only available algorithm
+Date: Tue, 24 Feb 2026 17:17:04 -0800
+Message-ID: <20260225012351.482317166@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,109 +70,193 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wp.pl,kernel.org,gondor.apana.org.au];
+	TAGGED_FROM(0.00)[bounces-218919-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218351-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,roeck-us.net:email]
-X-Rspamd-Queue-Id: 6C94E18F49F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,wp.pl:email]
+X-Rspamd-Queue-Id: B002B18FDFD
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carl Lee <carl.lee@amd.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 9e33c1dba22431bea9b2bf48adf56859e52fc7ec ]
+[ Upstream commit 0ceeadc7b53a041d89d5843f6bf0ccb7c98b0b4f ]
 
-When MPQ8785 reports VOUT_MODE as VID mode, mpq8785_identify()
-configures the driver for direct mode. The subsequent
-pmbus_identify_common() check then fails due to a mismatch
-between the reported mode and the configured mode, causing
-device initialization to fail.
+EIP93 has an options register. This register indicates which crypto
+algorithms are implemented in silicon. Supported algorithms are
+registered on this basis. Unregister algorithms on the same basis.
+Currently, all algorithms are unregistered, even those not supported
+by HW. This results in panic on platforms that don't have all options
+implemented in silicon.
 
-Override the reported VOUT_MODE to direct mode to keep the
-driver configuration consistent with the reported mode and
-allow successful device initialization.
-
-This does not change how voltages are interpreted, but avoids
-a false identification failure caused by mismatched mode
-handling.
-
-Fixes: f20b4a931130c ("hwmon: Add driver for MPS MPQ8785 Synchronous Step-Down Converter")
-Signed-off-by: Carl Lee <carl.lee@amd.com>
-Link: https://lore.kernel.org/r/20260210-dt-bindings-hwmon-pmbus-mpq8785-add-mpq8786-support-v3-1-84636ccfe76f@amd.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 9739f5f93b78 ("crypto: eip93 - Add Inside Secure SafeXcel EIP-93 crypto engine support")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Acked-by: Antoine Tenart <atenart@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/mpq8785.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ .../crypto/inside-secure/eip93/eip93-main.c   | 92 +++++++++++--------
+ 1 file changed, 53 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/mpq8785.c b/drivers/hwmon/pmbus/mpq8785.c
-index 1f56aaf4dde80..87bd039c77b9b 100644
---- a/drivers/hwmon/pmbus/mpq8785.c
-+++ b/drivers/hwmon/pmbus/mpq8785.c
-@@ -47,6 +47,33 @@ static int mpq8785_identify(struct i2c_client *client,
- 	return 0;
- };
+diff --git a/drivers/crypto/inside-secure/eip93/eip93-main.c b/drivers/crypto/inside-secure/eip93/eip93-main.c
+index 3cdc3308dcac8..b7fd9795062d4 100644
+--- a/drivers/crypto/inside-secure/eip93/eip93-main.c
++++ b/drivers/crypto/inside-secure/eip93/eip93-main.c
+@@ -77,11 +77,44 @@ inline void eip93_irq_clear(struct eip93_device *eip93, u32 mask)
+ 	__raw_writel(mask, eip93->base + EIP93_REG_INT_CLR);
+ }
  
-+static int mpq8785_read_byte_data(struct i2c_client *client, int page, int reg)
+-static void eip93_unregister_algs(unsigned int i)
++static int eip93_algo_is_supported(u32 alg_flags, u32 supported_algo_flags)
 +{
-+	int ret;
++	if ((IS_DES(alg_flags) || IS_3DES(alg_flags)) &&
++	    !(supported_algo_flags & EIP93_PE_OPTION_TDES))
++		return 0;
 +
-+	switch (reg) {
-+	case PMBUS_VOUT_MODE:
-+		ret = pmbus_read_byte_data(client, page, reg);
-+		if (ret < 0)
-+			return ret;
++	if (IS_AES(alg_flags) &&
++	    !(supported_algo_flags & EIP93_PE_OPTION_AES))
++		return 0;
 +
-+		if ((ret >> 5) == 1) {
-+			/*
-+			 * The MPQ8785 chip reports VOUT_MODE as VID mode, but the driver
-+			 * treats VID as direct mode. Without this, identification would fail
-+			 * due to mode mismatch.
-+			 * This override ensures the reported mode matches the driver
-+			 * configuration, allowing successful initialization.
-+			 */
-+			return PB_VOUT_MODE_DIRECT;
-+		}
++	if (IS_HASH_MD5(alg_flags) &&
++	    !(supported_algo_flags & EIP93_PE_OPTION_MD5))
++		return 0;
 +
-+		return ret;
-+	default:
-+		return -ENODATA;
-+	}
++	if (IS_HASH_SHA1(alg_flags) &&
++	    !(supported_algo_flags & EIP93_PE_OPTION_SHA_1))
++		return 0;
++
++	if (IS_HASH_SHA224(alg_flags) &&
++	    !(supported_algo_flags & EIP93_PE_OPTION_SHA_224))
++		return 0;
++
++	if (IS_HASH_SHA256(alg_flags) &&
++	    !(supported_algo_flags & EIP93_PE_OPTION_SHA_256))
++		return 0;
++
++	return 1;
 +}
 +
- static int mpm82504_read_word_data(struct i2c_client *client, int page,
- 				   int phase, int reg)
++static void eip93_unregister_algs(u32 supported_algo_flags, unsigned int i)
  {
-@@ -129,6 +156,7 @@ static int mpq8785_probe(struct i2c_client *client)
- 		break;
- 	case mpq8785:
- 		info->identify = mpq8785_identify;
-+		info->read_byte_data = mpq8785_read_byte_data;
- 		break;
- 	default:
- 		return -ENODEV;
+ 	unsigned int j;
+ 
+ 	for (j = 0; j < i; j++) {
++		if (!eip93_algo_is_supported(eip93_algs[j]->flags,
++					     supported_algo_flags))
++			continue;
++
+ 		switch (eip93_algs[j]->type) {
+ 		case EIP93_ALG_TYPE_SKCIPHER:
+ 			crypto_unregister_skcipher(&eip93_algs[j]->alg.skcipher);
+@@ -106,49 +139,27 @@ static int eip93_register_algs(struct eip93_device *eip93, u32 supported_algo_fl
+ 
+ 		eip93_algs[i]->eip93 = eip93;
+ 
+-		if ((IS_DES(alg_flags) || IS_3DES(alg_flags)) &&
+-		    !(supported_algo_flags & EIP93_PE_OPTION_TDES))
++		if (!eip93_algo_is_supported(alg_flags, supported_algo_flags))
+ 			continue;
+ 
+-		if (IS_AES(alg_flags)) {
+-			if (!(supported_algo_flags & EIP93_PE_OPTION_AES))
+-				continue;
++		if (IS_AES(alg_flags) && !IS_HMAC(alg_flags)) {
++			if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY128)
++				eip93_algs[i]->alg.skcipher.max_keysize =
++					AES_KEYSIZE_128;
+ 
+-			if (!IS_HMAC(alg_flags)) {
+-				if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY128)
+-					eip93_algs[i]->alg.skcipher.max_keysize =
+-						AES_KEYSIZE_128;
++			if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY192)
++				eip93_algs[i]->alg.skcipher.max_keysize =
++					AES_KEYSIZE_192;
+ 
+-				if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY192)
+-					eip93_algs[i]->alg.skcipher.max_keysize =
+-						AES_KEYSIZE_192;
++			if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY256)
++				eip93_algs[i]->alg.skcipher.max_keysize =
++					AES_KEYSIZE_256;
+ 
+-				if (supported_algo_flags & EIP93_PE_OPTION_AES_KEY256)
+-					eip93_algs[i]->alg.skcipher.max_keysize =
+-						AES_KEYSIZE_256;
+-
+-				if (IS_RFC3686(alg_flags))
+-					eip93_algs[i]->alg.skcipher.max_keysize +=
+-						CTR_RFC3686_NONCE_SIZE;
+-			}
++			if (IS_RFC3686(alg_flags))
++				eip93_algs[i]->alg.skcipher.max_keysize +=
++					CTR_RFC3686_NONCE_SIZE;
+ 		}
+ 
+-		if (IS_HASH_MD5(alg_flags) &&
+-		    !(supported_algo_flags & EIP93_PE_OPTION_MD5))
+-			continue;
+-
+-		if (IS_HASH_SHA1(alg_flags) &&
+-		    !(supported_algo_flags & EIP93_PE_OPTION_SHA_1))
+-			continue;
+-
+-		if (IS_HASH_SHA224(alg_flags) &&
+-		    !(supported_algo_flags & EIP93_PE_OPTION_SHA_224))
+-			continue;
+-
+-		if (IS_HASH_SHA256(alg_flags) &&
+-		    !(supported_algo_flags & EIP93_PE_OPTION_SHA_256))
+-			continue;
+-
+ 		switch (eip93_algs[i]->type) {
+ 		case EIP93_ALG_TYPE_SKCIPHER:
+ 			ret = crypto_register_skcipher(&eip93_algs[i]->alg.skcipher);
+@@ -167,7 +178,7 @@ static int eip93_register_algs(struct eip93_device *eip93, u32 supported_algo_fl
+ 	return 0;
+ 
+ fail:
+-	eip93_unregister_algs(i);
++	eip93_unregister_algs(supported_algo_flags, i);
+ 
+ 	return ret;
+ }
+@@ -469,8 +480,11 @@ static int eip93_crypto_probe(struct platform_device *pdev)
+ static void eip93_crypto_remove(struct platform_device *pdev)
+ {
+ 	struct eip93_device *eip93 = platform_get_drvdata(pdev);
++	u32 algo_flags;
++
++	algo_flags = readl(eip93->base + EIP93_REG_PE_OPTION_1);
+ 
+-	eip93_unregister_algs(ARRAY_SIZE(eip93_algs));
++	eip93_unregister_algs(algo_flags, ARRAY_SIZE(eip93_algs));
+ 	eip93_cleanup(eip93);
+ }
+ 
 -- 
 2.51.0
 
