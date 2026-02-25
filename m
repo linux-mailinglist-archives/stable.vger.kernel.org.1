@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-219002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218477-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBAqC31VnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-219002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:53 +0100
+	id wOrkH/ZRnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218477-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77F6190050
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA84F18F154
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2E24B30C4128
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2CD23051C81
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEB420C012;
-	Wed, 25 Feb 2026 01:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C731E2834;
+	Wed, 25 Feb 2026 01:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mY3447MI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhIyGgd6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECD8248886;
-	Wed, 25 Feb 2026 01:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551B01EB5E1;
+	Wed, 25 Feb 2026 01:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983912; cv=none; b=sfz5cjsxLqTz5x2lAcpl7FmjCh3fwanRRdUQ14guUSk1BYua5uIcHOGGOAVyOn1Q9Bw3/oLKCaenbghhk81kRQI98uu+Z+oQ6kVfajY5+L9rA71U+O0S0wU4VEKQKC8PjKgbm9HffPj7hLFbtpNaBqY03BPKwn9lgKldhWiLav8=
+	t=1771983305; cv=none; b=P6in8unwEXlSmRRDVeDvwmuiyee5M7n1r7FshMxwwz2cpfpwaMmEoGBel87G9JUWlFXseYfQmwQI6rkRCCqdmFxIce2VE0PE909SHHfQshgFFUvFjl5OKHVYd8XpbbaPyvnptOMxAb9nb+gqmiJRKyhj2ekJE8PnYufB5mFQuHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983912; c=relaxed/simple;
-	bh=mSzzWtLveh7GHqTIk9y+KV6qAEipi39rclCFfuam5Qk=;
+	s=arc-20240116; t=1771983305; c=relaxed/simple;
+	bh=FPC0zWTSEMdkQTXakk96cCYNxxu2RJO1Uwnfz9uCRJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sy4E3vpM2LiPF/zldmhQp9de/Pji28stkDyW6CAgPUjjCqyGUitLdnzEJNvdfRgsQbPevmvIY8qOfWfbSGhJzXXykmKdfCSvXk+WJUGjGQOkWvcZcK9oEJkH6XvCS03c5M9rw3n2L21HIXnw/tiGBWInV1qUS2lZwVNdntqgkq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mY3447MI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F391AC19423;
-	Wed, 25 Feb 2026 01:45:11 +0000 (UTC)
+	 MIME-Version; b=uEmf50uG+eJ0eYLTcjBMbuD2FwZcxSjrjJG3+ofFf2w3/rl0rwujTNmOkXbGi6xyEDLiV74DP7p3XqED6dV05xNGnQ9b8mdoiqy8NBH+P2/TeT9IZriuIuguNXzFYp2Oj5lIsl77u8D+KvHTmNGvHNyj+KeMrDjnUjOLFggfbaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhIyGgd6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F4DC116D0;
+	Wed, 25 Feb 2026 01:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983912;
-	bh=mSzzWtLveh7GHqTIk9y+KV6qAEipi39rclCFfuam5Qk=;
+	s=korg; t=1771983304;
+	bh=FPC0zWTSEMdkQTXakk96cCYNxxu2RJO1Uwnfz9uCRJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mY3447MIRrsyib1O7t8a1dUGvZroQD5OHbFk2hCGsH+IVRo5Oycn01D7mb1P/8YP1
-	 +z5FDQidYaxvGK7XcSzPalKeSVq0CdS7sWb2tOFf/O1ORI57ZuYQpBiIUOft0h04ZJ
-	 1IRDQ4NV4PJQoJMWL/tDdSmEehbR7CJNimqzCehs=
+	b=zhIyGgd6mgwEeoUZZkbIXXg47o5fQdcMA7/Bq195agMAQmfEKsgPE0QWvw9SzxQtU
+	 lYaSVZas9vSoCZPyUo8hGzTjxhdqb176jid2XRMwBKAIqaj5ksB0CZev64u4t+cbBc
+	 hzIE/HHn8rfgpbj2AwFdU73tCDSvgufKYICPE1Nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 178/641] accel/amdxdna: Fix race where send ring appears full due to delayed head update
-Date: Tue, 24 Feb 2026 17:18:24 -0800
-Message-ID: <20260225012353.342244531@linuxfoundation.org>
+Subject: [PATCH 6.19 396/781] PCI: dwc: Advertise dynamic inbound mapping support
+Date: Tue, 24 Feb 2026 17:18:25 -0800
+Message-ID: <20260225012409.416985108@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,119 +71,267 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218477-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219002-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: C77F6190050
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: DA84F18F154
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-[ Upstream commit 343f5683cfa443000904c88ce2e23656375fc51c ]
+[ Upstream commit c0f1506f63546308e894469ceb0f1fadbdf9d2f9 ]
 
-The firmware sends a response and interrupts the driver before advancing
-the mailbox send ring head pointer. As a result, the driver may observe
-the response and attempt to send a new request before the firmware has
-updated the head pointer. In this window, the send ring still appears
-full, causing the driver to incorrectly fail the send operation.
+The DesignWare EP core has supported updating the inbound iATU mapping
+for an already configured BAR (i.e. allowing pci_epc_set_bar() to be
+called again without a prior pci_epc_clear_bar()) since
+commit 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update
+inbound map address").
 
-This race can be triggered more easily in a multithreaded environment,
-leading to unexpected and spurious "send ring full" failures.
+Now that this capability is exposed via the dynamic_inbound_mapping EPC
+feature bit, set it for DWC-based EP glue drivers using a common
+initializer macro to avoid duplicating the same flag in each driver.
 
-To address this, poll the send ring head pointer for up to 100us before
-returning a full-ring condition. This allows the firmware time to update
-the head pointer.
+Note that pci-layerscape-ep.c is untouched. It currently constructs the
+feature struct dynamically in ls_pcie_ep_init(). Once converted to a
+static feature definition, it will use DWC_EPC_COMMON_FEATURES as well.
 
-Fixes: b87f920b9344 ("accel/amdxdna: Support hardware mailbox")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20251211045125.1724604-1-lizhi.hou@amd.com
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260124145012.2794108-4-den@valinux.co.jp
+Stable-dep-of: 72cb5ed2a5c6 ("PCI: dwc: ep: Add per-PF BAR and inbound ATU mapping support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/amdxdna_mailbox.c | 27 +++++++++++++++----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ drivers/pci/controller/dwc/pci-dra7xx.c           | 1 +
+ drivers/pci/controller/dwc/pci-imx6.c             | 3 +++
+ drivers/pci/controller/dwc/pci-keystone.c         | 1 +
+ drivers/pci/controller/dwc/pcie-artpec6.c         | 1 +
+ drivers/pci/controller/dwc/pcie-designware-plat.c | 1 +
+ drivers/pci/controller/dwc/pcie-designware.h      | 3 +++
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c     | 2 ++
+ drivers/pci/controller/dwc/pcie-keembay.c         | 1 +
+ drivers/pci/controller/dwc/pcie-qcom-ep.c         | 1 +
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c       | 1 +
+ drivers/pci/controller/dwc/pcie-stm32-ep.c        | 1 +
+ drivers/pci/controller/dwc/pcie-tegra194.c        | 1 +
+ drivers/pci/controller/dwc/pcie-uniphier-ep.c     | 2 ++
+ 13 files changed, 19 insertions(+)
 
-diff --git a/drivers/accel/amdxdna/amdxdna_mailbox.c b/drivers/accel/amdxdna/amdxdna_mailbox.c
-index 6634a4d5717ff..a80c77a478bff 100644
---- a/drivers/accel/amdxdna/amdxdna_mailbox.c
-+++ b/drivers/accel/amdxdna/amdxdna_mailbox.c
-@@ -206,26 +206,34 @@ mailbox_send_msg(struct mailbox_channel *mb_chann, struct mailbox_msg *mb_msg)
- 	u32 head, tail;
- 	u32 start_addr;
- 	u32 tmp_tail;
-+	int ret;
- 
- 	head = mailbox_get_headptr(mb_chann, CHAN_RES_X2I);
- 	tail = mb_chann->x2i_tail;
--	ringbuf_size = mailbox_get_ringbuf_size(mb_chann, CHAN_RES_X2I);
-+	ringbuf_size = mailbox_get_ringbuf_size(mb_chann, CHAN_RES_X2I) - sizeof(u32);
- 	start_addr = mb_chann->res[CHAN_RES_X2I].rb_start_addr;
- 	tmp_tail = tail + mb_msg->pkg_size;
- 
--	if (tail < head && tmp_tail >= head)
--		goto no_space;
--
--	if (tail >= head && (tmp_tail > ringbuf_size - sizeof(u32) &&
--			     mb_msg->pkg_size >= head))
--		goto no_space;
- 
--	if (tail >= head && tmp_tail > ringbuf_size - sizeof(u32)) {
-+check_again:
-+	if (tail >= head && tmp_tail > ringbuf_size) {
- 		write_addr = mb_chann->mb->res.ringbuf_base + start_addr + tail;
- 		writel(TOMBSTONE, write_addr);
- 
- 		/* tombstone is set. Write from the start of the ringbuf */
- 		tail = 0;
-+		tmp_tail = tail + mb_msg->pkg_size;
-+	}
-+
-+	if (tail < head && tmp_tail >= head) {
-+		ret = read_poll_timeout(mailbox_get_headptr, head,
-+					tmp_tail < head || tail >= head,
-+					1, 100, false, mb_chann, CHAN_RES_X2I);
-+		if (ret)
-+			return ret;
-+
-+		if (tail >= head)
-+			goto check_again;
- 	}
- 
- 	write_addr = mb_chann->mb->res.ringbuf_base + start_addr + tail;
-@@ -237,9 +245,6 @@ mailbox_send_msg(struct mailbox_channel *mb_chann, struct mailbox_msg *mb_msg)
- 			    mb_msg->pkg.header.id);
- 
- 	return 0;
--
--no_space:
--	return -ENOSPC;
+diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+index 01cfd9aeb0b81..d5d26229063f2 100644
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -424,6 +424,7 @@ static int dra7xx_pcie_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
  }
  
- static int
+ static const struct pci_epc_features dra7xx_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.linkup_notifier = true,
+ 	.msi_capable = true,
+ };
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 4668fc9648bff..f28e335bbbfaf 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1387,6 +1387,7 @@ static int imx_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+ }
+ 
+ static const struct pci_epc_features imx8m_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.msi_capable = true,
+ 	.bar[BAR_1] = { .type = BAR_RESERVED, },
+ 	.bar[BAR_3] = { .type = BAR_RESERVED, },
+@@ -1396,6 +1397,7 @@ static const struct pci_epc_features imx8m_pcie_epc_features = {
+ };
+ 
+ static const struct pci_epc_features imx8q_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.msi_capable = true,
+ 	.bar[BAR_1] = { .type = BAR_RESERVED, },
+ 	.bar[BAR_3] = { .type = BAR_RESERVED, },
+@@ -1416,6 +1418,7 @@ static const struct pci_epc_features imx8q_pcie_epc_features = {
+  * BAR5	| Enable   | 32-bit  | 64 KB   | Programmable Size
+  */
+ static const struct pci_epc_features imx95_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.msi_capable = true,
+ 	.bar[BAR_1] = { .type = BAR_FIXED, .fixed_size = SZ_64K, },
+ 	.align = SZ_4K,
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index f86d9111f863f..20fa4dadb82af 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -930,6 +930,7 @@ static int ks_pcie_am654_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+ }
+ 
+ static const struct pci_epc_features ks_pcie_am654_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.msi_capable = true,
+ 	.msix_capable = true,
+ 	.bar[BAR_0] = { .type = BAR_RESERVED, },
+diff --git a/drivers/pci/controller/dwc/pcie-artpec6.c b/drivers/pci/controller/dwc/pcie-artpec6.c
+index f4a136ee2daf3..e994b75986c34 100644
+--- a/drivers/pci/controller/dwc/pcie-artpec6.c
++++ b/drivers/pci/controller/dwc/pcie-artpec6.c
+@@ -370,6 +370,7 @@ static int artpec6_pcie_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+ }
+ 
+ static const struct pci_epc_features artpec6_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.msi_capable = true,
+ };
+ 
+diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
+index 12f41886c65d1..8530746ec5cbb 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-plat.c
++++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
+@@ -61,6 +61,7 @@ static int dw_plat_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+ }
+ 
+ static const struct pci_epc_features dw_plat_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.msi_capable = true,
+ 	.msix_capable = true,
+ };
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index 8a99a9c393f53..205fb55fca8c0 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -305,6 +305,9 @@
+ /* Default eDMA LLP memory size */
+ #define DMA_LLP_MEM_SIZE		PAGE_SIZE
+ 
++/* Common struct pci_epc_feature bits among DWC EP glue drivers */
++#define DWC_EPC_COMMON_FEATURES		.dynamic_inbound_mapping = true
++
+ struct dw_pcie;
+ struct dw_pcie_rp;
+ struct dw_pcie_ep;
+diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+index 2f865f67a10a7..bf8ec3ca6f689 100644
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -362,6 +362,7 @@ static int rockchip_pcie_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+ }
+ 
+ static const struct pci_epc_features rockchip_pcie_epc_features_rk3568 = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.linkup_notifier = true,
+ 	.msi_capable = true,
+ 	.msix_capable = true,
+@@ -382,6 +383,7 @@ static const struct pci_epc_features rockchip_pcie_epc_features_rk3568 = {
+  * BARs) would be overwritten, resulting in (all other BARs) no longer working.
+  */
+ static const struct pci_epc_features rockchip_pcie_epc_features_rk3588 = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.linkup_notifier = true,
+ 	.msi_capable = true,
+ 	.msix_capable = true,
+diff --git a/drivers/pci/controller/dwc/pcie-keembay.c b/drivers/pci/controller/dwc/pcie-keembay.c
+index 60e74ac782af3..2666a9c3d67e7 100644
+--- a/drivers/pci/controller/dwc/pcie-keembay.c
++++ b/drivers/pci/controller/dwc/pcie-keembay.c
+@@ -309,6 +309,7 @@ static int keembay_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+ }
+ 
+ static const struct pci_epc_features keembay_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.msi_capable		= true,
+ 	.msix_capable		= true,
+ 	.bar[BAR_0]		= { .only_64bit = true, },
+diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+index f1bc0ac81a928..5e990c7a5879f 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
++++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+@@ -820,6 +820,7 @@ static void qcom_pcie_ep_init_debugfs(struct qcom_pcie_ep *pcie_ep)
+ }
+ 
+ static const struct pci_epc_features qcom_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.linkup_notifier = true,
+ 	.msi_capable = true,
+ 	.align = SZ_4K,
+diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+index 80778917d2ddd..a6912e85e4ddc 100644
+--- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
++++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+@@ -420,6 +420,7 @@ static int rcar_gen4_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+ }
+ 
+ static const struct pci_epc_features rcar_gen4_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.msi_capable = true,
+ 	.bar[BAR_1] = { .type = BAR_RESERVED, },
+ 	.bar[BAR_3] = { .type = BAR_RESERVED, },
+diff --git a/drivers/pci/controller/dwc/pcie-stm32-ep.c b/drivers/pci/controller/dwc/pcie-stm32-ep.c
+index 2cecf32d2b0f3..c1944b40ce02f 100644
+--- a/drivers/pci/controller/dwc/pcie-stm32-ep.c
++++ b/drivers/pci/controller/dwc/pcie-stm32-ep.c
+@@ -70,6 +70,7 @@ static int stm32_pcie_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+ }
+ 
+ static const struct pci_epc_features stm32_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.msi_capable = true,
+ 	.align = SZ_64K,
+ };
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 0ddeef70726dd..06571d806ab31 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1988,6 +1988,7 @@ static int tegra_pcie_ep_raise_irq(struct dw_pcie_ep *ep, u8 func_no,
+ }
+ 
+ static const struct pci_epc_features tegra_pcie_epc_features = {
++	DWC_EPC_COMMON_FEATURES,
+ 	.linkup_notifier = true,
+ 	.msi_capable = true,
+ 	.bar[BAR_0] = { .type = BAR_FIXED, .fixed_size = SZ_1M,
+diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+index d6e73811216e2..d52753060970f 100644
+--- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
++++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
+@@ -420,6 +420,7 @@ static const struct uniphier_pcie_ep_soc_data uniphier_pro5_data = {
+ 	.init = uniphier_pcie_pro5_init_ep,
+ 	.wait = NULL,
+ 	.features = {
++		DWC_EPC_COMMON_FEATURES,
+ 		.linkup_notifier = false,
+ 		.msi_capable = true,
+ 		.msix_capable = false,
+@@ -438,6 +439,7 @@ static const struct uniphier_pcie_ep_soc_data uniphier_nx1_data = {
+ 	.init = uniphier_pcie_nx1_init_ep,
+ 	.wait = uniphier_pcie_nx1_wait_ep,
+ 	.features = {
++		DWC_EPC_COMMON_FEATURES,
+ 		.linkup_notifier = false,
+ 		.msi_capable = true,
+ 		.msix_capable = false,
 -- 
 2.51.0
 
