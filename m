@@ -1,224 +1,179 @@
-Return-Path: <stable+bounces-219151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOaZF9tknmlCVAQAu9opvQ
-	(envelope-from <stable+bounces-219151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:56:27 +0100
+	id kLRZKrJknmlCVAQAu9opvQ
+	(envelope-from <stable+bounces-219144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:55:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A2C19111C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:56:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 490931910E8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A24D330961D5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 320C5309344F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60C0299924;
-	Wed, 25 Feb 2026 02:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72E829A309;
+	Wed, 25 Feb 2026 02:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="F7FdF6+k"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="TKiSaPy3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m3278.qiye.163.com (mail-m3278.qiye.163.com [220.197.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEB7296BD1
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883AA298CC7;
+	Wed, 25 Feb 2026 02:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771988147; cv=none; b=oEqq6ejhOd5Eha8hpnMTDpLgf2ZOXgUGboDPkVFyfP3zikVTJFrO0p/NxB8QZpplkEnACdwyhtr6MPUJVKeezMi87MdWd6o6hcr8OdWVjAQ8iWzTUe+gSZKueqnAiQvtqqn4QLyjMxcF2sZ9Z/2923iEhzEWCH8iB6cNE4Hb7YA=
+	t=1771988124; cv=none; b=d0z+ryD1eYyQTh0JMbdSKRnXZlKxIs2vjXryJRE1sAZYmiNo66QGfrl47chnlHUO6fil66moxWXqZkVPDoePXFJVnR80h7PMhAZSikjR0c0W1w8kzA7xRYfUokon7LSVdCSx8ASkzM87NBw0ac9UN9XmP1S6G+NsA7T7+0UaYO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771988147; c=relaxed/simple;
-	bh=e+szBBS8wcV17NFtGmEkkIwh1FQqMwj7WjqS/I6jWIY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SU2vKeOj3PexpXqcYYCC0LjgJSP162LidF/JaD3cI2gI6U4U3ch9nyzD0Rbt4sHtg2Y0X9MynUEHbVyjWr2/U2uOy+Cuu1VevMgsooREHkC1PhOOLnFKkMNfmCinPfY7ewtdcDJrlolmIFU8xR6XF8F01o/xtCYju+aejPpGIMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=F7FdF6+k; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48371119eacso72344525e9.2
-        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 18:55:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1771988145; x=1772592945; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8RWYP/6Wd1cXUj1nyOSovpOWV1+OCRgcJOavJr/lHnM=;
-        b=F7FdF6+koCEtwEQGV3RYBXHh2Ga2duMIKPu1aU4UfzKLq8X5mqxRqQsi8KNMWd5LGn
-         +G0XQ33jSaIW72LRlIm3yygsb4MJL8EAlHUDLPrVFZT1i7+7bTZD7b8sbnC/b5ytITRk
-         QMg88Hd1hwczJh5fvY66ZwMNmO1g9P1WfZlpZHnQ05ImNV+bsTP8iw5L/BwLKrX5HUVB
-         XXsTIUOWM4mHWuclm7mvj6j5GTrHhy6ON6OS+gO4L3iekLHraeRGKvF/s1ZfAe1VozYh
-         m2EMF2NSaWSzLN6eQFykISJYhz19hdkEeXgjXi5/pFbLm4d/mY/2OY7kD22q1KEcXRq8
-         2B4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771988145; x=1772592945;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8RWYP/6Wd1cXUj1nyOSovpOWV1+OCRgcJOavJr/lHnM=;
-        b=GmkwM6vIznL2QjYWnncxe/H8RGaLkdnr/n0tkTI0lUt/NqXRl4bAwFkKrcUF7wCeAx
-         JaxBUjdEBIjIyJVRAYvsw0cndB/wXYYrKjBLN+sSNEWmiOaJ5WiO2lYZ+9JHjPpK3Bf8
-         lwV2V9QUkv6GN8oogS94Pt94JEv5ghTxqgWktaVY/Kj+AWM4Qi2lo+QkvtBVt6UoIVTA
-         yJBxwNGmmia/zUICcPtSGycSVf1UD0Nkdx9xZVLu5hxFLBHRZ8+6Ztn32MrTLdYYQb1R
-         e4X/3wKEOi9DbyYmuHzW73ij9a5QhhK/EF9e8/JF7EmIHRRi7oxEhXeYubu0zRatDSp5
-         0M1g==
-X-Gm-Message-State: AOJu0YzL9cia/2JTOtWDqdiOMJZqHJa70y15bAKUBDg7Noj0tJa+1oKS
-	RMccWN19YNbURvxDfGydvebf0sJDrSanHy465DFuIxhL88upXVfCObRCgJ1SvF44qQaqLKabTdQ
-	AFt+C
-X-Gm-Gg: ATEYQzzBxEl1RCYf3NXA0ESuU1FCN54KavIPWwfQUIc7VfET5AoIBC5nZCJCjcxUftL
-	F6HeT2SCZWFmqtnp73EaVKpMZ2GbLVH9WFUVXpKRsuD5rewAqSd6+56fZsVy9C20xj/6sDtb1tb
-	0q9qZtwngxxEBoxQoMLKHBNLJnpC/uq/mSJCSpCoxI/sxEAE1kGdy5PHUukaC7XOoj+bzPU6bPW
-	UX+SPVhH7/MK9jdB4d7cE0QhDSm3c3I79HxCXGG27axKAnrcXwayftDfJlnB4gR3gAAlCBMdqvK
-	Aw+Ms1suEUwYYOQaxYDQIAqzqE1KyINZ2219knaceIG+XHYn3w+ve2759PvA9fCJtFWP+uv3Eg/
-	KOj8qBPxyof1cVpAzJV+tR/TJhL8U8j2AMKMQp6eEtMsG9Zli7HmIqx+fvvWNkhv8pn7v5vt7iA
-	bWKSJzuW3/L5w143LnMsI27bUfFg==
-X-Received: by 2002:a05:600c:3147:b0:477:6374:6347 with SMTP id 5b1f17b1804b1-483a962e3e2mr221667955e9.22.1771988144603;
-        Tue, 24 Feb 2026 18:55:44 -0800 (PST)
-Received: from localhost ([2401:e180:8d80:eebd:d098:7649:31a9:9ad7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adae6c6674sm40278905ad.73.2026.02.24.18.55.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 18:55:44 -0800 (PST)
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Ricardo=20B=2E=20Marli=C3=A8re?= <rbm@suse.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH stable 6.6 11/11] selftests/bpf: Test bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) when transport_header is not set
-Date: Wed, 25 Feb 2026 10:54:49 +0800
-Message-ID: <20260225025454.17398-12-shung-hsi.yu@suse.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225025454.17398-1-shung-hsi.yu@suse.com>
-References: <20260225025454.17398-1-shung-hsi.yu@suse.com>
+	s=arc-20240116; t=1771988124; c=relaxed/simple;
+	bh=mIcZYpc8AT4o8gqIfnbh6XNvCFCHkFv3yuerLteQZn8=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=IeE6g8DxqL93ZfmnIGiJo5V7edlqle0MrXSDBmE4G/BOQw9qZ3ACCMHoNoNCQHyMAskFSHNSU/CzEqtMrvJ1UFcHCuGDlKPMX6gfJt8oboJrDprSkO2RePx+DN6+pwL3D1MMUPY7+AIwhg7vaBh5+kYyQLVKZykpsu1BNeqa5EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=TKiSaPy3; arc=none smtp.client-ip=220.197.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 34dd64091;
+	Wed, 25 Feb 2026 10:55:10 +0800 (GMT+08:00)
+From: Shawn Lin <shawn.lin@rock-chips.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Finley Xiao <finley.xiao@rock-chips.com>,
+	Frank Zhang <rmxpzlb@gmail.com>,
+	linux-pm@vger.kernel.org,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	linux-rockchip@lists.infradead.org,
+	stable@vger.kernel.org,
+	Chaoyi Chen <chaoyi.chen@rock-chips.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH v3] pmdomain: rockchip: Fix PD_VCODEC for RK3588
+Date: Wed, 25 Feb 2026 10:55:01 +0800
+Message-Id: <1771988101-49877-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
+X-HM-Tid: 0a9c92b8cc6f09cckunmfc928bb9ab3f2f
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQxgZTVZNGUsaGk1KGR9NTxpWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=TKiSaPy3NhGAYO2355MbeFtq5S/6Ra41Ad4uQsAdiMqL4m7io/5+I0fKG4R1j1VxTNszAQAMQz1N7MeExgk2qWnFB67tAS8TuJHLqyg/keJTq86ri1ucgYOoVpSJUH++UlAKn8ga/TIc+VtUZbwMi0DKU40Na7iKDOD7gQBS9nQ=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=w0DCebXqm5N2UL9SR5NHgl6Sni59xFPG3ie+LKXKsvw=;
+	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[rock-chips.com,none];
+	R_DKIM_ALLOW(-0.20)[rock-chips.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219151-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[rock-chips.com,gmail.com,vger.kernel.org,collabora.com,sntech.de,lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219144-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shawn.lin@rock-chips.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[rock-chips.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E5A2C19111C
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rock-chips.com:mid,rock-chips.com:dkim,rock-chips.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 490931910E8
 X-Rspamd-Action: no action
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From the RK3588 TRM Table 7-1 RK3588 Voltage Domain and Power Domain Summary,
+PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltages to
+be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support landed[1].
+The panic looks like below:
 
-commit 6cc73f35406cae1f053e984e8de40e6dc9681446 upstream.
+  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec0' on, val=0
+  rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec1' on, val=0
+  ...
+  Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
+  Workqueue: pm genpd_power_off_work_fn
+  Call trace:
+  show_stack+0x18/0x24 (C)
+  dump_stack_lvl+0x40/0x84
+  dump_stack+0x18/0x24
+  vpanic+0x1ec/0x4fc
+  vpanic+0x0/0x4fc
+  check_panic_on_warn+0x0/0x94
+  arm64_serror_panic+0x6c/0x78
+  do_serror+0xc4/0xcc
+  el1h_64_error_handler+0x3c/0x5c
+  el1h_64_error+0x6c/0x70
+  regmap_mmio_read32le+0x18/0x24 (P)
+  regmap_bus_reg_read+0xfc/0x130
+  regmap_read+0x188/0x1ac
+  regmap_read+0x54/0x78
+  rockchip_pd_power+0xcc/0x5f0
+  rockchip_pd_power_off+0x1c/0x4c
+  genpd_power_off+0x84/0x120
+  genpd_power_off+0x1b4/0x260
+  genpd_power_off_work_fn+0x38/0x58
+  process_scheduled_works+0x194/0x2c4
+  worker_thread+0x2ac/0x3d8
+  kthread+0x104/0x124
+  ret_from_fork+0x10/0x20
+  SMP: stopping secondary CPUs
+  Kernel Offset: disabled
+  CPU features: 0x3000000,000e0005,40230521,0400720b
+  Memory Limit: none
+  ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
 
-Add a test to check that bpf_skb_check_mtu(BPF_MTU_CHK_SEGS) is
-rejected (-EINVAL) if skb->transport_header is not set. The test
-needs to lower the MTU of the loopback device. Thus, take this
-opportunity to run the test in a netns by adding "ns_" to the test
-name. The "serial_" prefix can then be removed.
+Chaoyi pointed out the PD_VCODEC is the parent of PD_RKVDEC0/1 and PD_VENC0/1, so checking
+the PD_VCODEC is enough.
 
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20251112232331.1566074-2-martin.lau@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+[1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.casanova@collabora.com/
+Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
+Cc: stable@vger.kernel.org
+Suggested-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+
 ---
- .../selftests/bpf/prog_tests/check_mtu.c      | 23 ++++++++++++++++++-
- .../selftests/bpf/progs/test_check_mtu.c      | 12 ++++++++++
- 2 files changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/check_mtu.c b/tools/testing/selftests/bpf/prog_tests/check_mtu.c
-index 2a9a30650350..65b4512967e7 100644
---- a/tools/testing/selftests/bpf/prog_tests/check_mtu.c
-+++ b/tools/testing/selftests/bpf/prog_tests/check_mtu.c
-@@ -153,6 +153,26 @@ static void test_check_mtu_run_tc(struct test_check_mtu *skel,
- 	ASSERT_EQ(mtu_result, mtu_expect, "MTU-compare-user");
- }
- 
-+static void test_chk_segs_flag(struct test_check_mtu *skel, __u32 mtu)
-+{
-+	int err, prog_fd = bpf_program__fd(skel->progs.tc_chk_segs_flag);
-+	struct __sk_buff skb = {
-+		.gso_size = 10,
-+	};
-+	LIBBPF_OPTS(bpf_test_run_opts, topts,
-+		    .data_in = &pkt_v4,
-+		    .data_size_in = sizeof(pkt_v4),
-+		    .ctx_in = &skb,
-+		    .ctx_size_in = sizeof(skb),
-+	);
-+
-+	/* Lower the mtu to test the BPF_MTU_CHK_SEGS */
-+	SYS_NOFAIL("ip link set dev lo mtu 10");
-+	err = bpf_prog_test_run_opts(prog_fd, &topts);
-+	SYS_NOFAIL("ip link set dev lo mtu %u", mtu);
-+	ASSERT_OK(err, "test_run");
-+	ASSERT_EQ(topts.retval, BPF_OK, "retval");
-+}
- 
- static void test_check_mtu_tc(__u32 mtu, __u32 ifindex)
- {
-@@ -177,11 +197,12 @@ static void test_check_mtu_tc(__u32 mtu, __u32 ifindex)
- 	test_check_mtu_run_tc(skel, skel->progs.tc_minus_delta, mtu);
- 	test_check_mtu_run_tc(skel, skel->progs.tc_input_len, mtu);
- 	test_check_mtu_run_tc(skel, skel->progs.tc_input_len_exceed, mtu);
-+	test_chk_segs_flag(skel, mtu);
- cleanup:
- 	test_check_mtu__destroy(skel);
- }
- 
--void serial_test_check_mtu(void)
-+void test_ns_check_mtu(void)
- {
- 	int mtu_lo;
- 
-diff --git a/tools/testing/selftests/bpf/progs/test_check_mtu.c b/tools/testing/selftests/bpf/progs/test_check_mtu.c
-index 2ec1de11a3ae..7b6b2b342c1d 100644
---- a/tools/testing/selftests/bpf/progs/test_check_mtu.c
-+++ b/tools/testing/selftests/bpf/progs/test_check_mtu.c
-@@ -7,6 +7,7 @@
- 
- #include <stddef.h>
- #include <stdint.h>
-+#include <errno.h>
- 
- char _license[] SEC("license") = "GPL";
- 
-@@ -288,3 +289,14 @@ int tc_input_len_exceed(struct __sk_buff *ctx)
- 	global_bpf_mtu_xdp = mtu_len;
- 	return retval;
- }
-+
-+SEC("tc")
-+int tc_chk_segs_flag(struct __sk_buff *ctx)
-+{
-+	__u32 mtu_len = 0;
-+	int err;
-+
-+	err = bpf_check_mtu(ctx, GLOBAL_USER_IFINDEX, &mtu_len, 0, BPF_MTU_CHK_SEGS);
-+
-+	return err == -EINVAL ? BPF_OK : BPF_DROP;
-+}
+Changes in v3:
+- drop tags
+- rework it for just changing PD_VCODEC(chaoyi)
+
+Changes in v2:
+- collect tags
+- correct TRM section(Sebastian)
+
+ drivers/pmdomain/rockchip/pm-domains.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
+index 997e93c..44d3484 100644
+--- a/drivers/pmdomain/rockchip/pm-domains.c
++++ b/drivers/pmdomain/rockchip/pm-domains.c
+@@ -1311,7 +1311,7 @@ static const struct rockchip_domain_info rk3576_pm_domains[] = {
+ static const struct rockchip_domain_info rk3588_pm_domains[] = {
+ 	[RK3588_PD_GPU]		= DOMAIN_RK3588("gpu",     0x0, BIT(0),  0,       0x0, 0,       BIT(1),  0x0, BIT(0),  BIT(0),  false, true),
+ 	[RK3588_PD_NPU]		= DOMAIN_RK3588("npu",     0x0, BIT(1),  BIT(1),  0x0, 0,       0,       0x0, 0,       0,       false, true),
+-	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, false),
++	[RK3588_PD_VCODEC]	= DOMAIN_RK3588("vcodec",  0x0, BIT(2),  BIT(2),  0x0, 0,       0,       0x0, 0,       0,       false, true),
+ 	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
+ 	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
+ 	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
 -- 
-2.53.0
+2.7.4
 
 
