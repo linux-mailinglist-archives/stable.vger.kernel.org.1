@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218936-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UL3iGfFRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218369-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:45 +0100
+	id GCQFBb5WnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218936-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2647218F140
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DAB1903BD
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 587EB30A8574
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B85B31F62CF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24C11F03DE;
-	Wed, 25 Feb 2026 01:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63DAD274B3B;
+	Wed, 25 Feb 2026 01:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQVfOQJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fb8mmFWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BA31D5ABA;
-	Wed, 25 Feb 2026 01:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BE924677D;
+	Wed, 25 Feb 2026 01:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983179; cv=none; b=pT6LHJHk7LYvI4Uytwz3aBd9GEhRcG37mHUEs4bfu/3C1xt9eAmTnCxIr1bls9ckjpLWiiYqZU3201lisGx6uEakDHD+ox7nufML7z1zyx+k0tKWScvCIfWQTotxOhMPQhy1HugCVAkcn+X3ifbnwK6cBb+3gByW9z+HyI1hWPw=
+	t=1771983834; cv=none; b=QUDS0W3LFB2r9LEvn1y93yjx1jr4d04yIm6mG6Y9Chtgmg8dDHTa6byvhO2YJ5SzkEWPOzt6XYHIRzbayUJW9o/LqAgo40CureI9DrvDWaVO4oI8zAXgxVTgv67MmPh1br7psWURylhf55YfgPDM9/QUeEllrSw4YIypEbL59xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983179; c=relaxed/simple;
-	bh=REO3FOzALaW2l0U776uUpC9YbtrUnW02cPll9+zh+TA=;
+	s=arc-20240116; t=1771983834; c=relaxed/simple;
+	bh=09qKpXl0t+e4P0ebd0zTWm6cXaPOB32fz2frDjlnQwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VoNfxJLdSUWdgupufL2Ssh7XUWuTKkrmzrDZjfnP6F/6XiK0wry1/CAHs/ggLat0TWHhIN5VWs8TPNnVOQtsvaGDLNHDBZgs2DsTIhPFuq7s72KHrxa/aqtPdkKkYA4KYgGOnepCGqvhFuXcv71HzxVRJ7q0dN/QdEldNEWHj7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQVfOQJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63200C116D0;
-	Wed, 25 Feb 2026 01:32:59 +0000 (UTC)
+	 MIME-Version; b=YUqU0jmYkcHEXHfkV5Jm733LWWNMbnmBennUJhyj2w08VBfTAP0hco86DUAuhZHpoQQcz600xIrbLYU9dK2HW56uF90cKud2NqWgk4dzhOfQt86465w+w1/u2C9P5E92b2h5jMOz/QQrlh/h4WxNIAXf5Gf8+JAtrLRUwuuKKFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fb8mmFWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68BEC116D0;
+	Wed, 25 Feb 2026 01:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983179;
-	bh=REO3FOzALaW2l0U776uUpC9YbtrUnW02cPll9+zh+TA=;
+	s=korg; t=1771983834;
+	bh=09qKpXl0t+e4P0ebd0zTWm6cXaPOB32fz2frDjlnQwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQVfOQJVSTY6ChnSWdpBtu/gukeBuXK63QOkfmIgrmgGRyzNLUoM+vRgzNFnW+Txm
-	 n509kePVTEKufQJHquFKTUrvSMCQVS/mwk6rYd+5cHc6EZFsFSF6QujIyJ/ADBtL08
-	 IuLkqzuouOBennkt/XMvLoQbsv1RWYs2vI1QU2aw=
+	b=fb8mmFWXRuDzTuqSogaqgmdj6eKj3eCQZONh1bFcHfy4EABcls0RS6aaioL3jRR3v
+	 UoyOsmVWJ9gZcAF3HD58HlRkIzb+WIwgzleY+lkZkHB3EEeSiMpQfDk6IAaUaVkVtA
+	 6OQm99bGyTL7PVzAsvhKJv/hQwulUwGnVGINiU08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 330/781] dm: fix unlocked test for dm_suspended_md
-Date: Tue, 24 Feb 2026 17:17:19 -0800
-Message-ID: <20260225012407.797624252@linuxfoundation.org>
+Subject: [PATCH 6.18 114/641] media: pci: mg4b: Use IRQF_NO_THREAD
+Date: Tue, 24 Feb 2026 17:17:20 -0800
+Message-ID: <20260225012351.889478854@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218369-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218936-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,63 +90,46 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2647218F140
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email]
+X-Rspamd-Queue-Id: A2DAB1903BD
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 24c405fdbe215c45e57bba672cc42859038491ee ]
+[ Upstream commit ef92b98f5f6758a049898b53aa30476010db04fa ]
 
-The function dm_blk_report_zones tests if the device is suspended with
-the "dm_suspended_md" call. However, this function is called without
-holding any locks, so the device may be suspended just after it.
+The interrupt handler iio_trigger_generic_data_rdy_poll() will invoke other
+interrupt handlers and this supposed to happen from hard interrupt context.
 
-Move the call to dm_suspended_md after dm_get_live_table, so that the
-device can't be suspended after the suspended state was tested.
+Use IRQF_NO_THREAD to forbid forced-threading.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Fixes: 37f53a2c60d0 ("dm: fix dm_blk_report_zones")
-Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
+Fixes: 0ab13674a9bd1 ("media: pci: mgb4: Added Digiteq Automotive MGB4 driver")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260128095540.863589-21-bigeasy@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-zone.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/media/pci/mgb4/mgb4_trigger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-zone.c b/drivers/md/dm-zone.c
-index c95e417194b33..bc4e45862a220 100644
---- a/drivers/md/dm-zone.c
-+++ b/drivers/md/dm-zone.c
-@@ -60,11 +60,13 @@ int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
- 		 * Zone revalidation during __bind() is in progress, but this
- 		 * call is from a different process
- 		 */
--		if (dm_suspended_md(md))
--			return -EAGAIN;
--
- 		map = dm_get_live_table(md, &srcu_idx);
- 		put_table = true;
-+
-+		if (dm_suspended_md(md)) {
-+			ret = -EAGAIN;
-+			goto do_put_table;
-+		}
- 	} else {
- 		/* Zone revalidation during __bind() */
- 		map = zone_revalidate_map;
-@@ -79,6 +81,7 @@ int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
- 		ret = dm_blk_do_report_zones(md, map, nr_zones, &dm_args);
- 	}
+diff --git a/drivers/media/pci/mgb4/mgb4_trigger.c b/drivers/media/pci/mgb4/mgb4_trigger.c
+index d7dddc5c8728e..10c23f0c833d5 100644
+--- a/drivers/media/pci/mgb4/mgb4_trigger.c
++++ b/drivers/media/pci/mgb4/mgb4_trigger.c
+@@ -114,7 +114,7 @@ static int probe_trigger(struct iio_dev *indio_dev, int irq)
+ 	if (!st->trig)
+ 		return -ENOMEM;
  
-+do_put_table:
- 	if (put_table)
- 		dm_put_live_table(md, srcu_idx);
- 
+-	ret = request_irq(irq, &iio_trigger_generic_data_rdy_poll, 0,
++	ret = request_irq(irq, &iio_trigger_generic_data_rdy_poll, IRQF_NO_THREAD,
+ 			  "mgb4-trigger", st->trig);
+ 	if (ret)
+ 		goto error_free_trig;
 -- 
 2.51.0
 
