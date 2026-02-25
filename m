@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-218606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IAqHvdTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:23 +0100
+	id GD63M/FUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D142718FB09
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0781118FE67
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0333C31857A3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CF820310CAA6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C518C258EF9;
-	Wed, 25 Feb 2026 01:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045A8256C6C;
+	Wed, 25 Feb 2026 01:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiDXF/BA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wt7FCPKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D93256C84;
-	Wed, 25 Feb 2026 01:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCC91FE45D;
+	Wed, 25 Feb 2026 01:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983451; cv=none; b=BG+uzvZBgBUAPObwV+Qa11rzXxfAr6KgXJ5EGGC6GK1RYo8jRDikQkvoHfjhmrY8hwYEVtgaDa8G3DtF5Q3RKPr6NKkQ55fEDR8pVXbZ+gEPzTSZ0gq9//rCCXWSg+n4+n5lO1PNgYrNkk4mzeSgWoL7LRS+89b+1idQrmd2Cyc=
+	t=1771983459; cv=none; b=tJV/7ON2XrU4ZpeEUMvkYIzO4p+Jxgq4Wx2T9Jupe4MAtgvvdlVe0fLsO5842ikJtw4EK8P59TmDpP/foz0D63HWM+ZIBP9+NiEJtbdpvzCW3ZvQr+RdfATsvNqH6Q/IrtVeOffsm8ZCRMb//wiPi8vn/yWJpImTZl27EqipSYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983451; c=relaxed/simple;
-	bh=ZF9NiagRgAy3owfkIN8oFWM706ir+dqsN6hD1icYBNw=;
+	s=arc-20240116; t=1771983459; c=relaxed/simple;
+	bh=rjsbXpXpGIYdK613B3fHBKz2Dsuq7H5LAcG5teULoq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLbZsrMv6pBAw4KPx5mvDx8XtOSk3RysCFpP72XWT22RQPZUgUbpEyDfqPIss3myYJtwk09YB/WGR5rnwpoDwN5yGMTI45jsjqelh40L+r5TTJzNjP9wUlxo/k2CyoK8P+C0QBy3Wui1wLT9FPGnYWJSCoM6mWk76tr4qrRuwX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiDXF/BA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCC6C116D0;
-	Wed, 25 Feb 2026 01:37:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hxxm9r5+6YldyU8sDhUCNoJ00I2dS4YdH5WTXtqStFT56w7e/DxOe/UeYhrFSok75xQeaur9v6nVDzFXepVgjWgWsSKWP0jI4HM/FDsWJnpLA3IbK//5dI4cPuisJnjQSHiJ1xMLLRX37mp9v6rgZU1lcSTmJsa64OTMi0elDxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wt7FCPKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF38C116D0;
+	Wed, 25 Feb 2026 01:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983451;
-	bh=ZF9NiagRgAy3owfkIN8oFWM706ir+dqsN6hD1icYBNw=;
+	s=korg; t=1771983459;
+	bh=rjsbXpXpGIYdK613B3fHBKz2Dsuq7H5LAcG5teULoq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yiDXF/BAmCCxZ4MSvoSbq5eipmV0QcZ2c44WM0WGVKBxx/AqQ2y5qlJyUGtbNuHXL
-	 Yl1H7075n7/0r91Yq+BAg9N0t8KGHjuoaGhsGgGIWgBmVOWyCPM9YlEWthrEzd4Iuc
-	 lCCel391my9LRY0jZSrw6x3gXEntFxSkiFZrDUJ0=
+	b=wt7FCPKQSWUUygPuzrrfdZ8b4gXqvLdTka2HvmC6liJyVIJ2LQMdEXSax6pBDUuEm
+	 llABx1vvYlSbBdJG8giYboI31hMybI2BbnL9YbFqE0jqufNkItskuPium14RIYPR+i
+	 5x/NYNY5BwZLSFyTIdVbv8m4IGG30Wu8gDTpqJYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Brian Masney <bmasney@redhat.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 531/781] clk: microchip: core: remove duplicate determine_rate on pic32_sclk_ops
-Date: Tue, 24 Feb 2026 17:20:40 -0800
-Message-ID: <20260225012412.825969579@linuxfoundation.org>
+Subject: [PATCH 6.19 532/781] Input: adp5589 - remove a leftover header file
+Date: Tue, 24 Feb 2026 17:20:41 -0800
+Message-ID: <20260225012412.849570781@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -64,98 +65,250 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218606-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mleia.com,ideasonboard.com,analog.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218613-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,tuxon.dev:email]
-X-Rspamd-Queue-Id: D142718FB09
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,analog.com:email,mleia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ideasonboard.com:email]
+X-Rspamd-Queue-Id: 0781118FE67
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Vladimir Zapolskiy <vz@mleia.com>
 
-[ Upstream commit d93faac66dc04650d924f8f9584216d14f48fb14 ]
+[ Upstream commit f8a6e5eac701369afb5d69aba875dc5fec93003d ]
 
-pic32_sclk_ops previously had a sclk_round_rate() member, and this was
-recently converted over to sclk_determine_rate() with the help of a
-Coccinelle semantic patch. pic32_sclk_ops now has two conflicting
-determine_rate ops members.
+In commit 3bdbd0858df6 ("Input: adp5589: remove the driver") the last user
+of include/linux/input/adp5589.h was removed along with the whole driver,
+thus the header file can be also removed.
 
-Prior to the conversion, pic32_sclk_ops already had a determine_rate
-member that points to __clk_mux_determine_rate(). When both the
-round_rate() and determine_rate() ops are defined, the clk core only
-uses the determine_rate() op. Let's go ahead and drop the recently
-converted sclk_determine_rate() to match the previous functionality
-prior to the conversion.
-
-Fixes: e9f039c08cdc ("clk: microchip: core: convert from round_rate() to determine_rate()")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202511222115.uvHrP95A-lkp@intel.com/
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Link: https://lore.kernel.org/r/20251205-clk-microchip-fixes-v3-1-a02190705e47@redhat.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Vladimir Zapolskiy <vz@mleia.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Fixes: 3bdbd0858df6 ("Input: adp5589: remove the driver")
+Link: https://patch.msgid.link/20260113151140.3843753-1-vz@mleia.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/microchip/clk-core.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ include/linux/input/adp5589.h | 180 ----------------------------------
+ 1 file changed, 180 deletions(-)
+ delete mode 100644 include/linux/input/adp5589.h
 
-diff --git a/drivers/clk/microchip/clk-core.c b/drivers/clk/microchip/clk-core.c
-index b34348d491f3e..a0163441dfe5c 100644
---- a/drivers/clk/microchip/clk-core.c
-+++ b/drivers/clk/microchip/clk-core.c
-@@ -780,15 +780,6 @@ static unsigned long sclk_get_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	return parent_rate / div;
- }
- 
--static int sclk_determine_rate(struct clk_hw *hw,
--			       struct clk_rate_request *req)
--{
--	req->rate = calc_best_divided_rate(req->rate, req->best_parent_rate,
--					   SLEW_SYSDIV, 1);
+diff --git a/include/linux/input/adp5589.h b/include/linux/input/adp5589.h
+deleted file mode 100644
+index 0e4742c8c81e3..0000000000000
+--- a/include/linux/input/adp5589.h
++++ /dev/null
+@@ -1,180 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * Analog Devices ADP5589/ADP5585 I/O Expander and QWERTY Keypad Controller
+- *
+- * Copyright 2010-2011 Analog Devices Inc.
+- */
 -
--	return 0;
--}
+-#ifndef _ADP5589_H
+-#define _ADP5589_H
 -
- static int sclk_set_rate(struct clk_hw *hw,
- 			 unsigned long rate, unsigned long parent_rate)
- {
-@@ -912,7 +903,6 @@ static int sclk_init(struct clk_hw *hw)
- const struct clk_ops pic32_sclk_ops = {
- 	.get_parent	= sclk_get_parent,
- 	.set_parent	= sclk_set_parent,
--	.determine_rate = sclk_determine_rate,
- 	.set_rate	= sclk_set_rate,
- 	.recalc_rate	= sclk_get_rate,
- 	.init		= sclk_init,
+-/*
+- * ADP5589 specific GPI and Keymap defines
+- */
+-
+-#define ADP5589_KEYMAPSIZE	88
+-
+-#define ADP5589_GPI_PIN_ROW0 97
+-#define ADP5589_GPI_PIN_ROW1 98
+-#define ADP5589_GPI_PIN_ROW2 99
+-#define ADP5589_GPI_PIN_ROW3 100
+-#define ADP5589_GPI_PIN_ROW4 101
+-#define ADP5589_GPI_PIN_ROW5 102
+-#define ADP5589_GPI_PIN_ROW6 103
+-#define ADP5589_GPI_PIN_ROW7 104
+-#define ADP5589_GPI_PIN_COL0 105
+-#define ADP5589_GPI_PIN_COL1 106
+-#define ADP5589_GPI_PIN_COL2 107
+-#define ADP5589_GPI_PIN_COL3 108
+-#define ADP5589_GPI_PIN_COL4 109
+-#define ADP5589_GPI_PIN_COL5 110
+-#define ADP5589_GPI_PIN_COL6 111
+-#define ADP5589_GPI_PIN_COL7 112
+-#define ADP5589_GPI_PIN_COL8 113
+-#define ADP5589_GPI_PIN_COL9 114
+-#define ADP5589_GPI_PIN_COL10 115
+-#define GPI_LOGIC1 116
+-#define GPI_LOGIC2 117
+-
+-#define ADP5589_GPI_PIN_ROW_BASE ADP5589_GPI_PIN_ROW0
+-#define ADP5589_GPI_PIN_ROW_END ADP5589_GPI_PIN_ROW7
+-#define ADP5589_GPI_PIN_COL_BASE ADP5589_GPI_PIN_COL0
+-#define ADP5589_GPI_PIN_COL_END ADP5589_GPI_PIN_COL10
+-
+-#define ADP5589_GPI_PIN_BASE ADP5589_GPI_PIN_ROW_BASE
+-#define ADP5589_GPI_PIN_END ADP5589_GPI_PIN_COL_END
+-
+-#define ADP5589_GPIMAPSIZE_MAX (ADP5589_GPI_PIN_END - ADP5589_GPI_PIN_BASE + 1)
+-
+-/*
+- * ADP5585 specific GPI and Keymap defines
+- */
+-
+-#define ADP5585_KEYMAPSIZE	30
+-
+-#define ADP5585_GPI_PIN_ROW0 37
+-#define ADP5585_GPI_PIN_ROW1 38
+-#define ADP5585_GPI_PIN_ROW2 39
+-#define ADP5585_GPI_PIN_ROW3 40
+-#define ADP5585_GPI_PIN_ROW4 41
+-#define ADP5585_GPI_PIN_ROW5 42
+-#define ADP5585_GPI_PIN_COL0 43
+-#define ADP5585_GPI_PIN_COL1 44
+-#define ADP5585_GPI_PIN_COL2 45
+-#define ADP5585_GPI_PIN_COL3 46
+-#define ADP5585_GPI_PIN_COL4 47
+-#define GPI_LOGIC 48
+-
+-#define ADP5585_GPI_PIN_ROW_BASE ADP5585_GPI_PIN_ROW0
+-#define ADP5585_GPI_PIN_ROW_END ADP5585_GPI_PIN_ROW5
+-#define ADP5585_GPI_PIN_COL_BASE ADP5585_GPI_PIN_COL0
+-#define ADP5585_GPI_PIN_COL_END ADP5585_GPI_PIN_COL4
+-
+-#define ADP5585_GPI_PIN_BASE ADP5585_GPI_PIN_ROW_BASE
+-#define ADP5585_GPI_PIN_END ADP5585_GPI_PIN_COL_END
+-
+-#define ADP5585_GPIMAPSIZE_MAX (ADP5585_GPI_PIN_END - ADP5585_GPI_PIN_BASE + 1)
+-
+-struct adp5589_gpi_map {
+-	unsigned short pin;
+-	unsigned short sw_evt;
+-};
+-
+-/* scan_cycle_time */
+-#define ADP5589_SCAN_CYCLE_10ms		0
+-#define ADP5589_SCAN_CYCLE_20ms		1
+-#define ADP5589_SCAN_CYCLE_30ms		2
+-#define ADP5589_SCAN_CYCLE_40ms		3
+-
+-/* RESET_CFG */
+-#define RESET_PULSE_WIDTH_500us		0
+-#define RESET_PULSE_WIDTH_1ms		1
+-#define RESET_PULSE_WIDTH_2ms		2
+-#define RESET_PULSE_WIDTH_10ms		3
+-
+-#define RESET_TRIG_TIME_0ms		(0 << 2)
+-#define RESET_TRIG_TIME_1000ms		(1 << 2)
+-#define RESET_TRIG_TIME_1500ms		(2 << 2)
+-#define RESET_TRIG_TIME_2000ms		(3 << 2)
+-#define RESET_TRIG_TIME_2500ms		(4 << 2)
+-#define RESET_TRIG_TIME_3000ms		(5 << 2)
+-#define RESET_TRIG_TIME_3500ms		(6 << 2)
+-#define RESET_TRIG_TIME_4000ms		(7 << 2)
+-
+-#define RESET_PASSTHRU_EN		(1 << 5)
+-#define RESET1_POL_HIGH			(1 << 6)
+-#define RESET1_POL_LOW			(0 << 6)
+-#define RESET2_POL_HIGH			(1 << 7)
+-#define RESET2_POL_LOW			(0 << 7)
+-
+-/* ADP5589 Mask Bits:
+- * C C C C C C C C C C C | R R R R R R R R
+- * 1 9 8 7 6 5 4 3 2 1 0 | 7 6 5 4 3 2 1 0
+- * 0
+- * ---------------- BIT ------------------
+- * 1 1 1 1 1 1 1 1 1 0 0 | 0 0 0 0 0 0 0 0
+- * 8 7 6 5 4 3 2 1 0 9 8 | 7 6 5 4 3 2 1 0
+- */
+-
+-#define ADP_ROW(x)	(1 << (x))
+-#define ADP_COL(x)	(1 << (x + 8))
+-#define ADP5589_ROW_MASK		0xFF
+-#define ADP5589_COL_MASK		0xFF
+-#define ADP5589_COL_SHIFT		8
+-#define ADP5589_MAX_ROW_NUM		7
+-#define ADP5589_MAX_COL_NUM		10
+-
+-/* ADP5585 Mask Bits:
+- * C C C C C | R R R R R R
+- * 4 3 2 1 0 | 5 4 3 2 1 0
+- *
+- * ---- BIT -- -----------
+- * 1 0 0 0 0 | 0 0 0 0 0 0
+- * 0 9 8 7 6 | 5 4 3 2 1 0
+- */
+-
+-#define ADP5585_ROW_MASK		0x3F
+-#define ADP5585_COL_MASK		0x1F
+-#define ADP5585_ROW_SHIFT		0
+-#define ADP5585_COL_SHIFT		6
+-#define ADP5585_MAX_ROW_NUM		5
+-#define ADP5585_MAX_COL_NUM		4
+-
+-#define ADP5585_ROW(x)	(1 << ((x) & ADP5585_ROW_MASK))
+-#define ADP5585_COL(x)	(1 << (((x) & ADP5585_COL_MASK) + ADP5585_COL_SHIFT))
+-
+-/* Put one of these structures in i2c_board_info platform_data */
+-
+-struct adp5589_kpad_platform_data {
+-	unsigned keypad_en_mask;	/* Keypad (Rows/Columns) enable mask */
+-	const unsigned short *keymap;	/* Pointer to keymap */
+-	unsigned short keymapsize;	/* Keymap size */
+-	bool repeat;			/* Enable key repeat */
+-	bool en_keylock;		/* Enable key lock feature (ADP5589 only)*/
+-	unsigned char unlock_key1;	/* Unlock Key 1 (ADP5589 only) */
+-	unsigned char unlock_key2;	/* Unlock Key 2 (ADP5589 only) */
+-	unsigned char unlock_timer;	/* Time in seconds [0..7] between the two unlock keys 0=disable (ADP5589 only) */
+-	unsigned char scan_cycle_time;	/* Time between consecutive scan cycles */
+-	unsigned char reset_cfg;	/* Reset config */
+-	unsigned short reset1_key_1;	/* Reset Key 1 */
+-	unsigned short reset1_key_2;	/* Reset Key 2 */
+-	unsigned short reset1_key_3;	/* Reset Key 3 */
+-	unsigned short reset2_key_1;	/* Reset Key 1 */
+-	unsigned short reset2_key_2;	/* Reset Key 2 */
+-	unsigned debounce_dis_mask;	/* Disable debounce mask */
+-	unsigned pull_dis_mask;		/* Disable all pull resistors mask */
+-	unsigned pullup_en_100k;	/* Pull-Up 100k Enable Mask */
+-	unsigned pullup_en_300k;	/* Pull-Up 300k Enable Mask */
+-	unsigned pulldown_en_300k;	/* Pull-Down 300k Enable Mask */
+-	const struct adp5589_gpi_map *gpimap;
+-	unsigned short gpimapsize;
+-	const struct adp5589_gpio_platform_data *gpio_data;
+-};
+-
+-struct i2c_client; /* forward declaration */
+-
+-struct adp5589_gpio_platform_data {
+-	int	gpio_start;	/* GPIO Chip base # */
+-};
+-
+-#endif
 -- 
 2.51.0
 
