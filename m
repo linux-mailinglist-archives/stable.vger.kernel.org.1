@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HRqHShWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218874-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:44 +0100
+	id QPkzKTBTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09151901DA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:53:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD2418F70F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A82C932B1FF9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 034FD31927F0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710D6262FC0;
-	Wed, 25 Feb 2026 01:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF001F03DE;
+	Wed, 25 Feb 2026 01:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHRsKCzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AuE5CDc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FA5274B3B;
-	Wed, 25 Feb 2026 01:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739F51D5ABA;
+	Wed, 25 Feb 2026 01:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983761; cv=none; b=UO7OuuKW1vSapEEn+tVX9DgtxatAesx33Jj/K7YUptv8VDvA/lhc6nbnRrydBJ5FZL/mfSO40PkoW/z207IAh3DYmNqKh5kM0/YM8qeZe+PrWZ84gwt4PjRqNvksUjKIkMXU+kQ2HoGI/5uKP0ehSNbdj6E1zm5SWAV7ALOGHPM=
+	t=1771983109; cv=none; b=e19dMlx7qcq4QC5Bzte8GTV8kAXr4n5TNgxokaf8mNw0UlKQXqR2zvGxzrl7k9AxzUYE2DlpMPt14I6dTGsHtMOBFFrYzSXJRsY/xbCIAxUy7oNgDuXbDstlAPgDL2pKGOragljT1DI8R7bGf0+dDzz0SHEh6zNclkfTT2qR2AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983761; c=relaxed/simple;
-	bh=Fkn1YdcWgDpI6wXsWFV2sBuAwnThAFfRl1ZUMyhQuk8=;
+	s=arc-20240116; t=1771983109; c=relaxed/simple;
+	bh=WKsKFADZD4lT0c7Cf5S0ul93jpyNdvA03jgJkWMyIyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nAMmzB5ENAR4dBYsujX70bTtKgldrsPeaUMl79gBHuedGgAQ9B8B6nwCLjL7naMV8GV24d+jghFUsPNFthiskPTuCh3bLaAKcSFHoShrKNFq5ROCyJv9fY8ExubZStCNdSu0uwXyDAAw2yfmg3Sj3i7iiYevyRCZkLSXRbYAupo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHRsKCzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1347C116D0;
-	Wed, 25 Feb 2026 01:42:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AbbNL9yj+cIZ924n8EmjVK/d5HTPcNtlrWcBBS1rL7aNlGTfFAjjcXVHElzTjTwGplwY6ZlyDY12ZTb05qHTdcb/MGm5nR7yHGupSOAD7iuIZsg7ywjtPPJsBzMx36iK+5sFO+n4jVVYX4wYoJ8Cg0EK5lPGeLDH0Zgdogeppjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AuE5CDc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F205DC116D0;
+	Wed, 25 Feb 2026 01:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983761;
-	bh=Fkn1YdcWgDpI6wXsWFV2sBuAwnThAFfRl1ZUMyhQuk8=;
+	s=korg; t=1771983109;
+	bh=WKsKFADZD4lT0c7Cf5S0ul93jpyNdvA03jgJkWMyIyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHRsKCzTvWVfmoEguUXfgab/omHHahr+EqVWoGfGqf0hlDs/6pBgz42uGd2BRKnWN
-	 yp5xm6Zfz9yYuMp1Kokgtm4bqSs1ryhVvM/L4o+ehv6A3bTkPdl9p8IGX1cNSfar93
-	 THwW8ToQxJwv7PVKTM29CA9A7PcUUtRKv04+yvrQ=
+	b=2AuE5CDcR7NRpLX32zt0y7nJRz5BkEBoHRMxqWWO09JWn+51QxohQ81p+FroJrkBu
+	 2fS1qiOeg9rY/N+aWA2W9L7zUX32dYbsBGV2KFoiEbEHKIKnw8lHnr6TKYS7Lou/xO
+	 cJ+h1b3LwhfeX3X7GCyjS5zHHfCGcftU9MFVy1Mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Dingwall <james@dingwall.me.uk>,
-	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-	Juergen Gross <jgross@suse.com>,
+	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 053/641] Partial revert "x86/xen: fix balloon target initialization for PVH dom0"
+Subject: [PATCH 6.19 270/781] drm/buddy: release free_trees array on buddy mm teardown
 Date: Tue, 24 Feb 2026 17:16:19 -0800
-Message-ID: <20260225012350.323319840@linuxfoundation.org>
+Message-ID: <20260225012406.320419138@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,12 +71,12 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218874-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218307-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -87,147 +88,71 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,dingwall.me.uk:email,citrix.com:email]
-X-Rspamd-Queue-Id: B09151901DA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1CD2418F70F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Pau Monne <roger.pau@citrix.com>
+From: Michał Grzelak <michal.grzelak@intel.com>
 
-[ Upstream commit 0949c646d64697428ff6257d52efa5093566868d ]
+[ Upstream commit 7d0507772406e129329983b8b807e5b499bd74fd ]
 
-This partially reverts commit 87af633689ce16ddb166c80f32b120e50b1295de so
-the current memory target for PV guests is still fetched from
-start_info->nr_pages, which matches exactly what the toolstack sets the
-initial memory target to.
+During initialization of DRM buddy memory manager at drm_buddy_init,
+mm->free_trees array is allocated for both clear and dirty RB trees.
+During cleanup happening at drm_buddy_fini it is never freed, leading to
+following memory leaks observed on xe module load & unload cycles:
 
-Using get_num_physpages() is possible on PV also, but needs adjusting to
-take into account the ISA hole and the PFN at 0 not considered usable
-memory despite being populated, and hence would need extra adjustments.
-Instead of carrying those extra adjustments switch back to the previous
-code.  That leaves Linux with a difference in how current memory target is
-obtained for HVM vs PV, but that's better than adding extra logic just for
-PV.
+    kmemleak_alloc+0x4a/0x90
+    __kmalloc_cache_noprof+0x488/0x800
+    drm_buddy_init+0xc2/0x330 [drm_buddy]
+    __xe_ttm_vram_mgr_init+0xc3/0x190 [xe]
+    xe_ttm_stolen_mgr_init+0xf5/0x9d0 [xe]
+    xe_device_probe+0x326/0x9e0 [xe]
+    xe_pci_probe+0x39a/0x610 [xe]
+    local_pci_probe+0x47/0xb0
+    pci_device_probe+0xf3/0x260
+    really_probe+0xf1/0x3c0
+    __driver_probe_device+0x8c/0x180
+    driver_probe_device+0x24/0xd0
+    __driver_attach+0x10f/0x220
+    bus_for_each_dev+0x7f/0xe0
+    driver_attach+0x1e/0x30
+    bus_add_driver+0x151/0x290
 
-However if switching to start_info->nr_pages for PV domains we need to
-differentiate between released pages (freed back to the hypervisor) as
-opposed to pages in the physmap which are not populated to start with.
-Introduce a new xen_unpopulated_pages to account for papges that have
-never been populated, and hence in the PV case don't need subtracting.
+Deallocate array for free trees when cleaning up buddy memory manager
+in the same way as if going through out_free_tree label.
 
-Fixes: 87af633689ce ("x86/xen: fix balloon target initialization for PVH dom0")
-Reported-by: James Dingwall <james@dingwall.me.uk>
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20260128110510.46425-2-roger.pau@citrix.com>
+Fixes: d4cd665c98c1 ("drm/buddy: Separate clear and dirty free block trees")
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Link: https://patch.msgid.link/20251208102714.4008260-2-michal.grzelak@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/enlighten.c        |  2 +-
- drivers/xen/balloon.c           | 19 +++++++++++++++----
- drivers/xen/unpopulated-alloc.c |  3 +++
- include/xen/xen.h               |  2 ++
- 4 files changed, 21 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_buddy.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
-index 53282dc7d5ac5..23b91bf9b6630 100644
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -470,7 +470,7 @@ int __init arch_xen_unpopulated_init(struct resource **res)
- 		 * driver to know how much of the physmap is unpopulated and
- 		 * set an accurate initial memory target.
- 		 */
--		xen_released_pages += xen_extra_mem[i].n_pfns;
-+		xen_unpopulated_pages += xen_extra_mem[i].n_pfns;
- 		/* Zero so region is not also added to the balloon driver. */
- 		xen_extra_mem[i].n_pfns = 0;
- 	}
-diff --git a/drivers/xen/balloon.c b/drivers/xen/balloon.c
-index 49c3f99263943..8c44a25a7d2b9 100644
---- a/drivers/xen/balloon.c
-+++ b/drivers/xen/balloon.c
-@@ -724,6 +724,7 @@ static int __init balloon_add_regions(void)
- static int __init balloon_init(void)
- {
- 	struct task_struct *task;
-+	unsigned long current_pages;
- 	int rc;
+diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+index 2f279b46bd2cf..8308116058cc1 100644
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -420,6 +420,7 @@ void drm_buddy_fini(struct drm_buddy *mm)
  
- 	if (!xen_domain())
-@@ -731,12 +732,18 @@ static int __init balloon_init(void)
- 
- 	pr_info("Initialising balloon driver\n");
- 
--	if (xen_released_pages >= get_num_physpages()) {
--		WARN(1, "Released pages underflow current target");
--		return -ERANGE;
-+	if (xen_pv_domain()) {
-+		if (xen_released_pages >= xen_start_info->nr_pages)
-+			goto underflow;
-+		current_pages = min(xen_start_info->nr_pages -
-+		                    xen_released_pages, max_pfn);
-+	} else {
-+		if (xen_unpopulated_pages >= get_num_physpages())
-+			goto underflow;
-+		current_pages = get_num_physpages() - xen_unpopulated_pages;
- 	}
- 
--	balloon_stats.current_pages = get_num_physpages() - xen_released_pages;
-+	balloon_stats.current_pages = current_pages;
- 	balloon_stats.target_pages  = balloon_stats.current_pages;
- 	balloon_stats.balloon_low   = 0;
- 	balloon_stats.balloon_high  = 0;
-@@ -767,6 +774,10 @@ static int __init balloon_init(void)
- 	xen_balloon_init();
- 
- 	return 0;
-+
-+ underflow:
-+	WARN(1, "Released pages underflow current target");
-+	return -ERANGE;
+ 	for_each_free_tree(i)
+ 		kfree(mm->free_trees[i]);
++	kfree(mm->free_trees);
+ 	kfree(mm->roots);
  }
- subsys_initcall(balloon_init);
- 
-diff --git a/drivers/xen/unpopulated-alloc.c b/drivers/xen/unpopulated-alloc.c
-index d6fc2aefe2646..1dc0b495c8e59 100644
---- a/drivers/xen/unpopulated-alloc.c
-+++ b/drivers/xen/unpopulated-alloc.c
-@@ -18,6 +18,9 @@ static unsigned int list_count;
- 
- static struct resource *target_resource;
- 
-+/* Pages to subtract from the memory count when setting balloon target. */
-+unsigned long xen_unpopulated_pages __initdata;
-+
- /*
-  * If arch is not happy with system "iomem_resource" being used for
-  * the region allocation it can provide it's own view by creating specific
-diff --git a/include/xen/xen.h b/include/xen/xen.h
-index 61854e3f28377..f280c5dcf9236 100644
---- a/include/xen/xen.h
-+++ b/include/xen/xen.h
-@@ -69,11 +69,13 @@ extern u64 xen_saved_max_mem_size;
- #endif
- 
- #ifdef CONFIG_XEN_UNPOPULATED_ALLOC
-+extern unsigned long xen_unpopulated_pages;
- int xen_alloc_unpopulated_pages(unsigned int nr_pages, struct page **pages);
- void xen_free_unpopulated_pages(unsigned int nr_pages, struct page **pages);
- #include <linux/ioport.h>
- int arch_xen_unpopulated_init(struct resource **res);
- #else
-+#define xen_unpopulated_pages 0UL
- #include <xen/balloon.h>
- static inline int xen_alloc_unpopulated_pages(unsigned int nr_pages,
- 		struct page **pages)
+ EXPORT_SYMBOL(drm_buddy_fini);
 -- 
 2.51.0
 
