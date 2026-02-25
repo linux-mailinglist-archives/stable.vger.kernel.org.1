@@ -1,65 +1,89 @@
-Return-Path: <stable+bounces-219617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAruKcX4nmm+YAQAu9opvQ
-	(envelope-from <stable+bounces-219617-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:27:33 +0100
+	id CI95OvP4nmm+YAQAu9opvQ
+	(envelope-from <stable+bounces-219618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:28:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1318A1980ED
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:27:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F5A198119
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 14:28:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D8BC31170AE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 13:23:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5AD8130312F4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 13:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228183AE701;
-	Wed, 25 Feb 2026 13:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF3F3B8D5C;
+	Wed, 25 Feb 2026 13:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fg3y9IDW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OZRRRZp2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB9434F49A
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 13:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC5E3B8D40
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 13:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772025788; cv=none; b=R/w4mMADdHcYli3zOfQh4+gCXGsLc7/58cHsT1VJ8sILGw9/Sad71b5fewWAsBqCYp4T46bR4qIu9MfApbsvO1W7p50Wc1GGQ15uY+YDOyBcKHKsioB2uBPzZAtO4dtMxn+Kbt2l4FZ/SnZYBTvOxL9e6vh4YblbIYU/xNpG9mU=
+	t=1772026095; cv=none; b=cZEH/oFdX84p5Ud0UZf/FKHiGkgaCWT7KliPfBPv0+avmLzvH7K9KF6UoLQDSpAZo316kYnjPzg9WdaCsgcK+TuDi70COYYN8ry7ghG8i9G0/t0sbfjKM+tOYr3QmfLWUCZDnB5kWxEQsHyJI1v5HB47faKvOEUSx+MqacQHuzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772025788; c=relaxed/simple;
-	bh=gas9SNM01vo3RAfgyS0Fy9VKRumOsWgj/U008J6kpzs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTTEUnnhLeBnfMhPrTZaX3rbIun9czFUhNrPJdoOFVmcfeEaLcb+4sq4OunKDQEyyLzJnMZzNoJg/6FCBIFPUK4V9Hejf0qWXJIKlp8m/XfKygNA6zTBO4FazI+h+Beo9vJu6UOsyTiX6WJYSeZU3OE6kRD+jZTlQW/3W5tanVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fg3y9IDW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD18BC2BC87;
-	Wed, 25 Feb 2026 13:23:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772025788;
-	bh=gas9SNM01vo3RAfgyS0Fy9VKRumOsWgj/U008J6kpzs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fg3y9IDWhwwpAHT1FllfsQUA0grKTl8xAn+qTQk93IpFvo1sBJH2PeswPSVY9isIH
-	 fAz2Wsr1n09fxC+iAyPkGZXe8SG+Jfyg7N6dPU35lTnF9ZfronFUWEa3JgcuFVOtC2
-	 yXsVE0EX4lBQc0QM4tMYJlwJp67TyaYEXb3Ws5RxB8xetuTqwCuYZJXQZO+IajOIA1
-	 W9HyCySAsYX4pRTPM+e73sgLpI2xrm76CIccK0nN+mp9ajcH1JdqaK4vOKp7z5PBlT
-	 DCpGfyVXeDTQDrrxyLzAPUs57KapNC0bOT4id1q1XgaBIk796dGC59rjeQl7N0BtMG
-	 xbBzUBzs2faWg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Yongjian Sun <sunyongjian1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 6/6] ext4: fix e4b bitmap inconsistency reports
-Date: Wed, 25 Feb 2026 08:23:02 -0500
-Message-ID: <20260225132302.222887-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260225132302.222887-1-sashal@kernel.org>
-References: <2026022401-arose-calm-3e73@gregkh>
- <20260225132302.222887-1-sashal@kernel.org>
+	s=arc-20240116; t=1772026095; c=relaxed/simple;
+	bh=xRRjy3veOaCbWL+KPQCuz6nqQMwyYwm747YQfaGDlEw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fFbyYkah6lDbAyATVdOdzdhGNnt41GqrRXpCTIdg1g/Z1Zr+bpikn95noCTN4V1ELb55fMZLUgSczKVuwF1WMJ2WUOdLpTlKARkZuMhPQlhmyBdn8f+bAE9YCgiqesbrVN7c+mzyQPv6fgkmJSv6yA5+a32t4T8mKsNo39Oii/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OZRRRZp2; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ad21f437eeso6934645ad.0
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 05:28:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772026094; x=1772630894; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X4gY9ENXOOQCpnDpsjGMdFNmPdFyocZAizDByCQ4qGg=;
+        b=OZRRRZp2gFfzT7yi/jgdGgT4gJXmqsHJfdzQ/QqCXhvup5f/XYROVpVWfZWUfSJFPh
+         3f1I3ZFIt1aW7GY+eaWIw2tUUe3CG1+OJIMA+Iewp5NuaIBf69cES+fNv7CnNIpy1jYl
+         EpYRXW1XIP1PRTUpi2YCSa3kaxyAuyL40OaNld8kY4ao2oe1KG3maDQbVrw85eDcVZCk
+         uQTTG5vjXBq0vLCHxslz6vi5oLQqp4Rya7X3zrEnx52wMKbs1iKepM9UY4ad093II50Q
+         I0D95KJg/eIModQZwDhgnD+LenZwrUe+35XnDzTgabaDYQgO6bfFNwP2dPHOnEEXhNMK
+         8VsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772026094; x=1772630894;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X4gY9ENXOOQCpnDpsjGMdFNmPdFyocZAizDByCQ4qGg=;
+        b=Y7dCENvltIWIJWF3f74iniTOEBQ4Eof13oJOZ5/JUDda/XsdbdN2jz2Jgrdn7Gbt3M
+         q01s6GS5msH3Mez7eYwjuTSFfqp0uZBwRaMQMv1FTBtWldpAWHs3w1htI3fRDD47qa9h
+         hteE6bLGoq1ZB6biD8V+fNsiyVB3p+0lIECQsBWkKWX+AqU+EJYopUkUgFHUiwepw/DR
+         8EFwsIlbcYUFDEJf8eVAWRHkqSmcxjV+ZHaSmCgQF0TSqB9IiQm0/EWqbZ35hL1+zzM3
+         +UuwwaaDSCYkyejph4L63J9Y8n1E4b3ICgvzh+uzm/R9HZYR1aHUiGvpXsaZA6iW8to+
+         LmhA==
+X-Forwarded-Encrypted: i=1; AJvYcCV7pFggq7Dl6QOCjfBqZXUz8AV7NHG7A2Hydo62O/1EtI0qHnAROIDiZNfzV6q1f9tR1k169p8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yztwbsm0JorwtSMhkPu8dx2dzsywLTbyNoAAxYfiaRJhT0fPa+S
+	EQbDZxlWIPGS5KH2m5VeamMKDS2K65Cm9YZ1Q6YehIALt74ZOQL4alFR
+X-Gm-Gg: ATEYQzx/iYnuiIz8Zp5l8NH4X9ViPorXB3pmifRV6VGNwaqBfl0YBTU2/AigcDQWDPR
+	cJn4u7AG++HhGoj0wCJ3tQ6sD4qWAyieINPFTI0c73GbWRTUKiuH4k4CYaPQEFCWz3KVwyUd+EP
+	t3bHzIDRpv7iPtU+eTu5SOQq73XB9kXdtAQjtJuHR/J2pPhuaIHRBLY7XIMpTR0p7fqRC1R0p4I
+	hL7zDVjrB9EC2rfd8UIVsDQbuYO0AMG0DEsyAxB0KJWhVyS1n2lTJpuiG4wHN78xUTiPvas64aO
+	pa92eDI8dH9+3ojVbiK6ef4W3/VHC18IdkYVSJTDZMJ2MbcOrH7i5hZTTu0wh66amprvt5I4CdI
+	7QzrYgzrJLAt7AHTFpkEXM44l249lQnBlmMzSBusbeYoeUJH7+sLCO/CcKTLUlWUndNthyh7yLH
+	lM/6+xNCgkStoG5wDecPeRf3kt
+X-Received: by 2002:a17:902:e5c8:b0:2a0:c92e:a378 with SMTP id d9443c01a7336-2adbdc6b962mr38059985ad.7.1772026093769;
+        Wed, 25 Feb 2026 05:28:13 -0800 (PST)
+Received: from lgs.. ([36.255.193.30])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ad75052e9asm142759875ad.88.2026.02.25.05.28.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 05:28:13 -0800 (PST)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Yaxing Guo <guoyaxing@bosc.ac.cn>,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] uio: uio_pci_generic_sva: fix double free of devm_kzalloc() memory
+Date: Wed, 25 Feb 2026 21:27:36 +0800
+Message-ID: <20260225132737.4176605-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,155 +93,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-219618-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219617-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1318A1980ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 66F5A198119
 X-Rspamd-Action: no action
 
-From: Yongjian Sun <sunyongjian1@huawei.com>
+uio_pci_sva allocates struct uio_pci_sva_dev with devm_kzalloc() in probe(), but then calls kfree(udev) both on the probe() error path (label out_free) and again in remove().
+Because devm_kzalloc() allocations are devres-managed and are freed automatically when the device is detached, which also happens after a failing probe() and during driver unbind, the explicit kfree() can result in a double free. If probe() fails after devm_kzalloc(), the error path kfree(udev) frees the object, and devres cleanup will free it again when the core unwinds the partially bound device. On normal driver removal, remove() explicitly frees udev, and devres will free it again when the device is detached.
 
-[ Upstream commit bdc56a9c46b2a99c12313122b9352b619a2e719e ]
+Fix by removing the manual kfree() calls and dropping the now-unused label.
 
-A bitmap inconsistency issue was observed during stress tests under
-mixed huge-page workloads. Ext4 reported multiple e4b bitmap check
-failures like:
-
-ext4_mb_complex_scan_group:2508: group 350, 8179 free clusters as
-per group info. But got 8192 blocks
-
-Analysis and experimentation confirmed that the issue is caused by a
-race condition between page migration and bitmap modification. Although
-this timing window is extremely narrow, it is still hit in practice:
-
-folio_lock                        ext4_mb_load_buddy
-__migrate_folio
-  check ref count
-  folio_mc_copy                     __filemap_get_folio
-                                      folio_try_get(folio)
-                                  ......
-                                  mb_mark_used
-                                  ext4_mb_unload_buddy
-  __folio_migrate_mapping
-    folio_ref_freeze
-folio_unlock
-
-The root cause of this issue is that the fast path of load_buddy only
-increments the folio's reference count, which is insufficient to prevent
-concurrent folio migration. We observed that the folio migration process
-acquires the folio lock. Therefore, we can determine whether to take the
-fast path in load_buddy by checking the lock status. If the folio is
-locked, we opt for the slow path (which acquires the lock) to close this
-concurrency window.
-
-Additionally, this change addresses the following issues:
-
-When the DOUBLE_CHECK macro is enabled to inspect bitmap-related
-issues, the following error may be triggered:
-
-corruption in group 324 at byte 784(6272): f in copy != ff on
-disk/prealloc
-
-Analysis reveals that this is a false positive. There is a specific race
-window where the bitmap and the group descriptor become momentarily
-inconsistent, leading to this error report:
-
-ext4_mb_load_buddy                   ext4_mb_load_buddy
-  __filemap_get_folio(create|lock)
-    folio_lock
-  ext4_mb_init_cache
-    folio_mark_uptodate
-                                     __filemap_get_folio(no lock)
-                                     ......
-                                     mb_mark_used
-                                       mb_mark_used_double
-  mb_cmp_bitmaps
-                                       mb_set_bits(e4b->bd_bitmap)
-  folio_unlock
-
-The original logic assumed that since mb_cmp_bitmaps is called when the
-bitmap is newly loaded from disk, the folio lock would be sufficient to
-prevent concurrent access. However, this overlooks a specific race
-condition: if another process attempts to load buddy and finds the folio
-is already in an uptodate state, it will immediately begin using it without
-holding folio lock.
-
-Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260106090820.836242-1-sunyongjian@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3397c3cd859a2 ("uio: Add SVA support for PCI devices via uio_pci_generic_sva.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- fs/ext4/mballoc.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/uio/uio_pci_generic_sva.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 1d3eadf177234..701ef893fe984 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1520,16 +1520,17 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+diff --git a/drivers/uio/uio_pci_generic_sva.c b/drivers/uio/uio_pci_generic_sva.c
+index 4a46acd994a8..152201047334 100644
+--- a/drivers/uio/uio_pci_generic_sva.c
++++ b/drivers/uio/uio_pci_generic_sva.c
+@@ -129,15 +129,13 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	ret = devm_uio_register_device(&pdev->dev, &udev->info);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to register uio device\n");
+-		goto out_free;
++		goto out_disable;
+ 	}
  
- 	/* Avoid locking the folio in the fast path ... */
- 	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
--	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
-+	if (IS_ERR(folio) || !folio_test_uptodate(folio) || folio_test_locked(folio)) {
-+		/*
-+		 * folio_test_locked is employed to detect ongoing folio
-+		 * migrations, since concurrent migrations can lead to
-+		 * bitmap inconsistency. And if we are not uptodate that
-+		 * implies somebody just created the folio but is yet to
-+		 * initialize it. We can drop the folio reference and
-+		 * try to get the folio with lock in both cases to avoid
-+		 * concurrency.
-+		 */
- 		if (!IS_ERR(folio))
--			/*
--			 * drop the folio reference and try
--			 * to get the folio with lock. If we
--			 * are not uptodate that implies
--			 * somebody just created the folio but
--			 * is yet to initialize it. So
--			 * wait for it to initialize.
--			 */
- 			folio_put(folio);
- 		folio = __filemap_get_folio(inode->i_mapping, pnum,
- 				FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
-@@ -1571,7 +1572,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	poff = block % blocks_per_page;
+ 	pci_set_drvdata(pdev, udev);
  
- 	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
--	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
-+	if (IS_ERR(folio) || !folio_test_uptodate(folio) || folio_test_locked(folio)) {
- 		if (!IS_ERR(folio))
- 			folio_put(folio);
- 		folio = __filemap_get_folio(inode->i_mapping, pnum,
+ 	return 0;
+ 
+-out_free:
+-	kfree(udev);
+ out_disable:
+ 	pci_disable_device(pdev);
+ 
+@@ -150,7 +148,6 @@ static void remove(struct pci_dev *pdev)
+ 
+ 	pci_release_regions(pdev);
+ 	pci_disable_device(pdev);
+-	kfree(udev);
+ }
+ 
+ static ssize_t pasid_show(struct device *dev,
 -- 
-2.51.0
+2.43.0
 
 
