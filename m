@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-218738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BXzIWRTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:56 +0100
+	id +IT2E4CenmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B97718F820
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:41:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED716192CB7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5E0CB30711EB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 215BF30E5098
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011F1263C7F;
-	Wed, 25 Feb 2026 01:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708243019A6;
+	Wed, 25 Feb 2026 06:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NybIOJNs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jy7iTgVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A5526ED3D;
-	Wed, 25 Feb 2026 01:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340C52D7393;
+	Wed, 25 Feb 2026 06:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983604; cv=none; b=n2gkHl9PAHCzi5MMguHPNsrnNTclwEP9SeYxybTo8aI22T3gzrH71q2gXozmBt9ajZ+KjQNjx/P3UQHkVEZyv8EXkLbRJqQYWnSQX3IjjPZ4OMXe+B4u6G2rziaRIv9OudaNFp8P10DNpFdsRy485Rgm7QtqhY5/VGWRt8rAL4w=
+	t=1772002685; cv=none; b=n07hwXrqg4vbe7QbqZw9/7JKvF+ydtGNhu0E11a2/HLfo3b153xnUgHmuD78CufUCHOSVdBgFFV2ND3d5wpgl3UYYCE8AUHG2v6WyaFKo73+AevYTVpTo06lt0y6RtQp71U225K3BuJBt33loRAkUebXI97O+7ylzZn43CRFqC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983604; c=relaxed/simple;
-	bh=dCuspvkBgChxKpcrAe19aeMnq1nsvbpkpI8FjxFb31U=;
+	s=arc-20240116; t=1772002685; c=relaxed/simple;
+	bh=D7Ajchl2pWFzmpbhvwA+qjR0szPqfqo6LntQwvpQBAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Guj0te8JvpfStNsQgP9mnUYyLI3xk7EK+wqRQkvskQkfliqnR+3iBsgmmVdicbnafISTNI5HGpMG45Wn1gVrmIBkFID8zOtpcKdCDW4gX9TCW7cWLeEiIB4YrtAK0C5kjNcuYl8iqaRe80rww9h78kiYiJTY4WEUnJYqcHfW5KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NybIOJNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64370C19423;
-	Wed, 25 Feb 2026 01:40:04 +0000 (UTC)
+	 MIME-Version; b=YlyNcdkAGAf2pUH4KmNCDL7mGoIJ4wL/MVb0jAWYsKVqn0oEt67O8uYeaAfTMgxuA/ZHDgVQeREFkIgtMcQ20qjN88nWQXRnJDH73IIA4aka+0nKY2Q6ue+mm5YmoW+8OP+m1ZEW/XJMJxTZnJiovheGic8s1n1NdmFgkIgxg0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jy7iTgVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE65C116D0;
+	Wed, 25 Feb 2026 06:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983604;
-	bh=dCuspvkBgChxKpcrAe19aeMnq1nsvbpkpI8FjxFb31U=;
+	s=korg; t=1772002685;
+	bh=D7Ajchl2pWFzmpbhvwA+qjR0szPqfqo6LntQwvpQBAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NybIOJNsN0Zk61FOv3DqIUvEBnXBkWyDzB8ndMgoX0kHdosehSKJrHgWZoCUM9u5t
-	 1+2L63bQaITDo+JlcgHundLECNsRRa5s7/kh03WA0x9UOUEyVBnRdLkiOl7GrUAP/M
-	 GFXbGGi6J9NEpfy6SG6Vyu0EXsMWDtVH+7NxhnhI=
+	b=Jy7iTgVks7KMs2sOp09uL362gypVQBD9Bzx3gV72kVq0dsHc2JmC8cvM4W8gRXJXO
+	 WF/+7l3kv4wHMTZgzSBjjoWSiWVJxPrBYulfS0Qq3XpVwLIm44sYvZPaIkmB3T1X/0
+	 bjCGxeDFMZFsl4Ck1m8Qh27HbEKNKsS4uZ9TpwlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 692/781] apparmor: fix NULL sock in aa_sock_file_perm
-Date: Tue, 24 Feb 2026 17:23:21 -0800
-Message-ID: <20260225012416.733596218@linuxfoundation.org>
+Subject: [PATCH 6.18 476/641] Revert "mmc: rtsx_pci_sdmmc: increase power-on settling delay to 5ms"
+Date: Tue, 24 Feb 2026 17:23:22 -0800
+Message-ID: <20260225012400.051847175@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218738-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219391-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,51 +90,46 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4B97718F820
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linux.dev:email,linaro.org:email]
+X-Rspamd-Queue-Id: ED716192CB7
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 00b67657535dfea56e84d11492f5c0f61d0af297 ]
+[ Upstream commit ff112f1ecd10b72004eac05bae395e1c65f0c63c ]
 
-Deal with the potential that sock and sock-sk can be NULL during
-socket setup or teardown. This could lead to an oops. The fix for NULL
-pointer dereference in __unix_needs_revalidation shows this is at
-least possible for af_unix sockets. While the fix for af_unix sockets
-applies for newer mediation this is still the fall back path for older
-af_unix mediation and other sockets, so ensure it is covered.
+This reverts commit aced969e9bf3701dc75cfca57c78c031b7875b9d.
 
-Fixes: 56974a6fcfef6 ("apparmor: add base infastructure for socket mediation")
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+It was determined that this was not the correct "fix", so should be
+reverted.
+
+Fixes: aced969e9bf3 ("mmc: rtsx_pci_sdmmc: increase power-on settling delay to 5ms")
+Cc: Matthew Schwartz <matthew.schwartz@linux.dev>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/net.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/mmc/host/rtsx_pci_sdmmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/apparmor/net.c b/security/apparmor/net.c
-index 45cf25605c345..44c04102062f3 100644
---- a/security/apparmor/net.c
-+++ b/security/apparmor/net.c
-@@ -326,8 +326,10 @@ int aa_sock_file_perm(const struct cred *subj_cred, struct aa_label *label,
- 	struct socket *sock = (struct socket *) file->private_data;
+diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
+index b6cf1803c7d27..4db3328f46dfb 100644
+--- a/drivers/mmc/host/rtsx_pci_sdmmc.c
++++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+@@ -937,7 +937,7 @@ static int sd_power_on(struct realtek_pci_sdmmc *host, unsigned char power_mode)
+ 	if (err < 0)
+ 		return err;
  
- 	AA_BUG(!label);
--	AA_BUG(!sock);
--	AA_BUG(!sock->sk);
-+
-+	/* sock && sock->sk can be NULL for sockets being set up or torn down */
-+	if (!sock || !sock->sk)
-+		return 0;
+-	mdelay(5);
++	mdelay(1);
  
- 	if (sock->sk->sk_family == PF_UNIX)
- 		return aa_unix_file_perm(subj_cred, label, op, request, file);
+ 	err = rtsx_pci_write_register(pcr, CARD_OE, SD_OUTPUT_EN, SD_OUTPUT_EN);
+ 	if (err < 0)
 -- 
 2.51.0
 
