@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-219274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iO1WOO6enmlVWgQAu9opvQ
-	(envelope-from <stable+bounces-219274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:14 +0100
+	id YPDnA1BYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:56 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43359192DE1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 686671906DF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7BC0314B6ED
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21BE431A7BC8
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A286C2D23A4;
-	Wed, 25 Feb 2026 06:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B4F26056D;
+	Wed, 25 Feb 2026 01:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPK60Ij2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUpX3ynK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BD22D063E;
-	Wed, 25 Feb 2026 06:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4760D248881;
+	Wed, 25 Feb 2026 01:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002608; cv=none; b=oF8ADeo7sVnZhBYa8O1MRb7uDpeD3eHAwC6p3fSPmGYFzZndF9Ln9QhuMYw/PrtoC1X2zsXFW1qyuCw68oeZDDl/fwQzkF+7cbxk2p+Qj+fF+WJ4fa5nOzOj8sptyI4+PzG99BL6Z5mcLpIDUuYgXbV4/ztf314/mDcICmI4rZg=
+	t=1771983492; cv=none; b=iiRa7W3SF9QuNVQyY8/13xV13AwHd875rmYrebNcSvWybEFOzmo/YJCACEFlHFl24jyRBZ0vfMZHEwHrKriXWoMiEn/luCs0VAdH+Oa+dCqOpjuu+ojDI2IA9Or2CLOBiKhO2D7YugSMYfQzN2/kCr/pMXnP9O+zws5GHKVFSO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002608; c=relaxed/simple;
-	bh=Jwcz3hRADV13+aQiAx6q0/Wox2/152N7huxsMnMY6ls=;
+	s=arc-20240116; t=1771983492; c=relaxed/simple;
+	bh=5LIlLQBqolqsT01MwMxlmDKq17AbO2Cb5mSqT4qSPcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbBuhegO+B9h9NYFWZ/9n+ikYsUrzcGYGHn1Za/PkvNsvprXCkPgaSZaUbDW3/iXtVxTIPVw0Xg3cMT/vlt+I84bRXV391NtESCaQ4O31dqicweNItdBv9Adw53eKOB4nAU7ySxjypb4nc0CVCuXowc/QTVA9QJ6SW9FGmcQxbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPK60Ij2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE46C116D0;
-	Wed, 25 Feb 2026 06:56:48 +0000 (UTC)
+	 MIME-Version; b=Tnh8SfEcMvRWn7KHW/T//vQKfxhXGzHoWyr7dzBfU+Xb5twozjn201hdjz+kQM2ZvVaXU7fpNZGLAxNrM6WX+O1NZlNdWhmjY+9eTmds17kfcIpJrfQ3CsP2B1ECzOBYUf3rigXyM73ti6pXqu9jvbY5FSbWMcwp2vF4QrqVnyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUpX3ynK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B49C116D0;
+	Wed, 25 Feb 2026 01:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002608;
-	bh=Jwcz3hRADV13+aQiAx6q0/Wox2/152N7huxsMnMY6ls=;
+	s=korg; t=1771983491;
+	bh=5LIlLQBqolqsT01MwMxlmDKq17AbO2Cb5mSqT4qSPcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vPK60Ij2xs1kFt1TRJC639gI4R20QrhJu3byZMtbyaR/SGezGoembF+fNSBVQebup
-	 6TzOnv/rm4MKSdOUUKJWOmuvJEKpeSkZ3w2QGK3hV2pRMCN0lss9UMKZHp/GgrOQyt
-	 eFDlW6E5stLP0KDiSVM+y3IstWutdBunP+shvwso=
+	b=WUpX3ynKUsuTwBlxNrjlK/keKkR6TF7xtNW59i3ACq/sXo3k20lF+l51qGXBTNKCu
+	 4r04gqEdlWoAS85qovWUjU8DRgKZVVtY08VGnHm/S2X3bE9a0gMkLz0YjOGevsgro9
+	 CJ+bWm+KGK9pYr3tR3Rqbc1WfF6L6zdeXDetfAD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Zhu Yanjun <yanjun.Zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 358/641] RDMA/rxe: Fix double free in rxe_srq_from_init
-Date: Tue, 24 Feb 2026 17:21:24 -0800
-Message-ID: <20260225012357.300489441@linuxfoundation.org>
+Subject: [PATCH 6.19 576/781] mmc: rtsx_pci_sdmmc: increase power-on settling delay to 5ms
+Date: Tue, 24 Feb 2026 17:21:25 -0800
+Message-ID: <20260225012413.928205529@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,91 +73,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
-	TAGGED_FROM(0.00)[bounces-219274-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-218642-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 43359192DE1
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 686671906DF
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-[ Upstream commit 0beefd0e15d962f497aad750b2d5e9c3570b66d1 ]
+[ Upstream commit aced969e9bf3701dc75cfca57c78c031b7875b9d ]
 
-In rxe_srq_from_init(), the queue pointer 'q' is assigned to
-'srq->rq.queue' before copying the SRQ number to user space.
-If copy_to_user() fails, the function calls rxe_queue_cleanup()
-to free the queue, but leaves the now-invalid pointer in
-'srq->rq.queue'.
+The existing 1ms delay in sd_power_on is insufficient and causes resume
+errors around 4% of the time.
 
-The caller of rxe_srq_from_init() (rxe_create_srq) eventually
-calls rxe_srq_cleanup() upon receiving the error, which triggers
-a second rxe_queue_cleanup() on the same memory, leading to a
-double free.
+Increasing the delay to 5ms resolves this issue after testing 300
+s2idle cycles.
 
-The call trace looks like this:
-   kmem_cache_free+0x.../0x...
-   rxe_queue_cleanup+0x1a/0x30 [rdma_rxe]
-   rxe_srq_cleanup+0x42/0x60 [rdma_rxe]
-   rxe_elem_release+0x31/0x70 [rdma_rxe]
-   rxe_create_srq+0x12b/0x1a0 [rdma_rxe]
-   ib_create_srq_user+0x9a/0x150 [ib_core]
-
-Fix this by moving 'srq->rq.queue = q' after copy_to_user.
-
-Fixes: aae0484e15f0 ("IB/rxe: avoid srq memory leak")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20260112015412.29458-1-jiashengjiangcool@gmail.com
-Reviewed-by: Zhu Yanjun <yanjun.Zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 1f311c94aabd ("mmc: rtsx: add 74 Clocks in power on flow")
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Link: https://patch.msgid.link/20260105060236.400366-3-matthew.schwartz@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_srq.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mmc/host/rtsx_pci_sdmmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_srq.c b/drivers/infiniband/sw/rxe/rxe_srq.c
-index 2a234f26ac104..c9a7cd38953d3 100644
---- a/drivers/infiniband/sw/rxe/rxe_srq.c
-+++ b/drivers/infiniband/sw/rxe/rxe_srq.c
-@@ -77,9 +77,6 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
- 		goto err_free;
- 	}
+diff --git a/drivers/mmc/host/rtsx_pci_sdmmc.c b/drivers/mmc/host/rtsx_pci_sdmmc.c
+index 4db3328f46dfb..b6cf1803c7d27 100644
+--- a/drivers/mmc/host/rtsx_pci_sdmmc.c
++++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+@@ -937,7 +937,7 @@ static int sd_power_on(struct realtek_pci_sdmmc *host, unsigned char power_mode)
+ 	if (err < 0)
+ 		return err;
  
--	srq->rq.queue = q;
--	init->attr.max_wr = srq->rq.max_wr;
--
- 	if (uresp) {
- 		if (copy_to_user(&uresp->srq_num, &srq->srq_num,
- 				 sizeof(uresp->srq_num))) {
-@@ -88,6 +85,9 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
- 		}
- 	}
+-	mdelay(1);
++	mdelay(5);
  
-+	srq->rq.queue = q;
-+	init->attr.max_wr = srq->rq.max_wr;
-+
- 	return 0;
- 
- err_free:
+ 	err = rtsx_pci_write_register(pcr, CARD_OE, SD_OUTPUT_EN, SD_OUTPUT_EN);
+ 	if (err < 0)
 -- 
 2.51.0
 
