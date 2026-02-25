@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PX6HFNYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:59 +0100
+	id oKzbJ3OdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F9D1906E6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:02:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2306C1929D6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81A3331AA7EE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5F352303B5E6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60786262FE7;
-	Wed, 25 Feb 2026 01:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360AA2D77F5;
+	Wed, 25 Feb 2026 06:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOUcwhcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYLd2dtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24939248881;
-	Wed, 25 Feb 2026 01:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0AD2F9D83;
+	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983497; cv=none; b=c8KI1PHOKm3BllTWuN/+r9amfUNGMRqgNiyN1wLx6X4WsG2hq1+17C1OroSfan3LXZHczh7GarjngF0kP8v0u+5rU+GNZZb/5ZuJ+b74FDGeSWqStHrBepfxGXB38s1ssonK01vIEunTT5P6SiN9xvYrr0LU3GebQ/fwlQuO4+s=
+	t=1772002628; cv=none; b=RrKA9bZV90Fk1IKR9EOLBqYf6E2zbRtTl+giKsnrCLdAmkap4VTCVSSv/EvckprV0TmzfkKYtj5Fi5xJXPDiy2KQ4AQxU06sXcQofesLaHUbD86ZSul0PCDAsj2w/yBLdVtOSGegQRNL+7IYYAyG0qC+FqrDoAqIyl0+Na0Ga6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983497; c=relaxed/simple;
-	bh=AKCVT1wsjpMmC9qkEvTs7fNZDBKlQXfWVORcxxEZYmY=;
+	s=arc-20240116; t=1772002628; c=relaxed/simple;
+	bh=Z/yHBie1pYNB+9z+diaxmweAkYXtZCpqVQh+yH4UUUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QWz4NFog5iHvEZFklbfo20Fqwz60cqkeDy7SGvWvi9qCRgo4qrvAzXaIEEjBUPlLZxXPWsh5uZeH/scW+q6GTSsxVW72F1o4YHu4IDi/+EwOetAI22PovQQNRYnRQ9x4nZIXhV14gdvqqUnLVfCRKNkzpLaNlbxW1aV72Hk5H+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOUcwhcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2158C116D0;
-	Wed, 25 Feb 2026 01:38:16 +0000 (UTC)
+	 MIME-Version; b=h5WZG5R++N5VmxSg6qgZxzgqMkmjRh/RJ8ZVfpVQY0t/wvpqjpa8jj6mQF5RxN2g787KugzNCk9JqQqYiuL03i1IpI4/oWag6tAS/0vbyhjH5J8l1ERWwdMnqWjGKi+aRe1/0QZpQh00Z/qEwlUOISGU1SYRdOliOEyVN4KQmZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYLd2dtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C86BDC116D0;
+	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983497;
-	bh=AKCVT1wsjpMmC9qkEvTs7fNZDBKlQXfWVORcxxEZYmY=;
+	s=korg; t=1772002627;
+	bh=Z/yHBie1pYNB+9z+diaxmweAkYXtZCpqVQh+yH4UUUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOUcwhcwsSyKRObLfYbJBimJm+PfFaFGrBZjSpzYWZV/YNSwodYNeVZ23a4zifRzg
-	 Bl74bV5sOBN4280Zzm248QztgWjg3ODUxCOGGp1klA8qggjIJ0ui5/59zB4Ps9UTEJ
-	 qWF/XIjie9bIuahdDkoFkMH09aP1/m6b8nFpECaQ=
+	b=sYLd2dtr56TouyzYW4iDKfOCJadaawXwUhbZS7mhSQbLkQm2MK68kb6+yTkKXGP33
+	 k9wwVtCh8yE9oRm8dMyga6pxMZCnRoobWFMGqk4iRgLLpkw5SrcpZHLAs2cOirjdRe
+	 bXjVgM9hu1FA/r7vLQMNH86//dl94ou4C+2fTK0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karel Balej <balejk@matfyz.cz>,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
-	Lee Jones <lee@kernel.org>,
+	Yi Liu <liuy22@mails.tsinghua.edu.cn>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 606/781] leds: expresswire: Fix chip state breakage
+Subject: [PATCH 6.18 389/641] RDMA/uverbs: Add __GFP_NOWARN to ib_uverbs_unmarshall_recv() kmalloc
 Date: Tue, 24 Feb 2026 17:21:55 -0800
-Message-ID: <20260225012414.658529619@linuxfoundation.org>
+Message-ID: <20260225012358.006150881@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,160 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218646-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219304-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,matfyz.cz:email,dujemihanovic.xyz:email]
-X-Rspamd-Queue-Id: D5F9D1906E6
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 2306C1929D6
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duje Mihanović <duje@dujemihanovic.xyz>
+From: Yi Liu <liuy22@mails.tsinghua.edu.cn>
 
-[ Upstream commit f4b830a5371914239756b0599e5dc9d4c328e387 ]
+[ Upstream commit 58b604dfc7bb753f91bc0ccd3fa705e14e6edfb4 ]
 
-It is possible to put the KTD2801 chip in an unknown/undefined state by
-changing the brightness very rapidly (for example, with a brightness
-slider). When this happens, the brightness is stuck on max and cannot be
-changed until the chip is power cycled.
+Since wqe_size in ib_uverbs_unmarshall_recv() is user-provided and already
+validated, but can still be large, add __GFP_NOWARN to suppress memory
+allocation warnings for large sizes, consistent with the similar fix in
+ib_uverbs_post_send().
 
-Fix this by disabling interrupts while talking to the chip. While at it,
-make expresswire_power_off() use fsleep() and also unexport some
-functions meant to be internal.
-
-Fixes: 1368d06dd2c9 ("leds: Introduce ExpressWire library")
-Tested-by: Karel Balej <balejk@matfyz.cz>
-Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
-Link: https://patch.msgid.link/20251217-expresswire-fix-v2-1-4a02b10acd96@dujemihanovic.xyz
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
+Signed-off-by: Yi Liu <liuy22@mails.tsinghua.edu.cn>
+Link: https://patch.msgid.link/20260129094900.3517706-1-liuy22@mails.tsinghua.edu.cn
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-expresswire.c  | 24 +++++++++++++++++-------
- include/linux/leds-expresswire.h |  3 ---
- 2 files changed, 17 insertions(+), 10 deletions(-)
+ drivers/infiniband/core/uverbs_cmd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-expresswire.c b/drivers/leds/leds-expresswire.c
-index bb69be228a6d3..25c6b159a6ee9 100644
---- a/drivers/leds/leds-expresswire.c
-+++ b/drivers/leds/leds-expresswire.c
-@@ -9,6 +9,7 @@
- #include <linux/delay.h>
- #include <linux/export.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/irqflags.h>
- #include <linux/types.h>
+diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
+index 3259e9848cc79..f4616deeca545 100644
+--- a/drivers/infiniband/core/uverbs_cmd.c
++++ b/drivers/infiniband/core/uverbs_cmd.c
+@@ -2242,7 +2242,7 @@ ib_uverbs_unmarshall_recv(struct uverbs_req_iter *iter, u32 wr_count,
+ 	if (ret)
+ 		return ERR_PTR(ret);
  
- #include <linux/leds-expresswire.h>
-@@ -16,37 +17,41 @@
- void expresswire_power_off(struct expresswire_common_props *props)
- {
- 	gpiod_set_value_cansleep(props->ctrl_gpio, 0);
--	usleep_range(props->timing.poweroff_us, props->timing.poweroff_us * 2);
-+	fsleep(props->timing.poweroff_us);
- }
- EXPORT_SYMBOL_NS_GPL(expresswire_power_off, "EXPRESSWIRE");
+-	user_wr = kmalloc(wqe_size, GFP_KERNEL);
++	user_wr = kmalloc(wqe_size, GFP_KERNEL | __GFP_NOWARN);
+ 	if (!user_wr)
+ 		return ERR_PTR(-ENOMEM);
  
- void expresswire_enable(struct expresswire_common_props *props)
- {
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+
- 	gpiod_set_value(props->ctrl_gpio, 1);
- 	udelay(props->timing.detect_delay_us);
- 	gpiod_set_value(props->ctrl_gpio, 0);
- 	udelay(props->timing.detect_us);
- 	gpiod_set_value(props->ctrl_gpio, 1);
-+
-+	local_irq_restore(flags);
- }
- EXPORT_SYMBOL_NS_GPL(expresswire_enable, "EXPRESSWIRE");
- 
--void expresswire_start(struct expresswire_common_props *props)
-+static void expresswire_start(struct expresswire_common_props *props)
- {
- 	gpiod_set_value(props->ctrl_gpio, 1);
- 	udelay(props->timing.data_start_us);
- }
--EXPORT_SYMBOL_NS_GPL(expresswire_start, "EXPRESSWIRE");
- 
--void expresswire_end(struct expresswire_common_props *props)
-+static void expresswire_end(struct expresswire_common_props *props)
- {
- 	gpiod_set_value(props->ctrl_gpio, 0);
- 	udelay(props->timing.end_of_data_low_us);
- 	gpiod_set_value(props->ctrl_gpio, 1);
- 	udelay(props->timing.end_of_data_high_us);
- }
--EXPORT_SYMBOL_NS_GPL(expresswire_end, "EXPRESSWIRE");
- 
--void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
-+static void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
- {
- 	if (bit) {
- 		gpiod_set_value(props->ctrl_gpio, 0);
-@@ -60,13 +65,18 @@ void expresswire_set_bit(struct expresswire_common_props *props, bool bit)
- 		udelay(props->timing.short_bitset_us);
- 	}
- }
--EXPORT_SYMBOL_NS_GPL(expresswire_set_bit, "EXPRESSWIRE");
- 
- void expresswire_write_u8(struct expresswire_common_props *props, u8 val)
- {
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+
- 	expresswire_start(props);
- 	for (int i = 7; i >= 0; i--)
- 		expresswire_set_bit(props, val & BIT(i));
- 	expresswire_end(props);
-+
-+	local_irq_restore(flags);
- }
- EXPORT_SYMBOL_NS_GPL(expresswire_write_u8, "EXPRESSWIRE");
-diff --git a/include/linux/leds-expresswire.h b/include/linux/leds-expresswire.h
-index a422921f4159f..7f8c4795f69fa 100644
---- a/include/linux/leds-expresswire.h
-+++ b/include/linux/leds-expresswire.h
-@@ -30,9 +30,6 @@ struct expresswire_common_props {
- 
- void expresswire_power_off(struct expresswire_common_props *props);
- void expresswire_enable(struct expresswire_common_props *props);
--void expresswire_start(struct expresswire_common_props *props);
--void expresswire_end(struct expresswire_common_props *props);
--void expresswire_set_bit(struct expresswire_common_props *props, bool bit);
- void expresswire_write_u8(struct expresswire_common_props *props, u8 val);
- 
- #endif /* _LEDS_EXPRESSWIRE_H */
 -- 
 2.51.0
 
