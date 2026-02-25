@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-218459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aH5PBmRSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:40 +0100
+	id gJ66CJlYnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-219025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BDF18F348
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F4C190783
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:04:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DF56E306A66B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B974B3129CF1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142AB22579E;
-	Wed, 25 Feb 2026 01:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935D92701D9;
+	Wed, 25 Feb 2026 01:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8+0Yp2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWuUbnhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB84C18B0A;
-	Wed, 25 Feb 2026 01:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E7626F46F;
+	Wed, 25 Feb 2026 01:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983282; cv=none; b=b2nN+91beJrh2o2BR5BXl/8Z3jKTBV9Va7ts1vp3CqBQsGYoJ2CmPgnEH+eEyIwnhWqWQblSpKmmc/5vk3Pb4pTOyCdJCA/QqwQZ+gbrNGjRFXNSIGeSmxxfI2zYRXCBzdJ0s7rcX4nZ5WjeZURkTClywlcWRPLiG7gy6olx5Rw=
+	t=1771983939; cv=none; b=Dj03W+XT0QcFKhDSRSaKhdT5MsH8yDrJakY3JjUhPOanWMnGRyGip8jvmCOfdYxcrJNFpgwK76Q9CZJpWtZYCra20HWAKR+zB8LiYfM/j/lSwl90D1DMGUaAmQlhLHgU/HzS8c2W/tH9Wfu72H/yv7FgaGmCeaLDMeAbrnGgxWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983282; c=relaxed/simple;
-	bh=gUcfE9QGTc31Y7Lw3OFI4W1PwI6Z9Mo7HpMgWazU4UA=;
+	s=arc-20240116; t=1771983939; c=relaxed/simple;
+	bh=mZeFuT55887nhBL7CAVYqAT5Mj4iFTwWB9HJl4y+YEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rADIgVhLx6vBeIF16rnN/TA7c0ErOyZoBTUYC0+lqW+W4FlaoAZ004prHtjdYZYDMM+/1MztY5I0Gk1Lq7KrZGzPNj213i08zDMRKJGh1YNdBOT6jW0Zvvxy764Fu/Vbpq9RdEaaisQotBaoSXzFMg7LV6s/xBFyaoVc/TJdnLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8+0Yp2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B831C116D0;
-	Wed, 25 Feb 2026 01:34:42 +0000 (UTC)
+	 MIME-Version; b=BKGzlGA5rJzX5FOIZ6tqTeQ41P/fNDFiqp9LS/sdNAa8a+t2/UGS1Q116zHjfP9RaWjCIgLbseqbyTFSlmC6oGttQqM2WFpE/evNiFu3jEi1qAzy2QnR7ogUoCYfawjyBLng45huMo3EpYbshDknxG4ESe+BkWfh88rZdKenmhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWuUbnhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1007AC116D0;
+	Wed, 25 Feb 2026 01:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983282;
-	bh=gUcfE9QGTc31Y7Lw3OFI4W1PwI6Z9Mo7HpMgWazU4UA=;
+	s=korg; t=1771983939;
+	bh=mZeFuT55887nhBL7CAVYqAT5Mj4iFTwWB9HJl4y+YEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E8+0Yp2UHlCwQ43L8QdPkp7vP2QbxkvaRVzsLKOvifd6OhvfStjGt4cQ1XtSMcbO9
-	 l5lMFp7Jd9QM0RL9yaYG5P5RjXNqQPy1Dvf2qpstUSSmM6wwIV+nOXKBi2PwuZAiR6
-	 oOqSzee9ZomLxeb/pG7HuO2MN7KnZu9pJ0FyEWf8=
+	b=OWuUbnhzwbhJFqFTXOml7lVh9J3VeuOUfw+Ry5/pdimtMAt9SQsyeCNI578NOkXWY
+	 0qpO91uWgL2m9IXZPrcLX0Sez1ctim/47zNRXSmI2LgniiPPAAqIptVE9NsSIWzcs2
+	 SoW9FcCGQ3NUg55CRu7qVEx748iKmZWg0s8bKtLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 420/781] PCI: rzg3s-host: Fix device node reference leak in rzg3s_pcie_host_parse_port()
+Subject: [PATCH 6.18 203/641] drm/msm/a2xx: fix pixel shader start on A225
 Date: Tue, 24 Feb 2026 17:18:49 -0800
-Message-ID: <20260225012410.000182219@linuxfoundation.org>
+Message-ID: <20260225012353.887407589@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,80 +66,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218459-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,bp.renesas.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219025-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A5BDF18F348
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 53F4C190783
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit e43e2aa557040bbcc5de0eaa1c59ee3ae9e31793 ]
+[ Upstream commit 6a7b0a670ba4d283285d76d45233cbecc5af5e40 ]
 
-In rzg3s_pcie_host_parse_port(), of_get_next_child() returns a device node
-with an incremented reference count that must be released with
-of_node_put(). The current code fails to call of_node_put() which causes a
-reference leak.
+A225 has a different PixelShader start address, write correct address
+while initializing GPU.
 
-Use the __free(device_node) attribute to ensure automatic cleanup when the
-variable goes out of scope.
-
-Fixes: 7ef502fb35b2 ("PCI: Add Renesas RZ/G3S host controller driver")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20260204-rzg3s-v1-1-142bc81c3312@gmail.com
+Fixes: 21af872cd8c6 ("drm/msm/adreno: add a2xx")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/689906/
+Message-ID: <20251121-a225-v1-1-a1bab651d186@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rzg3s-host.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a2xx_gpu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-rzg3s-host.c b/drivers/pci/controller/pcie-rzg3s-host.c
-index ae6d9c7dc2c12..1bea8360f8944 100644
---- a/drivers/pci/controller/pcie-rzg3s-host.c
-+++ b/drivers/pci/controller/pcie-rzg3s-host.c
-@@ -1143,7 +1143,8 @@ static int rzg3s_pcie_resets_prepare_and_get(struct rzg3s_pcie_host *host)
+diff --git a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+index 963c0f669ee50..e67ed58aa3d8f 100644
+--- a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+@@ -77,7 +77,10 @@ static bool a2xx_me_init(struct msm_gpu *gpu)
  
- static int rzg3s_pcie_host_parse_port(struct rzg3s_pcie_host *host)
- {
--	struct device_node *of_port = of_get_next_child(host->dev->of_node, NULL);
-+	struct device_node *of_port __free(device_node) =
-+		of_get_next_child(host->dev->of_node, NULL);
- 	struct rzg3s_pcie_port *port = &host->port;
- 	int ret;
- 
+ 	/* Vertex and Pixel Shader Start Addresses in instructions
+ 	 * (3 DWORDS per instruction) */
+-	OUT_RING(ring, 0x80000180);
++	if (adreno_is_a225(adreno_gpu))
++		OUT_RING(ring, 0x80000300);
++	else
++		OUT_RING(ring, 0x80000180);
+ 	/* Maximum Contexts */
+ 	OUT_RING(ring, 0x00000001);
+ 	/* Write Confirm Interval and The CP will wait the
 -- 
 2.51.0
 
