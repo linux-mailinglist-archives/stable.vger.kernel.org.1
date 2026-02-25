@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNz7CfFTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:17 +0100
+	id AI7EDKyenmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BE718FAED
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BEE7192D24
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:03:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A49243181DF9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0DE5D312F728
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C3E26056D;
-	Wed, 25 Feb 2026 01:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0CD2D1F40;
+	Wed, 25 Feb 2026 06:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSSRsCN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wy0xnLEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B9D1FE45D;
-	Wed, 25 Feb 2026 01:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F532C17A0;
+	Wed, 25 Feb 2026 06:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983448; cv=none; b=f+0vGjGoMcJMF3HMZD14pZPwz+cL7qtyGOQ/iW3JuwIv0/OaHkqnCbZe+Oge9QoY3loVIo7hojyjpn9f7FDxUROc9E2kKYfAEf/estaiR5NeAGOjb2WBJL1oekUsAu9b9pajNDy+hdLSL/daQJbYVOcIu37nVLOxt8nC4KAZ2aY=
+	t=1772002600; cv=none; b=NLl1qhvsmgCZQ2LnpVqNtpOGpBFAXkemXgfjhYnX2MyvJGrknyGaqHAm/w//y3iYaPVbrjZl3JzHhAesu7XqHZwfcNOFXBFjMAaBIiJ5utqknp6+1hZLIcSCMdlK9TxPEg7xbW8cLGfVDqDORGNvYRpmR0XeKD5md2933b4SYDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983448; c=relaxed/simple;
-	bh=IXeNWZSF2lzG9nJbO4eZ2PZv6uih5wzD1X30J025B0o=;
+	s=arc-20240116; t=1772002600; c=relaxed/simple;
+	bh=/Kwzz5XCPX6OpMxP02av20uWd4Kd5C8eoC0dvuovOKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YY2eAETv0/oDF5gVVLgm+Vf5sp9SD+JoOOwudpeJ5O3zes/2/nzTDGsV/rHsZ702MAn4Qb9hlXgIq5WnfplV7sb2ACLZ3XorEJ96qx83yGBWWtm+66iHQmnTmj8lEtnSmUKz/MowUPedqZCDho2q+mWBzpgC4UiVPKTfcIOxYLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSSRsCN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D68C116D0;
-	Wed, 25 Feb 2026 01:37:27 +0000 (UTC)
+	 MIME-Version; b=DPcVeKtslvqJfRLbWwb4JpUTjrXr0mn9SXGfborzY2L3iVuOPyWveVeADS/+K8hpb/PbwtcZL1K2gSpA9K5hLHKTHgFFC3BZa/aRsh6FE3CSbELta076gvr1Qat1NiOymmv1RKM9frOm4c5lqAarOx+YaJ5vEgw9stetf3kqG6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wy0xnLEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C461C116D0;
+	Wed, 25 Feb 2026 06:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983448;
-	bh=IXeNWZSF2lzG9nJbO4eZ2PZv6uih5wzD1X30J025B0o=;
+	s=korg; t=1772002600;
+	bh=/Kwzz5XCPX6OpMxP02av20uWd4Kd5C8eoC0dvuovOKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSSRsCN8DjN5SgCl7Hl+PCeNKUuqyABeQmYBH/BMB3iaTmhOQDENnOOggFJQdQpnm
-	 M0tqwpWk4o/3A/7YLL+sN17ts+W7uWzF3RDv9Lbie13Ee/tTw666BP6rGhE1RfjLob
-	 s6LL3F9aoGEQqC5jrMYN/Tk7lE784xOvCHaEeuKE=
+	b=Wy0xnLEhKgWrHw7j3OQhRjMKHqIJQk5l7XkMpI8U/I+Re0bO8rN1LrKGabvh6qhyD
+	 uBoKHHUjcP3VzbcyVi2HtkXJ9cVpQj5Gp7WwZggf2A3KH97h1qEotZBSalGcCOEl+W
+	 77tQlT8MugVoyTQQAWZZFq6c4MjUUleqZyThpQKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Foreman <derek.foreman@collabora.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Waqar Hameed <waqar.hameed@axis.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 564/781] phy: rockchip: samsung-hdptx: Pre-compute HDMI PLL config for 461.10125 MHz output
+Subject: [PATCH 6.18 347/641] power: supply: bq25980: Fix use-after-free in power_supply_changed()
 Date: Tue, 24 Feb 2026 17:21:13 -0800
-Message-ID: <20260225012413.634623585@linuxfoundation.org>
+Message-ID: <20260225012357.062385399@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,84 +74,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218603-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219262-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 90BE718FAED
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,axis.com:email,collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7BEE7192D24
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Waqar Hameed <waqar.hameed@axis.com>
 
-[ Upstream commit f2daf0c67a1767ff6536aa3e96599afb42ca42e7 ]
+[ Upstream commit 5f0b1cb41906e86b64bf69f5ededb83b0d757c27 ]
 
-Attempting to make use of a 1080p@120Hz display mode with 10 bpc RGB on
-my Acer XV275K P3 monitor results in a blank image.  A similar behavior
-has been reported on Philips 279M1RV.
+Using the `devm_` variant for requesting IRQ _before_ the `devm_`
+variant for allocating/registering the `power_supply` handle, means that
+the `power_supply` handle will be deallocated/unregistered _before_ the
+interrupt handler (since `devm_` naturally deallocates in reverse
+allocation order). This means that during removal, there is a race
+condition where an interrupt can fire just _after_ the `power_supply`
+handle has been freed, *but* just _before_ the corresponding
+unregistration of the IRQ handler has run.
 
-The faulty modeline is created by drm_gtf_mode_complex() based on the
-following EDID entry from the Standard Timings block:
+This will lead to the IRQ handler calling `power_supply_changed()` with
+a freed `power_supply` handle. Which usually crashes the system or
+otherwise silently corrupts the memory...
 
-  GTF:  1920x1080  119.999987 Hz  16:9    138.840 kHz    368.759000 MHz
+Note that there is a similar situation which can also happen during
+`probe()`; the possibility of an interrupt firing _before_ registering
+the `power_supply` handle. This would then lead to the nasty situation
+of using the `power_supply` handle *uninitialized* in
+`power_supply_changed()`.
 
-It's worth noting the computed pixel clock ends up being slightly higher
-at 368.881000 MHz.  Nevertheless, this seems to work consistently fine
-with 8 bpc RGB.
+Fix this racy use-after-free by making sure the IRQ is requested _after_
+the registration of the `power_supply` handle.
 
-After switching to 10 bpc, the TMDS character rate expected for the mode
-increases to 461.101250 MHz, as per drm_hdmi_compute_mode_clock().
-
-Since there is no entry for this rate in the ropll_tmds_cfg table, the
-necessary HDMI PLL configuration parameters are calculated dynamically
-by rk_hdptx_phy_clk_pll_calc().  However, the resulting output rate is
-not quite a perfect match, i.e. 461.100000 MHz.  That proved to be the
-actual root cause of the problem.
-
-Add a new entry to the TMDS configuration table and provide the
-necessary frequency division coefficients for the PHY PLL to generate
-the expected 461.101250 MHz output.
-
-Fixes: 9d0ec51d7c22 ("phy: rockchip: samsung-hdptx: Add high color depth management")
-Tested-by: Derek Foreman <derek.foreman@collabora.com>
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20251221-phy-hdptx-pll-fix-v2-1-ae4abf7f75a1@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 5069185fc18e ("power: supply: bq25980: Add support for the BQ259xx family")
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+Link: https://patch.msgid.link/8763035cadb959e14787b3837f2d3db61f6e1c34.1766268280.git.waqar.hameed@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/bq25980_charger.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-index 29de2f7bdae8a..cafa618d70fdc 100644
---- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-+++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -414,6 +414,8 @@ struct rk_hdptx_phy {
- static const struct ropll_config ropll_tmds_cfg[] = {
- 	{ 594000000ULL, 124, 124, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 62, 1, 16, 5, 0,
- 	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 461101250ULL, 97, 97, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 71, 1, 53, 2, 6,
-+	  35, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
- 	{ 371250000ULL, 155, 155, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 62, 1, 16, 5, 0,
- 	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
- 	{ 297000000ULL, 124, 124, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 62, 1, 16, 5, 0,
+diff --git a/drivers/power/supply/bq25980_charger.c b/drivers/power/supply/bq25980_charger.c
+index 723858d62d141..73f06f09f134c 100644
+--- a/drivers/power/supply/bq25980_charger.c
++++ b/drivers/power/supply/bq25980_charger.c
+@@ -1241,6 +1241,12 @@ static int bq25980_probe(struct i2c_client *client)
+ 		return ret;
+ 	}
+ 
++	ret = bq25980_power_supply_init(bq, dev);
++	if (ret) {
++		dev_err(dev, "Failed to register power supply\n");
++		return ret;
++	}
++
+ 	if (client->irq) {
+ 		ret = devm_request_threaded_irq(dev, client->irq, NULL,
+ 						bq25980_irq_handler_thread,
+@@ -1251,12 +1257,6 @@ static int bq25980_probe(struct i2c_client *client)
+ 			return ret;
+ 	}
+ 
+-	ret = bq25980_power_supply_init(bq, dev);
+-	if (ret) {
+-		dev_err(dev, "Failed to register power supply\n");
+-		return ret;
+-	}
+-
+ 	ret = bq25980_hw_init(bq);
+ 	if (ret) {
+ 		dev_err(dev, "Cannot initialize the chip.\n");
 -- 
 2.51.0
 
