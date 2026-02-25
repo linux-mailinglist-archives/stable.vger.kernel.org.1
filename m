@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-219127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIBnN4NanmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219127-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:19 +0100
+	id 0NIIO4Ncnml3UwQAu9opvQ
+	(envelope-from <stable+bounces-219128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:20:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88727190B30
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ECE9190D73
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:20:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ED6613012B5F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:12:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F07A530D67DF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EE226F46F;
-	Wed, 25 Feb 2026 02:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249BB27F4CA;
+	Wed, 25 Feb 2026 02:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxtQTP4V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvQ2fWvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90CA26ED33
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB16274B39
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771985537; cv=none; b=hwZfQxUzv2VJ6TWqlaemvBQ/h5UcSibhcTxaDreZylVxV7feVg+X8FXc2DYK8D/DpBfv6y7hxxUQnSoH/x4KE0M7Or8wOUDP6TRv97d1gjl/8FvuWsbF4kv3RRuQYbPAKlQ4gz6SEzJpq9Hyen1WzFtGkK27jIBOf3L0L7NAW0o=
+	t=1771986016; cv=none; b=bjU7hdbPnbp6wsUr5tOEr7Vep5dj11yg6VdagxQv5oZ5Md0TqJA45PJKWJm7BC+J9jzXFWnlcC32uZ7ut6tlTIyLZjZoAp2izHCOs/KqPex7OHQv/6gXYIazUflWuHBJW+SCrupx2IyhlM7GBfxTzFJ7foLxlkmAx6QRqpNd+sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771985537; c=relaxed/simple;
-	bh=TrybjfvwdItPIQ42E2n3AkGbRsaA4KTWvRRw3yXXpAM=;
+	s=arc-20240116; t=1771986016; c=relaxed/simple;
+	bh=EZq2tgEGbvnHjpjQmnQx4cNWLpbIiyprQMkgBL30Ls0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+CRlKsO8aoBtRY00GPLt3GjL/ctDNjtSxkJp1FbKaGLL8kTSQruDZQ+aRi/Z0qjIkSvipYnIU1pEbY0ux2H1lf93NNk4Pxp4BceiSMoAK496oOXjIoWlWuw0Fww8a8MyJxqd6sZ6E2Gt8IuMLdcT5ZK8kYQC5e2W0xXsH9PKKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxtQTP4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1986C116D0;
-	Wed, 25 Feb 2026 02:12:16 +0000 (UTC)
+	 MIME-Version; b=ozgoxfXn1YNc6zSuL0X1wozSGf59QIP4QvYujlMCv1Aqye10G6JxeZHDfS/LFqM9gTteBIphrUDE+UvNpAM70QzU6U/ANfL4BcJh9mxCUVqGDREYx2n/8P8KM7y05E8/w6D31xs8syE/xNutRjn8V9VkQNkB8elxAo+C/zYPHCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvQ2fWvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BCBC19423;
+	Wed, 25 Feb 2026 02:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771985537;
-	bh=TrybjfvwdItPIQ42E2n3AkGbRsaA4KTWvRRw3yXXpAM=;
+	s=k20201202; t=1771986016;
+	bh=EZq2tgEGbvnHjpjQmnQx4cNWLpbIiyprQMkgBL30Ls0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PxtQTP4V8UbATPA+XGL49EGuliSIW2h1ceoPK1hRFeU0b7D+RLT3sZR9xrn1RGebZ
-	 c4ShtxPw3fhMIeePWBc4hKtyWlj6nfNoiFi+EjD5bFcOZHW1mf/YZQb9R93DScf7Ss
-	 dVOYn9WCTjgjuW1pLu6EYjMCyXTWgePE5CLGGvDYDOs8X1rzxJlWSZUdxT/UMDx0BM
-	 PkTwp1iYgec+L4EDBQuyoMCgoAtNjl4wE3K1JrB7MELCs6dvQ9Uh2xSj6mRdJbHPXd
-	 mz2DzViraFmc8T8qOWR51lkFBYRA+EYM/9tI8iiFau8CDGHKGHxpLNUdHdKD76GFNs
-	 9KOwtoss1IMPQ==
+	b=tvQ2fWvDXU+zGKQdztFO26kiJ+U27EAktFjTCpZ8KxKxieAinnU9tuGL6tFulTK5A
+	 FYXS2yPaTUprgfHgvmuI+jtzZ+TvCC+cMlMYqOEbQl3ejh7NFiIqGmsemDzpUY6Pzv
+	 XEFbl8Ko9EuaJVNDB1ubzmUQKRU6v4paW0pYAijEv0//J4ko0ycthOAcFC5thxyAsG
+	 OO2wiSx4oP2k56UfybBAP+nQpSxUdVmrcfidkQroVTyRRR0DYgRWQrq2MP5P3gZyY/
+	 LxZr7BqHaed8AR9apTjmNA0E7AhUcvPV9zSAVK8dip65GzodjVqmxhULN9FHkgM2kI
+	 hEAsPc2lsmfVw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Hongyu Xie <xiehongyu1@kylinos.cn>,
+	Peter Chen <peter.chen@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error paths
-Date: Tue, 24 Feb 2026 21:12:15 -0500
-Message-ID: <20260225021215.3793103-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/3] usb: cdns3: remove redundant if branch
+Date: Tue, 24 Feb 2026 21:20:12 -0500
+Message-ID: <20260225022014.3800129-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026022441-guzzler-reanalyze-624b@gregkh>
-References: <2026022441-guzzler-reanalyze-624b@gregkh>
+In-Reply-To: <2026022424-backshift-doily-d162@gregkh>
+References: <2026022424-backshift-doily-d162@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,92 +69,77 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-219128-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219127-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxtesting.org:url,ispras.ru:email]
-X-Rspamd-Queue-Id: 88727190B30
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7ECE9190D73
 X-Rspamd-Action: no action
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Hongyu Xie <xiehongyu1@kylinos.cn>
 
-[ Upstream commit a09dc10d1353f0e92c21eae2a79af1c2b1ddcde8 ]
+[ Upstream commit dedab674428f8a99468a4864c067128ba9ea83a6 ]
 
-There are two places where ksmbd_vfs_kern_path_end_removing() needs to be
-called in order to balance what the corresponding successful call to
-ksmbd_vfs_kern_path_start_removing() has done, i.e. drop inode locks and
-put the taken references.  Otherwise there might be potential deadlocks
-and unbalanced locks which are caught like:
+cdns->role_sw->dev->driver_data gets set in routines showing below,
+cdns_init
+  sw_desc.driver_data = cdns;
+  cdns->role_sw = usb_role_switch_register(dev, &sw_desc);
+    dev_set_drvdata(&sw->dev, desc->driver_data);
 
-BUG: workqueue leaked lock or atomic: kworker/5:21/0x00000000/7596
-     last function: handle_ksmbd_work
-2 locks held by kworker/5:21/7596:
- #0: ffff8881051ae448 (sb_writers#3){.+.+}-{0:0}, at: ksmbd_vfs_kern_path_locked+0x142/0x660
- #1: ffff888130e966c0 (&type->i_mutex_dir_key#3/1){+.+.}-{4:4}, at: ksmbd_vfs_kern_path_locked+0x17d/0x660
-CPU: 5 PID: 7596 Comm: kworker/5:21 Not tainted 6.1.162-00456-gc29b353f383b #138
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-Workqueue: ksmbd-io handle_ksmbd_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x44/0x5b
- process_one_work.cold+0x57/0x5c
- worker_thread+0x82/0x600
- kthread+0x153/0x190
- ret_from_fork+0x22/0x30
- </TASK>
+In cdns_resume,
+cdns->role = cdns_role_get(cdns->role_sw); //line redundant
+  struct cdns *cdns = usb_role_switch_get_drvdata(sw);
+    dev_get_drvdata(&sw->dev)
+      return dev->driver_data
+return cdns->role;
 
-Found by Linux Verification Center (linuxtesting.org).
+"line redundant" equals to,
+	cdns->role = cdns->role;
 
-Fixes: d5fc1400a34b ("smb/server: avoid deadlock when linking with ReplaceIfExists")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ ksmbd_vfs_kern_path_end_removing() call -> ksmbd_vfs_kern_path_unlock() ]
+So fix this if branch.
+
+Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20241231013641.23908-1-xiehongyu1@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 87e4b043b98a ("usb: cdns3: fix role switching during resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/cdns3/core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index ac8248479cba2..b73727416d2ad 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6074,14 +6074,14 @@ static int smb2_create_link(struct ksmbd_work *work,
- 				rc = -EINVAL;
- 				ksmbd_debug(SMB, "cannot delete %s\n",
- 					    link_name);
--				goto out;
- 			}
- 		} else {
- 			rc = -EEXIST;
- 			ksmbd_debug(SMB, "link already exists\n");
--			goto out;
- 		}
- 		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
-+		if (rc)
-+			goto out;
- 	}
- 	rc = ksmbd_vfs_link(work, target_name, link_name);
- 	if (rc)
+diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+index 7242591b346bc..d272d7b82bec1 100644
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -528,9 +528,7 @@ int cdns_resume(struct cdns *cdns)
+ 	int ret = 0;
+ 
+ 	if (cdns_power_is_lost(cdns)) {
+-		if (cdns->role_sw) {
+-			cdns->role = cdns_role_get(cdns->role_sw);
+-		} else {
++		if (!cdns->role_sw) {
+ 			real_role = cdns_hw_role_state_machine(cdns);
+ 			if (real_role != cdns->role) {
+ 				ret = cdns_hw_role_switch(cdns);
 -- 
 2.51.0
 
