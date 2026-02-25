@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-219328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DDFIHOdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:55 +0100
+	id OM6sM05Vnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6324B1929DB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F12CA18FFA0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 009BB3018698
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 48EED30A386F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC18301719;
-	Wed, 25 Feb 2026 06:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69CF326B2D7;
+	Wed, 25 Feb 2026 01:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGpXsaRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iD3naZzY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA0F2D77FA;
-	Wed, 25 Feb 2026 06:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB171D5141;
+	Wed, 25 Feb 2026 01:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002643; cv=none; b=XSU0aE9lSl2Ynksx/65x2lnJcw/6yvaNg49elNjm9oL6v2BsFGZJhjotoa2U2cEnbyqFjbMp9Kpi6u8N4DFkiWtmWiERxPWikJCHr5Sh+KHtvqK7NjjP8bsYPHc8vKxTOfZfNc/Pj76SKcR55tsu/4rbPvSubIen0a/Dwt8gGSI=
+	t=1771983521; cv=none; b=cCeV0ab67b+84vhXdghpS1IT7GMX0+loDMyDcYb6yzBr+23fodEEwYJFSz9U+LWFQK9Q4a1i75FAOrds6Dbfr0Kp5AdehsRYo4uhjKhYjil93o74Un4HZ8Plrcn0jlxGNRBIV4f63/HB2C6FxmhD191nwuUY8MdU+L3P8F8pVms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002643; c=relaxed/simple;
-	bh=8EWqtnr7YZg7hRMsPgszGc9Q9dbxbANdnwc9vsB6ztI=;
+	s=arc-20240116; t=1771983521; c=relaxed/simple;
+	bh=8hncPO2sbcneZUpdcMiI0mQQpK3cC0DZ9xEtPAu9Lvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4Anl8taGcNnSFuIQCL+uky2Bdi8mVPd++INGXpHhJJKu1rz1UGSe+hw1b+YUFCagj0E7H41vVaeM9B5RYFtYfTjgqh8hYLijJKtvpURN10vDkkVJqPhTJ/99UgMIWPe6bZ5xDY1M6I5DsFV2zojaeu3uH+7sP+MXshs7wRUnus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGpXsaRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E10C116D0;
-	Wed, 25 Feb 2026 06:57:23 +0000 (UTC)
+	 MIME-Version; b=J0V4SWr0oH9126muZYZAEmLEK4sC0rKPwDbb3Tgu/pnAjfgQpgklFfjzYCsJF7w2O9CtQmFuw3LF5/f6Hw8DZxZRvgvzc2f6aHS2qfjWpmFv6LIyNtcqgwHrmalvmisk8LzBlfTXIrKxj6mW4UkBgSoF8ZEcVBTAHwmuvOGgvVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iD3naZzY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076F0C116D0;
+	Wed, 25 Feb 2026 01:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002643;
-	bh=8EWqtnr7YZg7hRMsPgszGc9Q9dbxbANdnwc9vsB6ztI=;
+	s=korg; t=1771983521;
+	bh=8hncPO2sbcneZUpdcMiI0mQQpK3cC0DZ9xEtPAu9Lvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGpXsaRcVX1NU2Z12+1A+pEsp9JfAecCsHnymlhwefnK3AQhq01oqVaWVp8tgZcQU
-	 G1fNcsIfHliLgMTZLjkQ5L7oU8k5Sh9QGY/uoOAorqT5fL6RaLvWdHle6J9QMMS23K
-	 al2rcFpxuil7pirSOLlzCpnPCvGc0QXul5bz9Xqw=
+	b=iD3naZzYlJfkzCJI8qx1LfcHew8JbD5stmHx+ik23+AconmbsUzKEuW9/R13cxp72
+	 AJsX/8qSUxWWg9y02QRMNwDlnGNQ7KYoplmxXBCa3BYLAhyHGAuqw1lsdnE+dM6rOn
+	 TyDUg7c7mYnkjpys9o4S75A6RCdbRB7f0f3UYykc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Imran Shaik <imran.shaik@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	zhouwenhao <zhouwenhao7600@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Matt Wu <wuqiang.matt@bytedance.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 411/641] clk: qcom: gcc-sm4450: Update the SDCC RCGs to use shared_floor_ops
-Date: Tue, 24 Feb 2026 17:22:17 -0800
-Message-ID: <20260225012358.521883082@linuxfoundation.org>
+Subject: [PATCH 6.19 629/781] objpool: fix the overestimation of object pooling metadata size
+Date: Tue, 24 Feb 2026 17:22:18 -0800
+Message-ID: <20260225012415.239930340@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,89 +71,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux-foundation.org,kernel.org,bytedance.com];
+	TAGGED_FROM(0.00)[bounces-218667-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219328-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6324B1929DB
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,bytedance.com:email]
+X-Rspamd-Queue-Id: F12CA18FFA0
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+From: zhouwenhao <zhouwenhao7600@gmail.com>
 
-[ Upstream commit 458e8a082186335380a9ab83003a385aec9bb254 ]
+[ Upstream commit 5ed4b6b37c647d168ae31035b3f61b705997e043 ]
 
-Use shared_floor_ops for the SDCC RCGs so the RCG is safely parked
-during disable and the new parent configuration is programmed in
-hardware only when the new parent is enabled, avoiding cases where
-the RCG configuration fails to update.
+objpool uses struct objpool_head to store metadata information, and its
+cpu_slots member points to an array of pointers that store the addresses
+of the percpu ring arrays.  However, the memory size allocated during the
+initialization of cpu_slots is nr_cpu_ids * sizeof(struct objpool_slot).
+On a 64-bit machine, the size of struct objpool_slot is 16 bytes, which is
+twice the size of the actual pointer required, and the extra memory is
+never be used, resulting in a waste of memory.  Therefore, the memory size
+required for cpu_slots needs to be corrected.
 
-Fixes: c32c4ef98bac ("clk: qcom: Add GCC driver support for SM4450")
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-3-473afc86589c@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lkml.kernel.org/r/20260202132846.68257-1-zhouwenhao7600@gmail.com
+Fixes: b4edb8d2d464 ("lib: objpool added: ring-array based lockless MPMC")
+Signed-off-by: zhouwenhao <zhouwenhao7600@gmail.com>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Matt Wu <wuqiang.matt@bytedance.com>
+Cc: wuqiang.matt <wuqiang.matt@bytedance.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm4450.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/objpool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sm4450.c b/drivers/clk/qcom/gcc-sm4450.c
-index e2d9e4691c5b7..023d840e9f4ef 100644
---- a/drivers/clk/qcom/gcc-sm4450.c
-+++ b/drivers/clk/qcom/gcc-sm4450.c
-@@ -769,7 +769,7 @@ static struct clk_rcg2 gcc_sdcc1_apps_clk_src = {
- 		.parent_data = gcc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_4),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_floor_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
- };
- 
-@@ -791,7 +791,7 @@ static struct clk_rcg2 gcc_sdcc1_ice_core_clk_src = {
- 		.parent_data = gcc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_4),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_floor_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
- };
- 
-@@ -815,7 +815,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.parent_data = gcc_parent_data_6,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_6),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_floor_ops,
-+		.ops = &clk_rcg2_shared_floor_ops,
- 	},
- };
- 
+diff --git a/lib/objpool.c b/lib/objpool.c
+index b998b720c7329..d98fadf1de169 100644
+--- a/lib/objpool.c
++++ b/lib/objpool.c
+@@ -142,7 +142,7 @@ int objpool_init(struct objpool_head *pool, int nr_objs, int object_size,
+ 	pool->gfp = gfp & ~__GFP_ZERO;
+ 	pool->context = context;
+ 	pool->release = release;
+-	slot_size = nr_cpu_ids * sizeof(struct objpool_slot);
++	slot_size = nr_cpu_ids * sizeof(struct objpool_slot *);
+ 	pool->cpu_slots = kzalloc(slot_size, pool->gfp);
+ 	if (!pool->cpu_slots)
+ 		return -ENOMEM;
 -- 
 2.51.0
 
