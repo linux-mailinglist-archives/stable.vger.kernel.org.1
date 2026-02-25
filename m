@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-218499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uI0YKU1Snmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:17 +0100
+	id 4H9aDl9XnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DCDC18F2F5
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E90190504
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B9D93096B38
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A48031006D0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F7E22579E;
-	Wed, 25 Feb 2026 01:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9414129D260;
+	Wed, 25 Feb 2026 01:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+ADn3cq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSoHafx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEB618B0A;
-	Wed, 25 Feb 2026 01:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C111FE45D;
+	Wed, 25 Feb 2026 01:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983329; cv=none; b=GNLenoClQzGRoQkd5MKGBaadLRZhSvld00Y0/Jf2LOsAGSdF95Vk1t73V1RdO+/omFl3u9QeXfLndWMgrBlxLbOVrF9hYHcMl3Tb1mo+7KK5bH+S/mGgQVA082NKbq4nBQYq1z4Njmk/ir3DnmxpdfcA/RX6WiJfJv0Ok0F52z8=
+	t=1771983990; cv=none; b=mzG1cK2S3pEVimNjzHtPUc1/RrzwKcl9fq6iPVbd6eJN1NELLzP5Ggn0tx1CMEY4SJ7Wc57CbXjvOJ7AA7MMmtiLxthi1OiPkZEsJapWEbcH1eim9LV4RwLnnTjDYNJl7//gDktXafEOkDLS5Hab1f5alUFKKNGp2+WF+JDGxi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983329; c=relaxed/simple;
-	bh=ueCJh4D2MxTiKGKpOtY1U328PPOA7jzUNBXvW/cSKKc=;
+	s=arc-20240116; t=1771983990; c=relaxed/simple;
+	bh=xwS1vQc0it7QfN3AIulb/IDCUU1EARj/ZKh81/SCjZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=es8HfotYCc1K1PeIpNVaW0YSVYrc8fagouHXesCKLIacnBhbQmEE6sAzU1Pw97d0ZG1HLjd9zCd1AejJCvvCoFramOXjb97mkjydMdhKXD5Kxkp4IrY3t2lvGPA0PIV0y74esNq1HceKIp4OR+sB+H/jlctJwrCEmzfMWlncmOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+ADn3cq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1E0C116D0;
-	Wed, 25 Feb 2026 01:35:29 +0000 (UTC)
+	 MIME-Version; b=KXkedUOX3Z/6zhcjsGXap7THhiDZ60AlsyPlXyZmZQ8lNJYARGnjf7sbZWmzvK/SbcWHHAsTkwBv5Cs7CYoTLcOkCUvaR+AJRVzEGIKuVPSNru2325DER+6V7Ahd71F+zuKYnrg/3knYB8sIEq8umDY27sDaaFhh+5o8NX44N7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSoHafx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194C9C116D0;
+	Wed, 25 Feb 2026 01:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983329;
-	bh=ueCJh4D2MxTiKGKpOtY1U328PPOA7jzUNBXvW/cSKKc=;
+	s=korg; t=1771983990;
+	bh=xwS1vQc0it7QfN3AIulb/IDCUU1EARj/ZKh81/SCjZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+ADn3cqdGw5yhyDv767h2vV7XNAbYNI9D4+5hrbeiYf+QPr7LVABCm8xRkcgmiXa
-	 j9O9cv0DpMU4dHxOj4yf5Okya4fpCz4flVV+F225Ucsy4SIARGch0/q6HzsgaPrxSW
-	 vQtYGiSgAsJ4Fy8Gx83n4YpiFaiDbcgr9+s4zHXY=
+	b=uSoHafx+713fhcKs8vkvDO9B0EOCRYjQd4M1GcT6DOShslXigSb3q7ZmRCf3qZoi/
+	 3gbvsl22AT3viD/PM3BXaZcW1RzRWveT9WgEYrTmdTYovv+AOtRLj7WCVsYHfuupGl
+	 GLPFo+wR0TznWSepnxxHijNYxo88278CEzEYJAVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Penyaev <r.peniaev@gmail.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 461/781] RDMA/rtrs-srv: fix SG mapping
-Date: Tue, 24 Feb 2026 17:19:30 -0800
-Message-ID: <20260225012411.029092733@linuxfoundation.org>
+Subject: [PATCH 6.18 245/641] dm: fix unlocked test for dm_suspended_md
+Date: Tue, 24 Feb 2026 17:19:31 -0800
+Message-ID: <20260225012354.799722611@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218499-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ionos.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219066-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.984];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1DCDC18F2F5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 94E90190504
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Penyaev <r.peniaev@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 83835f7c07b523c7ca2a5ad0a511670b5810539e ]
+[ Upstream commit 24c405fdbe215c45e57bba672cc42859038491ee ]
 
-This fixes the following error on the server side:
+The function dm_blk_report_zones tests if the device is suspended with
+the "dm_suspended_md" call. However, this function is called without
+holding any locks, so the device may be suspended just after it.
 
-   RTRS server session allocation failed: -EINVAL
+Move the call to dm_suspended_md after dm_get_live_table, so that the
+device can't be suspended after the suspended state was tested.
 
-caused by the caller of the `ib_dma_map_sg()`, which does not expect
-less mapped entries, than requested, which is in the order of things
-and can be easily reproduced on the machine with enabled IOMMU.
-
-The fix is to treat any positive number of mapped sg entries as a
-successful mapping and cache DMA addresses by traversing modified
-SG table.
-
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Roman Penyaev <r.peniaev@gmail.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://patch.msgid.link/20260107161517.56357-2-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 37f53a2c60d0 ("dm: fix dm_blk_report_zones")
+Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ drivers/md/dm-zone.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 7a402eb8e0bf0..adb798e2a54ae 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -595,7 +595,7 @@ static int map_cont_bufs(struct rtrs_srv_path *srv_path)
- 	     srv_path->mrs_num++) {
- 		struct rtrs_srv_mr *srv_mr = &srv_path->mrs[srv_path->mrs_num];
- 		struct scatterlist *s;
--		int nr, nr_sgt, chunks;
-+		int nr, nr_sgt, chunks, ind;
- 
- 		sgt = &srv_mr->sgt;
- 		chunks = chunks_per_mr * srv_path->mrs_num;
-@@ -625,7 +625,7 @@ static int map_cont_bufs(struct rtrs_srv_path *srv_path)
- 		}
- 		nr = ib_map_mr_sg(mr, sgt->sgl, nr_sgt,
- 				  NULL, max_chunk_size);
--		if (nr != nr_sgt) {
-+		if (nr < nr_sgt) {
- 			err = nr < 0 ? nr : -EINVAL;
- 			goto dereg_mr;
- 		}
-@@ -641,9 +641,24 @@ static int map_cont_bufs(struct rtrs_srv_path *srv_path)
- 				goto dereg_mr;
- 			}
- 		}
--		/* Eventually dma addr for each chunk can be cached */
--		for_each_sg(sgt->sgl, s, nr_sgt, i)
--			srv_path->dma_addr[chunks + i] = sg_dma_address(s);
+diff --git a/drivers/md/dm-zone.c b/drivers/md/dm-zone.c
+index 78e17dd4d01b8..ba39c8313f32b 100644
+--- a/drivers/md/dm-zone.c
++++ b/drivers/md/dm-zone.c
+@@ -66,11 +66,13 @@ int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
+ 		 * Zone revalidation during __bind() is in progress, but this
+ 		 * call is from a different process
+ 		 */
+-		if (dm_suspended_md(md))
+-			return -EAGAIN;
+-
+ 		map = dm_get_live_table(md, &srcu_idx);
+ 		put_table = true;
 +
-+		/*
-+		 * Cache DMA addresses by traversing sg entries.  If
-+		 * regions were merged, an inner loop is required to
-+		 * populate the DMA address array by traversing larger
-+		 * regions.
-+		 */
-+		ind = chunks;
-+		for_each_sg(sgt->sgl, s, nr_sgt, i) {
-+			unsigned int dma_len = sg_dma_len(s);
-+			u64 dma_addr = sg_dma_address(s);
-+			u64 dma_addr_end = dma_addr + dma_len;
-+
-+			do {
-+				srv_path->dma_addr[ind++] = dma_addr;
-+				dma_addr += max_chunk_size;
-+			} while (dma_addr < dma_addr_end);
++		if (dm_suspended_md(md)) {
++			ret = -EAGAIN;
++			goto do_put_table;
 +		}
+ 	} else {
+ 		/* Zone revalidation during __bind() */
+ 		map = zone_revalidate_map;
+@@ -80,6 +82,7 @@ int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
+ 		ret = dm_blk_do_report_zones(md, map, sector, nr_zones, cb,
+ 					     data);
  
- 		ib_update_fast_reg_key(mr, ib_inc_rkey(mr->rkey));
- 		srv_mr->mr = mr;
++do_put_table:
+ 	if (put_table)
+ 		dm_put_live_table(md, srcu_idx);
+ 
 -- 
 2.51.0
 
