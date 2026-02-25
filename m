@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-218570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCDWOLxSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218570-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:08 +0100
+	id cL2oEI5WnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-219096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:26 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EB418F4F6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB56190330
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 79069301326A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C617530D7072
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C795258ED5;
-	Wed, 25 Feb 2026 01:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB6927603A;
+	Wed, 25 Feb 2026 01:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNjeYC6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBO+nveI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305A71D5141;
-	Wed, 25 Feb 2026 01:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313371E2834;
+	Wed, 25 Feb 2026 01:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983412; cv=none; b=mykHKg6JV1EWo0fkarDdAtCC+CIfUiziCJ6/x61PwWHPH+pTycuDTzmDiNgZcenPV/RL4PAtVju5Mi5ulid0nVjXClEfuSJccnj38EaLT2Ij97E+Z7hcU9PyeGtX3LiM2Dydw1J9waSUomklQNu1qn0ZgPMXrbpw76L5AKfoBYY=
+	t=1771984028; cv=none; b=AITjiwdgJdrvQ6J4bBQ+jvJMDqbNnKbspCU77l3icYry0QH7GIsqPTUblxj/5TY4MAMfArJ35h+oWavSBo31H7bYuuXq2rfrNoXW5p/zMnI6z4rsqPRxIbJavOGXksCmJ0wqf+8xhffBIX43Ke4dlaXa8wQncbeT45drLMFpfE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983412; c=relaxed/simple;
-	bh=6dvIQkhpv5/myMLiR1+eoZl5oFsyFblqyfng2szi/Wc=;
+	s=arc-20240116; t=1771984028; c=relaxed/simple;
+	bh=dAc9vW2w6/1XhEeA0d35nLcPf4rS+frMGQl18pO7sac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYNHvRq/hcRx+aPoi8vvw2n3eeXyLN4xMRvd5xqkkthdeLAh/n5+EZtmekzrY4QOufkOk0bVE//XsdLwJTMJhkDe1WIfWvMnW/9T8jXl68+/DhSa0fQTAyqUoxodz1RckyDF1Tvif5dsgW/3+44M0sSfprWEmMc+bf05keuKWPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNjeYC6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44FDC116D0;
-	Wed, 25 Feb 2026 01:36:51 +0000 (UTC)
+	 MIME-Version; b=GNbUyLBdro2mt+Q2LnCHRo/azDlMzjP3dZWPVeqKXF2xRv3T/dLtZMT9ebBCIPWYF8f9+Tgx+siCS4ppC1ZHUrmy744dKtPBbuakFWKIajnmZlnZ7naPVQeFivtBaYHbxUV83lVlHXowK9ftL0+GIL8Dgbm1UesJczvBDDZmlTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBO+nveI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F59C116D0;
+	Wed, 25 Feb 2026 01:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983412;
-	bh=6dvIQkhpv5/myMLiR1+eoZl5oFsyFblqyfng2szi/Wc=;
+	s=korg; t=1771984028;
+	bh=dAc9vW2w6/1XhEeA0d35nLcPf4rS+frMGQl18pO7sac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iNjeYC6z4wfLAj24hLgI8hA4jAXd8iaWKdi1duMwNkL7nfOWhOqaYiyF3U3KLAQ5I
-	 U3aIimDydUALNrYAGCrnbM9Cp+j6XTbNHdCbOECQO0BicPunckQciBvQGNvXu55Fis
-	 79mshw05G8k1MqpE+FwiUbj1Wz+vmdfnTDKRXnXU=
+	b=EBO+nveI+ILzPidg8qxJMZZeL9pl5m4sUjwBMKu9TOIUVTLzYj1LHlL/iZQO2fQeK
+	 FNyZKETqjvG+SnI9ivH3aJ2w/rqSE2zgAzcczh7bSrrdE4pPSf4kjuDDF1ZGpUrdsh
+	 4f1s8sYgclvWExSh/3G1F6g3BWKooiRPFvh/wnP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
 	Chuck Lever <chuck.lever@oracle.com>,
-	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 489/781] RDMA/core: add rdma_rw_max_sge() helper for SQ sizing
-Date: Tue, 24 Feb 2026 17:19:58 -0800
-Message-ID: <20260225012411.802416175@linuxfoundation.org>
+Subject: [PATCH 6.18 273/641] xdrgen: Remove inclusion of nlm4.h header
+Date: Tue, 24 Feb 2026 17:19:59 -0800
+Message-ID: <20260225012355.413480892@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,182 +73,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218570-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-219096-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A4EB418F4F6
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0FB56190330
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit afcae7d7b8a278a6c29e064f99e5bafd4ac1fb37 ]
+[ Upstream commit eb1f3b55ac6202a013daf14ed508066947cdafa8 ]
 
-svc_rdma_accept() computes sc_sq_depth as the sum of rq_depth and the
-number of rdma_rw contexts (ctxts). This value is used to allocate the
-Send CQ and to initialize the sc_sq_avail credit pool.
+The client-side source code template mistakenly includes the
+nlm4.h header file, which is specific to the NLM protocol and
+should not be present in the generic template that generates
+client stubs for all XDR-based protocols.
 
-However, when the device uses memory registration for RDMA operations,
-rdma_rw_init_qp() inflates the QP's max_send_wr by a factor of three
-per context to account for REG and INV work requests. The Send CQ and
-credit pool remain sized for only one work request per context,
-causing Send Queue exhaustion under heavy NFS WRITE workloads.
-
-Introduce rdma_rw_max_sge() to compute the actual number of Send Queue
-entries required for a given number of rdma_rw contexts. Upper layer
-protocols call this helper before creating a Queue Pair so that their
-Send CQs and credit accounting match the QP's true capacity.
-
-Update svc_rdma_accept() to use rdma_rw_max_sge() when computing
-sc_sq_depth, ensuring the credit pool reflects the work requests
-that rdma_rw_init_qp() will reserve.
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Fixes: 00bd1439f464 ("RDMA/rw: Support threshold for registration vs scattering to local pages")
+Fixes: 903a7d37d9ea ("xdrgen: Update the files included in client-side source code")
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://patch.msgid.link/20260128005400.25147-5-cel@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/rw.c             | 53 +++++++++++++++++-------
- include/rdma/rw.h                        |  2 +
- net/sunrpc/xprtrdma/svc_rdma_transport.c |  8 +++-
- 3 files changed, 46 insertions(+), 17 deletions(-)
+ tools/net/sunrpc/xdrgen/templates/C/source_top/client.j2 | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/rw.c b/drivers/infiniband/core/rw.c
-index 6354ddf2a274c..2522ff1cc462c 100644
---- a/drivers/infiniband/core/rw.c
-+++ b/drivers/infiniband/core/rw.c
-@@ -651,34 +651,57 @@ unsigned int rdma_rw_mr_factor(struct ib_device *device, u32 port_num,
- }
- EXPORT_SYMBOL(rdma_rw_mr_factor);
+diff --git a/tools/net/sunrpc/xdrgen/templates/C/source_top/client.j2 b/tools/net/sunrpc/xdrgen/templates/C/source_top/client.j2
+index c5518c519854a..df3598c38b2c2 100644
+--- a/tools/net/sunrpc/xdrgen/templates/C/source_top/client.j2
++++ b/tools/net/sunrpc/xdrgen/templates/C/source_top/client.j2
+@@ -8,6 +8,5 @@
+ #include <linux/sunrpc/xdr.h>
+ #include <linux/sunrpc/xdrgen/_defs.h>
+ #include <linux/sunrpc/xdrgen/_builtins.h>
+-#include <linux/sunrpc/xdrgen/nlm4.h>
  
-+/**
-+ * rdma_rw_max_send_wr - compute max Send WRs needed for RDMA R/W contexts
-+ * @dev: RDMA device
-+ * @port_num: port number
-+ * @max_rdma_ctxs: number of rdma_rw_ctx structures
-+ * @create_flags: QP create flags (pass IB_QP_CREATE_INTEGRITY_EN if
-+ *                data integrity will be enabled on the QP)
-+ *
-+ * Returns the total number of Send Queue entries needed for
-+ * @max_rdma_ctxs. The result accounts for memory registration and
-+ * invalidation work requests when the device requires them.
-+ *
-+ * ULPs use this to size Send Queues and Send CQs before creating a
-+ * Queue Pair.
-+ */
-+unsigned int rdma_rw_max_send_wr(struct ib_device *dev, u32 port_num,
-+				 unsigned int max_rdma_ctxs, u32 create_flags)
-+{
-+	unsigned int factor = 1;
-+	unsigned int result;
-+
-+	if (create_flags & IB_QP_CREATE_INTEGRITY_EN ||
-+	    rdma_rw_can_use_mr(dev, port_num))
-+		factor += 2;	/* reg + inv */
-+
-+	if (check_mul_overflow(factor, max_rdma_ctxs, &result))
-+		return UINT_MAX;
-+	return result;
-+}
-+EXPORT_SYMBOL(rdma_rw_max_send_wr);
-+
- void rdma_rw_init_qp(struct ib_device *dev, struct ib_qp_init_attr *attr)
- {
--	u32 factor;
-+	unsigned int factor = 1;
- 
- 	WARN_ON_ONCE(attr->port_num == 0);
- 
- 	/*
--	 * Each context needs at least one RDMA READ or WRITE WR.
--	 *
--	 * For some hardware we might need more, eventually we should ask the
--	 * HCA driver for a multiplier here.
--	 */
--	factor = 1;
--
--	/*
--	 * If the device needs MRs to perform RDMA READ or WRITE operations,
--	 * we'll need two additional MRs for the registrations and the
--	 * invalidation.
-+	 * If the device uses MRs to perform RDMA READ or WRITE operations,
-+	 * or if data integrity is enabled, account for registration and
-+	 * invalidation work requests.
- 	 */
- 	if (attr->create_flags & IB_QP_CREATE_INTEGRITY_EN ||
- 	    rdma_rw_can_use_mr(dev, attr->port_num))
--		factor += 2;	/* inv + reg */
-+		factor += 2;	/* reg + inv */
- 
- 	attr->cap.max_send_wr += factor * attr->cap.max_rdma_ctxs;
- 
- 	/*
--	 * But maybe we were just too high in the sky and the device doesn't
--	 * even support all we need, and we'll have to live with what we get..
-+	 * The device might not support all we need, and we'll have to
-+	 * live with what we get.
- 	 */
- 	attr->cap.max_send_wr =
- 		min_t(u32, attr->cap.max_send_wr, dev->attrs.max_qp_wr);
-diff --git a/include/rdma/rw.h b/include/rdma/rw.h
-index d606cac482338..9a8f4b76ce588 100644
---- a/include/rdma/rw.h
-+++ b/include/rdma/rw.h
-@@ -66,6 +66,8 @@ int rdma_rw_ctx_post(struct rdma_rw_ctx *ctx, struct ib_qp *qp, u32 port_num,
- 
- unsigned int rdma_rw_mr_factor(struct ib_device *device, u32 port_num,
- 		unsigned int maxpages);
-+unsigned int rdma_rw_max_send_wr(struct ib_device *dev, u32 port_num,
-+		unsigned int max_rdma_ctxs, u32 create_flags);
- void rdma_rw_init_qp(struct ib_device *dev, struct ib_qp_init_attr *attr);
- int rdma_rw_init_mrs(struct ib_qp *qp, struct ib_qp_init_attr *attr);
- void rdma_rw_cleanup_mrs(struct ib_qp *qp);
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-index b7b318ad25c42..9b623849723ed 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-@@ -462,7 +462,10 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
- 		newxprt->sc_max_bc_requests = 2;
- 	}
- 
--	/* Arbitrary estimate of the needed number of rdma_rw contexts.
-+	/* Estimate the needed number of rdma_rw contexts. The maximum
-+	 * Read and Write chunks have one segment each. Each request
-+	 * can involve one Read chunk and either a Write chunk or Reply
-+	 * chunk; thus a factor of three.
- 	 */
- 	maxpayload = min(xprt->xpt_server->sv_max_payload,
- 			 RPCSVC_MAXPAYLOAD_RDMA);
-@@ -470,7 +473,8 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
- 		rdma_rw_mr_factor(dev, newxprt->sc_port_num,
- 				  maxpayload >> PAGE_SHIFT);
- 
--	newxprt->sc_sq_depth = rq_depth + ctxts;
-+	newxprt->sc_sq_depth = rq_depth +
-+		rdma_rw_max_send_wr(dev, newxprt->sc_port_num, ctxts, 0);
- 	if (newxprt->sc_sq_depth > dev->attrs.max_qp_wr)
- 		newxprt->sc_sq_depth = dev->attrs.max_qp_wr;
- 	atomic_set(&newxprt->sc_sq_avail, newxprt->sc_sq_depth);
+ #include <linux/sunrpc/clnt.h>
 -- 
 2.51.0
 
