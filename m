@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218996-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIGdMkFSnmm6UgQAu9opvQ
-	(envelope-from <stable+bounces-218428-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:05 +0100
+	id yIxzFG1YnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218996-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A938E18F2B6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE382190711
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 51AAF305FDA1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B1E4631182C3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBC120C012;
-	Wed, 25 Feb 2026 01:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D113286D7E;
+	Wed, 25 Feb 2026 01:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8OhEFP6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IU8KU9QN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B271118DB2A;
-	Wed, 25 Feb 2026 01:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C6724337B;
+	Wed, 25 Feb 2026 01:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983248; cv=none; b=kyeYYhKGZ/0GSfuWwSlHIHvnAjuCqT6FQlcwDU8z5O3PS3p01cq8jt4Wza35Yw1YY9f/flqGSYatd2F66N65NaLbOxkCjGlqbic8l3Umx4R9/+mgwF7b5Rqrwbj+0ebk6SNcN3kb3sJuP+ViVGEdOqw+5uaXiGpIVw9CpezIRiM=
+	t=1771983905; cv=none; b=AbgMdvN6uRjps9JmiTk6/yyeOYKXxY0jc5fuyjRj16FrnWV7K/Qkv0ZO7VOSlFjvvJtehXeFtxqLF1y4E0ntMmqO2ZO3T8/CnyZOcHieFQ+BrzaOuQ+r3tnNSdyObJ0NBPnTi5s/1Y3cwfIhhHR8aywLKDiqHiih5MBTjbjE1MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983248; c=relaxed/simple;
-	bh=QRoww3ty/0XUsKdVjn3pBfaQL8n9Vl8XMRmm5E2+gkU=;
+	s=arc-20240116; t=1771983905; c=relaxed/simple;
+	bh=3J1tHiYjRPOWPC6DGnqgO2/lTIDIkAB114urZKgIEoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLkYaPrJUDLIkvkxq72OTmKTOeZvQn/7jwM2W1QWttlOCOu9yGnEVlSMuxii5mCBBP/yCdVnO6v0wPH7Z7TWGZORshgIANxMgsX7aSvLTPhxf+wx7haG/Vv3r0eTsdjQ0t04kzLjQJEnqlC7uuRTF1i4vVwu7FD9SijEVJYv9xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8OhEFP6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733C1C116D0;
-	Wed, 25 Feb 2026 01:34:08 +0000 (UTC)
+	 MIME-Version; b=XHDlO6Pk985EV18ziGvMgwshQsJj2EgyzGmv8PrEhzYWjKz6cePZr/9tMjHRtrWdwgcFEOPpAXVk5VRexy2VOfT4Kn8ZNcuznOFMtVOI4+fhJHPww7cdYn8INVdUATKqg+5RT1PgfNt2Tf58SWYv3JTDK+pVFxbkIwfVZGpLobQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IU8KU9QN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B437AC116D0;
+	Wed, 25 Feb 2026 01:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983248;
-	bh=QRoww3ty/0XUsKdVjn3pBfaQL8n9Vl8XMRmm5E2+gkU=;
+	s=korg; t=1771983904;
+	bh=3J1tHiYjRPOWPC6DGnqgO2/lTIDIkAB114urZKgIEoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N8OhEFP6iU1Kb+9u040v3ZgxAjRypCXOI+LVTmxX93qsEiP7iglb4FXeTSI7VTqgw
-	 I421SgKojB3vuO49JmwFyIlNJDO5n42AQfdcGEgNKmymY8I4d1bxJiRANT9Mf0uQkp
-	 W1hH8jgDYWZ7X9wxx1SjNUp9EwZDo31CaxJGHMvE=
+	b=IU8KU9QN5Qfcywye9I0UmYmMMiXtpJ0Dyfbyps8CDHfTjI1YbM6Kv7WPZ/pjLizy/
+	 aVrR4vI72qhjwtCtlfWzgfKgcVIuIpMj73YuRwEWlAskKv6HXsDl0P+Me6TiAlyh/P
+	 ebsms42+0GkB/OjWf4b6aFQ1xbldwUylq8KLs5Ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Steven Price <steven.price@arm.com>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 388/781] tcp: disable RFC3168 fallback identifier for CC modules
-Date: Tue, 24 Feb 2026 17:18:17 -0800
-Message-ID: <20260225012409.211884517@linuxfoundation.org>
+Subject: [PATCH 6.18 172/641] drm/panthor: Fix the logic that decides when to stop ticking
+Date: Tue, 24 Feb 2026 17:18:18 -0800
+Message-ID: <20260225012353.210183235@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,163 +70,159 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,gmail.com,collabora.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218996-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218428-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nokia-bell-labs.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: A938E18F2B6
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,collabora.com:email,msgid.link:url,arm.com:email]
+X-Rspamd-Queue-Id: AE382190711
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit e68c28f22f46ecfdec3656ae785dd8ccbb4d557d ]
+[ Upstream commit 61d9a43d70dc3e1709ecd14a34f6d5f01e21dfc9 ]
 
-When AccECN is not successfully negociated for a TCP flow, it defaults
-fallback to classic ECN (RFC3168). However, L4S service will fallback
-to non-ECN.
+When we have multiple active groups with the same priority, we need to
+keep ticking for the priority rotation to take place. If we don't do
+that, we might starve slots with lower priorities.
 
-This patch enables congestion control module to control whether it
-should not fallback to classic ECN after unsuccessful AccECN negotiation.
-A new CA module flag (TCP_CONG_NO_FALLBACK_RFC3168) identifies this
-behavior expected by the CA.
+It's annoying to deal with that in tick_ctx_update_resched_target(),
+so let's add a ::stop_tick field to the tick context which is
+initialized to true, and downgraded to false as soon as we detect
+something that requires to tick to happen. This way we can complement
+the current logic with extra conditions if needed.
 
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260131222515.8485-6-chia-yu.chang@nokia-bell-labs.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: c5ff6b837159 ("tcp: accecn: handle unexpected AccECN negotiation feedback")
+v2:
+- Add R-b
+
+v3:
+- Drop panthor_sched_tick_ctx::min_priority (no longer relevant)
+- Collect R-b
+
+Fixes: de8548813824 ("drm/panthor: Add the scheduler logical block")
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Chia-I Wu <olvaffe@gmail.com>
+Link: https://patch.msgid.link/20251128094839.3856402-7-boris.brezillon@collabora.com
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h        | 12 +++++++++++-
- include/net/tcp_ecn.h    | 11 ++++++++---
- net/ipv4/tcp_input.c     |  2 +-
- net/ipv4/tcp_minisocks.c |  7 ++++---
- 4 files changed, 24 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/panthor/panthor_sched.c | 44 ++++++++++---------------
+ 1 file changed, 17 insertions(+), 27 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index c4c25f2e0c0dd..e0a5cf2f78181 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1207,8 +1207,11 @@ enum tcp_ca_ack_event_flags {
- #define TCP_CONG_NEEDS_ACCECN		BIT(2)
- /* Use ECT(1) instead of ECT(0) while the CA is uninitialized */
- #define TCP_CONG_ECT_1_NEGOTIATION	BIT(3)
-+/* Cannot fallback to RFC3168 during AccECN negotiation */
-+#define TCP_CONG_NO_FALLBACK_RFC3168	BIT(4)
- #define TCP_CONG_MASK  (TCP_CONG_NON_RESTRICTED | TCP_CONG_NEEDS_ECN | \
--			TCP_CONG_NEEDS_ACCECN | TCP_CONG_ECT_1_NEGOTIATION)
-+			TCP_CONG_NEEDS_ACCECN | TCP_CONG_ECT_1_NEGOTIATION | \
-+			TCP_CONG_NO_FALLBACK_RFC3168)
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index 3d4ac73999825..368e7f3449105 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -1902,10 +1902,10 @@ struct panthor_sched_tick_ctx {
+ 	struct list_head groups[PANTHOR_CSG_PRIORITY_COUNT];
+ 	u32 idle_group_count;
+ 	u32 group_count;
+-	enum panthor_csg_priority min_priority;
+ 	struct panthor_vm *vms[MAX_CS_PER_CSG];
+ 	u32 as_count;
+ 	bool immediate_tick;
++	bool stop_tick;
+ 	u32 csg_upd_failed_mask;
+ };
  
- union tcp_cc_info;
+@@ -1970,17 +1970,21 @@ tick_ctx_pick_groups_from_list(const struct panthor_scheduler *sched,
+ 		if (!owned_by_tick_ctx)
+ 			group_get(group);
  
-@@ -1354,6 +1357,13 @@ static inline bool tcp_ca_ect_1_negotiation(const struct sock *sk)
- 	return icsk->icsk_ca_ops->flags & TCP_CONG_ECT_1_NEGOTIATION;
- }
- 
-+static inline bool tcp_ca_no_fallback_rfc3168(const struct sock *sk)
-+{
-+	const struct inet_connection_sock *icsk = inet_csk(sk);
+-		list_move_tail(&group->run_node, &ctx->groups[group->priority]);
+ 		ctx->group_count++;
 +
-+	return icsk->icsk_ca_ops->flags & TCP_CONG_NO_FALLBACK_RFC3168;
-+}
++		/* If we have more than one active group with the same priority,
++		 * we need to keep ticking to rotate the CSG priority.
++		 */
+ 		if (group_is_idle(group))
+ 			ctx->idle_group_count++;
++		else if (!list_empty(&ctx->groups[group->priority]))
++			ctx->stop_tick = false;
 +
- static inline void tcp_ca_event(struct sock *sk, const enum tcp_ca_event event)
++		list_move_tail(&group->run_node, &ctx->groups[group->priority]);
+ 
+ 		if (i == ctx->as_count)
+ 			ctx->vms[ctx->as_count++] = group->vm;
+ 
+-		if (ctx->min_priority > group->priority)
+-			ctx->min_priority = group->priority;
+-
+ 		if (tick_ctx_is_full(sched, ctx))
+ 			return;
+ 	}
+@@ -2024,7 +2028,7 @@ tick_ctx_init(struct panthor_scheduler *sched,
+ 	memset(ctx, 0, sizeof(*ctx));
+ 	csgs_upd_ctx_init(&upd_ctx);
+ 
+-	ctx->min_priority = PANTHOR_CSG_PRIORITY_COUNT;
++	ctx->stop_tick = true;
+ 	for (i = 0; i < ARRAY_SIZE(ctx->groups); i++) {
+ 		INIT_LIST_HEAD(&ctx->groups[i]);
+ 		INIT_LIST_HEAD(&ctx->old_groups[i]);
+@@ -2336,32 +2340,18 @@ static u64
+ tick_ctx_update_resched_target(struct panthor_scheduler *sched,
+ 			       const struct panthor_sched_tick_ctx *ctx)
  {
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
-diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
-index fdde1c342b35c..2e1637edf1d3c 100644
---- a/include/net/tcp_ecn.h
-+++ b/include/net/tcp_ecn.h
-@@ -507,7 +507,9 @@ static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb
- 		 * | ECN    | AccECN | 0   0   1  | Classic ECN |
- 		 * +========+========+============+=============+
- 		 */
--		if (tcp_ecn_mode_pending(tp))
-+		if (tcp_ca_no_fallback_rfc3168(sk))
-+			tcp_ecn_mode_set(tp, TCP_ECN_DISABLED);
-+		else if (tcp_ecn_mode_pending(tp))
- 			/* Downgrade from AccECN, or requested initially */
- 			tcp_ecn_mode_set(tp, TCP_ECN_MODE_RFC3168);
- 		break;
-@@ -531,9 +533,11 @@ static inline void tcp_ecn_rcv_synack(struct sock *sk, const struct sk_buff *skb
- 	}
- }
+-	/* We had space left, no need to reschedule until some external event happens. */
+-	if (!tick_ctx_is_full(sched, ctx))
+-		goto no_tick;
+-
+-	/* If idle groups were scheduled, no need to wake up until some external
+-	 * event happens (group unblocked, new job submitted, ...).
+-	 */
+-	if (ctx->idle_group_count)
+-		goto no_tick;
++	u64 resched_target;
  
--static inline void tcp_ecn_rcv_syn(struct tcp_sock *tp, const struct tcphdr *th,
-+static inline void tcp_ecn_rcv_syn(struct sock *sk, const struct tcphdr *th,
- 				   const struct sk_buff *skb)
- {
-+	struct tcp_sock *tp = tcp_sk(sk);
-+
- 	if (tcp_ecn_mode_pending(tp)) {
- 		if (!tcp_accecn_syn_requested(th)) {
- 			/* Downgrade to classic ECN feedback */
-@@ -545,7 +549,8 @@ static inline void tcp_ecn_rcv_syn(struct tcp_sock *tp, const struct tcphdr *th,
- 			tcp_ecn_mode_set(tp, TCP_ECN_MODE_ACCECN);
- 		}
- 	}
--	if (tcp_ecn_mode_rfc3168(tp) && (!th->ece || !th->cwr))
-+	if (tcp_ecn_mode_rfc3168(tp) &&
-+	    (!th->ece || !th->cwr || tcp_ca_no_fallback_rfc3168(sk)))
- 		tcp_ecn_mode_set(tp, TCP_ECN_DISABLED);
- }
+-	if (drm_WARN_ON(&sched->ptdev->base, ctx->min_priority >= PANTHOR_CSG_PRIORITY_COUNT))
++	if (ctx->stop_tick)
+ 		goto no_tick;
  
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 736f8f55ab5a6..0d080a3e27d6f 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6843,7 +6843,7 @@ static int tcp_rcv_synsent_state_process(struct sock *sk, struct sk_buff *skb,
- 		tp->snd_wl1    = TCP_SKB_CB(skb)->seq;
- 		tp->max_window = tp->snd_wnd;
+-	/* If there are groups of the same priority waiting, we need to
+-	 * keep the scheduler ticking, otherwise, we'll just wait for
+-	 * new groups with higher priority to be queued.
+-	 */
+-	if (!list_empty(&sched->groups.runnable[ctx->min_priority])) {
+-		u64 resched_target = sched->last_tick + sched->tick_period;
++	resched_target = sched->last_tick + sched->tick_period;
  
--		tcp_ecn_rcv_syn(tp, th, skb);
-+		tcp_ecn_rcv_syn(sk, th, skb);
+-		if (time_before64(sched->resched_target, sched->last_tick) ||
+-		    time_before64(resched_target, sched->resched_target))
+-			sched->resched_target = resched_target;
++	if (time_before64(sched->resched_target, sched->last_tick) ||
++	    time_before64(resched_target, sched->resched_target))
++		sched->resched_target = resched_target;
  
- 		tcp_mtup_init(sk);
- 		tcp_sync_mss(sk, icsk->icsk_pmtu_cookie);
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index bd5462154f970..9776c921d1bb4 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -485,9 +485,10 @@ static void tcp_ecn_openreq_child(struct sock *sk,
- 		tp->accecn_opt_demand = 1;
- 		tcp_ecn_received_counters_payload(sk, skb);
- 	} else {
--		tcp_ecn_mode_set(tp, inet_rsk(req)->ecn_ok ?
--				     TCP_ECN_MODE_RFC3168 :
--				     TCP_ECN_DISABLED);
-+		if (inet_rsk(req)->ecn_ok && !tcp_ca_no_fallback_rfc3168(sk))
-+			tcp_ecn_mode_set(tp, TCP_ECN_MODE_RFC3168);
-+		else
-+			tcp_ecn_mode_set(tp, TCP_ECN_DISABLED);
- 	}
- }
+-		return sched->resched_target - sched->last_tick;
+-	}
++	return sched->resched_target - sched->last_tick;
  
+ no_tick:
+ 	sched->resched_target = U64_MAX;
 -- 
 2.51.0
 
