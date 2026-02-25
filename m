@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFy6CJpWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:38 +0100
+	id WLQNBLxSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB764190369
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22B818F4E9
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6706030A4839
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 460E5300C0CE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456EF27D782;
-	Wed, 25 Feb 2026 01:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6A9254B03;
+	Wed, 25 Feb 2026 01:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0IPUPbQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hoMSYYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090F81E2834;
-	Wed, 25 Feb 2026 01:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F37D1D5141;
+	Wed, 25 Feb 2026 01:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984026; cv=none; b=NEWo+8hXG3NYvB3HD25b61rVjOh7GG7Sfib2rHgXKjmOZgDEg5XxyPYuZPkdUCw86kPZEk3NDy7SPyM96M0HPgzJgfqbTXnsWk5qum2Wx4hvJ7EjTocOjlI/9JL38KfMCXyWHUpLxsnZpz2iMbmEZHqaCJwju0EnCzOBThGxXh0=
+	t=1771983411; cv=none; b=Fvk7are1vaxZICr3R1U60M7UVLNJAEpIEJ4xcX7/d+vucBKe8dTErgED/cpUY5sgzqpeidKKW5fiLA3+6mqCQU2U6jjSwKAWkJaI48XRGtBUmZ48S6DHmVafib6kuCyJh0EuVzxRNsHbsVI8gnWPwM5R3Al9tkOc2jV/iOqLNrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984026; c=relaxed/simple;
-	bh=ActG3WlXVkACp1pEQfgdNxfz6eificW4sR2SGppsfQA=;
+	s=arc-20240116; t=1771983411; c=relaxed/simple;
+	bh=gDCDGURQAcLrHTnxNIXJBoQiLiyTO81p2vjJsa0ogtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9a11vVbzKVhs2mTjKjBCq3EusZVffa0GAiC5T+C54k8w5joPicK0HQ3g/7uTQHZWVZtNoo3sygDH3Qa86rirP9rMD4WWBgLSh8cA6BA4DyBBr/UCTcYsRxdNMQK/zkJTUpJ0fvs86VJNnZW9vQevB9znQrSY7JP2IqjDZwULLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0IPUPbQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6982C116D0;
-	Wed, 25 Feb 2026 01:47:05 +0000 (UTC)
+	 MIME-Version; b=ThrH5Vmu5Vq6XDWtG7/vlus43XM4IWnIsn2Lh7cQrx6a1RBnRUs1MvchPkjNTUFCqUXsio9HBLhFZR1HdVG/Urua3luhwMbBAq0jGHPjsFSl+fpSbjkM2Ca51tSiyzIt6ayorPZaJ4bZ88sZ8pLaCkFR7m9ZaSqJwcmCUTLTLr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hoMSYYy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1732C116D0;
+	Wed, 25 Feb 2026 01:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984025;
-	bh=ActG3WlXVkACp1pEQfgdNxfz6eificW4sR2SGppsfQA=;
+	s=korg; t=1771983411;
+	bh=gDCDGURQAcLrHTnxNIXJBoQiLiyTO81p2vjJsa0ogtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0IPUPbQVyXCBojTYpoR4q13B7on7w6HYG9VWrU7lFmHaHJNlnPQAPu65PhTKymk0
-	 k3wW1TJxh5BSaIkrJG7D8vjQGK2i120z92DP5praUKqVjp4MlrOt0/C615G5g+XTti
-	 UiktKboEEwH79f0fw57gvT7wxhVLPeo5HGoTTJBk=
+	b=1hoMSYYykMjpid2eN0SQX0YjHIXr1YqjaREHMi4hOsbDlWUnqcM5soc7Bm6R9SK/5
+	 hPSFM8jA8bOlTeCo3Hf6RpZUdUc7JFieJRYR4sdBY7fFekiksYAKOKGVm6JMCFxv/g
+	 mPmM07Cri/p5OUuLvqRHqXjd/qs7Tq8OtBNLSWQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 271/641] NFS: NFSERR_INVAL is not defined by NFSv2
+Subject: [PATCH 6.19 488/781] RDMA/rxe: Fix race condition in QP timer handlers
 Date: Tue, 24 Feb 2026 17:19:57 -0800
-Message-ID: <20260225012355.362260656@linuxfoundation.org>
+Message-ID: <20260225012411.778247442@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219094-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218569-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,89 +87,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[brown.name:email,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,opengroup.org:url]
-X-Rspamd-Queue-Id: BB764190369
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,fujitsu.com:email]
+X-Rspamd-Queue-Id: B22B818F4E9
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit 0ac903d1bfdce8ff40657c2b7d996947b72b6645 ]
+[ Upstream commit 87bf646921430e303176edc4eb07c30160361b73 ]
 
-A documenting comment in include/uapi/linux/nfs.h claims incorrectly
-that NFSv2 defines NFSERR_INVAL. There is no such definition in either
-RFC 1094 or https://pubs.opengroup.org/onlinepubs/9629799/chap7.htm
+I encontered the following warning:
+ WARNING: drivers/infiniband/sw/rxe/rxe_task.c:249 at rxe_sched_task+0x1c8/0x238 [rdma_rxe], CPU#0: swapper/0/0
+...
+  libsha1 [last unloaded: ip6_udp_tunnel]
+ CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G         C          6.19.0-rc5-64k-v8+ #37 PREEMPT
+ Tainted: [C]=CRAP
+ Hardware name: Raspberry Pi 4 Model B Rev 1.2
+ Call trace:
+  rxe_sched_task+0x1c8/0x238 [rdma_rxe] (P)
+  retransmit_timer+0x130/0x188 [rdma_rxe]
+  call_timer_fn+0x68/0x4d0
+  __run_timers+0x630/0x888
+...
+ WARNING: drivers/infiniband/sw/rxe/rxe_task.c:38 at rxe_sched_task+0x1c0/0x238 [rdma_rxe], CPU#0: swapper/0/0
+...
+ WARNING: drivers/infiniband/sw/rxe/rxe_task.c:111 at do_work+0x488/0x5c8 [rdma_rxe], CPU#3: kworker/u17:4/93400
+...
+ refcount_t: underflow; use-after-free.
+ WARNING: lib/refcount.c:28 at refcount_warn_saturate+0x138/0x1a0, CPU#3: kworker/u17:4/93400
 
-NFS3ERR_INVAL is introduced in RFC 1813.
+The issue is caused by a race condition between retransmit_timer() and
+rxe_destroy_qp, leading to the Queue Pair's (QP) reference count dropping
+to zero during timer handler execution.
 
-NFSD returns NFSERR_INVAL for PROC_GETACL, which has no
-specification (yet).
+It seems this warning is harmless because rxe_qp_do_cleanup() will flush
+all pending timers and requests.
 
-However, nfsd_map_status() maps nfserr_symlink and nfserr_wrong_type
-to nfserr_inval, which does not align with RFC 1094. This logic was
-introduced only recently by commit 438f81e0e92a ("nfsd: move error
-choice for incorrect object types to version-specific code."). Given
-that we have no INVAL or SERVERFAULT status in NFSv2, probably the
-only choice is NFSERR_IO.
+Example of flow causing the issue:
 
-Fixes: 438f81e0e92a ("nfsd: move error choice for incorrect object types to version-specific code.")
-Reviewed-by: NeilBrown <neil@brown.name>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+CPU0                                   CPU1
+retransmit_timer() {
+    spin_lock_irqsave
+                           rxe_destroy_qp()
+                            __rxe_cleanup()
+                              __rxe_put() // qp->ref_count decrease to 0
+                            rxe_qp_do_cleanup() {
+    if (qp->valid) {
+        rxe_sched_task() {
+            WARN_ON(rxe_read(task->qp) <= 0);
+        }
+    }
+    spin_unlock_irqrestore
+}
+                              spin_lock_irqsave
+                              qp->valid = 0
+                              spin_unlock_irqrestore
+                            }
+
+Ensure the QP's reference count is maintained and its validity is checked
+within the timer callbacks by adding calls to rxe_get(qp) and corresponding
+rxe_put(qp) after use.
+
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Fixes: d94671632572 ("RDMA/rxe: Rewrite rxe_task.c")
+Link: https://patch.msgid.link/20260120074437.623018-1-lizhijian@fujitsu.com
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs2acl.c        | 2 +-
- fs/nfsd/nfsproc.c        | 2 +-
- include/uapi/linux/nfs.h | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_comp.c | 3 +++
+ drivers/infiniband/sw/rxe/rxe_req.c  | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/fs/nfsd/nfs2acl.c b/fs/nfsd/nfs2acl.c
-index 5fb202acb0fd0..0ac538c761800 100644
---- a/fs/nfsd/nfs2acl.c
-+++ b/fs/nfsd/nfs2acl.c
-@@ -45,7 +45,7 @@ static __be32 nfsacld_proc_getacl(struct svc_rqst *rqstp)
- 	inode = d_inode(fh->fh_dentry);
+diff --git a/drivers/infiniband/sw/rxe/rxe_comp.c b/drivers/infiniband/sw/rxe/rxe_comp.c
+index a5b2b62f596b0..1390e861bd1d7 100644
+--- a/drivers/infiniband/sw/rxe/rxe_comp.c
++++ b/drivers/infiniband/sw/rxe/rxe_comp.c
+@@ -119,12 +119,15 @@ void retransmit_timer(struct timer_list *t)
  
- 	if (argp->mask & ~NFS_ACL_MASK) {
--		resp->status = nfserr_inval;
-+		resp->status = nfserr_io;
- 		goto out;
+ 	rxe_dbg_qp(qp, "retransmit timer fired\n");
+ 
++	if (!rxe_get(qp))
++		return;
+ 	spin_lock_irqsave(&qp->state_lock, flags);
+ 	if (qp->valid) {
+ 		qp->comp.timeout = 1;
+ 		rxe_sched_task(&qp->send_task);
  	}
- 	resp->mask = argp->mask;
-diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
-index 8f71f5748c75b..906a672578900 100644
---- a/fs/nfsd/nfsproc.c
-+++ b/fs/nfsd/nfsproc.c
-@@ -33,7 +33,7 @@ static __be32 nfsd_map_status(__be32 status)
- 		break;
- 	case nfserr_symlink:
- 	case nfserr_wrong_type:
--		status = nfserr_inval;
-+		status = nfserr_io;
- 		break;
+ 	spin_unlock_irqrestore(&qp->state_lock, flags);
++	rxe_put(qp);
+ }
+ 
+ void rxe_comp_queue_pkt(struct rxe_qp *qp, struct sk_buff *skb)
+diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
+index 373b03f223beb..12d03f390b097 100644
+--- a/drivers/infiniband/sw/rxe/rxe_req.c
++++ b/drivers/infiniband/sw/rxe/rxe_req.c
+@@ -102,6 +102,8 @@ void rnr_nak_timer(struct timer_list *t)
+ 
+ 	rxe_dbg_qp(qp, "nak timer fired\n");
+ 
++	if (!rxe_get(qp))
++		return;
+ 	spin_lock_irqsave(&qp->state_lock, flags);
+ 	if (qp->valid) {
+ 		/* request a send queue retry */
+@@ -110,6 +112,7 @@ void rnr_nak_timer(struct timer_list *t)
+ 		rxe_sched_task(&qp->send_task);
  	}
- 	return status;
-diff --git a/include/uapi/linux/nfs.h b/include/uapi/linux/nfs.h
-index 71c7196d32817..e629c49535345 100644
---- a/include/uapi/linux/nfs.h
-+++ b/include/uapi/linux/nfs.h
-@@ -55,7 +55,7 @@
- 	NFSERR_NODEV = 19,		/* v2 v3 v4 */
- 	NFSERR_NOTDIR = 20,		/* v2 v3 v4 */
- 	NFSERR_ISDIR = 21,		/* v2 v3 v4 */
--	NFSERR_INVAL = 22,		/* v2 v3 v4 */
-+	NFSERR_INVAL = 22,		/*    v3 v4 */
- 	NFSERR_FBIG = 27,		/* v2 v3 v4 */
- 	NFSERR_NOSPC = 28,		/* v2 v3 v4 */
- 	NFSERR_ROFS = 30,		/* v2 v3 v4 */
+ 	spin_unlock_irqrestore(&qp->state_lock, flags);
++	rxe_put(qp);
+ }
+ 
+ static void req_check_sq_drain_done(struct rxe_qp *qp)
 -- 
 2.51.0
 
