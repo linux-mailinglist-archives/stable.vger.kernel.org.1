@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNTdE7qinmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:20:26 +0100
+	id 6FI2G2xTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996E11933D8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:20:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C41718F837
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A70031D8D13
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 193863086A2F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF38313E0D;
-	Wed, 25 Feb 2026 06:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFA42741B6;
+	Wed, 25 Feb 2026 01:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xsZmDg9r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDCApSM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47392D7D59;
-	Wed, 25 Feb 2026 06:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D571B273D8D;
+	Wed, 25 Feb 2026 01:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002711; cv=none; b=YG3q74sVj//cfOTEvTNUwLr2y1UfJ12pZ/9lk4v11qfBCU7pcal54UAIVenVqhkCalFbFOgXrG1mJIBPTDs9Vl546dJhpIe313fFQWWEd0abo79/W3TtF6HC4Gbved8KVAXtqXk4G6xrJP+vAsKDj9rhsaLKLOteXkVjMXrLqRo=
+	t=1771983606; cv=none; b=tckIWAy3YJPOhU1T8ExUy2BD26nH21CchFfdcmkcGHN6Lub2kGh7Xzlh8xo7SXAFJimLFj1ZTonDs7eObjTbSKOM7YLf7KmaKpe/OvWOMuVTKAH3Hg77KP/xa1DSPaoAa5+OpLqBwfCl2+mPCkRwGog38jCUWvWO27CLtr5SsZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002711; c=relaxed/simple;
-	bh=g0r+9BlyqrFFpHKoyJafbqTy29qH0ea3HcAiIBPn+rQ=;
+	s=arc-20240116; t=1771983606; c=relaxed/simple;
+	bh=nd70LfAt3U36zzkC0Ur/J39GJi2sR6NxvyZAZE1gK3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgBaeZIKQ51SclxxF6ILEeApwWvjCGvjPM+EQ7yTU7KKNPZ6x8km0AZIMwx32MUwG6oqKiovsGnQQ1A2dYG2RygOGTcBNjC8IwTWCo+D7US4o7CmyNO0bIy+qHRsnulspVuM37emNbmA4qgW/f6VJaQgPEfou1+WQvIntrbGZkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xsZmDg9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFE9C116D0;
-	Wed, 25 Feb 2026 06:58:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QbEilimG9sDwOMKt0AupY6nxw92N2I9ZeUsFLmZVL/dxHoI1D1bgyXqbJiG9eug5RuzEXovxTWnzbUGjrzBN5ABtCvZhh8Mbxg1iTRvTxWf/7ly+AyQku9alR9YeQ970TOdbm6ZvEdciWj+yJ+YMjhd0lstCF8sthc5Hkhl0sy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDCApSM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6A4C19423;
+	Wed, 25 Feb 2026 01:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002711;
-	bh=g0r+9BlyqrFFpHKoyJafbqTy29qH0ea3HcAiIBPn+rQ=;
+	s=korg; t=1771983606;
+	bh=nd70LfAt3U36zzkC0Ur/J39GJi2sR6NxvyZAZE1gK3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xsZmDg9rMZ5uR+X4XITABWYhD7jvyKx8hbEe6WXeF700Wz1LQsyonpC3jdsKljhm9
-	 vlQa7FS4Df1UPs8VAd41cc8309bCFK5fttG1IGHkwtnaPbNuVkLexLg5uDIivbbcBQ
-	 KgsKR+VP2r1QZKXmbE7nl/gbsZWqL8dsePFUOR0Y=
+	b=rDCApSM0LOPkDbO1zdI8XgSjS3sPueUmbUGfnjUnpBV/SosrV3w26AMDea7RgEyAw
+	 ePB8lVgderNqxOEicF2bg7wJpuc9ilZpzqV6968tEgJcrOuxsmsPbk5+3Nxm3NobIC
+	 DHVzBdMJ8Lm9Hl+HHA9y/LQQDxBkDPR3wHhmc+vU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Jamin Mc <jaminmc@gmail.com>,
+	=?UTF-8?q?Fabian=20Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 473/641] coresight: etm3x: Fix cpulocked warning on cpuhp
-Date: Tue, 24 Feb 2026 17:23:19 -0800
-Message-ID: <20260225012359.975754138@linuxfoundation.org>
+Subject: [PATCH 6.19 691/781] apparmor: fix NULL pointer dereference in __unix_needs_revalidation
+Date: Tue, 24 Feb 2026 17:23:20 -0800
+Message-ID: <20260225012416.711530199@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,proxmox.com,canonical.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219432-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_FROM(0.00)[bounces-218740-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,st.com:email]
-X-Rspamd-Queue-Id: 996E11933D8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,localhost:email,proxmox.com:url,proxmox.com:email]
+X-Rspamd-Queue-Id: 2C41718F837
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Borneo <antonio.borneo@foss.st.com>
+From: System Administrator <root@localhost>
 
-[ Upstream commit 1feb0377b9b816f89a04fc381eb19fc6bac9f4a4 ]
+[ Upstream commit e2938ad00b21340c0362562dfedd7cfec0554d67 ]
 
-When changes [1] and [2] have been applied to the driver etm4x, the
-same modifications have been also collapsed in [3] and applied in
-one shot to the driver etm3x.
-While doing this, the driver etm3x has not been aligned to etm4x on
-the use of non cpuslocked version of cpuhp callback setup APIs.
+When receiving file descriptors via SCM_RIGHTS, both the socket pointer
+and the socket's sk pointer can be NULL during socket setup or teardown,
+causing NULL pointer dereferences in __unix_needs_revalidation().
 
-The current code triggers two run-time warnings when the kernel is
-compiled with CONFIG_PROVE_LOCKING=y.
+This is a regression in AppArmor 5.0.0 (kernel 6.17+) where the new
+__unix_needs_revalidation() function was added without proper NULL checks.
 
-Use non cpuslocked version of cpuhp callback setup APIs in driver
-etm3x, aligning it to the driver etm4x.
+The crash manifests as:
+  BUG: kernel NULL pointer dereference, address: 0x0000000000000018
+  RIP: aa_file_perm+0xb7/0x3b0 (or +0xbe/0x3b0, +0xc0/0x3e0)
+  Call Trace:
+   apparmor_file_receive+0x42/0x80
+   security_file_receive+0x2e/0x50
+   receive_fd+0x1d/0xf0
+   scm_detach_fds+0xad/0x1c0
 
-[1] commit 2d1a8bfb61ec ("coresight: etm4x: Fix etm4_count race by
-                          moving cpuhp callbacks to init")
-[2] commit 22a550a306ad ("coresight: etm4x: Allow etm4x to be built
-                          as a module")
-[3] commit 97fe626ce64c ("coresight: etm3x: Allow etm3x to be built
-                          as a module")
+The function dereferences sock->sk->sk_family without checking if either
+sock or sock->sk is NULL first.
 
-Fixes: 97fe626ce64c ("coresight: etm3x: Allow etm3x to be built as a module")
-Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20260108152427.357379-1-antonio.borneo@foss.st.com
+Add NULL checks for both sock and sock->sk before accessing sk_family.
+
+Fixes: 88fec3526e841 ("apparmor: make sure unix socket labeling is correctly updated.")
+Reported-by: Jamin Mc <jaminmc@gmail.com>
+Closes: https://bugzilla.proxmox.com/show_bug.cgi?id=7083
+Closes: https://gitlab.com/apparmor/apparmor/-/issues/568
+Signed-off-by: Fabian Grünbichler <f.gruenbichler@proxmox.com>
+Signed-off-by: System Administrator <root@localhost>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm3x-core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ security/apparmor/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm3x-core.c b/drivers/hwtracing/coresight/coresight-etm3x-core.c
-index a5e809589d3e3..0c011b7041696 100644
---- a/drivers/hwtracing/coresight/coresight-etm3x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm3x-core.c
-@@ -795,16 +795,16 @@ static int __init etm_hp_setup(void)
- {
- 	int ret;
+diff --git a/security/apparmor/file.c b/security/apparmor/file.c
+index c758204028780..919dbbbc87ab6 100644
+--- a/security/apparmor/file.c
++++ b/security/apparmor/file.c
+@@ -578,6 +578,9 @@ static bool __unix_needs_revalidation(struct file *file, struct aa_label *label,
+ 		return false;
+ 	if (request & NET_PEER_MASK)
+ 		return false;
++	/* sock and sock->sk can be NULL for sockets being set up or torn down */
++	if (!sock || !sock->sk)
++		return false;
+ 	if (sock->sk->sk_family == PF_UNIX) {
+ 		struct aa_sk_ctx *ctx = aa_sock(sock->sk);
  
--	ret = cpuhp_setup_state_nocalls_cpuslocked(CPUHP_AP_ARM_CORESIGHT_STARTING,
--						   "arm/coresight:starting",
--						   etm_starting_cpu, etm_dying_cpu);
-+	ret = cpuhp_setup_state_nocalls(CPUHP_AP_ARM_CORESIGHT_STARTING,
-+					"arm/coresight:starting",
-+					etm_starting_cpu, etm_dying_cpu);
- 
- 	if (ret)
- 		return ret;
- 
--	ret = cpuhp_setup_state_nocalls_cpuslocked(CPUHP_AP_ONLINE_DYN,
--						   "arm/coresight:online",
--						   etm_online_cpu, NULL);
-+	ret = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
-+					"arm/coresight:online",
-+					etm_online_cpu, NULL);
- 
- 	/* HP dyn state ID returned in ret on success */
- 	if (ret > 0) {
 -- 
 2.51.0
 
