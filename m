@@ -1,172 +1,161 @@
-Return-Path: <stable+bounces-219692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219693-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJCcNWhEn2m5ZgQAu9opvQ
-	(envelope-from <stable+bounces-219692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 19:50:16 +0100
+	id 2PJaDB5On2nNZwQAu9opvQ
+	(envelope-from <stable+bounces-219693-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 20:31:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8473219C6FC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 19:50:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B59D19CBA4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 20:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16A9B3033099
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 18:50:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88CD13018AC3
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 19:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF2E3ED135;
-	Wed, 25 Feb 2026 18:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227573ED136;
+	Wed, 25 Feb 2026 19:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.b="gvMKoedl"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA933D4127;
-	Wed, 25 Feb 2026 18:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8AC23EA89
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 19:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772045408; cv=none; b=pVwRjHT0fRy8bqQqCjJ+qX2RZJuRByW4/ILxJcFjHAG3XHu3LhhiPMjv0AMjhr+YhmY1qIgrg6fTTsyvqQzTSRdILuxMScaWxr94WBWf+8YvrmlgC5epuAPiOD7uxcdlNWuKBr7RcnjHh8jXzONn//Kz4qg7ZCNxWGGJcfNypRU=
+	t=1772047892; cv=none; b=q5rJIxisEF7JeP3z9NfmzZQAIMxL6pIJwbaWrM6+dnsAgJdTDHh904OL5bX0zwFGPVPVEIVbUNO5JxkQfM7S23L5ia3jGC0Nqmmi0yExuQUPO42x8vCjg0LGEYM84uh0Bi0CmQfKJve+cwnk6qFzqtio2NNYIake45+GAt/KC04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772045408; c=relaxed/simple;
-	bh=wL4+TlbUlIL2gNos6tx0NzDuYPhO4XDsOMYg5kj56oQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gU8obwCNBAD85p52h0KW45ZtFgp+jIAkTRNj6mWY5FRBh9iWnbNw+tx8C1ZWcUsEBAP/NTFSd8gA+kfL3A8Js/+MRu3aPMy79/KjZSddK7TuZ+4MEMUtWhlZhTTbLxmq2LlCBLxSER4eq6KfxmVIW9koDiS6bDeD3P6OyFopU10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id 8D18320B6F02; Wed, 25 Feb 2026 10:50:06 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8D18320B6F02
-From: Long Li <longli@microsoft.com>
-To: "K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: mana: Ring doorbell at 4 CQ wraparounds
-Date: Wed, 25 Feb 2026 10:49:48 -0800
-Message-ID: <20260225184948.941599-1-longli@microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1772047892; c=relaxed/simple;
+	bh=nBqF4w+CUs5G0Dk674hPgFrbQ9Ruua2n7FSfL7WEBlo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UOv64cBOgyFpNF55rFajF+o87o865IDJfhLXjz3gNWr19HsOXsiRjcRRjmkktMYvQBr4D3jTAl8wDIN9afego7tOM1S7Nx/AicYtrebXhdIQQ2C5OXGZgB33w/Nw3AgLz9LzUPH/J9o2plDU3yVrCEYJN6dDjmg0PvAtsuuaw0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.b=gvMKoedl; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-897023602b1so1236386d6.0
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 11:31:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1772047890; x=1772652690; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=q3Jxm9A3azjabtMJunPGxErvPjmUnEkcbOHkg5GFLOM=;
+        b=gvMKoedldtlpnr+OKjNj67GSHzGtIsdMyAHeQDxnO8ge5VpROoJjslHgL1NuYC/Ejp
+         genntVRbM3YYlyo9RVIuJstNp88lZLJlrl0WAcBrFpceDv4vy3JIZbFaDbanM0ljknTK
+         j81bCI3wrTb2zxFplksD3kUyKYKDA0Kk4qALwf8sgktQWuv4IcSNASJ7KGcGmiG2RJMX
+         MOlwotvv2nSINwl8G3nU0pIk3AkYCPl8IJPdMDaJDjf6/VBxALv5C2HcH9yobt1Ed0r6
+         fVSOOAggzkD2RdM9YPtSBc+agX77nzQBgX5nSVHFptN2ezjqODuScNnPoHNj5h/+61af
+         NycQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772047890; x=1772652690;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q3Jxm9A3azjabtMJunPGxErvPjmUnEkcbOHkg5GFLOM=;
+        b=qjZ0ABEDIRvogKzWrE0ajPWFGI2f9GPOPiFfnevaG3PHVDOwjRaUeLMickMtdhAj4g
+         wnUcV0J3vQFehOaAiFxk/NHcVZDamL12fVyfsym96JA4Y5aDjpk6PyHci/HnPnXigLOs
+         wqWsmacu6TAZTA/5HmVpWbhzXI6NHJ/ARgx+kBpVe+lL0apG4WXnjhhWpYQIBpCIFOxC
+         7Z/idTPwA2leEl6rN+BmlDE/5qGnxJsZ0Gyw+HxF3O+LPKVpcNbtjzHKHSuRfcX0MBc9
+         LfBroBK60hNl+PwjeNAFi7+1G/wbY0LRgBYTWLUfxfCKQWRIH6SLAtN4wKz9o81e+/ie
+         JoRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVsX/Ld3c5SSBWOtO4rCsJENOst7G7JGaJ1DkScLh37pIyK21EMn8N1WOEt9UfYJFDOzFqTuzI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhLA5qb1NRHxKvgOPWScAfiiQJKTK/J0znM8yap0fh5e9SIf6u
+	vTjloCglQLhrq7W4EPAsbV1+cTRXk0+hR3AuSBHYr+uuxtpl79e7E3tCpT561pzC+p8=
+X-Gm-Gg: ATEYQzxQPlRr39/F1wpnlU8Iya5hYwIhMxmTxQp5AXDq4fyIYmHa+dzGlWElaadd8rV
+	6UDWPvTaBZgIFcU5F4hI3uuryC38k09pLz+eQuzudkCK67joej1/6A512owMe3pkmy1CIEnC/aB
+	GUGpleS9WHmpg4lBLG7siMl8SNty/kCOiGdrVtQANhtX0BjdcRJFnOZd3pD+VWMkK3H0djEWEHy
+	VMGb1Z6TLGt0u7KwMS0M6v84SxxyCqDyO7ijqHavXeI66duUU6qcYdldx+j9xWd8XiDZhTkYpXl
+	nnHoJyjO6sueXy7UYZqpa84q2O+qsDvewuz8I7eRjd5f04IVwXDCetqgZBnCD+9m4iftTQtXzNh
+	ZG08mi8Lji+GfCPXELEMsSVoON5J4dNoMSDPfqt79/MXLOs4/lMMr+3jc2X3dsq55TnzKrtjOVN
+	alushVA2BXxqWw2GC+kbHPmcMDlIyIwwN1
+X-Received: by 2002:a05:6214:768:b0:896:fb96:e13c with SMTP id 6a1803df08f44-89979d91197mr276698026d6.57.1772047889659;
+        Wed, 25 Feb 2026 11:31:29 -0800 (PST)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf659210sm6749685a.8.2026.02.25.11.31.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 11:31:29 -0800 (PST)
+Date: Wed, 25 Feb 2026 14:31:28 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "ptdesc: remove references to folios from
+ __pagetable_ctor() and pagetable_dtor()"
+Message-ID: <aZ9OEAzENzeFYDB2@cmpxchg.org>
+References: <20260225002434.2953895-1-axelrasmussen@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225002434.2953895-1-axelrasmussen@google.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.54 / 15.00];
-	DMARC_POLICY_REJECT(2.00)[microsoft.com : SPF not aligned (relaxed), No valid DKIM,reject];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[cmpxchg.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[cmpxchg.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219692-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219693-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[cmpxchg.org:+];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.968];
-	FROM_NEQ_ENVFROM(0.00)[longli@microsoft.com,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable,netdev];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8473219C6FC
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hannes@cmpxchg.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cmpxchg.org:mid,cmpxchg.org:dkim,cmpxchg.org:email]
+X-Rspamd-Queue-Id: 8B59D19CBA4
 X-Rspamd-Action: no action
 
-MANA hardware requires at least one doorbell ring every 8 wraparounds
-of the CQ. The driver rings the doorbell as a form of flow control to
-inform hardware that CQEs have been consumed.
+On Tue, Feb 24, 2026 at 04:24:34PM -0800, Axel Rasmussen wrote:
+> This change swapped out mod_node_page_state for lruvec_stat_add_folio.
+> But, these two APIs are not interchangeable: the lruvec version also
+> increments memcg stats, in addition to "global" pgdat stats.
+> 
+> So after this change, the "pagetables" memcg stat in memory.stat always
+> yields "0", which is a userspace visible regression.
+> 
+> I tried to look for a refactor where we add a variant of
+> lruvec_stat_mod_folio which takes a pgdat and a memcg instead of a
+> folio, to try to adhere to the spirit of the original patch. But at the
+> end of the day this just means we have to call
+> folio_memcg(ptdesc_folio(ptdesc)) anyway, which doesn't really
+> accomplish much.
+> 
+> This regression is visible in master as well as 6.18 stable, so CC
+> stable too.
+> 
+> Fixes: f0c92726e89f ("ptdesc: remove references to folios from __pagetable_ctor() and pagetable_dtor()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
 
-The NAPI poll functions mana_poll_tx_cq() and mana_poll_rx_cq() can
-poll up to CQE_POLLING_BUFFER (512) completions per call. If the CQ
-has fewer than 512 entries, a single poll call can process more than
-4 wraparounds without ringing the doorbell. The doorbell threshold
-check also uses ">" instead of ">=", delaying the ring by one extra
-CQE beyond 4 wraparounds. Combined, these issues can cause the driver
-to exceed the 8-wraparound hardware limit, leading to missed
-completions and stalled queues.
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
-Fix this by capping the number of CQEs polled per call to 4 wraparounds
-of the CQ in both TX and RX paths. Also change the doorbell threshold
-from ">" to ">=" so the doorbell is rung as soon as 4 wraparounds are
-reached.
-
-Cc: stable@vger.kernel.org
-Fixes: 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
-Signed-off-by: Long Li <longli@microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 23 +++++++++++++++----
- 1 file changed, 18 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 9919183ad39e..fe667e0d930d 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1770,8 +1770,14 @@ static void mana_poll_tx_cq(struct mana_cq *cq)
- 	ndev = txq->ndev;
- 	apc = netdev_priv(ndev);
- 
-+	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
-+	 * doorbell can be rung in time for the hardware's requirement
-+	 * of at least one doorbell ring every 8 wraparounds.
-+	 */
- 	comp_read = mana_gd_poll_cq(cq->gdma_cq, completions,
--				    CQE_POLLING_BUFFER);
-+				    min_t(u32, (cq->gdma_cq->queue_size /
-+					   COMP_ENTRY_SIZE) * 4,
-+					  CQE_POLLING_BUFFER));
- 
- 	if (comp_read < 1)
- 		return;
-@@ -2156,7 +2162,14 @@ static void mana_poll_rx_cq(struct mana_cq *cq)
- 	struct mana_rxq *rxq = cq->rxq;
- 	int comp_read, i;
- 
--	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp, CQE_POLLING_BUFFER);
-+	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
-+	 * doorbell can be rung in time for the hardware's requirement
-+	 * of at least one doorbell ring every 8 wraparounds.
-+	 */
-+	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp,
-+				    min_t(u32, (cq->gdma_cq->queue_size /
-+					   COMP_ENTRY_SIZE) * 4,
-+					  CQE_POLLING_BUFFER));
- 	WARN_ON_ONCE(comp_read > CQE_POLLING_BUFFER);
- 
- 	rxq->xdp_flush = false;
-@@ -2201,11 +2214,11 @@ static int mana_cq_handler(void *context, struct gdma_queue *gdma_queue)
- 		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
- 		cq->work_done_since_doorbell = 0;
- 		napi_complete_done(&cq->napi, w);
--	} else if (cq->work_done_since_doorbell >
--		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
-+	} else if (cq->work_done_since_doorbell >=
-+		   (cq->gdma_cq->queue_size / COMP_ENTRY_SIZE) * 4) {
- 		/* MANA hardware requires at least one doorbell ring every 8
- 		 * wraparounds of CQ even if there is no need to arm the CQ.
--		 * This driver rings the doorbell as soon as we have exceeded
-+		 * This driver rings the doorbell as soon as it has processed
- 		 * 4 wraparounds.
- 		 */
- 		mana_gd_ring_cq(gdma_queue, 0);
--- 
-2.43.0
-
+Willy's cleanup proposal looks good to me too, but this is more
+straight forward to backport to stable.
 
