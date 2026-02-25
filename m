@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-218664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIlwN2NUnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:11 +0100
+	id yIDNLxBUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:48 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7102A18FC9F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:46:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36DA718FB76
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8BEB731B83D1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BFC331927EF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F44268690;
-	Wed, 25 Feb 2026 01:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C942652AF;
+	Wed, 25 Feb 2026 01:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HB0sr3rP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bT30Xt8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBD9243376;
-	Wed, 25 Feb 2026 01:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0259262FE7;
+	Wed, 25 Feb 2026 01:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983517; cv=none; b=m/vA4QDnU4YzhOcXF9pySDhL3AECsybd7iJsoxr+KxsU/LtqIyPiap12igkInx7dNqDUDzkabgXX4oBY/gFs5Wr8jcZwcD6sb26hsRy9cCzIW1yBJz5XbQyIXc4P4ZBhTRAgByWeXKQinsylXq709DJXUNxJSIQ1XhNLAKPZXnU=
+	t=1771983467; cv=none; b=XCoURz502QILioJFnbOkASZuSafimAfdT7+wQrjiPBCEAgPV+vgYVFU3VDvgWaoZIFemwGi0FMCkP4RObQyc3EDKrcnTkp8SYGscdeHy4bGu6s8dFHeLhsAQFcfq+CI8bhsaea0PsyXdXis2MuLpy24n/mWOeL2FjhugXye++Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983517; c=relaxed/simple;
-	bh=yvqb7ez7Ru5Cl71RVNPNHYrtBrjpzKfX9z2L4L2EB/U=;
+	s=arc-20240116; t=1771983467; c=relaxed/simple;
+	bh=xkk9T24dW7k9AFJPuGFDNYzrsOkOFAuQQRO1qhOuVJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ON4nVc2Ihemu8rHUJeM19QrsRTv4TXjVsv0NES3CgetvkHcNKhzZ4mNHJMIJX3QmVGyMdtVdnp9HX9mtMRoIhVxmgY+Z8rg6rzxGpesrE/fp6NF+XgV8COv0BPTjYAB0QjWicVQMpexIdgMpxysOud6kpXRAuKh76+tbW8cGzgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HB0sr3rP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D476C116D0;
-	Wed, 25 Feb 2026 01:38:37 +0000 (UTC)
+	 MIME-Version; b=IdG1xQ7ajwAjC9TSYqHnuT35CJSqxQ5QwKx6j4UW+Q7aiIBiha9k+l6NNVChsC6ZAm80ok8IBKZ6vo8v2W+z5sWLaoo8CQ4i/colXHAGk8alpMJm44wT5353HSqGDpH+HCgC7sE2c/2jF/kHeYD+UyvWDA9oTCGoyUZKxMdteYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bT30Xt8d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AD3C116D0;
+	Wed, 25 Feb 2026 01:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983517;
-	bh=yvqb7ez7Ru5Cl71RVNPNHYrtBrjpzKfX9z2L4L2EB/U=;
+	s=korg; t=1771983467;
+	bh=xkk9T24dW7k9AFJPuGFDNYzrsOkOFAuQQRO1qhOuVJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HB0sr3rPliGNUxCE2E+SRW/mHfDMzehnOJP29a545EQyK5ooGwyLji1tBlW+ssVdl
-	 nBkeiQHMar/epd/2ZsG6hKFHoI+1LogyM3vfH82/TEz7/fnrO/ALmqSeCnycmsjZ1t
-	 R93igrYcho508qPDuXgZhmrZQ4ibCZ/Yo0n/phmU=
+	b=bT30Xt8dQ7kngmGG0r2k0W/Pcxi3N/Y4WbR0zNBSdp5/hmfGU5glWrYdXwy89m+6o
+	 cfGDSS5IcxnOmhApr3vuaCKRNVnwjta1XkiYS5ekl2Q3+beAQ2UwT8JW1S4Siqi086
+	 FqKiAZg9EePY9EzoZNVqZxhwU7a+0okyyL+fC/1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kery Qi <qikeyu2017@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Antonio Borneo <antonio.borneo@foss.st.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 582/781] watchdog: starfive-wdt: Fix PM reference leak in probe error path
-Date: Tue, 24 Feb 2026 17:21:31 -0800
-Message-ID: <20260225012414.073290347@linuxfoundation.org>
+Subject: [PATCH 6.19 583/781] coresight: etm3x: Fix cpulocked warning on cpuhp
+Date: Tue, 24 Feb 2026 17:21:32 -0800
+Message-ID: <20260225012414.099939355@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -75,69 +74,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,roeck-us.net,linux-watchdog.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218664-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-218620-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-watchdog.org:email]
-X-Rspamd-Queue-Id: 7102A18FC9F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,st.com:email]
+X-Rspamd-Queue-Id: 36DA718FB76
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kery Qi <qikeyu2017@gmail.com>
+From: Antonio Borneo <antonio.borneo@foss.st.com>
 
-[ Upstream commit 3f2d8d79cceb05a8b8dd200fa81c0dffc59ec46f ]
+[ Upstream commit 1feb0377b9b816f89a04fc381eb19fc6bac9f4a4 ]
 
-The PM reference count is not expected to be incremented on return in
-functions starfive_wdt_probe.
+When changes [1] and [2] have been applied to the driver etm4x, the
+same modifications have been also collapsed in [3] and applied in
+one shot to the driver etm3x.
+While doing this, the driver etm3x has not been aligned to etm4x on
+the use of non cpuslocked version of cpuhp callback setup APIs.
 
-However, pm_runtime_get_sync will increment pm usage counter
-even failed. Forgetting to putting operation will result in a
-reference leak here.
+The current code triggers two run-time warnings when the kernel is
+compiled with CONFIG_PROVE_LOCKING=y.
 
-Replace it with pm_runtime_resume_and_get to keep usage
-counter balanced.
+Use non cpuslocked version of cpuhp callback setup APIs in driver
+etm3x, aligning it to the driver etm4x.
 
-Fixes: db728ea9c7be ("drivers: watchdog: Add StarFive Watchdog driver")
-Signed-off-by: Kery Qi <qikeyu2017@gmail.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+[1] commit 2d1a8bfb61ec ("coresight: etm4x: Fix etm4_count race by
+                          moving cpuhp callbacks to init")
+[2] commit 22a550a306ad ("coresight: etm4x: Allow etm4x to be built
+                          as a module")
+[3] commit 97fe626ce64c ("coresight: etm3x: Allow etm3x to be built
+                          as a module")
+
+Fixes: 97fe626ce64c ("coresight: etm3x: Allow etm3x to be built as a module")
+Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20260108152427.357379-1-antonio.borneo@foss.st.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/starfive-wdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-etm3x-core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/watchdog/starfive-wdt.c b/drivers/watchdog/starfive-wdt.c
-index ed71d3960a0f2..af55adc4a3c69 100644
---- a/drivers/watchdog/starfive-wdt.c
-+++ b/drivers/watchdog/starfive-wdt.c
-@@ -446,7 +446,7 @@ static int starfive_wdt_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, wdt);
- 	pm_runtime_enable(&pdev->dev);
- 	if (pm_runtime_enabled(&pdev->dev)) {
--		ret = pm_runtime_get_sync(&pdev->dev);
-+		ret = pm_runtime_resume_and_get(&pdev->dev);
- 		if (ret < 0)
- 			return ret;
- 	} else {
+diff --git a/drivers/hwtracing/coresight/coresight-etm3x-core.c b/drivers/hwtracing/coresight/coresight-etm3x-core.c
+index a5e809589d3e3..0c011b7041696 100644
+--- a/drivers/hwtracing/coresight/coresight-etm3x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm3x-core.c
+@@ -795,16 +795,16 @@ static int __init etm_hp_setup(void)
+ {
+ 	int ret;
+ 
+-	ret = cpuhp_setup_state_nocalls_cpuslocked(CPUHP_AP_ARM_CORESIGHT_STARTING,
+-						   "arm/coresight:starting",
+-						   etm_starting_cpu, etm_dying_cpu);
++	ret = cpuhp_setup_state_nocalls(CPUHP_AP_ARM_CORESIGHT_STARTING,
++					"arm/coresight:starting",
++					etm_starting_cpu, etm_dying_cpu);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = cpuhp_setup_state_nocalls_cpuslocked(CPUHP_AP_ONLINE_DYN,
+-						   "arm/coresight:online",
+-						   etm_online_cpu, NULL);
++	ret = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
++					"arm/coresight:online",
++					etm_online_cpu, NULL);
+ 
+ 	/* HP dyn state ID returned in ret on success */
+ 	if (ret > 0) {
 -- 
 2.51.0
 
