@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLBCGZBanmlSUwQAu9opvQ
-	(envelope-from <stable+bounces-219108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:32 +0100
+	id aDroH0RSnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C63190B45
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:12:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C207218F2C5
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB8AE31EB6DC
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51DAF309137A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1731D26FA60;
-	Wed, 25 Feb 2026 01:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0F824677D;
+	Wed, 25 Feb 2026 01:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCFt0CkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAxoVW+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF53827FD44;
-	Wed, 25 Feb 2026 01:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE43118B0A;
+	Wed, 25 Feb 2026 01:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984041; cv=none; b=I3wT5RS6cU+UAMa3y4nemQC/QgLx1KNjUaeN9frwDgqXNfC3mdQ7iuV/ukqCGBOdfDVjzutbB5DAhQwrtpezWqOP41DyH2Ov39gaQgq2WL0frI/Fhyjz+Ke+MhKL7qIwknqGV77aKXj+7KqSEfQ4ZOR5bfp4lot91V+V6llZxew=
+	t=1771983327; cv=none; b=bj0QYErrTBt/LWFRFEi8LLRtYp70NBJ23/FVIG3BOzGSxKhiUm0ndNRjfCWQ0aJy4VTmA2E/wjstWhKTGPma025M2vdar4CORC09mPz34oZkN7G/Qo0OG8BQKoLwe5CU/CjV7pK7MsoRioDGb0z+7tI+7b7RLOKh0To5tBUgNoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984041; c=relaxed/simple;
-	bh=7jPzZ1ysWsxFU/yFplb4wH4AljE+MTJOUMuMMwdH9ms=;
+	s=arc-20240116; t=1771983327; c=relaxed/simple;
+	bh=15cOaFP7CrNSmeiPgRWqa00kJarpb8vRZwBr1KrTpGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=skAFNub1+qF86J2+vD4eeeQwplq2lWrUR5YUJdfna8vatrGUAvOd4W4hdaZOpBn0+JR9YVU005RVqG9vnsXRNPb5I6cDCruejhJPduYw+PdQ55gLVRDz3W4R+nG2i0SXh0zUev/Ja0x3MJ3ebUzdf5ECOxZoK4sbKBY5GrQ/i5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCFt0CkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8613EC116D0;
-	Wed, 25 Feb 2026 01:47:21 +0000 (UTC)
+	 MIME-Version; b=LIy9exgM9zEkBPJSyNv1bGvMi+4xNqRGVcc7Lx6S9OxjxUCyqbH7hqe/H8llvF2WH5Wmf7ubYSEvGom7wsz9+8M3ueY3sGa9xRnOhl5ovLNy+Qiiie2zQ2D36C+XJj3TYjDy0e9Jxxf1BodXmNz42sn69ztBsIkA4YEnvjiI93Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAxoVW+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE59C116D0;
+	Wed, 25 Feb 2026 01:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984041;
-	bh=7jPzZ1ysWsxFU/yFplb4wH4AljE+MTJOUMuMMwdH9ms=;
+	s=korg; t=1771983327;
+	bh=15cOaFP7CrNSmeiPgRWqa00kJarpb8vRZwBr1KrTpGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCFt0CkUYt0Xy5XnqaZnx8LJ+J7PJp+GUqHi0IF9Bw+ht9Ss2ujfWyS2SfwuUDMaq
-	 dvc4RnsdPoyaaOj/sSajKlFNqNuJD97q5pR8yKvaqoydg00eNp12AVkvELSVAhFYTC
-	 qdXPAAWZ5iO4GHNh4faZpXaBBuoTTS6OS8UJXcuo=
+	b=LAxoVW+IQMMtfoCwxviMfuJFn/8ED88HfQJHcKJLAdpYAQIHoIptfbgQGn6noUM/7
+	 5XNkyW8YLwDuzBXF8d3yyIkZvjWs9ocgIjfj5etlsM+K75OM571yZAHWe+qqzisPzb
+	 z6Ga9FF+hxJhg6KLUSVgHNDBEvRF62+uORJGfcRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Matt Ranostay <matt@ranostay.sg>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 242/641] PCI: Do not attempt to set ExtTag for VFs
+Subject: [PATCH 6.19 459/781] power: supply: bq27xxx: fix wrong errno when bus ops are unsupported
 Date: Tue, 24 Feb 2026 17:19:28 -0800
-Message-ID: <20260225012354.733759640@linuxfoundation.org>
+Message-ID: <20260225012410.977814321@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +64,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219108-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218497-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C1C63190B45
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: C207218F2C5
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Håkon Bugge <haakon.bugge@oracle.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 73711730a1128d91ebca1a6994ceeb18f36cb0cd ]
+[ Upstream commit 688364a11647dc09ba1e4429313e0008066ec790 ]
 
-The bit for enabling extended tags is Reserved and Preserved (RsvdP) for
-VFs, according to PCIe r7.0 section 7.5.3.4 table 7.21.  Hence, bail out
-early from pci_configure_extended_tags() if the device is a VF.
+bq27xxx_write(), bq27xxx_read_block(), and bq27xxx_write_block()
+return -EPERM when the bus callback pointer is NULL. A NULL callback
+indicates the operation is not supported by the bus/driver,
+not that permission is denied.
 
-Otherwise, we may see incorrect log messages such as:
+Return -EOPNOTSUPP instead of -EPERM when di->bus.write/
+read_bulk/write_bulk is NULL.
 
-  kernel: pci 0000:af:00.2: enabling Extended Tags
-
-(af:00.2 is a VF)
-
-Fixes: 60db3a4d8cc9 ("PCI: Enable PCIe Extended Tags if supported")
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20251112095442.1913258-1-haakon.bugge@oracle.com
+Fixes: 14073f6614f6 ("power: supply: bq27xxx: Add bulk transfer bus methods")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Matt Ranostay <matt@ranostay.sg>
+Link: https://patch.msgid.link/20251204083436.1367-1-vulab@iscas.ac.cn
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/probe.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/power/supply/bq27xxx_battery.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 9cd032dff31e5..8cf573fca3078 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2251,7 +2251,8 @@ int pci_configure_extended_tags(struct pci_dev *dev, void *ign)
- 	u16 ctl;
- 	int ret;
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index 19445e39651c7..45f0e39b8c2dd 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1172,7 +1172,7 @@ static inline int bq27xxx_write(struct bq27xxx_device_info *di, int reg_index,
+ 		return -EINVAL;
  
--	if (!pci_is_pcie(dev))
-+	/* PCI_EXP_DEVCTL_EXT_TAG is RsvdP in VFs */
-+	if (!pci_is_pcie(dev) || dev->is_virtfn)
- 		return 0;
+ 	if (!di->bus.write)
+-		return -EPERM;
++		return -EOPNOTSUPP;
  
- 	ret = pcie_capability_read_dword(dev, PCI_EXP_DEVCAP, &cap);
+ 	ret = di->bus.write(di, di->regs[reg_index], value, single);
+ 	if (ret < 0)
+@@ -1191,7 +1191,7 @@ static inline int bq27xxx_read_block(struct bq27xxx_device_info *di, int reg_ind
+ 		return -EINVAL;
+ 
+ 	if (!di->bus.read_bulk)
+-		return -EPERM;
++		return -EOPNOTSUPP;
+ 
+ 	ret = di->bus.read_bulk(di, di->regs[reg_index], data, len);
+ 	if (ret < 0)
+@@ -1210,7 +1210,7 @@ static inline int bq27xxx_write_block(struct bq27xxx_device_info *di, int reg_in
+ 		return -EINVAL;
+ 
+ 	if (!di->bus.write_bulk)
+-		return -EPERM;
++		return -EOPNOTSUPP;
+ 
+ 	ret = di->bus.write_bulk(di, di->regs[reg_index], data, len);
+ 	if (ret < 0)
 -- 
 2.51.0
 
