@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAlnFFNXnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:43 +0100
+	id 8H6/IZNRnmmbUgQAu9opvQ
+	(envelope-from <stable+bounces-218298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:34:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766621904E6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:58:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF2418F02E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:34:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1B94130A51E1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A7CB307D734
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B19727055D;
-	Wed, 25 Feb 2026 01:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3FE18DB2A;
+	Wed, 25 Feb 2026 01:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQxBPMMW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSnMvYnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E47119FA93;
-	Wed, 25 Feb 2026 01:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC2C1E2834;
+	Wed, 25 Feb 2026 01:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983742; cv=none; b=ofHDnr3GIGkameMgO6MVUm9IPWQOU1fPEVFT0LxDk2MM/IkwkQiRTDRDXDaCP2cTYt4uGMrxI7W4oqzqG4tByzAc/e7ALLkdjY196nmHnEz17ElCWwEUPgljcvVKe4PhnUL9US26neYmfq9qYdaF+IiSpkMu7LZwt6Vnm/PaK4g=
+	t=1771983099; cv=none; b=f+OWvGTM1nvDdvhSFCzD/Tzlg4BOggC1WRyLW5Bi7tCaZhqTfsVl9Xjp+0alfZAoew4liHCdEeZtzz/0nPdH2S+GElyKZGSKX4QiOe/5Tj8nGqL2JqtFnkuwNHDFE9rd4+azeoGjyq2hBdnUMpC7oKbL1xzJe/r9mCD/kcTpyQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983742; c=relaxed/simple;
-	bh=DmATWHnuaReWS/4dlwsPRBHq6OFUKdPI55SChPdJ8V8=;
+	s=arc-20240116; t=1771983099; c=relaxed/simple;
+	bh=XCXbX0dJqcGirfWeaz3PwfKTds6v6fsQROxASmMrd9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJqPIclQ3FLMRozqda5MrxOVzEYi3Ji2y5SoDg8eUiNxXK88HuMO/Lel53m2mVTjPE/++4n4ipR86qDpY+JMzZ1b8hbj7BtRifwc66tY4nh/dBz1HgJ1QfZUD65dFOxqlpe+tt9g+jzsFFMm70vhQj2lG7IsQWyyE2u7f2Y6skY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQxBPMMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200ACC116D0;
-	Wed, 25 Feb 2026 01:42:22 +0000 (UTC)
+	 MIME-Version; b=jdopoDFZZTVHLkCO3NxjMcTVGt3unVk4ju4jKkxnH36l1CQ6Us/x7jJTQisGV56IiEYgDC5sA6lynNpt3EpYbKcJtaPbwwNcl+CYP7DEBfpWNilDWMMTO7KtaMbXdKkTGjdnVyUxBqWH/jdDo9u/2DttnqbWWuM9uCHQMPabz3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSnMvYnj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457D6C116D0;
+	Wed, 25 Feb 2026 01:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983742;
-	bh=DmATWHnuaReWS/4dlwsPRBHq6OFUKdPI55SChPdJ8V8=;
+	s=korg; t=1771983099;
+	bh=XCXbX0dJqcGirfWeaz3PwfKTds6v6fsQROxASmMrd9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQxBPMMWG057sqISpIbcTSDuzlmtikZ9Ce9jWvl1bSrhzJzElMfxjstg+rKOYaSoi
-	 HeZkl4KZB1PhYRhlKJw6lx/ReiqQji6vHTwXz1pMvi0o3rdtGGcTuNQmWM8/vFCazB
-	 BmbqwRxSGpFr2aHikVhRyz/7g2/Au0aMNMd6clTs=
+	b=MSnMvYnjsRoOPygsOiT4k+2NSincjlGqJKqAfZOMpnjcvo5J3B6TyH+yC+EmSAQnQ
+	 TL0XkPx1ldzWoG078lFRO+E7Iq4kgfryAfrb965CePl7Gc45lDimWPfWLY2BadT7L+
+	 VgPMXuQ0dRetRVr/yEl3+hmBZMuTzpwEDQUvqsVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 035/641] ACPI: processor: Update cpuidle driver check in __acpi_processor_start()
-Date: Tue, 24 Feb 2026 17:16:01 -0800
-Message-ID: <20260225012349.847997484@linuxfoundation.org>
+Subject: [PATCH 6.19 253/781] spi: microchip-core: use XOR instead of ANDNOT to fix the logic
+Date: Tue, 24 Feb 2026 17:16:02 -0800
+Message-ID: <20260225012405.913738308@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +71,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218298-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218857-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alien8.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 766621904E6
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2CF2418F02E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 0089ce1c056aee547115bdc25c223f8f88c08498 ]
+[ Upstream commit 19a4505a7a5d4eea70f1a42d601c25d730922fdf ]
 
-Commit 7a8c994cbb2d ("ACPI: processor: idle: Optimize ACPI idle
-driver registration") moved the ACPI idle driver registration to
-acpi_processor_driver_init() and acpi_processor_power_init() does
-not register an idle driver any more.
+Use XOR instead of ANDNOT to fix the logic. The current approach with
+(foo & BAR & ~baz) is harder to process, and it proved to be wrong,
+than more usual pattern for the comparing misconfiguration using
+((foo ^ baz) & BAR) which can be read as "find all different bits
+between foo and baz that are related to BAR (mask)". Besides that
+it makes the binary code shorter.
 
-Accordingly, the cpuidle driver check in __acpi_processor_start() needs
-to be updated to avoid calling acpi_processor_power_init() without a
-cpuidle driver, in which case the registration of the cpuidle device
-in that function would lead to a NULL pointer dereference in
-__cpuidle_register_device().
+Function                                     old     new   delta
+mchp_corespi_setup                           103      99      -4
 
-Fixes: 7a8c994cbb2d ("ACPI: processor: idle: Optimize ACPI idle driver registration")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://patch.msgid.link/20251223100914.2407069-4-lihuisong@huawei.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 059f545832be ("spi: add support for microchip "soft" spi controller")
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Tested-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20260108175100.3535306-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_driver.c | 2 +-
+ drivers/spi/spi-microchip-core-spi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
-index 65e779be64ffc..7644de24d2faa 100644
---- a/drivers/acpi/processor_driver.c
-+++ b/drivers/acpi/processor_driver.c
-@@ -166,7 +166,7 @@ static int __acpi_processor_start(struct acpi_device *device)
- 	if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
- 		dev_dbg(&device->dev, "CPPC data invalid or not present\n");
+diff --git a/drivers/spi/spi-microchip-core-spi.c b/drivers/spi/spi-microchip-core-spi.c
+index 89e40fc45d73a..c8ebb58e0369a 100644
+--- a/drivers/spi/spi-microchip-core-spi.c
++++ b/drivers/spi/spi-microchip-core-spi.c
+@@ -161,7 +161,7 @@ static int mchp_corespi_setup(struct spi_device *spi)
+ 		return -EOPNOTSUPP;
+ 	}
  
--	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
-+	if (cpuidle_get_driver() == &acpi_idle_driver)
- 		acpi_processor_power_init(pr);
- 
- 	acpi_pss_perf_init(pr);
+-	if (spi->mode & SPI_MODE_X_MASK & ~spi->controller->mode_bits) {
++	if ((spi->mode ^ spi->controller->mode_bits) & SPI_MODE_X_MASK) {
+ 		dev_err(&spi->dev, "incompatible CPOL/CPHA, must match controller's Motorola mode\n");
+ 		return -EINVAL;
+ 	}
 -- 
 2.51.0
 
