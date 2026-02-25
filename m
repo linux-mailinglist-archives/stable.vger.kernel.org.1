@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-218284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGHaL4BSnmm6UgQAu9opvQ
-	(envelope-from <stable+bounces-218284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:08 +0100
+	id 4PXgJT9ZnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F9D18F3A3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA2F1908F2
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:06:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C92A30ABBBD
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D999D305DAAA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196481D5ABA;
-	Wed, 25 Feb 2026 01:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1148A27BF6C;
+	Wed, 25 Feb 2026 01:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7OgxWZr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="va3xQoIW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F891FE45D;
-	Wed, 25 Feb 2026 01:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C79281376;
+	Wed, 25 Feb 2026 01:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983084; cv=none; b=DDxM1nUUM/sHTCX7JKfP0i4AQKkSVkiPDxIx7Z3BI9DvDZ5WowLQrUeq+poHNIdMY6vb9FV00bV++HwUuwQ/mn0epfjMcPwfz3gXlYUPuGczHKXWv0mifJn8Ajd6lu2+X63WFVh/Sm61fCevnyi8iLxPs8QqlMqh0SJx25fngMc=
+	t=1771983734; cv=none; b=opAD0sczNWu6bfs6iM6lxVJqctByz6epVJCC3FRsIXFbe2TfBYmB3pNMve+8R7cRIA9uAut3jWhmf/FkIQbcg4gX8ZQGpMIYWSpS+Z3G0T9CtwXPGWqPpV8nVUAd2Nl+06WZfI7Val0KNhkB2a0XBSTC1U6Y6yBpXFgMkT1keyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983084; c=relaxed/simple;
-	bh=wpVMExUPOGwFDuOFsdsDnbQI2WFUXTUs9zLDW67x9Ug=;
+	s=arc-20240116; t=1771983734; c=relaxed/simple;
+	bh=8acBm9j/G2xfq6gsWVbbFuMp611lbpiVzYbMrhou2gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qMmnx0kC3E1OlOH59Tkt8QwFWI9tRy5+Fn18riBpNaxBXIw61xva2apS8LrkLROfrbQgBZtN569wY8kkwnv28ooNT1TiPt2DzVXsPS9v0tDfLHkJ6RDB+znYdAjW/sfegYlzE8nmpl6G78YbG4cy7oJDoBVtn+KUephflFRe/Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7OgxWZr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1C0C116D0;
-	Wed, 25 Feb 2026 01:31:24 +0000 (UTC)
+	 MIME-Version; b=S+I9SoVK+sKapf0x/Arjdrl47FQBKT3sOXTub8cXwvVQwUsuTiHR4MC/r2CqrDR2UOpm1wYGSzwSSKwcED2Pzt0XMvrj8PjaJJvPZuaZbJchYYh6C9Ydm5HlF5gY6JougK8xRATaMs9XhlIFyfgU91so3c38zDdmKkIpR0LUlAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=va3xQoIW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9F6C19423;
+	Wed, 25 Feb 2026 01:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983084;
-	bh=wpVMExUPOGwFDuOFsdsDnbQI2WFUXTUs9zLDW67x9Ug=;
+	s=korg; t=1771983734;
+	bh=8acBm9j/G2xfq6gsWVbbFuMp611lbpiVzYbMrhou2gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7OgxWZrR8IbjMm83As9jPo4XkTYbWBt5YXw2jDmWrgXvbv3l23QitziPwsHPPwit
-	 7GlYKLQiY9oMm9xD3JzZcvU72w8WVOBtDYWfQ2CaWm1wzyb0MA/M+GlK41Rq9o80rS
-	 cLW9rpulrUSEHQZe0hxneBe0i1gnCoZNWwQv+H6s=
+	b=va3xQoIW2Aff6dTw08rfGgATnem/g+7ao/Ib3ULR3r6vS50+LnoTEgMfnVD0WukdQ
+	 mY5+9uX/sISU3fwL+V660jVSIaGf4D7V24MrmH+nAbBFk7CsDffDPI+U4nlay8apIq
+	 dH4TejflZXUMF5BPIpoPJ8vYpLaK9Fefjf3zLTas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Chenyu Chen <chen-yu.chen@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 245/781] drm/amd/display: Update dc_connection_dac_load to dc_connection_analog_load
-Date: Tue, 24 Feb 2026 17:15:54 -0800
-Message-ID: <20260225012405.716630638@linuxfoundation.org>
+Subject: [PATCH 6.18 029/641] btrfs: fix block_group_tree dirty_list corruption
+Date: Tue, 24 Feb 2026 17:15:55 -0800
+Message-ID: <20260225012349.690692947@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218284-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218850-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,104 +87,161 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 66F9D18F3A3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,bur.io:email]
+X-Rspamd-Queue-Id: 1BA2F1908F2
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 57c8690a84bec025a8bc22e5f867fd660c4a3e76 ]
+[ Upstream commit 3a1f4264daed4b419c325a7fe35e756cada3cf82 ]
 
-Update to a more accurate name dc_connection_analog_load.
+When the incompat flag EXTENT_TREE_V2 is set, we unconditionally add the
+block group tree to the switch_commits list before calling
+switch_commit_roots, as we do for the tree root and the chunk root.
+However, the block group tree uses normal root dirty tracking and in any
+transaction that does an allocation and dirties a block group, the block
+group root will already be linked to a list by the dirty_list field and
+this use of list_add_tail() is invalid and corrupts the prev/next
+members of block_group_root->dirty_list.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Chenyu Chen <chen-yu.chen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 0d89268d20c9 ("drm/amd/display: Don't repeat DAC load detection")
+This is apparent on a subsequent list_del on the prev if we enable
+CONFIG_DEBUG_LIST:
+
+  [32.1571] ------------[ cut here ]------------
+  [32.1572] list_del corruption. next->prev should beffff958890202538, but was ffff9588992bd538. (next=ffff958890201538)
+  [32.1575] WARNING: lib/list_debug.c:65 at 0x0, CPU#3: sync/607
+  [32.1583] CPU: 3 UID: 0 PID: 607 Comm: sync Not tainted 6.18.0 #24PREEMPT(none)
+  [32.1585] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS1.17.0-4.fc41 04/01/2014
+  [32.1587] RIP: 0010:__list_del_entry_valid_or_report+0x108/0x120
+  [32.1593] RSP: 0018:ffffaa288287fdd0 EFLAGS: 00010202
+  [32.1594] RAX: 0000000000000001 RBX: ffff95889326e800 RCX:ffff958890201538
+  [32.1596] RDX: ffff9588992bd538 RSI: ffff958890202538 RDI:ffffffff82a41e00
+  [32.1597] RBP: ffff958890202538 R08: ffffffff828fc1e8 R09:00000000ffffefff
+  [32.1599] R10: ffffffff8288c200 R11: ffffffff828e4200 R12:ffff958890201538
+  [32.1601] R13: ffff95889326e958 R14: ffff958895c24000 R15:ffff958890202538
+  [32.1603] FS:  00007f0c28eb5740(0000) GS:ffff958af2bd2000(0000)knlGS:0000000000000000
+  [32.1605] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [32.1607] CR2: 00007f0c28e8a3cc CR3: 0000000109942005 CR4:0000000000370ef0
+  [32.1609] Call Trace:
+  [32.1610]  <TASK>
+  [32.1611]  switch_commit_roots+0x82/0x1d0 [btrfs]
+  [32.1615]  btrfs_commit_transaction+0x968/0x1550 [btrfs]
+  [32.1618]  ? btrfs_attach_transaction_barrier+0x23/0x60 [btrfs]
+  [32.1621]  __iterate_supers+0xe8/0x190
+  [32.1622]  ? __pfx_sync_fs_one_sb+0x10/0x10
+  [32.1623]  ksys_sync+0x63/0xb0
+  [32.1624]  __do_sys_sync+0xe/0x20
+  [32.1625]  do_syscall_64+0x73/0x450
+  [32.1626]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [32.1627] RIP: 0033:0x7f0c28d05d2b
+  [32.1632] RSP: 002b:00007ffc9d988048 EFLAGS: 00000246 ORIG_RAX:00000000000000a2
+  [32.1634] RAX: ffffffffffffffda RBX: 00007ffc9d988228 RCX:00007f0c28d05d2b
+  [32.1636] RDX: 00007f0c28e02301 RSI: 00007ffc9d989b21 RDI:00007f0c28dba90d
+  [32.1637] RBP: 0000000000000001 R08: 0000000000000001 R09:0000000000000000
+  [32.1639] R10: 0000000000000000 R11: 0000000000000246 R12:000055b96572cb80
+  [32.1641] R13: 000055b96572b19f R14: 00007f0c28dfa434 R15:000055b96572b034
+  [32.1643]  </TASK>
+  [32.1644] irq event stamp: 0
+  [32.1644] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+  [32.1646] hardirqs last disabled at (0): [<ffffffff81298817>]copy_process+0xb37/0x2260
+  [32.1648] softirqs last  enabled at (0): [<ffffffff81298817>]copy_process+0xb37/0x2260
+  [32.1650] softirqs last disabled at (0): [<0000000000000000>] 0x0
+  [32.1652] ---[ end trace 0000000000000000 ]---
+
+Furthermore, this list corruption eventually (when we happen to add a
+new block group) results in getting the switch_commits and
+dirty_cowonly_roots lists mixed up and attempting to call update_root
+on the tree root which can't be found in the tree root, resulting in a
+transaction abort:
+
+  [87.8269] BTRFS critical (device nvme1n1): unable to find root key (1 0 0) in tree 1
+  [87.8272] ------------[ cut here ]------------
+  [87.8274] BTRFS: Transaction aborted (error -117)
+  [87.8275] WARNING: fs/btrfs/root-tree.c:153 at 0x0, CPU#4: sync/703
+  [87.8285] CPU: 4 UID: 0 PID: 703 Comm: sync Not tainted 6.18.0 #25 PREEMPT(none)
+  [87.8287] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-4.fc41 04/01/2014
+  [87.8289] RIP: 0010:btrfs_update_root+0x296/0x790 [btrfs]
+  [87.8295] RSP: 0018:ffffa58d035dfd60 EFLAGS: 00010282
+  [87.8297] RAX: ffff9a59126ddb68 RBX: ffff9a59126dc000 RCX: 0000000000000000
+  [87.8299] RDX: 0000000000000000 RSI: 00000000ffffff8b RDI: ffffffffc0b28270
+  [87.8301] RBP: ffff9a5904aec000 R08: 0000000000000000 R09: 00000000ffffefff
+  [87.8303] R10: ffffffff9ac8c200 R11: ffffffff9ace4200 R12: 0000000000000001
+  [87.8305] R13: ffff9a59041740e8 R14: ffff9a5904aec1f7 R15: ffff9a590fdefaf0
+  [87.8307] FS:  00007f54cde6b740(0000) GS:ffff9a5b5a81c000(0000) knlGS:0000000000000000
+  [87.8309] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [87.8310] CR2: 00007f54cde403cc CR3: 0000000112902004 CR4: 0000000000370ef0
+  [87.8312] Call Trace:
+  [87.8313]  <TASK>
+  [87.8314]  ? _raw_spin_unlock+0x23/0x40
+  [87.8315]  commit_cowonly_roots+0x1ad/0x250 [btrfs]
+  [87.8317]  ? btrfs_commit_transaction+0x79b/0x1560 [btrfs]
+  [87.8320]  btrfs_commit_transaction+0x8aa/0x1560 [btrfs]
+  [87.8322]  ? btrfs_attach_transaction_barrier+0x23/0x60 [btrfs]
+  [87.8325]  __iterate_supers+0xf1/0x170
+  [87.8326]  ? __pfx_sync_fs_one_sb+0x10/0x10
+  [87.8327]  ksys_sync+0x63/0xb0
+  [87.8328]  __do_sys_sync+0xe/0x20
+  [87.8329]  do_syscall_64+0x73/0x450
+  [87.8330]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [87.8331] RIP: 0033:0x7f54cdd05d2b
+  [87.8336] RSP: 002b:00007fff1b58ff78 EFLAGS: 00000246 ORIG_RAX: 00000000000000a2
+  [87.8338] RAX: ffffffffffffffda RBX: 00007fff1b590158 RCX: 00007f54cdd05d2b
+  [87.8340] RDX: 00007f54cde02301 RSI: 00007fff1b592b66 RDI: 00007f54cddba90d
+  [87.8342] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
+  [87.8344] R10: 0000000000000000 R11: 0000000000000246 R12: 000055e07ca96b80
+  [87.8346] R13: 000055e07ca9519f R14: 00007f54cddfa434 R15: 000055e07ca95034
+  [87.8348]  </TASK>
+  [87.8348] irq event stamp: 0
+  [87.8349] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+  [87.8351] hardirqs last disabled at (0): [<ffffffff99698797>] copy_process+0xb37/0x21e0
+  [87.8353] softirqs last  enabled at (0): [<ffffffff99698797>] copy_process+0xb37/0x21e0
+  [87.8355] softirqs last disabled at (0): [<0000000000000000>] 0x0
+  [87.8357] ---[ end trace 0000000000000000 ]---
+  [87.8358] BTRFS: error (device nvme1n1 state A) in btrfs_update_root:153: errno=-117 Filesystem corrupted
+  [87.8360] BTRFS info (device nvme1n1 state EA): forced readonly
+  [87.8362] BTRFS warning (device nvme1n1 state EA): Skipping commit of aborted transaction.
+  [87.8364] BTRFS: error (device nvme1n1 state EA) in cleanup_transaction:2037: errno=-117 Filesystem corrupted
+
+Since the block group tree was pulled out of the extent tree and uses
+normal root dirty tracking, remove the offending extra list_add. This
+fixes the list corruption and the resulting fs corruption.
+
+Fixes: 14033b08a029 ("btrfs: don't save block group root into super block")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c    | 2 +-
- drivers/gpu/drm/amd/display/dc/dc_types.h            | 2 +-
- drivers/gpu/drm/amd/display/dc/link/link_detection.c | 8 ++++----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ fs/btrfs/transaction.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index a8a59126b2d2b..b31bd6fa70181 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7434,7 +7434,7 @@ amdgpu_dm_connector_poll(struct amdgpu_dm_connector *aconnector, bool force)
- 	 *
- 	 * Only allow to poll such a connector again when forcing.
- 	 */
--	if (!force && link->local_sink && link->type == dc_connection_dac_load)
-+	if (!force && link->local_sink && link->type == dc_connection_analog_load)
- 		return connector->status;
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index 041f4781956cf..b537bba767806 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -2484,13 +2484,6 @@ int btrfs_commit_transaction(struct btrfs_trans_handle *trans)
+ 	list_add_tail(&fs_info->chunk_root->dirty_list,
+ 		      &cur_trans->switch_commits);
  
- 	mutex_lock(&aconnector->hpd_lock);
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
-index f46039f642034..3e63d7bda1661 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
-@@ -354,7 +354,7 @@ enum dc_connection_type {
- 	dc_connection_single,
- 	dc_connection_mst_branch,
- 	dc_connection_sst_branch,
--	dc_connection_dac_load
-+	dc_connection_analog_load
- };
+-	if (btrfs_fs_incompat(fs_info, EXTENT_TREE_V2)) {
+-		btrfs_set_root_node(&fs_info->block_group_root->root_item,
+-				    fs_info->block_group_root->node);
+-		list_add_tail(&fs_info->block_group_root->dirty_list,
+-			      &cur_trans->switch_commits);
+-	}
+-
+ 	switch_commit_roots(trans);
  
- struct dc_csc_adjustments {
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-index 7fa6bc97a9193..4f48e7ea75110 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-@@ -1176,7 +1176,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
- 				/* If we didn't do DAC load detection yet, do it now
- 				 * to verify there really is a display connected.
- 				 */
--				if (link->type != dc_connection_dac_load &&
-+				if (link->type != dc_connection_analog_load &&
- 					!link_detect_dac_load_detect(link)) {
- 					if (prev_sink)
- 						dc_sink_release(prev_sink);
-@@ -1185,7 +1185,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
- 				}
- 
- 				DC_LOG_INFO("%s detected analog display without EDID\n", __func__);
--				link->type = dc_connection_dac_load;
-+				link->type = dc_connection_analog_load;
- 				sink->edid_caps.analog = true;
- 				break;
- 			}
-@@ -1372,7 +1372,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
-  * @link: DC link to evaluate (must support analog signalling).
-  * @type: Updated with the detected connection type:
-  *        dc_connection_single (analog via DDC),
-- *        dc_connection_dac_load (via load-detect),
-+ *        dc_connection_analog_load (via load-detect),
-  *        or dc_connection_none.
-  *
-  * Return: true if detection completed.
-@@ -1388,7 +1388,7 @@ static bool link_detect_analog(struct dc_link *link, enum dc_connection_type *ty
- 	}
- 
- 	if (link_detect_dac_load_detect(link)) {
--		*type = dc_connection_dac_load;
-+		*type = dc_connection_analog_load;
- 		return true;
- 	}
- 
+ 	ASSERT(list_empty(&cur_trans->dirty_bgs));
 -- 
 2.51.0
 
