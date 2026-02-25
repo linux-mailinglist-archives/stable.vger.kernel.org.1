@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-218074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218085-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NpwB2ZQnmmNUgQAu9opvQ
-	(envelope-from <stable+bounces-218074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:10 +0100
+	id CHZqF4FQnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218085-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B7F18EBB6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CE418EC1D
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C4B653049380
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D6B973056B00
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F7B2505B2;
-	Wed, 25 Feb 2026 01:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B8D25332E;
+	Wed, 25 Feb 2026 01:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkfRDhY2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZjOOP2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2A7242D9B;
-	Wed, 25 Feb 2026 01:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF5E251795;
+	Wed, 25 Feb 2026 01:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982846; cv=none; b=ObAOWwSpLz12YfJckrI+WeJ2T8Tki2jiG77rX38FBZeVf5NtT6B3Yvec57sVNZzuTzQnjn9yPdYgVjz0u+opycsKPgUviuPXPTA+j4+FaQ2Q+o5v4bgvPVkxfhHAxzMYfv8U2A3h13v+HUj7pW/I7RGmYG7gsjad/SVZH/2JJkw=
+	t=1771982859; cv=none; b=ocPijv/zSpWLDzcpv9RHMcybid+HoJStXwvrCJmtWxloLTuU/vzo7a/ryXRfeEXGVPuTAxYKNC6mxq+kg8mZnppPNGqoCvanGEyaXZSWrmlR0TN9rsOsZHr9c63sqglztfVFBs/fVpfLNrMNNiROAJdWHYGtfrBgg2HIDPGzB5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982846; c=relaxed/simple;
-	bh=RGbCbpqPfk1bvEW77yVi1OAn4n8V9JfwDQZJ3KktTOM=;
+	s=arc-20240116; t=1771982859; c=relaxed/simple;
+	bh=D1KzJSSqUkYyVhoHG8Ae5Mgk/itT/rMursOKOKmjGtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GisJmQQl4s0/VnbxahfREslFz9qfL6tIgSy5mQFknrx44jnqpcJTPyp9vhEFDrCXEqvOoGdvUjC6lofNUfeirntnyUUqIbZ2oD/EfcwhyA193aWa6wq4lOsNNKoU6TVcWofShOk/nA2X3kBt2ZrK/kWkRXaO62Jk91IHUi6xr8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkfRDhY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B0BC116D0;
-	Wed, 25 Feb 2026 01:27:25 +0000 (UTC)
+	 MIME-Version; b=Jlu5cnvLQhA2teMSMzkBG7xs54st2jpnVqTJ+lkqvyfYjBNERNrdOhqIyYU4xB8xOQlikDtlNJFmeUXFXjIVBDh32R2cnQWVVDzd0f52aaw4OXxilOHrRhk+E2pXidi3WO6mTqYuXsi+2W/xJLhk9jFhSy7MwpAZeL4n844SXVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZjOOP2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D4EC116D0;
+	Wed, 25 Feb 2026 01:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982846;
-	bh=RGbCbpqPfk1bvEW77yVi1OAn4n8V9JfwDQZJ3KktTOM=;
+	s=korg; t=1771982859;
+	bh=D1KzJSSqUkYyVhoHG8Ae5Mgk/itT/rMursOKOKmjGtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkfRDhY2x7q3D6CEg9Hr61Ikcmcla2WR5VWVozl6k3qfmEVhI7D/Bkom1eDfvxr4W
-	 ytLsOOB4KH9Rx7HQyWsCe9ZNyFiwD46jqaF2jaSE/EZVNkJTIl7KFoMdi6WrWNuhgL
-	 P6+bn5FFkxGRuAH3AtIOKVyOfSCA0ByTZfxfvTaw=
+	b=SZjOOP2IhYYoB27X0d8y51q8sWof2JahpzJNOj9gYHVa0VobJxTaChqqzdEWc0fBQ
+	 em/VR217go/zYRxZ83chihPHxe1IBRT7LS8RFGX19nzqSPelQyX7T4VtOjZQnLsD8x
+	 VHBYnEC6a6AwkxS7BgBpt2IuVdHEqymLgiL0SzOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+046b605f01802054bff0@syzkaller.appspotmail.com,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 019/781] gfs2: Fix slab-use-after-free in qd_put
-Date: Tue, 24 Feb 2026 17:12:08 -0800
-Message-ID: <20260225012400.173411529@linuxfoundation.org>
+Subject: [PATCH 6.19 020/781] iomap: fix invalid folio access after folio_end_read()
+Date: Tue, 24 Feb 2026 17:12:09 -0800
+Message-ID: <20260225012400.199631920@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -65,77 +67,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218074-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218085-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lst.de,infradead.org,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,046b605f01802054bff0];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 47B7F18EBB6
+X-Rspamd-Queue-Id: B5CE418EC1D
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-[ Upstream commit 22150a7d401d9e9169b9b68e05bed95f7f49bf69 ]
+[ Upstream commit aa35dd5cbc060bc3e28ad22b1d76eefa3f024030 ]
 
-Commit a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
-started freeing quota data objects during filesystem shutdown instead of
-putting them back onto the LRU list, but it failed to remove these
-objects from the LRU list, causing LRU list corruption.  This caused
-use-after-free when the shrinker (gfs2_qd_shrink_scan) tried to access
-already-freed objects on the LRU list.
+If the folio does not have an iomap_folio_state (ifs) attached and the
+folio gets read in by the filesystem's IO helper, folio_end_read() will
+be called by the IO helper at any time. For this case, we cannot access
+the folio after dispatching it to the IO helper, eg subsequent accesses
+like
 
-Fix this by removing qd objects from the LRU list before freeing them in
-qd_put().
+        if (ctx->cur_folio &&
+                    offset_in_folio(ctx->cur_folio, iter->pos) == 0) {
 
-Initial fix from Deepanshu Kartikey <kartikey406@gmail.com>.
+are incorrect.
 
-Fixes: a475c5dd16e5 ("gfs2: Free quota data objects synchronously")
-Reported-by: syzbot+046b605f01802054bff0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=046b605f01802054bff0
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fix these invalid accesses by invalidating ctx->cur_folio if all bytes
+of the folio have been read in by the IO helper.
+
+This allows us to also remove the +1 bias added for the ifs case. The
+bias was previously added to ensure that if all bytes are read in, the
+IO helper does not end the read on the folio until iomap has decremented
+the bias.
+
+Fixes: b2f35ac4146d ("iomap: add caller-provided callbacks for read and readahead")
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Link: https://patch.msgid.link/20260126224107.2182262-2-joannelkoong@gmail.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/quota.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/iomap/buffered-io.c | 51 ++++++++++++++++++++++--------------------
+ 1 file changed, 27 insertions(+), 24 deletions(-)
 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index b1692f12a602a..2b499b554e876 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -334,6 +334,7 @@ static void qd_put(struct gfs2_quota_data *qd)
- 		lockref_mark_dead(&qd->qd_lockref);
- 		spin_unlock(&qd->qd_lockref.lock);
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 6beb876658c09..e3bedcbb5f1ea 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -409,8 +409,6 @@ static void iomap_read_init(struct folio *folio)
+ 	struct iomap_folio_state *ifs = folio->private;
  
-+		list_lru_del_obj(&gfs2_qd_lru, &qd->qd_lru);
- 		gfs2_qd_dispose(qd);
- 		return;
+ 	if (ifs) {
+-		size_t len = folio_size(folio);
+-
+ 		/*
+ 		 * ifs->read_bytes_pending is used to track how many bytes are
+ 		 * read in asynchronously by the IO helper. We need to track
+@@ -418,23 +416,19 @@ static void iomap_read_init(struct folio *folio)
+ 		 * reading in all the necessary ranges of the folio and can end
+ 		 * the read.
+ 		 *
+-		 * Increase ->read_bytes_pending by the folio size to start, and
+-		 * add a +1 bias. We'll subtract the bias and any uptodate /
+-		 * zeroed ranges that did not require IO in iomap_read_end()
+-		 * after we're done processing the folio.
++		 * Increase ->read_bytes_pending by the folio size to start.
++		 * We'll subtract any uptodate / zeroed ranges that did not
++		 * require IO in iomap_read_end() after we're done processing
++		 * the folio.
+ 		 *
+ 		 * We do this because otherwise, we would have to increment
+ 		 * ifs->read_bytes_pending every time a range in the folio needs
+ 		 * to be read in, which can get expensive since the spinlock
+ 		 * needs to be held whenever modifying ifs->read_bytes_pending.
+-		 *
+-		 * We add the bias to ensure the read has not been ended on the
+-		 * folio when iomap_read_end() is called, even if the IO helper
+-		 * has already finished reading in the entire folio.
+ 		 */
+ 		spin_lock_irq(&ifs->state_lock);
+ 		WARN_ON_ONCE(ifs->read_bytes_pending != 0);
+-		ifs->read_bytes_pending = len + 1;
++		ifs->read_bytes_pending = folio_size(folio);
+ 		spin_unlock_irq(&ifs->state_lock);
  	}
+ }
+@@ -465,11 +459,9 @@ static void iomap_read_end(struct folio *folio, size_t bytes_submitted)
+ 
+ 		/*
+ 		 * Subtract any bytes that were initially accounted to
+-		 * read_bytes_pending but skipped for IO. The +1 accounts for
+-		 * the bias we added in iomap_read_init().
++		 * read_bytes_pending but skipped for IO.
+ 		 */
+-		ifs->read_bytes_pending -=
+-			(folio_size(folio) + 1 - bytes_submitted);
++		ifs->read_bytes_pending -= folio_size(folio) - bytes_submitted;
+ 
+ 		/*
+ 		 * If !ifs->read_bytes_pending, this means all pending reads by
+@@ -483,14 +475,16 @@ static void iomap_read_end(struct folio *folio, size_t bytes_submitted)
+ 		spin_unlock_irq(&ifs->state_lock);
+ 		if (end_read)
+ 			folio_end_read(folio, uptodate);
+-	} else if (!bytes_submitted) {
++	} else {
+ 		/*
+-		 * If there were no bytes submitted, this means we are
+-		 * responsible for unlocking the folio here, since no IO helper
+-		 * has taken ownership of it. If there were bytes submitted,
+-		 * then the IO helper will end the read via
+-		 * iomap_finish_folio_read().
++		 * If a folio without an ifs is submitted to the IO helper, the
++		 * read must be on the entire folio and the IO helper takes
++		 * ownership of the folio. This means we should only enter
++		 * iomap_read_end() for the !ifs case if no bytes were submitted
++		 * to the IO helper, in which case we are responsible for
++		 * unlocking the folio here.
+ 		 */
++		WARN_ON_ONCE(bytes_submitted);
+ 		folio_unlock(folio);
+ 	}
+ }
+@@ -502,6 +496,7 @@ static int iomap_read_folio_iter(struct iomap_iter *iter,
+ 	loff_t pos = iter->pos;
+ 	loff_t length = iomap_length(iter);
+ 	struct folio *folio = ctx->cur_folio;
++	size_t folio_len = folio_size(folio);
+ 	size_t poff, plen;
+ 	loff_t pos_diff;
+ 	int ret;
+@@ -515,8 +510,7 @@ static int iomap_read_folio_iter(struct iomap_iter *iter,
+ 
+ 	ifs_alloc(iter->inode, folio, iter->flags);
+ 
+-	length = min_t(loff_t, length,
+-			folio_size(folio) - offset_in_folio(folio, pos));
++	length = min_t(loff_t, length, folio_len - offset_in_folio(folio, pos));
+ 	while (length) {
+ 		iomap_adjust_read_range(iter->inode, folio, &pos, length, &poff,
+ 				&plen);
+@@ -542,7 +536,15 @@ static int iomap_read_folio_iter(struct iomap_iter *iter,
+ 			ret = ctx->ops->read_folio_range(iter, ctx, plen);
+ 			if (ret)
+ 				return ret;
++
+ 			*bytes_submitted += plen;
++			/*
++			 * If the entire folio has been read in by the IO
++			 * helper, then the helper owns the folio and will end
++			 * the read on it.
++			 */
++			if (*bytes_submitted == folio_len)
++				ctx->cur_folio = NULL;
+ 		}
+ 
+ 		ret = iomap_iter_advance(iter, plen);
+@@ -575,7 +577,8 @@ void iomap_read_folio(const struct iomap_ops *ops,
+ 	if (ctx->ops->submit_read)
+ 		ctx->ops->submit_read(ctx);
+ 
+-	iomap_read_end(folio, bytes_submitted);
++	if (ctx->cur_folio)
++		iomap_read_end(ctx->cur_folio, bytes_submitted);
+ }
+ EXPORT_SYMBOL_GPL(iomap_read_folio);
+ 
 -- 
 2.51.0
 
