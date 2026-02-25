@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-218310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wLeiIZJSnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:26 +0100
+	id CHWAAqBXnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:00:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BE118F40A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:26 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1321905AF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:59:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E74A131949E2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3EAA430BEAAF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEB620C012;
-	Wed, 25 Feb 2026 01:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961A5279DCA;
+	Wed, 25 Feb 2026 01:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1etHphKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHiLzL81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5216C18DB2A;
-	Wed, 25 Feb 2026 01:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BBB279DB3;
+	Wed, 25 Feb 2026 01:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983112; cv=none; b=AN3oS4hDMhlDAedCXyFEvhwzKeZ47kkBvzslwk7xUBVEIfHClKPARvH8X0oJAern1f6dzbMAcDevxg6I/VAQniOHExP4nMWmDLAmMZeobd7LTGombL8ECvL0NneTs/Zi5q9LTXBNKmsQpqRAvPLhl8WuDUfoCiReojH0eVudRGw=
+	t=1771983763; cv=none; b=LxdIGyWL9r9RxGYFhYoWaKlObCdt9RRhQmF+Gi49lk5vXFDyPUkJtsvs/unWr9cBHJyh8nfthZ+BQ3aaPMKX+rDRfQddxDZs2wRIonV7e+teuwbfkTswKAiWlxgOsMPf1CU453Mj7VcQCh5kE8A/W5xjO6HntPS26dPDQztlBCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983112; c=relaxed/simple;
-	bh=F1TWJ96ntSolgvnriPitw2rcH+DcXzil3IGTaS9kAzM=;
+	s=arc-20240116; t=1771983763; c=relaxed/simple;
+	bh=jEydx9mCNRnhRgWMxGdyzJIAe6flJl1zBK/WoM9OUVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5XZMgkZnH3kvI5pJZQGLUdMHvxcEJ0j9xP6/fkui3sm/mStq3CQ5ZpRRbxh7IM6jlThU/mRxbXTiTNpLWgQHrBR6FD1bKehG0mEmbL45J5wHfK46yaVF2iPpCQUol96t3DY+WvkUY6DOplML5+9yq4dLncfQJon7H4zB+eweag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1etHphKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1134FC116D0;
-	Wed, 25 Feb 2026 01:31:52 +0000 (UTC)
+	 MIME-Version; b=EnxTC4/GF04Dtn5ajmR4khF30CvtIWqfHCuEYyhLgcp7W3Y8aMLHAYP+NOS/s+aHyx5MBdcTmgrIjIhGRy4gOTKeGYmRS+YJTuzsrTPhANKNY05N5PMdoZtzXMm2+31p6LsYBBXaK8ks2rZeDmukUgkKct3UU5pQGOGD3t8MIMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHiLzL81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10318C116D0;
+	Wed, 25 Feb 2026 01:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983112;
-	bh=F1TWJ96ntSolgvnriPitw2rcH+DcXzil3IGTaS9kAzM=;
+	s=korg; t=1771983763;
+	bh=jEydx9mCNRnhRgWMxGdyzJIAe6flJl1zBK/WoM9OUVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1etHphKY0h+0gUT9hv1hUCmuO1CS8+MJfAfzFcrVBgIwZgEZ++o7H/UFBYyojxqmp
-	 bj0u8r5xX1XVzB/5+kUAWc4aRpgFlLfLG1wBY3Cb68L+IJrTFZcPmfNK6PoanlcHOs
-	 4AZ1jSOqTf9HodPagxiDN1eZuPcjEUE592bMRvvc=
+	b=aHiLzL813MexOmPgdc1aAw3JyvIRrIfhFEzbQGJlHWtAAvnPRDW3OYlV7iVSZKb8M
+	 hvfw7klIDnaoZG12BcgGmh/KTJXZgSw/3FpY7mz4JOR74w71w2z0El4o0kDnUo7FUm
+	 d7+6ripOhXBJZPziIgPeHISGrZ3pUCy7w+DVihjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Tao Tian <tiantao6@hisilicon.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Xiao Ni <xni@redhat.com>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 272/781] drm/hisilicon/hibmc: add dp mode valid check
+Subject: [PATCH 6.18 055/641] md: fix return value of mddev_trylock
 Date: Tue, 24 Feb 2026 17:16:21 -0800
-Message-ID: <20260225012406.367335401@linuxfoundation.org>
+Message-ID: <20260225012350.373255414@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218310-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218876-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,126 +88,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 39BE118F40A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,fnnas.com:email,acm.org:email]
+X-Rspamd-Queue-Id: 6A1321905AF
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baihan Li <libaihan@huawei.com>
+From: Xiao Ni <xni@redhat.com>
 
-[ Upstream commit 607805abfb747b98f43aa57d6d9ba4caed4d106f ]
+[ Upstream commit 05c8de4f09b08e97c6ecb190dcec0e68b167cb03 ]
 
-If DP is connected, check the DP BW in mode_valid_ctx() to ensure
-that DP's link rate supports high-resolution data transmission.
+A return value of 0 is treaded as successful lock acquisition. In fact, a
+return value of 1 means getting the lock successfully.
 
-Fixes: 0ab6ea261c1f ("drm/hisilicon/hibmc: add dp module in hibmc")
-Signed-off-by: Baihan Li <libaihan@huawei.com>
-Signed-off-by: Yongbang Shi <shiyongbang@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Tao Tian <tiantao6@hisilicon.com>
-Link: https://patch.msgid.link/20251210023759.3944834-3-shiyongbang@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/linux-raid/20260127073951.17248-1-xni@redhat.com
+Fixes: 9e59d609763f ("md: call del_gendisk in control path")
+Reported-by: Bart Van Assche <bvanassche@acm.org>
+Closes: https://lore.kernel.org/linux-raid/20250611073108.25463-1-xni@redhat.com/T/#mfa369ef5faa4aa58e13e6d9fdb88aecd862b8f2f
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by:  Li Nan <linan122@huawei.com>
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/hisilicon/hibmc/dp/dp_config.h    |  2 ++
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c    | 10 ++++++++++
- drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h    |  2 ++
- .../gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c    | 19 +++++++++++++++++++
- 4 files changed, 33 insertions(+)
+ drivers/md/md.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_config.h b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_config.h
-index 08f9e1caf7fcb..efb30a7584758 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_config.h
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_config.h
-@@ -17,5 +17,7 @@
- #define HIBMC_DP_LINK_RATE_CAL		27
- #define HIBMC_DP_SYNC_DELAY(lanes)	((lanes) == 0x2 ? 86 : 46)
- #define HIBMC_DP_INT_ENABLE		0xc
-+/* HIBMC_DP_LINK_RATE_CAL * 10000 * 80% = 216000 */
-+#define DP_MODE_VALI_CAL		216000
+diff --git a/drivers/md/md.h b/drivers/md/md.h
+index fd6e001c1d38f..9d66afb8cc6e6 100644
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -736,8 +736,8 @@ static inline int mddev_trylock(struct mddev *mddev)
+ 	int ret;
  
- #endif
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-index 0ec6ace2d0822..37549dafa06ca 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.c
-@@ -264,6 +264,16 @@ void hibmc_dp_reset_link(struct hibmc_dp *dp)
- 	dp->dp_dev->link.status.channel_equalized = false;
- }
- 
-+u8 hibmc_dp_get_link_rate(struct hibmc_dp *dp)
-+{
-+	return dp->dp_dev->link.cap.link_rate;
-+}
-+
-+u8 hibmc_dp_get_lanes(struct hibmc_dp *dp)
-+{
-+	return dp->dp_dev->link.cap.lanes;
-+}
-+
- static const struct hibmc_dp_color_raw g_rgb_raw[] = {
- 	{CBAR_COLOR_BAR, 0x000, 0x000, 0x000},
- 	{CBAR_WHITE,     0xfff, 0xfff, 0xfff},
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h
-index 59c1eae153c55..31316fe1ea8db 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h
-+++ b/drivers/gpu/drm/hisilicon/hibmc/dp/dp_hw.h
-@@ -66,5 +66,7 @@ void hibmc_dp_hpd_cfg(struct hibmc_dp *dp);
- void hibmc_dp_enable_int(struct hibmc_dp *dp);
- void hibmc_dp_disable_int(struct hibmc_dp *dp);
- bool hibmc_dp_check_hpd_status(struct hibmc_dp *dp, int exp_status);
-+u8 hibmc_dp_get_link_rate(struct hibmc_dp *dp);
-+u8 hibmc_dp_get_lanes(struct hibmc_dp *dp);
- 
- #endif
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c
-index 4a66a107900a1..616821e3c933b 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_dp.c
-@@ -13,6 +13,7 @@
- #include "hibmc_drm_drv.h"
- #include "dp/dp_hw.h"
- #include "dp/dp_comm.h"
-+#include "dp/dp_config.h"
- 
- #define DP_MASKED_SINK_HPD_PLUG_INT	BIT(2)
- 
-@@ -81,9 +82,27 @@ static int hibmc_dp_detect(struct drm_connector *connector,
- 	return connector_status_disconnected;
- }
- 
-+static int hibmc_dp_mode_valid(struct drm_connector *connector,
-+			       const struct drm_display_mode *mode,
-+			       struct drm_modeset_acquire_ctx *ctx,
-+			       enum drm_mode_status *status)
-+{
-+	struct hibmc_dp *dp = to_hibmc_dp(connector);
-+	u64 cur_val, max_val;
-+
-+	/* check DP link BW */
-+	cur_val = (u64)mode->clock * HIBMC_DP_BPP;
-+	max_val = (u64)hibmc_dp_get_link_rate(dp) * DP_MODE_VALI_CAL * hibmc_dp_get_lanes(dp);
-+
-+	*status = cur_val > max_val ? MODE_CLOCK_HIGH : MODE_OK;
-+
-+	return 0;
-+}
-+
- static const struct drm_connector_helper_funcs hibmc_dp_conn_helper_funcs = {
- 	.get_modes = hibmc_dp_connector_get_modes,
- 	.detect_ctx = hibmc_dp_detect,
-+	.mode_valid_ctx = hibmc_dp_mode_valid,
- };
- 
- static int hibmc_dp_late_register(struct drm_connector *connector)
+ 	ret = mutex_trylock(&mddev->reconfig_mutex);
+-	if (!ret && test_bit(MD_DELETED, &mddev->flags)) {
+-		ret = -ENODEV;
++	if (ret && test_bit(MD_DELETED, &mddev->flags)) {
++		ret = 0;
+ 		mutex_unlock(&mddev->reconfig_mutex);
+ 	}
+ 	return ret;
 -- 
 2.51.0
 
