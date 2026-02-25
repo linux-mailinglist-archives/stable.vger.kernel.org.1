@@ -1,216 +1,363 @@
-Return-Path: <stable+bounces-218045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPsDKk5QnmlIUgQAu9opvQ
-	(envelope-from <stable+bounces-218045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:28:46 +0100
+	id sGI/F0+hnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:14:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC1118EB5A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBBB193208
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:14:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B48F83019041
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:25:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6383F310FEF7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EA1251795;
-	Wed, 25 Feb 2026 01:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3353254B3;
+	Wed, 25 Feb 2026 06:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0EFQtS/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZcSSU9J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AC72494FE
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 01:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5962FF669;
+	Wed, 25 Feb 2026 06:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982754; cv=none; b=IEojdKiRpzQ/KfcVRYc1/VHYHdz3Y9dQHSfKTGexWsCPEtgEsqZiExAvkn1CvJcFlTgZOdp0b87gZin7Ev8x2AbWrtR2OvJx+h0eTG8Kk2jUBW2aY18RxcPtnRGf29Dwrbrc0IIVY76d4LPbBCvlG/R3pPkKau7gcJFnz85jmlc=
+	t=1772002783; cv=none; b=H4AHdmbIFLWSrK6NbadRW/RT0/M6EUgzbxIYhi/ADzIfEWDbs6+do8i2SKKfxooqnUaDlJ/0eXA3FDE3WWvzEigHF8POvZR+Ds3QO942qDJQqTGq3pakVb4LKhNlKwoMhInptpl2m5imtbX6rP6mR1WelVgKMaosuHJPf/4XUco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982754; c=relaxed/simple;
-	bh=ryim3kBKfVpNClBm87uaeHeC28gK3jBN4xRGvEH2sTo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Geffd/h+qhsR3E9+xlWyZq5ygXZXZiwx115RNe4B5crF0s06M2NmTZAQG/vhaM2wbAEv8r63Jrg1JaARNTGZ+x8NGcKAr7EiSuX899JNwHYOixQKb+8b5EZiqt+xjIYnoq4Syy5LtcOOI9IWmqlqVkmCPVux00aXKIefZlemTf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0EFQtS/K; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3562370038dso5391094a91.3
-        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 17:25:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771982752; x=1772587552; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O/dMkWi/E0gzEc9xlKrxZrN+8RFKbCVIlfOl5w/8K8Y=;
-        b=0EFQtS/KT1thHFV9tfcvpczJxk3g5SeTrr0uSyDAJ3+UEMl4FdqYUuG/56DfZXI2S7
-         YZGap1Sfsqz/XclpY/JinY31UWfjnDjeEIeKPVdUEPOcV+K3hGd1ZMYsCpmmBoTuM7ro
-         jpJN5AaWg7WiHO+5PWvCL9MFpHagNIOQw6DEcUsStcHwTe9fYdEmWC5cHTnh6EXrZKe0
-         YZm7+4g9RZWuKLmu9PkLnhgfTbK2SdnQM/SE/gy2/aOKnJ0QhpAwxs1izgdfdMg5O0dv
-         fJv/WkCBSkItjo93dRV2HScnHjGGTxzs8XkMXhn8C2W7QsGxEZtgCAS/O7WnhK1h2gxk
-         RDEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771982752; x=1772587552;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=O/dMkWi/E0gzEc9xlKrxZrN+8RFKbCVIlfOl5w/8K8Y=;
-        b=hPjTfirKYBWAAammQN37YVAMftI0cwUUdsihZ7gt7+FwzRn/Ryreg4U8Urw1AXjhfu
-         B+ZlXUfI6+zCggM+Md7N4qdxfT1uDS6KyeNpo3chMg2HGGWd7ZHF2m5EGmQ2mGDNJnov
-         fCsCfsXbenQYMzKXOqr15BldaIFbxjaF595iuNQ9RbITDLyI1MjBE9iWZ7Bm3OFsZo3p
-         MrzpcVTPdE/JeT009fuUIhFWWKH6sMp8ueXFP9J8vMADiR232rmGRfT9mlychHpoiI/5
-         0D2jbC/990eyktByUwBH5xNV+o45aBFAsSdfH+LDwk39BgLGM7suPQ3CG6LbyZIAY4Do
-         gQ1g==
-X-Forwarded-Encrypted: i=1; AJvYcCX+2mTE6fDhjwvkez/0vqNAOXsqJCka3Cw3FBiegHylmBwGHZRmKBYMDru3sYkIYQCTECdZLDA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5H/t9lckZ4OGkuYhY++maYKjOdh3GFUCDfb4PGGJiffgvyUW5
-	xSQYq3/TPQwu+ke+KuZu7XeD0hbI9sUBf0HPLxNPrhnUe6Gq8P2cVCFUHugoTZTTsY3O5hNJX6e
-	AH8bFzA==
-X-Received: from pjbge3.prod.google.com ([2002:a17:90b:e03:b0:354:be64:d426])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2812:b0:354:a9f3:68bc
- with SMTP id 98e67ed59e1d1-358ae8e8390mr10841719a91.30.1771982752378; Tue, 24
- Feb 2026 17:25:52 -0800 (PST)
+	s=arc-20240116; t=1772002783; c=relaxed/simple;
+	bh=LCfBlUP5QW7hjRWUUnaHFxRwIDzmq56IVbL0nDYEt7w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Snvn0Vt2BN83tMBkAGKOlZfK7oMEDGhZU3pw8SVJOltq/Fx01M/vvkDv21pPTWgjLlxtE/HjTCFXbec6FCoonslyt3nwU+WvFFReWa48FJgzTNpqcYYK+BACsnP1igyDoDEG5h0eanIZptbh2Ye+80PZiY+bLXGPVUHAmzISxiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZcSSU9J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77421C116D0;
+	Wed, 25 Feb 2026 06:59:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1772002783;
+	bh=LCfBlUP5QW7hjRWUUnaHFxRwIDzmq56IVbL0nDYEt7w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lZcSSU9JW8l6FbieniQVWo6EKsMoq34/3kCwD20DTVx8xT/D9dGRLOI81GZv6Yt0/
+	 9kfQKE1q7rJtIE4HKUZ5hzQtFr3JU2jSrXxhua7jDlt6VanockjWJI1uqSqyvysp4b
+	 RKUuKgozPR/ViQqI1sAQ/TIHB5jf1EvvpfYJ8EX0=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Xingui Yang <yangxingui@huawei.com>,
+	Igor Pylypiv <ipylypiv@google.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	John Garry <john.g.garry@oracle.com>
+Subject: [PATCH 6.18 624/641] ata: libata-scsi: avoid Non-NCQ command starvation
 Date: Tue, 24 Feb 2026 17:25:50 -0800
-In-Reply-To: <CAO9r8zO+Eej0AjzQt6dnELKLKHZ33DGLbDv=_sP1J1qLMVWpvw@mail.gmail.com>
+Message-ID: <20260225012403.626504292@linuxfoundation.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260223154636.116671-1-yosry@kernel.org> <20260223154636.116671-3-yosry@kernel.org>
- <CAO9r8zPsAMaiU794xoXDso3sdAM0_EN2PyE13vR4NqqEh9e2=g@mail.gmail.com>
- <aZ5ItfEUtIlVbzuQ@google.com> <CAO9r8zPbu1BsOsPU02YcCLDbRXZoDmVd8XiMHssSDnkjdDPC4g@mail.gmail.com>
- <aZ5MF8_RK56C8B9Q@google.com> <CAO9r8zO+Eej0AjzQt6dnELKLKHZ33DGLbDv=_sP1J1qLMVWpvw@mail.gmail.com>
-Message-ID: <aZ5Pnvb4OAVWWtuR@google.com>
-Subject: Re: [PATCH v1 2/4] KVM: nSVM: Delay stuffing L2's current RIP into
- NextRIP until vCPU run
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218045-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219540-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 0FC1118EB5A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,oracle.com:email]
+X-Rspamd-Queue-Id: CFBBB193208
 X-Rspamd-Action: no action
 
-On Tue, Feb 24, 2026, Yosry Ahmed wrote:
-> On Tue, Feb 24, 2026 at 5:10=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Tue, Feb 24, 2026, Yosry Ahmed wrote:
-> > > > > Doing this in svm_prepare_switch_to_guest() is wrong, or at least
-> > > > > after the svm->guest_state_loaded check. It's possible to emulate=
- the
-> > > > > nested VMRUN without doing a vcpu_put(), which means
-> > > > > svm->guest_state_loaded will remain true and this code will be
-> > > > > skipped.
-> > > > >
-> > > > > In fact, this breaks the svm_nested_soft_inject_test test. Funny
-> > > > > enough, I was only running it with my repro changes, which papere=
-d
-> > > > > over the bug because it forced an exit to userspace after VMRUN d=
-ue to
-> > > > > single-stepping, so svm->guest_state_loaded got cleared and the c=
-ode
-> > > > > was executed on the next KVM_RUN, before L2 runs.
-> > > > >
-> > > > > I can move it above the svm->guest_state_loaded check, but I thin=
-k I
-> > > > > will just put it in pre_svm_run() instead.
-> > > >
-> > > > I would rather not expand pre_svm_run(), and instead just open code=
- it in
-> > > > svm_vcpu_run().  pre_svm_run() probably should never have been adde=
-d, because
-> > > > it's far from a generic "pre run" API.  E.g. if we want to keep the=
- helper around,
-> > > > it should probably be named something something ASID.
-> > >
-> > > I sent a new version before I saw your response.. sorry.
-> > >
-> > > How strongly do you feel about this? :P
-> >
-> > Strong enough that I'll fix it up when applying, unless it's a sticking=
- point on
-> > your end.
->=20
-> It's just that 99% of the time someone is reading svm_vcpu_run(), they
-> won't care about this code, and it's also cognitive load to filter it
-> out. We can add a helper for this code (and the soft IRQ inject),
-> something like svm_fixup_nested_rips() or sth.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
-I don't entirely disagree, but at the same time, why is someome reading svm=
-_vcpu_run()
-if they don't want to look at the gory details?
+------------------
 
-> We discussed a helper before and you didn't like it, but that was in a
-> different context (a helper that combined normal and special cases).
-> WDYT?
+From: Damien Le Moal <dlemoal@kernel.org>
 
-A helper would work.  svm_fixup_nested_rips() is good, the only flaw is the=
- CS.base
-chunk, but I'm not sure I care enough about 32-bit to reject the name just =
-because
-of that :-)
+commit 0ea84089dbf62a92dc7889c79e6b18fc89260808 upstream.
 
-That would make it easier to reduce indentation, e.g.
+When a non-NCQ command is issued while NCQ commands are being executed,
+ata_scsi_qc_issue() indicates to the SCSI layer that the command issuing
+should be deferred by returning SCSI_MLQUEUE_XXX_BUSY.  This command
+deferring is correct and as mandated by the ACS specifications since
+NCQ and non-NCQ commands cannot be mixed.
 
-static void svm_fixup_nested_rips(struct kvm_vcpu *vcpu)
-{
-	struct vcpu_svm *svm =3D to_svm(vcpu);
+However, in the case of a host adapter using multiple submission queues,
+when the target device is under a constant load of NCQ commands, there
+are no guarantees that requeueing the non-NCQ command will be executed
+later and it may be deferred again repeatedly as other submission queues
+can constantly issue NCQ commands from different CPUs ahead of the
+non-NCQ command. This can lead to very long delays for the execution of
+non-NCQ commands, and even complete starvation for these commands in the
+worst case scenario.
 
-	/*
-	 * If nrips is supported in hardware but not exposed to L1, stuff the
-	 * actual L2 RIP to emulate what a nrips=3D0 CPU would do (L1 is
-	 * responsible for advancing RIP prior to injecting the event). Once L2
-	 * runs after L1 executes VMRUN, NextRIP is updated by the CPU and/or
-	 * KVM, and this is no longer needed.
-	 *
-	 * This is done here (as opposed to when preparing vmcb02) to use the
-	 * most up-to-date value of RIP regardless of the order of restoring
-	 * registers and nested state in the vCPU save+restore path.
-	 *
-	 * Simiarly, initialize svm->soft_int_* fields here to use the most
-	 * up-to-date values of RIP and CS base, regardless of restore order.
-	 */
-	if (!is_guest_mode(vcpu) || !svm->nested.nested_run_pending)
-		return;
+Since the block layer and the SCSI layer do not distinguish between
+queueable (NCQ) and non queueable (non-NCQ) commands, libata-scsi SAT
+implementation must ensure forward progress for non-NCQ commands in the
+presence of NCQ command traffic. This is similar to what SAS HBAs with a
+hardware/firmware based SAT implementation do.
 
-	if (boot_cpu_has(X86_FEATURE_NRIPS) &&
-	    !guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-		svm->vmcb->control.next_rip =3D kvm_rip_read(vcpu);
+Implement such forward progress guarantee by limiting requeueing of
+non-NCQ commands from ata_scsi_qc_issue(): when a non-NCQ command is
+received and NCQ commands are in-flight, do not force a requeue of the
+non-NCQ command by returning SCSI_MLQUEUE_XXX_BUSY and instead return 0
+to indicate that the command was accepted but hold on to the qc using
+the new deferred_qc field of struct ata_port.
 
-	if (svm->soft_int_injected) {
-		svm->soft_int_csbase =3D svm->vmcb->save.cs.base;
-		svm->soft_int_old_rip =3D kvm_rip_read(vcpu);
-		if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NRIPS))
-			svm->soft_int_next_rip =3D kvm_rip_read(vcpu);
-	}
-}
+This deferred qc will be issued using the work item deferred_qc_work
+running the function ata_scsi_deferred_qc_work() once all in-flight
+commands complete, which is checked with the port qc_defer() callback
+return value indicating that no further delay is necessary. This check
+is done using the helper function ata_scsi_schedule_deferred_qc() which
+is called from ata_scsi_qc_complete(). This thus excludes this mechanism
+from all internal non-NCQ commands issued by ATA EH.
+
+When a port deferred_qc is non NULL, that is, the port has a command
+waiting for the device queue to drain, the issuing of all incoming
+commands (both NCQ and non-NCQ) is deferred using the regular busy
+mechanism. This simplifies the code and also avoids potential denial of
+service problems if a user issues too many non-NCQ commands.
+
+Finally, whenever ata EH is scheduled, regardless of the reason, a
+deferred qc is always requeued so that it can be retried once EH
+completes. This is done by calling the function
+ata_scsi_requeue_deferred_qc() from ata_eh_set_pending(). This avoids
+the need for any special processing for the deferred qc in case of NCQ
+error, link or device reset, or device timeout.
+
+Reported-by: Xingui Yang <yangxingui@huawei.com>
+Reported-by: Igor Pylypiv <ipylypiv@google.com>
+Fixes: bdb01301f3ea ("scsi: Add host and host template flag 'host_tagset'")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Tested-by: Igor Pylypiv <ipylypiv@google.com>
+Tested-by: Xingui Yang <yangxingui@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/ata/libata-core.c |    5 ++
+ drivers/ata/libata-eh.c   |    6 ++
+ drivers/ata/libata-scsi.c |   93 ++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/ata/libata.h      |    2 
+ include/linux/libata.h    |    3 +
+ 5 files changed, 109 insertions(+)
+
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5552,6 +5552,7 @@ struct ata_port *ata_port_alloc(struct a
+ 	mutex_init(&ap->scsi_scan_mutex);
+ 	INIT_DELAYED_WORK(&ap->hotplug_task, ata_scsi_hotplug);
+ 	INIT_DELAYED_WORK(&ap->scsi_rescan_task, ata_scsi_dev_rescan);
++	INIT_WORK(&ap->deferred_qc_work, ata_scsi_deferred_qc_work);
+ 	INIT_LIST_HEAD(&ap->eh_done_q);
+ 	init_waitqueue_head(&ap->eh_wait_q);
+ 	init_completion(&ap->park_req_pending);
+@@ -6162,6 +6163,10 @@ static void ata_port_detach(struct ata_p
+ 		}
+ 	}
+ 
++	/* Make sure the deferred qc work finished. */
++	cancel_work_sync(&ap->deferred_qc_work);
++	WARN_ON(ap->deferred_qc);
++
+ 	/* Tell EH to disable all devices */
+ 	ap->pflags |= ATA_PFLAG_UNLOADING;
+ 	ata_port_schedule_eh(ap);
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -917,6 +917,12 @@ static void ata_eh_set_pending(struct at
+ 
+ 	ap->pflags |= ATA_PFLAG_EH_PENDING;
+ 
++	/*
++	 * If we have a deferred qc, requeue it so that it is retried once EH
++	 * completes.
++	 */
++	ata_scsi_requeue_deferred_qc(ap);
++
+ 	if (!fastdrain)
+ 		return;
+ 
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1657,8 +1657,77 @@ static void ata_qc_done(struct ata_queue
+ 	done(cmd);
+ }
+ 
++void ata_scsi_deferred_qc_work(struct work_struct *work)
++{
++	struct ata_port *ap =
++		container_of(work, struct ata_port, deferred_qc_work);
++	struct ata_queued_cmd *qc;
++	unsigned long flags;
++
++	spin_lock_irqsave(ap->lock, flags);
++
++	/*
++	 * If we still have a deferred qc and we are not in EH, issue it. In
++	 * such case, we should not need any more deferring the qc, so warn if
++	 * qc_defer() says otherwise.
++	 */
++	qc = ap->deferred_qc;
++	if (qc && !ata_port_eh_scheduled(ap)) {
++		WARN_ON_ONCE(ap->ops->qc_defer(qc));
++		ap->deferred_qc = NULL;
++		ata_qc_issue(qc);
++	}
++
++	spin_unlock_irqrestore(ap->lock, flags);
++}
++
++void ata_scsi_requeue_deferred_qc(struct ata_port *ap)
++{
++	struct ata_queued_cmd *qc = ap->deferred_qc;
++	struct scsi_cmnd *scmd;
++
++	lockdep_assert_held(ap->lock);
++
++	/*
++	 * If we have a deferred qc when a reset occurs or NCQ commands fail,
++	 * do not try to be smart about what to do with this deferred command
++	 * and simply retry it by completing it with DID_SOFT_ERROR.
++	 */
++	if (!qc)
++		return;
++
++	scmd = qc->scsicmd;
++	ap->deferred_qc = NULL;
++	ata_qc_free(qc);
++	scmd->result = (DID_SOFT_ERROR << 16);
++	scsi_done(scmd);
++}
++
++static void ata_scsi_schedule_deferred_qc(struct ata_port *ap)
++{
++	struct ata_queued_cmd *qc = ap->deferred_qc;
++
++	lockdep_assert_held(ap->lock);
++
++	/*
++	 * If we have a deferred qc, then qc_defer() is defined and we can use
++	 * this callback to determine if this qc is good to go, unless EH has
++	 * been scheduled.
++	 */
++	if (!qc)
++		return;
++
++	if (ata_port_eh_scheduled(ap)) {
++		ata_scsi_requeue_deferred_qc(ap);
++		return;
++	}
++	if (!ap->ops->qc_defer(qc))
++		queue_work(system_highpri_wq, &ap->deferred_qc_work);
++}
++
+ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
+ {
++	struct ata_port *ap = qc->ap;
+ 	struct scsi_cmnd *cmd = qc->scsicmd;
+ 	u8 *cdb = cmd->cmnd;
+ 	bool have_sense = qc->flags & ATA_QCFLAG_SENSE_VALID;
+@@ -1688,6 +1757,8 @@ static void ata_scsi_qc_complete(struct
+ 	}
+ 
+ 	ata_qc_done(qc);
++
++	ata_scsi_schedule_deferred_qc(ap);
+ }
+ 
+ static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
+@@ -1697,6 +1768,16 @@ static int ata_scsi_qc_issue(struct ata_
+ 	if (!ap->ops->qc_defer)
+ 		goto issue;
+ 
++	/*
++	 * If we already have a deferred qc, then rely on the SCSI layer to
++	 * requeue and defer all incoming commands until the deferred qc is
++	 * processed, once all on-going commands complete.
++	 */
++	if (ap->deferred_qc) {
++		ata_qc_free(qc);
++		return SCSI_MLQUEUE_DEVICE_BUSY;
++	}
++
+ 	/* Check if the command needs to be deferred. */
+ 	ret = ap->ops->qc_defer(qc);
+ 	switch (ret) {
+@@ -1715,6 +1796,18 @@ static int ata_scsi_qc_issue(struct ata_
+ 	}
+ 
+ 	if (ret) {
++		/*
++		 * We must defer this qc: if this is not an NCQ command, keep
++		 * this qc as a deferred one and report to the SCSI layer that
++		 * we issued it so that it is not requeued. The deferred qc will
++		 * be issued with the port deferred_qc_work once all on-going
++		 * commands complete.
++		 */
++		if (!ata_is_ncq(qc->tf.protocol)) {
++			ap->deferred_qc = qc;
++			return 0;
++		}
++
+ 		/* Force a requeue of the command to defer its execution. */
+ 		ata_qc_free(qc);
+ 		return ret;
+--- a/drivers/ata/libata.h
++++ b/drivers/ata/libata.h
+@@ -161,6 +161,8 @@ void ata_scsi_sdev_config(struct scsi_de
+ int ata_scsi_dev_config(struct scsi_device *sdev, struct queue_limits *lim,
+ 		struct ata_device *dev);
+ int __ata_scsi_queuecmd(struct scsi_cmnd *scmd, struct ata_device *dev);
++void ata_scsi_deferred_qc_work(struct work_struct *work);
++void ata_scsi_requeue_deferred_qc(struct ata_port *ap);
+ 
+ /* libata-eh.c */
+ extern unsigned int ata_internal_cmd_timeout(struct ata_device *dev, u8 cmd);
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -899,6 +899,9 @@ struct ata_port {
+ 	u64			qc_active;
+ 	int			nr_active_links; /* #links with active qcs */
+ 
++	struct work_struct	deferred_qc_work;
++	struct ata_queued_cmd	*deferred_qc;
++
+ 	struct ata_link		link;		/* host default link */
+ 	struct ata_link		*slave_link;	/* see ata_slave_link_init() */
+ 
+
+
 
