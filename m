@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-219000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HYbOHNYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:31 +0100
+	id CBBKNPNTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C79A19071F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B9718FAFB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9CDC030748ED
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 520D4315CED4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC31C2652A2;
-	Wed, 25 Feb 2026 01:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CCE1EB5E1;
+	Wed, 25 Feb 2026 01:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwMusFv1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVyh78CD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F28720C012;
-	Wed, 25 Feb 2026 01:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BA818B0A;
+	Wed, 25 Feb 2026 01:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983909; cv=none; b=r1BHdLYTlPpSj8mofPL/etTyPfYHL5DnDoVv1Z60y+RJq+aNAAYtUmmWzOnBuM/8A8GAdI8zyNTuxEeE15+LPPodm33DjzLDT6pwEMQJYje0LTYTsZs0z8dzSdB4XLTUDQ9daR/3BI8Q4hnJkVzgGLSkplvs+8C6lIt/G9aLZL0=
+	t=1771983281; cv=none; b=CO92x70C+H02lh0rEcNV6p0hNCUt9yIF5dZJmUJUvu+erDLxS4rN7ur9KzhSLNU4RluR1SGDo1xXCZ4d3BcnUvk4sHu9ZNkcopWCooahe57h7b+OgF0No/EFkSQds93sreDzLBFbYXxB+GaYFODzPAbddGTo2BseU9NlBtb8PkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983909; c=relaxed/simple;
-	bh=YLdaV5S6+gTLlGvT9WN2aGN1bzQlarH6F0a/F5XoFg8=;
+	s=arc-20240116; t=1771983281; c=relaxed/simple;
+	bh=gksoAF4BqSgSquOyYRFTU2dCG5qOPV4uSD6YhBCBi1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFU5F1c6BuKSUBg4zy/vGnkq9/4IuzW4E+HlUNfbuMDFaz4U1X2godDlYmVGogu2rhWAP5HZBk1v4huIi7WFA0ix+Xjb4VsJvCPP6wU2KPOhVUVeTHGO4psMQ7/tbBWp3jEaIjbKFmsfs0jL+abVCDQOgei/0SnNJV76fwduIDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwMusFv1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EB5C116D0;
-	Wed, 25 Feb 2026 01:45:09 +0000 (UTC)
+	 MIME-Version; b=V8L8JBpRAgvBUoONFQKfta6WMzSVh/IT9Ue7svjpdsV5TuY446Cipr9bcC2k/nWMNdYgkymSfOD8V9XKlrlHBi/jku30ToaSHF4msM3ZiujFbSmwCt4Gw9eaf7KNoSf4XrnRKWrOgt+Re/7lCUSotoir0+y8AjjoyrDxiIUGypY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVyh78CD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9ACC116D0;
+	Wed, 25 Feb 2026 01:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983909;
-	bh=YLdaV5S6+gTLlGvT9WN2aGN1bzQlarH6F0a/F5XoFg8=;
+	s=korg; t=1771983281;
+	bh=gksoAF4BqSgSquOyYRFTU2dCG5qOPV4uSD6YhBCBi1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WwMusFv12BxtAAYy8S4uarlh2kTqDqu+X2jXYUfrv61CXHLtNgAcGxEEgDcKVZNI1
-	 tLClF/SuoFzje3KbW6AimcZXgkbks9pY8PzB9bgAMafVdNBDbtf4l4HYQaz6MBtBxR
-	 HstVUU9Ov0rZ5IiDJs2fe8V+O02Wro4Mm6h7JOYU=
+	b=TVyh78CDLL1D+EoC7cJsHAZp6eLPdxhlOhprG7raUsUTLLLMR/rtFFRAQ/t3xTDB/
+	 ZaUq5EnBCRP/dFds15AtjDwOK7ctE+Vc9u9smumoSmtj26WMa48nCWwbhgK4xAlwU+
+	 IieO1xPgOTdPt3BMMJi2Gm9xFLYg0OQMGHV/krZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ying chen <yc1082463@gmail.com>,
-	Lai Jiangshan <jiangshan.ljs@antgroup.com>,
-	Tejun Heo <tj@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Qiang Yu <qiang.yu@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 176/641] workqueue: Process rescuer work items one-by-one using a cursor
+Subject: [PATCH 6.19 393/781] PCI: dwc: Remove duplicate dw_pcie_ep_hide_ext_capability() function
 Date: Tue, 24 Feb 2026 17:18:22 -0800
-Message-ID: <20260225012353.298551794@linuxfoundation.org>
+Message-ID: <20260225012409.342282402@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,231 +70,149 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,antgroup.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-219000-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218458-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,antgroup.com:email]
-X-Rspamd-Queue-Id: 2C79A19071F
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 79B9718FAFB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lai Jiangshan <jiangshan.ljs@antgroup.com>
+From: Qiang Yu <qiang.yu@oss.qualcomm.com>
 
-[ Upstream commit e5a30c303b07a4d6083e0f7f051b53add6d93c5d ]
+[ Upstream commit 86291f774fe8524178446cb2c792939640b4970c ]
 
-Previously, the rescuer scanned for all matching work items at once and
-processed them within a single rescuer thread, which could cause one
-blocking work item to stall all others.
+Remove dw_pcie_ep_hide_ext_capability() and replace its usage with
+dw_pcie_remove_ext_capability(). Both functions serve the same purpose
+of hiding PCIe extended capabilities, but dw_pcie_remove_ext_capability()
+provides a cleaner API that doesn't require the caller to specify the
+previous capability ID.
 
-Make the rescuer process work items one-by-one instead of slurping all
-matches in a single pass.
-
-Break the rescuer loop after finding and processing the first matching
-work item, then restart the search to pick up the next. This gives
-normal worker threads a chance to process other items which gives them
-the opportunity to be processed instead of waiting on the rescuer's
-queue and prevents a blocking work item from stalling the rest once
-memory pressure is relieved.
-
-Introduce a dummy cursor work item to avoid potentially O(N^2)
-rescans of the work list.  The marker records the resume position for
-the next scan, eliminating redundant traversals.
-
-Also introduce RESCUER_BATCH to control the maximum number of work items
-the rescuer processes in each turn, and move on to other PWQs when the
-limit is reached.
-
-Cc: ying chen <yc1082463@gmail.com>
-Reported-by: ying chen <yc1082463@gmail.com>
-Fixes: e22bee782b3b ("workqueue: implement concurrency managed dynamic worker pool")
-Signed-off-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Suggested-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Tested-by: Niklas Cassel <cassel@kernel.org>
+Link: https://patch.msgid.link/20251224-remove_dw_pcie_ep_hide_ext_capability-v1-1-4302c9cdc316@oss.qualcomm.com
+Stable-dep-of: 72cb5ed2a5c6 ("PCI: dwc: ep: Add per-PF BAR and inbound ATU mapping support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/workqueue.c | 75 ++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 59 insertions(+), 16 deletions(-)
+ .../pci/controller/dwc/pcie-designware-ep.c   | 39 -------------------
+ drivers/pci/controller/dwc/pcie-designware.h  |  7 ----
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c |  4 +-
+ 3 files changed, 1 insertion(+), 49 deletions(-)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index f678200ce8692..885a8b31f855b 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -117,6 +117,8 @@ enum wq_internal_consts {
- 	MAYDAY_INTERVAL		= HZ / 10,	/* and then every 100ms */
- 	CREATE_COOLDOWN		= HZ,		/* time to breath after fail */
- 
-+	RESCUER_BATCH		= 16,		/* process items per turn */
-+
- 	/*
- 	 * Rescue workers are used only on emergencies and shared by
- 	 * all cpus.  Give MIN_NICE.
-@@ -286,6 +288,7 @@ struct pool_workqueue {
- 	struct list_head	pending_node;	/* LN: node on wq_node_nr_active->pending_pwqs */
- 	struct list_head	pwqs_node;	/* WR: node on wq->pwqs */
- 	struct list_head	mayday_node;	/* MD: node on wq->maydays */
-+	struct work_struct	mayday_cursor;	/* L: cursor on pool->worklist */
- 
- 	u64			stats[PWQ_NR_STATS];
- 
-@@ -1126,6 +1129,12 @@ static struct worker *find_worker_executing_work(struct worker_pool *pool,
- 	return NULL;
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 1195d401df19e..cfd59899c7b85 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -75,45 +75,6 @@ static u8 dw_pcie_ep_find_capability(struct dw_pcie_ep *ep, u8 func_no, u8 cap)
+ 				 cap, NULL, ep, func_no);
  }
  
-+static void mayday_cursor_func(struct work_struct *work)
-+{
-+	/* should not be processed, only for marking position */
-+	BUG();
-+}
-+
- /**
-  * move_linked_works - move linked works to a list
-  * @work: start of series of works to be scheduled
-@@ -1188,6 +1197,16 @@ static bool assign_work(struct work_struct *work, struct worker *worker,
- 
- 	lockdep_assert_held(&pool->lock);
- 
-+	/* The cursor work should not be processed */
-+	if (unlikely(work->func == mayday_cursor_func)) {
-+		/* only worker_thread() can possibly take this branch */
-+		WARN_ON_ONCE(worker->rescue_wq);
-+		if (nextp)
-+			*nextp = list_next_entry(work, entry);
-+		list_del_init(&work->entry);
-+		return false;
-+	}
-+
- 	/*
- 	 * A single work shouldn't be executed concurrently by multiple workers.
- 	 * __queue_work() ensures that @work doesn't jump to a different pool
-@@ -3446,22 +3465,30 @@ static int worker_thread(void *__worker)
- static bool assign_rescuer_work(struct pool_workqueue *pwq, struct worker *rescuer)
+-/**
+- * dw_pcie_ep_hide_ext_capability - Hide a capability from the linked list
+- * @pci: DWC PCI device
+- * @prev_cap: Capability preceding the capability that should be hidden
+- * @cap: Capability that should be hidden
+- *
+- * Return: 0 if success, errno otherwise.
+- */
+-int dw_pcie_ep_hide_ext_capability(struct dw_pcie *pci, u8 prev_cap, u8 cap)
+-{
+-	u16 prev_cap_offset, cap_offset;
+-	u32 prev_cap_header, cap_header;
+-
+-	prev_cap_offset = dw_pcie_find_ext_capability(pci, prev_cap);
+-	if (!prev_cap_offset)
+-		return -EINVAL;
+-
+-	prev_cap_header = dw_pcie_readl_dbi(pci, prev_cap_offset);
+-	cap_offset = PCI_EXT_CAP_NEXT(prev_cap_header);
+-	cap_header = dw_pcie_readl_dbi(pci, cap_offset);
+-
+-	/* cap must immediately follow prev_cap. */
+-	if (PCI_EXT_CAP_ID(cap_header) != cap)
+-		return -EINVAL;
+-
+-	/* Clear next ptr. */
+-	prev_cap_header &= ~GENMASK(31, 20);
+-
+-	/* Set next ptr to next ptr of cap. */
+-	prev_cap_header |= cap_header & GENMASK(31, 20);
+-
+-	dw_pcie_dbi_ro_wr_en(pci);
+-	dw_pcie_writel_dbi(pci, prev_cap_offset, prev_cap_header);
+-	dw_pcie_dbi_ro_wr_dis(pci);
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(dw_pcie_ep_hide_ext_capability);
+-
+ static int dw_pcie_ep_write_header(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 				   struct pci_epf_header *hdr)
  {
- 	struct worker_pool *pool = pwq->pool;
-+	struct work_struct *cursor = &pwq->mayday_cursor;
- 	struct work_struct *work, *n;
- 
- 	/* need rescue? */
- 	if (!pwq->nr_active || !need_to_create_worker(pool))
- 		return false;
- 
--	/*
--	 * Slurp in all works issued via this workqueue and
--	 * process'em.
--	 */
--	list_for_each_entry_safe(work, n, &pool->worklist, entry) {
--		if (get_work_pwq(work) == pwq && assign_work(work, rescuer, &n))
-+	/* search from the start or cursor if available */
-+	if (list_empty(&cursor->entry))
-+		work = list_first_entry(&pool->worklist, struct work_struct, entry);
-+	else
-+		work = list_next_entry(cursor, entry);
-+
-+	/* find the next work item to rescue */
-+	list_for_each_entry_safe_from(work, n, &pool->worklist, entry) {
-+		if (get_work_pwq(work) == pwq && assign_work(work, rescuer, &n)) {
- 			pwq->stats[PWQ_STAT_RESCUED]++;
-+			/* put the cursor for next search */
-+			list_move_tail(&cursor->entry, &n->entry);
-+			return true;
-+		}
- 	}
- 
--	return !list_empty(&rescuer->scheduled);
-+	return false;
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index f9e2eaa3571e0..8a99a9c393f53 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -906,7 +906,6 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+ int dw_pcie_ep_raise_msix_irq_doorbell(struct dw_pcie_ep *ep, u8 func_no,
+ 				       u16 interrupt_num);
+ void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar);
+-int dw_pcie_ep_hide_ext_capability(struct dw_pcie *pci, u8 prev_cap, u8 cap);
+ struct dw_pcie_ep_func *
+ dw_pcie_ep_get_func_from_ep(struct dw_pcie_ep *ep, u8 func_no);
+ #else
+@@ -964,12 +963,6 @@ static inline void dw_pcie_ep_reset_bar(struct dw_pcie *pci, enum pci_barno bar)
+ {
  }
  
- /**
-@@ -3518,6 +3545,7 @@ static int rescuer_thread(void *__rescuer)
- 		struct pool_workqueue *pwq = list_first_entry(&wq->maydays,
- 					struct pool_workqueue, mayday_node);
- 		struct worker_pool *pool = pwq->pool;
-+		unsigned int count = 0;
+-static inline int dw_pcie_ep_hide_ext_capability(struct dw_pcie *pci,
+-						 u8 prev_cap, u8 cap)
+-{
+-	return 0;
+-}
+-
+ static inline struct dw_pcie_ep_func *
+ dw_pcie_ep_get_func_from_ep(struct dw_pcie_ep *ep, u8 func_no)
+ {
+diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+index f8605fe61a415..2f865f67a10a7 100644
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -327,9 +327,7 @@ static void rockchip_pcie_ep_hide_broken_ats_cap_rk3588(struct dw_pcie_ep *ep)
+ 	if (!of_device_is_compatible(dev->of_node, "rockchip,rk3588-pcie-ep"))
+ 		return;
  
- 		__set_current_state(TASK_RUNNING);
- 		list_del_init(&pwq->mayday_node);
-@@ -3530,19 +3558,16 @@ static int rescuer_thread(void *__rescuer)
- 
- 		WARN_ON_ONCE(!list_empty(&rescuer->scheduled));
- 
--		if (assign_rescuer_work(pwq, rescuer)) {
-+		while (assign_rescuer_work(pwq, rescuer)) {
- 			process_scheduled_works(rescuer);
- 
- 			/*
--			 * The above execution of rescued work items could
--			 * have created more to rescue through
--			 * pwq_activate_first_inactive() or chained
--			 * queueing.  Let's put @pwq back on mayday list so
--			 * that such back-to-back work items, which may be
--			 * being used to relieve memory pressure, don't
--			 * incur MAYDAY_INTERVAL delay inbetween.
-+			 * If the per-turn work item limit is reached and other
-+			 * PWQs are in mayday, requeue mayday for this PWQ and
-+			 * let the rescuer handle the other PWQs first.
- 			 */
--			if (pwq->nr_active && need_to_create_worker(pool)) {
-+			if (++count > RESCUER_BATCH && !list_empty(&pwq->wq->maydays) &&
-+			    pwq->nr_active && need_to_create_worker(pool)) {
- 				raw_spin_lock(&wq_mayday_lock);
- 				/*
- 				 * Queue iff we aren't racing destruction
-@@ -3553,9 +3578,14 @@ static int rescuer_thread(void *__rescuer)
- 					list_add_tail(&pwq->mayday_node, &wq->maydays);
- 				}
- 				raw_spin_unlock(&wq_mayday_lock);
-+				break;
- 			}
- 		}
- 
-+		/* The cursor can not be left behind without the rescuer watching it. */
-+		if (!list_empty(&pwq->mayday_cursor.entry) && list_empty(&pwq->mayday_node))
-+			list_del_init(&pwq->mayday_cursor.entry);
-+
- 		/*
- 		 * Leave this pool. Notify regular workers; otherwise, we end up
- 		 * with 0 concurrency and stalling the execution.
-@@ -5174,6 +5204,19 @@ static void init_pwq(struct pool_workqueue *pwq, struct workqueue_struct *wq,
- 	INIT_LIST_HEAD(&pwq->pwqs_node);
- 	INIT_LIST_HEAD(&pwq->mayday_node);
- 	kthread_init_work(&pwq->release_work, pwq_release_workfn);
-+
-+	/*
-+	 * Set the dummy cursor work with valid function and get_work_pwq().
-+	 *
-+	 * The cursor work should only be in the pwq->pool->worklist, and
-+	 * should not be treated as a processable work item.
-+	 *
-+	 * WORK_STRUCT_PENDING and WORK_STRUCT_INACTIVE just make it less
-+	 * surprise for kernel debugging tools and reviewers.
-+	 */
-+	INIT_WORK(&pwq->mayday_cursor, mayday_cursor_func);
-+	atomic_long_set(&pwq->mayday_cursor.data, (unsigned long)pwq |
-+			WORK_STRUCT_PENDING | WORK_STRUCT_PWQ | WORK_STRUCT_INACTIVE);
+-	if (dw_pcie_ep_hide_ext_capability(pci, PCI_EXT_CAP_ID_SECPCI,
+-					   PCI_EXT_CAP_ID_ATS))
+-		dev_err(dev, "failed to hide ATS capability\n");
++	dw_pcie_remove_ext_capability(pci, PCI_EXT_CAP_ID_ATS);
  }
  
- /* sync @pwq with the current state of its associated wq and link it */
+ static void rockchip_pcie_ep_init(struct dw_pcie_ep *ep)
 -- 
 2.51.0
 
