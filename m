@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GK7yLUVUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:41 +0100
+	id 0DkHNS2fnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 093D718FC41
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DFF192E79
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:05:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 95E2A30CA82E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 62FF8316D995
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D6C26463A;
-	Wed, 25 Feb 2026 01:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C0E3009CB;
+	Wed, 25 Feb 2026 06:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2/efVcF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNe1MImJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367F0248881;
-	Wed, 25 Feb 2026 01:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CA02D77FF;
+	Wed, 25 Feb 2026 06:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983498; cv=none; b=YWXbsk2VH/8DkV2XGXRZsqfHg3fiDfWvFG4n8pm4oKUqG0FC+eZlXBYYmkTPB7GNAiwDCWwtHm7z2WFwLb0YN1xKVKvBMnLOLMOlSOIDoeQlPuNBrftC82zWpT8YnAsJGTyY4VDhUZftZ8RAqrHqhWLcG1ZQnAbH8PcYoWBlKTw=
+	t=1772002628; cv=none; b=GGkAcywx0TcW8qfVs1aXrstNS/Y9UdTdfujma3Uv4jTafcIt8N+FToMXuvXTmF3PHmgHNbSiFexdZ90sIznFaxBDBCOsmhYmL0HX0rn+F2YV0glJQbww7nlXk/YKf0ComYwp1TK19mOa5cDr492rpqYxxb+ocxKYSrQc959KR4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983498; c=relaxed/simple;
-	bh=Lj7+ZEV6WRbsKT9oKXbxC65mwMK8xhgctkJ8qMPLshI=;
+	s=arc-20240116; t=1772002628; c=relaxed/simple;
+	bh=hV3lftL4dOf2KDNb9fpWvaDBbDi0o43Tj+XBN8+/7GU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CmGoNf4QumZTZ04tTKJLhHTH76j6NNuWlVmFRyX6VUWo2ZdH2DCkwQ0/2+uoe0G4GVVlw6uB9s9lr3uQZFLdLsqZTsVwUFWjba0DGZAs+qXdWK1/47vIdLUpRFp6fFHJQHxMFb2kDUcTCzbZ0rfKcXXmKPagCRx59bcMpz4NAeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2/efVcF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5D4C116D0;
-	Wed, 25 Feb 2026 01:38:17 +0000 (UTC)
+	 MIME-Version; b=l1QnTLI0GmtfOlxa0kuspWzESvMt9lVSIDtoEj/QeWJG3E5Fi39uQ+ml27wxBNgfym/SBVBtInUIFdkeh0A6CSk9qjbvB+FVQG0ftls4fur9U3+jFKisQQrEDMNWO+n42FW2RHQ9BNOAP+ePmlwNR1qwQrA7qGEqoLkjztZmAjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNe1MImJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D10AC116D0;
+	Wed, 25 Feb 2026 06:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983498;
-	bh=Lj7+ZEV6WRbsKT9oKXbxC65mwMK8xhgctkJ8qMPLshI=;
+	s=korg; t=1772002628;
+	bh=hV3lftL4dOf2KDNb9fpWvaDBbDi0o43Tj+XBN8+/7GU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m2/efVcFCDrksC85lC+5gfdpBuZdRfQtkhmfec7k62IbdE/IZ5JZ5k6Es+5fL6cVq
-	 ylaHvsV6pg3xJ9zJSfi1OlUbFmwFc+eFa6ppThYOHsvdBz5oC/zvK9bauW3yvfJEQ2
-	 W/4rZn6TPAxj/ZrlnT65pocZO1h3zwzWYOu9CcKc=
+	b=ZNe1MImJRqoeyc4OIIUmQ5s+4hOT+h7zDHlUpJeiD5tCgMaEuq6ZGuTZmKygl1haT
+	 ZPaXURyyO9AnQg/kBhfoNB/ShtFsAHEIpmd/rRb2cKOzHwzhFnZu9QFfnglGc215lP
+	 crWzKSPrDaP35UTl8xk1xYKWMXUognU+MvFvXdMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 607/781] leds: qcom-lpg: Check the return value of regmap_bulk_write()
+Subject: [PATCH 6.18 390/641] pNFS: fix a missing wake up while waiting on NFS_LAYOUT_DRAIN
 Date: Tue, 24 Feb 2026 17:21:56 -0800
-Message-ID: <20260225012414.681268838@linuxfoundation.org>
+Message-ID: <20260225012358.028144475@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,78 +75,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219305-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218647-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 093D718FC41
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,hammerspace.com:email]
+X-Rspamd-Queue-Id: 37DFF192E79
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit f42033b5ce8c79c5db645916c9a72ee3e10cecfa ]
+[ Upstream commit 5248d8474e594d156bee1ed10339cc16e207a28b ]
 
-The lpg_lut_store() function currently ignores the return value of
-regmap_bulk_write() and always returns 0. This can cause hardware write
-failures to go undetected, leading the caller to believe LUT programming
-succeeded when it may have failed.
+It is possible to have a task get stuck on waiting on the
+NFS_LAYOUT_DRAIN in the following scenario
 
-Check the return value of regmap_bulk_write() in lpg_lut_store and return
-the error to the caller on failure.
+1. cpu a: waiter test NFS_LAYOUT_DRAIN (1) and plh_outstanding (1)
+2. cpu b: atomic_dec_and_test() -> clear bit -> wake up
+3. cpu c: sets NFS_LAYOUT_DRAIN again
+4. cpu a: calls wait_on_bit() sleeps forever.
 
-Fixes: 24e2d05d1b68 ("leds: Add driver for Qualcomm LPG")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20260108175133.638-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+To expand on this we have say 2 outstanding pnfs write IO that get
+ESTALE which causes both to call pnfs_destroy_layout() and set the
+NFS_LAYOUT_DRAIN bit but the 1st one doesn't call the
+pnfs_put_layout_hdr() yet (as that would prevent the 2nd ESTALE write
+from trying to call pnfs_destroy_layout()). If the 1st ESTALE write
+is the one that initially sets the NFS_LAYOUT_DRAIN so that new IO
+on this file initiates new LAYOUTGET. Another new write would find
+NFS_LAYOUT_DRAIN set and phl_outstanding>0 (step 1) and would
+wait_on_bit(). LAYOUTGET completes doing step 2. Now, the 2nd of
+ESTALE writes is calling pnfs_destory_layout() and set the
+NFS_LAYOUT_DRAIN bit (step 3). Finally, the waiting write wakes up
+to check the bit and goes back to sleep.
+
+The problem revolves around the fact that if NFS_LAYOUT_INVALID_STID
+was already set, it should not do the work of
+pnfs_mark_layout_stateid_invalid(), thus NFS_LAYOUT_DRAIN will not
+be set more than once for an invalid layout.
+
+Suggested-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 880265c77ac4 ("pNFS: Avoid a live lock condition in pnfs_update_layout()")
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/rgb/leds-qcom-lpg.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/nfs/pnfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-index 72da0bf469ad8..f54851dfb42fc 100644
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -369,7 +369,7 @@ static int lpg_lut_store(struct lpg *lpg, struct led_pattern *pattern,
- {
- 	unsigned int idx;
- 	u16 val;
--	int i;
-+	int i, ret;
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index 33bc6db0dc92f..b3cb5ee9d821e 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -463,7 +463,8 @@ pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
+ 	};
+ 	struct pnfs_layout_segment *lseg, *next;
  
- 	idx = bitmap_find_next_zero_area(lpg->lut_bitmap, lpg->lut_size,
- 					 0, len, 0);
-@@ -379,8 +379,10 @@ static int lpg_lut_store(struct lpg *lpg, struct led_pattern *pattern,
- 	for (i = 0; i < len; i++) {
- 		val = pattern[i].brightness;
- 
--		regmap_bulk_write(lpg->map, lpg->lut_base + LPG_LUT_REG(idx + i),
--				  &val, sizeof(val));
-+		ret = regmap_bulk_write(lpg->map, lpg->lut_base + LPG_LUT_REG(idx + i),
-+					&val, sizeof(val));
-+		if (ret)
-+			return ret;
- 	}
- 
- 	bitmap_set(lpg->lut_bitmap, idx, len);
+-	set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags);
++	if (test_and_set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags))
++		return !list_empty(&lo->plh_segs);
+ 	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(lo->plh_inode)->flags);
+ 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list)
+ 		pnfs_clear_lseg_state(lseg, lseg_list);
 -- 
 2.51.0
 
