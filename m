@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CLrEyVTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:53 +0100
+	id CBR1CmCinmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:18:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF81918F6F9
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60602193320
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 544513093DFE
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BF0F30BB959
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E7F26158C;
-	Wed, 25 Feb 2026 01:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6D930BF69;
+	Wed, 25 Feb 2026 06:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdOYE7lG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOWf7yIz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5EE24A05D;
-	Wed, 25 Feb 2026 01:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9292D6E58;
+	Wed, 25 Feb 2026 06:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983532; cv=none; b=KtJXViFIadorW5P/+kRUARnUnokboAZ+q5RmbKTze9ao8oUVx2HfCHXuHAw/qug2mTeNbyUGkxQolzWGosQDWP0EX+RH+liaOW+/V9yMHmftsZdBsg5XsZaIDDGMG1qIac31WLhBHp2BAhDkKiiiWm+0lqR2/WQS7sAjsorlBew=
+	t=1772002667; cv=none; b=FzfZs+NLlc4aSRVSSeWg7gYiGBjyxiBLknOQRcpsG8T+KGmOWKPzmnRArwS8L46NwY3veXsK1lQNj/3YvBmhMmJJxKvx7vVj+N8VpMovMzBDMQQUpRiR9RUeM5j1gwW8Clod+PlnSsWePsGTxiO8O4kXGFb0/4HAzYEVhwoKXx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983532; c=relaxed/simple;
-	bh=XR1MlU3poWCxzKjplDEosTMCXMhKu8vAqKpP8ByZ9Pw=;
+	s=arc-20240116; t=1772002667; c=relaxed/simple;
+	bh=GdnYzrRD2U5zdS+aE4bQ8fsnu9ctjkpLcRO3gm/m5MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TxI9UVmzUBPF+eQsdPdVlAHh0POqJJy4Mn+REmBKZ6iSL5g1P6wxxISoyEKiBZ32GhEGPHZv/sd6f2FnVSewJQE1jCpdgsVCxnGM7lyrSc4SVwrX5EVRKPY4iHcbgn/pSBD8XDZwYG2N6QVfIrRtRkIRYGGGEpG3TF7I9zRXrcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdOYE7lG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D72BC116D0;
-	Wed, 25 Feb 2026 01:38:52 +0000 (UTC)
+	 MIME-Version; b=ciJo1HIuSfYocLc3BzdK3GoH0K9GVjluWcJDAssEBWyfxBGYH8KS73OfQe7x/TApGUNUR5jDmRbTA0ynnJQPItoTaMnv/BYU7Z1bP/BCJzyArOlNqYzPMsKWNxyoSEtUQpk32Hlxk+3RXbGP6qXAz1DPpYyq94+Gbg9YfNnaNcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOWf7yIz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D39C116D0;
+	Wed, 25 Feb 2026 06:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983532;
-	bh=XR1MlU3poWCxzKjplDEosTMCXMhKu8vAqKpP8ByZ9Pw=;
+	s=korg; t=1772002666;
+	bh=GdnYzrRD2U5zdS+aE4bQ8fsnu9ctjkpLcRO3gm/m5MQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdOYE7lGTJQ21gM3+DMJDfLtPOVpJ/ZA49MwJLVSsowR0veJPbFDF0qR+RB5OW7a0
-	 G0RtuUo6PaHiWvJ45Ef5S++3JUNXpqtBszj+eyG3UErx2aTDLdzwI7MVK4uYJid/7P
-	 xLmKvKt1YmDG0MMjbWVRX+cbkO5uNONjE9sfvVjE=
+	b=aOWf7yIzl40s9a3S3z2IittGsyf06SCaDO6jkJZsvbrd+TImMDVQoxipnnO6SKCdK
+	 +siyipd8JhN2fWzwfCYs7gueF1i1e09dAi3yxWgCr6OngBNCR5Dx9IXweJOLsvf9tO
+	 Sgq6qYOr/imAYlSNRz/ZVlRoIMHMN8HI4sHD4l0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jie Zhang <jie.zhang@analog.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 638/781] net: stmmac: fix oops when split header is enabled
+Subject: [PATCH 6.18 421/641] clk: rockchip: Fix error pointer check after rockchip_clk_register_gate_link()
 Date: Tue, 24 Feb 2026 17:22:27 -0800
-Message-ID: <20260225012415.454315638@linuxfoundation.org>
+Message-ID: <20260225012358.753574503@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,109 +67,69 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-219364-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sntech.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218676-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: EF81918F6F9
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sntech.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: 60602193320
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Zhang <jzhang918@gmail.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit babab1b42ed68877ef669a08384becf281ad2582 ]
+[ Upstream commit a8d722f03923b1c6166d39482c6df8f017e185d9 ]
 
-For GMAC4, when split header is enabled, in some rare cases, the
-hardware does not fill buf2 of the first descriptor with payload.
-Thus we cannot assume buf2 is always fully filled if it is not
-the last descriptor. Otherwise, the length of buf2 of the second
-descriptor will be calculated wrong and cause an oops:
+Replace NULL check with IS_ERR_OR_NULL() check after calling
+rockchip_clk_register_gate_link() since this function
+returns error pointers (ERR_PTR).
 
-Unable to handle kernel paging request at virtual address ffff00019246bfc0
-...
-x2 : 0000000000000040 x1 : ffff00019246bfc0 x0 : ffff00009246c000
-Call trace:
- dcache_inval_poc+0x28/0x58 (P)
- dma_direct_sync_single_for_cpu+0x38/0x6c
- __dma_sync_single_for_cpu+0x34/0x6c
- stmmac_napi_poll_rx+0x8f0/0xb60
- __napi_poll.constprop.0+0x30/0x144
- net_rx_action+0x160/0x274
- handle_softirqs+0x1b8/0x1fc
-...
-
-To fix this, the PL bit-field in RDES3 register is used for all
-descriptors, whether it is the last descriptor or not.
-
-Fixes: ec222003bd94 ("net: stmmac: Prepare to add Split Header support")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Jie Zhang <jie.zhang@analog.com>
-Link: https://patch.msgid.link/20260209225037.589130-1-jie.zhang@analog.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c62fa612cfa6 ("clk: rockchip: implement linked gate clock support")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://patch.msgid.link/20250805030358.3665878-1-linmq006@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 20 ++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/clk/rockchip/clk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index a379221b96a34..f98fd254315f6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5023,13 +5023,27 @@ static unsigned int stmmac_rx_buf2_len(struct stmmac_priv *priv,
- 	if (!priv->sph_active)
- 		return 0;
+diff --git a/drivers/clk/rockchip/clk.c b/drivers/clk/rockchip/clk.c
+index 19caf26c991bd..2d30b1e24f013 100644
+--- a/drivers/clk/rockchip/clk.c
++++ b/drivers/clk/rockchip/clk.c
+@@ -693,7 +693,7 @@ void rockchip_clk_register_late_branches(struct device *dev,
+ 			break;
+ 		}
  
--	/* Not last descriptor */
--	if (status & rx_not_ls)
-+	/* For GMAC4, when split header is enabled, in some rare cases, the
-+	 * hardware does not fill buf2 of the first descriptor with payload.
-+	 * Thus we cannot assume buf2 is always fully filled if it is not
-+	 * the last descriptor. Otherwise, the length of buf2 of the second
-+	 * descriptor will be calculated wrong and cause an oops.
-+	 *
-+	 * If this is the last descriptor, 'plen' is the length of the
-+	 * received packet that was transferred to system memory.
-+	 * Otherwise, it is the accumulated number of bytes that have been
-+	 * transferred for the current packet.
-+	 *
-+	 * Thus 'plen - len' always gives the correct length of buf2.
-+	 */
-+
-+	/* Not GMAC4 and not last descriptor */
-+	if (priv->plat->core_type != DWMAC_CORE_GMAC4 && (status & rx_not_ls))
- 		return priv->dma_conf.dma_buf_sz;
- 
-+	/* GMAC4 or last descriptor */
- 	plen = stmmac_get_rx_frame_len(priv, p, coe);
- 
--	/* Last descriptor */
- 	return plen - len;
+-		if (!pdev)
++		if (IS_ERR_OR_NULL(pdev))
+ 			dev_err(dev, "failed to register device for clock %s\n", list->name);
+ 	}
  }
- 
 -- 
 2.51.0
 
