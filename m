@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-219077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIvvOXlWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-219077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:05 +0100
+	id UF7LHJxSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CB11902F4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1033918F459
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D3FEA309A0B8
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:48:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 932E8306BC27
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF25D258ED5;
-	Wed, 25 Feb 2026 01:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C253C18B0A;
+	Wed, 25 Feb 2026 01:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IntCbekh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oo0ZFRnY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DF920C012;
-	Wed, 25 Feb 2026 01:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BCA20C012;
+	Wed, 25 Feb 2026 01:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984003; cv=none; b=rVgjiPqacRSmfJlI/ENBDF7d+JcCyYqu77jS8uq8NHDk8LyiS9SOvRRrb+LY8EaTlQENBkIOuTMD+IJn3Idi62llgQ5F0TMpdi9gS8UhN5F6PEND6RCRs3YVwD87KZa+dncwiSTl+6BDYXaHdMkEyq4LGhmqa0nC9/+fik57xhU=
+	t=1771983343; cv=none; b=YXwufA8B4Y4cGASbrd0Mw6Ew5bAyCA6HgeNh9s9mGNM+6swEoKj3GzuebxHHNSZTWnsigyfzva7RN5PH/pAe6HNp4kmcHk+uloW2dYZxNM5NfZ/y/COEkR8n3+UrAC7/oXWKPvG7qU5cGdJmoF4KRw/yr4KHlF4NMT5rlpZxHMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984003; c=relaxed/simple;
-	bh=Pb/iuWcjPYK0cSeXmAO4tGDQpgkkc9ZK9q8GC8XU998=;
+	s=arc-20240116; t=1771983343; c=relaxed/simple;
+	bh=YuAqcOP4B+sQQYviASQqjrJbu/vouCmmHgMkXXuzaV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3u7hrQ/gU3HXmIkhJe5REsRVKjOM+pIuFiD+Jq/gBJjbm4JQ4IZlASS5be4Lm4zI413j3C5TbmOcaPYzsWySGdP41W2OzZmQaWGSLhaFQhv0Tip763wceET11hTVBIE16brcdWipf2l3qsNMig+j2W7xSaLzxkuUtWYaL+fazQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IntCbekh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B224C116D0;
-	Wed, 25 Feb 2026 01:46:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uV12LL/HRn+99hn8iLJv2XGw/9nQniPo2USh8v+L7jBXoUUJ/JmQVYbJVyuHFqpHFmedbCsdxBtIFe4CuMTzthnxiT0nvchol29vKSE6JqoUpIcHqCuX74p8tFS3O+0zfvR/5e4d6OQ8e2LJlC4hGcWeKkBoXQFGggdadby9Yc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oo0ZFRnY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475C0C116D0;
+	Wed, 25 Feb 2026 01:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771984003;
-	bh=Pb/iuWcjPYK0cSeXmAO4tGDQpgkkc9ZK9q8GC8XU998=;
+	s=korg; t=1771983343;
+	bh=YuAqcOP4B+sQQYviASQqjrJbu/vouCmmHgMkXXuzaV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IntCbekh4v5WH/6mD+tnjhr5jQOtQu5hsOSm2rDGeYanSCandI53IALA6vU/XE6DU
-	 OpBwS30GT5LNJ3i1LcmWCC42vLo+Pu3H6UgEmDabwigfD/Z1iLXV2aYhT7AECqwUpF
-	 PhfviwgU24yCdG3rrR1XDvAAJL1ajl3v6IkfqJSI=
+	b=oo0ZFRnYU+CNl9/j7P8XrfC4m4h89HvDEp6JYvxYNFte7FKYxofPIM1GSgKtTtaFc
+	 yxwoQe5CWbv9ovVD49jeDwIsJtqOi1a9lxxE4EquC6eu5BA67WqlpApaPsTesAhpqb
+	 Ngd0OUf4RVsnWxRQYYS63Wz/vbFrP2hK5aqeOlLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Chen <me@linux.beauty>,
-	Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Yijun Shen <Yijun.Shen@Dell.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 255/641] ext4: fast commit: make s_fc_lock reclaim-safe
+Subject: [PATCH 6.19 472/781] crypto: ccp - Declare PSP dead if PSP_CMD_TEE_RING_INIT fails
 Date: Tue, 24 Feb 2026 17:19:41 -0800
-Message-ID: <20260225012355.020044422@linuxfoundation.org>
+Message-ID: <20260225012411.394460181@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,334 +66,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219077-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-218511-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.cz:email,huawei.com:email]
-X-Rspamd-Queue-Id: 95CB11902F4
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1033918F459
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Chen <me@linux.beauty>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 491f2927ae097e2d405afe0b3fe841931ab8aad2 ]
+[ Upstream commit 5e599d7871bf852e94e8aa08b99724635f2cbf96 ]
 
-s_fc_lock can be acquired from inode eviction and thus is
-reclaim unsafe. Since the fast commit path holds s_fc_lock while writing
-the commit log, allocations under the lock can enter reclaim and invert
-the lock order with fs_reclaim. Add ext4_fc_lock()/ext4_fc_unlock()
-helpers which acquire s_fc_lock under memalloc_nofs_save()/restore()
-context and use them everywhere so allocations under the lock cannot
-recurse into filesystem reclaim.
+tee_init_ring() only declares PSP dead if the command times out.
+If there is any other failure it is still considered fatal though.
+Set psp_dead for other failures as well.
 
-Fixes: 6593714d67ba ("ext4: hold s_fc_lock while during fast commit")
-Signed-off-by: Li Chen <me@linux.beauty>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260106120621.440126-1-me@linux.beauty
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 949a0c8dd3c2 ("crypto: ccp - Move direct access to some PSP registers out of TEE")
+Tested-by: Yijun Shen <Yijun.Shen@Dell.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://patch.msgid.link/20260116041132.153674-3-superm1@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h        | 16 ++++++++++++++
- fs/ext4/fast_commit.c | 51 ++++++++++++++++++++++++-------------------
- 2 files changed, 44 insertions(+), 23 deletions(-)
+ drivers/crypto/ccp/tee-dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 57087da6c7bee..933297251f66a 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1771,6 +1771,10 @@ struct ext4_sb_info {
- 	 * Main fast commit lock. This lock protects accesses to the
- 	 * following fields:
- 	 * ei->i_fc_list, s_fc_dentry_q, s_fc_q, s_fc_bytes, s_fc_bh.
-+	 *
-+	 * s_fc_lock can be taken from reclaim context (inode eviction) and is
-+	 * thus reclaim unsafe. Use ext4_fc_lock()/ext4_fc_unlock() helpers
-+	 * when acquiring / releasing the lock.
- 	 */
- 	struct mutex s_fc_lock;
- 	struct buffer_head *s_fc_bh;
-@@ -1815,6 +1819,18 @@ static inline void ext4_writepages_up_write(struct super_block *sb, int ctx)
- 	percpu_up_write(&EXT4_SB(sb)->s_writepages_rwsem);
- }
- 
-+static inline int ext4_fc_lock(struct super_block *sb)
-+{
-+	mutex_lock(&EXT4_SB(sb)->s_fc_lock);
-+	return memalloc_nofs_save();
-+}
-+
-+static inline void ext4_fc_unlock(struct super_block *sb, int ctx)
-+{
-+	memalloc_nofs_restore(ctx);
-+	mutex_unlock(&EXT4_SB(sb)->s_fc_lock);
-+}
-+
- static inline int ext4_valid_inum(struct super_block *sb, unsigned long ino)
- {
- 	return ino == EXT4_ROOT_INO ||
-diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
-index fa66b08de9994..5bd57d7f921b9 100644
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -231,16 +231,16 @@ static bool ext4_fc_disabled(struct super_block *sb)
- void ext4_fc_del(struct inode *inode)
- {
- 	struct ext4_inode_info *ei = EXT4_I(inode);
--	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
- 	struct ext4_fc_dentry_update *fc_dentry;
- 	wait_queue_head_t *wq;
-+	int alloc_ctx;
- 
- 	if (ext4_fc_disabled(inode->i_sb))
- 		return;
- 
--	mutex_lock(&sbi->s_fc_lock);
-+	alloc_ctx = ext4_fc_lock(inode->i_sb);
- 	if (list_empty(&ei->i_fc_list) && list_empty(&ei->i_fc_dilist)) {
--		mutex_unlock(&sbi->s_fc_lock);
-+		ext4_fc_unlock(inode->i_sb, alloc_ctx);
- 		return;
+diff --git a/drivers/crypto/ccp/tee-dev.c b/drivers/crypto/ccp/tee-dev.c
+index 5e1d80724678d..af881daa5855b 100644
+--- a/drivers/crypto/ccp/tee-dev.c
++++ b/drivers/crypto/ccp/tee-dev.c
+@@ -125,6 +125,7 @@ static int tee_init_ring(struct psp_tee_device *tee)
+ 		dev_err(tee->dev, "tee: ring init command failed (%#010lx)\n",
+ 			FIELD_GET(PSP_CMDRESP_STS, reg));
+ 		tee_free_ring(tee);
++		psp_dead = true;
+ 		ret = -EIO;
  	}
- 
-@@ -275,9 +275,9 @@ void ext4_fc_del(struct inode *inode)
- #endif
- 		prepare_to_wait(wq, &wait.wq_entry, TASK_UNINTERRUPTIBLE);
- 		if (ext4_test_inode_state(inode, EXT4_STATE_FC_FLUSHING_DATA)) {
--			mutex_unlock(&sbi->s_fc_lock);
-+			ext4_fc_unlock(inode->i_sb, alloc_ctx);
- 			schedule();
--			mutex_lock(&sbi->s_fc_lock);
-+			alloc_ctx = ext4_fc_lock(inode->i_sb);
- 		}
- 		finish_wait(wq, &wait.wq_entry);
- 	}
-@@ -288,7 +288,7 @@ void ext4_fc_del(struct inode *inode)
- 	 * dentry create references, since it is not needed to log it anyways.
- 	 */
- 	if (list_empty(&ei->i_fc_dilist)) {
--		mutex_unlock(&sbi->s_fc_lock);
-+		ext4_fc_unlock(inode->i_sb, alloc_ctx);
- 		return;
- 	}
- 
-@@ -298,7 +298,7 @@ void ext4_fc_del(struct inode *inode)
- 	list_del_init(&fc_dentry->fcd_dilist);
- 
- 	WARN_ON(!list_empty(&ei->i_fc_dilist));
--	mutex_unlock(&sbi->s_fc_lock);
-+	ext4_fc_unlock(inode->i_sb, alloc_ctx);
- 
- 	release_dentry_name_snapshot(&fc_dentry->fcd_name);
- 	kmem_cache_free(ext4_fc_dentry_cachep, fc_dentry);
-@@ -315,6 +315,7 @@ void ext4_fc_mark_ineligible(struct super_block *sb, int reason, handle_t *handl
- 	tid_t tid;
- 	bool has_transaction = true;
- 	bool is_ineligible;
-+	int alloc_ctx;
- 
- 	if (ext4_fc_disabled(sb))
- 		return;
-@@ -329,12 +330,12 @@ void ext4_fc_mark_ineligible(struct super_block *sb, int reason, handle_t *handl
- 			has_transaction = false;
- 		read_unlock(&sbi->s_journal->j_state_lock);
- 	}
--	mutex_lock(&sbi->s_fc_lock);
-+	alloc_ctx = ext4_fc_lock(sb);
- 	is_ineligible = ext4_test_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
- 	if (has_transaction && (!is_ineligible || tid_gt(tid, sbi->s_fc_ineligible_tid)))
- 		sbi->s_fc_ineligible_tid = tid;
- 	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
--	mutex_unlock(&sbi->s_fc_lock);
-+	ext4_fc_unlock(sb, alloc_ctx);
- 	WARN_ON(reason >= EXT4_FC_REASON_MAX);
- 	sbi->s_fc_stats.fc_ineligible_reason_count[reason]++;
- }
-@@ -358,6 +359,7 @@ static int ext4_fc_track_template(
- 	struct ext4_inode_info *ei = EXT4_I(inode);
- 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
- 	tid_t tid = 0;
-+	int alloc_ctx;
- 	int ret;
- 
- 	tid = handle->h_transaction->t_tid;
-@@ -373,14 +375,14 @@ static int ext4_fc_track_template(
- 	if (!enqueue)
- 		return ret;
- 
--	mutex_lock(&sbi->s_fc_lock);
-+	alloc_ctx = ext4_fc_lock(inode->i_sb);
- 	if (list_empty(&EXT4_I(inode)->i_fc_list))
- 		list_add_tail(&EXT4_I(inode)->i_fc_list,
- 				(sbi->s_journal->j_flags & JBD2_FULL_COMMIT_ONGOING ||
- 				 sbi->s_journal->j_flags & JBD2_FAST_COMMIT_ONGOING) ?
- 				&sbi->s_fc_q[FC_Q_STAGING] :
- 				&sbi->s_fc_q[FC_Q_MAIN]);
--	mutex_unlock(&sbi->s_fc_lock);
-+	ext4_fc_unlock(inode->i_sb, alloc_ctx);
- 
- 	return ret;
- }
-@@ -402,6 +404,7 @@ static int __track_dentry_update(handle_t *handle, struct inode *inode,
- 	struct inode *dir = dentry->d_parent->d_inode;
- 	struct super_block *sb = inode->i_sb;
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
-+	int alloc_ctx;
- 
- 	spin_unlock(&ei->i_fc_lock);
- 
-@@ -425,7 +428,7 @@ static int __track_dentry_update(handle_t *handle, struct inode *inode,
- 	take_dentry_name_snapshot(&node->fcd_name, dentry);
- 	INIT_LIST_HEAD(&node->fcd_dilist);
- 	INIT_LIST_HEAD(&node->fcd_list);
--	mutex_lock(&sbi->s_fc_lock);
-+	alloc_ctx = ext4_fc_lock(sb);
- 	if (sbi->s_journal->j_flags & JBD2_FULL_COMMIT_ONGOING ||
- 		sbi->s_journal->j_flags & JBD2_FAST_COMMIT_ONGOING)
- 		list_add_tail(&node->fcd_list,
-@@ -446,7 +449,7 @@ static int __track_dentry_update(handle_t *handle, struct inode *inode,
- 		WARN_ON(!list_empty(&ei->i_fc_dilist));
- 		list_add_tail(&node->fcd_dilist, &ei->i_fc_dilist);
- 	}
--	mutex_unlock(&sbi->s_fc_lock);
-+	ext4_fc_unlock(sb, alloc_ctx);
- 	spin_lock(&ei->i_fc_lock);
- 
- 	return 0;
-@@ -1046,18 +1049,19 @@ static int ext4_fc_perform_commit(journal_t *journal)
- 	struct blk_plug plug;
- 	int ret = 0;
- 	u32 crc = 0;
-+	int alloc_ctx;
- 
- 	/*
- 	 * Step 1: Mark all inodes on s_fc_q[MAIN] with
- 	 * EXT4_STATE_FC_FLUSHING_DATA. This prevents these inodes from being
- 	 * freed until the data flush is over.
- 	 */
--	mutex_lock(&sbi->s_fc_lock);
-+	alloc_ctx = ext4_fc_lock(sb);
- 	list_for_each_entry(iter, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
- 		ext4_set_inode_state(&iter->vfs_inode,
- 				     EXT4_STATE_FC_FLUSHING_DATA);
- 	}
--	mutex_unlock(&sbi->s_fc_lock);
-+	ext4_fc_unlock(sb, alloc_ctx);
- 
- 	/* Step 2: Flush data for all the eligible inodes. */
- 	ret = ext4_fc_flush_data(journal);
-@@ -1067,7 +1071,7 @@ static int ext4_fc_perform_commit(journal_t *journal)
- 	 * any error from step 2. This ensures that waiters waiting on
- 	 * EXT4_STATE_FC_FLUSHING_DATA can resume.
- 	 */
--	mutex_lock(&sbi->s_fc_lock);
-+	alloc_ctx = ext4_fc_lock(sb);
- 	list_for_each_entry(iter, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
- 		ext4_clear_inode_state(&iter->vfs_inode,
- 				       EXT4_STATE_FC_FLUSHING_DATA);
-@@ -1084,7 +1088,7 @@ static int ext4_fc_perform_commit(journal_t *journal)
- 	 * prepare_to_wait() in ext4_fc_del().
- 	 */
- 	smp_mb();
--	mutex_unlock(&sbi->s_fc_lock);
-+	ext4_fc_unlock(sb, alloc_ctx);
- 
- 	/*
- 	 * If we encountered error in Step 2, return it now after clearing
-@@ -1101,12 +1105,12 @@ static int ext4_fc_perform_commit(journal_t *journal)
- 	 * previous handles are now drained. We now mark the inodes on the
- 	 * commit queue as being committed.
- 	 */
--	mutex_lock(&sbi->s_fc_lock);
-+	alloc_ctx = ext4_fc_lock(sb);
- 	list_for_each_entry(iter, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
- 		ext4_set_inode_state(&iter->vfs_inode,
- 				     EXT4_STATE_FC_COMMITTING);
- 	}
--	mutex_unlock(&sbi->s_fc_lock);
-+	ext4_fc_unlock(sb, alloc_ctx);
- 	jbd2_journal_unlock_updates(journal);
- 
- 	/*
-@@ -1117,6 +1121,7 @@ static int ext4_fc_perform_commit(journal_t *journal)
- 		blkdev_issue_flush(journal->j_fs_dev);
- 
- 	blk_start_plug(&plug);
-+	alloc_ctx = ext4_fc_lock(sb);
- 	/* Step 6: Write fast commit blocks to disk. */
- 	if (sbi->s_fc_bytes == 0) {
- 		/*
-@@ -1134,7 +1139,6 @@ static int ext4_fc_perform_commit(journal_t *journal)
- 	}
- 
- 	/* Step 6.2: Now write all the dentry updates. */
--	mutex_lock(&sbi->s_fc_lock);
- 	ret = ext4_fc_commit_dentry_updates(journal, &crc);
- 	if (ret)
- 		goto out;
-@@ -1156,7 +1160,7 @@ static int ext4_fc_perform_commit(journal_t *journal)
- 	ret = ext4_fc_write_tail(sb, crc);
- 
- out:
--	mutex_unlock(&sbi->s_fc_lock);
-+	ext4_fc_unlock(sb, alloc_ctx);
- 	blk_finish_plug(&plug);
- 	return ret;
- }
-@@ -1290,6 +1294,7 @@ static void ext4_fc_cleanup(journal_t *journal, int full, tid_t tid)
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	struct ext4_inode_info *ei;
- 	struct ext4_fc_dentry_update *fc_dentry;
-+	int alloc_ctx;
- 
- 	if (full && sbi->s_fc_bh)
- 		sbi->s_fc_bh = NULL;
-@@ -1297,7 +1302,7 @@ static void ext4_fc_cleanup(journal_t *journal, int full, tid_t tid)
- 	trace_ext4_fc_cleanup(journal, full, tid);
- 	jbd2_fc_release_bufs(journal);
- 
--	mutex_lock(&sbi->s_fc_lock);
-+	alloc_ctx = ext4_fc_lock(sb);
- 	while (!list_empty(&sbi->s_fc_q[FC_Q_MAIN])) {
- 		ei = list_first_entry(&sbi->s_fc_q[FC_Q_MAIN],
- 					struct ext4_inode_info,
-@@ -1356,7 +1361,7 @@ static void ext4_fc_cleanup(journal_t *journal, int full, tid_t tid)
- 
- 	if (full)
- 		sbi->s_fc_bytes = 0;
--	mutex_unlock(&sbi->s_fc_lock);
-+	ext4_fc_unlock(sb, alloc_ctx);
- 	trace_ext4_fc_stats(sb);
- }
  
 -- 
 2.51.0
