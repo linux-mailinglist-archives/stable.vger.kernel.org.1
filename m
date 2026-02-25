@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-219465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGt3H32fnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:37 +0100
+	id iLkwJGtWnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6E1192F46
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:06:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6A51902CA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9CA033064CCF
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3FF6530BF78F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C843002D1;
-	Wed, 25 Feb 2026 06:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBBB256C8B;
+	Wed, 25 Feb 2026 01:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6bM/h45"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGllNxZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994372D29C2;
-	Wed, 25 Feb 2026 06:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2832494FE;
+	Wed, 25 Feb 2026 01:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002733; cv=none; b=WW1wZOEQsIv8fIg8nLLYX+tbvmcLfkNOWC7KjfLfGcytiNiGDDDjOcc8CSs+XfOyAEiBfUFBT7RSM0It/bjUgHYHFgRCbMlmDqo7HImKAAfMpJI+5fez/5ZQskN1ozFWcq77En8kBls8tQOW5wQTqhvayDFo62NTZ5XUp/zLXVY=
+	t=1771983682; cv=none; b=dO2vF8vvlJQ6unLgylfzqDZV3ci5XPtDJ+kXsjC6TbKZD3uxi9YUF2/ovHPAKlqQuDGORENJor2Jizk8Lo/G+NhwBt2cKnQGojiMy4TRW3d7GGyf/gUsEdZ+mZ8VsCBPrddGCqtrfqvkO6Kx7EGK0ex9/nC6DVbNTDEkCmBtkQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002733; c=relaxed/simple;
-	bh=EU2M2lxuAt+gmGiYGf9jrHIQIJMQcef5Ryq/c27x2S8=;
+	s=arc-20240116; t=1771983682; c=relaxed/simple;
+	bh=SaduYM+Pi6w55vdvodszO75ytsaThhaSiwp1t/tO7/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cngs53aW9v+4QouIuWBGqzsVCFdlIoYmQ/LaDegCyeMy4HZzzjvzHHoe8aTtUTSewjBRD4WI5ngZn8eksVTZFxLBHxBA/LpqbY2IxIE5WuLwh07ukobxQwYlbBRMtOfPoTtRxVGUbE0SVYOjX8bk9OGpeb+bawfkIRus/Ve6HKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6bM/h45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70ECDC116D0;
-	Wed, 25 Feb 2026 06:58:53 +0000 (UTC)
+	 MIME-Version; b=PhTbs4+JfoWuQKduDlMfn554CmmuDm6kI+IrF53geM9jTLDNMgs2yluMKD5OnZRxJLwTS7soQ98kLRTywipLBCjD/Kd3gPbAtmk2g20uBtOryMUY9965YnBI40Y88QiaYJePWoLOHOsoABsSRc2PMzo9ruXGDHMWzc+B9aXL0R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGllNxZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC0CC116D0;
+	Wed, 25 Feb 2026 01:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002733;
-	bh=EU2M2lxuAt+gmGiYGf9jrHIQIJMQcef5Ryq/c27x2S8=;
+	s=korg; t=1771983682;
+	bh=SaduYM+Pi6w55vdvodszO75ytsaThhaSiwp1t/tO7/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6bM/h45rhZ1ioqWsbgQkHi4p2V3MXMae99bkSKe8f9ZH/nMSYIrvrTRRHJTf0ZSj
-	 CgokPG/tbeIKDV5kcDWr7VnlBzLJYnV2/5NNWvuelQYYJXY9X6Gz5Jv6K4ftL/s1JO
-	 yXIE/PTvDAy3U0suI745BP9CS2ymSe/U/QSPI9ro=
+	b=yGllNxZV7hmwlzBcHvWVsR6ZeKUqCW718YbKJSUPgsNLeD81kXx8XWhGaOI8keQ5G
+	 PL399tbLdlP1/5nRqfcg5qJoqy4cUiNUiEuQfWloeTSGrUDILjTruusMqFpOm2T2YU
+	 nxe+v/vpfuSUQDWquC/5Qpmd/lnw3DLMN3NgA4J0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 548/641] ping: annotate data-races in ping_lookup()
-Date: Tue, 24 Feb 2026 17:24:34 -0800
-Message-ID: <20260225012401.805183260@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Igor Pylypiv <ipylypiv@google.com>
+Subject: [PATCH 6.19 766/781] ata: libata-scsi: refactor ata_scsi_translate()
+Date: Tue, 24 Feb 2026 17:24:35 -0800
+Message-ID: <20260225012418.505020858@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219465-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218805-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,132 +88,169 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: CF6E1192F46
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,oracle.com:email]
+X-Rspamd-Queue-Id: BD6A51902CA
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit ad5dfde2a5733aaf652ea3e40c8c5e071e935901 ]
+commit bb3a8154b1a1dc2c86d037482c0a2cf9186829ed upstream.
 
-isk->inet_num, isk->inet_rcv_saddr and sk->sk_bound_dev_if
-are read locklessly in ping_lookup().
+Factor out of ata_scsi_translate() the code handling queued command
+deferral using the port qc_defer callback and issuing the queued
+command with ata_qc_issue() into the new function ata_scsi_qc_issue(),
+and simplify the goto used in ata_scsi_translate().
+While at it, also add a lockdep annotation to check that the port lock
+is held when ata_scsi_translate() is called.
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
+No functional changes.
 
-The race on isk->inet_rcv_saddr is probably coming from IPv6 support,
-but does not deserve a specific backport.
-
-Fixes: dbca1596bbb0 ("ping: convert to RCU lookups, get rid of rwlock")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260216100149.3319315-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ping.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ drivers/ata/libata-scsi.c |   81 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 50 insertions(+), 31 deletions(-)
 
-diff --git a/net/ipv4/ping.c b/net/ipv4/ping.c
-index a5227d23bb0b5..690f486173e01 100644
---- a/net/ipv4/ping.c
-+++ b/net/ipv4/ping.c
-@@ -148,7 +148,7 @@ void ping_unhash(struct sock *sk)
- 	pr_debug("ping_unhash(isk=%p,isk->num=%u)\n", isk, isk->inet_num);
- 	spin_lock(&ping_table.lock);
- 	if (sk_del_node_init_rcu(sk)) {
--		isk->inet_num = 0;
-+		WRITE_ONCE(isk->inet_num, 0);
- 		isk->inet_sport = 0;
- 		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
- 	}
-@@ -181,31 +181,35 @@ static struct sock *ping_lookup(struct net *net, struct sk_buff *skb, u16 ident)
- 	}
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1691,6 +1691,42 @@ static void ata_scsi_qc_complete(struct
+ 	ata_qc_done(qc);
+ }
  
- 	sk_for_each_rcu(sk, hslot) {
-+		int bound_dev_if;
++static int ata_scsi_qc_issue(struct ata_port *ap, struct ata_queued_cmd *qc)
++{
++	int ret;
 +
- 		if (!net_eq(sock_net(sk), net))
- 			continue;
- 		isk = inet_sk(sk);
- 
- 		pr_debug("iterate\n");
--		if (isk->inet_num != ident)
-+		if (READ_ONCE(isk->inet_num) != ident)
- 			continue;
- 
-+		bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
- 		if (skb->protocol == htons(ETH_P_IP) &&
- 		    sk->sk_family == AF_INET) {
-+			__be32 rcv_saddr = READ_ONCE(isk->inet_rcv_saddr);
++	if (!ap->ops->qc_defer)
++		goto issue;
 +
- 			pr_debug("found: %p: num=%d, daddr=%pI4, dif=%d\n", sk,
--				 (int) isk->inet_num, &isk->inet_rcv_saddr,
--				 sk->sk_bound_dev_if);
-+				 ident, &rcv_saddr,
-+				 bound_dev_if);
++	/* Check if the command needs to be deferred. */
++	ret = ap->ops->qc_defer(qc);
++	switch (ret) {
++	case 0:
++		break;
++	case ATA_DEFER_LINK:
++		ret = SCSI_MLQUEUE_DEVICE_BUSY;
++		break;
++	case ATA_DEFER_PORT:
++		ret = SCSI_MLQUEUE_HOST_BUSY;
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		ret = SCSI_MLQUEUE_HOST_BUSY;
++		break;
++	}
++
++	if (ret) {
++		/* Force a requeue of the command to defer its execution. */
++		ata_qc_free(qc);
++		return ret;
++	}
++
++issue:
++	ata_qc_issue(qc);
++
++	return 0;
++}
++
+ /**
+  *	ata_scsi_translate - Translate then issue SCSI command to ATA device
+  *	@dev: ATA device to which the command is addressed
+@@ -1714,66 +1750,49 @@ static void ata_scsi_qc_complete(struct
+  *	spin_lock_irqsave(host lock)
+  *
+  *	RETURNS:
+- *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY if the command
+- *	needs to be deferred.
++ *	0 on success, SCSI_ML_QUEUE_DEVICE_BUSY or SCSI_MLQUEUE_HOST_BUSY if the
++ *	command needs to be deferred.
+  */
+ static int ata_scsi_translate(struct ata_device *dev, struct scsi_cmnd *cmd,
+ 			      ata_xlat_func_t xlat_func)
+ {
+ 	struct ata_port *ap = dev->link->ap;
+ 	struct ata_queued_cmd *qc;
+-	int rc;
  
--			if (isk->inet_rcv_saddr &&
--			    isk->inet_rcv_saddr != ip_hdr(skb)->daddr)
-+			if (rcv_saddr && rcv_saddr != ip_hdr(skb)->daddr)
- 				continue;
- #if IS_ENABLED(CONFIG_IPV6)
- 		} else if (skb->protocol == htons(ETH_P_IPV6) &&
- 			   sk->sk_family == AF_INET6) {
++	lockdep_assert_held(ap->lock);
++
++	/*
++	 * ata_scsi_qc_new() calls scsi_done(cmd) in case of failure. So we
++	 * have nothing further to do when allocating a qc fails.
++	 */
+ 	qc = ata_scsi_qc_new(dev, cmd);
+ 	if (!qc)
+-		goto err_mem;
++		return 0;
  
- 			pr_debug("found: %p: num=%d, daddr=%pI6c, dif=%d\n", sk,
--				 (int) isk->inet_num,
-+				 ident,
- 				 &sk->sk_v6_rcv_saddr,
--				 sk->sk_bound_dev_if);
-+				 bound_dev_if);
- 
- 			if (!ipv6_addr_any(&sk->sk_v6_rcv_saddr) &&
- 			    !ipv6_addr_equal(&sk->sk_v6_rcv_saddr,
-@@ -216,8 +220,8 @@ static struct sock *ping_lookup(struct net *net, struct sk_buff *skb, u16 ident)
- 			continue;
+ 	/* data is present; dma-map it */
+ 	if (cmd->sc_data_direction == DMA_FROM_DEVICE ||
+ 	    cmd->sc_data_direction == DMA_TO_DEVICE) {
+ 		if (unlikely(scsi_bufflen(cmd) < 1)) {
+ 			ata_dev_warn(dev, "WARNING: zero len r/w req\n");
+-			goto err_did;
++			cmd->result = (DID_ERROR << 16);
++			goto done;
  		}
  
--		if (sk->sk_bound_dev_if && sk->sk_bound_dev_if != dif &&
--		    sk->sk_bound_dev_if != sdif)
-+		if (bound_dev_if && bound_dev_if != dif &&
-+		    bound_dev_if != sdif)
- 			continue;
+ 		ata_sg_init(qc, scsi_sglist(cmd), scsi_sg_count(cmd));
+-
+ 		qc->dma_dir = cmd->sc_data_direction;
+ 	}
  
- 		goto exit;
-@@ -392,7 +396,9 @@ static void ping_set_saddr(struct sock *sk, struct sockaddr *saddr)
- 	if (saddr->sa_family == AF_INET) {
- 		struct inet_sock *isk = inet_sk(sk);
- 		struct sockaddr_in *addr = (struct sockaddr_in *) saddr;
--		isk->inet_rcv_saddr = isk->inet_saddr = addr->sin_addr.s_addr;
-+
-+		isk->inet_saddr = addr->sin_addr.s_addr;
-+		WRITE_ONCE(isk->inet_rcv_saddr, addr->sin_addr.s_addr);
- #if IS_ENABLED(CONFIG_IPV6)
- 	} else if (saddr->sa_family == AF_INET6) {
- 		struct sockaddr_in6 *addr = (struct sockaddr_in6 *) saddr;
-@@ -849,7 +855,8 @@ int ping_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags,
- 	struct sk_buff *skb;
- 	int copied, err;
+ 	qc->complete_fn = ata_scsi_qc_complete;
  
--	pr_debug("ping_recvmsg(sk=%p,sk->num=%u)\n", isk, isk->inet_num);
-+	pr_debug("ping_recvmsg(sk=%p,sk->num=%u)\n", isk,
-+		 READ_ONCE(isk->inet_num));
+ 	if (xlat_func(qc))
+-		goto early_finish;
+-
+-	if (ap->ops->qc_defer) {
+-		if ((rc = ap->ops->qc_defer(qc)))
+-			goto defer;
+-	}
+-
+-	/* select device, send command to hardware */
+-	ata_qc_issue(qc);
+-
+-	return 0;
++		goto done;
  
- 	err = -EOPNOTSUPP;
- 	if (flags & MSG_OOB)
--- 
-2.51.0
-
+-early_finish:
+-	ata_qc_free(qc);
+-	scsi_done(cmd);
+-	return 0;
++	return ata_scsi_qc_issue(ap, qc);
+ 
+-err_did:
++done:
+ 	ata_qc_free(qc);
+-	cmd->result = (DID_ERROR << 16);
+ 	scsi_done(cmd);
+-err_mem:
+ 	return 0;
+-
+-defer:
+-	ata_qc_free(qc);
+-	if (rc == ATA_DEFER_LINK)
+-		return SCSI_MLQUEUE_DEVICE_BUSY;
+-	else
+-		return SCSI_MLQUEUE_HOST_BUSY;
+ }
+ 
+ /**
 
 
 
