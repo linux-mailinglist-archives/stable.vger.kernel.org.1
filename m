@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-219220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDtiK6OdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:43 +0100
+	id yGoYMvRXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138EB192A56
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8F519064E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55D6630692F3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 916C2314C621
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D408D2C0F97;
-	Wed, 25 Feb 2026 06:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DF52550D7;
+	Wed, 25 Feb 2026 01:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjQCHXm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulK8SWIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B462C11CD;
-	Wed, 25 Feb 2026 06:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58F518B0A;
+	Wed, 25 Feb 2026 01:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002571; cv=none; b=X1eNQe49CWAVINdDxoFNSRvOdCCotoQT862a9LmqNHhgkYPj930KkPN3Ad8F92WjatA7VtjaIOPcHR6pZSi6F9Rst3bIpM+iCg9bVkaKI0NKtabM4Rt6gvLxsC4VbG3pgxozTLy9DTG2Xg0wnJiH8GwTkFtsaps5thr0FjbluXU=
+	t=1771983401; cv=none; b=c4s8w/SJx/g+znjM3K4xjep3LoiLENqWh8UwTwNStak7uG4bNbQIDB5cPtGXUh4W5kzz615hJ63xKKqk3IPrENHIzBSYnEzgaz2pRCzr+Z12JF5gqGcjZpme97RZpxcWpZg2Rzw+m3oG23JGc4aKIp+4fQCUtBouDcNCppN9yhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002571; c=relaxed/simple;
-	bh=+rB13NVatJUV5B8tv4A9SBnzYzoKXIVg9xhsLqHXN5k=;
+	s=arc-20240116; t=1771983401; c=relaxed/simple;
+	bh=HeDFZPMeLbt3MOTK4VbXUrZxKa4cyb5Enqf0mZFtceA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpDa9XyW+3pHan/KrTi/cA31DqX+hVunXd81+HOc47CDVcUsolR85kv8lavH29aWvn2/4mBaFadCBEju4LoylISGI7DoNVasTWkiCuQXhlUhO3yR0XQEhUpuoHGYm99g8FxaMIsM4Ou4H8OYyMp1IFPjKj2kTMa6zt9jG5cu/rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjQCHXm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E651C19425;
-	Wed, 25 Feb 2026 06:56:11 +0000 (UTC)
+	 MIME-Version; b=i+gH200UP2NXKbnBmqjoINbm0RezOXhlgzOl7tob6sJ1BeYeH0kJVP/dZJsXUDL71qdamekwngyMBKmzdT9xBLVEOWStoWEQEf3QTjXVQoANYjmtEAaLQloiBUgJXzhUpiy/m92yCQ+rBuoMpgFFEHzsnM822o3X7N7vVB/SnTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulK8SWIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2DAC116D0;
+	Wed, 25 Feb 2026 01:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002571;
-	bh=+rB13NVatJUV5B8tv4A9SBnzYzoKXIVg9xhsLqHXN5k=;
+	s=korg; t=1771983401;
+	bh=HeDFZPMeLbt3MOTK4VbXUrZxKa4cyb5Enqf0mZFtceA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjQCHXm6T1/ZoKmikhlgHvz6HMm6YV1a4rzdxGL3I3slAPiW5DYDEkf3j8oA9v03j
-	 ivnZDLWn4F0iOtfiyKPoRwjVmEzGBdhrr85fFGwO/qS0mgkL48SU69fM36N7rcdCfS
-	 VPyzAvbD+kLtbdEt7lC5j0sQXQrmBdgjzR/agWFA=
+	b=ulK8SWIEhcaK7wF+51mdIhL/ZVsX6ux8x0sb+4+MjK6Kl4omij/S8vDZXf7T/w/t/
+	 bnUSAq8qy4uMJE6X6Qbbv118lnErw7Ng1jRmTFMNnN3TluZSuDu1bQcx+KAnvrTby4
+	 iTJFsqoCgbIxicZ0OVBnuLu3hZUd5Wlu+ELSsQ5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulrich Weber <ulrich.weber@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 305/641] netfilter: nfnetlink_queue: do shared-unconfirmed check before segmentation
+Subject: [PATCH 6.19 522/781] clk: qcom: gcc-milos: Update the SDCC RCGs to use shared_floor_ops
 Date: Tue, 24 Feb 2026 17:20:31 -0800
-Message-ID: <20260225012356.129628588@linuxfoundation.org>
+Message-ID: <20260225012412.604135145@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,279 +69,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219220-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218562-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.994];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 138EB192A56
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: 4F8F519064E
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
 
-[ Upstream commit 207b3ebacb6113acaaec0d171d5307032c690004 ]
+[ Upstream commit 08da8d7dabb161cea14c6d3ad9b5037aaf6d4b7e ]
 
-Ulrich reports a regression with nfqueue:
+Use shared_floor_ops for the SDCC RCGs to avoid any overclocking
+issues in SDCC usecases.
 
-If an application did not set the 'F_GSO' capability flag and a gso
-packet with an unconfirmed nf_conn entry is received all packets are
-now dropped instead of queued, because the check happens after
-skb_gso_segment().  In that case, we did have exclusive ownership
-of the skb and its associated conntrack entry.  The elevated use
-count is due to skb_clone happening via skb_gso_segment().
-
-Move the check so that its peformed vs. the aggregated packet.
-
-Then, annotate the individual segments except the first one so we
-can do a 2nd check at reinject time.
-
-For the normal case, where userspace does in-order reinjects, this avoids
-packet drops: first reinjected segment continues traversal and confirms
-entry, remaining segments observe the confirmed entry.
-
-While at it, simplify nf_ct_drop_unconfirmed(): We only care about
-unconfirmed entries with a refcnt > 1, there is no need to special-case
-dying entries.
-
-This only happens with UDP.  With TCP, the only unconfirmed packet will
-be the TCP SYN, those aren't aggregated by GRO.
-
-Next patch adds a udpgro test case to cover this scenario.
-
-Reported-by: Ulrich Weber <ulrich.weber@gmail.com>
-Fixes: 7d8dc1c7be8d ("netfilter: nf_queue: drop packets with cloned unconfirmed conntracks")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 88174d5d9422 ("clk: qcom: Add Global Clock controller (GCC) driver for Milos")
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-5-473afc86589c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_queue.h |   1 +
- net/netfilter/nfnetlink_queue.c  | 123 +++++++++++++++++++------------
- 2 files changed, 75 insertions(+), 49 deletions(-)
+ drivers/clk/qcom/gcc-milos.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/netfilter/nf_queue.h b/include/net/netfilter/nf_queue.h
-index e6803831d6af5..45eb26b2e95b3 100644
---- a/include/net/netfilter/nf_queue.h
-+++ b/include/net/netfilter/nf_queue.h
-@@ -21,6 +21,7 @@ struct nf_queue_entry {
- 	struct net_device	*physout;
- #endif
- 	struct nf_hook_state	state;
-+	bool			nf_ct_is_unconfirmed;
- 	u16			size; /* sizeof(entry) + saved route keys */
- 	u16			queue_num;
+diff --git a/drivers/clk/qcom/gcc-milos.c b/drivers/clk/qcom/gcc-milos.c
+index c9d61b05bafa1..81fa09ec55d7f 100644
+--- a/drivers/clk/qcom/gcc-milos.c
++++ b/drivers/clk/qcom/gcc-milos.c
+@@ -917,7 +917,7 @@ static struct clk_rcg2 gcc_sdcc1_apps_clk_src = {
+ 		.name = "gcc_sdcc1_apps_clk_src",
+ 		.parent_data = gcc_parent_data_9,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_9),
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index 336e3ad18e72d..34548213f2f14 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -438,6 +438,34 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
- 	nf_queue_entry_free(entry);
- }
+@@ -938,7 +938,7 @@ static struct clk_rcg2 gcc_sdcc1_ice_core_clk_src = {
+ 		.name = "gcc_sdcc1_ice_core_clk_src",
+ 		.parent_data = gcc_parent_data_10,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_10),
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
-+/* return true if the entry has an unconfirmed conntrack attached that isn't owned by us
-+ * exclusively.
-+ */
-+static bool nf_ct_drop_unconfirmed(const struct nf_queue_entry *entry, bool *is_unconfirmed)
-+{
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	struct nf_conn *ct = (void *)skb_nfct(entry->skb);
-+
-+	if (!ct || nf_ct_is_confirmed(ct))
-+		return false;
-+
-+	if (is_unconfirmed)
-+		*is_unconfirmed = true;
-+
-+	/* in some cases skb_clone() can occur after initial conntrack
-+	 * pickup, but conntrack assumes exclusive skb->_nfct ownership for
-+	 * unconfirmed entries.
-+	 *
-+	 * This happens for br_netfilter and with ip multicast routing.
-+	 * This can't be solved with serialization here because one clone
-+	 * could have been queued for local delivery or could be transmitted
-+	 * in parallel on another CPU.
-+	 */
-+	return refcount_read(&ct->ct_general.use) > 1;
-+#endif
-+	return false;
-+}
-+
- static void nfqnl_reinject(struct nf_queue_entry *entry, unsigned int verdict)
- {
- 	const struct nf_ct_hook *ct_hook;
-@@ -465,6 +493,24 @@ static void nfqnl_reinject(struct nf_queue_entry *entry, unsigned int verdict)
- 			break;
- 		}
- 	}
-+
-+	if (verdict != NF_DROP && entry->nf_ct_is_unconfirmed) {
-+		/* If first queued segment was already reinjected then
-+		 * there is a good chance the ct entry is now confirmed.
-+		 *
-+		 * Handle the rare cases:
-+		 *  - out-of-order verdict
-+		 *  - threaded userspace reinjecting in parallel
-+		 *  - first segment was dropped
-+		 *
-+		 * In all of those cases we can't handle this packet
-+		 * because we can't be sure that another CPU won't modify
-+		 * nf_conn->ext in parallel which isn't allowed.
-+		 */
-+		if (nf_ct_drop_unconfirmed(entry, NULL))
-+			verdict = NF_DROP;
-+	}
-+
- 	nf_reinject(entry, verdict);
- }
+@@ -962,7 +962,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.name = "gcc_sdcc2_apps_clk_src",
+ 		.parent_data = gcc_parent_data_11,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_11),
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
-@@ -894,49 +940,6 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
- 	return NULL;
- }
- 
--static bool nf_ct_drop_unconfirmed(const struct nf_queue_entry *entry)
--{
--#if IS_ENABLED(CONFIG_NF_CONNTRACK)
--	static const unsigned long flags = IPS_CONFIRMED | IPS_DYING;
--	struct nf_conn *ct = (void *)skb_nfct(entry->skb);
--	unsigned long status;
--	unsigned int use;
--
--	if (!ct)
--		return false;
--
--	status = READ_ONCE(ct->status);
--	if ((status & flags) == IPS_DYING)
--		return true;
--
--	if (status & IPS_CONFIRMED)
--		return false;
--
--	/* in some cases skb_clone() can occur after initial conntrack
--	 * pickup, but conntrack assumes exclusive skb->_nfct ownership for
--	 * unconfirmed entries.
--	 *
--	 * This happens for br_netfilter and with ip multicast routing.
--	 * We can't be solved with serialization here because one clone could
--	 * have been queued for local delivery.
--	 */
--	use = refcount_read(&ct->ct_general.use);
--	if (likely(use == 1))
--		return false;
--
--	/* Can't decrement further? Exclusive ownership. */
--	if (!refcount_dec_not_one(&ct->ct_general.use))
--		return false;
--
--	skb_set_nfct(entry->skb, 0);
--	/* No nf_ct_put(): we already decremented .use and it cannot
--	 * drop down to 0.
--	 */
--	return true;
--#endif
--	return false;
--}
--
- static int
- __nfqnl_enqueue_packet(struct net *net, struct nfqnl_instance *queue,
- 			struct nf_queue_entry *entry)
-@@ -953,9 +956,6 @@ __nfqnl_enqueue_packet(struct net *net, struct nfqnl_instance *queue,
- 	}
- 	spin_lock_bh(&queue->lock);
- 
--	if (nf_ct_drop_unconfirmed(entry))
--		goto err_out_free_nskb;
--
- 	if (queue->queue_total >= queue->queue_maxlen)
- 		goto err_out_queue_drop;
- 
-@@ -998,7 +998,6 @@ __nfqnl_enqueue_packet(struct net *net, struct nfqnl_instance *queue,
- 		else
- 			net_warn_ratelimited("nf_queue: hash insert failed: %d\n", err);
- 	}
--err_out_free_nskb:
- 	kfree_skb(nskb);
- err_out_unlock:
- 	spin_unlock_bh(&queue->lock);
-@@ -1077,9 +1076,10 @@ __nfqnl_enqueue_packet_gso(struct net *net, struct nfqnl_instance *queue,
- static int
- nfqnl_enqueue_packet(struct nf_queue_entry *entry, unsigned int queuenum)
- {
--	unsigned int queued;
--	struct nfqnl_instance *queue;
- 	struct sk_buff *skb, *segs, *nskb;
-+	bool ct_is_unconfirmed = false;
-+	struct nfqnl_instance *queue;
-+	unsigned int queued;
- 	int err = -ENOBUFS;
- 	struct net *net = entry->state.net;
- 	struct nfnl_queue_net *q = nfnl_queue_pernet(net);
-@@ -1103,6 +1103,15 @@ nfqnl_enqueue_packet(struct nf_queue_entry *entry, unsigned int queuenum)
- 		break;
- 	}
- 
-+	/* Check if someone already holds another reference to
-+	 * unconfirmed ct.  If so, we cannot queue the skb:
-+	 * concurrent modifications of nf_conn->ext are not
-+	 * allowed and we can't know if another CPU isn't
-+	 * processing the same nf_conn entry in parallel.
-+	 */
-+	if (nf_ct_drop_unconfirmed(entry, &ct_is_unconfirmed))
-+		return -EINVAL;
-+
- 	if (!skb_is_gso(skb) || ((queue->flags & NFQA_CFG_F_GSO) && !skb_is_gso_sctp(skb)))
- 		return __nfqnl_enqueue_packet(net, queue, entry);
- 
-@@ -1116,7 +1125,23 @@ nfqnl_enqueue_packet(struct nf_queue_entry *entry, unsigned int queuenum)
- 		goto out_err;
- 	queued = 0;
- 	err = 0;
-+
- 	skb_list_walk_safe(segs, segs, nskb) {
-+		if (ct_is_unconfirmed && queued > 0) {
-+			/* skb_gso_segment() increments the ct refcount.
-+			 * This is a problem for unconfirmed (not in hash)
-+			 * entries, those can race when reinjections happen
-+			 * in parallel.
-+			 *
-+			 * Annotate this for all queued entries except the
-+			 * first one.
-+			 *
-+			 * As long as the first one is reinjected first it
-+			 * will do the confirmation for us.
-+			 */
-+			entry->nf_ct_is_unconfirmed = ct_is_unconfirmed;
-+		}
-+
- 		if (err == 0)
- 			err = __nfqnl_enqueue_packet_gso(net, queue,
- 							segs, entry);
 -- 
 2.51.0
 
