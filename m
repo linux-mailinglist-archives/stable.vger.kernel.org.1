@@ -1,174 +1,199 @@
-Return-Path: <stable+bounces-219724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AM2jL117n2lmcQQAu9opvQ
-	(envelope-from <stable+bounces-219724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 23:44:45 +0100
+	id OBoAK0B+n2mrcQQAu9opvQ
+	(envelope-from <stable+bounces-219725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 23:57:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39A3E19E6CB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 23:44:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 984CD19E81E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 23:57:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1AD23064BE6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 22:44:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 549873022FAA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 22:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D5034D392;
-	Wed, 25 Feb 2026 22:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FD936A01F;
+	Wed, 25 Feb 2026 22:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdmvKaFH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PeWLozsb";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NmA+hGcI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571BA31690E
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 22:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4431936923C
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 22:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772059456; cv=none; b=q7Qi2Z1+AzP/L4AGPEC55BTaGqmolj8V8fYEa83ww7Ek7WHXn6EW1JS6XxB2ce+HNhbWxM8M8v+Df8DsY02+tb53bziAefYcqWh2Vv8AKnBolApS+tChExK9jJZx15cZCMOwYrTAaFReVb0SdngpLjLU4u+cak+Us8RB3To5Iwc=
+	t=1772060221; cv=none; b=Jq6C0RHr7SsPPc+yQPh05/ebH3KcxX5GRiBryFudIArqQnMcDmWHNKBLkJ5DSc7aSMXM41+nRxjmvifTULFW2q4y/dRMbcyDhZzlzoSQBMSg7l2vxzjGSaPKt9kFW1Q/y9O8CxuNmCRGY6ztdZirSYSIc1SbMcXhZkfMFnpumGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772059456; c=relaxed/simple;
-	bh=g/KGEimT/X+0VqaoMce6mZB36StxBuHTz74wXUXwxPg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RTF9NynILwXTlspTZ0Z+No8Lv7B8zpwTGQdZnR9GHsm4UBtC69cH3pYWL14V8u2lXgR7gVHPOYtacZ1BIGpSE+9qty/zaJTb+I6LHl2EDJui9VtiLbmYdiJanm3JzkVMSPaOiJPDoUGdI8SkLQnsIRz0Bals1jRHwt8IGW4N3j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdmvKaFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0266DC116D0
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 22:44:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772059456;
-	bh=g/KGEimT/X+0VqaoMce6mZB36StxBuHTz74wXUXwxPg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BdmvKaFHhqVyMXncCB0L6IYQawHQvnmP2puA1ugyu/9IFABsz1cBFvRSW++lH7BOF
-	 qibtJZ4FRTd6yRxDUnwgGdiZi1R5CFniCn2PyS8cz5Gk7cocpKbtwPSFrWn8Zu1Jsr
-	 L2qzbG5JTfa6jDBzmBhtMmHZ7iJ1LnFml6PQp95VoRt0fUqDATHsliWpTpxiHBVfy9
-	 +tFY53nklCGN3h7vZrgZez8EAx05onI8FZ3w7RMTJMcXhx2ek6U7yLoiECrg1UE1SI
-	 AMUpSncMgsLzd9G4eR2rdCesjnKp7c3NOf14b54daEoOuec8pDkQ7j1QIVVwRjpTIf
-	 WZvGeYhMwEWtw==
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-65a2fea1a1eso2168286a12.0
-        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 14:44:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVqJyVmRIV9HcrbHCj47NdnXR4NUhc4Yolk29xliiESWLYsVhtD4xL29NZccOvOSoAgmXbKpHI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBsguDIF77uony+Txpt2g9jIOZOLNGUn3T4cCihBwuN+F2eAei
-	Pei7dXcdp2+i2FDvUAjWyx7QJMrxeEfXG5iv7GGrqJc4DCkD0yF8q0fy9ZTmAeu5/9Nl4KyuohA
-	0Zdg1efu5GUs87G9P2xNFxDViqNf08mE=
-X-Received: by 2002:a17:907:3e82:b0:b8f:c684:db28 with SMTP id
- a640c23a62f3a-b9356f99d4cmr45998766b.12.1772059454826; Wed, 25 Feb 2026
- 14:44:14 -0800 (PST)
+	s=arc-20240116; t=1772060221; c=relaxed/simple;
+	bh=zdISM9A13n5bpev9HW8+eKbkpO1V24XmRiHqNp5Qrzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lGRHjfPSFiaa2TN0w2V/13jgOzQClNlNciEnVn4KQ+gxRFZ3qVbvNDjcKLtcItPL6iWhmB3+X8kKJfbmOg48IU4S1yQJxZEJVoPPhdV2Gdk44+HGAAlihKmzV0F1jtuUNqp9W5fCjVNFk5F1dXgDeTyMbvy38RuozbNMyh+1jTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PeWLozsb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NmA+hGcI; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772060219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7GoTj0XJIraxE36kErcF7CkdwsGLSTR+HFHvb50C3Fs=;
+	b=PeWLozsbsHlYhkqnrZeXqF+vk9nnOPhQFAtyc3MamUADTkzKQen1SWGc4j0/CAaUteSHol
+	esSPtATfvaLgnrQwSKSlRcy75xF3CMbnvdcpom7lTv+cD93CYTRDig2H7eygJsdVEnoFYa
+	fyBsvLVd2tx4csCOQPEmZ6tKpepbmJQ=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-594-ZgghpkC5NViRBkr_Ge_vYg-1; Wed, 25 Feb 2026 17:56:57 -0500
+X-MC-Unique: ZgghpkC5NViRBkr_Ge_vYg-1
+X-Mimecast-MFC-AGG-ID: ZgghpkC5NViRBkr_Ge_vYg_1772060217
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-798656130b0so3425267b3.1
+        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 14:56:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1772060217; x=1772665017; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7GoTj0XJIraxE36kErcF7CkdwsGLSTR+HFHvb50C3Fs=;
+        b=NmA+hGcI0Ta7jofYqCqzxr4th72qv8xiQIdYgQssal4ePG6B6hNhwqQT5H6zPJxDzV
+         7iqAiDKcr+iZdxWkPgXVAgJKHBZaMEfqIBmBFMVrSfP148h9afIhEOJXarGVmKJFU93I
+         njdpx0tP2SvA+/e3webeIXuWBxhgNapcKFhJCJY+bLIEpfVLY54+J8vj3tRK4LMdnStE
+         G1RWMsUlqHNyd6js4YCyzNpIIr5RBXiZ4JojoELbl6BfxgunmLPBEju+NpOIGy4zVqHS
+         Hch0D8VR4AHo1qWbh5VRoenQ63SN1jLukcbe7Gk1dX9WVfiDumJd8CooRwWAk9IQDmpY
+         EzqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772060217; x=1772665017;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7GoTj0XJIraxE36kErcF7CkdwsGLSTR+HFHvb50C3Fs=;
+        b=G0KxGQRO6wPDXXh4O3PNz54O4AOUMdr7DnzZrxr4qE/427W4mxSy07+4juKjv3Z4it
+         91lLMM9FARKW35WPM1jj/pxKO73tR2sJTb+jdcQBJOeb+9AQP8DkF0EJe8/uX0txudTy
+         eZUEhdor3/X+3XHSEXbmCXFG+Kt5TlJdhYOY3r07B//qAkcN3Ov0Kbzd3/6RfOSr5fhy
+         SQ+Mob9jnQ8llxXxhwj1Cb49MMQyA1vDDVoeYszZc5meNKnBzO6l5SWoggYdvCYAAY7z
+         wXMkhEA8vpuXhANEI/7nBqywxqUkb8vZKP/XBivbLbz160CpHWPEvw9fqcdLoYFILdxw
+         rKZA==
+X-Forwarded-Encrypted: i=1; AJvYcCWNV/lHGjUYgPZvjTneNqbQGM74prVfrJ8FZshJh3kEc3c9O/8GiplWNOmtfcbYJ6BiIlYEOSg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgkRDsIpN7RHvkL36i1kw4zjdWNHoiUOh6qLOBXdQxpPAwbxQt
+	ktjvgGTtM0v/ZQtKiou6o3eFjkiv2/BcXKkeJU1l2LDCpIMUdzwE9l6cFCelqy2RxgdJFSjgVGY
+	OaMrLXGimXmghMcbSuDVGN22O4xBFDEMiL4XHZLSOQJb5DoWdnixm1BuxFQ==
+X-Gm-Gg: ATEYQzwJiDmN1VQVDwQIqem71GPEDmeevyVL2cq20hzwJCSt4H+9xLBRkQvK+DzZ6ko
+	iihjaeelpX5HOFRoPUW1tVpbnqaW4+Lo0OtjOlDuXjEG0sXdAgThqDDi+Cev98JSUrSi97CsIRY
+	lBeKwk9HGg6cCjiYOSdA/G4VxJH8ZsVJ0/UjHt5nHb7R3NZQ0NP+i1vTAwoHLxq/LwVyB3ScgDf
+	E/Dbtv29MJphX+eVh1+rH/6xUk0cNc+9QDq5tATLmgok8MEkJ4YwQludHBd7qgkunVcVgHoq2la
+	wrpJeWrdrbdAUQcK1NU7L2482Sk6MtrbTycNiu1/L3hebsv+9QNKXeFaEMmLtnb7FDmq5Qx9yiA
+	LKBwrZm97OOvzVKbm7zs=
+X-Received: by 2002:a05:690c:101:b0:796:4154:9fab with SMTP id 00721157ae682-7986ff520ddmr20295287b3.41.1772060217165;
+        Wed, 25 Feb 2026 14:56:57 -0800 (PST)
+X-Received: by 2002:a05:690c:101:b0:796:4154:9fab with SMTP id 00721157ae682-7986ff520ddmr20295137b3.41.1772060216778;
+        Wed, 25 Feb 2026 14:56:56 -0800 (PST)
+Received: from redhat.com ([2600:382:811f:bb35:ae9a:1ac7:e1d:86ce])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79876ac3c0dsm1236297b3.12.2026.02.25.14.56.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 14:56:56 -0800 (PST)
+Date: Wed, 25 Feb 2026 17:56:53 -0500
+From: Brian Masney <bmasney@redhat.com>
+To: Conor Dooley <conor.dooley@microchip.com>
+Cc: linux-clk@vger.kernel.org, stable@vger.kernel.org,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] clk: microchip: mpfs-ccc: fix out of bounds access
+ during output registration
+Message-ID: <aZ9-NWiX4wMH3Ay6@redhat.com>
+References: <20260224-briskly-scholar-294d13464721@wendy>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260224223405.3270433-1-yosry@kernel.org> <20260224223405.3270433-17-yosry@kernel.org>
-In-Reply-To: <20260224223405.3270433-17-yosry@kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 25 Feb 2026 14:44:03 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zP3-=M+3hyve4-0uGXCsKrhwmx+YPXzw0b-+WfTRS-M1g@mail.gmail.com>
-X-Gm-Features: AaiRm50piw7sYl7IlcOqh1IjoW7ZIltJcKpNFA31qLSldsYHKfqSuGLBfbMNb-c
-Message-ID: <CAO9r8zP3-=M+3hyve4-0uGXCsKrhwmx+YPXzw0b-+WfTRS-M1g@mail.gmail.com>
-Subject: Re: [PATCH v6 16/31] KVM: nSVM: Unify handling of VMRUN failures with
- proper cleanup
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260224-briskly-scholar-294d13464721@wendy>
+User-Agent: Mutt/2.2.14 (2025-02-20)
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219724-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219725-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 39A3E19E6CB
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bmasney@redhat.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,tuxon.dev:email]
+X-Rspamd-Queue-Id: 984CD19E81E
 X-Rspamd-Action: no action
 
-> @@ -939,22 +939,19 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
->                                     vmcb12->control.intercepts[INTERCEPT_WORD4],
->                                     vmcb12->control.intercepts[INTERCEPT_WORD5]);
->
-> -
->         svm->nested.vmcb12_gpa = vmcb12_gpa;
->
->         WARN_ON(svm->vmcb == svm->nested.vmcb02.ptr);
->
->         enter_guest_mode(vcpu);
->
-> +       if (!nested_vmcb_check_save(vcpu, &svm->nested.save) ||
-> +           !nested_vmcb_check_controls(vcpu, &svm->nested.ctl))
-> +               return -EINVAL;
-> +
->         if (nested_npt_enabled(svm))
->                 nested_svm_init_mmu_context(vcpu);
->
-> -       nested_svm_copy_common_state(svm->vmcb01.ptr, svm->nested.vmcb02.ptr);
-> -
-> -       svm_switch_vmcb(svm, &svm->nested.vmcb02);
-> -       nested_vmcb02_prepare_control(svm, vmcb12->save.rip, vmcb12->save.cs.base);
-> -       nested_vmcb02_prepare_save(svm, vmcb12);
-> -
->         ret = nested_svm_load_cr3(&svm->vcpu, svm->nested.save.cr3,
->                                   nested_npt_enabled(svm), from_vmrun);
->         if (ret)
+Hi Conor,
 
-I think the above is wrong (as pointed out by an internal AI bot).
-nested_vmcb02_prepare_save() also initializes architectural state to
-L2's, moving it after nested_svm_load_cr3() means that
-nested_svm_load_cr3() will use L1's architectural state (e.g. in
-is_pae_paging(), but more importantly in kvm_init_mmu()).
+On Tue, Feb 24, 2026 at 09:35:25AM +0000, Conor Dooley wrote:
+> UBSAN reported an out of bounds access during registration of the last
+> two outputs. This out of bounds access occurs because space is only
+> allocated in the hws array for two PLLs and the four output dividers
+> that each has, but the defined IDs contain two DLLS and their two
+> outputs each, which are not supported by the driver. The ID order is
+> PLLs -> DLLs -> PLL outputs -> DLL outputs. Decrement the PLL output IDs
+> by two while adding them to the array to avoid the problem.
+> 
+> Fixes: d39fb172760e ("clk: microchip: add PolarFire SoC fabric clock support")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
+> CC: Conor Dooley <conor.dooley@microchip.com>
+> CC: Daire McNamara <daire.mcnamara@microchip.com>
+> CC: Michael Turquette <mturquette@baylibre.com>
+> CC: Stephen Boyd <sboyd@kernel.org>
+> CC: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+> CC: linux-riscv@lists.infradead.org
+> CC: linux-clk@vger.kernel.org
+> CC: linux-kernel@vger.kernel.org
+> ---
+>  drivers/clk/microchip/clk-mpfs-ccc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/clk/microchip/clk-mpfs-ccc.c b/drivers/clk/microchip/clk-mpfs-ccc.c
+> index 3a3ea2d142f8a..54cfbb8be8ab5 100644
+> --- a/drivers/clk/microchip/clk-mpfs-ccc.c
+> +++ b/drivers/clk/microchip/clk-mpfs-ccc.c
+> @@ -178,7 +178,7 @@ static int mpfs_ccc_register_outputs(struct device *dev, struct mpfs_ccc_out_hw_
+>  			return dev_err_probe(dev, ret, "failed to register clock id: %d\n",
+>  					     out_hw->id);
+>  
+> -		data->hw_data.hws[out_hw->id] = &out_hw->divider.hw;
+> +		data->hw_data.hws[out_hw->id - 2] = &out_hw->divider.hw;
 
-The only clean-ish solution I can think of is to refactor loading L2's
-architectural state out of nested_vmcb02_prepare_save(), and keep it
-before nested_svm_load_cr3(). Then, also refactor restoring L1's
-architectural state out of nested_svm_vmexit() and also do it in
-nested_svm_vmrun_error_vmexit().
+What happens when / if the DLLs are supported by this driver in the
+future? This seems like a trap for the future.
 
-We can probably move it to __nested_svm_vmexit(), assuming nothing
-else in nested_svm_vmexit() relies on it.
+According to include/dt-bindings/clock/microchip,mpfs-clock.h, there are
+only 16 clock IDs. Could hws be initialized to have enough room for all
+16 structures, and would it be ok if it was a sparse array?
 
-That being said, I am open to suggestions for better options.
+At the very least, I think it would be nice to include a comment here.
 
-> @@ -966,6 +963,17 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
->                         return ret;
->         }
->
-> +       /*
-> +        * Any VMRUN failure needs to happen before this point, such that the
-> +        * nested #VMEXIT is injected properly by nested_svm_vmrun_error_vmexit().
-> +        */
-> +
-> +       nested_svm_copy_common_state(svm->vmcb01.ptr, svm->nested.vmcb02.ptr);
-> +
-> +       svm_switch_vmcb(svm, &svm->nested.vmcb02);
-> +       nested_vmcb02_prepare_control(svm, vmcb12->save.rip, vmcb12->save.cs.base);
-> +       nested_vmcb02_prepare_save(svm, vmcb12);
-> +
+Brian
 
-Another problem here, hidden above the context lines is a call to
-nested_svm_merge_msrpm(), which updates msrpm_base_pa in the active
-VMCB, which should be vmcb02, but will be vmcb01 because we moved the
-VMCB switch below it.
-
-I think the easiest thing to do here is make nested_svm_merge_msrpm()
-explicitly update msrpm_base_pa in vmcb02, I think this is probably
-better anyway.
 
