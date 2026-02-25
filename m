@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDjxKzZUnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:26 +0100
+	id kKbfG1JWnmnyUgQAu9opvQ
+	(envelope-from <stable+bounces-219057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202EB18FC2A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3149419025B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0F80B3090C5E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E887430CE7EA
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05236243376;
-	Wed, 25 Feb 2026 01:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D1928507E;
+	Wed, 25 Feb 2026 01:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YszUBdwb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bu0BBeb8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE11220C012;
-	Wed, 25 Feb 2026 01:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0551A1F03DE;
+	Wed, 25 Feb 2026 01:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983315; cv=none; b=TGkeSdL3UUqEYpUEztxYeazNrZDjqLyT8ygr38b53is7a9Lp+cgxnc/pUbW/DFQhh7uFToHn6xdvi7kv7N6q7887JEIQBmR5mGtYG+tpZY22d9fu8BIwDpCUsTMaCzYD14XuqsJ2Mj8M8NBA4Y7Z/SAgfwL5iv6CBszQ078a+OU=
+	t=1771983980; cv=none; b=kOgvCTjGP7IScwMXUPjkyF4A4bsq+vujyNE+F4Sxjqj2CSq4trshMzSMUQCaNT15dYYZIESgJ4AViwrEHjafAaMIVtCDMgr3sMZL98LhiObWlJIY24hhiRqvcn5rR47Jy/T6WpIU88kARyii6FHMkG8/EA54ClylfXwL1v5H16E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983315; c=relaxed/simple;
-	bh=ZRbiBrRkQq+a71c2BeKA6oDvW6TSn8IMKThANtivr/Q=;
+	s=arc-20240116; t=1771983980; c=relaxed/simple;
+	bh=8pGfaeGwwh652BaELEftFaYIdSV7KGlO9CS9Os+Uv3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsUG6uE4Yu+qaPQzqI5bFiBBTGMi4DRQdESankaMOwNxfnyhCBROfcKbRQJJMpdWi+5KPSHtcj3+7uABdrPcNGYa5DfnT4Cub7Pk50xjoCMwvIY0xIoAfLATq8ov0zk2lbNLCOx9M4baykqzb051ubyaVvoItnfLc5eGLMJ6i3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YszUBdwb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57825C116D0;
-	Wed, 25 Feb 2026 01:35:15 +0000 (UTC)
+	 MIME-Version; b=Pi6Idhtn1n/rCd4vokW18DXGd/Omh92A0eydg+k5ny2UFHuxRpNPjHamKiDZKmPTLkLx5IIuilksKgRfLe3MhfxTncMEFxN9xZWS3n7g6ZcbM7QwASf4cj/t2C9srfKPJxWzjOvdeBsK8kIdjZjmfBa8nShiDmFmD0ZtVcwtfUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bu0BBeb8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DE2C19423;
+	Wed, 25 Feb 2026 01:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983315;
-	bh=ZRbiBrRkQq+a71c2BeKA6oDvW6TSn8IMKThANtivr/Q=;
+	s=korg; t=1771983979;
+	bh=8pGfaeGwwh652BaELEftFaYIdSV7KGlO9CS9Os+Uv3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YszUBdwbPgnKdZDIEdpZoKV5xkT3UE8c2MD23fF4p8MNL6Q1YTh6kPWHyGSRliEWr
-	 79y2GIdJjdktug1Z1qZV9hHb9udNKrJuA/2ZPWZWIM0iYF+O20w769/zbfODUWrlrK
-	 QzNsU5Tm1UxbgvjlBiCXOSfZBdLMXtvviGYv876E=
+	b=Bu0BBeb8C0Ml1krZZt3Az5B2+9mmgkTh7aVU312qh3LWjY1j9S6bydx2wD1C2+Pug
+	 eK5Am6/gZlvQqthq4zsHPTRdIXOVaHaRAwbWGcY/fA/LuMBmdNWOCd4YuuPbrEh6+e
+	 jBMYIjWN0iw3ypM6CkiRbAF/ZO4/nxJB/dn6haCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 449/781] power: supply: bq256xx: Fix use-after-free in power_supply_changed()
+Subject: [PATCH 6.18 232/641] Revert "hwmon: (ibmpex) fix use-after-free in high/low store"
 Date: Tue, 24 Feb 2026 17:19:18 -0800
-Message-ID: <20260225012410.724620849@linuxfoundation.org>
+Message-ID: <20260225012354.515723387@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,101 +70,118 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,outlook.com,roeck-us.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-219057-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218486-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,axis.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 202EB18FC2A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email,roeck-us.net:email]
+X-Rspamd-Queue-Id: 3149419025B
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waqar Hameed <waqar.hameed@axis.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 8005843369723d9c8975b7c4202d1b85d6125302 ]
+[ Upstream commit 8bde3e395a85017f12af2b0ba5c3684f5af9c006 ]
 
-Using the `devm_` variant for requesting IRQ _before_ the `devm_`
-variant for allocating/registering the `power_supply` handle, means that
-the `power_supply` handle will be deallocated/unregistered _before_ the
-interrupt handler (since `devm_` naturally deallocates in reverse
-allocation order). This means that during removal, there is a race
-condition where an interrupt can fire just _after_ the `power_supply`
-handle has been freed, *but* just _before_ the corresponding
-unregistration of the IRQ handler has run.
+This reverts commit 6946c726c3f4c36f0f049e6f97e88c510b15f65d.
 
-This will lead to the IRQ handler calling `power_supply_changed()` with
-a freed `power_supply` handle. Which usually crashes the system or
-otherwise silently corrupts the memory...
+Jean Delvare points out that the patch does not completely
+fix the reported problem, that it in fact introduces a
+(new) race condition, and that it may actually not be needed in
+the first place.
 
-Note that there is a similar situation which can also happen during
-`probe()`; the possibility of an interrupt firing _before_ registering
-the `power_supply` handle. This would then lead to the nasty situation
-of using the `power_supply` handle *uninitialized* in
-`power_supply_changed()`.
+Various AI reviews agree. Specific and relevant AI feedback:
 
-Fix this racy use-after-free by making sure the IRQ is requested _after_
-the registration of the `power_supply` handle.
+"
+This reordering sets the driver data to NULL before removing the sensor
+attributes in the loop below.
 
-Fixes: 32e4978bb920 ("power: supply: bq256xx: Introduce the BQ256XX charger driver")
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-Link: https://patch.msgid.link/39da6da8cc060fa0382ca859f65071e791cb6119.1766268280.git.waqar.hameed@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+ibmpex_show_sensor() retrieves this driver data via dev_get_drvdata() but
+does not check if it is NULL before dereferencing it to access
+data->sensors[].
+
+If a userspace process reads a sensor file (like temp1_input) while this
+delete function is running, could it race with the dev_set_drvdata(...,
+NULL) call here and crash in ibmpex_show_sensor()?
+
+Would it be safer to keep the original order where device_remove_file() is
+called before clearing the driver data? device_remove_file() should wait
+for any active sysfs callbacks to complete, which might already prevent the
+use-after-free this patch intends to fix.
+"
+
+Revert the offending patch. If it can be shown that the originally reported
+alleged race condition does indeed exist, it can always be re-introduced
+with a complete fix.
+
+Reported-by: Jean Delvare <jdelvare@suse.de>
+Closes: https://lore.kernel.org/linux-hwmon/20260121095342.73e723cb@endymion/
+Cc: Jean Delvare <jdelvare@suse.de>
+Cc: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 6946c726c3f4 ("hwmon: (ibmpex) fix use-after-free in high/low store")
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq256xx_charger.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/hwmon/ibmpex.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/power/supply/bq256xx_charger.c b/drivers/power/supply/bq256xx_charger.c
-index ae14162f017a9..d3de4f8b80db1 100644
---- a/drivers/power/supply/bq256xx_charger.c
-+++ b/drivers/power/supply/bq256xx_charger.c
-@@ -1741,6 +1741,12 @@ static int bq256xx_probe(struct i2c_client *client)
- 		usb_register_notifier(bq->usb3_phy, &bq->usb_nb);
- 	}
+diff --git a/drivers/hwmon/ibmpex.c b/drivers/hwmon/ibmpex.c
+index 129f3a9e8fe96..228c5f6c6f383 100644
+--- a/drivers/hwmon/ibmpex.c
++++ b/drivers/hwmon/ibmpex.c
+@@ -277,9 +277,6 @@ static ssize_t ibmpex_high_low_store(struct device *dev,
+ {
+ 	struct ibmpex_bmc_data *data = dev_get_drvdata(dev);
  
-+	ret = bq256xx_power_supply_init(bq, &psy_cfg, dev);
-+	if (ret) {
-+		dev_err(dev, "Failed to register power supply\n");
-+		return ret;
-+	}
-+
- 	if (client->irq) {
- 		ret = devm_request_threaded_irq(dev, client->irq, NULL,
- 						bq256xx_irq_handler_thread,
-@@ -1753,12 +1759,6 @@ static int bq256xx_probe(struct i2c_client *client)
- 		}
- 	}
- 
--	ret = bq256xx_power_supply_init(bq, &psy_cfg, dev);
--	if (ret) {
--		dev_err(dev, "Failed to register power supply\n");
--		return ret;
--	}
+-	if (!data)
+-		return -ENODEV;
 -
- 	ret = bq256xx_hw_init(bq);
- 	if (ret) {
- 		dev_err(dev, "Cannot initialize the chip.\n");
+ 	ibmpex_reset_high_low_data(data);
+ 
+ 	return count;
+@@ -511,9 +508,6 @@ static void ibmpex_bmc_delete(struct ibmpex_bmc_data *data)
+ {
+ 	int i, j;
+ 
+-	hwmon_device_unregister(data->hwmon_dev);
+-	dev_set_drvdata(data->bmc_device, NULL);
+-
+ 	device_remove_file(data->bmc_device,
+ 			   &sensor_dev_attr_reset_high_low.dev_attr);
+ 	device_remove_file(data->bmc_device, &dev_attr_name.attr);
+@@ -527,7 +521,8 @@ static void ibmpex_bmc_delete(struct ibmpex_bmc_data *data)
+ 		}
+ 
+ 	list_del(&data->list);
+-
++	dev_set_drvdata(data->bmc_device, NULL);
++	hwmon_device_unregister(data->hwmon_dev);
+ 	ipmi_destroy_user(data->user);
+ 	kfree(data->sensors);
+ 	kfree(data);
 -- 
 2.51.0
 
