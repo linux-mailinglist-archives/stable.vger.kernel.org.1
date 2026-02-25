@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEkeGG+dnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:51 +0100
+	id 4AxYFT1UnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF6E1929C0
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACDE118FC39
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 643CE3053A40
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE3B9306A53E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2874F2FFF99;
-	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C2B25A357;
+	Wed, 25 Feb 2026 01:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNS2NhEN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUJvbG74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2922D8DCF;
-	Wed, 25 Feb 2026 06:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84996256C84;
+	Wed, 25 Feb 2026 01:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002626; cv=none; b=XgseWpDcAgOUCwFWQzTxLV9vKq0l1qkrA+Sqrm21DxK4rDwpj1xxVMpz2EcBQyXIO1iYmZbLtYL47bxe275B3Ct5/SwJmBupW+86sU39LG6Ev7vHobiZEicF+VZNW1KLAn1ngJ/yFUb2ruVcDYBFTP1Nty6462WNOTlTlbiq1uE=
+	t=1771983494; cv=none; b=ENQ3kUxwICewiIXPQd2Abw++Lwfni9wFs/mwGR4KcjsFArA9xmj6wEMW4xbi6os1OZREslh5gxZXJq3yjdWWqyWgOBnWHijev3N1l0s2KXZC03hIzNBDl61Tj7RD91IS2ZtyVZRxwMnuAJFjdsttvTwz/XRkl0AnN3pTse3YDX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002626; c=relaxed/simple;
-	bh=Cegp8TLv9bvqUt9Whrby1MAB/LnL9jWw1XabjVgYFKk=;
+	s=arc-20240116; t=1771983494; c=relaxed/simple;
+	bh=vaKDAJu5PM5zh3RadBJJyWcrCK9Nw11HZ1mnboSRufI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHyndPuZOoVNR+RG1JJrX5GycspFN5W5ShxB26z+gG0PyK9MDoudFzIlV+wiBov+ilZxaGTk0Ub8MJkyQzSxoL2hNtITfbtjBFDc/8DzkvrXGQmah3d2CePDZ1QZYHz3GczerZPQFXgRfRqJ6yJG5zg2kIDVCequW8MY8A+agzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNS2NhEN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849FBC19425;
-	Wed, 25 Feb 2026 06:57:06 +0000 (UTC)
+	 MIME-Version; b=UqbRkPjSWQy95VHYdrd9jd4dScCgo9hNHUcxm5wHhCgSTpGf8NC/12rih31WTGhP98HHyaeiHGve6nIfb28Mg57qHLoElTX/YuLTC/HuQ/dC8PYHwAiGPeF7ib8dBSKesubqYOI+83Y+K8q0NZzXwCtbC0dE40rlr7DDOJM4hpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUJvbG74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36543C116D0;
+	Wed, 25 Feb 2026 01:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002626;
-	bh=Cegp8TLv9bvqUt9Whrby1MAB/LnL9jWw1XabjVgYFKk=;
+	s=korg; t=1771983494;
+	bh=vaKDAJu5PM5zh3RadBJJyWcrCK9Nw11HZ1mnboSRufI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNS2NhENF+AXfIcGUC/RkMOhSearShfDXKOQuAGVIu+EZDQY/UYL/DVOQXTanb7hc
-	 31Tza8cCFYbt0aDRjH38aEpmSxX88uVI9NlWHdWgUynJr/t724Gf3j1n/XvTGSP7oR
-	 UM9OAj0BcC9doEGKhpPa/1CfUQlSqB4NXLrfVLng=
+	b=uUJvbG746XRtq703pkK7xtfFwgaZXbZu328nCBoar5D/eeIY8HYNx+oyST6MqOl2O
+	 96GXqfyPgFLbclPNHnlv6Gn9sNyMs0V6BmmEcaqQMxQjCGLT/Hl5dVzptpPJ0frOjH
+	 xSdvPn99tTdcX5ZjlpRJF+oVomU66ySm+vgT9uHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Nikita Travkin <nikita@trvn.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Wei Li <unsw.weili@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 387/641] power: supply: pm8916_lbc: Fix use-after-free for extcon in IRQ handler
+Subject: [PATCH 6.19 604/781] pinctrl: single: fix refcount leak in pcs_add_gpio_func()
 Date: Tue, 24 Feb 2026 17:21:53 -0800
-Message-ID: <20260225012357.960322187@linuxfoundation.org>
+Message-ID: <20260225012414.609666179@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +65,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219302-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218644-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.976];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CEF6E1929C0
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,gpiospec.np:url]
+X-Rspamd-Queue-Id: ACDE118FC39
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waqar Hameed <waqar.hameed@axis.com>
+From: Wei Li <unsw.weili@gmail.com>
 
-[ Upstream commit 23067259919663580c6f81801847cfc7bd54fd1f ]
+[ Upstream commit 353353309b0f7afa407df29e455f9d15b5acc296 ]
 
-Using the `devm_` variant for requesting IRQ _before_ the `devm_`
-variant for allocating/registering the `extcon` handle, means that the
-`extcon` handle will be deallocated/unregistered _before_ the interrupt
-handler (since `devm_` naturally deallocates in reverse allocation
-order). This means that during removal, there is a race condition where
-an interrupt can fire just _after_ the `extcon` handle has been
-freed, *but* just _before_ the corresponding unregistration of the IRQ
-handler has run.
+of_parse_phandle_with_args() returns a device_node pointer with refcount
+incremented in gpiospec.np. The loop iterates through all phandles but
+never releases the reference, causing a refcount leak on each iteration.
 
-This will lead to the IRQ handler calling `extcon_set_state_sync()` with
-a freed `extcon` handle. Which usually crashes the system or otherwise
-silently corrupts the memory...
+Add of_node_put() calls to release the reference after extracting the
+needed arguments and on the error path when devm_kzalloc() fails.
 
-Fix this racy use-after-free by making sure the IRQ is requested _after_
-the registration of the `extcon` handle.
+This bug was detected by our static analysis tool and verified by my
+code review.
 
-Fixes: f8d7a3d21160 ("power: supply: Add driver for pm8916 lbc")
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-Reviewed-by: Nikita Travkin <nikita@trvn.ru>
-Link: https://patch.msgid.link/e2a4cd2fcd42b6cd97d856c17c097289a2aed393.1769163273.git.waqar.hameed@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: a1a277eb76b3 ("pinctrl: single: create new gpio function range")
+Signed-off-by: Wei Li <unsw.weili@gmail.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/pm8916_lbc.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/pinctrl/pinctrl-single.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/power/supply/pm8916_lbc.c b/drivers/power/supply/pm8916_lbc.c
-index 3ca717d84aade..6b631012a7959 100644
---- a/drivers/power/supply/pm8916_lbc.c
-+++ b/drivers/power/supply/pm8916_lbc.c
-@@ -327,11 +327,6 @@ static int pm8916_lbc_charger_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
--	ret = devm_request_threaded_irq(dev, irq, NULL, pm8916_lbc_charger_state_changed_irq,
--					IRQF_ONESHOT, "pm8916_lbc", chg);
--	if (ret)
--		return ret;
--
- 	chg->edev = devm_extcon_dev_allocate(dev, pm8916_lbc_charger_cable);
- 	if (IS_ERR(chg->edev))
- 		return PTR_ERR(chg->edev);
-@@ -340,6 +335,11 @@ static int pm8916_lbc_charger_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "failed to register extcon device\n");
- 
-+	ret = devm_request_threaded_irq(dev, irq, NULL, pm8916_lbc_charger_state_changed_irq,
-+					IRQF_ONESHOT, "pm8916_lbc", chg);
-+	if (ret)
-+		return ret;
-+
- 	ret = regmap_read(chg->regmap, chg->reg[LBC_USB] + PM8916_INT_RT_STS, &tmp);
- 	if (ret)
- 		goto comm_error;
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 998f23d6c3179..d85e6c1f63218 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -1359,6 +1359,7 @@ static int pcs_add_gpio_func(struct device_node *node, struct pcs_device *pcs)
+ 		}
+ 		range = devm_kzalloc(pcs->dev, sizeof(*range), GFP_KERNEL);
+ 		if (!range) {
++			of_node_put(gpiospec.np);
+ 			ret = -ENOMEM;
+ 			break;
+ 		}
+@@ -1368,6 +1369,7 @@ static int pcs_add_gpio_func(struct device_node *node, struct pcs_device *pcs)
+ 		mutex_lock(&pcs->mutex);
+ 		list_add_tail(&range->node, &pcs->gpiofuncs);
+ 		mutex_unlock(&pcs->mutex);
++		of_node_put(gpiospec.np);
+ 	}
+ 	return ret;
+ }
 -- 
 2.51.0
 
