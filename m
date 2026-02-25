@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-218070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMPNLzZQnmlIUgQAu9opvQ
-	(envelope-from <stable+bounces-218070-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:28:22 +0100
+	id QD2ZOWBQnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7323518EB15
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:28:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA7E18EBA7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:29:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 251D730D4BE4
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4B1DB30452FE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2FF25228D;
-	Wed, 25 Feb 2026 01:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBA32505B2;
+	Wed, 25 Feb 2026 01:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BS8UJfp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeTjg2WS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F24C1D5ABA;
-	Wed, 25 Feb 2026 01:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A262B242D9B;
+	Wed, 25 Feb 2026 01:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982841; cv=none; b=iF4H2dd6RjAlYUNB7Qnnjv7D5cfkRf51jLQaXWtg1lQfCm3I93iIFH26FXvcdcx1oymbBTKwJmq9v87kMOoKTeQzZmTloJwhKdn0WfL4+JreTWWFLz+VdHISl72bdzXnu9tZjJJMXWuqEJPDQKZpaNXY57H8g8n9MFv9lAmN8gw=
+	t=1771982842; cv=none; b=ZBna5bIQEvOvDh8qpxk7oyfKHEYuIyxJJ0nwVwbMs/gzCEm0DPGzkZPyhQZc1MX6a53NrnCUMoCNNwDctacAY57IohxbQoV5lAEQd8NFPxz4aBRL9Mt9Vt2oRohDd4B5wug0H4Ja+DEKCpedPrFTmAlkwwtWzlzgNV0eKBv8REc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982841; c=relaxed/simple;
-	bh=tT0GO0+iu3OG6ayOPJ42YszUOOsYD5i0ba682GVLIXk=;
+	s=arc-20240116; t=1771982842; c=relaxed/simple;
+	bh=Grj9Y3Q0ZtGRgJvuZ5fIXmovdAXxLLdFXFw7ZLpkWyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICaZDGoz9agBUz/+RZb5vO6GMrP9lA2+x8XUKu0xUXGOXDaLp5edG8ufSIjjFbpx9Ez5T6fOUA4HERKjW9vfYP+5lyChoiGCJvtPbllduC1S3ytdg3ZWa1DBbIH6XQntxlRstcnfqQpb5PUvhAOnhclHICW7GRaqADp60KM4W5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BS8UJfp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071ABC116D0;
-	Wed, 25 Feb 2026 01:27:21 +0000 (UTC)
+	 MIME-Version; b=WUGaCNRoC77ol3y+ypz3a9m/gbSJFWyKO+p0sOgXNNfsdBpNLuh+ua188xHv/rGYnUSQp7wyxm89/kzRyd43+JF9tfXM9z3MPFrnZvFTAzSll/P2bjIWR5Z7zxuEIIe2oy0XdKbZtnycfyZus9uoWUr01Ugo0+FDze1t//hAR88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeTjg2WS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20441C116D0;
+	Wed, 25 Feb 2026 01:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982841;
-	bh=tT0GO0+iu3OG6ayOPJ42YszUOOsYD5i0ba682GVLIXk=;
+	s=korg; t=1771982842;
+	bh=Grj9Y3Q0ZtGRgJvuZ5fIXmovdAXxLLdFXFw7ZLpkWyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BS8UJfp5Vdh0MHVb8B4VsAMaA4UQb0t52D9HYBEZ1aaAXX2qL6AUVHEM3zxK4NKxY
-	 QjWs0LQjOCV00LmE+cekZYrIR19Hn7O2nk6e/X/CYToRk3D0fonQM8R4Zljd++WKuy
-	 C61/LO/aGN8iOdmLJ9W2W2TgyWhdp6z7v3MBQIMk=
+	b=aeTjg2WSi8zQAERBbwvVX3HT2rPaHP151eyqlW3HCwv3T6cNVxaxfvb1N+Uptw4QG
+	 BxZQDOoSvti4KKAP1/4muPmSCocVNPXFtqfaKngTMLkoWKujn/nXgaevZ64YFdSwO5
+	 YJ2nOU0/QGkTITUuLClXHeExN6nC46fwHMtKPoO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	linux-cifs@vger.kernel.org,
+	Shyam Prasad N <sprasad@microsoft.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 033/781] smb: client: fix potential UAF and double free in smb2_open_file()
-Date: Tue, 24 Feb 2026 17:12:22 -0800
-Message-ID: <20260225012400.515913903@linuxfoundation.org>
+Subject: [PATCH 6.19 034/781] netfs: avoid double increment of retry_count in subreq
+Date: Tue, 24 Feb 2026 17:12:23 -0800
+Message-ID: <20260225012400.540596737@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -73,67 +71,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218070-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218071-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7323518EB15
+X-Rspamd-Queue-Id: 1FA7E18EBA7
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit ebbbc4bfad4cb355d17c671223d0814ee3ef4eda ]
+[ Upstream commit a5ca32d031bbba5160e1f555aabb75a3f40f918d ]
 
-Zero out @err_iov and @err_buftype before retrying SMB2_open() to
-prevent an UAF bug if @data != NULL, otherwise a double free.
+This change fixes the instance of double incrementing of
+retry_count. The increment of this count already happens
+when netfs_reissue_write gets called. Incrementing this
+value before is not necessary.
 
-Fixes: e3a43633023e ("smb/client: fix memory leak in smb2_open_file()")
-Reported-by: David Howells <dhowells@redhat.com>
-Closes: https://lore.kernel.org/r/2892312.1770306653@warthog.procyon.org.uk
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Cc: linux-cifs@vger.kernel.org
+Fixes: 4acb665cf4f3 ("netfs: Work around recursion by abandoning retry if nothing read")
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/netfs/write_retry.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index 2dd08388ea873..1f7f284a78449 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -179,6 +179,8 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms,
- 		       &err_buftype);
- 	if (rc == -EACCES && retry_without_read_attributes) {
- 		free_rsp_buf(err_buftype, err_iov.iov_base);
-+		memset(&err_iov, 0, sizeof(err_iov));
-+		err_buftype = CIFS_NO_BUFFER;
- 		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
- 		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
- 			       &err_buftype);
+diff --git a/fs/netfs/write_retry.c b/fs/netfs/write_retry.c
+index fc9c3e0d34d81..29489a23a2209 100644
+--- a/fs/netfs/write_retry.c
++++ b/fs/netfs/write_retry.c
+@@ -98,7 +98,6 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
+ 			subreq->start	= start;
+ 			subreq->len	= len;
+ 			__clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+-			subreq->retry_count++;
+ 			trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
+ 
+ 			/* Renegotiate max_len (wsize) */
 -- 
 2.51.0
 
