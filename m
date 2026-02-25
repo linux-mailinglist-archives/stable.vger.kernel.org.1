@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-219295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPWsJRmfnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:57 +0100
+	id YOqkOMpSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02077192E5D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:04:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A6C18F537
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:39:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E96C3161678
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 505C23065E5C
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8182D839C;
-	Wed, 25 Feb 2026 06:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B5C254B03;
+	Wed, 25 Feb 2026 01:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOHKOC2l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/GxO88P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A602C17A0;
-	Wed, 25 Feb 2026 06:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8F82550D7;
+	Wed, 25 Feb 2026 01:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002622; cv=none; b=sh2/EquTWNW5LZbj/MxNDob+ilXT/SrB5roNM+P6FADm62GLJLe27xoE75GdAKRCEWwW8tTi87oLusUvScg7QQbnV/5Doxf+CtZy3URIWMSF9/JIJVqqf6cs6GGiU5RDZNbkLo/QCNey++s1Fk9tKEcn4OFwuJi4Y9ieON/CnPQ=
+	t=1771983424; cv=none; b=bCLEc3YhsRBCmTsMStZ/+84gZcMwP7uLoRhMRVWyC8waH+au14QmZWEtJUa0jITLt9+FMZ2Rs60c7ieSZ2gzIadD3HiyEJ5R6mvixPZM1GH495tyCDLWmnb7F/SKrFYBfPRy1Fx8pDOf22fe7Inhz+TtKiTdVHiVL8cA/6IDDPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002622; c=relaxed/simple;
-	bh=Xt0uAy74UXVRM5MlNTebLsja9bjjXjJosQad7Gii7T4=;
+	s=arc-20240116; t=1771983424; c=relaxed/simple;
+	bh=HjyI0X/jvRrv6PAHHl6ladMRKC2ilfcYsZCnpU+xyxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QpYlXyd96C5oVMz3qdTUJii+/9BNZijRkw8ZSCtTxNdobQLpyZecWD8YAFT8TjeabmMmoIodmfw1jWYCvJAv9SFXtiJh33wlOltL5iCgMZLItUSWcDxh02fk/Alzifpz7lsRaCsqCHLt3Q/n3bXnuyunkgJlFFrVwhHIeWD8SnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOHKOC2l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80298C19425;
-	Wed, 25 Feb 2026 06:57:02 +0000 (UTC)
+	 MIME-Version; b=TUp0l2NhIIJ7cYr6vx8fRle10fEUQdbX4Cdwih70KJZ6+rWEe/oOaOTqgPQn1H64w+z2S5molAspuquSoo6T14u/OFOE6uaWkVy5vIZ7z6e7itB36APCIUOrTf2nI/yKnmTrKNT2dOlzMd6BGpVDKSkhWPXjFuE1lDEUTWT9Vo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/GxO88P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E08C116D0;
+	Wed, 25 Feb 2026 01:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002622;
-	bh=Xt0uAy74UXVRM5MlNTebLsja9bjjXjJosQad7Gii7T4=;
+	s=korg; t=1771983423;
+	bh=HjyI0X/jvRrv6PAHHl6ladMRKC2ilfcYsZCnpU+xyxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOHKOC2lO6UyZ7G02JLTKmiLjHWqWX+F315GvDQ27dx2RLGgjKeMd30hJLRfb8VyZ
-	 1XQtJ2WRnGOR7uW1Rtxx6jfNr5GXRLic7dMVeJ68YsRyLXdw04cKjxc8OGXzmNTOxs
-	 ipaGniQ3mKf7ByDC6QoXxJzwJouPKTM4Vpshe7IM=
+	b=I/GxO88PIMLRrWLOxBUOEfdZBUl9lAUiz97ia9SUj5Ls+7rbnlPhlztbfeh5xOq1U
+	 RkXHhJyzZv638vV9ETlHDnXyfT+BZp+LCJgLQIh6npDegkg/mMs3g+6C0Ij6KCuCNG
+	 i9WFxTq3elNmzO2ddjKc8B/AFqyc698F4rm1rVf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Sean Anderson <seanga2@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Brian Masney <bmasney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 327/641] net: sunhme: Fix sbus regression
+Subject: [PATCH 6.19 544/781] clk: milbeaut: convert from divider_round_rate() to divider_determine_rate()
 Date: Tue, 24 Feb 2026 17:20:53 -0800
-Message-ID: <20260225012356.617609965@linuxfoundation.org>
+Message-ID: <20260225012413.139012601@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +62,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,exactco.de,gmail.com,redhat.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219295-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218581-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,exactco.de:email,1f:email,0.0.0.2:email]
-X-Rspamd-Queue-Id: 02077192E5D
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A7A6C18F537
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 8c5d17834ec104d0abd1bda52fbc04e647fab274 ]
+[ Upstream commit 865e63b038c446d38593ddbcc362ebb62e6ff007 ]
 
-Commit cc216e4b44ce ("net: sunhme: Switch SBUS to devres") changed
-explicit sized of_ioremap with BMAC_REG_SIZEs to
-devm_platform_ioremap_resource mapping all the resource. However,
-this does not work on my Sun Ultra 2 with SBUS HMEs:
+The divider_round_rate() function is now deprecated, so let's migrate
+to divider_determine_rate() instead so that this deprecated API can be
+removed.
 
-hme f0072f38: error -EBUSY: can't request region for resource [mem 0x1ffe8c07000-0x1ffe8c0701f]
-hme f0072f38: Cannot map TCVR registers.
-hme f0072f38: probe with driver hme failed with error -16
-hme f007ab44: error -EBUSY: can't request region for resource [mem 0x1ff28c07000-0x1ff28c0701f]
-hme f007ab44: Cannot map TCVR registers.
-hme f007ab44: probe with driver hme failed with error -16
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
 
-Turns out the open-firmware resources overlap, at least on this
-machines and PROM version:
+    req->rate = divider_round_rate(...)
 
-hexdump /proc/device-tree/sbus@1f,0/SUNW,hme@2,8c00000/reg:
-00 00 00 02 08 c0 00 00  00 00 01 08
-00 00 00 02 08 c0 20 00  00 00 20 00
-00 00 00 02 08 c0 40 00  00 00 20 00
-00 00 00 02 08 c0 60 00  00 00 20 00
-00 00 00 02 08 c0 70 00  00 00 00 20
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
 
-And the driver previously explicitly mapped way smaller mmio regions:
-
-/proc/iomem:
-1ff28c00000-1ff28c00107 : HME Global Regs
-1ff28c02000-1ff28c02033 : HME TX Regs
-1ff28c04000-1ff28c0401f : HME RX Regs
-1ff28c06000-1ff28c0635f : HME BIGMAC Regs
-1ff28c07000-1ff28c0701f : HME Tranceiver Regs
-
-Quirk this specific issue by truncating the previous resource to not
-overlap into the TCVR registers.
-
-Fixes: cc216e4b44ce ("net: sunhme: Switch SBUS to devres")
-Signed-off-by: René Rebe <rene@exactco.de>
-Reviewed-by: Sean Anderson <seanga2@gmail.com>
-Link: https://patch.msgid.link/20260205.170959.89574674688839340.rene@exactco.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 7b45988fcf78 ("clk: milbeaut: convert from round_rate() to determine_rate()")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sun/sunhme.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/clk-milbeaut.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/sun/sunhme.c b/drivers/net/ethernet/sun/sunhme.c
-index 48f0a96c0e9e3..6669980829980 100644
---- a/drivers/net/ethernet/sun/sunhme.c
-+++ b/drivers/net/ethernet/sun/sunhme.c
-@@ -2551,6 +2551,9 @@ static int happy_meal_sbus_probe_one(struct platform_device *op, int is_qfe)
- 		goto err_out_clear_quattro;
+diff --git a/drivers/clk/clk-milbeaut.c b/drivers/clk/clk-milbeaut.c
+index b4f9b7143eaa6..bb94d02a76cf1 100644
+--- a/drivers/clk/clk-milbeaut.c
++++ b/drivers/clk/clk-milbeaut.c
+@@ -407,10 +407,7 @@ static int m10v_clk_divider_determine_rate(struct clk_hw *hw,
+ 		return 0;
  	}
  
-+	/* BIGMAC may have bogus sizes */
-+	if ((op->resource[3].end - op->resource[3].start) >= BMAC_REG_SIZE)
-+		op->resource[3].end = op->resource[3].start + BMAC_REG_SIZE - 1;
- 	hp->bigmacregs = devm_platform_ioremap_resource(op, 3);
- 	if (IS_ERR(hp->bigmacregs)) {
- 		dev_err(&op->dev, "Cannot map BIGMAC registers.\n");
+-	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
+-				       divider->table, divider->width, divider->flags);
+-
+-	return 0;
++	return divider_determine_rate(hw, req, divider->table, divider->width, divider->flags);
+ }
+ 
+ static int m10v_clk_divider_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.51.0
 
