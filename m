@@ -1,227 +1,274 @@
-Return-Path: <stable+bounces-219133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBC5Ea1dnmmIUwQAu9opvQ
-	(envelope-from <stable+bounces-219133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:25:49 +0100
+	id oGKtDgBfnmmaUwQAu9opvQ
+	(envelope-from <stable+bounces-219134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:31:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F57190E02
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:25:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD586190E8E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B852A303AF04
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:25:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 12C1830D6F71
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DB1281341;
-	Wed, 25 Feb 2026 02:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD15626F46F;
+	Wed, 25 Feb 2026 02:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="XVdfgYdK"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QLVrjOoE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m19731102.qiye.163.com (mail-m19731102.qiye.163.com [220.197.31.102])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010037.outbound.protection.outlook.com [40.93.198.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AF226D4F7;
-	Wed, 25 Feb 2026 02:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.102
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771986341; cv=none; b=LaHubTHexpe326Ke7RyifBoDP4i7f6/OrBAnqBYS3UagEgf/40ZPq+TLymMdrF24o94pdNY0Ul1WnT3C89spDYhc5yO+5357ey6a3qbCGXKntu9nGUYYN+baW+lbxdaIg4Z3iDmbY+WrvqVgRGyC0xO2C0x7d71jgbtjohAMPS4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771986341; c=relaxed/simple;
-	bh=yw6ev51JlU7dVgR7HH3KldsO8BV4QNHx1PLw7bT4wEc=;
-	h=Cc:Subject:To:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=Lanye7cyuHNB84D29xuFzikGsJaiar4ylalTPzgSS3Gh5SqJOTmpblNUgeUKrN8MSYNtgIH8VSNhYT6+FRjWuX/ioBRYkdB8y0OWB3XUa5+UDqB5R1pq4jOzNhPd8C1/hUtmXWAkZgpDNLF8ghlks67E0vas6RGrxeQTwcipeMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=XVdfgYdK; arc=none smtp.client-ip=220.197.31.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from [172.16.12.14] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 34dc7e637;
-	Wed, 25 Feb 2026 10:25:25 +0800 (GMT+08:00)
-Cc: shawn.lin@rock-chips.com, Ulf Hansson <ulf.hansson@linaro.org>,
- Finley Xiao <finley.xiao@rock-chips.com>, Frank Zhang <rmxpzlb@gmail.com>,
- linux-pm@vger.kernel.org, Sebastian Reichel
- <sebastian.reichel@collabora.com>,
- Detlev Casanova <detlev.casanova@collabora.com>,
- Heiko Stuebner <heiko@sntech.de>, linux-rockchip@lists.infradead.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] pmdomain: rockchip: Fix rkvdec0/1 and venc0/1 for
- RK3588
-To: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-References: <1771904879-243163-1-git-send-email-shawn.lin@rock-chips.com>
- <612e44b1-7747-4b47-820c-2262186e6e97@rock-chips.com>
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Message-ID: <741f556c-f325-0783-d78b-2976a07628db@rock-chips.com>
-Date: Wed, 25 Feb 2026 10:25:25 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E30E22B8A6
+	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 02:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771986673; cv=fail; b=giXX2upYjBhF1l+w7XahP6n0EFgdhtu8F/ZGGmaCrZ0xm4Ye7XUgK5kmn+fPPRw4La3+b5ZL/6ITMss6pynQeqBGVvQSheGKU8GibYET5Yi58D6iXGUoj64hUIOboF4Wh6PXPwbF3dLjK48UATNVZ3B7jJTrumyKJrc0uLKfjmQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771986673; c=relaxed/simple;
+	bh=j1uCfvTRJCOHW0/4wFcDZmRsD7dsqsjgC9mmZtLRPrw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=r+Mf2iFcYScCAP75vq67/m87/KCkPJp6IsNQs/p1KnPWcTk/K7biI/1Zdj0skLgKEftI4ouoAj/tHUoaYeBey1LuzYMx0r23+efFb8uGwMVKarcTipKhGbIlYufRFIhhrcpsurOitn73/KD3/FJLZv8vTRHCHS/7QLY7tT1D4kc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QLVrjOoE; arc=fail smtp.client-ip=40.93.198.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hggJESnkscp7di+zPQhxqGreN7yqcEnZrFMle0LxEcl3ZR7poYySaSNVycYS7wFjjOjePAfiUHBKbjVIMWQxGu+XinyULBzM6TUAIq8oheBS4j7tG0F3cCH9GXawgFzxLBu7nHHgt4BkzRAxTx1Vkb71XasGl9niIvBX6O6qzt27S1L9mZqwg4tZEap5isc2hYZKOC+zP/xmqB2DaaonQF/N5XkBZbxNLnmaJcfqAwuiod3xDtUH0M74Tpyw67UA/mGrAOZNGnFO92ypSPjN+5LwbbN75jUkaO5FIqgmgM1MPhyULs5SFBpmkygXAU92bwp1yCWOJt9FEtQZR1A98g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PCa75y1EtcG9owDS8dV6qTZNAGjRqfmfccET1TH8kwI=;
+ b=d1ii9jCMyppk+7nJADehve+fxKNwZL7nk9mvexuZqaYJrAF+KHRqtLE2reVOBvkowIHzxlBD8b9FyEUZ+wIVZryT5nLjol67fW1PfX5yMjtZG/aoBdKnAg5WAKpKxFlm8z0Il1jJ5xrhkVMEKOQML+CQOV2yNcDXdL5PXrxgMVNnTcgu5O/YWUwTxx8QEtkb8RR4UjYZl+w8YqlApvlley8QHRxuy6LfkO1NXADC2Y8GRdLVvSkaYfKRA/bVRa4DaJZMRZk9yAyyVg6sLasOCPZTlO3u/ItXiz20CkliVU9R9BsyjfN3oXtlMSmWEK5Y9bA+dcgV8T9iCRoHFRwIZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PCa75y1EtcG9owDS8dV6qTZNAGjRqfmfccET1TH8kwI=;
+ b=QLVrjOoEFUHMxb1BdlKUO3RtvRmXvsexjuJIulNCfMI1FavOrld2p6RbzeFDygwzvHC4prK6/qSD6hGOrAfkLqGTzq8MthzuQbP1xTdUxpdtgtWmrSiyJqQhlvpdI0R7A3Qj+MxpdwHFULzxSFblXo3UO0v+zhKMfYKU2c69tx0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA0PR12MB4557.namprd12.prod.outlook.com (2603:10b6:806:9d::10)
+ by SA1PR12MB5613.namprd12.prod.outlook.com (2603:10b6:806:22b::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.23; Wed, 25 Feb
+ 2026 02:31:08 +0000
+Received: from SA0PR12MB4557.namprd12.prod.outlook.com
+ ([fe80::885a:79b3:8288:287]) by SA0PR12MB4557.namprd12.prod.outlook.com
+ ([fe80::885a:79b3:8288:287%5]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
+ 02:31:08 +0000
+Message-ID: <c6996c83-db35-4f2c-b11d-dbb4eaeb7269@amd.com>
+Date: Tue, 24 Feb 2026 20:31:06 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: A few HDMI fixes for 6.18.y
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "Pananchikkal, Renjith" <Renjith.Pananchikkal@amd.com>
+References: <2525eb93-1515-4213-ba81-6d654c5db2ee@amd.com>
+ <2026022401-fondness-unburned-7a44@gregkh>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <2026022401-fondness-unburned-7a44@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR03CA0225.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f::20) To SA0PR12MB4557.namprd12.prod.outlook.com
+ (2603:10b6:806:9d::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <612e44b1-7747-4b47-820c-2262186e6e97@rock-chips.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9c929d916c09cckunm18eb6294aae34a
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQhhKHlZMTE1OS09CTB8fQhhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=XVdfgYdKOyBDuQOJoYJrgoBnOrP24HcyjRKh65OPFsR2Ek8ug8z7Aoeb/nz1pGqAizAqxqS8+Veo2/AmUTMKnkSN4/G2YJ8dGU3blJkosW4HwGWOvUHzY1qCJBweXpprrSGD5WN8HA1yXyBavJfxgBmlOiN5Y/BAI9YD1tUXH4A=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=W71tffjipz9IsOHmoYSHyedNnKPdfXKBp2Yf6wGNbvM=;
-	h=date:mime-version:subject:message-id:from;
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4557:EE_|SA1PR12MB5613:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1537a1df-7e6a-4113-cb22-08de7415eebf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N2lIQ29lc1p0SVhMMVduZTduSDY5T013ckIwL0FYMEpSZEZic3ZWTWJSNUtq?=
+ =?utf-8?B?MW14cE5lOXZiNTNsQUF0K0pmMjdhWHlBNEhYZUI2R1pwamNkZzlOZEJYZ216?=
+ =?utf-8?B?NlVreXVYMHo2ZnJFaWxuQkJ6bkRQblhmODlWcjNmQ3NqcjFLREdZRE00WjZY?=
+ =?utf-8?B?T3BDb0gxMHIrNW04aXZIUFJjK0ZyV3JtbFJPNXZQTGNhNVdYQkdseS8vU0Zv?=
+ =?utf-8?B?YWJsRmNXemt4ZU9yencxVThUVldqYmtwRDBJTG5ZMVRKQTN6OUtlL0tHQzlk?=
+ =?utf-8?B?OWhTZUdZMzhHNlFRVU9rU0VYU1VjQkd5bm5SWVN3czY4eUo3NlFOTVZTWU1K?=
+ =?utf-8?B?N0VkQ01qTmFYSi9HMHYwMDRwcVFsbHBXYVV5dmtVWG85aitCMEhRU09KMWJW?=
+ =?utf-8?B?Tm02dlV2TW0rL0FzQ1ZpeXRtM05iUnhwTEJGQnFNb1pkdEFxZXUrR2I3Qzlk?=
+ =?utf-8?B?eG5vOG1LYjRTWU1XZitQeldVd25RclMvd0l5d0ZYS2VqWVBMMGk5NW5DbDQy?=
+ =?utf-8?B?U0VVZFZUYmFSR0xsenRNeTd2YklzN2wwWXIwSjllUGVnd2VqMGpTZ2FvRE1B?=
+ =?utf-8?B?ckpBRHlvU0xvMlArTkEzTDE5Um9MQU5LeHhqc1RkQ2hQNEcrdVhadWtJeVFm?=
+ =?utf-8?B?Umt1OFE1dXFUT3ZQUDczK2Via3R5OG5kZE8wbW5MRHdjMG1saWozSGNXdWI4?=
+ =?utf-8?B?VkRHYXV0bllYV1ZQY250RFpDaWVucytZWmI3dGI5UG5qcWk5YnFGYVBTWnBl?=
+ =?utf-8?B?dk5ZMC96WmJneXNjbWpKMTRwbmdCcUpxUTJ0dXhxWUhNVExpNWljdFViOU0z?=
+ =?utf-8?B?NktpMDZUckxRK1N0K2t0RlRlRHV1YUxyWTdyODhwU0llL21SdGdON0Z2RkJR?=
+ =?utf-8?B?SFBUcDAvcXRJeWhRMEZjeWlWNTI5V253Zjh2N0UrK1J5ak1KbmM1MWpMSnVa?=
+ =?utf-8?B?ZGJjZkxtczhVcm94OTE4Q3lJdkZicmNBQjQ1WmNOQzJEdzkrV1pybmlFQlVT?=
+ =?utf-8?B?bEFjM3dFTG1OVldmWHBtZXZkR1RWS1B5elBYYXFVNm40RUxvNG9ad0pDYmw0?=
+ =?utf-8?B?UHZUZjEwNjZYbnF2akFqeStsZUNJNWRrMWV2bHVoUU1GaVA4ZDVwem1hMkRq?=
+ =?utf-8?B?YVY2ZzdNYkhkVlZCS2NwdFRPTVVyMUFIdFFtQkpFSWJLVFhEd01YYktrc2t6?=
+ =?utf-8?B?UGpCRzN3QjE1ay9GanZTUWVhcW1vRWFTOEo4azZRamEzdTNwdHpNTTgyY1h6?=
+ =?utf-8?B?TXMwZmhYS2hwTE4rMkg1UkIrK0w2d3hpMlFPL2R0d2l3V1lmYmJsclR2djcv?=
+ =?utf-8?B?ZzhvOW1VSUVqMExQbHFvTDVxS2VWT0ptaVEzMzRLQTFEMzM2TEEvM1NYOGp2?=
+ =?utf-8?B?dDlSK3JyUFVpbDg4ZVNlZFZYSlp3dzhWNDNyNVNIT0RJUXJjcUU1Nk1YN1dm?=
+ =?utf-8?B?cG1LS2RIT3JpZ2VSSGNSRWRqRG80eE0rUloyY3k3N09UdW9manpSV0s3cjA2?=
+ =?utf-8?B?TXVtRmlGS0tGOWJ4bzAzWVRrdHM3UlpNYitIazIydmI3TGNzZzNsL2c1d1Fo?=
+ =?utf-8?B?enRWc29IM1V3SGpnS3ZjUE9KVE5JVzJmakZBK0FVbmF2ejJvTDJlVy9VZE1y?=
+ =?utf-8?B?VmdwMlFmVkZSUVd5U0RSb2lUNU9vVFBRZngrS0h4L2Rkd096YldiY2k0azBz?=
+ =?utf-8?B?QlRMMVJ4VHNHcDdIeVN1WHNRa1pnZ0tKTS9YUSsyMUdXZjRMc3dMUUJueXRw?=
+ =?utf-8?B?aDdMZzkxNGh3NzNCbnU4UGEwQzVWTUM5T0F6dUFTSk8rL3Z6d0JWYzFSSmd5?=
+ =?utf-8?B?SHY5aGFjbnhJN254aFlKREdTUWR4cWNnQlYwbEVibktYYXlBcG5OMWoyTDhB?=
+ =?utf-8?B?U2J4MlFBbWo2SWdzUndxRWFocHZIZXYrYmxTVXlKbnhPcVl3OS9ucVFMNDdI?=
+ =?utf-8?B?WVYxN1M0cU1MVlBFNEdCKysySWNmK0lxMDRCN0ZQL0ZFTFl5L3h3WjhKcmJU?=
+ =?utf-8?B?MDdTSUxMUmhTM1hiamtqT0V2ZUd0Y29pa1ltQmdPTmVBdW1VdnRqekpNVkRX?=
+ =?utf-8?B?RmQxWW1kRmsydWxMeVNHWEFaalA3YTlVUWpOTE4yVFhwdDhhdXhKMEk5OVAz?=
+ =?utf-8?Q?mcf4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB4557.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SnNkamdWS01QMjRIUlN3c2MrU3RTN3R5QjhZQVljSTR0VllyUVY3Z0EycEtv?=
+ =?utf-8?B?SSs4RFllN2xrWlRsNkw0YnBGMjkvQUVsTW5WQllvbjFDQ2ErdTQ2cWNpUEx3?=
+ =?utf-8?B?d0pxelgvTWlvOUQwWThpNWt1THIxL096SjBTZGl3QmtSc3Z4RHJDYkphZ0wy?=
+ =?utf-8?B?OW9OSy9NWEQrcXM2dVIwWU5pa2lHcG5uQU5aR2ZGeXU1T0JLTm1oejZxTWcw?=
+ =?utf-8?B?djJ0dWU0MmlncEJXS0FhQnNCeDRubm4zdTIwbkZHS3RpdkQ1Z3ZOenh4c3Z6?=
+ =?utf-8?B?N0NGMExZdkNrVmIrNnpEaEZXUW0vQUx6YWtHOEFGUS9qS2U1Tm50ZFl2dGN5?=
+ =?utf-8?B?UUozemN3NWxJaVFsZXZkckg2TGd5dmRsS3hvcG0xWVBlc1JMekZIZ0NLSG4y?=
+ =?utf-8?B?V2FrTjlyYW1wZTlUUWpZeHZiOCtYZ1lzOVpVV1RmT2JtWnN6aXAydThFRXBh?=
+ =?utf-8?B?ejRSTFhENmFQNUxoa0c4bDFQUEZUWlFORkNGeDNpUVVZQ2tCS29NRjZwQkgr?=
+ =?utf-8?B?M2FZQVhSazNSRWVkR0JZM1o5bnNMOHJjZ2VMTmNsMDl5NTVpMnJJR2xqNXV1?=
+ =?utf-8?B?QndzT0dyeVptUklPRHl0UjZiMVJoUCswd3ErY25PbmpwSEtNa0FPYUs3d1Z0?=
+ =?utf-8?B?SHhCYWNEU1JWMFBjOCtYbVh2dzRETW9SbDA5bU5hbXIwMjlBQnl4NjM0K2h3?=
+ =?utf-8?B?UzVvL3F4ZEJOb2tWVkpGVWRqYjBkWThRNHMwZ2RZMnNWYUIzZ1V2eHR3QSsv?=
+ =?utf-8?B?M05UZW11QUtSU1htNWY2RWNudFNZcERGbDFlVXMwQ0NLcjgxUXpTSUJRZkdx?=
+ =?utf-8?B?dzRSNWtRdzRHSDBkQ1E1b003OHJoMldhM2lQZ1VYcmVPSkhWVk0zVyt6cVBB?=
+ =?utf-8?B?OFg1bFd2WWwva1JyRDhnYlNDS0MyMHBtRHhLZlN5RnNYVHhna1VzTE10RmxO?=
+ =?utf-8?B?R2o0WHlVd2FmcVRpLzRhVitxYVppM0h5cUMrUUFzS09rMy9DcURqNFVlWlVQ?=
+ =?utf-8?B?QlVtcFY4SW9yK3k4UUJOQmN3RzlLTDdWRlIwK1p3V0V2dTlFTWo4UGpST1Yv?=
+ =?utf-8?B?bG9WaTRWV0Q0YU9qMUVYSUhYNkZGUXRPWFJuTjd2SDJkd3MwTmdHY241Z3hh?=
+ =?utf-8?B?c0FJRXNQdThDSUNiRVVheHRsUkZOaVFxTnFtWHZyQlAzR3poQVFFMjNpS3cx?=
+ =?utf-8?B?Vko3VDBLRVZrZXg3b0thd3FCMWhKSnJVNHdIZGpJWmdxalpXeVd4eHo0MXFP?=
+ =?utf-8?B?c0t3SnRwMXUwbVhUdndoWjBPN1ljM0o2VWExZW1Zb1BDVXVVSEo3UkoxYVdj?=
+ =?utf-8?B?cjhTWG9iSjZCOGpZNlVLdngxSHB0bUZVcE9DTERlWDNsMTQ5MXpRTW90MDNB?=
+ =?utf-8?B?Z0xSTC93c2dMaDFOcUJBOGpVR3hvUmtrVkFlYVpBNnZYRDVNV1VyN2xSWWZz?=
+ =?utf-8?B?V2NrTTZuaXJ4enVCSjVQL3hyRVVWMFEyVWFtNXZCNzBhc1dWYmVtQW54MFdZ?=
+ =?utf-8?B?a2w1WEE5QzZmclJNcWUyb1ZsNk1ib01EVDRVR3hxdy9rSXN3OUViKzJIRmNE?=
+ =?utf-8?B?VjFVRzVHVDFVUlovaDV3Zlc4MXYwaFhmWktKbDlJV3h1blhDeVJVdlJTYlht?=
+ =?utf-8?B?bDliNFFRWm5haGJ0TGpBdlpka00ramVqbGo1SnNhbS9oTVRxM0JKTHEzWFJJ?=
+ =?utf-8?B?cVgrKzZXemlDbFlzRXB6d1lIUi81a3FVUThTUXRvaDJGKzcvQ254UkVDMk9Y?=
+ =?utf-8?B?N005MndkdnE4b2l3NlppKytWTGVCNWJwZnNCaUx6YzBOOC9HSVJVa2V6VS9Q?=
+ =?utf-8?B?NFVUNGViZExWSEgweXdESjB3Zk5UTEpnanhoWFUxU1JueUdTOVZMWUhjS1R1?=
+ =?utf-8?B?RFg0RitVdFVQMFluREdSNDIxa3hhajgxZFBQcFE4Szc1NE0zUjY3L3NzSUha?=
+ =?utf-8?B?WDZtbnltcnRHc1pQUjhJMHlMNi9oZjdVYnFPenZ5MkJZSThsc05rWTA5N2pE?=
+ =?utf-8?B?QnJGNlZraVpDeFR6SlZKeUx4L010QThXQ2hKeTcvNDViWTNNUmMrQVRVcUU5?=
+ =?utf-8?B?dlJYRUd4ZXhLbGowbHVVMG1xcndpSUVRTUx3SExXZU8zUTAwa0NqSFZOaTVB?=
+ =?utf-8?B?R3dhck4ra1FxYmlFMDc2UVZjd2c4UER3RXd5UFV2MGtnZnJJSUJYY2Fzdkxy?=
+ =?utf-8?B?anVZeFBoR0VCMTI0T2p0Witxb21kaFpYS1N4ZHZvTEdKRWpudlBOdVQ3dFRO?=
+ =?utf-8?B?YmwzVHVlYmpXUkZySjJkNldYMUpkTXlrTjFrN1B6ZElZaTRUTjRwMzhIL1Zp?=
+ =?utf-8?B?ckNGdStOOWM5MUZNbkw3YzNWeFpETllUSkxialc5U1J4eEl4R0NhQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1537a1df-7e6a-4113-cb22-08de7415eebf
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB4557.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 02:31:08.3208
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uW1zgheQf5j9v7pAYVQfaoiSQe+FLL6swFIG5PYryDjAu/9MVYUveXExqGM4j65b5Elsv5TGRguorfCYYNCi0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5613
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rock-chips.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[rock-chips.com:s=default];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[rock-chips.com,linaro.org,gmail.com,vger.kernel.org,collabora.com,sntech.de,lists.infradead.org];
-	TAGGED_FROM(0.00)[bounces-219133-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[rock-chips.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[amd.com:+];
+	TAGGED_FROM(0.00)[bounces-219134-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shawn.lin@rock-chips.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[mario.limonciello@amd.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 75F57190E02
+X-Rspamd-Queue-Id: BD586190E8E
 X-Rspamd-Action: no action
 
-Hi Chaoyi
 
-在 2026/02/25 星期三 9:37, Chaoyi Chen 写道:
-> Hi Shawn,
+
+On 2/24/2026 6:56 PM, Greg KH wrote:
+> On Mon, Feb 23, 2026 at 02:04:05PM -0600, Mario Limonciello wrote:
+>> Hi,
+>>
+>> There was a commit in 6.18 that caused a problem:
+>> c918e75e1ed9 ("drm/amd/display: Add an HPD filter for HDMI")
+>>
+>> This has been fixed by these commits:
+>> commit 6a681cd90345 ("drm/amd/display: Add an hdmi_hpd_debounce_delay_ms
+>> module")
+>> commit 17b2c526fd80 ("drm/amd/display: Clear HDMI HPD pending work only if
+>> it is enabled")
+>>
+>> Can we please bring to 6.18.y and 6.19.y?
 > 
-> On 2/24/2026 11:47 AM, Shawn Lin wrote:
->> Per the RK3588 TRM Table 7-1 RK3588 Voltage Domain and Power Domain Summary,
->> PD_RKVDEC0/1 and PD_VENC0/1 rely on VD_VCODEC which require extra voltages to
->> be applied, otherwise it breaks RK3588-evb1-v10 board after vdec support landed[1].
->> The panic looks like below:
->>
->>    rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec0' on, val=0
->>    rockchip-pm-domain fd8d8000.power-management:power-controller: failed to set domain 'rkvdec1' on, val=0
->>    ...
->>    Hardware name: Rockchip RK3588S EVB1 V10 Board (DT)
->>    Workqueue: pm genpd_power_off_work_fn
->>    Call trace:
->>    show_stack+0x18/0x24 (C)
->>    dump_stack_lvl+0x40/0x84
->>    dump_stack+0x18/0x24
->>    vpanic+0x1ec/0x4fc
->>    vpanic+0x0/0x4fc
->>    check_panic_on_warn+0x0/0x94
->>    arm64_serror_panic+0x6c/0x78
->>    do_serror+0xc4/0xcc
->>    el1h_64_error_handler+0x3c/0x5c
->>    el1h_64_error+0x6c/0x70
->>    regmap_mmio_read32le+0x18/0x24 (P)
->>    regmap_bus_reg_read+0xfc/0x130
->>    regmap_read+0x188/0x1ac
->>    regmap_read+0x54/0x78
->>    rockchip_pd_power+0xcc/0x5f0
->>    rockchip_pd_power_off+0x1c/0x4c
->>    genpd_power_off+0x84/0x120
->>    genpd_power_off+0x1b4/0x260
->>    genpd_power_off_work_fn+0x38/0x58
->>    process_scheduled_works+0x194/0x2c4
->>    worker_thread+0x2ac/0x3d8
->>    kthread+0x104/0x124
->>    ret_from_fork+0x10/0x20
->>    SMP: stopping secondary CPUs
->>    Kernel Offset: disabled
->>    CPU features: 0x3000000,000e0005,40230521,0400720b
->>    Memory Limit: none
->>    ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
->>
->> [1] https://lore.kernel.org/linux-rockchip/20251020212009.8852-2-detlev.casanova@collabora.com/
->> Fixes: db6df2e3fc16 ("pmdomain: rockchip: add regulator support")
->> Cc: stable@vger.kernel.org
->> Reviewed-by: Heiko Stuebner <heiko@sntech.de>
->> Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
->> Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
->> ---
->>
->> Changes in v2:
->> - collect tags
->> - correct TRM section(Sebastian)
->>
->>   drivers/pmdomain/rockchip/pm-domains.c | 8 ++++----
->>   1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
->> index 997e93c..040aa5f 100644
->> --- a/drivers/pmdomain/rockchip/pm-domains.c
->> +++ b/drivers/pmdomain/rockchip/pm-domains.c
->> @@ -1315,10 +1315,10 @@ static const struct rockchip_domain_info rk3588_pm_domains[] = {
->>   	[RK3588_PD_NPUTOP]	= DOMAIN_RK3588("nputop",  0x0, BIT(3),  0,       0x0, BIT(11), BIT(2),  0x0, BIT(1),  BIT(1),  false, false),
->>   	[RK3588_PD_NPU1]	= DOMAIN_RK3588("npu1",    0x0, BIT(4),  0,       0x0, BIT(12), BIT(3),  0x0, BIT(2),  BIT(2),  false, false),
->>   	[RK3588_PD_NPU2]	= DOMAIN_RK3588("npu2",    0x0, BIT(5),  0,       0x0, BIT(13), BIT(4),  0x0, BIT(3),  BIT(3),  false, false),
->> -	[RK3588_PD_VENC0]	= DOMAIN_RK3588("venc0",   0x0, BIT(6),  0,       0x0, BIT(14), BIT(5),  0x0, BIT(4),  BIT(4),  false, false),
->> -	[RK3588_PD_VENC1]	= DOMAIN_RK3588("venc1",   0x0, BIT(7),  0,       0x0, BIT(15), BIT(6),  0x0, BIT(5),  BIT(5),  false, false),
->> -	[RK3588_PD_RKVDEC0]	= DOMAIN_RK3588("rkvdec0", 0x0, BIT(8),  0,       0x0, BIT(16), BIT(7),  0x0, BIT(6),  BIT(6),  false, false),
->> -	[RK3588_PD_RKVDEC1]	= DOMAIN_RK3588("rkvdec1", 0x0, BIT(9),  0,       0x0, BIT(17), BIT(8),  0x0, BIT(7),  BIT(7),  false, false),
->> +	[RK3588_PD_VENC0]	= DOMAIN_RK3588("venc0",   0x0, BIT(6),  0,       0x0, BIT(14), BIT(5),  0x0, BIT(4),  BIT(4),  false, true),
->> +	[RK3588_PD_VENC1]	= DOMAIN_RK3588("venc1",   0x0, BIT(7),  0,       0x0, BIT(15), BIT(6),  0x0, BIT(5),  BIT(5),  false, true),
->> +	[RK3588_PD_RKVDEC0]	= DOMAIN_RK3588("rkvdec0", 0x0, BIT(8),  0,       0x0, BIT(16), BIT(7),  0x0, BIT(6),  BIT(6),  false, true),
->> +	[RK3588_PD_RKVDEC1]	= DOMAIN_RK3588("rkvdec1", 0x0, BIT(9),  0,       0x0, BIT(17), BIT(8),  0x0, BIT(7),  BIT(7),  false, true),
->>   	[RK3588_PD_VDPU]	= DOMAIN_RK3588("vdpu",    0x0, BIT(10), 0,       0x0, BIT(18), BIT(9),  0x0, BIT(8),  BIT(8),  false, false),
->>   	[RK3588_PD_RGA30]	= DOMAIN_RK3588("rga30",   0x0, BIT(11), 0,       0x0, BIT(19), BIT(10), 0x0, 0,       0,       false, false),
->>   	[RK3588_PD_AV1]		= DOMAIN_RK3588("av1",     0x0, BIT(12), 0,       0x0, BIT(20), BIT(11), 0x0, BIT(9),  BIT(9),  false, false),
+> These only apply to 6.18.y, but not 6.19.y, so can you provide a working
+> backport for both?
 > 
-> Perhaps you could try modifying only RK3588_PD_VCODEC.
-> VCODEC is the parent of these PDs, so you won't need to modify too
 
-Thanks for your suggestion! I once took a quick look at rk3588-base.dtsi
-and indeed noticed that these PDs (PD_RKVDEC0/1 and PD_VENC0/1) are all
-placed under PD_VCODEC. At that time, I considered PD_VCODEC to be a
-"fake" power domain, this was, because all my reference materials came 
-from the relevant chapters of the RK3588 TRM, where the structure is 
-illustrated as follows:
+It looks like 6.19.y already picked them up!
 
-┌────┬──────┬──────┐
-│        │            │BIU_RKVDEC0 │
-│        │PD_RKVDEC0  ├──────┤
-│        │            │RKVDEC0&CCU │
-│        ├──────┼──────┤
-│        │            │BIU_RKVDEC1 │
-│VD_VCODEC│PD_RKVDEC1 ├──────┤
-│        │            │RKVDEC1     │
-│        ├──────┼──────┤
-│        │            │BIU_VENC0   │
-│        │PD_VENC0    ├──────┤
-│        │            │RKVENCO     │
-│        ├──────┼──────┤
-│        │            │BIU_VENC1   │
-│        │PD_VENC1    ├──────┤
-│        │            │RKVENC1     │
-└────┴──────┴──────┘
+❯ git checkout linux-6.19.y
+❯ git cherry-pick -x 6a681cd90345
+Auto-merging drivers/gpu/drm/amd/amdgpu/amdgpu.h
+Auto-merging drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+Auto-merging drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+Auto-merging drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+On branch linux-6.19.y
+Your branch is up to date with 'origin/linux-6.19.y'.
 
-PD_VCODEC does not show up in any of these diagrams from the TRM. Looks
-like the people who wrote the TRM thought PD_VCODEC was a huge secret t
-that they just wouldn’t put it in the figure, for fear of being
-discovered :)
+You are currently cherry-picking commit 6a681cd90345.
+   (all conflicts fixed: run "git cherry-pick --continue")
+   (use "git cherry-pick --skip" to skip this patch)
+   (use "git cherry-pick --abort" to cancel the cherry-pick operation)
 
-Of course, you are right, there is some registers called
-pd_vcodec_foo..bar which seems it does exist. So I gave it a try
-and it worked too. Will update v3, thanks for help.
+nothing to commit, working tree clean
+The previous cherry-pick is now empty, possibly due to conflict resolution.
+If you wish to commit it anyway, use:
 
+     git commit --allow-empty
 
-> much code and devicetree. BTW I have tried it before, but with an
-> internal MPP driver. Maybe you can give it another try :)
-> 
+Otherwise, please use 'git cherry-pick --skip'
+❯ git cherry-pick --skip
+❯ git cherry-pick -x 17b2c526fd80
+Auto-merging drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+On branch linux-6.19.y
+Your branch is up to date with 'origin/linux-6.19.y'.
+
+You are currently cherry-picking commit 17b2c526fd80.
+   (all conflicts fixed: run "git cherry-pick --continue")
+   (use "git cherry-pick --skip" to skip this patch)
+   (use "git cherry-pick --abort" to cancel the cherry-pick operation)
+
+nothing to commit, working tree clean
+The previous cherry-pick is now empty, possibly due to conflict resolution.
+If you wish to commit it anyway, use:
+
+     git commit --allow-empty
+
+Otherwise, please use 'git cherry-pick --skip'
+❯ git cherry-pick --skip
 
