@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-218255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGwpFOpRnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:38 +0100
+	id YFdRAflTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BD118F123
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:35:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB9D18FB18
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1FCE23030363
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:30:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE3343014A0E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A126C243376;
-	Wed, 25 Feb 2026 01:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2C02641FC;
+	Wed, 25 Feb 2026 01:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSHCpz0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAVFchpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B1C2BAF7;
-	Wed, 25 Feb 2026 01:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F83B1E2834;
+	Wed, 25 Feb 2026 01:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983053; cv=none; b=pxYhj+pjJdpgxGJ6c6/iyb9CwUO7EzW0GO7Pwi4CDCNfM4XDBZWvst8tTV1Nf+12s74GesiXhji67iObAQ73nsiq9jFL7hhHBc6aQbrJiQZjb/N+Zf1/pRIxkIztz7T6JEzXWlcavL/y0+CKnIleDKr1teTX7GY7CA+NpVtIfI4=
+	t=1771983710; cv=none; b=YJrYgGb2eicB+Vu0S6qxC3Dr37i2/J3xmsT+/LHAQv6oCtvwMiTDWKK1GL9A2h6Uf4G9gUtyp22vFrTRqlObGhAYyAw1pmg5TrdcsvuWiS/mClG8jCgEzjN05PHJCs0twotFEl1hY0UovBLOi7rKATflXs2uGTDjv3rGrE5pxkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983053; c=relaxed/simple;
-	bh=KLE3auA+uAof9BOw2Cog3ntMJZwFCyPiQVzKQAoSvLw=;
+	s=arc-20240116; t=1771983710; c=relaxed/simple;
+	bh=QTVHyvPVoOmonEHpclWAquqIJW6Mcu0RUJYlV6A/IVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bz7pikUyfIgOkFV1xd0WTelvxGjtTuqm1n1VQyj+5k7hyZ3n0Pt1IPlag3DsF68pseEtqLSbJbuSdNWtEkPX7+tuxU9DdZ3BIZaZXCyzxA6xvwle/GnBdwpQylfsz7QNNXIYWfw5mKV5XPCjryQUGP9+GuQbitSEJja40/7a4Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSHCpz0O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA87C116D0;
-	Wed, 25 Feb 2026 01:30:53 +0000 (UTC)
+	 MIME-Version; b=mjcV6M3kJEkwEUmOWlplwsfxnQ+0zsoZ5RC+jNboUnqPATdgWe9+PZTmULOAWXgxl+FLSJ32isz6GLE8BQcGsmfB9438q3lVHnNLIMT1lkO1YQ+/l+N0ONY0WHNwWTjWYEKltMAMYWx7VpJarBOCU/0yEZm5R9b+t2+2HeTpLq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAVFchpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFBFC116D0;
+	Wed, 25 Feb 2026 01:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983053;
-	bh=KLE3auA+uAof9BOw2Cog3ntMJZwFCyPiQVzKQAoSvLw=;
+	s=korg; t=1771983710;
+	bh=QTVHyvPVoOmonEHpclWAquqIJW6Mcu0RUJYlV6A/IVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XSHCpz0Oerk9AtOEl32/ebLt0GhwFZkY++0MDpyx3Kyqt2kekM36PSBJ2Z7Urh9LL
-	 ssnJnMuxy14EINVBeaxUGZWX0f0EHkx9hJq6mQmZTQl8CHfLye+nDgMbGwDISnnVaK
-	 Gr8+g6ZiP5+t+9ZDPaeQfQvt+71WcT/NSYLvNONs=
+	b=CAVFchpTDgUCUE86po7qav37TjKrbJs0rJ+p5vog6GlvAKecthLteOwLX9Z1oJqpW
+	 6o7oxwEvkxMeKEJki9JG2qMZs2tIY6Pj4a6I/2H5crYe2AMg5FmQOv8aV/NJTOlwhz
+	 X0SVxcMVuRr6brsVbnDbmDTmT7/x3d+cnOr0eLVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 218/781] ALSA: seq: Relax __free() variable declarations
+	YunJe Shin <ioerts@kookmin.ac.kr>,
+	Bernard Metzler <bernard.metzler@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.18 001/641] RDMA/siw: Fix potential NULL pointer dereference in header processing
 Date: Tue, 24 Feb 2026 17:15:27 -0800
-Message-ID: <20260225012405.064474991@linuxfoundation.org>
+Message-ID: <20260225012348.961361442@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,790 +79,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218255-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218829-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 96BD118F123
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linux.dev:email]
+X-Rspamd-Queue-Id: 9BB9D18FB18
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: YunJe Shin <yjshin0438@gmail.com>
 
-[ Upstream commit 13bc5c5394b22fd0a0585733bbbd9266159a840c ]
+commit 14ab3da122bd18920ad57428f6cf4fade8385142 upstream.
 
-We used to have a variable declaration with __free() initialized with
-NULL.  This was to keep the old coding style rule, but recently it's
-relaxed and rather recommends to follow the new rule to declare in
-place of use for __free() -- which avoids potential deadlocks or UAFs
-with nested cleanups.
+If siw_get_hdr() returns -EINVAL before set_rx_fpdu_context(),
+qp->rx_fpdu can be NULL. The error path in siw_tcp_rx_data()
+dereferences qp->rx_fpdu->more_ddp_segs without checking, which
+may lead to a NULL pointer deref. Only check more_ddp_segs when
+rx_fpdu is present.
 
-Although the current code has no bug, per se, let's follow the new
-standard and move the declaration to the place of assignment (or
-directly assign the allocated result) instead of NULL initializations.
+KASAN splat:
+[  101.384271] KASAN: null-ptr-deref in range [0x00000000000000c0-0x00000000000000c7]
+[  101.385869] RIP: 0010:siw_tcp_rx_data+0x13ad/0x1e50
 
-Note that there is a remaining __free() with NULL initialization; it's
-because of the non-trivial code conditionally assigning the data.
-
-Fixes: 04a86185b785 ("ALSA: seq: Clean up queue locking with auto cleanup")
-Fixes: 0869afc958a0 ("ALSA: seq: Clean up port locking with auto cleanup")
-Fixes: 99e16633958b ("ALSA: seq: Use auto-cleanup for client refcounting")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20251216140634.171890-7-tiwai@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b6a361b8c48 ("rdma/siw: receive path")
+Signed-off-by: YunJe Shin <ioerts@kookmin.ac.kr>
+Link: https://patch.msgid.link/20260204092546.489842-1-ioerts@kookmin.ac.kr
+Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/seq/seq_clientmgr.c  | 171 ++++++++++++++++----------------
- sound/core/seq/seq_compat.c     |   4 +-
- sound/core/seq/seq_midi.c       |  10 +-
- sound/core/seq/seq_ports.c      |  11 +-
- sound/core/seq/seq_queue.c      |  32 +++---
- sound/core/seq/seq_ump_client.c |  16 +--
- sound/core/seq/seq_virmidi.c    |   4 +-
- 7 files changed, 126 insertions(+), 122 deletions(-)
+ drivers/infiniband/sw/siw/siw_qp_rx.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/seq/seq_clientmgr.c b/sound/core/seq/seq_clientmgr.c
-index f9a6e497f997c..75a7a2af9d8c9 100644
---- a/sound/core/seq/seq_clientmgr.c
-+++ b/sound/core/seq/seq_clientmgr.c
-@@ -494,9 +494,9 @@ static int check_port_perm(struct snd_seq_client_port *port, unsigned int flags)
-  */
- static struct snd_seq_client *get_event_dest_client(struct snd_seq_event *event)
- {
--	struct snd_seq_client *dest __free(snd_seq_client) = NULL;
-+	struct snd_seq_client *dest __free(snd_seq_client) =
-+		snd_seq_client_use_ptr(event->dest.client);
- 
--	dest = snd_seq_client_use_ptr(event->dest.client);
- 	if (dest == NULL)
- 		return NULL;
- 	if (! dest->accept_input)
-@@ -565,9 +565,9 @@ static int bounce_error_event(struct snd_seq_client *client,
- static int update_timestamp_of_queue(struct snd_seq_event *event,
- 				     int queue, int real_time)
- {
--	struct snd_seq_queue *q __free(snd_seq_queue) = NULL;
-+	struct snd_seq_queue *q __free(snd_seq_queue) =
-+		queueptr(queue);
- 
--	q = queueptr(queue);
- 	if (! q)
- 		return 0;
- 	event->queue = queue;
-@@ -609,13 +609,13 @@ static int _snd_seq_deliver_single_event(struct snd_seq_client *client,
- 					 struct snd_seq_event *event,
- 					 int atomic, int hop)
- {
--	struct snd_seq_client *dest __free(snd_seq_client) = NULL;
--	struct snd_seq_client_port *dest_port __free(snd_seq_port) = NULL;
--
--	dest = get_event_dest_client(event);
-+	struct snd_seq_client *dest __free(snd_seq_client) =
-+		get_event_dest_client(event);
- 	if (dest == NULL)
- 		return -ENOENT;
--	dest_port = snd_seq_port_use_ptr(dest, event->dest.port);
-+
-+	struct snd_seq_client_port *dest_port __free(snd_seq_port) =
-+		snd_seq_port_use_ptr(dest, event->dest.port);
- 	if (dest_port == NULL)
- 		return -ENOENT;
- 
-@@ -672,7 +672,6 @@ static int __deliver_to_subscribers(struct snd_seq_client *client,
- 				    struct snd_seq_event *event,
- 				    int port, int atomic, int hop)
- {
--	struct snd_seq_client_port *src_port __free(snd_seq_port) = NULL;
- 	struct snd_seq_subscribers *subs;
- 	int err, result = 0, num_ev = 0;
- 	union __snd_seq_event event_saved;
-@@ -681,7 +680,9 @@ static int __deliver_to_subscribers(struct snd_seq_client *client,
- 
- 	if (port < 0)
- 		return 0;
--	src_port = snd_seq_port_use_ptr(client, port);
-+
-+	struct snd_seq_client_port *src_port __free(snd_seq_port) =
-+		snd_seq_port_use_ptr(client, port);
- 	if (!src_port)
- 		return 0;
- 
-@@ -801,13 +802,13 @@ static int snd_seq_deliver_event(struct snd_seq_client *client, struct snd_seq_e
-  */
- int snd_seq_dispatch_event(struct snd_seq_event_cell *cell, int atomic, int hop)
- {
--	struct snd_seq_client *client __free(snd_seq_client) = NULL;
- 	int result;
- 
- 	if (snd_BUG_ON(!cell))
- 		return -EINVAL;
- 
--	client = snd_seq_client_use_ptr(cell->event.source.client);
-+	struct snd_seq_client *client __free(snd_seq_client) =
-+		snd_seq_client_use_ptr(cell->event.source.client);
- 	if (client == NULL) {
- 		snd_seq_cell_free(cell); /* release this cell */
- 		return -EINVAL;
-@@ -1154,10 +1155,10 @@ static int snd_seq_ioctl_system_info(struct snd_seq_client *client, void *arg)
- static int snd_seq_ioctl_running_mode(struct snd_seq_client *client, void  *arg)
- {
- 	struct snd_seq_running_info *info = arg;
--	struct snd_seq_client *cptr __free(snd_seq_client) = NULL;
--
- 	/* requested client number */
--	cptr = client_load_and_use_ptr(info->client);
-+	struct snd_seq_client *cptr __free(snd_seq_client) =
-+		client_load_and_use_ptr(info->client);
-+
- 	if (cptr == NULL)
- 		return -ENOENT;		/* don't change !!! */
- 
-@@ -1207,10 +1208,10 @@ static int snd_seq_ioctl_get_client_info(struct snd_seq_client *client,
- 					 void *arg)
- {
- 	struct snd_seq_client_info *client_info = arg;
--	struct snd_seq_client *cptr __free(snd_seq_client) = NULL;
--
- 	/* requested client number */
--	cptr = client_load_and_use_ptr(client_info->client);
-+	struct snd_seq_client *cptr __free(snd_seq_client) =
-+		client_load_and_use_ptr(client_info->client);
-+
- 	if (cptr == NULL)
- 		return -ENOENT;		/* don't change !!! */
- 
-@@ -1344,14 +1345,14 @@ static int snd_seq_ioctl_delete_port(struct snd_seq_client *client, void *arg)
- static int snd_seq_ioctl_get_port_info(struct snd_seq_client *client, void *arg)
- {
- 	struct snd_seq_port_info *info = arg;
--	struct snd_seq_client *cptr __free(snd_seq_client) = NULL;
--	struct snd_seq_client_port *port __free(snd_seq_port) = NULL;
- 
--	cptr = client_load_and_use_ptr(info->addr.client);
-+	struct snd_seq_client *cptr __free(snd_seq_client) =
-+		client_load_and_use_ptr(info->addr.client);
- 	if (cptr == NULL)
- 		return -ENXIO;
- 
--	port = snd_seq_port_use_ptr(cptr, info->addr.port);
-+	struct snd_seq_client_port *port __free(snd_seq_port) =
-+		snd_seq_port_use_ptr(cptr, info->addr.port);
- 	if (port == NULL)
- 		return -ENOENT;			/* don't change */
- 
-@@ -1367,11 +1368,12 @@ static int snd_seq_ioctl_get_port_info(struct snd_seq_client *client, void *arg)
- static int snd_seq_ioctl_set_port_info(struct snd_seq_client *client, void *arg)
- {
- 	struct snd_seq_port_info *info = arg;
--	struct snd_seq_client_port *port __free(snd_seq_port) = NULL;
- 
- 	if (info->addr.client != client->number) /* only set our own ports ! */
- 		return -EPERM;
--	port = snd_seq_port_use_ptr(client, info->addr.port);
-+
-+	struct snd_seq_client_port *port __free(snd_seq_port) =
-+		snd_seq_port_use_ptr(client, info->addr.port);
- 	if (port) {
- 		snd_seq_set_port_info(port, info);
- 		/* notify the change */
-@@ -1444,22 +1446,22 @@ static int snd_seq_ioctl_subscribe_port(struct snd_seq_client *client,
- 					void *arg)
- {
- 	struct snd_seq_port_subscribe *subs = arg;
--	struct snd_seq_client *receiver __free(snd_seq_client) = NULL;
--	struct snd_seq_client *sender __free(snd_seq_client) = NULL;
--	struct snd_seq_client_port *sport __free(snd_seq_port) = NULL;
--	struct snd_seq_client_port *dport __free(snd_seq_port) = NULL;
- 	int result;
- 
--	receiver = client_load_and_use_ptr(subs->dest.client);
-+	struct snd_seq_client *receiver __free(snd_seq_client) =
-+		client_load_and_use_ptr(subs->dest.client);
- 	if (!receiver)
- 		return -EINVAL;
--	sender = client_load_and_use_ptr(subs->sender.client);
-+	struct snd_seq_client *sender __free(snd_seq_client) =
-+		client_load_and_use_ptr(subs->sender.client);
- 	if (!sender)
- 		return -EINVAL;
--	sport = snd_seq_port_use_ptr(sender, subs->sender.port);
-+	struct snd_seq_client_port *sport __free(snd_seq_port) =
-+		snd_seq_port_use_ptr(sender, subs->sender.port);
- 	if (!sport)
- 		return -EINVAL;
--	dport = snd_seq_port_use_ptr(receiver, subs->dest.port);
-+	struct snd_seq_client_port *dport __free(snd_seq_port) =
-+		snd_seq_port_use_ptr(receiver, subs->dest.port);
- 	if (!dport)
- 		return -EINVAL;
- 
-@@ -1483,22 +1485,22 @@ static int snd_seq_ioctl_unsubscribe_port(struct snd_seq_client *client,
- 					  void *arg)
- {
- 	struct snd_seq_port_subscribe *subs = arg;
--	struct snd_seq_client *receiver __free(snd_seq_client) = NULL;
--	struct snd_seq_client *sender __free(snd_seq_client) = NULL;
--	struct snd_seq_client_port *sport __free(snd_seq_port) = NULL;
--	struct snd_seq_client_port *dport __free(snd_seq_port) = NULL;
- 	int result;
- 
--	receiver = snd_seq_client_use_ptr(subs->dest.client);
-+	struct snd_seq_client *receiver __free(snd_seq_client) =
-+		snd_seq_client_use_ptr(subs->dest.client);
- 	if (!receiver)
- 		return -ENXIO;
--	sender = snd_seq_client_use_ptr(subs->sender.client);
-+	struct snd_seq_client *sender __free(snd_seq_client) =
-+		snd_seq_client_use_ptr(subs->sender.client);
- 	if (!sender)
- 		return -ENXIO;
--	sport = snd_seq_port_use_ptr(sender, subs->sender.port);
-+	struct snd_seq_client_port *sport __free(snd_seq_port) =
-+		snd_seq_port_use_ptr(sender, subs->sender.port);
- 	if (!sport)
- 		return -ENXIO;
--	dport = snd_seq_port_use_ptr(receiver, subs->dest.port);
-+	struct snd_seq_client_port *dport __free(snd_seq_port) =
-+		snd_seq_port_use_ptr(receiver, subs->dest.port);
- 	if (!dport)
- 		return -ENXIO;
- 
-@@ -1518,9 +1520,9 @@ static int snd_seq_ioctl_unsubscribe_port(struct snd_seq_client *client,
- static int snd_seq_ioctl_create_queue(struct snd_seq_client *client, void *arg)
- {
- 	struct snd_seq_queue_info *info = arg;
--	struct snd_seq_queue *q __free(snd_seq_queue) = NULL;
-+	struct snd_seq_queue *q __free(snd_seq_queue) =
-+		snd_seq_queue_alloc(client->number, info->locked, info->flags);
- 
--	q = snd_seq_queue_alloc(client->number, info->locked, info->flags);
- 	if (IS_ERR(q))
- 		return PTR_ERR(q);
- 
-@@ -1549,9 +1551,9 @@ static int snd_seq_ioctl_get_queue_info(struct snd_seq_client *client,
- 					void *arg)
- {
- 	struct snd_seq_queue_info *info = arg;
--	struct snd_seq_queue *q __free(snd_seq_queue) = NULL;
-+	struct snd_seq_queue *q __free(snd_seq_queue) =
-+		queueptr(info->queue);
- 
--	q = queueptr(info->queue);
- 	if (q == NULL)
- 		return -EINVAL;
- 
-@@ -1569,7 +1571,6 @@ static int snd_seq_ioctl_set_queue_info(struct snd_seq_client *client,
- 					void *arg)
- {
- 	struct snd_seq_queue_info *info = arg;
--	struct snd_seq_queue *q __free(snd_seq_queue) = NULL;
- 
- 	if (info->owner != client->number)
- 		return -EINVAL;
-@@ -1584,7 +1585,8 @@ static int snd_seq_ioctl_set_queue_info(struct snd_seq_client *client,
- 		return -EPERM;
- 	}	
- 
--	q = queueptr(info->queue);
-+	struct snd_seq_queue *q __free(snd_seq_queue) =
-+		queueptr(info->queue);
- 	if (! q)
- 		return -EINVAL;
- 	if (q->owner != client->number)
-@@ -1599,9 +1601,9 @@ static int snd_seq_ioctl_get_named_queue(struct snd_seq_client *client,
- 					 void *arg)
- {
- 	struct snd_seq_queue_info *info = arg;
--	struct snd_seq_queue *q __free(snd_seq_queue) = NULL;
-+	struct snd_seq_queue *q __free(snd_seq_queue) =
-+		snd_seq_queue_find_name(info->name);
- 
--	q = snd_seq_queue_find_name(info->name);
- 	if (q == NULL)
- 		return -EINVAL;
- 	info->queue = q->queue;
-@@ -1616,10 +1618,10 @@ static int snd_seq_ioctl_get_queue_status(struct snd_seq_client *client,
- 					  void *arg)
- {
- 	struct snd_seq_queue_status *status = arg;
--	struct snd_seq_queue *queue __free(snd_seq_queue) = NULL;
- 	struct snd_seq_timer *tmr;
-+	struct snd_seq_queue *queue __free(snd_seq_queue) =
-+		queueptr(status->queue);
- 
--	queue = queueptr(status->queue);
- 	if (queue == NULL)
- 		return -EINVAL;
- 	memset(status, 0, sizeof(*status));
-@@ -1644,10 +1646,10 @@ static int snd_seq_ioctl_get_queue_tempo(struct snd_seq_client *client,
- 					 void *arg)
- {
- 	struct snd_seq_queue_tempo *tempo = arg;
--	struct snd_seq_queue *queue __free(snd_seq_queue) = NULL;
- 	struct snd_seq_timer *tmr;
-+	struct snd_seq_queue *queue __free(snd_seq_queue) =
-+		queueptr(tempo->queue);
- 
--	queue = queueptr(tempo->queue);
- 	if (queue == NULL)
- 		return -EINVAL;
- 	memset(tempo, 0, sizeof(*tempo));
-@@ -1693,10 +1695,10 @@ static int snd_seq_ioctl_get_queue_timer(struct snd_seq_client *client,
- 					 void *arg)
- {
- 	struct snd_seq_queue_timer *timer = arg;
--	struct snd_seq_queue *queue __free(snd_seq_queue) = NULL;
- 	struct snd_seq_timer *tmr;
-+	struct snd_seq_queue *queue __free(snd_seq_queue) =
-+		queueptr(timer->queue);
- 
--	queue = queueptr(timer->queue);
- 	if (queue == NULL)
- 		return -EINVAL;
- 
-@@ -1726,10 +1728,10 @@ static int snd_seq_ioctl_set_queue_timer(struct snd_seq_client *client,
- 		return -EINVAL;
- 
- 	if (snd_seq_queue_check_access(timer->queue, client->number)) {
--		struct snd_seq_queue *q __free(snd_seq_queue) = NULL;
- 		struct snd_seq_timer *tmr;
-+		struct snd_seq_queue *q __free(snd_seq_queue) =
-+			queueptr(timer->queue);
- 
--		q = queueptr(timer->queue);
- 		if (q == NULL)
- 			return -ENXIO;
- 		guard(mutex)(&q->timer_mutex);
-@@ -1788,9 +1790,9 @@ static int snd_seq_ioctl_get_client_pool(struct snd_seq_client *client,
- 					 void *arg)
- {
- 	struct snd_seq_client_pool *info = arg;
--	struct snd_seq_client *cptr __free(snd_seq_client) = NULL;
-+	struct snd_seq_client *cptr __free(snd_seq_client) =
-+		client_load_and_use_ptr(info->client);
- 
--	cptr = client_load_and_use_ptr(info->client);
- 	if (cptr == NULL)
- 		return -ENOENT;
- 	memset(info, 0, sizeof(*info));
-@@ -1888,13 +1890,13 @@ static int snd_seq_ioctl_get_subscription(struct snd_seq_client *client,
- 					  void *arg)
- {
- 	struct snd_seq_port_subscribe *subs = arg;
--	struct snd_seq_client *sender __free(snd_seq_client) = NULL;
--	struct snd_seq_client_port *sport __free(snd_seq_port) = NULL;
- 
--	sender = client_load_and_use_ptr(subs->sender.client);
-+	struct snd_seq_client *sender __free(snd_seq_client) =
-+		client_load_and_use_ptr(subs->sender.client);
- 	if (!sender)
- 		return -EINVAL;
--	sport = snd_seq_port_use_ptr(sender, subs->sender.port);
-+	struct snd_seq_client_port *sport __free(snd_seq_port) =
-+		snd_seq_port_use_ptr(sender, subs->sender.port);
- 	if (!sport)
- 		return -EINVAL;
- 	return snd_seq_port_get_subscription(&sport->c_src, &subs->dest, subs);
-@@ -1907,16 +1909,16 @@ static int snd_seq_ioctl_get_subscription(struct snd_seq_client *client,
- static int snd_seq_ioctl_query_subs(struct snd_seq_client *client, void *arg)
- {
- 	struct snd_seq_query_subs *subs = arg;
--	struct snd_seq_client *cptr __free(snd_seq_client) = NULL;
--	struct snd_seq_client_port *port __free(snd_seq_port) = NULL;
- 	struct snd_seq_port_subs_info *group;
- 	struct list_head *p;
- 	int i;
- 
--	cptr = client_load_and_use_ptr(subs->root.client);
-+	struct snd_seq_client *cptr __free(snd_seq_client) =
-+		client_load_and_use_ptr(subs->root.client);
- 	if (!cptr)
- 		return -ENXIO;
--	port = snd_seq_port_use_ptr(cptr, subs->root.port);
-+	struct snd_seq_client_port *port __free(snd_seq_port) =
-+		snd_seq_port_use_ptr(cptr, subs->root.port);
- 	if (!port)
- 		return -ENXIO;
- 
-@@ -1963,7 +1965,6 @@ static int snd_seq_ioctl_query_next_client(struct snd_seq_client *client,
- 					   void *arg)
- {
- 	struct snd_seq_client_info *info = arg;
--	struct snd_seq_client *cptr __free(snd_seq_client) = NULL;
- 
- 	/* search for next client */
- 	if (info->client < INT_MAX)
-@@ -1971,7 +1972,8 @@ static int snd_seq_ioctl_query_next_client(struct snd_seq_client *client,
- 	if (info->client < 0)
- 		info->client = 0;
- 	for (; info->client < SNDRV_SEQ_MAX_CLIENTS; info->client++) {
--		cptr = client_load_and_use_ptr(info->client);
-+		struct snd_seq_client *cptr __free(snd_seq_client) =
-+			client_load_and_use_ptr(info->client);
- 		if (cptr) {
- 			get_client_info(cptr, info);
- 			return 0; /* found */
-@@ -1987,16 +1989,16 @@ static int snd_seq_ioctl_query_next_port(struct snd_seq_client *client,
- 					 void *arg)
- {
- 	struct snd_seq_port_info *info = arg;
--	struct snd_seq_client *cptr __free(snd_seq_client) = NULL;
--	struct snd_seq_client_port *port __free(snd_seq_port) = NULL;
- 
--	cptr = client_load_and_use_ptr(info->addr.client);
-+	struct snd_seq_client *cptr __free(snd_seq_client) =
-+		client_load_and_use_ptr(info->addr.client);
- 	if (cptr == NULL)
- 		return -ENXIO;
- 
- 	/* search for next port */
- 	info->addr.port++;
--	port = snd_seq_port_query_nearest(cptr, info);
-+	struct snd_seq_client_port *port __free(snd_seq_port) =
-+		snd_seq_port_query_nearest(cptr, info);
- 	if (port == NULL)
- 		return -ENOENT;
- 
-@@ -2067,7 +2069,6 @@ static int snd_seq_ioctl_client_ump_info(struct snd_seq_client *caller,
- {
- 	struct snd_seq_client_ump_info __user *argp =
- 		(struct snd_seq_client_ump_info __user *)arg;
--	struct snd_seq_client *cptr __free(snd_seq_client) = NULL;
- 	int client, type, err = 0;
- 	size_t size;
- 	void *p;
-@@ -2083,7 +2084,9 @@ static int snd_seq_ioctl_client_ump_info(struct snd_seq_client *caller,
- 		size = sizeof(struct snd_ump_endpoint_info);
- 	else
- 		size = sizeof(struct snd_ump_block_info);
--	cptr = client_load_and_use_ptr(client);
-+
-+	struct snd_seq_client *cptr __free(snd_seq_client) =
-+		client_load_and_use_ptr(client);
- 	if (!cptr)
- 		return -ENOENT;
- 
-@@ -2342,8 +2345,6 @@ EXPORT_SYMBOL(snd_seq_delete_kernel_client);
- int snd_seq_kernel_client_enqueue(int client, struct snd_seq_event *ev,
- 				  struct file *file, bool blocking)
- {
--	struct snd_seq_client *cptr __free(snd_seq_client) = NULL;
--
- 	if (snd_BUG_ON(!ev))
- 		return -EINVAL;
- 
-@@ -2360,7 +2361,8 @@ int snd_seq_kernel_client_enqueue(int client, struct snd_seq_event *ev,
- 	if (check_event_type_and_length(ev))
- 		return -EINVAL;
- 
--	cptr = client_load_and_use_ptr(client);
-+	struct snd_seq_client *cptr __free(snd_seq_client) =
-+		client_load_and_use_ptr(client);
- 	if (cptr == NULL)
- 		return -EINVAL;
- 	
-@@ -2385,8 +2387,6 @@ EXPORT_SYMBOL(snd_seq_kernel_client_enqueue);
- int snd_seq_kernel_client_dispatch(int client, struct snd_seq_event * ev,
- 				   int atomic, int hop)
- {
--	struct snd_seq_client *cptr __free(snd_seq_client) = NULL;
--
- 	if (snd_BUG_ON(!ev))
- 		return -EINVAL;
- 
-@@ -2397,7 +2397,8 @@ int snd_seq_kernel_client_dispatch(int client, struct snd_seq_event * ev,
- 	if (check_event_type_and_length(ev))
- 		return -EINVAL;
- 
--	cptr = snd_seq_client_use_ptr(client);
-+	struct snd_seq_client *cptr __free(snd_seq_client) =
-+		snd_seq_client_use_ptr(client);
- 	if (cptr == NULL)
- 		return -EINVAL;
- 
-@@ -2450,9 +2451,9 @@ EXPORT_SYMBOL(snd_seq_kernel_client_ctl);
- /* a similar like above but taking locks; used only from OSS sequencer layer */
- int snd_seq_kernel_client_ioctl(int clientid, unsigned int cmd, void *arg)
- {
--	struct snd_seq_client *client __free(snd_seq_client) = NULL;
-+	struct snd_seq_client *client __free(snd_seq_client) =
-+		client_load_and_use_ptr(clientid);
- 
--	client = client_load_and_use_ptr(clientid);
- 	if (!client)
- 		return -ENXIO;
- 	guard(mutex)(&client->ioctl_mutex);
-@@ -2597,9 +2598,9 @@ void snd_seq_info_clients_read(struct snd_info_entry *entry,
- 
- 	/* list the client table */
- 	for (c = 0; c < SNDRV_SEQ_MAX_CLIENTS; c++) {
--		struct snd_seq_client *client __free(snd_seq_client) = NULL;
-+		struct snd_seq_client *client __free(snd_seq_client) =
-+			client_load_and_use_ptr(c);
- 
--		client = client_load_and_use_ptr(c);
- 		if (client == NULL)
- 			continue;
- 		if (client->type == NO_CLIENT)
-diff --git a/sound/core/seq/seq_compat.c b/sound/core/seq/seq_compat.c
-index 643af4c1e8386..260428747e337 100644
---- a/sound/core/seq/seq_compat.c
-+++ b/sound/core/seq/seq_compat.c
-@@ -31,10 +31,10 @@ struct snd_seq_port_info32 {
- static int snd_seq_call_port_info_ioctl(struct snd_seq_client *client, unsigned int cmd,
- 					struct snd_seq_port_info32 __user *data32)
- {
--	struct snd_seq_port_info *data __free(kfree) = NULL;
- 	int err;
-+	struct snd_seq_port_info *data __free(kfree) =
-+		kmalloc(sizeof(*data), GFP_KERNEL);
- 
--	data = kmalloc(sizeof(*data), GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
- 
-diff --git a/sound/core/seq/seq_midi.c b/sound/core/seq/seq_midi.c
-index 581e138a31159..73dbef8fb2ac0 100644
---- a/sound/core/seq/seq_midi.c
-+++ b/sound/core/seq/seq_midi.c
-@@ -270,8 +270,6 @@ snd_seq_midisynth_probe(struct device *_dev)
- 	struct snd_seq_device *dev = to_seq_dev(_dev);
- 	struct seq_midisynth_client *client;
- 	struct seq_midisynth *msynth, *ms;
--	struct snd_seq_port_info *port __free(kfree) = NULL;
--	struct snd_rawmidi_info *info __free(kfree) = NULL;
- 	struct snd_rawmidi *rmidi = dev->private_data;
- 	int newclient = 0;
- 	unsigned int p, ports;
-@@ -282,7 +280,9 @@ snd_seq_midisynth_probe(struct device *_dev)
- 
- 	if (snd_BUG_ON(!card || device < 0 || device >= SNDRV_RAWMIDI_DEVICES))
- 		return -EINVAL;
--	info = kmalloc(sizeof(*info), GFP_KERNEL);
-+
-+	struct snd_rawmidi_info *info __free(kfree) =
-+		kmalloc(sizeof(*info), GFP_KERNEL);
- 	if (! info)
- 		return -ENOMEM;
- 	info->device = device;
-@@ -320,7 +320,9 @@ snd_seq_midisynth_probe(struct device *_dev)
- 	}
- 
- 	msynth = kcalloc(ports, sizeof(struct seq_midisynth), GFP_KERNEL);
--	port = kmalloc(sizeof(*port), GFP_KERNEL);
-+
-+	struct snd_seq_port_info *port __free(kfree) =
-+		kmalloc(sizeof(*port), GFP_KERNEL);
- 	if (msynth == NULL || port == NULL)
- 		goto __nomem;
- 
-diff --git a/sound/core/seq/seq_ports.c b/sound/core/seq/seq_ports.c
-index 40fa379847e57..bbec34bba4f99 100644
---- a/sound/core/seq/seq_ports.c
-+++ b/sound/core/seq/seq_ports.c
-@@ -211,14 +211,13 @@ static void clear_subscriber_list(struct snd_seq_client *client,
- 
- 	list_for_each_safe(p, n, &grp->list_head) {
- 		struct snd_seq_subscribers *subs;
--		struct snd_seq_client *c __free(snd_seq_client) = NULL;
--		struct snd_seq_client_port *aport __free(snd_seq_port) = NULL;
- 
- 		subs = get_subscriber(p, is_src);
--		if (is_src)
--			aport = get_client_port(&subs->info.dest, &c);
--		else
--			aport = get_client_port(&subs->info.sender, &c);
-+		struct snd_seq_client *c __free(snd_seq_client) = NULL;
-+		struct snd_seq_client_port *aport __free(snd_seq_port) =
-+			is_src ?
-+			get_client_port(&subs->info.dest, &c) :
-+			get_client_port(&subs->info.sender, &c);
- 		delete_and_unsubscribe_port(client, port, subs, is_src, false);
- 
- 		if (!aport) {
-diff --git a/sound/core/seq/seq_queue.c b/sound/core/seq/seq_queue.c
-index f5c0e401c8ae5..c0c5e1424c5a1 100644
---- a/sound/core/seq/seq_queue.c
-+++ b/sound/core/seq/seq_queue.c
-@@ -211,8 +211,9 @@ struct snd_seq_queue *snd_seq_queue_find_name(char *name)
- 	int i;
- 
- 	for (i = 0; i < SNDRV_SEQ_MAX_QUEUES; i++) {
--		struct snd_seq_queue *q __free(snd_seq_queue) = NULL;
--		q = queueptr(i);
-+		struct snd_seq_queue *q __free(snd_seq_queue) =
-+			queueptr(i);
-+
- 		if (q) {
- 			if (strncmp(q->name, name, sizeof(q->name)) == 0)
- 				return no_free_ptr(q);
-@@ -285,12 +286,13 @@ void snd_seq_check_queue(struct snd_seq_queue *q, int atomic, int hop)
- int snd_seq_enqueue_event(struct snd_seq_event_cell *cell, int atomic, int hop)
- {
- 	int dest, err;
--	struct snd_seq_queue *q __free(snd_seq_queue) = NULL;
- 
- 	if (snd_BUG_ON(!cell))
- 		return -EINVAL;
- 	dest = cell->event.queue;	/* destination queue */
--	q = queueptr(dest);
-+
-+	struct snd_seq_queue *q __free(snd_seq_queue) =
-+		queueptr(dest);
- 	if (q == NULL)
- 		return -EINVAL;
- 	/* handle relative time stamps, convert them into absolute */
-@@ -403,10 +405,10 @@ int snd_seq_queue_set_owner(int queueid, int client, int locked)
- int snd_seq_queue_timer_open(int queueid)
- {
- 	int result = 0;
--	struct snd_seq_queue *queue __free(snd_seq_queue) = NULL;
- 	struct snd_seq_timer *tmr;
-+	struct snd_seq_queue *queue __free(snd_seq_queue) =
-+		queueptr(queueid);
- 
--	queue = queueptr(queueid);
- 	if (queue == NULL)
- 		return -EINVAL;
- 	tmr = queue->timer;
-@@ -423,10 +425,10 @@ int snd_seq_queue_timer_open(int queueid)
-  */
- int snd_seq_queue_timer_close(int queueid)
- {
--	struct snd_seq_queue *queue __free(snd_seq_queue) = NULL;
- 	int result = 0;
-+	struct snd_seq_queue *queue __free(snd_seq_queue) =
-+		queueptr(queueid);
- 
--	queue = queueptr(queueid);
- 	if (queue == NULL)
- 		return -EINVAL;
- 	snd_seq_timer_close(queue);
-@@ -479,9 +481,9 @@ static void queue_use(struct snd_seq_queue *queue, int client, int use)
-  */
- int snd_seq_queue_use(int queueid, int client, int use)
- {
--	struct snd_seq_queue *queue __free(snd_seq_queue) = NULL;
-+	struct snd_seq_queue *queue __free(snd_seq_queue) =
-+		queueptr(queueid);
- 
--	queue = queueptr(queueid);
- 	if (queue == NULL)
- 		return -EINVAL;
- 	guard(mutex)(&queue->timer_mutex);
-@@ -496,9 +498,9 @@ int snd_seq_queue_use(int queueid, int client, int use)
-  */
- int snd_seq_queue_is_used(int queueid, int client)
- {
--	struct snd_seq_queue *q __free(snd_seq_queue) = NULL;
-+	struct snd_seq_queue *q __free(snd_seq_queue) =
-+		queueptr(queueid);
- 
--	q = queueptr(queueid);
- 	if (q == NULL)
- 		return -EINVAL; /* invalid queue */
- 	return test_bit(client, q->clients_bitmap) ? 1 : 0;
-@@ -642,11 +644,11 @@ static void snd_seq_queue_process_event(struct snd_seq_queue *q,
-  */
- int snd_seq_control_queue(struct snd_seq_event *ev, int atomic, int hop)
- {
--	struct snd_seq_queue *q __free(snd_seq_queue) = NULL;
--
- 	if (snd_BUG_ON(!ev))
- 		return -EINVAL;
--	q = queueptr(ev->data.queue.queue);
-+
-+	struct snd_seq_queue *q __free(snd_seq_queue) =
-+		queueptr(ev->data.queue.queue);
- 
- 	if (q == NULL)
- 		return -EINVAL;
-diff --git a/sound/core/seq/seq_ump_client.c b/sound/core/seq/seq_ump_client.c
-index 27247babb16de..14b82a31eb195 100644
---- a/sound/core/seq/seq_ump_client.c
-+++ b/sound/core/seq/seq_ump_client.c
-@@ -214,13 +214,13 @@ static bool skip_group(struct seq_ump_client *client, struct snd_ump_group *grou
- static int seq_ump_group_init(struct seq_ump_client *client, int group_index)
- {
- 	struct snd_ump_group *group = &client->ump->groups[group_index];
--	struct snd_seq_port_info *port __free(kfree) = NULL;
- 	struct snd_seq_port_callback pcallbacks;
- 
- 	if (skip_group(client, group))
- 		return 0;
- 
--	port = kzalloc(sizeof(*port), GFP_KERNEL);
-+	struct snd_seq_port_info *port __free(kfree) =
-+		kzalloc(sizeof(*port), GFP_KERNEL);
- 	if (!port)
- 		return -ENOMEM;
- 
-@@ -243,12 +243,12 @@ static int seq_ump_group_init(struct seq_ump_client *client, int group_index)
- /* update the sequencer ports; called from notify_fb_change callback */
- static void update_port_infos(struct seq_ump_client *client)
- {
--	struct snd_seq_port_info *old __free(kfree) = NULL;
--	struct snd_seq_port_info *new __free(kfree) = NULL;
- 	int i, err;
- 
--	old = kzalloc(sizeof(*old), GFP_KERNEL);
--	new = kzalloc(sizeof(*new), GFP_KERNEL);
-+	struct snd_seq_port_info *old __free(kfree) =
-+		kzalloc(sizeof(*old), GFP_KERNEL);
-+	struct snd_seq_port_info *new __free(kfree) =
-+		kzalloc(sizeof(*new), GFP_KERNEL);
- 	if (!old || !new)
- 		return;
- 
-@@ -278,12 +278,12 @@ static void update_port_infos(struct seq_ump_client *client)
- /* create a UMP Endpoint port */
- static int create_ump_endpoint_port(struct seq_ump_client *client)
- {
--	struct snd_seq_port_info *port __free(kfree) = NULL;
- 	struct snd_seq_port_callback pcallbacks;
- 	unsigned int rawmidi_info = client->ump->core.info_flags;
- 	int err;
- 
--	port = kzalloc(sizeof(*port), GFP_KERNEL);
-+	struct snd_seq_port_info *port __free(kfree) =
-+		kzalloc(sizeof(*port), GFP_KERNEL);
- 	if (!port)
- 		return -ENOMEM;
- 
-diff --git a/sound/core/seq/seq_virmidi.c b/sound/core/seq/seq_virmidi.c
-index 9e7fd4993a108..574493fbd50d0 100644
---- a/sound/core/seq/seq_virmidi.c
-+++ b/sound/core/seq/seq_virmidi.c
-@@ -361,13 +361,13 @@ static int snd_virmidi_dev_attach_seq(struct snd_virmidi_dev *rdev)
- {
- 	int client;
- 	struct snd_seq_port_callback pcallbacks;
--	struct snd_seq_port_info *pinfo __free(kfree) = NULL;
- 	int err;
- 
- 	if (rdev->client >= 0)
- 		return 0;
- 
--	pinfo = kzalloc(sizeof(*pinfo), GFP_KERNEL);
-+	struct snd_seq_port_info *pinfo __free(kfree) =
-+		kzalloc(sizeof(*pinfo), GFP_KERNEL);
- 	if (!pinfo)
- 		return -ENOMEM;
- 
--- 
-2.51.0
-
+--- a/drivers/infiniband/sw/siw/siw_qp_rx.c
++++ b/drivers/infiniband/sw/siw/siw_qp_rx.c
+@@ -1435,7 +1435,8 @@ int siw_tcp_rx_data(read_descriptor_t *r
+ 		}
+ 		if (unlikely(rv != 0 && rv != -EAGAIN)) {
+ 			if ((srx->state > SIW_GET_HDR ||
+-			     qp->rx_fpdu->more_ddp_segs) && run_completion)
++			     (qp->rx_fpdu && qp->rx_fpdu->more_ddp_segs)) &&
++			    run_completion)
+ 				siw_rdmap_complete(qp, rv);
+ 
+ 			siw_dbg_qp(qp, "rx error %d, rx state %d\n", rv,
 
 
 
