@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219335-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNSLL21YnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218672-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:25 +0100
+	id IKFUCHqdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219335-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1C1190718
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B775A1929FF
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B8EA31BEA13
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B60CF3012B44
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4491D5141;
-	Wed, 25 Feb 2026 01:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4033F3090D4;
+	Wed, 25 Feb 2026 06:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OW+/GqrW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFkmutGk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F55726463A;
-	Wed, 25 Feb 2026 01:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027EA2D4805;
+	Wed, 25 Feb 2026 06:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983527; cv=none; b=FECCrZ/bofB0458IZSsHbK/6dwy9VhuDIMt2Pq2dScBfzR3OSrlw+lcR2TkLZzVNtAWcCKewPqOVimBjP9NXQZDLiXSR7sgL0nDYfOliw05cIFvLozhZl/gTaAOJoir6j8d58zx1D9NOOBwxzrnNbvEpXNNzmhRaDVqFrQIJOao=
+	t=1772002648; cv=none; b=fy9mAr42aFjdbF19ucaInIUReWbQ4/blgEI3evd2rS3auBW6TqHZ4gm3D8vPgYOkGGpyVXnHSMXUtNAKGu6IOTUJx/QXhuUykYZYvAo1nFPMOF65dRDyaLNcUBzZqgtU/qdQd/E/8fueduHkkH+NMXBpzZ5V7UM6mYSiU2dB988=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983527; c=relaxed/simple;
-	bh=vjyZLNTlZ1I1thJTTiJR0ytr8uhMdqwKHR69l6ATJ8o=;
+	s=arc-20240116; t=1772002648; c=relaxed/simple;
+	bh=YzcLFkyvu6wX7/w7Fl66JrDYuexUFkYmutCx5H1JBkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCi1gahhz8FASEVQjLq1JvqJ52L3r6JQ/ivu36EKDXyrK8GkfDe4t6zZvAYIFWVeP8NTFfFYE1XuZA3j+ctn9msuiUJpOdMnTaVpuOBnlQIWKCfTVqxzYBLHckaeoPZQdr2NgxK9+Xzk1XR7jdqP+yazMvr6uIiZ+gQvJBbdOOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OW+/GqrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF22DC116D0;
-	Wed, 25 Feb 2026 01:38:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=onFJr+UskHwDvbTYNCamRb1luN7BqhODNXDov2TY2MOyqhUrD1CJBhKmK7lK8AYmHsrTWgTnconZxSMz7ivW41tAa81YE8P/qULQ5krbYDT2WE0rFLYPwtBemdI0blMCwZdn/5IJ18Fs8N6KmfVsRZ3quAI4TBAk93cvs51r8f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFkmutGk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF3FFC19422;
+	Wed, 25 Feb 2026 06:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983526;
-	bh=vjyZLNTlZ1I1thJTTiJR0ytr8uhMdqwKHR69l6ATJ8o=;
+	s=korg; t=1772002647;
+	bh=YzcLFkyvu6wX7/w7Fl66JrDYuexUFkYmutCx5H1JBkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OW+/GqrWUvz3T48YePBSgXiMW8I3hzLf35+G7VkDgTFfj87Ue9Pkr2KSVJv2XbH4/
-	 xBT7wdS1Ce8rF1vg0GGizD7g6AiHRe1FdhFuzbpz2Sy+gnhPnlyln5YF0PbvFkbHHg
-	 o9dYSoiVVGebMwOtPIoCQurAnPNhknRmd215fmuo=
+	b=WFkmutGklTppq7LKdDf8vMhdJuulhv4FzY4wS44akZ1iV7DZZHt6Nn+p/3wqWYKyV
+	 b8ZK8vU/Qtp3wcFiFSV7DIUyC5C8F2iSJMlOcDvn8Ni3JeIx026qsDZXgXlt/PfDAd
+	 zhDQIBKfUvupUbn0qabevvnNfuhiN8yfo5TwWrLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Antonio Quartulli <antonio@openvpn.net>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 634/781] ovpn: fix VPN TX bytes counting
+Subject: [PATCH 6.18 417/641] clk: qcom: gcc-msm8953: Remove ALWAYS_ON flag from cpp_gdsc
 Date: Tue, 24 Feb 2026 17:22:23 -0800
-Message-ID: <20260225012415.357602716@linuxfoundation.org>
+Message-ID: <20260225012358.662107083@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +64,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218672-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-219335-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,queasysnail.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,openvpn.net:email]
-X-Rspamd-Queue-Id: 6E1C1190718
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mainlining.org:email]
+X-Rspamd-Queue-Id: B775A1929FF
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralf Lici <ralf@mandelbit.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit b660b13d4c6379ca6360f24aaef8c5807fefd237 ]
+[ Upstream commit 5f613e7034187179a9d088ff5fd02b1089d0cf20 ]
 
-In ovpn_net_xmit, after GSO segmentation and segment processing, the
-first segment on the list is used to increment VPN TX statistics, which
-fails to account for any subsequent segments in the chain.
+cpp_gdsc should not be always on, ALWAYS_ON flag was set accidentally.
 
-Fix this by accumulating the length of every segment that successfully
-passes skb_share_check into a tx_bytes variable. This ensures the peer
-statistics accurately reflect the total data volume sent, regardless of
-whether the original packet was segmented.
-
-Fixes: 04ca14955f9a ("ovpn: store tunnel and transport statistics")
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Fixes: 9bb6cfc3c77e ("clk: qcom: Add Global Clock Controller driver for MSM8953")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251117-fix-gdsc-cpp-msm8917-msm8953-v1-1-db33adcff28a@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ovpn/io.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-msm8953.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
-index f70c58b10599b..955c9a37e1f8d 100644
---- a/drivers/net/ovpn/io.c
-+++ b/drivers/net/ovpn/io.c
-@@ -355,6 +355,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct ovpn_priv *ovpn = netdev_priv(dev);
- 	struct sk_buff *segments, *curr, *next;
- 	struct sk_buff_head skb_list;
-+	unsigned int tx_bytes = 0;
- 	struct ovpn_peer *peer;
- 	__be16 proto;
- 	int ret;
-@@ -414,6 +415,8 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 			continue;
- 		}
+diff --git a/drivers/clk/qcom/gcc-msm8953.c b/drivers/clk/qcom/gcc-msm8953.c
+index 8f29ecc74c50b..8fe1d3e421440 100644
+--- a/drivers/clk/qcom/gcc-msm8953.c
++++ b/drivers/clk/qcom/gcc-msm8953.c
+@@ -3946,7 +3946,6 @@ static struct gdsc cpp_gdsc = {
+ 	.pd = {
+ 		.name = "cpp_gdsc",
+ 	},
+-	.flags = ALWAYS_ON,
+ 	.pwrsts = PWRSTS_OFF_ON,
+ };
  
-+		/* only count what we actually send */
-+		tx_bytes += curr->len;
- 		__skb_queue_tail(&skb_list, curr);
- 	}
- 
-@@ -426,7 +429,7 @@ netdev_tx_t ovpn_net_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 	skb_list.prev->next = NULL;
- 
--	ovpn_peer_stats_increment_tx(&peer->vpn_stats, skb_list.next->len);
-+	ovpn_peer_stats_increment_tx(&peer->vpn_stats, tx_bytes);
- 	ovpn_send(ovpn, skb_list.next, peer);
- 
- 	return NETDEV_TX_OK;
 -- 
 2.51.0
 
