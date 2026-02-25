@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-218156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKrqLgRRnmlIUgQAu9opvQ
-	(envelope-from <stable+bounces-218156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:48 +0100
+	id YH5NC1hQnmlIUgQAu9opvQ
+	(envelope-from <stable+bounces-218111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:28:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EBD18EE2B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:31:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA62D18EB76
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB784307990C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:29:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EBB493043DD4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCC21EB5E1;
-	Wed, 25 Feb 2026 01:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EAB525332E;
+	Wed, 25 Feb 2026 01:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAa9BW0z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1HyzNPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1191421D596;
-	Wed, 25 Feb 2026 01:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FF7251795;
+	Wed, 25 Feb 2026 01:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982940; cv=none; b=AbkGwQXLCMbXUf1x9Z1WahPN96z4KwomJQ3ARb5XIneNfxlEDHx32DMzVVlPnq1sElp2ohFHkDtnw7No/xUJlRJ3/r4NVRk7bZN9/dQPzia+SO9cZ3olh3nUKxDu8PExlUDzV2glxvAik+iIXgl1AqU9XwoUe20qQiNyUE3B5GU=
+	t=1771982889; cv=none; b=G9+eXIXH7PCPbpVvYfs7lzA93D5JyRkKqiZlgn0POdz/w4H+Nmis7+OSqbi4UFQB46JkcK67NnR9cXUyheLfnEW7keB829v2FVj3Cly5hZmp1BfCkPtNAg6UF6YovrZGqDyWknkGE0cTRWer/VJlvOgiUyJKwVdP2SLGc2wJx4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982940; c=relaxed/simple;
-	bh=0kV9cLdn9r1KTG/fVdlfk3uDXSPlh+8lmYkDD5voOdE=;
+	s=arc-20240116; t=1771982889; c=relaxed/simple;
+	bh=zwQtGPNVUKT+eCGnB4CTARAs3wk7to3A3ndTx3eiZds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVIXdC1n9tfWef2I0bu/VWfyLd/xNHx7+Lf4NQ9Mcd/Num3qp2bU/Crub2u3wsxxqSI5Av8BUGbdWM+gUaWvuMyb/+zfkTqRzOeU6pZ77STUrv3F525dbpBQ3XDBABOGVxR9WOVA3UbeMCxiX4HHjUw6j1w8SRY5SQEC8LOy+qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAa9BW0z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C0EC116D0;
-	Wed, 25 Feb 2026 01:28:59 +0000 (UTC)
+	 MIME-Version; b=EyBALUcU+C95a8j6UH69IhY6C20IR3P0pb05xo3uhYQvzJzgb/mCtpFOfu/mf3DQ67eyZAFOYPPVi0izUCJqLtWbfhiNB50z9QokqrrAjfeKKeVwKKvBoaBX8JyMIU2Fn690MUW9gxZKR3vOfgpGmYZ/qGBkvhg2PerSBgfpenM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1HyzNPi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC929C116D0;
+	Wed, 25 Feb 2026 01:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771982940;
-	bh=0kV9cLdn9r1KTG/fVdlfk3uDXSPlh+8lmYkDD5voOdE=;
+	s=korg; t=1771982888;
+	bh=zwQtGPNVUKT+eCGnB4CTARAs3wk7to3A3ndTx3eiZds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAa9BW0zB1Bm8Ox10iYW6H2yzWkk0UvhfC1bFJrB21jxjlUFewxb7Zy9+PNHK7hVB
-	 rOj5A0qTOMQ6UORZTvHLEnfzC8hpMzBbPRcYn2IieCXg1oVSF/vdoc6TGMJzLt3EKJ
-	 PCFmSFHC0gGuILFzDkKAW5DzZ7kCPRxSfwKBTOGU=
+	b=E1HyzNPiTxEQECf1Jhd0YgEWPh8ZfEn1axz+5ejNFoEVz4WltcjBNDkn/wHPAo0tM
+	 onLSwaboZDofVwWMG3U/I66jBl1RXX9aOuGA2t/7fVo/b1/UWKMbmM7z7WeiFGcz7w
+	 d0iUXip5aUFUTg74H8X/KSSPo9sNa9K72S3yL/a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Harrison Green <harrisonmichaelgreen@gmail.com>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Varun R Mallya <varunrmallya@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 073/781] selftests/bpf: veristat: fix printing order in output_stats()
-Date: Tue, 24 Feb 2026 17:13:02 -0800
-Message-ID: <20260225012401.494316564@linuxfoundation.org>
+Subject: [PATCH 6.19 074/781] libbpf: Fix OOB read in btf_dump_get_bitfield_value
+Date: Tue, 24 Feb 2026 17:13:03 -0800
+Message-ID: <20260225012401.518821302@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
 References: <20260225012359.695468795@linuxfoundation.org>
@@ -71,73 +72,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218156-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218111-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E7EBD18EE2B
+X-Rspamd-Queue-Id: DA62D18EB76
 X-Rspamd-Action: no action
 
 6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Varun R Mallya <varunrmallya@gmail.com>
 
-[ Upstream commit c286e7e9d1f1f3d90ad11c37e896f582b02d19c4 ]
+[ Upstream commit 5714ca8cba5ed736f3733663c446cbee63a10a64 ]
 
-The order of the variables in the printf() doesn't match the text and
-therefore veristat prints something like this:
+When dumping bitfield data, btf_dump_get_bitfield_value() reads data
+based on the underlying type's size (t->size). However, it does not
+verify that the provided data buffer (data_sz) is large enough to
+contain these bytes.
 
-Done. Processed 24 files, 0 programs. Skipped 62 files, 0 programs.
+If btf_dump__dump_type_data() is called with a buffer smaller than
+the type's size, this leads to an out-of-bounds read. This was
+confirmed by AddressSanitizer in the linked issue.
 
-When it should print:
+Fix this by ensuring we do not read past the provided data_sz limit.
 
-Done. Processed 24 files, 62 programs. Skipped 0 files, 0 programs.
+Fixes: a1d3cc3c5eca ("libbpf: Avoid use of __int128 in typed dump display")
+Reported-by: Harrison Green <harrisonmichaelgreen@gmail.com>
+Suggested-by: Alan Maguire <alan.maguire@oracle.com>
+Signed-off-by: Varun R Mallya <varunrmallya@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20260106233527.163487-1-varunrmallya@gmail.com
 
-Fix the order of variables in the printf() call.
-
-Fixes: 518fee8bfaf2 ("selftests/bpf: make veristat skip non-BPF and failing-to-open BPF objects")
-Tested-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/r/20251231221052.759396-1-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Closes: https://github.com/libbpf/libbpf/issues/928
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/veristat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/bpf/btf_dump.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/veristat.c b/tools/testing/selftests/bpf/veristat.c
-index e962f133250c7..1be1e353d40a7 100644
---- a/tools/testing/selftests/bpf/veristat.c
-+++ b/tools/testing/selftests/bpf/veristat.c
-@@ -2580,7 +2580,7 @@ static void output_stats(const struct verif_stats *s, enum resfmt fmt, bool last
- 	if (last && fmt == RESFMT_TABLE) {
- 		output_header_underlines();
- 		printf("Done. Processed %d files, %d programs. Skipped %d files, %d programs.\n",
--		       env.files_processed, env.files_skipped, env.progs_processed, env.progs_skipped);
-+		       env.files_processed, env.progs_processed, env.files_skipped, env.progs_skipped);
- 	}
- }
+diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
+index 6388392f49a0b..53c6624161d79 100644
+--- a/tools/lib/bpf/btf_dump.c
++++ b/tools/lib/bpf/btf_dump.c
+@@ -1762,9 +1762,18 @@ static int btf_dump_get_bitfield_value(struct btf_dump *d,
+ 	__u16 left_shift_bits, right_shift_bits;
+ 	const __u8 *bytes = data;
+ 	__u8 nr_copy_bits;
++	__u8 start_bit, nr_bytes;
+ 	__u64 num = 0;
+ 	int i;
  
++	/* Calculate how many bytes cover the bitfield */
++	start_bit = bits_offset % 8;
++	nr_bytes = (start_bit + bit_sz + 7) / 8;
++
++	/* Bound check */
++	if (data + nr_bytes > d->typed_dump->data_end)
++		return -E2BIG;
++
+ 	/* Maximum supported bitfield size is 64 bits */
+ 	if (t->size > 8) {
+ 		pr_warn("unexpected bitfield size %d\n", t->size);
 -- 
 2.51.0
 
