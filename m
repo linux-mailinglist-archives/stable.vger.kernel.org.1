@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-219020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gCE3CSlanmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-219020-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:49 +0100
+	id kAySOgJSnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA9C190A6E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89B5B18F185
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9AF5932D996D
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E409305808F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEEB1279907;
-	Wed, 25 Feb 2026 01:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1946322579E;
+	Wed, 25 Feb 2026 01:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fK2WzVmU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8/DNGGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABECD28850C;
-	Wed, 25 Feb 2026 01:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D142218B0A;
+	Wed, 25 Feb 2026 01:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983933; cv=none; b=EZKgwZIdLQYRc2AxotF0PF47fMQ/ANYrolQTckJmTasir5vY6bS1dQ7GI0LXQOu9EKlAcI88cUu0e0zyNutAEvBDueiiMXaOp4rV1QjSBzugcHsSf1QgXdKmPYt7j9BIu87HOwAuv6n1uReIupueHOOzJF2nvyOwvP0cNDWVEK8=
+	t=1771983308; cv=none; b=X3AWyivsHp5ZHOOEXDQMi0lLga02zWWJy8xnp6d0j4XeTCBgFJfdnjEcsuZRiay8iPJvfkuxSrFWMF+B1uYvdLgje+tySnPx57cOH0xJw64T+FKrHbs2cSYLaSLw/OMk4SWqXgVH1G0V8I/6fWSqTwq+GUelC39+rpaq16N28xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983933; c=relaxed/simple;
-	bh=3V3t9b0eMa55ZyFXhdp7Smey5xFofuCj9Oh9IlX1zf0=;
+	s=arc-20240116; t=1771983308; c=relaxed/simple;
+	bh=7KjS0ke886oDXewqGckTjgV4STzXTHPvLmGbFNPpJX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IqnfXtPA4r1l0h8ksbbKSA7mKqToyuzbwLFWNDsQMrmhC9prJ+9N10k7ZNWI2s84IkakppbqPQfDF5szh4ylhRFdXzPin8pgwIPW95sUn/yhCi4nhJw0kPBWWnm/fABvRgQPcHnODRrrOXBqqgeZWFPa6RV8vwm5DCj0SlrJ59A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fK2WzVmU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823C6C116D0;
-	Wed, 25 Feb 2026 01:45:33 +0000 (UTC)
+	 MIME-Version; b=awoQbpjXVC5rFUX+ViWAewQOKwm/1gmTq5wZTEYYnAeNUBgrRaUSqvV7yY6ZyqroKlp5D0OCLYTsrlFnFx2gEvSdBYDPNeZFjTGOiSMfWNRHPNSmwaTm8/dUYWGpQdxGcjczfow+0oi7iVDD518qaeYwBx7u+wPBrDLhE9jEJxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8/DNGGU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E6BC116D0;
+	Wed, 25 Feb 2026 01:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983933;
-	bh=3V3t9b0eMa55ZyFXhdp7Smey5xFofuCj9Oh9IlX1zf0=;
+	s=korg; t=1771983308;
+	bh=7KjS0ke886oDXewqGckTjgV4STzXTHPvLmGbFNPpJX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fK2WzVmUpqRXhHupTnGJoXtXZ1zk9AarEF41HpM5wU1cIu463vLFDcotuxcQQ5yxI
-	 ct1U9GJdUa/8+LULCIa6hFRFa+xwsH7R5ocU9felOnkvGvVD36DxtcLhix7QwC+uKv
-	 +MKrKhJ7F2UvtnBu+WrYkBNk6YwDOA2LSSfJtBHk=
+	b=m8/DNGGU17rUqTxtw3pFum1FG/hqujpePEEWJ7c0+nvgnMZTGUjvJtDiJ7PG9Czzz
+	 4sxmkNwdVLNIUwZyL//rA3+KcAr3HHj1iNOoQslcXeilglLfIqOdI8igB/U23u+Q4K
+	 jQ5z1+uwoJIu/Di0dZaGDV+UlQo9DcI5ppQe15QY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Aksh Garg <a-garg7@ti.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 181/641] ALSA: vmaster: Relax __free() variable declarations
-Date: Tue, 24 Feb 2026 17:18:27 -0800
-Message-ID: <20260225012353.411426280@linuxfoundation.org>
+Subject: [PATCH 6.19 399/781] PCI: dwc: ep: Add per-PF BAR and inbound ATU mapping support
+Date: Tue, 24 Feb 2026 17:18:28 -0800
+Message-ID: <20260225012409.493949626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,105 +71,338 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218480-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219020-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 9AA9C190A6E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,ti.com:email]
+X-Rspamd-Queue-Id: 89B5B18F185
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Aksh Garg <a-garg7@ti.com>
 
-[ Upstream commit 3b7c7bda39e1e48f926fb3d280a5f5d20a939857 ]
+[ Upstream commit 72cb5ed2a5c6d87f71a409347f7d3b228fee6bee ]
 
-We used to have a variable declaration with __free() initialized with
-NULL.  This was to keep the old coding style rule, but recently it's
-relaxed and rather recommends to follow the new rule to declare in
-place of use for __free() -- which avoids potential deadlocks or UAFs
-with nested cleanups.
+The commit 24ede430fa49 ("PCI: designware-ep: Add multiple PFs support
+for DWC") added support for multiple PFs in the DWC driver, but the
+implementation was incomplete. It did not properly support MSI/MSI-X,
+as well as BAR and inbound ATU mapping for multiple PFs. The MSI/MSI-X
+issue was later fixed by commit 47a062609a30 ("PCI: designware-ep:
+Modify MSI and MSIX CAP way of finding") by introducing a per-PF
+struct dw_pcie_ep_func.
 
-Although the current code has no bug, per se, let's follow the new
-standard and move the declaration to the place of assignment (or
-directly assign the allocated result) instead of NULL initializations.
+However, even with both commits, the multiple PF support in the driver
+remains broken because BAR configuration and ATU mappings are managed
+globally in struct dw_pcie_ep, meaning all PFs share the same BAR-to-ATU
+mapping table. This causes one PF's EPF to overwrite the address
+translation of another PF's EPF in the internal ATU region,
+creating conflicts when multiple physical functions attempt to
+configure their BARs independently.
 
-Fixes: fb9e197f3f27 ("ALSA: vmaster: Use automatic cleanup of kfree()")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20251216140634.171890-9-tiwai@suse.de
+The commit cfbc98dbf44d ("PCI: dwc: ep: Support BAR subrange inbound
+mapping via Address Match Mode iATU") later introduced Address Match
+Mode support, which suffers from the same multi-PF conflict issue.
+
+Fix this by moving the required members from struct dw_pcie_ep to
+struct dw_pcie_ep_func, similar to what commit 47a062609a30
+("PCI: designware-ep: Modify MSI and MSIX CAP way of finding") did for
+MSI/MSI-X capability support, to allow proper multi-function endpoint
+operation, where each PF can configure its BARs and corresponding
+internal ATU region without interfering with other PFs.
+
+Fixes: 24ede430fa49 ("PCI: designware-ep: Add multiple PFs support for DWC")
+Fixes: cc839bef7727 ("PCI: dwc: ep: Support BAR subrange inbound mapping via Address Match Mode iATU")
+Signed-off-by: Aksh Garg <a-garg7@ti.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Link: https://patch.msgid.link/20260130115516.515082-3-a-garg7@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/vmaster.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ .../pci/controller/dwc/pcie-designware-ep.c   | 79 +++++++++++--------
+ drivers/pci/controller/dwc/pcie-designware.h  | 12 +--
+ 2 files changed, 54 insertions(+), 37 deletions(-)
 
-diff --git a/sound/core/vmaster.c b/sound/core/vmaster.c
-index c657659b236c4..76cc64245f5df 100644
---- a/sound/core/vmaster.c
-+++ b/sound/core/vmaster.c
-@@ -56,10 +56,10 @@ struct link_follower {
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 1cc2985bab03d..6d3c35dd280f3 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -115,11 +115,15 @@ static int dw_pcie_ep_ib_atu_bar(struct dw_pcie_ep *ep, u8 func_no, int type,
+ 	int ret;
+ 	u32 free_win;
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
++	struct dw_pcie_ep_func *ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
  
- static int follower_update(struct link_follower *follower)
+-	if (!ep->bar_to_atu[bar])
++	if (!ep_func)
++		return -EINVAL;
++
++	if (!ep_func->bar_to_atu[bar])
+ 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
+ 	else
+-		free_win = ep->bar_to_atu[bar] - 1;
++		free_win = ep_func->bar_to_atu[bar] - 1;
+ 
+ 	if (free_win >= pci->num_ib_windows) {
+ 		dev_err(pci->dev, "No free inbound window\n");
+@@ -137,33 +141,37 @@ static int dw_pcie_ep_ib_atu_bar(struct dw_pcie_ep *ep, u8 func_no, int type,
+ 	 * Always increment free_win before assignment, since value 0 is used to identify
+ 	 * unallocated mapping.
+ 	 */
+-	ep->bar_to_atu[bar] = free_win + 1;
++	ep_func->bar_to_atu[bar] = free_win + 1;
+ 	set_bit(free_win, ep->ib_window_map);
+ 
+ 	return 0;
+ }
+ 
+-static void dw_pcie_ep_clear_ib_maps(struct dw_pcie_ep *ep, enum pci_barno bar)
++static void dw_pcie_ep_clear_ib_maps(struct dw_pcie_ep *ep, u8 func_no, enum pci_barno bar)
  {
--	struct snd_ctl_elem_value *uctl __free(kfree) = NULL;
- 	int err, ch;
-+	struct snd_ctl_elem_value *uctl __free(kfree) =
-+		kzalloc(sizeof(*uctl), GFP_KERNEL);
++	struct dw_pcie_ep_func *ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	struct device *dev = pci->dev;
+ 	unsigned int i, num;
+ 	u32 atu_index;
+ 	u32 *indexes;
  
--	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
- 	if (!uctl)
- 		return -ENOMEM;
- 	uctl->id = follower->follower.id;
-@@ -74,7 +74,6 @@ static int follower_update(struct link_follower *follower)
- /* get the follower ctl info and save the initial values */
- static int follower_init(struct link_follower *follower)
- {
--	struct snd_ctl_elem_info *uinfo __free(kfree) = NULL;
- 	int err;
- 
- 	if (follower->info.count) {
-@@ -84,7 +83,8 @@ static int follower_init(struct link_follower *follower)
- 		return 0;
++	if (!ep_func)
++		return;
++
+ 	/* Tear down the BAR Match Mode mapping, if any. */
+-	if (ep->bar_to_atu[bar]) {
+-		atu_index = ep->bar_to_atu[bar] - 1;
++	if (ep_func->bar_to_atu[bar]) {
++		atu_index = ep_func->bar_to_atu[bar] - 1;
+ 		dw_pcie_disable_atu(pci, PCIE_ATU_REGION_DIR_IB, atu_index);
+ 		clear_bit(atu_index, ep->ib_window_map);
+-		ep->bar_to_atu[bar] = 0;
++		ep_func->bar_to_atu[bar] = 0;
  	}
  
--	uinfo = kmalloc(sizeof(*uinfo), GFP_KERNEL);
-+	struct snd_ctl_elem_info *uinfo __free(kfree) =
-+		kmalloc(sizeof(*uinfo), GFP_KERNEL);
- 	if (!uinfo)
- 		return -ENOMEM;
- 	uinfo->id = follower->follower.id;
-@@ -341,9 +341,9 @@ static int master_get(struct snd_kcontrol *kcontrol,
- static int sync_followers(struct link_master *master, int old_val, int new_val)
+ 	/* Tear down all Address Match Mode mappings, if any. */
+-	indexes = ep->ib_atu_indexes[bar];
+-	num = ep->num_ib_atu_indexes[bar];
+-	ep->ib_atu_indexes[bar] = NULL;
+-	ep->num_ib_atu_indexes[bar] = 0;
++	indexes = ep_func->ib_atu_indexes[bar];
++	num = ep_func->num_ib_atu_indexes[bar];
++	ep_func->ib_atu_indexes[bar] = NULL;
++	ep_func->num_ib_atu_indexes[bar] = 0;
+ 	if (!indexes)
+ 		return;
+ 	for (i = 0; i < num; i++) {
+@@ -248,6 +256,7 @@ static int dw_pcie_ep_validate_submap(struct dw_pcie_ep *ep,
+ static int dw_pcie_ep_ib_atu_addr(struct dw_pcie_ep *ep, u8 func_no, int type,
+ 				  const struct pci_epf_bar *epf_bar)
  {
- 	struct link_follower *follower;
--	struct snd_ctl_elem_value *uval __free(kfree) = NULL;
-+	struct snd_ctl_elem_value *uval __free(kfree) =
-+		kmalloc(sizeof(*uval), GFP_KERNEL);
++	struct dw_pcie_ep_func *ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
+ 	const struct pci_epf_bar_submap *submap = epf_bar->submap;
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	enum pci_barno bar = epf_bar->barno;
+@@ -258,7 +267,7 @@ static int dw_pcie_ep_ib_atu_addr(struct dw_pcie_ep *ep, u8 func_no, int type,
+ 	unsigned int i;
+ 	u32 *indexes;
  
--	uval = kmalloc(sizeof(*uval), GFP_KERNEL);
- 	if (!uval)
+-	if (!epf_bar->num_submap || !submap || !epf_bar->size)
++	if (!ep_func || !epf_bar->num_submap || !submap || !epf_bar->size)
+ 		return -EINVAL;
+ 
+ 	ret = dw_pcie_ep_validate_submap(ep, submap, epf_bar->num_submap,
+@@ -279,8 +288,8 @@ static int dw_pcie_ep_ib_atu_addr(struct dw_pcie_ep *ep, u8 func_no, int type,
+ 	if (!indexes)
  		return -ENOMEM;
- 	list_for_each_entry(follower, &master->followers, list) {
+ 
+-	ep->ib_atu_indexes[bar] = indexes;
+-	ep->num_ib_atu_indexes[bar] = 0;
++	ep_func->ib_atu_indexes[bar] = indexes;
++	ep_func->num_ib_atu_indexes[bar] = 0;
+ 
+ 	for (i = 0; i < epf_bar->num_submap; i++) {
+ 		size = submap[i].size;
+@@ -308,11 +317,11 @@ static int dw_pcie_ep_ib_atu_addr(struct dw_pcie_ep *ep, u8 func_no, int type,
+ 
+ 		set_bit(free_win, ep->ib_window_map);
+ 		indexes[i] = free_win;
+-		ep->num_ib_atu_indexes[bar] = i + 1;
++		ep_func->num_ib_atu_indexes[bar] = i + 1;
+ 	}
+ 	return 0;
+ err:
+-	dw_pcie_ep_clear_ib_maps(ep, bar);
++	dw_pcie_ep_clear_ib_maps(ep, func_no, bar);
+ 	return ret;
+ }
+ 
+@@ -346,15 +355,16 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	enum pci_barno bar = epf_bar->barno;
++	struct dw_pcie_ep_func *ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
+ 
+-	if (!ep->epf_bar[bar])
++	if (!ep_func || !ep_func->epf_bar[bar])
+ 		return;
+ 
+ 	__dw_pcie_ep_reset_bar(pci, func_no, bar, epf_bar->flags);
+ 
+-	dw_pcie_ep_clear_ib_maps(ep, bar);
++	dw_pcie_ep_clear_ib_maps(ep, func_no, bar);
+ 
+-	ep->epf_bar[bar] = NULL;
++	ep_func->epf_bar[bar] = NULL;
+ }
+ 
+ static unsigned int dw_pcie_ep_get_rebar_offset(struct dw_pcie_ep *ep, u8 func_no,
+@@ -481,12 +491,16 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ {
+ 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
++	struct dw_pcie_ep_func *ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
+ 	enum pci_barno bar = epf_bar->barno;
+ 	size_t size = epf_bar->size;
+ 	enum pci_epc_bar_type bar_type;
+ 	int flags = epf_bar->flags;
+ 	int ret, type;
+ 
++	if (!ep_func)
++		return -EINVAL;
++
+ 	/*
+ 	 * DWC does not allow BAR pairs to overlap, e.g. you cannot combine BARs
+ 	 * 1 and 2 to form a 64-bit BAR.
+@@ -500,22 +514,22 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	 * calling clear_bar() would clear the BAR's PCI address assigned by the
+ 	 * host).
+ 	 */
+-	if (ep->epf_bar[bar]) {
++	if (ep_func->epf_bar[bar]) {
+ 		/*
+ 		 * We can only dynamically change a BAR if the new BAR size and
+ 		 * BAR flags do not differ from the existing configuration.
+ 		 */
+-		if (ep->epf_bar[bar]->barno != bar ||
+-		    ep->epf_bar[bar]->size != size ||
+-		    ep->epf_bar[bar]->flags != flags)
++		if (ep_func->epf_bar[bar]->barno != bar ||
++		    ep_func->epf_bar[bar]->size != size ||
++		    ep_func->epf_bar[bar]->flags != flags)
+ 			return -EINVAL;
+ 
+ 		/*
+ 		 * When dynamically changing a BAR, tear down any existing
+ 		 * mappings before re-programming.
+ 		 */
+-		if (ep->epf_bar[bar]->num_submap || epf_bar->num_submap)
+-			dw_pcie_ep_clear_ib_maps(ep, bar);
++		if (ep_func->epf_bar[bar]->num_submap || epf_bar->num_submap)
++			dw_pcie_ep_clear_ib_maps(ep, func_no, bar);
+ 
+ 		/*
+ 		 * When dynamically changing a BAR, skip writing the BAR reg, as
+@@ -574,7 +588,7 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	if (ret)
+ 		return ret;
+ 
+-	ep->epf_bar[bar] = epf_bar;
++	ep_func->epf_bar[bar] = epf_bar;
+ 
+ 	return 0;
+ }
+@@ -969,7 +983,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+ 	bir = FIELD_GET(PCI_MSIX_TABLE_BIR, tbl_offset);
+ 	tbl_offset &= PCI_MSIX_TABLE_OFFSET;
+ 
+-	msix_tbl = ep->epf_bar[bir]->addr + tbl_offset;
++	msix_tbl = ep_func->epf_bar[bir]->addr + tbl_offset;
+ 	msg_addr = msix_tbl[(interrupt_num - 1)].msg_addr;
+ 	msg_data = msix_tbl[(interrupt_num - 1)].msg_data;
+ 	vec_ctrl = msix_tbl[(interrupt_num - 1)].vector_ctrl;
+@@ -1032,11 +1046,14 @@ EXPORT_SYMBOL_GPL(dw_pcie_ep_deinit);
+ 
+ static void dw_pcie_ep_init_rebar_registers(struct dw_pcie_ep *ep, u8 func_no)
+ {
+-	unsigned int offset;
+-	unsigned int nbars;
++	struct dw_pcie_ep_func *ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
++	unsigned int offset, nbars;
+ 	enum pci_barno bar;
+ 	u32 reg, i, val;
+ 
++	if (!ep_func)
++		return;
++
+ 	offset = dw_pcie_ep_find_ext_capability(ep, func_no, PCI_EXT_CAP_ID_REBAR);
+ 
+ 	if (offset) {
+@@ -1063,8 +1080,8 @@ static void dw_pcie_ep_init_rebar_registers(struct dw_pcie_ep *ep, u8 func_no)
+ 			 */
+ 			val = dw_pcie_ep_readl_dbi(ep, func_no, offset + PCI_REBAR_CTRL);
+ 			bar = FIELD_GET(PCI_REBAR_CTRL_BAR_IDX, val);
+-			if (ep->epf_bar[bar])
+-				pci_epc_bar_size_to_rebar_cap(ep->epf_bar[bar]->size, &val);
++			if (ep_func->epf_bar[bar])
++				pci_epc_bar_size_to_rebar_cap(ep_func->epf_bar[bar]->size, &val);
+ 			else
+ 				val = BIT(4);
+ 
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index 3c4220027415e..5c429b62cb086 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -467,6 +467,12 @@ struct dw_pcie_ep_func {
+ 	u8			func_no;
+ 	u8			msi_cap;	/* MSI capability offset */
+ 	u8			msix_cap;	/* MSI-X capability offset */
++	u8			bar_to_atu[PCI_STD_NUM_BARS];
++	struct pci_epf_bar	*epf_bar[PCI_STD_NUM_BARS];
++
++	/* Only for Address Match Mode inbound iATU */
++	u32			*ib_atu_indexes[PCI_STD_NUM_BARS];
++	unsigned int		num_ib_atu_indexes[PCI_STD_NUM_BARS];
+ };
+ 
+ struct dw_pcie_ep {
+@@ -476,17 +482,11 @@ struct dw_pcie_ep {
+ 	phys_addr_t		phys_base;
+ 	size_t			addr_size;
+ 	size_t			page_size;
+-	u8			bar_to_atu[PCI_STD_NUM_BARS];
+ 	phys_addr_t		*outbound_addr;
+ 	unsigned long		*ib_window_map;
+ 	unsigned long		*ob_window_map;
+ 	void __iomem		*msi_mem;
+ 	phys_addr_t		msi_mem_phys;
+-	struct pci_epf_bar	*epf_bar[PCI_STD_NUM_BARS];
+-
+-	/* Only for Address Match Mode inbound iATU */
+-	u32			*ib_atu_indexes[PCI_STD_NUM_BARS];
+-	unsigned int		num_ib_atu_indexes[PCI_STD_NUM_BARS];
+ 
+ 	/* MSI outbound iATU state */
+ 	bool			msi_iatu_mapped;
 -- 
 2.51.0
 
