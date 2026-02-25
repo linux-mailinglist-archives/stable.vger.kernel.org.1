@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YA7XBQlVnmnyUgQAu9opvQ
-	(envelope-from <stable+bounces-218743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:57 +0100
+	id qBAKCw6gnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FB118FEAA
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:48:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84938193048
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6B7D31F2496
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:40:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D145F31C2982
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A77258ED5;
-	Wed, 25 Feb 2026 01:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAC42BDC03;
+	Wed, 25 Feb 2026 06:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRne+H7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnsJIMHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E0A248881;
-	Wed, 25 Feb 2026 01:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5316D3081D7;
+	Wed, 25 Feb 2026 06:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983610; cv=none; b=KeXzgcAakMN9ZWkDKtIs1H+3zfOybJNGfxe/OsZVbYrHOJvuD1RF0vYeXvq+nE1vyIrctQa186wDPDgPHigodKlhDHj+9IrnSqTh0qayBeyCkrcR7A3fHmoYTICloxXaRb1McowkiNK6eWMPyke4kyfUtEOKz5IRVj6wrjaU/2A=
+	t=1772002694; cv=none; b=fHerpnqrwwD/msgnXsO6IXfqnQU8nUIdjjjDdBcGVf9GT9unyKinuij4Whx9oMm7Z439HIsd+Zk7qdTlhLGsaFDq4URYIw3FOeaqwjBKRWOu3qmEDSjbJXh/7XHYrjrcwMJrPCqLZs0rjgpCP12YXonaY6alVLMDagDOJO/+xVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983610; c=relaxed/simple;
-	bh=z34LJmPJJ2Tsn9kcL7MMc0x21DL8NaugKrHyN3ZIOVM=;
+	s=arc-20240116; t=1772002694; c=relaxed/simple;
+	bh=LvPsTPBwJ3HAtTWL/sSbkPggwowCa15cDIQcxedsods=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtN8tP5NwdRfjjVabhTDLGjuEMhPRmRJ8bS9UFQBu65mTLvLRGjkbPgr5/i+e07UKo0Mbp6GSiGr/winf4x05eDImX4LqGjnEpNw8Lw7keu1jOEbCnQJSyMkH1Th3AP3gzSjhN2UajgjomKhU5petOKHuIjaXdQSTTITwzZVo5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRne+H7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC32C116D0;
-	Wed, 25 Feb 2026 01:40:10 +0000 (UTC)
+	 MIME-Version; b=pDhsX05xguWomT8ziEWllsNQf2gf49OjaL2CdDOLuvuVDE/b59bE7yJDwlJBSWepCmHmv71UQRggwM7QBRlyONFsY1Zz5zUh1xwPX7Fx7C/Yo3+C1vsaOerQlEzoSDZMOAZBCz4ecrRYAk06cWbvcN7glkr8gB+9V1KhLjX94Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnsJIMHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD3EC19425;
+	Wed, 25 Feb 2026 06:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983610;
-	bh=z34LJmPJJ2Tsn9kcL7MMc0x21DL8NaugKrHyN3ZIOVM=;
+	s=korg; t=1772002694;
+	bh=LvPsTPBwJ3HAtTWL/sSbkPggwowCa15cDIQcxedsods=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRne+H7GlRetP1xzYMLJq/bU0pberjHx1ePkKNO7J2o7hd0DW9NCAsLJaWfG2YrZv
-	 lngNWtqFAC3I18fWAC1XeObZR6+LjTi9IoASUulzttLpJ6orP4iDRLpWPldRqAoFPK
-	 +cOhh2AU6myKVoRiyhfBJfBd222Nv7h3xlovbIOs=
+	b=HnsJIMHKz5NkJKa6f21gshDaFB0K4LmIPwtui0YbU3EkLp+FeVkJ+Yul5mp1os7xj
+	 EEP7ZEaHXARzj4idvxMXpX1fO22C4dRYb5XKyESYwWeuqRbLdTjQHgOBa9c1L03Izy
+	 YU9HwIjrCzS8wEeLD1VPzKT28uodJJqbT6vOf+6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 705/781] apparmor: fix aa_label to return state from compount and component match
-Date: Tue, 24 Feb 2026 17:23:34 -0800
-Message-ID: <20260225012417.042132239@linuxfoundation.org>
+Subject: [PATCH 6.18 489/641] pinctrl: meson: amlogic-a4: Fix device node reference leak in bank helpers
+Date: Tue, 24 Feb 2026 17:23:35 -0800
+Message-ID: <20260225012400.366423005@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +66,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218743-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219405-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amlogic.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.955];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 92FB118FEAA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amlogic.com:email]
+X-Rspamd-Queue-Id: 84938193048
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 9058798652c8bc0584ed1fb0766a1015046c06e8 ]
+[ Upstream commit e56aa18eba32fb68ac5e19e44670010095bb189c ]
 
-aa-label_match is not correctly returning the state in all cases.
-The only reason this didn't cause a error is that all callers currently
-ignore the return value.
+of_parse_phandle_with_fixed_args() increments the reference count of the
+returned device node, so it must be explicitly released using
+of_node_put() after use.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202602020631.wXgZosyU-lkp@intel.com/
-Fixes: a4c9efa4dbad6 ("apparmor: make label_match return a consistent value")
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fix the reference leak in aml_bank_pins() and aml_bank_number() by
+adding the missing of_node_put() calls.
+
+Fixes: 6e9be3abb78c ("pinctrl: Add driver support for Amlogic SoCs")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/label.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/pinctrl/meson/pinctrl-amlogic-a4.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/security/apparmor/label.c b/security/apparmor/label.c
-index 1d3fa5c28d97f..dd6c58f595ba8 100644
---- a/security/apparmor/label.c
-+++ b/security/apparmor/label.c
-@@ -1334,7 +1334,7 @@ static int label_compound_match(struct aa_profile *profile,
-  * @request: permissions to request
-  * @perms: an initialized perms struct to add accumulation to
-  *
-- * Returns: 0 on success else ERROR
-+ * Returns: the state the match finished in, may be the none matching state
-  *
-  * For the label A//&B//&C this does the perm match for each of A and B and C
-  * @perms should be preinitialized with allperms OR a previous permission
-@@ -1362,7 +1362,7 @@ static int label_components_match(struct aa_profile *profile,
- 	}
- 
- 	/* no subcomponents visible - no change in perms */
--	return 0;
-+	return state;
- 
- next:
- 	tmp = *aa_lookup_perms(rules->policy, state);
-@@ -1378,13 +1378,13 @@ static int label_components_match(struct aa_profile *profile,
- 	}
- 
- 	if ((perms->allow & request) != request)
--		return -EACCES;
-+		return DFA_NOMATCH;
- 
--	return 0;
-+	return state;
- 
- fail:
- 	*perms = nullperms;
--	return -EACCES;
-+	return DFA_NOMATCH;
+diff --git a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
+index d9e3a8d5932a8..f05d8261624a4 100644
+--- a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
++++ b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
+@@ -725,8 +725,9 @@ static u32 aml_bank_pins(struct device_node *np)
+ 	if (of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3,
+ 					     0, &of_args))
+ 		return 0;
+-	else
+-		return of_args.args[2];
++
++	of_node_put(of_args.np);
++	return of_args.args[2];
  }
  
- /**
-@@ -1406,7 +1406,7 @@ int aa_label_match(struct aa_profile *profile, struct aa_ruleset *rules,
- 	aa_state_t tmp = label_compound_match(profile, rules, label, state, subns,
- 					request, perms);
- 	if ((perms->allow & request) == request)
--		return 0;
-+		return tmp;
+ static int aml_bank_number(struct device_node *np)
+@@ -736,8 +737,9 @@ static int aml_bank_number(struct device_node *np)
+ 	if (of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3,
+ 					     0, &of_args))
+ 		return -EINVAL;
+-	else
+-		return of_args.args[1] >> 8;
++
++	of_node_put(of_args.np);
++	return of_args.args[1] >> 8;
+ }
  
- 	/* failed compound_match try component matches */
- 	*perms = allperms;
+ static unsigned int aml_count_pins(struct device_node *np)
 -- 
 2.51.0
 
