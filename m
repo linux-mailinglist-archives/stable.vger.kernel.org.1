@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-219298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGebMGadnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:42 +0100
+	id WCfSMDBUnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3986A1929A3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 375E718FC05
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9F2B2304F23A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C450131A44C1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B35C2D6E74;
-	Wed, 25 Feb 2026 06:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F8826A1A4;
+	Wed, 25 Feb 2026 01:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb8sYd3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEc5J68y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EB42D6E58;
-	Wed, 25 Feb 2026 06:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660BD2641FC;
+	Wed, 25 Feb 2026 01:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002624; cv=none; b=QWSLhdQVptOGrum8KtyCbUEHqd30F40m7Ju4j/mZytHJUk+mbVhPvRVdtlIBeESnZ382c4wqb3CPujyll6BknWxopcljg6m7EPLacNNFdbOLwtS0RCSvSReB3FTWFaGN2Dof6On+Ym6bs42NOnm3G8DLbftNV5gOS4zWiYFBy3s=
+	t=1771983488; cv=none; b=mpbY0cPgA18k858aMvsrGbFJJS1L3b9yM6AqTdwp9G3y/N3X4euygpwsKqkKz1d1ovaFr4HFmP7D/RPN42HGtW65pngua01dmSYECTWzwd2ADff2kH9x6iNZR6t7NXTd3HTMkf14FJX5cioerGKo7ijOGFrMVDrSxfpP+Q+iTlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002624; c=relaxed/simple;
-	bh=IH2u9ka2MFnpO/L260oqPNJ8NPOypxY+USFgdJwmthU=;
+	s=arc-20240116; t=1771983488; c=relaxed/simple;
+	bh=XgVOx060x4RobTkkBVxqrqM6MXy3SSjIFCJ8jSJai9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FQ7czjguSBVppeEPairRns3XQy1PeeHfu/hJa4+aEOQr4GrBxhlW5dbm7LXJb6gONezpK1mRM5Tgk5NVYOBE1e95Y4L0Zmb/3oIR+qdKmfFudhEKYRKQPyGrjVxILR25qfcRbE9f87zt4O1sJH3ziSZk9Hm+HiIeJlxoK9z2nOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bb8sYd3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3E9C19422;
-	Wed, 25 Feb 2026 06:57:03 +0000 (UTC)
+	 MIME-Version; b=uYEkWGt/I4cRsa7kFAlu9YEpHl92uaksQc/jSzMfmiFfbPlAFQ2YMjeroKg06hs9BuCT1Dx9WkP4HW7pUKCA2mpOZZprNUUFGUWckOo4dGOlSHyno+4bhgOGfAaEljoKW4dcRy0Xg/GHIRiYHkU+wYg+HPfLrMbMyNpPVMIddFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEc5J68y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1EAC116D0;
+	Wed, 25 Feb 2026 01:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002623;
-	bh=IH2u9ka2MFnpO/L260oqPNJ8NPOypxY+USFgdJwmthU=;
+	s=korg; t=1771983488;
+	bh=XgVOx060x4RobTkkBVxqrqM6MXy3SSjIFCJ8jSJai9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bb8sYd3pXBKEX17wCxralKWemreWN319cElZw5Rn6QbdyEXk4xov+/a7YpjrqxKkW
-	 PMrloqNPG7gsKS8xA1+YI5kcOaN4HtgxjBhCFVgoBQ4lDe8UBoNC9aIuHZV9B9HP+k
-	 Lx7vk5LniKB8j5m5wO+srqh46xM2jJk3yPJWWJro=
+	b=dEc5J68yC/pm0inxB+VOqV7EdkOku1FneJdv97fvTQlUYWEHm+a2b5KZ5ebHIX8r1
+	 22QCI1gnXtKx29cwPdC3caZkur45/R6sTHv/rJrqLqvXI6BvDZJZGrdDpce2BDppbD
+	 YvYHiPf5CpyHeLysOnp78kWDq6fI3QI/Z4JO73yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuxiong Wang <yuxiong.wang@linux.alibaba.com>,
-	Huang Ying <ying.huang@linux.alibaba.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 383/641] cxl: Fix premature commit_end increment on decoder commit failure
+Subject: [PATCH 6.19 600/781] mips: LOONGSON32: drop a dangling Kconfig symbol
 Date: Tue, 24 Feb 2026 17:21:49 -0800
-Message-ID: <20260225012357.871335043@linuxfoundation.org>
+Message-ID: <20260225012414.511774265@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +66,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219298-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-218639-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,infradead.org,gmail.com,alpha.franken.de,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 3986A1929A3
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,franken.de:email]
+X-Rspamd-Queue-Id: 375E718FC05
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuxiong Wang <yuxiong.wang@linux.alibaba.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 7b6f9d9b1ea05c9c22570126547c780e8c6c3f62 ]
+[ Upstream commit d463fc5ca1ace0b2e8bb764df04fc12ecd6f8e2b ]
 
-In cxl_decoder_commit(), commit_end is incremented before verifying
-whether the commit succeeded, and the CXL_DECODER_F_ENABLE bit in
-cxld->flags is only set after a successful commit. As a result, if the
-commit fails, commit_end has been incremented and cxld->reset() has no
-effect since the flag is not set, so commit_end remains incorrectly
-incremented. The inconsistency between commit_end and CXL_DECODER_F_ENABLE
-causes failure during subsequent either commit or reset operations.
+CPU_HAS_LOAD_STORE_LR is not used anywhere in the kernel sources,
+so drop it.
 
-Fix this by incrementing commit_end only after confirming the commit
-succeeded. Also, remove the ineffective cxld->reset() call. According to
-CXL Spec r4.0 8.2.4.20.12 Committing Decoder Programming, since
-cxld_await_commit() has cleared the decoder commit bit on failure, no
-additional reset is required.
-
-[dj: Fixed commit log 80 char wrapping. ]
-[dj: Fix "Fixes" tag to correct hash length. ]
-[dj: Change spec to r4.0. ]
-
-Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
-Signed-off-by: Yuxiong Wang <yuxiong.wang@linux.alibaba.com>
-Acked-by: Huang Ying <ying.huang@linux.alibaba.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Link: https://patch.msgid.link/20260129064552.31180-1-yuxiong.wang@linux.alibaba.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: 85c4354076ca ("MIPS: loongson32: Switch to generic core")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Keguang Zhang <keguang.zhang@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/hdm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/mips/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-index 20dd638108062..13dafac7c6d56 100644
---- a/drivers/cxl/core/hdm.c
-+++ b/drivers/cxl/core/hdm.c
-@@ -844,14 +844,13 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
- 	scoped_guard(rwsem_read, &cxl_rwsem.dpa)
- 		setup_hw_decoder(cxld, hdm);
- 
--	port->commit_end++;
- 	rc = cxld_await_commit(hdm, cxld->id);
- 	if (rc) {
- 		dev_dbg(&port->dev, "%s: error %d committing decoder\n",
- 			dev_name(&cxld->dev), rc);
--		cxld->reset(cxld);
- 		return rc;
- 	}
-+	port->commit_end++;
- 	cxld->flags |= CXL_DECODER_F_ENABLE;
- 
- 	return 0;
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b88b97139fa8e..d87db7c535ea1 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1408,7 +1408,6 @@ config CPU_LOONGSON32
+ 	select CPU_MIPS32
+ 	select CPU_MIPSR2
+ 	select CPU_HAS_PREFETCH
+-	select CPU_HAS_LOAD_STORE_LR
+ 	select CPU_SUPPORTS_32BIT_KERNEL
+ 	select CPU_SUPPORTS_HIGHMEM
+ 	select CPU_SUPPORTS_CPUFREQ
 -- 
 2.51.0
 
