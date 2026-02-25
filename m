@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-218776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AD+NBktVnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:03 +0100
+	id iCXNB52fnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C58118FF8B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:50:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85AF1192F86
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D095312E4E7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A8FE312C1DB
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345F4256C6C;
-	Wed, 25 Feb 2026 01:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716C93101B6;
+	Wed, 25 Feb 2026 06:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgPBRjS5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8XQAyYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE0D256C8B;
-	Wed, 25 Feb 2026 01:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355372D23A4;
+	Wed, 25 Feb 2026 06:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983649; cv=none; b=mHlw7EnRCqbTwyw4Wb7rBnJoIAaQiBWT49aIQWQyDfiszbYLLuH3ZdSH6/WtRGGskzjrkb3596pOQVWUBDgm4TnIyY3/t9DJnRwVRHO1AcJFUSFGWpK9eurZ0yO1dgUEbJ95Ztb8Vic8HGI0kDSpQliXT54BqglOgKQvrpFp6Xs=
+	t=1772002741; cv=none; b=rsuZ1nLP18gj03Ysy5ILnbgGdNj5QkDVleoR149gjCU9EDQdyR3rIreOmniNjDpwf/XUTrNbLvfe7WiIBb1uFrUgaqE+Ydu+TaZl/Vl9/72SGawRYD5lTiHbCunkp+UxPw7nJWU+xaPvCoJIkb2hWVlp/9ikJTKTsDxuqRElRVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983649; c=relaxed/simple;
-	bh=3LR/dS+4dHTsGm53kvYOz0Bd4zdJBnJFGEvIFYiZ20M=;
+	s=arc-20240116; t=1772002741; c=relaxed/simple;
+	bh=rEndfa6mgQt4O4pHntKGvZO5cZEH4u8MTkBUstL7ne4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D14uhTstTrGmGXspzX/bCZgqzj9l9QL/0tOq40BKFtUCLLHvs67A4gXN7/+oxNb4+/2uC+/OVkypyOZI4CaMwUiKWZhqg91IEq+UyEg75AnKVfISXC8eztQO5Ftav5qS+W46+Jfx7eYp/Lu0GtcaTrtOXRxl8xfUjQTjvYC9SY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgPBRjS5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BD7C116D0;
-	Wed, 25 Feb 2026 01:40:48 +0000 (UTC)
+	 MIME-Version; b=O9PFQlE5G582Cgzrjr4g0Uc+DjuG6M1u7lyErUREeEys5fAdRGe+g/8McMOmxXhT7U4tPPaQLrVRgAML9f/qu04j6zMXUB/aDc+kkUHrJ8OYmdk97ElcRD5Y6+wGkjeP8GflgGNBK5mDgz3V4KB0+8+2eKCsVlkfbyhTb+fHY/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8XQAyYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A67AC116D0;
+	Wed, 25 Feb 2026 06:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983648;
-	bh=3LR/dS+4dHTsGm53kvYOz0Bd4zdJBnJFGEvIFYiZ20M=;
+	s=korg; t=1772002741;
+	bh=rEndfa6mgQt4O4pHntKGvZO5cZEH4u8MTkBUstL7ne4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgPBRjS52sWLc4k1SBI3IX+RaXgKHxUhOi5FtNUH4rm0bBWhGPPjX0f+Ee1mJ4g1f
-	 IkigSTrH86ZXBE8qH670KQyqqm33EBQ0w6dJXgCwJ88nRdX1f+8f7FHFIXJvJys9Sm
-	 Ut2fYauPdc3ZGX9ktWjhTJfOtJ8VYEmZNxn7Yr+U=
+	b=R8XQAyYFNN3jkGRwkYon63BAXC67WJCHzeVV31p8rCPyV8UYGE5RnwQDSjZY9+tJg
+	 vjT7UmgAuuMXU1ZxY4Ghy4VEYCWmLJbyDJcePyXdSySVg8NMe+1Kszy2diP6E/BwHy
+	 aZpdqgtaldkfQaMaz3derWw9sMTqzVkdbuzG3y8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moritz Sanft <ms@edgeless.systems>,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 735/781] efi: Fix reservation of unaccepted memory table
+Subject: [PATCH 6.18 518/641] net: sparx5/lan969x: fix DWRR cost max to match hardware register width
 Date: Tue, 24 Feb 2026 17:24:04 -0800
-Message-ID: <20260225012417.758539954@linuxfoundation.org>
+Message-ID: <20260225012401.080522604@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218776-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219476-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,73 +87,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3C58118FF8B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,microchip.com:email]
+X-Rspamd-Queue-Id: 85AF1192F86
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiryl Shutsemau (Meta) <kas@kernel.org>
+From: Daniel Machon <daniel.machon@microchip.com>
 
-[ Upstream commit 0862438c90487e79822d5647f854977d50381505 ]
+[ Upstream commit 6c28aa8dfdf24f554d4c5d4ff7d723a95360d94a ]
 
-The reserve_unaccepted() function incorrectly calculates the size of the
-memblock reservation for the unaccepted memory table. It aligns the
-size of the table, but fails to account for cases where the table's
-starting physical address (efi.unaccepted) is not page-aligned.
+DWRR (Deficit Weighted Round Robin) scheduling distributes bandwidth
+across traffic classes based on per-queue cost values, where lower cost
+means higher bandwidth share.
 
-If the table starts at an offset within a page and its end crosses into
-a subsequent page that the aligned size does not cover, the end of the
-table will not be reserved. This can lead to the table being overwritten
-or inaccessible, causing a kernel panic in accept_memory().
+The SPX5_DWRR_COST_MAX constant is 63 (6 bits) but the hardware
+register field HSCH_DWRR_ENTRY_DWRR_COST is GENMASK(24, 20), only
+5 bits wide (max 31). This causes sparx5_weight_to_hw_cost() to
+compute cost values that silently overflow via FIELD_PREP, resulting
+in incorrect scheduling weights.
 
-This issue was observed when starting Intel TDX VMs with specific memory
-sizes (e.g., > 64GB).
+Set SPX5_DWRR_COST_MAX to 31 to match the hardware register width.
 
-Fix this by calculating the end address first (including the unaligned
-start) and then aligning it up, ensuring the entire range is covered
-by the reservation.
-
-Fixes: 8dbe33956d96 ("efi/unaccepted: Make sure unaccepted table is mapped")
-Reported-by: Moritz Sanft <ms@edgeless.systems>
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 211225428d65 ("net: microchip: sparx5: add support for offloading ets qdisc")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260210-sparx5-fix-dwrr-cost-max-v1-1-58fbdbc25652@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/efi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_qos.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 17b5f3415465e..92e91c3eb4690 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -692,13 +692,13 @@ static __init int match_config_table(const efi_guid_t *guid,
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_qos.h b/drivers/net/ethernet/microchip/sparx5/sparx5_qos.h
+index 1231a80335d7b..04f76f1e23f60 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_qos.h
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_qos.h
+@@ -35,7 +35,7 @@
+ #define SPX5_SE_BURST_UNIT 4096
  
- static __init void reserve_unaccepted(struct efi_unaccepted_memory *unaccepted)
- {
--	phys_addr_t start, size;
-+	phys_addr_t start, end;
+ /* Dwrr */
+-#define SPX5_DWRR_COST_MAX 63
++#define SPX5_DWRR_COST_MAX 31
  
- 	start = PAGE_ALIGN_DOWN(efi.unaccepted);
--	size = PAGE_ALIGN(sizeof(*unaccepted) + unaccepted->size);
-+	end = PAGE_ALIGN(efi.unaccepted + sizeof(*unaccepted) + unaccepted->size);
- 
--	memblock_add(start, size);
--	memblock_reserve(start, size);
-+	memblock_add(start, end - start);
-+	memblock_reserve(start, end - start);
- }
- 
- int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
+ struct sparx5_shaper {
+ 	u32 mode;
 -- 
 2.51.0
 
