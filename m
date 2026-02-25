@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-218644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AxYFT1UnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:33 +0100
+	id iMkdBHGdnmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACDE118FC39
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 867F81929C7
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE3B9306A53E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6AA32303B2D1
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C2B25A357;
-	Wed, 25 Feb 2026 01:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3DD2D94AF;
+	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUJvbG74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQuSnrTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84996256C84;
-	Wed, 25 Feb 2026 01:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5232E2FFFB6;
+	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983494; cv=none; b=ENQ3kUxwICewiIXPQd2Abw++Lwfni9wFs/mwGR4KcjsFArA9xmj6wEMW4xbi6os1OZREslh5gxZXJq3yjdWWqyWgOBnWHijev3N1l0s2KXZC03hIzNBDl61Tj7RD91IS2ZtyVZRxwMnuAJFjdsttvTwz/XRkl0AnN3pTse3YDX0=
+	t=1772002627; cv=none; b=VJccdnO/EG2VtX7sznU+YgoKwdJSHP+FJzI7by4DoOEqVJSHLnvACN61rE9vAWiqE9DBOHrcAvEcVApkcAMDvz5ZTDERXiOGvyPztRwighGiem2HY7zT9br8ml4FNbaR75EFy2SKQkUKj07ZuPE3cJfwoqduQ+as5Xb7j+trIXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983494; c=relaxed/simple;
-	bh=vaKDAJu5PM5zh3RadBJJyWcrCK9Nw11HZ1mnboSRufI=;
+	s=arc-20240116; t=1772002627; c=relaxed/simple;
+	bh=hIS7d0dErC/+aWpe7Azq+GW1c5eVrqCjBPodVwIC+HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqbRkPjSWQy95VHYdrd9jd4dScCgo9hNHUcxm5wHhCgSTpGf8NC/12rih31WTGhP98HHyaeiHGve6nIfb28Mg57qHLoElTX/YuLTC/HuQ/dC8PYHwAiGPeF7ib8dBSKesubqYOI+83Y+K8q0NZzXwCtbC0dE40rlr7DDOJM4hpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUJvbG74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36543C116D0;
-	Wed, 25 Feb 2026 01:38:14 +0000 (UTC)
+	 MIME-Version; b=JDJL/m0MXiouhk1wDwfj013EVzpQMwDrqs4VgKYV1ipEBN2U+zI9G2Uh5xmFeQEEjVtQuZZVodmpvVnrT3PI0uIOBdQ88RDa/n/SEwD2V12Skrp0WQSJAgyJWTsWDCnKOpTvnc0FgwxJFDcsq2W+4PQogyZXTHezwt4GzdtA4g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQuSnrTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBA2C116D0;
+	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983494;
-	bh=vaKDAJu5PM5zh3RadBJJyWcrCK9Nw11HZ1mnboSRufI=;
+	s=korg; t=1772002627;
+	bh=hIS7d0dErC/+aWpe7Azq+GW1c5eVrqCjBPodVwIC+HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uUJvbG746XRtq703pkK7xtfFwgaZXbZu328nCBoar5D/eeIY8HYNx+oyST6MqOl2O
-	 96GXqfyPgFLbclPNHnlv6Gn9sNyMs0V6BmmEcaqQMxQjCGLT/Hl5dVzptpPJ0frOjH
-	 xSdvPn99tTdcX5ZjlpRJF+oVomU66ySm+vgT9uHM=
+	b=UQuSnrTMwlBgzVJbeFIGK2NoW5miXG44JcpebE+kx3/e8UcfxF1fmNG56RMuNFKaW
+	 uDJCXJPm27lW3Kfi0Aku0Ua2Z7wKxP0wc2oK8v4dIi3PVmp0aSEWawZCWKjhHK/REb
+	 M/vpOlkovLL8tWNAebBOBM9KHNTUpSrz6Z6ibYSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Li <unsw.weili@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Val Packett <val@packett.cool>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 604/781] pinctrl: single: fix refcount leak in pcs_add_gpio_func()
-Date: Tue, 24 Feb 2026 17:21:53 -0800
-Message-ID: <20260225012414.609666179@linuxfoundation.org>
+Subject: [PATCH 6.18 388/641] power: supply: qcom_battmgr: Recognize "LiP" as lithium-polymer
+Date: Tue, 24 Feb 2026 17:21:54 -0800
+Message-ID: <20260225012357.983964944@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +67,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218644-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219303-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.976];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,gpiospec.np:url]
-X-Rspamd-Queue-Id: ACDE118FC39
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 867F81929C7
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Li <unsw.weili@gmail.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 353353309b0f7afa407df29e455f9d15b5acc296 ]
+[ Upstream commit c655f45480637aee326b5bd96488d35ab90db2b0 ]
 
-of_parse_phandle_with_args() returns a device_node pointer with refcount
-incremented in gpiospec.np. The loop iterates through all phandles but
-never releases the reference, causing a refcount leak on each iteration.
+On the Dell Latitude 7455, the firmware uses "LiP" with a lowercase 'i'
+for the battery chemistry type, but only all-uppercase "LIP" was being
+recognized. Add the CamelCase variant to the check to fix the "Unknown
+battery technology" warning.
 
-Add of_node_put() calls to release the reference after extracting the
-needed arguments and on the error path when devm_kzalloc() fails.
-
-This bug was detected by our static analysis tool and verified by my
-code review.
-
-Fixes: a1a277eb76b3 ("pinctrl: single: create new gpio function range")
-Signed-off-by: Wei Li <unsw.weili@gmail.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Fixes: 202ac22b8e2e ("power: supply: qcom_battmgr: Add lithium-polymer entry")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260120235831.479038-1-val@packett.cool
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-single.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/qcom_battmgr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 998f23d6c3179..d85e6c1f63218 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -1359,6 +1359,7 @@ static int pcs_add_gpio_func(struct device_node *node, struct pcs_device *pcs)
- 		}
- 		range = devm_kzalloc(pcs->dev, sizeof(*range), GFP_KERNEL);
- 		if (!range) {
-+			of_node_put(gpiospec.np);
- 			ret = -ENOMEM;
- 			break;
- 		}
-@@ -1368,6 +1369,7 @@ static int pcs_add_gpio_func(struct device_node *node, struct pcs_device *pcs)
- 		mutex_lock(&pcs->mutex);
- 		list_add_tail(&range->node, &pcs->gpiofuncs);
- 		mutex_unlock(&pcs->mutex);
-+		of_node_put(gpiospec.np);
- 	}
- 	return ret;
- }
+diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
+index e6f01e0122e1c..ff77dba29a3ef 100644
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -1244,7 +1244,8 @@ static unsigned int qcom_battmgr_sc8280xp_parse_technology(const char *chemistry
+ 	if ((!strncmp(chemistry, "LIO", BATTMGR_CHEMISTRY_LEN)) ||
+ 	    (!strncmp(chemistry, "OOI", BATTMGR_CHEMISTRY_LEN)))
+ 		return POWER_SUPPLY_TECHNOLOGY_LION;
+-	if (!strncmp(chemistry, "LIP", BATTMGR_CHEMISTRY_LEN))
++	if (!strncmp(chemistry, "LIP", BATTMGR_CHEMISTRY_LEN) ||
++	    !strncmp(chemistry, "LiP", BATTMGR_CHEMISTRY_LEN))
+ 		return POWER_SUPPLY_TECHNOLOGY_LIPO;
+ 
+ 	pr_err("Unknown battery technology '%s'\n", chemistry);
 -- 
 2.51.0
 
