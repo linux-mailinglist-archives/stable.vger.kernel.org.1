@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-219398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218785-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YIIbL/2fnmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:45 +0100
+	id eN8aKe9YnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218785-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF7119303A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E90B19084B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08F4330CD032
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C86B3130A9B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF0C304BBF;
-	Wed, 25 Feb 2026 06:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8540D26FD9B;
+	Wed, 25 Feb 2026 01:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPg0UQb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKRcE/FO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FE12FB08C;
-	Wed, 25 Feb 2026 06:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4983D26FD93;
+	Wed, 25 Feb 2026 01:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002689; cv=none; b=l3GA2lHMD9GxEyeC1R/2bCV3fwxI2WyL1v6cWYG8AE7fMHTynn0tIHAo88xskTDme2jo0ItHmuBwAo1FTX0IySEgcREdHuoShvLwFK+0hvk1zQ+Y5EoTe/CotvfjEZdT6r2cIB4WuLCrQWBBD/yw2r2q18v+V/N7ufheM93pWH0=
+	t=1771983659; cv=none; b=urTdId2wQ1vQcPne4GmK5qsr796Cfy9AxlroCnuCUIEgRAzb0+KNdiwaKNxBc6BvtxwkBMtqNMLTsEL4ivlW7Asb8agg6Qv7gQKwVUI4GXbaA/djGYArbb1WX7395fv6NI/GtE4imf3e+Es1lubhhY1PG7C+m8MwIqnDG5B907A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002689; c=relaxed/simple;
-	bh=7QJGrnD/aar1VUyTyVzgadLuMrvtqODfyZD8On8MREA=;
+	s=arc-20240116; t=1771983659; c=relaxed/simple;
+	bh=Kl5BNgfvMibn1ohYbR3YL0k+N3Cr4HkgWckLJTeyePk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1c55XO3cbYTQ7koPfd4dIYNLYBzz9GxQULNErrvSpaYddhATimNmwJDzqX/lt66gLpX/q5642L24jzpV4StKH3DO7w+4buijYccdRvixe8Uo+B8+d/+2lrOFs6BbhGlE6wlzRqGeZk76M2NYxCEEMkoZGsQSlwLV2NwL8vJPjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPg0UQb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BC3C116D0;
-	Wed, 25 Feb 2026 06:58:09 +0000 (UTC)
+	 MIME-Version; b=VOX3fLdd7gFo0njK789zyl0Ownsj0SgVeDslkKQoRvRfgrtFEyRE0fzcGFPmWyWVe7IWIXvpvOD9KkDeOXYnf9w+Kw46/Fpp8jkr9jKyaoj6D22thP785eQUshV+NsdvvaRIqk5gY/QmHOmY2aC34B0dihv2wJdlG2MrSbrBzJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKRcE/FO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00516C116D0;
+	Wed, 25 Feb 2026 01:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002689;
-	bh=7QJGrnD/aar1VUyTyVzgadLuMrvtqODfyZD8On8MREA=;
+	s=korg; t=1771983659;
+	bh=Kl5BNgfvMibn1ohYbR3YL0k+N3Cr4HkgWckLJTeyePk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jPg0UQb2FIlFCgpvq4W1aR6UZNu3uaYaR8ylMUBYi6Ekz+zepUmeLThSlaNA19ke+
-	 BB5G+U89zTTZ/H9xFc7i9nhXKywdVBzCGUom9NE1mrUCryMe8TdfFVa1AWMZ7mbkA4
-	 9NsT+tM4z1WoVi2atgxJlhJD+dxcDn40L2zA9wKw=
+	b=LKRcE/FOnopG4kqGOQaf4043jVDWPRinC5+tc+1Nlh8y1vv9Bzn6mMBDIe4ZdG+Pk
+	 jXGOO7AamQPW7xeg4LHJUJtjHGCP99CtpY73UblGiRKNAIdeM3kOWv/YdOgJ+gcd3M
+	 +VT6eLcbmOuycxAepAdYYI5NsdNP5V9JjDI/fpQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 483/641] pinctrl: equilibrium: Fix device node reference leak in pinbank_init()
-Date: Tue, 24 Feb 2026 17:23:29 -0800
-Message-ID: <20260225012400.222651343@linuxfoundation.org>
+Subject: [PATCH 6.19 701/781] apparmor: remove apply_modes_to_perms from label_match
+Date: Tue, 24 Feb 2026 17:23:30 -0800
+Message-ID: <20260225012416.950138844@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +65,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-219398-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218785-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.956];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,spec.np:url]
-X-Rspamd-Queue-Id: 1EF7119303A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,canonical.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3E90B19084B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: John Johansen <john.johansen@canonical.com>
 
-[ Upstream commit c0b4a4feeb43305a754893d8d9c6b2b5a52d45ac ]
+[ Upstream commit b2e27be2948f2f8c38421cd554b5fc9383215648 ]
 
-When calling of_parse_phandle_with_fixed_args(), the caller is
-responsible to call of_node_put() to release the reference of device
-node.
+The modes shouldn't be applied at the point of label match, it just
+results in them being applied multiple times. Instead they should be
+applied after which is already being done by all callers so it can
+just be dropped from label_match.
 
-In pinbank_init(), the reference of the node obtained from the
-"gpio-ranges" property is never released, resulting in a reference
-count leak.
-
-Add the missing of_node_put() call to fix the leak.
-
-Fixes: 1948d5c51dba ("pinctrl: Add pinmux & GPIO controller driver for a new SoC")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Acked-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Stable-dep-of: a4c9efa4dbad ("apparmor: make label_match return a consistent value")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-equilibrium.c | 1 +
- 1 file changed, 1 insertion(+)
+ security/apparmor/label.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-equilibrium.c b/drivers/pinctrl/pinctrl-equilibrium.c
-index 2d04829b29c99..48b55c5bf8d4f 100644
---- a/drivers/pinctrl/pinctrl-equilibrium.c
-+++ b/drivers/pinctrl/pinctrl-equilibrium.c
-@@ -846,6 +846,7 @@ static int pinbank_init(struct device_node *np,
+diff --git a/security/apparmor/label.c b/security/apparmor/label.c
+index 913678f199c35..02ee128f53d13 100644
+--- a/security/apparmor/label.c
++++ b/security/apparmor/label.c
+@@ -1317,7 +1317,6 @@ static int label_compound_match(struct aa_profile *profile,
+ 			goto fail;
+ 	}
+ 	*perms = *aa_lookup_perms(rules->policy, state);
+-	aa_apply_modes_to_perms(profile, perms);
+ 	if ((perms->allow & request) != request)
+ 		return -EACCES;
  
- 	bank->pin_base = spec.args[1];
- 	bank->nr_pins = spec.args[2];
-+	of_node_put(spec.np);
+@@ -1370,7 +1369,6 @@ static int label_components_match(struct aa_profile *profile,
  
- 	bank->aval_pinmap = readl(bank->membase + REG_AVAIL);
- 	bank->id = id;
+ next:
+ 	tmp = *aa_lookup_perms(rules->policy, state);
+-	aa_apply_modes_to_perms(profile, &tmp);
+ 	aa_perms_accum(perms, &tmp);
+ 	label_for_each_cont(i, label, tp) {
+ 		if (!aa_ns_visible(profile->ns, tp->ns, subns))
+@@ -1379,7 +1377,6 @@ static int label_components_match(struct aa_profile *profile,
+ 		if (!state)
+ 			goto fail;
+ 		tmp = *aa_lookup_perms(rules->policy, state);
+-		aa_apply_modes_to_perms(profile, &tmp);
+ 		aa_perms_accum(perms, &tmp);
+ 	}
+ 
 -- 
 2.51.0
 
