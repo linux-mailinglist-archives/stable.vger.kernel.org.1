@@ -1,124 +1,182 @@
-Return-Path: <stable+bounces-218029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPHWGZY+nmkrUQQAu9opvQ
-	(envelope-from <stable+bounces-218029-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:13:10 +0100
+	id UP4sObg/nmlXUQQAu9opvQ
+	(envelope-from <stable+bounces-218030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:18:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D4618E572
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:13:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8074D18E587
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:18:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD1063060BCB
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 00:11:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D3E113035E08
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 00:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D574518DF80;
-	Wed, 25 Feb 2026 00:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B094D1F5858;
+	Wed, 25 Feb 2026 00:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lbi/yUto"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R8JTrHNA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9840A3FCC;
-	Wed, 25 Feb 2026 00:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B59F381AF;
+	Wed, 25 Feb 2026 00:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771978287; cv=none; b=bdsGQ0pk3ZBsAB8MLpFjIVg5HRoKVzz3mYo4wSjHYzIbXsZXZQWDiTGZVLvh8k+Quf9wdFYcZg1AT8HHmdnGoMnREVsMwdpMYnYVogiAmu2wiwy+Wnsj/DH6yNAjP/F5EA5lwaF7lpjYWh2b0a49y82X49htWESCL0u2io2AiAY=
+	t=1771978675; cv=none; b=Ie/PWdOJUYrSWxJuHYG+2x8fLoBEw3cMOBgCHs7HbRWgkT9zCtnT+r3m5aQbSfCwUBkU9z3UabDhGMi1addUeZl68nntQJlMm5ifTBE6ALudXHMKxKwSyakhRSZbVMFEYHuZP+xP6gNMEIt8tTMveRXnFBFhC7P2QQQW35zzAIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771978287; c=relaxed/simple;
-	bh=Eu/+E6Fe9CTf+32ncOdkyu0tZxs9mpbn4gaiq8dFxqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C0aP4z1vVQrKFS4fMm1qzHtF97HHJSPoREpQCyPiCa4h7kRTxx52kSzXrLU2N96CSaaizfbmp+pvoWcvyk92wMcfLiRrYfrZclfszHgxoOxRcsH6DEzIeNtR0jbLLjdZV4TWHXbS15YncX8J6mKGDYkNnAj/WJchJqjey4pshGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lbi/yUto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3C0C116D0;
-	Wed, 25 Feb 2026 00:11:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771978287;
-	bh=Eu/+E6Fe9CTf+32ncOdkyu0tZxs9mpbn4gaiq8dFxqQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lbi/yUtoqADzlCBITKE11CFaiT9gHa2IQJaQhHBj1QC+6Wt2Qjk5Geuw94XAswPnu
-	 VkNTgQaQoYnKdsGeCm3WEwDZDkTq5zeElAauS5dhoIMmHiyF5JHWUdTfM80fYjEClV
-	 DHnsPzaCHBM8HBh5yXL6LcVO+DfE9r33ZR54RDBEOAsDN08T8Il9U8SpkaANG8oZZN
-	 pJe6Mf4+tnK+oQyqMbMs1wFexYT97Et3D98VX/C4iOkLhGnjnA6gt0OsXa+RytVUus
-	 CZzyyxuSi2c1rYLqn2/47SjD+KzY0LLWR5xujimd1Sx1k8X0gj/qHI9ZED9J2VuA++
-	 slqj/wVFasEVw==
-Date: Tue, 24 Feb 2026 16:11:25 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Simon Horman <horms@kernel.org>, <joshua.a.hay@intel.com>,
- <aaron.ma@canonical.com>, <przemyslaw.kitszel@intel.com>,
- <Samuel.salin@intel.com>, <jacob.e.keller@intel.com>,
- <pmenzel@molgen.mpg.de>, <sridhar.samudrala@intel.com>,
- <brett.creeley@amd.com>, <decot@google.com>, <david.m.ertman@intel.com>,
- <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
- <intel-wired-lan@lists.osuosl.org>, <sreedevi.joshi@intel.com>,
- <rafal.romanowski@intel.com>, <en-wei.wu@canonical.com>,
- <dima.ruinskiy@intel.com>, <michal.kubiak@intel.com>, <tglx@kernel.org>,
- <pabeni@redhat.com>, <willemb@google.com>, <avigailx.dahan@intel.com>,
- <davem@davemloft.net>, <aleksandr.loktionov@intel.com>,
- <edumazet@google.com>, <piotr.kwapulinski@intel.com>,
- <sx.rinitha@intel.com>, <emil.s.tantilov@intel.com>, <brianvv@google.com>,
- <vitaly.lifshits@intel.com>, <jedrzej.jagielski@intel.com>,
- <stable@vger.kernel.org>, <richardcochran@gmail.com>, <joe@dama.to>,
- <mschmidt@redhat.com>, <boolli@google.com>
-Subject: Re: [net,13/13] e1000e: correct TIMINCA on ADP/TGP systems with
- wrong XTAL frequency
-Message-ID: <20260224161125.4dc744eb@kernel.org>
-In-Reply-To: <842bb101-d73c-4470-a01e-f49f96847370@intel.com>
-References: <20260220004027.729384-14-anthony.l.nguyen@intel.com>
-	<20260222162835.23954-1-horms@kernel.org>
-	<842bb101-d73c-4470-a01e-f49f96847370@intel.com>
+	s=arc-20240116; t=1771978675; c=relaxed/simple;
+	bh=gJSYwWNrpcUuy0nEPHIdqhjVPHZ0ifj371xTSfdjVWw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CGlGqIEDo9Ra0egXkZA85VKaxQexOn77hJikoLO2S8EnQGWsPMvO28R+lMFDw16m2iJqKAxkkY3QJ1JHd0o29ivNizc/oCa6lLddi67Oaxd7zCYTgJjWz1/o2SwiUynLOqJayEoWd9Ta/M4jm3rlqldRK1QvPNLezHG6ItoCCrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R8JTrHNA; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771978675; x=1803514675;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gJSYwWNrpcUuy0nEPHIdqhjVPHZ0ifj371xTSfdjVWw=;
+  b=R8JTrHNAgcAnEgzoi3+ngV7dVryLZjbj5eqz2U43Y+NuacG7562N/y4u
+   oFEHnu/TAl1sJJXK8FFRbtg5Wt0R7nhz3tNTpd3amFq7+4AKFliHSMTYv
+   8uoRxzVX4Wl065Pn3JLrJYSJeQlYVqwSUPF55FMlaU/tLR/y60Gh5Z+JS
+   ly1ynmuWqVCC2VzzLgTT0DVnTP1ZQFgnS24GQcgILGYGwJQOe5DFvjHGg
+   pYNmdzjWkBjz00bPkLI79MStgYcOWrv+2+F9Ye9jUrl3To4nSoOavomDi
+   I1g0Dh/EZ6HsUIuCMpaRV9xoqZCdQlL9lH1UoLIUdgRpev42ONuQ/i4Xl
+   g==;
+X-CSE-ConnectionGUID: SqAeZHH+TdqaN17nHIqCGg==
+X-CSE-MsgGUID: GK+YVUtBStScf8oo1o4pkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="72912752"
+X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
+   d="scan'208";a="72912752"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 16:17:54 -0800
+X-CSE-ConnectionGUID: ZuN7BQKlRfeJZFrXvtOh1Q==
+X-CSE-MsgGUID: J38oYL4URaejf6NTwyLL3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
+   d="scan'208";a="220668188"
+Received: from spandruv-desk.jf.intel.com ([10.54.55.20])
+  by fmviesa005.fm.intel.com with ESMTP; 24 Feb 2026 16:17:53 -0800
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To: rafael@kernel.org,
+	viresh.kumar@linaro.org
+Cc: linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] cpufreq: intel_pstate: Fix crash during turbo disable
+Date: Tue, 24 Feb 2026 16:17:52 -0800
+Message-ID: <20260225001752.890164-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218029-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,intel.com,canonical.com,molgen.mpg.de,amd.com,google.com,lunn.ch,vger.kernel.org,lists.osuosl.org,redhat.com,davemloft.net,gmail.com,dama.to];
-	RCPT_COUNT_TWELVE(0.00)[38];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C2D4618E572
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218030-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[srinivas.pandruvada@linux.intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+X-Rspamd-Queue-Id: 8074D18E587
 X-Rspamd-Action: no action
 
-On Tue, 24 Feb 2026 14:59:36 -0800 Tony Nguyen wrote:
-> Yea, looks like we need to do some adjustments here. Also, the AI review 
-> I just ran on this is reporting another issue that we'll need to look 
-> into. I'm going to drop this one from the series to not hold the others 
-> up on this.
+When the system is booted with kernel command line argument "nosmt" or
+"maxcpus" to limit the number of CPUs, disabling turbo via:
+echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+results in a crash:
+PF: supervisor read access in kernel mode
+PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP PTI
+...
+RIP: 0010:store_no_turbo+0x100/0x1f0
+ ...
 
-I'd sometimes apply series partially for y'all but FWIW the idpf
-"defensive programming instead of proper rollback" patches really
-don't make me want to interact with this series more than I have to.
-You don't have to rework them. Just expect some delays, I guess.
+This occurs because for_each_possible_cpu() returns CPUs even if they are
+not online. For those CPUs, all_cpu_data[] will be NULL. Since
+commit 973207ae3d7c ("cpufreq: intel_pstate: Rearrange max frequency
+updates handling code"), all_cpu_data[] is dereferenced even for CPUs
+which are not online, causing the NULL pointer dereference.
+
+To fix that pass CPU number to intel_pstate_update_max_freq() and use
+all_cpu_data[] for those CPUs for which there is a valid cpufreq policy.
+
+Fixes: 973207ae3d7c ("cpufreq: intel_pstate: Rearrange max frequency updates handling code")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221068
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: <stable@vger.kernel.org> # 6.16+
+---
+ drivers/cpufreq/intel_pstate.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index a48af3540c74..3ecfa921f9b9 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -1476,13 +1476,13 @@ static void __intel_pstate_update_max_freq(struct cpufreq_policy *policy,
+ 	refresh_frequency_limits(policy);
+ }
+ 
+-static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
++static bool intel_pstate_update_max_freq(int cpu)
+ {
+-	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpudata->cpu);
++	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+ 	if (!policy)
+ 		return false;
+ 
+-	__intel_pstate_update_max_freq(policy, cpudata);
++	__intel_pstate_update_max_freq(policy, all_cpu_data[cpu]);
+ 
+ 	return true;
+ }
+@@ -1501,7 +1501,7 @@ static void intel_pstate_update_limits_for_all(void)
+ 	int cpu;
+ 
+ 	for_each_possible_cpu(cpu)
+-		intel_pstate_update_max_freq(all_cpu_data[cpu]);
++		intel_pstate_update_max_freq(cpu);
+ 
+ 	mutex_lock(&hybrid_capacity_lock);
+ 
+@@ -1908,7 +1908,7 @@ static void intel_pstate_notify_work(struct work_struct *work)
+ 	struct cpudata *cpudata =
+ 		container_of(to_delayed_work(work), struct cpudata, hwp_notify_work);
+ 
+-	if (intel_pstate_update_max_freq(cpudata)) {
++	if (intel_pstate_update_max_freq(cpudata->cpu)) {
+ 		/*
+ 		 * The driver will not be unregistered while this function is
+ 		 * running, so update the capacity without acquiring the driver
+-- 
+2.52.0
+
 
