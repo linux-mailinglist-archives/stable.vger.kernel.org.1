@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFG5JXlYnmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:37 +0100
+	id +Oe3OnGenmkZWgQAu9opvQ
+	(envelope-from <stable+bounces-219385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B94190727
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:03:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 734E3192C86
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EE1430E6C9E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:39:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2B65330DF84F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C07326CE1A;
-	Wed, 25 Feb 2026 01:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD32301718;
+	Wed, 25 Feb 2026 06:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBgx+m5w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6fKJXkt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD7125A655;
-	Wed, 25 Feb 2026 01:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BF02D4805;
+	Wed, 25 Feb 2026 06:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983539; cv=none; b=poDTZ/hJ3mCVdYrCIMoePZ2SYfOTUM71GOT0egiE/jYIYpsybd4JL7KXvzaTkzSyvfQiYrJtBNbVnSfuSSN6srOibvRQ0Xq237zpatfzBqTTp0MpsHhxL41DWHJizeGfRK8PMkuSFFFVxgs0/dXGPjYB5v9uMh8Ofux6APQ6xtc=
+	t=1772002681; cv=none; b=sFXz/n+QFtgZkmtGwo5msK3aJjMGCO4wCiV9LZq1zASSQhklF768Xqv7dJ0p6ywEWTnhNDb/+jZ6oH75eIuUMqNCftyKJbVWlcKKDBOZx+2IiaA25rsP+UVEyWHmnb6QonYwRWqVGjpHRfz0KzSb6DOFuYCPKjDMOHQQGFM3ws8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983539; c=relaxed/simple;
-	bh=99jMZrr6yrfDHYCyqa8IEFWqLxIeUN4x20CcYSAOscI=;
+	s=arc-20240116; t=1772002681; c=relaxed/simple;
+	bh=PuYbNJX7Hy9Dbyr750xXnqxAQuHoZ0iDEuF7YCDxjBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=py3bVnxiRdmpP2QJ4buQ3eNDwknD6SX/pH365d6tlVALuZvoO9KLI1ilxyABClsBzQZS7mlPJa+qzXcc0LA+yv0+7ZQ/vkVN0dQhI2bRROHRYN8DD3FWMp14wTJXOUeWIe4L8K0IH0y9jhhP8AxOsxj2mI9HaXK6ZAaU+dgLLNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBgx+m5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F8FC116D0;
-	Wed, 25 Feb 2026 01:38:59 +0000 (UTC)
+	 MIME-Version; b=kHYl8+gNPEtdUJRmFAb0KvYs8FppuURCVSNmUrowY824uCESbpaN1E6RJKVFzXUc7ZPyTrmU7D0OGoqRjoMwcPkyr3OiNjdaohzwlD4XzFPkcrzZMgHHphom/kcuQpqJndL45bAiyaPLPGJAy/93dB9/lDrx0BC5PfHr8QIUo1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6fKJXkt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1908CC116D0;
+	Wed, 25 Feb 2026 06:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983539;
-	bh=99jMZrr6yrfDHYCyqa8IEFWqLxIeUN4x20CcYSAOscI=;
+	s=korg; t=1772002681;
+	bh=PuYbNJX7Hy9Dbyr750xXnqxAQuHoZ0iDEuF7YCDxjBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBgx+m5wi3Zz6pG7GgFmb8Mhfg/MYgPS+Qy8NcYW9ISlFBIoa4BJ4f1S24w9E4C+W
-	 d2FTPfpMWZBjvcvyS/y6v6SsEEnJ+R//U9fwz7y0N5016fNNKJMVTxSpGsntDIKVN9
-	 t5kwqkg4bRupUpe6N1RGPLxYqTE/V8DBULkU5If8=
+	b=a6fKJXktkIuYnRlVeIahcL6X5G5+9/DkduY91HEdKczDJyNhp/3SafOJSRZG7gID7
+	 N47B5d6qMT+fjF4Bf7I4zxki97VB9XKo8wSmDZ+xGjMRoLfWBdQoAMUPon8sknQIdR
+	 6l6OyXAQYzYj4bW7+sO4aszhkv9LA2TsKdkZs+qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 643/781] selftests: netconsole: Increase port listening timeout
+Subject: [PATCH 6.18 426/641] clk: qcom: regmap-divider: convert from divider_round_rate() to divider_determine_rate()
 Date: Tue, 24 Feb 2026 17:22:32 -0800
-Message-ID: <20260225012415.572890363@linuxfoundation.org>
+Message-ID: <20260225012358.870597424@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218682-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219385-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,55 +88,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,netcons_basic.sh:url]
-X-Rspamd-Queue-Id: 20B94190727
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 734E3192C86
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@google.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit a68a9bd086c2822d0c629443bd16ad1317afe501 ]
+[ Upstream commit d8300e6e078a3a44ac0c75c6d8ba46d78ab94035 ]
 
-wait_for_port() can wait up to 2 seconds with the sleep and the polling
-in wait_local_port_listen() combined. So, in netcons_basic.sh, the socat
-process could die before the test writes to the netconsole.
+The divider_round_rate() function is now deprecated, so let's migrate
+to divider_determine_rate() instead so that this deprecated API can be
+removed.
 
-Increase the timeout to 3 seconds to make netcons_basic.sh pass
-consistently.
+Note that when the main function itself was migrated to use
+determine_rate, this was mistakenly converted to:
 
-Fixes: 3dc6c76391cb ("selftests: net: Add IPv6 support to netconsole basic tests")
-Signed-off-by: Pin-yen Lin <treapking@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260210005939.3230550-1-treapking@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    req->rate = divider_round_rate(...)
+
+This is invalid in the case when an error occurs since it can set the
+rate to a negative value.
+
+Fixes: b6f90511c165 ("clk: qcom: regmap-divider: convert from round_rate() to determine_rate()")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260108-clk-divider-round-rate-v1-16-535a3ed73bf3@redhat.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/clk-regmap-divider.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh b/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh
-index ae8abff4be409..64d3941576d5d 100644
---- a/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh
-+++ b/tools/testing/selftests/drivers/net/lib/sh/lib_netcons.sh
-@@ -247,8 +247,8 @@ function listen_port_and_save_to() {
- 		SOCAT_MODE="UDP6-LISTEN"
- 	fi
+diff --git a/drivers/clk/qcom/clk-regmap-divider.c b/drivers/clk/qcom/clk-regmap-divider.c
+index af9c01dd78537..672e82caf2050 100644
+--- a/drivers/clk/qcom/clk-regmap-divider.c
++++ b/drivers/clk/qcom/clk-regmap-divider.c
+@@ -34,12 +34,8 @@ static int div_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
+ {
+ 	struct clk_regmap_div *divider = to_clk_regmap_div(hw);
  
--	# Just wait for 2 seconds
--	timeout 2 ip netns exec "${NAMESPACE}" \
-+	# Just wait for 3 seconds
-+	timeout 3 ip netns exec "${NAMESPACE}" \
- 		socat "${SOCAT_MODE}":"${PORT}",fork "${OUTPUT}" 2> /dev/null
+-	req->rate = divider_round_rate(hw, req->rate, &req->best_parent_rate,
+-				       NULL,
+-				       divider->width,
+-				       CLK_DIVIDER_ROUND_CLOSEST);
+-
+-	return 0;
++	return divider_determine_rate(hw, req, NULL, divider->width,
++				      CLK_DIVIDER_ROUND_CLOSEST);
  }
  
+ static int div_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.51.0
 
