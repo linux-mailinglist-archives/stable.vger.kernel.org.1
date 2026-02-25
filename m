@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-219303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218645-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMkdBHGdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219303-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:53 +0100
+	id SKh2EShVnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218645-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867F81929C7
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5081518FF17
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6AA32303B2D1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6DB1F312448A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3DD2D94AF;
-	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A591258EF9;
+	Wed, 25 Feb 2026 01:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQuSnrTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEJBP3BG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5232E2FFFB6;
-	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ABA256C6C;
+	Wed, 25 Feb 2026 01:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002627; cv=none; b=VJccdnO/EG2VtX7sznU+YgoKwdJSHP+FJzI7by4DoOEqVJSHLnvACN61rE9vAWiqE9DBOHrcAvEcVApkcAMDvz5ZTDERXiOGvyPztRwighGiem2HY7zT9br8ml4FNbaR75EFy2SKQkUKj07ZuPE3cJfwoqduQ+as5Xb7j+trIXA=
+	t=1771983495; cv=none; b=kcQbf3C034Skekak7wbZmX9P18tq1SvlEgAmNDX08pOZ+TSSpdT3Cdqw7o7Fcnrw2PYEPiD0bIswhpU8IytBk4VJ4LqfxVyIQV+YKmTTMn+2lNHZ4ZRRtj7Ogq2r2k+sGU9ElqBt7fSOavv04vMfLpGlIjQ/srgGC2w8z4woUDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002627; c=relaxed/simple;
-	bh=hIS7d0dErC/+aWpe7Azq+GW1c5eVrqCjBPodVwIC+HA=;
+	s=arc-20240116; t=1771983495; c=relaxed/simple;
+	bh=IhWe3ctdStMJeRIcUowKctwaUIOOqcsXCNofpBP6GWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDJL/m0MXiouhk1wDwfj013EVzpQMwDrqs4VgKYV1ipEBN2U+zI9G2Uh5xmFeQEEjVtQuZZVodmpvVnrT3PI0uIOBdQ88RDa/n/SEwD2V12Skrp0WQSJAgyJWTsWDCnKOpTvnc0FgwxJFDcsq2W+4PQogyZXTHezwt4GzdtA4g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQuSnrTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBA2C116D0;
-	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
+	 MIME-Version; b=S8n9GzJvLy/q4mCmBJ36vx2lCyC4a1X/coRsm7r2WWq+t8cSKINKS/g9lE0rBeOdzGKwtfZ6uRiSS8B2dfahEG5ijCb7OMr/7NTynsHfJF3kmE79yqXG3pVUYXF5vAHt6TqZmY9xd3A8W//p3SmXNg3DgS2ojSAs4cBxFbc6Sns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEJBP3BG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824C8C116D0;
+	Wed, 25 Feb 2026 01:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002627;
-	bh=hIS7d0dErC/+aWpe7Azq+GW1c5eVrqCjBPodVwIC+HA=;
+	s=korg; t=1771983495;
+	bh=IhWe3ctdStMJeRIcUowKctwaUIOOqcsXCNofpBP6GWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQuSnrTMwlBgzVJbeFIGK2NoW5miXG44JcpebE+kx3/e8UcfxF1fmNG56RMuNFKaW
-	 uDJCXJPm27lW3Kfi0Aku0Ua2Z7wKxP0wc2oK8v4dIi3PVmp0aSEWawZCWKjhHK/REb
-	 M/vpOlkovLL8tWNAebBOBM9KHNTUpSrz6Z6ibYSw=
+	b=bEJBP3BGBr47ghPMvigE2LRiUXKSeX9yv+r5XsdgrzWnDdla1QvQANfFFRQTM4xR1
+	 WaqCXCqbKM/PTveBlR/o96rbjWB4+zGgds4dbBsy4sZM8aYG8SxwUGa/nWoAJ91QrF
+	 xxZ0QJDcxYRXFqGROgGxCjYO5clxFLHyTobRJIr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Jiayu Du <jiayu.riscv@isrc.iscas.ac.cn>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 388/641] power: supply: qcom_battmgr: Recognize "LiP" as lithium-polymer
+Subject: [PATCH 6.19 605/781] pinctrl: canaan: k230: Fix NULL pointer dereference when parsing devicetree
 Date: Tue, 24 Feb 2026 17:21:54 -0800
-Message-ID: <20260225012357.983964944@linuxfoundation.org>
+Message-ID: <20260225012414.634455871@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,70 +69,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219303-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218645-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 867F81929C7
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5081518FF17
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Jiayu Du <jiayu.riscv@isrc.iscas.ac.cn>
 
-[ Upstream commit c655f45480637aee326b5bd96488d35ab90db2b0 ]
+[ Upstream commit d8c128fb6c2277d95f3f6a4ce28b82c8370031f6 ]
 
-On the Dell Latitude 7455, the firmware uses "LiP" with a lowercase 'i'
-for the battery chemistry type, but only all-uppercase "LIP" was being
-recognized. Add the CamelCase variant to the check to fix the "Unknown
-battery technology" warning.
+When probing the k230 pinctrl driver, the kernel triggers a NULL pointer
+dereference. The crash trace showed:
+[    0.732084] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000068
+[    0.740737] ...
+[    0.776296] epc : k230_pinctrl_probe+0x1be/0x4fc
 
-Fixes: 202ac22b8e2e ("power: supply: qcom_battmgr: Add lithium-polymer entry")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260120235831.479038-1-val@packett.cool
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+In k230_pinctrl_parse_functions(), we attempt to retrieve the device
+pointer via info->pctl_dev->dev, but info->pctl_dev is only initialized
+after k230_pinctrl_parse_dt() completes.
+
+At the time of DT parsing, info->pctl_dev is still NULL, leading to
+the invalid dereference of info->pctl_dev->dev.
+
+Use the already available device pointer from platform_device
+instead of accessing through uninitialized pctl_dev.
+
+Fixes: d94a32ac688f ("pinctrl: canaan: k230: Fix order of DT parse and pinctrl register")
+Signed-off-by: Jiayu Du <jiayu.riscv@isrc.iscas.ac.cn>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/qcom_battmgr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-k230.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
-index e6f01e0122e1c..ff77dba29a3ef 100644
---- a/drivers/power/supply/qcom_battmgr.c
-+++ b/drivers/power/supply/qcom_battmgr.c
-@@ -1244,7 +1244,8 @@ static unsigned int qcom_battmgr_sc8280xp_parse_technology(const char *chemistry
- 	if ((!strncmp(chemistry, "LIO", BATTMGR_CHEMISTRY_LEN)) ||
- 	    (!strncmp(chemistry, "OOI", BATTMGR_CHEMISTRY_LEN)))
- 		return POWER_SUPPLY_TECHNOLOGY_LION;
--	if (!strncmp(chemistry, "LIP", BATTMGR_CHEMISTRY_LEN))
-+	if (!strncmp(chemistry, "LIP", BATTMGR_CHEMISTRY_LEN) ||
-+	    !strncmp(chemistry, "LiP", BATTMGR_CHEMISTRY_LEN))
- 		return POWER_SUPPLY_TECHNOLOGY_LIPO;
+diff --git a/drivers/pinctrl/pinctrl-k230.c b/drivers/pinctrl/pinctrl-k230.c
+index d716f23d837f7..20f7c0f70eb77 100644
+--- a/drivers/pinctrl/pinctrl-k230.c
++++ b/drivers/pinctrl/pinctrl-k230.c
+@@ -65,6 +65,7 @@ struct k230_pmx_func {
+ };
  
- 	pr_err("Unknown battery technology '%s'\n", chemistry);
+ struct k230_pinctrl {
++	struct device		*dev;
+ 	struct pinctrl_desc	pctl;
+ 	struct pinctrl_dev	*pctl_dev;
+ 	struct regmap		*regmap_base;
+@@ -470,7 +471,7 @@ static int k230_pinctrl_parse_groups(struct device_node *np,
+ 				     struct k230_pinctrl *info,
+ 				     unsigned int index)
+ {
+-	struct device *dev = info->pctl_dev->dev;
++	struct device *dev = info->dev;
+ 	const __be32 *list;
+ 	int size, i, ret;
+ 
+@@ -511,7 +512,7 @@ static int k230_pinctrl_parse_functions(struct device_node *np,
+ 					struct k230_pinctrl *info,
+ 					unsigned int index)
+ {
+-	struct device *dev = info->pctl_dev->dev;
++	struct device *dev = info->dev;
+ 	struct k230_pmx_func *func;
+ 	struct k230_pin_group *grp;
+ 	static unsigned int idx, i;
+@@ -596,6 +597,8 @@ static int k230_pinctrl_probe(struct platform_device *pdev)
+ 	if (!info)
+ 		return -ENOMEM;
+ 
++	info->dev = dev;
++
+ 	pctl = &info->pctl;
+ 
+ 	pctl->name	= "k230-pinctrl";
 -- 
 2.51.0
 
