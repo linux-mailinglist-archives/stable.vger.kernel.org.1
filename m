@@ -1,314 +1,231 @@
-Return-Path: <stable+bounces-219200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PYHDg6cnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:51:58 +0100
+	id mO9fO/KanmkSWgQAu9opvQ
+	(envelope-from <stable+bounces-219201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:47:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E93419288A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:51:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E202192807
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:47:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82E2C314D494
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:46:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 25C8A3024BF0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD8F2C0F91;
-	Wed, 25 Feb 2026 06:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8C1296BD5;
+	Wed, 25 Feb 2026 06:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fOuKXTg7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7gXHvXn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EC829B76F
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 06:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBBC2BE642;
+	Wed, 25 Feb 2026 06:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772001981; cv=none; b=VLmp17V3B1ZJwZy+Nu7NyN4PyLpzl5GsIyv+bV0+q4L+wm3i/x4WcqLXis4vnnaL3ZKMx5Ukx55k/VDYIhR/H7Me1ipB/omhlkuGGSux2D4xpOYYAxYVavy0h5hd5ZF3bUmX1fDUTAxAq4BTiG5lHCWnVXPGNQRrw1I7BWR9M94=
+	t=1772001995; cv=none; b=t75d6QcKM+eGGP5PG5uJ6c7c2MY8cRJ7MPzSzIZxFgfrxBhNbToxwpJJHJcQ8NG9s3ievPkzUuPbwYqJrguU/OFSnChuGZ6dfTAwknOR1ku/ceiqvlMj7qnhDwAtjQ/67B4QqrHc8h1GMi45EzTvdIP3j/1KGfiZNnZdZPmFETY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772001981; c=relaxed/simple;
-	bh=KapOGnfYOh0PXxFD3beN+OUTsZGlUIANBotOvS5qfBU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LuFePJbo2lUvQe413HDrQGdaB3ksLn6PEPNU4cmac0+afeK4HiKiPSH5QTdTo/2wy6vDhauojkxitWjRjZJhrk5n+qwS4zoP76naO8UVeu+VyVRdRxztp240A0XqUhm71hV1wa4VhJiCMTYhlwEh+gq880uGxhciVeEHJEKlGYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--guanyulin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fOuKXTg7; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--guanyulin.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-358f4ed4eceso1142276a91.2
-        for <stable@vger.kernel.org>; Tue, 24 Feb 2026 22:46:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772001975; x=1772606775; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QnjS8olMajKnP/sZl5vPFhjp48gpsJXv+tm2dwICITg=;
-        b=fOuKXTg7xdPgbuvDQh9UA4vsU2GLSCulXctaJ3hj1RVw7GEuVJaA0ySUC4PYUee2Ri
-         9s3TndCsOySG+Leu9bNlX3vCHgj+roHQsdRR6mp9w2l9TKvBIX7CFQmvYH/og0mt3m9D
-         yEl1HG1ncHxFdjbPpZDzq+QiLZKnXu4BKNvMDVEFRK4lySAcGylCnNEo503XHA0tLjXY
-         NXN/rE9B/b3IzNmKiGxmsQ9+hxtOttbiZgO34R/YnJzibTMowrsG7q2LN+tr6oiSDHTi
-         SZ8WDOG3sqC/PKSH/DflhYxC/QYIF2/sAgAe1cjtGMevef0QEfmUwbFPCl7TLWX+1f21
-         Ab4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772001975; x=1772606775;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QnjS8olMajKnP/sZl5vPFhjp48gpsJXv+tm2dwICITg=;
-        b=GPnI9OiphV2rkWlwsmUnpK73M6tWb1Wd/eoUz8Prq/S+RPNZDdmZld+cfQeCr4wBH6
-         LkhoUQG57zUqnq1WsvquB6vVXrpnKVGXJTpMI7lmnjHatsi/2K8adBSwpdSNMcdMzoiS
-         4+MtKCXFEkFZ1QXhG2C0c+crxLjFgWT7hhrO/s/1sc+cW/usHC4l0NoTKyfaz9qsAKxd
-         SF6I79WxTMYeJVS+5wx6o6oCIn9uw3hkZaH4OXDHuwfZQvNjQVheb8OTnUPOJU0NBU93
-         5mv9Qv4QDTdNs3ZnSE8i5Kc2Ll3UBHpKbU9r39MuN7cEJiUfV6oKGsPihdZeALhZpkhp
-         t4Ug==
-X-Forwarded-Encrypted: i=1; AJvYcCWkzpQ3xt/iYzipdxCXXqRww4zcHRMvQMXNpi+bYk3FAbt9IZdeEOWX2Bv1GlW3+FL9NXCyFYE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTid9P+SAwph/hgdeu1lZTuQyytv8Rz0DWRmt3LbJK0uizF3JD
-	bVOkWBQd1r5LCl3qNSlQvrWhuyZOzJJVIT4A1PrYPhLtKJRxcO4k5Cyl4HNn01yRSiu+Ih+dasW
-	DSgWWko1/X+N0wsz3Zg==
-X-Received: from pgce1.prod.google.com ([2002:a05:6a02:1c1:b0:bd9:a349:94a5])
- (user=guanyulin job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:9d91:b0:394:6208:6623 with SMTP id adf61e73a8af0-39545ed01cfmr12186049637.27.1772001974577;
- Tue, 24 Feb 2026 22:46:14 -0800 (PST)
-Date: Wed, 25 Feb 2026 06:45:51 +0000
-In-Reply-To: <20260225064601.270301-1-guanyulin@google.com>
+	s=arc-20240116; t=1772001995; c=relaxed/simple;
+	bh=BeJA7G0siXCB3Ao0rY8v9Oc6tjvzqZacEfVv9U5JCDo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gf2nW4RLSawpL/9zK9fspWTcNusrGr2LZ6SQyV2ZsI2foizfkEY04i8r6mUBnMTzypAbp4aZnw7ouwo5M/C3DoALM/5W4CZeJc3Y2yGgUzo1HnFgbcUed8yHc87rf4/k9bxjG1g9+LhXrVR58Q+ednpinofbE1pSXXxZSnooYv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7gXHvXn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C271C116D0;
+	Wed, 25 Feb 2026 06:46:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772001994;
+	bh=BeJA7G0siXCB3Ao0rY8v9Oc6tjvzqZacEfVv9U5JCDo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=H7gXHvXnzmnMWM7+iAxoPIOXocftNXhJZ+n+zqM7uf0gTE99Vx+PinVHq95ZRlL5U
+	 E5EzA5zli6/ghg/UlNV/yi2DiBxx5V0pnjaIG30gYsE3vz8dYo1ACt9CxZc1+1vn0N
+	 31anOLFCi5nJ4OyE6rriK5Aua3DoIV/k0SzDYfX8sLINZXIVuVByLHxKXdBG1h34B5
+	 vYNZKnJIWG0v7SLpsyPmwkWL0CAWUWf9o0S5UtK5BhNbeckNJWSKKKMmSjXu2Jbuxu
+	 r7tkWXd5hqeAXitVw404foXgvL24Q/TmdqpfKO4euM3k+HfW1S9yCJeY2wXobDj9rG
+	 eVTOLvN+T1nLg==
+Message-ID: <96928eb5-bfa8-482b-9555-3662e25803cf@kernel.org>
+Date: Wed, 25 Feb 2026 07:46:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260225064601.270301-1-guanyulin@google.com>
-X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260225064601.270301-3-guanyulin@google.com>
-Subject: [PATCH v1 2/2] ALSA: usb: qcom: manage offload device usage
-From: Guan-Yu Lin <guanyulin@google.com>
-To: gregkh@linuxfoundation.org, mathias.nyman@intel.com, perex@perex.cz, 
-	tiwai@suse.com, quic_wcheng@quicinc.com, broonie@kernel.org, arnd@arndb.de, 
-	harshit.m.mogalapalli@oracle.com, wesley.cheng@oss.qualcomm.com, 
-	dan.carpenter@linaro.org
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-sound@vger.kernel.org, Guan-Yu Lin <guanyulin@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 202/781] drm/amdgpu: dont attach the tlb fence for SI
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, =?UTF-8?Q?Timur_Krist=C3=B3f?=
+ <timur.kristof@gmail.com>, Alex Deucher <alexander.deucher@amd.com>,
+ Sasha Levin <sashal@kernel.org>
+References: <20260225012359.695468795@linuxfoundation.org>
+ <20260225012404.620340700@linuxfoundation.org>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20260225012404.620340700@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219200-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219201-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.989];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanyulin@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8E93419288A
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0E202192807
 X-Rspamd-Action: no action
 
-The Qualcomm USB audio offload driver currently does not report its offload
-activity to the USB core. This prevents the USB core from properly tracking
-active offload sessions, which could allow the device to auto-suspend while
-audio offloading is in progress.
+On 25. 02. 26, 2:15, Greg Kroah-Hartman wrote:
+> 6.19-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Alex Deucher <alexander.deucher@amd.com>
+> 
+> [ Upstream commit 820b3d376e8a102c6aeab737ec6edebbbb710e04 ]
 
-Integrate usb_offload_get() and usb_offload_put() calls into the offload
-stream setup and teardown paths. Specifically, call usb_offload_get() when
-initializing the event ring and usb_offload_put() when freeing it.
+Bah :/.
 
-Since the updated usb_offload_get() and usb_offload_put() APIs require the
-caller to hold the USB device lock, add the necessary device locking in
-handle_uaudio_stream_req() and qmi_stop_session() to satisfy this
-requirement.
+It was applied in 6.19 as:
+commit eb296c09805ee37dd4ea520a7fb3ec157c31090f
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Tue Dec 2 14:24:03 2025 -0500
 
-Cc: stable@vger.kernel.org
-Fixes: ef82a4803aab ("xhci: sideband: add api to trace sideband usage")
-Signed-off-by: Guan-Yu Lin <guanyulin@google.com>
----
- sound/usb/qcom/qc_audio_offload.c | 102 ++++++++++++++++++------------
- 1 file changed, 60 insertions(+), 42 deletions(-)
+     drm/amdgpu: don't attach the tlb fence for SI
+...
+     (cherry picked from commit 820b3d376e8a102c6aeab737ec6edebbbb710e04)
 
-diff --git a/sound/usb/qcom/qc_audio_offload.c b/sound/usb/qcom/qc_audio_offload.c
-index cfb30a195364..1da243662327 100644
---- a/sound/usb/qcom/qc_audio_offload.c
-+++ b/sound/usb/qcom/qc_audio_offload.c
-@@ -699,6 +699,7 @@ static void uaudio_event_ring_cleanup_free(struct uaudio_dev *dev)
- 		uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE,
- 				   PAGE_SIZE);
- 		xhci_sideband_remove_interrupter(uadev[dev->chip->card->number].sb);
-+		usb_offload_put(dev->udev);
- 	}
- }
- 
-@@ -750,6 +751,7 @@ static void qmi_stop_session(void)
- 	struct snd_usb_substream *subs;
- 	struct usb_host_endpoint *ep;
- 	struct snd_usb_audio *chip;
-+	struct usb_device *udev;
- 	struct intf_info *info;
- 	int pcm_card_num;
- 	int if_idx;
-@@ -791,8 +793,13 @@ static void qmi_stop_session(void)
- 			disable_audio_stream(subs);
- 		}
- 		atomic_set(&uadev[idx].in_use, 0);
--		guard(mutex)(&chip->mutex);
--		uaudio_dev_cleanup(&uadev[idx]);
-+
-+		udev = uadev[idx].udev;
-+		if (udev) {
-+			guard(device)(&udev->dev);
-+			guard(mutex)(&chip->mutex);
-+			uaudio_dev_cleanup(&uadev[idx]);
-+		}
- 	}
- }
- 
-@@ -1183,11 +1190,15 @@ static int uaudio_event_ring_setup(struct snd_usb_substream *subs,
- 	er_pa = 0;
- 
- 	/* event ring */
-+	ret = usb_offload_get(subs->dev);
-+	if (ret < 0)
-+		goto exit;
-+
- 	ret = xhci_sideband_create_interrupter(uadev[card_num].sb, 1, false,
- 					       0, uaudio_qdev->data->intr_num);
- 	if (ret < 0) {
- 		dev_err(&subs->dev->dev, "failed to fetch interrupter\n");
--		goto exit;
-+		goto put_offload;
- 	}
- 
- 	sgt = xhci_sideband_get_event_buffer(uadev[card_num].sb);
-@@ -1219,6 +1230,8 @@ static int uaudio_event_ring_setup(struct snd_usb_substream *subs,
- 	mem_info->dma = 0;
- remove_interrupter:
- 	xhci_sideband_remove_interrupter(uadev[card_num].sb);
-+put_offload:
-+	usb_offload_put(subs->dev);
- exit:
- 	return ret;
- }
-@@ -1483,6 +1496,7 @@ static int prepare_qmi_response(struct snd_usb_substream *subs,
- 	uaudio_iommu_unmap(MEM_EVENT_RING, IOVA_BASE, PAGE_SIZE, PAGE_SIZE);
- free_sec_ring:
- 	xhci_sideband_remove_interrupter(uadev[card_num].sb);
-+	usb_offload_put(subs->dev);
- drop_sync_ep:
- 	if (subs->sync_endpoint) {
- 		uaudio_iommu_unmap(MEM_XFER_RING,
-@@ -1528,6 +1542,7 @@ static void handle_uaudio_stream_req(struct qmi_handle *handle,
- 	u8 pcm_card_num;
- 	u8 pcm_dev_num;
- 	u8 direction;
-+	struct usb_device *udev = NULL;
- 	int ret = 0;
- 
- 	if (!svc->client_connected) {
-@@ -1597,50 +1612,53 @@ static void handle_uaudio_stream_req(struct qmi_handle *handle,
- 
- 	uadev[pcm_card_num].ctrl_intf = chip->ctrl_intf;
- 
--	if (req_msg->enable) {
--		ret = enable_audio_stream(subs,
--					  map_pcm_format(req_msg->audio_format),
--					  req_msg->number_of_ch, req_msg->bit_rate,
--					  datainterval);
--
--		if (!ret)
--			ret = prepare_qmi_response(subs, req_msg, &resp,
--						   info_idx);
--		if (ret < 0) {
--			guard(mutex)(&chip->mutex);
--			subs->opened = 0;
--		}
--	} else {
--		info = &uadev[pcm_card_num].info[info_idx];
--		if (info->data_ep_pipe) {
--			ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
--					       info->data_ep_pipe);
--			if (ep) {
--				xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
--							    ep);
--				xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
--							      ep);
-+	udev = subs->dev;
-+	scoped_guard(device, &udev->dev) {
-+		if (req_msg->enable) {
-+			ret = enable_audio_stream(subs,
-+						map_pcm_format(req_msg->audio_format),
-+						req_msg->number_of_ch, req_msg->bit_rate,
-+						datainterval);
-+
-+			if (!ret)
-+				ret = prepare_qmi_response(subs, req_msg, &resp,
-+							info_idx);
-+			if (ret < 0) {
-+				guard(mutex)(&chip->mutex);
-+				subs->opened = 0;
-+			}
-+		} else {
-+			info = &uadev[pcm_card_num].info[info_idx];
-+			if (info->data_ep_pipe) {
-+				ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
-+							info->data_ep_pipe);
-+				if (ep) {
-+					xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
-+									ep);
-+					xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
-+									ep);
-+				}
-+
-+				info->data_ep_pipe = 0;
- 			}
- 
--			info->data_ep_pipe = 0;
--		}
--
--		if (info->sync_ep_pipe) {
--			ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
--					       info->sync_ep_pipe);
--			if (ep) {
--				xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
--							    ep);
--				xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
--							      ep);
-+			if (info->sync_ep_pipe) {
-+				ep = usb_pipe_endpoint(uadev[pcm_card_num].udev,
-+							info->sync_ep_pipe);
-+				if (ep) {
-+					xhci_sideband_stop_endpoint(uadev[pcm_card_num].sb,
-+									ep);
-+					xhci_sideband_remove_endpoint(uadev[pcm_card_num].sb,
-+									ep);
-+				}
-+
-+				info->sync_ep_pipe = 0;
- 			}
- 
--			info->sync_ep_pipe = 0;
-+			disable_audio_stream(subs);
-+			guard(mutex)(&chip->mutex);
-+			subs->opened = 0;
- 		}
--
--		disable_audio_stream(subs);
--		guard(mutex)(&chip->mutex);
--		subs->opened = 0;
- 	}
- 
- response:
+
+
+
+and reverted by:
+commit 808c2052f046d730a588f7b92b04a12f64970853
+Author: Prike Liang <Prike.Liang@amd.com>
+Date:   Fri Jan 9 16:15:11 2026 +0800
+
+     Revert "drm/amdgpu: don't attach the tlb fence for SI"
+...
+     (cherry picked from commit 9163fe4d790fb4e16d6b0e23f55b43cddd3d4a65)
+
+still in 6.19 (the cherry picks suggest fixes takes to some 6.19-fixes 
+tree).
+
+
+
+
+Then merged to 7.0 as:
+commit 820b3d376e8a102c6aeab737ec6edebbbb710e04
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Tue Dec 2 14:24:03 2025 -0500
+
+     drm/amdgpu: don't attach the tlb fence for SI
+
+
+
+and reverted by:
+commit 9163fe4d790fb4e16d6b0e23f55b43cddd3d4a65
+Author: Prike Liang <Prike.Liang@amd.com>
+Date:   Fri Jan 9 16:15:11 2026 +0800
+
+     Revert "drm/amdgpu: don't attach the tlb fence for SI"
+
+It should be dropped or the latter revert added too.
+
+> SI hardware doesn't support pasids, user mode queues, or
+> KIQ/MES so there is no need for this.  Doing so results in
+> a segfault as these callbacks are non-existent for SI.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4744
+> Fixes: f3854e04b708 ("drm/amdgpu: attach tlb fence to the PTs update")
+> Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+> index a67285118c37b..c362d4dfb5bbb 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+> @@ -1069,7 +1069,9 @@ amdgpu_vm_tlb_flush(struct amdgpu_vm_update_params *params,
+>   	}
+>   
+>   	/* Prepare a TLB flush fence to be attached to PTs */
+> -	if (!params->unlocked) {
+> +	if (!params->unlocked &&
+> +	    /* SI doesn't support pasid or KIQ/MES */
+> +	    params->adev->family > AMDGPU_FAMILY_SI) {
+>   		amdgpu_vm_tlb_fence_create(params->adev, vm, fence);
+>   
+>   		/* Makes sure no PD/PT is freed before the flush */
+
 -- 
-2.53.0.414.gf7e9f6c205-goog
+js
+suse labs
 
 
