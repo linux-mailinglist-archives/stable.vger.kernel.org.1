@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-218302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCvYM0VSnmmbUgQAu9opvQ
-	(envelope-from <stable+bounces-218302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:09 +0100
+	id IAyIAP9XnmkjUwQAu9opvQ
+	(envelope-from <stable+bounces-218913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FC018F2D2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:37:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 278BD190663
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:01:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5F0343079893
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:31:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4D2AC308DD76
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C801D5ABA;
-	Wed, 25 Feb 2026 01:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C97285CA3;
+	Wed, 25 Feb 2026 01:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0a5JTyXr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCtQ0uOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FDB2BAF7;
-	Wed, 25 Feb 2026 01:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C02248F54;
+	Wed, 25 Feb 2026 01:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983104; cv=none; b=j33wpzTnjI0jBZ4ZhqPQg8FDZ0P026qkX/YcTUBIIKLc4CiMZkgFquAq7FhYle4LrUItfjHosk+DB0W+zCIgcI42wKV2QqgTM2FoGx50KXQy9MuVEZLDC8p7yymhTHRJR6vZyQ95KMiaeGKcd+OIV0KQdQ11r7Rku9nR0xal0DU=
+	t=1771983806; cv=none; b=rrfNMvZumcPQzjPJ/JbkCWek1h1ixa5pON3wGR7xktaASbr8ov8PjOEwsSeLrRDEOj4ImKpns3VsuwbOygI9GqhZZT91qaCw84d7dO7SbsWAwHPj6pVae9PYAycWw9mDPFAJHPonY0PtXB2i2HBmWG+iPM+A6gAVch8tF1Yg6YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983104; c=relaxed/simple;
-	bh=KkB1Ewt5Zc/MrpWgP4Yf9HXP1Y2nV99aDX9PXL2dwpc=;
+	s=arc-20240116; t=1771983806; c=relaxed/simple;
+	bh=7qg/g7QLNZwNu1vbSjh/ZWajvsaWwdDko814yJ3m4tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g//EJBPwlSaEh0os3MzmxLmmTy03JTuxgaNNLpGx7MTcYv78phVPVlQuwSc/H42wG2eAEYvjq5yeqhVJxlF1sCbMwsLIeVsGPEnepwFFd41IzYtRp7LfK09o/xLMFmfvE+JvOgKtyXE4OqlO9NedvdW0kTto9QTrC3PfyuZ73Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0a5JTyXr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE54AC116D0;
-	Wed, 25 Feb 2026 01:31:43 +0000 (UTC)
+	 MIME-Version; b=PA6Y1PqZPjIqvvzZJTan5vA55rPyCH1bKW488uufiqY5X2ezJNSQjwTaLUiHFFwi1a4iBcgKJ9RqsjGV0+hKeqM2jUvvv4YNxQal4iu92dWMfCe4tFNABTlPPXZSeX/zAem7LwQ6n/gK2CBu3GAUF8aIt+pAWp+xfjFNAOncfUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCtQ0uOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F19CC116D0;
+	Wed, 25 Feb 2026 01:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983103;
-	bh=KkB1Ewt5Zc/MrpWgP4Yf9HXP1Y2nV99aDX9PXL2dwpc=;
+	s=korg; t=1771983806;
+	bh=7qg/g7QLNZwNu1vbSjh/ZWajvsaWwdDko814yJ3m4tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0a5JTyXrvVFuoQ+G2CpjAd1CyHWfvx1/2f0XO0OrDe5Xm39psJrt5QLlSA/gYrVe+
-	 8peEf/cRhVIX4ZeDbnyZ9BfcyGKBue2MPFuaPC2Kh6HcYUrUC80H1vycAwJq/7yp/3
-	 T+WUpG9q6UG6dLKS1j/ODUlYzRodeXXWvvACAzUw=
+	b=WCtQ0uOb+5PtjJpPvdA0ZA8/QO24sKsU1Yqnk57SADTTqoZBmy2FvOmUSvM54tc27
+	 kDdtXTapoFmd0LW+wlhYPxE/1T7iNOgGqrBcXZa8+JoVBpXow1+bG38ZYXL4SjSAB/
+	 8vWjDTFFhwQk51UNHZ0aWX9ip7Zyo659U+9U4kPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 265/781] accel/amdxdna: Fix notifier_wq flushing warning
-Date: Tue, 24 Feb 2026 17:16:14 -0800
-Message-ID: <20260225012406.196100242@linuxfoundation.org>
+Subject: [PATCH 6.18 049/641] iomap: fix submission side handling of completion side errors
+Date: Tue, 24 Feb 2026 17:16:15 -0800
+Message-ID: <20260225012350.223220731@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-218302-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218913-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,49 +88,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 13FC018F2D2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kernel.dk:email]
+X-Rspamd-Queue-Id: 278BD190663
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit b36178488d479e9a53bbef2b01280378b5586e60 ]
+[ Upstream commit 4ad357e39b2ecd5da7bcc7e840ee24d179593cd5 ]
 
-Create notifier_wq with WQ_MEM_RECLAIM flag to fix the possible warning.
+The "if (dio->error)" in iomap_dio_bio_iter exists to stop submitting
+more bios when a completion already return an error.  Commit cfe057f7db1f
+("iomap_dio_actor(): fix iov_iter bugs") made it revert the iov by
+"copied", which is very wrong given that we've already consumed that
+range and submitted a bio for it.
 
-  workqueue: WQ_MEM_RECLAIM amdxdna_js:drm_sched_free_job_work [gpu_sched] is flushing !WQ_MEM_RECLAIM notifier_wq:0x0
-
-Fixes: e486147c912f ("accel/amdxdna: Add BO import and export")
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20260113173624.256053-1-lizhi.hou@amd.com
+Fixes: cfe057f7db1f ("iomap_dio_actor(): fix iov_iter bugs")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/amdxdna_pci_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/iomap/direct-io.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/amdxdna_pci_drv.c b/drivers/accel/amdxdna/amdxdna_pci_drv.c
-index 1973ab67721be..fcc9be23b3de5 100644
---- a/drivers/accel/amdxdna/amdxdna_pci_drv.c
-+++ b/drivers/accel/amdxdna/amdxdna_pci_drv.c
-@@ -282,7 +282,7 @@ static int amdxdna_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		fs_reclaim_release(GFP_KERNEL);
- 	}
- 
--	xdna->notifier_wq = alloc_ordered_workqueue("notifier_wq", 0);
-+	xdna->notifier_wq = alloc_ordered_workqueue("notifier_wq", WQ_MEM_RECLAIM);
- 	if (!xdna->notifier_wq)
- 		return -ENOMEM;
+diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
+index 6317e4cd42517..e73c71f39bd45 100644
+--- a/fs/iomap/direct-io.c
++++ b/fs/iomap/direct-io.c
+@@ -429,9 +429,13 @@ static int iomap_dio_bio_iter(struct iomap_iter *iter, struct iomap_dio *dio)
+ 	nr_pages = bio_iov_vecs_to_alloc(dio->submit.iter, BIO_MAX_VECS);
+ 	do {
+ 		size_t n;
+-		if (dio->error) {
+-			iov_iter_revert(dio->submit.iter, copied);
+-			copied = ret = 0;
++
++		/*
++		 * If completions already occurred and reported errors, give up now and
++		 * don't bother submitting more bios.
++		 */
++		if (unlikely(data_race(dio->error))) {
++			ret = 0;
+ 			goto out;
+ 		}
  
 -- 
 2.51.0
