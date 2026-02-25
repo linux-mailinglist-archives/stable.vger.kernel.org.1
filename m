@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-218784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGADLZtTnmm3UgQAu9opvQ
-	(envelope-from <stable+bounces-218784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:51 +0100
+	id YIIbL/2fnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E29918F935
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF7119303A
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:08:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2FFFA306A154
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:41:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 08F4330CD032
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA2D25A642;
-	Wed, 25 Feb 2026 01:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF0C304BBF;
+	Wed, 25 Feb 2026 06:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwQekAYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPg0UQb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E402926FD93;
-	Wed, 25 Feb 2026 01:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FE12FB08C;
+	Wed, 25 Feb 2026 06:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983658; cv=none; b=F/g5YZqmoAFBO+Ld0WXicELC/xjRQMv9F9y8OjqMej2zWoWb7tndvF7cXgqk02Jt0Bl8ymrCLTLwEJVyN+nYWTmLk3HG1u0io0IKZz4npwH5Mua9HYRB29GPzFgycA2PlrzJJnhINZhMO1nLdjzka6f40SLqJ0bU+2FpOska4BA=
+	t=1772002689; cv=none; b=l3GA2lHMD9GxEyeC1R/2bCV3fwxI2WyL1v6cWYG8AE7fMHTynn0tIHAo88xskTDme2jo0ItHmuBwAo1FTX0IySEgcREdHuoShvLwFK+0hvk1zQ+Y5EoTe/CotvfjEZdT6r2cIB4WuLCrQWBBD/yw2r2q18v+V/N7ufheM93pWH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983658; c=relaxed/simple;
-	bh=6WWeMpRkkpSwuP7xcgr/9zjmETzqTh8CZiFGlN02Pqk=;
+	s=arc-20240116; t=1772002689; c=relaxed/simple;
+	bh=7QJGrnD/aar1VUyTyVzgadLuMrvtqODfyZD8On8MREA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQ0czhWUtgYUoHF9Ji0ZsYUNwMjqt5/OZojgocxK9aifAsiPhgUyVvQkv8mrJhxl3/LY77OaWZq5M42kz3A2QbIISFAHIzXILPzBf+7KR9KWqnotgrIDZKcMMg4yUelyOffEUa4TBiu2x/J8QhWwd/fxkanV3yVhuHM0NoyuUrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwQekAYA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6331C116D0;
-	Wed, 25 Feb 2026 01:40:57 +0000 (UTC)
+	 MIME-Version; b=O1c55XO3cbYTQ7koPfd4dIYNLYBzz9GxQULNErrvSpaYddhATimNmwJDzqX/lt66gLpX/q5642L24jzpV4StKH3DO7w+4buijYccdRvixe8Uo+B8+d/+2lrOFs6BbhGlE6wlzRqGeZk76M2NYxCEEMkoZGsQSlwLV2NwL8vJPjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPg0UQb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BC3C116D0;
+	Wed, 25 Feb 2026 06:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983657;
-	bh=6WWeMpRkkpSwuP7xcgr/9zjmETzqTh8CZiFGlN02Pqk=;
+	s=korg; t=1772002689;
+	bh=7QJGrnD/aar1VUyTyVzgadLuMrvtqODfyZD8On8MREA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwQekAYAT6fxF+T1a0hvfupfoXSXmyqIl7hpwDVCUHJ74ErwuJGyO1/NLsBM6bYWD
-	 /zyylXRaSAwLLOZaXqXVAzEtOqWtWItgeb5laWe82HqUI6ZkK3DGr+JVKFBJ9r0r7+
-	 3u3sLlEmFGhDOc+Agk1LtMqTXpL3qDwvpesjqHt8=
+	b=jPg0UQb2FIlFCgpvq4W1aR6UZNu3uaYaR8ylMUBYi6Ekz+zepUmeLThSlaNA19ke+
+	 BB5G+U89zTTZ/H9xFc7i9nhXKywdVBzCGUom9NE1mrUCryMe8TdfFVa1AWMZ7mbkA4
+	 9NsT+tM4z1WoVi2atgxJlhJD+dxcDn40L2zA9wKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 700/781] apparmor: fix rlimit for posix cpu timers
+Subject: [PATCH 6.18 483/641] pinctrl: equilibrium: Fix device node reference leak in pinbank_init()
 Date: Tue, 24 Feb 2026 17:23:29 -0800
-Message-ID: <20260225012416.925853756@linuxfoundation.org>
+Message-ID: <20260225012400.222651343@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-218784-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219398-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.956];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9E29918F935
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,spec.np:url]
+X-Rspamd-Queue-Id: 1EF7119303A
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 6ca56813f4a589f536adceb42882855d91fb1125 ]
+[ Upstream commit c0b4a4feeb43305a754893d8d9c6b2b5a52d45ac ]
 
-Posix cpu timers requires an additional step beyond setting the rlimit.
-Refactor the code so its clear when what code is setting the
-limit and conditionally update the posix cpu timers when appropriate.
+When calling of_parse_phandle_with_fixed_args(), the caller is
+responsible to call of_node_put() to release the reference of device
+node.
 
-Fixes: baa73d9e478ff ("posix-timers: Make them configurable")
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+In pinbank_init(), the reference of the node obtained from the
+"gpio-ranges" property is never released, resulting in a reference
+count leak.
+
+Add the missing of_node_put() call to fix the leak.
+
+Fixes: 1948d5c51dba ("pinctrl: Add pinmux & GPIO controller driver for a new SoC")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Acked-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/resource.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/pinctrl-equilibrium.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/security/apparmor/resource.c b/security/apparmor/resource.c
-index 8e80db3ae21c0..64212b39ba4bb 100644
---- a/security/apparmor/resource.c
-+++ b/security/apparmor/resource.c
-@@ -196,6 +196,11 @@ void __aa_transition_rlimits(struct aa_label *old_l, struct aa_label *new_l)
- 					     rules->rlimits.limits[j].rlim_max);
- 			/* soft limit should not exceed hard limit */
- 			rlim->rlim_cur = min(rlim->rlim_cur, rlim->rlim_max);
-+			if (j == RLIMIT_CPU &&
-+			    rlim->rlim_cur != RLIM_INFINITY &&
-+			    IS_ENABLED(CONFIG_POSIX_TIMERS))
-+				(void) update_rlimit_cpu(current->group_leader,
-+							 rlim->rlim_cur);
- 		}
- 	}
- }
+diff --git a/drivers/pinctrl/pinctrl-equilibrium.c b/drivers/pinctrl/pinctrl-equilibrium.c
+index 2d04829b29c99..48b55c5bf8d4f 100644
+--- a/drivers/pinctrl/pinctrl-equilibrium.c
++++ b/drivers/pinctrl/pinctrl-equilibrium.c
+@@ -846,6 +846,7 @@ static int pinbank_init(struct device_node *np,
+ 
+ 	bank->pin_base = spec.args[1];
+ 	bank->nr_pins = spec.args[2];
++	of_node_put(spec.np);
+ 
+ 	bank->aval_pinmap = readl(bank->membase + REG_AVAIL);
+ 	bank->id = id;
 -- 
 2.51.0
 
