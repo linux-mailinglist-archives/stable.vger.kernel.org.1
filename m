@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-219304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKzbJ3OdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:55 +0100
+	id GK7yLUVUnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2306C1929D6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 093D718FC41
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:45:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F352303B5E6
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:57:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95E2A30CA82E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360AA2D77F5;
-	Wed, 25 Feb 2026 06:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D6C26463A;
+	Wed, 25 Feb 2026 01:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYLd2dtr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2/efVcF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0AD2F9D83;
-	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367F0248881;
+	Wed, 25 Feb 2026 01:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002628; cv=none; b=RrKA9bZV90Fk1IKR9EOLBqYf6E2zbRtTl+giKsnrCLdAmkap4VTCVSSv/EvckprV0TmzfkKYtj5Fi5xJXPDiy2KQ4AQxU06sXcQofesLaHUbD86ZSul0PCDAsj2w/yBLdVtOSGegQRNL+7IYYAyG0qC+FqrDoAqIyl0+Na0Ga6c=
+	t=1771983498; cv=none; b=YWXbsk2VH/8DkV2XGXRZsqfHg3fiDfWvFG4n8pm4oKUqG0FC+eZlXBYYmkTPB7GNAiwDCWwtHm7z2WFwLb0YN1xKVKvBMnLOLMOlSOIDoeQlPuNBrftC82zWpT8YnAsJGTyY4VDhUZftZ8RAqrHqhWLcG1ZQnAbH8PcYoWBlKTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002628; c=relaxed/simple;
-	bh=Z/yHBie1pYNB+9z+diaxmweAkYXtZCpqVQh+yH4UUUw=;
+	s=arc-20240116; t=1771983498; c=relaxed/simple;
+	bh=Lj7+ZEV6WRbsKT9oKXbxC65mwMK8xhgctkJ8qMPLshI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5WZG5R++N5VmxSg6qgZxzgqMkmjRh/RJ8ZVfpVQY0t/wvpqjpa8jj6mQF5RxN2g787KugzNCk9JqQqYiuL03i1IpI4/oWag6tAS/0vbyhjH5J8l1ERWwdMnqWjGKi+aRe1/0QZpQh00Z/qEwlUOISGU1SYRdOliOEyVN4KQmZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYLd2dtr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C86BDC116D0;
-	Wed, 25 Feb 2026 06:57:07 +0000 (UTC)
+	 MIME-Version; b=CmGoNf4QumZTZ04tTKJLhHTH76j6NNuWlVmFRyX6VUWo2ZdH2DCkwQ0/2+uoe0G4GVVlw6uB9s9lr3uQZFLdLsqZTsVwUFWjba0DGZAs+qXdWK1/47vIdLUpRFp6fFHJQHxMFb2kDUcTCzbZ0rfKcXXmKPagCRx59bcMpz4NAeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2/efVcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5D4C116D0;
+	Wed, 25 Feb 2026 01:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002627;
-	bh=Z/yHBie1pYNB+9z+diaxmweAkYXtZCpqVQh+yH4UUUw=;
+	s=korg; t=1771983498;
+	bh=Lj7+ZEV6WRbsKT9oKXbxC65mwMK8xhgctkJ8qMPLshI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sYLd2dtr56TouyzYW4iDKfOCJadaawXwUhbZS7mhSQbLkQm2MK68kb6+yTkKXGP33
-	 k9wwVtCh8yE9oRm8dMyga6pxMZCnRoobWFMGqk4iRgLLpkw5SrcpZHLAs2cOirjdRe
-	 bXjVgM9hu1FA/r7vLQMNH86//dl94ou4C+2fTK0Q=
+	b=m2/efVcFCDrksC85lC+5gfdpBuZdRfQtkhmfec7k62IbdE/IZ5JZ5k6Es+5fL6cVq
+	 ylaHvsV6pg3xJ9zJSfi1OlUbFmwFc+eFa6ppThYOHsvdBz5oC/zvK9bauW3yvfJEQ2
+	 W/4rZn6TPAxj/ZrlnT65pocZO1h3zwzWYOu9CcKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Liu <liuy22@mails.tsinghua.edu.cn>,
-	Leon Romanovsky <leon@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 389/641] RDMA/uverbs: Add __GFP_NOWARN to ib_uverbs_unmarshall_recv() kmalloc
-Date: Tue, 24 Feb 2026 17:21:55 -0800
-Message-ID: <20260225012358.006150881@linuxfoundation.org>
+Subject: [PATCH 6.19 607/781] leds: qcom-lpg: Check the return value of regmap_bulk_write()
+Date: Tue, 24 Feb 2026 17:21:56 -0800
+Message-ID: <20260225012414.681268838@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,57 +79,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219304-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-218647-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 2306C1929D6
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 093D718FC41
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <liuy22@mails.tsinghua.edu.cn>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 58b604dfc7bb753f91bc0ccd3fa705e14e6edfb4 ]
+[ Upstream commit f42033b5ce8c79c5db645916c9a72ee3e10cecfa ]
 
-Since wqe_size in ib_uverbs_unmarshall_recv() is user-provided and already
-validated, but can still be large, add __GFP_NOWARN to suppress memory
-allocation warnings for large sizes, consistent with the similar fix in
-ib_uverbs_post_send().
+The lpg_lut_store() function currently ignores the return value of
+regmap_bulk_write() and always returns 0. This can cause hardware write
+failures to go undetected, leading the caller to believe LUT programming
+succeeded when it may have failed.
 
-Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
-Signed-off-by: Yi Liu <liuy22@mails.tsinghua.edu.cn>
-Link: https://patch.msgid.link/20260129094900.3517706-1-liuy22@mails.tsinghua.edu.cn
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Check the return value of regmap_bulk_write() in lpg_lut_store and return
+the error to the caller on failure.
+
+Fixes: 24e2d05d1b68 ("leds: Add driver for Qualcomm LPG")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20260108175133.638-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/rgb/leds-qcom-lpg.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
-index 3259e9848cc79..f4616deeca545 100644
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -2242,7 +2242,7 @@ ib_uverbs_unmarshall_recv(struct uverbs_req_iter *iter, u32 wr_count,
- 	if (ret)
- 		return ERR_PTR(ret);
+diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+index 72da0bf469ad8..f54851dfb42fc 100644
+--- a/drivers/leds/rgb/leds-qcom-lpg.c
++++ b/drivers/leds/rgb/leds-qcom-lpg.c
+@@ -369,7 +369,7 @@ static int lpg_lut_store(struct lpg *lpg, struct led_pattern *pattern,
+ {
+ 	unsigned int idx;
+ 	u16 val;
+-	int i;
++	int i, ret;
  
--	user_wr = kmalloc(wqe_size, GFP_KERNEL);
-+	user_wr = kmalloc(wqe_size, GFP_KERNEL | __GFP_NOWARN);
- 	if (!user_wr)
- 		return ERR_PTR(-ENOMEM);
+ 	idx = bitmap_find_next_zero_area(lpg->lut_bitmap, lpg->lut_size,
+ 					 0, len, 0);
+@@ -379,8 +379,10 @@ static int lpg_lut_store(struct lpg *lpg, struct led_pattern *pattern,
+ 	for (i = 0; i < len; i++) {
+ 		val = pattern[i].brightness;
  
+-		regmap_bulk_write(lpg->map, lpg->lut_base + LPG_LUT_REG(idx + i),
+-				  &val, sizeof(val));
++		ret = regmap_bulk_write(lpg->map, lpg->lut_base + LPG_LUT_REG(idx + i),
++					&val, sizeof(val));
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	bitmap_set(lpg->lut_bitmap, idx, len);
 -- 
 2.51.0
 
