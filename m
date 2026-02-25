@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-219249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +I9PMlyenmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:48 +0100
+	id 8KbuHyJTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A4D192C3F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:01:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0907918F6E4
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C89B8310E19B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF8B5311F855
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59342C21DF;
-	Wed, 25 Feb 2026 06:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B195253932;
+	Wed, 25 Feb 2026 01:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KxFjIDP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqcqV6hw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2E22C11CD;
-	Wed, 25 Feb 2026 06:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E546248881;
+	Wed, 25 Feb 2026 01:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002592; cv=none; b=eab8n338HNI4wRF3zUy78d15YCFc9Zy9uI5aQcj8tvx02ihZmkLVg7hJwMx2f7ierakces7EC1tSc1cLQhXpyhOYVLpXbXmv9gEW4x7b6G1JGK7iDqnRSz/YBS7iOLUVAG7ShYJxhAJ3P58TVrgey6YX+OW3ijSg5EvYo77LCXY=
+	t=1771983375; cv=none; b=AhjdUunuafXGbBEF+iSmHf3kZ8kVjvz+PwHTElyfhjOwVXOG7S8OUOBRv7VgupWSKneFnHw5CYK+CtRAnBxGMSEZ7C9ZsusPEK9DjGxD+leSi9Ziesttqx45xHEjShK3Zs1RF1tk/GFRg8CZ+O3BXSqkNeHdb36scREDJ6ECCcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002592; c=relaxed/simple;
-	bh=HhpHl69Q7YIztPTHyw4ZuAHJHPtaI7OcQTMBiOZPqEY=;
+	s=arc-20240116; t=1771983375; c=relaxed/simple;
+	bh=pb5jPxl7Sp5kUoQmtgfM2gsYl8XQhE/ZqbbaWO88+dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0XuAWIo0oVjP04F9Kl04sZIBcRwtGPxo/Y7NMx7HyzPR4lTFK5Uk286YuKTcnojUyq802pFj6SdwyMX/IxOrMaYROyr9aFQu1Gg+g/d7djFwEFA70euGIxtDXaN3n8u4fw6xsXCRKlBTvUcSJ3za6z93ASJTdfvGqvpQiokyP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KxFjIDP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 402DBC116D0;
-	Wed, 25 Feb 2026 06:56:32 +0000 (UTC)
+	 MIME-Version; b=bIbGMFs+kWa5S/Bd4K/NsJo3HAll4wo24npMiNpSG+5tR4phZuHbZicnK9FmiS27AvCwStoFNxcnWRkypeGE9e80J0tsXtCqTiO7rl703M5cdeibk0k6CI3d3VYq6UtvqhWtl2kKhAAHVsYkUXdSpep0lGS6lttU5GjX9eg2i1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqcqV6hw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA10EC19423;
+	Wed, 25 Feb 2026 01:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002592;
-	bh=HhpHl69Q7YIztPTHyw4ZuAHJHPtaI7OcQTMBiOZPqEY=;
+	s=korg; t=1771983374;
+	bh=pb5jPxl7Sp5kUoQmtgfM2gsYl8XQhE/ZqbbaWO88+dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KxFjIDPzsZgJUE4YrvWxz6uOITMtDAFeRVxN8C/HNrueSj7+LOFX4Lx8M0761Kjt
-	 OzzowKj5tGAYn3I9TBFYn6KUBCnOWQKjpy+oBkXUFewJHPOJxp9SGXjb25qtrfQ7yi
-	 invCx+aSDfKgsIr4ZotSwvrnCg12OrhEWG7/DjcQ=
+	b=EqcqV6hw6xY8B1bpY506z4KeXMu8sv2R47RgDO0K4kPM06lJ6ZulkJOKso+QdjIrg
+	 MS2mSZdi0ips+PWkbeS6H7jPrG3pe3zfiwquwIgoHxm5JaGsqrKFaRS4ozFzkylRNl
+	 AbLQNU6XtgPRwSnk0T0tUZOn0b/EAhkvdjM34LbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@auroraos.dev>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 282/641] PCI: Check parent for NULL in of_pci_bus_release_domain_nr()
-Date: Tue, 24 Feb 2026 17:20:08 -0800
-Message-ID: <20260225012355.607090768@linuxfoundation.org>
+Subject: [PATCH 6.19 500/781] scsi: csiostor: Fix dereference of null pointer rn
+Date: Tue, 24 Feb 2026 17:20:09 -0800
+Message-ID: <20260225012412.068317346@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219249-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218537-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.988];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linuxtesting.org:url]
-X-Rspamd-Queue-Id: 26A4D192C3F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
+X-Rspamd-Queue-Id: 0907918F6E4
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit f7245901de8978d829f80b3d8e36ed9a8fd18049 ]
+[ Upstream commit 1982257570b84dc33753d536dd969fd357a014e9 ]
 
-of_pci_bus_find_domain_nr() allows its parent parameter to be NULL but
-of_pci_bus_release_domain_nr() (that undoes its effect) doesn't -- that
-means it's going to blow up while calling of_get_pci_domain_nr() if the
-parent parameter indeed happens to be NULL.  Add the missing NULL check.
+The error exit path when rn is NULL ends up deferencing the null pointer rn
+via the use of the macro CSIO_INC_STATS. Fix this by adding a new error
+return path label after the use of the macro to avoid the deference.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
-
-Fixes: c14f7ccc9f5d ("PCI: Assign PCI domain IDs by ida_alloc()")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20260127203944.28588-1-s.shtylyov@auroraos.dev
+Fixes: a3667aaed569 ("[SCSI] csiostor: Chelsio FCoE offload driver")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Link: https://patch.msgid.link/20260129155332.196338-1-colin.i.king@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/csiostor/csio_scsi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 08a8c17ba4b12..82e323b5aaa25 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -6717,7 +6717,7 @@ static void of_pci_bus_release_domain_nr(struct device *parent, int domain_nr)
- 		return;
+diff --git a/drivers/scsi/csiostor/csio_scsi.c b/drivers/scsi/csiostor/csio_scsi.c
+index 34bde6650fae0..356a7c577ec3e 100644
+--- a/drivers/scsi/csiostor/csio_scsi.c
++++ b/drivers/scsi/csiostor/csio_scsi.c
+@@ -2074,7 +2074,7 @@ csio_eh_lun_reset_handler(struct scsi_cmnd *cmnd)
+ 	struct csio_scsi_level_data sld;
  
- 	/* Release domain from IDA where it was allocated. */
--	if (of_get_pci_domain_nr(parent->of_node) == domain_nr)
-+	if (parent && of_get_pci_domain_nr(parent->of_node) == domain_nr)
- 		ida_free(&pci_domain_nr_static_ida, domain_nr);
- 	else
- 		ida_free(&pci_domain_nr_dynamic_ida, domain_nr);
+ 	if (!rn)
+-		goto fail;
++		goto fail_ret;
+ 
+ 	csio_dbg(hw, "Request to reset LUN:%llu (ssni:0x%x tgtid:%d)\n",
+ 		      cmnd->device->lun, rn->flowid, rn->scsi_id);
+@@ -2220,6 +2220,7 @@ csio_eh_lun_reset_handler(struct scsi_cmnd *cmnd)
+ 	csio_put_scsi_ioreq_lock(hw, scsim, ioreq);
+ fail:
+ 	CSIO_INC_STATS(rn, n_lun_rst_fail);
++fail_ret:
+ 	return FAILED;
+ }
+ 
 -- 
 2.51.0
 
