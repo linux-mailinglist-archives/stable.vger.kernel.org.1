@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HxNFrlTnmmmUgQAu9opvQ
-	(envelope-from <stable+bounces-218408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:21 +0100
+	id qOCSNBBXnmkKUwQAu9opvQ
+	(envelope-from <stable+bounces-218975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C0118F9C3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A74190471
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5849314AD97
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:33:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF67631B71C6
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A659D1EB5E1;
-	Wed, 25 Feb 2026 01:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17682820A0;
+	Wed, 25 Feb 2026 01:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uy9sattO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qrewv/C7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6A618B0A;
-	Wed, 25 Feb 2026 01:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6385D25A655;
+	Wed, 25 Feb 2026 01:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983225; cv=none; b=Lf9FHX0hykIr82vIu8duieVVN7ikOC7uQMEhfl7T17hAm2dMhsNKgOBGBwJY/R2SZQldxrUmDP/g8h8eugfiLoyurygVZoyPDbGzuJ1stF8Zw1VP3IwT9hneoXRSnlhWUwEy3whsOsAc4fjjib3NYYDZ+WIlYh8jEfacmzNZwyE=
+	t=1771983878; cv=none; b=fjwn4gR/W5Y9IessK2xhAW/72sYuKzrJpqz8j7hPckSvPE+AQlMtBaeM8iivfxIODjjYlNL7tqXkjVraFGreStqAKR5lhW6BfoUnCSalA7tJuU+p7sW/URS1olWD3na7bKvsn/Nl5qh5UYtzaaXDosamx/PXmdHBvPdZR7heNn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983225; c=relaxed/simple;
-	bh=Z86aKaM1oc2mTjlmHj+nUBdO1o7v4Py2pVJ+QngelvQ=;
+	s=arc-20240116; t=1771983878; c=relaxed/simple;
+	bh=vZGF+P4f6cUt5ZIaRUN/GtlFpTilclWaSzAaaR4z30E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=syokyKF6RBWe1uJYaPrgaPlFjZ1OnAc5e1kHo0qwBG8jHAJSvBNit6xLxBIVMSjjqM8G7eV/hVS9UOS2hgrNxj06yeT8aYR5RdOKbQ65FuUKxAhCd90v+16/zoA+ZVux4SoJd5SawAVScbXIuVV4lnUvPkoFqy8VAVUHHhbbJJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uy9sattO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EE0C116D0;
-	Wed, 25 Feb 2026 01:33:44 +0000 (UTC)
+	 MIME-Version; b=He+u6SaXn1yQyjBmMftTf0ZpePJa5goSjoMMwuKxsKYt2s7oMri588t1E+ueZN1IviaanwSPCZQ/nlwX1FZYwxrstqLK40bM0aX0P3L4wTc0TUxkuVFJyjdiaUbYEUnJnQpL8sCoy9F2KXu8xNymiddm+789yMY31ODwETOP7a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qrewv/C7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA51C116D0;
+	Wed, 25 Feb 2026 01:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983225;
-	bh=Z86aKaM1oc2mTjlmHj+nUBdO1o7v4Py2pVJ+QngelvQ=;
+	s=korg; t=1771983878;
+	bh=vZGF+P4f6cUt5ZIaRUN/GtlFpTilclWaSzAaaR4z30E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uy9sattOIQmzTl9q3HobwGnw+VQLyzFlNRcnb0xIibf7vdsWMjY6qn4243ZL1OUiD
-	 xWml1ixG7bteek1k+fNM898kMuL9/L5DM9cxNFHkAbXivvo03fnUTJAxbJyTNWmX07
-	 XUhohqpaD1R8bXtWcQIaEnvo9sJlooEhacy1Bh3k=
+	b=Qrewv/C7g5Zo8Xw8sluipR0q/W4/kh5LCyKGtmeNy1sB7+YULNU492Kr4zcr5DK6s
+	 sBSX8M8UTvp199uBYD3TY2zx9zl7fGuuMBoxfxsXhiIRWU9HrgAKQziLuic5PRJwLQ
+	 SpSjudVdWPi185b+jxHZlRGSDyZO9uXJdmOXn7ZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Richter <Simon.Richter@hogyros.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 370/781] PCI: Remove old_size limit from bridge window sizing
+Subject: [PATCH 6.18 153/641] soc: qcom: ubwc: add missing include
 Date: Tue, 24 Feb 2026 17:17:59 -0800
-Message-ID: <20260225012408.762338501@linuxfoundation.org>
+Message-ID: <20260225012352.796730030@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
-References: <20260225012359.695468795@linuxfoundation.org>
+In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
+References: <20260225012348.915798704@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,148 +64,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-218408-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218975-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,hogyros.de:email]
-X-Rspamd-Queue-Id: E2C0118F9C3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 74A74190471
 X-Rspamd-Action: no action
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit f909e3ee3ed1a44202f09ac7e637a0f9ec372225 ]
+[ Upstream commit ccef4b2703ff5b0de0b1bda30a0de3026d52eb19 ]
 
-calculate_memsize() applies lower bound to the resource size before
-aligning the resource size making it impossible to shrink bridge window
-resources. I've not found any justification for this lower bound and
-nothing indicated it was to work around some HW issue.
+The header has a function which calls pr_err(). Don't require users of
+the header to include <linux/printk.h> and include it here.
 
-Prior to the commit 3baeae36039a ("PCI: Use pci_release_resource() instead
-of release_resource()"), releasing a bridge window during BAR resize
-resulted in clearing start and end address of the resource.  Clearing
-addresses destroys the resource size as a side-effect, therefore nullifying
-the effect of the old size lower bound.
-
-After the commit 3baeae36039a ("PCI: Use pci_release_resource() instead of
-release_resource()"), BAR resize uses the aligned old size, which results
-in exceeding what fits into the parent window in some cases:
-
-  xe 0030:03:00.0: [drm] Attempting to resize bar from 256MiB -> 16384MiB
-  xe 0030:03:00.0: BAR 0 [mem 0x620c000000000-0x620c000ffffff 64bit]: releasing
-  xe 0030:03:00.0: BAR 2 [mem 0x6200000000000-0x620000fffffff 64bit pref]: releasing
-  pci 0030:02:01.0: bridge window [mem 0x6200000000000-0x620001fffffff 64bit pref]: releasing
-  pci 0030:01:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref]: releasing
-  pci 0030:00:00.0: bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref]: was not released (still contains assigned resources)
-  pci 0030:00:00.0: Assigned bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref] to [bus 01-04] free space at [mem 0x6200400000000-0x62007ffffffff 64bit pref]
-  pci 0030:00:00.0: Assigned bridge window [mem 0x6200000000000-0x6203fbff0ffff 64bit pref] to [bus 01-04] cannot fit 0x4000000000 required for 0030:01:00.0 bridging to [bus 02-04]
-
-The old size of 0x6200000000000-0x6203fbff0ffff resource was used as the
-lower bound which results in 0x4000000000 size request due to alignment.
-That exceeds what can fit into the parent window.
-
-Since the lower bound never even was enforced fully because the resource
-addresses were cleared when the bridge window is released, remove the
-old_size lower bound entirely and trust the calculated bridge window size
-is enough.
-
-This same problem may occur on io window side but seems less likely to
-cause issues due to general difference in alignment. Removing the lower
-bound may have other unforeseen consequences in case of io window so it's
-better to leave it as -next material if no problem is reported related to
-io window sizing (BAR resize shouldn't touch io windows anyway).
-
-Fixes: 3baeae36039a ("PCI: Use pci_release_resource() instead of release_resource()")
-Reported-by: Simon Richter <Simon.Richter@hogyros.de>
-Link: https://lore.kernel.org/r/f9a8c975-f5d3-4dd2-988e-4371a1433a60@hogyros.de/
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20251219174036.16738-6-ilpo.jarvinen@linux.intel.com
+Fixes: 87cfc79dcd60 ("drm/msm/a6xx: Resolve the meaning of UBWC_MODE")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20260110-iris-ubwc-v1-1-dd70494dcd7b@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ include/linux/soc/qcom/ubwc.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index ed23778659114..902fdae73c232 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -1070,16 +1070,13 @@ static resource_size_t calculate_memsize(resource_size_t size,
- 					 resource_size_t min_size,
- 					 resource_size_t add_size,
- 					 resource_size_t children_add_size,
--					 resource_size_t old_size,
- 					 resource_size_t align)
- {
- 	if (size < min_size)
- 		size = min_size;
--	if (old_size == 1)
--		old_size = 0;
+diff --git a/include/linux/soc/qcom/ubwc.h b/include/linux/soc/qcom/ubwc.h
+index 1ed8b1b16bc90..d9dfc9edc1b2f 100644
+--- a/include/linux/soc/qcom/ubwc.h
++++ b/include/linux/soc/qcom/ubwc.h
+@@ -8,6 +8,7 @@
+ #define __QCOM_UBWC_H__
  
- 	size = max(size, add_size) + children_add_size;
--	return ALIGN(max(size, old_size), align);
-+	return ALIGN(size, align);
- }
+ #include <linux/bits.h>
++#include <linux/printk.h>
+ #include <linux/types.h>
  
- resource_size_t __weak pcibios_window_alignment(struct pci_bus *bus,
-@@ -1297,7 +1294,6 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 	resource_size_t children_add_size = 0;
- 	resource_size_t children_add_align = 0;
- 	resource_size_t add_align = 0;
--	resource_size_t old_size;
- 
- 	if (!b_res)
- 		return;
-@@ -1363,11 +1359,10 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 		}
- 	}
- 
--	old_size = resource_size(b_res);
- 	win_align = window_alignment(bus, b_res->flags);
- 	min_align = calculate_head_align(aligns, max_order);
- 	min_align = max(min_align, win_align);
--	size0 = calculate_memsize(size, min_size, 0, 0, old_size, win_align);
-+	size0 = calculate_memsize(size, min_size, 0, 0, win_align);
- 
- 	if (size0) {
- 		resource_set_range(b_res, min_align, size0);
-@@ -1377,7 +1372,7 @@ static void pbus_size_mem(struct pci_bus *bus, unsigned long type,
- 	if (realloc_head && (add_size > 0 || children_add_size > 0)) {
- 		add_align = max(min_align, add_align);
- 		size1 = calculate_memsize(size, min_size, add_size, children_add_size,
--					  old_size, win_align);
-+					  win_align);
- 	}
- 
- 	if (!size0 && !size1) {
+ struct qcom_ubwc_cfg_data {
 -- 
 2.51.0
 
