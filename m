@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-219207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218550-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OsCFT6dnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:02 +0100
+	id iFRhMHVTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218550-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CAD192944
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:57:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 477F718F870
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EE5D30804F1
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:55:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7AC1E313F527
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151E32C11D6;
-	Wed, 25 Feb 2026 06:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54558243376;
+	Wed, 25 Feb 2026 01:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLYyDJFD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTdmZeOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAF72C0263;
-	Wed, 25 Feb 2026 06:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1882518B0A;
+	Wed, 25 Feb 2026 01:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002555; cv=none; b=rAFc/m6p32iS72+aVdwXKRR35Cnk3gFFTlDN9CiK2qjkPISaF7WR0VSeljWx3czqfyJjhlGTHK9qOvdxfHExoNcsubJ+u3hXAhcbHc4sx3uSwZZqJZbY+hffd2zeqi3/1HSqwWlXB1PZzwDE1Z9MzIzInnQQsOvuszKuKa19kCM=
+	t=1771983389; cv=none; b=K3CK1zoKOG3D+Y/3bIzH2Zlg1bJ8p025XnFr+1RD4kmslnLCzzcsekGhdbDepMfKrfK0/gq9g6GgAM3tKMx3hAM0STT4b02F6ypR2zHAHraWjerwzLMaQluEpdbcNCrfaB7eZQjNOpyYu/G8Xx5j+rr78K6bUJZEg/jGh+pW+FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002555; c=relaxed/simple;
-	bh=InzYR8tKVM0v8XjvNQSCLyhzCN4GHMmsfqrIfp2zwWw=;
+	s=arc-20240116; t=1771983389; c=relaxed/simple;
+	bh=gQCbjtcz6r17DLWj9UaqlL07ccdKijZQcDwkqdd1MLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W0ch6z3ABSpGwnfrq/5OKK65IXCFXhII7NgC/sSFeCpsX9bcws4/0QiguFEL+2/YRarf5ssLPadcjQGkhki83b7Zi3jUkTQ2J3gLAAJLUi6e6Za9mfAUR6yQzn/HR8TAn/tvQANBgu1tTfqGwlL3+Hs38tuVRICa4tzIg4xq/HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLYyDJFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDF2C116D0;
-	Wed, 25 Feb 2026 06:55:55 +0000 (UTC)
+	 MIME-Version; b=OMh1YfWsEmk1GsVhndG158ZycASWDPnnDxjJ3IlmrSu4+3pqjNL0dXeqcqs6lRT9S2r+/9kIwLQJYTmladBBHUqGfGYKDLN+KLsqyxKaIdPvj+J9jq1NclQUkqyso+YjSBGXAtSBTwQuXpcKj7YQDTR9pSdsPDI2eVYoYIPsAcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTdmZeOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6FDC116D0;
+	Wed, 25 Feb 2026 01:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002555;
-	bh=InzYR8tKVM0v8XjvNQSCLyhzCN4GHMmsfqrIfp2zwWw=;
+	s=korg; t=1771983389;
+	bh=gQCbjtcz6r17DLWj9UaqlL07ccdKijZQcDwkqdd1MLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QLYyDJFD3i2+vk8ExVFAQCJSV7CAOmajs3xCZqxChjD7KTV4ajNB2VKW0e7N+Ept4
-	 hMo1DqhR+ybTrGL3PVzyxlUiofNaVZ04Bj21jW78dO23zWi2GPz+RVqVcDdGXlD46r
-	 vpnklHYT5iH2+eZGyq3bXqv+gX3TcNFTbKDouG9M=
+	b=RTdmZeOp1GCsOsc5GJyiKz4BbQn90OGbdWUbx0UHGbREeCk6hKoyHnHtq7s7bVWmI
+	 Bf3l8/FXZKYG8BsI829bupW1pk/NIrHnd4ay+lprndFelO8BE3iDaqjuE3DNztOcMC
+	 CIP6M3JhPambbcY8npMl1S56riM2x7UJacYZjRlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Tilmans <olivier.tilmans@nokia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ij@kernel.org>,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Drew Fustini <fustini@kernel.org>,
+	Yao Zi <ziyao@disroot.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 294/641] tcp: ECT_1_NEGOTIATION and NEEDS_ACCECN identifiers
+Subject: [PATCH 6.19 511/781] clk: thead: th1520-ap: Poll for PLL lock and wait for stability
 Date: Tue, 24 Feb 2026 17:20:20 -0800
-Message-ID: <20260225012355.876366253@linuxfoundation.org>
+Message-ID: <20260225012412.338794381@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,238 +63,184 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-219207-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218550-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nokia-bell-labs.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: B2CAD192944
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,disroot.org:email]
+X-Rspamd-Queue-Id: 477F718F870
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit 100f946b8d44b64bc0b8a8c30d283105031c0a77 ]
+[ Upstream commit 892abfbed71e8e0fc5d6ccee1e975904805c6327 ]
 
-Two flags for congestion control (CC) module are added in this patch
-related to AccECN negotiation. First, a new flag (TCP_CONG_NEEDS_ACCECN)
-defines that the CC expects to negotiate AccECN functionality using the
-ECE, CWR and AE flags in the TCP header.
+All PLLs found on TH1520 SoC take 21250ns at maximum to lock, and their
+lock status is indicated by register PLL_STS (offset 0x80 inside AP
+clock controller). We should poll the register to ensure the PLL
+actually locks after enabling it.
 
-Second, during ECN negotiation, ECT(0) in the IP header is used. This
-patch enables CC to control whether ECT(0) or ECT(1) should be used on
-a per-segment basis. A new flag (TCP_CONG_ECT_1_NEGOTIATION) defines the
-expected ECT value in the IP header by the CA when not-yet initialized
-for the connection.
+Furthermore, a 30us delay is added after enabling the PLL, after which
+the PLL could be considered stable as stated by vendor clock code.
 
-The detailed AccECN negotiaotn can be found in IETF RFC9768.
-
-Co-developed-by: Olivier Tilmans <olivier.tilmans@nokia.com>
-Signed-off-by: Olivier Tilmans <olivier.tilmans@nokia.com>
-Signed-off-by: Ilpo Järvinen <ij@kernel.org>
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260131222515.8485-5-chia-yu.chang@nokia-bell-labs.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: c5ff6b837159 ("tcp: accecn: handle unexpected AccECN negotiation feedback")
+Fixes: 56a48c1833aa ("clk: thead: add support for enabling/disabling PLLs")
+Reviewed-by: Drew Fustini <fustini@kernel.org>
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Drew Fustini <fustini@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet_ecn.h | 20 +++++++++++++++++---
- include/net/tcp.h      | 21 ++++++++++++++++++++-
- include/net/tcp_ecn.h  | 13 ++++++++++---
- net/ipv4/tcp_cong.c    |  5 +++--
- net/ipv4/tcp_input.c   |  3 ++-
- 5 files changed, 52 insertions(+), 10 deletions(-)
+ drivers/clk/thead/clk-th1520-ap.c | 34 +++++++++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/inet_ecn.h b/include/net/inet_ecn.h
-index ea32393464a29..827b87a95dab3 100644
---- a/include/net/inet_ecn.h
-+++ b/include/net/inet_ecn.h
-@@ -51,11 +51,25 @@ static inline __u8 INET_ECN_encapsulate(__u8 outer, __u8 inner)
- 	return outer;
- }
+diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
+index 71ad03a998e8e..d870f0c665f8a 100644
+--- a/drivers/clk/thead/clk-th1520-ap.c
++++ b/drivers/clk/thead/clk-th1520-ap.c
+@@ -8,11 +8,14 @@
+ #include <dt-bindings/clock/thead,th1520-clk-ap.h>
+ #include <linux/bitfield.h>
+ #include <linux/clk-provider.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
  
-+/* Apply either ECT(0) or ECT(1) */
-+static inline void __INET_ECN_xmit(struct sock *sk, bool use_ect_1)
-+{
-+	__u8 ect = use_ect_1 ? INET_ECN_ECT_1 : INET_ECN_ECT_0;
++#define TH1520_PLL_STS		0x80
 +
-+	/* Mask the complete byte in case the connection alternates between
-+	 * ECT(0) and ECT(1).
-+	 */
-+	inet_sk(sk)->tos &= ~INET_ECN_MASK;
-+	inet_sk(sk)->tos |= ect;
-+	if (inet6_sk(sk)) {
-+		inet6_sk(sk)->tclass &= ~INET_ECN_MASK;
-+		inet6_sk(sk)->tclass |= ect;
-+	}
-+}
-+
- static inline void INET_ECN_xmit(struct sock *sk)
- {
--	inet_sk(sk)->tos |= INET_ECN_ECT_0;
--	if (inet6_sk(sk) != NULL)
--		inet6_sk(sk)->tclass |= INET_ECN_ECT_0;
-+	__INET_ECN_xmit(sk, false);
- }
+ #define TH1520_PLL_POSTDIV2	GENMASK(26, 24)
+ #define TH1520_PLL_POSTDIV1	GENMASK(22, 20)
+ #define TH1520_PLL_FBDIV	GENMASK(19, 8)
+@@ -23,6 +26,13 @@
+ #define TH1520_PLL_FRAC		GENMASK(23, 0)
+ #define TH1520_PLL_FRAC_BITS    24
  
- static inline void INET_ECN_dontxmit(struct sock *sk)
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index ab20f549b8f91..c1db8a851243d 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1190,7 +1190,12 @@ enum tcp_ca_ack_event_flags {
- #define TCP_CONG_NON_RESTRICTED		BIT(0)
- /* Requires ECN/ECT set on all packets */
- #define TCP_CONG_NEEDS_ECN		BIT(1)
--#define TCP_CONG_MASK	(TCP_CONG_NON_RESTRICTED | TCP_CONG_NEEDS_ECN)
-+/* Require successfully negotiated AccECN capability */
-+#define TCP_CONG_NEEDS_ACCECN		BIT(2)
-+/* Use ECT(1) instead of ECT(0) while the CA is uninitialized */
-+#define TCP_CONG_ECT_1_NEGOTIATION	BIT(3)
-+#define TCP_CONG_MASK  (TCP_CONG_NON_RESTRICTED | TCP_CONG_NEEDS_ECN | \
-+			TCP_CONG_NEEDS_ACCECN | TCP_CONG_ECT_1_NEGOTIATION)
++/*
++ * All PLLs in TH1520 take 21250ns at maximum to lock, let's take its double
++ * for safety.
++ */
++#define TH1520_PLL_LOCK_TIMEOUT_US	44
++#define TH1520_PLL_STABLE_DELAY_US	30
++
+ struct ccu_internal {
+ 	u8	shift;
+ 	u8	width;
+@@ -64,6 +74,7 @@ struct ccu_div {
  
- union tcp_cc_info;
- 
-@@ -1322,6 +1327,20 @@ static inline bool tcp_ca_needs_ecn(const struct sock *sk)
- 	return icsk->icsk_ca_ops->flags & TCP_CONG_NEEDS_ECN;
- }
- 
-+static inline bool tcp_ca_needs_accecn(const struct sock *sk)
-+{
-+	const struct inet_connection_sock *icsk = inet_csk(sk);
-+
-+	return icsk->icsk_ca_ops->flags & TCP_CONG_NEEDS_ACCECN;
-+}
-+
-+static inline bool tcp_ca_ect_1_negotiation(const struct sock *sk)
-+{
-+	const struct inet_connection_sock *icsk = inet_csk(sk);
-+
-+	return icsk->icsk_ca_ops->flags & TCP_CONG_ECT_1_NEGOTIATION;
-+}
-+
- static inline void tcp_ca_event(struct sock *sk, const enum tcp_ca_event event)
- {
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
-diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
-index f13e5cd2b1ac3..fdde1c342b35c 100644
---- a/include/net/tcp_ecn.h
-+++ b/include/net/tcp_ecn.h
-@@ -31,6 +31,12 @@ enum tcp_accecn_option {
- 	TCP_ACCECN_OPTION_FULL = 2,
+ struct ccu_pll {
+ 	struct ccu_common	common;
++	u32			lock_sts_mask;
  };
  
-+/* Apply either ECT(0) or ECT(1) based on TCP_CONG_ECT_1_NEGOTIATION flag */
-+static inline void INET_ECN_xmit_ect_1_negotiation(struct sock *sk)
-+{
-+	__INET_ECN_xmit(sk, tcp_ca_ect_1_negotiation(sk));
-+}
-+
- static inline void tcp_ecn_queue_cwr(struct tcp_sock *tp)
+ #define TH_CCU_ARG(_shift, _width)					\
+@@ -299,9 +310,21 @@ static void ccu_pll_disable(struct clk_hw *hw)
+ static int ccu_pll_enable(struct clk_hw *hw)
  {
- 	/* Do not set CWR if in AccECN mode! */
-@@ -561,7 +567,7 @@ static inline void tcp_ecn_send_synack(struct sock *sk, struct sk_buff *skb)
- 		TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_ECE;
- 	else if (tcp_ca_needs_ecn(sk) ||
- 		 tcp_bpf_ca_needs_ecn(sk))
--		INET_ECN_xmit(sk);
-+		INET_ECN_xmit_ect_1_negotiation(sk);
+ 	struct ccu_pll *pll = hw_to_ccu_pll(hw);
++	u32 reg;
++	int ret;
  
- 	if (tp->ecn_flags & TCP_ECN_MODE_ACCECN) {
- 		TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_ACE;
-@@ -579,7 +585,8 @@ static inline void tcp_ecn_send_syn(struct sock *sk, struct sk_buff *skb)
- 	bool use_ecn, use_accecn;
- 	u8 tcp_ecn = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_ecn);
- 
--	use_accecn = tcp_ecn == TCP_ECN_IN_ACCECN_OUT_ACCECN;
-+	use_accecn = tcp_ecn == TCP_ECN_IN_ACCECN_OUT_ACCECN ||
-+		     tcp_ca_needs_accecn(sk);
- 	use_ecn = tcp_ecn == TCP_ECN_IN_ECN_OUT_ECN ||
- 		  tcp_ecn == TCP_ECN_IN_ACCECN_OUT_ECN ||
- 		  tcp_ca_needs_ecn(sk) || bpf_needs_ecn || use_accecn;
-@@ -595,7 +602,7 @@ static inline void tcp_ecn_send_syn(struct sock *sk, struct sk_buff *skb)
- 
- 	if (use_ecn) {
- 		if (tcp_ca_needs_ecn(sk) || bpf_needs_ecn)
--			INET_ECN_xmit(sk);
-+			INET_ECN_xmit_ect_1_negotiation(sk);
- 
- 		TCP_SKB_CB(skb)->tcp_flags |= TCPHDR_ECE | TCPHDR_CWR;
- 		if (use_accecn) {
-diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
-index df758adbb445f..e9f6c77e06316 100644
---- a/net/ipv4/tcp_cong.c
-+++ b/net/ipv4/tcp_cong.c
-@@ -16,6 +16,7 @@
- #include <linux/gfp.h>
- #include <linux/jhash.h>
- #include <net/tcp.h>
-+#include <net/tcp_ecn.h>
- #include <trace/events/tcp.h>
- 
- static DEFINE_SPINLOCK(tcp_cong_list_lock);
-@@ -227,7 +228,7 @@ void tcp_assign_congestion_control(struct sock *sk)
- 
- 	memset(icsk->icsk_ca_priv, 0, sizeof(icsk->icsk_ca_priv));
- 	if (ca->flags & TCP_CONG_NEEDS_ECN)
--		INET_ECN_xmit(sk);
-+		INET_ECN_xmit_ect_1_negotiation(sk);
- 	else
- 		INET_ECN_dontxmit(sk);
+-	return regmap_clear_bits(pll->common.map, pll->common.cfg1,
+-				 TH1520_PLL_VCO_RST);
++	regmap_clear_bits(pll->common.map, pll->common.cfg1,
++			  TH1520_PLL_VCO_RST);
++
++	ret = regmap_read_poll_timeout_atomic(pll->common.map, TH1520_PLL_STS,
++					      reg, reg & pll->lock_sts_mask,
++					      5, TH1520_PLL_LOCK_TIMEOUT_US);
++	if (ret)
++		return ret;
++
++	udelay(TH1520_PLL_STABLE_DELAY_US);
++
++	return 0;
  }
-@@ -257,7 +258,7 @@ static void tcp_reinit_congestion_control(struct sock *sk,
- 	memset(icsk->icsk_ca_priv, 0, sizeof(icsk->icsk_ca_priv));
  
- 	if (ca->flags & TCP_CONG_NEEDS_ECN)
--		INET_ECN_xmit(sk);
-+		INET_ECN_xmit_ect_1_negotiation(sk);
- 	else
- 		INET_ECN_dontxmit(sk);
+ static int ccu_pll_is_enabled(struct clk_hw *hw)
+@@ -389,6 +412,7 @@ static struct ccu_pll cpu_pll0_clk = {
+ 					      &clk_pll_ops,
+ 					      CLK_IS_CRITICAL),
+ 	},
++	.lock_sts_mask		= BIT(1),
+ };
  
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index e4a979b75cc66..f920fa44c3d39 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -7222,7 +7222,8 @@ static void tcp_ecn_create_request(struct request_sock *req,
- 	u32 ecn_ok_dst;
+ static struct ccu_pll cpu_pll1_clk = {
+@@ -401,6 +425,7 @@ static struct ccu_pll cpu_pll1_clk = {
+ 					      &clk_pll_ops,
+ 					      CLK_IS_CRITICAL),
+ 	},
++	.lock_sts_mask		= BIT(4),
+ };
  
- 	if (tcp_accecn_syn_requested(th) &&
--	    READ_ONCE(net->ipv4.sysctl_tcp_ecn) >= 3) {
-+	    (READ_ONCE(net->ipv4.sysctl_tcp_ecn) >= 3 ||
-+	     tcp_ca_needs_accecn(listen_sk))) {
- 		inet_rsk(req)->ecn_ok = 1;
- 		tcp_rsk(req)->accecn_ok = 1;
- 		tcp_rsk(req)->syn_ect_rcv = TCP_SKB_CB(skb)->ip_dsfield &
+ static struct ccu_pll gmac_pll_clk = {
+@@ -413,6 +438,7 @@ static struct ccu_pll gmac_pll_clk = {
+ 					      &clk_pll_ops,
+ 					      CLK_IS_CRITICAL),
+ 	},
++	.lock_sts_mask		= BIT(3),
+ };
+ 
+ static const struct clk_hw *gmac_pll_clk_parent[] = {
+@@ -433,6 +459,7 @@ static struct ccu_pll video_pll_clk = {
+ 					      &clk_pll_ops,
+ 					      CLK_IS_CRITICAL),
+ 	},
++	.lock_sts_mask		= BIT(7),
+ };
+ 
+ static const struct clk_hw *video_pll_clk_parent[] = {
+@@ -453,6 +480,7 @@ static struct ccu_pll dpu0_pll_clk = {
+ 					      &clk_pll_ops,
+ 					      0),
+ 	},
++	.lock_sts_mask		= BIT(8),
+ };
+ 
+ static const struct clk_hw *dpu0_pll_clk_parent[] = {
+@@ -469,6 +497,7 @@ static struct ccu_pll dpu1_pll_clk = {
+ 					      &clk_pll_ops,
+ 					      0),
+ 	},
++	.lock_sts_mask		= BIT(9),
+ };
+ 
+ static const struct clk_hw *dpu1_pll_clk_parent[] = {
+@@ -485,6 +514,7 @@ static struct ccu_pll tee_pll_clk = {
+ 					      &clk_pll_ops,
+ 					      CLK_IS_CRITICAL),
+ 	},
++	.lock_sts_mask		= BIT(10),
+ };
+ 
+ static const struct clk_parent_data c910_i0_parents[] = {
 -- 
 2.51.0
 
