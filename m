@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-219529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEWvAnmenmlPWgQAu9opvQ
-	(envelope-from <stable+bounces-219529-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:17 +0100
+	id COsRLS+gnmlPWgQAu9opvQ
+	(envelope-from <stable+bounces-219531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F210192C94
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:02:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E50193090
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 08:09:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8510C301C17C
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D3C4A3077F25
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF5A31280B;
-	Wed, 25 Feb 2026 06:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56333128AE;
+	Wed, 25 Feb 2026 06:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WO4Pn6U4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTazRdPf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0EE312834;
-	Wed, 25 Feb 2026 06:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882442F7478;
+	Wed, 25 Feb 2026 06:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002776; cv=none; b=c3KmjLox6NfmVc/cnShig++W6nRX+tnnDlxQbz7JRp99SGI0cm5zFQVAaHto3rpZl5LmLW8tDqDik0+pTBspoExFxIX+1Dh3UBoDJhqAWyv3gLMqtYpK08SmDbhbZjN2yRyKNh9mC+IEtA5aWikaMjuhKJHKBe/ervzTEpcGnqQ=
+	t=1772002777; cv=none; b=ilmSmYC6HYoj3NqvvbNtsZy69VEX7M8IScfKzt8bwG4pgffabjKQNM31kDzB9WT3uFSG7dGfcBRldYd1XarfP2vzWZ+xhdhBUDET4wat4/kR3u8fsPFau4tQw8/b+u1CyD/s7c0YK7x9rI08C3SEh3j3t7+4cIRCTlwSahRtln4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002776; c=relaxed/simple;
-	bh=eprf7rTtRZLaaUDIKxe5YLqqy6jIQ1zHPVlMReZLG+s=;
+	s=arc-20240116; t=1772002777; c=relaxed/simple;
+	bh=AjsPquFhp2OAKkV/oF6dV4qm/l4bRdgD2942dLoM77s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UolIdNQre2hsLvlu4vEDAF1A5jWhkuMyR7xdqCDudmpeH0HWaNupq+YcUnRRg2Qck/T7LPga9TGjdpEbzqwYq8cxyDtv7gsFIvnERCeH5QDFqvShTW0wgtmvWjzVgDXFcWeBKgOAtkgNUlZKxlgc5jibdNOw4A0Hewkp8QGoebE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WO4Pn6U4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4C2C116D0;
-	Wed, 25 Feb 2026 06:59:35 +0000 (UTC)
+	 MIME-Version; b=rvJ8l6VuBiTIUU3ESpwanMOK4f7vxdUU0uooI8bwrllTiNpA1Svb24WHuBq4U+so6gNyBL19e1Z6hzrYuQ5wEUDoUx4Vi+6XHodazVzU4mgaxIdNC3oBWUdsN5SWDchNbNXKOs2hRNeHxALShcmSA8pH284atr3326LkRMD7ygw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTazRdPf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D638C116D0;
+	Wed, 25 Feb 2026 06:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002776;
-	bh=eprf7rTtRZLaaUDIKxe5YLqqy6jIQ1zHPVlMReZLG+s=;
+	s=korg; t=1772002777;
+	bh=AjsPquFhp2OAKkV/oF6dV4qm/l4bRdgD2942dLoM77s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WO4Pn6U4ol5/cudmwOfwFB1UFvrU6bbpJOA9pAJ8Jf+qAZi8nEJKi1OqCkFR5TyqD
-	 xFsEFCO4jFqDqBGSXxroBAbrC3A4XpAU7xAyY3qe6CxSc5HArWeUKH8+LXdPMsj+UJ
-	 /c8jVsPSSCBTNTw/JTRmhun4kcqGIbxWjCAwAenk=
+	b=dTazRdPfdCzqMU5rrKUjbjLe935FaFg2OG7hyNbVYx/xlQ3N/qu9hoeVskMEvFWQI
+	 3zFDJS8n1jYqcV44bzuK2vWRGQwqIMBEyjWcPrvMiPEuItX//sEJqi9/xEvIqP75H0
+	 WNgUkL5zFn6o/7M+/W7iPNeV7Jjq02VkW8q0W1fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Zhang Yi <yi.zhang@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
 	Baokun Li <libaokun1@huawei.com>,
 	stable@kernel.org,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
 	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.18 614/641] ext4: dont cache extent during splitting extent
-Date: Tue, 24 Feb 2026 17:25:40 -0800
-Message-ID: <20260225012403.389519876@linuxfoundation.org>
+Subject: [PATCH 6.18 615/641] ext4: drop extent cache after doing PARTIAL_VALID1 zeroout
+Date: Tue, 24 Feb 2026 17:25:41 -0800
+Message-ID: <20260225012403.412612912@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
 References: <20260225012348.915798704@linuxfoundation.org>
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219529-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-219531-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,13 +88,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,huawei.com:email,huaweicloud.com:email]
-X-Rspamd-Queue-Id: 9F210192C94
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huaweicloud.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 47E50193090
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
@@ -103,73 +103,83 @@ X-Rspamd-Action: no action
 
 From: Zhang Yi <yi.zhang@huawei.com>
 
-commit 8b4b19a2f96348d70bfa306ef7d4a13b0bcbea79 upstream.
+commit 6d882ea3b0931b43530d44149b79fcd4ffc13030 upstream.
 
-Caching extents during the splitting process is risky, as it may result
-in stale extents remaining in the status tree. Moreover, in most cases,
-the corresponding extent block entries are likely already cached before
-the split happens, making caching here not particularly useful.
+When splitting an unwritten extent in the middle and converting it to
+initialized in ext4_split_extent() with the EXT4_EXT_MAY_ZEROOUT and
+EXT4_EXT_DATA_VALID2 flags set, it could leave a stale unwritten extent.
 
-Assume we have an unwritten extent, and then DIO writes the first half.
+Assume we have an unwritten file and buffered write in the middle of it
+without dioread_nolock enabled, it will allocate blocks as written
+extent.
 
-  [UUUUUUUUUUUUUUUU] on-disk extent        U: unwritten extent
-  [UUUUUUUUUUUUUUUU] extent status tree
-  |<-   ->| ----> dio write this range
+       0  A      B  N
+       [UUUUUUUUUUUU] on-disk extent      U: unwritten extent
+       [UUUUUUUUUUUU] extent status tree
+       [--DDDDDDDD--]                     D: valid data
+          |<-  ->| ----> this range needs to be initialized
 
-First, when ext4_split_extent_at() splits this extent, it truncates the
-existing extent and then inserts a new one. During this process, this
-extent status entry may be shrunk, and calls to ext4_find_extent() and
-ext4_cache_extents() may occur, which could potentially insert the
-truncated range as a hole into the extent status tree. After the split
-is completed, this hole is not replaced with the correct status.
+ext4_split_extent() first try to split this extent at B with
+EXT4_EXT_DATA_PARTIAL_VALID1 and EXT4_EXT_MAY_ZEROOUT flag set, but
+ext4_split_extent_at() failed to split this extent due to temporary lack
+of space. It zeroout B to N and leave the entire extent as unwritten.
 
-  [UUUUUUU|UUUUUUUU] on-disk extent        U: unwritten extent
-  [UUUUUUU|HHHHHHHH] extent status tree    H: hole
+       0  A      B  N
+       [UUUUUUUUUUUU] on-disk extent
+       [UUUUUUUUUUUU] extent status tree
+       [--DDDDDDDDZZ]                     Z: zeroed data
 
-Then, the outer calling functions will not correct this remaining hole
-extent either. Finally, if we perform a delayed buffer write on this
-latter part, it will re-insert the delayed extent and cause an error in
-space accounting.
+ext4_split_extent() then try to split this extent at A with
+EXT4_EXT_DATA_VALID2 flag set. This time, it split successfully and
+leave an written extent from A to N.
 
-In adition, if the unwritten extent cache is not shrunk during the
-splitting, ext4_cache_extents() also conflicts with existing extents
-when caching extents. In the future, we will add checks when caching
-extents, which will trigger a warning. Therefore, Do not cache extents
-that are being split.
+       0  A      B  N
+       [UUWWWWWWWWWW] on-disk extent      W: written extent
+       [UUUUUUUUUUUU] extent status tree
+       [--DDDDDDDDZZ]
+
+Finally ext4_map_create_blocks() only insert extent A to B to the extent
+status tree, and leave an stale unwritten extent in the status tree.
+
+       0  A      B  N
+       [UUWWWWWWWWWW] on-disk extent      W: written extent
+       [UUWWWWWWWWUU] extent status tree
+       [--DDDDDDDDZZ]
+
+Fix this issue by always cached extent status entry after zeroing out
+the second part.
 
 Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 Reviewed-by: Baokun Li <libaokun1@huawei.com>
 Cc: stable@kernel.org
-Message-ID: <20251129103247.686136-6-yi.zhang@huaweicloud.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Message-ID: <20251129103247.686136-7-yi.zhang@huaweicloud.com>
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ext4/extents.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 --- a/fs/ext4/extents.c
 +++ b/fs/ext4/extents.c
-@@ -3199,6 +3199,9 @@ static struct ext4_ext_path *ext4_split_
- 	BUG_ON((split_flag & EXT4_EXT_DATA_VALID1) &&
- 	       (split_flag & EXT4_EXT_DATA_VALID2));
+@@ -3319,8 +3319,16 @@ static struct ext4_ext_path *ext4_split_
+ 			 * extent length and ext4_split_extent() split will the
+ 			 * first half again.
+ 			 */
+-			if (split_flag & EXT4_EXT_DATA_PARTIAL_VALID1)
++			if (split_flag & EXT4_EXT_DATA_PARTIAL_VALID1) {
++				/*
++				 * Drop extent cache to prevent stale unwritten
++				 * extents remaining after zeroing out.
++				 */
++				ext4_es_remove_extent(inode,
++					le32_to_cpu(zero_ex.ee_block),
++					ext4_ext_get_actual_len(&zero_ex));
+ 				goto fix_extent_len;
++			}
  
-+	/* Do not cache extents that are in the process of being modified. */
-+	flags |= EXT4_EX_NOCACHE;
-+
- 	ext_debug(inode, "logical block %llu\n", (unsigned long long)split);
- 
- 	ext4_ext_show_leaf(inode, path);
-@@ -3381,6 +3384,9 @@ static struct ext4_ext_path *ext4_split_
- 	ee_len = ext4_ext_get_actual_len(ex);
- 	unwritten = ext4_ext_is_unwritten(ex);
- 
-+	/* Do not cache extents that are in the process of being modified. */
-+	flags |= EXT4_EX_NOCACHE;
-+
- 	if (map->m_lblk + map->m_len < ee_block + ee_len) {
- 		split_flag1 = split_flag & EXT4_EXT_MAY_ZEROOUT;
- 		flags1 = flags | EXT4_GET_BLOCKS_PRE_IO;
+ 			/* update the extent length and mark as initialized */
+ 			ex->ee_len = cpu_to_le16(ee_len);
 
 
 
