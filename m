@@ -1,159 +1,142 @@
-Return-Path: <stable+bounces-219673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-219678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHByBW0sn2lXZQQAu9opvQ
-	(envelope-from <stable+bounces-219673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 18:07:57 +0100
+	id GHUoMbc3n2m5ZQQAu9opvQ
+	(envelope-from <stable+bounces-219678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 18:56:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163A219B407
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 18:07:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF0519BD81
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 18:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 561F4300B2B2
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 17:07:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC69030D9C8B
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 17:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2553E8C66;
-	Wed, 25 Feb 2026 17:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12B93A1D1C;
+	Wed, 25 Feb 2026 17:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="0uwzxaA9"
+	dkim=pass (4096-bit key) header.d=venev.name header.i=@venev.name header.b="gAGFaymo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a1-bg02.venev.name (a1-bg02.venev.name [213.240.239.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE763DA7D9
-	for <stable@vger.kernel.org>; Wed, 25 Feb 2026 17:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772039270; cv=pass; b=C0H5iahlZ8GQlcZ+1xYYkmpjqkXJGXSUhoRfSLx4KrVhh++UtwGU1CLIk6WeRL7+fz5ZHXT8Fzd6SKBJPEN2lnXRWmZeEoNySityg1a2M4aP5cB3kq/VyMkXEnMQx3FP2mjeYCOUVUq5b5+a5VhKFD5I6fjeHMWLtIRpVqioiJE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772039270; c=relaxed/simple;
-	bh=BHt6OhKSRIG7K0eCwlhqf9/pM6TuVhjVuDYDu9/5bnY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aXnDVAhuZ/nkpu7ws+i5lqc+Q9CW9ATt3ba+rKydVA0/9mFpdhgDxYDc/o5GMQPvSdfToQNWH4ZE+p3/H7Ib8Jkq3sMK1m08rXmQ6/Q63SGP8NjJq5luvh/9f5MtXKDs0LeuGKLRNDMg9vRSSw9ffjHbXjNE3FeyT9eBrB7VFKs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=0uwzxaA9; arc=pass smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b8869cd7bb1so1134251866b.1
-        for <stable@vger.kernel.org>; Wed, 25 Feb 2026 09:07:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772039268; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DOHi8UTMLcXWtOfpQttlQSLI9j04OjHNIlpqZWg8yP4JNpQmZX93pyyrwq7aWThnaw
-         Wo/0gPrmXcahLDSAXDksgVVSJkT+QonPrKILZTEzMO8LlCpTIF7+LCxjC0FWBTHbnePW
-         Smo1/eBdpFerJTv01uRBlelo1AC6cblNuXIVU4vORhgu3xPMz1nWl0Hot3M4FI4RFJ/z
-         icxM6SsLDh2lOfzSorBIxl7TLh9YV+O9N38JSbNooQlPcUFCryrhiIppMnv1MtGVODHC
-         kUeAL95gRe6sSAaQ1pkDKSbtLJ/xPxqrjkJKMBcZuLg2vZMeSbs30y0BOKRyPdBd2NJF
-         6U/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=0mMGJPyNubjSi/gW1GVHGktA2Q5Zc/kPJnBbOwa9/Vs=;
-        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
-        b=Tub3nwHpAYmJlE6ZSJjCh3qVQmPY55LPcm5fPFSpbUn15UTVTiYwjxdi+cskdS7SqH
-         Kxob6Ux8Zv70mRwGY+CXtWKJxK8UrzB1nPo2b6tVxDvqnTlcxIAHatWLEg9ZAa6KOFag
-         G4LuMpMblEBLcy/gMrLCeRYxf3SZ2XV/JNNoO1Dv96I/cKLU8678Q3IR9LMdn1EW/uug
-         6M7645RjscOas6AW4NfRs2ox5biZv5TPTvl9m8P10Kpav/VzEQ30EkiLrzhT2oyh9+W9
-         ehrWkxxVuJRDpSL9QqDoWaFk/G1Y57Sx/Jh5Sblx4oY4LdB++uK89iydgwyCAIsWDJiU
-         Wiug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1772039268; x=1772644068; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0mMGJPyNubjSi/gW1GVHGktA2Q5Zc/kPJnBbOwa9/Vs=;
-        b=0uwzxaA9avtvbNU8XmEtB2SReV6ImxQegUbE4/OHipb6fhsaHWdZbtD/B/7TLObLHt
-         Mj9ZGdocPfLz4tYSEkPsQuaAwzgo2m3LNW5YnPkn8EYrpdQnK++YbbxTe7TEOvd3AxXI
-         XBTXzc3GbjsonjRvINZqo+xsIMwbkbQfeWARsTFruGzGbONM1xUzVo5A8E5ouFmGu41D
-         SuTKPuHWbgPsDDh9qlbEFA7AxJnmu1pwB7ni8P01y9j4qvFihL3gR+fvKu8xehaTfzhr
-         lmiQUlsn44as857vR01qg5IYzXcIyQbkA2aejei8jnPaUSG2eivT1uPyacUMoJjoXgxR
-         coqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772039268; x=1772644068;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0mMGJPyNubjSi/gW1GVHGktA2Q5Zc/kPJnBbOwa9/Vs=;
-        b=TMNp84cxb67yMa8FeCDpDfwh+XZIxWmeQwIjrOQgezTK9bw3jtj8ZmwT7YMDtjEc3C
-         tGqQ14PnrEcG1/NJNhpPyxkyNDOjbEPOIBzbU8vRShAOWzINZJSgmf5O3DkKJCJAeDsb
-         zH2lKWqoykLWUgRFc1n+wYTT4APanfRGrJGwHHxKJebRnl/cxaLhx/uYGPrOaBrc511q
-         rrQ3QcSAOBpjV0YYG1jgrfdqamBjRasJg1gaBiPaP1tBMYtPzY+qHhB7WmhUafFsV4/v
-         3n8d4Alh0pyYKOeVVkZzFU+g527NEppufM9oXvMV8rZc8va646E7f2AeFwoUATyVSkPR
-         P1lQ==
-X-Gm-Message-State: AOJu0YyYftwmEo4DyDOdFkXopF/4BbzztbSS4kHiEIVN8yKJFfCEqyIg
-	I8PKtJV1JFbO/rRi70WmbawrcgR5cf5aPYStBreK2qVry+tMcmgXaHUFgUB1xG3XCsacoCkemQG
-	bPo+vkb4W8KS0aWD1ytGDXPPFpcvzQtjTVBbmvmyLjg==
-X-Gm-Gg: ATEYQzwMkUYMPtEARcgcbn41ovtG3N/9xYeZ3Lz6JUQIyLkVAYM5jOzHR79Zj5sU4HQ
-	dXEdP2WlQaF4MhcaoznVXTutEcxRwJkwFvdGWuu3B1/T0CQrMOrrGafcKZgAeLrcymqRD/wPHL0
-	YSl5GzA4HNwhEBEtF9KKXehGTduVlRAal+YQc4ACkwQXTJ8sa/Xxw3fQagS4Li2q51v5HTLGuOA
-	pi9BedUAVRBuAZxsqulSs5YVMOiG92E2rMU4AEaB8bT7YT6m35UzsekKQRm7/X+OB/R+QCgDFdI
-	P4pw7j6a+rHu9SPbgNiTvYl2wS6wQeAZFmiCYNRB0vV6QeyV3raU4xgXSYmFwgHpokxCDzA=
-X-Received: by 2002:a17:907:db03:b0:b8f:f6c5:3f3f with SMTP id
- a640c23a62f3a-b935172f984mr63678366b.28.1772039267527; Wed, 25 Feb 2026
- 09:07:47 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C403E392825;
+	Wed, 25 Feb 2026 17:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.240.239.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772042111; cv=none; b=UBqFUozyen+j8eCxxW49h+exGWDeY/zMg3DsumlMEwuOL7YV6VEx3gircSGyS2FfpkbeaF5yei6PkiLMB8F/I1rEpcPDADLab5hlghMMrUwDps6zM4CLk/IPHRjYbn/lesgP6XveSICtSSA166VeNiw7goBs9EZdJ+s9stGANUg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772042111; c=relaxed/simple;
+	bh=H+chkqwt59HWgZzCRKIAyTH02EYmsW7XaEQJO1obFZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CEd/Rutl3Ld0Suf0gZ+hSHkvnyho6PP9ksUyF2T+AeelTd9jN1WKShUvsaURdnL3+j52GIpc5e3a62wS4UxNWsul51HjaUoLetdtw7FjUl7HwujtdBRui41zLDyadBdb5k86wgpPP6M/dDMWuEaTehnaz/+w7l929BT0QF3KYjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=venev.name; spf=pass smtp.mailfrom=venev.name; dkim=pass (4096-bit key) header.d=venev.name header.i=@venev.name header.b=gAGFaymo; arc=none smtp.client-ip=213.240.239.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=venev.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=venev.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=venev.name;
+	s=default; h=Content-Transfer-Encoding:Message-ID:Date:Subject:To:From:
+	Content-Type:Reply-To:Sender; bh=bI+u5Go5q3imugeHY6u14MsTL81HIvemx6U4FxXiSMk=
+	; b=gAGFaymofxqt74bKtaytoYrt5qtGxevVqVS3umjP291ZGdNPeWcNlcMMIVkT8F6aDWIYeBYdx
+	SWYBaoBOy01X8vDJE84Un9JLF1427K27zRldmt55NdFhco+M5WjQxi6a7LGOO1sCWNQiyA/+QYcEN
+	ti6aHh+U3xrWp4DkyE+1qkl/2gVrB4OVw0b0KRjlA0skxuBxcgKSKBSjOAwPmVBcnpkVvyrSJjQYg
+	/yZAxqPMnYISM5E1+xyzT+/ba5OgP0+XZPpy+axc07+2fzTzfGVfX1LWJi8ZarQWusLUOiEjgnTiI
+	R3dyV1Cg2FUE4HkSWIcR9se7l/Sfs+OIViJicrGR2XP5CasFSQjiGngm+wPQ3ljL/o5HqNGFyJ6qk
+	sipxak6tXb9GO8ZntD8Hv+d9HWsQVsDeWnz3o6xKiy/H1kZ0t/tG4sNwmX0KuyzfeX23ACFfw7cc3
+	hOeGnt2o9m2KU4PdKfcxpiEQt7cK5rDtLEMUJDnhUgKLqgfGD2LZEn0+lA/yHOcNnbygffe8bKvNR
+	kXzaJGcOsr+VG2zFOBRreuHLOsV5+/4WmfhY8iW+cTGR6b4dU2I9H2HA1INnSlC5yImZfXp/doecS
+	1kQTcjq0O4sBCYlo1id2ZirjWrkZ18rg0XHi1/IJw2nPiFSPxbLlCwDgtFXKQgD4YrH1eOY=;
+Received: from a1-bg02.venev.name ([213.240.239.49] helo=pmx1.venev.name)
+	by a1-bg02.venev.name with esmtps
+	id 1vvIQy-00000008SDW-2KUx
+	(TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	(envelope-from <hristo@venev.name>);
+	Wed, 25 Feb 2026 17:12:24 +0000
+Received: from venev.name ([213.240.239.49])
+	by pmx1.venev.name with ESMTPSA
+	id Dx3VDnctn2lzvx4AdB6GMg
+	(envelope-from <hristo@venev.name>); Wed, 25 Feb 2026 17:12:24 +0000
+From: Hristo Venev <hristo@venev.name>
+To: Viacheslav Dubeyko <slava@dubeyko.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Cc: ceph-devel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Hristo Venev <hristo@venev.name>
+Subject: [PATCH] ceph: Do not skip the first folio of the next object in writeback
+Date: Wed, 25 Feb 2026 19:07:56 +0200
+Message-ID: <20260225170758.2014172-1-hristo@venev.name>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260225151847.709818960@linuxfoundation.org>
-In-Reply-To: <20260225151847.709818960@linuxfoundation.org>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Wed, 25 Feb 2026 22:37:10 +0530
-X-Gm-Features: AaiRm50gCERmHyy5gDJze0xWRxS2ihcgUJwcE5zXm4dDX0vxgKBXxMTZRU4-MwE
-Message-ID: <CAG=yYwm8kPbrbFExgW43q9NNv3jzBMF9OtdpT+S7k+DD5eOc_w@mail.gmail.com>
-Subject: Re: [PATCH 6.18 000/641] 6.18.14-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[venev.name,quarantine];
+	R_DKIM_ALLOW(-0.20)[venev.name:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[rajagiritech.edu.in];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-219673-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-219678-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[dubeyko.com,redhat.com,gmail.com];
+	DKIM_TRACE(0.00)[venev.name:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hristo@venev.name,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,rajagiritech.edu.in:email,rajagiritech-edu-in.20230601.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 163A219B407
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,venev.name:mid,venev.name:dkim,venev.name:email]
+X-Rspamd-Queue-Id: 5FF0519BD81
 X-Rspamd-Action: no action
 
-hello,
+When `ceph_process_folio_batch` encounters a folio past the end of the
+current object, it should leave it in the batch so that it is picked up
+in the next iteration.
 
-Compiled and booted  6.18.14-rc2+
-No new typical dmesg regressions
-.
+Removing the folio from the batch means that it does not get written
+back and remains dirty instead. This makes `fsync()` silently skip some
+of the data, delays capability release, and breaks coherence with
+`O_DIRECT`.
 
-Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+The link below contains instructions for reproducing the bug.
 
+Cc: stable@vger.kernel.org
+Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method")
+Link: https://tracker.ceph.com/issues/75156
+Signed-off-by: Hristo Venev <hristo@venev.name>
+---
+ fs/ceph/addr.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---
-software engineer
-rajagiri school of engineering and technology-
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index e87b3bb94ee89..2090fc78529cb 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -1326,7 +1326,6 @@ void ceph_process_folio_batch(struct address_space *mapping,
+ 			continue;
+ 		} else if (rc == -E2BIG) {
+ 			folio_unlock(folio);
+-			ceph_wbc->fbatch.folios[i] = NULL;
+ 			break;
+ 		}
+ 
+-- 
+2.53.0
+
 
