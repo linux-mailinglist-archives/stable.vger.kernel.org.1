@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-219226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YD1sGcmdnmk5WgQAu9opvQ
-	(envelope-from <stable+bounces-219226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:21 +0100
+	id oFDyA7JTnmmmUgQAu9opvQ
+	(envelope-from <stable+bounces-218573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:14 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1AF2192AB3
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:59:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6407C18F9AE
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 315BF30D193F
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3490731593D0
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62B92C21F1;
-	Wed, 25 Feb 2026 06:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C327E256C84;
+	Wed, 25 Feb 2026 01:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvuc+FZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfcecpeB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7979E2C0263;
-	Wed, 25 Feb 2026 06:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E401D5141;
+	Wed, 25 Feb 2026 01:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002577; cv=none; b=TmYdExrb3kSpJr0leUnXO+Uyfn2q1MKMfmw8WG9F/zgKtkOdIK2rxoLNC4+jxq5OLtUqizWwu83pq64xQRz9yWACwtaV7jdBjbZWyEycCMnyNRGaxAXEFkODtOMrD/gOVvfpiRKTtA5fjhuYeS2ySiw7sU0spdSPtwew40gRKo0=
+	t=1771983415; cv=none; b=FKRjxVaDLJeAITO+KwuwAHmsgmTSBjgiK1FCJG95TPz5xBKonwKlanB0WiuOd5iARz+frnIeEoO7YGNHvQt4mxNW6qBk0Wxh7dkeqcjWddGIMswBOaoGGAE+bqWOBsG3RIsyvoK0WWNMt9R253OIfNxaufw46wHs+f7Po5JeY5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002577; c=relaxed/simple;
-	bh=DaHBWEKw0RMjbi09ED7pJbPyeNac/Ink17KLE9G93Ac=;
+	s=arc-20240116; t=1771983415; c=relaxed/simple;
+	bh=lpGUkWsqdrnYYmpgEnPhlbQ6ptR7CSb+UbRnsi0zpZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HgP0GK0PVumH2p+ZyIu52Rk0+zfG7V/8PEYvbGaZ5YVo/q4eN406B3reSO1vEUTLq1/J5hKHZOouHdy6VxGk6bS2wX22S0j//cWM5Zbi+3qbralA2KGpsreBQf/3Y/HgmQ9p0ebXj00nDBs09LS3Q2RwVStLZwSL4QD4Ye0OxfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvuc+FZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C61FC116D0;
-	Wed, 25 Feb 2026 06:56:17 +0000 (UTC)
+	 MIME-Version; b=EYGZWIFkxsK4nWekPqCUvwFv7O38AR3G/sBz8AxP2BqzAN5wA/MXe1YNMTWIKzZDMXuRepquty6NkKpZdZ+uvFpWiUqmzReO6JQZDSVgDaNWrLgb85ITft+v/MkHYzFv12qj41Libfu1lcF5sbnpW2fsLwldYhfXspBDKYTpxpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfcecpeB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D47BC116D0;
+	Wed, 25 Feb 2026 01:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002577;
-	bh=DaHBWEKw0RMjbi09ED7pJbPyeNac/Ink17KLE9G93Ac=;
+	s=korg; t=1771983415;
+	bh=lpGUkWsqdrnYYmpgEnPhlbQ6ptR7CSb+UbRnsi0zpZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvuc+FZAAConIAgpMKzrLwWvvUMUw2GlTrnIYuOGb6gMKIGR4SrQpCwSjSn/Z/nLD
-	 m10LcO2Sb1FZd337lfbG6GaGgS1yqaaZaWN1YwlknWepFxZ6TrQO90UDBjz3ZF0COz
-	 KZoBpWgwMziaqFcwIIQju1w6brOtZ2poY8vcN+Ak=
+	b=EfcecpeBXle3V1S9AXoMgUaoaPdu+Dfj7UziG2h44hgBatde4fcjzArlryeg6MUIY
+	 jCZnBG3CU8LDeGoQm8+fyM/ktziY/FvgAqjJ012kXJwmTSvhmnSSSu53DgklaLdW7b
+	 C9BaYXwKR1oo2Jz8J799lJEsGMLHCj6Lho0FoM6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	George Moussalem <george.moussalem@outlook.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 311/641] netfilter: nft_set_rbtree: use binary search array in get command
+Subject: [PATCH 6.19 528/781] clk: qcom: gcc-ipq5018: flag sleep clock as critical
 Date: Tue, 24 Feb 2026 17:20:37 -0800
-Message-ID: <20260225012356.262131560@linuxfoundation.org>
+Message-ID: <20260225012412.749671138@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,221 +75,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-218573-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219226-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: D1AF2192AB3
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6407C18F9AE
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: George Moussalem <george.moussalem@outlook.com>
 
-[ Upstream commit 2aa34191f06fc5af4f70241518a8554370d86054 ]
+[ Upstream commit 04c4dc1f541135708d90a9b4632af51136f93ac3 ]
 
-Rework .get interface to use the binary search array, this needs a specific
-lookup function to match on end intervals (<=). Packet path lookup is slight
-different because match is on lesser value, not equal (ie. <).
+The sleep clock never be disabled. To avoid the kernel trying to disable
+it and keep it always on, flag it as critical.
 
-After this patch, seqcount can be removed in a follow up patch.
-
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Stable-dep-of: 782f2688128e ("netfilter: nft_set_rbtree: validate element belonging to interval")
+Fixes: e3fdbef1bab8 ("clk: qcom: Add Global Clock controller (GCC) driver for IPQ5018")
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251128-ipq5018-sleep-clk-fix-v1-1-6f4b75ec336c@outlook.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 154 ++++++++++++++-------------------
- 1 file changed, 64 insertions(+), 90 deletions(-)
+ drivers/clk/qcom/gcc-ipq5018.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 04e696c87f4a0..1b0502cc87301 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -69,96 +69,6 @@ static int nft_rbtree_cmp(const struct nft_set *set,
- 		      set->klen);
- }
- 
--static bool __nft_rbtree_get(const struct net *net, const struct nft_set *set,
--			     const u32 *key, struct nft_rbtree_elem **elem,
--			     unsigned int seq, unsigned int flags, u8 genmask)
--{
--	struct nft_rbtree_elem *rbe, *interval = NULL;
--	struct nft_rbtree *priv = nft_set_priv(set);
--	const struct rb_node *parent;
--	const void *this;
--	int d;
--
--	parent = rcu_dereference_raw(priv->root.rb_node);
--	while (parent != NULL) {
--		if (read_seqcount_retry(&priv->count, seq))
--			return false;
--
--		rbe = rb_entry(parent, struct nft_rbtree_elem, node);
--
--		this = nft_set_ext_key(&rbe->ext);
--		d = memcmp(this, key, set->klen);
--		if (d < 0) {
--			parent = rcu_dereference_raw(parent->rb_left);
--			if (!(flags & NFT_SET_ELEM_INTERVAL_END))
--				interval = rbe;
--		} else if (d > 0) {
--			parent = rcu_dereference_raw(parent->rb_right);
--			if (flags & NFT_SET_ELEM_INTERVAL_END)
--				interval = rbe;
--		} else {
--			if (!nft_set_elem_active(&rbe->ext, genmask)) {
--				parent = rcu_dereference_raw(parent->rb_left);
--				continue;
--			}
--
--			if (nft_set_elem_expired(&rbe->ext))
--				return false;
--
--			if (!nft_set_ext_exists(&rbe->ext, NFT_SET_EXT_FLAGS) ||
--			    (*nft_set_ext_flags(&rbe->ext) & NFT_SET_ELEM_INTERVAL_END) ==
--			    (flags & NFT_SET_ELEM_INTERVAL_END)) {
--				*elem = rbe;
--				return true;
--			}
--
--			if (nft_rbtree_interval_end(rbe))
--				interval = NULL;
--
--			parent = rcu_dereference_raw(parent->rb_left);
--		}
--	}
--
--	if (set->flags & NFT_SET_INTERVAL && interval != NULL &&
--	    nft_set_elem_active(&interval->ext, genmask) &&
--	    !nft_set_elem_expired(&interval->ext) &&
--	    ((!nft_rbtree_interval_end(interval) &&
--	      !(flags & NFT_SET_ELEM_INTERVAL_END)) ||
--	     (nft_rbtree_interval_end(interval) &&
--	      (flags & NFT_SET_ELEM_INTERVAL_END)))) {
--		*elem = interval;
--		return true;
--	}
--
--	return false;
--}
--
--static struct nft_elem_priv *
--nft_rbtree_get(const struct net *net, const struct nft_set *set,
--	       const struct nft_set_elem *elem, unsigned int flags)
--{
--	struct nft_rbtree *priv = nft_set_priv(set);
--	unsigned int seq = read_seqcount_begin(&priv->count);
--	struct nft_rbtree_elem *rbe = ERR_PTR(-ENOENT);
--	const u32 *key = (const u32 *)&elem->key.val;
--	u8 genmask = nft_genmask_cur(net);
--	bool ret;
--
--	ret = __nft_rbtree_get(net, set, key, &rbe, seq, flags, genmask);
--	if (ret || !read_seqcount_retry(&priv->count, seq))
--		return &rbe->priv;
--
--	read_lock_bh(&priv->lock);
--	seq = read_seqcount_begin(&priv->count);
--	ret = __nft_rbtree_get(net, set, key, &rbe, seq, flags, genmask);
--	read_unlock_bh(&priv->lock);
--
--	if (!ret)
--		return ERR_PTR(-ENOENT);
--
--	return &rbe->priv;
--}
--
- struct nft_array_lookup_ctx {
- 	const u32	*key;
- 	u32		klen;
-@@ -213,6 +123,70 @@ nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
- 	return interval->from;
- }
- 
-+struct nft_array_get_ctx {
-+	const u32	*key;
-+	unsigned int	flags;
-+	u32		klen;
-+};
-+
-+static int nft_array_get_cmp(const void *pkey, const void *entry)
-+{
-+	const struct nft_array_interval *interval = entry;
-+	const struct nft_array_get_ctx *ctx = pkey;
-+	int a, b;
-+
-+	if (!interval->from)
-+		return 1;
-+
-+	a = memcmp(ctx->key, nft_set_ext_key(interval->from), ctx->klen);
-+	if (!interval->to)
-+		b = -1;
-+	else
-+		b = memcmp(ctx->key, nft_set_ext_key(interval->to), ctx->klen);
-+
-+	if (a >= 0) {
-+		if (ctx->flags & NFT_SET_ELEM_INTERVAL_END && b <= 0)
-+			return 0;
-+		else if (b < 0)
-+			return 0;
-+	}
-+
-+	if (a < 0)
-+		return -1;
-+
-+	return 1;
-+}
-+
-+static struct nft_elem_priv *
-+nft_rbtree_get(const struct net *net, const struct nft_set *set,
-+	       const struct nft_set_elem *elem, unsigned int flags)
-+{
-+	struct nft_rbtree *priv = nft_set_priv(set);
-+	struct nft_array *array = rcu_dereference(priv->array);
-+	const struct nft_array_interval *interval;
-+	struct nft_array_get_ctx ctx = {
-+		.key	= (const u32 *)&elem->key.val,
-+		.flags	= flags,
-+		.klen	= set->klen,
-+	};
-+	struct nft_rbtree_elem *rbe;
-+
-+	if (!array)
-+		return ERR_PTR(-ENOENT);
-+
-+	interval = bsearch(&ctx, array->intervals, array->num_intervals,
-+			   sizeof(struct nft_array_interval), nft_array_get_cmp);
-+	if (!interval || nft_set_elem_expired(interval->from))
-+		return ERR_PTR(-ENOENT);
-+
-+	if (flags & NFT_SET_ELEM_INTERVAL_END)
-+		rbe = container_of(interval->to, struct nft_rbtree_elem, ext);
-+	else
-+		rbe = container_of(interval->from, struct nft_rbtree_elem, ext);
-+
-+	return &rbe->priv;
-+}
-+
- static void nft_rbtree_gc_elem_remove(struct net *net, struct nft_set *set,
- 				      struct nft_rbtree *priv,
- 				      struct nft_rbtree_elem *rbe)
+diff --git a/drivers/clk/qcom/gcc-ipq5018.c b/drivers/clk/qcom/gcc-ipq5018.c
+index dcda2be8c1a51..64792cda06202 100644
+--- a/drivers/clk/qcom/gcc-ipq5018.c
++++ b/drivers/clk/qcom/gcc-ipq5018.c
+@@ -1340,6 +1340,7 @@ static struct clk_branch gcc_sleep_clk_src = {
+ 			.name = "gcc_sleep_clk_src",
+ 			.parent_data = gcc_sleep_clk_data,
+ 			.num_parents = ARRAY_SIZE(gcc_sleep_clk_data),
++			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
 -- 
 2.51.0
 
