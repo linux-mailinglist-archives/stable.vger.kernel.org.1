@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-219221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePpxOamdnmkZWgQAu9opvQ
-	(envelope-from <stable+bounces-219221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:49 +0100
+	id gDUgL6NTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:59 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653C2192A64
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 07:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9A518F969
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:42:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 983FA30C3999
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 06:56:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A94D3314D163
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BE32C21F1;
-	Wed, 25 Feb 2026 06:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D79243376;
+	Wed, 25 Feb 2026 01:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxGxXkLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDWNCC97"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27F52C17A0;
-	Wed, 25 Feb 2026 06:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB67718B0A;
+	Wed, 25 Feb 2026 01:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772002572; cv=none; b=tHTXeinD8SnoxX38UWP6sptPhPh/vKNyBkh/bs3GOxYXvWWUbDz5wvtG+m/tcjoYJXgZtHfSDc9+xzQw0QGu4L/x0oebg0Cnl7MMFnIMfZlox10vku0c8S3VTf0wZqJeqRSqapOfFAbpubwJ2ThT986zixYJgmGpB970L0EWtok=
+	t=1771983402; cv=none; b=m3lzuGK1K26YWpGYUxLNjOq0xvU0HaXnKUeOIGfI0in94hKU7RyZHD9cxw+i3mOIjad2K3dUar/8MIfLiM9oCNfhKvDEGSdSc4CnUJEnZUX4TGhi62N37GFyT1ntAVlQpONd9e4yQB109qKmKC3rsc8GLTxaTM6kZZAqveVfUcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772002572; c=relaxed/simple;
-	bh=gk8ZIFHNVdKD5ltqqKO12rjL/u7lXbh5L5klznygEXI=;
+	s=arc-20240116; t=1771983402; c=relaxed/simple;
+	bh=Y1SziltBEW1hPyYuh7G8YOEkEHPm4JxCkqPncEb/UZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2i0sZBzXGRDUC2DmXECKMyJ0vaQZJzkKmRoipsda/PeGfG+O1qLtvh2wSctSVtTbxX8LYsBUq0ywdiu/FgkRT9x2AqqN96beyZySN8IazT4IRvlSB8VAhWA1soHdMDj25qBwvWT2jiufxcZufwuOUuwzK9Syd4EqO3EPXh/Tms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxGxXkLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FB4C116D0;
-	Wed, 25 Feb 2026 06:56:11 +0000 (UTC)
+	 MIME-Version; b=D7EEqXK+M+K8juZhPT10kPay5FHmksNzCu1xh0zQYxwGowIAFE4sZXaZq2RAHYdhGOwyRf6p7PFi6Ke562UerFuUGt0zAdfU37SGTHnjwDyrL0uuYr3r/U8sEOfaERb58ymos4SpGgQJ808qD0WRWhl1pUQQWD0eTQrLt7BI0Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDWNCC97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73995C116D0;
+	Wed, 25 Feb 2026 01:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772002571;
-	bh=gk8ZIFHNVdKD5ltqqKO12rjL/u7lXbh5L5klznygEXI=;
+	s=korg; t=1771983402;
+	bh=Y1SziltBEW1hPyYuh7G8YOEkEHPm4JxCkqPncEb/UZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UxGxXkLB1vTlT8feJQULHYV4ikgt+Iirp+u5NeQPaUXX/Yvz/0kERRJG9ZrdVtheT
-	 zcMN2NfLfSdF2k/G1zFsd7nZ3uVOF9A7mZRrQ1ZJA+bQo39egC3bBDzUR48OCJZ+lv
-	 6jdH6VaQj8uoesOrrVpJzkKNVFhMWM9PG0U2VDh8=
+	b=gDWNCC97Q0jC/KlM6tCW9o0eKX2vcnnRNL/TbNOYR6K3SmBIJ0pyffVly8KA+8py1
+	 xZ/tHOHoTNo2fsVolnwYHQfRwaloMPionnogolBt6IU6ZBLt6856kf/lxpcaTypk5/
+	 Sbjqlojs3KJdD1d+tE4pD9GjFJye/N9LDqEZUR4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
+	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 306/641] netfilter: nft_set_hash: fix get operation on big endian
+Subject: [PATCH 6.19 523/781] clk: qcom: gcc-x1e80100: Update the SDCC RCGs to use shared_floor_ops
 Date: Tue, 24 Feb 2026 17:20:32 -0800
-Message-ID: <20260225012356.151524823@linuxfoundation.org>
+Message-ID: <20260225012412.627095203@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,80 +76,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218563-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-219221-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 653C2192A64
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1D9A518F969
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
 
-[ Upstream commit 2f635adbe2642d398a0be3ab245accd2987be0c3 ]
+[ Upstream commit a468047c4e1c56783204a3ac551b843b4277c8fc ]
 
-tests/shell/testcases/packetpath/set_match_nomatch_hash_fast
-fails on big endian with:
+Use shared_floor_ops for the SDCC RCGs so the RCG is safely parked
+during disable and the new parent configuration is programmed in
+hardware only when the new parent is enabled, avoiding cases where
+the RCG configuration fails to update.
 
-Error: Could not process rule: No such file or directory
-reset element ip test s { 244.147.90.126 }
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Fatal: Cannot fetch element "244.147.90.126"
-
-... because the wrong bucket is searched, jhash() and jhash1_word are
-not interchangeable on big endian.
-
-Fixes: 3b02b0adc242 ("netfilter: nft_set_hash: fix lookups with fixed size hash on big endian")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
+Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20251127-sdcc_shared_floor_ops-v2-6-473afc86589c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_hash.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-x1e80100.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
-index ba01ce75d6dea..739b992bde591 100644
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -619,15 +619,20 @@ static struct nft_elem_priv *
- nft_hash_get(const struct net *net, const struct nft_set *set,
- 	     const struct nft_set_elem *elem, unsigned int flags)
- {
-+	const u32 *key = (const u32 *)&elem->key.val;
- 	struct nft_hash *priv = nft_set_priv(set);
- 	u8 genmask = nft_genmask_cur(net);
- 	struct nft_hash_elem *he;
- 	u32 hash;
+diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
+index b63c8abdd2fc2..e46e65e631513 100644
+--- a/drivers/clk/qcom/gcc-x1e80100.c
++++ b/drivers/clk/qcom/gcc-x1e80100.c
+@@ -1516,7 +1516,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_9,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_9),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
  
--	hash = jhash(elem->key.val.data, set->klen, priv->seed);
-+	if (set->klen == 4)
-+		hash = jhash_1word(*key, priv->seed);
-+	else
-+		hash = jhash(key, set->klen, priv->seed);
-+
- 	hash = reciprocal_scale(hash, priv->buckets);
- 	hlist_for_each_entry_rcu(he, &priv->table[hash], node) {
--		if (!memcmp(nft_set_ext_key(&he->ext), elem->key.val.data, set->klen) &&
-+		if (!memcmp(nft_set_ext_key(&he->ext), key, set->klen) &&
- 		    nft_set_elem_active(&he->ext, genmask))
- 			return &he->priv;
- 	}
+@@ -1538,7 +1538,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_floor_ops,
++		.ops = &clk_rcg2_shared_floor_ops,
+ 	},
+ };
+ 
 -- 
 2.51.0
 
