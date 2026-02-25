@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-218918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HOHJaBWnmkKUwQAu9opvQ
-	(envelope-from <stable+bounces-218918-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:44 +0100
+	id AFdpNa9Snmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CD319037E
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:55:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C94E18F49F
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:38:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99601311FF9A
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:45:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B46653134C2E
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63F7287253;
-	Wed, 25 Feb 2026 01:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237291D5ABA;
+	Wed, 25 Feb 2026 01:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZjH4ahD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gm9i7cve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B05724A06D;
-	Wed, 25 Feb 2026 01:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB751E2834;
+	Wed, 25 Feb 2026 01:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983812; cv=none; b=kwFb00vIR7QPoKcNLtTxlUoySR0sjBFikhniPSkhwwmKLRllfel/zkqIa48mnXezBRQGaEcHmA3TYlIFe8vbfgSvhE3OcVGR84Is9eD0jjo1rTWNzFKUtpuUnZ86v6D7mg7IT2+3Gp6/NjyksFm6WkdY2tts3k2ZPisgwymLeIk=
+	t=1771983160; cv=none; b=ErsZyHv+VgEJDmvGcaxIW4UG7HsCuHDIiaFraZ+l77rjqQcULAw4akVXCn4nnMuwkvAZKORiDBZC8tNVczQiooelBft/kjHBNV1YqFZJVS3MvhvZzocBdX5Wvt6yOamlLVsWnsIRHUwbyX1Pl0J46mURkY9yk6pjzSEJ8hAahag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983812; c=relaxed/simple;
-	bh=I4KQBavIhwrqXpljckIjxs2d9l+K/jcPCyz0X2WRgMM=;
+	s=arc-20240116; t=1771983160; c=relaxed/simple;
+	bh=k0CWLz721y279tmIyf2UunUK99d+vXjpT9BJXp5XnO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DcaVN5R/MftH8vqP9CWBQWbQbJ0SXD3fQx/DQXKAsm3Gp0cMQArFwr9vACygUN/zDhGgrnAAF7oartfoZSW55o9281fZp1X94KqEEyw7PHr/4QPObUrMx94mKMCca2eXlWnMbhEcTGUHT8LfpBvZDeof/2d7Clx58tyAwrmV2lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZjH4ahD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B73C116D0;
-	Wed, 25 Feb 2026 01:43:32 +0000 (UTC)
+	 MIME-Version; b=U7YMIDmnaf4W6sRo5co/yy2m0ZIw/MF/FAig4NRPq3OXCWIsptOlTlo1UuV66nFZ/lp0+NaLgUFvKHN2nM4gKVm9zfx/7kovKRAn+uQtUF0eZLQsczy+JtVhhoykoBpHwF+KCGptU1FaJm5r6eZFJiVS0dyxUAlpvivFLmRTxQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gm9i7cve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A943DC116D0;
+	Wed, 25 Feb 2026 01:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983812;
-	bh=I4KQBavIhwrqXpljckIjxs2d9l+K/jcPCyz0X2WRgMM=;
+	s=korg; t=1771983160;
+	bh=k0CWLz721y279tmIyf2UunUK99d+vXjpT9BJXp5XnO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zZjH4ahDJuCkubtOLmZ4MsejV4cP3zP3JJbZb9TApX4uHCjcvEXnQYORWKQ9q4dtz
-	 SeHj185qOzArCo/oQTa2x1C3FFk66V3S5vxbp5u0GgPrB7bcG+seRcnDTYWxVCZiyT
-	 QZpchk+dvHTgBiuMZqDCy27n4m+iyw/zaHOR9kyY=
+	b=Gm9i7cveUikT3rZjlzm3rmsYQ/kftTSNpTwQQSzig6s6yocrPP6Vv58i0z8Y6jqhv
+	 MRkupLBpqEOCutFhwt7NKE1QL5LhyGmz2qKOqCyITDop5j/cLWfx0663I+EvisZ6vO
+	 AnzJMVKLiv0h3g1wI3quik3vuJ561DDi+9ArHWOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ella Ma <alansnape3058@gmail.com>,
-	Tom Lendacky <thomas.lendacky@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Carl Lee <carl.lee@amd.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 097/641] crypto: ccp - Fix a crash due to incorrect cleanup usage of kfree
+Subject: [PATCH 6.19 314/781] hwmon: (pmbus/mpq8785) fix VOUT_MODE mismatch during identification
 Date: Tue, 24 Feb 2026 17:17:03 -0800
-Message-ID: <20260225012351.457148725@linuxfoundation.org>
+Message-ID: <20260225012407.402493502@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +65,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-218918-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-218351-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.984];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 08CD319037E
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,roeck-us.net:email]
+X-Rspamd-Queue-Id: 6C94E18F49F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ella Ma <alansnape3058@gmail.com>
+From: Carl Lee <carl.lee@amd.com>
 
-[ Upstream commit d5abcc33ee76bc26d58b39dc1a097e43a99dd438 ]
+[ Upstream commit 9e33c1dba22431bea9b2bf48adf56859e52fc7ec ]
 
-Annotating a local pointer variable, which will be assigned with the
-kmalloc-family functions, with the `__cleanup(kfree)` attribute will
-make the address of the local variable, rather than the address returned
-by kmalloc, passed to kfree directly and lead to a crash due to invalid
-deallocation of stack address. According to other places in the repo,
-the correct usage should be `__free(kfree)`. The code coincidentally
-compiled because the parameter type `void *` of kfree is compatible with
-the desired type `struct { ... } **`.
+When MPQ8785 reports VOUT_MODE as VID mode, mpq8785_identify()
+configures the driver for direct mode. The subsequent
+pmbus_identify_common() check then fails due to a mismatch
+between the reported mode and the configured mode, causing
+device initialization to fail.
 
-Fixes: a71475582ada ("crypto: ccp - reduce stack usage in ccp_run_aes_gcm_cmd")
-Signed-off-by: Ella Ma <alansnape3058@gmail.com>
-Acked-by: Tom Lendacky <thomas.lendacky@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Override the reported VOUT_MODE to direct mode to keep the
+driver configuration consistent with the reported mode and
+allow successful device initialization.
+
+This does not change how voltages are interpreted, but avoids
+a false identification failure caused by mismatched mode
+handling.
+
+Fixes: f20b4a931130c ("hwmon: Add driver for MPS MPQ8785 Synchronous Step-Down Converter")
+Signed-off-by: Carl Lee <carl.lee@amd.com>
+Link: https://lore.kernel.org/r/20260210-dt-bindings-hwmon-pmbus-mpq8785-add-mpq8786-support-v3-1-84636ccfe76f@amd.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/ccp-ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/pmbus/mpq8785.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/crypto/ccp/ccp-ops.c b/drivers/crypto/ccp/ccp-ops.c
-index d78865d9d5f09..d0412e5847625 100644
---- a/drivers/crypto/ccp/ccp-ops.c
-+++ b/drivers/crypto/ccp/ccp-ops.c
-@@ -642,7 +642,7 @@ ccp_run_aes_gcm_cmd(struct ccp_cmd_queue *cmd_q, struct ccp_cmd *cmd)
- 		struct ccp_data dst;
- 		struct ccp_data aad;
- 		struct ccp_op op;
--	} *wa __cleanup(kfree) = kzalloc(sizeof *wa, GFP_KERNEL);
-+	} *wa __free(kfree) = kzalloc(sizeof(*wa), GFP_KERNEL);
- 	unsigned int dm_offset;
- 	unsigned int authsize;
- 	unsigned int jobid;
+diff --git a/drivers/hwmon/pmbus/mpq8785.c b/drivers/hwmon/pmbus/mpq8785.c
+index 1f56aaf4dde80..87bd039c77b9b 100644
+--- a/drivers/hwmon/pmbus/mpq8785.c
++++ b/drivers/hwmon/pmbus/mpq8785.c
+@@ -47,6 +47,33 @@ static int mpq8785_identify(struct i2c_client *client,
+ 	return 0;
+ };
+ 
++static int mpq8785_read_byte_data(struct i2c_client *client, int page, int reg)
++{
++	int ret;
++
++	switch (reg) {
++	case PMBUS_VOUT_MODE:
++		ret = pmbus_read_byte_data(client, page, reg);
++		if (ret < 0)
++			return ret;
++
++		if ((ret >> 5) == 1) {
++			/*
++			 * The MPQ8785 chip reports VOUT_MODE as VID mode, but the driver
++			 * treats VID as direct mode. Without this, identification would fail
++			 * due to mode mismatch.
++			 * This override ensures the reported mode matches the driver
++			 * configuration, allowing successful initialization.
++			 */
++			return PB_VOUT_MODE_DIRECT;
++		}
++
++		return ret;
++	default:
++		return -ENODATA;
++	}
++}
++
+ static int mpm82504_read_word_data(struct i2c_client *client, int page,
+ 				   int phase, int reg)
+ {
+@@ -129,6 +156,7 @@ static int mpq8785_probe(struct i2c_client *client)
+ 		break;
+ 	case mpq8785:
+ 		info->identify = mpq8785_identify;
++		info->read_byte_data = mpq8785_read_byte_data;
+ 		break;
+ 	default:
+ 		return -ENODEV;
 -- 
 2.51.0
 
