@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-218997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-218436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNeqFg1anmkjUwQAu9opvQ
-	(envelope-from <stable+bounces-218997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:21 +0100
+	id aNvFDwVTnmm3UgQAu9opvQ
+	(envelope-from <stable+bounces-218436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE63B190A2B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 03:10:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B596318F655
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 02:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C5F032D947B
-	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:46:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B0E030F1563
+	for <lists+stable@lfdr.de>; Wed, 25 Feb 2026 01:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556FE2877E5;
-	Wed, 25 Feb 2026 01:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9B61EB5E1;
+	Wed, 25 Feb 2026 01:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9gk13qP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xhssv0AT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185042522A7;
-	Wed, 25 Feb 2026 01:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826B518B0A;
+	Wed, 25 Feb 2026 01:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983906; cv=none; b=aFT6rJBBKA9nqJTxaoqp1DIvda1QYxfjFts1I/wRaoa0rNlJbTxvRT1Y9LetWLn6SBMwqB//GiNTvnbsbgLiri0PIg4Izbh/dJXaJu18n+Xw2u7XyT43tqoRHQFrec4KYKlGGcFEUgrgiffaEo7V3yd03JjlmZk8wJNOt5VdipU=
+	t=1771983257; cv=none; b=lFa896ghiMI+SZseH+Jac8PArHzglI1rKZHeX9YYBED+j3P8f37yF2AloBUFG4OXotrds6uzaUchO5FLfSwC6QiMg35sUym77q4GGR4IJoXbAP5fHhoCMCB4lJ832RWbnL4PkZF/nZBDEvcdKbnUhFRiGVpQtM6cL2KBPrl5VA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983906; c=relaxed/simple;
-	bh=XoIAfc5C9YwdDvf0+fAspcg1S1zA4oXxlPsAhJn8nhA=;
+	s=arc-20240116; t=1771983257; c=relaxed/simple;
+	bh=3k3j0eYImRl0xyXieE3ldUnnN6elvs4fY6eraqdpIWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgdfAFQKCjuU48Ch1nwL9DtmEnrqnaHoao1xHPLrc9vH2y1tMFTGD/NqnZRaGR3wOH2sL5s67/bRbs8YxV0z7AAlHtobeTsLDLzeIyR0/JGhEQIiIYiWglT7+kJInsCnCSYDYiQIF62uEv7uMs5Xsgjt8Gn8cr0rfBiV2N/OHLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9gk13qP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA91C116D0;
-	Wed, 25 Feb 2026 01:45:05 +0000 (UTC)
+	 MIME-Version; b=QKF6FOVW+aYEHrgGUxLwsxKYg9rZ8mp0bKcizLqsEz1PB2NC/urGmTDolnLat1jTUGWMjPp0aZdyfFfUd1AIvy+cz5Ogfy97UZE8rSnzYAgTOU7OfAdVNl9M+0aUTl8Zph63wpExir5Nvr8aomlQeWbnp0bo/7ApQVb/WA58fiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xhssv0AT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424B7C116D0;
+	Wed, 25 Feb 2026 01:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771983906;
-	bh=XoIAfc5C9YwdDvf0+fAspcg1S1zA4oXxlPsAhJn8nhA=;
+	s=korg; t=1771983257;
+	bh=3k3j0eYImRl0xyXieE3ldUnnN6elvs4fY6eraqdpIWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n9gk13qPJnYlp2YUXHQGabyf9nNkedXwx9doaQATfH2ehWzK+PLu+57gDLRgobkVt
-	 37/kfDSibNUxrDrMTUaZdU0lB/drTKYAsyT/F9zNwnLMrjqaNFYyLXm9fLVEUx6EVy
-	 w0plGrMZfJr0B2Hh4UVAAxWQ2yJjTToZjItqh9+A=
+	b=Xhssv0ATCnPYb4tsMmv6cPIGGoiPko5c66eoeQKzul0V6qPMNHLpZcUXoQIxb40li
+	 Xxw3WeEo2o5G4FqkrpbXfvtfzyVWLyYT6mmKnA7WYp7xpJcM1brwrby8+riQ0WRC52
+	 ENrpy5oR6Ef3wb2+M49Ct1dntN9a+Zna2GYcDgyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Price <steven.price@arm.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Wenbin Yao <wenbin.yao@oss.qualcomm.com>,
+	Qiang Yu <qiang.yu@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 173/641] drm/panthor: Make sure we resume the tick when new jobs are submitted
-Date: Tue, 24 Feb 2026 17:18:19 -0800
-Message-ID: <20260225012353.231936993@linuxfoundation.org>
+Subject: [PATCH 6.19 391/781] PCI: dwc: Add new APIs to remove standard and extended Capability
+Date: Tue, 24 Feb 2026 17:18:20 -0800
+Message-ID: <20260225012409.287893256@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225012348.915798704@linuxfoundation.org>
-References: <20260225012348.915798704@linuxfoundation.org>
+In-Reply-To: <20260225012359.695468795@linuxfoundation.org>
+References: <20260225012359.695468795@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,138 +70,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,gmail.com,collabora.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-218997-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-218436-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: EE63B190A2B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: B596318F655
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Qiang Yu <qiang.yu@oss.qualcomm.com>
 
-[ Upstream commit 99820b4b7e50d9651f01d2d55b6b9ba92dcc5b99 ]
+[ Upstream commit 0183562f1e824c0ca6c918309a0978e9a269af3e ]
 
-If the group is already assigned a slot but was idle before this job
-submission, we need to make sure the priority rotation happens in the
-future. Extract the existing logic living in group_schedule_locked()
-and call this new sched_resume_tick() helper from the "group is
-assigned a slot" path.
+On some platforms, certain PCIe Capabilities may be present in hardware
+but are not fully implemented as defined in PCIe spec. These incomplete
+capabilities should be hidden from the PCI framework to prevent unexpected
+behavior.
 
-v2:
-- Add R-b
+Introduce two APIs to remove a specific PCIe Capability and Extended
+Capability by updating the previous capability's next offset field to skip
+over the unwanted capability. These APIs allow RC drivers to easily hide
+unsupported or partially implemented capabilities from software.
 
-v3:
-- Re-use queue_mask to clear the bit
-- Collect R-b
-
-Fixes: de8548813824 ("drm/panthor: Add the scheduler logical block")
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Chia-I Wu <olvaffe@gmail.com>
-Link: https://patch.msgid.link/20251128094839.3856402-8-boris.brezillon@collabora.com
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Co-developed-by: Wenbin Yao <wenbin.yao@oss.qualcomm.com>
+Signed-off-by: Wenbin Yao <wenbin.yao@oss.qualcomm.com>
+Signed-off-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20251109-remove_cap-v1-2-2208f46f4dc2@oss.qualcomm.com
+Stable-dep-of: 72cb5ed2a5c6 ("PCI: dwc: ep: Add per-PF BAR and inbound ATU mapping support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 43 +++++++++++++++++++------
- 1 file changed, 34 insertions(+), 9 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware.c | 53 ++++++++++++++++++++
+ drivers/pci/controller/dwc/pcie-designware.h |  2 +
+ 2 files changed, 55 insertions(+)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 368e7f3449105..8f11fe73bee23 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -2563,14 +2563,33 @@ static void sync_upd_work(struct work_struct *work)
- 		sched_queue_delayed_work(sched, tick, 0);
+diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+index 5d7a7e6f5724e..345365ea97c74 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.c
++++ b/drivers/pci/controller/dwc/pcie-designware.c
+@@ -236,6 +236,59 @@ u16 dw_pcie_find_ext_capability(struct dw_pcie *pci, u8 cap)
  }
+ EXPORT_SYMBOL_GPL(dw_pcie_find_ext_capability);
  
-+static void sched_resume_tick(struct panthor_device *ptdev)
++void dw_pcie_remove_capability(struct dw_pcie *pci, u8 cap)
 +{
-+	struct panthor_scheduler *sched = ptdev->scheduler;
-+	u64 delay_jiffies, now;
++	u8 cap_pos, pre_pos, next_pos;
++	u16 reg;
 +
-+	drm_WARN_ON(&ptdev->base, sched->resched_target != U64_MAX);
++	cap_pos = PCI_FIND_NEXT_CAP(dw_pcie_read_cfg, PCI_CAPABILITY_LIST, cap,
++				 &pre_pos, pci);
++	if (!cap_pos)
++		return;
 +
-+	/* Scheduler tick was off, recalculate the resched_target based on the
-+	 * last tick event, and queue the scheduler work.
-+	 */
-+	now = get_jiffies_64();
-+	sched->resched_target = sched->last_tick + sched->tick_period;
-+	if (sched->used_csg_slot_count == sched->csg_slot_count &&
-+	    time_before64(now, sched->resched_target))
-+		delay_jiffies = min_t(unsigned long, sched->resched_target - now, ULONG_MAX);
++	reg = dw_pcie_readw_dbi(pci, cap_pos);
++	next_pos = (reg & 0xff00) >> 8;
++
++	dw_pcie_dbi_ro_wr_en(pci);
++	if (pre_pos == PCI_CAPABILITY_LIST)
++		dw_pcie_writeb_dbi(pci, PCI_CAPABILITY_LIST, next_pos);
 +	else
-+		delay_jiffies = 0;
-+
-+	sched_queue_delayed_work(sched, tick, delay_jiffies);
++		dw_pcie_writeb_dbi(pci, pre_pos + 1, next_pos);
++	dw_pcie_dbi_ro_wr_dis(pci);
 +}
++EXPORT_SYMBOL_GPL(dw_pcie_remove_capability);
 +
- static void group_schedule_locked(struct panthor_group *group, u32 queue_mask)
++void dw_pcie_remove_ext_capability(struct dw_pcie *pci, u8 cap)
++{
++	int cap_pos, next_pos, pre_pos;
++	u32 pre_header, header;
++
++	cap_pos = PCI_FIND_NEXT_EXT_CAP(dw_pcie_read_cfg, 0, cap, &pre_pos, pci);
++	if (!cap_pos)
++		return;
++
++	header = dw_pcie_readl_dbi(pci, cap_pos);
++	/*
++	 * If the first cap at offset PCI_CFG_SPACE_SIZE is removed,
++	 * only set it's capid to zero as it cannot be skipped.
++	 */
++	if (cap_pos == PCI_CFG_SPACE_SIZE) {
++		dw_pcie_dbi_ro_wr_en(pci);
++		dw_pcie_writel_dbi(pci, cap_pos, header & 0xffff0000);
++		dw_pcie_dbi_ro_wr_dis(pci);
++		return;
++	}
++
++	pre_header = dw_pcie_readl_dbi(pci, pre_pos);
++	next_pos = PCI_EXT_CAP_NEXT(header);
++
++	dw_pcie_dbi_ro_wr_en(pci);
++	dw_pcie_writel_dbi(pci, pre_pos,
++			  (pre_header & 0xfffff) | (next_pos << 20));
++	dw_pcie_dbi_ro_wr_dis(pci);
++}
++EXPORT_SYMBOL_GPL(dw_pcie_remove_ext_capability);
++
+ static u16 __dw_pcie_find_vsec_capability(struct dw_pcie *pci, u16 vendor_id,
+ 					  u16 vsec_id)
  {
- 	struct panthor_device *ptdev = group->ptdev;
- 	struct panthor_scheduler *sched = ptdev->scheduler;
- 	struct list_head *queue = &sched->groups.runnable[group->priority];
--	u64 delay_jiffies = 0;
- 	bool was_idle;
--	u64 now;
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index 31685951a0804..aec4af5194b51 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -562,6 +562,8 @@ void dw_pcie_version_detect(struct dw_pcie *pci);
  
- 	if (!group_can_run(group))
- 		return;
-@@ -2615,13 +2634,7 @@ static void group_schedule_locked(struct panthor_group *group, u32 queue_mask)
- 	/* Scheduler tick was off, recalculate the resched_target based on the
- 	 * last tick event, and queue the scheduler work.
- 	 */
--	now = get_jiffies_64();
--	sched->resched_target = sched->last_tick + sched->tick_period;
--	if (sched->used_csg_slot_count == sched->csg_slot_count &&
--	    time_before64(now, sched->resched_target))
--		delay_jiffies = min_t(unsigned long, sched->resched_target - now, ULONG_MAX);
--
--	sched_queue_delayed_work(sched, tick, delay_jiffies);
-+	sched_resume_tick(ptdev);
- }
+ u8 dw_pcie_find_capability(struct dw_pcie *pci, u8 cap);
+ u16 dw_pcie_find_ext_capability(struct dw_pcie *pci, u8 cap);
++void dw_pcie_remove_capability(struct dw_pcie *pci, u8 cap);
++void dw_pcie_remove_ext_capability(struct dw_pcie *pci, u8 cap);
+ u16 dw_pcie_find_rasdes_capability(struct dw_pcie *pci);
+ u16 dw_pcie_find_ptm_capability(struct dw_pcie *pci);
  
- static void queue_stop(struct panthor_queue *queue,
-@@ -3222,6 +3235,18 @@ queue_run_job(struct drm_sched_job *sched_job)
- 
- 		group_schedule_locked(group, BIT(job->queue_idx));
- 	} else {
-+		u32 queue_mask = BIT(job->queue_idx);
-+		bool resume_tick = group_is_idle(group) &&
-+				   (group->idle_queues & queue_mask) &&
-+				   !(group->blocked_queues & queue_mask) &&
-+				   sched->resched_target == U64_MAX;
-+
-+		/* We just added something to the queue, so it's no longer idle. */
-+		group->idle_queues &= ~queue_mask;
-+
-+		if (resume_tick)
-+			sched_resume_tick(ptdev);
-+
- 		gpu_write(ptdev, CSF_DOORBELL(queue->doorbell_id), 1);
- 		if (!sched->pm.has_ref &&
- 		    !(group->blocked_queues & BIT(job->queue_idx))) {
 -- 
 2.51.0
 
